@@ -22,11 +22,11 @@ DROP INDEX [IF EXISTS] [schema-name.]index-name;
 
 ### Parameters
 
-| Parameter     | Description                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| `IF EXISTS`   | Prevents an error if the index does not exist. The statement is a no-op when the index is absent. |
+| Parameter | Description |
+| - | - |
+| `IF EXISTS` | Prevents an error if the index does not exist. The statement is a no-op when the index is absent. |
 | `schema-name` | The name of the attached database containing the index. Defaults to the main database if omitted. |
-| `index-name`  | The name of the index to drop.                                                                    |
+| `index-name` | The name of the index to drop. |
 
 ### Behavior
 

@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 416 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 417 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -256,6 +256,7 @@
 - `docs/guides/dns/squarespace` — [Squarespace](pages/docs/guides/dns/squarespace.md) · [原文](https://resend.com/docs/guides/dns/squarespace)
 - `docs/guides/dns/strato` — [Strato](pages/docs/guides/dns/strato.md) · [原文](https://resend.com/docs/guides/dns/strato)
 - `docs/guides/dns/vercel` — [Vercel](pages/docs/guides/dns/vercel.md) · [原文](https://resend.com/docs/guides/dns/vercel)
+- `docs/guides/laravel-cloud-integration` — [Laravel Cloud Integration](pages/docs/guides/laravel-cloud-integration.md) · [原文](https://resend.com/docs/guides/laravel-cloud-integration)
 - `docs/guides/paper` — [Turn Paper designs into Resend emails](pages/docs/guides/paper.md) · [原文](https://resend.com/docs/guides/paper)
 - `docs/guides/stripe-projects-integration` — [Stripe Projects Integration](pages/docs/guides/stripe-projects-integration.md) · [原文](https://resend.com/docs/guides/stripe-projects-integration)
 - `docs/guides/vercel-marketplace-integration` — [Vercel Marketplace Integration](pages/docs/guides/vercel-marketplace-integration.md) · [原文](https://resend.com/docs/guides/vercel-marketplace-integration)

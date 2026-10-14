@@ -63,10 +63,10 @@ Tools can access an agent's runtime context through the `config` parameter. Conf
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
+import { uuid7 } from "langsmith";
 import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, tool } from "langchain";
-import { uuid7 } from "langsmith";
 
 const getUserName = tool(
   (_, config) => {

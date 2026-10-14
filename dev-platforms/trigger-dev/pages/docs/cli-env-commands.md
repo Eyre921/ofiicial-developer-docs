@@ -77,7 +77,7 @@ npx trigger.dev@latest env set STRIPE_KEY sk_live_abc --secret
 
 ## env pull
 
-Writes the project's environment variables to a local file. Defaults to `.env.local`. Fails if the file already exists unless you pass `--force`.
+Writes the project's environment variables to a local file. Defaults to `.env.local`. Asks you to confirm before overwriting an existing file unless you pass `--force`. `TRIGGER_` system variables are omitted.
 
 ```bash theme={"theme":"css-variables"}
 npx trigger.dev@latest env pull
@@ -89,7 +89,7 @@ npx trigger.dev@latest env pull --output .env.trigger --force
 </ParamField>
 
 <ParamField type="--force">
-  Overwrite the output file if it exists.
+  Overwrite the output file if it exists, without asking.
 </ParamField>
 
 ## Options
@@ -107,8 +107,7 @@ npx trigger.dev@latest env pull --output .env.trigger --force
 </ParamField>
 
 <ParamField type="--branch | -b">
-  When using `--env preview` the branch is automatically detected from git. But you can manually
-  specify it by using this option, e.g. `--branch my-branch` or `-b my-branch`.
+  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
 </ParamField>
 
 ### Common options
@@ -116,7 +115,7 @@ npx trigger.dev@latest env pull --output .env.trigger --force
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

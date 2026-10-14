@@ -12,15 +12,15 @@ Turso offers two approaches for database access from Vercel serverless and edge 
 
 * **In-Function SQLite** — Database pages are replicated into the serverless function. Reads execute locally with no network round-trips; writes go directly to the remote database for durability. If you've used Turso's embedded replicas or Cloudflare's Durable Objects with SQLite, this model will feel familiar. See [Bringing SQLite to Vercel Functions](https://turso.tech/blog/serverless) for a deep dive.
 
-|                          | SQL over HTTP                                           | In-Function SQLite                                        |
-| ------------------------ | ------------------------------------------------------- | --------------------------------------------------------- |
-| **Packages**             | `@tursodatabase/serverless`, `@libsql/client`           | `@tursodatabase/vercel-experimental`                      |
-| **Best for**             | Write-heavy workloads, edge runtimes without filesystem | Read-heavy workloads, per-tenant databases                |
-| **Read latency**         | Network round-trip per query                            | In-process SQLite read (zero network hops)                |
-| **Write latency**        | Network round-trip                                      | Network round-trip (same)                                 |
-| **Multi-tenant**         | Shared database                                         | Database-per-tenant with automatic on-demand provisioning |
-| **Runtime requirements** | `fetch` API only                                        | Ephemeral filesystem (`/tmp`)                             |
-| **ORM support**          | Drizzle, Prisma, and others (`@libsql/client`)          | Not yet supported                                         |
+| | SQL over HTTP | In-Function SQLite |
+| - | - | - |
+| **Packages** | `@tursodatabase/serverless`, `@libsql/client` | `@tursodatabase/vercel-experimental` |
+| **Best for** | Write-heavy workloads, edge runtimes without filesystem | Read-heavy workloads, per-tenant databases |
+| **Read latency** | Network round-trip per query | In-process SQLite read (zero network hops) |
+| **Write latency** | Network round-trip | Network round-trip (same) |
+| **Multi-tenant** | Shared database | Database-per-tenant with automatic on-demand provisioning |
+| **Runtime requirements** | `fetch` API only | Ephemeral filesystem (`/tmp`) |
+| **ORM support** | Drizzle, Prisma, and others (`@libsql/client`) | Not yet supported |
 
 ## SQL over HTTP
 
@@ -29,12 +29,12 @@ Connect to Turso databases from Vercel serverless and edge environments. Configu
 * `TURSO_DATABASE_URL` — Your Turso database URL
 * `TURSO_AUTH_TOKEN` — Your Turso auth token
 
-|                       | `@tursodatabase/serverless`                  | `@libsql/client`                   |
-| --------------------- | -------------------------------------------- | ---------------------------------- |
-| **Use with**          | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        |
-| **Dependencies**      | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath |
-| **Concurrent writes** | Yes — built into the Turso engine            | Not supported                      |
-| **ORM support**       | Not yet supported                            | Drizzle, Prisma, and others        |
+| | `@tursodatabase/serverless` | `@libsql/client` |
+| - | - | - |
+| **Use with** | [Turso](/tursodb/quickstart) databases | [libSQL](/libsql) databases |
+| **Dependencies** | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath |
+| **Concurrent writes** | Yes — built into the Turso engine | Not supported |
+| **ORM support** | Not yet supported | Drizzle, Prisma, and others |
 
 Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases and ORM integration (Drizzle, Prisma).
 

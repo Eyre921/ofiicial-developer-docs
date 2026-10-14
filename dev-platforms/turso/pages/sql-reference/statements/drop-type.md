@@ -26,10 +26,10 @@ DROP TYPE removes the named custom type from the database. The type must exist u
 
 ### Clauses
 
-| Clause      | Description                                                                                                            |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Clause | Description |
+| - | - |
 | `IF EXISTS` | Suppresses the error that would occur if the type does not exist. The statement is a no-op when the type is not found. |
-| `type-name` | The name of the custom type to remove.                                                                                 |
+| `type-name` | The name of the custom type to remove. |
 
 ### Restrictions
 

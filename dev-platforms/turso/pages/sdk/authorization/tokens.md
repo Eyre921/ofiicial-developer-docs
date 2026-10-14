@@ -16,11 +16,11 @@ turso group tokens create <group-name>
 
 You can control token scope, permissions, and expiration:
 
-| Flag                  | Description                                                                                      |
-| --------------------- | ------------------------------------------------------------------------------------------------ |
-| `-r`, `--read-only`   | Create a read-only token (queries only, no writes)                                               |
+| Flag | Description |
+| - | - |
+| `-r`, `--read-only` | Create a read-only token (queries only, no writes) |
 | `-p`, `--permissions` | Set [fine-grained permissions](/sdk/authorization/fine-grained-permissions) per table and action |
-| `-e`, `--expiration`  | Set token expiration (`never`, `7d`, `30d`, etc.)                                                |
+| `-e`, `--expiration` | Set token expiration (`never`, `7d`, `30d`, etc.) |
 
 <CodeGroup>
   ```bash Read-only token theme={null}

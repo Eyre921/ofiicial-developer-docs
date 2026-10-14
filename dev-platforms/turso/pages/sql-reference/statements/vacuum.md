@@ -17,10 +17,10 @@ VACUUM [schema-name];
 VACUUM [schema-name] INTO filename;
 ```
 
-| Parameter     | Description                                                                                                                                                                            |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parameter | Description |
+| - | - |
 | `schema-name` | The database to vacuum. For in-place `VACUUM` only `main` is supported. For `VACUUM INTO` any attached schema is accepted; `temp` is a no-op and produces no file. Defaults to `main`. |
-| `filename`    | A string literal giving the destination file path for `VACUUM INTO`. Bind parameters are not accepted.                                                                                 |
+| `filename` | A string literal giving the destination file path for `VACUUM INTO`. Bind parameters are not accepted. |
 
 ## Common Requirements
 
@@ -142,23 +142,23 @@ VACUUM;
 
 ## Errors
 
-| Error                                                                                                   | Cause                                                                                            |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `VACUUM is an experimental feature. Enable with --experimental-vacuum flag`                             | In-place `VACUUM` used in a release build without the experimental flag.                         |
-| `VACUUM is only supported for the main database; schema '<name>' is not supported yet`                  | In-place `VACUUM schema-name` with a schema other than `main`.                                   |
-| `Cannot execute VACUUM in query_only mode`                                                              | `VACUUM` or `VACUUM INTO` run on a connection where `PRAGMA query_only` is set.                  |
-| `cannot VACUUM from within a transaction` / `cannot VACUUM INTO from within a transaction`              | Run inside an explicit `BEGIN`.                                                                  |
-| `cannot VACUUM - SQL statements in progress`                                                            | Another statement is still active on the same connection.                                        |
-| `Incremental auto-vacuum is not supported`                                                              | The source database has `auto_vacuum = incremental`. Applies to both `VACUUM` and `VACUUM INTO`. |
-| `VACUUM requires a WAL-mode database`                                                                   | In-place `VACUUM` on a non-WAL database.                                                         |
-| `cannot VACUUM an in-memory database`                                                                   | In-place `VACUUM` on an in-memory database.                                                      |
-| `ReadOnly`                                                                                              | In-place `VACUUM` on a read-only database.                                                       |
-| `cannot VACUUM while experimental multiprocess WAL is active in another process`                        | In-place `VACUUM` while another process holds the multi-process WAL.                             |
-| `cannot VACUUM an MVCC database with uncheckpointed changes; run PRAGMA wal_checkpoint(TRUNCATE) first` | In-place `VACUUM` on an MVCC database with pending log entries.                                  |
-| `output file already exists: <path>`                                                                    | The destination for `VACUUM INTO` already exists.                                                |
-| `VACUUM INTO path cannot be empty`                                                                      | `VACUUM INTO ''` was used.                                                                       |
-| `VACUUM INTO requires a string literal path`                                                            | A non-literal expression (for example a bind parameter) was used for the destination.            |
-| `no such database: <name>`                                                                              | `VACUUM <schema> INTO` referenced an unknown schema.                                             |
+| Error | Cause |
+| - | - |
+| `VACUUM is an experimental feature. Enable with --experimental-vacuum flag` | In-place `VACUUM` used in a release build without the experimental flag. |
+| `VACUUM is only supported for the main database; schema '<name>' is not supported yet` | In-place `VACUUM schema-name` with a schema other than `main`. |
+| `Cannot execute VACUUM in query_only mode` | `VACUUM` or `VACUUM INTO` run on a connection where `PRAGMA query_only` is set. |
+| `cannot VACUUM from within a transaction` / `cannot VACUUM INTO from within a transaction` | Run inside an explicit `BEGIN`. |
+| `cannot VACUUM - SQL statements in progress` | Another statement is still active on the same connection. |
+| `Incremental auto-vacuum is not supported` | The source database has `auto_vacuum = incremental`. Applies to both `VACUUM` and `VACUUM INTO`. |
+| `VACUUM requires a WAL-mode database` | In-place `VACUUM` on a non-WAL database. |
+| `cannot VACUUM an in-memory database` | In-place `VACUUM` on an in-memory database. |
+| `ReadOnly` | In-place `VACUUM` on a read-only database. |
+| `cannot VACUUM while experimental multiprocess WAL is active in another process` | In-place `VACUUM` while another process holds the multi-process WAL. |
+| `cannot VACUUM an MVCC database with uncheckpointed changes; run PRAGMA wal_checkpoint(TRUNCATE) first` | In-place `VACUUM` on an MVCC database with pending log entries. |
+| `output file already exists: <path>` | The destination for `VACUUM INTO` already exists. |
+| `VACUUM INTO path cannot be empty` | `VACUUM INTO ''` was used. |
+| `VACUUM INTO requires a string literal path` | A non-literal expression (for example a bind parameter) was used for the destination. |
+| `no such database: <name>` | `VACUUM <schema> INTO` referenced an unknown schema. |
 
 ## See Also
 

@@ -20,21 +20,21 @@ turso db create [database-name]
 
 ## Flags
 
-| Flag                  | Description                                                                                                                                                                                                                           |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--enable-extensions` | Enables experimental support for SQLite extensions.                                                                                                                                                                                   |
-| `--from-csv`          | Create the database from a csv file.                                                                                                                                                                                                  |
-| `--csv-table-name`    | Name of the table in the csv file.                                                                                                                                                                                                    |
-| `--from-db`           | Select another database to copy data from.                                                                                                                                                                                            |
-| `--timestamp`         | Set a point in time in the past to copy data from the selected database.<br /><br />Must be used with the 'from-db' flag. Must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339) format like '2023-09-29T10:16:13-03:00' |
-| `--from-dump`         | Create the database from a local SQLite dump.                                                                                                                                                                                         |
-| `--from-dump-url`     | Create the database from a remote SQLite dump.                                                                                                                                                                                        |
-| `--from-file`         | Create the database from a local SQLite3-compatible file.                                                                                                                                                                             |
-| `--group`             | Create the database in the specified group.                                                                                                                                                                                           |
-| `--size-limit`        | The maximum size of the database in bytes. Values with units are also accepted, e.g. 1mb, 256mb, 1gb.                                                                                                                                 |
-| `--canary`            | Use database canary build.                                                                                                                                                                                                            |
-| `-w`, `--wait`        | Wait for the database to be ready to receive requests.                                                                                                                                                                                |
-| `-h`, `--help`        | Get help for create.                                                                                                                                                                                                                  |
+| Flag | Description |
+| - | - |
+| `--enable-extensions` | Enables experimental support for SQLite extensions. |
+| `--from-csv` | Create the database from a csv file. |
+| `--csv-table-name` | Name of the table in the csv file. |
+| `--from-db` | Select another database to copy data from. |
+| `--timestamp` | Set a point in time in the past to copy data from the selected database.<br /><br />Must be used with the 'from-db' flag. Must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339) format like '2023-09-29T10:16:13-03:00' |
+| `--from-dump` | Create the database from a local SQLite dump. |
+| `--from-dump-url` | Create the database from a remote SQLite dump. |
+| `--from-file` | Create the database from a local SQLite3-compatible file. |
+| `--group` | Create the database in the specified group. |
+| `--size-limit` | The maximum size of the database in bytes. Values with units are also accepted, e.g. 1mb, 256mb, 1gb. |
+| `--canary` | Use database canary build. |
+| `-w`, `--wait` | Wait for the database to be ready to receive requests. |
+| `-h`, `--help` | Get help for create. |
 
 ## Examples
 

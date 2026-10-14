@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 332 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 334 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -284,6 +284,7 @@
 - `docs/queues` — [Queues](pages/docs/queues.md) · [原文](https://trigger.dev/docs/queues)
 - `docs/quick-start` — [Quick start: add Trigger.dev to your project](pages/docs/quick-start.md) · [原文](https://trigger.dev/docs/quick-start)
 - `docs/realtime/auth` — [Realtime authentication](pages/docs/realtime/auth.md) · [原文](https://trigger.dev/docs/realtime/auth)
+- `docs/realtime/backend/input-streams` — [Input Streams](pages/docs/realtime/backend/input-streams.md) · [原文](https://trigger.dev/docs/realtime/backend/input-streams)
 - `docs/realtime/backend/overview` — [Subscribe to tasks from your backend](pages/docs/realtime/backend/overview.md) · [原文](https://trigger.dev/docs/realtime/backend/overview)
 - `docs/realtime/backend/streams` — [Stream data to your backend (AI, files)](pages/docs/realtime/backend/streams.md) · [原文](https://trigger.dev/docs/realtime/backend/streams)
 - `docs/realtime/backend/subscribe` — [Run updates (backend)](pages/docs/realtime/backend/subscribe.md) · [原文](https://trigger.dev/docs/realtime/backend/subscribe)
@@ -306,6 +307,7 @@
 - `docs/runs` — [Runs](pages/docs/runs.md) · [原文](https://trigger.dev/docs/runs)
 - `docs/runs/bulk-actions` — [Bulk actions with the SDK](pages/docs/runs/bulk-actions.md) · [原文](https://trigger.dev/docs/runs/bulk-actions)
 - `docs/runs/heartbeats` — [Heartbeats](pages/docs/runs/heartbeats.md) · [原文](https://trigger.dev/docs/runs/heartbeats)
+- `docs/runs/list-best-practices` — [Using runs.list() efficiently](pages/docs/runs/list-best-practices.md) · [原文](https://trigger.dev/docs/runs/list-best-practices)
 - `docs/runs/max-duration` — [Max duration](pages/docs/runs/max-duration.md) · [原文](https://trigger.dev/docs/runs/max-duration)
 - `docs/runs/metadata` — [Run metadata](pages/docs/runs/metadata.md) · [原文](https://trigger.dev/docs/runs/metadata)
 - `docs/runs/priority` — [Priority](pages/docs/runs/priority.md) · [原文](https://trigger.dev/docs/runs/priority)

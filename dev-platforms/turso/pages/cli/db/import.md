@@ -20,7 +20,7 @@ turso db import ~/path/to/database.db
 
 ## Flags
 
-| Flag           | Description                                 |
-| -------------- | ------------------------------------------- |
-| `--group`      | Import the database in the specified group. |
-| `-h`, `--help` | Get help for import.                        |
+| Flag | Description |
+| - | - |
+| `--group` | Import the database in the specified group. |
+| `-h`, `--help` | Get help for import. |

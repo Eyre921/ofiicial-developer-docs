@@ -89,12 +89,12 @@ Refer to the API reference for all parameters and response fields:
 The [Turso MCP server](/integrations/mcp) exposes recovery to AI agents, so an
 agent that deleted a database by mistake can bring it back in the same session:
 
-| Tool                     | Description                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------------- |
+| Tool | Description |
+| - | - |
 | `list_deleted_databases` | List databases deleted within the last five days. Returns the UUID needed to restore. |
-| `restore_database`       | Restore a deleted database by UUID, optionally under a new name.                      |
-| `list_deleted_groups`    | List groups deleted within the last five days, including empty groups.                |
-| `restore_group`          | Restore a deleted group and the databases that were deleted with it.                  |
+| `restore_database` | Restore a deleted database by UUID, optionally under a new name. |
+| `list_deleted_groups` | List groups deleted within the last five days, including empty groups. |
+| `restore_group` | Restore a deleted group and the databases that were deleted with it. |
 
 ## Restoring groups
 

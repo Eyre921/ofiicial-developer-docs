@@ -8,14 +8,14 @@ TypeScript Reference for Turso
 
 Turso offers four TypeScript packages:
 
-|                       | `@tursodatabase/database` | `@tursodatabase/sync`       | `@tursodatabase/serverless`                                   | `@libsql/client`                                      |
-| --------------------- | ------------------------- | --------------------------- | ------------------------------------------------------------- | ----------------------------------------------------- |
-| **Use case**          | Local / embedded database | Local database + cloud sync | Remote Turso database (servers, containers, serverless, edge) | Remote libSQL database, ORM support (Drizzle, Prisma) |
-| **Engine**            | Turso (rewrite)           | Turso (rewrite)             | Turso                                                         | libSQL (SQLite fork)                                  |
-| **Dependencies**      | Native (Node.js, WASM)    | Native (Node.js)            | `fetch` only — zero native deps                               | Requires Node.js or `/web` subpath                    |
-| **Concurrent writes** | Yes (MVCC)                | Yes (MVCC)                  | Yes (MVCC)                                                    | Not supported                                         |
-| **Sync**              | —                         | push/pull (local-first)     | —                                                             | Embedded Replicas (writes go to cloud primary)        |
-| **ORM support**       | Drizzle (beta)            | —                           | —                                                             | Drizzle, Prisma, and others                           |
+| | `@tursodatabase/database` | `@tursodatabase/sync` | `@tursodatabase/serverless` | `@libsql/client` |
+| - | - | - | - | - |
+| **Use case** | Local / embedded database | Local database + cloud sync | Remote Turso database (servers, containers, serverless, edge) | Remote libSQL database, ORM support (Drizzle, Prisma) |
+| **Engine** | Turso (rewrite) | Turso (rewrite) | Turso | libSQL (SQLite fork) |
+| **Dependencies** | Native (Node.js, WASM) | Native (Node.js) | `fetch` only — zero native deps | Requires Node.js or `/web` subpath |
+| **Concurrent writes** | Yes (MVCC) | Yes (MVCC) | Yes (MVCC) | Not supported |
+| **Sync** | — | push/pull (local-first) | — | Embedded Replicas (writes go to cloud primary) |
+| **ORM support** | Drizzle (beta) | — | — | Drizzle, Prisma, and others |
 
 **Starting a new project?** Use `@tursodatabase/database` for local/embedded use, `@tursodatabase/sync` for local + cloud sync, and `@tursodatabase/serverless` to reach a remote [Turso database](/tursodb/quickstart) over the network (Node.js servers, Docker containers, serverless functions, edge runtimes). **Connecting to a remote [libSQL](/libsql) database, or using an ORM?** Use `@libsql/client` — it's production-ready and supported by Drizzle, Prisma, and others. Drizzle has [beta support](https://orm.drizzle.team/docs/connect-turso-database) for `@tursodatabase/database` for local/embedded use.
 
@@ -296,12 +296,12 @@ const client = createClient({
 
 Each method listed below returns a `Promise<ResultSet>`:
 
-| Property          | Type                          | Description                                                                                                        |
-| ----------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `rows`            | `Array<Row>`                  | An array of Row objects containing the row values, empty for write operations                                      |
-| `columns`         | `Array<string>`               | An array of strings with the names of the columns in the order they appear in each Row, empty for write operations |
-| `rowsAffected`    | `number`                      | The number of rows affected by a write statement, `0` otherwise                                                    |
-| `lastInsertRowid` | `bigint         \| undefined` | The ID of a newly inserted row, or `undefined` if there is none for the statement                                  |
+| Property | Type | Description |
+| - | - | - |
+| `rows` | `Array<Row>` | An array of Row objects containing the row values, empty for write operations |
+| `columns` | `Array<string>` | An array of strings with the names of the columns in the order they appear in each Row, empty for write operations |
+| `rowsAffected` | `number` | The number of rows affected by a write statement, `0` otherwise |
+| `lastInsertRowid` | `bigint         \| undefined` | The ID of a newly inserted row, or `undefined` if there is none for the statement |
 
 ### Simple query
 
@@ -368,11 +368,11 @@ libSQL supports the use of positional and named placeholders within SQL statemen
 
 ### Transaction Modes
 
-| Mode       | SQLite command               | Description                                                                                                                                                                                        |
-| ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `write`    | `BEGIN IMMEDIATE`            | The transaction may execute statements that read and write data. Write transactions executed on a replica are forwarded to the primary instance, and can't operate in parallel.                    |
-| `read`     | `BEGIN TRANSACTION READONLY` | The transaction may only execute statements that read data (select). Read transactions can occur on replicas, and can operate in parallel with other read transactions.                            |
-| `deferred` | `BEGIN DEFERRED`             | The transaction starts in read mode, then changes to write as soon as a write statement is executed. This mode change may fail if there is a write transaction currently executing on the primary. |
+| Mode | SQLite command | Description |
+| - | - | - |
+| `write` | `BEGIN IMMEDIATE` | The transaction may execute statements that read and write data. Write transactions executed on a replica are forwarded to the primary instance, and can't operate in parallel. |
+| `read` | `BEGIN TRANSACTION READONLY` | The transaction may only execute statements that read data (select). Read transactions can occur on replicas, and can operate in parallel with other read transactions. |
+| `deferred` | `BEGIN DEFERRED` | The transaction starts in read mode, then changes to write as soon as a write statement is executed. This mode change may fail if there is a write transaction currently executing on the primary. |
 
 ### Batch Transactions
 
@@ -398,12 +398,12 @@ const result = await client.batch(
 
 Interactive transactions in SQLite ensure the consistency of a series of read and write operations within a transaction's scope. These transactions give you control over when to commit or roll back changes, isolating them from other client activity.
 
-| Method       | Description                                                         |
-| ------------ | ------------------------------------------------------------------- |
-| `execute()`  | Similar to `execute()` except within the context of the transaction |
-| `commit()`   | Commits all write statements in the transaction                     |
-| `rollback()` | Rolls back the entire transaction                                   |
-| `close()`    | Immediately stops the transaction                                   |
+| Method | Description |
+| - | - |
+| `execute()` | Similar to `execute()` except within the context of the transaction |
+| `commit()` | Commits all write statements in the transaction |
+| `rollback()` | Rolls back the entire transaction |
+| `close()` | Immediately stops the transaction |
 
 <CodeGroup>
   ```ts Rollback Usage theme={null}

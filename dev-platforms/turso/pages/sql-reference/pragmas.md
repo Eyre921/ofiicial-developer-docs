@@ -113,14 +113,14 @@ Returns one row for each column in the named table.
 PRAGMA table_info(table-name);
 ```
 
-| Column      | Type    | Description                            |
-| ----------- | ------- | -------------------------------------- |
-| cid         | INTEGER | Column index (0-based)                 |
-| name        | TEXT    | Column name                            |
-| type        | TEXT    | Declared type name                     |
-| notnull     | INTEGER | 1 if NOT NULL constraint exists        |
-| dflt\_value | TEXT    | Default value expression, or NULL      |
-| pk          | INTEGER | 1 if column is part of the PRIMARY KEY |
+| Column | Type | Description |
+| - | - | - |
+| cid | INTEGER | Column index (0-based) |
+| name | TEXT | Column name |
+| type | TEXT | Declared type name |
+| notnull | INTEGER | 1 if NOT NULL constraint exists |
+| dflt\_value | TEXT | Default value expression, or NULL |
+| pk | INTEGER | 1 if column is part of the PRIMARY KEY |
 
 ```sql theme={null}
 CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT);
@@ -162,13 +162,13 @@ PRAGMA index_list(table-name);
 -- 0   | idx_email      | 1      | c      | 0
 ```
 
-| Column  | Type    | Description                                                           |
-| ------- | ------- | --------------------------------------------------------------------- |
-| seq     | INTEGER | Index sequence number                                                 |
-| name    | TEXT    | Index name                                                            |
-| unique  | INTEGER | 1 if the index is UNIQUE                                              |
-| origin  | TEXT    | `c` for CREATE INDEX, `u` for UNIQUE constraint, `pk` for PRIMARY KEY |
-| partial | INTEGER | 1 if the index is a partial index                                     |
+| Column | Type | Description |
+| - | - | - |
+| seq | INTEGER | Index sequence number |
+| name | TEXT | Index name |
+| unique | INTEGER | 1 if the index is UNIQUE |
+| origin | TEXT | `c` for CREATE INDEX, `u` for UNIQUE constraint, `pk` for PRIMARY KEY |
+| partial | INTEGER | 1 if the index is a partial index |
 
 ### index\_info
 
@@ -419,35 +419,35 @@ PRAGMA capture_data_changes_conn('mode,table_name');
 
 The legacy name `unstable_capture_data_changes_conn` is still accepted for backwards compatibility.
 
-| Parameter   | Description                                                  |
-| ----------- | ------------------------------------------------------------ |
-| mode        | Capture mode: `off`, `id`, `before`, `after`, `full`         |
+| Parameter | Description |
+| - | - |
+| mode | Capture mode: `off`, `id`, `before`, `after`, `full` |
 | table\_name | Custom table name for storing changes (default: `turso_cdc`) |
 
 #### Capture Modes
 
-| Mode     | Description                                               |
-| -------- | --------------------------------------------------------- |
-| `off`    | Disable CDC for this connection                           |
-| `id`     | Capture only the primary key/rowid of changed rows        |
-| `before` | Capture row state before changes (for updates/deletes)    |
-| `after`  | Capture row state after changes (for inserts/updates)     |
-| `full`   | Capture both before and after states, plus update details |
+| Mode | Description |
+| - | - |
+| `off` | Disable CDC for this connection |
+| `id` | Capture only the primary key/rowid of changed rows |
+| `before` | Capture row state before changes (for updates/deletes) |
+| `after` | Capture row state after changes (for inserts/updates) |
+| `full` | Capture both before and after states, plus update details |
 
 #### CDC Table Structure
 
 The CDC table contains the following columns:
 
-| Column       | Type    | Description                                      |
-| ------------ | ------- | ------------------------------------------------ |
-| change\_id   | INTEGER | Auto-incrementing unique identifier              |
-| change\_time | INTEGER | Unix epoch timestamp                             |
-| change\_type | INTEGER | 1 (INSERT), 0 (UPDATE), -1 (DELETE)              |
-| table\_name  | TEXT    | Name of the changed table                        |
-| id           | varies  | Primary key/rowid of the changed row             |
-| before       | BLOB    | Row data before the change (modes: before, full) |
-| after        | BLOB    | Row data after the change (modes: after, full)   |
-| updates      | BLOB    | Updated column details (mode: full)              |
+| Column | Type | Description |
+| - | - | - |
+| change\_id | INTEGER | Auto-incrementing unique identifier |
+| change\_time | INTEGER | Unix epoch timestamp |
+| change\_type | INTEGER | 1 (INSERT), 0 (UPDATE), -1 (DELETE) |
+| table\_name | TEXT | Name of the changed table |
+| id | varies | Primary key/rowid of the changed row |
+| before | BLOB | Row data before the change (modes: before, full) |
+| after | BLOB | Row data after the change (modes: after, full) |
+| updates | BLOB | Updated column details (mode: full) |
 
 #### CDC Examples
 
@@ -492,12 +492,12 @@ PRAGMA cipher = 'aegis256';
 
 Supported ciphers:
 
-| Cipher       | Key Size | Description                       |
-| ------------ | -------- | --------------------------------- |
-| `aes128gcm`  | 16 bytes | AES-128 in Galois/Counter Mode    |
-| `aes256gcm`  | 32 bytes | AES-256 in Galois/Counter Mode    |
-| `aegis128l`  | 16 bytes | AEGIS-128L                        |
-| `aegis256`   | 32 bytes | AEGIS-256 (recommended)           |
+| Cipher | Key Size | Description |
+| - | - | - |
+| `aes128gcm` | 16 bytes | AES-128 in Galois/Counter Mode |
+| `aes256gcm` | 32 bytes | AES-256 in Galois/Counter Mode |
+| `aegis128l` | 16 bytes | AEGIS-128L |
+| `aegis256` | 32 bytes | AEGIS-256 (recommended) |
 | `aegis128x2` | 16 bytes | AEGIS-128 with 2x parallelization |
 | `aegis128x4` | 16 bytes | AEGIS-128 with 4x parallelization |
 | `aegis256x2` | 32 bytes | AEGIS-256 with 2x parallelization |

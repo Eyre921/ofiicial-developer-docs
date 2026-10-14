@@ -24,17 +24,17 @@ CREATE [UNIQUE] INDEX [IF NOT EXISTS] [schema-name.]index-name
 
 ### Parameters
 
-| Parameter                 | Description                                                                                                                     |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `UNIQUE`                  | Enforces a uniqueness constraint. Turso rejects any INSERT or UPDATE that would create duplicate values in the indexed columns. |
-| `IF NOT EXISTS`           | Prevents an error if an index with the same name already exists. The statement is a no-op when the index is present.            |
-| `schema-name`             | The name of the attached database containing the table. Defaults to the main database if omitted.                               |
-| `index-name`              | A unique name for the index within the database.                                                                                |
-| `table-name`              | The table to index.                                                                                                             |
-| `column-or-expr`          | A column name or an expression to include in the index. Multiple entries are separated by commas.                               |
-| `COLLATE collation-name`  | An optional collation sequence applied to the indexed column (e.g. `NOCASE`).                                                   |
-| `ASC` / `DESC`            | Sort direction for the indexed column. Default is `ASC`.                                                                        |
-| `WHERE filter-expression` | An optional filter that creates a partial index. Only rows matching the expression are included in the index.                   |
+| Parameter | Description |
+| - | - |
+| `UNIQUE` | Enforces a uniqueness constraint. Turso rejects any INSERT or UPDATE that would create duplicate values in the indexed columns. |
+| `IF NOT EXISTS` | Prevents an error if an index with the same name already exists. The statement is a no-op when the index is present. |
+| `schema-name` | The name of the attached database containing the table. Defaults to the main database if omitted. |
+| `index-name` | A unique name for the index within the database. |
+| `table-name` | The table to index. |
+| `column-or-expr` | A column name or an expression to include in the index. Multiple entries are separated by commas. |
+| `COLLATE collation-name` | An optional collation sequence applied to the indexed column (e.g. `NOCASE`). |
+| `ASC` / `DESC` | Sort direction for the indexed column. Default is `ASC`. |
+| `WHERE filter-expression` | An optional filter that creates a partial index. Only rows matching the expression are included in the index. |
 
 ## Column Indexes
 

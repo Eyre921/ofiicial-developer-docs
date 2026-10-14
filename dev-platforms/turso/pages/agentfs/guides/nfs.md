@@ -45,13 +45,13 @@ mount -t nfs -o vers=3,tcp,port=2049,mountport=2049,nolock server-ip:/ /mnt/agen
 
 ### Mount Options Explained
 
-| Option            | Description                        |
-| ----------------- | ---------------------------------- |
-| `vers=3`          | Use NFSv3 protocol                 |
-| `tcp`             | Use TCP transport                  |
-| `port=11111`      | NFS server port                    |
-| `mountport=11111` | Mount protocol port                |
-| `nolock`          | Disable file locking (single-user) |
+| Option | Description |
+| - | - |
+| `vers=3` | Use NFSv3 protocol |
+| `tcp` | Use TCP transport |
+| `port=11111` | NFS server port |
+| `mountport=11111` | Mount protocol port |
+| `nolock` | Disable file locking (single-user) |
 
 ## Unmounting
 

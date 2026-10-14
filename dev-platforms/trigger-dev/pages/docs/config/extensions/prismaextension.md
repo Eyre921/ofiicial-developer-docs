@@ -643,7 +643,7 @@ prismaExtension({
 ```prisma theme={"theme":"css-variables"}
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 ```
 
@@ -887,7 +887,7 @@ export const db = new PrismaClient({
 generator client {
   provider      = "prisma-client-js"
   output        = "../src/generated/prisma"
-  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -915,7 +915,6 @@ datasource db {
 prismaExtension({
   mode: "engine-only",
   version: "6.19.0",
-  binaryTarget: "linux-arm64-openssl-3.0.x",
 });
 ```
 

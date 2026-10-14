@@ -14,113 +14,113 @@ Scalar functions accept one or more arguments and return a single value. They ca
 
 ### Math Functions
 
-| Function         | Description                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------ |
-| `abs(X)`         | Absolute value of X. Returns INTEGER if X is INTEGER, REAL if X is REAL, NULL if X is NULL |
-| `max(X, Y, ...)` | Returns the argument with the maximum value                                                |
-| `min(X, Y, ...)` | Returns the argument with the minimum value                                                |
-| `random()`       | Returns a random 64-bit signed integer                                                     |
-| `round(X)`       | Rounds X to the nearest integer                                                            |
-| `round(X, Y)`    | Rounds X to Y decimal places                                                               |
-| `sign(X)`        | Returns -1, 0, or 1 for negative, zero, or positive X                                      |
+| Function | Description |
+| - | - |
+| `abs(X)` | Absolute value of X. Returns INTEGER if X is INTEGER, REAL if X is REAL, NULL if X is NULL |
+| `max(X, Y, ...)` | Returns the argument with the maximum value |
+| `min(X, Y, ...)` | Returns the argument with the minimum value |
+| `random()` | Returns a random 64-bit signed integer |
+| `round(X)` | Rounds X to the nearest integer |
+| `round(X, Y)` | Rounds X to Y decimal places |
+| `sign(X)` | Returns -1, 0, or 1 for negative, zero, or positive X |
 
 ### String Functions
 
-| Function                       | Description                                                                                         |
-| ------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `char(X1, X2, ..., XN)`        | Returns a string composed of characters with Unicode code points X1 through XN                      |
-| `chr(X)`                       | Alias for `char(X)`. PostgreSQL/SQL-standard spelling                                               |
-| `concat(X, ...)`               | Concatenates all arguments as strings. NULL arguments are skipped                                   |
-| `concat_ws(SEP, X, ...)`       | Concatenates arguments with separator SEP. NULL arguments are skipped                               |
-| `format(FORMAT, ...)`          | Returns a formatted string using printf-style format specifiers                                     |
-| `hex(X)`                       | Returns the uppercase hexadecimal representation of X                                               |
-| `instr(X, Y)`                  | Returns the 1-based position of the first occurrence of Y in X, or 0 if not found                   |
-| `strpos(X, Y)`                 | Alias for `instr(X, Y)`. PostgreSQL spelling, identical argument order                              |
-| `length(X)`                    | Returns the string length in characters, or blob length in bytes                                    |
-| `char_length(X)`               | Alias for `length(X)`. SQL-standard short form                                                      |
-| `character_length(X)`          | Alias for `length(X)`. SQL-standard long form                                                       |
-| `lower(X)`                     | Returns a lowercase copy of string X                                                                |
-| `lpad(X, N)` / `lpad(X, N, F)` | Pads X on the left to length N using F (defaults to a single space)                                 |
-| `ltrim(X)`                     | Removes leading whitespace from X                                                                   |
-| `ltrim(X, Y)`                  | Removes leading characters found in Y from X                                                        |
-| `octet_length(X)`              | Returns the length of X in bytes                                                                    |
-| `printf(FORMAT, ...)`          | Alias for `format()`. Returns a formatted string                                                    |
-| `quote(X)`                     | Returns the SQL literal representation of X                                                         |
-| `repeat(X, N)`                 | Returns X concatenated N times. `N <= 0` produces an empty string                                   |
-| `replace(X, Y, Z)`             | Returns X with every occurrence of Y replaced by Z                                                  |
-| `reverse(X)`                   | Returns the characters of string X in reverse order. Alias for `string_reverse(X)`                  |
-| `rpad(X, N)` / `rpad(X, N, F)` | Pads X on the right to length N using F (defaults to a single space)                                |
-| `rtrim(X)`                     | Removes trailing whitespace from X                                                                  |
-| `rtrim(X, Y)`                  | Removes trailing characters found in Y from X                                                       |
-| `soundex(X)`                   | Returns the Soundex encoding of string X                                                            |
-| `string_reverse(X)`            | Returns the characters of string X in reverse order                                                 |
-| `substr(X, Y)`                 | Returns the substring of X starting at position Y (1-based)                                         |
-| `substr(X, Y, Z)`              | Returns Z characters from X starting at position Y                                                  |
-| `substring(X, Y)`              | Alias for `substr(X, Y)`                                                                            |
-| `substring(X, Y, Z)`           | Alias for `substr(X, Y, Z)`                                                                         |
-| `trim(X)`                      | Removes leading and trailing whitespace from X                                                      |
-| `trim(X, Y)`                   | Removes leading and trailing characters found in Y from X                                           |
-| `btrim(X)` / `btrim(X, Y)`     | Alias for `trim(X)` / `trim(X, Y)`. PostgreSQL/Oracle spelling                                      |
-| `unhex(X)`                     | Converts hexadecimal string X to a blob. Returns NULL if X contains non-hex characters              |
-| `unhex(X, Y)`                  | Like `unhex(X)`, but characters in Y are silently ignored in X                                      |
-| `unicode(X)`                   | Returns the Unicode code point of the first character of string X                                   |
-| `unistr(X)`                    | Evaluates PostgreSQL-style Unicode escapes in X (`\XXXX`, `\+XXXXXX`, `\uXXXX`, `\UXXXXXXXX`, `\\`) |
-| `unistr_quote(X)`              | Returns X as a quoted string literal with non-ASCII characters written as `unistr` escapes          |
-| `upper(X)`                     | Returns an uppercase copy of string X                                                               |
-| `zeroblob(N)`                  | Returns a blob consisting of N zero bytes                                                           |
+| Function | Description |
+| - | - |
+| `char(X1, X2, ..., XN)` | Returns a string composed of characters with Unicode code points X1 through XN |
+| `chr(X)` | Alias for `char(X)`. PostgreSQL/SQL-standard spelling |
+| `concat(X, ...)` | Concatenates all arguments as strings. NULL arguments are skipped |
+| `concat_ws(SEP, X, ...)` | Concatenates arguments with separator SEP. NULL arguments are skipped |
+| `format(FORMAT, ...)` | Returns a formatted string using printf-style format specifiers |
+| `hex(X)` | Returns the uppercase hexadecimal representation of X |
+| `instr(X, Y)` | Returns the 1-based position of the first occurrence of Y in X, or 0 if not found |
+| `strpos(X, Y)` | Alias for `instr(X, Y)`. PostgreSQL spelling, identical argument order |
+| `length(X)` | Returns the string length in characters, or blob length in bytes |
+| `char_length(X)` | Alias for `length(X)`. SQL-standard short form |
+| `character_length(X)` | Alias for `length(X)`. SQL-standard long form |
+| `lower(X)` | Returns a lowercase copy of string X |
+| `lpad(X, N)` / `lpad(X, N, F)` | Pads X on the left to length N using F (defaults to a single space) |
+| `ltrim(X)` | Removes leading whitespace from X |
+| `ltrim(X, Y)` | Removes leading characters found in Y from X |
+| `octet_length(X)` | Returns the length of X in bytes |
+| `printf(FORMAT, ...)` | Alias for `format()`. Returns a formatted string |
+| `quote(X)` | Returns the SQL literal representation of X |
+| `repeat(X, N)` | Returns X concatenated N times. `N <= 0` produces an empty string |
+| `replace(X, Y, Z)` | Returns X with every occurrence of Y replaced by Z |
+| `reverse(X)` | Returns the characters of string X in reverse order. Alias for `string_reverse(X)` |
+| `rpad(X, N)` / `rpad(X, N, F)` | Pads X on the right to length N using F (defaults to a single space) |
+| `rtrim(X)` | Removes trailing whitespace from X |
+| `rtrim(X, Y)` | Removes trailing characters found in Y from X |
+| `soundex(X)` | Returns the Soundex encoding of string X |
+| `string_reverse(X)` | Returns the characters of string X in reverse order |
+| `substr(X, Y)` | Returns the substring of X starting at position Y (1-based) |
+| `substr(X, Y, Z)` | Returns Z characters from X starting at position Y |
+| `substring(X, Y)` | Alias for `substr(X, Y)` |
+| `substring(X, Y, Z)` | Alias for `substr(X, Y, Z)` |
+| `trim(X)` | Removes leading and trailing whitespace from X |
+| `trim(X, Y)` | Removes leading and trailing characters found in Y from X |
+| `btrim(X)` / `btrim(X, Y)` | Alias for `trim(X)` / `trim(X, Y)`. PostgreSQL/Oracle spelling |
+| `unhex(X)` | Converts hexadecimal string X to a blob. Returns NULL if X contains non-hex characters |
+| `unhex(X, Y)` | Like `unhex(X)`, but characters in Y are silently ignored in X |
+| `unicode(X)` | Returns the Unicode code point of the first character of string X |
+| `unistr(X)` | Evaluates PostgreSQL-style Unicode escapes in X (`\XXXX`, `\+XXXXXX`, `\uXXXX`, `\UXXXXXXXX`, `\\`) |
+| `unistr_quote(X)` | Returns X as a quoted string literal with non-ASCII characters written as `unistr` escapes |
+| `upper(X)` | Returns an uppercase copy of string X |
+| `zeroblob(N)` | Returns a blob consisting of N zero bytes |
 
 ### Conditional Functions
 
-| Function              | Description                                                                     |
-| --------------------- | ------------------------------------------------------------------------------- |
-| `coalesce(X, Y, ...)` | Returns the first non-NULL argument. Returns NULL if all arguments are NULL     |
-| `ifnull(X, Y)`        | Returns X if X is not NULL, otherwise returns Y. Equivalent to `coalesce(X, Y)` |
-| `iif(X, Y, Z)`        | Returns Y if X is true (non-zero), otherwise returns Z                          |
-| `if(X, Y, Z)`         | Alias for `iif(X, Y, Z)`                                                        |
-| `nullif(X, Y)`        | Returns NULL if X equals Y, otherwise returns X                                 |
+| Function | Description |
+| - | - |
+| `coalesce(X, Y, ...)` | Returns the first non-NULL argument. Returns NULL if all arguments are NULL |
+| `ifnull(X, Y)` | Returns X if X is not NULL, otherwise returns Y. Equivalent to `coalesce(X, Y)` |
+| `iif(X, Y, Z)` | Returns Y if X is true (non-zero), otherwise returns Z |
+| `if(X, Y, Z)` | Alias for `iif(X, Y, Z)` |
+| `nullif(X, Y)` | Returns NULL if X equals Y, otherwise returns X |
 
 ### Type Functions
 
-| Function    | Description                                                                               |
-| ----------- | ----------------------------------------------------------------------------------------- |
+| Function | Description |
+| - | - |
 | `typeof(X)` | Returns the type of X as a string: `"null"`, `"integer"`, `"real"`, `"text"`, or `"blob"` |
 
 ### Pattern Matching Functions
 
-| Function        | Description                                                                           |
-| --------------- | ------------------------------------------------------------------------------------- |
-| `glob(X, Y)`    | Returns 1 if string Y matches glob pattern X, 0 otherwise. Case-sensitive             |
-| `like(X, Y)`    | Returns 1 if string Y matches LIKE pattern X, 0 otherwise. Case-insensitive for ASCII |
-| `like(X, Y, Z)` | Like `like(X, Y)` but uses Z as the escape character                                  |
+| Function | Description |
+| - | - |
+| `glob(X, Y)` | Returns 1 if string Y matches glob pattern X, 0 otherwise. Case-sensitive |
+| `like(X, Y)` | Returns 1 if string Y matches LIKE pattern X, 0 otherwise. Case-insensitive for ASCII |
+| `like(X, Y, Z)` | Like `like(X, Y)` but uses Z as the escape character |
 
 ### Optimizer Hints
 
-| Function           | Description                                                                                    |
-| ------------------ | ---------------------------------------------------------------------------------------------- |
+| Function | Description |
+| - | - |
 | `likelihood(X, Y)` | Returns X unchanged. Hints to the query planner that X is true with probability Y (0.0 to 1.0) |
-| `likely(X)`        | Returns X unchanged. Equivalent to `likelihood(X, 0.9375)`                                     |
-| `unlikely(X)`      | Returns X unchanged. Equivalent to `likelihood(X, 0.0625)`                                     |
+| `likely(X)` | Returns X unchanged. Equivalent to `likelihood(X, 0.9375)` |
+| `unlikely(X)` | Returns X unchanged. Equivalent to `likelihood(X, 0.0625)` |
 
 ### Blob Functions
 
-| Function        | Description                                                           |
-| --------------- | --------------------------------------------------------------------- |
-| `hex(X)`        | Returns the uppercase hexadecimal representation of blob or integer X |
-| `randomblob(N)` | Returns a blob of N bytes filled with pseudo-random data              |
-| `unhex(X)`      | Converts hexadecimal string X to a blob                               |
-| `zeroblob(N)`   | Returns a blob of N zero bytes                                        |
+| Function | Description |
+| - | - |
+| `hex(X)` | Returns the uppercase hexadecimal representation of blob or integer X |
+| `randomblob(N)` | Returns a blob of N bytes filled with pseudo-random data |
+| `unhex(X)` | Converts hexadecimal string X to a blob |
+| `zeroblob(N)` | Returns a blob of N zero bytes |
 
 ### System Functions
 
-| Function              | Description                                                                            |
-| --------------------- | -------------------------------------------------------------------------------------- |
+| Function | Description |
+| - | - |
 | `last_insert_rowid()` | Returns the rowid of the most recent successful INSERT on the same database connection |
-| `changes()`           | Returns the number of rows modified by the most recent INSERT, UPDATE, or DELETE       |
-| `total_changes()`     | Returns the total number of rows modified since the database connection was opened     |
-| `sqlite_version()`    | Returns the version string `"3.42.0"`                                                  |
-| `sqlite_source_id()`  | Returns the source identifier string for the SQLite-compatible engine                  |
-| `turso_version()`     | Returns the Turso engine version string (e.g. `"0.7.0"`)                               |
-| `load_extension(X)`   | Loads a Turso-native extension from the shared library at path X                       |
+| `changes()` | Returns the number of rows modified by the most recent INSERT, UPDATE, or DELETE |
+| `total_changes()` | Returns the total number of rows modified since the database connection was opened |
+| `sqlite_version()` | Returns the version string `"3.42.0"` |
+| `sqlite_source_id()` | Returns the source identifier string for the SQLite-compatible engine |
+| `turso_version()` | Returns the Turso engine version string (e.g. `"0.7.0"`) |
+| `load_extension(X)` | Loads a Turso-native extension from the shared library at path X |
 
 ## Detailed Descriptions and Examples
 
@@ -173,17 +173,17 @@ SELECT concat_ws('-', 2024, 1, 15);            -- '2024-1-15'
 
 Returns a formatted string using printf-style format specifiers. `printf` is an alias for `format`.
 
-| Specifier | Description                                      |
-| --------- | ------------------------------------------------ |
-| `%d`      | Signed integer                                   |
-| `%f`      | Floating-point                                   |
-| `%s`      | String                                           |
-| `%x`      | Lowercase hexadecimal integer                    |
-| `%X`      | Uppercase hexadecimal integer                    |
-| `%o`      | Octal integer                                    |
-| `%e`      | Scientific notation                              |
-| `%g`      | General floating-point (shortest representation) |
-| `%%`      | Literal percent sign                             |
+| Specifier | Description |
+| - | - |
+| `%d` | Signed integer |
+| `%f` | Floating-point |
+| `%s` | String |
+| `%x` | Lowercase hexadecimal integer |
+| `%X` | Uppercase hexadecimal integer |
+| `%o` | Octal integer |
+| `%e` | Scientific notation |
+| `%g` | General floating-point (shortest representation) |
+| `%%` | Literal percent sign |
 
 ```sql theme={null}
 SELECT format('Hello, %s! You are #%d.', 'Alice', 1);

@@ -245,11 +245,15 @@ This webhook is sent when a run fails. The payload is available on the `object` 
 </ParamField>
 
 <ParamField type="string">
-  Environment type (STAGING or PRODUCTION)
+  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
 </ParamField>
 
 <ParamField type="string">
   Environment slug
+</ParamField>
+
+<ParamField type="string">
+  Environment branch name (optional)
 </ParamField>
 
 <ParamField type="string">
@@ -313,7 +317,7 @@ This webhook is sent when a deployment succeeds. The payload is available on the
 </ParamField>
 
 <ParamField type="string">
-  Environment type (STAGING or PRODUCTION)
+  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
 </ParamField>
 
 <ParamField type="string">
@@ -346,6 +350,54 @@ This webhook is sent when a deployment succeeds. The payload is available on the
 
 <ParamField type="string">
   Project name
+</ParamField>
+
+<ParamField type="object">
+  Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
+</ParamField>
+
+<ParamField type="string">
+  Git branch
+</ParamField>
+
+<ParamField type="string">
+  Short commit SHA (first 7 characters)
+</ParamField>
+
+<ParamField type="string">
+  Commit message (empty string if unavailable)
+</ParamField>
+
+<ParamField type="string">
+  URL of the commit
+</ParamField>
+
+<ParamField type="string">
+  URL of the branch
+</ParamField>
+
+<ParamField type="number">
+  Pull request number (optional)
+</ParamField>
+
+<ParamField type="string">
+  Pull request title (optional)
+</ParamField>
+
+<ParamField type="string">
+  Pull request URL (optional)
+</ParamField>
+
+<ParamField type="string">
+  Git provider (optional)
+</ParamField>
+
+<ParamField type="object">
+  Vercel metadata for the deployment (optional)
+</ParamField>
+
+<ParamField type="string">
+  URL of the deployment in the Vercel dashboard
 </ParamField>
 
 ### Deployment Failed Alert
@@ -393,7 +445,7 @@ This webhook is sent when a deployment fails. The payload is available on the `o
 </ParamField>
 
 <ParamField type="string">
-  Environment type (STAGING or PRODUCTION)
+  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
 </ParamField>
 
 <ParamField type="string">
@@ -426,6 +478,54 @@ This webhook is sent when a deployment fails. The payload is available on the `o
 
 <ParamField type="string">
   Project name
+</ParamField>
+
+<ParamField type="object">
+  Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
+</ParamField>
+
+<ParamField type="string">
+  Git branch
+</ParamField>
+
+<ParamField type="string">
+  Short commit SHA (first 7 characters)
+</ParamField>
+
+<ParamField type="string">
+  Commit message (empty string if unavailable)
+</ParamField>
+
+<ParamField type="string">
+  URL of the commit
+</ParamField>
+
+<ParamField type="string">
+  URL of the branch
+</ParamField>
+
+<ParamField type="number">
+  Pull request number (optional)
+</ParamField>
+
+<ParamField type="string">
+  Pull request title (optional)
+</ParamField>
+
+<ParamField type="string">
+  Pull request URL (optional)
+</ParamField>
+
+<ParamField type="string">
+  Git provider (optional)
+</ParamField>
+
+<ParamField type="object">
+  Vercel metadata for the deployment (optional)
+</ParamField>
+
+<ParamField type="string">
+  URL of the deployment in the Vercel dashboard
 </ParamField>
 
 ### Error Group Alert

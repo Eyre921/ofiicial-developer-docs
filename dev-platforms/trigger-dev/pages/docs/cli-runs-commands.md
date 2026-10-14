@@ -87,8 +87,7 @@ npx trigger.dev@latest runs cancel run_abc123
 </ParamField>
 
 <ParamField type="--branch | -b">
-  When using `--env preview` the branch is automatically detected from git. But you can manually
-  specify it by using this option, e.g. `--branch my-branch` or `-b my-branch`.
+  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
 </ParamField>
 
 ### Common options
@@ -96,7 +95,7 @@ npx trigger.dev@latest runs cancel run_abc123
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

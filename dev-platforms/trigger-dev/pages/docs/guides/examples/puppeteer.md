@@ -43,13 +43,9 @@ export default defineConfig({
 
 Learn more about the [trigger.config.ts](/docs/config/config-file) file including setting default retry settings, customizing the build environment, and more.
 
-## Set an environment variable
+## Environment variables
 
-Set the following environment variable in your [Trigger.dev dashboard](/docs/deploy-environment-variables) or [using the SDK](/docs/deploy-environment-variables#in-your-code):
-
-```bash theme={"theme":"css-variables"}
-PUPPETEER_EXECUTABLE_PATH: "/usr/bin/google-chrome-stable",
-```
+The extension installs Chrome and sets `PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable` for deployed builds automatically, so you do not need to set it. Don't set it in your Dev environment: the extension does nothing in Dev, and locally Puppeteer uses the browser it downloads on install.
 
 ## Basic example
 

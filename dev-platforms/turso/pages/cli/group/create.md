@@ -20,8 +20,8 @@ turso group create <group-name> [flags]
 
 ## Flags
 
-| Flag           | Description                                                                  |
-| -------------- | ---------------------------------------------------------------------------- |
-| `--canary`     | Use database canary build.                                                   |
-| `--location`   | Create the group in the specified primary location using a three-digit code. |
-| `-w`, `--wait` | Wait for group to be ready before exiting.                                   |
+| Flag | Description |
+| - | - |
+| `--canary` | Use database canary build. |
+| `--location` | Create the group in the specified primary location using a three-digit code. |
+| `-w`, `--wait` | Wait for group to be ready before exiting. |

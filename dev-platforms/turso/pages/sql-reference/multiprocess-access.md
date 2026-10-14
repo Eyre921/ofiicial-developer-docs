@@ -30,10 +30,10 @@ For single-process applications — including multi-threaded servers using a con
 
 When multi-process access is enabled, Turso creates an additional sibling file next to the database:
 
-| File           | Purpose                                                                                                                                                           |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mydb.db`      | The database file (unchanged).                                                                                                                                    |
-| `mydb.db-wal`  | The write-ahead log (unchanged).                                                                                                                                  |
+| File | Purpose |
+| - | - |
+| `mydb.db` | The database file (unchanged). |
+| `mydb.db-wal` | The write-ahead log (unchanged). |
 | `mydb.db-tshm` | Turso shared memory. Memory-mapped coordinator that tracks WAL state, the active writer, the active checkpointer, reader slots, and a shared page-to-frame index. |
 
 All participating processes mmap the `.tshm` file and coordinate through:
@@ -55,14 +55,14 @@ Multi-process WAL is only available when all of the following hold:
 
 * **Filesystem**: The database must live on a local filesystem that implements POSIX byte-range locks and mmap correctly. The following filesystems are **explicitly rejected** because shared mmap coordination is not safe on them:
 
-  | Filesystem                | Reason                                                         |
-  | ------------------------- | -------------------------------------------------------------- |
-  | NFS                       | Advisory lock semantics diverge across clients                 |
-  | CIFS / SMB2               | Same as above; mmap coherence is not guaranteed                |
-  | CephFS                    | Distributed cache semantics                                    |
-  | GFS2                      | Cluster filesystem; not validated                              |
-  | Lustre                    | Distributed; not validated                                     |
-  | OCFS2                     | Cluster filesystem; not validated                              |
+  | Filesystem | Reason |
+  | - | - |
+  | NFS | Advisory lock semantics diverge across clients |
+  | CIFS / SMB2 | Same as above; mmap coherence is not guaranteed |
+  | CephFS | Distributed cache semantics |
+  | GFS2 | Cluster filesystem; not validated |
+  | Lustre | Distributed; not validated |
+  | OCFS2 | Cluster filesystem; not validated |
   | AFS, CODA, NCP, 9P (v9fs) | Network/legacy filesystems with unreliable mmap+lock semantics |
 
   Opening a database on any of these filesystems with `multiprocess_wal` enabled returns `InvalidArgument`.

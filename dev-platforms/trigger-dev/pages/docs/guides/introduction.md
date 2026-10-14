@@ -33,7 +33,7 @@ Get set up fast using our detailed walk-through guides.
 | [AI Agent: Route questions](/docs/guides/ai-agents/route-question) | Route questions to different models based on complexity |
 | [AI Agent: Translation refinement](/docs/guides/ai-agents/translate-and-refine) | Evaluate and refine translations with feedback |
 | [Claude Agent SDK](/docs/guides/ai-agents/claude-code-trigger) | Build AI agents that read files, run commands, and edit code |
-| [Cursor rules](/docs/guides/cursor-rules) | Use Cursor rules to help write Trigger.dev tasks |
+| [Agent rules](/docs/mcp-agent-rules) | Install agent skills so your AI assistant writes correct tasks |
 | [Prisma](/docs/guides/frameworks/prisma) | How to setup Prisma with Trigger.dev |
 | [Python image processing](/docs/guides/python/python-image-processing) | Use Python and Pillow to process images |
 | [Python document to markdown](/docs/guides/python/python-doc-to-markdown) | Use Python and MarkItDown to convert documents to markdown |

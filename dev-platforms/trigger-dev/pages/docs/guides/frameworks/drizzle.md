@@ -54,7 +54,7 @@ Follow these steps if you don't already have Trigger.dev set up in your project.
       Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
     </Tip>
 
-    1. Ask if you want to install the [Trigger.dev MCP server](/docs/mcp-introduction) for your AI assistant.
+    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
     2. Log you into the CLI if you're not already logged in.
     3. Ask you to select your project.
     4. Install the required SDK packages.
@@ -179,7 +179,7 @@ Follow these steps if you don't already have Trigger.dev set up in your project.
   </Step>
 
   <Step title="Adding your DATABASE_URL environment variable to Trigger.dev">
-    In your Trigger.dev dashboard sidebar click "Environment Variables" <Icon icon="circle-1" />, and then the "New environment variable" button <Icon icon="circle-2" />.
+    In your Trigger.dev dashboard sidebar click "Environment Variables" <Icon icon="circle-1" />, and then the "Add new" button <Icon icon="circle-2" />.
 
     <img alt="Environment variables page" />
 

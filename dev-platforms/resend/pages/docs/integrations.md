@@ -225,6 +225,10 @@ Integrate Resend with the tools you already use.
 ## Developer tools
 
 <CardGroup>
+  <Card title="Laravel Cloud" href="/docs/guides/laravel-cloud-integration" icon={<LaravelIcon />}>
+    Connect Resend to a Laravel Cloud environment
+  </Card>
+
   <Card title="Raycast" href="https://www.raycast.com/resend/resend" icon={<RaycastIcon />}>
     Manage emails, domains, and more
   </Card>

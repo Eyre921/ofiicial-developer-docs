@@ -700,6 +700,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
   <Tab title="Original">
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
+    import { uuid7 } from "langsmith";
 
     import {
       END,
@@ -709,7 +710,6 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
       StateSchema,
     } from "@langchain/langgraph";
     import type { GraphNode } from "@langchain/langgraph";
-    import { uuid7 } from "langsmith";
 
     const State = new StateSchema({
       url: z.string(),
@@ -745,6 +745,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
   <Tab title="With task">
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import * as z from "zod";
+    import { uuid7 } from "langsmith";
 
     import {
       END,
@@ -755,7 +756,6 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
       task,
     } from "@langchain/langgraph";
     import type { GraphNode } from "@langchain/langgraph";
-    import { uuid7 } from "langsmith";
 
     const State = new StateSchema({
       urls: z.array(z.string()),

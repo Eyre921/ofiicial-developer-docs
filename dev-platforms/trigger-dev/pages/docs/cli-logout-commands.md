@@ -29,7 +29,7 @@ Run the command like this:
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

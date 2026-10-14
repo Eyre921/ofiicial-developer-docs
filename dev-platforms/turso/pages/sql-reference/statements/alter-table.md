@@ -25,10 +25,10 @@ ALTER TABLE [schema-name.]table-name DROP COLUMN column-name;
 
 ### Parameters
 
-| Parameter     | Description                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------ |
+| Parameter | Description |
+| - | - |
 | `schema-name` | The name of an attached database containing the table. Defaults to the main database if omitted. |
-| `table-name`  | The name of the table to alter.                                                                  |
+| `table-name` | The name of the table to alter. |
 
 ## RENAME TO
 
@@ -118,17 +118,17 @@ ALTER TABLE table-name ADD COLUMN column-name type [constraints];
 
 A new column added with ADD COLUMN must satisfy these requirements:
 
-| Requirement                                                                         | Reason                                                                                                                                |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| No `PRIMARY KEY` constraint                                                         | The primary key of a table cannot be changed after creation                                                                           |
-| No `UNIQUE` constraint                                                              | Adding a UNIQUE column would require scanning all existing rows                                                                       |
-| `NOT NULL` requires a non-NULL default                                              | Existing rows must have a valid value for the new column                                                                              |
-| Default must be a constant expression                                               | Only literal values, signed literals, and parenthesized constant expressions are allowed. Functions like `random()` are not permitted |
-| `CURRENT_TIME`, `CURRENT_DATE`, `CURRENT_TIMESTAMP` defaults require an empty table | These non-deterministic values cannot be retroactively applied to existing rows                                                       |
-| CHECK constraints require an empty table                                            | The constraint cannot be validated against existing rows                                                                              |
-| No duplicate column name                                                            | The column name must not already exist in the table                                                                                   |
-| No `GENERATED ALWAYS AS`                                                            | Generated columns cannot be added via ALTER TABLE                                                                                     |
-| STRICT tables require an explicit type                                              | The column type must be a valid STRICT type                                                                                           |
+| Requirement | Reason |
+| - | - |
+| No `PRIMARY KEY` constraint | The primary key of a table cannot be changed after creation |
+| No `UNIQUE` constraint | Adding a UNIQUE column would require scanning all existing rows |
+| `NOT NULL` requires a non-NULL default | Existing rows must have a valid value for the new column |
+| Default must be a constant expression | Only literal values, signed literals, and parenthesized constant expressions are allowed. Functions like `random()` are not permitted |
+| `CURRENT_TIME`, `CURRENT_DATE`, `CURRENT_TIMESTAMP` defaults require an empty table | These non-deterministic values cannot be retroactively applied to existing rows |
+| CHECK constraints require an empty table | The constraint cannot be validated against existing rows |
+| No duplicate column name | The column name must not already exist in the table |
+| No `GENERATED ALWAYS AS` | Generated columns cannot be added via ALTER TABLE |
+| STRICT tables require an explicit type | The column type must be a valid STRICT type |
 
 ### Supported Column Constraints
 
@@ -190,17 +190,17 @@ ALTER TABLE table-name DROP COLUMN column-name;
 
 A column cannot be dropped if any of the following conditions are true:
 
-| Condition                                                                               | Error                                            |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| The column is a PRIMARY KEY or part of one                                              | Cannot drop PRIMARY KEY column                   |
-| The column has a UNIQUE constraint                                                      | Cannot drop UNIQUE column                        |
-| The column is referenced by an index                                                    | Cannot drop indexed column                       |
-| The column is referenced in an expression index                                         | Cannot drop column used in expression index      |
-| The column is named in a partial index WHERE clause                                     | Cannot drop column used in partial index         |
-| The column is referenced in a CHECK constraint belonging to another column or the table | Cannot drop column used in CHECK constraint      |
-| The column is referenced by a foreign key in another table                              | Cannot drop column used in foreign key           |
-| The table has only one column                                                           | Cannot drop the last remaining column            |
-| The column appears in a trigger or view                                                 | Cannot drop column referenced by trigger or view |
+| Condition | Error |
+| - | - |
+| The column is a PRIMARY KEY or part of one | Cannot drop PRIMARY KEY column |
+| The column has a UNIQUE constraint | Cannot drop UNIQUE column |
+| The column is referenced by an index | Cannot drop indexed column |
+| The column is referenced in an expression index | Cannot drop column used in expression index |
+| The column is named in a partial index WHERE clause | Cannot drop column used in partial index |
+| The column is referenced in a CHECK constraint belonging to another column or the table | Cannot drop column used in CHECK constraint |
+| The column is referenced by a foreign key in another table | Cannot drop column used in foreign key |
+| The table has only one column | Cannot drop the last remaining column |
+| The column appears in a trigger or view | Cannot drop column referenced by trigger or view |
 
 ### Examples
 

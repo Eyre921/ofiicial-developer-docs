@@ -28,14 +28,14 @@ INSERT [OR conflict_action] INTO table_name [(column_name [, ...])]
 
 ### Parameters
 
-| Parameter          | Type         | Description                                                                                                                         |
-| ------------------ | ------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `conflict_action`  | keyword      | One of REPLACE, IGNORE, ABORT, ROLLBACK, or FAIL. Controls behavior on constraint violations                                        |
-| `table_name`       | identifier   | The table to insert rows into                                                                                                       |
-| `column_name`      | identifier   | Column to assign a value to. Unlisted columns receive their default value or NULL                                                   |
-| `expression`       | expression   | A value to insert, or the keyword `DEFAULT` to use the column's default value. Must match the position or name of the target column |
-| `select_statement` | SELECT query | A query whose result rows are inserted into the table                                                                               |
-| `result_column`    | expression   | Column or expression to return for each inserted row                                                                                |
+| Parameter | Type | Description |
+| - | - | - |
+| `conflict_action` | keyword | One of REPLACE, IGNORE, ABORT, ROLLBACK, or FAIL. Controls behavior on constraint violations |
+| `table_name` | identifier | The table to insert rows into |
+| `column_name` | identifier | Column to assign a value to. Unlisted columns receive their default value or NULL |
+| `expression` | expression | A value to insert, or the keyword `DEFAULT` to use the column's default value. Must match the position or name of the target column |
+| `select_statement` | SELECT query | A query whose result rows are inserted into the table |
+| `result_column` | expression | Column or expression to return for each inserted row |
 
 ## Description
 
@@ -163,13 +163,13 @@ The `DEFAULT` keyword is only valid inside INSERT VALUES lists. Using it in othe
 
 The `OR` clause specifies what happens when an INSERT violates a uniqueness or NOT NULL constraint.
 
-| Action     | Behavior                                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `ABORT`    | Roll back the current statement and return an error. Previously inserted rows within the same INSERT are undone. This is the default |
-| `ROLLBACK` | Roll back the entire transaction and return an error                                                                                 |
-| `FAIL`     | Stop execution and return an error. Rows already inserted by this statement before the failure are kept                              |
-| `IGNORE`   | Skip the row that caused the violation and continue with the next row                                                                |
-| `REPLACE`  | Delete the conflicting row and insert the new row in its place                                                                       |
+| Action | Behavior |
+| - | - |
+| `ABORT` | Roll back the current statement and return an error. Previously inserted rows within the same INSERT are undone. This is the default |
+| `ROLLBACK` | Roll back the entire transaction and return an error |
+| `FAIL` | Stop execution and return an error. Rows already inserted by this statement before the failure are kept |
+| `IGNORE` | Skip the row that caused the violation and continue with the next row |
+| `REPLACE` | Delete the conflicting row and insert the new row in its place |
 
 ```sql theme={null}
 -- Skip rows that violate a UNIQUE constraint

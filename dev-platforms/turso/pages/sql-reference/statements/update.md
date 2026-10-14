@@ -30,13 +30,13 @@ SET column-name = expression [, column-name = expression ...]
 
 The optional `OR` clause specifies how to handle constraint violations during the update. When omitted, the default behavior is `ABORT`.
 
-| Algorithm  | Behavior                                                                                                                                                    |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ABORT`    | Roll back the current statement and return an error. The transaction remains active. This is the default.                                                   |
-| `ROLLBACK` | Roll back the entire transaction and return an error.                                                                                                       |
-| `FAIL`     | Stop at the first constraint violation and return an error, but keep changes made by earlier rows in this statement.                                        |
-| `IGNORE`   | Skip the row that caused the constraint violation and continue processing remaining rows.                                                                   |
-| `REPLACE`  | Delete the conflicting row before updating the current row. If a NOT NULL constraint fails and there is no DEFAULT value, the statement behaves as `ABORT`. |
+| Algorithm | Behavior |
+| - | - |
+| `ABORT` | Roll back the current statement and return an error. The transaction remains active. This is the default. |
+| `ROLLBACK` | Roll back the entire transaction and return an error. |
+| `FAIL` | Stop at the first constraint violation and return an error, but keep changes made by earlier rows in this statement. |
+| `IGNORE` | Skip the row that caused the constraint violation and continue processing remaining rows. |
+| `REPLACE` | Delete the conflicting row before updating the current row. If a NOT NULL constraint fails and there is no DEFAULT value, the statement behaves as `ABORT`. |
 
 ```sql theme={null}
 UPDATE OR IGNORE employees

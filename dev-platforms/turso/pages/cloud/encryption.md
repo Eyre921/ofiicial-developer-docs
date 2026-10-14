@@ -163,29 +163,29 @@ Turso Cloud supports multiple variants of three AEAD encryption algorithms, offe
 
 NIST-approved standard for compliance requirements. Widely supported across industries.
 
-| Cipher          | Key Size           | Cipher Code | Use Case                             |
-| --------------- | ------------------ | ----------- | ------------------------------------ |
+| Cipher | Key Size | Cipher Code | Use Case |
+| - | - | - | - |
 | **AES-128-GCM** | 128-bit (16 bytes) | `aes128gcm` | Compliance with 128-bit requirements |
-| **AES-256-GCM** | 256-bit (32 bytes) | `aes256gcm` | Maximum security for compliance      |
+| **AES-256-GCM** | 256-bit (32 bytes) | `aes256gcm` | Maximum security for compliance |
 
 ### ChaCha20-Poly1305
 
-| Cipher                | Key Size           | Cipher Code        | Use Case            |
-| --------------------- | ------------------ | ------------------ | ------------------- |
+| Cipher | Key Size | Cipher Code | Use Case |
+| - | - | - | - |
 | **ChaCha20-Poly1305** | 256-bit (32 bytes) | `chacha20poly1305` | Alternative for AES |
 
 ### AEGIS
 
 Modern, high-performance cipher family optimized for speed. **Recommended for most use cases.**
 
-| Cipher          | Key Size           | Cipher Code  | Use Case                               |
-| --------------- | ------------------ | ------------ | -------------------------------------- |
-| **AEGIS-128L**  | 128-bit (16 bytes) | `aegis128l`  | Balanced performance, 128-bit security |
-| **AEGIS-128X2** | 128-bit (16 bytes) | `aegis128x2` | 2x parallel processing                 |
-| **AEGIS-128X4** | 128-bit (16 bytes) | `aegis128x4` | 4x parallel processing, maximum speed  |
-| **AEGIS-256**   | 256-bit (32 bytes) | `aegis256`   | Balanced 256-bit security              |
-| **AEGIS-256X2** | 256-bit (32 bytes) | `aegis256x2` | 2x parallel processing, 256-bit        |
-| **AEGIS-256X4** | 256-bit (32 bytes) | `aegis256x4` | 4x parallel, maximum speed & security  |
+| Cipher | Key Size | Cipher Code | Use Case |
+| - | - | - | - |
+| **AEGIS-128L** | 128-bit (16 bytes) | `aegis128l` | Balanced performance, 128-bit security |
+| **AEGIS-128X2** | 128-bit (16 bytes) | `aegis128x2` | 2x parallel processing |
+| **AEGIS-128X4** | 128-bit (16 bytes) | `aegis128x4` | 4x parallel processing, maximum speed |
+| **AEGIS-256** | 256-bit (32 bytes) | `aegis256` | Balanced 256-bit security |
+| **AEGIS-256X2** | 256-bit (32 bytes) | `aegis256x2` | 2x parallel processing, 256-bit |
+| **AEGIS-256X4** | 256-bit (32 bytes) | `aegis256x4` | 4x parallel, maximum speed & security |
 
 <Info>
   **Choosing a cipher:**

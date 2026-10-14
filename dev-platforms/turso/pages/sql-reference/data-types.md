@@ -12,13 +12,13 @@ Turso uses the same dynamic type system as SQLite, where values have types but c
 
 ## Storage Classes
 
-| Storage Class | Description                                                                  |
-| ------------- | ---------------------------------------------------------------------------- |
-| NULL          | The NULL value                                                               |
-| INTEGER       | A signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on magnitude |
-| REAL          | An 8-byte IEEE 754 floating-point number                                     |
-| TEXT          | A UTF-8 encoded string                                                       |
-| BLOB          | Raw binary data, stored exactly as input                                     |
+| Storage Class | Description |
+| - | - |
+| NULL | The NULL value |
+| INTEGER | A signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on magnitude |
+| REAL | An 8-byte IEEE 754 floating-point number |
+| TEXT | A UTF-8 encoded string |
+| BLOB | Raw binary data, stored exactly as input |
 
 ```sql theme={null}
 SELECT typeof(NULL);       -- 'null'
@@ -36,13 +36,13 @@ When a column is declared with a type name, Turso assigns a **type affinity** to
 
 The type affinity of a column is determined by the declared type name, using these rules applied in order:
 
-| Rule | Condition                                      | Affinity | Examples                                          |
-| ---- | ---------------------------------------------- | -------- | ------------------------------------------------- |
-| 1    | Type name contains "INT"                       | INTEGER  | `INT`, `INTEGER`, `BIGINT`, `SMALLINT`, `TINYINT` |
-| 2    | Type name contains "CHAR", "CLOB", or "TEXT"   | TEXT     | `TEXT`, `VARCHAR(255)`, `CLOB`, `CHARACTER(20)`   |
-| 3    | Type name contains "BLOB" or no type specified | BLOB     | `BLOB`, (no type)                                 |
-| 4    | Type name contains "REAL", "FLOA", or "DOUB"   | REAL     | `REAL`, `FLOAT`, `DOUBLE`, `DOUBLE PRECISION`     |
-| 5    | Otherwise                                      | NUMERIC  | `NUMERIC`, `DECIMAL`, `BOOLEAN`, `DATE`           |
+| Rule | Condition | Affinity | Examples |
+| - | - | - | - |
+| 1 | Type name contains "INT" | INTEGER | `INT`, `INTEGER`, `BIGINT`, `SMALLINT`, `TINYINT` |
+| 2 | Type name contains "CHAR", "CLOB", or "TEXT" | TEXT | `TEXT`, `VARCHAR(255)`, `CLOB`, `CHARACTER(20)` |
+| 3 | Type name contains "BLOB" or no type specified | BLOB | `BLOB`, (no type) |
+| 4 | Type name contains "REAL", "FLOA", or "DOUB" | REAL | `REAL`, `FLOAT`, `DOUBLE`, `DOUBLE PRECISION` |
+| 5 | Otherwise | NUMERIC | `NUMERIC`, `DECIMAL`, `BOOLEAN`, `DATE` |
 
 ```sql theme={null}
 -- Type affinity is a suggestion, not a constraint
@@ -92,13 +92,13 @@ INSERT INTO users VALUES (2, 'Bob', 'thirty', 80.0);
 
 STRICT tables only allow these base type names:
 
-| Type    | Description                                                |
-| ------- | ---------------------------------------------------------- |
-| INTEGER | Signed integer                                             |
-| REAL    | Floating-point number                                      |
-| TEXT    | UTF-8 string                                               |
-| BLOB    | Raw binary data                                            |
-| ANY     | Any storage class (disables type checking for this column) |
+| Type | Description |
+| - | - |
+| INTEGER | Signed integer |
+| REAL | Floating-point number |
+| TEXT | UTF-8 string |
+| BLOB | Raw binary data |
+| ANY | Any storage class (disables type checking for this column) |
 
 <Info>
   **Turso Extension**: STRICT tables also accept [custom type](/sql-reference/statements/create-type) names, [composite types](#composite-types-struct-and-union) (STRUCT and UNION), and [array types](#array-types). Any base type can be turned into an array column by appending `[]` to the type name (e.g., `INTEGER[]`, `TEXT[]`). Arrays, custom types, and composite types are Turso-specific features.
@@ -132,20 +132,20 @@ SELECT amount FROM prices;
 
 Turso provides several built-in custom types available in STRICT tables:
 
-| Type           | Base    | Description                                      |
-| -------------- | ------- | ------------------------------------------------ |
-| `date`         | TEXT    | ISO 8601 date (YYYY-MM-DD)                       |
-| `time`         | TEXT    | ISO 8601 time (HH:MM:SS)                         |
-| `timestamp`    | TEXT    | ISO 8601 datetime                                |
-| `varchar(N)`   | TEXT    | Text with maximum length constraint              |
-| `numeric(P,S)` | BLOB    | Fixed-point decimal with precision and scale     |
-| `smallint`     | INTEGER | Integer constrained to -32768..32767             |
-| `boolean`      | INTEGER | Integer constrained to 0 or 1                    |
-| `uuid`         | BLOB    | UUID stored as 16-byte blob, displayed as string |
-| `bytea`        | BLOB    | Binary data (PostgreSQL-compatible alias)        |
-| `inet`         | TEXT    | IP address                                       |
-| `json`         | TEXT    | Validated JSON text                              |
-| `jsonb`        | BLOB    | JSON in binary format                            |
+| Type | Base | Description |
+| - | - | - |
+| `date` | TEXT | ISO 8601 date (YYYY-MM-DD) |
+| `time` | TEXT | ISO 8601 time (HH:MM:SS) |
+| `timestamp` | TEXT | ISO 8601 datetime |
+| `varchar(N)` | TEXT | Text with maximum length constraint |
+| `numeric(P,S)` | BLOB | Fixed-point decimal with precision and scale |
+| `smallint` | INTEGER | Integer constrained to -32768..32767 |
+| `boolean` | INTEGER | Integer constrained to 0 or 1 |
+| `uuid` | BLOB | UUID stored as 16-byte blob, displayed as string |
+| `bytea` | BLOB | Binary data (PostgreSQL-compatible alias) |
+| `inet` | TEXT | IP address |
+| `json` | TEXT | Validated JSON text |
+| `jsonb` | BLOB | JSON in binary format |
 
 ```sql theme={null}
 CREATE TABLE events (

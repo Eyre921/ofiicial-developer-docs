@@ -11,11 +11,11 @@ In this quickstart we will learn how to:
 * Connect to a remote Turso database
 * Execute SQL queries using [SQL over HTTP](https://github.com/tursodatabase/libsql/blob/main/docs/HRANA_3_SPEC.md#hrana-over-http)
 
-|                  | `@tursodatabase/serverless`                  | `@libsql/client`                   | Raw HTTP               |
-| ---------------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
-| **Use with**     | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        | Any database           |
+| | `@tursodatabase/serverless` | `@libsql/client` | Raw HTTP |
+| - | - | - | - |
+| **Use with** | [Turso](/tursodb/quickstart) databases | [libSQL](/libsql) databases | Any database |
 | **Dependencies** | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath | None (any HTTP client) |
-| **ORM support**  | Not yet supported                            | Drizzle, Prisma, and others        | N/A                    |
+| **ORM support** | Not yet supported | Drizzle, Prisma, and others | N/A |
 
 Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases.
 

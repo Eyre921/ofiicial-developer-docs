@@ -24,15 +24,15 @@ The UUID extension provides functions for generating and working with UUIDs. UUI
 
 ### Functions
 
-| Function                   | Parameters | Return Type | Description                                                     |
-| -------------------------- | ---------- | ----------- | --------------------------------------------------------------- |
-| `uuid4()`                  | none       | BLOB        | Generate a random UUID v4                                       |
-| `uuid4_str()`              | none       | TEXT        | Generate a random UUID v4 as string. Alias: `gen_random_uuid()` |
-| `uuid7()`                  | none       | BLOB        | Generate a time-ordered UUID v7                                 |
-| `uuid7(seconds)`           | INTEGER    | BLOB        | Generate a UUID v7 with specified seconds since epoch           |
-| `uuid7_timestamp_ms(uuid)` | BLOB       | INTEGER     | Extract milliseconds since epoch from a UUID v7                 |
-| `uuid_str(uuid)`           | BLOB       | TEXT        | Convert a UUID blob to string representation                    |
-| `uuid_blob(uuid)`          | TEXT       | BLOB        | Convert a UUID string to blob representation                    |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `uuid4()` | none | BLOB | Generate a random UUID v4 |
+| `uuid4_str()` | none | TEXT | Generate a random UUID v4 as string. Alias: `gen_random_uuid()` |
+| `uuid7()` | none | BLOB | Generate a time-ordered UUID v7 |
+| `uuid7(seconds)` | INTEGER | BLOB | Generate a UUID v7 with specified seconds since epoch |
+| `uuid7_timestamp_ms(uuid)` | BLOB | INTEGER | Extract milliseconds since epoch from a UUID v7 |
+| `uuid_str(uuid)` | BLOB | TEXT | Convert a UUID blob to string representation |
+| `uuid_blob(uuid)` | TEXT | BLOB | Convert a UUID string to blob representation |
 
 ### Examples
 
@@ -67,14 +67,14 @@ The regexp extension provides regular expression functions compatible with [sqle
 
 ### Functions
 
-| Function                                       | Parameters          | Return Type | Description                                                   |
-| ---------------------------------------------- | ------------------- | ----------- | ------------------------------------------------------------- |
-| `regexp(pattern, source)`                      | TEXT, TEXT          | INTEGER     | Returns 1 if source matches pattern                           |
-| `regexp_like(source, pattern)`                 | TEXT, TEXT          | INTEGER     | Returns 1 if source matches pattern (argument order reversed) |
-| `regexp_substr(source, pattern)`               | TEXT, TEXT          | TEXT        | Returns the first substring matching pattern, or NULL         |
-| `regexp_capture(source, pattern)`              | TEXT, TEXT          | TEXT        | Returns the first capture group match                         |
-| `regexp_capture(source, pattern, n)`           | TEXT, TEXT, INTEGER | TEXT        | Returns the n-th capture group match                          |
-| `regexp_replace(source, pattern, replacement)` | TEXT, TEXT, TEXT    | TEXT        | Replace matches with replacement string                       |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `regexp(pattern, source)` | TEXT, TEXT | INTEGER | Returns 1 if source matches pattern |
+| `regexp_like(source, pattern)` | TEXT, TEXT | INTEGER | Returns 1 if source matches pattern (argument order reversed) |
+| `regexp_substr(source, pattern)` | TEXT, TEXT | TEXT | Returns the first substring matching pattern, or NULL |
+| `regexp_capture(source, pattern)` | TEXT, TEXT | TEXT | Returns the first capture group match |
+| `regexp_capture(source, pattern, n)` | TEXT, TEXT, INTEGER | TEXT | Returns the n-th capture group match |
+| `regexp_replace(source, pattern, replacement)` | TEXT, TEXT, TEXT | TEXT | Replace matches with replacement string |
 
 ### Examples
 
@@ -112,15 +112,15 @@ For the complete function reference, see [Vector Functions](/sql-reference/funct
 
 ### Quick Reference
 
-| Function                      | Description                  |
-| ----------------------------- | ---------------------------- |
-| `vector32(json)`              | Create a 32-bit float vector |
-| `vector64(json)`              | Create a 64-bit float vector |
-| `vector_distance_cos(v1, v2)` | Cosine distance              |
-| `vector_distance_l2(v1, v2)`  | Euclidean distance           |
-| `vector_extract(v)`           | Convert vector to JSON       |
-| `vector_concat(v1, v2)`       | Concatenate vectors          |
-| `vector_slice(v, start, end)` | Extract vector slice         |
+| Function | Description |
+| - | - |
+| `vector32(json)` | Create a 32-bit float vector |
+| `vector64(json)` | Create a 64-bit float vector |
+| `vector_distance_cos(v1, v2)` | Cosine distance |
+| `vector_distance_l2(v1, v2)` | Euclidean distance |
+| `vector_extract(v)` | Convert vector to JSON |
+| `vector_concat(v1, v2)` | Concatenate vectors |
+| `vector_slice(v, start, end)` | Extract vector slice |
 
 ### Example
 
@@ -162,56 +162,56 @@ The time extension is compatible with [sqlean-time](https://github.com/nalgeon/s
 
 ### Key Functions
 
-| Function                    | Parameters       | Return Type | Description                         |
-| --------------------------- | ---------------- | ----------- | ----------------------------------- |
-| `time_now()`                | none             | BLOB        | Current time                        |
-| `time_date(y,m,d,...)`      | INTEGER...       | BLOB        | Create time from components         |
-| `make_date(y,m,d)`          | INTEGER...       | BLOB        | Create time from a date             |
-| `make_timestamp(...)`       | INTEGER...       | BLOB        | Create time from a timestamp        |
-| `time_unix(sec)`            | INTEGER          | BLOB        | Create time from Unix seconds       |
-| `to_timestamp(sec)`         | INTEGER          | BLOB        | Create time from Unix seconds       |
-| `time_milli(ms)`            | INTEGER          | BLOB        | Create time from milliseconds       |
-| `time_micro(us)`            | INTEGER          | BLOB        | Create time from microseconds       |
-| `time_nano(ns)`             | INTEGER          | BLOB        | Create time from nanoseconds        |
-| `time_to_unix(t)`           | BLOB             | INTEGER     | Convert to Unix seconds             |
-| `time_to_milli(t)`          | BLOB             | INTEGER     | Convert to milliseconds             |
-| `time_to_micro(t)`          | BLOB             | INTEGER     | Convert to microseconds             |
-| `time_to_nano(t)`           | BLOB             | INTEGER     | Convert to nanoseconds              |
-| `time_get_year(t)`          | BLOB             | INTEGER     | Extract year                        |
-| `time_get_month(t)`         | BLOB             | INTEGER     | Extract month (1-12)                |
-| `time_get_day(t)`           | BLOB             | INTEGER     | Extract day (1-31)                  |
-| `time_get_hour(t)`          | BLOB             | INTEGER     | Extract hour (0-23)                 |
-| `time_get_minute(t)`        | BLOB             | INTEGER     | Extract minute (0-59)               |
-| `time_get_second(t)`        | BLOB             | INTEGER     | Extract second (0-59)               |
-| `time_get_weekday(t)`       | BLOB             | INTEGER     | Day of week (0=Sunday)              |
-| `time_get(t, field)`        | BLOB, TEXT       | INTEGER     | Extract named field                 |
-| `time_add(t, d)`            | BLOB, INTEGER    | BLOB        | Add duration                        |
-| `time_add_date(t, y, m, d)` | BLOB, INTEGER... | BLOB        | Add years/months/days               |
-| `time_sub(t, u)`            | BLOB, BLOB       | INTEGER     | Difference between times (duration) |
-| `time_since(t)`             | BLOB             | INTEGER     | Duration since time                 |
-| `time_until(t)`             | BLOB             | INTEGER     | Duration until time                 |
-| `time_trunc(t, field)`      | BLOB, TEXT       | BLOB        | Truncate to field                   |
-| `time_round(t, d)`          | BLOB, INTEGER    | BLOB        | Round to nearest duration           |
-| `time_after(t, u)`          | BLOB, BLOB       | INTEGER     | 1 if t is after u                   |
-| `time_before(t, u)`         | BLOB, BLOB       | INTEGER     | 1 if t is before u                  |
-| `time_compare(t, u)`        | BLOB, BLOB       | INTEGER     | -1, 0, or 1                         |
-| `time_equal(t, u)`          | BLOB, BLOB       | INTEGER     | 1 if equal                          |
-| `time_fmt_iso(t)`           | BLOB             | TEXT        | Format as ISO 8601                  |
-| `time_fmt_datetime(t)`      | BLOB             | TEXT        | Format as datetime                  |
-| `time_fmt_date(t)`          | BLOB             | TEXT        | Format as date                      |
-| `time_fmt_time(t)`          | BLOB             | TEXT        | Format as time                      |
-| `time_parse(s)`             | TEXT             | BLOB        | Parse time string                   |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `time_now()` | none | BLOB | Current time |
+| `time_date(y,m,d,...)` | INTEGER... | BLOB | Create time from components |
+| `make_date(y,m,d)` | INTEGER... | BLOB | Create time from a date |
+| `make_timestamp(...)` | INTEGER... | BLOB | Create time from a timestamp |
+| `time_unix(sec)` | INTEGER | BLOB | Create time from Unix seconds |
+| `to_timestamp(sec)` | INTEGER | BLOB | Create time from Unix seconds |
+| `time_milli(ms)` | INTEGER | BLOB | Create time from milliseconds |
+| `time_micro(us)` | INTEGER | BLOB | Create time from microseconds |
+| `time_nano(ns)` | INTEGER | BLOB | Create time from nanoseconds |
+| `time_to_unix(t)` | BLOB | INTEGER | Convert to Unix seconds |
+| `time_to_milli(t)` | BLOB | INTEGER | Convert to milliseconds |
+| `time_to_micro(t)` | BLOB | INTEGER | Convert to microseconds |
+| `time_to_nano(t)` | BLOB | INTEGER | Convert to nanoseconds |
+| `time_get_year(t)` | BLOB | INTEGER | Extract year |
+| `time_get_month(t)` | BLOB | INTEGER | Extract month (1-12) |
+| `time_get_day(t)` | BLOB | INTEGER | Extract day (1-31) |
+| `time_get_hour(t)` | BLOB | INTEGER | Extract hour (0-23) |
+| `time_get_minute(t)` | BLOB | INTEGER | Extract minute (0-59) |
+| `time_get_second(t)` | BLOB | INTEGER | Extract second (0-59) |
+| `time_get_weekday(t)` | BLOB | INTEGER | Day of week (0=Sunday) |
+| `time_get(t, field)` | BLOB, TEXT | INTEGER | Extract named field |
+| `time_add(t, d)` | BLOB, INTEGER | BLOB | Add duration |
+| `time_add_date(t, y, m, d)` | BLOB, INTEGER... | BLOB | Add years/months/days |
+| `time_sub(t, u)` | BLOB, BLOB | INTEGER | Difference between times (duration) |
+| `time_since(t)` | BLOB | INTEGER | Duration since time |
+| `time_until(t)` | BLOB | INTEGER | Duration until time |
+| `time_trunc(t, field)` | BLOB, TEXT | BLOB | Truncate to field |
+| `time_round(t, d)` | BLOB, INTEGER | BLOB | Round to nearest duration |
+| `time_after(t, u)` | BLOB, BLOB | INTEGER | 1 if t is after u |
+| `time_before(t, u)` | BLOB, BLOB | INTEGER | 1 if t is before u |
+| `time_compare(t, u)` | BLOB, BLOB | INTEGER | -1, 0, or 1 |
+| `time_equal(t, u)` | BLOB, BLOB | INTEGER | 1 if equal |
+| `time_fmt_iso(t)` | BLOB | TEXT | Format as ISO 8601 |
+| `time_fmt_datetime(t)` | BLOB | TEXT | Format as datetime |
+| `time_fmt_date(t)` | BLOB | TEXT | Format as date |
+| `time_fmt_time(t)` | BLOB | TEXT | Format as time |
+| `time_parse(s)` | TEXT | BLOB | Parse time string |
 
 #### Duration Constants
 
-| Function   | Value         |
-| ---------- | ------------- |
-| `dur_ns()` | 1 nanosecond  |
+| Function | Value |
+| - | - |
+| `dur_ns()` | 1 nanosecond |
 | `dur_us()` | 1 microsecond |
 | `dur_ms()` | 1 millisecond |
-| `dur_s()`  | 1 second      |
-| `dur_m()`  | 1 minute      |
-| `dur_h()`  | 1 hour        |
+| `dur_s()` | 1 second |
+| `dur_m()` | 1 minute |
+| `dur_h()` | 1 hour |
 
 ### Example
 
@@ -270,10 +270,10 @@ CREATE VIRTUAL TABLE temp.csv_data USING csv(
 SELECT * FROM csv_data;
 ```
 
-| Parameter  | Description                                  |
-| ---------- | -------------------------------------------- |
-| `filename` | Path to the CSV file                         |
-| `header`   | `yes` if the first row contains column names |
+| Parameter | Description |
+| - | - |
+| `filename` | Path to the CSV file |
+| `header` | `yes` if the first row contains column names |
 
 ## Percentile Extension
 
@@ -281,12 +281,12 @@ Statistical aggregate functions for computing percentiles.
 
 ### Functions
 
-| Function                | Parameters   | Return Type | Description                                |
-| ----------------------- | ------------ | ----------- | ------------------------------------------ |
-| `median(X)`             | column       | REAL        | Median value (50th percentile)             |
-| `percentile(Y, P)`      | column, REAL | REAL        | P-th percentile of Y (P between 0 and 100) |
-| `percentile_cont(Y, P)` | column, REAL | REAL        | Continuous percentile (interpolated)       |
-| `percentile_disc(Y, P)` | column, REAL | REAL        | Discrete percentile (nearest value)        |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `median(X)` | column | REAL | Median value (50th percentile) |
+| `percentile(Y, P)` | column, REAL | REAL | P-th percentile of Y (P between 0 and 100) |
+| `percentile_cont(Y, P)` | column, REAL | REAL | Continuous percentile (interpolated) |
+| `percentile_disc(Y, P)` | column, REAL | REAL | Discrete percentile (nearest value) |
 
 ### Examples
 
@@ -310,16 +310,16 @@ The crypto extension provides hashing and encoding functions, compatible with [s
 
 ### Functions
 
-| Function                      | Parameters | Return Type | Description                                                                  |
-| ----------------------------- | ---------- | ----------- | ---------------------------------------------------------------------------- |
-| `crypto_md5(data)`            | TEXT/BLOB  | BLOB        | MD5 hash                                                                     |
-| `crypto_sha1(data)`           | TEXT/BLOB  | BLOB        | SHA-1 hash                                                                   |
-| `crypto_sha256(data)`         | TEXT/BLOB  | BLOB        | SHA-256 hash                                                                 |
-| `crypto_sha384(data)`         | TEXT/BLOB  | BLOB        | SHA-384 hash                                                                 |
-| `crypto_sha512(data)`         | TEXT/BLOB  | BLOB        | SHA-512 hash                                                                 |
-| `crypto_blake3(data)`         | TEXT/BLOB  | BLOB        | BLAKE3 hash                                                                  |
-| `crypto_encode(data, format)` | BLOB, TEXT | TEXT        | Encode a blob as text using `format` (e.g. `hex`, `base32`, `base64`, `url`) |
-| `crypto_decode(text, format)` | TEXT, TEXT | BLOB        | Decode text in the given `format` back into a blob                           |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `crypto_md5(data)` | TEXT/BLOB | BLOB | MD5 hash |
+| `crypto_sha1(data)` | TEXT/BLOB | BLOB | SHA-1 hash |
+| `crypto_sha256(data)` | TEXT/BLOB | BLOB | SHA-256 hash |
+| `crypto_sha384(data)` | TEXT/BLOB | BLOB | SHA-384 hash |
+| `crypto_sha512(data)` | TEXT/BLOB | BLOB | SHA-512 hash |
+| `crypto_blake3(data)` | TEXT/BLOB | BLOB | BLAKE3 hash |
+| `crypto_encode(data, format)` | BLOB, TEXT | TEXT | Encode a blob as text using `format` (e.g. `hex`, `base32`, `base64`, `url`) |
+| `crypto_decode(text, format)` | TEXT, TEXT | BLOB | Decode text in the given `format` back into a blob |
 
 ```sql theme={null}
 -- Hash a value and encode it as hex
@@ -335,21 +335,21 @@ The fuzzy extension provides string-similarity, distance, and phonetic functions
 
 ### Functions
 
-| Function               | Parameters | Return Type | Description                             |
-| ---------------------- | ---------- | ----------- | --------------------------------------- |
-| `fuzzy_editdist(a, b)` | TEXT, TEXT | INTEGER     | Spellcheck-style edit distance          |
-| `fuzzy_leven(a, b)`    | TEXT, TEXT | INTEGER     | Levenshtein distance                    |
-| `fuzzy_damlev(a, b)`   | TEXT, TEXT | INTEGER     | Damerau-Levenshtein distance            |
-| `fuzzy_osadist(a, b)`  | TEXT, TEXT | INTEGER     | Optimal string alignment distance       |
-| `fuzzy_hamming(a, b)`  | TEXT, TEXT | INTEGER     | Hamming distance                        |
-| `fuzzy_jarowin(a, b)`  | TEXT, TEXT | REAL        | Jaro-Winkler similarity                 |
-| `fuzzy_soundex(s)`     | TEXT       | TEXT        | Soundex phonetic code                   |
-| `fuzzy_rsoundex(s)`    | TEXT       | TEXT        | Refined Soundex code                    |
-| `fuzzy_caver(s)`       | TEXT       | TEXT        | Caverphone phonetic code                |
-| `fuzzy_phonetic(s)`    | TEXT       | TEXT        | US Census phonetic code                 |
-| `fuzzy_translit(s)`    | TEXT       | TEXT        | Transliterate Unicode text to ASCII     |
-| `fuzzy_script(s)`      | TEXT       | INTEGER     | Identify the writing script of the text |
-| `phonetics(a, b)`      | TEXT, TEXT | INTEGER     | 1 if two strings are phonetically equal |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `fuzzy_editdist(a, b)` | TEXT, TEXT | INTEGER | Spellcheck-style edit distance |
+| `fuzzy_leven(a, b)` | TEXT, TEXT | INTEGER | Levenshtein distance |
+| `fuzzy_damlev(a, b)` | TEXT, TEXT | INTEGER | Damerau-Levenshtein distance |
+| `fuzzy_osadist(a, b)` | TEXT, TEXT | INTEGER | Optimal string alignment distance |
+| `fuzzy_hamming(a, b)` | TEXT, TEXT | INTEGER | Hamming distance |
+| `fuzzy_jarowin(a, b)` | TEXT, TEXT | REAL | Jaro-Winkler similarity |
+| `fuzzy_soundex(s)` | TEXT | TEXT | Soundex phonetic code |
+| `fuzzy_rsoundex(s)` | TEXT | TEXT | Refined Soundex code |
+| `fuzzy_caver(s)` | TEXT | TEXT | Caverphone phonetic code |
+| `fuzzy_phonetic(s)` | TEXT | TEXT | US Census phonetic code |
+| `fuzzy_translit(s)` | TEXT | TEXT | Transliterate Unicode text to ASCII |
+| `fuzzy_script(s)` | TEXT | INTEGER | Identify the writing script of the text |
+| `phonetics(a, b)` | TEXT, TEXT | INTEGER | 1 if two strings are phonetically equal |
 
 ```sql theme={null}
 -- Distance between two strings
@@ -367,13 +367,13 @@ The ipaddr extension provides functions for working with IPv4 and IPv6 addresses
 
 ### Functions
 
-| Function                  | Parameters | Return Type | Description                                         |
-| ------------------------- | ---------- | ----------- | --------------------------------------------------- |
-| `ipfamily(ip)`            | TEXT       | INTEGER     | Returns 4 for IPv4 or 6 for IPv6                    |
-| `iphost(ip)`              | TEXT       | TEXT        | The host portion of an address (strips any netmask) |
-| `ipmasklen(cidr)`         | TEXT       | INTEGER     | The prefix (mask) length of a CIDR network          |
-| `ipnetwork(cidr)`         | TEXT       | TEXT        | The network address of a CIDR value                 |
-| `ipcontains(network, ip)` | TEXT, TEXT | INTEGER     | 1 if the CIDR network contains the given address    |
+| Function | Parameters | Return Type | Description |
+| - | - | - | - |
+| `ipfamily(ip)` | TEXT | INTEGER | Returns 4 for IPv4 or 6 for IPv6 |
+| `iphost(ip)` | TEXT | TEXT | The host portion of an address (strips any netmask) |
+| `ipmasklen(cidr)` | TEXT | INTEGER | The prefix (mask) length of a CIDR network |
+| `ipnetwork(cidr)` | TEXT | TEXT | The network address of a CIDR value |
+| `ipcontains(network, ip)` | TEXT, TEXT | INTEGER | 1 if the CIDR network contains the given address |
 
 ```sql theme={null}
 SELECT ipfamily('192.168.1.1');            -- 4
@@ -390,11 +390,11 @@ SELECT value FROM generate_series(start, stop);
 SELECT value FROM generate_series(start, stop, step);
 ```
 
-| Parameter | Type    | Description                 |
-| --------- | ------- | --------------------------- |
-| start     | INTEGER | Starting value (inclusive)  |
-| stop      | INTEGER | Ending value (inclusive)    |
-| step      | INTEGER | Step increment (default: 1) |
+| Parameter | Type | Description |
+| - | - | - |
+| start | INTEGER | Starting value (inclusive) |
+| stop | INTEGER | Ending value (inclusive) |
+| step | INTEGER | Step increment (default: 1) |
 
 ```sql theme={null}
 SELECT value FROM generate_series(1, 5);

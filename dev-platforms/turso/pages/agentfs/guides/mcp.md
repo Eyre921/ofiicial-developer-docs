@@ -20,25 +20,25 @@ This starts an MCP server that exposes AgentFS tools over stdio.
 
 ### Filesystem Tools
 
-| Tool         | Description                   |
-| ------------ | ----------------------------- |
-| `read_file`  | Read file contents            |
-| `write_file` | Write file contents           |
-| `readdir`    | List directory contents       |
-| `mkdir`      | Create directory              |
-| `remove`     | Remove file or directory      |
-| `rename`     | Rename file or directory      |
-| `stat`       | Get file metadata             |
-| `access`     | Check file access permissions |
+| Tool | Description |
+| - | - |
+| `read_file` | Read file contents |
+| `write_file` | Write file contents |
+| `readdir` | List directory contents |
+| `mkdir` | Create directory |
+| `remove` | Remove file or directory |
+| `rename` | Rename file or directory |
+| `stat` | Get file metadata |
+| `access` | Check file access permissions |
 
 ### Key-Value Tools
 
-| Tool        | Description        |
-| ----------- | ------------------ |
-| `kv_get`    | Get value by key   |
-| `kv_set`    | Set key-value pair |
-| `kv_delete` | Delete key         |
-| `kv_list`   | List all keys      |
+| Tool | Description |
+| - | - |
+| `kv_get` | Get value by key |
+| `kv_set` | Set key-value pair |
+| `kv_delete` | Delete key |
+| `kv_list` | List all keys |
 
 ## Limiting Exposed Tools
 

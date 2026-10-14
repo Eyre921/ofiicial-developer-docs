@@ -16,6 +16,6 @@ turso auth signup
 
 ## Flags
 
-| Flag         | Description                                                       |
-| ------------ | ----------------------------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `--headless` | Useful when the CLI can't interact with the system's web browser. |

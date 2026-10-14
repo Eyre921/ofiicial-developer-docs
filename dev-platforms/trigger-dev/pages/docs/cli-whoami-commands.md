@@ -24,12 +24,24 @@ Run the command like this:
 
 ## Options
 
+<ParamField type="-c, --config <config file>">
+  The name of the config file.
+</ParamField>
+
+<ParamField type="-p, --project-ref <project ref>">
+  The project ref. Overrides the project in the config file.
+</ParamField>
+
+<ParamField type="--env-file <env file>">
+  Path to a `.env` file to read `TRIGGER_PROJECT_REF` from. Defaults to `.env`, `.env.development`, `.env.local`, `.env.development.local` and `dev.vars` in the current directory.
+</ParamField>
+
 ### Common options
 
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

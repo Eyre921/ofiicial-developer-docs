@@ -12,11 +12,11 @@ turso db shell <database-name> [sql] [flags]
 
 ## Flags
 
-| Flag                         | Description                                        |
-| ---------------------------- | -------------------------------------------------- |
-| `--instance <instance>`      | Connect to the specified database instance.        |
+| Flag | Description |
+| - | - |
+| `--instance <instance>` | Connect to the specified database instance. |
 | `--location <location-code>` | Connect to the database at the specified location. |
-| `--proxy <url>`              | The proxy to use when connecting to the database.  |
+| `--proxy <url>` | The proxy to use when connecting to the database. |
 
 ## Examples
 

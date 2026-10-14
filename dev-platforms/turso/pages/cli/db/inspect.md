@@ -12,9 +12,9 @@ turso db inspect <database-name>
 
 ## Flags
 
-| Flag        | Description                                                          |
-| ----------- | -------------------------------------------------------------------- |
-| `--queries` | Show database query statistics.                                      |
+| Flag | Description |
+| - | - |
+| `--queries` | Show database query statistics. |
 | `--verbose` | Show detailed information, including the location and instance type. |
 
 ## Examples

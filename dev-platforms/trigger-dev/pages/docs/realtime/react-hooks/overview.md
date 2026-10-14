@@ -22,7 +22,7 @@ Install the `@trigger.dev/react-hooks` package in your project:
   ```
 
   ```bash yarn theme={"theme":"css-variables"}
-  yarn install @trigger.dev/react-hooks
+  yarn add @trigger.dev/react-hooks
   ```
 </CodeGroup>
 

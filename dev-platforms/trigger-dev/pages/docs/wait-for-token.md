@@ -139,7 +139,7 @@ Create a waitpoint token.
 The `createToken` function accepts an object with the following properties:
 
 <ParamField type="string">
-  The maximum amount of time to wait for the token to be completed. Defaults to "10m".
+  The maximum amount of time to wait for the token to be completed. If omitted, the token has no timeout. Accepts a duration string like `"30s"` or `"4w"`, or a `Date`.
 </ParamField>
 
 <ParamField type="string">
@@ -148,7 +148,7 @@ The `createToken` function accepts an object with the following properties:
 </ParamField>
 
 <ParamField type="string">
-  The time to live for the idempotency key. Defaults to "1h".
+  The time to live for the idempotency key. If omitted, the key does not expire.
 </ParamField>
 
 <ParamField type="string[]">
@@ -381,7 +381,7 @@ The `listTokens` function accepts an object with the following properties:
 </ParamField>
 
 <ParamField type="string">
-  The period to filter by. Can be one of: `1h`, `1d`, `7d`, `30d`.
+  The period to filter by, as a duration string such as `1h`, `1d`, `7d` or `30d`.
 </ParamField>
 
 <ParamField type="Date | number">

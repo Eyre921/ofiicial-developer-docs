@@ -34,11 +34,11 @@ agentfs init [OPTIONS] [ID]
 
 **Options:**
 
-| Option                    | Description                           |
-| ------------------------- | ------------------------------------- |
-| `--force`                 | Overwrite existing agent filesystem   |
-| `--base <PATH>`           | Base directory for overlay filesystem |
-| `--sync-remote-url <URL>` | Remote Turso database URL             |
+| Option | Description |
+| - | - |
+| `--force` | Overwrite existing agent filesystem |
+| `--base <PATH>` | Base directory for overlay filesystem |
+| `--sync-remote-url <URL>` | Remote Turso database URL |
 
 **Example:**
 
@@ -59,13 +59,13 @@ agentfs run [OPTIONS] <COMMAND> [ARGS]...
 
 **Options:**
 
-| Option                   | Description                         |
-| ------------------------ | ----------------------------------- |
-| `--session <ID>`         | Named session for persistence       |
-| `--allow <PATH>`         | Allow write access to directory     |
-| `--no-default-allows`    | Disable default allowed directories |
-| `--experimental-sandbox` | Use ptrace sandbox (Linux)          |
-| `--strace`               | Show intercepted syscalls           |
+| Option | Description |
+| - | - |
+| `--session <ID>` | Named session for persistence |
+| `--allow <PATH>` | Allow write access to directory |
+| `--no-default-allows` | Disable default allowed directories |
+| `--experimental-sandbox` | Use ptrace sandbox (Linux) |
+| `--strace` | Show intercepted syscalls |
 
 **Examples:**
 
@@ -89,13 +89,13 @@ Without arguments, lists all mounted filesystems.
 
 **Options:**
 
-| Option               | Description                   |
-| -------------------- | ----------------------------- |
+| Option | Description |
+| - | - |
 | `-a, --auto-unmount` | Automatically unmount on exit |
-| `--allow-root`       | Allow root user access        |
-| `-f, --foreground`   | Run in foreground             |
-| `--uid <UID>`        | User ID for files             |
-| `--gid <GID>`        | Group ID for files            |
+| `--allow-root` | Allow root user access |
+| `-f, --foreground` | Run in foreground |
+| `--uid <UID>` | User ID for files |
+| `--gid <GID>` | Group ID for files |
 
 **Examples:**
 
@@ -122,16 +122,16 @@ agentfs serve mcp <ID_OR_PATH> [OPTIONS]
 
 **Options:**
 
-| Option            | Description                   |
-| ----------------- | ----------------------------- |
+| Option | Description |
+| - | - |
 | `--tools <TOOLS>` | Comma-separated list of tools |
 
 **Available Tools:**
 
-| Category   | Tools                                                                               |
-| ---------- | ----------------------------------------------------------------------------------- |
+| Category | Tools |
+| - | - |
 | Filesystem | `read_file`, `write_file`, `readdir`, `mkdir`, `remove`, `rename`, `stat`, `access` |
-| Key-Value  | `kv_get`, `kv_set`, `kv_delete`, `kv_list`                                          |
+| Key-Value | `kv_get`, `kv_set`, `kv_delete`, `kv_list` |
 
 **Examples:**
 
@@ -152,10 +152,10 @@ agentfs serve nfs <ID_OR_PATH> [OPTIONS]
 
 **Options:**
 
-| Option          | Description                       |
-| --------------- | --------------------------------- |
-| `--bind <IP>`   | IP to bind (default: `127.0.0.1`) |
-| `--port <PORT>` | Port (default: `11111`)           |
+| Option | Description |
+| - | - |
+| `--bind <IP>` | IP to bind (default: `127.0.0.1`) |
+| `--port <PORT>` | Port (default: `11111`) |
 
 **Example:**
 
@@ -181,12 +181,12 @@ agentfs sync <ID_OR_PATH> <SUBCOMMAND>
 
 **Subcommands:**
 
-| Command      | Description          |
-| ------------ | -------------------- |
-| `pull`       | Pull remote changes  |
-| `push`       | Push local changes   |
-| `stats`      | View sync statistics |
-| `checkpoint` | Create checkpoint    |
+| Command | Description |
+| - | - |
+| `pull` | Pull remote changes |
+| `push` | Push local changes |
+| `stats` | View sync statistics |
+| `checkpoint` | Create checkpoint |
 
 **Example:**
 
@@ -255,12 +255,12 @@ agentfs timeline [OPTIONS] <ID_OR_PATH>
 
 **Options:**
 
-| Option              | Description                           |
-| ------------------- | ------------------------------------- |
-| `--limit <N>`       | Limit entries (default: 100)          |
-| `--filter <TOOL>`   | Filter by tool name                   |
+| Option | Description |
+| - | - |
+| `--limit <N>` | Limit entries (default: 100) |
+| `--filter <TOOL>` | Filter by tool name |
 | `--status <STATUS>` | Filter: `pending`, `success`, `error` |
-| `--format <FORMAT>` | Output: `table`, `json`               |
+| `--format <FORMAT>` | Output: `table`, `json` |
 
 **Examples:**
 
@@ -288,18 +288,18 @@ Supported: `bash`, `zsh`, `fish`, `powershell`
 
 Variables set inside the sandbox:
 
-| Variable          | Description               |
-| ----------------- | ------------------------- |
-| `AGENTFS`         | Set to `1` inside sandbox |
-| `AGENTFS_SANDBOX` | Sandbox type              |
-| `AGENTFS_SESSION` | Session ID                |
+| Variable | Description |
+| - | - |
+| `AGENTFS` | Set to `1` inside sandbox |
+| `AGENTFS_SANDBOX` | Sandbox type |
+| `AGENTFS_SESSION` | Session ID |
 
 ## Files
 
-| Path                 | Description               |
-| -------------------- | ------------------------- |
-| `.agentfs/<ID>.db`   | Agent filesystem database |
-| `~/.config/agentfs/` | Configuration directory   |
+| Path | Description |
+| - | - |
+| `.agentfs/<ID>.db` | Agent filesystem database |
+| `~/.config/agentfs/` | Configuration directory |
 
 ## See Also
 

@@ -22,11 +22,11 @@ DROP VIEW [IF EXISTS] [schema-name.]view-name;
 
 ### Parameters
 
-| Parameter     | Description                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------ |
-| `IF EXISTS`   | Prevents an error if the view does not exist. The statement is a no-op when the view is absent.  |
+| Parameter | Description |
+| - | - |
+| `IF EXISTS` | Prevents an error if the view does not exist. The statement is a no-op when the view is absent. |
 | `schema-name` | The name of the attached database containing the view. Defaults to the main database if omitted. |
-| `view-name`   | The name of the view to drop.                                                                    |
+| `view-name` | The name of the view to drop. |
 
 ### Behavior
 

@@ -41,7 +41,7 @@ This guide will show you how to setup Trigger.dev in your existing Remix project
       Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
     </Tip>
 
-    1. Ask if you want to install the [Trigger.dev MCP server](/docs/mcp-introduction) for your AI assistant.
+    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
     2. Log you into the CLI if you're not already logged in.
     3. Ask you to select your project.
     4. Install the required SDK packages.
@@ -173,7 +173,7 @@ For more information on authenticating with Trigger.dev, see the [API keys page]
 
 If you have any environment variables in your tasks, be sure to add them in the dashboard so deployed code runs successfully. In Node.js, these environment variables are accessed in your code using `process.env.MY_ENV_VAR`.
 
-In the sidebar select the "Environment Variables" page, then press the "New environment variable"
+In the sidebar select the "Environment Variables" page, then press the "Add new"
 button. <img alt="Environment variables page" />
 
 You can add values for your local dev environment, staging and prod. <img alt="Environment variables
@@ -207,7 +207,7 @@ For this guide, we'll manually deploy your task by running the [CLI deploy comma
   </Tab>
 
   <Tab title="Vercel Integration">
-    We're working on adding an official [Vercel integration](/docs/vercel-integration) which you can follow the progress of [here](https://feedback.trigger.dev/p/vercel-integration-3).
+    Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
   </Tab>
 </Tabs>
 

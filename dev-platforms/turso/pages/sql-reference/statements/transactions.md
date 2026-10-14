@@ -30,11 +30,11 @@ The BEGIN statement starts a new explicit transaction. While a transaction is op
 
 ### Transaction Types
 
-| Type        | Description                                                                                                                                               |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEFERRED`  | Default. No locks are acquired until the first read or write operation. A read operation acquires a shared lock; a write operation acquires a write lock. |
-| `IMMEDIATE` | Acquires a write lock immediately when BEGIN is executed. Other connections can still read but cannot write until the transaction completes.              |
-| `EXCLUSIVE` | Same behavior as IMMEDIATE in Turso. Turso always uses WAL mode, where EXCLUSIVE and IMMEDIATE are equivalent.                                            |
+| Type | Description |
+| - | - |
+| `DEFERRED` | Default. No locks are acquired until the first read or write operation. A read operation acquires a shared lock; a write operation acquires a write lock. |
+| `IMMEDIATE` | Acquires a write lock immediately when BEGIN is executed. Other connections can still read but cannot write until the transaction completes. |
+| `EXCLUSIVE` | Same behavior as IMMEDIATE in Turso. Turso always uses WAL mode, where EXCLUSIVE and IMMEDIATE are equivalent. |
 
 If no type is specified, the transaction defaults to `DEFERRED`.
 
@@ -115,11 +115,11 @@ Each connection can have at most one active top-level transaction at a time. For
 
 Savepoints are named markers within a transaction that let you roll back part of the work without aborting the whole transaction. They can be nested.
 
-| Statement                                    | Description                                                                                                           |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `SAVEPOINT name`                             | Establishes a new savepoint with the given name                                                                       |
-| `RELEASE [SAVEPOINT] name`                   | Removes the savepoint (and any savepoints created after it), keeping its changes as part of the enclosing transaction |
-| `ROLLBACK [TRANSACTION] TO [SAVEPOINT] name` | Undoes all changes made since the savepoint, but keeps the savepoint and the transaction open                         |
+| Statement | Description |
+| - | - |
+| `SAVEPOINT name` | Establishes a new savepoint with the given name |
+| `RELEASE [SAVEPOINT] name` | Removes the savepoint (and any savepoints created after it), keeping its changes as part of the enclosing transaction |
+| `ROLLBACK [TRANSACTION] TO [SAVEPOINT] name` | Undoes all changes made since the savepoint, but keeps the savepoint and the transaction open |
 
 ```sql theme={null}
 BEGIN;

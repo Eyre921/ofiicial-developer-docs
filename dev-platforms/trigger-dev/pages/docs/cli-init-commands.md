@@ -22,6 +22,12 @@ Run the command like this:
   ```
 </CodeGroup>
 
+## Arguments
+
+<ParamField type="[path]">
+  The path to the project. Defaults to `.`.
+</ParamField>
+
 ## Options
 
 <ParamField type="--javascript">
@@ -34,7 +40,7 @@ Run the command like this:
 </ParamField>
 
 <ParamField type="--tag | -t">
-  The version of the `@trigger.dev/sdk` package to install. Defaults to `latest`.
+  The version of the `@trigger.dev/sdk` package to install. Defaults to the CLI version.
 </ParamField>
 
 <ParamField type="--skip-package-install">
@@ -43,6 +49,26 @@ Run the command like this:
 
 <ParamField type="--override-config">
   Override the existing config file if it exists.
+</ParamField>
+
+<ParamField type="--project-name <name>">
+  The name of the project to create when your account has no projects yet.
+</ParamField>
+
+<ParamField type="--org-name <name>">
+  The organization to create the first project in. Matches an existing organization by name, or creates it if you have none.
+</ParamField>
+
+<ParamField type="-r, --runtime <runtime>">
+  The runtime to use: `node`, `node-22`, `node-24`, `node-26` or `bun`. Defaults to `node-24`.
+</ParamField>
+
+<ParamField type="-y, --yes">
+  Skip all prompts. Requires `--project-ref`, or `--project-name` with `--org-name` for a new account.
+</ParamField>
+
+<ParamField type="--no-browser">
+  Do not open the browser during login. Print the URL only.
 </ParamField>
 
 <ParamField type="--pkg-args">
@@ -54,7 +80,7 @@ Run the command like this:
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

@@ -146,11 +146,11 @@ Set the output display mode.
 .mode <MODE>
 ```
 
-| Mode     | Description                           |
-| -------- | ------------------------------------- |
-| `pretty` | Table with borders (default)          |
-| `list`   | Pipe-delimited values                 |
-| `line`   | One column per line with column names |
+| Mode | Description |
+| - | - |
+| `pretty` | Table with borders (default) |
+| `list` | Pipe-delimited values |
+| `line` | One column per line with column names |
 
 ```
 tursodb> .mode list
@@ -366,11 +366,11 @@ Import data from a file into a table.
 .import [--csv] [--skip N] [--verbose] <FILE> <TABLE>
 ```
 
-| Option      | Default | Description                                                  |
-| ----------- | ------- | ------------------------------------------------------------ |
-| `--csv`     | on      | Use comma as field separator and newline as record separator |
-| `--skip N`  | 0       | Skip the first N rows (useful for skipping a header row)     |
-| `--verbose` | off     | Print progress information during import                     |
+| Option | Default | Description |
+| - | - | - |
+| `--csv` | on | Use comma as field separator and newline as record separator |
+| `--skip N` | 0 | Skip the first N rows (useful for skipping a header row) |
+| `--verbose` | off | Print progress information during import |
 
 ```
 tursodb> CREATE TABLE people (name TEXT, age INTEGER);

@@ -18,6 +18,6 @@ turso group destroy <group-name> [flags]
 
 ## Flags
 
-| Flag          | Description                                                      |
-| ------------- | ---------------------------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-y`, `--yes` | Confirms destroying the group, with all locations and databases. |

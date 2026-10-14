@@ -12347,8 +12347,26 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 ### `validation_error`
 
 * **Status:** 403
-* **Message:** You have reached the inbox limit of your plan. Upgrade to add more.
-* **Suggested action:** Enable pay-as-you-go for inboxes in your [usage settings](https://resend.com/settings/usage) to create more than the 3 included inboxes (requires a paid plan).
+* **Message:** You have reached the inboxes included in your plan. Enable pay-as-you-go for inboxes at [https://resend.com/settings/usage](https://resend.com/settings/usage) to add more.
+* **Suggested action:** Every plan includes 3 inboxes. A team admin can enable pay-as-you-go for inboxes in your [usage settings](https://resend.com/settings/usage), after which each extra inbox costs \$1 per month.
+
+### `validation_error`
+
+* **Status:** 403
+* **Message:** You have reached the inboxes included in your plan. Upgrade your Transactional plan to unlock pay-as-you-go for inboxes.
+* **Suggested action:** Every plan includes 3 inboxes, and pay-as-you-go for inboxes needs a paid Transactional plan. [Upgrade your plan](https://resend.com/settings/billing), then enable pay-as-you-go for inboxes in your [usage settings](https://resend.com/settings/usage).
+
+### `validation_error`
+
+* **Status:** 403
+* **Message:** You have reached the inboxes included in your plan. Pay-as-you-go for inboxes isn't available for your billing setup.
+* **Suggested action:** Teams billed through Vercel or Stripe Projects cannot enable pay-as-you-go for inboxes. [Contact support](https://resend.com/help) if you need more than the 3 included inboxes.
+
+### `validation_error`
+
+* **Status:** 403
+* **Message:** You have reached the inboxes included in your plan. Manage pay-as-you-go for inboxes at [https://resend.com/settings/usage](https://resend.com/settings/usage) to add more.
+* **Suggested action:** Every plan includes 3 inboxes. Open your [usage settings](https://resend.com/settings/usage) to enable pay-as-you-go for inboxes, which needs a paid Transactional plan.
 
 ### `not_found`
 
@@ -13459,49 +13477,61 @@ Create a draft on an inbox, either as a new conversation or as a reply.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-A draft is an unsent message. Omit `thread_id` for a new conversation. Pass
-`thread_id` and `reply_to_email_id` together to attach it as a reply. When a
-reply draft is created without `to`, it's filled in the same way as [Reply to
-Thread Email](/docs/api-reference/inboxes/reply-thread-email). `cc`, `bcc`, and
-`subject` are never filled in, so set `subject` before you send it.
+A draft is an unsent message. Omit `thread_id` and `reply_to_email_id` for a
+draft that starts a new thread. Pass both together for a reply draft in an
+existing thread.
+
+A reply draft without `to` is addressed to the sender of the email it replies
+to, or to its Reply-To when set. For an email the inbox sent, it defaults to
+that email's `to` recipients. Send `to: []` to leave it empty. `cc`, `bcc`, and
+`subject` are never filled in.
 
 At least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or `attachments`
-must be non-empty. Combined recipients cannot exceed 50. Returns `201` for a
-new draft, or `200` if that reply draft already exists.
+must be non-empty. The combined recipients of `to`, `cc`, and `bcc` cannot
+exceed 50.
+
+Returns `201` for a new draft. Only one unsent reply draft can target an email,
+so a reply draft request for an email that already has one returns `200` with
+the ID of the existing draft. That request ignores every other field, except
+`attachments`, which replaces the attachments of the existing draft.
+
+A reply draft created without `subject` stores an empty subject and gets no
+`Re:` prefix. Set a subject before you send it.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Body Parameters
 
 <ParamField type="string | string[] | null">
-  Recipients. Each value may include a friendly name, for example
-  `Ada Lovelace <ada@example.org>`.
+  Recipients. For multiple addresses, send an array of strings. Each value can
+  include a friendly name, for example `Ada Lovelace <ada@example.org>`.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  CC recipients.
+  CC recipients. For multiple addresses, send an array of strings.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  BCC recipients.
+  BCC recipients. For multiple addresses, send an array of strings.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Max 2000 characters.
+  The subject. Max 2000 characters. A string that is only whitespace, or that
+  contains a line break, is rejected.
 </ParamField>
 
 <ParamField type="string | null">
@@ -13513,9 +13543,11 @@ new draft, or `200` if that reply draft already exists.
 </ParamField>
 
 <ParamField type="array">
-  Filename and content of attachments (max 25MB of content). Each file is raw
-  `content`. `path` and `content_id` return `422`. An empty file returns `422`.
-  A file counts as draft content.
+  Files to store on the draft. Each one needs `content`, `filename`, and
+  `content_type`. `path` and `content_id` return `422`. An empty file or a
+  blocked file type, such as `.exe`, returns `422`. The files on a draft can
+  total at most 25 MB. A file counts as
+  draft content.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -13541,6 +13573,23 @@ new draft, or `200` if that reply draft already exists.
   Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`. Must be
   sent with `thread_id`.
 </ResendParamField>
+
+## Headers
+
+<ParamField type="string">
+  Add an idempotency key to prevent duplicated drafts.
+
+  * Should be **unique per API request**
+  * Idempotency keys expire after **24 hours**
+  * Have a maximum length of **256 characters**
+  * A retry with the same key returns the first successful response, with the
+    `idempotent-replayed: true` header
+  * A failed request is not stored, so you can retry it with the same key
+  * Reusing the key with a different body, or while the first request is still
+    running, returns a `409`
+
+  [Learn more](/docs/dashboard/emails/idempotency-keys)
+</ParamField>
 
 ## Response Fields
 
@@ -13600,18 +13649,17 @@ new draft, or `200` if that reply draft already exists.
        -d $'{
     "thread_id": "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
     "reply_to_email_id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
-    "to": ["replies@example.org"],
     "text": "Refund issued for order 1041."
   }'
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts create \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  resend inboxes drafts create b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --to ada@example.org \
     --subject "Refund for order 1041" \
     --html "<p>Refund issued for order 1041.</p>" \
-    --text "Refund issued for order 1041."
+    --text "Refund issued for order 1041." \
+    --attachment "./note.txt;type=text/plain"
   ```
 </RequestExample>
 
@@ -13645,33 +13693,48 @@ Create an inbox to send, receive and organize email.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 An inbox sends and receives email at an address on one of your domains, such as
-`support@example.com`.
+`support@example.com`. The domain must belong to the team.
+
+Without `forwarding`, the domain must have receiving enabled, with DKIM and SPF
+verified and the inbound MX record verified or pending. With `forwarding` set to
+`true`, the domain only needs DKIM and SPF verified for sending.
+
+* A domain that does not meet these rules returns a `422` `validation_error`.
+* An address or receiving address that is already in use returns a `409`.
+* A team that has reached the inbox limit of its plan returns a `403`
+  `validation_error`.
+* A blocked account returns a `451`.
 
 ## Body Parameters
 
 <ResendParamField type="string">
-  The inbox email address on one of your domains. The domain must be verified to
-  send email, and verified to receive email unless `forwarding` is `true`.
+  The inbox email address on one of your domains. The API trims and lowercases
+  it. The part before the `@` is at most 64 characters and contains only
+  letters, numbers, and `. _ % + -`. It cannot start or end with a dot or
+  contain two dots in a row.
 </ResendParamField>
 
 <ParamField type="string">
-  Internal name for the inbox. Recipients do not see it. Defaults to
-  `email_address`.
+  Internal name for the inbox. Recipients do not see it. Max 64 characters.
+  Defaults to `email_address`.
 </ParamField>
 
 <ResendParamField type="string">
   The name recipients see when mail is sent from this inbox. A plain name, not
-  a `Name <email>` address.
+  a `Name <email>` address. Max 78 characters. It cannot contain a colon, `<`,
+  `>`, line breaks, or other control characters. An email address inside the
+  name must be on a domain the team has verified for sending. An empty string
+  leaves it unset.
 </ResendParamField>
 
 <ParamField type="boolean">
@@ -13706,9 +13769,9 @@ An inbox sends and receives email at an address on one of your domains, such as
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes create \
-    --email_address support@example.com \
+    --email-address support@example.com \
     --name "Customer Support" \
-    --from_name "Ada from Support"
+    --from-name "Ada from Support"
   ```
 </RequestExample>
 
@@ -13742,32 +13805,35 @@ Create a label on an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-A label is a named, colored tag that belongs to one inbox.
+A label is a named, colored tag that belongs to one inbox. An inbox can have at
+most 100 labels. Label names are unique per inbox, compared without case. A
+duplicate name or a full inbox returns a `422` `validation_error`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Body Parameters
 
 <ParamField type="string">
-  The name of the label.
+  The name of the label. Max 64 characters. Leading and trailing whitespace is
+  trimmed. Must not match another label on the inbox, compared without case.
 </ParamField>
 
 <ParamField type="string">
-  The color of the label as a `#RRGGBB` hex code, like `#E93D82`. If you leave
-  it out, Resend picks one for you.
+  The color of the label as a `#RRGGBB` hex code, like `#E93D82`. It is stored
+  in uppercase. When omitted, a random color from the dashboard palette is used.
 </ParamField>
 
 <RequestExample>
@@ -13794,8 +13860,7 @@ A label is a named, colored tag that belongs to one inbox.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes labels create \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  resend inboxes labels create b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --name Urgent \
     --color '#E93D82'
   ```
@@ -13831,19 +13896,22 @@ Discard an existing draft.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
+Discards an unsent draft. A draft that was already sent, or that changed during
+the request, returns a `409`.
+
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -13868,9 +13936,7 @@ Discard an existing draft.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts delete \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --draft_id c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32 \
+  resend inboxes drafts delete b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32 \
     --yes
   ```
 </RequestExample>
@@ -13906,19 +13972,22 @@ Remove an existing inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
+An inbox that does not exist or was already removed returns a `404`
+`not_found`.
+
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <RequestExample>
@@ -13973,19 +14042,21 @@ Remove an existing label from an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
+Deletes the label and removes it from every thread that carries it.
+
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14010,9 +14081,7 @@ Remove an existing label from an inbox.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes labels delete \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --label_id 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34 \
+  resend inboxes labels delete b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34 \
     --yes
   ```
 </RequestExample>
@@ -14048,11 +14117,11 @@ Move a thread to the trash folder.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -14069,7 +14138,7 @@ days.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14109,9 +14178,7 @@ days.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads delete \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
+  resend inboxes threads delete b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
     --yes
   ```
 </RequestExample>
@@ -14146,20 +14213,25 @@ Forward a message in an inbox thread to new recipients.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Forwards from the inbox address. `to` is required. The original message is
-quoted under a forwarded-message banner, and its attachments are included.
-Files in `attachments` are sent along with those. Both count toward the 25MB
-of content. An original attachment that was sent as a URL cannot be forwarded.
+Forwards a message from the inbox address right away, with no stored draft.
+`to` is required. The original message is quoted under a forwarded-message
+banner, below the optional `html` or `text` note.
+
+The attachments of the original message are sent with the forward, together
+with any `attachments` you add. The request fails when they exceed 10 files or
+25 MB of `content` in total. An original
+attachment that was sent from a URL (`path`) cannot be forwarded, and the
+request returns a `422`.
 
 The forward carries the same `In-Reply-To` and `References` headers as a
 [reply](/docs/api-reference/inboxes/reply-thread-email) to the original message, so
@@ -14169,7 +14241,7 @@ be set or overridden.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14185,7 +14257,8 @@ be set or overridden.
 
 <ParamField type="string | string[]">
   Recipient email address. For multiple addresses, send as an array of strings.
-  `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+  Must name at least one address. `to`, `cc`, and `bcc` combined cannot exceed
+  50 recipients.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -14207,15 +14280,19 @@ be set or overridden.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the forward. When omitted, the thread subject is used, prefixed
-  with `Fwd:` if it isn't already. Max 2000 characters.
+  The subject of the forward. Max 2000 characters. Cannot contain a line break.
+  When omitted, the thread subject is used, prefixed with `Fwd:` if it does not
+  already start with it.
 </ParamField>
 
 <ParamField type="array">
-  Filename and content of attachments (max 25MB of content per message). A
-  `path` is fetched when the email is sent and does not count toward that limit.
-
-  [See examples](/docs/dashboard/emails/attachments)
+  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email). Each one
+  needs `content` or `path`. They share one limit with the attachments of the
+  original message, which the forward also sends. Together they can have up to
+  10 files and at most 25 MB of `content`. A `path` file counts toward the 10
+  files only, because it is fetched when the email is sent. An empty file, a
+  blocked file type, or a `path` that is not an `http` or `https` URL, or that
+  points to `localhost`, returns a `422`.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -14227,22 +14304,27 @@ be set or overridden.
     </ParamField>
 
     <ParamField type="string">
-      Path where the attachment file is hosted
+      Path where the attachment file is hosted.
     </ParamField>
 
     <ResendParamField type="string">
-      Content type for the attachment.
+      Content type for the attachment. When not set, it is derived from the
+      `filename`.
     </ResendParamField>
 
     <ResendParamField type="string">
-      You can embed images using the content id parameter for the attachment. To show the image, you need to include the ID in the `src` attribute of the `img` tag (e.g., `<img src="cid:...">`) of your HTML. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
+      Content ID for embedding inline images with a `cid:` reference in the
+      `html`. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
     </ResendParamField>
   </Expandable>
 </ParamField>
 
 <ParamField type="object">
-  Custom headers to add to the email. `In-Reply-To`, `References`, and
-  `Reply-To` can't be set and return `422`.
+  Custom headers to add to the email. Resend sets the `In-Reply-To`,
+  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
+  of them, in any letter case, returns a `422`. A header name cannot be empty,
+  and names and values cannot contain line breaks or null characters, or the
+  request returns a `422`.
 </ParamField>
 
 ## Headers
@@ -14253,6 +14335,11 @@ be set or overridden.
   * Should be **unique per API request**
   * Idempotency keys expire after **24 hours**
   * Have a maximum length of **256 characters**
+  * A retry with the same key returns the first successful response, with the
+    `idempotent-replayed: true` header
+  * A failed request is not stored, so you can retry it with the same key
+  * Reusing the key with a different body, or while the first request is still
+    running, returns a `409`
 
   [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
@@ -14260,7 +14347,8 @@ be set or overridden.
 ## Response Fields
 
 <ParamField type="string">
-  The ID of the queued outbound email.
+  The ID of the sent email. Use it with the [emails
+  endpoints](/docs/api-reference/emails/retrieve-email).
 </ParamField>
 
 <RequestExample>
@@ -14305,10 +14393,7 @@ be set or overridden.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails forward \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
-    --email_id 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
+  resend inboxes threads emails forward b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
     --to colleague@example.org \
     --text "Flagging this refund request for you."
   ```
@@ -14343,21 +14428,22 @@ Retrieve the agent settings for an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-An inbox without a configured agent returns empty settings.
+An inbox without a configured agent returns empty settings: `instructions` and
+`tone` are `null` and `enabled_actions` is an empty array.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Response Fields
@@ -14377,9 +14463,9 @@ An inbox without a configured agent returns empty settings.
 </ParamField>
 
 <ParamField type="string[]">
-  Actions the agent is allowed to take. Each entry is one of `draft_reply`,
-  `forward_thread`, `add_labels`, `assign_thread`, `mark_as_spam`,
-  `archive_thread`, or `delete_thread`.
+  Actions the agent is allowed to take. Empty when no actions are enabled. Each
+  entry is one of `draft_reply`, `forward_thread`, `add_labels`,
+  `assign_thread`, `mark_as_spam`, `archive_thread`, or `delete_thread`.
 </ParamField>
 
 <RequestExample>
@@ -14399,7 +14485,7 @@ An inbox without a configured agent returns empty settings.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes agent get --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes agent get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 
@@ -14434,12 +14520,12 @@ Retrieve a single draft by its ID.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -14447,7 +14533,7 @@ Retrieve a single draft by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14465,11 +14551,12 @@ Retrieve a single draft by its ID.
 </ParamField>
 
 <ParamField type="string">
-  `standalone` for a new conversation, or `reply`.
+  `reply` when the draft replies to an email in an existing thread. `standalone`
+  when the draft starts a new thread.
 </ParamField>
 
 <ParamField type="string[] | null">
-  Recipients.
+  Recipients. `null` or empty when no recipients are set.
 </ParamField>
 
 <ParamField type="string[]">
@@ -14501,7 +14588,8 @@ Retrieve a single draft by its ID.
 </ParamField>
 
 <ParamField type="string | null">
-  The queued outbound email after send. `null` until then.
+  The ID of the outbound email queued when the draft was sent. `null` until the
+  draft is sent.
 </ParamField>
 
 <ParamField type="string">
@@ -14552,9 +14640,7 @@ Retrieve a single draft by its ID.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts get \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --draft_id c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
+  resend inboxes drafts get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
   ```
 </RequestExample>
 
@@ -14608,11 +14694,11 @@ Retrieve a single inbox by its ID or email address.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -14620,7 +14706,9 @@ Retrieve a single inbox by its ID or email address.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`.
+  The Inbox ID or the inbox email address, such as `support@example.com`. A
+  value that contains `@` must be a valid email address, and the match is
+  case-insensitive. Any other value must be a UUID.
 </ResendParamField>
 
 ## Response Fields
@@ -14634,7 +14722,8 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string">
-  Internal name for the inbox. Recipients do not see it.
+  Internal name for the inbox. Recipients do not see it. Falls back to the inbox
+  email address.
 </ParamField>
 
 <ParamField type="string">
@@ -14650,12 +14739,12 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string | null">
-  The name recipients see when mail is sent from this inbox. A plain name, not
-  a `Name <email>` address.
+  The name recipients see when mail is sent from this inbox. `null` when not
+  set.
 </ParamField>
 
 <ParamField type="number">
-  The number of unread threads in the inbox.
+  The number of unread threads in the Inbox folder.
 </ParamField>
 
 <ParamField type="number">
@@ -14663,7 +14752,8 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string | null">
-  ISO 8601 timestamp when a thread in this inbox was last active.
+  ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
+  when the folder has no received email.
 </ParamField>
 
 <ParamField type="string">
@@ -14730,11 +14820,11 @@ Retrieve a thread summary.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -14745,7 +14835,7 @@ Thread Emails](/docs/api-reference/inboxes/list-thread-emails).
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14797,9 +14887,7 @@ Thread Emails](/docs/api-reference/inboxes/list-thread-emails).
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads get \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12
+  resend inboxes threads get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12
   ```
 </RequestExample>
 
@@ -14843,11 +14931,11 @@ Retrieve a single message from a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -14858,7 +14946,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14878,15 +14966,18 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 
 <ParamField type="string">
   Whether the message was received by the inbox or sent from it. One of
-  `inbound` or `outbound`.
+  `inbound` or `outbound`. A message the inbox sent to itself is `inbound`, so a
+  reply to it goes to its sender.
 </ParamField>
 
 <ParamField type="string">
-  Sender email address.
+  Sender email address. Includes the display name when the sender has one, in
+  the format `Name <sender@domain.com>`.
 </ParamField>
 
 <ParamField type="string[]">
-  The recipients of the message.
+  The recipients of the message. For a received message, these are the addresses
+  it was delivered to, not the full `To` header.
 </ParamField>
 
 <ParamField type="string[]">
@@ -14894,7 +14985,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 </ParamField>
 
 <ParamField type="string[]">
-  The BCC recipients of the message.
+  The BCC recipients of the message. Always empty for a received message.
 </ParamField>
 
 <ParamField type="string[]">
@@ -14940,7 +15031,8 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 </ParamField>
 
 <ParamField type="string">
-  ISO 8601 timestamp when the message arrived or was sent.
+  ISO 8601 timestamp when the inbox received the message, or when the inbox sent
+  it.
 </ParamField>
 
 <RequestExample>
@@ -14962,10 +15054,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails get \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
-    --email_id 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
+  resend inboxes threads emails get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
   ```
 </RequestExample>
 
@@ -15016,22 +15105,24 @@ Retrieve the drafts on an inbox.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Unsent drafts, most recently updated first.
+Returns the unsent drafts on the inbox, most recently updated first. The
+`after` and `before` cursors take a Draft ID from the current page. A cursor
+that is not an unsent draft on this inbox returns a `404`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Query Parameters
@@ -15069,11 +15160,12 @@ Unsent drafts, most recently updated first.
     </ParamField>
 
     <ParamField type="string">
-      `standalone` for a new conversation, or `reply`.
+      `reply` when the draft replies to an email in an existing thread.
+      `standalone` when the draft starts a new thread.
     </ParamField>
 
     <ParamField type="string[] | null">
-      Recipients.
+      Recipients. `null` or empty when no recipients are set.
     </ParamField>
 
     <ParamField type="string[]">
@@ -15145,7 +15237,7 @@ Unsent drafts, most recently updated first.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts list --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes drafts list b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 
@@ -15185,7 +15277,7 @@ Unsent drafts, most recently updated first.
 Source: https://resend.com/docs/api-reference/inboxes/list-inboxes
 
 GET /inboxes
-Retrieve a list of inboxes for the authenticated user.
+Retrieve a list of inboxes for the team.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -15201,17 +15293,22 @@ Retrieve a list of inboxes for the authenticated user.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 Inboxes are returned newest first. Results are paginated with cursors. See
-[Pagination](/docs/api-reference/pagination) for how `after` and `before` work.
+[Pagination](/docs/api-reference/pagination) for how `after` and `before` work. The
+cursors take an inbox ID. A value that is not a UUID returns a `422`, and an
+unknown ID returns a `404`.
+
+The list items carry fewer fields than a single inbox. [Retrieve an
+inbox](/docs/api-reference/inboxes/get-inbox) to get all its fields.
 
 <QueryParams type="inboxes" />
 
@@ -15242,16 +15339,17 @@ Inboxes are returned newest first. Results are paginated with cursors. See
     </ParamField>
 
     <ParamField type="string | null">
-      The name recipients see when mail is sent from this inbox. A plain name,
-      not a `Name <email>` address.
+      The name recipients see when mail is sent from this inbox. `null` when
+      not set.
     </ParamField>
 
     <ParamField type="number">
-      The number of unread threads in the inbox.
+      The number of unread threads in the Inbox folder.
     </ParamField>
 
     <ParamField type="string | null">
-      ISO 8601 timestamp when a thread in this inbox was last active.
+      ISO 8601 timestamp of the newest received email in the Inbox folder.
+      `null` when the folder has no received email.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -15323,21 +15421,21 @@ Retrieve the labels on an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Returns every label on the inbox, oldest first.
+Returns every label on the inbox, oldest first. The list is not paginated.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Response Fields
@@ -15386,7 +15484,7 @@ Returns every label on the inbox, oldest first.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes labels list --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes labels list b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 
@@ -15433,22 +15531,25 @@ Retrieve the messages in a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 Messages are returned oldest first. Each item has the same shape as [Retrieve
-Thread Email](/docs/api-reference/inboxes/get-thread-email).
+Thread Email](/docs/api-reference/inboxes/get-thread-email). Pass the `id` of the
+last message as `after` to get the next, newer page. Pass the `id` of the first
+message as `before` to get the previous, older page. You cannot combine `after`
+and `before`. A cursor that is not a message of the thread returns a `404`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -15492,15 +15593,18 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
 
     <ParamField type="string">
       Whether the message was received by the inbox or sent from it. One of
-      `inbound` or `outbound`.
+      `inbound` or `outbound`. A message the inbox sent to itself is `inbound`, so
+      a reply to it goes to its sender.
     </ParamField>
 
     <ParamField type="string">
-      Sender email address.
+      Sender email address. Includes the display name when the sender has one, in
+      the format `Name <sender@domain.com>`.
     </ParamField>
 
     <ParamField type="string[]">
-      The recipients of the message.
+      The recipients of the message. For a received message, these are the
+      addresses it was delivered to, not the full `To` header.
     </ParamField>
 
     <ParamField type="string[]">
@@ -15508,7 +15612,7 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
     </ParamField>
 
     <ParamField type="string[]">
-      The BCC recipients of the message.
+      The BCC recipients of the message. Always empty for a received message.
     </ParamField>
 
     <ParamField type="string[]">
@@ -15554,7 +15658,8 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
     </ParamField>
 
     <ParamField type="string">
-      ISO 8601 timestamp when the message arrived or was sent.
+      ISO 8601 timestamp when the inbox received the message, or when the inbox
+      sent it.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -15577,9 +15682,7 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails list \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12
+  resend inboxes threads emails list b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12
   ```
 </RequestExample>
 
@@ -15637,21 +15740,25 @@ Retrieve the threads in an inbox, filtered by folder, label, and read status.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 A thread is a conversation within an inbox, made up of one or more messages.
+Threads are returned most recently active first. The `after` and `before`
+cursors take a thread ID, and only one of them can be passed. A date cursor
+returns a `422` `validation_error`. A cursor thread that is not in the selected
+folders returns a `404`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Query Parameters
@@ -15661,17 +15768,20 @@ A thread is a conversation within an inbox, made up of one or more messages.
   `trash`. A thread is returned when any of its emails is in one of them, so a
   thread in `inbox` with an email you sent matches both `inbox` and `sent`.
   Defaults to `inbox`, or `inbox,archive,sent` when `labels` is set. `spam` and
-  `trash` are only included when you name them.
+  `trash` are only included when you name them. Repeating the parameter returns
+  a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
   Comma-separated label IDs. Returns threads with any of these labels. Up to
-  `50` IDs. An ID that doesn't exist in the inbox returns a `404`.
+  `50` IDs. An ID that doesn't exist in the inbox returns a `404`. Repeating the
+  parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="boolean">
   `true` returns threads where every email is read. `false` returns threads with
-  at least one unread email.
+  at least one unread email. Only the literal values `true` and `false` are
+  accepted.
 </ParamField>
 
 <ParamField type="number">
@@ -15733,11 +15843,12 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="string | null">
-      Sender email address.
+      Sender email address. Can include the display name.
     </ParamField>
 
     <ParamField type="string[]">
-      The recipients of the most recent message.
+      The recipients of the most recent message. For a received email, these
+      are the addresses it was delivered to, not the full `To` header.
     </ParamField>
 
     <ParamField type="string[]">
@@ -15745,7 +15856,8 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="string[]">
-      The BCC recipients of the most recent message.
+      The BCC recipients of the most recent message. Always empty for a
+      received email.
     </ParamField>
 
     <ParamField type="array">
@@ -15754,11 +15866,11 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="number">
-      The number of messages in the thread.
+      The number of emails in the thread.
     </ParamField>
 
     <ParamField type="boolean">
-      Whether any message has an attachment.
+      Whether the most recent message in the thread has an attachment.
     </ParamField>
 
     <ParamField type="boolean">
@@ -15797,7 +15909,7 @@ assigned automatically.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads list --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes threads list b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 
@@ -15821,7 +15933,7 @@ assigned automatically.
             "color": "#E93D82"
           }
         ],
-        "message_count": 2,
+        "email_count": 2,
         "has_attachment": true,
         "has_draft": false,
         "read": false,
@@ -15853,23 +15965,27 @@ Send a reply to a message in an inbox thread.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Replies from the inbox address. `to` is taken from the message you reply to:
-its author, or its `Reply-To` address if it has one. When the inbox sent that
-message, the reply goes to the message's original `to` recipients. Add more
-recipients with `cc` and `bcc`. The total number of recipients can't exceed 50,
-counted after `reply_all` adds everyone on the message.
+Sends a reply from the inbox address right away, with no stored draft. The `to`
+recipients come from the message you reply to:
 
-At least one of `html` or `text` is required.
+* For a message the inbox received, the reply goes to its `Reply-To` addresses,
+  or to its sender when it has no `Reply-To`.
+* For a message the inbox sent, the reply goes to that message's `to`
+  recipients.
+
+Set `reply_all` to also copy the other recipients of the message.
+
+At least one of `html` or `text` must contain more than whitespace.
 
 The reply is threaded for the recipient. `In-Reply-To` is set to the
 `Message-ID` of the message you reply to, and `References` to that message's
@@ -15879,7 +15995,7 @@ overridden.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -15895,40 +16011,48 @@ overridden.
 
 <ParamField type="string | string[]">
   CC recipient email address. For multiple addresses, send as an array of
-  strings. Not copied from the message you reply to unless `reply_all` is
-  `true`, which merges these addresses with the copied ones, without duplicates.
+  strings. Without `reply_all`, the reply copies only these addresses. With
+  `reply_all`, these addresses are merged with the copied recipients, without
+  duplicates. `cc` and `bcc` combined must be fewer than 50 addresses. After the
+  `to` recipients are added, the reply cannot exceed 50 recipients.
 </ParamField>
 
 <ParamField type="string | string[]">
   BCC recipient email address. For multiple addresses, send as an array of
-  strings. Not copied from the message you reply to.
+  strings. BCC recipients of the original message are never copied.
 </ParamField>
 
 <ParamField type="string">
-  The HTML body.
+  The HTML body of the reply.
 </ParamField>
 
 <ParamField type="string">
-  The plain-text body.
+  The plain-text body of the reply.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the reply. When omitted, the thread subject is used, prefixed
-  with `Re:` if it isn't already. Max 2000 characters.
+  The subject of the reply. Max 2000 characters. Cannot contain a line break.
+  When omitted, the thread subject is used, prefixed with `Re:` if it does not
+  already start with it.
 </ParamField>
 
-<ParamField type="boolean">
-  Reply to everyone on the original message, not only its author. The reply goes
-  to the author, or its `Reply-To` address if it has one, and to the message's
-  `to` and `cc` recipients, excluding the inbox's own address. `bcc` recipients
-  are never copied.
-</ParamField>
+<ResendParamField type="boolean">
+  Reply to everyone on the original message. For a message the inbox received,
+  the reply goes to its `Reply-To` addresses, or to its sender when it has none.
+  It copies the other addresses of its `To` header and its `cc` recipients in
+  `cc`. For a message the inbox sent, the reply goes to that message's
+  `Reply-To` addresses when they are not the inbox address, otherwise to its
+  `to` recipients. It copies its `cc` recipients. The inbox address is always
+  excluded, and duplicates are removed.
+</ResendParamField>
 
 <ParamField type="array">
-  Filename and content of attachments (max 25MB of content per message). A
-  `path` is fetched when the email is sent and does not count toward that limit.
-
-  [See examples](/docs/dashboard/emails/attachments)
+  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email). Each one
+  needs `content` or `path`. Up to 10 files. The `content` of all files can total
+  at most 25 MB. A `path` file counts toward the 10 files only, because it is
+  fetched when the email is sent. An empty file, a blocked file type, or a
+  `path` that is not an `http` or `https` URL, or that points to `localhost`,
+  returns a `422`.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -15940,22 +16064,27 @@ overridden.
     </ParamField>
 
     <ParamField type="string">
-      Path where the attachment file is hosted
+      Path where the attachment file is hosted.
     </ParamField>
 
     <ResendParamField type="string">
-      Content type for the attachment.
+      Content type for the attachment. When not set, it is derived from the
+      `filename`.
     </ResendParamField>
 
     <ResendParamField type="string">
-      You can embed images using the content id parameter for the attachment. To show the image, you need to include the ID in the `src` attribute of the `img` tag (e.g., `<img src="cid:...">`) of your HTML. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
+      Content ID for embedding inline images with a `cid:` reference in the
+      `html`. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
     </ResendParamField>
   </Expandable>
 </ParamField>
 
 <ParamField type="object">
-  Custom headers to add to the email. `In-Reply-To`, `References`, and
-  `Reply-To` can't be set and return `422`.
+  Custom headers to add to the email. Resend sets the `In-Reply-To`,
+  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
+  of them, in any letter case, returns a `422`. A header name cannot be empty,
+  and names and values cannot contain line breaks or null characters, or the
+  request returns a `422`.
 </ParamField>
 
 ## Headers
@@ -15966,6 +16095,11 @@ overridden.
   * Should be **unique per API request**
   * Idempotency keys expire after **24 hours**
   * Have a maximum length of **256 characters**
+  * A retry with the same key returns the first successful response, with the
+    `idempotent-replayed: true` header
+  * A failed request is not stored, so you can retry it with the same key
+  * Reusing the key with a different body, or while the first request is still
+    running, returns a `409`
 
   [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
@@ -15973,7 +16107,8 @@ overridden.
 ## Response Fields
 
 <ParamField type="string">
-  The ID of the queued outbound email.
+  The ID of the sent email. Use it with the [emails
+  endpoints](/docs/api-reference/emails/retrieve-email).
 </ParamField>
 
 <RequestExample>
@@ -16018,10 +16153,7 @@ overridden.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails reply \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
-    --email_id 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
+  resend inboxes threads emails reply b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
     --html "<p>Refund issued for order 1041.</p>" \
     --text "Refund issued for order 1041."
   ```
@@ -16056,11 +16188,11 @@ Find threads in an inbox by text, people, attachments, and dates.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -16077,7 +16209,7 @@ Threads](/docs/api-reference/inboxes/list-threads).
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Query Parameters
@@ -16092,25 +16224,27 @@ Threads](/docs/api-reference/inboxes/list-threads).
 <ParamField type="string">
   Comma-separated senders. Each value matches part of the sender's address or
   name, case-insensitive. Returns threads matching any of them. Up to `20`
-  values.
+  values. Repeating the parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
   Comma-separated recipients, matched the same way as `from`. Up to `20` values.
+  Repeating the parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
   Comma-separated CC recipients, matched the same way as `from`. Up to `20`
-  values.
+  values. Repeating the parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
   Comma-separated BCC recipients, matched the same way as `from`. Up to `20`
-  values.
+  values. Repeating the parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="boolean">
   `true` matches emails with an attachment. `false` matches emails without one.
+  Only the literal values `true` and `false` are accepted.
 </ParamField>
 
 <ParamField type="string">
@@ -16121,7 +16255,8 @@ Threads](/docs/api-reference/inboxes/list-threads).
 <ParamField type="string">
   Matches emails sent on or before this date. Same formats as `start_date`. A
   date covers that whole day, so `start_date=2026-09-01&end_date=2026-09-30`
-  covers all of September. A timestamp is used as given.
+  covers all of September. A timestamp is used as given. An `end_date` before
+  `start_date` returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
@@ -16129,17 +16264,20 @@ Threads](/docs/api-reference/inboxes/list-threads).
   `trash`. A thread is returned when any of its emails is in one of them, so a
   thread in `inbox` with an email you sent matches both `inbox` and `sent`.
   Defaults to `inbox`, or `inbox,archive,sent` when `labels` is set. `spam` and
-  `trash` are only included when you name them.
+  `trash` are only included when you name them. Repeating the parameter returns
+  a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="string">
   Comma-separated label IDs. Returns threads with any of these labels. Up to
-  `50` IDs. An ID that doesn't exist in the inbox returns a `404`.
+  `50` IDs. An ID that doesn't exist in the inbox returns a `404`. Repeating the
+  parameter returns a `422` `validation_error`.
 </ParamField>
 
 <ParamField type="boolean">
   `true` returns threads where every email is read. `false` returns threads with
-  at least one unread email.
+  at least one unread email. Only the literal values `true` and `false` are
+  accepted.
 </ParamField>
 
 <ParamField type="number">
@@ -16169,6 +16307,8 @@ Threads](/docs/api-reference/inboxes/list-threads).
 * `folders`, `labels`, and `read` apply to the thread. `query`, `from`, `to`,
   `cc`, `bcc`, `has_attachment`, `start_date`, and `end_date` must all match
   the same email in the thread.
+* When any of these email filters is set, the matching email must itself be in
+  one of `folders`. For `sent`, that means an email the inbox sent.
 * When more than 10,000 threads match, search covers the 10,000 with the
   newest matching email.
 
@@ -16211,11 +16351,12 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="string | null">
-      Sender email address.
+      Sender email address. Can include the display name.
     </ParamField>
 
     <ParamField type="string[]">
-      The recipients of the most recent message.
+      The recipients of the most recent message. For a received email, these
+      are the addresses it was delivered to, not the full `To` header.
     </ParamField>
 
     <ParamField type="string[]">
@@ -16223,7 +16364,8 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="string[]">
-      The BCC recipients of the most recent message.
+      The BCC recipients of the most recent message. Always empty for a
+      received email.
     </ParamField>
 
     <ParamField type="array">
@@ -16232,11 +16374,11 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="number">
-      The number of messages in the thread.
+      The number of emails in the thread.
     </ParamField>
 
     <ParamField type="boolean">
-      Whether any message has an attachment.
+      Whether the most recent message in the thread has an attachment.
     </ParamField>
 
     <ParamField type="boolean">
@@ -16257,17 +16399,12 @@ assigned automatically.
     </ParamField>
 
     <ParamField type="string | null">
-      The ID of the email in the thread that matched the search. When `query`
+      Identifies the email in the thread that matched the search. When `query`
       has words or phrases, it's the most relevant match. Otherwise, it's the
-      newest. Pass it to [Retrieve Thread
-      Email](/docs/api-reference/inboxes/get-thread-email) to read that email.
-    </ParamField>
-
-    <ParamField type="object">
-      Where `query` matched the email in `matched_email_id`, as text fragments
-      with each match wrapped in `**`. Keys are `subject`, `body`, `from`,
-      `to`, `cc`, `bcc`, and `attachments`, each an array of strings, and only
-      keys with a match are present. `{}` when there's no `query`.
+      newest. [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email),
+      reply, and forward accept it as `email_id`, but it is not equal to the
+      `id` those endpoints return. `null` when the search index returns no
+      matched email for the thread.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -16319,11 +16456,10 @@ Validation errors return `422` with the name `validation_error`.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads search \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  resend inboxes threads search b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --query "invoice -draft" \
     --from isabella@example.com carolina@example.com \
-    --start_date 2026-09-01 \
+    --start-date 2026-09-01 \
     --limit 2
   ```
 </RequestExample>
@@ -16348,18 +16484,13 @@ Validation errors return `422` with the name `validation_error`.
             "color": "#46A758"
           }
         ],
-        "message_count": 3,
+        "email_count": 3,
         "has_attachment": true,
         "has_draft": false,
         "read": false,
         "received_at": "2026-09-24T14:12:08.000Z",
         "folder": "inbox",
-        "matched_email_id": "e8a3f1c6-2b9d-4e5a-a7c4-9d1b6f3e2a80",
-        "highlights": {
-          "subject": ["September **invoice**"],
-          "body": ["Attached is the **invoice** for September, due on the 30th."],
-          "attachments": ["**invoice**-2026-09.pdf"]
-        }
+        "matched_email_id": "e8a3f1c6-2b9d-4e5a-a7c4-9d1b6f3e2a80"
       },
       {
         "id": "7d2f8a3b-9c1e-4b6d-a5f2-3e8c0b7a9d16",
@@ -16369,16 +16500,13 @@ Validation errors return `422` with the name `validation_error`.
         "cc": ["finance@example.com"],
         "bcc": [],
         "labels": [],
-        "message_count": 5,
+        "email_count": 5,
         "has_attachment": false,
         "has_draft": false,
         "read": true,
         "received_at": "2026-09-18T09:47:31.000Z",
         "folder": "inbox",
-        "matched_email_id": "3c6b9e2d-7a1f-4d8c-b3e5-0f2a8d6c4b19",
-        "highlights": {
-          "body": ["I'll send the **invoice** once the renewal is signed."]
-        }
+        "matched_email_id": "3c6b9e2d-7a1f-4d8c-b3e5-0f2a8d6c4b19"
       }
     ]
   }
@@ -16405,19 +16533,23 @@ Send an existing draft from the inbox address.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-The draft must have at least one recipient and a subject; a draft without a
-subject returns `422`. Attachments saved on the draft are sent with it. A draft
-that was already sent returns `409`.
+Sends the draft from the inbox address. A reply draft is sent in its thread. A
+draft without a thread starts a new thread. Attachments saved on the draft are
+sent with it.
+
+The draft must have at least one `to` recipient, a non-empty `subject`, and
+`html` or `text`, or the request returns a `422`. A draft that was already sent
+returns a `409`.
 
 A reply draft is sent with the same `In-Reply-To` and `References` headers as
 [Reply to Thread Email](/docs/api-reference/inboxes/reply-thread-email). A draft for
@@ -16426,7 +16558,7 @@ a new conversation has neither.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16435,9 +16567,15 @@ a new conversation has neither.
 
 ## Body Parameters
 
+The request body is optional and takes only `headers`. Without headers, send no
+body.
+
 <ParamField type="object">
-  Custom headers to add to the email. `In-Reply-To`, `References`, and
-  `Reply-To` can't be set and return `422`.
+  Custom headers to add to the email. Resend sets the `In-Reply-To`,
+  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
+  of them, in any letter case, returns a `422`. A header name cannot be empty,
+  and names and values cannot contain line breaks or null characters, or the
+  request returns a `422`.
 </ParamField>
 
 ## Headers
@@ -16448,6 +16586,11 @@ a new conversation has neither.
   * Should be **unique per API request**
   * Idempotency keys expire after **24 hours**
   * Have a maximum length of **256 characters**
+  * A retry with the same key returns the first successful response, with the
+    `idempotent-replayed: true` header
+  * A failed request is not stored, so you can retry it with the same key
+  * Reusing the key with a different body, or while the first request is still
+    running, returns a `409`
 
   [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
@@ -16455,7 +16598,8 @@ a new conversation has neither.
 ## Response Fields
 
 <ParamField type="string">
-  The ID of the queued outbound email.
+  The ID of the sent email. Use it with the [emails
+  endpoints](/docs/api-reference/emails/retrieve-email).
 </ParamField>
 
 <RequestExample>
@@ -16476,9 +16620,7 @@ a new conversation has neither.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts send \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --draft_id c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
+  resend inboxes drafts send b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
   ```
 </RequestExample>
 
@@ -16511,41 +16653,45 @@ Update the agent settings for an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 At least one of `instructions`, `tone`, or `enabled_actions` is required.
-Omitted fields keep their current value.
+Omitted fields keep their current value. The agent is created when the inbox
+has none. A body with none of these keys returns a `422`, even when it has
+other keys.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Body Parameters
 
 <ParamField type="string | null">
   Instructions the agent follows when handling the inbox's threads. Max 4000
-  characters and must not be an empty string. Send `null` to clear them.
+  characters. Leading and trailing whitespace is trimmed, and the trimmed value
+  must not be empty. Send `null` to clear them.
 </ParamField>
 
 <ParamField type="string | null">
-  Tone the agent writes in, such as `friendly and concise`. Max 64 characters
-  and must not be an empty string. Send `null` to clear it.
+  Tone the agent writes in, such as `friendly and concise`. Max 64 characters.
+  Leading and trailing whitespace is trimmed, and the trimmed value must not be
+  empty. Send `null` to clear it.
 </ParamField>
 
 <ParamField type="string[]">
-  Actions the agent is allowed to take. Replaces the whole set. Each entry must
-  be one of `draft_reply`, `forward_thread`, `add_labels`, `assign_thread`,
-  `mark_as_spam`, `archive_thread`, or `delete_thread`. Send an empty array to
-  disable all actions.
+  Actions the agent is allowed to take. Replaces the whole set. Duplicates are
+  removed. Each entry must be one of `draft_reply`, `forward_thread`,
+  `add_labels`, `assign_thread`, `mark_as_spam`, `archive_thread`, or
+  `delete_thread`. Send an empty array to disable all actions.
 </ParamField>
 
 <RequestExample>
@@ -16574,11 +16720,10 @@ Omitted fields keep their current value.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes agent update \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  resend inboxes agent update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --instructions "Answer refund questions yourself. Escalate legal threats." \
     --tone "friendly and concise" \
-    --enabled_actions draft_reply,add_labels
+    --enabled-actions draft_reply,add_labels
   ```
 </RequestExample>
 
@@ -16611,31 +16756,35 @@ Update fields on an existing draft.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Send at least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or
-`attachments`. An empty body is rejected even when the draft already has files.
-After the update, the draft must still contain at least one non-empty field.
-Files already on the draft count toward that, so clearing the other fields
-while leaving `attachments` out is allowed. Combined recipients cannot exceed 50.
+Updates the content of an unsent draft. Send at least one of `to`, `cc`, `bcc`,
+`subject`, `text`, `html`, or `attachments`. An empty body is rejected even when
+the draft already has files. A body with none of these keys returns a `422`, even
+when it has other keys.
 
 Fields you leave out stay as they are. `html` and `text` are the exception:
 sending either one replaces both, and the one you leave out is saved as `null`.
-For `attachments`, a present array replaces the files, `[]` removes them, and
-leaving the field out keeps them.
+For `attachments`, a present array replaces every file on the draft, `[]` or
+`null` removes them, and leaving the field out keeps them.
+
+After the update, the draft must still contain at least one non-empty field.
+Files already on the draft count toward that. The combined recipients cannot
+exceed 50. A draft that was already sent, or that changed during the request,
+returns a `409`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16645,7 +16794,8 @@ leaving the field out keeps them.
 ## Body Parameters
 
 <ParamField type="string | string[] | null">
-  Recipients. Pass `null` to clear.
+  Recipients. For multiple addresses, send an array of strings. Each value can
+  include a friendly name. Pass `null` to clear.
 </ParamField>
 
 <ParamField type="string | string[] | null">
@@ -16657,7 +16807,8 @@ leaving the field out keeps them.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Pass `null` to clear. Max 2000 characters.
+  The subject. Max 2000 characters. Must not contain a line break. Pass `null`
+  to clear.
 </ParamField>
 
 <ParamField type="string | null">
@@ -16670,11 +16821,13 @@ leaving the field out keeps them.
   both, and the one you leave out is saved as `null`.
 </ParamField>
 
-<ParamField type="array">
-  Filename and content of attachments (max 25MB of content). Each file is raw
-  `content`. `path` and `content_id` return `422`. An empty file returns `422`.
-  A present array replaces the files on the draft. `[]` removes them. Leave the
-  field out to keep the current files.
+<ParamField type="array | null">
+  Files to store on the draft. Each one needs `content`, `filename`, and
+  `content_type`. `path` and `content_id` return `422`. An empty file or a
+  blocked file type, such as `.exe`, returns `422`. The files on a draft can
+  total at most 25 MB. A present array
+  replaces every file on the draft. `[]` or `null` removes them. Leave the field out to
+  keep the current files.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -16702,11 +16855,12 @@ leaving the field out keeps them.
 </ParamField>
 
 <ParamField type="string">
-  `standalone` for a new conversation, or `reply`.
+  `reply` when the draft replies to an email in an existing thread. `standalone`
+  when the draft starts a new thread.
 </ParamField>
 
 <ParamField type="string[] | null">
-  Recipients.
+  Recipients. `null` or empty when no recipients are set.
 </ParamField>
 
 <ParamField type="string[]">
@@ -16738,7 +16892,8 @@ leaving the field out keeps them.
 </ParamField>
 
 <ParamField type="string | null">
-  The queued outbound email after send. `null` until then.
+  The ID of the outbound email queued when the draft was sent. `null` until the
+  draft is sent.
 </ParamField>
 
 <ParamField type="string">
@@ -16794,9 +16949,7 @@ leaving the field out keeps them.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts update \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --draft_id c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32 \
+  resend inboxes drafts update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32 \
     --subject "Refund issued for order 1041"
   ```
 </RequestExample>
@@ -16851,11 +17004,11 @@ Update the internal inbox name or the name recipients see when sending.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -16865,18 +17018,22 @@ At least one of `name` or `from_name` is required.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Body Parameters
 
 <ParamField type="string">
-  New internal name for the inbox. Recipients do not see it.
+  New internal name for the inbox. Recipients do not see it. Between 1 and 64
+  characters after trimming.
 </ParamField>
 
 <ResendParamField type="string">
   The name recipients see when mail is sent from this inbox. A plain name, not
-  a `Name <email>` address.
+  a `Name <email>` address. Max 78 characters. It cannot contain a colon, `<`,
+  `>`, line breaks, or other control characters. An email address inside the
+  name must be on a domain the team has verified for sending. An empty string
+  removes it.
 </ResendParamField>
 
 <RequestExample>
@@ -16904,7 +17061,7 @@ At least one of `name` or `from_name` is required.
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --name "Customer Support" \
-    --from_name "Ada from Support"
+    --from-name "Ada from Support"
   ```
 </RequestExample>
 
@@ -16938,19 +17095,23 @@ Rename or recolor an existing label.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
+Omitted fields keep their current value. A new name must not match another
+label on the inbox, compared without case, or the request returns a `422`
+`validation_error`.
+
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16960,11 +17121,13 @@ Rename or recolor an existing label.
 ## Body Parameters
 
 <ParamField type="string">
-  A new name for the label.
+  A new name for the label. Max 64 characters. Leading and trailing whitespace
+  is trimmed.
 </ParamField>
 
 <ParamField type="string">
-  The color of the label as a `#RRGGBB` hex code, like `#E93D82`.
+  A new color for the label as a `#RRGGBB` hex code, like `#E93D82`. It is
+  stored in uppercase.
 </ParamField>
 
 <RequestExample>
@@ -16990,9 +17153,7 @@ Rename or recolor an existing label.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes labels update \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --label_id 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34 \
+  resend inboxes labels update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34 \
     --color '#F76B15'
   ```
 </RequestExample>
@@ -17026,22 +17187,28 @@ Mark a thread read or unread, move it, or add and remove labels.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-At least one of `read`, `folder`, `add_label_ids`, or `remove_label_ids` is required.
+At least one of `read`, `folder`, `add_label_ids`, or `remove_label_ids` is
+required. A label ID cannot be both added and removed in the same request.
+Moving a thread out of `trash` restores it and clears its deletion deadline.
+
+The changes apply in this order: `read`, `folder`, added labels, removed labels.
+They are not atomic, so a `404` for a label leaves the earlier changes applied.
+A body with none of these keys returns a `422`, even when it has other keys.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -17055,17 +17222,20 @@ At least one of `read`, `folder`, `add_label_ids`, or `remove_label_ids` is requ
 </ParamField>
 
 <ParamField type="string">
-  Moves the thread. One of `inbox`, `archive`, `spam`, or `trash`.
+  Moves the thread to this folder. One of `inbox`, `archive`, `spam`, or
+  `trash`. `sent` is assigned automatically and cannot be set.
 </ParamField>
 
 <ResendParamField type="string[]">
-  Applies these labels to the thread. Up to 10 label IDs per request. A label ID
-  cannot appear in both `add_label_ids` and `remove_label_ids`.
+  Applies these labels to the thread. Between 1 and 10 label IDs. A label ID
+  cannot appear in both `add_label_ids` and `remove_label_ids`. A label ID that
+  does not exist in the inbox returns a `404`.
 </ResendParamField>
 
 <ResendParamField type="string[]">
-  Takes these labels off the thread. Up to 10 label IDs per request. The labels
-  themselves are kept and stay on every other thread carrying them.
+  Takes these labels off the thread. Between 1 and 10 label IDs. The labels
+  themselves are kept and stay on every other thread carrying them. A label ID
+  that does not exist in the inbox returns a `404`.
 </ResendParamField>
 
 ## Folders
@@ -17162,9 +17332,7 @@ assigned automatically.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads update \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
+  resend inboxes threads update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
     --read \
     --folder spam
   ```
@@ -33619,7 +33787,7 @@ For each Contact, you can:
 
 In the [Dashboard](https://resend.com/audience), add Contacts manually by providing one or more email addresses, or [upload your existing Contacts](/docs/dashboard/contacts/add-contacts#add-contacts-by-uploading-a-csv) stored in a `.csv` file.
 
-Add Contacts programmatically with the [Contacts API](/docs/dashboard/contacts/manage-contacts#add-contacts-programmatically-via-api) or [CLI commands](cli#contacts).
+Add Contacts programmatically with the [Contacts API](/docs/dashboard/contacts/manage-contacts#add-contacts-programmatically-via-api) or [CLI commands](/docs/cli#contacts).
 
 To add a single Contact manually in the Dashboard:
 
@@ -49163,6 +49331,149 @@ If your domain is not successfully verified, these are some common troubleshooti
 </AccordionGroup>
 
 
+# Laravel Cloud Integration
+Source: https://resend.com/docs/guides/laravel-cloud-integration
+
+Connect a Resend account to Laravel Cloud and send email from your environments.
+
+[Laravel Cloud](https://laravel.com/cloud) hosts Laravel applications and manages Resend as an email resource. Connect a Resend account once for your organization, then attach email to any environment. Laravel Cloud creates a sending key and injects the mail variables your application needs.
+
+## What you get
+
+* OAuth connection to your Laravel Cloud organization.
+* Resource you can reuse across environments.
+* A sending key for each environment, injected as environment variables.
+* Billing that stays on your [Resend plan](/docs/dashboard/settings/billing).
+
+## Prerequisites
+
+* A Laravel Cloud organization with an environment.
+* A Resend account with a [verified domain](/docs/add-a-domain).
+
+## Connect your Resend account
+
+Connect from the organization settings, or the first time you attach email to an environment. Either path sends you to Resend to approve access.
+
+Prefer a video walkthrough?
+
+<YouTube />
+
+<Steps>
+  <Step title="Open the canvas">
+    Open the environment canvas and choose the **Email** resource.
+  </Step>
+
+  <Step title="Approve full access">
+    On the Resend consent screen, pick the team Laravel Cloud should use and choose **Full access**. Laravel Cloud returns you to the same environment and imports the sending domains already on that team.
+
+    <Info>
+      **Full access** lets Laravel Cloud import your existing domains and set up the
+      webhooks it needs. **Sending access** can only send email, so Laravel Cloud
+      can't finish setup with that permission.
+    </Info>
+
+    <video aria-label="Connecting a Resend account from the Laravel Cloud canvas" />
+  </Step>
+
+  <Step title="Connect a domain and create a key">
+    Select a verified domain or create a new one. Click **Continue**.
+
+    <video aria-label="Choosing a sending domain, sender, and key, then attaching email to a Laravel Cloud environment" />
+
+    Enter the sender address and sender name, then choose a sending key.
+
+    * **Create a new key** creates a full access key used by this environment.
+    * **Reuse existing key** shares a key already used by another environment in the organization.
+
+    Confirm and attach email to finish.
+  </Step>
+
+  <Step title="Redeploy your application">
+    For changes to take effect, redeploy your application.
+  </Step>
+</Steps>
+
+Connecting and disconnecting requires the **Edit organization integrations** permission. See [roles and permissions](https://laravel.com/cloud/docs/rbac) for more details.
+
+### Injected environment variables
+
+```ini theme={"theme":{"light":"github-light","dark":"vesper"}}
+RESEND_API_KEY=re_xxxxxxxxxxxx
+MAIL_MAILER=resend
+MAIL_FROM_ADDRESS=hello@notifications.example.com
+MAIL_FROM_NAME="Your application name"
+```
+
+`MAIL_FROM_ADDRESS` and `MAIL_FROM_NAME` use the sender you entered. Laravel Cloud encrypts `RESEND_API_KEY` and masks it, the same way it handles a database password.
+
+A custom environment variable with the same name takes priority over an injected one. Define the custom variable, then deploy. See [Laravel Cloud's environment variables documentation](https://laravel.com/cloud/docs/environments#environment-variables) for how overrides work.
+
+To send from your own machine, copy these variables into your local `.env`. Laravel Cloud injects them into the hosted environment.
+
+## Send from your application
+
+### Laravel
+
+[Laravel ships with a Resend mail transport](https://laravel.com/cloud/docs/resources/email#laravel). The transport needs Resend's PHP SDK. If the package is missing, Laravel Cloud prompts you to add it to the project's dependencies:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+composer require resend/resend-php
+```
+
+Laravel reads the injected variables directly, so no further configuration is required. Send mail as you normally would:
+
+```php theme={"theme":{"light":"github-light","dark":"vesper"}}
+use Illuminate\Support\Facades\Mail;
+
+Mail::to($user)->send(new OrderShipped($order));
+```
+
+The key has full access, so the same application can call the rest of the Resend API. Install [`resend/resend-laravel`](/docs/send-with-laravel) for the Laravel SDK, or send over [SMTP](/docs/send-with-laravel-smtp).
+
+### Other frameworks
+
+Laravel Cloud injects `RESEND_API_KEY` for every runtime. Read the key from the environment and pass it to the [API](/docs/api-reference/introduction) or an [SDK](/docs/sdks).
+
+<Note>
+  Queued mail can fail as a failed job. [Laravel
+  Nightwatch](https://nightwatch.laravel.com) traces those jobs and alerts you
+  when they start failing.
+</Note>
+
+## Attach Resend with the API
+
+[Attach Resend to an environment](https://laravel.com/cloud/docs/api/email/attach-resend-to-environment#attach-resend-to-environment) with a bearer token from the Laravel Cloud UI. `from_address` and `from_name` are required. Set `key_strategy` to `create` for a new key, or `reuse` and pass `reuse_key_id` to share a key another environment already uses. `key_name` is optional.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl --request POST \
+  --url https://cloud.laravel.com/api/environments/{environment}/resend \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "from_address": "hello@notifications.example.com",
+  "from_name": "Acme",
+  "key_name": "production",
+  "key_strategy": "create"
+}'
+```
+
+Deploy the environment after the request so the application receives the mail variables.
+
+The same API can list what you attach and change it later:
+
+* [List sending domains](https://laravel.com/cloud/docs/api/email/list-sending-domains) for the organization.
+* [List reusable sending keys](https://laravel.com/cloud/docs/api/email/list-reusable-sending-keys) that other environments can share.
+* [Update the sender](https://laravel.com/cloud/docs/api/email/update-environment-resend-sender) with `from_address` and `from_name`.
+* [Detach Resend](https://laravel.com/cloud/docs/api/email/detach-resend-from-environment). This deletes the environment's sending key unless another environment shares it.
+
+## Next steps
+
+* Send your first email with [Laravel](/docs/send-with-laravel).
+* Add and verify a [domain](/docs/dashboard/domains/introduction).
+* Design messages with [Templates](/docs/dashboard/templates/introduction).
+* Follow up with an [Automation](/docs/dashboard/automations/introduction).
+
+
 # Turn Paper designs into Resend emails
 Source: https://resend.com/docs/guides/paper
 
@@ -50027,6 +50338,10 @@ Integrate Resend with the tools you already use.
 ## Developer tools
 
 <CardGroup>
+  <Card title="Laravel Cloud" href="/docs/guides/laravel-cloud-integration" icon={<LaravelIcon />}>
+    Connect Resend to a Laravel Cloud environment
+  </Card>
+
   <Card title="Raycast" href="https://www.raycast.com/resend/resend" icon={<RaycastIcon />}>
     Manage emails, domains, and more
   </Card>
@@ -60969,6 +61284,12 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
+<Info>
+  On [Laravel Cloud](/docs/guides/laravel-cloud-integration), connect Resend as an
+  email resource. Cloud injects `RESEND_API_KEY`, `MAIL_MAILER`,
+  `MAIL_FROM_ADDRESS`, and `MAIL_FROM_NAME` into the environment.
+</Info>
+
 Prefer watching a video? Check out this video walkthrough below.
 
 <YouTube />
@@ -69032,11 +69353,11 @@ Received when an inbox is created.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69053,7 +69374,7 @@ Event triggered whenever an **inbox is created**.
   </ParamField>
 
   <ParamField type="object">
-    The inbox, as it is when the webhook is sent
+    The inbox, as it is when the webhook is sent. Absent when the inbox no longer exists
 
     <Expandable title="inbox object">
       <ParamField type="string">
@@ -69082,11 +69403,11 @@ Event triggered whenever an **inbox is created**.
       </ParamField>
 
       <ParamField type="string | null">
-        The name recipients see when mail is sent from this inbox
+        The name recipients see when mail is sent from this inbox. `null` when not set
       </ParamField>
 
       <ParamField type="number">
-        The number of unread threads in the inbox
+        The number of unread threads in the Inbox folder
       </ParamField>
 
       <ParamField type="number">
@@ -69094,7 +69415,8 @@ Event triggered whenever an **inbox is created**.
       </ParamField>
 
       <ParamField type="string | null">
-        ISO 8601 timestamp when a thread in this inbox was last active
+        ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
+        when the folder has no received email
       </ParamField>
 
       <ParamField type="string">
@@ -69150,11 +69472,11 @@ Received when an inbox is deleted.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69204,11 +69526,11 @@ Received when a draft is created.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69233,7 +69555,7 @@ Event triggered whenever a **draft is created**, standalone or reply.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent. Only on reply drafts
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists. Only on reply drafts
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -69263,7 +69585,7 @@ Event triggered whenever a **draft is created**, standalone or reply.
   </ParamField>
 
   <ParamField type="object">
-    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft)
+    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft). Absent when the draft no longer exists
 
     <Expandable title="draft object">
       <ParamField type="string">
@@ -69313,6 +69635,28 @@ Event triggered whenever a **draft is created**, standalone or reply.
       <ParamField type="string">
         ISO 8601 timestamp when the draft was last saved
       </ParamField>
+
+      <ParamField type="array">
+        The files stored on the draft
+
+        <Expandable title="attachment object">
+          <ParamField type="string">
+            The ID of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The filename of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The MIME type of the attachment
+          </ParamField>
+
+          <ParamField type="number">
+            The size of the attachment in bytes
+          </ParamField>
+        </Expandable>
+      </ParamField>
     </Expandable>
   </ParamField>
 </ResponseBodyParameters>
@@ -69347,7 +69691,8 @@ Event triggered whenever a **draft is created**, standalone or reply.
         "reply_to_email_id": "4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
         "email_id": null,
         "created_at": "2026-09-29T11:58:00.000Z",
-        "updated_at": "2026-09-29T12:00:00.000Z"
+        "updated_at": "2026-09-29T12:00:00.000Z",
+        "attachments": []
       }
     }
   }
@@ -69374,11 +69719,11 @@ Received when a draft is discarded.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69405,7 +69750,7 @@ Event triggered whenever a **draft is discarded**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent. Only on reply drafts
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists. Only on reply drafts
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -69478,11 +69823,11 @@ Received when a draft is sent.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69513,7 +69858,7 @@ Event triggered whenever a **draft is sent**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -69543,7 +69888,7 @@ Event triggered whenever a **draft is sent**.
   </ParamField>
 
   <ParamField type="object">
-    The email, as it is when the webhook is sent, without `html` or `text`. Only when the email is already on the thread when the webhook is sent
+    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email). Only when the email is already on the thread when the webhook is sent
 
     <Expandable title="email object">
       <ParamField type="string">
@@ -69611,7 +69956,7 @@ Event triggered whenever a **draft is sent**.
   </ParamField>
 
   <ParamField type="object">
-    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft)
+    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft). Absent when the draft no longer exists
 
     <Expandable title="draft object">
       <ParamField type="string">
@@ -69660,6 +70005,28 @@ Event triggered whenever a **draft is sent**.
 
       <ParamField type="string">
         ISO 8601 timestamp when the draft was last saved
+      </ParamField>
+
+      <ParamField type="array">
+        The files stored on the draft
+
+        <Expandable title="attachment object">
+          <ParamField type="string">
+            The ID of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The filename of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The MIME type of the attachment
+          </ParamField>
+
+          <ParamField type="number">
+            The size of the attachment in bytes
+          </ParamField>
+        </Expandable>
       </ParamField>
     </Expandable>
   </ParamField>
@@ -69696,7 +70063,8 @@ Event triggered whenever a **draft is sent**.
         "reply_to_email_id": "4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
         "email_id": "81ce9b8d-1b0a-4d02-a4d9-2a91f5ab6397",
         "created_at": "2026-09-29T11:58:00.000Z",
-        "updated_at": "2026-09-29T12:00:00.000Z"
+        "updated_at": "2026-09-29T12:00:00.000Z",
+        "attachments": []
       }
     }
   }
@@ -69723,11 +70091,11 @@ Received when a draft is edited.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69752,7 +70120,7 @@ Event triggered whenever a **draft is edited**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent. Only on reply drafts
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists. Only on reply drafts
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -69782,7 +70150,7 @@ Event triggered whenever a **draft is edited**.
   </ParamField>
 
   <ParamField type="object">
-    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft)
+    The draft, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Draft](/docs/api-reference/inboxes/get-draft). Absent when the draft no longer exists
 
     <Expandable title="draft object">
       <ParamField type="string">
@@ -69832,6 +70200,28 @@ Event triggered whenever a **draft is edited**.
       <ParamField type="string">
         ISO 8601 timestamp when the draft was last saved
       </ParamField>
+
+      <ParamField type="array">
+        The files stored on the draft
+
+        <Expandable title="attachment object">
+          <ParamField type="string">
+            The ID of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The filename of the attachment
+          </ParamField>
+
+          <ParamField type="string">
+            The MIME type of the attachment
+          </ParamField>
+
+          <ParamField type="number">
+            The size of the attachment in bytes
+          </ParamField>
+        </Expandable>
+      </ParamField>
     </Expandable>
   </ParamField>
 </ResponseBodyParameters>
@@ -69866,7 +70256,8 @@ Event triggered whenever a **draft is edited**.
         "reply_to_email_id": "4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
         "email_id": null,
         "created_at": "2026-09-29T11:58:00.000Z",
-        "updated_at": "2026-09-29T12:00:00.000Z"
+        "updated_at": "2026-09-29T12:00:00.000Z",
+        "attachments": []
       }
     }
   }
@@ -69893,11 +70284,11 @@ Received when an inbound email is added to a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -69924,7 +70315,7 @@ Event triggered whenever an **inbound email is added to a thread**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -69954,7 +70345,7 @@ Event triggered whenever an **inbound email is added to a thread**.
   </ParamField>
 
   <ParamField type="object">
-    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email)
+    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email). Absent when the email no longer exists
 
     <Expandable title="email object">
       <ParamField type="string">
@@ -70085,11 +70476,11 @@ Received when an outbound email is accepted for delivery and added to a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70118,7 +70509,7 @@ Event triggered whenever an **outbound email is accepted for delivery** and adde
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70148,7 +70539,7 @@ Event triggered whenever an **outbound email is accepted for delivery** and adde
   </ParamField>
 
   <ParamField type="object">
-    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email)
+    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email). Absent when the email no longer exists
 
     <Expandable title="email object">
       <ParamField type="string">
@@ -70273,11 +70664,11 @@ Received when a thread is assigned or reassigned.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70290,7 +70681,7 @@ Event triggered whenever a **thread is assigned or reassigned**.
   </ParamField>
 
   <ParamField type="string | null">
-    The email of the member who made the assignment
+    The email of the member who made the assignment. `null` when no member made it
   </ParamField>
 
   <ParamField type="string | null">
@@ -70310,7 +70701,7 @@ Event triggered whenever a **thread is assigned or reassigned**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70385,11 +70776,11 @@ Received when the first email of a thread lands in an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70416,7 +70807,7 @@ Event triggered whenever the **first email of a thread** lands in the inbox, inb
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70446,7 +70837,7 @@ Event triggered whenever the **first email of a thread** lands in the inbox, inb
   </ParamField>
 
   <ParamField type="object">
-    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email)
+    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email). Absent when the email no longer exists
 
     <Expandable title="email object">
       <ParamField type="string">
@@ -70577,11 +70968,11 @@ Received when a thread moves between folders.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70591,11 +70982,11 @@ Event triggered whenever a **thread moves between folders**.
 *Note: Moving a thread to a label can send both this event and `inbox.thread.labels.updated` for the same thread.*
 
 <ResponseBodyParameters type="inbox.thread.folder.updated">
-  <ParamField type="inbox | archive | spam | sent | trash">
+  <ParamField type="inbox | archive | spam | trash">
     The folder the thread was in
   </ParamField>
 
-  <ParamField type="inbox | archive | spam | sent | trash">
+  <ParamField type="inbox | archive | spam | trash">
     The folder the thread moved to
   </ParamField>
 
@@ -70612,7 +71003,7 @@ Event triggered whenever a **thread moves between folders**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70686,11 +71077,11 @@ Received when a label is applied to or removed from a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70723,7 +71114,7 @@ Event triggered whenever a **label is applied to or removed from a thread**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70809,11 +71200,11 @@ Received when a thread is unassigned.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70838,7 +71229,7 @@ Event triggered whenever a **thread is unassigned**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -70911,11 +71302,11 @@ Received when an inbox's settings change.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -70932,7 +71323,7 @@ Event triggered whenever an **inbox's settings change**.
   </ParamField>
 
   <ParamField type="object">
-    The inbox, as it is when the webhook is sent
+    The inbox, as it is when the webhook is sent. Absent when the inbox no longer exists
 
     <Expandable title="inbox object">
       <ParamField type="string">
@@ -70961,11 +71352,11 @@ Event triggered whenever an **inbox's settings change**.
       </ParamField>
 
       <ParamField type="string | null">
-        The name recipients see when mail is sent from this inbox
+        The name recipients see when mail is sent from this inbox. `null` when not set
       </ParamField>
 
       <ParamField type="number">
-        The number of unread threads in the inbox
+        The number of unread threads in the Inbox folder
       </ParamField>
 
       <ParamField type="number">
@@ -70973,7 +71364,8 @@ Event triggered whenever an **inbox's settings change**.
       </ParamField>
 
       <ParamField type="string | null">
-        ISO 8601 timestamp when a thread in this inbox was last active
+        ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
+        when the folder has no received email
       </ParamField>
 
       <ParamField type="string">

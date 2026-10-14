@@ -327,24 +327,24 @@ We can see that we have received a `baton` back. This is because we haven't clos
 
 The response contains the following fields:
 
-| Field      | Type   | Description                                                                                                                          |
-| ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `baton`    | string | The baton is used to identify a connection with the server so that it can be reused.                                                 |
+| Field | Type | Description |
+| - | - | - |
+| `baton` | string | The baton is used to identify a connection with the server so that it can be reused. |
 | `base_url` | string | The base URL of the server that handled the request. This URL can be reused for subsequent requests to force routing to that server. |
-| `results`  | array  | The results for each of the requests made in the pipeline.                                                                           |
+| `results` | array | The results for each of the requests made in the pipeline. |
 
 The `results` array contains the results for each of the requests made in the pipeline. Each result has the following fields:
 
-| Field                | Type    | Description                                                 |
-| -------------------- | ------- | ----------------------------------------------------------- |
-| `cols`               | array   | The list of columns for the returned rows.                  |
-| `rows`               | array   | The rows returned for the query.                            |
-| `affected_row_count` | integer | The number of rows affected by the query.                   |
-| `last_insert_rowid`  | integer | The ID of the last inserted row.                            |
-| `replication_index`  | string  | The replication timestamp at which this query was executed. |
-| `rows_read`          | integer | The number of rows read by the query.                       |
-| `rows_written`       | integer | The number of rows written by the query.                    |
-| `query_duration_ms`  | float   | The duration of the query in milliseconds.                  |
+| Field | Type | Description |
+| - | - | - |
+| `cols` | array | The list of columns for the returned rows. |
+| `rows` | array | The rows returned for the query. |
+| `affected_row_count` | integer | The number of rows affected by the query. |
+| `last_insert_rowid` | integer | The ID of the last inserted row. |
+| `replication_index` | string | The replication timestamp at which this query was executed. |
+| `rows_read` | integer | The number of rows read by the query. |
+| `rows_written` | integer | The number of rows written by the query. |
+| `query_duration_ms` | float | The duration of the query in milliseconds. |
 
 ### `GET /version`
 

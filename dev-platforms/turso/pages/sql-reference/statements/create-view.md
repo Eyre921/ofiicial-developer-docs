@@ -23,13 +23,13 @@ A view is a virtual table defined by a SELECT statement. It does not store data 
 
 ### Parameters
 
-| Parameter          | Description                                                                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `TEMPORARY`        | Creates the view in a temporary database. The view is visible only to the current connection and is dropped when the connection closes. `TEMP` is accepted as a synonym. |
-| `IF NOT EXISTS`    | Prevents an error if a view with the same name already exists. The statement is a no-op when the view is present.                                                        |
-| `schema-name`      | The name of the attached database in which to create the view. Defaults to the main database if omitted. Cannot be used with `TEMPORARY`.                                |
-| `view-name`        | A unique name for the view within the database.                                                                                                                          |
-| `select-statement` | The SELECT query that defines the view's contents.                                                                                                                       |
+| Parameter | Description |
+| - | - |
+| `TEMPORARY` | Creates the view in a temporary database. The view is visible only to the current connection and is dropped when the connection closes. `TEMP` is accepted as a synonym. |
+| `IF NOT EXISTS` | Prevents an error if a view with the same name already exists. The statement is a no-op when the view is present. |
+| `schema-name` | The name of the attached database in which to create the view. Defaults to the main database if omitted. Cannot be used with `TEMPORARY`. |
+| `view-name` | A unique name for the view within the database. |
+| `select-statement` | The SELECT query that defines the view's contents. |
 
 ### Behavior
 

@@ -14,10 +14,10 @@ tursodb [OPTIONS] [DATABASE] [SQL]
 
 ## Arguments
 
-| Argument   | Default    | Description                                                                  |
-| ---------- | ---------- | ---------------------------------------------------------------------------- |
+| Argument | Default | Description |
+| - | - | - |
 | `DATABASE` | `:memory:` | Path to a SQLite database file. If omitted, an in-memory database is created |
-| `SQL`      | —          | SQL statement to execute. If provided, the shell runs the query and exits    |
+| `SQL` | — | SQL statement to execute. If provided, the shell runs the query and exits |
 
 ### Examples
 
@@ -41,11 +41,11 @@ echo "SELECT 1 + 1;" | tursodb -q
 
 Set the output display format.
 
-| Mode     | Description                           |
-| -------- | ------------------------------------- |
-| `pretty` | Table with borders (default)          |
-| `list`   | Pipe-delimited values                 |
-| `line`   | One column per line with column names |
+| Mode | Description |
+| - | - |
+| `pretty` | Table with borders (default) |
+| `list` | Pipe-delimited values |
+| `line` | One column per line with column names |
 
 ```bash theme={null}
 tursodb -m list mydata.db "SELECT * FROM users;"
@@ -84,10 +84,10 @@ SELECT 42;
 
 Select the Virtual File System backend.
 
-| VFS        | Description                             |
-| ---------- | --------------------------------------- |
-| `syscall`  | Standard OS file I/O (default)          |
-| `memory`   | In-memory storage                       |
+| VFS | Description |
+| - | - |
+| `syscall` | Standard OS file I/O (default) |
+| `memory` | In-memory storage |
 | `io_uring` | Linux io\_uring (requires feature flag) |
 
 ```bash theme={null}
@@ -141,19 +141,19 @@ These flags enable features that are still under development. They may change or
   Experimental features may have incomplete implementations or known limitations. Use them for testing and development only.
 </Warning>
 
-| Flag                                     | Description                                                                         |
-| ---------------------------------------- | ----------------------------------------------------------------------------------- |
-| `--experimental-views`                   | Enable views (`CREATE VIEW` / `CREATE MATERIALIZED VIEW`)                           |
-| `--experimental-custom-types`            | Enable custom types (`CREATE TYPE` / `DROP TYPE` / `CREATE DOMAIN` / `DROP DOMAIN`) |
-| `--experimental-encryption`              | Enable at-rest database encryption                                                  |
-| `--experimental-index-method`            | Enable custom index methods. Necessary for FTS and sparse vector indexes            |
-| `--experimental-autovacuum`              | Enable automatic database vacuuming                                                 |
-| `--experimental-vacuum`                  | Enable in-place `VACUUM`                                                            |
-| `--experimental-attach`                  | Enable `ATTACH DATABASE` / `DETACH DATABASE`                                        |
-| `--experimental-generated-columns`       | Enable virtual `GENERATED ALWAYS AS` columns                                        |
-| `--experimental-without-rowid`           | Enable `WITHOUT ROWID` tables                                                       |
-| `--experimental-multiprocess-wal`        | Enable sharing a database between processes via a shared WAL coordinator            |
-| `--experimental-mvcc-passive-checkpoint` | Enable passive checkpointing under MVCC (`journal_mode=mvcc`)                       |
+| Flag | Description |
+| - | - |
+| `--experimental-views` | Enable views (`CREATE VIEW` / `CREATE MATERIALIZED VIEW`) |
+| `--experimental-custom-types` | Enable custom types (`CREATE TYPE` / `DROP TYPE` / `CREATE DOMAIN` / `DROP DOMAIN`) |
+| `--experimental-encryption` | Enable at-rest database encryption |
+| `--experimental-index-method` | Enable custom index methods. Necessary for FTS and sparse vector indexes |
+| `--experimental-autovacuum` | Enable automatic database vacuuming |
+| `--experimental-vacuum` | Enable in-place `VACUUM` |
+| `--experimental-attach` | Enable `ATTACH DATABASE` / `DETACH DATABASE` |
+| `--experimental-generated-columns` | Enable virtual `GENERATED ALWAYS AS` columns |
+| `--experimental-without-rowid` | Enable `WITHOUT ROWID` tables |
+| `--experimental-multiprocess-wal` | Enable sharing a database between processes via a shared WAL coordinator |
+| `--experimental-mvcc-passive-checkpoint` | Enable passive checkpointing under MVCC (`journal_mode=mvcc`) |
 
 <Info>
   Triggers (`CREATE TRIGGER` / `DROP TRIGGER`) are stable as of Turso 0.7 and no longer require a flag.
@@ -166,9 +166,9 @@ tursodb --experimental-views --experimental-custom-types --experimental-vacuum m
 
 ## Other Flags
 
-| Flag               | Description                                                               |
-| ------------------ | ------------------------------------------------------------------------- |
-| `--mvcc`           | Start the MVCC concurrent-transaction harness instead of the normal shell |
-| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes)             |
-| `-h, --help`       | Print usage help                                                          |
-| `-V, --version`    | Print version information                                                 |
+| Flag | Description |
+| - | - |
+| `--mvcc` | Start the MVCC concurrent-transaction harness instead of the normal shell |
+| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes) |
+| `-h, --help` | Print usage help |
+| `-V, --version` | Print version information |

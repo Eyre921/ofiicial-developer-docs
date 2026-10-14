@@ -51,12 +51,12 @@ FOREIGN KEY (column-name [, column-name ...]) REFERENCES foreign-table [(column-
 
 ### Parameters
 
-| Parameter       | Description                                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Parameter | Description |
+| - | - |
 | `IF NOT EXISTS` | Prevents an error if a table with the same name already exists. The statement is a no-op when the table is present. |
-| `schema-name`   | The name of an attached database. Defaults to the main database if omitted.                                         |
-| `table-name`    | The name of the table to create.                                                                                    |
-| `STRICT`        | Enables strict type checking on the table. See [STRICT Tables](#strict-tables).                                     |
+| `schema-name` | The name of an attached database. Defaults to the main database if omitted. |
+| `table-name` | The name of the table to create. |
+| `STRICT` | Enables strict type checking on the table. See [STRICT Tables](#strict-tables). |
 
 ## Column Definitions
 
@@ -155,14 +155,14 @@ CREATE TABLE orders (
 
 The default expression can be:
 
-| Expression                 | Example                                   |
-| -------------------------- | ----------------------------------------- |
-| A literal value            | `DEFAULT 42`, `DEFAULT 'active'`          |
-| NULL                       | `DEFAULT NULL`                            |
-| `CURRENT_TIME`             | Current time as `HH:MM:SS`                |
-| `CURRENT_DATE`             | Current date as `YYYY-MM-DD`              |
-| `CURRENT_TIMESTAMP`        | Current datetime as `YYYY-MM-DD HH:MM:SS` |
-| A parenthesized expression | `DEFAULT (1 + 1)`                         |
+| Expression | Example |
+| - | - |
+| A literal value | `DEFAULT 42`, `DEFAULT 'active'` |
+| NULL | `DEFAULT NULL` |
+| `CURRENT_TIME` | Current time as `HH:MM:SS` |
+| `CURRENT_DATE` | Current date as `YYYY-MM-DD` |
+| `CURRENT_TIMESTAMP` | Current datetime as `YYYY-MM-DD HH:MM:SS` |
+| A parenthesized expression | `DEFAULT (1 + 1)` |
 
 ### CHECK
 
@@ -192,11 +192,11 @@ CREATE TABLE orders (
 
 Specifies the collation sequence used for text comparisons and sorting on the column.
 
-| Collation | Description                                       |
-| --------- | ------------------------------------------------- |
-| `BINARY`  | Compares text using the raw byte values (default) |
-| `NOCASE`  | Case-insensitive comparison for ASCII characters  |
-| `RTRIM`   | Like `BINARY`, but ignores trailing spaces        |
+| Collation | Description |
+| - | - |
+| `BINARY` | Compares text using the raw byte values (default) |
+| `NOCASE` | Case-insensitive comparison for ASCII characters |
+| `RTRIM` | Like `BINARY`, but ignores trailing spaces |
 
 Turso also resolves locale-aware collations and custom collations registered on the connection. An unknown collation name now raises a `no such collation sequence` error rather than being silently ignored.
 
@@ -279,13 +279,13 @@ FOREIGN KEY (column-name [, column-name ...])
 
 The `ON DELETE` and `ON UPDATE` clauses specify what happens to child rows when a referenced parent row is deleted or updated.
 
-| Action        | Description                                                               |
-| ------------- | ------------------------------------------------------------------------- |
-| `NO ACTION`   | Raises an error if the foreign key constraint is violated (default)       |
-| `RESTRICT`    | Same as `NO ACTION`, but checked immediately rather than at statement end |
-| `CASCADE`     | Deletes or updates all child rows that reference the parent row           |
-| `SET NULL`    | Sets the foreign key columns in child rows to NULL                        |
-| `SET DEFAULT` | Sets the foreign key columns in child rows to their default values        |
+| Action | Description |
+| - | - |
+| `NO ACTION` | Raises an error if the foreign key constraint is violated (default) |
+| `RESTRICT` | Same as `NO ACTION`, but checked immediately rather than at statement end |
+| `CASCADE` | Deletes or updates all child rows that reference the parent row |
+| `SET NULL` | Sets the foreign key columns in child rows to NULL |
+| `SET DEFAULT` | Sets the foreign key columns in child rows to their default values |
 
 ```sql theme={null}
 CREATE TABLE departments (
@@ -320,13 +320,13 @@ CREATE TABLE sensor_data (
 
 STRICT tables only allow these base column types:
 
-| Type      | Description                                                |
-| --------- | ---------------------------------------------------------- |
-| `INTEGER` | Signed integer                                             |
-| `REAL`    | Floating-point number                                      |
-| `TEXT`    | UTF-8 string                                               |
-| `BLOB`    | Raw binary data                                            |
-| `ANY`     | Any storage class (disables type checking for this column) |
+| Type | Description |
+| - | - |
+| `INTEGER` | Signed integer |
+| `REAL` | Floating-point number |
+| `TEXT` | UTF-8 string |
+| `BLOB` | Raw binary data |
+| `ANY` | Any storage class (disables type checking for this column) |
 
 Every column in a STRICT table must have an explicit type declaration.
 
@@ -356,19 +356,19 @@ CREATE TABLE events (
 
 The following CREATE TABLE features are not yet supported:
 
-| Feature                                    | Notes                                                                                                                                                                          |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `CREATE TEMPORARY TABLE`                   | Temporary tables are not supported                                                                                                                                             |
-| `CREATE TABLE ... AS SELECT`               | Creating a table from a query result is not supported                                                                                                                          |
+| Feature | Notes |
+| - | - |
+| `CREATE TEMPORARY TABLE` | Temporary tables are not supported |
+| `CREATE TABLE ... AS SELECT` | Creating a table from a query result is not supported |
 | `ON CONFLICT` clause on column constraints | The column-level ON CONFLICT clause (e.g., `NOT NULL ON CONFLICT REPLACE`) is not supported. Use the [INSERT ... ON CONFLICT](/sql-reference/statements/upsert) syntax instead |
 
 ### Experimental Features
 
 The following are available behind [experimental feature flags](/sql-reference/experimental-features):
 
-| Feature               | Flag                               | Notes                                                                           |
-| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------- |
-| `WITHOUT ROWID`       | `--experimental-without-rowid`     | WITHOUT ROWID tables have limitations; see the experimental features page       |
+| Feature | Flag | Notes |
+| - | - | - |
+| `WITHOUT ROWID` | `--experimental-without-rowid` | WITHOUT ROWID tables have limitations; see the experimental features page |
 | `GENERATED ALWAYS AS` | `--experimental-generated-columns` | Virtual generated (computed) columns only; stored columns are not yet supported |
 
 ## Examples

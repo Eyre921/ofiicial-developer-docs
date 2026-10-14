@@ -174,6 +174,15 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
     harness.
   </Accordion>
 
+  <Accordion title="ChatGPT says a model is not supported with a ChatGPT account">
+    The thread started on an OpenAI model, and ChatGPT and Codex app threads
+    keep their starting provider. This happens with any Fireworks model you
+    pick in that thread, not only FireRouter, and the error names the model
+    you picked. Start a new thread to use Fireworks models and FireRouter. To
+    continue the old thread, switch back to an OpenAI model. See
+    [Codex](/nexus/harnesses#codex).
+  </Accordion>
+
   <Accordion title="A FireRouter route never uses Claude or GPT">
     The harness cannot send a local provider key, or the route does not pick
     up your saved key. Connect the matching

@@ -14,19 +14,19 @@ All standard aggregate functions ignore NULL values (except `count(*)`). If ever
 
 ## Function Reference
 
-| Function             | Return Type     | Description                                                                      |
-| -------------------- | --------------- | -------------------------------------------------------------------------------- |
-| `array_agg(X)`       | BLOB (array)    | Collects all values of X into an array (Turso extension)                         |
-| `avg(X)`             | REAL            | Average of all non-NULL values of X                                              |
-| `count(X)`           | INTEGER         | Count of rows where X is not NULL                                                |
-| `count(*)`           | INTEGER         | Count of all rows in the group                                                   |
-| `group_concat(X)`    | TEXT            | Concatenation of all non-NULL values of X, separated by commas                   |
-| `group_concat(X, Y)` | TEXT            | Concatenation of all non-NULL values of X, separated by Y                        |
-| `string_agg(X, Y)`   | TEXT            | Alias for `group_concat(X, Y)`                                                   |
-| `max(X)`             | same as X       | Maximum non-NULL value of X                                                      |
-| `min(X)`             | same as X       | Minimum non-NULL value of X                                                      |
-| `sum(X)`             | INTEGER or REAL | Sum of all non-NULL values of X. Returns NULL if all values are NULL             |
-| `total(X)`           | REAL            | Sum of all non-NULL values of X. Always returns REAL, 0.0 if all values are NULL |
+| Function | Return Type | Description |
+| - | - | - |
+| `array_agg(X)` | BLOB (array) | Collects all values of X into an array (Turso extension) |
+| `avg(X)` | REAL | Average of all non-NULL values of X |
+| `count(X)` | INTEGER | Count of rows where X is not NULL |
+| `count(*)` | INTEGER | Count of all rows in the group |
+| `group_concat(X)` | TEXT | Concatenation of all non-NULL values of X, separated by commas |
+| `group_concat(X, Y)` | TEXT | Concatenation of all non-NULL values of X, separated by Y |
+| `string_agg(X, Y)` | TEXT | Alias for `group_concat(X, Y)` |
+| `max(X)` | same as X | Maximum non-NULL value of X |
+| `min(X)` | same as X | Minimum non-NULL value of X |
+| `sum(X)` | INTEGER or REAL | Sum of all non-NULL values of X. Returns NULL if all values are NULL |
+| `total(X)` | REAL | Sum of all non-NULL values of X. Always returns REAL, 0.0 if all values are NULL |
 
 ## Detailed Descriptions and Examples
 
@@ -58,9 +58,9 @@ avg(X)
 
 Returns the average of all non-NULL values of X as a REAL (floating-point) number. Returns NULL if all values are NULL.
 
-| Parameter | Type        | Description               |
-| --------- | ----------- | ------------------------- |
-| X         | any numeric | The expression to average |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any numeric | The expression to average |
 
 **Return type:** REAL
 
@@ -73,10 +73,10 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | avg\_amount      |
-| ------ | ---------------- |
-| North  | 183.333333333333 |
-| South  | 162.5            |
+| region | avg\_amount |
+| - | - |
+| North | 183.333333333333 |
+| South | 162.5 |
 
 <Info>
   `avg(X)` ignores NULL values in both the sum and the count. In the example above, the South region has three non-NULL amounts (150 + 175 = 325, but also the NULL row is excluded), so the average is computed over the non-NULL values only.
@@ -91,10 +91,10 @@ count(*)
 
 `count(X)` returns the number of rows where X is not NULL. `count(*)` returns the total number of rows in the group, including rows with NULL values.
 
-| Parameter | Type    | Description                                 |
-| --------- | ------- | ------------------------------------------- |
-| X         | any     | The expression to count non-NULL values for |
-| `*`       | special | Counts all rows regardless of NULL          |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression to count non-NULL values for |
+| `*` | special | Counts all rows regardless of NULL |
 
 **Return type:** INTEGER
 
@@ -111,9 +111,9 @@ GROUP BY region;
 ```
 
 | region | total\_rows | rows\_with\_amount |
-| ------ | ----------- | ------------------ |
-| North  | 3           | 3                  |
-| South  | 3           | 2                  |
+| - | - | - |
+| North | 3 | 3 |
+| South | 3 | 2 |
 
 ### group\_concat(X) and group\_concat(X, Y)
 
@@ -124,10 +124,10 @@ group_concat(X, Y)
 
 Concatenates all non-NULL values of X into a single string. The default separator is a comma (`,`). When Y is provided, it is used as the separator instead.
 
-| Parameter | Type | Description                                |
-| --------- | ---- | ------------------------------------------ |
-| X         | any  | The expression whose values to concatenate |
-| Y         | TEXT | Separator string (default: `","`)          |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression whose values to concatenate |
+| Y | TEXT | Separator string (default: `","`) |
 
 **Return type:** TEXT
 
@@ -143,10 +143,10 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | products                   |
-| ------ | -------------------------- |
-| North  | Widget \| Gadget \| Widget |
-| South  | Widget \| Gadget \| Widget |
+| region | products |
+| - | - |
+| North | Widget \| Gadget \| Widget |
+| South | Widget \| Gadget \| Widget |
 
 ### string\_agg(X, Y)
 
@@ -156,10 +156,10 @@ string_agg(X, Y)
 
 Alias for `group_concat(X, Y)`. Provided for compatibility with PostgreSQL.
 
-| Parameter | Type | Description                                |
-| --------- | ---- | ------------------------------------------ |
-| X         | any  | The expression whose values to concatenate |
-| Y         | TEXT | Separator string                           |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression whose values to concatenate |
+| Y | TEXT | Separator string |
 
 **Return type:** TEXT
 
@@ -169,10 +169,10 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | products               |
-| ------ | ---------------------- |
-| North  | Widget, Gadget, Widget |
-| South  | Widget, Gadget, Widget |
+| region | products |
+| - | - |
+| North | Widget, Gadget, Widget |
+| South | Widget, Gadget, Widget |
 
 ### max(X) and min(X)
 
@@ -183,9 +183,9 @@ min(X)
 
 `max(X)` returns the maximum non-NULL value of X. `min(X)` returns the minimum non-NULL value of X. Values are compared using the standard SQLite comparison rules. Returns NULL if all values are NULL.
 
-| Parameter | Type | Description                                            |
-| --------- | ---- | ------------------------------------------------------ |
-| X         | any  | The expression to find the maximum or minimum value of |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression to find the maximum or minimum value of |
 
 **Return type:** Same as the input type
 
@@ -199,9 +199,9 @@ GROUP BY region;
 ```
 
 | region | highest | lowest |
-| ------ | ------- | ------ |
-| North  | 250.0   | 100.0  |
-| South  | 175.0   | 150.0  |
+| - | - | - |
+| North | 250.0 | 100.0 |
+| South | 175.0 | 150.0 |
 
 <Info>
   When `max(X)` or `min(X)` is called with a single argument in an aggregate context, it acts as an aggregate function. When called with two or more arguments (e.g., `max(a, b, c)`), it acts as a [scalar function](/sql-reference/functions/scalar) and returns the largest argument.
@@ -216,9 +216,9 @@ total(X)
 
 Both functions return the sum of all non-NULL values of X. They differ in return type and behavior when all values are NULL.
 
-| Parameter | Type        | Description           |
-| --------- | ----------- | --------------------- |
-| X         | any numeric | The expression to sum |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any numeric | The expression to sum |
 
 **Return type:**
 
@@ -260,9 +260,9 @@ GROUP BY region;
 ```
 
 | region | sum\_amount | total\_amount |
-| ------ | ----------- | ------------- |
-| North  | 550.0       | 550.0         |
-| South  | 325.0       | 325.0         |
+| - | - | - |
+| North | 550.0 | 550.0 |
+| South | 325.0 | 325.0 |
 
 ```sql theme={null}
 -- total() is useful in arithmetic to avoid NULL propagation
@@ -294,11 +294,11 @@ GROUP BY region, product;
 ```
 
 | region | product | order\_count | total\_sales | avg\_sale | min\_sale | max\_sale |
-| ------ | ------- | ------------ | ------------ | --------- | --------- | --------- |
-| North  | Gadget  | 1            | 250.0        | 250.0     | 250.0     | 250.0     |
-| North  | Widget  | 2            | 300.0        | 150.0     | 100.0     | 200.0     |
-| South  | Gadget  | 1            | NULL         | NULL      | NULL      | NULL      |
-| South  | Widget  | 2            | 325.0        | 162.5     | 150.0     | 175.0     |
+| - | - | - | - | - | - | - |
+| North | Gadget | 1 | 250.0 | 250.0 | 250.0 | 250.0 |
+| North | Widget | 2 | 300.0 | 150.0 | 100.0 | 200.0 |
+| South | Gadget | 1 | NULL | NULL | NULL | NULL |
+| South | Widget | 2 | 325.0 | 162.5 | 150.0 | 175.0 |
 
 ## Filtering Groups with HAVING
 
@@ -313,8 +313,8 @@ HAVING sum(amount) > 400;
 ```
 
 | region | total\_sales |
-| ------ | ------------ |
-| North  | 550.0        |
+| - | - |
+| North | 550.0 |
 
 ## Aggregates with DISTINCT
 
@@ -347,13 +347,13 @@ ORDER BY region, id;
 ```
 
 | id | region | amount | running\_total | region\_count |
-| -- | ------ | ------ | -------------- | ------------- |
-| 1  | North  | 100.0  | 100.0          | 3             |
-| 2  | North  | 250.0  | 350.0          | 3             |
-| 5  | North  | 200.0  | 550.0          | 3             |
-| 3  | South  | 150.0  | 150.0          | 3             |
-| 4  | South  | NULL   | 150.0          | 3             |
-| 6  | South  | 175.0  | 325.0          | 3             |
+| - | - | - | - | - |
+| 1 | North | 100.0 | 100.0 | 3 |
+| 2 | North | 250.0 | 350.0 | 3 |
+| 5 | North | 200.0 | 550.0 | 3 |
+| 3 | South | 150.0 | 150.0 | 3 |
+| 4 | South | NULL | 150.0 | 3 |
+| 6 | South | 175.0 | 325.0 | 3 |
 
 ## Ordered-Set Aggregates (WITHIN GROUP)
 
@@ -379,9 +379,9 @@ mode() WITHIN GROUP (ORDER BY X)
 
 Returns the most frequent value of X. If several values are equally frequent, the smallest is returned. Works with any type and returns the value in its original type.
 
-| Parameter | Type | Description                                        |
-| --------- | ---- | -------------------------------------------------- |
-| X         | any  | The expression whose most frequent value to return |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression whose most frequent value to return |
 
 **Return type:** same as X
 
@@ -395,9 +395,9 @@ GROUP BY region;
 ```
 
 | region | top\_product |
-| ------ | ------------ |
-| North  | Widget       |
-| South  | Widget       |
+| - | - |
+| North | Widget |
+| South | Widget |
 
 <Info>
   `mode()` is only valid with `WITHIN GROUP`; calling `mode(X)` without it is an error.
@@ -415,10 +415,10 @@ Compute the `fraction`-th percentile of X, where `fraction` is between 0.0 and 1
 * `percentile_cont` returns a continuous, interpolated value (always REAL).
 * `percentile_disc` returns the actual element at the discrete percentile position, in its original type.
 
-| Parameter | Type                                                  | Description                               |
-| --------- | ----------------------------------------------------- | ----------------------------------------- |
-| fraction  | REAL                                                  | Percentile fraction, 0.0 to 1.0           |
-| X         | numeric (`percentile_cont`) / any (`percentile_disc`) | The values to compute the percentile over |
+| Parameter | Type | Description |
+| - | - | - |
+| fraction | REAL | Percentile fraction, 0.0 to 1.0 |
+| X | numeric (`percentile_cont`) / any (`percentile_disc`) | The values to compute the percentile over |
 
 **Return type:** REAL for `percentile_cont`; same as X for `percentile_disc`
 
@@ -466,9 +466,9 @@ array_agg(X)
 
 Collects all values of X (including NULLs) into an array. Returns NULL if the group is empty.
 
-| Parameter | Type | Description                                          |
-| --------- | ---- | ---------------------------------------------------- |
-| X         | any  | The expression whose values to collect into an array |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any | The expression whose values to collect into an array |
 
 **Return type:** BLOB (array)
 
@@ -479,10 +479,10 @@ SELECT array_agg(name) FROM users;
 SELECT department, array_agg(name) FROM employees GROUP BY department;
 ```
 
-| department  | array\_agg(name)           |
-| ----------- | -------------------------- |
-| Engineering | \["Alice","Bob"]           |
-| Sales       | \["Charlie","Diana","Eve"] |
+| department | array\_agg(name) |
+| - | - |
+| Engineering | \["Alice","Bob"] |
+| Sales | \["Charlie","Diana","Eve"] |
 
 ```sql theme={null}
 -- Control ordering with a subquery
@@ -507,9 +507,9 @@ stddev(X)
 
 Returns the population standard deviation of all non-NULL values of X. Returns NULL if there are no non-NULL values.
 
-| Parameter | Type        | Description                                         |
-| --------- | ----------- | --------------------------------------------------- |
-| X         | any numeric | The expression to compute the standard deviation of |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any numeric | The expression to compute the standard deviation of |
 
 **Return type:** REAL
 
@@ -537,9 +537,9 @@ median(X)
 
 Returns the median (middle value) of all non-NULL values of X.
 
-| Parameter | Type        | Description                          |
-| --------- | ----------- | ------------------------------------ |
-| X         | any numeric | The expression to find the median of |
+| Parameter | Type | Description |
+| - | - | - |
+| X | any numeric | The expression to find the median of |
 
 **Return type:** REAL
 
@@ -560,10 +560,10 @@ percentile(Y, P)
 
 Returns the P-th percentile of all non-NULL values of Y. Uses linear interpolation between adjacent values.
 
-| Parameter | Type        | Description                               |
-| --------- | ----------- | ----------------------------------------- |
-| Y         | any numeric | The values to compute the percentile over |
-| P         | REAL        | The percentile to compute (0.0 to 100.0)  |
+| Parameter | Type | Description |
+| - | - | - |
+| Y | any numeric | The values to compute the percentile over |
+| P | REAL | The percentile to compute (0.0 to 100.0) |
 
 **Return type:** REAL
 
@@ -582,10 +582,10 @@ percentile_disc(Y, P)
 
 These two-argument forms are a convenience provided by the **percentile** extension. The SQL-standard spelling — `percentile_cont(P) WITHIN GROUP (ORDER BY Y)` — is built in and needs no extension; see [Ordered-Set Aggregates](#ordered-set-aggregates-within-group) above. `percentile_cont` uses a continuous (interpolated) distribution, while `percentile_disc` returns a discrete input value.
 
-| Parameter | Type        | Description                               |
-| --------- | ----------- | ----------------------------------------- |
-| Y         | any numeric | The values to compute the percentile over |
-| P         | REAL        | The percentile fraction (0.0 to 1.0)      |
+| Parameter | Type | Description |
+| - | - | - |
+| Y | any numeric | The values to compute the percentile over |
+| P | REAL | The percentile fraction (0.0 to 1.0) |
 
 **Return type:** REAL
 

@@ -16,32 +16,32 @@ Turso supports **dense**, **sparse**, **quantized**, and **binary** vector repre
 
 Dense vectors store a value for every dimension. Turso provides two precision levels:
 
-| Function   | Precision    | Storage per dimension | Best for                                           |
-| ---------- | ------------ | --------------------- | -------------------------------------------------- |
-| `vector32` | 32-bit float | 4 bytes               | Most ML embeddings (OpenAI, sentence transformers) |
-| `vector64` | 64-bit float | 8 bytes               | Applications requiring higher precision            |
+| Function | Precision | Storage per dimension | Best for |
+| - | - | - | - |
+| `vector32` | 32-bit float | 4 bytes | Most ML embeddings (OpenAI, sentence transformers) |
+| `vector64` | 64-bit float | 8 bytes | Applications requiring higher precision |
 
 ### Sparse Vectors
 
 Sparse vectors only store non-zero values and their indices, making them memory-efficient for high-dimensional data with many zero values.
 
-| Function          | Storage                   | Best for                                           |
-| ----------------- | ------------------------- | -------------------------------------------------- |
+| Function | Storage | Best for |
+| - | - | - |
 | `vector32_sparse` | Non-zero values + indices | TF-IDF, bag-of-words, high-dimensional sparse data |
 
 ### Quantized Vectors
 
-| Function  | Storage per dimension      | Best for                                                                             |
-| --------- | -------------------------- | ------------------------------------------------------------------------------------ |
+| Function | Storage per dimension | Best for |
+| - | - | - |
 | `vector8` | 1 byte (+8 bytes overhead) | Large-scale search where \~4x compression vs Float32 is worth minimal precision loss |
 
 Values are linearly quantized to the 0-255 range using min/max scaling. Dequantization: `f_i = alpha * q_i + shift`.
 
 ### Binary Vectors
 
-| Function     | Storage per dimension | Best for                                                                           |
-| ------------ | --------------------- | ---------------------------------------------------------------------------------- |
-| `vector1bit` | 1 bit                 | Binary hashing, approximate nearest neighbor search (\~32x compression vs Float32) |
+| Function | Storage per dimension | Best for |
+| - | - | - |
+| `vector1bit` | 1 bit | Binary hashing, approximate nearest neighbor search (\~32x compression vs Float32) |
 
 Positive values become 1, non-positive values become 0. Extracted values are displayed as +1/-1.
 

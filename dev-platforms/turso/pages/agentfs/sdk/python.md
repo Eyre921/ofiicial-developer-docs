@@ -269,53 +269,53 @@ asyncio.run(main())
 
 ### AgentFS
 
-| Method                  | Description                        |
-| ----------------------- | ---------------------------------- |
+| Method | Description |
+| - | - |
 | `AgentFS.open(options)` | Open or create an agent filesystem |
-| `agent.close()`         | Close the database connection      |
-| `agent.kv`              | Key-value store interface          |
-| `agent.fs`              | Filesystem interface               |
-| `agent.tools`           | Tool calls interface               |
+| `agent.close()` | Close the database connection |
+| `agent.kv` | Key-value store interface |
+| `agent.fs` | Filesystem interface |
+| `agent.tools` | Tool calls interface |
 
 ### AgentFSOptions
 
-| Property | Type  | Description                                   |
-| -------- | ----- | --------------------------------------------- |
-| `id`     | `str` | Agent identifier (creates `.agentfs/{id}.db`) |
-| `path`   | `str` | Custom database path                          |
+| Property | Type | Description |
+| - | - | - |
+| `id` | `str` | Agent identifier (creates `.agentfs/{id}.db`) |
+| `path` | `str` | Custom database path |
 
 ### KvStore
 
-| Method            | Description           |
-| ----------------- | --------------------- |
-| `set(key, value)` | Store a value         |
-| `get(key)`        | Retrieve a value      |
-| `delete(key)`     | Delete a key          |
-| `list(prefix)`    | List keys with prefix |
+| Method | Description |
+| - | - |
+| `set(key, value)` | Store a value |
+| `get(key)` | Retrieve a value |
+| `delete(key)` | Delete a key |
+| `list(prefix)` | List keys with prefix |
 
 ### Filesystem
 
-| Method                      | Description            |
-| --------------------------- | ---------------------- |
-| `write_file(path, content)` | Write file contents    |
-| `read_file(path, encoding)` | Read file contents     |
-| `readdir(path)`             | List directory entries |
-| `stat(path)`                | Get file metadata      |
-| `delete_file(path)`         | Delete a file          |
-| `mkdir(path)`               | Create directory       |
+| Method | Description |
+| - | - |
+| `write_file(path, content)` | Write file contents |
+| `read_file(path, encoding)` | Read file contents |
+| `readdir(path)` | List directory entries |
+| `stat(path)` | Get file metadata |
+| `delete_file(path)` | Delete a file |
+| `mkdir(path)` | Create directory |
 
 ### ToolCalls
 
-| Method                     | Description             |
-| -------------------------- | ----------------------- |
-| `start(name, params)`      | Start tracking a call   |
-| `success(id, result)`      | Mark call as successful |
-| `error(id, message)`       | Mark call as failed     |
-| `record(...)`              | Record a completed call |
-| `get(id)`                  | Get call by ID          |
-| `get_by_name(name, limit)` | Query by tool name      |
-| `get_recent(since)`        | Get recent calls        |
-| `get_stats()`              | Get usage statistics    |
+| Method | Description |
+| - | - |
+| `start(name, params)` | Start tracking a call |
+| `success(id, result)` | Mark call as successful |
+| `error(id, message)` | Mark call as failed |
+| `record(...)` | Record a completed call |
+| `get(id)` | Get call by ID |
+| `get_by_name(name, limit)` | Query by tool name |
+| `get_recent(since)` | Get recent calls |
+| `get_stats()` | Get usage statistics |
 
 ## Next Steps
 

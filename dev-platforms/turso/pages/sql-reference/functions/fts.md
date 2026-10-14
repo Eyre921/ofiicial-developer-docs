@@ -44,20 +44,20 @@ CREATE INDEX idx_tags ON tags USING fts (tag) WITH (tokenizer = 'raw');
 
 ### Available Tokenizers
 
-| Tokenizer    | Description                                                                        | Use case                                   |
-| ------------ | ---------------------------------------------------------------------------------- | ------------------------------------------ |
-| `default`    | Unicode-aware tokenizer with lowercasing and punctuation splitting (40-char limit) | General-purpose text search                |
-| `raw`        | No tokenization -- matches the entire field value as a single token                | IDs, UUIDs, tags, exact-match fields       |
-| `simple`     | Splits on whitespace and punctuation without lowercasing                           | Simple text without case-insensitive needs |
-| `whitespace` | Splits on whitespace only                                                          | Whitespace-delimited tokens                |
-| `ngram`      | Generates 2-3 character n-grams from the text                                      | Autocomplete, substring matching           |
+| Tokenizer | Description | Use case |
+| - | - | - |
+| `default` | Unicode-aware tokenizer with lowercasing and punctuation splitting (40-char limit) | General-purpose text search |
+| `raw` | No tokenization -- matches the entire field value as a single token | IDs, UUIDs, tags, exact-match fields |
+| `simple` | Splits on whitespace and punctuation without lowercasing | Simple text without case-insensitive needs |
+| `whitespace` | Splits on whitespace only | Whitespace-delimited tokens |
+| `ngram` | Generates 2-3 character n-grams from the text | Autocomplete, substring matching |
 
 **Tokenizer examples:**
 
-| Input         | default          | raw           | ngram                                      |
-| ------------- | ---------------- | ------------- | ------------------------------------------ |
+| Input | default | raw | ngram |
+| - | - | - | - |
 | `Hello World` | `hello`, `world` | `Hello World` | `He`, `Hel`, `el`, `ell`, `ll`, `llo`, ... |
-| `user-123`    | `user`, `123`    | `user-123`    | `us`, `use`, `se`, `ser`, ...              |
+| `user-123` | `user`, `123` | `user-123` | `us`, `use`, `se`, `ser`, ... |
 
 ### Field Weights
 
@@ -68,8 +68,8 @@ CREATE INDEX idx_articles ON articles USING fts (title, body)
     WITH (weights = 'title=2.0,body=1.0');
 ```
 
-| Parameter | Default              | Description                                                                        |
-| --------- | -------------------- | ---------------------------------------------------------------------------------- |
+| Parameter | Default | Description |
+| - | - | - |
 | `weights` | `1.0` for all fields | Comma-separated `column=weight` pairs. Higher weights increase score contribution. |
 
 ***
@@ -84,10 +84,10 @@ Returns 1 if the row matches the full-text query, or 0 otherwise. Used in the `W
 fts_match(column1, column2, ..., query)
 ```
 
-| Parameter               | Type | Description                                                       |
-| ----------------------- | ---- | ----------------------------------------------------------------- |
-| `column1, column2, ...` | TEXT | One or more columns covered by an FTS index                       |
-| `query`                 | TEXT | The search query string (see [Query Syntax](#query-syntax) below) |
+| Parameter | Type | Description |
+| - | - | - |
+| `column1, column2, ...` | TEXT | One or more columns covered by an FTS index |
+| `query` | TEXT | The search query string (see [Query Syntax](#query-syntax) below) |
 
 **Returns:** INTEGER -- 1 if the row matches, 0 otherwise.
 
@@ -110,10 +110,10 @@ Computes the BM25 relevance score for each matching row. Lower scores indicate h
 fts_score(column1, column2, ..., query)
 ```
 
-| Parameter               | Type | Description                                 |
-| ----------------------- | ---- | ------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `column1, column2, ...` | TEXT | One or more columns covered by an FTS index |
-| `query`                 | TEXT | The search query string                     |
+| `query` | TEXT | The search query string |
 
 **Returns:** REAL -- the BM25 relevance score. Lower values mean higher relevance.
 
@@ -137,12 +137,12 @@ Returns text with matching query terms wrapped in custom tags. Useful for displa
 fts_highlight(column1, column2, ..., open_tag, close_tag, query)
 ```
 
-| Parameter               | Type | Description                                                |
-| ----------------------- | ---- | ---------------------------------------------------------- |
-| `column1, column2, ...` | TEXT | One or more text columns to highlight                      |
-| `open_tag`              | TEXT | The tag to insert before each matching term (e.g. `'<b>'`) |
-| `close_tag`             | TEXT | The tag to insert after each matching term (e.g. `'</b>'`) |
-| `query`                 | TEXT | The search query string                                    |
+| Parameter | Type | Description |
+| - | - | - |
+| `column1, column2, ...` | TEXT | One or more text columns to highlight |
+| `open_tag` | TEXT | The tag to insert before each matching term (e.g. `'<b>'`) |
+| `close_tag` | TEXT | The tag to insert after each matching term (e.g. `'</b>'`) |
+| `query` | TEXT | The search query string |
 
 **Returns:** TEXT -- the input text with matching terms wrapped in the specified tags. Returns the original text if no matches are found. Returns NULL if the query, open\_tag, or close\_tag is NULL.
 
@@ -172,21 +172,21 @@ The query string passed to `fts_match` and `fts_score` supports Tantivy's query 
 
 ### Basic queries
 
-| Syntax              | Example                 | Description                                  |
-| ------------------- | ----------------------- | -------------------------------------------- |
-| Single term         | `'database'`            | Match rows containing "database"             |
-| Multiple terms (OR) | `'database search'`     | Match rows containing "database" OR "search" |
-| Boolean AND         | `'database AND search'` | Match rows containing both terms             |
-| Boolean NOT         | `'database NOT nosql'`  | Match "database" but exclude "nosql"         |
+| Syntax | Example | Description |
+| - | - | - |
+| Single term | `'database'` | Match rows containing "database" |
+| Multiple terms (OR) | `'database search'` | Match rows containing "database" OR "search" |
+| Boolean AND | `'database AND search'` | Match rows containing both terms |
+| Boolean NOT | `'database NOT nosql'` | Match "database" but exclude "nosql" |
 
 ### Advanced queries
 
-| Syntax          | Example              | Description                                |
-| --------------- | -------------------- | ------------------------------------------ |
-| Phrase search   | `'"exact phrase"'`   | Match the exact phrase                     |
-| Prefix search   | `'data*'`            | Match terms starting with "data"           |
-| Column-specific | `'title:database'`   | Match "database" only in the `title` field |
-| Boosting        | `'title:database^2'` | Boost matches in `title` by a factor of 2  |
+| Syntax | Example | Description |
+| - | - | - |
+| Phrase search | `'"exact phrase"'` | Match the exact phrase |
+| Prefix search | `'data*'` | Match terms starting with "data" |
+| Column-specific | `'title:database'` | Match "database" only in the `title` field |
+| Boosting | `'title:database^2'` | Boost matches in `title` by a factor of 2 |
 
 ### Examples
 
@@ -306,11 +306,11 @@ OPTIMIZE INDEX;
 
 FTS indexes are updated automatically when you modify the underlying table.
 
-| Operation | FTS behavior                                                            |
-| --------- | ----------------------------------------------------------------------- |
-| `INSERT`  | New rows are indexed immediately (batched commits every 1000 documents) |
-| `UPDATE`  | Implemented as DELETE + INSERT internally                               |
-| `DELETE`  | Marks documents as deleted via tombstones, cleaned up on OPTIMIZE       |
+| Operation | FTS behavior |
+| - | - |
+| `INSERT` | New rows are indexed immediately (batched commits every 1000 documents) |
+| `UPDATE` | Implemented as DELETE + INSERT internally |
+| `DELETE` | Marks documents as deleted via tombstones, cleaned up on OPTIMIZE |
 
 ```sql theme={null}
 -- All of these automatically update the FTS index
@@ -323,19 +323,19 @@ DELETE FROM articles WHERE id = 5;
 
 ## Comparison with SQLite FTS5
 
-| Feature                | SQLite FTS5                          | Turso FTS                                 |
-| ---------------------- | ------------------------------------ | ----------------------------------------- |
-| Filtering              | `WHERE t MATCH 'query'`              | `WHERE fts_match(cols, 'query')`          |
-| Ranking                | `bm25(t)`, `rank` column             | `fts_score(cols, 'query')`                |
-| Highlighting           | `highlight(t, col_idx, open, close)` | `fts_highlight(cols, open, close, query)` |
-| Snippets               | `snippet(t, ...)`                    | Not supported                             |
-| Boolean operators      | AND, OR, NOT                         | AND, OR, NOT                              |
-| Phrase search          | `"exact phrase"`                     | `"exact phrase"`                          |
-| Prefix search          | `word*`                              | `word*`                                   |
-| Column filter          | `col:term`                           | `col:term`                                |
-| Tokenizers             | unicode61, ascii, porter             | default, raw, simple, whitespace, ngram   |
-| Segment management     | Automatic                            | Manual via `OPTIMIZE INDEX`               |
-| Transaction visibility | Immediate                            | After COMMIT                              |
+| Feature | SQLite FTS5 | Turso FTS |
+| - | - | - |
+| Filtering | `WHERE t MATCH 'query'` | `WHERE fts_match(cols, 'query')` |
+| Ranking | `bm25(t)`, `rank` column | `fts_score(cols, 'query')` |
+| Highlighting | `highlight(t, col_idx, open, close)` | `fts_highlight(cols, open, close, query)` |
+| Snippets | `snippet(t, ...)` | Not supported |
+| Boolean operators | AND, OR, NOT | AND, OR, NOT |
+| Phrase search | `"exact phrase"` | `"exact phrase"` |
+| Prefix search | `word*` | `word*` |
+| Column filter | `col:term` | `col:term` |
+| Tokenizers | unicode61, ascii, porter | default, raw, simple, whitespace, ngram |
+| Segment management | Automatic | Manual via `OPTIMIZE INDEX` |
+| Transaction visibility | Immediate | After COMMIT |
 
 ***
 

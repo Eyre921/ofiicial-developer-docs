@@ -11,12 +11,12 @@ Two rules cover almost every case:
 1. **If a local database is involved, use the Turso packages.** That means fully local databases (embedded, on-device, offline) and local databases that sync with the cloud — even when the database on the other side is libSQL.
 2. **If your application only talks to a cloud database over the network, match the driver to the database engine.** [Turso databases](/tursodb/quickstart) use the serverless drivers; [libSQL](/libsql) databases use the libSQL clients.
 
-| Use case                                          | TypeScript                  | Python                | Go                    | Rust                             |
-| ------------------------------------------------- | --------------------------- | --------------------- | --------------------- | -------------------------------- |
-| **Local database** (embedded, on-device, offline) | `@tursodatabase/database`   | `pyturso`             | `tursogo`             | `turso`                          |
-| **Local database + cloud sync** (push/pull)       | `@tursodatabase/sync`       | `pyturso` (with sync) | `tursogo` (with sync) | `turso` (with `sync` feature)    |
-| **Remote Turso database** (over-the-wire)         | `@tursodatabase/serverless` | `turso_serverless`    | `tursogo-serverless`  | `turso_serverless`               |
-| **Remote libSQL database** (over-the-wire)        | `@libsql/client`            | `libsql`              | `libsql-client-go`    | `libsql` (with `remote` feature) |
+| Use case | TypeScript | Python | Go | Rust |
+| - | - | - | - | - |
+| **Local database** (embedded, on-device, offline) | `@tursodatabase/database` | `pyturso` | `tursogo` | `turso` |
+| **Local database + cloud sync** (push/pull) | `@tursodatabase/sync` | `pyturso` (with sync) | `tursogo` (with sync) | `turso` (with `sync` feature) |
+| **Remote Turso database** (over-the-wire) | `@tursodatabase/serverless` | `turso_serverless` | `tursogo-serverless` | `turso_serverless` |
+| **Remote libSQL database** (over-the-wire) | `@libsql/client` | `libsql` | `libsql-client-go` | `libsql` (with `remote` feature) |
 
 **Starting a new project?** Use `@tursodatabase/database` (TypeScript), `pyturso` (Python), `tursogo` (Go), or `turso` (Rust). These are built on the Turso engine — the ground-up rewrite of SQLite with concurrent writes, async I/O, and local-first sync.
 

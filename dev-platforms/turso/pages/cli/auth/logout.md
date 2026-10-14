@@ -12,6 +12,6 @@ turso auth logout
 
 ## Flags
 
-| Flag        | Description                                   |
-| ----------- | --------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-a, --all` | Invalidate all sessions for the current user. |

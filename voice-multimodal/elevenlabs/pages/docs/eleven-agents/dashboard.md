@@ -165,3 +165,7 @@ Extract structured data from conversations for analytics
 #### [Real-time monitoring](/docs/eleven-agents/guides/realtime-monitoring)
 
 Observe live conversations and send control commands
+
+#### [Alerts](/docs/eleven-agents/operate/alerts)
+
+Get notified when agent error rates spike

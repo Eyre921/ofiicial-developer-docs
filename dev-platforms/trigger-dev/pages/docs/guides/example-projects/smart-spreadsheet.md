@@ -39,7 +39,7 @@ The enrichment workflow:
 
 ## Features
 
-* **Parallel processing** – All four enrichment categories run simultaneously using [batch.triggerByTaskAndWait](/docs/triggering#batch-trigger-by-task-and-wait)
+* **Parallel processing** – All four enrichment categories run simultaneously using [batch.triggerByTaskAndWait](/docs/triggering#batch-triggerbytaskandwait)
 * **Source attribution** – Every data point includes the URL it was extracted from
 * **Live updates** – Results appear in the UI as each task completes using [Realtime](/docs/realtime/overview)
 * **Structured extraction** – Zod schemas ensure consistent data output from Claude

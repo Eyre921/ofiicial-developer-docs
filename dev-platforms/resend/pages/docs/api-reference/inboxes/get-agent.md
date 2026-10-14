@@ -21,21 +21,22 @@ Retrieve the agent settings for an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-An inbox without a configured agent returns empty settings.
+An inbox without a configured agent returns empty settings: `instructions` and
+`tone` are `null` and `enabled_actions` is an empty array.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Response Fields
@@ -55,9 +56,9 @@ An inbox without a configured agent returns empty settings.
 </ParamField>
 
 <ParamField type="string[]">
-  Actions the agent is allowed to take. Each entry is one of `draft_reply`,
-  `forward_thread`, `add_labels`, `assign_thread`, `mark_as_spam`,
-  `archive_thread`, or `delete_thread`.
+  Actions the agent is allowed to take. Empty when no actions are enabled. Each
+  entry is one of `draft_reply`, `forward_thread`, `add_labels`,
+  `assign_thread`, `mark_as_spam`, `archive_thread`, or `delete_thread`.
 </ParamField>
 
 <RequestExample>
@@ -77,7 +78,7 @@ An inbox without a configured agent returns empty settings.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes agent get --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes agent get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 

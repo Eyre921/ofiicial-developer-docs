@@ -16,13 +16,13 @@ turso auth api-tokens mint <api-token-name> --org <organization-slug>
 
 ## Flags
 
-| Flag            | Description                                                                                     |
-| --------------- | ----------------------------------------------------------------------------------------------- |
-| `--org`         | Restrict the token to a specific organization.                                                  |
-| `--group`       | Restrict the token to a specific group inside `--org`. Requires `--org` and at least one scope. |
-| `--scope`       | Permission to grant a group-scoped token. Repeatable.                                           |
-| `--read-only`   | Shorthand for `--scope read`.                                                                   |
-| `--full-access` | Shorthand for granting every scope.                                                             |
+| Flag | Description |
+| - | - |
+| `--org` | Restrict the token to a specific organization. |
+| `--group` | Restrict the token to a specific group inside `--org`. Requires `--org` and at least one scope. |
+| `--scope` | Permission to grant a group-scoped token. Repeatable. |
+| `--read-only` | Shorthand for `--scope read`. |
+| `--full-access` | Shorthand for granting every scope. |
 
 ## Organization-scoped tokens
 
@@ -56,17 +56,17 @@ turso auth api-tokens mint deploy-bot --org my-org --group default \
 
 `--scope` can be repeated and accepts any of the following:
 
-| Scope                | Allows                                                                                                |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| `read`               | All GET-style routes: list/retrieve databases and groups, configuration, usage, instances, locations. |
-| `db:create`          | Create databases inside the group, seed from a dump, restore.                                         |
-| `db:delete`          | Delete a database inside the group.                                                                   |
-| `db:configure`       | Patch database configuration, transfer, wake, add or remove instances.                                |
-| `db:mint-token`      | Issue a SQL-engine token or TLS client certificate for a database inside the group.                   |
-| `db:rotate-creds`    | Rotate the database signing key, invalidating every SQL token previously issued for it.               |
-| `group:configure`    | Configure, rename, update, unarchive the group, or add and remove locations.                          |
-| `group:mint-token`   | Issue a group-level SQL-engine token.                                                                 |
-| `group:rotate-creds` | Rotate the group signing key, invalidating every SQL token issued against any database in the group.  |
+| Scope | Allows |
+| - | - |
+| `read` | All GET-style routes: list/retrieve databases and groups, configuration, usage, instances, locations. |
+| `db:create` | Create databases inside the group, seed from a dump, restore. |
+| `db:delete` | Delete a database inside the group. |
+| `db:configure` | Patch database configuration, transfer, wake, add or remove instances. |
+| `db:mint-token` | Issue a SQL-engine token or TLS client certificate for a database inside the group. |
+| `db:rotate-creds` | Rotate the database signing key, invalidating every SQL token previously issued for it. |
+| `group:configure` | Configure, rename, update, unarchive the group, or add and remove locations. |
+| `group:mint-token` | Issue a group-level SQL-engine token. |
+| `group:rotate-creds` | Rotate the group signing key, invalidating every SQL token issued against any database in the group. |
 
 <Warning>
   `db:mint-token` and `db:rotate-creds` are deliberately separate scopes. Minting a new SQL credential is additive; rotating invalidates every credential currently in use, which can take down running applications. Grant rotation only to automations that need it.

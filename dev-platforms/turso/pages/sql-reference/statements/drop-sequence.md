@@ -26,11 +26,11 @@ DROP SEQUENCE removes the named sequence from the database schema. The sequence 
 
 ### Clauses
 
-| Clause          | Description                                                                                                                    |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `IF EXISTS`     | Suppresses the error that would occur if the sequence does not exist. The statement is a no-op when the sequence is not found. |
-| `schema-name`   | The name of an attached database. Defaults to the main database if omitted.                                                    |
-| `sequence-name` | The name of the sequence to remove.                                                                                            |
+| Clause | Description |
+| - | - |
+| `IF EXISTS` | Suppresses the error that would occur if the sequence does not exist. The statement is a no-op when the sequence is not found. |
+| `schema-name` | The name of an attached database. Defaults to the main database if omitted. |
+| `sequence-name` | The name of the sequence to remove. |
 
 ## Examples
 
@@ -74,8 +74,8 @@ SELECT nextval('counter');
 
 ## Errors
 
-| Error                            | Cause                                                                |
-| -------------------------------- | -------------------------------------------------------------------- |
+| Error | Cause |
+| - | - |
 | `sequence "name" does not exist` | No sequence with that name exists and `IF EXISTS` was not specified. |
 
 ## See Also

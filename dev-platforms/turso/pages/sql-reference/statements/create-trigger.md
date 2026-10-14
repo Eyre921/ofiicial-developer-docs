@@ -31,18 +31,18 @@ A trigger defines a set of SQL statements that run automatically when a specifie
 
 ### Parameters
 
-| Parameter                         | Description                                                                                                                                                                    |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `TEMPORARY`                       | Creates the trigger in a temporary database. The trigger is visible only to the current connection and is dropped when the connection closes. `TEMP` is accepted as a synonym. |
-| `IF NOT EXISTS`                   | Prevents an error if a trigger with the same name already exists.                                                                                                              |
-| `schema-name`                     | The name of the attached database containing the trigger. Defaults to the main database if omitted. Cannot be used with `TEMPORARY`.                                           |
-| `trigger-name`                    | A unique name for the trigger within the database.                                                                                                                             |
-| `BEFORE` / `AFTER` / `INSTEAD OF` | When the trigger fires relative to the triggering event. Default is `BEFORE`. `INSTEAD OF` triggers are not yet supported.                                                     |
-| `INSERT` / `UPDATE` / `DELETE`    | The data modification event that fires the trigger.                                                                                                                            |
-| `OF column-name, ...`             | For UPDATE triggers only. Restricts the trigger to fire only when the specified columns are modified.                                                                          |
-| `table-name`                      | The table (or view, for INSTEAD OF triggers) that the trigger monitors.                                                                                                        |
-| `FOR EACH ROW`                    | The trigger fires once per modified row. This is the only supported mode and is the default even if omitted.                                                                   |
-| `WHEN expression`                 | An optional condition. The trigger body executes only for rows where the expression evaluates to true.                                                                         |
+| Parameter | Description |
+| - | - |
+| `TEMPORARY` | Creates the trigger in a temporary database. The trigger is visible only to the current connection and is dropped when the connection closes. `TEMP` is accepted as a synonym. |
+| `IF NOT EXISTS` | Prevents an error if a trigger with the same name already exists. |
+| `schema-name` | The name of the attached database containing the trigger. Defaults to the main database if omitted. Cannot be used with `TEMPORARY`. |
+| `trigger-name` | A unique name for the trigger within the database. |
+| `BEFORE` / `AFTER` / `INSTEAD OF` | When the trigger fires relative to the triggering event. Default is `BEFORE`. `INSTEAD OF` triggers are not yet supported. |
+| `INSERT` / `UPDATE` / `DELETE` | The data modification event that fires the trigger. |
+| `OF column-name, ...` | For UPDATE triggers only. Restricts the trigger to fire only when the specified columns are modified. |
+| `table-name` | The table (or view, for INSTEAD OF triggers) that the trigger monitors. |
+| `FOR EACH ROW` | The trigger fires once per modified row. This is the only supported mode and is the default even if omitted. |
+| `WHEN expression` | An optional condition. The trigger body executes only for rows where the expression evaluates to true. |
 
 ## Trigger Timing
 
@@ -73,10 +73,10 @@ In SQLite, an `INSTEAD OF` trigger can only be created on a view and fires in pl
 
 Inside a trigger body, `NEW` and `OLD` are special row references that provide access to column values.
 
-| Reference    | INSERT               | UPDATE              | DELETE              |
-| ------------ | -------------------- | ------------------- | ------------------- |
-| `NEW.column` | Value being inserted | Updated value       | Not available       |
-| `OLD.column` | Not available        | Value before update | Value being deleted |
+| Reference | INSERT | UPDATE | DELETE |
+| - | - | - | - |
+| `NEW.column` | Value being inserted | Updated value | Not available |
+| `OLD.column` | Not available | Value before update | Value being deleted |
 
 ```sql theme={null}
 -- Access individual columns
@@ -116,12 +116,12 @@ END;
 
 The `RAISE` function is used inside trigger bodies (and other contexts) to interrupt execution and signal an error. It takes one of four forms:
 
-| Form                       | Behavior                                                                                                                                                                     |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RAISE(IGNORE)`            | Skips the remainder of the trigger body and the triggering statement for the current row. Processing continues with the next row.                                            |
-| `RAISE(ABORT, message)`    | Aborts the current statement and rolls back any changes made by that statement, but preserves prior changes in the transaction. This is the default error handling behavior. |
-| `RAISE(ROLLBACK, message)` | Aborts the current statement and rolls back the entire transaction.                                                                                                          |
-| `RAISE(FAIL, message)`     | Aborts the current statement. Changes already made by the statement (previous rows) are preserved, but the current row and subsequent rows are not processed.                |
+| Form | Behavior |
+| - | - |
+| `RAISE(IGNORE)` | Skips the remainder of the trigger body and the triggering statement for the current row. Processing continues with the next row. |
+| `RAISE(ABORT, message)` | Aborts the current statement and rolls back any changes made by that statement, but preserves prior changes in the transaction. This is the default error handling behavior. |
+| `RAISE(ROLLBACK, message)` | Aborts the current statement and rolls back the entire transaction. |
+| `RAISE(FAIL, message)` | Aborts the current statement. Changes already made by the statement (previous rows) are preserved, but the current row and subsequent rows are not processed. |
 
 ```sql theme={null}
 CREATE TRIGGER validate_age

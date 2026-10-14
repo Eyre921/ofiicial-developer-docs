@@ -10,17 +10,23 @@ Run the command like this:
 
 <CodeGroup>
   ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest update
+  npx trigger.dev@latest update [path]
   ```
 
   ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest update
+  pnpm dlx trigger.dev@latest update [path]
   ```
 
   ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest update
+  yarn dlx trigger.dev@latest update [path]
   ```
 </CodeGroup>
+
+## Arguments
+
+<ParamField type="[path]">
+  The directory that contains the `package.json` file. Defaults to `.`.
+</ParamField>
 
 ## Options
 

@@ -22,11 +22,11 @@ DROP TABLE [IF EXISTS] [schema-name.]table-name;
 
 ### Parameters
 
-| Parameter     | Description                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| `IF EXISTS`   | Prevents an error if the table does not exist. The statement is a no-op when the table is absent. |
+| Parameter | Description |
+| - | - |
+| `IF EXISTS` | Prevents an error if the table does not exist. The statement is a no-op when the table is absent. |
 | `schema-name` | The name of the attached database containing the table. Defaults to the main database if omitted. |
-| `table-name`  | The name of the table to drop.                                                                    |
+| `table-name` | The name of the table to drop. |
 
 ### Behavior
 

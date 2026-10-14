@@ -12,6 +12,6 @@ turso org members invite <email> [flags]
 
 ## Flags
 
-| Flag            | Description               |
-| --------------- | ------------------------- |
+| Flag | Description |
+| - | - |
 | `-a`, `--admin` | Add the user as an admin. |

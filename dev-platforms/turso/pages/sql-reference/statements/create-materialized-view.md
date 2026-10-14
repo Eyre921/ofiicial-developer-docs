@@ -22,11 +22,11 @@ CREATE MATERIALIZED VIEW [IF NOT EXISTS] view-name AS select-statement;
 
 ### Parameters
 
-| Parameter          | Description                                                                                                                    |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| `IF NOT EXISTS`    | Prevents an error if a materialized view with the same name already exists. The statement is a no-op when the view is present. |
-| `view-name`        | A unique name for the materialized view within the database.                                                                   |
-| `select-statement` | The SELECT query that defines the materialized view's contents.                                                                |
+| Parameter | Description |
+| - | - |
+| `IF NOT EXISTS` | Prevents an error if a materialized view with the same name already exists. The statement is a no-op when the view is present. |
+| `view-name` | A unique name for the materialized view within the database. |
+| `select-statement` | The SELECT query that defines the materialized view's contents. |
 
 ## How Incremental View Maintenance Works
 

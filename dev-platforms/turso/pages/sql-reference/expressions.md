@@ -60,14 +60,14 @@ SELECT 0;    -- false
 
 ### Arithmetic Operators
 
-| Operator    | Description    | Example  | Result                 |
-| ----------- | -------------- | -------- | ---------------------- |
-| `+`         | Addition       | `3 + 4`  | `7`                    |
-| `-`         | Subtraction    | `10 - 3` | `7`                    |
-| `*`         | Multiplication | `3 * 4`  | `12`                   |
-| `/`         | Division       | `10 / 3` | `3` (integer division) |
-| `-` (unary) | Negation       | `-5`     | `-5`                   |
-| `+` (unary) | No-op          | `+5`     | `5`                    |
+| Operator | Description | Example | Result |
+| - | - | - | - |
+| `+` | Addition | `3 + 4` | `7` |
+| `-` | Subtraction | `10 - 3` | `7` |
+| `*` | Multiplication | `3 * 4` | `12` |
+| `/` | Division | `10 / 3` | `3` (integer division) |
+| `-` (unary) | Negation | `-5` | `-5` |
+| `+` (unary) | No-op | `+5` | `5` |
 
 Integer division truncates toward zero. Use `CAST` or multiply by `1.0` for floating-point division:
 
@@ -79,40 +79,40 @@ SELECT CAST(10 AS REAL) / 3;  -- 3.333...
 
 ### Comparison Operators
 
-| Operator     | Description           | Example  |
-| ------------ | --------------------- | -------- |
-| `=` or `==`  | Equal                 | `x = 5`  |
-| `!=` or `<>` | Not equal             | `x != 5` |
-| `<`          | Less than             | `x < 5`  |
-| `>`          | Greater than          | `x > 5`  |
-| `<=`         | Less than or equal    | `x <= 5` |
-| `>=`         | Greater than or equal | `x >= 5` |
+| Operator | Description | Example |
+| - | - | - |
+| `=` or `==` | Equal | `x = 5` |
+| `!=` or `<>` | Not equal | `x != 5` |
+| `<` | Less than | `x < 5` |
+| `>` | Greater than | `x > 5` |
+| `<=` | Less than or equal | `x <= 5` |
+| `>=` | Greater than or equal | `x >= 5` |
 
 All comparison operators return `1` (true), `0` (false), or `NULL` (if either operand is NULL).
 
 ### Logical Operators
 
-| Operator | Description | Example            |
-| -------- | ----------- | ------------------ |
-| `AND`    | Logical AND | `x > 0 AND x < 10` |
-| `OR`     | Logical OR  | `x = 1 OR x = 2`   |
-| `NOT`    | Logical NOT | `NOT x = 5`        |
+| Operator | Description | Example |
+| - | - | - |
+| `AND` | Logical AND | `x > 0 AND x < 10` |
+| `OR` | Logical OR | `x = 1 OR x = 2` |
+| `NOT` | Logical NOT | `NOT x = 5` |
 
 ### Bitwise Operators
 
-| Operator | Description | Example   | Result |
-| -------- | ----------- | --------- | ------ |
-| `&`      | Bitwise AND | `5 & 3`   | `1`    |
-| `\|`     | Bitwise OR  | `5 \| 3`  | `7`    |
-| `~`      | Bitwise NOT | `~5`      | `-6`   |
-| `<<`     | Left shift  | `1 << 4`  | `16`   |
-| `>>`     | Right shift | `16 >> 2` | `4`    |
+| Operator | Description | Example | Result |
+| - | - | - | - |
+| `&` | Bitwise AND | `5 & 3` | `1` |
+| `\|` | Bitwise OR | `5 \| 3` | `7` |
+| `~` | Bitwise NOT | `~5` | `-6` |
+| `<<` | Left shift | `1 << 4` | `16` |
+| `>>` | Right shift | `16 >> 2` | `4` |
 
 ### String Concatenation
 
-| Operator | Description   | Example                         | Result          |
-| -------- | ------------- | ------------------------------- | --------------- |
-| `\|\|`   | Concatenation | `'hello' \|\| ' ' \|\| 'world'` | `'hello world'` |
+| Operator | Description | Example | Result |
+| - | - | - | - |
+| `\|\|` | Concatenation | `'hello' \|\| ' ' \|\| 'world'` | `'hello world'` |
 
 When either operand is an array, `||` performs array concatenation instead. See [Array Operators](#array-operators).
 
@@ -122,12 +122,12 @@ When either operand is an array, `||` performs array concatenation instead. See 
   **Turso Extension**: Array operators are a Turso-specific feature not available in SQLite.
 </Info>
 
-| Operator                        | Description  | Example                        | Result      |
-| ------------------------------- | ------------ | ------------------------------ | ----------- |
-| `@>`                            | Contains all | `ARRAY[1,2,3] @> ARRAY[1,2]`   | `1`         |
-| `&&`                            | Overlaps     | `ARRAY[1,2,3] && ARRAY[3,4,5]` | `1`         |
-| `\|\|`                          | Array concat | `ARRAY[1,2] \|\| ARRAY[3,4]`   | `[1,2,3,4]` |
-| `=`, `!=`, `<`, `>`, `<=`, `>=` | Comparison   | `ARRAY[1,2] < ARRAY[1,3]`      | `1`         |
+| Operator | Description | Example | Result |
+| - | - | - | - |
+| `@>` | Contains all | `ARRAY[1,2,3] @> ARRAY[1,2]` | `1` |
+| `&&` | Overlaps | `ARRAY[1,2,3] && ARRAY[3,4,5]` | `1` |
+| `\|\|` | Array concat | `ARRAY[1,2] \|\| ARRAY[3,4]` | `[1,2,3,4]` |
+| `=`, `!=`, `<`, `>`, `<=`, `>=` | Comparison | `ARRAY[1,2] < ARRAY[1,3]` | `1` |
 
 The `@>` operator tests if the left array contains all elements of the right array. The `&&` operator tests if two arrays share any common elements. Both return `1` (true) or `0` (false).
 
@@ -149,10 +149,10 @@ The CAST expression converts a value to a specified type.
 CAST(expression AS type-name)
 ```
 
-| Parameter  | Type | Description          |
-| ---------- | ---- | -------------------- |
-| expression | any  | The value to convert |
-| type-name  | type | The target type name |
+| Parameter | Type | Description |
+| - | - | - |
+| expression | any | The value to convert |
+| type-name | type | The target type name |
 
 ```sql theme={null}
 SELECT CAST(3.7 AS INTEGER);    -- 3 (truncates toward zero)
@@ -176,11 +176,11 @@ expression COLLATE collation-name
 
 Built-in collation sequences:
 
-| Collation | Description                                      |
-| --------- | ------------------------------------------------ |
-| `BINARY`  | Byte-by-byte comparison (default)                |
-| `NOCASE`  | Case-insensitive comparison for ASCII characters |
-| `RTRIM`   | Like BINARY but ignores trailing spaces          |
+| Collation | Description |
+| - | - |
+| `BINARY` | Byte-by-byte comparison (default) |
+| `NOCASE` | Case-insensitive comparison for ASCII characters |
+| `RTRIM` | Like BINARY but ignores trailing spaces |
 
 ```sql theme={null}
 SELECT 'ABC' = 'abc';                        -- 0 (BINARY comparison)
@@ -397,12 +397,12 @@ RAISE(ABORT, error-message)
 RAISE(FAIL, error-message)
 ```
 
-| Form                   | Description                                                                       |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `RAISE(IGNORE)`        | Abandon the current trigger action but continue the statement                     |
-| `RAISE(ROLLBACK, msg)` | Abort the statement and roll back the current transaction                         |
-| `RAISE(ABORT, msg)`    | Abort the current statement; prior changes in the transaction are preserved       |
-| `RAISE(FAIL, msg)`     | Abort the current statement at the current point; prior row changes are preserved |
+| Form | Description |
+| - | - |
+| `RAISE(IGNORE)` | Abandon the current trigger action but continue the statement |
+| `RAISE(ROLLBACK, msg)` | Abort the statement and roll back the current transaction |
+| `RAISE(ABORT, msg)` | Abort the current statement; prior changes in the transaction are preserved |
+| `RAISE(FAIL, msg)` | Abort the current statement at the current point; prior row changes are preserved |
 
 ```sql theme={null}
 -- In a trigger
@@ -424,18 +424,18 @@ CREATE TYPE positive_int BASE integer
 
 Operators are evaluated in the following order (highest precedence first):
 
-| Precedence  | Operators                                                                                            |
-| ----------- | ---------------------------------------------------------------------------------------------------- |
-| 1 (highest) | `~` (unary NOT), `+` (unary), `-` (unary)                                                            |
-| 2           | `\|\|` (concatenation)                                                                               |
-| 3           | `*`, `/`                                                                                             |
-| 4           | `+`, `-`                                                                                             |
-| 5           | `<<`, `>>`, `&`, `\|`                                                                                |
-| 6           | `<`, `<=`, `>`, `>=`, `@>`, `&&`                                                                     |
-| 7           | `=`, `==`, `!=`, `<>`, `IS`, `IS NOT`, `IS DISTINCT FROM`, `IN`, `LIKE`, `GLOB`, `REGEXP`, `BETWEEN` |
-| 8           | `NOT`                                                                                                |
-| 9           | `AND`                                                                                                |
-| 10 (lowest) | `OR`                                                                                                 |
+| Precedence | Operators |
+| - | - |
+| 1 (highest) | `~` (unary NOT), `+` (unary), `-` (unary) |
+| 2 | `\|\|` (concatenation) |
+| 3 | `*`, `/` |
+| 4 | `+`, `-` |
+| 5 | `<<`, `>>`, `&`, `\|` |
+| 6 | `<`, `<=`, `>`, `>=`, `@>`, `&&` |
+| 7 | `=`, `==`, `!=`, `<>`, `IS`, `IS NOT`, `IS DISTINCT FROM`, `IN`, `LIKE`, `GLOB`, `REGEXP`, `BETWEEN` |
+| 8 | `NOT` |
+| 9 | `AND` |
+| 10 (lowest) | `OR` |
 
 Use parentheses to override precedence when needed:
 

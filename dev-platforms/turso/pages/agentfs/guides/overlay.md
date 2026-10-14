@@ -142,13 +142,13 @@ Original files are never duplicated. A 10GB project with 1MB of changes only use
 
 ### File Operations
 
-| Operation           | Behavior                  |
-| ------------------- | ------------------------- |
-| Read existing file  | Pass through to base      |
+| Operation | Behavior |
+| - | - |
+| Read existing file | Pass through to base |
 | Write existing file | Copy to delta, then write |
-| Create new file     | Write directly to delta   |
-| Delete file         | Create whiteout in delta  |
-| Rename file         | Delete old + create new   |
+| Create new file | Write directly to delta |
+| Delete file | Create whiteout in delta |
+| Rename file | Delete old + create new |
 
 ### Whiteouts
 

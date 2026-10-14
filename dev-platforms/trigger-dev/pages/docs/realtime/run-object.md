@@ -38,26 +38,21 @@ Type-safety is supported for the run object, so you can infer the types of the r
   Timestamp when the run was last updated.
 </ParamField>
 
-<ParamField type="number">
-  Sequential number assigned to the run.
-</ParamField>
-
 <ParamField type="RunStatus">
   Current status of the run.
 
   <Accordion title="RunStatus enum">
     | Status | Description |
     | - | - |
-    | `WAITING_FOR_DEPLOY` | Task hasn't been deployed yet but is waiting to be executed |
+    | `PENDING_VERSION` | Run is waiting for a version update because it cannot execute without additional information |
     | `QUEUED` | Run is waiting to be executed by a worker |
+    | `DEQUEUED` | Run has been dequeued and is being sent to a worker to start executing |
     | `EXECUTING` | Run is currently being executed by a worker |
-    | `REATTEMPTING` | Run has failed and is waiting to be retried |
-    | `FROZEN` | Run has been paused by the system, and will be resumed by the system |
+    | `WAITING` | Run has been paused by the system, and will be resumed by the system |
     | `COMPLETED` | Run has been completed successfully |
     | `CANCELED` | Run has been canceled by the user |
     | `FAILED` | Run has been completed with errors |
     | `CRASHED` | Run has crashed and won't be retried, most likely the worker ran out of resources, e.g. memory or storage |
-    | `INTERRUPTED` | Run was interrupted during execution, mostly this happens in development environments |
     | `SYSTEM_FAILURE` | Run has failed to complete, due to an error in the system |
     | `DELAYED` | Run has been scheduled to run at a specific time |
     | `EXPIRED` | Run has expired and won't be executed |
@@ -89,10 +84,6 @@ Type-safety is supported for the run object, so you can infer the types of the r
   Timestamp when the run expired.
 </ParamField>
 
-<ParamField type="string">
-  Time-to-live duration for the run.
-</ParamField>
-
 <ParamField type="Date">
   Timestamp when the run finished.
 </ParamField>
@@ -119,6 +110,38 @@ Type-safety is supported for the run object, so you can infer the types of the r
 
 <ParamField type="boolean">
   Indicates whether this is a test run.
+</ParamField>
+
+<ParamField type="string[]">
+  Names of the Realtime streams on the run.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run is queued, delayed or waiting for a version update.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run is dequeued or executing.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run is waiting.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run has finished, either successfully or with any failure status.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run failed, crashed, hit a system failure, expired or timed out.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run completed successfully.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` if the run was canceled.
 </ParamField>
 
 ## Type-safety

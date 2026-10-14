@@ -140,7 +140,7 @@
 - [Amazon Chime SDK SIP Integration](https://docs.vapi.ai/advanced/sip/amazon-chime.md): Integrate Amazon Chime SDK Voice Connector with Vapi for inbound and outbound SIP trunking, connecting an AI assistant to a phone number without Lambda logic.
 - [Troubleshoot SIP trunk credential errors](https://docs.vapi.ai/advanced/sip/troubleshoot-sip-trunk-credential-errors.md): Resolve the SIP gateway creation failed error when creating a BYO SIP trunk credential in Vapi, covering the common causes and how to fix each one.
 - [Troubleshoot SIP response codes](https://docs.vapi.ai/advanced/sip/troubleshoot-sip-response-codes.md): Diagnose SIP response codes by response class, failure point, and call direction, then check the relevant Vapi, provider, network, or destination configuration.
-- [Phone Number Hooks](https://docs.vapi.ai/phone-numbers/phone-number-hooks.md): Configure phone number hooks in Vapi to run actions on call events, currently the call.ringing event, by defining them in a phone number's hooks array.
+- [Phone Number Hooks](https://docs.vapi.ai/phone-numbers/phone-number-hooks.md): Configure phone number hooks in Vapi to run actions on the call.ringing and call.ending events by defining them in a phone number's hooks array.
 - [Phone Calling](https://docs.vapi.ai/phone-calling.md): Create and configure phone numbers in Vapi. Use a free US number to receive inbound calls, or import a number from a provider to place outbound and international calls.
 - [Outbound Calling](https://docs.vapi.ai/calls/outbound-calling.md): Send outbound calls from Vapi programmatically, placing single or batch calls and scheduling them for reminders, surveys, and automated call campaigns.
 - [WebSocket Transport](https://docs.vapi.ai/calls/websocket-transport.md): Stream audio directly via WebSockets for real-time, bidirectional communication
@@ -236,14 +236,13 @@
 - [OpenAI](https://docs.vapi.ai/providers/transcriber/openai.md): Configure OpenAI as your Vapi assistant's transcriber, including transcription models and supported languages.
 - [Soniox](https://docs.vapi.ai/providers/transcriber/soniox.md): Connect Soniox to a Vapi assistant and configure the stt-rt-v5 real-time speech-to-text model for low-latency, multilingual transcription and endpointing.
 - [Speechmatics](https://docs.vapi.ai/providers/transcriber/speechmatics.md): Configure Speechmatics as your Vapi assistant's transcriber and review setup guidance and supported options.
-- [Talkscriber](https://docs.vapi.ai/providers/transcriber/talkscriber.md): Use Talkscriber with Vapi for real-time Whisper transcription. See configuration fields, defaults, supported languages, and an API example.
 - [xAI](https://docs.vapi.ai/providers/transcriber/xai.md): Configure xAI as your Vapi assistant's transcriber, including supported models, languages, and transcription options.
 - [Model providers](https://docs.vapi.ai/providers/model/overview.md): Reference of every large language model provider Vapi supports, including provider IDs and where to configure each one.
 - [Anthropic](https://docs.vapi.ai/providers/model/anthropic.md): Connect Anthropic to Vapi to use Claude models as your voice agent's language model. Covers the supported Claude models and how to use them in the API.
 - [Anthropic Bedrock](https://docs.vapi.ai/providers/model/anthropic-bedrock.md): Connect AWS Bedrock credentials to Vapi and use Anthropic Claude models with your AWS account, regions, rate limits, and data controls.
 - [Anyscale](https://docs.vapi.ai/providers/model/anyscale.md): Connect an Anyscale account to Vapi and configure an assistant with the exact model ID available through your Anyscale account.
 - [Azure OpenAI](https://docs.vapi.ai/providers/model/azure-openai.md): Connect an Azure OpenAI resource to Vapi. Configure credentials, deployment names, supported models, regions, and endpoints.
-- [Cerebras](https://docs.vapi.ai/providers/model/cerebras.md): Connect a Cerebras API key to Vapi and configure an assistant with a supported Cerebras model.
+- [Cerebras](https://docs.vapi.ai/providers/model/cerebras.md): Connect a Cerebras API key to Vapi and configure an assistant with an exact model ID from your Cerebras account.
 - [DeepInfra](https://docs.vapi.ai/providers/model/deepinfra.md): Connect a DeepInfra account to Vapi and configure an assistant with an exact model ID from DeepInfra's current model catalog.
 - [DeepSeek](https://docs.vapi.ai/providers/model/deepseek.md): Connect a DeepSeek API key to Vapi and configure an assistant with a supported DeepSeek model.
 - [Google](https://docs.vapi.ai/providers/model/gemini.md): Configure Google Gemini as your Vapi assistant's language model and choose from the models Vapi supports.

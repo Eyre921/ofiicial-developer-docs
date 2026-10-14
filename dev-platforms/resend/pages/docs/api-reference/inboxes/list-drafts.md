@@ -20,22 +20,24 @@ Retrieve the drafts on an inbox.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Unsent drafts, most recently updated first.
+Returns the unsent drafts on the inbox, most recently updated first. The
+`after` and `before` cursors take a Draft ID from the current page. A cursor
+that is not an unsent draft on this inbox returns a `404`.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Query Parameters
@@ -73,11 +75,12 @@ Unsent drafts, most recently updated first.
     </ParamField>
 
     <ParamField type="string">
-      `standalone` for a new conversation, or `reply`.
+      `reply` when the draft replies to an email in an existing thread.
+      `standalone` when the draft starts a new thread.
     </ParamField>
 
     <ParamField type="string[] | null">
-      Recipients.
+      Recipients. `null` or empty when no recipients are set.
     </ParamField>
 
     <ParamField type="string[]">
@@ -149,7 +152,7 @@ Unsent drafts, most recently updated first.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts list --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+  resend inboxes drafts list b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
   ```
 </RequestExample>
 

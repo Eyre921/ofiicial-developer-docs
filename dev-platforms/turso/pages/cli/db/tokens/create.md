@@ -12,10 +12,10 @@ turso db tokens create <database-name> [flags]
 
 ## Flags
 
-| Flag                 | Description                                                                     |
-| -------------------- | ------------------------------------------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-e`, `--expiration` | The expiration time for a token, can be `never` or a value in days, e.g. `7d` . |
-| `-r`, `--read-only`  | Restrict the token to read only access.                                         |
+| `-r`, `--read-only` | Restrict the token to read only access. |
 
 ## Examples
 

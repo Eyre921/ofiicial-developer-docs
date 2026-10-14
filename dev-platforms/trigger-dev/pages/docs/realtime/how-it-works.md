@@ -82,7 +82,7 @@ See our [run metadata docs](/docs/runs/metadata) for more on how to write tasks 
 
 You can combine run metadata with the Realtime API to bridge the gap between your trigger.dev tasks and your applications in two ways:
 
-1. Using our [React hooks](/docs/realtime/react-hooks/subscribe#using-metadata) to subscribe to metadata updates and update your UI in real-time.
+1. Using our [React hooks](/docs/realtime/react-hooks/subscribe#using-metadata-to-show-progress-in-your-ui) to subscribe to metadata updates and update your UI in real-time.
 2. Using our [backend functions](/docs/realtime/backend) to subscribe to metadata updates in your backend.
 
 ## Limits

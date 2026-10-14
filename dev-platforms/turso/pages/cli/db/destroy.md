@@ -16,6 +16,6 @@ turso db destroy <database-name> [flags]
 
 ## Flags
 
-| Flag          | Description                            |
-| ------------- | -------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-y`, `--yes` | Confirms the destruction the database. |

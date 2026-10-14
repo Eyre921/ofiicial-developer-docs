@@ -59,11 +59,11 @@ string_to_array(text, delimiter)
 string_to_array(text, delimiter, null_string)
 ```
 
-| Parameter     | Type | Description                                                           |
-| ------------- | ---- | --------------------------------------------------------------------- |
-| `text`        | TEXT | The string to split                                                   |
-| `delimiter`   | TEXT | The delimiter to split on. If NULL, splits into individual characters |
-| `null_string` | TEXT | Optional. Elements matching this string are replaced with NULL        |
+| Parameter | Type | Description |
+| - | - | - |
+| `text` | TEXT | The string to split |
+| `delimiter` | TEXT | The delimiter to split on. If NULL, splits into individual characters |
+| `null_string` | TEXT | Optional. Elements matching this string are replaced with NULL |
 
 **Returns:** BLOB -- an array value.
 
@@ -146,10 +146,10 @@ array_length(array)
 array_length(array, dimension)
 ```
 
-| Parameter   | Type      | Description                                                                  |
-| ----------- | --------- | ---------------------------------------------------------------------------- |
-| `array`     | BLOB/TEXT | The array to measure                                                         |
-| `dimension` | INTEGER   | Optional. 1-based dimension index. Defaults to `1` (the outermost dimension) |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to measure |
+| `dimension` | INTEGER | Optional. 1-based dimension index. Defaults to `1` (the outermost dimension) |
 
 **Returns:** INTEGER -- the number of elements along `dimension`. NULL if the input is NULL, if `dimension < 1`, or if `dimension` exceeds the array's nesting depth.
 
@@ -186,10 +186,10 @@ Returns the upper bound (inclusive) of a given dimension of an array.
 array_upper(array, dimension)
 ```
 
-| Parameter   | Type      | Description             |
-| ----------- | --------- | ----------------------- |
-| `array`     | BLOB/TEXT | The array to measure    |
-| `dimension` | INTEGER   | 1-based dimension index |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to measure |
+| `dimension` | INTEGER | 1-based dimension index |
 
 **Returns:** INTEGER -- the upper bound of `dimension`. NULL with the same conditions as `array_length`.
 
@@ -214,10 +214,10 @@ Appends an element to the end of an array.
 array_append(array, element)
 ```
 
-| Parameter | Type      | Description                                                            |
-| --------- | --------- | ---------------------------------------------------------------------- |
-| `array`   | BLOB/TEXT | The array to append to. If NULL, a new single-element array is created |
-| `element` | any       | The element to append                                                  |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to append to. If NULL, a new single-element array is created |
+| `element` | any | The element to append |
 
 **Returns:** BLOB -- a new array with the element appended.
 
@@ -240,10 +240,10 @@ Prepends an element to the beginning of an array.
 array_prepend(element, array)
 ```
 
-| Parameter | Type      | Description             |
-| --------- | --------- | ----------------------- |
-| `element` | any       | The element to prepend  |
-| `array`   | BLOB/TEXT | The array to prepend to |
+| Parameter | Type | Description |
+| - | - | - |
+| `element` | any | The element to prepend |
+| `array` | BLOB/TEXT | The array to prepend to |
 
 **Returns:** BLOB -- a new array with the element prepended.
 
@@ -260,10 +260,10 @@ Concatenates two arrays.
 array_cat(array1, array2)
 ```
 
-| Parameter | Type      | Description      |
-| --------- | --------- | ---------------- |
-| `array1`  | BLOB/TEXT | The first array  |
-| `array2`  | BLOB/TEXT | The second array |
+| Parameter | Type | Description |
+| - | - | - |
+| `array1` | BLOB/TEXT | The first array |
+| `array2` | BLOB/TEXT | The second array |
 
 **Returns:** BLOB -- a new array containing all elements from both arrays.
 
@@ -302,10 +302,10 @@ Removes all occurrences of an element from an array.
 array_remove(array, element)
 ```
 
-| Parameter | Type      | Description              |
-| --------- | --------- | ------------------------ |
-| `array`   | BLOB/TEXT | The array to remove from |
-| `element` | any       | The element to remove    |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to remove from |
+| `element` | any | The element to remove |
 
 **Returns:** BLOB -- a new array with all occurrences of the element removed.
 
@@ -325,10 +325,10 @@ Tests whether an array contains a specific element.
 array_contains(array, element)
 ```
 
-| Parameter | Type      | Description               |
-| --------- | --------- | ------------------------- |
-| `array`   | BLOB/TEXT | The array to search       |
-| `element` | any       | The element to search for |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to search |
+| `element` | any | The element to search for |
 
 **Returns:** INTEGER -- 1 if found, 0 if not found.
 
@@ -348,10 +348,10 @@ Returns the zero-based index of the first occurrence of an element.
 array_position(array, element)
 ```
 
-| Parameter | Type      | Description         |
-| --------- | --------- | ------------------- |
-| `array`   | BLOB/TEXT | The array to search |
-| `element` | any       | The element to find |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to search |
+| `element` | any | The element to find |
 
 **Returns:** INTEGER -- the zero-based index, or NULL if not found.
 
@@ -374,11 +374,11 @@ Extracts a sub-array by index range.
 array_slice(array, start, end)
 ```
 
-| Parameter | Type      | Description                                       |
-| --------- | --------- | ------------------------------------------------- |
-| `array`   | BLOB/TEXT | The source array                                  |
-| `start`   | INTEGER   | Start index (zero-based, inclusive). NULL means 0 |
-| `end`     | INTEGER   | End index (exclusive)                             |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The source array |
+| `start` | INTEGER | Start index (zero-based, inclusive). NULL means 0 |
+| `end` | INTEGER | End index (exclusive) |
 
 **Returns:** BLOB -- a new array containing elements from `start` to `end - 1`.
 
@@ -399,11 +399,11 @@ array_to_string(array, delimiter)
 array_to_string(array, delimiter, null_string)
 ```
 
-| Parameter     | Type      | Description                                                                 |
-| ------------- | --------- | --------------------------------------------------------------------------- |
-| `array`       | BLOB/TEXT | The array to join                                                           |
-| `delimiter`   | TEXT      | The separator between elements                                              |
-| `null_string` | TEXT      | Optional. Replacement text for NULL elements. If omitted, NULLs are skipped |
+| Parameter | Type | Description |
+| - | - | - |
+| `array` | BLOB/TEXT | The array to join |
+| `delimiter` | TEXT | The separator between elements |
+| `null_string` | TEXT | Optional. Replacement text for NULL elements. If omitted, NULLs are skipped |
 
 **Returns:** TEXT -- the joined string.
 
@@ -429,10 +429,10 @@ Tests whether one array contains all elements of another.
 array_contains_all(haystack, needles)
 ```
 
-| Parameter  | Type      | Description                         |
-| ---------- | --------- | ----------------------------------- |
-| `haystack` | BLOB/TEXT | The array to search in              |
-| `needles`  | BLOB/TEXT | The array of elements to search for |
+| Parameter | Type | Description |
+| - | - | - |
+| `haystack` | BLOB/TEXT | The array to search in |
+| `needles` | BLOB/TEXT | The array of elements to search for |
 
 **Returns:** INTEGER -- 1 if all elements of `needles` are found in `haystack`, 0 otherwise.
 
@@ -457,10 +457,10 @@ Tests whether two arrays share any common elements.
 array_overlap(array1, array2)
 ```
 
-| Parameter | Type      | Description      |
-| --------- | --------- | ---------------- |
-| `array1`  | BLOB/TEXT | The first array  |
-| `array2`  | BLOB/TEXT | The second array |
+| Parameter | Type | Description |
+| - | - | - |
+| `array1` | BLOB/TEXT | The first array |
+| `array2` | BLOB/TEXT | The second array |
 
 **Returns:** INTEGER -- 1 if any element appears in both arrays, 0 otherwise.
 
@@ -489,9 +489,9 @@ Collects values from a group of rows into an array.
 array_agg(expression)
 ```
 
-| Parameter    | Type | Description                                    |
-| ------------ | ---- | ---------------------------------------------- |
-| `expression` | any  | The value to collect. NULL values are included |
+| Parameter | Type | Description |
+| - | - | - |
+| `expression` | any | The value to collect. NULL values are included |
 
 **Returns:** BLOB -- an array containing one element per row in the group. Returns NULL for empty groups.
 
@@ -503,9 +503,9 @@ SELECT grp, array_agg(val) FROM t GROUP BY grp ORDER BY grp;
 ```
 
 | grp | array\_agg(val) |
-| --- | --------------- |
-| x   | \["a","b"]      |
-| y   | \["c","d","e"]  |
+| - | - |
+| x | \["a","b"] |
+| y | \["c","d","e"] |
 
 ```sql theme={null}
 -- Control order with a subquery

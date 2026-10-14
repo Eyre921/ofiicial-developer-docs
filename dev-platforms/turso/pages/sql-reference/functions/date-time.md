@@ -22,10 +22,10 @@ Returns the date as TEXT in `YYYY-MM-DD` format.
 date(time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                 |
-| ------------ | ---------------------- | ----------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right  |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** TEXT in `YYYY-MM-DD` format, or NULL if any argument is invalid.
 
@@ -53,10 +53,10 @@ Returns the time as TEXT in `HH:MM:SS` format.
 time(time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                 |
-| ------------ | ---------------------- | ----------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right  |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** TEXT in `HH:MM:SS` format, or NULL if any argument is invalid.
 
@@ -84,10 +84,10 @@ Returns the date and time as TEXT in `YYYY-MM-DD HH:MM:SS` format.
 datetime(time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                 |
-| ------------ | ---------------------- | ----------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right  |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** TEXT in `YYYY-MM-DD HH:MM:SS` format, or NULL if any argument is invalid.
 
@@ -112,10 +112,10 @@ Returns the [Julian day number](https://en.wikipedia.org/wiki/Julian_day) as a R
 julianday(time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                 |
-| ------------ | ---------------------- | ----------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right  |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** REAL representing the Julian day number, or NULL if any argument is invalid.
 
@@ -141,10 +141,10 @@ Returns the Unix timestamp as an INTEGER. The Unix timestamp is the number of se
 unixepoch(time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                 |
-| ------------ | ---------------------- | ----------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right  |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** INTEGER representing seconds since the Unix epoch, or NULL if any argument is invalid. If the `subsec` modifier is used, returns REAL with fractional seconds.
 
@@ -169,23 +169,23 @@ Returns a formatted date/time string according to the specified format string.
 strftime(format, time-value, modifier, modifier, ...)
 ```
 
-| Parameter    | Type                   | Description                                                             |
-| ------------ | ---------------------- | ----------------------------------------------------------------------- |
-| `format`     | TEXT                   | A format string containing [substitution codes](#strftime-format-codes) |
-| `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats)             |
-| `modifier`   | TEXT                   | Zero or more [modifiers](#modifiers) applied left to right              |
+| Parameter | Type | Description |
+| - | - | - |
+| `format` | TEXT | A format string containing [substitution codes](#strftime-format-codes) |
+| `time-value` | TEXT, REAL, or INTEGER | A time value in any [supported format](#time-value-formats) |
+| `modifier` | TEXT | Zero or more [modifiers](#modifiers) applied left to right |
 
 **Returns:** TEXT with format codes replaced by date/time components, or NULL if any argument is invalid.
 
 The other date/time functions can be expressed as `strftime` calls:
 
-| Function         | Equivalent strftime                  |
-| ---------------- | ------------------------------------ |
-| `date(...)`      | `strftime('%Y-%m-%d', ...)`          |
-| `time(...)`      | `strftime('%H:%M:%S', ...)`          |
-| `datetime(...)`  | `strftime('%Y-%m-%d %H:%M:%S', ...)` |
-| `julianday(...)` | `strftime('%J', ...)` (as TEXT)      |
-| `unixepoch(...)` | `strftime('%s', ...)` (as TEXT)      |
+| Function | Equivalent strftime |
+| - | - |
+| `date(...)` | `strftime('%Y-%m-%d', ...)` |
+| `time(...)` | `strftime('%H:%M:%S', ...)` |
+| `datetime(...)` | `strftime('%Y-%m-%d %H:%M:%S', ...)` |
+| `julianday(...)` | `strftime('%J', ...)` (as TEXT) |
+| `unixepoch(...)` | `strftime('%s', ...)` (as TEXT) |
 
 ```sql theme={null}
 SELECT strftime('%Y', 'now');
@@ -209,31 +209,31 @@ SELECT strftime('%W', '2025-06-15');
 
 #### strftime Format Codes
 
-| Code | Description                             | Example      |
-| ---- | --------------------------------------- | ------------ |
-| `%d` | Day of month (01-31)                    | `15`         |
-| `%e` | Day of month with leading space ( 1-31) | `15`         |
-| `%f` | Fractional seconds (SS.SSS)             | `00.123`     |
-| `%F` | ISO 8601 date (YYYY-MM-DD)              | `2025-06-15` |
-| `%H` | Hour (00-23)                            | `14`         |
-| `%I` | Hour (01-12)                            | `02`         |
-| `%j` | Day of year (001-366)                   | `166`        |
-| `%J` | Julian day number                       | `2460811.5`  |
-| `%k` | Hour with leading space ( 0-23)         | `14`         |
-| `%l` | Hour with leading space ( 1-12)         | ` 2`         |
-| `%m` | Month (01-12)                           | `06`         |
-| `%M` | Minute (00-59)                          | `30`         |
-| `%p` | AM or PM                                | `PM`         |
-| `%P` | am or pm                                | `pm`         |
-| `%R` | Time as HH:MM                           | `14:30`      |
-| `%s` | Seconds since Unix epoch                | `1750001400` |
-| `%S` | Seconds (00-59)                         | `00`         |
-| `%T` | Time as HH:MM:SS                        | `14:30:00`   |
-| `%u` | Day of week (1=Monday, 7=Sunday)        | `7`          |
-| `%w` | Day of week (0=Sunday, 6=Saturday)      | `0`          |
-| `%W` | Week of year (00-53)                    | `23`         |
-| `%Y` | Year (0000-9999)                        | `2025`       |
-| `%%` | Literal `%` character                   | `%`          |
+| Code | Description | Example |
+| - | - | - |
+| `%d` | Day of month (01-31) | `15` |
+| `%e` | Day of month with leading space ( 1-31) | `15` |
+| `%f` | Fractional seconds (SS.SSS) | `00.123` |
+| `%F` | ISO 8601 date (YYYY-MM-DD) | `2025-06-15` |
+| `%H` | Hour (00-23) | `14` |
+| `%I` | Hour (01-12) | `02` |
+| `%j` | Day of year (001-366) | `166` |
+| `%J` | Julian day number | `2460811.5` |
+| `%k` | Hour with leading space ( 0-23) | `14` |
+| `%l` | Hour with leading space ( 1-12) | ` 2` |
+| `%m` | Month (01-12) | `06` |
+| `%M` | Minute (00-59) | `30` |
+| `%p` | AM or PM | `PM` |
+| `%P` | am or pm | `pm` |
+| `%R` | Time as HH:MM | `14:30` |
+| `%s` | Seconds since Unix epoch | `1750001400` |
+| `%S` | Seconds (00-59) | `00` |
+| `%T` | Time as HH:MM:SS | `14:30:00` |
+| `%u` | Day of week (1=Monday, 7=Sunday) | `7` |
+| `%w` | Day of week (0=Sunday, 6=Saturday) | `0` |
+| `%W` | Week of year (00-53) | `23` |
+| `%Y` | Year (0000-9999) | `2025` |
+| `%%` | Literal `%` character | `%` |
 
 ***
 
@@ -245,10 +245,10 @@ Returns the difference between two time values as a TEXT string in the format `(
 timediff(time1, time2)
 ```
 
-| Parameter | Type                   | Description            |
-| --------- | ---------------------- | ---------------------- |
-| `time1`   | TEXT, REAL, or INTEGER | The later time value   |
-| `time2`   | TEXT, REAL, or INTEGER | The earlier time value |
+| Parameter | Type | Description |
+| - | - | - |
+| `time1` | TEXT, REAL, or INTEGER | The later time value |
+| `time2` | TEXT, REAL, or INTEGER | The earlier time value |
 
 **Returns:** TEXT in `(+|-)YYYY-MM-DD HH:MM:SS.SSS` format, or NULL if either argument is invalid.
 
@@ -270,21 +270,21 @@ SELECT timediff('2024-01-01', '2025-06-15');
 
 All date and time functions accept time values in the following formats.
 
-| Format                    | Example                     | Description                              |
-| ------------------------- | --------------------------- | ---------------------------------------- |
-| `YYYY-MM-DD`              | `'2025-06-15'`              | Date only (time defaults to 00:00:00)    |
-| `YYYY-MM-DD HH:MM`        | `'2025-06-15 14:30'`        | Date and time (seconds default to 00)    |
-| `YYYY-MM-DD HH:MM:SS`     | `'2025-06-15 14:30:00'`     | Date and time with seconds               |
-| `YYYY-MM-DD HH:MM:SS.SSS` | `'2025-06-15 14:30:00.123'` | Date and time with fractional seconds    |
-| `YYYY-MM-DDTHH:MM`        | `'2025-06-15T14:30'`        | ISO 8601 with `T` separator              |
-| `YYYY-MM-DDTHH:MM:SS`     | `'2025-06-15T14:30:00'`     | ISO 8601 with `T` separator              |
-| `YYYY-MM-DDTHH:MM:SS.SSS` | `'2025-06-15T14:30:00.123'` | ISO 8601 with `T` separator              |
-| `HH:MM`                   | `'14:30'`                   | Time only (date defaults to 2000-01-01)  |
-| `HH:MM:SS`                | `'14:30:00'`                | Time only with seconds                   |
-| `HH:MM:SS.SSS`            | `'14:30:00.123'`            | Time only with fractional seconds        |
-| `now`                     | `'now'`                     | Current date and time in UTC             |
-| Julian day number         | `2460811.5`                 | REAL number representing a Julian day    |
-| Unix timestamp            | `1718458200`                | INTEGER, requires `'unixepoch'` modifier |
+| Format | Example | Description |
+| - | - | - |
+| `YYYY-MM-DD` | `'2025-06-15'` | Date only (time defaults to 00:00:00) |
+| `YYYY-MM-DD HH:MM` | `'2025-06-15 14:30'` | Date and time (seconds default to 00) |
+| `YYYY-MM-DD HH:MM:SS` | `'2025-06-15 14:30:00'` | Date and time with seconds |
+| `YYYY-MM-DD HH:MM:SS.SSS` | `'2025-06-15 14:30:00.123'` | Date and time with fractional seconds |
+| `YYYY-MM-DDTHH:MM` | `'2025-06-15T14:30'` | ISO 8601 with `T` separator |
+| `YYYY-MM-DDTHH:MM:SS` | `'2025-06-15T14:30:00'` | ISO 8601 with `T` separator |
+| `YYYY-MM-DDTHH:MM:SS.SSS` | `'2025-06-15T14:30:00.123'` | ISO 8601 with `T` separator |
+| `HH:MM` | `'14:30'` | Time only (date defaults to 2000-01-01) |
+| `HH:MM:SS` | `'14:30:00'` | Time only with seconds |
+| `HH:MM:SS.SSS` | `'14:30:00.123'` | Time only with fractional seconds |
+| `now` | `'now'` | Current date and time in UTC |
+| Julian day number | `2460811.5` | REAL number representing a Julian day |
+| Unix timestamp | `1718458200` | INTEGER, requires `'unixepoch'` modifier |
 
 <Info>
   When passing a Unix timestamp as the time value, you must include the `'unixepoch'` modifier so the function knows to interpret the number as seconds since 1970-01-01, not as a Julian day number.
@@ -312,15 +312,15 @@ Modifiers transform the time value. Multiple modifiers are applied left to right
 
 Offset modifiers add or subtract a specified amount from the time value.
 
-| Modifier           | Description            | Example                  |
-| ------------------ | ---------------------- | ------------------------ |
-| `NNN days`         | Add NNN days           | `'+7 days'`, `'-1 days'` |
-| `NNN hours`        | Add NNN hours          | `'+6 hours'`             |
-| `NNN minutes`      | Add NNN minutes        | `'+30 minutes'`          |
-| `NNN seconds`      | Add NNN seconds        | `'+90 seconds'`          |
-| `NNN.NNNN seconds` | Add fractional seconds | `'+0.5 seconds'`         |
-| `NNN months`       | Add NNN months         | `'+1 months'`            |
-| `NNN years`        | Add NNN years          | `'+1 years'`             |
+| Modifier | Description | Example |
+| - | - | - |
+| `NNN days` | Add NNN days | `'+7 days'`, `'-1 days'` |
+| `NNN hours` | Add NNN hours | `'+6 hours'` |
+| `NNN minutes` | Add NNN minutes | `'+30 minutes'` |
+| `NNN seconds` | Add NNN seconds | `'+90 seconds'` |
+| `NNN.NNNN seconds` | Add fractional seconds | `'+0.5 seconds'` |
+| `NNN months` | Add NNN months | `'+1 months'` |
+| `NNN years` | Add NNN years | `'+1 years'` |
 
 NNN can be a positive or negative integer (or real number for seconds). The `+` sign is optional for positive values.
 
@@ -351,11 +351,11 @@ SELECT datetime('2025-06-15 14:30:00', '-08:00');
 
 These modifiers reset the time value to the start of a period.
 
-| Modifier         | Description                                      |
-| ---------------- | ------------------------------------------------ |
-| `start of day`   | Sets time to 00:00:00, keeps date                |
+| Modifier | Description |
+| - | - |
+| `start of day` | Sets time to 00:00:00, keeps date |
 | `start of month` | Sets to first day of the month, time to 00:00:00 |
-| `start of year`  | Sets to January 1 of the year, time to 00:00:00  |
+| `start of year` | Sets to January 1 of the year, time to 00:00:00 |
 
 ```sql theme={null}
 SELECT datetime('2025-06-15 14:30:00', 'start of day');
@@ -388,11 +388,11 @@ SELECT date('2025-06-15', 'weekday 5');
 
 ### Interpretation Modifiers
 
-| Modifier    | Description                                                              |
-| ----------- | ------------------------------------------------------------------------ |
-| `unixepoch` | Interpret the time value as a Unix timestamp (seconds since 1970-01-01)  |
-| `julianday` | Interpret the time value as a Julian day number                          |
-| `auto`      | Automatically detect whether the value is a Unix timestamp or Julian day |
+| Modifier | Description |
+| - | - |
+| `unixepoch` | Interpret the time value as a Unix timestamp (seconds since 1970-01-01) |
+| `julianday` | Interpret the time value as a Julian day number |
+| `auto` | Automatically detect whether the value is a Unix timestamp or Julian day |
 
 ```sql theme={null}
 SELECT datetime(1718458200, 'unixepoch');
@@ -407,10 +407,10 @@ SELECT datetime(0, 'unixepoch');
 
 ### Timezone Modifiers
 
-| Modifier    | Description                    |
-| ----------- | ------------------------------ |
+| Modifier | Description |
+| - | - |
 | `localtime` | Convert from UTC to local time |
-| `utc`       | Convert from local time to UTC |
+| `utc` | Convert from local time to UTC |
 
 ```sql theme={null}
 SELECT datetime('2025-06-15 14:30:00', 'localtime');
@@ -422,10 +422,10 @@ SELECT time('now', 'localtime');
 
 ### Rounding Modifiers
 
-| Modifier  | Description                                                                          |
-| --------- | ------------------------------------------------------------------------------------ |
+| Modifier | Description |
+| - | - |
 | `ceiling` | When adding months, if the day overflows, advance to the first day of the next month |
-| `floor`   | When adding months, if the day overflows, use the last day of the target month       |
+| `floor` | When adding months, if the day overflows, use the last day of the target month |
 
 These modifiers affect how month arithmetic handles months with different numbers of days.
 

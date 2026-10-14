@@ -8,13 +8,13 @@ Python Reference for Turso
 
 Turso offers three Python packages:
 
-|                       | `pyturso`                       | `turso_serverless`                    | `libsql`                                          |
-| --------------------- | ------------------------------- | ------------------------------------- | ------------------------------------------------- |
-| **Use case**          | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases |
-| **Engine**            | Turso (rewrite)                 | Turso (rewrite)                       | libSQL (SQLite fork)                              |
-| **Concurrent writes** | Yes (MVCC)                      | Yes (MVCC)                            | Not supported                                     |
-| **Sync**              | push/pull (local-first)         | —                                     | Embedded Replicas (writes go to cloud primary)    |
-| **API**               | Python `sqlite3`-compatible     | Python `sqlite3`-compatible           | Python `sqlite3`-compatible                       |
+| | `pyturso` | `turso_serverless` | `libsql` |
+| - | - | - | - |
+| **Use case** | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases |
+| **Engine** | Turso (rewrite) | Turso (rewrite) | libSQL (SQLite fork) |
+| **Concurrent writes** | Yes (MVCC) | Yes (MVCC) | Not supported |
+| **Sync** | push/pull (local-first) | — | Embedded Replicas (writes go to cloud primary) |
+| **API** | Python `sqlite3`-compatible | Python `sqlite3`-compatible | Python `sqlite3`-compatible |
 
 **Starting a new project?** Use `pyturso` — it is built on the Turso engine with concurrent writes and local-first sync. For remote access over the network, match the driver to the database engine: [`turso_serverless`](/sdk/python/quickstart) for Turso databases, `libsql` for libSQL databases.
 

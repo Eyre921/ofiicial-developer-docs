@@ -20,11 +20,11 @@ Received when an inbound email is added to a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -51,7 +51,7 @@ Event triggered whenever an **inbound email is added to a thread**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">
@@ -81,7 +81,7 @@ Event triggered whenever an **inbound email is added to a thread**.
   </ParamField>
 
   <ParamField type="object">
-    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email)
+    The email, as it is when the webhook is sent, without `html` or `text`. Fetch the body with [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email). Absent when the email no longer exists
 
     <Expandable title="email object">
       <ParamField type="string">

@@ -17,9 +17,9 @@ EXPLAIN statement;
 EXPLAIN QUERY PLAN statement;
 ```
 
-| Parameter | Type | Description                                              |
-| --------- | ---- | -------------------------------------------------------- |
-| statement | SQL  | Any SQL statement (SELECT, INSERT, UPDATE, DELETE, etc.) |
+| Parameter | Type | Description |
+| - | - | - |
+| statement | SQL | Any SQL statement (SELECT, INSERT, UPDATE, DELETE, etc.) |
 
 ## EXPLAIN
 
@@ -36,15 +36,15 @@ EXPLAIN SELECT * FROM users WHERE id = 1;
 
 ### Output Columns
 
-| Column | Description                                                        |
-| ------ | ------------------------------------------------------------------ |
-| addr   | Instruction address (sequential integer)                           |
-| opcode | The operation name (e.g., OpenRead, SeekRowid, Column, ResultRow)  |
-| p1     | First operand                                                      |
-| p2     | Second operand                                                     |
-| p3     | Third operand                                                      |
-| p4     | Fourth operand (often a string value like table name or collation) |
-| p5     | Fifth operand (flags)                                              |
+| Column | Description |
+| - | - |
+| addr | Instruction address (sequential integer) |
+| opcode | The operation name (e.g., OpenRead, SeekRowid, Column, ResultRow) |
+| p1 | First operand |
+| p2 | Second operand |
+| p3 | Third operand |
+| p4 | Fourth operand (often a string value like table name or collation) |
+| p5 | Fifth operand (flags) |
 
 ## EXPLAIN QUERY PLAN
 
@@ -65,24 +65,24 @@ EXPLAIN QUERY PLAN SELECT * FROM users WHERE name = 'Alice';
 
 ### Output Columns
 
-| Column  | Description                                      |
-| ------- | ------------------------------------------------ |
-| id      | A unique identifier for this step                |
-| parent  | The id of the parent step (0 for top-level)      |
-| notused | Reserved for future use (always 0)               |
-| detail  | Human-readable description of the execution step |
+| Column | Description |
+| - | - |
+| id | A unique identifier for this step |
+| parent | The id of the parent step (0 for top-level) |
+| notused | Reserved for future use (always 0) |
+| detail | Human-readable description of the execution step |
 
 ### Common Detail Messages
 
-| Detail Pattern                                     | Meaning                                           |
-| -------------------------------------------------- | ------------------------------------------------- |
-| `SCAN table`                                       | Full table scan (no index used)                   |
-| `SEARCH table USING INDEX idx (col=?)`             | Index lookup on the specified column              |
-| `SEARCH table USING INTEGER PRIMARY KEY (rowid=?)` | Direct rowid lookup                               |
-| `USE TEMP B-TREE FOR ORDER BY`                     | A temporary B-tree is used for sorting            |
-| `USE TEMP B-TREE FOR DISTINCT`                     | A temporary B-tree is used for deduplication      |
-| `COMPOUND SUBQUERY`                                | Indicates a UNION, INTERSECT, or EXCEPT           |
-| `CORRELATED SCALAR SUBQUERY`                       | A correlated subquery that returns a single value |
+| Detail Pattern | Meaning |
+| - | - |
+| `SCAN table` | Full table scan (no index used) |
+| `SEARCH table USING INDEX idx (col=?)` | Index lookup on the specified column |
+| `SEARCH table USING INTEGER PRIMARY KEY (rowid=?)` | Direct rowid lookup |
+| `USE TEMP B-TREE FOR ORDER BY` | A temporary B-tree is used for sorting |
+| `USE TEMP B-TREE FOR DISTINCT` | A temporary B-tree is used for deduplication |
+| `COMPOUND SUBQUERY` | Indicates a UNION, INTERSECT, or EXCEPT |
+| `CORRELATED SCALAR SUBQUERY` | A correlated subquery that returns a single value |
 
 ## Examples
 

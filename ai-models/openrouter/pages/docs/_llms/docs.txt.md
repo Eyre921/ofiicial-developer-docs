@@ -1,5 +1,5 @@
 ---
-title: "Docs (151 pages)"
+title: "Docs (152 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -83,6 +83,7 @@ path: docs/_llms/docs.txt
 - [Web Search](https://openrouter.ai/docs/guides/features/plugins/web-search.md): Model-agnostic grounding
 - [Response Healing](https://openrouter.ai/docs/guides/features/plugins/response-healing.md): Automatically fix malformed JSON responses
 - [Alignment](https://openrouter.ai/docs/guides/features/plugins/alignment.md): Check every assistant message against rules sent with the request, in audit or enforce mode
+- [Armor](https://openrouter.ai/docs/guides/features/plugins/armor.md): A safety classifier for tool calls, between the model and your application
 
 ### Features
 

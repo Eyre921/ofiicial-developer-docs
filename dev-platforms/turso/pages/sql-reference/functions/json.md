@@ -16,14 +16,14 @@ Most functions come in pairs: a `json_*` variant that returns TEXT and a `jsonb_
 
 Many JSON functions accept a **path** argument that identifies a specific element within a JSON document.
 
-| Syntax        | Meaning                                           |
-| ------------- | ------------------------------------------------- |
-| `$`           | The root element                                  |
-| `$.key`       | Object member named `key`                         |
-| `$[N]`        | Array element at index `N` (zero-based)           |
-| `$.key1.key2` | Nested object member                              |
-| `$.key[0]`    | First element of an array inside an object member |
-| `$[0].key`    | Object member inside the first array element      |
+| Syntax | Meaning |
+| - | - |
+| `$` | The root element |
+| `$.key` | Object member named `key` |
+| `$[N]` | Array element at index `N` (zero-based) |
+| `$.key1.key2` | Nested object member |
+| `$.key[0]` | First element of an array inside an object member |
+| `$[0].key` | Object member inside the first array element |
 
 Path arguments must begin with `$`. If a path does not match any element, functions generally return `NULL`.
 
@@ -44,8 +44,8 @@ Validates a JSON string and returns it in minified form. If the input is not val
 json(json_text)
 ```
 
-| Parameter   | Type | Description                          |
-| ----------- | ---- | ------------------------------------ |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT | A JSON string to validate and minify |
 
 **Returns:** TEXT -- the minified JSON string.
@@ -63,8 +63,8 @@ Converts a JSON string to the internal binary JSON format.
 jsonb(json_text)
 ```
 
-| Parameter   | Type | Description              |
-| ----------- | ---- | ------------------------ |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT | A JSON string to convert |
 
 **Returns:** BLOB -- the value in binary JSON format.
@@ -83,9 +83,9 @@ json_array(value1, value2, ...)
 jsonb_array(value1, value2, ...)
 ```
 
-| Parameter             | Type | Description                                                   |
-| --------------------- | ---- | ------------------------------------------------------------- |
-| `value1, value2, ...` | any  | Values to include in the array. SQL NULL becomes JSON `null`. |
+| Parameter | Type | Description |
+| - | - | - |
+| `value1, value2, ...` | any | Values to include in the array. SQL NULL becomes JSON `null`. |
 
 **Returns:** TEXT (json\_array) or BLOB (jsonb\_array) -- a JSON array.
 
@@ -107,10 +107,10 @@ jsonb_object(label1, value1, label2, value2, ...)
 json_object(*)
 ```
 
-| Parameter             | Type | Description                                         |
-| --------------------- | ---- | --------------------------------------------------- |
-| `label1, label2, ...` | TEXT | Keys for the JSON object. Must be strings.          |
-| `value1, value2, ...` | any  | Corresponding values. SQL NULL becomes JSON `null`. |
+| Parameter | Type | Description |
+| - | - | - |
+| `label1, label2, ...` | TEXT | Keys for the JSON object. Must be strings. |
+| `value1, value2, ...` | any | Corresponding values. SQL NULL becomes JSON `null`. |
 
 **Returns:** TEXT (json\_object) or BLOB (jsonb\_object) -- a JSON object.
 
@@ -130,9 +130,9 @@ Converts a SQL value to its JSON representation.
 json_quote(value)
 ```
 
-| Parameter | Type | Description                  |
-| --------- | ---- | ---------------------------- |
-| `value`   | any  | A SQL value to quote as JSON |
+| Parameter | Type | Description |
+| - | - | - |
+| `value` | any | A SQL value to quote as JSON |
 
 **Returns:** TEXT -- the JSON representation of the value.
 
@@ -155,8 +155,8 @@ Returns 1 if the argument is well-formed JSON, or 0 otherwise.
 json_valid(json_text)
 ```
 
-| Parameter   | Type | Description                      |
-| ----------- | ---- | -------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT | A string to check for valid JSON |
 
 **Returns:** INTEGER -- 1 if valid JSON, 0 otherwise.
@@ -180,8 +180,8 @@ Returns the character position of the first syntax error in a JSON string, or 0 
 json_error_position(json_text)
 ```
 
-| Parameter   | Type | Description                       |
-| ----------- | ---- | --------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT | A string to check for JSON errors |
 
 **Returns:** INTEGER -- character position of the first error (1-based), or 0 if valid.
@@ -208,10 +208,10 @@ json_extract(json_text, path1, path2, ...)
 jsonb_extract(json_text, path)
 ```
 
-| Parameter   | Type         | Description                       |
-| ----------- | ------------ | --------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                   |
-| `path`      | TEXT         | One or more JSON path expressions |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | One or more JSON path expressions |
 
 **Returns:** With a single path, returns the extracted value using its natural SQL type (INTEGER, REAL, TEXT, or NULL). JSON objects and arrays are returned as TEXT. With multiple paths, returns a JSON array of the extracted values. `jsonb_extract` returns BLOB.
 
@@ -235,10 +235,10 @@ Extracts a value from JSON and returns it as JSON. This is a shorthand for `json
 json_text -> path
 ```
 
-| Parameter   | Type         | Description            |
-| ----------- | ------------ | ---------------------- |
-| `json_text` | TEXT or BLOB | A JSON document        |
-| `path`      | TEXT         | A JSON path expression |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | A JSON path expression |
 
 **Returns:** TEXT -- the extracted value as JSON.
 
@@ -258,10 +258,10 @@ Extracts a value from JSON and returns it as a SQL value. Strings are unquoted, 
 json_text ->> path
 ```
 
-| Parameter   | Type         | Description            |
-| ----------- | ------------ | ---------------------- |
-| `json_text` | TEXT or BLOB | A JSON document        |
-| `path`      | TEXT         | A JSON path expression |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | A JSON path expression |
 
 **Returns:** The extracted value as its natural SQL type (TEXT, INTEGER, REAL, or NULL).
 
@@ -282,10 +282,10 @@ json_type(json_text)
 json_type(json_text, path)
 ```
 
-| Parameter   | Type         | Description                                                      |
-| ----------- | ------------ | ---------------------------------------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                                                  |
-| `path`      | TEXT         | Optional. A JSON path to inspect. If omitted, inspects the root. |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | Optional. A JSON path to inspect. If omitted, inspects the root. |
 
 **Returns:** TEXT -- the JSON type name.
 
@@ -316,11 +316,11 @@ json_insert(json_text, path1, value1, path2, value2, ...)
 jsonb_insert(json_text, path1, value1, path2, value2, ...)
 ```
 
-| Parameter   | Type         | Description                                    |
-| ----------- | ------------ | ---------------------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                                |
-| `path`      | TEXT         | A JSON path where the value should be inserted |
-| `value`     | any          | The value to insert                            |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | A JSON path where the value should be inserted |
+| `value` | any | The value to insert |
 
 **Returns:** TEXT (json\_insert) or BLOB (jsonb\_insert) -- the modified JSON.
 
@@ -342,11 +342,11 @@ json_replace(json_text, path1, value1, path2, value2, ...)
 jsonb_replace(json_text, path1, value1, path2, value2, ...)
 ```
 
-| Parameter   | Type         | Description                                  |
-| ----------- | ------------ | -------------------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                              |
-| `path`      | TEXT         | A JSON path identifying the value to replace |
-| `value`     | any          | The replacement value                        |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | A JSON path identifying the value to replace |
+| `value` | any | The replacement value |
 
 **Returns:** TEXT (json\_replace) or BLOB (jsonb\_replace) -- the modified JSON.
 
@@ -368,11 +368,11 @@ json_set(json_text, path1, value1, path2, value2, ...)
 jsonb_set(json_text, path1, value1, path2, value2, ...)
 ```
 
-| Parameter   | Type         | Description               |
-| ----------- | ------------ | ------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document           |
-| `path`      | TEXT         | A JSON path for the value |
-| `value`     | any          | The value to set          |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | A JSON path for the value |
+| `value` | any | The value to set |
 
 **Returns:** TEXT (json\_set) or BLOB (jsonb\_set) -- the modified JSON.
 
@@ -395,10 +395,10 @@ json_remove(json_text, path1, path2, ...)
 jsonb_remove(json_text, path1, path2, ...)
 ```
 
-| Parameter   | Type         | Description                      |
-| ----------- | ------------ | -------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                  |
-| `path`      | TEXT         | One or more JSON paths to remove |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | One or more JSON paths to remove |
 
 **Returns:** TEXT (json\_remove) or BLOB (jsonb\_remove) -- the modified JSON.
 
@@ -419,10 +419,10 @@ json_patch(json_text, patch)
 jsonb_patch(json_text, patch)
 ```
 
-| Parameter   | Type         | Description              |
-| ----------- | ------------ | ------------------------ |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT or BLOB | The target JSON document |
-| `patch`     | TEXT or BLOB | The merge patch to apply |
+| `patch` | TEXT or BLOB | The merge patch to apply |
 
 **Returns:** TEXT (json\_patch) or BLOB (jsonb\_patch) -- the patched JSON.
 
@@ -443,8 +443,8 @@ Returns a pretty-printed (indented) representation of a JSON document.
 json_pretty(json_text)
 ```
 
-| Parameter   | Type         | Description     |
-| ----------- | ------------ | --------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_text` | TEXT or BLOB | A JSON document |
 
 **Returns:** TEXT -- the formatted JSON string with indentation.
@@ -476,10 +476,10 @@ json_array_length(json_text)
 json_array_length(json_text, path)
 ```
 
-| Parameter   | Type         | Description                                            |
-| ----------- | ------------ | ------------------------------------------------------ |
-| `json_text` | TEXT or BLOB | A JSON document                                        |
-| `path`      | TEXT         | Optional. A JSON path to an array within the document. |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | Optional. A JSON path to an array within the document. |
 
 **Returns:** INTEGER -- the number of elements, or NULL if the value at the path is not an array.
 
@@ -507,9 +507,9 @@ json_group_array(value)
 jsonb_group_array(value)
 ```
 
-| Parameter | Type | Description                          |
-| --------- | ---- | ------------------------------------ |
-| `value`   | any  | The value to aggregate from each row |
+| Parameter | Type | Description |
+| - | - | - |
+| `value` | any | The value to aggregate from each row |
 
 **Returns:** TEXT (json\_group\_array) or BLOB (jsonb\_group\_array) -- a JSON array of all values in the group.
 
@@ -531,10 +531,10 @@ json_group_object(label, value)
 jsonb_group_object(label, value)
 ```
 
-| Parameter | Type | Description              |
-| --------- | ---- | ------------------------ |
-| `label`   | TEXT | The key for each entry   |
-| `value`   | any  | The value for each entry |
+| Parameter | Type | Description |
+| - | - | - |
+| `label` | TEXT | The key for each entry |
+| `value` | any | The value for each entry |
 
 **Returns:** TEXT (json\_group\_object) or BLOB (jsonb\_group\_object) -- a JSON object.
 
@@ -559,23 +559,23 @@ SELECT * FROM json_each(json_text);
 SELECT * FROM json_each(json_text, path);
 ```
 
-| Parameter   | Type         | Description                                                               |
-| ----------- | ------------ | ------------------------------------------------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                                                           |
-| `path`      | TEXT         | Optional. A JSON path to the array or object to iterate. Defaults to `$`. |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | Optional. A JSON path to the array or object to iterate. Defaults to `$`. |
 
 **Output columns:**
 
-| Column    | Type            | Description                                                                                |
-| --------- | --------------- | ------------------------------------------------------------------------------------------ |
-| `key`     | TEXT or INTEGER | Object key (TEXT) or array index (INTEGER)                                                 |
-| `value`   | any             | The value of the element, as JSON text for objects/arrays or as a SQL value for primitives |
-| `type`    | TEXT            | JSON type: `null`, `true`, `false`, `integer`, `real`, `text`, `array`, or `object`        |
-| `atom`    | any             | The SQL value for primitives (NULL for arrays and objects)                                 |
-| `id`      | INTEGER         | A sequential identifier for the element                                                    |
-| `parent`  | INTEGER         | The id of the parent element (NULL for top-level)                                          |
-| `fullkey` | TEXT            | The full JSON path to this element                                                         |
-| `path`    | TEXT            | The JSON path to the parent of this element                                                |
+| Column | Type | Description |
+| - | - | - |
+| `key` | TEXT or INTEGER | Object key (TEXT) or array index (INTEGER) |
+| `value` | any | The value of the element, as JSON text for objects/arrays or as a SQL value for primitives |
+| `type` | TEXT | JSON type: `null`, `true`, `false`, `integer`, `real`, `text`, `array`, or `object` |
+| `atom` | any | The SQL value for primitives (NULL for arrays and objects) |
+| `id` | INTEGER | A sequential identifier for the element |
+| `parent` | INTEGER | The id of the parent element (NULL for top-level) |
+| `fullkey` | TEXT | The full JSON path to this element |
+| `path` | TEXT | The JSON path to the parent of this element |
 
 ```sql theme={null}
 SELECT key, value, type FROM json_each('[10, "hello", null]');
@@ -607,10 +607,10 @@ SELECT * FROM json_tree(json_text);
 SELECT * FROM json_tree(json_text, path);
 ```
 
-| Parameter   | Type         | Description                                                    |
-| ----------- | ------------ | -------------------------------------------------------------- |
-| `json_text` | TEXT or BLOB | A JSON document                                                |
-| `path`      | TEXT         | Optional. A JSON path to the subtree to walk. Defaults to `$`. |
+| Parameter | Type | Description |
+| - | - | - |
+| `json_text` | TEXT or BLOB | A JSON document |
+| `path` | TEXT | Optional. A JSON path to the subtree to walk. Defaults to `$`. |
 
 **Output columns:** Same as `json_each`.
 

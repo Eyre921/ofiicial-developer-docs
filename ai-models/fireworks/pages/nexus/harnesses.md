@@ -383,6 +383,19 @@ When you resume an old session, select the provider explicitly:
 codex resume <id> -c model_provider="fireworks-ai"
 ```
 
+<Note>
+  **ChatGPT and Codex app threads keep the provider they started on.** A thread
+  started on an OpenAI model before you connected stays on OpenAI, even after
+  you pick a Fireworks model or FireRouter in the picker. ChatGPT then shows an
+  error such as
+  `The 'firerouter' model is not supported when using Codex with a ChatGPT account.`
+  The error names whichever Fireworks model you picked.
+
+  * Start a new thread to use Fireworks models and FireRouter.
+  * To keep working in the old thread, switch back to an OpenAI model, or run
+    `fireconnect codex off` and turn it back on when you start a new thread.
+</Note>
+
 <Warning>
   **MiniMax models don't work on Codex.** Codex may insert assistant messages between `tool_calls` and `tool_results`, which MiniMax templates reject. Use a Chat Completions harness such as OpenCode for MiniMax.
 </Warning>

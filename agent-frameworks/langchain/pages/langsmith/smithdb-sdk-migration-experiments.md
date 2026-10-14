@@ -308,6 +308,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -522,6 +523,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -742,6 +744,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();

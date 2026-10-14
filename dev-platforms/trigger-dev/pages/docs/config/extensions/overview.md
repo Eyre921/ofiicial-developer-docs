@@ -53,6 +53,8 @@ Trigger.dev provides a set of built-in extensions that you can use to customize 
 | [prismaExtension](/docs/config/extensions/prismaExtension) | Using prisma in your Trigger.dev tasks |
 | [pythonExtension](/docs/config/extensions/pythonExtension) | Execute Python scripts in your project |
 | [puppeteer](/docs/config/extensions/puppeteer) | Use Puppeteer in your Trigger.dev tasks |
+| [playwright](/docs/config/extensions/playwright) | Use Playwright in your Trigger.dev tasks |
+| [lightpanda](/docs/config/extensions/lightpanda) | Use Lightpanda in your Trigger.dev tasks |
 | [ffmpeg](/docs/config/extensions/ffmpeg) | Use FFmpeg in your Trigger.dev tasks |
 | [aptGet](/docs/config/extensions/aptGet) | Install system packages in your build image |
 | [additionalFiles](/docs/config/extensions/additionalFiles) | Copy additional files to your build image |

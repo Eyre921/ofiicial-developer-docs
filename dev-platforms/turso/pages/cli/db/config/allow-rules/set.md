@@ -14,9 +14,9 @@ At least one of `--ip` or `--aws-vpc` must be provided. To remove restrictions u
 
 ## Flags
 
-| Flag        | Description                                                                           |
-| ----------- | ------------------------------------------------------------------------------------- |
-| `--ip`      | IP address or CIDR block to allow. Repeatable. Replaces the current IP list.          |
+| Flag | Description |
+| - | - |
+| `--ip` | IP address or CIDR block to allow. Repeatable. Replaces the current IP list. |
 | `--aws-vpc` | AWS VPC endpoint ID (`vpce-...`) to allow. Repeatable. Replaces the current VPC list. |
 
 ## Examples

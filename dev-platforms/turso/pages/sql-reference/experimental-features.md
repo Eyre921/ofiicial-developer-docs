@@ -12,19 +12,19 @@ Some Turso features are still experimental and must be explicitly enabled before
 
 ## Experimental Features List
 
-| Feature                 | Flag                      | Description                                                                                                                                                                                                                                  |
-| ----------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Views                   | `views`                   | [CREATE VIEW](/sql-reference/statements/create-view) and [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view)                                                                                                      |
-| Custom Types            | `custom_types`            | [CREATE TYPE](/sql-reference/statements/create-type), [DROP TYPE](/sql-reference/statements/drop-type), [CREATE DOMAIN](/sql-reference/statements/create-domain), and [DROP DOMAIN](/sql-reference/statements/drop-domain) for STRICT tables |
-| Encryption              | `encryption`              | At-rest encryption via [PRAGMA cipher / hexkey](/sql-reference/pragmas#encryption)                                                                                                                                                           |
-| Index Methods           | `index_method`            | [CREATE INDEX ... USING](/sql-reference/statements/create-index#using-clause) for FTS and custom index types                                                                                                                                 |
-| Autovacuum              | `autovacuum`              | Automatic database file compaction                                                                                                                                                                                                           |
-| Vacuum                  | `vacuum`                  | In-place [VACUUM](/sql-reference/statements/vacuum) compaction                                                                                                                                                                               |
-| Attach                  | `attach`                  | [ATTACH DATABASE](/sql-reference/statements/attach-database) and [DETACH DATABASE](/sql-reference/statements/detach-database)                                                                                                                |
-| Generated Columns       | `generated_columns`       | Virtual [`GENERATED ALWAYS AS`](/sql-reference/statements/create-table) columns                                                                                                                                                              |
-| Without Rowid           | `without_rowid`           | `WITHOUT ROWID` tables                                                                                                                                                                                                                       |
-| Multi-Process WAL       | `multiprocess_wal`        | [Multi-Process Access](/sql-reference/multiprocess-access) — share a database file between OS processes via a shared WAL coordinator                                                                                                         |
-| MVCC Passive Checkpoint | `mvcc_passive_checkpoint` | Passive checkpointing under MVCC (`journal_mode=mvcc`)                                                                                                                                                                                       |
+| Feature | Flag | Description |
+| - | - | - |
+| Views | `views` | [CREATE VIEW](/sql-reference/statements/create-view) and [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view) |
+| Custom Types | `custom_types` | [CREATE TYPE](/sql-reference/statements/create-type), [DROP TYPE](/sql-reference/statements/drop-type), [CREATE DOMAIN](/sql-reference/statements/create-domain), and [DROP DOMAIN](/sql-reference/statements/drop-domain) for STRICT tables |
+| Encryption | `encryption` | At-rest encryption via [PRAGMA cipher / hexkey](/sql-reference/pragmas#encryption) |
+| Index Methods | `index_method` | [CREATE INDEX ... USING](/sql-reference/statements/create-index#using-clause) for FTS and custom index types |
+| Autovacuum | `autovacuum` | Automatic database file compaction |
+| Vacuum | `vacuum` | In-place [VACUUM](/sql-reference/statements/vacuum) compaction |
+| Attach | `attach` | [ATTACH DATABASE](/sql-reference/statements/attach-database) and [DETACH DATABASE](/sql-reference/statements/detach-database) |
+| Generated Columns | `generated_columns` | Virtual [`GENERATED ALWAYS AS`](/sql-reference/statements/create-table) columns |
+| Without Rowid | `without_rowid` | `WITHOUT ROWID` tables |
+| Multi-Process WAL | `multiprocess_wal` | [Multi-Process Access](/sql-reference/multiprocess-access) — share a database file between OS processes via a shared WAL coordinator |
+| MVCC Passive Checkpoint | `mvcc_passive_checkpoint` | Passive checkpointing under MVCC (`journal_mode=mvcc`) |
 
 <Info>
   Triggers are no longer experimental as of Turso 0.7 — [CREATE TRIGGER](/sql-reference/statements/create-trigger) and [DROP TRIGGER](/sql-reference/statements/drop-trigger) work without any flag.

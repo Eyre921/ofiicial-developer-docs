@@ -27,15 +27,15 @@ SELECT [DISTINCT] result_column [, ...]
 
 ### Parameters
 
-| Parameter           | Type                          | Description                                                   |
-| ------------------- | ----------------------------- | ------------------------------------------------------------- |
-| `result_column`     | expression, `*`, or `table.*` | Columns or expressions to return. Use `*` for all columns     |
-| `table_or_subquery` | identifier or subquery        | Table name, aliased table, or parenthesized SELECT            |
-| `expression`        | expression                    | Any valid SQL expression                                      |
-| `ordering_term`     | expression + direction        | Expression followed by optional ASC/DESC and NULLS FIRST/LAST |
-| `compound_operator` | keyword                       | UNION, UNION ALL, INTERSECT, or EXCEPT                        |
-| `cte_name`          | identifier                    | Name for a Common Table Expression                            |
-| `window_name`       | identifier                    | Name for a reusable window definition                         |
+| Parameter | Type | Description |
+| - | - | - |
+| `result_column` | expression, `*`, or `table.*` | Columns or expressions to return. Use `*` for all columns |
+| `table_or_subquery` | identifier or subquery | Table name, aliased table, or parenthesized SELECT |
+| `expression` | expression | Any valid SQL expression |
+| `ordering_term` | expression + direction | Expression followed by optional ASC/DESC and NULLS FIRST/LAST |
+| `compound_operator` | keyword | UNION, UNION ALL, INTERSECT, or EXCEPT |
+| `cte_name` | identifier | Name for a Common Table Expression |
+| `window_name` | identifier | Name for a reusable window definition |
 
 ## Basic Queries
 
@@ -85,18 +85,18 @@ SELECT * FROM orders WHERE total > 100 AND status != 'cancelled';
 
 ### Comparison Operators
 
-| Operator               | Description                             |
-| ---------------------- | --------------------------------------- |
-| `=`                    | Equal                                   |
-| `!=` or `<>`           | Not equal                               |
-| `<`                    | Less than                               |
-| `>`                    | Greater than                            |
-| `<=`                   | Less than or equal                      |
-| `>=`                   | Greater than or equal                   |
-| `IS`                   | Equal (NULL-safe)                       |
-| `IS NOT`               | Not equal (NULL-safe)                   |
-| `IS DISTINCT FROM`     | Not identical (NULL-safe, SQL standard) |
-| `IS NOT DISTINCT FROM` | Identical (NULL-safe, SQL standard)     |
+| Operator | Description |
+| - | - |
+| `=` | Equal |
+| `!=` or `<>` | Not equal |
+| `<` | Less than |
+| `>` | Greater than |
+| `<=` | Less than or equal |
+| `>=` | Greater than or equal |
+| `IS` | Equal (NULL-safe) |
+| `IS NOT` | Not equal (NULL-safe) |
+| `IS DISTINCT FROM` | Not identical (NULL-safe, SQL standard) |
+| `IS NOT DISTINCT FROM` | Identical (NULL-safe, SQL standard) |
 
 ### Logical Operators
 
@@ -170,13 +170,13 @@ Combines rows from two or more tables based on a related column.
 
 ### Supported Join Types
 
-| Join Type                        | Description                                                                          |
-| -------------------------------- | ------------------------------------------------------------------------------------ |
-| `INNER JOIN` or `JOIN`           | Returns rows that have matching values in both tables                                |
-| `LEFT JOIN` or `LEFT OUTER JOIN` | Returns all rows from the left table, with NULLs for unmatched right-side columns    |
-| `FULL OUTER JOIN`                | Returns all rows from both tables, with NULLs where there is no match on either side |
-| `NATURAL JOIN`                   | Joins on all columns with the same name in both tables                               |
-| `JOIN ... USING (column)`        | Joins on the specified column that exists in both tables                             |
+| Join Type | Description |
+| - | - |
+| `INNER JOIN` or `JOIN` | Returns rows that have matching values in both tables |
+| `LEFT JOIN` or `LEFT OUTER JOIN` | Returns all rows from the left table, with NULLs for unmatched right-side columns |
+| `FULL OUTER JOIN` | Returns all rows from both tables, with NULLs where there is no match on either side |
+| `NATURAL JOIN` | Joins on all columns with the same name in both tables |
+| `JOIN ... USING (column)` | Joins on the specified column that exists in both tables |
 
 ### INNER JOIN
 
@@ -252,17 +252,17 @@ GROUP BY department;
 
 Aggregate functions that can be used with GROUP BY:
 
-| Function                              | Description                                                |
-| ------------------------------------- | ---------------------------------------------------------- |
-| `COUNT(*)`                            | Number of rows in the group                                |
-| `COUNT(expression)`                   | Number of non-NULL values                                  |
-| `SUM(expression)`                     | Sum of non-NULL values                                     |
-| `AVG(expression)`                     | Average of non-NULL values                                 |
-| `MIN(expression)`                     | Minimum value                                              |
-| `MAX(expression)`                     | Maximum value                                              |
-| `TOTAL(expression)`                   | Sum as a REAL (returns 0.0 instead of NULL for empty sets) |
-| `GROUP_CONCAT(expression, separator)` | Concatenation of values                                    |
-| `STRING_AGG(expression, separator)`   | Alias for GROUP\_CONCAT                                    |
+| Function | Description |
+| - | - |
+| `COUNT(*)` | Number of rows in the group |
+| `COUNT(expression)` | Number of non-NULL values |
+| `SUM(expression)` | Sum of non-NULL values |
+| `AVG(expression)` | Average of non-NULL values |
+| `MIN(expression)` | Minimum value |
+| `MAX(expression)` | Maximum value |
+| `TOTAL(expression)` | Sum as a REAL (returns 0.0 instead of NULL for empty sets) |
+| `GROUP_CONCAT(expression, separator)` | Concatenation of values |
+| `STRING_AGG(expression, separator)` | Alias for GROUP\_CONCAT |
 
 ### HAVING
 
@@ -329,9 +329,9 @@ SELECT * FROM employees ORDER BY manager_id DESC NULLS FIRST;
 ```
 
 | Direction | Default NULL Placement |
-| --------- | ---------------------- |
-| ASC       | NULLS LAST             |
-| DESC      | NULLS FIRST            |
+| - | - |
+| ASC | NULLS LAST |
+| DESC | NULLS FIRST |
 
 ## LIMIT and OFFSET
 
@@ -468,10 +468,10 @@ function_name() OVER (
 )
 ```
 
-| Component      | Description                                                                   |
-| -------------- | ----------------------------------------------------------------------------- |
+| Component | Description |
+| - | - |
 | `PARTITION BY` | Divides rows into groups (partitions). The function resets for each partition |
-| `ORDER BY`     | Defines the order of rows within each partition                               |
+| `ORDER BY` | Defines the order of rows within each partition |
 
 Standard aggregate functions (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`, `TOTAL`, `GROUP_CONCAT`) can all be used as window functions.
 
@@ -483,12 +483,12 @@ Standard aggregate functions (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`, `TOTAL`, `GRO
 
 Combine the results of two or more SELECT statements.
 
-| Operator    | Description                                                       |
-| ----------- | ----------------------------------------------------------------- |
-| `UNION`     | Combines results and removes duplicates                           |
-| `UNION ALL` | Combines results and keeps duplicates                             |
-| `INTERSECT` | Returns only rows present in both result sets                     |
-| `EXCEPT`    | Returns rows from the first result set that are not in the second |
+| Operator | Description |
+| - | - |
+| `UNION` | Combines results and removes duplicates |
+| `UNION ALL` | Combines results and keeps duplicates |
+| `INTERSECT` | Returns only rows present in both result sets |
+| `EXCEPT` | Returns rows from the first result set that are not in the second |
 
 All set operations require the same number of columns in each SELECT, with compatible types.
 

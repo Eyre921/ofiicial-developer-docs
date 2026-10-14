@@ -22,9 +22,9 @@ DETACH closes the connection to the attached database identified by `schema-name
 
 ### Clauses
 
-| Clause        | Description                                              |
-| ------------- | -------------------------------------------------------- |
-| `DATABASE`    | Optional keyword. Has no effect on behavior.             |
+| Clause | Description |
+| - | - |
+| `DATABASE` | Optional keyword. Has no effect on behavior. |
 | `schema-name` | The schema name assigned when the database was attached. |
 
 The `main` and `temp` schemas cannot be detached.

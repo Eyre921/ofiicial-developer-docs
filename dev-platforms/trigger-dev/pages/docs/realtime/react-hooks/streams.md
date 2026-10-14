@@ -468,7 +468,7 @@ function MyComponent({ runId, publicAccessToken }: { runId: string; publicAccess
 
 ### Throttling updates
 
-The `useRealtimeRunWithStreams` hook accepts an `experimental_throttleInMs` option to throttle the updates from the server. This can be useful if you are getting too many updates and want to reduce the number of updates.
+The `useRealtimeRunWithStreams` hook accepts a `throttleInMs` option to throttle the updates from the server. This can be useful if you are getting too many updates and want to reduce the number of updates.
 
 ```tsx theme={"theme":"css-variables"}
 import { useRealtimeRunWithStreams } from "@trigger.dev/react-hooks";
@@ -482,7 +482,7 @@ export function MyComponent({
 }) {
   const { run, streams, error } = useRealtimeRunWithStreams(runId, {
     accessToken: publicAccessToken,
-    experimental_throttleInMs: 1000, // Throttle updates to once per second
+    throttleInMs: 1000, // Throttle updates to once per second
   });
 
   if (error) return <div>Error: {error.message}</div>;

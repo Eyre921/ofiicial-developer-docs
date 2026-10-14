@@ -20,20 +20,25 @@ Forward a message in an inbox thread to new recipients.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Forwards from the inbox address. `to` is required. The original message is
-quoted under a forwarded-message banner, and its attachments are included.
-Files in `attachments` are sent along with those. Both count toward the 25MB
-of content. An original attachment that was sent as a URL cannot be forwarded.
+Forwards a message from the inbox address right away, with no stored draft.
+`to` is required. The original message is quoted under a forwarded-message
+banner, below the optional `html` or `text` note.
+
+The attachments of the original message are sent with the forward, together
+with any `attachments` you add. The request fails when they exceed 10 files or
+25 MB of `content` in total. An original
+attachment that was sent from a URL (`path`) cannot be forwarded, and the
+request returns a `422`.
 
 The forward carries the same `In-Reply-To` and `References` headers as a
 [reply](/docs/api-reference/inboxes/reply-thread-email) to the original message, so
@@ -43,7 +48,7 @@ be set or overridden.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -59,7 +64,8 @@ be set or overridden.
 
 <ParamField type="string | string[]">
   Recipient email address. For multiple addresses, send as an array of strings.
-  `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+  Must name at least one address. `to`, `cc`, and `bcc` combined cannot exceed
+  50 recipients.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -81,15 +87,19 @@ be set or overridden.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the forward. When omitted, the thread subject is used, prefixed
-  with `Fwd:` if it isn't already. Max 2000 characters.
+  The subject of the forward. Max 2000 characters. Cannot contain a line break.
+  When omitted, the thread subject is used, prefixed with `Fwd:` if it does not
+  already start with it.
 </ParamField>
 
 <ParamField type="array">
-  Filename and content of attachments (max 25MB of content per message). A
-  `path` is fetched when the email is sent and does not count toward that limit.
-
-  [See examples](/docs/dashboard/emails/attachments)
+  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email). Each one
+  needs `content` or `path`. They share one limit with the attachments of the
+  original message, which the forward also sends. Together they can have up to
+  10 files and at most 25 MB of `content`. A `path` file counts toward the 10
+  files only, because it is fetched when the email is sent. An empty file, a
+  blocked file type, or a `path` that is not an `http` or `https` URL, or that
+  points to `localhost`, returns a `422`.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -101,22 +111,27 @@ be set or overridden.
     </ParamField>
 
     <ParamField type="string">
-      Path where the attachment file is hosted
+      Path where the attachment file is hosted.
     </ParamField>
 
     <ResendParamField type="string">
-      Content type for the attachment.
+      Content type for the attachment. When not set, it is derived from the
+      `filename`.
     </ResendParamField>
 
     <ResendParamField type="string">
-      You can embed images using the content id parameter for the attachment. To show the image, you need to include the ID in the `src` attribute of the `img` tag (e.g., `<img src="cid:...">`) of your HTML. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
+      Content ID for embedding inline images with a `cid:` reference in the
+      `html`. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
     </ResendParamField>
   </Expandable>
 </ParamField>
 
 <ParamField type="object">
-  Custom headers to add to the email. `In-Reply-To`, `References`, and
-  `Reply-To` can't be set and return `422`.
+  Custom headers to add to the email. Resend sets the `In-Reply-To`,
+  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
+  of them, in any letter case, returns a `422`. A header name cannot be empty,
+  and names and values cannot contain line breaks or null characters, or the
+  request returns a `422`.
 </ParamField>
 
 ## Headers
@@ -127,6 +142,11 @@ be set or overridden.
   * Should be **unique per API request**
   * Idempotency keys expire after **24 hours**
   * Have a maximum length of **256 characters**
+  * A retry with the same key returns the first successful response, with the
+    `idempotent-replayed: true` header
+  * A failed request is not stored, so you can retry it with the same key
+  * Reusing the key with a different body, or while the first request is still
+    running, returns a `409`
 
   [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
@@ -134,7 +154,8 @@ be set or overridden.
 ## Response Fields
 
 <ParamField type="string">
-  The ID of the queued outbound email.
+  The ID of the sent email. Use it with the [emails
+  endpoints](/docs/api-reference/emails/retrieve-email).
 </ParamField>
 
 <RequestExample>
@@ -179,10 +200,7 @@ be set or overridden.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails forward \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
-    --email_id 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
+  resend inboxes threads emails forward b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
     --to colleague@example.org \
     --text "Flagging this refund request for you."
   ```

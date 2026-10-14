@@ -20,12 +20,12 @@ Retrieve a single draft by its ID.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -33,7 +33,7 @@ Retrieve a single draft by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -51,11 +51,12 @@ Retrieve a single draft by its ID.
 </ParamField>
 
 <ParamField type="string">
-  `standalone` for a new conversation, or `reply`.
+  `reply` when the draft replies to an email in an existing thread. `standalone`
+  when the draft starts a new thread.
 </ParamField>
 
 <ParamField type="string[] | null">
-  Recipients.
+  Recipients. `null` or empty when no recipients are set.
 </ParamField>
 
 <ParamField type="string[]">
@@ -87,7 +88,8 @@ Retrieve a single draft by its ID.
 </ParamField>
 
 <ParamField type="string | null">
-  The queued outbound email after send. `null` until then.
+  The ID of the outbound email queued when the draft was sent. `null` until the
+  draft is sent.
 </ParamField>
 
 <ParamField type="string">
@@ -138,9 +140,7 @@ Retrieve a single draft by its ID.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes drafts get \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --draft_id c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
+  resend inboxes drafts get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32
   ```
 </RequestExample>
 

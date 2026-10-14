@@ -14,7 +14,7 @@ import { task } from "@trigger.dev/sdk";
 export const heavyTask = task({
   id: "heavy-task",
   machine: "large-1x",
-  run: async ({ payload, ctx }) => {
+  run: async (payload, { ctx }) => {
     //...
   },
 });

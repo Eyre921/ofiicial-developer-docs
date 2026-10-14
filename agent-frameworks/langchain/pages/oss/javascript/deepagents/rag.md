@@ -774,7 +774,6 @@ Add this code to `agent.ts`:
     import { StateBackend } from "deepagents";
     import { tool } from "langchain";
     import * as z from "zod";
-    import { uuid7 } from "langsmith";
 
     const backend = new StateBackend();
 
@@ -1142,8 +1141,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1327,8 +1326,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1512,8 +1511,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1697,8 +1696,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1882,8 +1881,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -2067,8 +2066,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -2252,8 +2251,8 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";

@@ -22,11 +22,11 @@ DROP TRIGGER removes the named trigger from the database. The trigger must exist
 
 ### Clauses
 
-| Clause         | Description                                                                                                                  |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `IF EXISTS`    | Suppresses the error that would occur if the trigger does not exist. The statement is a no-op when the trigger is not found. |
-| `schema-name`  | The name of the attached database containing the trigger. When omitted, Turso searches for the trigger in the main database. |
-| `trigger-name` | The name of the trigger to remove.                                                                                           |
+| Clause | Description |
+| - | - |
+| `IF EXISTS` | Suppresses the error that would occur if the trigger does not exist. The statement is a no-op when the trigger is not found. |
+| `schema-name` | The name of the attached database containing the trigger. When omitted, Turso searches for the trigger in the main database. |
+| `trigger-name` | The name of the trigger to remove. |
 
 Dropping a trigger does not affect any data in the table the trigger was associated with. It only removes the trigger definition from the schema.
 

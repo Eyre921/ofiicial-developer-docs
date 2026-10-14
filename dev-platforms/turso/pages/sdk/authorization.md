@@ -10,13 +10,13 @@ Turso uses scoped, JWT-based tokens to control access to your databases. Every t
 
 Tokens are scoped at multiple levels, from broad to narrow:
 
-| Level              | Scope                           | How to create                       |
-| ------------------ | ------------------------------- | ----------------------------------- |
-| **Group**          | Access all databases in a group | `turso group tokens create <group>` |
-| **Database**       | Access a single database        | `turso db tokens create <database>` |
-| **Read-only**      | Queries only, no writes         | Add `--read-only` flag              |
-| **Table + Action** | Specific tables and operations  | Add `-p <table>:<actions>` flag     |
-| **Time-limited**   | Auto-expires after a duration   | Add `--expiration 7d` flag          |
+| Level | Scope | How to create |
+| - | - | - |
+| **Group** | Access all databases in a group | `turso group tokens create <group>` |
+| **Database** | Access a single database | `turso db tokens create <database>` |
+| **Read-only** | Queries only, no writes | Add `--read-only` flag |
+| **Table + Action** | Specific tables and operations | Add `-p <table>:<actions>` flag |
+| **Time-limited** | Auto-expires after a duration | Add `--expiration 7d` flag |
 
 These can be combined. For example, a read-only token scoped to a single database that expires in 7 days:
 

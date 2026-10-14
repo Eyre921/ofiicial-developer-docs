@@ -8,13 +8,13 @@ Rust Reference for Turso
 
 Turso offers three Rust crates:
 
-|                       | `turso`                         | `turso_serverless`                    | `libsql`                                                  |
-| --------------------- | ------------------------------- | ------------------------------------- | --------------------------------------------------------- |
-| **Use case**          | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases         |
-| **Engine**            | Turso (rewrite)                 | Turso (rewrite)                       | libSQL (SQLite fork)                                      |
-| **Concurrent writes** | Yes (MVCC)                      | Yes (MVCC)                            | Not supported                                             |
-| **Sync**              | push/pull (local-first)         | —                                     | Embedded Replicas (writes go to cloud primary)            |
-| **C compiler**        | Not required                    | Not required                          | Required for `core`, `replication`, `encryption` features |
+| | `turso` | `turso_serverless` | `libsql` |
+| - | - | - | - |
+| **Use case** | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases |
+| **Engine** | Turso (rewrite) | Turso (rewrite) | libSQL (SQLite fork) |
+| **Concurrent writes** | Yes (MVCC) | Yes (MVCC) | Not supported |
+| **Sync** | push/pull (local-first) | — | Embedded Replicas (writes go to cloud primary) |
+| **C compiler** | Not required | Not required | Required for `core`, `replication`, `encryption` features |
 
 **Starting a new project?** Use `turso` for local/embedded use or sync. For remote access, match the crate to the database engine: [`turso_serverless`](/sdk/rust/quickstart) for Turso databases, `libsql` with the `remote` feature for libSQL databases (no C compiler needed).
 
@@ -259,12 +259,12 @@ To enable encryption on a SQLite file, pass the encryption key value as an argum
 
 The `libsql` crate supports [conditionally compiling](https://doc.rust-lang.org/cargo/reference/features.html#dependency-features) features:
 
-| Feature       | Description                                                           |
-| ------------- | --------------------------------------------------------------------- |
-| `remote`      | HTTP-only client, pure Rust. No C compiler needed.                    |
-| `core`        | Local database only. Requires a C compiler.                           |
+| Feature | Description |
+| - | - |
+| `remote` | HTTP-only client, pure Rust. No C compiler needed. |
+| `core` | Local database only. Requires a C compiler. |
 | `replication` | Combines `core` with embedded replica support. Requires a C compiler. |
-| `encryption`  | Encryption at rest. Requires `cmake`. Not enabled by default.         |
+| `encryption` | Encryption at rest. Requires `cmake`. Not enabled by default. |
 
 ### Simple query
 

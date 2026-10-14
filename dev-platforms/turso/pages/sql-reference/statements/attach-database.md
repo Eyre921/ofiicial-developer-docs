@@ -22,10 +22,10 @@ ATTACH opens the database file at `filename` and makes its tables accessible thr
 
 ### Clauses
 
-| Clause        | Description                                                                                                                                    |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE`    | Optional keyword. Has no effect on behavior.                                                                                                   |
-| `filename`    | A string expression that evaluates to the path of the database file to attach. Use `':memory:'` to attach an in-memory database.               |
+| Clause | Description |
+| - | - |
+| `DATABASE` | Optional keyword. Has no effect on behavior. |
+| `filename` | A string expression that evaluates to the path of the database file to attach. Use `':memory:'` to attach an in-memory database. |
 | `schema-name` | The name used to qualify table references from the attached database. This name must be unique among all attached databases on the connection. |
 
 Every connection has a built-in schema named `main` for its primary database. The names `main` and `temp` are reserved and cannot be used as schema names for attached databases.

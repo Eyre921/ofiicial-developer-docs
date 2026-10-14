@@ -28,15 +28,15 @@ Use `all` as the table name to apply permissions to every table.
 
 ## Available Actions
 
-| Action          | Description           |
-| --------------- | --------------------- |
-| `data_read`     | Read data from tables |
-| `data_add`      | Insert new rows       |
-| `data_update`   | Update existing rows  |
-| `data_delete`   | Delete rows           |
-| `schema_add`    | Create new tables     |
-| `schema_update` | Modify table schemas  |
-| `schema_delete` | Drop tables           |
+| Action | Description |
+| - | - |
+| `data_read` | Read data from tables |
+| `data_add` | Insert new rows |
+| `data_update` | Update existing rows |
+| `data_delete` | Delete rows |
+| `schema_add` | Create new tables |
+| `schema_update` | Modify table schemas |
+| `schema_delete` | Drop tables |
 
 <Note>
   `data_read` is allowed on SQLite system tables (e.g., `sqlite_master`,
@@ -47,10 +47,10 @@ Use `all` as the table name to apply permissions to every table.
 
 You can configure your JWT template to grant different permissions based on user roles:
 
-| Role      | Permissions                                                                             |
-| --------- | --------------------------------------------------------------------------------------- |
-| Admin     | `all:data_read,data_add,data_update,data_delete,schema_add,schema_update,schema_delete` |
-| Moderator | `all:data_read,data_update`                                                             |
-| User      | `all:data_read`                                                                         |
+| Role | Permissions |
+| - | - |
+| Admin | `all:data_read,data_add,data_update,data_delete,schema_add,schema_update,schema_delete` |
+| Moderator | `all:data_read,data_update` |
+| User | `all:data_read` |
 
 With JWKS, these permissions are embedded in the JWT token based on user metadata (e.g., role, group membership) from your auth provider.

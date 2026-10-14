@@ -12,6 +12,6 @@ turso db list
 
 ## Flags
 
-| Flag                   | Description                |
-| ---------------------- | -------------------------- |
+| Flag | Description |
+| - | - |
 | `--group <group-name>` | Filter databases by group. |

@@ -23,12 +23,12 @@ aggregate_function(expression) OVER (
 )
 ```
 
-| Clause               | Description                                                                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `aggregate_function` | Any supported aggregate function: `count`, `sum`, `avg`, `min`, `max`, `total`, `group_concat`                                                          |
-| `OVER (...)`         | Defines the window over which the function operates                                                                                                     |
-| `PARTITION BY`       | Divides the result set into partitions. The function is applied independently within each partition. If omitted, the entire result set is one partition |
-| `ORDER BY`           | Defines the order of rows within each partition. This determines which rows are included in the frame for each calculation                              |
+| Clause | Description |
+| - | - |
+| `aggregate_function` | Any supported aggregate function: `count`, `sum`, `avg`, `min`, `max`, `total`, `group_concat` |
+| `OVER (...)` | Defines the window over which the function operates |
+| `PARTITION BY` | Divides the result set into partitions. The function is applied independently within each partition. If omitted, the entire result set is one partition |
+| `ORDER BY` | Defines the order of rows within each partition. This determines which rows are included in the frame for each calculation |
 
 ### Default Frame
 
@@ -46,16 +46,16 @@ When ORDER BY is omitted, the default frame covers the entire partition.
 
 Any aggregate function can be used as a window function by adding an OVER clause.
 
-| Function                              | Description                                                |
-| ------------------------------------- | ---------------------------------------------------------- |
-| `count(*)`                            | Number of rows in the frame                                |
-| `count(expression)`                   | Number of non-NULL values in the frame                     |
-| `sum(expression)`                     | Sum of non-NULL values in the frame                        |
-| `avg(expression)`                     | Average of non-NULL values in the frame                    |
-| `min(expression)`                     | Minimum value in the frame                                 |
-| `max(expression)`                     | Maximum value in the frame                                 |
-| `total(expression)`                   | Sum as REAL (returns 0.0 for empty frames instead of NULL) |
-| `group_concat(expression, separator)` | Concatenation of values in the frame                       |
+| Function | Description |
+| - | - |
+| `count(*)` | Number of rows in the frame |
+| `count(expression)` | Number of non-NULL values in the frame |
+| `sum(expression)` | Sum of non-NULL values in the frame |
+| `avg(expression)` | Average of non-NULL values in the frame |
+| `min(expression)` | Minimum value in the frame |
+| `max(expression)` | Maximum value in the frame |
+| `total(expression)` | Sum as REAL (returns 0.0 for empty frames instead of NULL) |
+| `group_concat(expression, separator)` | Concatenation of values in the frame |
 
 ## Ranking Functions
 
@@ -72,13 +72,13 @@ SELECT
 FROM employees;
 ```
 
-| department  | name  | salary | rank\_in\_dept |
-| ----------- | ----- | ------ | -------------- |
-| Engineering | Alice | 90000  | 1              |
-| Engineering | Bob   | 85000  | 2              |
-| Engineering | Carol | 75000  | 3              |
-| Marketing   | Dave  | 70000  | 1              |
-| Marketing   | Eve   | 60000  | 2              |
+| department | name | salary | rank\_in\_dept |
+| - | - | - | - |
+| Engineering | Alice | 90000 | 1 |
+| Engineering | Bob | 85000 | 2 |
+| Engineering | Carol | 75000 | 3 |
+| Marketing | Dave | 70000 | 1 |
+| Marketing | Eve | 60000 | 2 |
 
 ## FILTER (WHERE ...)
 
@@ -106,13 +106,13 @@ SELECT
 FROM employees;
 ```
 
-| department  | name  | salary | dept\_total |
-| ----------- | ----- | ------ | ----------- |
-| Engineering | Alice | 90000  | 250000      |
-| Engineering | Bob   | 85000  | 250000      |
-| Engineering | Carol | 75000  | 250000      |
-| Marketing   | Dave  | 70000  | 130000      |
-| Marketing   | Eve   | 60000  | 130000      |
+| department | name | salary | dept\_total |
+| - | - | - | - |
+| Engineering | Alice | 90000 | 250000 |
+| Engineering | Bob | 85000 | 250000 |
+| Engineering | Carol | 75000 | 250000 |
+| Marketing | Dave | 70000 | 130000 |
+| Marketing | Eve | 60000 | 130000 |
 
 Without PARTITION BY, the function treats the entire result set as one partition:
 
@@ -136,13 +136,13 @@ SELECT
 FROM employees;
 ```
 
-| name  | salary | running\_total |
-| ----- | ------ | -------------- |
-| Eve   | 60000  | 60000          |
-| Dave  | 70000  | 130000         |
-| Carol | 75000  | 205000         |
-| Bob   | 85000  | 290000         |
-| Alice | 90000  | 380000         |
+| name | salary | running\_total |
+| - | - | - |
+| Eve | 60000 | 60000 |
+| Dave | 70000 | 130000 |
+| Carol | 75000 | 205000 |
+| Bob | 85000 | 290000 |
+| Alice | 90000 | 380000 |
 
 ### PARTITION BY with ORDER BY
 
@@ -160,13 +160,13 @@ SELECT
 FROM employees;
 ```
 
-| department  | name  | salary | dept\_running\_total |
-| ----------- | ----- | ------ | -------------------- |
-| Engineering | Carol | 75000  | 75000                |
-| Engineering | Bob   | 85000  | 160000               |
-| Engineering | Alice | 90000  | 250000               |
-| Marketing   | Eve   | 60000  | 60000                |
-| Marketing   | Dave  | 70000  | 130000               |
+| department | name | salary | dept\_running\_total |
+| - | - | - | - |
+| Engineering | Carol | 75000 | 75000 |
+| Engineering | Bob | 85000 | 160000 |
+| Engineering | Alice | 90000 | 250000 |
+| Marketing | Eve | 60000 | 60000 |
+| Marketing | Dave | 70000 | 130000 |
 
 ## Named Windows
 
@@ -276,22 +276,22 @@ FROM employees;
 
 The following window function features are not yet supported in Turso:
 
-| Feature                                   | Status        |
-| ----------------------------------------- | ------------- |
-| `rank()`                                  | Not supported |
-| `dense_rank()`                            | Not supported |
-| `ntile(N)`                                | Not supported |
-| `lag(expr, offset, default)`              | Not supported |
-| `lead(expr, offset, default)`             | Not supported |
-| `first_value(expr)`                       | Not supported |
-| `last_value(expr)`                        | Not supported |
-| `nth_value(expr, N)`                      | Not supported |
-| `cume_dist()`                             | Not supported |
-| `percent_rank()`                          | Not supported |
-| Custom frame: `ROWS BETWEEN ...`          | Not supported |
+| Feature | Status |
+| - | - |
+| `rank()` | Not supported |
+| `dense_rank()` | Not supported |
+| `ntile(N)` | Not supported |
+| `lag(expr, offset, default)` | Not supported |
+| `lead(expr, offset, default)` | Not supported |
+| `first_value(expr)` | Not supported |
+| `last_value(expr)` | Not supported |
+| `nth_value(expr, N)` | Not supported |
+| `cume_dist()` | Not supported |
+| `percent_rank()` | Not supported |
+| Custom frame: `ROWS BETWEEN ...` | Not supported |
 | Custom frame: `RANGE BETWEEN ... AND ...` | Not supported |
-| Custom frame: `GROUPS BETWEEN ...`        | Not supported |
-| `EXCLUDE` clause                          | Not supported |
+| Custom frame: `GROUPS BETWEEN ...` | Not supported |
+| `EXCLUDE` clause | Not supported |
 
 `row_number()` and `FILTER (WHERE ...)` are supported — see the sections above.
 

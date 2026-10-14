@@ -12,6 +12,6 @@ turso group tokens invalidate <group-name> [flags]
 
 ## Flags
 
-| Flag          | Description                                             |
-| ------------- | ------------------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-y`, `--yes` | Confirms the invalidation of all existing group tokens. |

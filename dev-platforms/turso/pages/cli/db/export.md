@@ -14,9 +14,9 @@ turso db export <database> [flags]
 
 ## Flags
 
-| Flag              | Description                                             |
-| ----------------- | ------------------------------------------------------- |
-| `--output-file`   | Specify the output file name (default: `<database>.db`) |
-| `--overwrite`     | Overwrite output file if it exists                      |
-| `--with-metadata` | Include metadata in the export                          |
-| `-h`, `--help`    | Help for export                                         |
+| Flag | Description |
+| - | - |
+| `--output-file` | Specify the output file name (default: `<database>.db`) |
+| `--overwrite` | Overwrite output file if it exists |
+| `--with-metadata` | Include metadata in the export |
+| `-h`, `--help` | Help for export |

@@ -1225,22 +1225,41 @@ Add this configuration to `~/.kiro/settings/mcp.json`:
 
 **Devin Desktop**
 
-Add this configuration to `~/.config/devin/mcp_config.json`:
+These instructions use the Devin Local agent in Devin Desktop or Devin CLI. Add the Supabase MCP server to your user configuration:
+
+```bash
+devin mcp add -s user supabase "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `~/.config/devin/mcp_config.json`:
 
 ```json
 {
   "mcpServers": {
     "supabase": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.supabase.com/mcp"
-      ]
+      "url": "https://mcp.supabase.com/mcp"
     }
   }
 }
 ```
+
+On Windows, the configuration file is `%APPDATA%\devin\mcp_config.json` instead.
+
+If you skipped the browser sign-in or need to re-authenticate, run:
+
+```bash
+devin mcp login supabase
+```
+
+Complete the authorization flow in your browser.
+
+Check the server configuration:
+
+```bash
+devin mcp list
+```
+
+Start a new Devin Local or Devin CLI session to load the server's tools.
 
 **Kimi Code**
 
@@ -36123,6 +36142,113 @@ Deprecation is done for the following reasons:
 
 ---
 
+# Custom OIDC provider
+
+Use any OIDC-compliant identity provider with your Supabase project
+
+Any identity provider that supports OpenID Connect (OIDC) can be used as a third-party authentication provider alongside Supabase Auth, or standalone, with your Supabase project. Use this guide for a provider that is not in the list of [supported providers](https://supabase.com/docs/guides/auth/third-party/overview).
+
+## Getting started
+
+1. Check that your provider meets the [requirements](#requirements).
+2. Add a Third-Party Auth integration with your provider's issuer URL in the [Dashboard](#add-the-integration-in-the-dashboard) or with the [Management API](#add-the-integration-with-the-management-api).
+3. Add the `role` claim to the JWTs your provider issues.
+4. Set up the Supabase client in your application.
+
+## Requirements
+
+Your provider must meet the [limitations](https://supabase.com/docs/guides/auth/third-party/overview#limitations) of third-party auth:
+
+1. It exposes an OIDC Issuer Discovery URL, served at `<issuer>/.well-known/openid-configuration`.
+2. It signs JWTs with an asymmetric key and includes a `kid` header parameter. Symmetrically signed JWTs, such as HS256, are not supported.
+3. Its JWTs contain a `role` claim. See [Assign the role claim](#assign-the-role-claim).
+
+The issuer URL must use HTTPS. Your project reads the signing keys from the `jwks_uri` listed in the discovery document.
+
+## Add the integration in the Dashboard
+
+1. In the Dashboard, go to **Authentication** > **Sign In / Providers** > [**Third-Party Auth**](https://supabase.com/dashboard/project/_/auth/third-party).
+2. Click **Add provider** and select **Custom OIDC**.
+3. Enter your provider's issuer URL in **Issuer URL**, for example `https://login.example.com`.
+4. Click **Add provider**.
+
+The provider appears in the Third-Party Auth list with its issuer URL. To remove it, delete it from the same list.
+
+## Add the integration with the Management API
+
+Create a [personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens), then call the [create third-party auth integration](https://supabase.com/docs/reference/api/v1-create-project-tpa-integration) endpoint with your provider's issuer URL in the `oidc_issuer_url` field. To list or remove integrations, use the [list](https://supabase.com/docs/reference/api/v1-list-project-tpa-integrations) and [delete](https://supabase.com/docs/reference/api/v1-delete-project-tpa-integration) endpoints.
+
+## Supabase CLI
+
+Custom OIDC providers are not available in the Supabase CLI. There is no `supabase/config.toml` option for them.
+
+## Assign the role claim
+
+Your Supabase project inspects the `role` claim in every JWT sent to it, to assign the correct Postgres role when using the Data API, Storage or Realtime authorization. Without a `role` claim, requests run as the `anon` role.
+
+Set `role` to `authenticated` for signed-in users. Use your provider's custom claims or token template feature to add it. See your provider's documentation for the steps.
+
+## Set up the Supabase client library
+
+Pass an `accessToken` async function that returns your provider's JWT for the current user, or `null` if there is no signed-in user:
+
+```typescript
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  'https://<supabase-project>.supabase.co',
+  'SUPABASE_PUBLISHABLE_KEY',
+  {
+    accessToken: async () => {
+      return getAccessTokenFromYourProvider()
+    },
+  }
+)
+```
+
+Replace `getAccessTokenFromYourProvider` with the call your provider's SDK offers to get the current user's JWT.
+
+## Using RLS policies
+
+After the client sends your provider's JWT, use RLS policies to secure access to your project's database, Storage objects and Realtime channels.
+
+### Identify the user
+
+The `sub` claim identifies the user. `auth.uid()` casts `sub` to `uuid`, so it fails if your provider issues subjects that are not UUIDs. Read the claim directly instead:
+
+```sql
+create policy "Users can read their own rows"
+  on table_name
+  for select
+  to authenticated
+  using (user_id = (select auth.jwt()->>'sub'));
+```
+
+Here `user_id` must be a `text` column.
+
+### Restrict access by issuer
+
+Your project trusts every issuer you add, and `sub` values from different issuers can collide. If you use more than one issuer, or you also use Supabase Auth, add a restrictive policy that checks the `iss` claim:
+
+```sql
+create policy "Restrict access to trusted issuers"
+  on table_name
+  as restrictive
+  to authenticated
+  using (
+    (auth.jwt()->>'iss' = 'https://<project-ref>.supabase.co/auth/v1')
+    or
+    (auth.jwt()->>'iss' = 'https://login.example.com')
+  );
+```
+
+Danger: Postgres has two types of policies: permissive and restrictive. This example uses a restrictive policy, so make sure you don't omit the `as restrictive` clause.
+
+For more on restrictive policies and on sharing the check across tables, Storage and Realtime, see the [Firebase Auth guide](https://supabase.com/docs/guides/auth/third-party/firebase-auth#adding-an-extra-layer-of-security-to-your-projects-rls-policies-self-hosting-only).
+
+
+---
+
 # Firebase Auth
 
 Use Firebase Auth with your Supabase project
@@ -36456,6 +36582,7 @@ Supabase has first-class support for these third-party authentication providers:
 - [Auth0](https://supabase.com/docs/guides/auth/third-party/auth0)
 - [AWS Cognito (with or without AWS Amplify)](https://supabase.com/docs/guides/auth/third-party/aws-cognito)
 - [WorkOS](https://supabase.com/docs/guides/auth/third-party/workos)
+- [Custom OIDC provider](https://supabase.com/docs/guides/auth/third-party/custom-oidc), for any other provider that supports OpenID Connect
 
 You can use these providers alongside Supabase Auth, or on their own, to access the [Data API (REST and GraphQL)](https://supabase.com/docs/guides/database/overview), [Storage](https://supabase.com/docs/guides/storage), [Realtime](https://supabase.com/docs/guides/storage) and [Functions](https://supabase.com/docs/guides/functions) from your existing apps.
 
@@ -68908,30 +69035,45 @@ You can deploy directly from GitHub on any plan — connect your repository and 
 
 Use branching to safely experiment with changes to your Supabase project.
 
-Supabase branches create separate environments that spin off from your main project. You can use these branching environments to create and test changes like new configurations, database schemas, or features without affecting your production setup. When you're ready to ship your changes, merge your branch to update your production instance with the new changes.
+Supabase branches create separate environments that spin off from your base project. You can use these branching environments to create and test changes like new configurations, database schemas, or features without affecting your production setup. When you're ready to ship your changes, merge your branch to update your production instance with the new changes.
 
 ## How branching works
 
 - **Separate Environments**: Each branch is a separate environment with its own Supabase instance and API credentials.
 - **Preview Branches**: Preview branches are ephemeral and best suited for focused testing. They are automatically deleted when a PR is merged or closed.
 - **Persistent Branches**: Persistent branches are long-lived and recommended for environments like staging, QA, or development. They aren't automatically paused or deleted due to inactivity or when a PR is merged or closed.
-- **Managing Branches**: You can create, review, and merge branches either automatically via our [GitHub integration](https://supabase.com/docs/guides/deployment/branching/github-integration) or directly [through the dashboard](https://supabase.com/docs/guides/deployment/branching/dashboard) (currently in beta). All branches show up in the branches page in the dashboard, regardless of how they were created.
-- **Cloned from your main project**: Each new branch is created as a clone of your main project. It starts with that project's Edge Functions deployed and the configuration set.
-- **Data-less by default**: By default, new branches do not start with any data or storage objects from your main project. This is meant to better protect your sensitive production data. To start your branches with data, you can use a [seed file](https://supabase.com/docs/guides/deployment/branching/github-integration#seeding) if using the GitHub integration, or the [Include data](https://supabase.com/docs/guides/deployment/branching/dashboard#include-production-data) option if you create the branch from the dashboard.
+- **Managing Branches**: You can create, review, and merge branches either automatically via our [GitHub integration](https://supabase.com/docs/guides/deployment/branching/github-integration) or directly [through the Supabase Dashboard](https://supabase.com/docs/guides/deployment/branching/dashboard) (currently in beta). All branches show up in the branches page in the dashboard, regardless of how they were created.
+- **Cloned from your base project**: Each new branch is created as a clone of your base project. It starts with that project's Edge Functions deployed and the configuration set.
+- **Data-less by default**: By default, new branches do not start with any data or storage objects from your base project. This is meant to better protect your sensitive production data. To start your branches with data, you can use a [seed file](https://supabase.com/docs/guides/deployment/branching/github-integration#seeding) if using the GitHub integration, or the [Include data](https://supabase.com/docs/guides/deployment/branching/dashboard#include-production-data) option if you create the branch from the Supabase Dashboard.
+
+## What a new branch starts with
+
+Whether you create a branch from a pull request or from the Supabase Dashboard, Supabase creates a project with default settings then copies these settings from your base project:
+
+- Postgres settings
+- Connection pooler settings
+- Auth, Data API, Realtime, and Storage settings
+- SSL enforcement
+- Network restrictions, when your base project has them
+- Deployed Edge Functions
+
+Auth secrets, such as OAuth provider secrets and SMTP passwords, get placeholder values instead. Set the real values with [branch secrets](https://supabase.com/docs/guides/deployment/branching/configuration#managing-secrets-for-branches). Supabase also turns on Database Webhooks for every branch.
+
+The database schema isn't cloned. A GitHub-connected branch builds it from the [migrations in your repository](https://supabase.com/docs/guides/deployment/branching/github-integration#migrations). A dashboard branch builds it from your [base project's migration history](https://supabase.com/docs/guides/deployment/branching/dashboard#where-a-dashboard-branch-gets-its-schema). The branch is ready when the settings, the schema, and the Edge Functions are all in place.
 
 ## Deploying to production
 
-When you merge any branch into your main project, Supabase automatically runs a deployment workflow to deploy your changes to production. The deployment workflow is expressed as a Directed Acyclic Graph where each node represents one of the following deployment steps.
+When you merge any branch into your base project, Supabase automatically runs a deployment workflow to deploy your changes to production. The deployment workflow is expressed as a Directed Acyclic Graph where each node represents one of the following deployment steps.
 
 1. **Clone** - Checks out your repository at the specified git branch (optional for [Branching via Dashboard](https://supabase.com/docs/guides/deployment/branching/dashboard))
-2. **Pull** - Retrieves database migrations from your main project (also initialises the migration history table when Branching via Dashboard)
+2. **Pull** - Retrieves database migrations from your base project (also initialises the migration history table when Branching via Dashboard)
 3. **Health** - Waits up to 2 minutes for all Supabase services on your branch to be running and healthy, including Auth, API, Database, Storage, and Realtime
 4. **Configure** - Updates service configurations based on your config.toml file (only available for [Branching via GitHub](https://supabase.com/docs/guides/deployment/branching/github-integration))
 5. **Migrate** - Applies pending database migrations and vault secrets to your branch
 6. **Seed** - Runs seed files to populate your branch with initial data (must be [enabled in config.toml](https://supabase.com/docs/guides/deployment/branching/configuration#branch-configuration-with-remotes) for persistent branches)
 7. **Deploy** - Deploys any changed Edge Functions and updates function secrets
 
-If a parent deployment step fails, all dependent child steps will be skipped. For instance, if your database migrations failed at step 5, our runner will not seed your branch because step 6 is skipped. If you are using GitHub integration, the same deployment workflow will be run on every commit pushed to your git branch.
+If a parent deployment step fails, all dependent child steps are skipped. For instance, if your database migrations fail at step 5, our runner doesn't seed your branch because step 6 is skipped. If you are using GitHub integration, the same deployment workflow runs on every commit pushed to your git branch. To check each step's status in the Supabase Dashboard, see [Monitoring deployments](https://supabase.com/docs/guides/deployment/branching/troubleshooting#monitoring-deployments).
 
 
 ---
@@ -69220,13 +69362,13 @@ Use the value from the `BRANCH PROJECT ID` column as your `project_id` in the re
 
 Create, manage, review, and merge branches directly in the dashboard
 
-You can create, manage, review, and merge Supabase branches directly via the dashboard. This is useful for quick testing, prototyping, or when you prefer to work in a no-code way. You can also connect a Supabase branch to a GitHub branch at a later time if needed.
+You can create, manage, review, and merge Supabase branches directly in the Supabase Dashboard. This is useful for quick testing, prototyping, or when you prefer to work in a no-code way. You can also connect a Supabase branch to a GitHub branch at a later time if needed.
 
-Note: Branch management via the dashboard is currently in public alpha. Features and functionality may change.
+Note: Branch management in the Supabase Dashboard is currently in public alpha. Features and functionality may change.
 
 ## How Branching works
 
-You can do the following directly from the Supabase dashboard:
+You can do the following directly from the Supabase Dashboard:
 
 - Create preview branches
 - Make changes to your public schema or edge functions
@@ -69250,7 +69392,11 @@ Once you've enabled the feature, you can create a new branch:
 1. Click the arrows next to the branch name in the top menu bar. (The top menu bar has the format `YOUR_ORGANIZATION / YOUR_PROJECT / CURRENT_BRANCH_NAME`.)
 2. Click `Create branch`.
 
-The new branch is a clone of your base project. It starts with the project's schema, Edge Functions, and the configuration set.
+The new branch is a clone of your base project. It starts with the project's schema, Edge Functions, and the configuration set. For the full list of what it inherits, see [What a new branch starts with](https://supabase.com/docs/guides/deployment/branching#what-a-new-branch-starts-with).
+
+### Where a dashboard branch gets its schema
+
+A dashboard branch has no git branch to read migrations from. Instead, it reads your base project's migration history and applies each entry as a migration. The branch ends up with the same schema as your base project. If your base project has no migration history, the branch dumps the base project's schema and uses the dump as its first migration.
 
 ### Include production data
 
@@ -69282,7 +69428,7 @@ When reviewing a merge request you may see a notice at the top of the page askin
 
 There are a few limitations you should be aware of before deciding to use branching without git.
 
-- Custom roles created through the dashboard are not captured on branch creation
+- Custom roles created through the Supabase Dashboard are not captured on branch creation
 - Branches can only be merged to main; merging between preview branches is not supported
 - If your branch is out of date, you can pull in latest changes from main, but keep in mind that all functions will be overwritten
 - Deleting functions must be done manually on main branch
@@ -69330,7 +69476,7 @@ supabase init
 
 2. **Pull your database migration**
 
-Pull your database changes using `supabase db pull`. To get your database connection string, go to your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and look for the Session pooler connection string.
+Pull your database changes using `supabase db pull`. To get your database connection string, open the Supabase Dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and look for the Session pooler connection string.
 
 ```markdown
 supabase db pull --db-url <db_connection_string>
@@ -69357,13 +69503,23 @@ Enable the **Automatic branching** option in your GitHub Integration configurati
 
 When a new branch is created in GitHub, a corresponding branch is created in Supabase. (You can enable the **Supabase changes only** option to only create Supabase branches when Supabase files change.)
 
-Every Supabase branch, preview or persistent, is created as a clone of your base project. The new branch starts with the Edge Functions and configuration of that project. Its database schema is not cloned. Instead, it is built from the migrations you commit to your repository.
+Every Supabase branch, preview or persistent, is created as a clone of your base project. The new branch starts with the Edge Functions and configuration of that project. Its database schema is not cloned. Instead, it is built from the migrations you commit to your repository. For the full list of what a branch inherits, see [What a new branch starts with](https://supabase.com/docs/guides/deployment/branching#what-a-new-branch-starts-with).
+
+### What runs on each push
+
+After Supabase creates the branch and copies your base project's settings, it runs the branching workflow against the files in your repository. The workflow applies your `config.toml` first, then runs any migrations the branch hasn't applied yet. After that it seeds the database and Storage buckets, and finally deploys your Edge Functions. On a persistent branch, including your production branch, the `config.toml` and seed steps apply only when a `[remotes]` block names that branch, as described in [Configuration](#configuration). The same workflow runs again on every push to the git branch. You don't need a GitHub Action to deploy migrations or sync `config.toml` to a branch.
+
+For what each step does, see [Deploying to production](https://supabase.com/docs/guides/deployment/branching#deploying-to-production). To check a step's status and read its logs, see [Monitoring deployments](https://supabase.com/docs/guides/deployment/branching/troubleshooting#monitoring-deployments).
 
 ### Configuration
 
 You can test configuration changes on your Preview Branch by configuring the `config.toml` file in your Supabase directory. See the [Configuration docs](https://supabase.com/docs/guides/deployment/branching/configuration) for more information.
 
-Your branch starts with the configuration of your base project. The settings in your `config.toml` file are applied on top of that clone.
+Supabase applies the settings in your `config.toml` on top of the configuration copied from your base project, and where the two differ, your repository wins.
+
+The `configure` step compares the `[db]`, `[api]`, `[auth]`, `[storage]`, and `[experimental]` sections of `config.toml` with the branch's current settings and updates the ones that differ. The migrate, seed, and deploy steps read the other sections, such as `[functions]` and `[db.seed]`. If your repository has no `config.toml`, the step only turns on Database Webhooks.
+
+On a persistent branch, including your production branch, the step runs only when a `[remotes]` block names that branch's project ID. For the `[remotes]` syntax, see [Remote-specific configuration](https://supabase.com/docs/guides/deployment/branching/configuration#remote-specific-configuration).
 
 A comment is added to your PR with the deployment status of your preview branch.
 
@@ -69371,11 +69527,18 @@ A comment is added to your PR with the deployment status of your preview branch.
 
 The migrations in the `migrations` subdirectory of your Supabase directory are automatically run when the branch is created. Each later commit runs only the migrations that haven't been applied yet.
 
+The `migrate` step compares the files in `supabase/migrations` with the branch's migration history and applies every file without a history entry. Before it runs them, it saves the Vault secrets declared under `[db.vault]` to the branch. Keep two cases in mind:
+
+- A migration file with a timestamp older than the latest applied migration still runs and the step finishes with a warning.
+- A version in the branch's migration history with no matching file fails the step.
+
+To stop branching from running migrations, set `enabled = false` under `[db.migrations]` in `config.toml`.
+
 If your project uses [declarative schemas](https://supabase.com/docs/guides/local-development/declarative-database-schemas), the files in `supabase/schemas/` are not applied by branching. Run `supabase db schema declarative sync` to generate a migration from your schema changes, and commit the generated migration alongside your schema files.
 
 Branching runs each migration file inside a single transaction and does not honor the `-- pg-delta: transaction=false` directive. A migration that can't run in a transaction (for example, one that uses `create index concurrently`, or a [`pg-delta`](https://supabase.com/docs/guides/local-development/diff-engines) file that carries the directive) applies with `supabase db push` but fails when branching deploys it.
 
-If you want to rerun existing migrations, reset the branch from the Supabase dashboard to start from scratch. Note that existing data on your branch will also be dropped by a reset.
+If you want to rerun existing migrations, reset the branch from the Supabase Dashboard to start from scratch. Note that existing data on your branch will also be dropped by a reset.
 
 ### Seeding
 
@@ -69384,6 +69547,15 @@ Cloning your base project copies its Edge Functions and configuration, but not i
 You can seed your Preview Branch with sample data using the `seed.sql` file in your Supabase directory. See the [Seeding docs](https://supabase.com/docs/guides/local-development/seeding-your-database) for more information.
 
 Data changes in your seed files are not merged to production.
+
+### Edge Functions
+
+Edge Functions reach your branch in the `deploy` step, the last step of the workflow. The step saves the function secrets declared under `[edge_runtime.secrets]` then deploys functions:
+
+- If your repository has a `supabase/functions` directory, the step deploys the functions declared in `config.toml` under `[functions.<slug>]`. If the directory has functions but `config.toml` declares none, the step deploys nothing and finishes with a warning.
+- If your repository has no functions directory, the step copies the functions deployed on your base project. `config.toml` can still disable a copied function or change its JWT verification.
+
+A function is uploaded again only when it changed. For each function, the step compares the checksum of the new bundle and the JWT verification setting against the version already deployed on the branch. If both are the same, the step skips that function.
 
 ## Deploying changes to production
 
@@ -69484,10 +69656,22 @@ This guide covers common issues you might encounter when using Supabase branchin
 
 To check deployment status and troubleshoot failures:
 
-1. Go to your project dashboard
+1. Open the Supabase Dashboard
 2. Navigate to "Manage Branches"
 3. Click on your branch to view deployment logs
 4. Check the "View logs" section for detailed error messages
+
+Each step in a workflow run reports one of these statuses:
+
+| Status    | Meaning                                                                             |
+| --------- | ----------------------------------------------------------------------------------- |
+| `CREATED` | The step hasn't started.                                                            |
+| `RUNNING` | The step is in progress.                                                            |
+| `EXITED`  | The step succeeded.                                                                 |
+| `PAUSED`  | The step finished with a warning, or was skipped on purpose. Later steps still run. |
+| `DEAD`    | The step failed. Steps that depend on it don't run.                                 |
+
+A failed health check is a warning. The `health` step shows `PAUSED` and the workflow continues. A `DEAD` `migrate` step stops the `seed` and `deploy` steps.
 
 For programmatic monitoring, you can use the [Management API](https://api.supabase.com/api/v1#tag/environments/post/v1/projects/\{ref}/branches) to poll branch status.
 
@@ -69503,7 +69687,7 @@ To fix this, push the latest changes, then delete the preview branch in Supabase
 
 The new preview branch is a fresh clone of your base project and is reseeded from the `./supabase/seed.sql` file by default. Any additional data changes made on the old preview branch are lost.
 
-To rerun migrations that your base project has already applied, reset the branch from the Supabase dashboard instead. A reset reruns all migrations in sequential order and drops existing data on the branch.
+To rerun migrations that your base project has already applied, reset the branch from the Supabase Dashboard instead. A reset reruns all migrations in sequential order and drops existing data on the branch.
 
 ### Deployment failures
 
@@ -69597,6 +69781,8 @@ If configuration changes aren't applying:
 1. **Syntax errors**: Validate your `config.toml` syntax
 2. **Git sync**: Ensure changes are committed and pushed
 3. **Branch refresh**: Try deleting and recreating the branch
+4. **Persistent branch**: Configuration runs on a persistent branch, including your production branch, only when a `[remotes]` block names its project ID. For the `[remotes]` syntax, see [Remote-specific configuration](https://supabase.com/docs/guides/deployment/branching/configuration#remote-specific-configuration)
+5. **Section not applied by branching**: The `configure` step applies only the `[db]`, `[api]`, `[auth]`, `[storage]`, and `[experimental]` sections. For which steps read the other sections, see [Configuration](https://supabase.com/docs/guides/deployment/branching/github-integration#configuration)
 
 ### Secrets not available
 
@@ -69646,7 +69832,7 @@ Remember that preview branch data:
 
 If you're still experiencing issues:
 
-1. **Check logs**: Review branch logs in the dashboard
+1. **Check logs**: Review branch logs in the Supabase Dashboard
 2. **Community**: Ask in [GitHub discussions](https://github.com/orgs/supabase/discussions/18937)
 3. **Support**: Contact support for project-specific issues
 4. **Documentation**: Review the latest documentation for updates
@@ -79498,13 +79684,13 @@ Resources for getting started with Supabase.
 - **[API Keys](https://supabase.com/docs/guides/getting-started/api-keys):** Learn about the different API keys in Supabase and how to use them.
 - **[Local Development](https://supabase.com/docs/guides/local-development):** Use the Supabase CLI to develop locally and collaborate between teams.
 
-### Use cases
+## Use cases
 
 - **[AI, Vectors, and embeddings](https://supabase.com/docs/guides/ai#examples):** Build AI-enabled applications using our Vector toolkit.
 - **[Subscription Payments (SaaS)](https://github.com/vercel/nextjs-subscription-payments#nextjs-subscription-payments-starter):** Clone, deploy, and fully customize a SaaS subscription application with Next.js.
 - **[Partner Gallery](https://github.com/supabase-community/partner-gallery-example#supabase-partner-gallery-example):** Postgres full-text search, image storage, and more.
 
-### Framework quickstarts
+## Framework quickstarts
 
 - **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Build single-page apps from reusable components, and query Supabase Postgres from the browser.
 - **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Full-stack React with server rendering, wired to Supabase Postgres and cookie-based auth.
@@ -79529,7 +79715,7 @@ Resources for getting started with Supabase.
 
 
 
-### Web app demos
+## Web app demos
 
 - **[Next.js](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs):** Learn how to build a user management app with Next.js and Supabase Database, Auth, and Storage functionality.
 - **[React](https://supabase.com/docs/guides/getting-started/tutorials/with-react):** Learn how to build a user management app with React and Supabase Database, Auth, and Storage functionality.
@@ -79541,7 +79727,7 @@ Resources for getting started with Supabase.
 - **[SvelteKit](https://supabase.com/docs/guides/getting-started/tutorials/with-sveltekit):** Learn how to build a user management app with SvelteKit and Supabase Database, Auth, and Storage functionality.
 - **[Refine](https://supabase.com/docs/guides/getting-started/tutorials/with-refine):** Learn how to build a user management app with Refine and Supabase Database, Auth, and Storage functionality.
 
-### Mobile tutorials
+## Mobile tutorials
 
 - **[Flutter](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter):** Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.
 - **[Expo React Native](https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native):** Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.
@@ -98866,7 +99052,7 @@ Linux packages are provided in [Releases](https://github.com/supabase/cli/releas
 
 ### Run a local Supabase project \[#running-a-local-supabase-project]
 
-The most common thing you'll do with the CLI is run the full Supabase stack (Postgres, Auth, Storage, and the rest) on your own machine. That stack runs in Docker containers, so you need a container runtime installed first. On Windows and Linux, follow the official guide to install and configure [Docker Desktop](https://docs.docker.com/desktop).
+The most common thing you do with the CLI is run the full Supabase stack (Postgres, Auth, Storage, and the rest) on your own machine. That stack runs in Docker containers, so you need a container runtime installed first. On Windows and Linux, follow the official guide to install and configure [Docker Desktop](https://docs.docker.com/desktop). In a coding agent sandbox or on a CI runner with no container engine, the experimental native runtime runs each service as a process instead. It supports Linux and macOS on Apple silicon. For platform requirements and setup, see [Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes).
 
 On macOS, we recommend [OrbStack](https://orbstack.dev/) instead of Docker Desktop. It's a drop-in replacement that handles extended file attributes (xattrs) on mounted volumes and container networking more reliably than Docker Desktop. It also starts faster and uses less CPU, memory, and disk, which makes a noticeable difference when running the full Supabase stack.
 
@@ -99877,7 +100063,7 @@ supabase migration up
 
 Caution: With declarative schemas, the files in `supabase/schemas/` are the source of truth. `supabase db schema declarative sync` compares those files against your migrations. It does not read the live database. Changes you make directly (Studio, the SQL editor, `psql`) are invisible to the diff, which reports "No schema changes found" and silently drops the change. Always edit the schema files, then run `sync`.
 
-Don't use `supabase db diff` here, because it diffs a live database against your migrations and never uses `supabase/schemas/` as its baseline.
+Don't use `supabase db diff` here, because it diffs a live database against your migrations and never uses `supabase/schemas/` as its baseline. If you run `supabase db diff -f` while schema files exist, the CLI prints a note that it ignored them. When your migrations are empty or outdated, the migration it writes can include objects your schema files already declare.
 
 1. **Add a new column**
 
@@ -99996,6 +100182,11 @@ supabase db schema declarative generate --linked
 
 This writes per-object SQL files under `supabase/schemas/` (or the directory set by `experimental.pgdelta.declarative_schema_path`), organized by database schema. In scripts, pass the target explicitly (`--local`, `--linked`, or `--db-url`) and add `--overwrite` to replace an existing tree without prompting. To later refresh the declarative tree from the remote database (for example, after a change was deployed outside your local workflow), run `supabase db pull --declarative`. It replaces the schema files without creating a migration or touching migration history.
 
+Note: CLI versions before 2.115.0 wrote the declarative tree to `supabase/database`. Version 2.115.0 and later read `supabase/schemas` and warn when `supabase/database` holds schema files, `supabase/schemas` is empty, and `declarative_schema_path` is unset. To clear the warning, do one of the following:
+
+- Move the tree to `supabase/schemas/`.
+- Keep the tree in place and set `declarative_schema_path = "./database"` under `[experimental.pgdelta]`.
+
 `generate` writes schema files only. Because `sync` diffs your schema files against your migration history, that history must describe the same database before your first `sync`. If your project has no migrations yet, run `supabase db pull` first to create a baseline migration. Without a baseline, the first `sync` regenerates the entire schema as one migration. That migration can apply cleanly to an empty local database and still fail on `db push`, because the remote database already has those objects.
 
 ### Rolling back a schema change
@@ -100055,7 +100246,12 @@ Two checks gate `sync` on a schema tree the CLI didn't generate:
 
 Projects that haven't enabled `pg-delta` can still use declarative schemas. The workflow has the same shape, but the commands differ, and the `db schema declarative` commands aren't available. See [Diff engines](https://supabase.com/docs/guides/local-development/diff-engines) for how to check which engine you're on and how the engines compare.
 
-Caution: On the legacy engine, don't run `supabase db pull --declarative`. The command runs regardless of the `[experimental.pgdelta]` setting, but the tree it writes is only readable by the `db schema declarative` commands. `db diff` on the legacy engine tries to load that tree as its baseline, in lexicographic order, and fails on the first file. If you've already run it, delete the generated tree under `supabase/schemas/` or [switch to `pg-delta`](#switching-to-pg-delta).
+Caution: On the legacy engine, don't run `supabase db pull --declarative`. The command runs regardless of the `[experimental.pgdelta]` setting and writes a per-object tree meant for the `db schema declarative` commands. It also points `[db.migrations].schema_paths` in `config.toml` at that tree. The next local `db diff` applies the files in lexicographic order without resolving dependencies between them, so it fails when a file sorts before an object it depends on.
+
+If you've already run it, [switch to `pg-delta`](#switching-to-pg-delta), or undo both changes:
+
+1. Delete the files the export wrote to the declarative directory (`supabase/schemas/` by default). Files that were already there are left in place.
+2. Restore `[db.migrations].schema_paths` in `config.toml` to its previous value, or remove it if the export added it.
 
 ### Generating migrations on the legacy engine
 
@@ -100133,12 +100329,15 @@ enabled = true
 
 Existing projects without that section keep the legacy `migra` engine until they add it. See [Switch an existing project to `pg-delta`](#switch-an-existing-project-to-pg-delta).
 
-To use `migra` for a single run without changing `config.toml`, the flag depends on the command:
+To switch engines for a single run without changing `config.toml`, the flag depends on the command:
 
-| Command   | Flag to fall back to `migra` |
-| --------- | ---------------------------- |
-| `db diff` | `--use-migra`                |
-| `db pull` | `--diff-engine migra`        |
+| Command                                     | Flag to use `pg-delta`   | Flag to use `migra`   |
+| ------------------------------------------- | ------------------------ | --------------------- |
+| `db diff`                                   | `--use-pg-delta`         | `--use-migra`         |
+| `db pull`                                   | `--diff-engine pg-delta` | `--diff-engine migra` |
+| `db schema declarative generate` and `sync` | `--experimental`         | Not available         |
+
+For `db diff` and `db pull`, setting `SUPABASE_EXPERIMENTAL_PG_DELTA=1` in your shell or in `supabase/.env` has the same effect as `enabled = true`. An explicit engine flag on the command still wins.
 
 To opt out entirely, set `enabled = false` under `[experimental.pgdelta]`.
 
@@ -100154,7 +100353,7 @@ The commands and the migration workflow are the same on both engines. What diffe
 | Ordering of declarative files                | Automatic, based on dependencies between statements. `[db.migrations].schema_paths` is ignored, and the CLI warns when the setting lists any paths.                                                                        | Lexicographic by default. `[db.migrations].schema_paths` overrides the order. Files in `supabase/schemas/` are used even when the setting is empty.                                                                                                 |
 | Initial `db pull` (empty migration history)  | Diffs the remote database against an empty shadow database. Your customizations in managed schemas, such as triggers on `auth.users` and RLS policies on `storage.objects`, are included.                                  | Seeds the migration with `pg_dump`, which skips managed schemas, then appends a diff of your triggers and RLS policies in `auth` and `storage`. Older versions excluded those schemas and told you to run `supabase db pull --schema auth,storage`. |
 | Later `db pull` runs                         | Diffs the remote database against your migrations.                                                                                                                                                                         | Same. Trigger and RLS policy changes in managed schemas are included.                                                                                                                                                                               |
-| `db pull --declarative`                      | Replaces `supabase/schemas/` from the selected database without creating a migration.                                                                                                                                      | Runs, but don't use it. The tree it writes is only readable by the `db schema declarative` commands. `db diff` on the legacy engine then tries to load that tree as its baseline and fails.                                                         |
+| `db pull --declarative`                      | Replaces `supabase/schemas/` from the selected database without creating a migration.                                                                                                                                      | Runs, but don't use it. The command also points `[db.migrations].schema_paths` at the tree it writes. The next local `db diff` applies those files in lexicographic order and fails when a file sorts before an object it depends on.               |
 | Objects the engine doesn't track             | Reported as warnings and never silently dropped. Pass `--strict-coverage` to turn the warnings into failures.                                                                                                              | Silently omitted. `--strict-coverage` has no effect.                                                                                                                                                                                                |
 | Generated SQL                                | Uppercase keywords wrapped at 180 characters. Configurable with `[experimental.pgdelta] format_options`.                                                                                                                   | Engine default formatting.                                                                                                                                                                                                                          |
 | Migration files per run                      | Usually one. When a change crosses a transaction boundary, it may write one ordered file per unit with `_1`, `_2` suffixes. Files whose statements can't run in a transaction start with `-- pg-delta: transaction=false`. | One file.                                                                                                                                                                                                                                           |
@@ -100307,6 +100506,7 @@ The `runtime` field is `docker`, `podman`, or `native`. The text output of `supa
 - A local project keeps the runtime it was created with, and the CLI doesn't move data between runtimes. See [How the CLI picks a runtime](#how-the-cli-picks-a-runtime).
 - Running several native local projects on one machine works, but they share host resources without the isolation containers provide. Use Docker for that case.
 - If Postgres takes too long to become ready on a cold start, raise `health_timeout` under `[db]` in `config.toml`. Both runtimes use that setting.
+- In CLI v2.121.0 or later, the native runtime runs each `pg_cron` job in a background worker instead of over a new connection. As a result, a job body can't contain its own `BEGIN` or `COMMIT`. Earlier versions fail every native `pg_cron` job with `connection failed` or with `job startup timeout` on macOS.
 
 ## Learn more
 
@@ -100530,7 +100730,15 @@ For an app that already has a `config.toml`, remove the port lines from each app
    - `smtp_port` and `pop3_port` under `[local_smtp]`, and `vector_port` under `[analytics]`, if you set them. `supabase init` writes the SMTP ports commented out.
 3. Save the file and commit it, so everyone on the team gets the same behavior.
 
-Remove the ports before the app's first `supabase start` with the setting on. A local project keeps the ports it was created with. If you already started one with the fixed ports, removing them afterward makes `supabase start` fail with `cannot change on the saved stack`. Start a new local project with a different `--stack` name, or run `supabase stack destroy` and start again. Destroying deletes the local project's data.
+If you already started a local project with the fixed ports:
+
+1. Stop it with `supabase stop`.
+2. Remove the port keys from `config.toml`.
+3. Run `supabase start` again.
+
+In CLI v2.121.0 or later, `supabase start` applies the port change to the stopped local project and prints each moved endpoint, such as `api: 54321 → 26199`. The local project keeps its data.
+
+Earlier versions fail with `The saved stack cannot adopt these changes`. On those versions, start a new local project with a different `--stack` name or run `supabase stack destroy` and start again. Destroying deletes the local project's data.
 
 The CLI also treats ports you set with an environment variable, such as `SUPABASE_API_PORT` or `SUPABASE_DB_PORT`, as exact requests. If another process already listens on that port, the start fails. When the port belongs to another local project, the error names that local project.
 
@@ -100570,7 +100778,7 @@ The database can't be excluded. Studio needs the REST API, so to exclude `rest`,
 
 Running `supabase start` again on a running local project keeps its current settings and prints `Stack is already running with its current services`. To apply a change to `config.toml`, `--exclude`, or `--eager`, stop the local project and start it again. Starting without `--exclude` restores the services enabled in `config.toml`.
 
-Stopping and starting doesn't apply changes to ports or to the Postgres major version. For those, start a new local project with a different `--stack` name, or run `supabase stack destroy` and start again.
+In CLI v2.121.0 or later, stopping and starting also applies port changes. A change to the Postgres major version always needs a new local project. Start one with a different `--stack` name, or run `supabase stack destroy` and start again.
 
 ## Run named local projects for one app
 
@@ -100630,9 +100838,15 @@ To list every local project on the machine, across all apps, run:
 supabase stack list
 ```
 
-The list shows each local project's name, project root, branch, runtime, and a short ID. Pass `--output-format json` to get the full ID that `--stack-id` accepts.
+The list shows each local project's name, project root, branch, runtime, whether its background process is reachable, and a short ID. Pass `--output-format json` to get the full ID that `--stack-id` accepts.
 
-To stream live logs from a local project, run `supabase stack logs`. Pass `--service database` to limit the output to one service.
+To read a local project's logs, run `supabase stack logs` in its app directory. The command prints the last 200 retained lines and exits. It also works while the local project is stopped. These flags change what it prints:
+
+- `--follow` keeps streaming new lines after the history.
+- `--tail <n>` changes how many retained lines it prints.
+- `--since 10m` prints only lines from the last 10 minutes.
+- `--service database` narrows the output to one service.
+- `--service gateway` shows only the requests that reached the shared API port.
 
 ## Choose a runtime
 
@@ -100670,7 +100884,9 @@ To permanently delete one local project and its data, run `supabase stack destro
 supabase stack destroy --stack test --yes
 ```
 
-Danger: `supabase stack destroy` deletes the local project's database data and frees its ports. There is no backup and no undo. There is also no bulk destroy, so one command removes one local project.
+In CLI v2.121.0 or later, you can destroy several local projects in one command by passing `--stack-id` more than once with IDs from `supabase stack list`. The command asks for confirmation once. Every ID must match a local project before it destroys anything. Earlier versions destroy one local project per command.
+
+Danger: `supabase stack destroy` takes no backup, so you can't recover the local project's data afterward. It also frees the local project's ports.
 
 `destroy` keeps two kinds of data:
 
@@ -100696,11 +100912,11 @@ Keep these differences in mind when you turn the setting on for an app that used
   - Custom Auth email templates with `content_path`
   - Storage Analytics and Storage vector buckets
   - A custom `edge_runtime.deno_version`
-  - OrioleDB, and `db.major_version` values other than 15 and 17
+  - `db.major_version` values other than 15 and 17
+  - `db.orioledb_version` in CLI versions earlier than v2.121.0, and the `experimental.s3_*` settings for OrioleDB in any version
 - Database commands don't accept `--stack`. `supabase db reset` and `supabase db diff` run against the current branch's default local project. `supabase db pull`, `supabase db push`, and `supabase db dump` target the linked project unless you pass `--local`. To reach a named local project, pass the `DB_URL` from `supabase status --stack <name> --env` to a command that accepts `--db-url`.
 - Switching branches switches local projects. The git branch is part of the identity. After you check out another branch in the same directory, `supabase start` creates or resumes a different local project with its own data. The first branch's local project keeps running until you stop it.
 - Moving or renaming an app directory creates a new local project, because the identity includes the project root path. The previous local project's data stays until you destroy it.
-- `supabase stack logs` streams new log lines only. It has no history.
 
 ## Learn more
 
@@ -132516,29 +132732,31 @@ sh run.sh restart api-gw
 
 Routes are matched in the order declared. The first matching prefix wins. Protected routes require a valid `apikey` header; open routes pass through without API key validation.
 
-| Path prefix                               | Upstream  | Path rewrite             | Access control | Notes                                                                                                      |
-| ----------------------------------------- | --------- | ------------------------ | -------------- | ---------------------------------------------------------------------------------------------------------- |
-| `/auth/v1/verify`                         | auth      | `/verify`                | Open           | Email verification                                                                                         |
-| `/auth/v1/callback`                       | auth      | `/callback`              | Open           | OAuth callback                                                                                             |
-| `/auth/v1/authorize`                      | auth      | `/authorize`             | Open           | OAuth authorize                                                                                            |
-| `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open           | JWKS for third-party verification                                                                          |
-| `/.well-known/oauth-authorization-server` | auth      | -                        | Open           | OAuth 2.0 Authorization Server Metadata (RFC 8414)                                                         |
-| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open           | SAML assertion consumer                                                                                    |
-| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open           | SAML metadata                                                                                              |
-| `/functions/v1/`                          | functions | `/`                      | `sb_` keys     | Rejects invalid and conflicting `sb_` keys; others pass; 160s idle timeout, 410s upstream response timeout |
-| `/storage/v1/`                            | storage   | `/`                      | Bypass         | Storage performs its own authorization                                                                     |
-| `/auth/v1/`                               | auth      | `/`                      | API key        | Protected Auth endpoints                                                                                   |
-| `/rest/v1/`                               | rest      | `/`                      | API key        | PostgREST Open API root (requires secret key)                                                              |
-| `/rest/v1/*`                              | rest      | `/`                      | API key        | PostgREST data endpoints                                                                                   |
-| `/graphql/v1`                             | rest      | `/rpc/graphql`           | API key        | pg\_graphql (adds `Content-Profile: graphql_public`)                                                       |
-| `/realtime/v1/api/tenants`                | realtime  | -                        | Denied         | Realtime management API (blocked by default)                                                               |
-| `/realtime/v1/api/openapi`                | realtime  | -                        | Denied         | Realtime OpenAPI spec (blocked by default)                                                                 |
-| `/realtime/v1/api`                        | realtime  | `/api`                   | API key        | Realtime REST API (broadcast, channels, ping)                                                              |
-| `/realtime/v1/`                           | realtime  | `/socket/`               | API key        | Realtime WebSocket                                                                                         |
-| `/pg/`                                    | meta      | `/`                      | API key        | postgres-meta / Studio database operations (requires secret key)                                           |
-| `/api/mcp`                                | studio    | -                        | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
-| `/mcp`                                    | studio    | `/api/mcp`               | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
-| `/` (catch-all)                           | studio    | -                        | Basic auth     | Dashboard; strips inbound `Authorization` header                                                           |
+| Path prefix                                       | Upstream  | Path rewrite                              | Access control | Notes                                                                                                      |
+| ------------------------------------------------- | --------- | ----------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `/auth/v1/verify`                                 | auth      | `/verify`                                 | Open           | Email verification                                                                                         |
+| `/auth/v1/callback`                               | auth      | `/callback`                               | Open           | OAuth callback                                                                                             |
+| `/auth/v1/authorize`                              | auth      | `/authorize`                              | Open           | OAuth authorize                                                                                            |
+| `/auth/v1/.well-known/jwks.json`                  | auth      | `/.well-known/jwks.json`                  | Open           | JWKS for third-party verification                                                                          |
+| `/auth/v1/.well-known/oauth-authorization-server` | auth      | `/.well-known/oauth-authorization-server` | Open           | OAuth 2.0 Authorization Server Metadata                                                                    |
+| `/auth/v1/.well-known/openid-configuration`       | auth      | `/.well-known/openid-configuration`       | Open           | OpenID Connect discovery                                                                                   |
+| `/.well-known/oauth-authorization-server/auth/v1` | auth      | `/.well-known/oauth-authorization-server` | Open           | OAuth 2.0 Authorization Server Metadata at the RFC 8414 path for the `/auth/v1` issuer                     |
+| `/auth/v1/sso/saml/acs`                           | auth      | `/sso/saml/acs`                           | Open           | SAML assertion consumer                                                                                    |
+| `/auth/v1/sso/saml/metadata`                      | auth      | `/sso/saml/metadata`                      | Open           | SAML metadata                                                                                              |
+| `/functions/v1/`                                  | functions | `/`                                       | `sb_` keys     | Rejects invalid and conflicting `sb_` keys; others pass; 160s idle timeout, 410s upstream response timeout |
+| `/storage/v1/`                                    | storage   | `/`                                       | Bypass         | Storage performs its own authorization                                                                     |
+| `/auth/v1/`                                       | auth      | `/`                                       | API key        | Protected Auth endpoints                                                                                   |
+| `/rest/v1/`                                       | rest      | `/`                                       | API key        | PostgREST Open API root (requires secret key)                                                              |
+| `/rest/v1/*`                                      | rest      | `/`                                       | API key        | PostgREST data endpoints                                                                                   |
+| `/graphql/v1`                                     | rest      | `/rpc/graphql`                            | API key        | pg\_graphql (adds `Content-Profile: graphql_public`)                                                       |
+| `/realtime/v1/api/tenants`                        | realtime  | -                                         | Denied         | Realtime management API (blocked by default)                                                               |
+| `/realtime/v1/api/openapi`                        | realtime  | -                                         | Denied         | Realtime OpenAPI spec (blocked by default)                                                                 |
+| `/realtime/v1/api`                                | realtime  | `/api`                                    | API key        | Realtime REST API (broadcast, channels, ping)                                                              |
+| `/realtime/v1/`                                   | realtime  | `/socket/`                                | API key        | Realtime WebSocket                                                                                         |
+| `/pg/`                                            | meta      | `/`                                       | API key        | postgres-meta / Studio database operations (requires secret key)                                           |
+| `/api/mcp`                                        | studio    | -                                         | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
+| `/mcp`                                            | studio    | `/api/mcp`                                | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
+| `/` (catch-all)                                   | studio    | -                                         | Basic auth     | Dashboard; strips inbound `Authorization` header                                                           |
 
 Note: MCP routes are denied at the gateway by default. Allowing local access requires editing the RBAC rule on the `/mcp` route. See the inline comments in `lds.template.yaml` for the allowed pattern, and [Enabling MCP Server Access](https://supabase.com/docs/guides/self-hosting/enable-mcp) for the security model.
 

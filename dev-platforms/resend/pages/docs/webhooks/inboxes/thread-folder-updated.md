@@ -20,11 +20,11 @@ Received when a thread moves between folders.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -34,11 +34,11 @@ Event triggered whenever a **thread moves between folders**.
 *Note: Moving a thread to a label can send both this event and `inbox.thread.labels.updated` for the same thread.*
 
 <ResponseBodyParameters type="inbox.thread.folder.updated">
-  <ParamField type="inbox | archive | spam | sent | trash">
+  <ParamField type="inbox | archive | spam | trash">
     The folder the thread was in
   </ParamField>
 
-  <ParamField type="inbox | archive | spam | sent | trash">
+  <ParamField type="inbox | archive | spam | trash">
     The folder the thread moved to
   </ParamField>
 
@@ -55,7 +55,7 @@ Event triggered whenever a **thread moves between folders**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
 
     <Expandable title="thread object">
       <ParamField type="string">

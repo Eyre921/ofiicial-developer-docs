@@ -28,12 +28,12 @@ The ANALYZE statement gathers statistics about the distribution of values in ind
 
 ### Forms
 
-| Form                  | Description                                              |
-| --------------------- | -------------------------------------------------------- |
-| `ANALYZE`             | Analyze all tables and indexes in all attached databases |
-| `ANALYZE schema-name` | Analyze all tables and indexes in the named database     |
-| `ANALYZE table-name`  | Analyze all indexes on the named table                   |
-| `ANALYZE index-name`  | Analyze the named index                                  |
+| Form | Description |
+| - | - |
+| `ANALYZE` | Analyze all tables and indexes in all attached databases |
+| `ANALYZE schema-name` | Analyze all tables and indexes in the named database |
+| `ANALYZE table-name` | Analyze all indexes on the named table |
+| `ANALYZE index-name` | Analyze the named index |
 
 ## Examples
 

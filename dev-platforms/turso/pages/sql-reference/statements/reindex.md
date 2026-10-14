@@ -21,12 +21,12 @@ REINDEX [schema-name.]index-name;
 
 ## Description
 
-| Form                     | Description                                                |
-| ------------------------ | ---------------------------------------------------------- |
-| `REINDEX`                | Rebuild all indexes in all attached databases              |
+| Form | Description |
+| - | - |
+| `REINDEX` | Rebuild all indexes in all attached databases |
 | `REINDEX collation-name` | Rebuild every index that uses the named collation sequence |
-| `REINDEX table-name`     | Rebuild all indexes associated with the named table        |
-| `REINDEX index-name`     | Rebuild the named index                                    |
+| `REINDEX table-name` | Rebuild all indexes associated with the named table |
+| `REINDEX index-name` | Rebuild the named index |
 
 When a single unqualified name is given, Turso resolves it in the order **collation → table → index**: if the name matches a collation sequence, all indexes using that collation are rebuilt; otherwise it is treated as a table or index name.
 

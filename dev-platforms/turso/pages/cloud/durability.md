@@ -6,12 +6,12 @@ path: cloud/durability
 
 The following are the durability guarantees provided by the Turso Cloud platform for users who registered or upgraded **after March 17, 2025**:
 
-|                   | Durability    | Added commit latency |
-| ----------------- | ------------- | -------------------- |
-| **Free**          | 99.999999999% | up to 100ms          |
-| **Developer**     | 99.999999999% | up to 50ms           |
-| **Scaler**        | 99.999999999% | up to 25ms           |
-| **Pro and above** | 99.999999999% | up to 10ms           |
+| | Durability | Added commit latency |
+| - | - | - |
+| **Free** | 99.999999999% | up to 100ms |
+| **Developer** | 99.999999999% | up to 50ms |
+| **Scaler** | 99.999999999% | up to 25ms |
+| **Pro and above** | 99.999999999% | up to 10ms |
 
 For all Turso AWS regions, we employ a diskless architecture where data is backed by a combination of S3-Express One Zone and S3.
 

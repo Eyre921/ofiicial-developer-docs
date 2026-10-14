@@ -115,6 +115,22 @@ Cancel a running or queued run.
 * `"Cancel run run_abc123"`
 * `"Stop that task"`
 
+### replay\_run
+
+Replay a run as a new run of the same task, in the same environment. The new run reuses the original run's payload, metadata, tags, queue, concurrency key, and machine unless you override them. See [Replaying](/docs/replaying) for how each option falls back.
+
+**Parameters:**
+
+* `runId` (required): The run to replay, starting with `run_`
+* `payload`, `metadata`, `tags` (optional): Replace the original run's values
+* `queue`, `concurrencyKey`, `machine`, `version`, `region`, `delay`, `ttl`, `idempotencyKey`, `maxAttempts`, `maxDuration`, `priority` (optional): Override the trigger options for the new run
+
+**Example usage:**
+
+* `"Replay run run_abc123"`
+* `"Replay that failed run with userId set to user_456"`
+* `"Replay run run_abc123 on a large-1x machine in 10 minutes"`
+
 ## Deployment Tools
 
 ### deploy
@@ -252,7 +268,7 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Are there any build errors?"`
 
 <Callout type="warning">
-  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, and cancel\_run.
+  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, and replay\_run.
 </Callout>
 
 ## Agent Chat Tools

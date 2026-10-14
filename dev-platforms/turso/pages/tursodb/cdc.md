@@ -20,18 +20,14 @@ To disable:
 PRAGMA capture_data_changes_conn('off');
 ```
 
-<Warning>
-  CDC cannot be used together with [MVCC](/tursodb/concurrent-writes). They are mutually exclusive on the same connection.
-</Warning>
-
 ## Capture Modes
 
-| Mode     | Description                                                          |
-| -------- | -------------------------------------------------------------------- |
-| `id`     | Capture only the primary key/rowid of changed rows                   |
-| `before` | Capture row state before changes (for updates/deletes)               |
-| `after`  | Capture row state after changes (for inserts/updates)                |
-| `full`   | Capture both before and after states, plus per-column update details |
+| Mode | Description |
+| - | - |
+| `id` | Capture only the primary key/rowid of changed rows |
+| `before` | Capture row state before changes (for updates/deletes) |
+| `after` | Capture row state after changes (for inserts/updates) |
+| `full` | Capture both before and after states, plus per-column update details |
 
 ## CDC Table
 
@@ -43,17 +39,17 @@ PRAGMA capture_data_changes_conn('full,my_changes_table');
 
 The CDC table has the following schema:
 
-| Column          | Type    | Description                                             |
-| --------------- | ------- | ------------------------------------------------------- |
-| `change_id`     | INTEGER | Auto-incrementing unique identifier                     |
-| `change_time`   | INTEGER | Timestamp (Unix epoch)                                  |
-| `change_txn_id` | INTEGER | Transaction ID (groups rows into transactions)          |
-| `change_type`   | INTEGER | `1` = INSERT, `0` = UPDATE, `-1` = DELETE, `2` = COMMIT |
-| `table_name`    | TEXT    | Name of the table that was changed                      |
-| `id`            | varies  | Primary key/rowid of the changed row                    |
-| `before`        | BLOB    | Row data before the change (modes: `before`, `full`)    |
-| `after`         | BLOB    | Row data after the change (modes: `after`, `full`)      |
-| `updates`       | BLOB    | Per-column change details (mode: `full`)                |
+| Column | Type | Description |
+| - | - | - |
+| `change_id` | INTEGER | Auto-incrementing unique identifier |
+| `change_time` | INTEGER | Timestamp (Unix epoch) |
+| `change_txn_id` | INTEGER | Transaction ID (groups rows into transactions) |
+| `change_type` | INTEGER | `1` = INSERT, `0` = UPDATE, `-1` = DELETE, `2` = COMMIT |
+| `table_name` | TEXT | Name of the table that was changed |
+| `id` | varies | Primary key/rowid of the changed row |
+| `before` | BLOB | Row data before the change (modes: `before`, `full`) |
+| `after` | BLOB | Row data after the change (modes: `after`, `full`) |
+| `updates` | BLOB | Per-column change details (mode: `full`) |
 
 ## Querying Changes
 
@@ -92,10 +88,10 @@ FROM turso_cdc
 WHERE table_name = 'users' AND change_type != 2;
 ```
 
-| Function                                     | Description                                                                     |
-| -------------------------------------------- | ------------------------------------------------------------------------------- |
-| `table_columns_json_array(table_name)`       | Returns a JSON array of column names for a table (e.g. `["id","name","email"]`) |
-| `bin_record_json_object(columns_json, blob)` | Decodes a binary record into a JSON object using the given column names         |
+| Function | Description |
+| - | - |
+| `table_columns_json_array(table_name)` | Returns a JSON array of column names for a table (e.g. `["id","name","email"]`) |
+| `bin_record_json_object(columns_json, blob)` | Decodes a binary record into a JSON object using the given column names |
 
 ## Transactions
 

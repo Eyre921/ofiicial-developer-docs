@@ -126,7 +126,7 @@ npx trigger.dev@latest deploy [path]
 </ParamField>
 
 <ParamField type="--depot-build">
-  Build the image with Depot, the default build provider.
+  Build the image with Depot, ignoring the build path configured for your project.
 </ParamField>
 
 <ParamField type="--local-build">
@@ -143,7 +143,7 @@ npx trigger.dev@latest deploy [path]
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

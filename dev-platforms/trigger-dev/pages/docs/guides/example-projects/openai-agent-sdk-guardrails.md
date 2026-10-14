@@ -51,4 +51,4 @@ Guardrails are safety mechanisms that run alongside AI agents to validate input,
 
 * [OpenAI Agent SDK documentation](https://openai.github.io/openai-agents-python/)
 * [OpenAI Agent SDK guardrails](https://openai.github.io/openai-agents-python/guardrails/)
-* Our [Python build extension](/docs/config/extensions/pythonExtension#python)
+* Our [Python build extension](/docs/config/extensions/pythonExtension)

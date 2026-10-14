@@ -52,17 +52,17 @@ You can also programmatically manage your Turso account, including groups, datab
   <Step title="Operate">
     The Turso CLI provides the following commands:
 
-    | Command                     | Description                                                          |
-    | --------------------------- | -------------------------------------------------------------------- |
-    | [`auth`](/cli/auth)         | Authenticate and manage API tokens.                                  |
-    | [`contact`](/cli/contact)   | Submit your feedback, ideas and create a meeting with the team.      |
-    | [`db`](/cli/db)             | Create and manage databases, access tokens and connect to the shell. |
-    | `dev`                       | Run Turso [locally](/local-development) for development.             |
-    | [`group`](/cli/group)       | Create groups for databases with a shared location.                  |
-    | [`org`](/cli/org)           | Manage billing and invite members.                                   |
-    | [`plan`](/cli/plan)         | `overages`, `select`, `show`, `upgrade`                              |
-    | [`quickstart`](/quickstart) | Get started with Turso in 5 minutes.                                 |
-    | `relax`                     | Take some time out and relax with Turso.                             |
-    | `update`                    | Update to the Turso CLI to the latest version with one command.      |
+    | Command | Description |
+    | - | - |
+    | [`auth`](/cli/auth) | Authenticate and manage API tokens. |
+    | [`contact`](/cli/contact) | Submit your feedback, ideas and create a meeting with the team. |
+    | [`db`](/cli/db) | Create and manage databases, access tokens and connect to the shell. |
+    | `dev` | Run Turso [locally](/local-development) for development. |
+    | [`group`](/cli/group) | Create groups for databases with a shared location. |
+    | [`org`](/cli/org) | Manage billing and invite members. |
+    | [`plan`](/cli/plan) | `overages`, `select`, `show`, `upgrade` |
+    | [`quickstart`](/quickstart) | Get started with Turso in 5 minutes. |
+    | `relax` | Take some time out and relax with Turso. |
+    | `update` | Update to the Turso CLI to the latest version with one command. |
   </Step>
 </Steps>

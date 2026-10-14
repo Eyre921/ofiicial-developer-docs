@@ -42,11 +42,11 @@ await libsqlClient.execute("SELECT * FROM users");
 
 By default, everything is turned on. You can configure what you want by passing a third argument to the `libsqlIntegration` function.
 
-| Option        | Default | Description                            |
-| ------------- | ------- | -------------------------------------- |
-| `tracing`     | `true`  | Enable tracing for SQL queries.        |
-| `breadcrumbs` | `true`  | Enable breadcrumbs for SQL queries.    |
-| `errors`      | `true`  | Enable error handling for SQL queries. |
+| Option | Default | Description |
+| - | - | - |
+| `tracing` | `true` | Enable tracing for SQL queries. |
+| `breadcrumbs` | `true` | Enable breadcrumbs for SQL queries. |
+| `errors` | `true` | Enable error handling for SQL queries. |
 
 ```ts theme={null}
 Sentry.init({

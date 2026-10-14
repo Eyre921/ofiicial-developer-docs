@@ -16,18 +16,18 @@ Refer to that document for the current state of compatibility. It is updated alo
 
 These features extend Turso beyond SQLite compatibility:
 
-| Feature                                                                         | Description                                              |
-| ------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| [CREATE TYPE](/sql-reference/statements/create-type)                            | User-defined types for STRICT tables                     |
-| [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view)  | Live materialized views with incremental maintenance     |
-| [BEGIN CONCURRENT](/sql-reference/statements/transactions#begin-concurrent)     | Optimistic concurrent write transactions (MVCC)          |
-| [Vector functions](/sql-reference/functions/vector)                             | Vector storage, distance calculations, similarity search |
-| [Full-text search](/sql-reference/functions/fts)                                | Tantivy-powered FTS with BM25 scoring                    |
-| [CDC](/sql-reference/pragmas#change-data-capture)                               | Change Data Capture via PRAGMA                           |
-| [Encryption](/sql-reference/pragmas#encryption)                                 | At-rest database encryption                              |
-| [Custom index methods](/sql-reference/statements/create-index#using-method)     | CREATE INDEX ... USING for FTS and custom access methods |
-| stddev()                                                                        | Standard deviation aggregate function                    |
-| [DEFAULT in VALUES](/sql-reference/statements/insert#default-keyword-in-values) | SQL-standard DEFAULT keyword in INSERT VALUES lists      |
+| Feature | Description |
+| - | - |
+| [CREATE TYPE](/sql-reference/statements/create-type) | User-defined types for STRICT tables |
+| [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view) | Live materialized views with incremental maintenance |
+| [BEGIN CONCURRENT](/sql-reference/statements/transactions#begin-concurrent) | Optimistic concurrent write transactions (MVCC) |
+| [Vector functions](/sql-reference/functions/vector) | Vector storage, distance calculations, similarity search |
+| [Full-text search](/sql-reference/functions/fts) | Tantivy-powered FTS with BM25 scoring |
+| [CDC](/sql-reference/pragmas#change-data-capture) | Change Data Capture via PRAGMA |
+| [Encryption](/sql-reference/pragmas#encryption) | At-rest database encryption |
+| [Custom index methods](/sql-reference/statements/create-index#using-method) | CREATE INDEX ... USING for FTS and custom access methods |
+| stddev() | Standard deviation aggregate function |
+| [DEFAULT in VALUES](/sql-reference/statements/insert#default-keyword-in-values) | SQL-standard DEFAULT keyword in INSERT VALUES lists |
 
 ## See Also
 

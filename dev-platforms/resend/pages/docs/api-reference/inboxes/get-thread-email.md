@@ -21,11 +21,11 @@ Retrieve a single message from a thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -36,7 +36,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -56,15 +56,18 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 
 <ParamField type="string">
   Whether the message was received by the inbox or sent from it. One of
-  `inbound` or `outbound`.
+  `inbound` or `outbound`. A message the inbox sent to itself is `inbound`, so a
+  reply to it goes to its sender.
 </ParamField>
 
 <ParamField type="string">
-  Sender email address.
+  Sender email address. Includes the display name when the sender has one, in
+  the format `Name <sender@domain.com>`.
 </ParamField>
 
 <ParamField type="string[]">
-  The recipients of the message.
+  The recipients of the message. For a received message, these are the addresses
+  it was delivered to, not the full `To` header.
 </ParamField>
 
 <ParamField type="string[]">
@@ -72,7 +75,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 </ParamField>
 
 <ParamField type="string[]">
-  The BCC recipients of the message.
+  The BCC recipients of the message. Always empty for a received message.
 </ParamField>
 
 <ParamField type="string[]">
@@ -118,7 +121,8 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 </ParamField>
 
 <ParamField type="string">
-  ISO 8601 timestamp when the message arrived or was sent.
+  ISO 8601 timestamp when the inbox received the message, or when the inbox sent
+  it.
 </ParamField>
 
 <RequestExample>
@@ -140,10 +144,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails get \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --thread_id 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
-    --email_id 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
+  resend inboxes threads emails get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
   ```
 </RequestExample>
 

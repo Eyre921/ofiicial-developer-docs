@@ -12,6 +12,6 @@ turso db locations
 
 ## Flags
 
-| Flag                     | Description                                                               |
-| ------------------------ | ------------------------------------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-l`, `--show-latencies` | Display latencies from your current location to each of Turso's locations |

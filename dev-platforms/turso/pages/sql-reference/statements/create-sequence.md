@@ -33,16 +33,16 @@ Unlike `AUTOINCREMENT` on an `INTEGER PRIMARY KEY`, sequences are standalone obj
 
 ### Parameters
 
-| Parameter        | Description                                                                                                               | Default                                                                        |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `IF NOT EXISTS`  | Prevents an error if a sequence with the same name already exists. The statement is a no-op when the sequence is present. |                                                                                |
-| `schema-name`    | The name of an attached database. Defaults to the main database if omitted.                                               |                                                                                |
-| `sequence-name`  | The name of the sequence to create.                                                                                       |                                                                                |
-| `START [WITH]`   | The first value returned by `nextval()`.                                                                                  | `MINVALUE` for ascending sequences, `MAXVALUE` for descending sequences.       |
-| `INCREMENT [BY]` | The step between consecutive values. Use a negative value for descending sequences.                                       | `1`                                                                            |
-| `MINVALUE`       | The lower bound of the sequence.                                                                                          | `1` for ascending sequences, minimum 64-bit integer for descending sequences.  |
-| `MAXVALUE`       | The upper bound of the sequence.                                                                                          | Maximum 64-bit integer for ascending sequences, `-1` for descending sequences. |
-| `CYCLE`          | When the sequence reaches its boundary, wrap around to the opposite end instead of raising an error.                      | `NO CYCLE`                                                                     |
+| Parameter | Description | Default |
+| - | - | - |
+| `IF NOT EXISTS` | Prevents an error if a sequence with the same name already exists. The statement is a no-op when the sequence is present. | |
+| `schema-name` | The name of an attached database. Defaults to the main database if omitted. | |
+| `sequence-name` | The name of the sequence to create. | |
+| `START [WITH]` | The first value returned by `nextval()`. | `MINVALUE` for ascending sequences, `MAXVALUE` for descending sequences. |
+| `INCREMENT [BY]` | The step between consecutive values. Use a negative value for descending sequences. | `1` |
+| `MINVALUE` | The lower bound of the sequence. | `1` for ascending sequences, minimum 64-bit integer for descending sequences. |
+| `MAXVALUE` | The upper bound of the sequence. | Maximum 64-bit integer for ascending sequences, `-1` for descending sequences. |
+| `CYCLE` | When the sequence reaches its boundary, wrap around to the opposite end instead of raising an error. | `NO CYCLE` |
 
 ### Validation
 
@@ -97,11 +97,11 @@ setval(sequence_name, value)
 setval(sequence_name, value, is_called)
 ```
 
-| Parameter       | Description                                                                                                                                     |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sequence_name` | The name of the sequence.                                                                                                                       |
-| `value`         | The value to set. Must be within the sequence's `MINVALUE`..`MAXVALUE` range.                                                                   |
-| `is_called`     | When `true` (the default), the next `nextval()` will return `value + increment`. When `false`, the next `nextval()` will return `value` itself. |
+| Parameter | Description |
+| - | - |
+| `sequence_name` | The name of the sequence. |
+| `value` | The value to set. Must be within the sequence's `MINVALUE`..`MAXVALUE` range. |
+| `is_called` | When `true` (the default), the next `nextval()` will return `value + increment`. When `false`, the next `nextval()` will return `value` itself. |
 
 ```sql theme={null}
 CREATE SEQUENCE my_seq;
@@ -288,13 +288,13 @@ The "current value" reachable from a fresh connection depends on mode:
 
 ## Errors
 
-| Error                                                 | Cause                                                                           |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `sequence "name" already exists`                      | A sequence with that name already exists and `IF NOT EXISTS` was not specified. |
-| `INCREMENT must not be zero`                          | `INCREMENT BY 0` was specified.                                                 |
-| `MINVALUE (x) must be less than MAXVALUE (y)`         | `MINVALUE` is greater than or equal to `MAXVALUE`.                              |
-| `START value (x) cannot be less than MINVALUE (y)`    | For ascending sequences, `START` is below `MINVALUE`.                           |
-| `START value (x) cannot be greater than MAXVALUE (y)` | For descending sequences, `START` is above `MAXVALUE`.                          |
+| Error | Cause |
+| - | - |
+| `sequence "name" already exists` | A sequence with that name already exists and `IF NOT EXISTS` was not specified. |
+| `INCREMENT must not be zero` | `INCREMENT BY 0` was specified. |
+| `MINVALUE (x) must be less than MAXVALUE (y)` | `MINVALUE` is greater than or equal to `MAXVALUE`. |
+| `START value (x) cannot be less than MINVALUE (y)` | For ascending sequences, `START` is below `MINVALUE`. |
+| `START value (x) cannot be greater than MAXVALUE (y)` | For descending sequences, `START` is above `MAXVALUE`. |
 
 ## See Also
 

@@ -482,7 +482,7 @@ import { task } from "@trigger.dev/sdk";
 
 export const myTask = task({
   id: "my-task",
-  onStart: ({ payload, ctx }) => {},
+  onStart: (payload, { ctx }) => {},
   run: async (payload, { ctx }) => {},
 });
 ```

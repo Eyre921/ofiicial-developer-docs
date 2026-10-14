@@ -56,7 +56,6 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds support for Data Share Only for 3D Secure authentication](https://docs.stripe.com/changelog/endive/2026-09-30/data-share-only.md) | Payments | Breaking | api |
 | [Makes Payment Evaluation signal scores nullable](https://docs.stripe.com/changelog/endive/2026-09-30/payment-evaluations-nullable-score.md) | Radar | Breaking | api |
 | [Removes PayTo-specific fields from Payment Methods](https://docs.stripe.com/changelog/endive/2026-09-30/removed-payto-fields.md) | Payments | Breaking | api |
-| [Enforces collection of billing address parameters for non-EEA SEPA Direct Debit payments](https://docs.stripe.com/changelog/endive/2026-09-30/require-sepa-direct-debit-address-fields.md) | Payments | Breaking | api |
 | [Removes the payment method types parameter from Payment Intents and Setup Intents](https://docs.stripe.com/changelog/endive/2026-09-30/removes-the-payment-method-types-parameter-from-payment-intents-and-setup-intents.md) | Payments | Breaking | api |
 | [Returns specific decline codes for BLIK payment failures](https://docs.stripe.com/changelog/endive/2026-09-30/blik-granular-decline-codes.md) | Payments | Breaking | api |
 | [Deprecates the payment request button](https://docs.stripe.com/changelog/endive/2026-09-30/deprecate-payment-request-button.md) | Elements | Breaking | stripejs |

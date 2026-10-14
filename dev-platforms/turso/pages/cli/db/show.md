@@ -14,7 +14,7 @@ You can also obtain the different URLs for the database using the following:
 
 ## Flags
 
-| Flag         | Description                              |
-| ------------ | ---------------------------------------- |
-| `--url`      | Show URL for the database HTTP API.      |
+| Flag | Description |
+| - | - |
+| `--url` | Show URL for the database HTTP API. |
 | `--http-url` | Show HTTP URL for the database HTTP API. |

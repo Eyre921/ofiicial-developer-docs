@@ -333,6 +333,8 @@ order status. Always filter by the provided status.`,
   Unused built-in tools still send their full schemas on every turn. Use `excluded_tools` to remove tools the agent should never call (for example `write_file` or `execute` on a read-only agent). That shrinks baseline prompt size for the whole run. It is configuration, not the automatic offloading or summarization in [Context compression](#context-compression).
 
   See [Harness profiles](/oss/javascript/deepagents/profiles#harness-profiles) and [Running without the default filesystem tools](/oss/javascript/deepagents/overview#virtual-filesystem-access).
+
+  If a tool is related to a skill, you can keep the tool's schema out of the prompt until a skill needs it. For more information, see [Add tools to skills](/oss/javascript/deepagents/skills#add-tools-to-skills).
 </Tip>
 
 See [Overview](/oss/javascript/deepagents/overview#execution-environment) for built-in capabilities and [Customization](/oss/javascript/deepagents/customization#tools) for passing tools directly.

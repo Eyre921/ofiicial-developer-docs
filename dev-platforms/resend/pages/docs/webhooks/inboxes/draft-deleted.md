@@ -20,11 +20,11 @@ Received when a draft is discarded.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -51,7 +51,7 @@ Event triggered whenever a **draft is discarded**.
   </ParamField>
 
   <ParamField type="object">
-    The thread, as it is when the webhook is sent. Only on reply drafts
+    The thread, as it is when the webhook is sent. Absent when the thread no longer exists. Only on reply drafts
 
     <Expandable title="thread object">
       <ParamField type="string">

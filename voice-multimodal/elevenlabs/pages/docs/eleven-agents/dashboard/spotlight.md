@@ -58,3 +58,7 @@ Understand user sentiment across completed conversations.
 #### [Topic discovery](/docs/eleven-agents/dashboard/spotlight/topic-discovery)
 
 Review recurring topics and the conversations behind each topic.
+
+#### [Alerts](/docs/eleven-agents/operate/alerts)
+
+Investigate the alert cards that surface here when error rates spike.

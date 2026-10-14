@@ -39,12 +39,23 @@ It is worth noting that each task runs in a separate Node process. This means th
 </ParamField>
 
 <ParamField type="--env-file">
-  Load environment variables from a file. This will only hydrate the `process.env` of the CLI
-  process, not the tasks.
+  Load environment variables from a file instead of the default `.env` files. They are available to your tasks in the local dev session.
 </ParamField>
 
 <ParamField type="--skip-update-check">
   Skip checking for `@trigger.dev` package updates.
+</ParamField>
+
+<ParamField type="--branch | -b">
+  The dev branch to use. Defaults to the `TRIGGER_DEV_BRANCH` environment variable. See [dev branches](/docs/deployment/dev-branches).
+</ParamField>
+
+<ParamField type="--max-concurrent-runs">
+  The maximum number of concurrent runs in the dev session. It can only lower your dev environment's concurrency limit, not raise it.
+</ParamField>
+
+<ParamField type="--keep-tmp-files">
+  Keep temporary files after the dev session ends.
 </ParamField>
 
 <ParamField type="--analyze">
@@ -57,7 +68,7 @@ It is worth noting that each task runs in a separate Node process. This means th
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

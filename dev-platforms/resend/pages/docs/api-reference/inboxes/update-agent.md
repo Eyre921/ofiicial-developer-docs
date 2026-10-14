@@ -21,41 +21,45 @@ Update the agent settings for an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 At least one of `instructions`, `tone`, or `enabled_actions` is required.
-Omitted fields keep their current value.
+Omitted fields keep their current value. The agent is created when the inbox
+has none. A body with none of these keys returns a `422`, even when it has
+other keys.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID. An email address is not accepted.
 </ResendParamField>
 
 ## Body Parameters
 
 <ParamField type="string | null">
   Instructions the agent follows when handling the inbox's threads. Max 4000
-  characters and must not be an empty string. Send `null` to clear them.
+  characters. Leading and trailing whitespace is trimmed, and the trimmed value
+  must not be empty. Send `null` to clear them.
 </ParamField>
 
 <ParamField type="string | null">
-  Tone the agent writes in, such as `friendly and concise`. Max 64 characters
-  and must not be an empty string. Send `null` to clear it.
+  Tone the agent writes in, such as `friendly and concise`. Max 64 characters.
+  Leading and trailing whitespace is trimmed, and the trimmed value must not be
+  empty. Send `null` to clear it.
 </ParamField>
 
 <ParamField type="string[]">
-  Actions the agent is allowed to take. Replaces the whole set. Each entry must
-  be one of `draft_reply`, `forward_thread`, `add_labels`, `assign_thread`,
-  `mark_as_spam`, `archive_thread`, or `delete_thread`. Send an empty array to
-  disable all actions.
+  Actions the agent is allowed to take. Replaces the whole set. Duplicates are
+  removed. Each entry must be one of `draft_reply`, `forward_thread`,
+  `add_labels`, `assign_thread`, `mark_as_spam`, `archive_thread`, or
+  `delete_thread`. Send an empty array to disable all actions.
 </ParamField>
 
 <RequestExample>
@@ -84,11 +88,10 @@ Omitted fields keep their current value.
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes agent update \
-    --inbox_id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  resend inboxes agent update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --instructions "Answer refund questions yourself. Escalate legal threats." \
     --tone "friendly and concise" \
-    --enabled_actions draft_reply,add_labels
+    --enabled-actions draft_reply,add_labels
   ```
 </RequestExample>
 

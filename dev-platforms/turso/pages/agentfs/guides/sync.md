@@ -118,12 +118,12 @@ agentfs init my-agent \
 
 ### Partial Sync Options
 
-| Option                            | Description                   |
-| --------------------------------- | ----------------------------- |
-| `--sync-partial-prefetch`         | Enable prefetching            |
-| `--sync-partial-segment-size`     | Segment size for partial sync |
-| `--sync-partial-bootstrap-query`  | Custom bootstrap query        |
-| `--sync-partial-bootstrap-length` | Bootstrap prefix length       |
+| Option | Description |
+| - | - |
+| `--sync-partial-prefetch` | Enable prefetching |
+| `--sync-partial-segment-size` | Segment size for partial sync |
+| `--sync-partial-bootstrap-query` | Custom bootstrap query |
+| `--sync-partial-bootstrap-length` | Bootstrap prefix length |
 
 ## Authentication
 

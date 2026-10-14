@@ -24,12 +24,32 @@ Run the command like this:
 
 ## Options
 
+<ParamField type="--no-browser">
+  Do not open the browser. Print the URL only.
+</ParamField>
+
+<ParamField type="--email <email>">
+  Prefill the email on the login page.
+</ParamField>
+
+<ParamField type="--name <name>">
+  Set your name after authorization. Only applies to a new account that has not set its details yet.
+</ParamField>
+
+<ParamField type="--cancel-pending">
+  Cancel a pending login and keep the current account.
+</ParamField>
+
+<ParamField type="--no-wait">
+  Save the authorization and exit so login can be resumed later.
+</ParamField>
+
 ### Common options
 
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

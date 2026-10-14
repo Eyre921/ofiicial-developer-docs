@@ -164,22 +164,22 @@ await client.batch("""insert into customers (name) values ('Jane Doe'); insert i
 
 ## Transaction Modes
 
-| Mode                                  | SQLite command               | Description                                                                                                                                                                                        |
-| ------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `LibsqlTransactionBehavior.immediate` | `BEGIN IMMEDIATE`            | The transaction may execute statements that read and write data. Write transactions executed on a replica are forwarded to the primary instance, and can't operate in parallel.                    |
-| `LibsqlTransactionBehavior.readOnly`  | `BEGIN TRANSACTION READONLY` | The transaction may only execute statements that read data (select). Read transactions can occur on replicas, and can operate in parallel with other read transactions.                            |
-| `LibsqlTransactionBehavior.deferred_` | `BEGIN DEFERRED`             | The transaction starts in read mode, then changes to write as soon as a write statement is executed. This mode change may fail if there is a write transaction currently executing on the primary. |
+| Mode | SQLite command | Description |
+| - | - | - |
+| `LibsqlTransactionBehavior.immediate` | `BEGIN IMMEDIATE` | The transaction may execute statements that read and write data. Write transactions executed on a replica are forwarded to the primary instance, and can't operate in parallel. |
+| `LibsqlTransactionBehavior.readOnly` | `BEGIN TRANSACTION READONLY` | The transaction may only execute statements that read data (select). Read transactions can occur on replicas, and can operate in parallel with other read transactions. |
+| `LibsqlTransactionBehavior.deferred_` | `BEGIN DEFERRED` | The transaction starts in read mode, then changes to write as soon as a write statement is executed. This mode change may fail if there is a write transaction currently executing on the primary. |
 
 ## Interactive Transactions
 
 Interactive transactions in SQLite ensure the consistency of a series of read and write operations within a transaction's scope. These transactions give you control over when to commit or roll back changes, isolating them from other client activity.
 
-| Method       | Description                                                         |
-| ------------ | ------------------------------------------------------------------- |
-| `execute()`  | Similar to `execute()` except within the context of the transaction |
-| `query()`    | Similar to `query()` except within the context of the transaction   |
-| `commit()`   | Commits all write statements in the transaction                     |
-| `rollback()` | Rolls back the entire transaction                                   |
+| Method | Description |
+| - | - |
+| `execute()` | Similar to `execute()` except within the context of the transaction |
+| `query()` | Similar to `query()` except within the context of the transaction |
+| `commit()` | Commits all write statements in the transaction |
+| `rollback()` | Rolls back the entire transaction |
 
 ```dart theme={null}
 final tx = await client.transaction();

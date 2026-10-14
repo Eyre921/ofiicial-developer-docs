@@ -37,14 +37,14 @@ LibSQL uses the native SQLite BLOB [storage class](https://www.sqlite.org/dataty
 
 The table below lists six vector types currently supported by LibSQL. Types are listed from more precise and storage-heavy to more compact but less precise alternatives (the number of dimensions in vector $D$ is used to estimate storage requirements for a single vector).
 
-| Type name                   | Storage (bytes)                 | Description                                                                                                                                                                                        |
-| --------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FLOAT64` \| `F64_BLOB`     | $8D + 1$                        | Implementation of [IEEE 754 double precision format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) for 64-bit floating point numbers                                       |
-| `FLOAT32` \| `F32_BLOB`     | $4D$                            | Implementation of [IEEE 754 single precision format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) for 32-bit floating point numbers                                       |
-| `FLOAT16` \| `F16_BLOB`     | $2D + 1$                        | Implementation of [IEEE 754-2008 half precision format](https://en.wikipedia.org/wiki/Half-precision_floating-point_format) for 16-bit floating point numbers                                      |
-| `FLOATB16` \| `FB16_BLOB`   | $2D + 1$                        | Implementation of [bfloat16 format](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) for 16-bit floating point numbers                                                                |
-| `FLOAT8` \| `F8_BLOB`       | $D + 14$                        | LibSQL specific implementation which compresses each vector component to single `u8` byte `b` and reconstruct value from it using simple transformation: $\texttt{shift} + \texttt{alpha} \cdot b$ |
-| `FLOAT1BIT` \| `F1BIT_BLOB` | $\lceil \frac{D}{8} \rceil + 3$ | LibSQL-specific implementation which compresses each vector component down to 1-bit and packs multiple components into a single machine word, achieving a very compact representation              |
+| Type name | Storage (bytes) | Description |
+| - | - | - |
+| `FLOAT64` \| `F64_BLOB` | $8D + 1$ | Implementation of [IEEE 754 double precision format](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) for 64-bit floating point numbers |
+| `FLOAT32` \| `F32_BLOB` | $4D$ | Implementation of [IEEE 754 single precision format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) for 32-bit floating point numbers |
+| `FLOAT16` \| `F16_BLOB` | $2D + 1$ | Implementation of [IEEE 754-2008 half precision format](https://en.wikipedia.org/wiki/Half-precision_floating-point_format) for 16-bit floating point numbers |
+| `FLOATB16` \| `FB16_BLOB` | $2D + 1$ | Implementation of [bfloat16 format](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) for 16-bit floating point numbers |
+| `FLOAT8` \| `F8_BLOB` | $D + 14$ | LibSQL specific implementation which compresses each vector component to single `u8` byte `b` and reconstruct value from it using simple transformation: $\texttt{shift} + \texttt{alpha} \cdot b$ |
+| `FLOAT1BIT` \| `F1BIT_BLOB` | $\lceil \frac{D}{8} \rceil + 3$ | LibSQL-specific implementation which compresses each vector component down to 1-bit and packs multiple components into a single machine word, achieving a very compact representation |
 
 <Info>
   For most applications, the `FLOAT32` type should be a good starting point, but
@@ -64,13 +64,13 @@ To work with vectors, LibSQL provides several functions that operate in the vect
 
 Currently, LibSQL supports the following functions:
 
-| Function name                                                                      | Description                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vector64` \| `vector32` \| `vector16` \| `vectorb16` \| `vector8` \| `vector1bit` | Conversion function which accepts a valid vector and converts it to the corresponding target type                                                                            |
-| `vector`                                                                           | Alias for `vector32` conversion function                                                                                                                                     |
-| `vector_extract`                                                                   | Extraction function which accepts valid vector and return its text representation                                                                                            |
-| `vector_distance_cos`                                                              | Cosine distance (1 - [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity)) function which operates over vector of **same type** with **same dimensionality** |
-| `vector_distance_l2`                                                               | Euclidean distance function which operates over vector of **same type** with **same dimensionality**                                                                         |
+| Function name | Description |
+| - | - |
+| `vector64` \| `vector32` \| `vector16` \| `vectorb16` \| `vector8` \| `vector1bit` | Conversion function which accepts a valid vector and converts it to the corresponding target type |
+| `vector` | Alias for `vector32` conversion function |
+| `vector_extract` | Extraction function which accepts valid vector and return its text representation |
+| `vector_distance_cos` | Cosine distance (1 - [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity)) function which operates over vector of **same type** with **same dimensionality** |
+| `vector_distance_l2` | Euclidean distance function which operates over vector of **same type** with **same dimensionality** |
 
 ### Vectors usage
 
@@ -202,14 +202,14 @@ ON movies(libsql_vector_idx(embedding, 'metric=l2', 'compress_neighbors=float8')
 
 At the moment LibSQL supports the following settings:
 
-| Setting key          | Value type                                                          | Description                                                                                                                                                                                                                                                                              |
-| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `metric`             | `cosine` \| `l2`                                                    | Which distance function to use for building the index. <br /> Default: `cosine`                                                                                                                                                                                                          |
-| `max_neighbors`      | positive integer                                                    | How many neighbors to store for every node in the DiskANN graph. The lower the setting -- the less storage index will use in exchange to search precision. <br /> Default: $3 \sqrt{D}$ where $D$ -- dimensionality of vector column                                                     |
+| Setting key | Value type | Description |
+| - | - | - |
+| `metric` | `cosine` \| `l2` | Which distance function to use for building the index. <br /> Default: `cosine` |
+| `max_neighbors` | positive integer | How many neighbors to store for every node in the DiskANN graph. The lower the setting -- the less storage index will use in exchange to search precision. <br /> Default: $3 \sqrt{D}$ where $D$ -- dimensionality of vector column |
 | `compress_neighbors` | `float1bit`\|`float8`\|<br />`float16`\|`floatb16`\|<br />`float32` | Which vector type must be used to store neighbors for every node in the DiskANN graph. The more compact vector type is used for neighbors -- the less storage index will use in exchange to search precision. <br /> Default: **no compression** (neighbors has same type as base table) |
-| `alpha`              | positive float $\geq 1$                                             | "Density" parameter of general sparse neighborhood graph build during DiskANN algorithm. The lower parameter -- the more sparse is DiskANN graph which can speed up query speed in exchange to lower search precision. <br />Default: `1.2`                                              |
-| `search_l`           | positive integer                                                    | Setting which limits the amount of neighbors visited during vector search. The lower the setting -- the faster will be search query in exchange to search precision. <br />Default: `200`                                                                                                |
-| `insert_l`           | positive integer                                                    | Setting which limits the amount of neighbors visited during vector insert. The lower the setting -- the faster will be insert query in exchange to DiskANN graph navigability properties. <br />Default: `70`                                                                            |
+| `alpha` | positive float $\geq 1$ | "Density" parameter of general sparse neighborhood graph build during DiskANN algorithm. The lower parameter -- the more sparse is DiskANN graph which can speed up query speed in exchange to lower search precision. <br />Default: `1.2` |
+| `search_l` | positive integer | Setting which limits the amount of neighbors visited during vector search. The lower the setting -- the faster will be search query in exchange to search precision. <br />Default: `200` |
+| `insert_l` | positive integer | Setting which limits the amount of neighbors visited during vector insert. The lower the setting -- the faster will be insert query in exchange to DiskANN graph navigability properties. <br />Default: `70` |
 
 <Note>
   Vector index for column of type `T1` with `max_neighbors=M` and

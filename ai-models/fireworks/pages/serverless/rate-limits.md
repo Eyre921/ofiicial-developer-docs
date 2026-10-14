@@ -20,11 +20,55 @@ All limits are measured and enforced in **tokens per minute (TPM)**.
 
 Adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher ceilings:
 
-| Tier | Total parameters | Total Prompt TPM | Uncached Prompt TPM | Generated TPM |
-| - | - | - | - | - |
-| **Small** | \< 600B | 216M | 54M | 2.16M |
-| **Medium** | 600B – \< 1.6T | 43.2M | 10.8M | 432k |
-| **Large** | ≥ 1.6T | 21.6M | 5.4M | 216k |
+<table>
+  <colgroup>
+    <col />
+
+    <col />
+
+    <col />
+
+    <col />
+
+    <col />
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th>Tier</th>
+      <th>Total parameters</th>
+      <th>Total<br />Prompt TPM</th>
+      <th>Uncached<br />Prompt TPM</th>
+      <th>Generated<br />TPM</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><strong>Small</strong></td>
+      <td>\< 600B</td>
+      <td>216M</td>
+      <td>54M</td>
+      <td>2.16M</td>
+    </tr>
+
+    <tr>
+      <td><strong>Medium</strong></td>
+      <td>600B – \< 1.6T</td>
+      <td>43.2M</td>
+      <td>10.8M</td>
+      <td>432k</td>
+    </tr>
+
+    <tr>
+      <td><strong>Large</strong></td>
+      <td>≥ 1.6T</td>
+      <td>21.6M</td>
+      <td>5.4M</td>
+      <td>216k</td>
+    </tr>
+  </tbody>
+</table>
 
 Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Models without a known parameter count use **Large** ceilings.
 

@@ -22,12 +22,12 @@ Upload a SQLite database file to a database created with `seed.type = "database_
 
 ## Headers
 
-| Header                      | Required | Description                                                                                |
-| --------------------------- | -------- | ------------------------------------------------------------------------------------------ |
-| `Authorization`             | Yes      | Bearer token for the database                                                              |
-| `Content-Length`            | Yes      | Size of the database file in bytes                                                         |
-| `x-turso-encryption-key`    | No       | Base64-encoded encryption key (32 bytes for 256-bit ciphers, 16 bytes for 128-bit ciphers) |
-| `x-turso-encryption-cipher` | No       | Encryption cipher. See table below for options.                                            |
+| Header | Required | Description |
+| - | - | - |
+| `Authorization` | Yes | Bearer token for the database |
+| `Content-Length` | Yes | Size of the database file in bytes |
+| `x-turso-encryption-key` | No | Base64-encoded encryption key (32 bytes for 256-bit ciphers, 16 bytes for 128-bit ciphers) |
+| `x-turso-encryption-cipher` | No | Encryption cipher. See table below for options. |
 
 ## Request Body
 
@@ -44,17 +44,17 @@ The SQLite database file must meet these requirements:
 
 For encrypted databases, you must also set the reserved bytes to match the cipher:
 
-| Cipher             | Reserved Bytes |
-| ------------------ | -------------- |
-| `aes256gcm`        | 28             |
-| `aes128gcm`        | 28             |
-| `chacha20poly1305` | 28             |
-| `aegis128l`        | 32             |
-| `aegis128x2`       | 32             |
-| `aegis128x4`       | 32             |
-| `aegis256`         | 48             |
-| `aegis256x2`       | 48             |
-| `aegis256x4`       | 48             |
+| Cipher | Reserved Bytes |
+| - | - |
+| `aes256gcm` | 28 |
+| `aes128gcm` | 28 |
+| `chacha20poly1305` | 28 |
+| `aegis128l` | 32 |
+| `aegis128x2` | 32 |
+| `aegis128x4` | 32 |
+| `aegis256` | 48 |
+| `aegis256x2` | 48 |
+| `aegis256x4` | 48 |
 
 ## Responses
 
@@ -64,10 +64,10 @@ Returns an empty response with status `200 OK` on success.
 
 ### Errors
 
-| Status | Description                                                   |
-| ------ | ------------------------------------------------------------- |
-| `400`  | Invalid database file (wrong format, settings, or corruption) |
-| `401`  | Invalid or missing authorization token                        |
+| Status | Description |
+| - | - |
+| `400` | Invalid database file (wrong format, settings, or corruption) |
+| `401` | Invalid or missing authorization token |
 
 <RequestExample>
   ```bash cURL theme={null}

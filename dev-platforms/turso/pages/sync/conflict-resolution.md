@@ -14,12 +14,12 @@ How Turso sync handles concurrent changes from multiple clients.
 
 Turso sync uses a **last push wins** strategy. When two clients modify the same data and push, the last push determines the final state on the remote.
 
-| Time | Client A                                   | Client B                                 |
-| ---- | ------------------------------------------ | ---------------------------------------- |
-| T1   | `UPDATE users SET name='Alice' WHERE id=1` |                                          |
-| T2   |                                            | `UPDATE users SET name='Bob' WHERE id=1` |
-| T3   | `push()`                                   |                                          |
-| T4   |                                            | `push()`                                 |
+| Time | Client A | Client B |
+| - | - | - |
+| T1 | `UPDATE users SET name='Alice' WHERE id=1` | |
+| T2 | | `UPDATE users SET name='Bob' WHERE id=1` |
+| T3 | `push()` | |
+| T4 | | `push()` |
 
 **Result**: The name is `'Bob'` because Client B pushed last.
 

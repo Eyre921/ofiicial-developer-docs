@@ -14,53 +14,53 @@ Turso provides all SQLite math functions. These functions operate on numeric val
 
 ### Trigonometric Functions
 
-| Function      | Description                                                                                    | Return Type |
-| ------------- | ---------------------------------------------------------------------------------------------- | ----------- |
-| `acos(X)`     | Inverse cosine of X in radians. X must be between -1.0 and 1.0                                 | REAL        |
-| `asin(X)`     | Inverse sine of X in radians. X must be between -1.0 and 1.0                                   | REAL        |
-| `atan(X)`     | Inverse tangent of X in radians                                                                | REAL        |
-| `atan2(Y, X)` | Inverse tangent of Y/X in radians, using the signs of both arguments to determine the quadrant | REAL        |
-| `cos(X)`      | Cosine of X, where X is in radians                                                             | REAL        |
-| `sin(X)`      | Sine of X, where X is in radians                                                               | REAL        |
-| `tan(X)`      | Tangent of X, where X is in radians                                                            | REAL        |
+| Function | Description | Return Type |
+| - | - | - |
+| `acos(X)` | Inverse cosine of X in radians. X must be between -1.0 and 1.0 | REAL |
+| `asin(X)` | Inverse sine of X in radians. X must be between -1.0 and 1.0 | REAL |
+| `atan(X)` | Inverse tangent of X in radians | REAL |
+| `atan2(Y, X)` | Inverse tangent of Y/X in radians, using the signs of both arguments to determine the quadrant | REAL |
+| `cos(X)` | Cosine of X, where X is in radians | REAL |
+| `sin(X)` | Sine of X, where X is in radians | REAL |
+| `tan(X)` | Tangent of X, where X is in radians | REAL |
 
 ### Hyperbolic Functions
 
-| Function   | Description                                                     | Return Type |
-| ---------- | --------------------------------------------------------------- | ----------- |
-| `acosh(X)` | Inverse hyperbolic cosine of X. X must be >= 1.0                | REAL        |
-| `asinh(X)` | Inverse hyperbolic sine of X                                    | REAL        |
-| `atanh(X)` | Inverse hyperbolic tangent of X. X must be between -1.0 and 1.0 | REAL        |
-| `cosh(X)`  | Hyperbolic cosine of X                                          | REAL        |
-| `sinh(X)`  | Hyperbolic sine of X                                            | REAL        |
-| `tanh(X)`  | Hyperbolic tangent of X                                         | REAL        |
+| Function | Description | Return Type |
+| - | - | - |
+| `acosh(X)` | Inverse hyperbolic cosine of X. X must be >= 1.0 | REAL |
+| `asinh(X)` | Inverse hyperbolic sine of X | REAL |
+| `atanh(X)` | Inverse hyperbolic tangent of X. X must be between -1.0 and 1.0 | REAL |
+| `cosh(X)` | Hyperbolic cosine of X | REAL |
+| `sinh(X)` | Hyperbolic sine of X | REAL |
+| `tanh(X)` | Hyperbolic tangent of X | REAL |
 
 ### Angle Conversion
 
-| Function     | Description                       | Return Type |
-| ------------ | --------------------------------- | ----------- |
-| `degrees(X)` | Convert X from radians to degrees | REAL        |
-| `radians(X)` | Convert X from degrees to radians | REAL        |
+| Function | Description | Return Type |
+| - | - | - |
+| `degrees(X)` | Convert X from radians to degrees | REAL |
+| `radians(X)` | Convert X from degrees to radians | REAL |
 
 ### Rounding and Truncation
 
-| Function     | Description                               | Return Type |
-| ------------ | ----------------------------------------- | ----------- |
-| `ceil(X)`    | Smallest integer not less than X          | INTEGER     |
-| `ceiling(X)` | Alias for `ceil(X)`                       | INTEGER     |
-| `floor(X)`   | Largest integer not greater than X        | INTEGER     |
-| `trunc(X)`   | Integer part of X (truncates toward zero) | INTEGER     |
+| Function | Description | Return Type |
+| - | - | - |
+| `ceil(X)` | Smallest integer not less than X | INTEGER |
+| `ceiling(X)` | Alias for `ceil(X)` | INTEGER |
+| `floor(X)` | Largest integer not greater than X | INTEGER |
+| `trunc(X)` | Integer part of X (truncates toward zero) | INTEGER |
 
 ### Logarithmic and Exponential Functions
 
-| Function    | Description                                          | Return Type |
-| ----------- | ---------------------------------------------------- | ----------- |
-| `exp(X)`    | e raised to the power X                              | REAL        |
-| `ln(X)`     | Natural logarithm of X. X must be > 0                | REAL        |
-| `log(X)`    | Natural logarithm of X (same as `ln(X)`)             | REAL        |
-| `log(B, X)` | Logarithm of X with base B. Both must be > 0, B != 1 | REAL        |
-| `log10(X)`  | Base-10 logarithm of X. X must be > 0                | REAL        |
-| `log2(X)`   | Base-2 logarithm of X. X must be > 0                 | REAL        |
+| Function | Description | Return Type |
+| - | - | - |
+| `exp(X)` | e raised to the power X | REAL |
+| `ln(X)` | Natural logarithm of X. X must be > 0 | REAL |
+| `log(X)` | Natural logarithm of X (same as `ln(X)`) | REAL |
+| `log(B, X)` | Logarithm of X with base B. Both must be > 0, B != 1 | REAL |
+| `log10(X)` | Base-10 logarithm of X. X must be > 0 | REAL |
+| `log2(X)` | Base-2 logarithm of X. X must be > 0 | REAL |
 
 <Info>
   The single-argument `log(X)` returns the natural logarithm (base e), matching SQLite behavior. This differs from some other databases where `log(X)` returns the base-10 logarithm.
@@ -68,21 +68,21 @@ Turso provides all SQLite math functions. These functions operate on numeric val
 
 ### Arithmetic Functions
 
-| Function      | Description                                            | Return Type |
-| ------------- | ------------------------------------------------------ | ----------- |
-| `mod(X, Y)`   | Remainder of X divided by Y                            | REAL        |
-| `pow(X, Y)`   | X raised to the power Y                                | REAL        |
-| `power(X, Y)` | Alias for `pow(X, Y)`                                  | REAL        |
-| `sqrt(X)`     | Square root of X. X must be >= 0                       | REAL        |
-| `sign(X)`     | Returns -1, 0, or +1 for negative, zero, or positive X | INTEGER     |
-| `gcd(A, B)`   | Greatest common divisor of two integers                | INTEGER     |
-| `lcm(A, B)`   | Least common multiple of two integers                  | INTEGER     |
+| Function | Description | Return Type |
+| - | - | - |
+| `mod(X, Y)` | Remainder of X divided by Y | REAL |
+| `pow(X, Y)` | X raised to the power Y | REAL |
+| `power(X, Y)` | Alias for `pow(X, Y)` | REAL |
+| `sqrt(X)` | Square root of X. X must be >= 0 | REAL |
+| `sign(X)` | Returns -1, 0, or +1 for negative, zero, or positive X | INTEGER |
+| `gcd(A, B)` | Greatest common divisor of two integers | INTEGER |
+| `lcm(A, B)` | Least common multiple of two integers | INTEGER |
 
 ### Constants
 
-| Function | Description                                 | Return Type |
-| -------- | ------------------------------------------- | ----------- |
-| `pi()`   | Returns the value of pi (3.141592653589793) | REAL        |
+| Function | Description | Return Type |
+| - | - | - |
+| `pi()` | Returns the value of pi (3.141592653589793) | REAL |
 
 ## Signatures
 
@@ -92,9 +92,9 @@ Turso provides all SQLite math functions. These functions operate on numeric val
 acos(X)
 ```
 
-| Parameter | Type            | Description                |
-| --------- | --------------- | -------------------------- |
-| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value between -1.0 and 1.0 |
 
 **Returns:** REAL. The angle in radians whose cosine is X. Returns NULL if X is outside \[-1.0, 1.0].
 
@@ -106,9 +106,9 @@ acos(X)
 acosh(X)
 ```
 
-| Parameter | Type            | Description  |
-| --------- | --------------- | ------------ |
-| `X`       | REAL or INTEGER | Value >= 1.0 |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value >= 1.0 |
 
 **Returns:** REAL. The inverse hyperbolic cosine of X. Returns NULL if X \< 1.0.
 
@@ -120,9 +120,9 @@ acosh(X)
 asin(X)
 ```
 
-| Parameter | Type            | Description                |
-| --------- | --------------- | -------------------------- |
-| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value between -1.0 and 1.0 |
 
 **Returns:** REAL. The angle in radians whose sine is X. Returns NULL if X is outside \[-1.0, 1.0].
 
@@ -134,9 +134,9 @@ asin(X)
 asinh(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** REAL. The inverse hyperbolic sine of X.
 
@@ -148,9 +148,9 @@ asinh(X)
 atan(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** REAL. The angle in radians whose tangent is X. Result is in the range (-pi/2, pi/2).
 
@@ -162,10 +162,10 @@ atan(X)
 atan2(Y, X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `Y`       | REAL or INTEGER | The y-coordinate |
-| `X`       | REAL or INTEGER | The x-coordinate |
+| Parameter | Type | Description |
+| - | - | - |
+| `Y` | REAL or INTEGER | The y-coordinate |
+| `X` | REAL or INTEGER | The x-coordinate |
 
 **Returns:** REAL. The angle in radians between the positive x-axis and the point (X, Y). Result is in the range (-pi, pi]. Unlike `atan(Y/X)`, `atan2` correctly handles all quadrants and the case where X is zero.
 
@@ -177,9 +177,9 @@ atan2(Y, X)
 atanh(X)
 ```
 
-| Parameter | Type            | Description                            |
-| --------- | --------------- | -------------------------------------- |
-| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 (exclusive) |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value between -1.0 and 1.0 (exclusive) |
 
 **Returns:** REAL. The inverse hyperbolic tangent of X. Returns NULL if X is outside (-1.0, 1.0).
 
@@ -192,9 +192,9 @@ ceil(X)
 ceiling(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** INTEGER. The smallest integer not less than X.
 
@@ -212,9 +212,9 @@ SELECT ceiling(5.0); -- 5
 cos(X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `X`       | REAL or INTEGER | Angle in radians |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Angle in radians |
 
 **Returns:** REAL. The cosine of X.
 
@@ -226,9 +226,9 @@ cos(X)
 cosh(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** REAL. The hyperbolic cosine of X.
 
@@ -240,9 +240,9 @@ cosh(X)
 degrees(X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `X`       | REAL or INTEGER | Angle in radians |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Angle in radians |
 
 **Returns:** REAL. X converted from radians to degrees.
 
@@ -259,9 +259,9 @@ SELECT degrees(pi()/2); -- 90.0
 exp(X)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Exponent    |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Exponent |
 
 **Returns:** REAL. The value of e raised to the power X.
 
@@ -278,10 +278,10 @@ SELECT exp(1);   -- 2.718281828459045
 gcd(A, B)
 ```
 
-| Parameter | Type    | Description    |
-| --------- | ------- | -------------- |
-| `A`       | INTEGER | First operand  |
-| `B`       | INTEGER | Second operand |
+| Parameter | Type | Description |
+| - | - | - |
+| `A` | INTEGER | First operand |
+| `B` | INTEGER | Second operand |
 
 **Returns:** INTEGER. The greatest common divisor of A and B. The result is always non-negative regardless of the signs of the inputs. `gcd(0, 0)` returns `0`. Returns NULL if either argument is NULL. Raises an integer-overflow error when the result is not representable as a signed 64-bit integer (the only such case involves `-9223372036854775808`).
 
@@ -305,10 +305,10 @@ SELECT gcd(NULL, 7);   -- NULL
 lcm(A, B)
 ```
 
-| Parameter | Type    | Description    |
-| --------- | ------- | -------------- |
-| `A`       | INTEGER | First operand  |
-| `B`       | INTEGER | Second operand |
+| Parameter | Type | Description |
+| - | - | - |
+| `A` | INTEGER | First operand |
+| `B` | INTEGER | Second operand |
 
 **Returns:** INTEGER. The least common multiple of A and B. The result is always non-negative regardless of the signs of the inputs. `lcm(_, 0)` and `lcm(0, _)` return `0`. Returns NULL if either argument is NULL. Raises an integer-overflow error when the multiplication does not fit in a signed 64-bit integer.
 
@@ -327,9 +327,9 @@ SELECT lcm(NULL, 7);   -- NULL
 floor(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** INTEGER. The largest integer not greater than X.
 
@@ -347,9 +347,9 @@ SELECT floor(5.0);   -- 5
 ln(X)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Value > 0   |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value > 0 |
 
 **Returns:** REAL. The natural logarithm (base e) of X. Returns NULL if X \<= 0.
 
@@ -368,10 +368,10 @@ log(X)
 log(B, X)
 ```
 
-| Parameter | Type            | Description                  |
-| --------- | --------------- | ---------------------------- |
-| `X`       | REAL or INTEGER | Value > 0                    |
-| `B`       | REAL or INTEGER | Base > 0 and != 1 (optional) |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value > 0 |
+| `B` | REAL or INTEGER | Base > 0 and != 1 (optional) |
 
 **Returns:** REAL. With one argument, returns the natural logarithm of X (same as `ln(X)`). With two arguments, returns the logarithm of X in base B.
 
@@ -389,9 +389,9 @@ SELECT log(2, 256);  -- 8.0 (log base 2 of 256)
 log10(X)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Value > 0   |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value > 0 |
 
 **Returns:** REAL. The base-10 logarithm of X. Returns NULL if X \<= 0.
 
@@ -408,9 +408,9 @@ SELECT log10(1000);  -- 3.0
 log2(X)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Value > 0   |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value > 0 |
 
 **Returns:** REAL. The base-2 logarithm of X. Returns NULL if X \<= 0.
 
@@ -427,10 +427,10 @@ SELECT log2(1024);  -- 10.0
 mod(X, Y)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Dividend    |
-| `Y`       | REAL or INTEGER | Divisor     |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Dividend |
+| `Y` | REAL or INTEGER | Divisor |
 
 **Returns:** REAL. The remainder when X is divided by Y. Returns NULL if Y is 0.
 
@@ -466,10 +466,10 @@ pow(X, Y)
 power(X, Y)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Base        |
-| `Y`       | REAL or INTEGER | Exponent    |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Base |
+| `Y` | REAL or INTEGER | Exponent |
 
 **Returns:** REAL. X raised to the power Y.
 
@@ -487,9 +487,9 @@ SELECT pow(100, 0.5);   -- 10.0 (square root)
 radians(X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `X`       | REAL or INTEGER | Angle in degrees |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Angle in degrees |
 
 **Returns:** REAL. X converted from degrees to radians.
 
@@ -506,9 +506,9 @@ SELECT radians(90);    -- 1.5707963267948966
 sign(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** INTEGER. Returns -1 if X is negative, 0 if X is zero, and +1 if X is positive. Returns NULL if X is NULL.
 
@@ -526,9 +526,9 @@ SELECT sign(3.14); -- 1
 sin(X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `X`       | REAL or INTEGER | Angle in radians |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Angle in radians |
 
 **Returns:** REAL. The sine of X.
 
@@ -540,9 +540,9 @@ sin(X)
 sinh(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** REAL. The hyperbolic sine of X.
 
@@ -554,9 +554,9 @@ sinh(X)
 sqrt(X)
 ```
 
-| Parameter | Type            | Description |
-| --------- | --------------- | ----------- |
-| `X`       | REAL or INTEGER | Value >= 0  |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Value >= 0 |
 
 **Returns:** REAL. The square root of X. Returns NULL if X is negative.
 
@@ -573,9 +573,9 @@ SELECT sqrt(2);    -- 1.4142135623730951
 tan(X)
 ```
 
-| Parameter | Type            | Description      |
-| --------- | --------------- | ---------------- |
-| `X`       | REAL or INTEGER | Angle in radians |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Angle in radians |
 
 **Returns:** REAL. The tangent of X.
 
@@ -587,9 +587,9 @@ tan(X)
 tanh(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** REAL. The hyperbolic tangent of X. Result is always in the range (-1.0, 1.0).
 
@@ -601,9 +601,9 @@ tanh(X)
 trunc(X)
 ```
 
-| Parameter | Type            | Description       |
-| --------- | --------------- | ----------------- |
-| `X`       | REAL or INTEGER | Any numeric value |
+| Parameter | Type | Description |
+| - | - | - |
+| `X` | REAL or INTEGER | Any numeric value |
 
 **Returns:** INTEGER. The integer part of X, removing any fractional digits. Truncates toward zero.
 

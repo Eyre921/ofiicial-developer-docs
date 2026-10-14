@@ -16,6 +16,6 @@ turso group transfer <group-name> <organization-name> [flags]
 
 ## Flags
 
-| Flag          | Description                                  |
-| ------------- | -------------------------------------------- |
+| Flag | Description |
+| - | - |
 | `-y`, `--yes` | Confirms the transfer to a new organization. |

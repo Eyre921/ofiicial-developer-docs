@@ -6,7 +6,7 @@ path: docs/migration-mergent
 
 A guide for migrating from Mergent to Trigger.dev
 
-Mergent is being absorbed into Resend, so if you’re running background jobs or scheduled tasks on Mergent, now is a good time to migrate. Trigger.dev is a modern, developer-friendly platform for background jobs, workflows, and scheduling.
+Mergent was acquired by Resend and its service shut down on July 28, 2025. If you ran background jobs or scheduled tasks on Mergent, you need to move them to another platform. Trigger.dev is a modern, developer-friendly platform for background jobs, workflows, and scheduling.
 
 ### Why Trigger.dev?
 

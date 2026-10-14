@@ -26,7 +26,9 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | AR | ar_cuit | Argentinian tax ID number | 12-3456789-01 | No |
 | AT | eu_vat | European VAT number | ATU12345678 | Yes |
 | AU | au_abn | Australian Business Number (AU ABN) | 12345678912 | Yes |
+| AU | au_acn | Australian Company Number | 123456789 | No |
 | AU | au_arn | Australian Taxation Office Reference Number | 123456789123 | No |
+| AU | au_wpn | Australian Withholding Payer Number | 00123456789 | No |
 | AW | aw_tin | Aruba Tax Identification Number | 12345678 | Yes |
 | AZ | az_tin | Azerbaijan Tax Identification Number | 0123456789 | Yes |
 | BA | ba_tin | Bosnia and Herzegovina Tax Identification Number | 123456789012 | Yes |
@@ -59,6 +61,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | CR | cr_tin | Costa Rican tax ID | 1-234-567890 | No |
 | CV | cv_nif | Cape Verde Tax Identification Number (Número de Identificação Fiscal) | 213456789 | No |
 | CY | eu_vat | European VAT number | CY12345678Z | Yes |
+| CZ | cz_dic | Czechia Daňové identifikační číslo | CZ12345678 | No |
 | CZ | eu_vat | European VAT number | CZ1234567890 | Yes |
 | DE | de_stn | German Tax Number (Steuernummer) | 1234567890 | No |
 | DE | eu_vat | European VAT number | DE123456789 | Yes |
@@ -74,6 +77,9 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | FI | eu_vat | European VAT number | FI12345678 | Yes |
 | FO | fo_vat | Faroe Islands VAT number | FO123456 | No |
 | FR | eu_vat | European VAT number | FRAB123456789 | Yes |
+| FR | fr_siren | France SIREN number | 123456789 | No |
+| FR | fr_siret | France SIRET number | 12345678901234 | No |
+| FR | fr_spi | France SPI / NIF | 1234567890123 | No |
 | GB | eu_vat | Northern Ireland VAT number | XI123456789 | Yes |
 | GB | gb_vat | United Kingdom VAT number | GB123456789 | Yes |
 | GE | ge_vat | Georgian VAT | 123456789 | Yes |
@@ -90,6 +96,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | IE | eu_vat | European VAT number | IE1234567AB | Yes |
 | IL | il_vat | Israel VAT | 000012345 | No |
 | IN | in_gst | Indian GST number | 12ABCDE3456FGZH | Yes |
+| IS | is_kt | Iceland Tax Identification Number | 1234567890 | No |
 | IS | is_vat | Icelandic VAT | 123456 | Yes |
 | IT | eu_vat | European VAT number | IT12345678912 | Yes |
 | IT | it_cf | Italian Codice Fiscale number | ABCDEF12A12A123A | No |
@@ -109,20 +116,24 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | LU | eu_vat | European VAT number | LU12345678 | Yes |
 | LV | eu_vat | European VAT number | LV12345678912 | Yes |
 | MA | ma_vat | Morocco VAT Number | 12345678 | Yes |
+| MD | md_cf | Moldova Cod Fiscal number | E123456789012 | No |
 | MD | md_vat | Moldova VAT Number | 1234567 | Yes |
 | ME | me_pib | Montenegro PIB Number | 12345678 | No |
 | MK | mk_vat | North Macedonia VAT Number | MK1234567890123 | Yes |
 | MR | mr_nif | Mauritania Tax Identification Number (Número de Identificação Fiscal) | 12345678 | No |
 | MT | eu_vat | European VAT number | MT12345678 | Yes |
+| MU | mu_vat | Mauritius Value Added Tax number | VAT12345678 | No |
 | MX | mx_rfc | Mexican RFC number | ABC010203AB9 | No |
 | MY | my_frp | Malaysian FRP number | 12345678 | No |
 | MY | my_itn | Malaysian ITN | C 1234567890 | No |
 | MY | my_sst | Malaysian SST number | A12-3456-78912345 | No |
+| MZ | mz_nuit | Mozambique Número de Identificação Tributária | 123456789 | No |
 | NG | ng_tin | Nigerian Tax Identification Number | 1234567890123 | No |
 | NL | eu_vat | European VAT number | NL123456789B12 | Yes |
 | NO | no_vat | Norwegian VAT number | 123456789MVA | Yes |
 | NO | no_voec | Norwegian VAT on e-commerce number | 1234567 | No |
 | NP | np_pan | Nepal PAN Number | 123456789 | Yes |
+| NZ | nz_bn | New Zealand Business Number | 1234567890123 | No |
 | NZ | nz_gst | New Zealand GST number | 123456789 | Yes |
 | OM | om_vat | Omani VAT Number | OM1234567890 | Yes |
 | PE | pe_ruc | Peruvian RUC number | 12345678901 | Yes |
@@ -130,6 +141,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | PL | eu_vat | European VAT number | PL1234567890 | Yes |
 | PL | pl_nip | Polish NIP number | 1234567890 | No |
 | PT | eu_vat | European VAT number | PT123456789 | Yes |
+| PT | pt_nif | Portugal Número de Identificação Fiscal | 123456789 | No |
 | PY | py_ruc | Paraguayan RUC number | 12345678A | No |
 | RO | eu_vat | European VAT number | RO1234567891 | Yes |
 | RO | ro_tin | Romanian tax ID number | 1234567890123 | No |
@@ -143,12 +155,15 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | SI | eu_vat | European VAT number | SI12345678 | Yes |
 | SI | si_tin | Slovenia tax number (davčna številka) | 12345678 | No |
 | SK | eu_vat | European VAT number | SK1234567891 | Yes |
+| SM | sm_coe | San Marino COE number | SM12345 | No |
 | SN | sn_ninea | Senegal NINEA Number | 12345672A2 | No |
 | SR | sr_fin | Suriname FIN Number | 1234567890 | Yes |
 | SV | sv_nit | El Salvadorian NIT number | 1234-567890-123-4 | No |
 | TH | th_vat | Thai VAT | 1234567891234 | Yes |
 | TJ | tj_tin | Tajikistan Tax Identification Number | 123456789 | Yes |
 | TR | tr_tin | Turkish Tax Identification Number | 0123456789 | Yes |
+| TT | tt_bir | Trinidad and Tobago Board of Inland Revenue | 1234567890 | No |
+| TT | tt_vat | Trinidad and Tobago VAT registration number | 123456 | No |
 | TW | tw_vat | Taiwanese VAT | 12345678 | Yes |
 | TZ | tz_vat | Tanzania VAT Number | 12345678A | Yes |
 | UA | ua_vat | Ukrainian VAT | 123456789 | Yes |

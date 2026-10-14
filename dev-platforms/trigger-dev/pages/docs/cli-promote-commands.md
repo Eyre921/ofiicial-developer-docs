@@ -10,26 +10,44 @@ Run the command like this:
 
 <CodeGroup>
   ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest promote [version]
+  npx trigger.dev@latest promote <version>
   ```
 
   ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest promote [version]
+  pnpm dlx trigger.dev@latest promote <version>
   ```
 
   ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest promote [version]
+  yarn dlx trigger.dev@latest promote <version>
   ```
 </CodeGroup>
 
 ## Arguments
 
 ```
-npx trigger.dev@latest promote [version]
+npx trigger.dev@latest promote <version>
 ```
 
-<ParamField type="[version]">
-  The version to promote. This is the version that was previously deployed.
+<ParamField type="<version>">
+  The version to promote, e.g. `20250208.1`.
+</ParamField>
+
+## Options
+
+<ParamField type="-c, --config <config file>">
+  The name of the config file.
+</ParamField>
+
+<ParamField type="-e, --env <env>">
+  The environment to promote in: `prod`, `staging` or `preview`. Defaults to `prod`.
+</ParamField>
+
+<ParamField type="-b, --branch <branch>">
+  The preview branch when `--env` is `preview`. If omitted, it's read from `TRIGGER_PREVIEW_BRANCH`, then `VERCEL_GIT_COMMIT_REF`, then your git branch.
+</ParamField>
+
+<ParamField type="-p, --project-ref <project ref>">
+  The project ref. Required if there is no config file. Overrides the project in the config file.
 </ParamField>
 
 ### Common options
@@ -37,7 +55,7 @@ npx trigger.dev@latest promote [version]
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

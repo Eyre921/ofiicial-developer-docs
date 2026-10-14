@@ -26,10 +26,10 @@ DROP DOMAIN removes the named domain from the database. The domain must exist un
 
 ### Clauses
 
-| Clause        | Description                                                                                                                |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `IF EXISTS`   | Suppresses the error that would occur if the domain does not exist. The statement is a no-op when the domain is not found. |
-| `domain-name` | The name of the domain to remove.                                                                                          |
+| Clause | Description |
+| - | - |
+| `IF EXISTS` | Suppresses the error that would occur if the domain does not exist. The statement is a no-op when the domain is not found. |
+| `domain-name` | The name of the domain to remove. |
 
 ### Restrictions
 

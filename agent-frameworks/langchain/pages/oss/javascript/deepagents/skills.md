@@ -303,6 +303,228 @@ scripts/extract.py
 
 For each file you reference, state what it contains and when the agent should use it. Keep references one level deep from `SKILL.md`. Avoid deeply nested reference chains that force the agent through multiple reads to reach the information it needs.
 
+## Add tools to skills
+
+A skill can bring its own tools. The agent sees them only after it reads the skill, so their schemas stay out of the prompt until a task needs them.
+
+Skill tools are a Deep Agents feature, not part of the [Agent Skills specification](https://agentskills.io/specification). Deep Agents reads the tool names from the spec's free-form `metadata` field. They are unrelated to the spec's `allowed-tools` field, which pre-approves tools rather than adding them.
+
+<Note>Skill tools require `deepagents>=1.15.0`.</Note>
+
+List the tools under `metadata.include_tools` in the skill's frontmatter, separated by spaces. A YAML list does not match any tool.
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+name: linear
+description: Triage and file Linear issues. Use when the user reports a bug or asks about the Linear backlog.
+metadata:
+  include_tools: list_issues create_issue
+```
+
+Passing `skills` to `createDeepAgent` creates the skills middleware for you. To add tools, create it yourself with `createSkillsMiddleware` and pass it in `middleware` instead. Give it your skill paths as `sources`, and your tools as `tools` on the middleware rather than on the agent:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import {
+  createDeepAgent,
+  createSkillsMiddleware,
+  FilesystemBackend,
+} from "deepagents";
+import { z } from "zod";
+
+const listIssues = tool(
+  async ({ team }) => `${team}-101: Login page times out`,
+  {
+    name: "list_issues",
+    description: "List open issues for a Linear team.",
+    schema: z.object({ team: z.string() }),
+  },
+);
+
+const createIssue = tool(async ({ team, title }) => `${team}-102: ${title}`, {
+  name: "create_issue",
+  description: "Create a Linear issue and return its ID.",
+  schema: z.object({ team: z.string(), title: z.string() }),
+});
+
+const backend = new FilesystemBackend({
+  rootDir: "./my-project",
+  virtualMode: true,
+});
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  middleware: [
+    createSkillsMiddleware({
+      backend,
+      sources: ["/skills/"],
+      tools: [listIssues, createIssue],
+    }),
+  ],
+});
+```
+
+Skill tools follow these rules:
+
+* Skill tools are gated. Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
+* When [summarization](/oss/javascript/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
+
+<Note>
+  On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) integration pages.
+</Note>
+
+### Resolve tools at runtime
+
+The names in `include_tools` do not have to match a tool's own name. A generated tool name such as `mcp_linear_list_issues_ab12` is hard to write by hand, and may not stay the same.
+
+To map the names a skill lists to tools, pass a resolver function as the middleware's `tools`. The resolver receives each `include_tools` name and the graph's `Runtime`, and returns the tools for that name.
+
+The skill lists readable names:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+metadata:
+  include_tools: list_issues create_issue
+```
+
+The resolver maps each one to its real tool:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type { StructuredTool } from "langchain";
+import {
+  createDeepAgent,
+  createSkillsMiddleware,
+  type SkillToolResolver,
+} from "deepagents";
+
+// Real names like "mcp_linear_list_issues_ab12"
+const toolsByName = new Map<string, StructuredTool>([
+  ["list_issues", listIssues],
+  ["create_issue", createIssue],
+]);
+
+const resolveSkillTools: SkillToolResolver = (name) => {
+  const tool = toolsByName.get(name);
+  return tool ? [tool] : [];
+};
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  middleware: [
+    createSkillsMiddleware({
+      backend,
+      sources: ["/skills/"],
+      tools: resolveSkillTools,
+    }),
+  ],
+});
+```
+
+One name can also stand for many tools, such as every tool from the Linear MCP server. List one name in the skill:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+metadata:
+  include_tools: linear
+```
+
+Then return all of the server's tools from the resolver:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Every tool from the Linear MCP server
+const toolsByIntegration = new Map([["linear", linearTools]]);
+
+const resolveSkillTools: SkillToolResolver = (name) =>
+  toolsByIntegration.get(name) ?? [];
+```
+
+The resolver also receives the graph's `Runtime`, so it can return different tools for each run based on [runtime context](/oss/javascript/deepagents/context-engineering#runtime-context). For example, look up tools by user:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  createSkillsMiddleware,
+  type SkillToolResolver,
+} from "deepagents";
+import { z } from "zod";
+
+const contextSchema = z.object({ userId: z.string() });
+
+const resolveSkillTools: SkillToolResolver<z.infer<typeof contextSchema>> = (
+  name,
+  runtime,
+) => {
+  if (name !== "linear") return [];
+  return linearToolsForUser(runtime.context.userId);
+};
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  contextSchema,
+  middleware: [
+    createSkillsMiddleware({
+      backend,
+      sources: ["/skills/"],
+      tools: resolveSkillTools,
+    }),
+  ],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "File a bug: checkout button does nothing." },
+    ],
+  },
+  { context: { userId: "user-123" } },
+);
+```
+
+When you write a resolver:
+
+* Keep it fast. It runs on every model call after the agent reads the skill, and again before each skill tool call.
+
+* The resolver can be async. It can return a promise of the tools.
+
+### Keep a tool searchable
+
+Skill tools, the ones you pass to `createSkillsMiddleware`, are reachable only through their skill. With [`providerToolSearchMiddleware`](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware), the model finds [deferred tools](/oss/javascript/langchain/middleware/built-in#provider-tool-search), marked with `extras: { defer_loading: true }`, by searching for them. To make a tool reachable either way, through search or by reading a skill, pass it to the agent's `tools` and defer it. Reading the skill then reveals it without a search:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { providerToolSearchMiddleware, tool } from "langchain";
+import { createDeepAgent, createSkillsMiddleware } from "deepagents";
+import { z } from "zod";
+
+const createIssue = tool(async ({ team, title }) => `${team}-102: ${title}`, {
+  name: "create_issue",
+  description: "Create a Linear issue and return its ID.",
+  schema: z.object({ team: z.string(), title: z.string() }),
+  extras: { defer_loading: true },
+});
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  tools: [createIssue],
+  middleware: [
+    providerToolSearchMiddleware(),
+    createSkillsMiddleware({ backend, sources: ["/skills/"] }),
+  ],
+});
+```
+
+Unlike a skill tool, a deferred tool is not gated. The model can find and call it through search before the agent reads the skill.
+
+How the agent reaches a tool depends on where you pass it:
+
+| Pass the tool to | Before the agent reads the skill | After the agent reads the skill |
+| - | - | - |
+| `createSkillsMiddleware({ tools })` | Hidden, and calls fail | Visible |
+| The agent's `tools`, deferred | Available through provider tool search | Visible without a search |
+| The agent's `tools` | Visible, so `include_tools` has no effect | Visible |
+
+When a skill lists a tool the agent already has, including built-in tools such as `edit_file`, Deep Agents uses the agent's tool, not one with the same name passed to `createSkillsMiddleware`.
+
 ## Backends and remote skill loading
 
 Deep Agents supports different backends depending on how you want to store and manage skill files:
@@ -2021,6 +2243,18 @@ Use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm
 2. **Keep paths within the skill directory.** File paths resolve against the backend. Confirm supporting files exist at the paths your instructions reference.
 
 3. **Sync skills into sandboxes.** If you use [sandbox backends](/oss/javascript/deepagents/sandboxes), skill files outside the container are not available until you copy them in. See [Sandbox scripts](#sandbox-scripts) and [syncing skills and memories with custom middleware](/oss/javascript/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware).
+
+### Skill tool not available
+
+**Problem**: The agent cannot call a tool that a skill lists in `include_tools`.
+
+**Solutions**:
+
+1. **Check that the agent read the skill.** Skill tools appear only after the agent reads `SKILL.md`, and disappear when summarization drops that read. See [Add tools to skills](#add-tools-to-skills).
+
+2. **Write `include_tools` as a string.** Separate names with spaces. A YAML list never matches a tool.
+
+3. **Check the names.** Each name must match a tool passed to the agent or to `createSkillsMiddleware`, or a name your resolver handles.
 
 ### Scripts fail to run
 

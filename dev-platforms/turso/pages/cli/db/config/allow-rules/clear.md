@@ -14,9 +14,9 @@ Without any flags, both the IP list and the AWS VPC endpoint list are cleared. U
 
 ## Flags
 
-| Flag         | Description                                          |
-| ------------ | ---------------------------------------------------- |
-| `--ips`      | Clear only the list of allowed IPs.                  |
+| Flag | Description |
+| - | - |
+| `--ips` | Clear only the list of allowed IPs. |
 | `--aws-vpcs` | Clear only the list of allowed AWS VPC endpoint IDs. |
 
 ## Examples

@@ -121,6 +121,15 @@ export function RunStatusBadge({
 
 You can skip any of: `payload`, `output`, `metadata`, `startedAt`, `delayUntil`, `queuedAt`, `expiredAt`, `completedAt`, `number`, `isTest`, `usageDurationMs`, `costInCents`, `baseCostInCents`, `ttl`, `payloadType`, `outputType`, `runTags`, `error`. The `useRealtimeRunsWithTag` hook also accepts a `skipColumns` option in the same way.
 
+By default the hook stops subscribing once the run completes. Pass `stopOnCompletion: false` to keep receiving updates after completion, for example metadata updates from child runs.
+
+```tsx theme={"theme":"css-variables"}
+const { run, error } = useRealtimeRun(runId, {
+  accessToken: publicAccessToken,
+  stopOnCompletion: false, // Keep receiving updates after the run completes
+});
+```
+
 See our [run object reference](/docs/realtime/run-object) for the complete schema and [How it Works documentation](/docs/realtime/how-it-works) for more technical details.
 
 ### useRealtimeRunsWithTag
@@ -200,6 +209,14 @@ export function MyComponent({ tag }: { tag: string }) {
 }
 ```
 
+You can also pass an array of tags, and use the `createdAt` option to only subscribe to runs created within a recent period. It accepts a duration string such as `"30m"` or `"1h"` and is applied when the subscription starts. The default and maximum lookback is 24 hours, so longer durations are capped at 24 hours.
+
+```tsx theme={"theme":"css-variables"}
+const { runs, error } = useRealtimeRunsWithTag(["user:123", "report"], {
+  createdAt: "1h", // Only runs created in the last hour
+});
+```
+
 ### useRealtimeBatch
 
 The `useRealtimeBatch` hook allows you to subscribe to a batch of runs by its the batch ID.
@@ -248,13 +265,12 @@ export function ProgressMonitor({
   runId: string;
   publicAccessToken: string;
 }) {
-  const { run, error, isLoading } = useRealtimeRun(runId, {
+  const { run, error } = useRealtimeRun(runId, {
     accessToken: publicAccessToken,
   });
 
-  if (isLoading) return <div>Loading run...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!run) return <div>Run not found</div>;
+  if (!run) return <div>Loading run...</div>;
 
   const progress = run.metadata?.progress as
     | {

@@ -4,7 +4,7 @@ source: https://trigger.dev/docs/cli-projects-commands
 path: docs/cli-projects-commands
 ---
 
-Create, inspect, and rename Trigger.dev projects from the terminal.
+List, create, inspect, and rename Trigger.dev projects from the terminal.
 
 These commands act on the organizations and projects your account can access, so run
 [`login`](/docs/cli-login-commands) first.
@@ -35,6 +35,18 @@ Creates a project. You are prompted for the organization and name when the optio
   The name of the new project.
 </ParamField>
 
+## projects list
+
+Lists your projects with the runtime and version of their current Production deployment.
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest projects list
+```
+
+<ParamField type="--needs-update">
+  Only show projects using Node.js 21 in Production.
+</ParamField>
+
 ## projects get
 
 Prints the name, ref, slug, organization, default runtime and region of a project.
@@ -58,7 +70,7 @@ npx trigger.dev@latest projects rename proj_abc123 "My new name"
 These options are available on most commands.
 
 <ParamField type="--profile">
-  The login profile to use. Defaults to "default".
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 </ParamField>
 
 <ParamField type="--api-url | -a">

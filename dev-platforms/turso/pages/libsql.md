@@ -28,12 +28,12 @@ libSQL is a fork of SQLite. It maintains the same file format, the same API, and
 
 [Turso Database](/tursodb/quickstart) is a different approach: a ground-up rewrite of SQLite. It reimplements SQLite's semantics with a modern architecture designed for concurrent writes, async I/O, and the highest database density in the industry.
 
-|                      | libSQL                           | Turso Database                                              |
-| -------------------- | -------------------------------- | ----------------------------------------------------------- |
-| Approach             | Fork of SQLite                   | Full rewrite of SQLite                                      |
-| Maturity             | Production-ready                 | Production-ready                                            |
-| SQLite compatibility | Full (same file format and API)  | Backwards compatible                                        |
-| Best for             | Mission-critical workloads today | New projects, agents, smart devices, high-density use cases |
+| | libSQL | Turso Database |
+| - | - | - |
+| Approach | Fork of SQLite | Full rewrite of SQLite |
+| Maturity | Production-ready | Production-ready |
+| SQLite compatibility | Full (same file format and API) | Backwards compatible |
+| Best for | Mission-critical workloads today | New projects, agents, smart devices, high-density use cases |
 
 Both are open-contribution and maintained by Turso, and both can be deployed on [Turso Cloud](/turso-cloud): libSQL has powered it for years, and Turso databases are now available on the platform as well.
 

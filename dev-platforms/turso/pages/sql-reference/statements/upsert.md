@@ -73,10 +73,10 @@ ON CONFLICT (a, b) WHERE c > 0 DO NOTHING;
 
 Inside the `SET` and `WHERE` clauses of `DO UPDATE`, the special `excluded` table contains the values that were proposed for insertion. This allows the update expression to reference both the existing row (using the table name) and the proposed new row (using `excluded`).
 
-| Reference           | Meaning                                                           |
-| ------------------- | ----------------------------------------------------------------- |
-| `table-name.column` | The current value of the column in the existing row               |
-| `excluded.column`   | The value that was proposed for insertion but caused the conflict |
+| Reference | Meaning |
+| - | - |
+| `table-name.column` | The current value of the column in the existing row |
+| `excluded.column` | The value that was proposed for insertion but caused the conflict |
 
 ```sql theme={null}
 INSERT INTO products (sku, name, price) VALUES ('A001', 'Widget', 12.99)

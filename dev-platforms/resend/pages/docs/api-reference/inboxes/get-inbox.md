@@ -21,11 +21,11 @@ Retrieve a single inbox by its ID or email address.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.6
+    npm install resend@6.33.0
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.9
+    npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
@@ -33,7 +33,9 @@ Retrieve a single inbox by its ID or email address.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`.
+  The Inbox ID or the inbox email address, such as `support@example.com`. A
+  value that contains `@` must be a valid email address, and the match is
+  case-insensitive. Any other value must be a UUID.
 </ResendParamField>
 
 ## Response Fields
@@ -47,7 +49,8 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string">
-  Internal name for the inbox. Recipients do not see it.
+  Internal name for the inbox. Recipients do not see it. Falls back to the inbox
+  email address.
 </ParamField>
 
 <ParamField type="string">
@@ -63,12 +66,12 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string | null">
-  The name recipients see when mail is sent from this inbox. A plain name, not
-  a `Name <email>` address.
+  The name recipients see when mail is sent from this inbox. `null` when not
+  set.
 </ParamField>
 
 <ParamField type="number">
-  The number of unread threads in the inbox.
+  The number of unread threads in the Inbox folder.
 </ParamField>
 
 <ParamField type="number">
@@ -76,7 +79,8 @@ Retrieve a single inbox by its ID or email address.
 </ParamField>
 
 <ParamField type="string | null">
-  ISO 8601 timestamp when a thread in this inbox was last active.
+  ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
+  when the folder has no received email.
 </ParamField>
 
 <ParamField type="string">

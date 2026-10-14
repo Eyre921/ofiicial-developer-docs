@@ -16,7 +16,7 @@ We deploy your tasks and scale them up and down when they are triggered. So any 
 
 <Steps>
   <Step title="Go to the Environment Variables page">
-    In the sidebar select the "Environment Variables" page, then press the "New environment variable"
+    In the sidebar select the "Environment Variables" page, then press the "Add new"
     button. <img alt="Environment variables page" />
   </Step>
 

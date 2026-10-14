@@ -23,12 +23,12 @@ A virtual table delegates row storage and retrieval to a module. The module dete
 
 ### Clauses
 
-| Clause             | Description                                                                                                    |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| `IF NOT EXISTS`    | Suppresses the error that would occur if a table with the same name already exists.                            |
-| `schema-name`      | The name of the attached database in which to create the virtual table. Defaults to `main`.                    |
-| `table-name`       | The name for the new virtual table.                                                                            |
-| `module-name`      | The name of the module that provides the virtual table implementation.                                         |
+| Clause | Description |
+| - | - |
+| `IF NOT EXISTS` | Suppresses the error that would occur if a table with the same name already exists. |
+| `schema-name` | The name of the attached database in which to create the virtual table. Defaults to `main`. |
+| `table-name` | The name for the new virtual table. |
+| `module-name` | The name of the module that provides the virtual table implementation. |
 | `module-arguments` | Comma-separated arguments passed to the module. The format and meaning of these arguments are module-specific. |
 
 ## Available Modules
@@ -37,22 +37,22 @@ A virtual table delegates row storage and retrieval to a module. The module dete
 
 The `csv` module reads data from a CSV file and exposes its contents as a read-only table. Load the csv extension first with `load_extension('csv')`.
 
-| Argument   | Description                                                            |
-| ---------- | ---------------------------------------------------------------------- |
-| `filename` | Path to the CSV file to read.                                          |
-| `header`   | Set to `yes` if the first row contains column names. Defaults to `no`. |
-| `columns`  | Number of columns to expect when `header` is `no`.                     |
-| `schema`   | Explicit CREATE TABLE schema for column names and types.               |
+| Argument | Description |
+| - | - |
+| `filename` | Path to the CSV file to read. |
+| `header` | Set to `yes` if the first row contains column names. Defaults to `no`. |
+| `columns` | Number of columns to expect when `header` is `no`. |
+| `schema` | Explicit CREATE TABLE schema for column names and types. |
 
 ### generate\_series
 
 The `generate_series` module is a built-in table-valued function that produces a sequence of integer values. It does not require an extension to be loaded.
 
-| Argument | Description                                    |
-| -------- | ---------------------------------------------- |
-| `start`  | The first value in the sequence (inclusive).   |
-| `stop`   | The last value in the sequence (inclusive).    |
-| `step`   | The increment between values. Defaults to `1`. |
+| Argument | Description |
+| - | - |
+| `start` | The first value in the sequence (inclusive). |
+| `stop` | The last value in the sequence (inclusive). |
+| `step` | The increment between values. Defaults to `1`. |
 
 The `generate_series` module can be used either as a virtual table or as a table-valued function in the FROM clause.
 

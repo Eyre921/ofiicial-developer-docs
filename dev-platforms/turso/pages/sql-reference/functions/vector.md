@@ -26,8 +26,8 @@ Creates a 32-bit floating-point vector from a JSON array of numbers.
 vector32(json_array)
 ```
 
-| Parameter    | Type | Description                                       |
-| ------------ | ---- | ------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of numbers, e.g. `'[1.0, 2.0, 3.0]'` |
 
 **Returns:** BLOB -- the vector in 32-bit float binary format.
@@ -56,8 +56,8 @@ Creates a 64-bit floating-point vector from a JSON array of numbers.
 vector64(json_array)
 ```
 
-| Parameter    | Type | Description                                       |
-| ------------ | ---- | ------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of numbers, e.g. `'[1.0, 2.0, 3.0]'` |
 
 **Returns:** BLOB -- the vector in 64-bit float binary format.
@@ -77,8 +77,8 @@ Creates a vector using the default format (32-bit float).
 vector(json_array)
 ```
 
-| Parameter    | Type | Description             |
-| ------------ | ---- | ----------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of numbers |
 
 **Returns:** BLOB -- the vector in default (32-bit float) binary format.
@@ -95,8 +95,8 @@ Creates an 8-bit quantized vector from a JSON array of numbers.
 vector8(json_array)
 ```
 
-| Parameter    | Type | Description                            |
-| ------------ | ---- | -------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of integer values (0-255) |
 
 **Returns:** BLOB -- the vector in 8-bit integer binary format.
@@ -115,8 +115,8 @@ Creates a 1-bit binary vector from a JSON array.
 vector1bit(json_array)
 ```
 
-| Parameter    | Type | Description               |
-| ------------ | ---- | ------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of 0s and 1s |
 
 **Returns:** BLOB -- the vector in 1-bit binary format.
@@ -135,8 +135,8 @@ Creates a 32-bit floating-point **sparse** vector from a JSON array. Only non-ze
 vector32_sparse(json_array)
 ```
 
-| Parameter    | Type | Description                                        |
-| ------------ | ---- | -------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `json_array` | TEXT | A JSON array of numbers, typically with many zeros |
 
 **Returns:** BLOB -- the vector in 32-bit float sparse binary format.
@@ -163,10 +163,10 @@ Computes the cosine distance between two vectors, defined as `1 - cosine_similar
 vector_distance_cos(v1, v2)
 ```
 
-| Parameter | Type | Description                                                     |
-| --------- | ---- | --------------------------------------------------------------- |
-| `v1`      | BLOB | First vector                                                    |
-| `v2`      | BLOB | Second vector (must have the same number of dimensions as `v1`) |
+| Parameter | Type | Description |
+| - | - | - |
+| `v1` | BLOB | First vector |
+| `v2` | BLOB | Second vector (must have the same number of dimensions as `v1`) |
 
 **Returns:** REAL -- the cosine distance between the two vectors.
 
@@ -192,10 +192,10 @@ Computes the Euclidean (L2) distance between two vectors. A result of 0 means th
 vector_distance_l2(v1, v2)
 ```
 
-| Parameter | Type | Description                                                     |
-| --------- | ---- | --------------------------------------------------------------- |
-| `v1`      | BLOB | First vector                                                    |
-| `v2`      | BLOB | Second vector (must have the same number of dimensions as `v1`) |
+| Parameter | Type | Description |
+| - | - | - |
+| `v1` | BLOB | First vector |
+| `v2` | BLOB | Second vector (must have the same number of dimensions as `v1`) |
 
 **Returns:** REAL -- the Euclidean distance between the two vectors.
 
@@ -221,10 +221,10 @@ Computes the negative dot product distance between two vectors. The result is th
 vector_distance_dot(v1, v2)
 ```
 
-| Parameter | Type | Description                                                     |
-| --------- | ---- | --------------------------------------------------------------- |
-| `v1`      | BLOB | First vector                                                    |
-| `v2`      | BLOB | Second vector (must have the same number of dimensions as `v1`) |
+| Parameter | Type | Description |
+| - | - | - |
+| `v1` | BLOB | First vector |
+| `v2` | BLOB | Second vector (must have the same number of dimensions as `v1`) |
 
 **Returns:** REAL -- the negative dot product of the two vectors.
 
@@ -244,10 +244,10 @@ Computes the Jaccard distance between two binary vectors. Best suited for use wi
 vector_distance_jaccard(v1, v2)
 ```
 
-| Parameter | Type | Description                                                     |
-| --------- | ---- | --------------------------------------------------------------- |
-| `v1`      | BLOB | First vector                                                    |
-| `v2`      | BLOB | Second vector (must have the same number of dimensions as `v1`) |
+| Parameter | Type | Description |
+| - | - | - |
+| `v1` | BLOB | First vector |
+| `v2` | BLOB | Second vector (must have the same number of dimensions as `v1`) |
 
 **Returns:** REAL -- the Jaccard distance between the two vectors.
 
@@ -263,8 +263,8 @@ Converts a vector BLOB back to a JSON text representation.
 vector_extract(vector_blob)
 ```
 
-| Parameter     | Type | Description                                                            |
-| ------------- | ---- | ---------------------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `vector_blob` | BLOB | A vector created by `vector32`, `vector64`, or another vector function |
 
 **Returns:** TEXT -- a JSON array string of the vector's components.
@@ -282,8 +282,8 @@ Concatenates two or more vectors into a single vector.
 vector_concat(v1, v2, ...)
 ```
 
-| Parameter     | Type | Description                                                            |
-| ------------- | ---- | ---------------------------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `v1, v2, ...` | BLOB | Two or more vectors to concatenate. All vectors must be the same type. |
 
 **Returns:** BLOB -- a new vector containing the dimensions of all input vectors in order.
@@ -306,11 +306,11 @@ Extracts a contiguous portion of a vector.
 vector_slice(vector_blob, start, end)
 ```
 
-| Parameter     | Type    | Description                         |
-| ------------- | ------- | ----------------------------------- |
-| `vector_blob` | BLOB    | The source vector                   |
-| `start`       | INTEGER | Start index (zero-based, inclusive) |
-| `end`         | INTEGER | End index (exclusive)               |
+| Parameter | Type | Description |
+| - | - | - |
+| `vector_blob` | BLOB | The source vector |
+| `start` | INTEGER | Start index (zero-based, inclusive) |
+| `end` | INTEGER | End index (exclusive) |
 
 **Returns:** BLOB -- a new vector containing dimensions from `start` to `end - 1`.
 

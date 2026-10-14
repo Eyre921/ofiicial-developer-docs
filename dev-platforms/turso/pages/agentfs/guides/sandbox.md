@@ -10,12 +10,12 @@ AgentFS lets you run AI coding agents like Claude Code, Codex, and OpenCode in a
 
 ## Supported Agents
 
-| Agent                                                   | Command                 |
-| ------------------------------------------------------- | ----------------------- |
-| [Claude Code](https://code.claude.com/docs/en/overview) | `agentfs run claude`    |
-| [Codex](https://openai.com/codex/)                      | `agentfs run codex`     |
-| [OpenCode](https://opencode.ai/)                        | `agentfs run opencode`  |
-| Any CLI tool                                            | `agentfs run <command>` |
+| Agent | Command |
+| - | - |
+| [Claude Code](https://code.claude.com/docs/en/overview) | `agentfs run claude` |
+| [Codex](https://openai.com/codex/) | `agentfs run codex` |
+| [OpenCode](https://opencode.ai/) | `agentfs run opencode` |
+| Any CLI tool | `agentfs run <command>` |
 
 ## Workflow
 

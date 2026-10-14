@@ -45,12 +45,12 @@ CREATE TYPE IF NOT EXISTS cents BASE integer ENCODE value * 100 DECODE value / 1
 
 Specifies the underlying SQLite storage class used to store values on disk. Every custom type must have a BASE clause.
 
-| Base Type | Description                                                |
-| --------- | ---------------------------------------------------------- |
+| Base Type | Description |
+| - | - |
 | `integer` | Signed integer, stored in 1-8 bytes depending on magnitude |
-| `real`    | 8-byte IEEE 754 floating-point number                      |
-| `text`    | UTF-8 encoded string                                       |
-| `blob`    | Raw binary data                                            |
+| `real` | 8-byte IEEE 754 floating-point number |
+| `text` | UTF-8 encoded string |
+| `blob` | Raw binary data |
 
 ```sql theme={null}
 CREATE TYPE cents BASE integer
@@ -108,9 +108,9 @@ The OPERATOR clause maps SQL operators to functions. This allows columns of a cu
 OPERATOR 'op' function-name
 ```
 
-| Component       | Description                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------------------- |
-| `'op'`          | The operator symbol as a string literal: `'+'`, `'-'`, `'*'`, `'/'`, `'<'`, `'='`, etc.                       |
+| Component | Description |
+| - | - |
+| `'op'` | The operator symbol as a string literal: `'+'`, `'-'`, `'*'`, `'/'`, `'<'`, `'='`, etc. |
 | `function-name` | The name of a SQL function to call when this operator is used. Omit to use the base type's native comparison. |
 
 When an operator is defined, expressions like `column + 1` are rewritten into `function_name(column, 1)`.
@@ -261,21 +261,21 @@ The added column follows the same STRICT type-checking rules as columns defined 
 
 Turso provides the following built-in custom types in STRICT tables:
 
-| Type           | Base    | Parameters           | Description                                                                                  |
-| -------------- | ------- | -------------------- | -------------------------------------------------------------------------------------------- |
-| `boolean`      | integer | --                   | Constrained to 0 or 1. Aliases: `bool`.                                                      |
-| `smallint`     | integer | --                   | Integer constrained to -32768 through 32767. Aliases: `int2`.                                |
-| `bigint`       | integer | --                   | Integer (no range constraint). Aliases: `int8`.                                              |
-| `varchar(N)`   | text    | `maxlen`             | Text with a maximum length of N characters.                                                  |
-| `date`         | text    | --                   | ISO 8601 date (YYYY-MM-DD), validated on insert.                                             |
-| `time`         | text    | --                   | ISO 8601 time (HH:MM:SS), validated on insert.                                               |
-| `timestamp`    | text    | --                   | ISO 8601 datetime, validated on insert.                                                      |
-| `numeric(P,S)` | blob    | `precision`, `scale` | Fixed-point decimal with P total digits and S decimal places. Supports arithmetic operators. |
-| `uuid`         | blob    | --                   | UUID stored as 16-byte blob, displayed as string. Default: `uuid4_str()`.                    |
-| `inet`         | text    | --                   | Validated IP address (IPv4 or IPv6).                                                         |
-| `bytea`        | blob    | --                   | Binary data (PostgreSQL-compatible alias).                                                   |
-| `json`         | text    | --                   | Validated JSON text.                                                                         |
-| `jsonb`        | blob    | --                   | JSON stored in binary format, returned as JSON text on read.                                 |
+| Type | Base | Parameters | Description |
+| - | - | - | - |
+| `boolean` | integer | -- | Constrained to 0 or 1. Aliases: `bool`. |
+| `smallint` | integer | -- | Integer constrained to -32768 through 32767. Aliases: `int2`. |
+| `bigint` | integer | -- | Integer (no range constraint). Aliases: `int8`. |
+| `varchar(N)` | text | `maxlen` | Text with a maximum length of N characters. |
+| `date` | text | -- | ISO 8601 date (YYYY-MM-DD), validated on insert. |
+| `time` | text | -- | ISO 8601 time (HH:MM:SS), validated on insert. |
+| `timestamp` | text | -- | ISO 8601 datetime, validated on insert. |
+| `numeric(P,S)` | blob | `precision`, `scale` | Fixed-point decimal with P total digits and S decimal places. Supports arithmetic operators. |
+| `uuid` | blob | -- | UUID stored as 16-byte blob, displayed as string. Default: `uuid4_str()`. |
+| `inet` | text | -- | Validated IP address (IPv4 or IPv6). |
+| `bytea` | blob | -- | Binary data (PostgreSQL-compatible alias). |
+| `json` | text | -- | Validated JSON text. |
+| `jsonb` | blob | -- | JSON stored in binary format, returned as JSON text on read. |
 
 <Info>
   The `uuid`, `json`, and `jsonb` types require their respective extensions to be compiled in. They are available by default in standard Turso builds.
