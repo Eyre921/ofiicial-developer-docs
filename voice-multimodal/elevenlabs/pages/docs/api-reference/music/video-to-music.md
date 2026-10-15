@@ -38,6 +38,9 @@ This endpoint expects a multipart form with multiple files.
 - `description` (string, optional) — Optional text description of the music you want. A maximum of 4100 characters is allowed.
 - `tags` (list of string, optional) — Optional list of style tags (e.g. ['upbeat', 'cinematic']). A maximum of 10 tags is allowed.
 - `model_id` (enum, optional) — The model to use for the generation.
+- `add_sfx` (boolean, optional) — When true, incorporate SFX cues from the video.
+- `separate_tracks` (boolean, optional) — When true, return a ZIP with separate music and SFX audio tracks instead of a single mixed file. Use this for more flexibility to layer the tracks.
+- `use_audio_as_reference` (boolean, optional) — When true, analyze the video's audio track and use its genres, BPM, instrumentation, mood, and arc as reference characteristics for music generation.
 - `sign_with_c2pa` (boolean, optional) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.
 
 ## Response
@@ -83,10 +86,13 @@ url = "https://api.elevenlabs.io/v1/music/video-to-music"
 
 files = { "videos": "open('string', 'rb')" }
 payload = {
+    "add_sfx": ,
     "description": ,
     "model_id": ,
+    "separate_tracks": ,
     "sign_with_c2pa": ,
-    "tags": 
+    "tags": ,
+    "use_audio_as_reference": 
 }
 
 response = requests.post(url, data=payload, files=files)
@@ -97,10 +103,13 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/music/video-to-music';
 const form = new FormData();
+form.append('add_sfx', '');
 form.append('description', '');
 form.append('model_id', '');
+form.append('separate_tracks', '');
 form.append('sign_with_c2pa', '');
 form.append('tags', '');
+form.append('use_audio_as_reference', '');
 form.append('videos', 'string');
 
 const options = {method: 'POST'};
@@ -130,7 +139,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/music/video-to-music"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"add_sfx\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"separate_tracks\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_audio_as_reference\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -155,7 +164,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"add_sfx\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"separate_tracks\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_audio_as_reference\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -166,7 +175,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/music/video-to-music")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"add_sfx\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"separate_tracks\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_audio_as_reference\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -194,13 +203,17 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/video-to-music");
 var request = new RestRequest(Method.POST);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"add_sfx\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"description\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"separate_tracks\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"sign_with_c2pa\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"use_audio_as_reference\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"videos\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 let parameters = [
+  [
+    "name": "add_sfx",
+    "value": 
+  ],
   [
     "name": "description",
     "value": 
@@ -210,11 +223,19 @@ let parameters = [
     "value": 
   ],
   [
+    "name": "separate_tracks",
+    "value": 
+  ],
+  [
     "name": "sign_with_c2pa",
     "value": 
   ],
   [
     "name": "tags",
+    "value": 
+  ],
+  [
+    "name": "use_audio_as_reference",
     "value": 
   ],
   [

@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 334 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 356 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -268,6 +268,17 @@
 - `docs/management/waitpoints/create` — [Create a waitpoint token](pages/docs/management/waitpoints/create.md) · [原文](https://trigger.dev/docs/management/waitpoints/create)
 - `docs/management/waitpoints/list` — [List waitpoint tokens](pages/docs/management/waitpoints/list.md) · [原文](https://trigger.dev/docs/management/waitpoints/list)
 - `docs/management/waitpoints/retrieve` — [Retrieve a waitpoint token](pages/docs/management/waitpoints/retrieve.md) · [原文](https://trigger.dev/docs/management/waitpoints/retrieve)
+- `docs/management/webhooks/cancel-waiter` — [Cancel a webhook waiter](pages/docs/management/webhooks/cancel-waiter.md) · [原文](https://trigger.dev/docs/management/webhooks/cancel-waiter)
+- `docs/management/webhooks/create-waiter` — [Create a webhook waiter](pages/docs/management/webhooks/create-waiter.md) · [原文](https://trigger.dev/docs/management/webhooks/create-waiter)
+- `docs/management/webhooks/disable-endpoint` — [Disable a webhook endpoint](pages/docs/management/webhooks/disable-endpoint.md) · [原文](https://trigger.dev/docs/management/webhooks/disable-endpoint)
+- `docs/management/webhooks/enable-endpoint` — [Enable a webhook endpoint](pages/docs/management/webhooks/enable-endpoint.md) · [原文](https://trigger.dev/docs/management/webhooks/enable-endpoint)
+- `docs/management/webhooks/generate-secret` — [Generate a webhook signing secret](pages/docs/management/webhooks/generate-secret.md) · [原文](https://trigger.dev/docs/management/webhooks/generate-secret)
+- `docs/management/webhooks/list-deliveries` — [List webhook deliveries](pages/docs/management/webhooks/list-deliveries.md) · [原文](https://trigger.dev/docs/management/webhooks/list-deliveries)
+- `docs/management/webhooks/list-endpoints` — [List webhook endpoints](pages/docs/management/webhooks/list-endpoints.md) · [原文](https://trigger.dev/docs/management/webhooks/list-endpoints)
+- `docs/management/webhooks/replay-delivery` — [Replay a webhook delivery](pages/docs/management/webhooks/replay-delivery.md) · [原文](https://trigger.dev/docs/management/webhooks/replay-delivery)
+- `docs/management/webhooks/retrieve-delivery` — [Retrieve a webhook delivery](pages/docs/management/webhooks/retrieve-delivery.md) · [原文](https://trigger.dev/docs/management/webhooks/retrieve-delivery)
+- `docs/management/webhooks/retrieve-endpoint` — [Retrieve a webhook endpoint](pages/docs/management/webhooks/retrieve-endpoint.md) · [原文](https://trigger.dev/docs/management/webhooks/retrieve-endpoint)
+- `docs/management/webhooks/set-secret` — [Set a webhook signing secret](pages/docs/management/webhooks/set-secret.md) · [原文](https://trigger.dev/docs/management/webhooks/set-secret)
 - `docs/manual-setup` — [Manual setup](pages/docs/manual-setup.md) · [原文](https://trigger.dev/docs/manual-setup)
 - `docs/mcp-agent-rules` — [Agent rules](pages/docs/mcp-agent-rules.md) · [原文](https://trigger.dev/docs/mcp-agent-rules)
 - `docs/mcp-introduction` — [MCP Introduction](pages/docs/mcp-introduction.md) · [原文](https://trigger.dev/docs/mcp-introduction)
@@ -338,4 +349,15 @@
 - `docs/wait-for` — [Wait for](pages/docs/wait-for.md) · [原文](https://trigger.dev/docs/wait-for)
 - `docs/wait-for-token` — [Wait for token](pages/docs/wait-for-token.md) · [原文](https://trigger.dev/docs/wait-for-token)
 - `docs/wait-until` — [Wait until](pages/docs/wait-until.md) · [原文](https://trigger.dev/docs/wait-until)
+- `docs/webhooks/channels` — [Channels (chat frontends)](pages/docs/webhooks/channels.md) · [原文](https://trigger.dev/docs/webhooks/channels)
+- `docs/webhooks/connect` — [Connect a webhook provider](pages/docs/webhooks/connect.md) · [原文](https://trigger.dev/docs/webhooks/connect)
+- `docs/webhooks/deliveries` — [Deliveries and endpoints](pages/docs/webhooks/deliveries.md) · [原文](https://trigger.dev/docs/webhooks/deliveries)
+- `docs/webhooks/filters` — [Filtering deliveries](pages/docs/webhooks/filters.md) · [原文](https://trigger.dev/docs/webhooks/filters)
+- `docs/webhooks/human-in-the-loop` — [Human-in-the-loop](pages/docs/webhooks/human-in-the-loop.md) · [原文](https://trigger.dev/docs/webhooks/human-in-the-loop)
+- `docs/webhooks/linear` — [Linear agents](pages/docs/webhooks/linear.md) · [原文](https://trigger.dev/docs/webhooks/linear)
+- `docs/webhooks/overview` — [Webhooks overview](pages/docs/webhooks/overview.md) · [原文](https://trigger.dev/docs/webhooks/overview)
+- `docs/webhooks/session-routing` — [Routing to a session](pages/docs/webhooks/session-routing.md) · [原文](https://trigger.dev/docs/webhooks/session-routing)
+- `docs/webhooks/slack` — [Slack agents](pages/docs/webhooks/slack.md) · [原文](https://trigger.dev/docs/webhooks/slack)
+- `docs/webhooks/sources` — [Sources and verification](pages/docs/webhooks/sources.md) · [原文](https://trigger.dev/docs/webhooks/sources)
+- `docs/webhooks/waiters` — [Waiting for a webhook](pages/docs/webhooks/waiters.md) · [原文](https://trigger.dev/docs/webhooks/waiters)
 - `docs/writing-tasks-introduction` — [Writing tasks: Overview](pages/docs/writing-tasks-introduction.md) · [原文](https://trigger.dev/docs/writing-tasks-introduction)

@@ -4,10 +4,28 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 14, 2026">
+  ### Return fewer page properties from search
+
+  [Search](/reference/post-search#return-fewer-page-properties) now accepts the `filter_properties` query parameter, so you can return only the page properties you need. It works like it does on data source queries, except that search skips names or IDs that don't exist on a page.
+
+  ### List page backlinks in Notion MCP
+
+  The new `notion-list-page-backlinks` tool lists the pages in the same workspace that link to or mention a page or database. It returns IDs, titles, and URLs, and only for pages the user can open. See [List page backlinks](/guides/mcp/mcp-supported-tools#list-page-backlinks).
+
+  ### Look up permission groups in Notion MCP
+
+  The new `notion-get-groups` tool lists the permission groups a user can see, with their IDs and names. People properties show a group only as `space_permission_group-<id>`, so assistants can now turn that ID into a name, or find a group by name before setting it. See [Get groups](/guides/mcp/mcp-supported-tools#get-groups).
+</Update>
+
 <Update label="October 13, 2026">
   ### Delete pages and databases in Notion MCP
 
   Two new Notion MCP tools move content to Trash after the user confirms. `notion-delete-pages` moves up to 20 pages, and `notion-delete-databases` moves up to 20 databases with their rows. Both need the update content capability. Locked pages and databases can't be moved to Trash. To undo a deletion, use `notion-restore-pages` or restore the item from Trash in Notion. See [Supported tools](/guides/mcp/mcp-supported-tools).
+
+  ### Edit, delete, and react to comments in Notion MCP
+
+  Four new Notion MCP tools change existing comments. `notion-update-comment` replaces the text of a comment the user wrote, and `notion-delete-comment` deletes one. `notion-set-discussion-resolved` resolves or reopens a discussion. `notion-set-comment-reaction` adds or removes the user's emoji reaction. The tools need a Business or Enterprise plan. Get comment and discussion IDs from `notion-get-comments` or `notion-create-comment`. See [Supported tools](/guides/mcp/mcp-supported-tools).
 </Update>
 
 <Update label="October 9, 2026">
@@ -20,6 +38,10 @@ path: page/changelog
   ### Admin API list endpoints accept `start_cursor`
 
   [List MCP client connections](/reference/admin/list-mcp-client-connections) and [List personal access tokens](/reference/admin/list-personal-access-tokens) now accept `start_cursor`, like other Admin API list endpoints. Before this change, these endpoints ignored `start_cursor` and returned the first page again. The `cursor` parameter still works but is deprecated. If you send both with different values, the request fails with a `400` error.
+
+  ### `notion-download-skill` returns markdown for Skills without files
+
+  When a Skill has no supporting files, `notion-download-skill` in Notion MCP now returns `markdown`, the full `SKILL.md` text with its frontmatter, instead of a `url` to an archive. Skills with supporting files still return a signed `url`. See [Use Notion Skills with MCP](/guides/mcp/notion-skills#download-a-complete-skill).
 </Update>
 
 <Update label="October 8, 2026">
@@ -60,6 +82,12 @@ path: page/changelog
   ### Create teamspace root pages with Notion MCP
 
   `notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/mcp-supported-tools#teamspace-root-pages) for details and an example.
+</Update>
+
+<Update label="October 5, 2026">
+  ### `notion-fetch` no longer signs file URLs by default
+
+  Page markdown from `notion-fetch` in Notion MCP now cites files in page blocks by stable `notion-file-block://` references, without signed URLs. Files in database properties are still signed inline. To get download URLs, call the new `notion-get-file-download-urls` tool with up to 25 references, or pass `include_file_urls: true` to `notion-fetch`. Keep the references, not the URLs, when you edit or copy page markdown. See [Supported tools](/guides/mcp/mcp-supported-tools).
 </Update>
 
 <Update label="October 2, 2026">

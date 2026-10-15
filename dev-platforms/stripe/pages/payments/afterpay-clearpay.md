@@ -38,8 +38,8 @@ Your account might be reviewed after activation to confirm eligibility. While Af
 
 Review the list of *merchant category codes* (A Merchant Category Code (MCC) is a four-digit number that classifies the type of goods or services a business offers) that are prohibited or restricted for Afterpay.
 
-- **Prohibited** MCCs are not supported by this payment method.
-- **Restricted** MCCs may be supported, but require additional information at account creation.
+- **Prohibited**: You can’t use this payment method with these MCCs.
+- **Restricted**: You might be able to use this payment method with these MCCs, but you must provide additional information when you create the account.
 
 | MCC | Description | Type |
 | --- | --- | --- |
@@ -68,19 +68,19 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 6011 | Financial Service | Prohibited |
 | 6012 | Financial Institutions | Prohibited |
 | 6051 | Cryptocurrency exchanges and wallets | Prohibited |
-| 6211 | Security Brokers/Dealers | Prohibited |
+| 6211 | Security Brokers and Dealers | Prohibited |
 | 6300 | Insurance Underwriting, Premiums | Prohibited |
-| 6540 | Non-FI, Stored Value Card Purchase/Load | Prohibited |
+| 6540 | Non-FI, Stored Value Card Purchase and Load | Prohibited |
 | 7011 | Hotels, Motels, and Resorts | Restricted |
 | 7012 | Timeshares | Restricted |
 | 7321 | Credit Reporting Agencies | Restricted |
 | 7394 | Equipment Rental | Restricted |
 | 7800 | Government-Owned Lotteries (US Region only) | Prohibited |
 | 7801 | Government Licensed On-line Casinos (On-Line Gambling) | Prohibited |
-| 7802 | Government-Licensed Horse/Dog Racing | Prohibited |
-| 7829 | Picture/Video Production | Restricted |
+| 7802 | Government-Licensed Horse and Dog Racing | Prohibited |
+| 7829 | Picture and Video Production | Restricted |
 | 7841 | Video Tape Rental Stores | Prohibited |
-| 7995 | Betting/Casino Gambling | Prohibited |
+| 7995 | Betting and Casino Gambling | Prohibited |
 | 8111 | Legal Services, Attorneys | Restricted |
 | 8398 | Charitable and Social Service Organizations - Fundraising | Restricted |
 | 8641 | Civic, Social, Fraternal Associations | Restricted |
@@ -94,7 +94,7 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 9405 | US Federal Govt Agencies or Departments | Restricted |
 | 9950 | Intra-Company Purchases | Prohibited |
 
-Stripe accounts in the following countries can accept Afterpay payments with local currency settlement.
+Stripe accounts in the following countries can accept Afterpay payments that settle in a supported currency.
 
 AMER: CA, US
 
@@ -112,11 +112,11 @@ APAC: AU, NZ
 
 ### Payment support
 Customer location: AU, CA, GB, NZ, US
-Presentment currency: AUD, NZD, GBP, USD, CAD
+Presentment currency: AUD, CAD, GBP, NZD, USD
 Geographic coverage: ✓ Domestic, ✓ Crossborder
-Transaction limits: Minimum amount: 1.00 USD
+Transaction limits: Minimum amount: 1.00 AUD
 
-Maximum amount: 4,000.00 USD
+Maximum amount: 4,000.00 AUD
 > Afterpay only supports domestic transactions in general availability, meaning you can only sell to customers in the same country as your business. Cross-border transactions are available in private preview. If you’re using [Dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md), Stripe handles a customer’s payment method eligibility automatically. If you use [payment_method_types](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-payment_method_types), you must either configure your integration so that it only presents Afterpay to eligible customers, or use dynamic payment methods.
 
 ### Payment options
@@ -189,25 +189,23 @@ Disputes:
   Submission window: 120 days
 ### Refunds 
 
-You have up to 120 days from the original payment to submit a refund using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API.](https://docs.stripe.com/api/refunds/create.md) This is the maximum the payment method allows-your return policy determines what you offer customers.
+Afterpay requires that you submit a refund within 120 days from the original payment using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API](https://docs.stripe.com/api/refunds/create.md). This is the maximum the payment method allows. Your return policy determines what you offer customers.
 
-Refunds for Afterpay payments are asynchronous and take up to 10 business days to complete. Afterpay refunds can’t be canceled. 
+Refunds for Afterpay payments are asynchronous and take up to 10 business days to complete. You can’t cancel Afterpay refunds.
 
 #### Refund process 
-
-
 
 Afterpay refunds are never processed as reversals. When you issue a refund, Afterpay cancels any remaining scheduled payments and returns any amounts the customer has already paid. The customer sees the update reflected in their Afterpay account.
 
 #### Tracking refunds 
 
-You can view refund status in the [Dashboard](https://dashboard.stripe.com/payments). Open the payment and click **View Details** on the refund entry, or [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field. Stripe also notifies you of the final refund status using the `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the status of the [Refund](https://docs.stripe.com/api/refunds/object.md) object transitions to `succeeded`. If a refund fails, the status transitions to `failed`, Stripe returns the amount to your Stripe balance, and you must arrange an alternative way to provide your customer with a refund.
+To check a refund’s status, open the payment in the [Dashboard](https://dashboard.stripe.com/payments) and click **View details** on the refund entry. You can also [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field.
+
+Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
 
 ### Disputes 
 
 Customers have up to 120 calendar days from the date of purchase to file Afterpay disputes.
-
-Afterpay payments can only be disputed once.
 
 #### Dispute process 
 
@@ -216,11 +214,11 @@ Afterpay payments can only be disputed once.
 
 #### Dispute notifications 
 
-When a Afterpay dispute is opened, Stripe notifies you through:
+When Afterpay disputes are opened, Stripe notifies you through:
 
 - Email
 - The [Stripe Dashboard](https://dashboard.stripe.com/disputes)
-- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) webhook event
+- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) event
 
 The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_due_by` field of the Dispute object.
 
@@ -230,7 +228,7 @@ You have 14 calendar days from dispute creation to submit evidence.
 
 Stripe requests that you upload compelling evidence that you fulfilled the purchase order using the Stripe Dashboard. This evidence can include: a received return confirmation, the tracking ID, the shipping date, a record of purchase for intangible goods (such as an IP address or email receipt), or a record of purchase for services or physical goods (such as a phone number or proof of receipt).
 
-You can submit evidence and manage Afterpay disputes in the [Dashboard](https://dashboard.stripe.com/disputes) or programmatically using the [Disputes API](https://docs.stripe.com/api/disputes/update.md). In the Dashboard, go to the **Needs Response** tab, click the disputed payment, then click **Counter dispute** to submit your evidence, or **Accept dispute** to accept the loss. To submit evidence through the API, upload supporting files using the [Files API](https://docs.stripe.com/api/files/create.md) and include the returned file IDs when you update the [Dispute Evidence object](https://docs.stripe.com/api/disputes/update.md).
+You can submit evidence and manage Afterpay disputes in the [Dashboard](https://dashboard.stripe.com/disputes) or programmatically using the [Disputes API](https://docs.stripe.com/api/disputes/update.md). In the Dashboard, go to the **Needs response** tab, click the disputed payment, then click **Counter dispute** to submit your evidence, or **Accept dispute** to accept the loss. To submit evidence through the API, upload supporting files using the [Files API](https://docs.stripe.com/api/files/create.md) and include the returned file IDs when you update the [Dispute Evidence object](https://docs.stripe.com/api/disputes/update.md).
 
 #### Dispute outcomes 
 
@@ -249,6 +247,7 @@ Checkout UIs:
   ✓ Embedded form
   ✓ Payment Element
   ✗ Express Checkout Element
+  ✓ Payment Method Messaging Element
   ✓ In-app payments
 
 Products:
@@ -266,6 +265,7 @@ APIs:
   ✓ Payment Intents
   ✗ Payment Intents with setup_future_usage
   ✗ Setup Intents
+  ✗ Off-session payments
 ### Add Afterpay branding to your website 
 
 Let your customers know you accept payments with Afterpay by including the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your product and cart pages.
@@ -300,7 +300,7 @@ After the payment completes, expand `latest_charge` on the PaymentIntent to retr
 
 ## Enable Afterpay 
 
-If you use our front-end products, you can enable Afterpay directly from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe then automatically determines the most relevant payment methods to display to your customers.
+If you use Stripe front-end products, enable Afterpay in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe automatically determines which payment methods are most relevant to each customer.
 
-If your integration requires manually listing payment methods, learn how to [manually configure Afterpay as a payment](https://docs.stripe.com/payments/afterpay-clearpay/accept-a-payment.md).
+If your integration requires manually listing payment methods, you can [configure Afterpay as an accepted payment method](https://docs.stripe.com/payments/afterpay-clearpay/accept-a-payment.md).
 

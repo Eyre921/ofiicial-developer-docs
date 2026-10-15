@@ -10,6 +10,8 @@ Search works best when the request is as specific as possible. We recommend filt
 
 To speed up results, try reducing the `page_size`. The default `page_size` is 100.
 
+If you only need a few properties from each page, such as its title, use the `filter_properties` query parameter. It makes each page result smaller and faster to build. See [Return fewer page properties](/reference/post-search#return-fewer-page-properties).
+
 Our implementation of the search endpoint includes an optimization where any pages or databases that are directly shared with a connection are guaranteed to be returned. If your use case requires pages or databases to immediately be available in search without an indexing delay, we recommend that you share relevant pages/databases with your connection directly.
 
 ## Limitations

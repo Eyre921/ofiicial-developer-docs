@@ -1,5 +1,5 @@
 ---
-title: "Upsert text"
+title: "Upsert text (legacy Records API)"
 source: https://docs.pinecone.io/reference/api/2026-07/data-plane/upsert_records
 path: reference/api/2026-07/data-plane/upsert_records
 ---
@@ -7,7 +7,9 @@ path: reference/api/2026-07/data-plane/upsert_records
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /records/namespaces/{namespace}/upsert
 Upsert text into a namespace. Pinecone converts the text to vectors automatically using the hosted embedding model associated with the index.
 
-Upserting text is supported only for [indexes with integrated embedding](https://docs.pinecone.io/guides/index-data/create-an-index#embedding-models); for any other index the request is rejected with `400`. It is not available on BYOC indexes.
+This operation is part of the legacy Records API, which legacy integrated indexes require. For new work, create a document index with a `string` field that uses integrated embedding (`embed` or `sparse_embed`), and write text with the Documents API's `upsert_documents` operation.
+
+Upserting text is supported only for [legacy integrated indexes](https://docs.pinecone.io/guides/index-data/create-an-index#embedding-models); for any other index the request is rejected with `400`. It is not available on BYOC indexes.
 
 A request can contain at most 1000 records. Each record is identified by `_id`. The service also accepts `id` as an alias, which this schema does not model; a record must not carry both.
 

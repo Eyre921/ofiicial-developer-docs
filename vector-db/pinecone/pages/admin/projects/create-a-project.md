@@ -6,17 +6,15 @@ path: admin/projects/create-a-project
 
 Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
 
-This page shows you how to create a project.
-
-If you are an [organization owner or organization manager](/admin/organizations/understanding-organizations#organization-roles), you can create a project in your organization:
+If you're an [organization owner or organization manager](/admin/organizations/understanding-organizations#organization-roles), you can create a project in your organization.
 
 <Tabs>
   <Tab title="Pinecone console">
     1. In the Pinecone console, go to [**your profile > Organization settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
 
-    2. Click **+ Create Project**.
+    2. Click **+ Create project**.
 
-    3. Enter a **Name**.
+    3. Enter a project name in **Give your project a name**.
 
        <Note>
          A project name can contain up to 512 characters. For more information, see [Object identifiers](/reference/api/database-limits/identifier-limits).
@@ -24,20 +22,20 @@ If you are an [organization owner or organization manager](/admin/organizations/
 
     4. (Optional) Tags are key-value pairs that you can use to categorize and identify the project. To add a tag, click **+ Add tag** and enter a tag key and value.
 
-    5. (Optional) Select **Encrypt with Customer Managed Encryption Key**. For more information, see [Configure CMEK](/guides/production/configure-cmek).
+    5. (Optional, Enterprise plan) Turn on **Enforce customer managed encryption (CMEK)**. For more information, see [Configure CMEK](/guides/production/configure-cmek).
 
     6. Click **Create project**.
 
        To create an index from a sample movies dataset, go to **Database > Quickstart** and click **Load from dataset**.
 
     <Note>
-      The number of projects per organization varies by plan—see [Projects per organization](/reference/api/database-limits/object-limits). To create additional projects, [upgrade your plan](/admin/billing/upgrade-billing-plan).
+      The number of projects per organization varies by plan. For details, see [Projects per organization](/reference/api/database-limits/object-limits). To create additional projects, [upgrade your plan](/admin/billing/upgrade-billing-plan).
     </Note>
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>

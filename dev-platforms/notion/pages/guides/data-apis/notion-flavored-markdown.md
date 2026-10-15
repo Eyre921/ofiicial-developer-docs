@@ -25,6 +25,7 @@ Inline tags:
 - <span color="..." discussion-urls="url,url">text</span>; nest to combine: <span color="orange"><u>word</u></span>.
 - Use <mention url="...">Label</mention> or <mention url="..." /> for mentioning Notion entities user://..., HTTPS page URLs, collection://..., agent://.... Database mentions use type="database" to distinguish them from page mentions. Regular links use [text](url).
 - <date start="YYYY-MM-DD" end="YYYY-MM-DD" start-time="HH:mm" end-time="HH:mm" time-zone="IANA_TZ" />
+- <link-preview url="..." source="..." /> is a read-only marker. Preserve it when editing existing content; never add one to create a link preview.
 
 Block tags: always use the tag form when a block needs attributes, children, or edge whitespace — <quote> not >, <li> not -. Most accept color="gray|brown|orange|yellow|green|blue|purple|pink|red" (text) or _bg forms like "blue_bg" (background). Color a whole block or cell with its color attribute; use <span color> only for words inside text.
 

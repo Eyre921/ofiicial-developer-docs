@@ -423,7 +423,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc490030-828a-4756-899a-063c3c3d3600/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -615,7 +615,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d59e6358-4c08-48b8-a906-8a054bddb7ac/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r">
   Open a public LangSmith run for this example.
 </Card>
 

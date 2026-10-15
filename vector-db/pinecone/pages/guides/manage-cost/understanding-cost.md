@@ -6,18 +6,13 @@ path: guides/manage-cost/understanding-cost
 
 Understand how Pinecone bills read units, write units, storage, egress, and embedding for full-text search, semantic search, and hybrid search.
 
-Pinecone serverless is usage-based, so you pay for the data you store and the operations you run. Many small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/).
+Pinecone serverless is usage-based, so you pay for the data you store and the operations you run. Four metrics meter index usage: [read units](#read-units), [write units](#write-units), [storage](#storage), and [egress](#egress). [Imports](#imports), [backups](#backups-and-restores), [embedding](#embedding), and [reranking](#reranking) are billed on their own. Many small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/).
+
+[Full-text search](/guides/search/full-text-search) on a document index, semantic search on a vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
 
 <Tip>
-  This page explains how usage is measured. For current rates, see [Pricing](https://www.pinecone.io/pricing/).
+  This page explains how usage is measured. For current rates, see [Pricing](https://www.pinecone.io/pricing/). For ways to spend less, see [Save on Pinecone costs](/guides/manage-cost/save-on-costs).
 </Tip>
-
-## Ways to reduce cost
-
-* Build and test on the Starter plan, which is free and has no monthly minimum.
-* Buy prepaid credits or commit to annual usage for discounted rates. See [Prepaid credits](#prepaid-credits).
-* Split data into namespaces so each query scans less data, and keep read responses small. See [Save on costs](/guides/optimize/save-on-costs).
-* On the Standard or Enterprise plan, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) about volume discounts and ways to lower your costs.
 
 ## Minimum usage
 
@@ -68,15 +63,7 @@ Customers on Standard and Enterprise pay-as-you-go plans can purchase prepaid cr
   Purchasing prepaid credits isn't available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
 </Note>
 
-## Serverless indexes
-
-With serverless indexes, you pay for the amount of data stored and operations performed, based on four usage metrics: [read units](#read-units), [write units](#write-units), [storage](#storage), and [egress](#egress).
-
-[Full-text search](/guides/search/full-text-search) on a document index, semantic search on a vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
-
-For the latest serverless pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
-
-### Read units
+## Read units
 
 A read unit (RU) measures the compute, I/O, and network resources a read request uses. Pinecone bills these read requests in RUs:
 
@@ -86,14 +73,14 @@ A read unit (RU) measures the compute, I/O, and network resources a read request
 * [Full-text search](#full-text-search)
 
 <Tip>
-  Read responses include the number of RUs used, which you can use to [monitor read costs](/guides/manage-cost/monitor-usage-and-costs#read-units).
+  Read responses include the number of RUs used, which you can use to [monitor read costs](/guides/manage-cost/check-usage-per-request#read-units).
 </Tip>
 
 <Note>
   Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 </Note>
 
-#### Query
+### Query
 
 A query uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per query.
 
@@ -111,7 +98,7 @@ To learn how to calculate your namespace size, see [Storage](#storage).
   Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, don't affect query cost. Only the size of the namespace does.
 </Note>
 
-#### Fetch
+### Fetch
 
 A fetch request uses 1 RU for every 10 records fetched, for example:
 
@@ -127,17 +114,17 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
   [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
 </Note>
 
-#### List
+### List
 
 A list request uses 1 RU and returns up to 100 IDs.
 
-#### Full-text search
+### Full-text search
 
 Searching a [document index](/guides/search/full-text-search) uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per search, the same as a [query](#query). This holds whether the request ranks by keyword relevance or by vector similarity.
 
 A document index can declare `string` fields with `full_text_search` enabled and a `dense_vector` field in one schema, and each request ranks by one of them. So a [hybrid search](/guides/search/hybrid-search) that narrows candidates with a [text-match filter](/guides/search/filter-by-metadata#text-match-filters) and then ranks what remains with a `dense_vector` search is billed as one read request. Running a separate keyword search and dense search and merging the results client-side is billed as two.
 
-### Write units
+## Write units
 
 A write unit (WU) measures the storage and compute resources a write request uses. Pinecone bills these write requests in WUs:
 
@@ -149,7 +136,7 @@ A write unit (WU) measures the storage and compute resources a write request use
   Writes to a [document index](/guides/index-data/adopt-the-documents-api) use the same cost models as writes to a vector index. The formulas below apply to both.
 </Note>
 
-#### Upsert
+### Upsert
 
 An upsert request uses 1 WU for each 1 KB of the request, with a minimum of 5 WUs per request. When an upsert modifies an existing record, the request also uses 1 WU for each 1 KB of the existing record.
 
@@ -163,7 +150,7 @@ The following table shows the WUs used by upsert requests at different batch siz
 | 100 | 768 | 500 bytes | 3.57 KB | 357 |
 | 1,000 | 1536 | 1,000 bytes | 7.14 KB | 7,140 |
 
-#### Update
+### Update
 
 An update request uses 1 WU for each 1 KB of the new and existing record, with a minimum of 5 WUs per request.
 
@@ -181,7 +168,7 @@ The following table shows the WUs used by an update at different record sizes:
   [Updating records by metadata](/guides/manage-data/update-data#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
 </Note>
 
-#### Delete
+### Delete
 
 A delete request uses 1 WU for each 1 KB of records deleted, with a minimum of 5 WUs per request.
 
@@ -203,9 +190,9 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
   [Deleting records by metadata](/guides/manage-data/delete-data#delete-records-by-metadata) uses the same cost model as deleting by ID: 1 WU for each 1 KB of records deleted.
 </Note>
 
-### Storage
+## Storage
 
-Storage is billed monthly per gigabyte (GB) of index size. An index's size is the total size of its records or documents across all namespaces. For the latest storage pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+Storage is billed monthly per gigabyte (GB) of index size. An index's size is the total size of its records or documents across all namespaces.
 
 A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
@@ -342,7 +329,7 @@ A document in a document index can include any combination of `string` fields wi
   </Tabs>
 </div>
 
-### Egress
+## Egress
 
 Egress measures the data Pinecone returns to you on serverless reads. Egress is measured in GB of total response bytes returned by an in-scope read request, proportional to the record or document data returned (IDs, scores, vector values, text fields, and metadata).
 
@@ -362,7 +349,7 @@ Egress applies to indexes that use [dedicated read nodes](/guides/index-data/ded
   Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.
 </Note>
 
-#### Egress allowance
+### Egress allowance
 
 Each plan includes a monthly egress allowance, which resets at the start of each billing period:
 
@@ -375,8 +362,8 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 
 What happens past the allowance depends on your plan:
 
-* **Usage-based plans (Standard, Enterprise):** Egress beyond the allowance is billed at the per-GB overage rate and reads keep serving. For the latest egress rate, see [Pricing](https://www.pinecone.io/pricing/).
-* **Flat-fee plans (Starter, Builder):** In-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
+* **Usage-based plans (Standard, Enterprise)**: Egress beyond the allowance is billed at the per-GB overage rate and reads keep serving.
+* **Flat-fee plans (Starter, Builder)**: In-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
 
 ## Imports
 
@@ -384,35 +371,31 @@ What happens past the allowance depends on your plan:
 
 If the import fails (e.g., after it reads a vector of the wrong dimension in an import with `on_error="abort"`), you're still charged for the records read. If the import fails because of an internal system error, you aren't charged, and the import returns the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
-For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
-
 ## Backups and restores
 
 A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup are both billed by the size of the index.
 
 [Restoring a backup into a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region) also incurs a cross-region transfer fee, charged per GB on top of the restore cost. The rate depends on the cloud provider and the backup's region. Restoring into the same region as the backup doesn't incur this fee. On your invoice, the fee appears as **Serverless Cross-Region Transfer**.
 
-For the latest backup, restore, and cross-region transfer pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
-
 ## Embedding
 
-Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models). You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
+Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
 
 Embedding is billed by the number of [tokens](https://www.pinecone.io/learn/tokenization/) in a request. The more words in your passage or query, the more tokens it generates.
 
 For example, if you generate embeddings for the query, "What is the maximum diameter of a red pine?", Pinecone Inference generates 10 tokens, then converts them into an embedding. If your plan's rate is \$0.08 per million tokens, this call costs \$0.0000008.
 
-To learn more about tokenization, see [Choosing an embedding model](https://www.pinecone.io/learn/series/rag/embedding-models-rundown/). For the latest embed pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+To learn more about tokenization, see [Choosing an embedding model](https://www.pinecone.io/learn/series/rag/embedding-models-rundown/).
 
 <Tip>
-  Embedding requests return the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
+  Embedding requests return the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/check-usage-per-request#embedding-tokens).
 </Tip>
 
 ## Reranking
 
-Pinecone hosts several [reranking models](/guides/search/rerank-results#reranking-models). You can use a hosted model to rerank results as an integrated part of a query, or you can use a hosted model to rerank results as a standalone operation.
+Pinecone hosts several [reranking models](/guides/search/rerank-results#reranking-models). You can rerank results as an integrated part of a query, or as a standalone operation.
 
-Reranking is billed by the number of requests to the reranking model. For the latest rerank pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+Reranking is billed by the number of requests to the reranking model.
 
 ## Assistant
 
@@ -442,9 +425,7 @@ To enable the HIPAA compliance add-on, [submit a HIPAA request](https://www.pine
 
 ## See also
 
-* [Save on Pinecone costs](/guides/optimize/save-on-costs)
-* [Monitor usage](/guides/manage-cost/monitor-usage-and-costs)
-* [Full-text search](/guides/search/full-text-search)
-* [Hybrid search](/guides/search/hybrid-search)
-* [Configure audit logs](/admin/security/configure-audit-logs)
+* [Save on Pinecone costs](/guides/manage-cost/save-on-costs)
+* [Check usage per request](/guides/manage-cost/check-usage-per-request)
+* [Download a usage report](/admin/billing/download-usage-report)
 * [Pricing](https://www.pinecone.io/pricing/)

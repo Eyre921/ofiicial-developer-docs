@@ -5,15 +5,9 @@ path: reference/api/2026-07/data-plane/repoint_namespace_alias
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml patch /namespace-aliases/{alias_name}
-Update the namespace an alias resolves to. The change is atomic: the target
-is validated in the same transaction that rewrites the alias, and on
-failure the alias keeps its current target.
+Update the namespace an alias resolves to. The change is atomic: the target is validated in the same transaction that rewrites the alias, and on failure the alias keeps its current target.
 
-The call returns once the new target is live on every reader, which takes
-about a second; size client timeouts accordingly. Reads through the alias
-that start after the response are served from the new namespace, so no
-polling is needed. Repointing is safe to retry; `updated_at` advances on
-every attempt.
+The call returns once the new target is live on every reader, which takes about a second; size client timeouts accordingly. Reads through the alias that start after the response are served from the new namespace, so no polling is needed. Repointing is safe to retry; `updated_at` advances on every attempt.
 
 For guidance and examples, see [Manage namespace aliases](https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-aliases).
 

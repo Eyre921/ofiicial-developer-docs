@@ -6,9 +6,10 @@ path: reference/api/2026-07/assistant/list_operations
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml GET /operations/{assistant_name}
 List all operations for an assistant. Returns operations that are in progress, as well as recently completed or failed operations.
-Both successful and failed operations are retained for 30 days after completion.
-Use the `operation_type` and `status` query parameters to filter results.
 
+Both successful and failed operations are retained for 30 days after completion.
+
+Use the `operation_type` and `status` query parameters to filter results.
 
 <RequestExample>
   ```bash curl theme={null}

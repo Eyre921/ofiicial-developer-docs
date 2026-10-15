@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/nexus/harnesses
 path: nexus/harnesses
 ---
 
-Connect Claude Code, the Claude Agent SDK, Claude Desktop, OpenCode, Codex, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks, with FireConnect or by editing the harness settings yourself.
+Connect Claude Code, the Claude Agent SDK, Claude Desktop, Codex, the ChatGPT desktop app, OpenCode, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks, with FireConnect or by editing the harness settings yourself.
 
 Most harnesses below work two ways. **FireConnect** writes the settings for you and restores them with `off`. **Manual setup** shows the same settings so you can apply them yourself, with no extra tool installed. Claude Desktop is FireConnect only.
 
@@ -17,7 +17,11 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
     macOS only
   </Card>
 
-  <Card title="Codex CLI, Codex app, and ChatGPT" icon="square-terminal" href="#codex">
+  <Card title="Codex" icon="square-terminal" href="#codex">
+    Responses API
+  </Card>
+
+  <Card title="ChatGPT desktop app" icon="sparkles" href="#chatgpt-desktop-app">
     Responses API
   </Card>
 
@@ -61,7 +65,7 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
     ```
 
     * **Connect:** `fireconnect <harness>`. Add `--model <id>` to choose a model or router. Browse IDs with `fireconnect model list`.
-    * **Quit first:** fully quit Cursor IDE, VS Code, and the Copilot App before connecting or running `off`. Restart other harnesses, including Claude Desktop, after connecting.
+    * **Quit first:** fully quit Cursor IDE, VS Code, the Copilot App, and the ChatGPT desktop app before connecting or running `off`. Restart other harnesses, including Claude Desktop, after connecting.
     * **Check:** `fireconnect <harness> status` is read-only and safe while the app is open.
     * **Undo:** `fireconnect <harness> off` restores the settings FireConnect saved under `~/.fireconnect/`.
   </Tab>
@@ -80,7 +84,7 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
     | Anthropic Messages | `https://api.fireworks.ai/inference` |
     | OpenAI Chat Completions or Responses | `https://api.fireworks.ai/inference/v1` |
 
-    Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, or a router from [FireRouter](/nexus/firerouter#supported-models), such as `firerouter/opus`. Back up a settings file before you edit it.
+    Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, or [FireRouter](/nexus/firerouter) as `firerouter`. Back up a settings file before you edit it.
   </Tab>
 </Tabs>
 
@@ -146,12 +150,12 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
       }
       ```
 
-      * The Fireworks key goes in a custom header, so your Claude login stays available for routes with Claude models.
+      * The Fireworks key goes in a custom header, so your Claude login stays available for Claude turns.
       * `[1m]` marks 1M-context models.
       * A pinned tier adds `ANTHROPIC_DEFAULT_<TIER>_MODEL` to `env`, such as `ANTHROPIC_DEFAULT_SONNET_MODEL`. A pinned subagent adds `CLAUDE_CODE_SUBAGENT_MODEL`.
       * The status line shows the estimated session cost. It is added only if you do not already have one.
       * FireConnect also turns off Claude Code telemetry and nonessential traffic, and enables MCP tool search.
-      * `~/.claude.json` records approval for the FireConnect credential so Claude Code does not prompt for it.
+      * `~/.claude.json`: if you export `ANTHROPIC_API_KEY`, FireConnect pre-approves it so Claude Code doesn't prompt. FireConnect also removes its retired `fireworks-websearch` server here.
     </Accordion>
   </Tab>
 
@@ -185,7 +189,7 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
       </Step>
 
       <Step title="Optional: use FireRouter" icon="shuffle">
-        Set `"model": "firerouter/opus"`. For Claude models in the route, connect an Anthropic [Provider Key](/nexus/provider-keys), or add `x-anthropic-api-key` to `ANTHROPIC_CUSTOM_HEADERS`.
+        Set `"model": "firerouter"`. For Claude turns, connect an Anthropic [Provider Key](/nexus/provider-keys), or add `x-anthropic-api-key` to `ANTHROPIC_CUSTOM_HEADERS`.
       </Step>
     </Steps>
 
@@ -195,10 +199,9 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
 
 <AccordionGroup>
   <Accordion title="Routers and credentials">
-    * Bare `firerouter` and routes with Claude models can use your Claude login when you connect with FireConnect.
-    * Optional: save an OpenAI key once with `fireconnect configure --openai-api-key sk-...` so FireRouter can also reach GPT models. FireConnect sends it on bare `firerouter` and on routes that name a GPT model ID, such as `firerouter/gpt-5.6-sol`.
-    * Family routes such as `firerouter/sol` and `firerouter/astra` don't use the saved key. Connect an OpenAI [Provider Key](/nexus/provider-keys), or send `x-openai-api-key` with manual setup.
-    * See [Routing Preferences](/nexus/routing-preferences) for `--routing-preference` and [Harness Compatibility](/nexus/harness-compatibility) for cross-harness support.
+    * `firerouter` can use your Claude login for Claude turns when you connect with FireConnect.
+    * Optional: save an OpenAI key once with `fireconnect configure --openai-api-key sk-...` so `firerouter` can also reach GPT models. See [how `firerouter` picks its closed model](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model).
+    * See [Harness Compatibility](/nexus/harness-compatibility) for cross-harness support.
   </Accordion>
 
   <Accordion title="Usage and cost">
@@ -219,7 +222,7 @@ Most harnesses below work two ways. **FireConnect** writes the settings for you 
 The Claude Agent SDK can reuse the Claude Code settings above. Connect Claude Code first, with FireConnect or manually:
 
 ```bash wrap theme={null}
-fireconnect claude --model firerouter/opus
+fireconnect claude --model firerouter
 ```
 
 In the SDK query options, include `settingSources: ["user"]`. The SDK then reads the Fireworks endpoint, model, and credentials from `~/.claude/settings.json`.
@@ -249,7 +252,7 @@ FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It
 
     <Accordion title="See what FireConnect writes">
       * `on` writes a third-party inference provider profile, Claude Desktop's own supported mechanism. The profile points at a small local gateway that FireConnect runs as a launchd service. It starts at login and restarts after a crash.
-      * `on` does not copy custom skills or plugins into third-party mode. Conversations stay in the mode they were made in.
+      * `on` copies your custom skills and plugins into third-party mode. It never overwrites a file that is already there. Conversations stay in the mode they were made in.
       * Connector OAuth clients you register are saved in `~/.fireconnect/claude-desktop/oauth-clients.json`, readable only by you. They survive `off` and `on`.
       * `off` restores your previous provider profile and the device settings FireConnect changed, then removes the local gateway service. Nothing of yours is deleted.
     </Accordion>
@@ -260,7 +263,7 @@ FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It
 
 * Connectors move automatically with `on`. Sign in to each one once the first time you use it.
 * Connector OAuth clients you register are saved and survive `off` and `on`.
-* Conversations, custom skills, and plugins stay where they are. Third-party mode does not show your claude.ai sessions, and your subscription does not show sessions you start while connected. Nothing is deleted.
+* `on` copies your custom skills and plugins. Conversations stay where they are. Third-party mode does not show your claude.ai sessions, and your subscription does not show sessions you start while connected. Nothing is deleted.
 * MCPs that need an OAuth client ID and secret do not move. Create your own client, such as a **Desktop app** client in Google Cloud for the Google-hosted connectors. If you need one of these connectors, [reach out to the team](https://fireworks.ai/contact).
 
 Run `fireconnect claude-desktop mcp sync` when you add a connector later and want it in third-party mode too.
@@ -273,7 +276,8 @@ Run `fireconnect claude-desktop mcp sync` when you add a connector later and wan
   <Accordion title="Connectors">
     Claude Desktop's third-party mode hides the in-app connector browser. Manage connectors with FireConnect instead:
 
-    * `on` imports the connectors you already use, from Desktop session history, your previous Desktop config, and your claude.ai organization when the Claude Code CLI is installed and signed in.
+    * `on` imports the connectors you already use, from Desktop session history and your previous Desktop config.
+    * `mcp sync` also adds connectors from your claude.ai organization when the Claude Code CLI is installed and signed in, plus any you added later.
     * `fireconnect claude-desktop mcp add <name> <url>` and `mcp remove <name>` manage entries by hand. Removals stick across syncs.
     * Each connector asks you to sign in once the first time you use it after `on`.
 
@@ -299,12 +303,7 @@ Run `fireconnect claude-desktop mcp sync` when you add a connector later and wan
 
 <Badge>OpenAI Responses</Badge> <Badge>FireRouter</Badge> <Badge>Native web search</Badge>
 
-The Codex CLI, the Codex app, and the ChatGPT desktop app share one config in `~/.codex/config.toml`, so one setup covers all three. **Quit the Codex app and the ChatGPT app** before you change it so their model lists refresh.
-
-<Warning>
-  MCP servers and plugins in the ChatGPT desktop app don't work reliably while
-  FireConnect is on. See [Harness Compatibility](/nexus/harness-compatibility#mcp).
-</Warning>
+The Codex CLI reads `~/.codex/config.toml`. The [ChatGPT desktop app](#chatgpt-desktop-app) reads the same file, so connecting one connects the other. **Close open Codex sessions and quit the ChatGPT desktop app** before connecting or running `off`. In a terminal, FireConnect waits for them to close; in a script, it exits with an error. `--force` writes anyway, which isn't recommended.
 
 <Tabs>
   <Tab title="FireConnect" icon="bolt">
@@ -313,11 +312,17 @@ The Codex CLI, the Codex app, and the ChatGPT desktop app share one config in `~
     fireconnect codex status
     ```
 
-    The default model is `auto`. To add FireRouter to the Codex and ChatGPT model pickers, run `fireconnect codex --model firerouter`. Exit Codex and run `codex resume <id>`, or start a new session.
+    Start a new Codex session. Codex opens on FireRouter (`firerouter`). Run `fireconnect codex` again at any time. It keeps the model you're on.
 
     <Frame>
-      <img alt="Codex CLI model picker showing Auto selected, FireRouter, and Fireworks DeepSeek, GLM, and Kimi models" />
+      <img alt="Codex CLI Select Model and Effort picker with FireRouter (current) selected, described as routing each user turn between open models and the closed models you have access to, followed by GPT-6.1-Sol, GPT-6-Astra, GPT-6-Sol, GPT-6-Luna, and older GPT models" />
     </Frame>
+
+    `/model` lists FireRouter first, then Codex's GPT models, then Fireworks models.
+
+    **Codex keeps its own sign-in.** Pick ChatGPT, a device code, or an API key when it asks, or run `codex login`. Your Fireworks key pays for Fireworks models. Your Codex sign-in pays for GPT models; open **Who pays for GPT turns** below for the details.
+
+    **Upgrading from an earlier FireConnect?** Run `fireconnect upgrade`, then restart Codex. Your model stays. If FireConnect 0.9.9 set up the FireRouter row as `firerouter/astra`, it becomes `firerouter`. Run `codex login` if Codex asks.
 
     <Tree>
       <Tree.Folder name="~/.codex">
@@ -331,17 +336,19 @@ The Codex CLI, the Codex app, and the ChatGPT desktop app share one config in `~
       ```toml ~/.codex/config.toml theme={null}
       model_provider = "fireworks-ai"
       model_catalog_json = "~/.codex/fireworks-model-catalog.json"
-      model = "auto"
+      model = "firerouter"
 
       [model_providers.fireworks-ai]
       name = "Fireworks"
       base_url = "https://api.fireworks.ai/inference/v1"
       wire_api = "responses"
-      experimental_bearer_token = "fw_..."
-      requires_openai_auth = false
+      requires_openai_auth = true
+      http_headers = { "X-Title" = "Codex", "HTTP-Referer" = "fireconnect/v<version>", "x-fireworks-api-key" = "fw_..." }
       ```
 
-      FireConnect keeps your other TOML settings, saves the key with file mode `0600`, and writes a model catalog so Codex knows each model's context window and capabilities. The catalog also makes Codex auto-review use the model you picked, so approvals are reviewed on Fireworks. Connected before FireConnect 0.9.8? Run `fireconnect codex` once, or auto-review keeps denying every approval.
+      `requires_openai_auth = true` makes Codex send its own sign-in, and the Fireworks key travels in `x-fireworks-api-key`. FireConnect writes the same provider table for every model and sends no Anthropic or OpenAI key.
+
+      FireConnect keeps your other TOML settings, including `[mcp_servers]`, saves the file with mode `0600`, and writes a model catalog so Codex knows each model's context window and capabilities. The catalog also turns on Codex's MCP tool search for every model, so MCP and app connector tools load on demand, and makes Codex auto-review run on the model you picked.
     </Accordion>
   </Tab>
 
@@ -370,12 +377,17 @@ The Codex CLI, the Codex app, and the ChatGPT desktop app share one config in `~
     </Steps>
 
     Without a model catalog, Codex warns that it has no metadata for Fireworks models and uses fallback limits. FireConnect writes that catalog for you.
+
+    To pay for GPT turns with your Codex sign-in, as FireConnect does, replace the `env_key` line with these two:
+
+    ```toml ~/.codex/config.toml theme={null}
+    requires_openai_auth = true
+    env_http_headers = { "x-fireworks-api-key" = "FIREWORKS_API_KEY" }
+    ```
+
+    Codex then sends its own sign-in, and reads your Fireworks key from the environment.
   </Tab>
 </Tabs>
-
-<Frame>
-  <img alt="ChatGPT desktop model picker showing FireRouter selected alongside Auto and Fireworks models" />
-</Frame>
 
 When you resume an old session, select the provider explicitly:
 
@@ -383,22 +395,73 @@ When you resume an old session, select the provider explicitly:
 codex resume <id> -c model_provider="fireworks-ai"
 ```
 
-<Note>
-  **ChatGPT and Codex app threads keep the provider they started on.** A thread
-  started on an OpenAI model before you connected stays on OpenAI, even after
-  you pick a Fireworks model or FireRouter in the picker. ChatGPT then shows an
-  error such as
-  `The 'firerouter' model is not supported when using Codex with a ChatGPT account.`
-  The error names whichever Fireworks model you picked.
+<AccordionGroup>
+  <Accordion title="Who pays for GPT turns">
+    With FireConnect, your Codex sign-in decides who pays for GPT turns:
 
-  * Start a new thread to use Fireworks models and FireRouter.
-  * To keep working in the old thread, switch back to an OpenAI model, or run
-    `fireconnect codex off` and turn it back on when you start a new thread.
-</Note>
+    | Codex sign-in | Who pays for GPT turns |
+    | - | - |
+    | ChatGPT | Your ChatGPT plan. Older models, such as `gpt-5.6-terra`, use an OpenAI Provider Key instead |
+    | OpenAI API key | That OpenAI key |
+    | Fireworks key only | An OpenAI [Provider Key](/nexus/provider-keys). Without one, a GPT model you pick fails with `no usable openai credential` |
+
+    * FireConnect doesn't hand a saved OpenAI key to Codex. To pay with it, sign Codex in with it: `fireconnect key export --openai | codex login --with-api-key`.
+    * No browser on the machine? `codex login --device-auth` signs in with ChatGPT through a one-time code.
+  </Accordion>
+
+  <Accordion title="Routers and credentials">
+    * On Codex, `firerouter` routes between GPT Sol and Fireworks open models. See [how `firerouter` picks its closed model](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model).
+    * With only a Fireworks key, `firerouter` uses GPT Sol if you have an OpenAI Provider Key, otherwise Claude Opus if you have an Anthropic Provider Key, otherwise open models.
+    * Codex doesn't send an Anthropic key, so Claude turns on Codex need an Anthropic [Provider Key](/nexus/provider-keys).
+  </Accordion>
+</AccordionGroup>
 
 <Warning>
-  **MiniMax models don't work on Codex.** Codex may insert assistant messages between `tool_calls` and `tool_results`, which MiniMax templates reject. Use a Chat Completions harness such as OpenCode for MiniMax.
+  **MiniMax models don't work on Codex.** Codex may insert assistant messages between `tool_calls` and `tool_results`, which MiniMax templates reject. FireConnect leaves MiniMax out of the Codex model list and rejects `--model minimax-...`. Use a Chat Completions harness such as OpenCode for MiniMax.
 </Warning>
+
+## ChatGPT desktop app
+
+<Badge>OpenAI Responses</Badge> <Badge>FireRouter</Badge> <Badge>Native web search</Badge>
+
+The ChatGPT desktop app reads the same `~/.codex/config.toml` as the [Codex CLI](#codex), so connecting one connects the other. **Quit the ChatGPT desktop app and close open Codex sessions before connecting or running `off`.** The app loads its model list only at startup. FireConnect waits for both to close, or use `--force` to write anyway.
+
+<Tabs>
+  <Tab title="FireConnect" icon="bolt">
+    ```bash wrap theme={null}
+    fireconnect chatgpt
+    fireconnect chatgpt status
+    ```
+
+    `fireconnect chatgpt` is the same command as `fireconnect codex`. Reopen the app. Its model list starts on FireRouter (`firerouter`) and adds the Fireworks models next to the GPT models.
+
+    * **Sign-in:** the app keeps its own ChatGPT sign-in, which pays for GPT turns. Your Fireworks key pays for Fireworks models. See **Who pays for GPT turns** under [Codex](#codex).
+    * **MCP servers and plugins** keep working, through Codex's tool search. Connected with FireConnect 0.9.9 or earlier? Run `fireconnect upgrade`, then reopen the app.
+    * **Files:** FireConnect writes the same `config.toml` and model catalog as for Codex. See **See what FireConnect writes** under [Codex](#codex).
+
+    <Note>
+      **Threads keep the provider they started on.** A thread started on an
+      OpenAI model before you connected stays on OpenAI, even after you pick
+      FireRouter or a Fireworks model. ChatGPT then shows an error such as
+      `The 'firerouter' model is not supported when using Codex with a ChatGPT account.`
+      The error names whichever Fireworks model you picked.
+
+      * Start a new thread to use FireRouter and Fireworks models.
+      * To keep working in the old thread, switch back to an OpenAI model, or run
+        `fireconnect chatgpt off` and turn it back on when you start a new thread.
+      * After `off`, threads started on Fireworks models don't open until you run `fireconnect chatgpt` again.
+    </Note>
+
+    <Note>
+      Sign-in billing is tested in the Codex CLI. The ChatGPT desktop app is not
+      tested yet.
+    </Note>
+  </Tab>
+
+  <Tab title="Manual setup" icon="wrench">
+    Quit the app, then follow the [Codex manual setup](#codex). The app reads the same `~/.codex/config.toml`. Reopen the app and pick the model you set.
+  </Tab>
+</Tabs>
 
 ## OpenCode
 
@@ -433,6 +496,8 @@ codex resume <id> -c model_provider="fireworks-ai"
       }
       ```
 
+      If your `opencode.json` uses OpenCode v2's `providers` map, FireConnect writes the Fireworks provider there too, so the models appear in `/models`. Connected with an earlier FireConnect? Run `fireconnect upgrade` to add them.
+
       The file is saved with mode `0600`. FireConnect never changes `auth.json`. Use `--config-path` for a config stored elsewhere.
     </Accordion>
   </Tab>
@@ -450,7 +515,7 @@ codex resume <id> -c model_provider="fireworks-ai"
           "options": { "apiKey": "{env:FIREWORKS_API_KEY}" },
           "models": {
             "glm-latest": { "name": "GLM (Latest)" },
-            "firerouter/opus": { "name": "FireRouter Opus" }
+            "firerouter": { "name": "FireRouter" }
           }
         }
       },
@@ -458,7 +523,7 @@ codex resume <id> -c model_provider="fireworks-ai"
     }
     ```
 
-    <Check>`opencode run -m fireworks-ai/firerouter/opus "hello"` answers through FireRouter.</Check>
+    <Check>`opencode run -m fireworks-ai/firerouter "hello"` answers through FireRouter.</Check>
   </Tab>
 </Tabs>
 
@@ -673,7 +738,7 @@ The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks 
   </Tab>
 </Tabs>
 
-The app's bring-your-own-key path does not support image input, the hover-card Context row, or AI-credits pricing. FireConnect can add any FireRouter ID, but the app cannot send a local Anthropic or OpenAI key. Without a matching [Provider Key](/nexus/provider-keys), FireRouter serves those routes with open models. See [Harness Compatibility](/nexus/harness-compatibility).
+The app's bring-your-own-key path does not support image input, the hover-card Context row, or AI-credits pricing. FireConnect can add `firerouter`, but the app cannot send a local Anthropic or OpenAI key. Without a matching [Provider Key](/nexus/provider-keys), FireRouter serves every turn with open models. See [Harness Compatibility](/nexus/harness-compatibility).
 
 ## Copilot CLI
 
@@ -728,7 +793,7 @@ The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`, s
     { "model": "fireworks/glm-latest" }
     ```
 
-    For a FireRouter route with Claude or GPT models, add a `headers` map to the provider, such as `"headers": { "x-anthropic-api-key": "sk-ant-..." }`, and use the router ID, such as `firerouter/opus`, as the model `id` and `wireModel`. FireConnect adds these routes but does not send your provider keys, so use manual setup to send them yourself. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full file.
+    To use FireRouter with Claude or GPT turns, add a `headers` map to the provider, such as `"headers": { "x-anthropic-api-key": "sk-ant-..." }`, and use `firerouter` as the model `id` and `wireModel`. FireConnect adds `firerouter` but does not send your provider keys, so use manual setup to send them yourself. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full file.
   </Tab>
 </Tabs>
 
@@ -767,7 +832,7 @@ DeepSeek's coding agent (`dsh`) runs named profiles, such as `tui`, `web`, and `
 
     Connected before FireConnect 0.9.8? Run `fireconnect deepseek` once so `dsh` 0.1.7 and later stop asking for a DeepSeek key.
 
-    FireConnect can add any FireRouter ID, but it does not send provider keys from `dsh`. To use Claude or GPT models in a route, connect a [Provider Key](/nexus/provider-keys) or use manual setup.
+    FireConnect can add `firerouter`, but it does not send provider keys from `dsh`. For Claude or GPT turns, connect a [Provider Key](/nexus/provider-keys) or use manual setup.
   </Tab>
 
   <Tab title="Manual setup" icon="wrench">
@@ -803,6 +868,6 @@ DeepSeek's coding agent (`dsh`) runs named profiles, such as `tui`, `web`, and `
     dsh tui
     ```
 
-    For a FireRouter route with Claude or GPT models, add `headers` to the provider, such as `x-anthropic-api-key: sk-ant-...`, and use the router ID as the model. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full patch.
+    To use FireRouter with Claude or GPT turns, add `headers` to the provider, such as `x-anthropic-api-key: sk-ant-...`, and use `firerouter` as the model. The [harness setup](/nexus/firerouter/setup#set-up-your-harness) generates the full patch.
   </Tab>
 </Tabs>

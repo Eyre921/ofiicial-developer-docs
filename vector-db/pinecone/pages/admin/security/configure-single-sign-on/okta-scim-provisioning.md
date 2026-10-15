@@ -6,7 +6,7 @@ path: admin/security/configure-single-sign-on/okta-scim-provisioning
 
 Automatically provision members and roles from Okta to Pinecone over SCIM.
 
-Instead of managing members and roles manually in Pinecone, you can have your identity provider (IdP) provision them automatically over SCIM. This page continues [Configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and shows how to set up SCIM provisioning with Okta. These instructions can be adapted for any provider with SCIM 2.0 support.
+Instead of managing members and roles manually in Pinecone, you can have your identity provider (IdP) provision them automatically over SCIM. This page continues [Configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and shows how to set up SCIM provisioning with Okta. You can adapt these instructions for any provider with SCIM 2.0 support.
 
 <Note>SCIM provisioning is available on the Enterprise plan and builds on SAML SSO. Before you begin, [configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and enforce SSO for your organization.</Note>
 
@@ -63,7 +63,7 @@ A user can hold multiple roles by sending multiple values in the `roles` attribu
 
 ### Organization roles
 
-For details on what each [organization role](/admin/organizations/understanding-organizations#organization-roles) grants, see [Understanding organizations](/admin/organizations/understanding-organizations#organization-roles).
+For details on what each [organization role](/admin/organizations/understanding-organizations#organization-roles) grants, see [Organizations overview](/admin/organizations/understanding-organizations#organization-roles).
 
 | Organization role | Attribute value |
 | :- | :- |
@@ -74,7 +74,7 @@ For details on what each [organization role](/admin/organizations/understanding-
 
 ### Project roles
 
-For details on what each [project role](/admin/projects/understanding-projects#project-roles) grants, see [Understanding projects](/admin/projects/understanding-projects#project-roles).
+For details on what each [project role](/admin/projects/understanding-projects#project-roles) grants, see [Projects overview](/admin/projects/understanding-projects#project-roles).
 
 | Project role | Attribute value |
 | :- | :- |
@@ -104,12 +104,12 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 ## 2. Generate a SCIM token
 
-1. Choose the token's permissions and expiry. By default the token grants all user permissions and expires in 90 days; you can also choose **Token never expires**.
+1. Choose the token's permissions and expiry. By default, the token grants all user permissions and expires in 90 days. You can also choose **Token never expires**.
 2. Click **Generate token**.
 3. Copy the **bearer token**. The **SCIM endpoint** is shown on the next screen of the dialog. You'll add both to Okta in [Step 3](#3-connect-okta-to-the-scim-endpoint).
 
 <Warning>
-  The bearer token is shown only once. Copy it before closing the dialog. You can have at most two active tokens per organization; rotate or revoke them later from the **Manage** dialog.
+  The bearer token is shown only once. Copy it before closing the dialog. You can have at most two active tokens per organization. You can rotate or revoke them later from the **Manage** dialog.
 </Warning>
 
 ## 3. Connect Okta to the SCIM endpoint
@@ -181,6 +181,6 @@ For example, an organization manager who is also a project owner on one project 
 1. Back in the Pinecone **Set up SCIM provisioning** dialog, click **Enable SCIM**. Pinecone verifies that an organization owner has been provisioned with `pinecone:OrgOwner` before activating.
 2. If Pinecone blocks activation because no owner is provisioned, return to Okta, assign `pinecone:OrgOwner` to a current owner (see [Step 4](#4-send-role-values-to-pinecone)), let it sync, and click **Enable SCIM** again.
 
-Once enabled, your IdP is the source of truth for membership and roles. Members and their roles sync automatically as you provision them in Okta.
+Once SCIM is enabled, your IdP is the source of truth for membership and roles. Members and their roles sync automatically as you provision them in Okta.
 
 To rotate or revoke tokens or view the SCIM endpoint, select **Manage** next to the SCIM option. To stop provisioning, select **Manage roles in Pinecone** (or **Disable SCIM** from the **Manage** dialog), which revokes all SCIM tokens and reverts to manual role management. Existing role assignments are preserved until you change them.

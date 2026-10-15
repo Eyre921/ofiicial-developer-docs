@@ -25,11 +25,20 @@ Before you start, [enable Fireworks in Microsoft Foundry](/ecosystem/integration
 | Harness | FireConnect | Manual setup | LLM gateway |
 | - | - | - | - |
 | OpenCode, Pi, Cursor IDE, VS Code | Supported | Supported | Supported |
-| Codex CLI, Codex app, ChatGPT desktop | Not supported by current Codex | Not supported by current Codex | Needs a gateway that serves the Responses API |
+| Codex CLI, ChatGPT desktop app | Not supported by current Codex | Not supported by current Codex | Needs a gateway that serves the Responses API |
 | Claude Code | Not supported | Not supported | [Supported, with format translation](#claude-code-through-a-gateway) |
 | DeepSeek Harness, Copilot App, Copilot CLI | Not supported | Depends on the harness | Depends on the harness |
 
-Foundry serves Fireworks models through an OpenAI-compatible Chat Completions API. Claude Code sends Anthropic Messages requests, so it needs a gateway that translates between the two formats. Current Codex releases send only Responses API requests and reject `wire_api = "chat"` in `config.toml`, which is what FireConnect writes for Codex on Foundry.
+Foundry serves Fireworks models through an OpenAI-compatible Chat Completions API. Claude Code sends Anthropic Messages requests, so it needs a gateway that translates between the two formats. Codex CLI 0.160 and later send only Responses API requests and reject `wire_api = "chat"` in `config.toml`, so FireConnect no longer connects Codex to Foundry.
+
+If an earlier FireConnect connected Codex to Foundry, move it back to the Fireworks gateway:
+
+```bash wrap theme={null}
+fireconnect configure --provider fireworks
+fireconnect codex
+```
+
+The first command makes Fireworks the default provider for every harness, not only Codex.
 
 <Warning>
   FireRouter is not available on Foundry, including through a gateway. To use

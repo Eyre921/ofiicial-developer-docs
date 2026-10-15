@@ -5,7 +5,7 @@ path: reference/api/2026-07/data-plane/search_documents
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /namespaces/{namespace}/documents/search
-Search for documents in a namespace using one or more scoring methods (dense vector, sparse vector, text, or query string similarity).
+Search for documents in a namespace using one or more scoring methods (dense vector, sparse vector, text, or query string similarity, or similarity to query text that Pinecone embeds with a field's own model).
 
 Returns the top-k most similar documents along with their scores and requested fields.
 

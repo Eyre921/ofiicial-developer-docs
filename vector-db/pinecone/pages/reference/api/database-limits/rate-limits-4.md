@@ -18,7 +18,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 ## Monthly usage limits
 
-[Read units](/guides/manage-cost/understanding-cost#read-units) and [write units](/guides/manage-cost/understanding-cost#write-units) measure resource consumption. To check your current usage, see [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs).
+[Read units](/guides/manage-cost/understanding-cost#read-units) and [write units](/guides/manage-cost/understanding-cost#write-units) measure resource consumption. To check your current usage, see [Download a usage report](/admin/billing/download-usage-report).
 
 | Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |

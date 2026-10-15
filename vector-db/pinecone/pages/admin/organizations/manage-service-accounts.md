@@ -7,18 +7,16 @@ path: admin/organizations/manage-service-accounts
 Create and manage service accounts at the organization level in Pinecone for programmatic Admin API access, including client secrets and role assignment.
 
 <Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Enterprise plans](https://www.pinecone.io/pricing/).
+  This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
 </Note>
 
-This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) can add and manage service accounts at the organization-level. Service accounts enable programmatic access to Pinecone's Admin API, which can be used to create and manage projects and API keys.
+This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) can add and manage service accounts at the organization level. Service accounts enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
 
 <Tip>
-  Once a service account is added at the organization-level, it can be added to a project. For more information, see [Manage service accounts at the project-level](/admin/projects/manage-service-accounts).
+  Once you add a service account at the organization level, you can add it to a project. For more information, see [Manage service accounts at the project level](/admin/projects/manage-service-accounts).
 </Tip>
 
 ## Create a service account
-
-You can create a service account in the [Pinecone console](https://app.pinecone.io):
 
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 
@@ -28,21 +26,21 @@ You can create a service account in the [Pinecone console](https://app.pinecone.
 
 4. Click **Create**.
 
-5. Copy and save the **Client secret** in a secure place for future use. You will need the client secret to retrieve an access token.
+5. Copy and save the **Client secret** in a secure place for future use. You'll need the client secret to retrieve an access token.
 
    <Warning>
-     You will not be able to see the client secret again after you close the dialog.
+     You cannot view the client secret again after you close the dialog.
    </Warning>
 
-6. Click **Close**.
+6. Click **Copy and Continue**.
 
-Once you have created a service account, [add it to a project](/admin/projects/manage-service-accounts#add-a-service-account-to-a-project) to allow it access to the project's resources.
+Once you've created a service account, [add it to a project](/admin/projects/manage-service-accounts#add-a-service-account-to-a-project) to give it access to the project's resources.
 
 ## Retrieve an access token
 
-To access the Admin API, you must provide an access token to authenticate. Retrieve the access token using the client secret of a service account, which was [provided at time of creation](#create-a-service-account).
+To access the Admin API, you must authenticate with an access token. To get one, use the client secret you received when you [created the service account](#create-a-service-account).
 
-You can retrieve an access token for a service account from the `https://login.pinecone.io/oauth/token` endpoint, as shown in the following example:
+This example requests an access token for a service account from the `https://login.pinecone.io/oauth/token` endpoint:
 
 ```bash curl theme={null}
 curl "https://login.pinecone.io/oauth/token" \
@@ -56,7 +54,7 @@ curl "https://login.pinecone.io/oauth/token" \
 	}'
 ```
 
-The response will include an `access_token` field, which you can use to authenticate with the Admin API.
+The response includes an `access_token` field, which you can use to authenticate with the Admin API.
 
 ```
 {
@@ -68,25 +66,19 @@ The response will include an `access_token` field, which you can use to authenti
 
 ## Change a service account's role
 
-You can change a service account's role in the [Pinecone console](https://app.pinecone.io):
-
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
-2. In the row of the service account you want to update, click **ellipsis (...) menu > Manage**.
+2. In the row of the service account you want to update, click **ellipsis (...) menu > Edit role**.
 3. Select an [**Organization role**](/admin/organizations/understanding-organizations#organization-roles) for the service account.
-4. Click **Update**.
+4. Click **Save**.
 
 ## Update service account name
 
-You can change a service account's name in the [Pinecone console](https://app.pinecone.io):
-
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
-2. In the row of the service account you want to update, click **ellipsis (...) menu > Manage**.
-3. Enter a new **Service account name**.
-4. Click **Update**.
+2. In the row of the service account you want to update, click **ellipsis (...) menu > Rename**.
+3. Enter a new **Name**.
+4. Click **Save**.
 
 ## Rotate a service account's secret
-
-You can rotate a service account's client secret in the [Pinecone console](https://app.pinecone.io):
 
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 
@@ -94,19 +86,19 @@ You can rotate a service account's client secret in the [Pinecone console](https
 
 3. **Enter the service account name** to confirm.
 
-4. Click **Rotate client secret**.
+4. Click **Rotate secret**.
 
 5. Copy and save the **Client secret** in a secure place for future use.
 
    <Warning>
-     You will not be able to see the client secret again after you close the dialog.
+     You cannot view the client secret again after you close the dialog.
    </Warning>
 
-6. Click **Close**.
+6. Click **Copy and Continue**.
 
 ## Delete a service account
 
-Deleting a service account will remove it from all projects and will disrupt any applications using it to access Pinecone. You delete a service account in the [Pinecone console](https://app.pinecone.io):
+Deleting a service account removes it from all projects and disrupts any applications that use it to access Pinecone.
 
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Delete**.

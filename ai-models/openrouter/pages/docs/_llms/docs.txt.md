@@ -1,5 +1,5 @@
 ---
-title: "Docs (152 pages)"
+title: "Docs (153 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -135,6 +135,7 @@ path: docs/_llms/docs.txt
 - [Elastic Observability](https://openrouter.ai/docs/guides/features/broadcast/elastic.md): Send traces to Elastic Observability
 - [Google BigQuery](https://openrouter.ai/docs/guides/features/broadcast/bigquery.md): Send traces to Google BigQuery
 - [Grafana Cloud](https://openrouter.ai/docs/guides/features/broadcast/grafana.md): Send traces to Grafana Cloud
+- [Hugging Face Storage Buckets](https://openrouter.ai/docs/guides/features/broadcast/hugging-face.md): Send traces to Hugging Face Storage Buckets
 - [Langfuse](https://openrouter.ai/docs/guides/features/broadcast/langfuse.md): Send traces to Langfuse
 - [LangSmith](https://openrouter.ai/docs/guides/features/broadcast/langsmith.md): Send traces to LangSmith
 - [New Relic](https://openrouter.ai/docs/guides/features/broadcast/newrelic.md): Send traces to New Relic

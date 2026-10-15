@@ -20,11 +20,11 @@ Retrieve the agent settings for an inbox.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
@@ -50,9 +50,8 @@ An inbox without a configured agent returns empty settings: `instructions` and
   no instructions are set.
 </ParamField>
 
-<ParamField type="string | null">
-  Tone the agent writes in, such as `friendly and concise`. `null` when no tone
-  is set.
+<ParamField type="'concise_professional' | 'concise_casual' | 'expanded_professional' | 'expanded_casual' | null">
+  Tone the agent writes in. `null` when no tone is set.
 </ParamField>
 
 <ParamField type="string[]">
@@ -87,7 +86,7 @@ An inbox without a configured agent returns empty settings: `instructions` and
   {
     "object": "inbox_agent",
     "instructions": "Answer refund questions yourself. Escalate legal threats.",
-    "tone": "friendly and concise",
+    "tone": "concise_professional",
     "enabled_actions": ["draft_reply", "add_labels"]
   }
   ```

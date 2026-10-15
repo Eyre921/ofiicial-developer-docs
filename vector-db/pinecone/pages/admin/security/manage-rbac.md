@@ -18,8 +18,6 @@ This page shows how to assign and manage roles in the [Pinecone console](https:/
 
 A user must have an organization role to belong to the organization, and gains access to a project through one or more project roles. A principal's effective permissions are the union of all the roles it holds, so you can combine roles to grant exactly the access a user needs.
 
-The following table maps common scenarios to the roles to assign:
-
 | Scenario | Organization role | Project role(s) |
 | :- | :- | :- |
 | Administer the organization and every project | `OrgOwner` | None (inherits owner access to all projects) |
@@ -32,7 +30,7 @@ The following table maps common scenarios to the roles to assign:
 | Work across two projects at different access levels | `OrgMember` | `ProjectManager` on one project and `ProjectMember` with `DataPlaneViewer` on another |
 
 <Note>
-  Assigning an organization role adds the user to the organization; assigning a project role grants access to that specific project. To assign these roles in the console, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
+  Assigning an organization role adds the user to the organization. Assigning a project role grants access to that specific project. To assign these roles in the console, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
 </Note>
 
 ### Invite a developer to a project
@@ -111,7 +109,7 @@ curl "https://api.pinecone.io/admin/role-bindings" \
 
 ### Extend a user's access with an additional role
 
-Because effective permissions are the union of all roles, you can broaden access by adding another role rather than replacing the existing one. The user from the previous example holds `ProjectMember` and `DataPlaneViewer`; add `ControlPlaneViewer` to also allow read-only access to the project's indexes, assistants, backups, and collections:
+Because effective permissions are the union of all roles, you can broaden access by adding another role rather than replacing the existing one. The user from the previous example holds `ProjectMember` and `DataPlaneViewer`. Add `ControlPlaneViewer` to also allow read-only access to the project's indexes, assistants, backups, and collections:
 
 ```bash curl theme={null}
 PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
@@ -146,12 +144,12 @@ You can assign and change roles when you manage principals in the console:
 The Admin API represents each role assignment as a *role binding* that grants one role to one principal for one resource scope. You can assign roles when you create a principal, or manage role bindings directly after creation.
 
 <Note>
-  An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to authenticate with the Admin API.
+  You need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) to authenticate with the Admin API.
 </Note>
 
 ### Assign roles when creating a principal
 
-When you invite a user or create a service account, grant roles with the `role_bindings` field. Set `resource_type` to `organization` or `project`; for `project` scope, include the project's `resource_id`.
+When you invite a user or create a service account, grant roles with the `role_bindings` field. Set `resource_type` to `organization` or `project`. For `project` scope, include the project's `resource_id`.
 
 Invite a user as an organization member with a project role:
 

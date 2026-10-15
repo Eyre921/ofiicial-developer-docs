@@ -9505,10 +9505,6 @@ Each function is individually traced, and because they're called from within `ru
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5680e7b5-1d37-428c-b02b-753429ac7f83/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType
   import com.langchain.smith.tracing.TraceConfig
@@ -9572,10 +9568,6 @@ Each function is individually traced, and because they're called from within `ru
 
   println(runPipeline("colorful socks"))
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/397a7c30-a236-43bb-b104-89f8d9e3145c/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code), you'll find a `run_pipeline` trace with `format_prompt`, `invoke_llm`, and `parse_output` as nested child runs.
@@ -24279,10 +24271,6 @@ To compute cost automatically from token usage, you need to provide **token coun
            }
        }
        ```
-
-       <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77fb737d-e763-4f42-bc77-cbc27a4e9120/r">
-         Open a public LangSmith run for this example.
-       </Card>
      </CodeGroup>
 
      The Java and Kotlin examples use a dedicated executor. Shutting down the executor and awaiting termination ensures background trace submissions complete before the process exits.
@@ -24854,10 +24842,6 @@ Gemini 2.5 Pro Preview and Gemini 2.5 Pro use a stepwise cost function, which La
       }
   }
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fcb46808-1b10-4847-a3c9-164c47413524/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 ### Other runs: Send costs
@@ -61778,6 +61762,35 @@ The layout above shows the common `.ts` names. TypeScript managed declarations a
 
 * **Evals**: Managed Deep Agents [evals](/langsmith/javascript/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
 
+## Share code from outside the project
+
+The build copies only the project directory. To use a package from a sibling directory, declare it as a local dependency:
+
+<CodeGroup>
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install ../shared
+  ```
+
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm add ../shared
+  ```
+</CodeGroup>
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { helper } from "@acme/shared";
+```
+
+Put the shared code in its own package. Its `package.json` needs a `name` and a `main` or `exports` entry, which can point to `.ts` files:
+
+```json ../shared/package.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "name": "@acme/shared",
+  "main": "./index.ts"
+}
+```
+
+MDA copies the package into the build. `mda dev` reloads when you edit it, and `mda deploy` ships it.
+
 ## Next steps
 
 <CardGroup>
@@ -76350,10 +76363,6 @@ These conversion methods rely on logic from within LangChain integration package
           .build()
   );
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851bb441-3c1e-4ec9-88d1-ed0a102d7ba8/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 ## List, delete, and like prompts
@@ -80575,10 +80584,6 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2529a15-5c87-4c29-9c34-9aa9a899bcf1/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType
   import com.langchain.smith.tracing.TraceConfig
@@ -80631,10 +80636,6 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
 
   println(assistant("How long are LangSmith traces stored?"))
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/95567c68-5e7b-44f2-9355-7705ac00de5a/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 ## 3. Run the app
@@ -90946,6 +90947,32 @@ The only required file is `agent.py` at the project root containing the [agent d
 * **Dependencies and secrets**: Declare dependencies in `pyproject.toml`, which also sets the [deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version). MDA loads `.env` locally and forwards non-reserved values as deployment secrets. Reserved platform variables and `.env` files are not included in the build archive. For more information, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy).
 
 * **Evals**: Managed Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
+
+## Share code from outside the project
+
+The build copies only the project directory. To use a package from a sibling directory, declare it as a local dependency:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add ../shared
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from shared import helper
+```
+
+Put the shared code in its own package. Its `pyproject.toml` needs `[project]` and `[build-system]`:
+
+```toml ../shared/pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[project]
+name = "shared"
+version = "0.1.0"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+MDA copies the package into the build. `mda dev` reloads when you edit it, and `mda deploy` ships it.
 
 ## Next steps
 
@@ -127524,10 +127551,13 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/create-f
 Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/delete-feedback-config-endpoint
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback-configs
-Soft delete a feedback config by marking it as deleted.
+Soft delete one feedback config by id, or every config of a feedback key.
 
 The config can be recreated later with the same key (simple reuse pattern).
-Existing feedback records with this key will remain unchanged.
+Existing feedback records with this key will remain unchanged. Deleting an
+enforced config turns off its enforcement instead of removing it, and needs
+the feedback-configs:manage-enforced permission.
+Deleting an unenforced config that an annotation queue uses is refused.
 
 
 
@@ -139498,10 +139528,6 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
             if (count >= 5) break
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e97fb036-8386-475c-a992-f63ee6ae660e/r">
-          Open a public LangSmith run for this example.
-        </Card>
       </Tab>
     </Tabs>
   </Tab>
@@ -140252,10 +140278,6 @@ Fetch all the runs that belong to one trace, given its trace ID.
             println("${run.name()} ${run.runType()} ${run.status()}")
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3722fdb8-c690-4a42-95b0-6480092e6a33/r">
-          Open a public LangSmith run for this example.
-        </Card>
       </Tab>
 
       <Tab title="After">
@@ -140484,10 +140506,6 @@ Narrow a trace's runs down to a specific run type, for example just the LLM call
           llmRuns.push(run);
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/33ef3cbf-dbb6-4148-9f4b-9d2e9e4b614d/r">
-          Open a public LangSmith run for this example.
-        </Card>
       </Tab>
 
       <Tab title="After">
@@ -171293,10 +171311,6 @@ For full control, use the `DeepAgentsServer` class directly:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c5305a5-2072-4194-b0aa-007ecdd21808/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 #### Server options
 
 | Option | Type | Default | Description |
@@ -171416,10 +171430,6 @@ const server = new DeepAgentsServer({
 await server.start();
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e4966624-3c7b-4809-a2e4-f9c5edc39843/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ### Custom backend
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -171435,10 +171445,6 @@ const server = new DeepAgentsServer({
   },
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/456029e3-e7c4-42e5-a265-826acd7d14c0/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### Skills and memory
 
@@ -172351,10 +172357,6 @@ even after that subagent's execution is complete. Those files will continue to b
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 **How it works:**
 
@@ -174665,6 +174667,10 @@ order status. Always filter by the provided status.`,
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a1e5187c-7d69-497f-97a0-7d5dbb63c766/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 <Tip>
   To override a built-in or user-supplied tool's description for a specific provider or model, use a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)'s `tool_description_overrides` keyed by tool name.
 
@@ -175057,7 +175063,7 @@ Subagents solve the **context bloat problem**. When the main agent uses tools wi
    };
    ```
 
-   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f16f08a-46ef-4b67-9dab-5d2478341843/r">
+   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/15892b34-9951-4142-a766-5d792dc0489d/r">
      Open a public LangSmith run for this example.
    </Card>
 
@@ -175223,7 +175229,7 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5b8bfe15-a23f-4b74-b406-3e4e6f0ab709/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54c201ac-6630-4220-a36e-94cee1aa7957/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -175363,10 +175369,6 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5749bda2-c929-4fca-bbf7-237e7c9a7d2d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 | Parameter | What it does |
 | - | - |
@@ -176350,10 +176352,6 @@ Pass `system_prompt=` to give the agent your own instructions:
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/106b59e4-4dc2-4539-b035-4f4a27cac53b/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Note>
   Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) with structured [content blocks](/oss/javascript/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/javascript/deepagents/subagents) dictionary specs remain strings).
@@ -177425,10 +177423,6 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
-      Open a public LangSmith run for this example.
-    </Card>
-
     <Tip>
       Wrap `FilesystemBackend` in a `CompositeBackend` to prevent internal agent data (offloaded tool results, conversation history) from being written to disk alongside your project files. See the [recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk).
     </Tip>
@@ -177923,10 +177917,6 @@ const agent = createDeepAgent({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 You can configure interrupt for agents and subagents on tool call as well as from within tool calls.
 For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
 
@@ -177984,6 +177974,10 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="StoreBackend">
@@ -178027,7 +178021,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -178072,7 +178066,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -178435,7 +178429,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29f5b6b3-cd51-45e2-8cef-d654bc08a205/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1f901559-574a-4785-aef7-820229ce4480/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -178835,7 +178829,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b67cebb9-9aee-43ca-b77b-8fce2bbd6807/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ed26e792-56b7-45d3-995b-232979cef08f/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -179069,7 +179063,7 @@ console.log(result.structuredResponse);
 // }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a33f9ad7-9ab0-4ab5-a27a-67d1d06851de/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0a26dee6-4493-45b0-a48f-d2e05edaa29e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -180131,10 +180125,6 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     ```
   </CodeGroup>
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/521542f0-6b09-467c-ba36-838f76424c44/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   **What the agent writes**
 
   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -180489,10 +180479,6 @@ graph LR
     });
     ```
   </CodeGroup>
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2668c0c8-ccfc-4325-bcac-dfb767b8bb59/r">
-    Open a public LangSmith run for this example.
-  </Card>
 
   **What the agent writes**
 
@@ -181052,7 +181038,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/772cbde0-b8d3-44ec-9ac8-3641bc61a567/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -181078,10 +181064,6 @@ for await (const subagent of stream.subagents) {
 
 await stream.output;
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871e73d9-e98c-4ac5-bfec-2e6ab7a6bd6b/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Stream tool calls
 
@@ -181111,7 +181093,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fdda16a-c42c-4931-81f5-36e4a4ecfc5c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -181145,7 +181127,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0b947581-de0c-491e-96c1-ba37cc862b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -181176,7 +181158,7 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ad72588-6334-4d84-ad85-f66e6c13f0f3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -181204,7 +181186,7 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da37e344-18bb-4a36-be3e-1a1740f281c6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -181494,10 +181476,6 @@ const agent = createDeepAgent({
   ],
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba2a0ba2-a907-42fe-aa94-f637359bd130/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 On the frontend, connect with [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) the same way as with `createAgent`. Pass a [type parameter](/oss/javascript/langchain/frontend/overview) for type-safe stream state. Deep agent patterns use `stream.subagents`, selector helpers such as `useMessages(stream, subagent)`, and custom state values like `stream.values.todos` to render subagent-specific UIs.
 
@@ -183691,7 +183669,7 @@ The two are independent and almost always passed together:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -184431,10 +184409,6 @@ const agent = createDeepAgent({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef15f9d2-5959-4bf4-bddc-b408fdfbac38/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Decision types
 
 The `allowed_decisions` list controls what actions a human can take when reviewing a tool call:
@@ -184998,10 +184972,6 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7594f2f3-5572-420e-be08-7272d2c9cdd2/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## How interpreters work
 
@@ -185804,10 +185774,6 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   const agent = createDeepAgent({ model });
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c4aae0a6-9a08-44a5-acbe-e1dcaea34f44/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
   ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
@@ -185818,10 +185784,6 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   });
   const agent = createDeepAgent({ model });
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1b3ed9c3-23f0-41d3-b162-d8f32ded339b/r">
-    Open a public LangSmith run for this example.
-  </Card>
 </CodeGroup>
 
 <Note>
@@ -185888,7 +185850,7 @@ const result = await agent.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/89e1089d-632c-4338-b4bb-c019f4c18e14/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/45e09f7e-1d7b-4419-856a-202e800bcb8d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -186092,7 +186054,7 @@ console.log(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b715dead-e44d-4049-b945-0c34888747fe/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -187592,7 +187554,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/16b9c27f-3b1f-4eb2-99b1-a59eb58167c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/df7664f6-253f-4eba-b8aa-f55b59889b5a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -189828,10 +189790,6 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9bcce461-cc36-4d39-a790-b5e02ac3da26/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Next steps
 
 You implemented one RAG pattern with [`createDeepAgent`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent). Combine it with other Deep Agents capabilities or try a different pattern from [RAG patterns](#rag-patterns):
@@ -190270,7 +190228,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ec47344-9aad-47cb-aa43-3d98ad5da94d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -190752,7 +190710,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8542aece-b18a-4f24-8ff1-3bc1a0737104/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -190896,10 +190854,6 @@ for (const result of results) {
   }
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/01ee861b-8f70-459d-bd79-116bc21c99c3/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Note>
   Inside the sandbox, the agent uses its own filesystem tools (`read_file`, `write_file`): not `uploadFiles` or `downloadFiles`. Those methods are for your application code to move files across the boundary between your host and the sandbox.
@@ -191097,7 +191051,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637067d5-ee65-481b-a13e-3b3944551e9a/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/39b1ef25-cf7f-4a4f-96b9-79e4902604d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Step>
@@ -191136,6 +191090,8 @@ In Deep Agents, [`SkillsMiddleware`](https://reference.langchain.com/javascript/
 1. **Discovery** (level 1): At agent start, the middleware scans the configured skill paths, parses each `SKILL.md` [frontmatter](#frontmatter-fields), and injects the [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) fields into the system prompt.
 2. **Read** (level 2): When the agent invokes a skill, it reads the full `SKILL.md` content via `read_file`.
 3. **Execute** (level 3): After invocation, the agent follows the skill's instructions and reads supporting files (scripts, references, assets) only as the instructions require.
+
+To give the agent a skill's instructions without waiting for it to choose the skill, [pin the skill](#pin-skills).
 
 ## When to use skills
 
@@ -191319,6 +191275,7 @@ Skill tools follow these rules:
 
 * Skill tools are gated. Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
 * When [summarization](/oss/javascript/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
+* [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.
 
 <Note>
   On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) integration pages.
@@ -191431,6 +191388,10 @@ const result = await agent.invoke(
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2c02ac34-3a67-455e-9f14-12f5e0426a53/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 When you write a resolver:
 
 * Keep it fast. It runs on every model call after the agent reads the skill, and again before each skill tool call.
@@ -191527,6 +191488,10 @@ Deep Agents supports different backends depending on how you want to store and m
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="StoreBackend">
@@ -191570,7 +191535,7 @@ Deep Agents supports different backends depending on how you want to store and m
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -191615,7 +191580,7 @@ Deep Agents supports different backends depending on how you want to store and m
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -191705,10 +191670,6 @@ const agent = await createDeepAgent({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3ced22a-c125-4ac0-90a1-7da0898dd262/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 This keeps the agent configuration stable while the backend enforces which library the agent can access. The scope does not need to be user-specific. It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
 
 To populate a shared library, seed the store from your application code or an admin workflow:
@@ -191788,6 +191749,64 @@ const reloadEditedSkills = createMiddleware({
 });
 ```
 
+## Pin skills
+
+The agent reads a skill only when it decides the skill matches the task. When a user names a skill in your app, for example by typing `/langgraph-docs` or choosing it from a menu, pin the skill. Deep Agents then adds the skill's instructions to the conversation, so the agent does not have to choose it.
+
+<Note>Pinning skills requires `deepagents>=1.15.0`.</Note>
+
+Pass skill names in `pinnedSkills` with the run input:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "What is LangGraph?" }],
+    pinnedSkills: ["langgraph-docs"],
+  },
+  { configurable: { thread_id: "1" } },
+);
+```
+
+Before the next model call, `SkillsMiddleware` reads each named skill's `SKILL.md` and appends it to the conversation as a `HumanMessage`. It adds one message per skill, in the order you name them. Each message holds the file without its frontmatter:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<skill name="langgraph-docs" path="/skills/langgraph-docs/SKILL.md">
+# langgraph-docs
+
+## Overview
+...
+</skill>
+```
+
+Each message also sets `additional_kwargs.lc_source` to `"pinned_skill"`, and puts the skill's `name`, `path`, and `description` in `additional_kwargs.skill`. A chat UI can use these fields to show a pinned skill as a label instead of its full text.
+
+Pinned skills follow these rules:
+
+* The message stays in the conversation as written. Editing `SKILL.md` later does not change it, and pinning the skill again appends the current text. Earlier messages never change, so the prompt cache stays valid.
+* The middleware skips a name that matches no loaded skill, and a skill whose `SKILL.md` it cannot read.
+* When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
+
+### Pin skills named in a message
+
+Deep Agents does not look for skill names in messages. Your app chooses the syntax, finds the names, and passes them in `pinnedSkills`. The following example pins each skill named as `/skill-name` anywhere in the message, and sends the text unchanged:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const SKILL_REFERENCE = /(?<!\S)\/([a-z0-9-]+)/g;
+
+const message = "/langgraph-docs How do I add a checkpointer to my graph?";
+const pinnedSkills = [...message.matchAll(SKILL_REFERENCE)].map((m) => m[1]); // ["langgraph-docs"]
+
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: message }],
+    pinnedSkills,
+  },
+  { configurable: { thread_id: "1" } },
+);
+```
+
+The pattern matches a `/` followed by a skill name, at the start of the message or after a space. It does not check names against your skills, because the middleware skips unknown names. To support another syntax, such as `$skill-name`, change the pattern.
+
 ## Skills for subagents
 
 When you use [subagents](/oss/javascript/deepagents/subagents), you can configure which skills each type has access to:
@@ -191814,10 +191833,6 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For more information on subagent configuration and skills inheritance, see [Subagents](/oss/javascript/deepagents/subagents).
 
@@ -192086,10 +192101,6 @@ const agent = await createDeepAgent({
   store,
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/27cdf1d8-3b6f-4a8e-9bbb-c8c2a63ebf99/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 The agent uses `write_file` and `edit_file` to create or update `SKILL.md` and supporting files under writable paths. To capture general learnings outside the skills format, route a separate path such as `/memories/` to another writable backend. See [Backends](/oss/javascript/deepagents/backends) for routing and store setup.
 
@@ -193131,7 +193142,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/35c73ef7-efb6-47f0-bf7a-b81975d5a6f4/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cca657b7-b162-47f9-9fca-a20bed29cb66/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -193162,6 +193173,8 @@ Use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm
 2. **Reduce overlap between skills.** If multiple skills have similar descriptions, the agent may skip the right one or pick the wrong one. Differentiate descriptions or [consolidate related skills](#write-effective-skills).
 
 3. **Confirm the skill is in the `skills` array.** Skills load only from paths you pass at agent creation or from subagent-specific `skills` parameters.
+
+4. **Pin the skill.** When the user or your app already knows which skill applies, [pin it](#pin-skills). The agent then gets the skill's instructions without having to choose the skill.
 
 ### Skills missing at startup
 
@@ -193567,7 +193580,7 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8df86c24-16e9-47e4-bdb7-9aa07df974d1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba3b5afc-8b2f-4e17-af79-b43c46a2a0a3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -193605,7 +193618,7 @@ for await (const [namespace, chunk] of await agent.stream(
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f2c37793-36ac-464b-96ce-5f7d5307d074/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/80ab06ee-385f-4713-864c-c15ab35d76b3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -193993,7 +194006,7 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6892dbbe-d797-44da-974f-d78cd433299e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ad634a9-907e-49bb-9415-c20c70260b02/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -194060,7 +194073,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b193af81-1c11-41a9-a814-7f8250a66f9a/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/78ee935c-72fb-4c0d-9b7d-c73825f5ba7a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -194123,7 +194136,7 @@ for await (const [namespace, chunk] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b691dfbe-3eea-472b-92a3-7200ce7fd48d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/319a8e85-061a-40d1-a368-28f222a3e08c/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -194651,7 +194664,7 @@ Use `config.writer` inside your subagent tools to emit custom progress events:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/30aef957-d016-4885-adb7-7a0d7952f97f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8eac6b1d-4f60-437c-b35f-e7f40443033b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -194722,7 +194735,7 @@ for await (const [namespace, mode, data] of await agent.stream(
 process.stdout.write("\n");
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/abec3125-178c-474a-b0c4-9e4cb553eb63/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0f8a930f-c5ba-43e2-9fbb-39bf5066a749/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -194846,7 +194859,7 @@ for (const [id, sub] of activeSubagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/08302070-e307-46d9-8312-f7bef65bff07/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/990d5bae-eb8d-4170-b578-6131293d657b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -195736,10 +195749,6 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2adc5144-9f83-42dd-814b-0a57d62ea58f/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Forked subagents
 
 By default, a subagent runs with `mode: "isolated"`: it sees only the task description you give it and has no memory of the conversation that led up to the delegation. A **forked subagent** (`mode: "fork"`) inherits the parent's full conversation history and exact system prompt instead.
@@ -195819,6 +195828,10 @@ const result = await agent.invoke({
   ],
 });
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/efa7623d-0431-4516-8187-0cd7e2d3a753/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ### How it works
 
@@ -196483,10 +196496,6 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4c9b1369-0827-48ce-b391-e3979d888664/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ### LangSmith tracing
 
 As your deep agent runs, all runs executed by a subagent or the coordinator will have the agent name in their metadata under the `lc_agent_name` key—for example, `{'lc_agent_name': 'research-agent'}`. This lets you identify and filter runs by subagent in LangSmith.
@@ -196854,7 +196863,7 @@ Pass `responseFormat` on the subagent config. When the subagent finishes, its st
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5cd6c6e-4261-46ed-be8e-cce8304d368e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f34744b4-0794-4f4f-9e31-f7c9e3f0b2e5/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -197127,10 +197136,6 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Best practices
 
@@ -197579,10 +197584,6 @@ Create specialized subagents for different domains:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4ad1d9ce-50ae-4ca0-981c-14bd6e7ecd97/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 **Workflow:**
 
 1. Main agent creates high-level plan
@@ -197933,6 +197934,10 @@ const verifyClaim = tool(
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e104a86-0921-4274-aa71-25ac90bd78b7/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Identifying which subagent called a tool
 
 When the same tool is shared between the parent and multiple subagents, you can use the `lc_agent_name` metadata (the same value used in [streaming](#streaming)) to determine which agent initiated the call:
@@ -197957,6 +197962,10 @@ const sharedLookup = tool(
   },
 );
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/50309ec3-2016-43c4-bee1-0f707e501fdf/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 You can combine both patterns—read agent-specific settings from `runtime.context` and read `lc_agent_name` from `runtime.config` metadata when branching tool behavior.
 
@@ -197988,6 +197997,10 @@ const flexibleSearch = tool(
   },
 );
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/47447223-d4cd-4265-b0f9-c6a330258b99/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Troubleshooting
 
@@ -198035,10 +198048,6 @@ const flexibleSearch = tool(
      ],
    });
    ```
-
-   <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aed3033-1e71-4ff2-a35f-8c6dea38dd2b/r">
-     Open a public LangSmith run for this example.
-   </Card>
 
 ### Context still getting bloated
 
@@ -198089,10 +198098,6 @@ const subagents = [
   },
 ];
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/69d484e7-bfb9-408f-b644-d5bf79d126ad/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ***
 
@@ -198186,10 +198191,6 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/60b06506-b368-4faa-bb2f-6a838968ee8d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Custom tools
 
@@ -198712,10 +198713,6 @@ npm install @langchain/mcp-adapters
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8d5c96b3-9582-4dc8-b89b-8f667e64836d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/javascript/langchain/mcp).
 
@@ -209975,10 +209972,6 @@ To add custom fields, define a state schema on your middleware using `stateSchem
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e33888d-0583-4e7b-993f-5a033d502eb9/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 For full details, examples, and middleware-level state schemas, see [Short-term memory](/oss/javascript/langchain/short-term-memory#customizing-agent-memory) and [Custom middleware](/oss/javascript/langchain/middleware/custom#state-updates).
 
 ## Invocation
@@ -210201,7 +210194,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8262831f-ae54-4ad3-a6d5-8b07f581b14a/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dc6c669f-1699-4c3c-8490-c02b7d2cf978/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -210430,7 +210423,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/afee5acc-3718-422c-9f72-85e9b5a07112/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3bc1fb83-7ada-4e78-b9ac-31b749201c7d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -210469,7 +210462,7 @@ for await (const snapshot of stream.values) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da6d46ae-4947-4d53-a83e-57403981b680/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/53397253-6f2d-47c6-aa4e-a701377341e7/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -221476,10 +221469,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       });
       ```
     </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6be2083-3efd-4571-86bc-af3ac3d29ca3/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -221607,10 +221596,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       });
       ```
     </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d88f3dfa-62b7-4860-a17d-96372551753e/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 </Tabs>
 
@@ -222160,7 +222145,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/762275c3-4815-418e-a314-5ad241f959b0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/402f8832-35d4-4c95-9ebd-cb371af7366f/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -222483,7 +222468,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/244238a0-dc8a-4023-b85b-b8145b79cfab/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3cac0150-fe8c-4346-904f-a67a8d6fb156/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -222894,7 +222879,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cfc3587-f9a0-4926-8e0f-0659ed631e5a/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1329ec1b-63c9-4cea-99be-74a763a4cc16/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -223210,7 +223195,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e0e4b08-7234-49bc-adcc-8d5cf48455ad/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/85c902fd-dbd7-4d73-9d11-a09f01dace8f/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -223571,7 +223556,7 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54f2fa78-9b4c-445a-94a2-27f4cdaa4e67/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -223606,7 +223591,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637a53d2-a23e-4691-b70c-7bf3d8de9755/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -223640,7 +223625,7 @@ export async function makeGraph() {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d5c9bc74-bbab-4f0f-97bd-e9982ee4b050/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -223695,6 +223680,10 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 Each server's `mode` controls its negotiation independently:
 
@@ -223797,7 +223786,7 @@ async function main() {
 await main();
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00d2cbd2-4f4b-4f31-8346-041c7412c083/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -223832,7 +223821,7 @@ await main();
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/38191417-0728-47c9-bede-d0544de2af17/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r">
     Open a public LangSmith run for this example.
   </Card>
 
@@ -223888,7 +223877,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c2129d38-77f6-42d0-ab37-d414fc067ee6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -223970,7 +223959,7 @@ async function main(server: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f60de8e-697e-40e1-87de-d2419e426b61/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -224026,6 +224015,10 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 ### Structured content
 
 When a tool returns structured content, the adapter attaches it to the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) as an artifact rather than folding it into the model-visible text. Run the agent, then read the `artifact` from the [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) instances in the result:
@@ -224064,7 +224057,7 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77a2988b-909c-475d-a811-86cbb843f5c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -224107,7 +224100,7 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f47c3c87-87f8-4b3e-9b51-6116e9bdd313/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -224145,10 +224138,6 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
   return annotations?.destructiveHint ?? false;
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aca946a6-8b00-425e-9ebd-c9166dfe5958/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Human-in-the-loop
 
@@ -224204,10 +224193,6 @@ async function gateDestructiveTools(serverUrl: string) {
   return { agent, adapter };
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c0bfda7-ce16-43ee-a5ad-0c827409668a/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Warning>
   `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm_delete_file`). An unprefixed key never matches, so the tool runs without approval.
@@ -224294,7 +224279,7 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc8ee095-52ca-403e-800f-e75479cdff90/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -225356,10 +225341,6 @@ const serialized = message.toJSON();
 // Deserialize back to a message object
 const restored = await load<HumanMessage>(JSON.stringify(serialized));
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5be0f5b8-9c08-4287-bcf9-adacc4b19e95/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Warning>
   **`load()` deserializes data by instantiating classes and invoking constructors. Never call `load()` on untrusted or user-supplied input.** Only deserialize data that originates from a source you control, such as your own database.
@@ -227573,10 +227554,6 @@ Use the `systemMessage` field in `ModelRequest` to read and modify the system pr
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4eaefcd5-90ad-4349-bb51-2cfc660e8af3/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 Use [`SystemMessage.concat`](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) to preserve cache control metadata or structured content blocks created by other middleware.
 
 ### Dynamic model selection
@@ -227602,10 +227579,6 @@ const dynamicModelMiddleware = createMiddleware({
   },
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/97b0c168-3017-4ad9-8278-49e135c43f3d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### Dynamically selecting tools
 
@@ -237871,7 +237844,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef60e8dc-0d58-46bb-af52-e2864152be81/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -239872,7 +239845,7 @@ The following tutorial covers the following concepts:
         ```
       </CodeGroup>
 
-      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6e260649-34ee-4075-b034-23c9404b868c/r">
+      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3925fa04-8885-4afd-aa45-5ba021acc93b/r">
         Open a public LangSmith run for this example.
       </Card>
     </Accordion>
@@ -240582,7 +240555,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc490030-828a-4756-899a-063c3c3d3600/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -240774,7 +240747,7 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d59e6358-4c08-48b8-a906-8a054bddb7ac/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -242728,7 +242701,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab55241e-3982-457e-9357-a41564c847a3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -242936,7 +242909,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce2632f4-09ef-4d71-96fb-d8e61662f9ae/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -242970,7 +242943,7 @@ const getWeatherData = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e798b200-7e02-420a-9b50-1808b2d25b7c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -243046,7 +243019,7 @@ const setLanguage = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/57a6ece9-3cd4-436c-a15e-da77946c0e2f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -243093,7 +243066,7 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/40a81784-60df-4455-861e-ddf7f4a51b2e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -243290,10 +243263,6 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71c1f8da-7a0d-49eb-a57c-a83dc0eb188c/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### State injection
 
@@ -250053,7 +250022,7 @@ await graph.invoke({ userInput: "My" });
 // { graphOutput: 'My name is Lance' }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/11c4d2f4-cc73-404c-962e-3b16c9b1574c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8fd9e17e-fd75-4829-a402-cb7e0bf18736/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250126,7 +250095,7 @@ There are two subtle and important points to note here:
   // { foo: 'My name', userInput: 'My', graphOutput: 'My name is Lance', bar: 'My name is' }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c326389e-fd63-4647-9d99-6c6a797d96cd/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/32188285-dc90-4281-b140-d3bbf033748c/r">
     Open a public LangSmith run for this example.
   </Card>
 
@@ -250182,7 +250151,7 @@ const State = new StateSchema({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/51e24f47-6fcb-4d4c-addc-260c9f4f29cd/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c4537752-96b4-4e3a-832b-9733d2486e85/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250193,10 +250162,6 @@ const reducer = (left: string[], right: string[]) => left.concat(right);
 
 reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/65c80463-0cf3-4a86-be27-6136cb4b67a6/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 The new state value for `tags` is `["draft", "review"]`.
 
@@ -250216,7 +250181,7 @@ const State = new StateSchema({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/66046eed-b4dc-4d27-89d6-ea12289d3bfd/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/62bd5fab-0acd-46c3-9689-42a37da3c7f5/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250241,7 +250206,7 @@ const State = new StateSchema({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/60729226-ed2c-4bef-bce5-54f20732c56f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e9ae6a10-b6dc-49c9-bb16-5f307b57d2e4/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250269,7 +250234,7 @@ const State = new StateSchema({
 // state.errors is still ["bad sql"]; the empty array is merged in, not cleared
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7f2fa409-bef2-4eee-b4dd-dcb460739296/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3bb1b2e1-f021-488d-86ec-0b09f71b4d14/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250289,7 +250254,7 @@ const State = new StateSchema({
 // node can now clear the field with { errors: [] }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b71bfa2d-72b9-4ecd-822b-38269f81cbe8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0ddacd70-2b42-4e9e-97c3-064e5c5d1f4d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -250618,7 +250583,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     await graph.invoke({ url: "https://www.example.com" }, config);
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/365c3891-8f8f-4ade-9c37-aa64cd342feb/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/13308e63-ab5d-47b0-b9ac-9a52389969ed/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -250669,7 +250634,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     await graph.invoke({ urls: ["https://www.example.com"] }, config);
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f25ffc86-7e15-44ab-b9bd-9557d9ecc674/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8a472619-c051-4137-95d3-1937c6d0855e/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -251484,7 +251449,7 @@ while (true) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acc5e3f4-3086-44f9-b484-51ae7eca6216/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7ebae998-6b68-4caa-a262-38d84efc922f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -251901,7 +251866,7 @@ const getAgeNode: typeof State.Node = (state) => {
 // );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8f40efd5-a1c5-43fe-a95c-b533b408c0b4/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9e6a7db8-1fa3-4f6f-91cc-3b48fcf5e6ec/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -254626,7 +254591,7 @@ const stream = await graph.streamEvents(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7dace240-589b-4be3-89ed-8e29b5818188/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ba51f3a8-41b5-4403-bf37-5978e9fadb99/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -256829,7 +256794,7 @@ for await (const chunk of stream.values) {
 // 10
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0104f36d-4746-4819-9bfd-09bc642b913d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a8e1b6e9-202c-4541-8faa-5cbc0d8abde3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -261624,7 +261589,7 @@ const result = await graph.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bb52f523-7662-4984-9b46-d3b0132b962a/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f9a855a9-4897-4c50-ab4f-8c7db93b1894/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -268560,10 +268525,6 @@ This starts an ACP server in stdio mode (it reads requests from stdin and writes
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/98892671-3052-4477-947a-de42469f7da5/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 <Card title="Example coding agent" icon="brand-github" href="https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py">
   The `deepagents-acp` package includes an example coding agent with filesystem and shell that you can run out of the box.
 </Card>
@@ -268932,10 +268893,6 @@ agent = create_deep_agent(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0727618d-02b5-4e99-b7c7-79d6f37f234d/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 | Field | Type | Description |
 | - | - | - |
 | `name` | `str` | Required. Unique identifier. The supervisor uses this when launching tasks. |
@@ -269069,10 +269026,6 @@ async_subagents = [
 ]
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dddcb1d1-92ac-468b-aa34-5d9070661aa1/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Best practices
 
 ### Size the worker pool for local development
@@ -269133,10 +269086,6 @@ agent = create_deep_agent(
     subagents=async_subagents,
 )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/181f8fc2-b3aa-4c4b-b23d-d4204db98849/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### Supervisor reports stale status
 
@@ -273334,10 +273283,6 @@ In addition to [built-in tools](/oss/python/deepagents/overview#execution-enviro
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/72db4044-0d95-4eaa-becf-5d5705110acb/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ### MCP tools
 
 <Tip>
@@ -273527,10 +273472,6 @@ pip install "langchain[mcp]"
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52f4ba76-56b4-4d12-91fe-8a1c51c0b0fd/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/python/langchain/mcp).
 
 ## System prompt
@@ -273636,10 +273577,6 @@ Pass `system_prompt=` to give the agent your own instructions:
   )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4e2e0256-4d32-42a2-b152-a6f6c6e2a6da/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Note>
   Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
@@ -274345,10 +274282,6 @@ Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool th
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/fca69438-166f-4d35-9530-31b165fe4e9b/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 For setup, programmatic tool calling, subagent orchestration, and limits, see [Interpreters](/oss/python/deepagents/interpreters).
 
 ## Subagents
@@ -274394,10 +274327,6 @@ agent = create_deep_agent(
     subagents=subagents,
 )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/298e9d96-115e-45b0-8b07-e9f1f0f6f899/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For more information, see [Subagents](/oss/python/deepagents/subagents).
 
@@ -276723,10 +276652,6 @@ register_harness_profile(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e0c76e79-471f-44a6-9b68-d717733cf641/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 See [Profiles](/oss/python/deepagents/profiles) for registration keys, merge semantics, and plugin packaging. A narrower companion API, [provider profiles](/oss/python/deepagents/profiles#provider-profiles), packages model-construction arguments (API keys, timeouts, retry settings) for a provider.
 
 ## Structured output
@@ -276795,7 +276720,7 @@ print(result["structured_response"])
 # location='San Francisco, California' temperature=18.3 condition='Sunny' humidity=48 wind_speed=7.6 forecast='Pleasant sunny conditions expected to continue with temperatures around 64°F (18°C) during the day, dropping to around 52°F (11°C) at night. Clear skies with minimal precipitation expected.'
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a28f9784-f16d-4bb0-8103-98eae39d2743/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1f7faa8f-571a-45d4-a549-5510c0feae4e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -277995,10 +277920,6 @@ Create `agent.py` in your project directory:
             middleware=[TodoListMiddleware()],
         )
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4a74e627-23f2-4b23-b930-1199b640cc71/r">
-          Open a public LangSmith run for this example.
-        </Card>
       </Tab>
     </Tabs>
   </Step>
@@ -279500,7 +279421,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54d79ba7-1564-4f59-b249-4c5717bfdea3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279546,7 +279467,7 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5da4a9f-e7cb-4264-8aee-7589558a9cad/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279567,7 +279488,7 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/359c380b-c1e8-471e-be20-5dee479834b8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279596,7 +279517,7 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c3a01f68-bece-422d-add0-703090a068a5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279622,7 +279543,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4688ab50-e9ee-4b4e-94c8-2e77825554cf/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279662,7 +279583,7 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a851bb1-f8f7-46a4-9222-d1d54388bf22/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -279689,7 +279610,7 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0230fcfc-7ae2-4d19-a0fe-5cd8d347f7f2/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -282282,7 +282203,7 @@ The two are independent and almost always passed together:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2cd41e2d-4f69-4620-ba18-670336d3915d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2dea64cd-d02d-449c-b44c-4e6604fb5719/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -285238,7 +285159,7 @@ result = agent.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d7ab3fb7-b497-4399-aa90-40d4a26ac121/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/36cdb378-76ec-4705-8fcd-5cdba106b659/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -285563,7 +285484,7 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6303999e-5e08-4c66-b14c-ba5648f32f88/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -285627,10 +285548,6 @@ agent = create_deep_agent(
     tools=[search, fetch_page, run_query],
 )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c793ecf2-d06d-4687-8952-9d98fd107b4b/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For more information on defining custom tools, using MCP servers, and the full list of built-in harness tools, see [Tools](/oss/python/deepagents/tools).
 
@@ -287238,7 +287155,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/691c063c-0d9d-4235-9a34-a74e3655a7f5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9e5d5ccc-eb86-4a0d-896b-6104d648e7ce/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -288518,7 +288435,7 @@ if __name__ == "__main__":
             print(msg.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acdc9abe-384b-4988-a0a8-aaa78b7d8ffb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6028e45a-23d0-4073-968c-19d161910ef8/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -289983,7 +289900,7 @@ These examples assume you have already created a sandbox/devbox using the provid
         client.delete_sandbox(ls_sandbox.name)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c6756d1-2bb1-4ba5-a54a-9891abd057db/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c79cd36-6974-4010-8f93-9e81a6ff8c94/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -290029,7 +289946,7 @@ These examples assume you have already created a sandbox/devbox using the provid
         sandbox.stop()
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bdbb9f73-7bff-4e32-891b-fc05ed487f01/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/571f1de5-c211-47b2-81d3-ea330cb6bc31/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -290644,10 +290561,6 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/658fb215-7b1c-4914-96d2-834acdd6110f/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 For manual create, execute, and teardown outside a graph factory, see [Basic usage](#basic-usage) and [sandbox integrations](/oss/python/integrations/sandboxes) for provider-specific APIs.
 
 ## Integration patterns
@@ -290915,7 +290828,7 @@ Trade-offs:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a9453638-8ae8-496c-9dbe-1f9f56391cd6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2b9e8bc1-f9de-41fd-824b-cf6f397eb2f2/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -291429,10 +291342,6 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
         else:
             print(f"Failed to download {result.path}: {result.error}")
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7cff6290-eb4f-4fc8-8982-39b78675cbfc/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="AgentCore">
@@ -292687,7 +292596,7 @@ Pinned skills follow these rules:
 
 * The message stays in the conversation as written. Editing `SKILL.md` later does not change it, and pinning the skill again appends the current text. Earlier messages never change, so the prompt cache stays valid.
 * The middleware skips a name that matches no loaded skill, and a skill whose `SKILL.md` it cannot read. It logs each skip at debug level.
-  -When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
+* When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
 
 ### Pin skills named in a message
 
@@ -292953,10 +292862,6 @@ To let agents use a curated skill library without modifying it, route the skill 
   )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cd1dc73a-2a92-4daf-bd25-4e239ff72ae3/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 Use this for enterprise knowledge bases, approved tool instructions, or centrally managed skill packs where the agent should use the content but should not rewrite the source of truth.
 
@@ -293732,7 +293637,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8aa169fb-c98f-48f6-8441-520bf8144a01/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -295427,10 +295332,6 @@ agent = create_deep_agent(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/298e9d96-115e-45b0-8b07-e9f1f0f6f899/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Using CompiledSubAgent
 
 For more complex use cases, you can provide your custom subagents with [`CompiledSubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent).
@@ -295782,7 +295683,7 @@ result = agent.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8690f61a-2e91-442f-b772-589ad1e807c7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6824e214-8e46-4cc4-8332-884c37bae27a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -296403,7 +296304,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ee862817-3467-417b-808a-73b1dac48d00/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f25e02c6-7a78-4d2c-b2d7-3d33c3599818/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -298345,10 +298246,6 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5e2332fe-f150-4b1c-8980-0df71370e64e/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 ## Custom tools
 
 Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
@@ -298566,10 +298463,6 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/72db4044-0d95-4eaa-becf-5d5705110acb/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 For full details on defining and using LangChain tools (tool dicts, `StructuredTool`, return types, error handling, and more), see [Tools](/oss/python/langchain/tools).
 
 ## MCP tools
@@ -298768,10 +298661,6 @@ Install LangChain with the `mcp` extra to connect to MCP servers:
           )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52f4ba76-56b4-4d12-91fe-8a1c51c0b0fd/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/python/langchain/mcp).
 
@@ -304869,7 +304758,7 @@ The following platforms provide access to multiple tools and services through a 
 | Tool/Toolkit | Number of Integrations | Pricing | Key Features |
 | - | - | - | - |
 | [Composio](/oss/python/integrations/tools/composio) | 500+ | Free tier available | OAuth handling, event-driven workflows, multi-user support |
-| [Scalekit](https://docs.scalekit.com/agentkit/quickstart/) | 400+ | Free tier available | Delegated OAuth, token vault, multi-user support, LangSmith tracing |
+| [Scalekit](https://docs.scalekit.com/agentkit/quickstart/) | 500+ | Free tier available | Delegated OAuth, token vault, multi-user support, LangSmith tracing |
 
 ## Security
 
@@ -306962,7 +306851,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5ddee370-d49e-4c80-ae12-691aa17c1aa8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/455ace73-fce4-413b-b47e-613b605ae01d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -307163,7 +307052,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a94648f-0a0b-46f3-a80c-bd1670e35930/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ccaff61-e004-4356-81f3-4c061ef7a93a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -307193,7 +307082,7 @@ for snapshot in stream.values:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7331dcc8-fbc7-4d2e-91fa-f32b4a6f410d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eb78aa8e-9575-4c73-8e79-bad82b30ef1d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -319952,10 +319841,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
         store=store,
     )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2521e9f7-35c6-4a40-9b50-bedf6b66f302/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -319988,10 +319873,6 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
             store=store,
         )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2faa3ae-94bf-4a5e-a373-abf574b7223c/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 </Tabs>
 
@@ -320050,10 +319931,6 @@ This structure enables hierarchical organization of memories. Cross-namespace se
         namespace, filter={"my-key": "my-value"}, query="language preferences"
     )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/19bcf66b-a673-4d5c-b936-f9110546d42c/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -320095,10 +319972,6 @@ This structure enables hierarchical organization of memories. Cross-namespace se
             namespace, filter={"my-key": "my-value"}, query="language preferences"
         )
     ```
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/072edfca-d661-4858-a2ff-663daff0c41e/r">
-      Open a public LangSmith run for this example.
-    </Card>
   </Tab>
 </Tabs>
 
@@ -320502,7 +320375,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a1a10780-0608-450e-9d0e-86dac1a9747e/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/50107c17-6209-4486-be7e-65fc84f20e75/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -320548,7 +320421,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
         )
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4184a4-46db-413d-a847-571c44ac1627/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/98f96556-7dae-426d-bf15-03d9827c1aa2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -320938,7 +320811,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d2799b9a-c5ad-465a-8980-ea8aa39f59dc/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8161bb6c-4876-44f7-9570-b187ae14da8a/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -320988,7 +320861,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
         )
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c75411b-ff91-449b-bfce-c9c0fdacb530/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e500c680-f6c1-439e-a85c-9d39ff04d841/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -321222,10 +321095,6 @@ async def fleet_agent(config):
         return create_agent("claude-sonnet-5", tools)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/36cdd94e-7f37-4681-afe1-dbc15b85c239/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 Each backend is addressed independently, so a fleet can mix transports: one server over stdio, another over HTTP. An `MCPConfig` fleet shares a single negotiated [protocol era](#protocol-eras) across every backend, though: add a legacy-only server and the whole fleet drops to the legacy era.
 
 ### Independent connections with `ClientGroup`
@@ -321254,10 +321123,6 @@ async def agent_from_group(legacy_url: str, modern_url: str):
         tools = await adapter.list_tools()
         return create_agent("claude-sonnet-5", tools)
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e7804f49-ac87-4afb-8c19-691900f65c7d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Scale a deployment
 
@@ -321328,10 +321193,6 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
     async with MCPAdapter(group) as adapter:
         return await adapter.list_tools()
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3c3bb95-25d4-4a2e-bf3a-41e87f3b788d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 Because every client borrows from `_POOL`, the deployment opens one set of HTTP connections for the whole fleet rather than one per server.
 
@@ -321448,7 +321309,7 @@ async def main():
         return await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dbd2bd37-78e9-48ac-8d8a-ae052e8462ca/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7247701e-2f85-49e6-8434-c43cf1ddbad8/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -321590,7 +321451,7 @@ async def run_agent(server) -> dict:
         )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/025418ad-e7bc-43a3-b700-d1a78b3a4856/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -321634,7 +321495,7 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b0c37c50-18d9-43d8-91fb-b933c920ebd7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -321666,7 +321527,7 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/52189bcc-6bd4-4d88-b8da-e5cf72a4849c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -322921,10 +322782,6 @@ serialized = dumpd(message)
 # Deserialize back to a message object
 restored = load(serialized)
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2a8b01aa-e859-42a3-b658-d991cf6746dd/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 <Warning>
   **`load()` instantiates Python objects and can trigger side effects during deserialization. Never call `load()` on data from an untrusted or unauthenticated source.**
@@ -335787,7 +335644,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/29a89413-165f-4e8f-9fa6-e0a0ef296df1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/37316651-0cd8-4bf4-a331-24c30f1c315b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -337688,7 +337545,7 @@ Pass a `thread_id` via `config` so the conversation is checkpointed and follow-u
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cd9423e-4fda-4987-bfc0-a5c4246a19eb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6ac596b-db43-4172-bd17-edd3c833064f/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -337980,7 +337837,7 @@ for message in stream.messages:
         print(token, end="", flush=True)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cce5483a-c5fd-4e08-94dc-12b510c6ccf1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eba47840-3f3c-4528-b786-c962c59912ba/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340515,7 +340372,7 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2d025b4-a79c-4aa5-9efa-953e09a5566c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d77e4082-5e11-4004-b5ac-351caf69c151/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340607,7 +340464,7 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9862768e-4c5c-46df-b774-e0eda067aea7/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1a8a880e-fdc6-4e8c-9035-f41dfab4884b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340794,7 +340651,7 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/53f46dad-2132-4c21-aa44-58110a7041c8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3d0c3e6d-cb98-44a6-9335-f44180a9d7bd/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340824,7 +340681,7 @@ def get_weather_data(city: str) -> dict:
     }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a9566cd-8702-4147-bfe0-f22949d91761/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef7c7454-03e6-481c-b5d3-be3862290879/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340893,10 +340750,6 @@ def set_language(language: str, runtime: ToolRuntime) -> Command:
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7d36f0e9-8036-4ad0-a0f9-68a94e45628f/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 Behavior:
 
 * The command updates state using `update`.
@@ -340934,7 +340787,7 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b1764d7e-9786-4040-a1dd-720102c9b0b0/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/73ccdc9c-8579-4a93-906c-1338c04bf047/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -340985,10 +340838,6 @@ def fetch_and_store_order(order_id: str, runtime: ToolRuntime) -> Command:
         }
     )
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a4000b2b-d692-4e4f-ad34-2317ff0bd93d/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 To write to a parent graph instead, set `graph=Command.PARENT`. In that case the `ToolMessage` requirement is lifted because execution leaves the current graph entirely.
 
@@ -341214,10 +341063,6 @@ Handle tool errors using LangChain agent [middleware](/oss/python/langchain/midd
   )
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab5801b7-dc0e-40c5-ac56-a55ac8c65af6/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ### State injection
 
@@ -349114,7 +348959,7 @@ graph.invoke({"user_input": "My"})
 # {'graph_output': 'My name is Lance'}
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a72a6e66-883f-4551-b4e2-3ca3129be6a2/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/62539b5c-8df4-4dff-8de2-f365fc05983d/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -349153,7 +348998,7 @@ There are two subtle and important points to note here:
   # {'foo': 'My name', 'user_input': 'My', 'graph_output': 'My name is Lance', 'bar': 'My name is'}
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00c6ab6e-18ce-48ee-893e-4c97cec6ee6c/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/086201cf-5ed2-4a4b-aade-02848b380fad/r">
     Open a public LangSmith run for this example.
   </Card>
 
@@ -349605,7 +349450,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     graph.invoke({"url": "https://www.example.com"}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b9aac911-dc73-43de-b535-e52dfd6d7125/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3bce38d1-45db-477d-87a2-f58b0d2473d9/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -349654,7 +349499,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     graph.invoke({"urls": ["https://www.example.com"]}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aff19bbc-eb5c-464c-838c-67f1257290e9/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/906c25d1-3431-4e07-a0a5-c8f6b51bfa66/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -349958,7 +349803,7 @@ resumed = graph.stream_events(Command(resume="yes"), config, version="v3")
 final = resumed.output
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d043193b-5547-48ea-9796-f1bf5e3d32fb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b9e32d60-4cf6-44e6-b85c-60f763578a10/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -350346,7 +350191,7 @@ resumed = graph.stream_events(Command(resume=True), config=config, version="v3")
 final = resumed.output
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/81fa636e-c8ef-45a7-bb56-88ebcc19c392/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cf85f039-145d-4226-9c16-3e915c35a35c/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -350470,7 +350315,7 @@ while True:
     stream_input = Command(resume=user_response)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f93bbd7c-13df-4d59-878d-99bad0e1042b/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fcd0b07-12d7-455e-9d24-8b25548a46be/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -350538,7 +350383,7 @@ print("Final state:", resumed.output)
 # Final state: {'vals': ['a:answer for question_a', 'b:answer for question_b']}
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d43fa02f-0832-41ba-8c7d-06031d75c296/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7cbaa580-169c-4f6d-a883-5d980309e9cf/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -350635,7 +350480,7 @@ graph.stream_events(Command(resume=False), config=config, version="v3").output
   print(resumed.output["status"])
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9a47c888-5047-468c-9c93-5ef7f4969b88/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/81e6322b-083e-4290-bcb2-18cf98d38038/r">
     Open a public LangSmith run for this example.
   </Card>
 </Accordion>
@@ -350716,7 +350561,7 @@ graph.stream_events(
   print(final_state.output["generated_text"])  # -> "Improved draft after review"
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eef6edc7-2aad-4330-ba7e-a56d856bc699/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5efd556a-ed06-45b2-9520-a7a4819a92a6/r">
     Open a public LangSmith run for this example.
   </Card>
 </Accordion>
@@ -354881,7 +354726,7 @@ initial_state: State = {"topic": "AI", "answer": "", "notes": ""}
 stream = graph.stream_events(initial_state, version="v3")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e17f4132-e295-47d7-a61d-eb85ca98fbfa/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5687375-a6ad-4b8d-b553-8672cc6da1b3/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -356598,7 +356443,7 @@ Let's run our agent with an urgent billing issue that needs human review:
   print("Email sent successfully!")
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2636e51a-5dcd-4a33-8b4d-23678e364ef2/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c11c3fe2-7ea3-44bf-aa5d-85e4ac995b88/r">
     Open a public LangSmith run for this example.
   </Card>
 </Accordion>
@@ -357054,7 +356899,7 @@ for mode, chunk in stream.interleave("values"):
 # values: 10
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/64d863ef-f16b-469d-9c63-b0d2d5e24554/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6a1d451c-0e3a-4a7b-8e6f-b5cedae52a15/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -360589,7 +360434,7 @@ agent = create_agent(
     final = resumed.output
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0197c295-d619-44c2-8ec7-4bd629c786ae/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a97b862b-4007-4c28-8de3-7dadd3246bc2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -360721,7 +360566,7 @@ agent = create_agent(
     final = resumed.output
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0197c295-d619-44c2-8ec7-4bd629c786ae/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a97b862b-4007-4c28-8de3-7dadd3246bc2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -362526,7 +362371,7 @@ result = graph.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/afaeb6f7-9e5a-4417-9ea0-22352736f755/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9ab71e9c-3d7c-49aa-aa11-70fa6fc848aa/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -362874,10 +362719,6 @@ async def agent_with_interception(target):
         tools = await adapter.list_tools()
         return create_agent("claude-sonnet-5", tools, middleware=[log_mcp_calls])
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d21d1f57-af89-4714-8d4f-a065f5d99f28/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Error handling
 

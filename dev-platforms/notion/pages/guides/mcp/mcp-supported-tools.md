@@ -12,6 +12,10 @@ An MCP client can call several tools in one task. For example, it can search for
 
 ## MCP tools
 
+<Note>
+  Workspace-owned MCP connections list only the tools an admin selected for the connection, from this set: `notion-search`, `notion-ai-search`, `notion-fetch`, `notion-get-self`, `notion-get-tool-access`, `notion-create-attachment`, `notion-create-file-upload`, `notion-download-attachment`, `notion-get-file-download-urls`, `notion-create-pages`, `notion-create-database`, `notion-update-page`, `notion-convert-page-to-skill`, `notion-update-data-source`, `notion-create-view`, `notion-update-view`, `notion-move-pages`, `notion-duplicate-page`, `notion-create-comment`, `notion-get-comments`, `notion-get-async-task`, `notion-get-users`, `notion-query-data-sources`, and `notion-query-multiple-data-sources`. Other tools on this page aren't available in workspace-owned connections.
+</Note>
+
 <AccordionGroup>
   <Accordion title="Search Notion">
     `notion-search`
@@ -26,7 +30,7 @@ An MCP client can call several tools in one task. For example, it can search for
 
     A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search and reports `type: "workspace_search"`, even when the user has AI search. A connection whose selected tool list leaves out AI search also keeps its content searches on Notion workspace search.
 
-    `notion-search` supports location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results. Workspace search results may include `path` and `verification` details. Fetch important matches before relying on them. Results from AI search omit `verification`, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results can't be fetched with `notion-fetch`.
+    `notion-search` supports location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results. In `filters.created_by_user_ids` and `filters.edited_by_user_ids`, pass `"me"` for the connected user. Workspace search results may include `path` and `verification` details. Fetch important matches before relying on them. Results from AI search omit `verification`, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results can't be fetched with `notion-fetch`.
 
     A filter or sort that the workspace's plan doesn't include doesn't fail the call. Notion drops the unavailable options, runs the rest of the search, and adds a `notices` array to the response. A notice names the dropped fields, such as `filters.title_only`, and may include an upgrade link. Results can be broader than requested and use relevance sorting. On a plan without multiple-teamspace search, when `teamspace_id` and `filters.teamspace_ids` select different teamspaces, both are dropped. If dropping the options leaves an empty query with no supported constraint, the response returns no results and a notice asking for a non-empty query or a supported filter.
 
@@ -47,6 +51,19 @@ An MCP client can call several tools in one task. For example, it can search for
     * "What decisions have we made about the mobile launch?"
     * "Find discussions about this launch in my connected Slack and Mail"
     * "Look up the workspace user with the email [ada@example.com](mailto:ada@example.com)"
+  </Accordion>
+
+  <Accordion title="Search personal memories">
+    `notion-memory-search`
+
+    Searches the memories that the user's connected agents saved in earlier sessions, such as context, preferences, corrections, and decisions. Pass words or a short phrase as `query`, up to 500 characters. `limit` defaults to 10 and can be at most 50. Each result has an `id`, `title`, `url`, and `snippet`.
+
+    The tool returns the best matches, not every memory. To list, count, or filter memories, fetch the id `memory` with `notion-fetch` and query its data source with `notion-query-data-sources`. Read the `notion://docs/memory` MCP resource once before you first search or save memories in a conversation.
+
+    **Example prompts:**
+
+    * "What do you remember about how I like status updates written?"
+    * "Check my memories for the decision on the launch date"
   </Accordion>
 
   <Accordion title="Check tool access">
@@ -93,12 +110,44 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Download a Notion Skill">
     `notion-download-skill`
 
-    Downloads a complete [Notion Skill](/guides/mcp/notion-skills#download-a-complete-skill). Pass the Skill page's `id`. The response contains `id`, `version_id`, and a signed `url` for a `tar.gz` archive with `SKILL.md` and supporting files and folders. The URL expires after one hour. Skills without supporting files still return an archive. Requires the Skills API to be enabled for the workspace; unavailable in eval mode and workspace-owned MCP connections.
+    Downloads a complete [Notion Skill](/guides/mcp/notion-skills#download-a-complete-skill). Pass the Skill page's `id`. The response contains `id`, `version_id`, and a signed `url` for a `tar.gz` archive with `SKILL.md` and supporting files and folders. The URL expires after one hour. For a Skill without supporting files, the response has `markdown`, the full `SKILL.md` text with its frontmatter, instead of `url`. Unavailable in eval mode and workspace-owned MCP connections.
 
     **Example prompts:**
 
     * "Download this Skill and its supporting files for my local agent"
     * "Get the complete directory for this Skill"
+  </Accordion>
+
+  <Accordion title="Upload a Notion Skill">
+    `notion-upload-skill`
+
+    Imports an [Agent Skills standard](https://agentskills.io/home) directory into an existing page in a Skills database. Uploading takes three steps:
+
+    1. Call the tool with `action: "prepare"`, the target `page_id`, and the exact `content_length` and `checksum_crc32` of the `tar.gz` archive. `checksum_crc32` is the archive's big-endian CRC32 encoded as Base64, such as `AAAAAA==`, not as hex or an integer.
+    2. Send the raw archive bytes in a `PUT` request to the returned `upload_url`, with every header in `upload_headers`.
+    3. Call the tool with `action: "complete"`, the same `page_id`, and the returned `upload_token`.
+
+    The archive must contain `SKILL.md` with `name` and `description` in its YAML frontmatter, either at the root or in one folder named after the Skill. Other frontmatter fields are ignored. Completing the upload replaces the page's title, Description, body, and Files. `SKILL.md` becomes the page content, and the other files and folders are added to Files with their nested paths. Folders from earlier uploads aren't deleted. To upload a new Skill, create a page in a Skills database first.
+
+    Archives are limited to 20 MiB compressed, 25 MiB expanded, and 1,000 files and folders. `SKILL.md` can be at most 200,000 UTF-8 bytes. Other limits apply to folder depth and to path and file extension lengths. An upload that breaks any limit is rejected with a `validation_error`. Paths must be unique without regard to case. Links and special files are rejected. Upload URLs and tokens expire after ten minutes. Uploading never runs the Skill's instructions or scripts. Requires the read content, insert content, and update content [capabilities](/reference/capabilities). Unavailable in eval mode.
+
+    **Example prompts:**
+
+    * "Upload my local `release-notes` skill to this Notion Skill page"
+    * "Replace this Skill with the updated version from my repo"
+  </Accordion>
+
+  <Accordion title="Manage enabled Skills">
+    `notion-get-enabled-skills` lists the Notion Skills the user has enabled for MCP clients. It takes no arguments. Each entry has the Skill page's `id`, a `name`, and a `description` of when to use it when one exists. Fetch a Skill's `id` to read it. The list holds at most 30 Skills and has no cursor, so a user with more enabled Skills doesn't see all of them. Long names and descriptions are shortened.
+
+    `notion-update-enabled-skills` enables or disables Skills by page URL. Pass up to 50 URLs in `add_skill_urls` or `remove_skill_urls`. `surfaces` picks which settings change: `mcp`, `notion_ai`, or both. It defaults to both. The tool changes only the current user's settings.
+
+    Both tools are available only to connections a user authorized with OAuth.
+
+    **Example prompts:**
+
+    * "Which Notion Skills have I enabled for you?"
+    * "Turn on the 'Weekly report' Skill for MCP clients only"
   </Accordion>
 
   <Accordion title="Fetch Notion content">
@@ -116,6 +165,8 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept: an emoji character (e.g. "🚀"), a custom emoji by name (e.g. ":rocket\_ship:"), a Notion icon identifier as returned by fetch (e.g. "icons/pizza\_blue"), or an external image URL.
 
+    Page markdown cites files in page blocks by stable `notion-file-block://` references and doesn't sign them. Files in database properties are still signed inline. To get download URLs, call `notion-get-file-download-urls` with those references, or pass `include_file_urls: true` to get a `references` map from each reference to a signed URL. `include_file_urls` defaults to `false`.
+
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
@@ -128,6 +179,66 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Fetch the data source `collection://f336d0bc-b841-465b-8045-024475c079dd` to see its schema"
     * "Fetch the view `view://8ac3f3d0-1f2b-4c7e-9d51-4b0c0a9f2e77` to see how it's filtered and sorted"
     * "Fetch the bug tracking database so I can see the available templates"
+  </Accordion>
+
+  <Accordion title="Get file download URLs">
+    `notion-get-file-download-urls`
+
+    Returns signed download URLs for files that `notion-fetch` output cites with `notion-file-block://` references. Pass up to 25 references in `references`, copied exactly from the fetched markdown. Each reference resolves on its own. `files` lists the ones that resolved, each with `reference`, `url`, and `expiry_time`. `unresolved` lists the rest with a `reason`: `invalid_reference` when the value isn't a `notion-file-block://` reference, or `file_not_found` when the file doesn't exist or the user can't access it.
+
+    The URLs expire after a few minutes. Call the tool again for fresh ones. When you edit or copy page markdown, keep the `notion-file-block://` references, not the signed URLs.
+
+    **Example prompts:**
+
+    * "Download the diagram attached to this spec page"
+    * "Get links to every file on this page"
+  </Accordion>
+
+  <Accordion title="List sidebar pages">
+    These tools list pages and databases from the user's sidebar:
+
+    * `notion-list-private-pages`: top-level pages and databases in the user's **Private** section.
+    * `notion-list-shared-pages`: pages and databases in the user's **Shared** section.
+    * `notion-list-favorite-pages`: the user's favorites, in sidebar order.
+    * `notion-list-recent-pages`: pages and databases the user recently viewed, ranked by recency and visit frequency. It covers only the user's 1,000 top-ranked pages. This list reflects views, not edits. To find pages the user edited, use `notion-search` with `filters.edited_by_user_ids: ["me"]` and `sort: "last_edited"`.
+
+    Each result has a `type` of `page` or `database`, a `url`, and, when available, a `title` and an `icon`.
+
+    `limit` is 1 to 200 and defaults to 50. When more results follow, the response includes `nextCursor`. Pass it back as `cursor` until the response stops returning one. A page of results can be shorter than `limit`, or empty, and still include `nextCursor`.
+
+    For content searches, including by title, use `notion-search`.
+
+    **Example prompts:**
+
+    * "What's in my Private section?"
+    * "Open the page I was looking at this morning"
+    * "List my favorite pages"
+  </Accordion>
+
+  <Accordion title="List page backlinks">
+    `notion-list-page-backlinks`
+
+    Lists the pages in the connected workspace that link to or mention a page or database. Pass the page's ID or URL as `page_id`. The tool returns IDs, titles, and URLs, never page content. To read a result, fetch it with `notion-fetch`. Requires the read content [capability](/reference/capabilities).
+
+    Each entry in `backlinks` has a `type` and a `source` with the linking page's `id`, `url`, `title`, and `last_edited_time`. An entry can also show where the mention is: `block_id` for a block in the source page, `comment_id` for a comment, or `property` (`id` and `name`) for a database property. Within one response, each source page appears at most once per type. The same page can appear again in a later response, because a page boundary can fall between two entries for it. `type` is one of these values:
+
+    * `page_mention`: an inline mention in text, a title, or a caption.
+    * `link_to_page`: a link to page block.
+    * `property_mention`: a mention in a database property.
+    * `comment_mention`: a mention in a comment.
+
+    Pass `types` to return only some kinds. Omit it to get all of them.
+
+    The list includes only pages the user can open. It never says how many backlinks it left out. Backlinks from other workspaces aren't included. A page the user can reach only through view-only web sharing returns an empty list.
+
+    `page_size` is 1 to 100 and defaults to 25. The response includes `next_cursor` only when another backlink the user can open follows. Pass it as `cursor`, with the same `page_id` and `types`, to get the next page. A response can have fewer than `page_size` backlinks, or none. The list can also end early, with no `next_cursor` and no error, for example when many backlinks come from pages the user can't open.
+
+    A page that doesn't exist, or that the user can't read, returns an HTTP 400 `validation_error` with `additional_data.tool_error_code` set to `page_not_found`. The two cases look the same. A block ID that isn't a page or database returns a `validation_error`. So does a cursor from a different request, or one that was changed.
+
+    **Example prompts:**
+
+    * "Which pages link to our launch plan?"
+    * "Find comments that mention this spec"
   </Accordion>
 
   <Accordion title="Create a file upload URL">
@@ -325,10 +436,31 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Create a folder named 'Supporting documents' under this project page"
   </Accordion>
 
+  <Accordion title="Update a folder">
+    `notion-update-folder`
+
+    Changes an existing Folder with one command per call. Pass the Folder's `folder_id`, with or without dashes, and exactly one of these command shapes:
+
+    * `{"command": "add_files", "file_upload_ids": [...]}` adds files by the file upload IDs that the upload tools return, such as `notion-create-file-upload`.
+    * `{"command": "remove_files", "file_urls": [...]}` removes files. Fetch the Folder first and pass the exact file URLs from that result.
+    * `{"command": "add_subfolder", "title": "..."}` creates a nested Folder. The response includes `created_folder_id` and `created_folder_url`.
+
+    The response also includes `folder_id`, `command`, and `updated_item_count`.
+
+    **Example prompts:**
+
+    * "Add the report I just uploaded to the 'Project files' folder"
+    * "Create a 'Drafts' subfolder in this folder"
+  </Accordion>
+
   <Accordion title="Update a data source">
     `notion-update-data-source`
 
     Update a Notion data source's properties, name, description, or other attributes.
+
+    To change a `select`, `multi_select`, or `status` property, list every option to keep. Omitted options are removed. Existing options keep their IDs and can be recolored, and `status` options keep their group when you omit it.
+
+    Pass `page_layout` to replace the layout that every page in the data source uses, such as pinned properties, the sidebar, and property sections. Fetch the data source first to get its current layout, then edit it. Read the `notion://docs/database-page-layouts` MCP resource for the format. Change properties and the page layout in separate calls. A call that does both returns a `validation_error`.
 
     **Example prompts:**
 
@@ -397,6 +529,23 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Read the in-progress rows from the Specs data source. Keep mentions and links in Notes."
   </Accordion>
 
+  <Accordion title="Query multiple data sources">
+    `notion-query-multiple-data-sources`
+
+    Runs one read-only SQLite query across 2 to 100 data sources, for joins, unions, comparisons, and totals. Fetch each data source first with `notion-fetch` to get its schema and `collection://` URL. Pass the URLs in `data_source_urls` and use each one as a quoted table name in `query`. Bind untrusted values with `?` placeholders and `params` instead of putting them in the SQL. Saved view filters and sorts aren't applied, so put every filter in `WHERE`.
+
+    The response contains the matching rows, the IDs of the queried data sources, and whether the results were truncated. SQL output can omit mention text, link targets, and formatting, the same as SQL in `notion-query-data-sources`. To read one data source or run a saved view, use `notion-query-data-sources`.
+
+    <Note>
+      Requires a Business or Enterprise plan with Notion AI. On other plans the call doesn't run the query. It returns an error that says the tool needs the full version of Notion MCP and links to the next step. To check before you call, read the tool's entry in `notion-get-tool-access`.
+    </Note>
+
+    **Example prompts:**
+
+    * "Join the Projects and Tasks data sources and count open tasks per project"
+    * "Compare this quarter's deals across the Sales and Partnerships databases"
+  </Accordion>
+
   <Accordion title="Query meeting notes">
     `notion-query-meeting-notes`
 
@@ -414,10 +563,11 @@ An MCP client can call several tools in one task. For example, it can search for
   </Accordion>
 
   <Accordion title="Work with Custom Agent sessions">
-    Use `notion-list-agents` to browse available Custom Agents. Use
-    `notion-search-agents` to get the Custom Agent URL needed to start a
-    session. Then use these tools to find sessions, start a session, send
-    follow-up messages, wait for a reply, stop a run, and read session events:
+    Use `notion-search-agents` to find a Custom Agent by name or description,
+    or to browse the user's favorite agents and the workspace's newest agents.
+    It returns the Custom Agent URL needed to start a session. Then use these
+    tools to find sessions, start a session, send follow-up messages, wait for
+    a reply, stop a run, and read session events:
 
     * `notion-query-sessions`
     * `notion-search-sessions`
@@ -498,13 +648,35 @@ An MCP client can call several tools in one task. For example, it can search for
     `notion-get-comments`
 
     Lists all comments and discussions on a page. Can include block-level and
-    inline discussions, resolved threads, and full comment content.
+    inline discussions, resolved threads, and full comment content. Comments the
+    connected user wrote are marked `by-you="true"`.
 
     **Example prompts:**
 
     * "Get all discussions on this page, including resolved ones"
     * "Show me the comments on the Requirements section"
     * "Get all feedback comments from last week's review"
+  </Accordion>
+
+  <Accordion title="Edit and react to comments">
+    These tools change existing comments and discussions. Get comment and discussion IDs from `notion-get-comments` or `notion-create-comment`. Comment IDs work with or without dashes.
+
+    * `notion-update-comment` replaces the text of a comment the user wrote. Pass `comment_id` and the full new text as inline markdown in `markdown`. The new text replaces the whole comment. Block-level markdown, such as lists and headings, isn't supported.
+    * `notion-delete-comment` deletes a comment the user wrote. If it's the last comment in its discussion, the discussion is removed too.
+    * `notion-set-discussion-resolved` resolves a discussion with `resolved: true` or reopens it with `resolved: false`. Pass `discussion_id`, either a `discussion://` URL from `notion-get-comments` or the `discussion_id` from `notion-create-comment`.
+    * `notion-set-comment-reaction` adds (`reacted: true`) or removes (`reacted: false`) the user's reaction on a comment. Pass one standard Unicode emoji in `emoji`. Setting the same state twice changes nothing.
+
+    <Note>
+      Requires a Business or Enterprise plan. On other plans the tools return an upgrade prompt.
+    </Note>
+
+    Users can edit and delete only their own comments. The tool descriptions tell assistants to fix a comment with `notion-update-comment` instead of deleting it and posting a new one, and to resolve a discussion only when a person asks.
+
+    **Example prompts:**
+
+    * "Fix the typo in my last comment on this page"
+    * "Resolve the discussion about the launch date"
+    * "React with 👍 to Ada's comment"
   </Accordion>
 
   <Accordion title="Get teams">
@@ -516,6 +688,19 @@ An MCP client can call several tools in one task. For example, it can search for
 
     * "Search for teams by name, and your membership status in each team"
     * "Get a team's ID to use as a filter for a search"
+  </Accordion>
+
+  <Accordion title="Get groups">
+    `notion-get-groups`
+
+    Lists the permission groups in the current workspace that the user can see, with each group's ID and name. Pass an optional `query` to search by name, or pass a group reference from a People property value (`space_permission_group-<id>`, or the bare ID) to look up that group's name. Returns at most 25 groups and reports when there are more.
+
+    Workspace members see every group in the workspace, as they do in the People picker. Guests and connections that don't act as a user get no groups.
+
+    **Example prompts:**
+
+    * "Which group is set in the Owner property of this page?"
+    * "Find the Design group so I can assign it to this task"
   </Accordion>
 
   <Accordion title="Get users">

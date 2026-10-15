@@ -20,11 +20,11 @@ Update the agent settings for an inbox.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
@@ -49,10 +49,8 @@ other keys.
   must not be empty. Send `null` to clear them.
 </ParamField>
 
-<ParamField type="string | null">
-  Tone the agent writes in, such as `friendly and concise`. Max 64 characters.
-  Leading and trailing whitespace is trimmed, and the trimmed value must not be
-  empty. Send `null` to clear it.
+<ParamField type="'concise_professional' | 'concise_casual' | 'expanded_professional' | 'expanded_casual' | null">
+  Tone the agent writes in. Send `null` to clear it.
 </ParamField>
 
 <ParamField type="string[]">
@@ -71,7 +69,7 @@ other keys.
   const { data, error } = await resend.inboxes.agent.update({
     inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
     instructions: 'Answer refund questions yourself. Escalate legal threats.',
-    tone: 'friendly and concise',
+    tone: 'concise_professional',
     enabledActions: ['draft_reply', 'add_labels'],
   });
   ```
@@ -82,7 +80,7 @@ other keys.
        -H 'Content-Type: application/json' \
        -d $'{
     "instructions": "Answer refund questions yourself. Escalate legal threats.",
-    "tone": "friendly and concise",
+    "tone": "concise_professional",
     "enabled_actions": ["draft_reply", "add_labels"]
   }'
   ```
@@ -90,7 +88,7 @@ other keys.
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes agent update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --instructions "Answer refund questions yourself. Escalate legal threats." \
-    --tone "friendly and concise" \
+    --tone concise_professional \
     --enabled-actions draft_reply,add_labels
   ```
 </RequestExample>

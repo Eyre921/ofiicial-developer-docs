@@ -17,11 +17,11 @@ Claude Code session-cost tools run on the machine where the session ran. After y
 | **1** | A spend bar and the estimated session cost. Each segment represents a model that served traffic |
 | **2** | Each model's name, estimated cost, and cache share. For bare `firerouter`, it also shows the routing level, such as `balanced` or `max-savings` |
 
-Several models can appear in one bar. See [FireRouter](/nexus/firerouter) for why `firerouter/...` can use multiple backends.
+Several models can appear in one bar. See [FireRouter](/nexus/firerouter) for why `firerouter` can use multiple backends.
 
 The auto-mode line below the bar belongs to Claude Code, not the Fireworks `auto` model ID.
 
-The FireConnect status line and session meter use Fireworks rates. `fireconnect model list` shows those rates. Claude Code's built-in HUD uses Anthropic list prices.
+The FireConnect status line and session meter price Fireworks models at Fireworks rates, which `fireconnect model list` shows. They price Claude and GPT models at provider list prices, from a cached copy that also works offline. Claude Code's built-in HUD uses Anthropic list prices.
 
 ## Inspect a session
 

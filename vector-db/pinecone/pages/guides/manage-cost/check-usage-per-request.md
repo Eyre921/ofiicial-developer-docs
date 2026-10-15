@@ -1,78 +1,21 @@
 ---
-title: "Monitor usage and costs"
-source: https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs
-path: guides/manage-cost/monitor-usage-and-costs
+title: "Check usage per request"
+source: https://docs.pinecone.io/guides/manage-cost/check-usage-per-request
+path: guides/manage-cost/check-usage-per-request
 ---
 
-Monitor Pinecone usage and costs at the organization, index, and operation level, and set monthly spend alerts to catch unexpected charges.
+Check the read units and embedding tokens Pinecone returns on each query, fetch, list, and embedding request to see what a single call consumed.
 
-## Monitor organization-level usage and costs
+Requests that consume read units or embedding tokens return a `usage` field alongside their results. Reading it tells you what a single request cost, so you can compare approaches before running them at scale.
 
-<Note>
-  To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
-</Note>
+## Read units
 
-The **Usage** dashboard in the Pinecone console gives you a detailed report of usage and costs across your organization, broken down by each billable SKU or aggregated by project or service. You can view the report in the console or download it as a CSV file for more detailed analysis.
-
-1. Go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.
-2. Select the time range to report on. This defaults to the last 30 days.
-3. Select the scope for your report:
-   * **SKU:** The usage and cost for each billable SKU, for example, read units per cloud region, storage size per cloud region, or tokens per embedding model.
-   * **Project:** The aggregated cost for each project in your organization.
-   * **Service:** The aggregated cost for each service your organization uses, for example, database (includes serverless back up and restore), assistants, inference (embedding and reranking), and collections.
-4. Choose the specific SKUs, projects, or services you want to report on. This defaults to all.
-5. To download the report as a CSV file, click **Download**.
-
-   <Tip>
-     The CSV download provides more granular detail than the console view, including breakdowns by individual index as well as project and index tags.
-   </Tip>
-
-Dates are shown in UTC to match billing invoices. Cost data is delayed up to three days from the actual usage date.
-
-## Set monthly spend alerts
-
-You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
+[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), and [list by ID](/guides/manage-data/list-record-ids) requests return a `usage` field with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of that request.
 
 <Note>
-  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
-</Note>
-
-To set a spend alert:
-
-1. Go to [Settings > Spend alerts](https://app.pinecone.io/organizations/-/settings/spend-alerts) in the Pinecone console
-2. Click **+ Add Alert**.
-3. Enter the dollar amount for the spend alert.
-4. Enter the email addresses to send the alert to. [Organization owners](/admin/organizations/understanding-organizations#organization-roles) are listed by default.
-5. Click **Create**.
-
-To edit a spend alert:
-
-1. In the row of the spend alert you want to edit, click **ellipsis (...) menu > Edit**.
-2. Change the dollar amount and/or email addresses for the spend alert.
-3. Click **Update**.
-
-<Note>
-  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert can't be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
-</Note>
-
-## Monitor index-level usage
-
-You can monitor index-level usage directly in the Pinecone console, or you can pull them into [Prometheus](https://prometheus.io/). For more details, see [Monitoring](/guides/production/monitoring).
-
-## Monitor operation-level usage
-
-### Read units
-
-[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), and [list by ID](/guides/manage-data/list-record-ids) requests return a `usage` parameter with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of each request that's made.
-
-<Warning>
   While Pinecone tracks read unit usage with decimal precision, the Pinecone API and SDKs round these values up to the nearest whole number in query, fetch, list, and full-text search responses. For example, if a query uses 0.45 read units, the API and SDKs will report it as 1 read unit.
 
-  For precise read unit reporting, see [index-level metrics](/guides/production/monitoring) or the organization-wide [Usage dashboard](/guides/manage-cost/monitor-usage-and-costs#monitor-organization-level-usage-and-costs).
-</Warning>
-
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+  For precise read unit reporting, see [index-level metrics](/guides/production/monitoring) or the organization-wide [Usage dashboard](/admin/billing/download-usage-report).
 </Note>
 
 Example query request:
@@ -291,13 +234,13 @@ The response looks like this:
   ```
 </CodeGroup>
 
-For a more in-depth demonstration of how to use read units to inspect read costs, see [this notebook](https://github.com/pinecone-io/examples/blob/master/docs/read-units-demonstrated.ipynb).
+For a worked example of inspecting read costs, see the [read units notebook](https://github.com/pinecone-io/examples/blob/master/docs/read-units-demonstrated.ipynb).
 
-### Embedding tokens
+## Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
 
-For example, the following request to use the `multilingual-e5-large` model to generate embeddings for sentences related to the word “apple” might return this request and summary of embedding tokens generated:
+For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -530,7 +473,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   ```
 </CodeGroup>
 
-The returned object looks like this:
+The response looks like this:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -620,4 +563,5 @@ The returned object looks like this:
 ## See also
 
 * [Understand Pinecone cost](/guides/manage-cost/understanding-cost)
-* [Save on Pinecone costs](/guides/optimize/save-on-costs)
+* [Monitor performance](/guides/production/monitoring)
+* [Download a usage report](/admin/billing/download-usage-report)

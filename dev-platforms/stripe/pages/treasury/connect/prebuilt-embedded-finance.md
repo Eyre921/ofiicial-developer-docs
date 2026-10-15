@@ -89,7 +89,9 @@ After you request the capabilities for each account configuration, Stripe return
 
 You must collect the requirements from your connected accounts to enable the requested capabilities. You can use the [Connect embedded onboarding](https://docs.stripe.com/connect/supported-embedded-components/account-onboarding.md) component to collect onboarding requirements from your connected accounts.
 
-1. Create or update the connected account, requesting `money_manager` and `card_creator` capabilities.
+1. Create or update the connected account, requesting `money_manager` and `card_creator` capabilities. Choose the card program that Stripe has enabled for your platform.
+
+   #### Celtic Bank spend card
 
    ```curl
    curl -X POST https://api.stripe.com/v2/core/accounts \
@@ -153,6 +155,80 @@ You must collect the requirements from your connected accounts to enable the req
                    "commercial": {
                        "celtic": {
                            "spend_card": {
+                               "requested": true
+                           }
+                       }
+                   }
+               }
+           }
+       }
+     }'
+   ```
+
+   #### Cross River Bank prepaid card
+
+   ```curl
+   curl -X POST https://api.stripe.com/v2/core/accounts \
+     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+     -H "Stripe-Version: 2026-09-30.preview" \
+     --json '{
+       "include": [
+           "configuration.money_manager",
+           "configuration.card_creator"
+       ],
+       "configuration": {
+           "money_manager": {
+               "capabilities": {
+                   "received_credits": {
+                       "bank_accounts": {
+                           "requested": true
+                       }
+                   },
+                   "business_storage": {
+                       "inbound": {
+                           "usd": {
+                               "requested": true
+                           }
+                       },
+                       "outbound": {
+                           "usd": {
+                               "requested": true
+                           }
+                       }
+                   },
+                   "outbound_payments": {
+                       "bank_accounts": {
+                           "requested": true
+                       },
+                       "financial_accounts": {
+                           "requested": true
+                       }
+                   },
+                   "outbound_transfers": {
+                       "bank_accounts": {
+                           "requested": true
+                       },
+                       "financial_accounts": {
+                           "requested": true
+                       }
+                   },
+                   "inbound_transfers": {
+                       "bank_accounts": {
+                           "requested": true
+                       }
+                   },
+                   "received_debits": {
+                       "bank_accounts": {
+                           "requested": true
+                       }
+                   }
+               }
+           },
+           "card_creator": {
+               "capabilities": {
+                   "commercial": {
+                       "cross_river_bank": {
+                           "prepaid_card": {
                                "requested": true
                            }
                        }

@@ -20,7 +20,7 @@ With an active Fire Pass you get:
 
 * Covered usage on the open-weight model routers enabled for your pass
 * A dedicated `fpk_...` key that works only with Fire Pass routes
-* Access through supported FireConnect harnesses and compatible OpenAI- or Anthropic-style clients
+* Access through compatible OpenAI- or Anthropic-style clients
 
 Use a standard Fireworks key (`fw_...`) for models and features outside Fire Pass.
 
@@ -45,25 +45,18 @@ Use a standard Fireworks key (`fw_...`) for models and features outside Fire Pas
 
 ## Using your Fire Pass
 
-Fire Pass is designed for personal agentic coding. [FireConnect](/nexus/fireconnect) detects `fpk_...` keys, selects `kimi-fast-latest` by default, and exposes only the routers supported by Fire Pass.
-
-```bash theme={null}
-fireconnect login
-fireconnect model list
-fireconnect claude
-```
-
-| FireConnect harness | Fire Pass |
-| - | - |
-| Claude Code, OpenCode, Pi | Supported |
-| Cursor IDE, VS Code Chat | Supported |
-| GitHub Copilot app and CLI | Supported |
-| DeepSeek Harness | Supported |
-| Codex CLI and ChatGPT desktop | Not supported. These clients use the Responses API, which does not currently accept Fire Pass keys. |
+Fire Pass is designed for personal agentic coding. Configure your tool manually with your Fire Pass key and the details in [General Configuration](#general-configuration).
 
 <Warning>
-  Fire Pass keys cannot use `auto`, `auto-instant`, or FireRouter. Run
-  `fireconnect model list` with your Fire Pass key to see the available routes.
+  [FireConnect](/nexus/fireconnect) doesn't accept Fire Pass keys. It rejects
+  an `fpk_...` key and asks you to sign in with `fireconnect login`. To use
+  FireConnect, sign in with a standard Fireworks key (`fw_...`).
+</Warning>
+
+<Warning>
+  Fire Pass keys cannot use `auto`, `auto-instant`, or FireRouter. Codex and the
+  ChatGPT desktop app use the Responses API, which isn't supported with Fire
+  Pass keys.
 </Warning>
 
 ### General Configuration
@@ -94,15 +87,23 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
   </Accordion>
 
   <Accordion title="OpenCode">
-    Use [FireConnect](/nexus/harnesses#opencode):
+    Add the Fire Pass router to `~/.config/opencode/opencode.json`, with your
+    Fire Pass key in `FIREWORKS_API_KEY`:
 
-    ```bash theme={null}
-    fireconnect login
-    fireconnect opencode
+    ```json ~/.config/opencode/opencode.json theme={null}
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "provider": {
+        "fireworks-ai": {
+          "options": { "apiKey": "{env:FIREWORKS_API_KEY}" },
+          "models": {
+            "accounts/fireworks/routers/kimi-fast-latest": { "name": "Kimi Fast (Fire Pass)" }
+          }
+        }
+      },
+      "model": "fireworks-ai/accounts/fireworks/routers/kimi-fast-latest"
+    }
     ```
-
-    Fire Pass keys default to `kimi-fast-latest`. Run `fireconnect model list`
-    to see the other routes enabled for Fire Pass.
   </Accordion>
 
   <Accordion title="Cline">
@@ -131,15 +132,28 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
   </Accordion>
 
   <Accordion title="Claude Code">
-    Use [FireConnect](/nexus/harnesses#claude-code):
+    Add these values to `~/.claude/settings.json`:
 
-    ```bash theme={null}
-    fireconnect login
-    fireconnect claude
+    ```json ~/.claude/settings.json theme={null}
+    {
+      "env": {
+        "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
+        "ANTHROPIC_AUTH_TOKEN": "fpk_YOUR_FIRE_PASS_KEY",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
+        "ANTHROPIC_DEFAULT_FABLE_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
+        "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/routers/kimi-fast-latest"
+      },
+      "model": "accounts/fireworks/routers/kimi-fast-latest"
+    }
     ```
 
-    FireConnect pins Claude Code's model slots to the Fire Pass default. Fire
-    Pass does not add the standard Fireworks catalog or FireRouter to `/model`.
+    Run `claude`. Claude Code may ask once whether to use the API key; approve it.
+
+    Set every model slot to the Fire Pass router. Claude Code sends background
+    and subagent requests to those slots, and a `claude-*` model ID fails with a
+    Fire Pass key. Claude Code's web search also needs a standard `fw_...` key.
   </Accordion>
 
   <Accordion title="Kilo Code">
@@ -215,10 +229,9 @@ Fire Pass is intended for **non-production coding use only**. By activating Fire
   </Accordion>
 
   <Accordion title="Do I need to use a special model ID?">
-    Use one of the routers enabled for Fire Pass. FireConnect defaults to
-    `kimi-fast-latest`; run `fireconnect model list` to see the current set.
-    For manual configuration, use the full ID
-    `accounts/fireworks/routers/kimi-fast-latest`.
+    Use one of the routers enabled for Fire Pass, such as
+    `accounts/fireworks/routers/kimi-fast-latest`. Check the Fire Pass page for
+    the current set.
   </Accordion>
 
   <Accordion title="Can I use FireRouter or Auto?">

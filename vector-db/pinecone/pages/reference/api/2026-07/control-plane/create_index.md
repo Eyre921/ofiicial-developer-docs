@@ -5,13 +5,17 @@ path: reference/api/2026-07/control-plane/create_index
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes
-Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields — and, optionally, the deployment infrastructure (managed serverless or BYOC). To create an index with an integrated embedding model, use [Create an index with integrated embedding](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model).
+Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields, and string fields with integrated embedding — and, optionally, the deployment infrastructure (managed serverless or BYOC).
 
-**The index schema cannot be modified after creation.** Field types, dimensions, metrics, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
+The index is a document index, read and written through the Documents API. To enable integrated embedding on a field, declare a `string` field with `embed` (dense) and/or `sparse_embed` (sparse): Pinecone embeds the field's text when documents are written and the query text when a search scores the field. BYOC indexes cannot declare `embed` or `sparse_embed`.
+
+**The index schema cannot be modified after creation.** Field types, dimensions, metrics, embedding models, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
 
 To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
+
+[Create a legacy integrated index](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model) creates legacy integrated indexes, which require the legacy Records API.
 
 The index initializes asynchronously. Before sending data plane requests, poll [Describe an index](/reference/api/2026-07/control-plane/describe_index) until `status.ready` is `true` (and, for `Dedicated` read capacity, until `read_capacity.status.state` is `"Ready"`). The response shows each `full_text_search` field's resolved analyzer settings (`language`, `stemming`, and `stop_words`), including any defaults applied at creation.
 

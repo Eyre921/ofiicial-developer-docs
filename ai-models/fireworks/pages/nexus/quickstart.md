@@ -53,14 +53,9 @@ You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys)
       fireconnect codex
       ```
 
-      ```bash Codex app theme={null}
-      # Quit the Codex app first
-      fireconnect codex
-      ```
-
-      ```bash ChatGPT desktop theme={null}
-      # Quit the ChatGPT app first
-      fireconnect codex
+      ```bash ChatGPT desktop app theme={null}
+      # Quit the ChatGPT desktop app first
+      fireconnect chatgpt
       ```
 
       ```bash OpenCode theme={null}
@@ -80,7 +75,7 @@ You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys)
       ```
     </CodeGroup>
 
-    The Codex CLI, the Codex app, and the ChatGPT desktop app share one config, so `fireconnect codex` connects all three. For desktop apps, including Cursor IDE and VS Code, quit the app first. See [Coding Harnesses](/nexus/harnesses) for every harness.
+    The Codex CLI and the ChatGPT desktop app share one config, so `fireconnect codex` and `fireconnect chatgpt` connect both. For desktop apps, including Cursor IDE and VS Code, quit the app first. See [Coding Harnesses](/nexus/harnesses) for every harness.
   </Step>
 
   <Step title="Restart and pick a model" icon="sparkles">
@@ -90,7 +85,7 @@ You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys)
       <img alt="Claude Code model picker with FireRouter selected and Auto, DeepSeek, GLM, Kimi, and MiniMax options" />
     </Frame>
 
-    <Check>`fireconnect claude status` shows the configured model and Fireworks endpoint.</Check>
+    <Check>`fireconnect claude status` shows Fireworks as the provider and the configured model.</Check>
   </Step>
 </Steps>
 
@@ -178,7 +173,7 @@ You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys)
   </Step>
 
   <Step title="Try a router" icon="shuffle">
-    Change `model` to `firerouter/opus`. FireRouter picks a model for each turn, and the response `model` field shows which one served it. Routes with closed models need a [provider credential](/nexus/firerouter#provide-anthropic-and-openai-credentials).
+    Change `model` to `firerouter`. FireRouter picks a model for each turn, and the response `model` field shows which one served it. Claude and GPT turns need a [provider credential](/nexus/firerouter#provide-anthropic-and-openai-credentials).
 
     More examples, including the Responses API: [FireRouter Setup](/nexus/firerouter/setup#api-and-sdk).
   </Step>

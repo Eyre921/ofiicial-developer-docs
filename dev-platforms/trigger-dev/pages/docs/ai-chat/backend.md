@@ -499,6 +499,47 @@ Custom actions let the frontend send structured commands (undo, rollback, edit, 
 
 See [Actions](/docs/ai-chat/actions).
 
+### Webhook events and channels
+
+<Note>
+  Webhooks are in private beta. [Request access](https://trigger.dev/webhooks-beta) and we'll turn them on for your
+  organization.
+</Note>
+
+Two `chat.agent()` options wire an agent to verified inbound webhooks. `events` claims [`chat.event(...)`](/docs/webhooks/session-routing) descriptors: each verified delivery is routed to this agent's session and arrives at `onAction` as an action (not a turn), so [session routing](/docs/webhooks/session-routing) decides which conversation it lands on. `channels` claims channel connectors that turn an external chat surface into a frontend for the agent: an inbound message runs as a turn through `run()` and the reply is posted back. `slack()` ships in `@trigger.dev/slack`, and `chat.channels.custom(...)` builds a connector for any endpoint without a preset.
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { slack, webhookSource } from "@trigger.dev/slack";
+
+const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
+const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const orderEvents = chat.event({
+  id: "order-events",
+  endpoint: stripe,
+  key: "{event.data.object.customer}",
+  // invoices always carry a customer; events without one would have no session to go to
+  filter: "event.type startsWith 'invoice.'",
+  type: "order.event",
+});
+
+export const myChat = chat.agent({
+  id: "my-chat",
+  events: [orderEvents],
+  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  onAction: async ({ action }) => {
+    // A verified order-events delivery arrives here as an action.
+  },
+  run: async (payload) => {
+    // Inbound Slack messages run here as normal turns.
+  },
+});
+```
+
+See [session routing](/docs/webhooks/session-routing) and [channels](/docs/webhooks/channels). For the interactive approvals layer, where a turn pauses on a human decision (buttons in the thread) and resumes on the click, see [human-in-the-loop](/docs/webhooks/human-in-the-loop).
+
 ### Chat history
 
 Imperative API for reading and modifying the accumulated message history. Works from any hook (`onAction`, `onTurnStart`, `onBeforeTurnComplete`, `onTurnComplete`, `hydrateMessages`) or from `run()` and AI SDK tools.

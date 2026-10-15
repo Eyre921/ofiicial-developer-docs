@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/admin/security/security-overview
 path: admin/security/security-overview
 ---
 
-Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints.
+Review Pinecone's security features for production, including API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints.
 
 ## Access management
 
@@ -54,7 +54,7 @@ A user can be assigned roles for each organization they belong to, and any proje
 
 [Audit logs](/admin/security/configure-audit-logs) provide a detailed record of user and API actions that occur within Pinecone.
 
-Events are captured every 30 minutes and each log batch will be saved into its own file as a JSON blob, keyed by the time of the log to be written. Only logs since the integration was created and enabled will be saved.
+Events are captured every 30 minutes, and each log batch is saved to its own file as a JSON blob, keyed by the time of the log to be written. Only logs since the integration was created and enabled are saved.
 
 Audit log events adhere to a standard JSON schema and include the following fields:
 
@@ -111,7 +111,7 @@ The following events are captured in the audit logs:
 
 | Action | Query parameters |
 | - | - |
-| Create project | `event.action: create`, `event.resource_type: project`, `event.resouce_id: PROJ_NAME` |
+| Create project | `event.action: create`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME` |
 | Update project | `event.action: update`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME` |
 | Delete project | `event.action: delete`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME` |
 | Invite project member | `event.action: create`, `event.resource_type: user`, `event.resource_id: [ARRAY_OF_USER_EMAILS]` |
@@ -122,7 +122,7 @@ The following events are captured in the audit logs:
 
 | Action | Query parameters |
 | - | - |
-| Create index | `event.action: create`, `event.resource_type: index`, `event.resouce_id: INDEX_NAME` |
+| Create index | `event.action: create`, `event.resource_type: index`, `event.resource_id: INDEX_NAME` |
 | Update index | `event.action: update`, `event.resource_type: index`, `event.resource_id: INDEX_NAME` |
 | Delete index | `event.action: delete`, `event.resource_type: index`, `event.resource_id: INDEX_NAME` |
 | Create backup | `event.action: create`, `event.resource_type: backup`, `event.resource_id: BACKUP_NAME` |
@@ -132,7 +132,7 @@ The following events are captured in the audit logs:
 
 | Action | Query parameters |
 | - | - |
-| User login | `event.action: login`, `event.resource_type: user`, `event.resouce_id: USERNAME` |
+| User login | `event.action: login`, `event.resource_type: user`, `event.resource_id: USERNAME` |
 | Create API key | `event.action: create`, `event.resource_type: api-key`, `event.resource_id: API_KEY_ID` |
 | Delete API key | `event.action: delete`, `event.resource_type: api-key`, `event.resource_id: API_KEY_ID` |
 
@@ -167,7 +167,7 @@ Pinecone encrypts stored data using the 256-bit Advanced Encryption Standard (AE
 
 ### Encryption in transit
 
-Pinecone uses standard protocols to encrypt user data in transit. Clients open HTTPS or gRPC connections to the Pinecone API; the Pinecone API gateway uses gRPC connections to user deployments in the cloud. These HTTPS and gRPC connections use the TLS 1.2 protocol with 256-bit Advanced Encryption Standard (AES-256) encryption.
+Pinecone uses standard protocols to encrypt user data in transit. Clients open HTTPS or gRPC connections to the Pinecone API. The Pinecone API gateway uses gRPC connections to user deployments in the cloud. These HTTPS and gRPC connections use the TLS 1.2 protocol with 256-bit Advanced Encryption Standard (AES-256) encryption.
 
 <img alt="Diagram showing encryption protocols for user data in transit" />
 
@@ -175,9 +175,9 @@ Traffic is also encrypted in transit between the Pinecone backend and cloud infr
 
 ## Network security
 
-### Private Endpoints
+### Private endpoints
 
-Use [Private Endpoints](/guides/production/configure-private-endpoints) to connect via AWS PrivateLink or Azure Private Link. This establishes private connectivity between your Pinecone serverless indexes and your cloud VPC/VNet while keeping traffic off the public internet.
+Use [Private Endpoints](/guides/production/configure-private-endpoints) to connect through AWS PrivateLink or Azure Private Link. This establishes private connectivity between your Pinecone serverless indexes and your cloud VPC or VNet while keeping traffic off the public internet.
 
 <img alt="PrivateLink diagram" />
 
@@ -185,7 +185,7 @@ Private Endpoints are additive to other Pinecone security features: data is also
 
 ### Proxies
 
-The following Pinecone SDKs support the use of proxies:
+The following Pinecone SDKs support proxies:
 
 * [Python SDK](/reference/sdks/python/overview#proxy-configuration)
 * [Node.js SDK](/reference/sdks/node/overview#proxy-configuration)

@@ -86,7 +86,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/772cbde0-b8d3-44ec-9ac8-3641bc61a567/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -112,10 +112,6 @@ for await (const subagent of stream.subagents) {
 
 await stream.output;
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871e73d9-e98c-4ac5-bfec-2e6ab7a6bd6b/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Stream tool calls
 
@@ -145,7 +141,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3fdda16a-c42c-4931-81f5-36e4a4ecfc5c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -179,7 +175,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0b947581-de0c-491e-96c1-ba37cc862b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -210,7 +206,7 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ad72588-6334-4d84-ad85-f66e6c13f0f3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -238,7 +234,7 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/da37e344-18bb-4a36-be3e-1a1740f281c6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r">
   Open a public LangSmith run for this example.
 </Card>
 

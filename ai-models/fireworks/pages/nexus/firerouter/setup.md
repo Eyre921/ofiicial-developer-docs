@@ -6,11 +6,12 @@ path: nexus/firerouter/setup
 
 Set up FireRouter in a coding harness with FireConnect, in an LLM gateway such as LiteLLM or Portkey, or from the OpenAI, Anthropic, or Fireworks SDK.
 
-Use the same model ID, such as `auto` or `firerouter/opus`, from a coding harness, an LLM gateway, or your own code. Every path needs a Fireworks API key. Each closed provider in the route also needs a credential. See [Provide Anthropic and OpenAI credentials](/nexus/firerouter#provide-anthropic-and-openai-credentials).
+Use the same model ID, `firerouter` or `auto`, from a coding harness, an LLM gateway, or your own code. Every path needs a Fireworks API key. To add Claude or GPT, also provide an Anthropic or OpenAI credential. See [Provide Anthropic and OpenAI credentials](/nexus/firerouter#provide-anthropic-and-openai-credentials).
 
 | You are using | Setup |
 | - | - |
 | Claude Code, Codex, OpenCode, Cursor IDE, or another coding harness | [FireConnect](#fireconnect) |
+| The ChatGPT desktop app or Claude Desktop | [Desktop apps](#desktop-apps) |
 | LiteLLM, Portkey, or another LLM gateway | [LLM gateway](#llm-gateway) |
 | Your own app, agent, or script | [API and SDK](#api-and-sdk) |
 
@@ -18,12 +19,12 @@ Use the same model ID, such as `auto` or `firerouter/opus`, from a coding harnes
 
 | Model ID | What it routes across | Credentials |
 | - | - | - |
+| `firerouter` | Claude Opus or GPT Sol, [picked from your credentials and client](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model), plus the Fireworks open-model mix | Fireworks key, plus an Anthropic or OpenAI credential |
 | `auto` | Fireworks open models only | Fireworks API key |
-| `firerouter` | Claude Opus or GPT Sol, [picked from your credentials and client](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model), plus the open-model mix | Fireworks key, plus an Anthropic or OpenAI credential |
-| `firerouter/opus`, `firerouter/sol`, `firerouter/astra` | The named closed family, plus the open-model mix | Fireworks key, plus the matching provider credential |
-| `firerouter/opus/glm-5p3` | Only the models you list | Fireworks key, plus a credential for each closed provider listed |
 
-Start with `auto` if you only have a Fireworks key. Without a closed-model credential, any `firerouter` ID serves every turn with open models. See [Build a router ID](/nexus/firerouter#build-a-router-id) and [Supported models](/nexus/firerouter#supported-models).
+* Use `firerouter` for most work.
+* Without a closed-model credential, `firerouter` uses Fireworks open models only.
+* To choose the models yourself, see [Pin specific models](/nexus/firerouter#pin-specific-models).
 
 ## FireConnect
 
@@ -31,7 +32,7 @@ Use FireRouter in any coding harness. [FireConnect](/nexus/fireconnect) writes t
 
 ### Set up your harness
 
-Pick your harness, a model or router ID, and a setup method. Start with `auto` to route across Fireworks open models with only a Fireworks key, or choose **Build your own** to compose a `firerouter` route with Claude, GPT, and open models. The commands and config files update as you choose, including the provider-key headers your route needs.
+Pick your harness, a router, and a setup method. Pick `firerouter` to route between Claude or GPT and Fireworks open models. Pick `auto` if you have only a Fireworks key. The commands and config files update as you choose, including the provider-key headers you need.
 
 <FireRouterHarnessSetup />
 
@@ -51,7 +52,7 @@ Pick your harness, a model or router ID, and a setup method. Start with `auto` t
     </Step>
 
     <Step title="Restart and pick FireRouter">
-      Start a new session and open `/model`. Routes with Claude models use your Claude login.
+      Start a new session and open `/model`. Claude turns use your Claude login.
     </Step>
 
     <Step title="Watch routing live">
@@ -66,26 +67,57 @@ Pick your harness, a model or router ID, and a setup method. Start with `auto` t
 
 ### Which harnesses can send provider keys
 
-| Harness | FireConnect with Claude routes | FireConnect with GPT routes | Manual setup |
+| Harness | FireConnect with Claude turns | FireConnect with GPT turns | Manual setup |
 | - | - | - | - |
-| Claude Code | Your Claude login, or `--anthropic-api-key` | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
-| Codex CLI, Codex app, ChatGPT desktop, OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Claude Code | Your Claude login, or an exported `ANTHROPIC_API_KEY` | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Codex CLI, ChatGPT desktop app | Anthropic Provider Key | Your Codex sign-in (a ChatGPT plan or an OpenAI key), or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
 | Copilot CLI, DeepSeek Harness | Anthropic Provider Key | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
 | Cursor IDE, Copilot App | Anthropic Provider Key | OpenAI Provider Key | Provider Keys only; these apps cannot send extra headers |
 
-* **Save a key once:** `fireconnect configure --anthropic-api-key sk-ant-...` or `fireconnect configure --openai-api-key sk-...`. Both are optional; FireConnect connects without them.
-* **Where the OpenAI key goes:** bare `firerouter`, and routes that name a GPT model ID, such as `firerouter/gpt-5.6-sol`. Family routes such as `firerouter/sol` and `firerouter/astra` need an OpenAI [Provider Key](/nexus/provider-keys) or manual setup.
-* **No key, no problem:** every harness accepts every FireRouter ID. When no closed-model key reaches FireRouter, it serves the turn with open models.
+* **Save a key once:** `fireconnect configure --anthropic-api-key sk-ant-...` or `fireconnect configure --openai-api-key sk-...`. Both are optional; FireConnect connects without them. `fireconnect configure --unset openai-api-key` or `--unset anthropic-api-key` clears a saved key from FireConnect and every harness.
+* **Where a saved OpenAI key goes:** FireConnect sends it with `firerouter`, so FireRouter can pick GPT Sol.
+* **Codex uses its own sign-in** for GPT turns, not a saved key. See [Codex](/nexus/harnesses#codex).
+* **No key, no problem:** every harness above accepts `firerouter`. When no closed-model key reaches FireRouter, it uses Fireworks open models only.
 
 For every harness's files and restore behavior, see [Coding Harnesses](/nexus/harnesses) and [Harness Compatibility](/nexus/harness-compatibility).
 
+### Desktop apps
+
+<Tabs>
+  <Tab title="ChatGPT desktop app" icon="sparkles">
+    The ChatGPT desktop app shares the Codex CLI's config, so one command sets up both. Quit the ChatGPT desktop app first:
+
+    ```bash wrap theme={null}
+    fireconnect chatgpt
+    ```
+
+    Reopen the app. FireRouter (`firerouter`) is the default model in its model list, and it routes between GPT Sol and Fireworks open models.
+
+    * GPT turns use the app's own sign-in: your ChatGPT plan, or the OpenAI key you signed in with. See [Codex](/nexus/harnesses#codex) for the exceptions.
+    * Sign-in billing is tested in the Codex CLI. The ChatGPT desktop app is not tested yet.
+  </Tab>
+
+  <Tab title="Claude Desktop" icon="desktop">
+    FireConnect doesn't add FireRouter to Claude Desktop yet. On macOS, connect it with:
+
+    ```bash wrap theme={null}
+    fireconnect claude-desktop on
+    ```
+
+    Reopen Claude Desktop. The picker starts on `auto`, which routes across Fireworks open models, followed by the Fireworks models. See [Claude Desktop](/nexus/harnesses#claude-desktop).
+
+    To route between Claude and open models, use FireRouter in [Claude Code](/nexus/harnesses#claude-code).
+  </Tab>
+</Tabs>
+
 ## LLM gateway
 
-You do not need FireConnect behind a gateway. The gateway sends the exact `firerouter/...` model ID and your Fireworks API key to Fireworks. Clients and harnesses behind the gateway call the router ID with only their gateway key.
+You do not need FireConnect behind a gateway. The gateway sends the `firerouter` model ID and your Fireworks API key to Fireworks. Clients and harnesses behind the gateway call `firerouter` with only their gateway key.
 
 ### Set up your gateway
 
-Choose LiteLLM or Portkey, pick a preset or build your own route, and choose where the provider keys live. The widget writes the gateway config and a test request.
+Choose LiteLLM or Portkey, pick a model ID, and choose where the provider keys live. The widget writes the gateway config and a test request.
 
 <FireRouterGatewaySetup />
 
@@ -105,8 +137,8 @@ In every SDK, the API key is your **Fireworks** API key. Send closed-provider ke
 
 | Header | When |
 | - | - |
-| `x-anthropic-api-key` | The route includes a Claude model and no Anthropic Provider Key is connected |
-| `x-openai-api-key` | The route includes a GPT model and no OpenAI Provider Key is connected |
+| `x-anthropic-api-key` | You want Claude and no Anthropic Provider Key is connected |
+| `x-openai-api-key` | You want GPT and no OpenAI Provider Key is connected |
 
 Leave out a header when the matching [Provider Key](/nexus/provider-keys) is connected. A header, when sent, takes precedence over the stored key for that request. [Amazon Bedrock](/nexus/provider-keys/bedrock) has no request header; it uses Provider Keys only.
 
@@ -124,18 +156,18 @@ Install the SDKs you use:
 
 ### Build your request
 
-Pick your models, API, and language. The router ID and the command update as you choose, with the provider headers your route needs.
+Pick an API and a language. The command updates with the provider header that API needs.
 
 <FireRouterBuilder />
 
 ### Examples
 
-The examples below use two router IDs:
+Every example uses `firerouter`. The provider key you send picks the closed model:
 
-* **`firerouter/astra`** in the Chat Completions and Responses examples. FireRouter routes between GPT Astra and the Fireworks open-model mix, so it needs an OpenAI key. `firerouter/sol` works the same way with GPT Sol.
-* **`firerouter/opus`** in the Messages examples. FireRouter routes between Claude Opus and the Fireworks open-model mix, so it needs an Anthropic key.
+* **Chat Completions and Responses** examples send an OpenAI key. FireRouter routes between GPT Sol and the Fireworks open-model mix.
+* **Messages** examples send an Anthropic key. FireRouter routes between Claude Opus and the Fireworks open-model mix.
 
-Any router ID works on any API. To use a different route, change `model` and send the header for each closed provider in it. See [Supported models](/nexus/firerouter#supported-models) and [Build a router ID](/nexus/firerouter#build-a-router-id).
+Send both keys, or connect [Provider Keys](/nexus/provider-keys) for both providers, and FireRouter picks by API. See [How bare `firerouter` picks its closed model](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model).
 
 #### Chat Completions
 
@@ -146,7 +178,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
     -H "x-openai-api-key: $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "firerouter/astra",
+      "model": "firerouter",
       "messages": [{"role": "user", "content": "Say pong in one word."}]
     }'
   ```
@@ -164,7 +196,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   )
 
   response = client.chat.completions.create(
-      model="firerouter/astra",
+      model="firerouter",
       messages=[{"role": "user", "content": "Say pong in one word."}],
   )
 
@@ -182,7 +214,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   });
 
   const response = await client.chat.completions.create({
-    model: "firerouter/astra",
+    model: "firerouter",
     messages: [{ role: "user", content: "Say pong in one word." }],
   });
 
@@ -201,7 +233,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   )
 
   response = client.chat.completions.create(
-      model="firerouter/astra",
+      model="firerouter",
       messages=[{"role": "user", "content": "Say pong in one word."}],
   )
 
@@ -218,7 +250,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
     -H "x-openai-api-key: $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "firerouter/astra",
+      "model": "firerouter",
       "input": "Say pong in one word."
     }'
   ```
@@ -236,7 +268,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   )
 
   response = client.responses.create(
-      model="firerouter/astra",
+      model="firerouter",
       input="Say pong in one word.",
   )
 
@@ -254,7 +286,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   });
 
   const response = await client.responses.create({
-    model: "firerouter/astra",
+    model: "firerouter",
     input: "Say pong in one word.",
   });
 
@@ -272,7 +304,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
     -H "anthropic-version: 2023-06-01" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "firerouter/opus",
+      "model": "firerouter",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Say pong in one word."}]
     }'
@@ -291,7 +323,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   )
 
   message = client.messages.create(
-      model="firerouter/opus",
+      model="firerouter",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Say pong in one word."}],
   )
@@ -311,7 +343,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   });
 
   const message = await client.messages.create({
-    model: "firerouter/opus",
+    model: "firerouter",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Say pong in one word." }],
   });
@@ -332,7 +364,7 @@ Any router ID works on any API. To use a different route, change `model` and sen
   )
 
   message = client.messages.create(
-      model="firerouter/opus",
+      model="firerouter",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Say pong in one word."}],
   )
@@ -346,6 +378,6 @@ The Anthropic SDK base URL is `https://api.fireworks.ai/inference`, without `/v1
 
 ### Check which model served the request
 
-Each example prints the response `model` field. It names the model that served the turn, such as `glm-5p3-flash`, `claude-opus-5-5`, or `gpt-6-astra`, not the router ID you sent. To confirm closed-model access, add `x-routing-preference: 1` so the route's primary model serves the turn. See [Verify routing](/nexus/firerouter#verify-routing).
+Each example prints the response `model` field. It names the model that served the turn, an open model or the closed model, not the router ID you sent. To confirm closed-model access, add `x-routing-preference: 1` so the route's primary model serves the turn. See [Verify routing](/nexus/firerouter#verify-routing).
 
 For errors, limits, and more API details, see [APIs and SDKs](/nexus/apis-and-sdks).

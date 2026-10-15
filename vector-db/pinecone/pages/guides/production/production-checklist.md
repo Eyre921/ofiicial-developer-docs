@@ -65,7 +65,7 @@ Before serving production workloads, optimize your Pinecone implementation:
 * **Increase search relevance**: Use techniques like reranking, metadata filtering, hybrid search, and chunking strategies to improve result quality. See [increase search relevance](/guides/optimize/increase-relevance) for details.
 * **Increase throughput**: Import from object storage, upsert in batches, use parallel operations, and use Python SDK optimizations like gRPC. See [increase throughput](/guides/optimize/increase-throughput) for details.
 * **Decrease latency**: Use namespaces, filter by metadata, target indexes by host, reuse connections, and deploy in the same cloud region as your index. See [decrease latency](/guides/optimize/decrease-latency) for details.
-* **Save on costs**: Prefer bulk import for large initial loads, use namespaces for multitenancy, and avoid unnecessary data in query responses. See [save on costs](/guides/optimize/save-on-costs) for details.
+* **Save on costs**: Prefer bulk import for large initial loads, use namespaces for multitenancy, and avoid unnecessary data in query responses. See [save on costs](/guides/manage-cost/save-on-costs) for details.
 
 ## Backup up your indexes
 

@@ -72,11 +72,16 @@ onAction: async ({ action }) => {
       chat.history.slice(0, -1);
       chat.inject([{ role: "system", content: "Answer formally this time." }]);
       return chat.turn(); // with a one-shot instruction
+
+    case "ask":
+      return chat.turn(action.question); // answer a new user message
   }
 }
 ```
 
-`run()` receives the edited history with no incoming user message, the same shape as a `regenerate-message` turn, and its `trigger` is `"action-turn"`, so a `run()` that returns early on `"action"` (the pre-May behaviour, when actions invoked `run()` directly) still answers. Returning anything other than `chat.turn()` or nothing is an error; a response can no longer be returned from `onAction` directly.
+`chat.turn(message)` appends `message` (a string, or a `UIMessage`) to the history as a user message after the edit, and the turn answers it. That is how a button click becomes a question, such as a follow-up suggestion in [Slack](/docs/webhooks/slack#buttons-that-send-the-agent-an-action).
+
+Without a message, `run()` receives the edited history with no incoming user message, the same shape as a `regenerate-message` turn, and its `trigger` is `"action-turn"`, so a `run()` that returns early on `"action"` (the pre-May behaviour, when actions invoked `run()` directly) still answers. Returning anything other than `chat.turn()` or nothing is an error; a response can no longer be returned from `onAction` directly.
 
 ### Actions and persistence
 
@@ -727,6 +732,47 @@ export const myChat = chat.agent({
 Custom actions let the frontend send structured commands (undo, rollback, edit, regenerate) that modify the conversation state. **Actions are not turns**: they fire `hydrateMessages` (if set) and `onAction` only. The full surface (defining `actionSchema`, returning a model response from `onAction`, gating against pending HITL tool calls, and sending actions from the frontend) lives on its own page.
 
 See [Actions](/docs/ai-chat/actions).
+
+### Webhook events and channels
+
+<Note>
+  Webhooks are in private beta. [Request access](https://trigger.dev/webhooks-beta) and we'll turn them on for your
+  organization.
+</Note>
+
+Two `chat.agent()` options wire an agent to verified inbound webhooks. `events` claims [`chat.event(...)`](/docs/webhooks/session-routing) descriptors: each verified delivery is routed to this agent's session and arrives at `onAction` as an action (not a turn), so [session routing](/docs/webhooks/session-routing) decides which conversation it lands on. `channels` claims channel connectors that turn an external chat surface into a frontend for the agent: an inbound message runs as a turn through `run()` and the reply is posted back. `slack()` ships in `@trigger.dev/slack`, and `chat.channels.custom(...)` builds a connector for any endpoint without a preset.
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { slack, webhookSource } from "@trigger.dev/slack";
+
+const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
+const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const orderEvents = chat.event({
+  id: "order-events",
+  endpoint: stripe,
+  key: "{event.data.object.customer}",
+  // invoices always carry a customer; events without one would have no session to go to
+  filter: "event.type startsWith 'invoice.'",
+  type: "order.event",
+});
+
+export const myChat = chat.agent({
+  id: "my-chat",
+  events: [orderEvents],
+  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  onAction: async ({ action }) => {
+    // A verified order-events delivery arrives here as an action.
+  },
+  run: async (payload) => {
+    // Inbound Slack messages run here as normal turns.
+  },
+});
+```
+
+See [session routing](/docs/webhooks/session-routing) and [channels](/docs/webhooks/channels). For the interactive approvals layer, where a turn pauses on a human decision (buttons in the thread) and resumes on the click, see [human-in-the-loop](/docs/webhooks/human-in-the-loop).
 
 ### Chat history
 
@@ -11639,6 +11685,8 @@ By default (without `pendingMessages`), a message sent while the agent is respon
 
 The `pendingMessages` option enables steering instead, injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. A message that is not injected becomes the next turn instead, whether that is because `shouldInject` returned `false` or because there were no more step boundaries (single-step response or final text generation). The backend handles that, so no client-side re-send is involved.
 
+Messages from a [channel](/docs/webhooks/channels) such as [Slack](/docs/webhooks/slack) are offered the same way, with `metadata.source` set to `"channel"` so `shouldInject` can tell them apart. A channel's stop control and approval clicks are never offered. The connector acknowledges a channel message as soon as it arrives (Slack reacts with 👀, Linear posts a thought), before `shouldInject` decides, so the acknowledgement is the same whether the message is folded in or answered next. Channels are part of the [webhooks private beta](https://trigger.dev/webhooks-beta).
+
 Use the `streamText` passed to your agent's `run` callback. It wires up pending-message injection automatically. If you import `streamText` directly from `ai`, spread `chat.toStreamTextOptions()` into its options to connect injection.
 
 ## How it works
@@ -12407,7 +12455,9 @@ Options for `chat.agent()`.
 | `storage` | `TranscriptStorage` | `defaultStorage` | Where the conversation is persisted and read back. The platform snapshot by default; bring your own to write each change to your database. See [Transcript storage](/docs/ai-chat/transcript-storage) |
 | `hydrateMessages` | `(event: HydrateMessagesEvent) => UIMessage[] \| Promise<UIMessage[]>` | — | **Deprecated.** Load message history from backend, replacing the linear accumulator. Use `loadContext` on a `storage` instead; cannot be combined with `storage`. See [hydrateMessages](/docs/ai-chat/lifecycle-hooks#hydratemessages) |
 | `actionSchema` | `TaskSchema` | — | Schema for validating custom actions sent via `transport.sendAction()`. See [Actions](/docs/ai-chat/actions) |
-| `onAction` | `(event: ActionEvent) => Promise<void \| ActionTurn> \| void \| ActionTurn` | — | Handle custom actions. Actions are state edits: only `hydrateMessages` (or a storage's `loadContext`) + `onAction` fire. Return `chat.turn()` to run a turn on the edited history, or nothing for an edit only. See [Actions](/docs/ai-chat/actions) |
+| `onAction` | `(event: ActionEvent) => Promise<void \| ActionTurn> \| void \| ActionTurn` | — | Handle custom actions. Actions are state edits: only `hydrateMessages` (or a storage's `loadContext`) + `onAction` fire. Return `chat.turn()` to run a turn on the edited history (`chat.turn(message)` to answer a new user message), or nothing for an edit only. See [Actions](/docs/ai-chat/actions) |
+| `events` | `ChatEvent[]` | — | Webhook event descriptors (from `chat.event()`) whose verified deliveries are routed to this agent as actions and handled in `onAction`. See [session routing](/docs/webhooks/session-routing). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
+| `channels` | `ChannelConnector[]` | — | Channel connectors (for example `slack()`) that turn an external chat surface into a frontend for the agent: inbound messages run as turns and the reply posts back. See [channels](/docs/webhooks/channels). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
 | `onTurnStart` | `(event: TurnStartEvent) => Promise<void> \| void` | — | Fires every turn before `run()` |
 | `onBeforeTurnComplete` | `(event: BeforeTurnCompleteEvent) => Promise<void> \| void` | — | Fires after response but before stream closes. Includes `writer`. |
 | `onTurnComplete` | `(event: TurnCompleteEvent) => Promise<void> \| void` | — | Fires after each turn completes (stream closed) |
@@ -12592,7 +12642,7 @@ The persistence adapter set through `chat.agent({ storage })`. See [Transcript s
 | Type | Shape |
 | - | - |
 | `TranscriptScope<TClientData>` | `{ chatId: string; clientData: TClientData }` |
-| `TranscriptStorageContext<TClientData>` | `TranscriptScope` plus `{ turn: number; trigger: "submit-message" \| "regenerate-message" \| "action"; runId: string; ctx: TaskRunContext }` |
+| `TranscriptStorageContext<TClientData>` | `TranscriptScope` plus `{ turn: number; trigger: "submit-message" \| "regenerate-message" \| "action" \| "action-turn"; source?: "client" \| "channel" \| "webhook"; connectorId?: string; runId: string; ctx: TaskRunContext }`. `action-turn` is the turn `chat.turn()` requested; `source` names the surface that drove the write |
 | `TranscriptChange` | `{ op: "put"; message: UIMessage; final?: boolean }` \| `{ op: "remove"; id: string }` \| `{ op: "truncateAfter"; afterId: string }` \| `{ op: "state"; value: unknown \| null }` |
 | `TranscriptChangeset` | `{ reason: "turn-complete" \| "turn-error" \| "action" \| "compaction" \| "recovery"; changes: TranscriptChange[]; transcript: TranscriptState; cursors?: TranscriptCursors }` |
 | `TranscriptState` | `{ entries: Array<{ id: string; final: boolean; message: UIMessage }>; state: unknown \| null }`: the whole conversation after the changeset's changes, for stores that write one document |
@@ -12635,6 +12685,7 @@ Passed to the `onAction` callback. See [Actions](/docs/ai-chat/actions).
 | `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
 | `uiMessages` | `UIMessage[]` | Accumulated UI messages (after hydration, if set) |
 | `messages` | `ModelMessage[]` | Accumulated model messages (after hydration, if set) |
+| `channel` | `{ connectorId, provider, event, deliveryId }` | For a channel action (a button the agent posted, such as a Slack `slackButton()`): the verified click event. Absent otherwise |
 
 ## TurnStartEvent
 
@@ -12898,6 +12949,8 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | Method | Description |
 | - | - |
 | `chat.agent(options)` | Create a chat agent |
+| `chat.event(options)` | Declare an inbound webhook event descriptor an agent claims via `chat.agent({ events })`. See [session routing](/docs/webhooks/session-routing). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
+| `chat.channels.custom(options)` | Create a generic chat-frontend channel over any verified webhook source (you supply the egress). The `slack()` preset ships in `@trigger.dev/slack`. See [channels](/docs/webhooks/channels). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
 | `chat.createSession(payload, options)` | Create an async iterator for chat turns |
 | `chat.pipe(source, options?)` | Pipe a stream to the frontend (from anywhere inside a task) |
 | `chat.pipeAndCapture(source, options?)` | Pipe and capture the response; returns `{ message, status, error }` |
@@ -12929,6 +12982,51 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | `chat.MessageAccumulator` | Class that accumulates conversation messages across turns |
 | `chat.withUIMessage(config?)` | Returns a [ChatBuilder](/docs/ai-chat/types#chatbuilder) with a fixed `UIMessage` subtype. See [Types](/docs/ai-chat/types) |
 | `chat.withClientData({ schema })` | Returns a [ChatBuilder](/docs/ai-chat/types#chatbuilder) with a fixed client data schema. See [Types](/docs/ai-chat/types#typed-client-data-with-chatwithclientdata) |
+
+## `chat.event`
+
+Declare an inbound webhook event that an agent claims via [`events`](#chatagentoptions) on `chat.agent()`. It is a descriptor only, with no handler: it names the [endpoint](/docs/webhooks/overview) it subscribes to, a `key` template that resolves each delivery to a durable [session](/docs/ai-chat/sessions), and an optional `type` label (defaults to the descriptor `id`). Verified deliveries are routed to that session and arrive at `onAction` as a `{ type, event, source, headers, deliveryId, endpoint }` envelope, not as a chat turn. See [session routing](/docs/webhooks/session-routing).
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const orderEvents = chat.event({
+  id: "order-events",
+  endpoint: stripe,
+  key: "{event.data.object.customer}",
+  // invoices always carry a customer; events without one would have no session to go to
+  filter: "event.type startsWith 'invoice.'",
+  type: "order.event",
+});
+```
+
+## `chat.channels.custom`
+
+Create a generic chat-frontend channel on any [endpoint](/docs/webhooks/overview), claimed via [`channels`](#chatagentoptions) on `chat.agent()`. You supply the session `key`, the `inbound` map from event to turn message, and your own `send` egress that posts the reply back, so the whole round-trip is under your control. Inbound messages run as normal turns and the reply is posted back. The `slack()` preset ships in `@trigger.dev/slack` and wires the egress for you. See [channels](/docs/webhooks/channels), and the interactive approvals layer at [human-in-the-loop](/docs/webhooks/human-in-the-loop).
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+
+const surface = webhooks.endpoint.define({
+  id: "my-surface",
+  source: webhooks.custom<MyEvent>({ /* verifier config */ }),
+});
+
+export const mySurface = chat.channels.custom({
+  id: "my-surface",
+  endpoint: surface,
+  key: "{event.conversationId}",
+  inbound: (event) => event.text,
+  send: async (message, ctx) => {
+    const ref = await postToMySurface(ctx.event, message.text, ctx.previousRef);
+    return { ref };
+  },
+});
+```
 
 ## `chat.withUIMessage`
 
@@ -22605,6 +22703,8 @@ When creating an environment variable, you can mark it as a **Secret**. Secret v
 ### Editing environment variables
 
 You can edit an environment variable's values. You cannot edit the key name, you must delete and create a new one.
+
+<RollingOut />
 
 <Note>
   An empty string is a valid value. Saving a variable with an empty value stores it as an empty
@@ -41994,6 +42094,8 @@ For a finished run, spans that finish more than 7 days after the run are returne
 
 ## Page large traces
 
+<RollingOut />
+
 The tree response stops at a size limit. To get every span of a large trace, page it: send `page[size]` (1,000–10,000) on the first request, then pass each response's `pagination.next` back as `page[after]` until it's absent.
 
 ```ts Your backend code theme={"theme":"css-variables"}
@@ -42335,6 +42437,105 @@ Source: https://trigger.dev/docs/management/waitpoints/retrieve
 
 v3-openapi GET /api/v1/waitpoints/tokens/{waitpointId}
 Retrieves a waitpoint token by its ID, including its current status and output if it has been completed.
+
+
+
+# Cancel a webhook waiter
+Source: https://trigger.dev/docs/management/webhooks/cancel-waiter
+
+v3-openapi POST /api/v1/webhooks/waiters/{waiterId}/cancel
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Cancel a waiter. It stops matching deliveries, frees its slot toward the endpoint's limit, and fails the run's wait. If a delivery already claimed the waiter, the cancel is too late: the response has `cancelled: false` with `reason: "too_late"`, and the run resumes with that delivery's event.
+
+
+
+# Create a webhook waiter
+Source: https://trigger.dev/docs/management/webhooks/create-waiter
+
+v3-openapi POST /api/v1/webhooks/endpoints/{endpointId}/waiters
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Create a waiter on an endpoint. A waiter is a waitpoint that completes when a matching delivery arrives on the endpoint, so a run waiting on its id resumes with the verified event. It only matches deliveries that arrive after it was created. Omit `match` to get a waiter with its own `url`, for providers that take a webhook URL per request.
+
+
+
+# Disable a webhook endpoint
+Source: https://trigger.dev/docs/management/webhooks/disable-endpoint
+
+v3-openapi POST /api/v1/webhooks/endpoints/{endpointId}/disable
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Pause an endpoint. Its status becomes `inactive` and its URL responds with `404` until you enable it, so providers see failed deliveries and retry on their own schedule. Returns the updated endpoint.
+
+
+
+# Enable a webhook endpoint
+Source: https://trigger.dev/docs/management/webhooks/enable-endpoint
+
+v3-openapi POST /api/v1/webhooks/endpoints/{endpointId}/enable
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Resume a disabled endpoint so its URL accepts deliveries again. Returns the updated endpoint.
+
+
+
+# Generate a webhook signing secret
+Source: https://trigger.dev/docs/management/webhooks/generate-secret
+
+v3-openapi POST /api/v1/webhooks/endpoints/{endpointId}/rotate-secret
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Generate a new signing secret for the endpoint, store it, and return it once. Use this for providers where you choose the secret, such as GitHub. It replaces any existing secret, so deliveries fail verification until the provider uses the new one. Endpoints whose source verifies with a public key refuse this; set the provider's key with the set secret endpoint instead.
+
+
+
+# List webhook deliveries
+Source: https://trigger.dev/docs/management/webhooks/list-deliveries
+
+v3-openapi GET /api/v1/webhooks/deliveries
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+List the verified events providers sent to the environment's endpoints, newest first. Filter by endpoint, status and time range, and page with `page[after]` and `page[before]`.
+
+
+
+# List webhook endpoints
+Source: https://trigger.dev/docs/management/webhooks/list-endpoints
+
+v3-openapi GET /api/v1/webhooks/endpoints
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+List the hosted webhook endpoints in the environment, ordered by declared id. Each endpoint includes its webhook URL and whether its signing secret is set. The secret itself is never returned.
+
+
+
+# Replay a webhook delivery
+Source: https://trigger.dev/docs/management/webhooks/replay-delivery
+
+v3-openapi POST /api/v1/webhooks/deliveries/{deliveryId}/replay
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Route a delivery's stored event again as a new delivery. Without `targetId` every current subscriber is checked against its filter again. With `targetId` the event goes to that one subscriber, even if its filter skipped it. A replay never resumes waiting runs. Replays start real runs, so the key needs permission to trigger every task the replay runs, and to write sessions if it reaches an agent's subscriber.
+
+
+
+# Retrieve a webhook delivery
+Source: https://trigger.dev/docs/management/webhooks/retrieve-delivery
+
+v3-openapi GET /api/v1/webhooks/deliveries/{deliveryId}
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Retrieve one delivery: its status and error, the event body and headers it carried, and a `targets` entry per subscriber with the run or session it started or why its filter skipped the event. When the delivery resumed waiting runs, one more entry summarizes them.
+
+
+
+# Retrieve a webhook endpoint
+Source: https://trigger.dev/docs/management/webhooks/retrieve-endpoint
+
+v3-openapi GET /api/v1/webhooks/endpoints/{endpointId}
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Retrieve one webhook endpoint with its subscribers, the filter each one applies, and its setup prompt: instructions for registering the endpoint and its signing secret with the provider.
+
+
+
+# Set a webhook signing secret
+Source: https://trigger.dev/docs/management/webhooks/set-secret
+
+v3-openapi PUT /api/v1/webhooks/endpoints/{endpointId}/secret
+**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
+Store the signing secret or public key the provider issued for this endpoint, such as the `whsec_` secret Stripe returns when you create a webhook endpoint. It replaces any existing secret.
 
 
 
@@ -43781,6 +43982,98 @@ Append one record to a named side channel's `in` stream. Sends control input to 
 
 <Callout type="warning">
   `write_session_channel` is a write operation and is not available in readonly mode.
+</Callout>
+
+## Webhook Tools
+
+<Note>
+  Webhooks are in private beta. [Request access](https://trigger.dev/webhooks-beta) and we'll turn them on for your
+  organization.
+</Note>
+
+Set up and debug [hosted webhook endpoints](/docs/webhooks/overview). Endpoint ids start with `wh_` and delivery ids with `whd_`; endpoint tools also accept an endpoint's declared id. The same operations are on the [Webhooks API](/docs/management/webhooks/list-endpoints).
+
+### list\_webhook\_endpoints
+
+List the environment's webhook endpoints: each one's id, declared id, source, status, URL and whether its signing secret is set.
+
+**Example usage:**
+
+* `"Which webhook endpoints do I have in dev?"`
+
+### get\_webhook\_endpoint\_details
+
+Get an endpoint's subscribers, with the filters that decide which events each accepts, and its setup prompt: the steps for registering the endpoint and its signing secret with the provider.
+
+**Parameters:**
+
+* `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
+
+**Example usage:**
+
+* `"Connect my payments webhook to Stripe"`
+
+### list\_webhook\_deliveries
+
+List recent deliveries, newest first.
+
+**Parameters:**
+
+* `endpointId` (optional): only this endpoint's deliveries, by declared id or `wh_` id
+* `status` (optional): only these statuses, such as `["failed", "filtered"]`
+* `period` (optional, default: `7d`): how far back to look
+* `limit` (optional, default: `20`): how many to return, up to 100
+* `cursor` (optional): the cursor from a previous call, for the next page
+
+**Example usage:**
+
+* `"Did the Stripe checkout event arrive in the last hour?"`
+* `"Show me failed deliveries on the github endpoint"`
+
+### get\_webhook\_delivery
+
+Get one delivery: its status and error, each subscriber's result (the run or session it started, or why its filter skipped the event), how many waiting runs it resumed, and its event and headers.
+
+**Parameters:**
+
+* `deliveryId` (required): the delivery's `whd_` id
+
+**Example usage:**
+
+* `"Why didn't this webhook trigger my order task?"`
+
+### replay\_webhook\_delivery
+
+Replay a delivery from its stored event. Without `targetId` it goes to every subscriber again, with their filters checked again. With `targetId` it goes to that subscriber even if its filter skipped the event.
+
+**Parameters:**
+
+* `deliveryId` (required): the delivery's `whd_` id
+* `targetId` (optional): the subscriber id to replay to
+
+**Example usage:**
+
+* `"Replay that delivery to the refunds task"`
+
+### generate\_webhook\_secret
+
+Generate a new signing secret for an endpoint and return it once, for providers where you choose the secret (such as GitHub). It replaces any existing secret.
+
+**Parameters:**
+
+* `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
+
+### set\_webhook\_secret
+
+Store a signing secret or public key the provider issued, such as Stripe's `whsec_` secret. It replaces any existing secret.
+
+**Parameters:**
+
+* `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
+* `secret` (required): the secret or public key
+
+<Callout type="warning">
+  `replay_webhook_delivery`, `generate_webhook_secret` and `set_webhook_secret` are write operations and are not available in readonly mode.
 </Callout>
 
 
@@ -60066,6 +60359,1876 @@ await wait.until({
   idempotencyKeyTTL: "1h",
 });
 ```
+
+
+# Channels (chat frontends)
+Source: https://trigger.dev/docs/webhooks/channels
+
+Point Slack (or any chat surface) at an agent: messages become turns and replies post back.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+A [session route](/docs/webhooks/session-routing) delivers a verified event to an agent as an [action](/docs/ai-chat/actions): the agent reacts, and the response is a side effect. A **channel** is the other half: the webhook IS the chat surface. Inbound messages become **turns** (the normal `run()` loop), and the agent's reply is posted **back** to the surface. A Slack thread becomes a real conversation with the agent, exactly like the browser chat, just a different frontend.
+
+List channels on a [`chat.agent`](/docs/ai-chat/overview) alongside (or instead of) `events`:
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { slack, webhookSource } from "@trigger.dev/slack";
+import { anthropic } from "@ai-sdk/anthropic";
+
+const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
+
+export const supportAgent = chat.agent({
+  id: "support-agent",
+  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  run: async ({ messages, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages }),
+});
+```
+
+The `run()` loop is unchanged: the agent does not know or care that it is talking to Slack. One verified Slack message in a thread is routed to a durable [session](/docs/ai-chat/sessions) keyed to that thread, run as a turn, and the reply is posted into the thread.
+
+## Slack
+
+`slack()` from `@trigger.dev/slack` makes the agent a native Slack agent: the session shows its status, the reply streams into the thread with tool calls as task cards, approvals are buttons and Slack's stop button stops the turn. Shared images and PDFs reach the model, messages sent mid-reply can be folded into it, and the agent can post its own buttons. See [Slack agents](/docs/webhooks/slack) for setup and options.
+
+## Linear
+
+`linear()` from `@trigger.dev/linear` makes the agent a Linear agent: assign it an issue or @mention it and it works the issue inside Linear's agent session UI, with thoughts, actions, a plan and approvals. See [Linear agents](/docs/webhooks/linear).
+
+## Approvals and interactive controls
+
+An agent on a channel can pause a turn to get a human decision, approving a refund or confirming a deletion, and resume once someone clicks a button in the thread. `slack()` renders Approve and Deny buttons for you and collapses them to the decision once clicked; you can replace them, or give a tool its own UI whose click becomes the tool's result (see [Slack agents](/docs/webhooks/slack#approvals-and-buttons)). See [human-in-the-loop](/docs/webhooks/human-in-the-loop).
+
+## Any surface: `chat.channels.custom`
+
+For a surface without a preset, `chat.channels.custom` is the generic connector. You supply the [endpoint](/docs/webhooks/overview) it subscribes to, the session `key`, the `inbound` map, and the egress `send`:
+
+```ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { webhooks } from "@trigger.dev/sdk";
+
+const surface = webhooks.endpoint.define({
+  id: "my-surface",
+  source: webhooks.custom<MyEvent>({ /* verifier config */ }),
+});
+
+const mySurface = chat.channels.custom({
+  id: "my-surface",
+  endpoint: surface,
+  key: "{event.conversationId}",
+  inbound: (e) => e.text,
+  outbound: (reply) => (reply.text ? { text: reply.text } : null), // null posts nothing
+  send: async (message, ctx) => {
+    const ref = await postToMySurface(ctx.event, message.text, ctx.previousRef);
+    return { ref }; // later sends in the same turn get it back as ctx.previousRef
+  },
+});
+```
+
+`send` is called to post the reply. Within a turn, `ctx.previousRef` is the ref you returned from the turn's earlier `send` (the acknowledgement, or the message being streamed), so later sends edit that message instead of posting a new one. Each turn starts without a ref: the next turn's answer is a new message. Return `null` from `outbound` to stay silent (a tool-only turn, say).
+
+An event that `inbound` maps to an empty message (no text, and no file or data parts) runs no turn. A click or system event your surface sends to the same endpoint is dropped rather than answered with an empty prompt.
+
+List the connector in `chat.agent({ channels: [mySurface] })`, which subscribes the agent to the endpoint with the id `agentId:connectorId`. Other subscribers on the endpoint keep receiving its deliveries.
+
+## Stopping a turn from the channel
+
+A connector can map an event to a control with `onControl`. Returning `{ kind: "stop" }` while a turn is running aborts it through the run's `stopSignal`, exactly like the browser's stop button: the partial reply posts with `stopped: true` and the event is consumed instead of running as a turn. `linear()` and `slack()` map their stop buttons this way; a custom connector might map a `/stop` command:
+
+```ts theme={"theme":"css-variables"}
+chat.channels.custom({
+  // ...
+  onControl: (e) => (e.text.trim() === "/stop" ? { kind: "stop" } : null),
+});
+```
+
+When nothing is running, the event is handled by `inbound` as an ordinary message. Return `whenIdle: "drop"` to consume it instead: no turn runs, and if the session is waiting on an [approval](/docs/webhooks/human-in-the-loop) the pending tool calls are resolved as stopped and the connector's `cancelInteraction(cancelled, ctx)` takes the controls down (each cancelled call carries the `ref` its controls were posted with). Set `at` to when the user asked (epoch milliseconds), and a stop older than the latest turn is consumed without stopping it or cancelling that turn's approval, so a late or repeated delivery never stops the wrong turn. A stop pressed while the latest turn ran but delivered after it ended is consumed too, rather than handled as a message.
+
+## Status and native streaming
+
+Two more hooks let a connector mirror the session into a surface that has its own notion of an agent, the way `slack()` does:
+
+* `lifecycle(state, ctx)` reports `working` when a turn starts (and every 50 minutes while it runs), `waiting` when it pauses on a human decision, `idle` when it ends for any reason, and `closed` on `chat.close()`. `ctx.firstTurn` and `ctx.prompt` are there to title a new conversation. Calls are serialized, so an older report never lands after a newer one.
+* `stream(ctx)`, with `delivery: "stream"`, returns a per-turn transport `{ text(delta), progress?(event), end(outcome) }`. The runtime feeds it the reply's markdown deltas and tool progress, then calls `end({ stopped, pending, errorText? })` once. Resolve `{ delivered: true }` when the reply reached the surface, and the runtime does not post it again. Call `ctx.opened(ref)` once the surface has created the stream message: the ref is saved with the session while the turn runs, and if the worker dies mid-stream the next one calls the connector's `endInterruptedStream(ref, ctx)` before it answers, so the old stream does not look like it is still being written.
+
+## Bound sessions
+
+The first channel message binds the session to its connector and thread. From then on, any turn on that session posts its answer back through the same connector, including turns no channel delivery started: a [`chat.event`](/docs/webhooks/session-routing#answering-into-a-channel) action that returns `chat.turn()`, or a message from a browser client sharing the session via [`chat.createWatchToken`](/docs/ai-chat/reference). `slack()` binds to the team, channel, thread and the user it is answering; a custom connector opts in with `bind`:
+
+```ts theme={"theme":"css-variables"}
+chat.channels.custom({
+  id: "my-surface",
+  endpoint: surface,
+  key: "{event.conversationId}",
+  inbound: (e) => ({ message: e.text, externalUserId: e.userId, externalMessageId: e.id }),
+  bind: (e) => ({ conversationId: e.conversationId }),
+  send: async (message, ctx) => {
+    // ctx.event is absent on a bound turn; ctx.handle always carries what bind() returned
+    const target = ctx.handle ?? { conversationId: ctx.event!.conversationId };
+    return { ref: await postToMySurface(target, message.text, ctx.previousRef) };
+  },
+});
+```
+
+`inbound` may return `{ message, externalUserId, externalMessageId }` as well as a plain string or `UIMessage`. The runtime stamps every channel-delivered user message with `metadata: { source: "channel", connectorId, provider, deliveryId, externalDeliveryId?, externalUserId?, externalMessageId? }` (`deliveryId` is the delivery's `whd_` id and `externalDeliveryId` the provider's), and a [transcript storage](/docs/ai-chat/transcript-storage) receives `source: "channel"` and the `connectorId` on its save context, so a store you own can attribute and reconcile channel messages.
+
+## Files, buttons and steering
+
+Three more hooks cover what a chat surface carries besides text:
+
+* `download(url, { handle })` fetches files only the surface's credentials can read. Have `inbound` return file parts on the surface's URLs, and the `streamText` passed to `run()` asks each connector's `download` for every file URL in the prompt (return null for URLs it doesn't own). Downloads are cached for the run and the transcript keeps the URL. A file `download` throws on becomes a short note in that turn's messages, and the turn still runs.
+* `toAction(event)` maps a click on a control the agent posted to an action. It reaches `onAction`, validated against `actionSchema`, with the click itself as `channel.event`. Returning `chat.turn(message)` answers in the bound thread. Return null for anything else, such as a click answering a pending tool call, which `onInteraction` handles.
+* With [`pendingMessages`](/docs/ai-chat/pending-messages) on the agent, a channel message that arrives while a turn is running goes through `inbound` and is offered to `shouldInject` like a browser message (its `metadata.source` is `"channel"`). Stops, clicks and empty messages are never offered.
+* `received(ctx)` acknowledges a channel message that arrives while a turn is running, as soon as it arrives and whether or not `pendingMessages` folds it in, so its wording should be true either way: `slack()` reacts with 👀, `linear()` posts a thought. Stops, clicks and empty messages are not acknowledged.
+
+## Channels vs events
+
+Both are inbound surfaces on a `chat.agent`, and an agent can list both:
+
+* [`events`](/docs/webhooks/session-routing) (`chat.event`): the webhook is a signal. Delivered to `onAction`; the agent acts, no reply is sent back.
+* `channels` (`slack`, `chat.channels.custom`): the webhook is a chat frontend. Delivered as a turn to `run()`; the reply is posted back.
+
+
+# Connect a webhook provider
+Source: https://trigger.dev/docs/webhooks/connect
+
+Register an endpoint's URL and signing secret with the provider, by hand or with an AI coding agent, then check that events arrive.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+Connect a provider to an [endpoint](/docs/webhooks/overview) by registering the endpoint's URL with the provider and giving Trigger.dev the credential that verifies its requests.
+
+Deploy the project or start `trigger dev` first. Once the CLI finds the endpoint, it appears on the environment's **Webhooks** page. The **Signing secret** column shows **Ready** when the endpoint can verify deliveries and **Needs secret** until then. Every delivery is rejected while an endpoint needs its secret.
+
+## Set it up with an AI agent
+
+Each endpoint has a setup prompt: the URL, the events its subscribers filter on, the provider's own setup steps, and how to generate or store the signing secret. Choose **Copy setup prompt** on the Webhooks page or the endpoint's page, and paste it into an AI coding agent such as Claude Code.
+
+The prompt tells the agent to use the Trigger.dev MCP server (`npx trigger.dev@latest install-mcp`), which has these tools:
+
+| Tool | What it does |
+| - | - |
+| `list_webhook_endpoints` | Lists the environment's endpoints, with their URL and whether a secret is set. |
+| `get_webhook_endpoint_details` | Reads one endpoint: URL, subscribers and their filters, secret state, and the setup prompt. |
+| `generate_webhook_secret` | Generates a signing secret and returns it once, for providers where you choose the secret. |
+| `set_webhook_secret` | Stores a secret the provider issued. |
+
+Without the MCP server, the same operations are available on the REST API with the environment's secret key:
+
+| Request | What it does |
+| - | - |
+| [`GET /api/v1/webhooks/endpoints`](/docs/management/webhooks/list-endpoints) | Lists the environment's endpoints, with their URL and whether a secret is set. |
+| [`GET /api/v1/webhooks/endpoints/{endpointId}`](/docs/management/webhooks/retrieve-endpoint) | Reads the endpoint, including `subscribers` and `setupPrompt`. |
+| [`POST /api/v1/webhooks/endpoints/{endpointId}/rotate-secret`](/docs/management/webhooks/generate-secret) | Generates a secret and returns it once. |
+| [`PUT /api/v1/webhooks/endpoints/{endpointId}/secret`](/docs/management/webhooks/set-secret) | Stores a secret, sent as `{ "secret": "..." }`. |
+
+`endpointId` is the endpoint's declared id (the `id` passed to `webhooks.endpoint.define`) or its `wh_` id, shown on its page and returned by `list_webhook_endpoints`:
+
+```bash theme={"theme":"css-variables"}
+curl -X PUT "https://api.trigger.dev/api/v1/webhooks/endpoints/stripe/secret" \
+  -H "Authorization: Bearer $TRIGGER_SECRET_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"secret": "whsec_..."}'
+```
+
+## Set it up by hand
+
+<Steps>
+  <Step title="Copy the webhook URL">
+    Open the endpoint from the Webhooks page and copy the **Webhook URL**.
+  </Step>
+
+  <Step title="Configure the provider">
+    Add the URL as the webhook destination in your provider's dashboard and select the events your subscribers need. The provider's setup determines where the verification credential comes from:
+
+    | Provider setup | Action |
+    | - | - |
+    | The provider supplies a signing secret, as Stripe and Svix do | Copy the secret from the provider, then choose **Set signing secret** on the endpoint. |
+    | The provider accepts a secret you choose, as GitHub does | Choose **Generate secret** on the endpoint, then paste the value into the provider's webhook configuration. |
+    | The provider uses an asymmetric signature, as Discord does | Copy the application's public key from the provider and choose **Set public key** on the endpoint. |
+
+    Set the credential before sending a test event or asking the provider to validate the URL.
+  </Step>
+</Steps>
+
+## Verify the connection
+
+Send a test event from your provider, or use the endpoint's **Test** tab. The event appears on the endpoint's **Deliveries** tab. Open it to see which subscribers it reached and follow the links to their runs; see [Deliveries and endpoints](/docs/webhooks/deliveries) for the statuses.
+
+If no delivery appears, check that the provider uses the copied URL and that both sides have the same signing secret or public key.
+
+## Verify a WhatsApp endpoint URL
+
+`webhooks.whatsapp()` also needs a verify token for Meta's URL check. On the endpoint, choose **Generate verify token** and paste the value into Meta's **Verify Token** field. Set Meta's App Secret as the signing secret, then validate the URL in Meta's dashboard.
+
+The verify token answers the URL check. The signing secret verifies event deliveries. See [Sources and verification](/docs/webhooks/sources#endpoint-validation) for the response behavior.
+
+## Rotate a credential
+
+Choose **Rotate signing secret** to replace a provider-supplied secret. For a secret you generate, choose **Regenerate secret**, copy the new value, and update the provider's configuration. Use **Rotate public key** when replacing an asymmetric provider's key.
+
+<Warning>
+  Trigger.dev stores credentials encrypted and doesn't display saved values. Copy a generated secret
+  before closing the dialog. Deliveries signed with the old secret fail verification after rotation.
+</Warning>
+
+
+# Deliveries and endpoints
+Source: https://trigger.dev/docs/webhooks/deliveries
+
+Inspect webhook payloads, where each delivery went, and the runs it started or resumed.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**A delivery records a verified webhook event and what happened to it at each subscriber.** Find deliveries on an endpoint's **Deliveries** tab. A run that a delivery triggered links back to it, and to its endpoint, from the run's **Detail** tab.
+
+## Endpoints
+
+The environment's **Webhooks** page lists its endpoints with their URL, whether the signing secret is set, the last 24 hours of activity, and the last delivery. Open an endpoint for its tabs:
+
+| Tab | Shows |
+| - | - |
+| **Deliveries** | The endpoint's deliveries, filterable by status and time. |
+| **Subscribers** | Every task, agent session and channel subscribed to the endpoint, with each one's filter. |
+| **Waiters** | Runs currently [waiting](/docs/webhooks/waiters) on the endpoint. |
+| **Test** | Sends a sample event through the endpoint. |
+
+The endpoint's details show its URL, source, verification scheme and signing secret actions. See [Connect a provider](/docs/webhooks/connect).
+
+### Disable an endpoint
+
+Disable an endpoint to stop accepting its deliveries without removing it from your code. Its status becomes `inactive` and its URL responds with `404`, so the provider records failed deliveries and retries them on its own schedule:
+
+```bash theme={"theme":"css-variables"}
+curl -X POST "https://api.trigger.dev/api/v1/webhooks/endpoints/stripe/disable" \
+  -H "Authorization: Bearer $TRIGGER_SECRET_KEY"
+```
+
+[Enable](/docs/management/webhooks/enable-endpoint) it again with `POST /api/v1/webhooks/endpoints/{endpointId}/enable`. An endpoint that is no longer in the environment's current deployment is also `inactive`.
+
+## Delivery status
+
+| Status | Meaning |
+| - | - |
+| `PENDING` | Waiting to be routed, including after a retryable error at a subscriber. |
+| `PROCESSING` | Being routed. A delivery that resumes many waiting runs stays here until they have all been resumed. |
+| `SUCCEEDED` | At least one subscriber or waiting run received it, and nothing failed. |
+| `FAILED` | A subscriber failed after its retries. The delivery's error names it. |
+| `FILTERED` | No subscriber's filter matched, or the endpoint has no subscribers. The reason shows the failed clause. |
+| `UNMATCHED` | Runs were waiting on the endpoint, but none matched and no subscriber took it. |
+
+Delivery status tracks routing. Each run it started has its own status and retry history.
+
+## Where a delivery went
+
+Open a delivery to see its payload and headers, and a row per subscriber with its result (`SUCCEEDED`, `FILTERED` with the reason, or `FAILED` with the error) and a link to the run it started. Waiting runs are summarized in one row: how many waiters matched, how many were resumed, and how many failed to resume.
+
+A subscriber that fails transiently is retried on its own; subscribers that already succeeded are not run again.
+
+## Replay
+
+Replaying a delivery routes its event again as a new delivery. Filters are checked again, so the replay reaches the subscribers that would take the event now:
+
+```bash theme={"theme":"css-variables"}
+curl -X POST "https://api.trigger.dev/api/v1/webhooks/deliveries/whd_1234/replay" \
+  -H "Authorization: Bearer $TRIGGER_SECRET_KEY"
+```
+
+Add `?targetId=` to send it to one subscriber regardless of its filter. `targetId` is the subscriber id: a `webhook()` task's id, or `agentId:eventId` for an agent's `chat.event` or channel. A replay never resumes waiting runs.
+
+## From an agent or the API
+
+The [MCP server](/docs/mcp-introduction) has `list_webhook_deliveries` (filter by endpoint, status and time), `get_webhook_delivery` (each subscriber's result, the waiter summary, the event and headers) and `replay_webhook_delivery`. The same data is on the REST API:
+
+| Request | What it does |
+| - | - |
+| [`GET /api/v1/webhooks/deliveries`](/docs/management/webhooks/list-deliveries) | Lists deliveries, newest first. Filter with `filter[endpoint]` (declared or `wh_` ids), `filter[status]`, and `filter[period]` or `filter[from]`/`filter[to]`. |
+| [`GET /api/v1/webhooks/deliveries/{deliveryId}`](/docs/management/webhooks/retrieve-delivery) | Reads a delivery, with a `targets` entry per subscriber and one for waiting runs. |
+| [`POST /api/v1/webhooks/deliveries/{deliveryId}/replay`](/docs/management/webhooks/replay-delivery) | Replays it, as above. The key needs permission to trigger every task the replay starts, and to write sessions if it reaches an agent's subscriber. |
+
+## Deduplication
+
+Trigger.dev uses the endpoint and idempotency key to deduplicate incoming events. Delivery records and task runs have separate deduplication windows:
+
+| What is deduplicated | Window |
+| - | - |
+| Delivery records | Six hours by default. |
+| Task runs | Three days for Stripe; one day for other sources. |
+
+A retry after the delivery window expires can create another delivery record. If the task-run idempotency window is still active, routing returns the existing run instead of starting another one.
+
+When the source maps a provider event ID, that ID becomes the key. For example, Stripe uses the event body's `id`, and GitHub uses the `X-GitHub-Delivery` header.
+
+If the source doesn't map an event ID, the key is derived from the raw body, timestamp, and signature. A retry with a different timestamp or signature can therefore produce a different key. For a [custom source](/docs/webhooks/sources#custom-providers), set `idempotencyField` to a stable event identifier when the provider supplies one.
+
+## Verification and recording
+
+Requests must pass the source's verification checks before they are recorded. Timestamp checks apply when configured by the source. A verification failure returns the source's rejected HTTP status (`400` by default) and creates no delivery or run.
+
+Provider handshakes receive their configured response without creating a delivery. Other verified events are checked for duplicates, recorded, and routed. Filtered and unmatched deliveries stay visible, so you can see what arrived and why nothing ran.
+
+
+# Filtering deliveries
+Source: https://trigger.dev/docs/webhooks/filters
+
+Choose which verified webhook events reach each subscriber, by payload fields, request headers, or endpoint metadata.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**A filter selects which verified deliveries reach a subscriber.** Each subscriber on an [endpoint](/docs/webhooks/overview) has its own filter, so one delivery can start one task and skip another. A delivery no subscriber takes is recorded with status `FILTERED`, so you can inspect it in the dashboard.
+
+## Add a filter
+
+Set `filter` on the subscriber. This example accepts Stripe payment-intent events whose amount is at least 10,000:
+
+```ts /trigger/payment-events.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const largePayments = webhook({
+  id: "large-payments",
+  endpoint: stripe,
+  filter: "event.type == 'payment_intent.succeeded' && event.data.object.amount >= 10000",
+  onEvent: async ({ event }) => {
+    console.log("Matched payment event", event.id);
+  },
+});
+```
+
+The same `filter` works on a [`chat.event`](/docs/webhooks/session-routing#filtering), a channel connector, and a [waiter](/docs/webhooks/waiters), where it is checked after the waiter's `match`.
+
+The filter is checked against the [endpoint's event type](/docs/webhooks/sources#typing-the-event). Concrete types catch missing fields and incompatible literals. Fields typed as `unknown`, including values in Stripe's default `data.object`, allow arbitrary non-empty field paths. Operator literals and path structure are still checked. A filter built at runtime (typed as `string` rather than a string literal) skips the compile-time check, and is validated when the endpoint is deployed.
+
+## Narrow a union event
+
+When the endpoint's event is a union, such as `webhooks.stripe<Stripe.Event>()`, an `event.<field> == '<value>'` clause selects the members whose field can hold that value. The rest of that `&&` chain is checked against those members, and the handler's `event` has their type:
+
+```ts /trigger/checkouts.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+import type Stripe from "stripe";
+
+export const stripe = webhooks.endpoint.define({
+  id: "stripe",
+  source: webhooks.stripe<Stripe.Event>(),
+});
+
+export const checkouts = webhook({
+  id: "checkouts",
+  endpoint: stripe,
+  filter: "event.type == 'checkout.session.completed' && event.data.object.amount_total >= 100",
+  onEvent: async ({ event }) => {
+    const session: Stripe.Checkout.Session = event.data.object; // no cast needed
+    console.log("Checkout completed", session.id);
+  },
+});
+```
+
+* `in [...]` selects the members for any listed value, and `||` gives the union of its branches. Parentheses group branches as usual.
+* `!=`, `not in`, numeric comparisons, string operators, and `any`/`all` don't narrow. Neither do `null`, `'null'`, or `0`, because the server's `==` also matches a null field for those values.
+* Without a type clause, a field that only some members have is accepted: an event without it never matches.
+* The narrowed type also applies to the task's trigger payload, a `chat.event` action's `event` and `key`, channel connector callbacks, and a waiter's event. A filter built at runtime doesn't narrow.
+
+## Check the result
+
+Send an event and open its [delivery](/docs/webhooks/deliveries) in the dashboard. Each subscriber's row shows whether it took the event, and a filtered subscriber shows the failed clause and its value. The provider receives the source's accepted HTTP status (`200` by default) either way.
+
+<Note>
+  If filter evaluation throws an exception, Trigger.dev routes the event. Filters aren't a substitute
+  for signature verification or validation inside your handler.
+</Note>
+
+## The expression language
+
+A filter is one or more `path operator value` clauses combined with `&&` and `||` (use parentheses to group).
+
+### Paths
+
+A path reads from one of three namespaces:
+
+* `event.*`: the verified, parsed request body, for example `event.data.object.amount`.
+* `header.*`: an inbound request header, matched case-insensitively, for example `header.x-github-event`.
+* `webhook.*`: endpoint and delivery metadata: `source`, `id`, `deliveryId`, `externalRef`, and `tenantId`. The last two depend on the endpoint configuration.
+
+Paths must have non-empty segments. `event.data.amount` is valid; `event.`, `event..amount`, and `event.amount.` are rejected.
+
+[Session routing](/docs/webhooks/session-routing) keys use the same namespaces in braces (`{event.data.object.customer}`), and [waiter](/docs/webhooks/waiters) `match` paths use them as keys (`"event.data.object.metadata.orderId"`).
+
+### Operators
+
+| Operator | Meaning |
+| - | - |
+| `==` `!=` | equality |
+| `>` `<` `>=` `<=` | numeric comparison |
+| `in` `not in` | membership in a list, for example `event.type in ['a', 'b']` |
+| `startsWith` `endsWith` `contains` | string matching |
+
+Values are strings in single quotes (`'created'`), numbers (`10000`), booleans (`true`), or `null`. Use a list of these values with `in` and `not in`.
+
+### Comparing two fields
+
+Equality and comparison operators also accept a field path on the right-hand side:
+
+```text Filter expression theme={"theme":"css-variables"}
+event.billing.country == event.shipping.country
+```
+
+### Matching inside a list
+
+`any` matches if at least one array element meets the condition. `all` requires every element to match. The path inside the parentheses is relative to each element:
+
+```text Filter expression theme={"theme":"css-variables"}
+event.items any ( quantity > 0 )
+```
+
+### Spacing
+
+Separate paths, operators, and values with one space. Parentheses may touch what they enclose, as in `(event.amount > 0)` and `any (quantity > 0)`. Lists and quoted strings may contain spaces (`['opened', 'closed']`, `'Fix the build'`). These forms work with both the TypeScript validator and the deployment parser.
+
+## Filter by event type
+
+Use the field or header your provider supplies for its event type. GitHub uses the `x-github-event` header:
+
+```ts /trigger/github-events.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const github = webhooks.endpoint.define({ id: "github", source: webhooks.github() });
+
+export const onIssuesAndPullRequests = webhook({
+  id: "github-issues-and-prs",
+  endpoint: github,
+  filter: "header.x-github-event in ['issues', 'pull_request']",
+  onEvent: async ({ headers }) => {
+    console.log("Matched GitHub event", headers.get("x-github-event"));
+  },
+});
+```
+
+## Filtering a session route
+
+A `filter` works the same way on [`chat.event`](/docs/webhooks/session-routing): a delivery that doesn't match never reaches the session.
+
+
+# Human-in-the-loop
+Source: https://trigger.dev/docs/webhooks/human-in-the-loop
+
+Pause an agent mid-turn to get a human decision from the channel (Slack approve/deny), then resume with the answer.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector ships Approve and Deny buttons out of the box.
+
+## How it works
+
+The building block is a tool with no `execute` function. When the model calls it, the turn completes with the tool call still pending instead of resolving it. Over a channel the framework then takes over the round-trip:
+
+```mermaid theme={"theme":"css-variables"}
+sequenceDiagram
+    participant U as User
+    participant S as Slack
+    participant A as Agent run
+    U->>S: Message in a thread
+    S->>A: Verified delivery starts a turn
+    A->>A: Model calls requestApproval (no execute)
+    A->>S: renderInteraction posts Approve and Deny
+    Note over A: Turn completes, run suspends (no compute while waiting)
+    U->>S: Clicks a button
+    S->>A: Signed block_actions callback to the same webhook URL
+    A->>A: onInteraction resolves the pending tool
+    A->>S: finalizeInteraction collapses the buttons
+    A->>A: Run resumes, model continues
+    A->>S: Reply posts back to the thread
+```
+
+Because it is a no-`execute` pause, the run suspends while it waits rather than holding compute. A human can take minutes or days to decide without burning compute or hitting [`maxDuration`](/docs/runs/max-duration). The mechanics are the same as the browser case, covered in [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop#duration-and-cost-while-paused).
+
+## Slack approvals
+
+Out of the box, `slack()` posts Approve and Deny buttons for any pending no-`execute` tool. A click resolves to `{ approved: boolean }` and the buttons collapse to the decision. You define the tool and list the channel on the agent:
+
+```ts trigger/support-agent.ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { slack, webhookSource } from "@trigger.dev/slack";
+import { tool } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
+
+const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
+
+// No execute: calling this pauses the turn for a human decision.
+const requestApproval = tool({
+  description:
+    "Request human approval before a sensitive or irreversible action. " +
+    "Call this and stop; you will receive { approved: boolean }, then proceed or decline.",
+  inputSchema: z.object({
+    action: z.string().describe("A short description of the action needing approval"),
+  }),
+});
+
+export const supportAgent = chat.agent({
+  id: "support-agent",
+  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  tools: { requestApproval },
+  run: async ({ messages, tools, streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      tools,
+      system:
+        "Before any sensitive or irreversible action (refunds, cancellations, deletions), " +
+        "call requestApproval and wait. If approved, confirm it is done; if denied, decline.",
+    }),
+});
+```
+
+Button clicks arrive through Slack's interactivity, so the app needs **Interactivity & Shortcuts** turned on with the Request URL set to the **same** endpoint URL as events. The [Slack agents](/docs/webhooks/slack#setup) manifest already does this.
+
+When the model calls `requestApproval`, the bot posts "Approval needed" with the action and Approve and Deny buttons, and the session's status is **suspended**. Clicking **Approve** resolves the tool to `{ approved: true }`, the buttons collapse to "Approved by @you", and the agent continues and streams the outcome. **Deny** resolves `{ approved: false }`. Pressing Slack's stop button instead cancels the approval: the buttons are replaced with "Stopped" and a later click resumes nothing.
+
+## Customizing the controls
+
+For [`chat.channels.custom`](/docs/webhooks/channels), four hooks own the interaction round-trip:
+
+<ParamField type="(pending, ctx) => ChannelMessage | null">
+  Map the pending tool call(s) to the controls you post. `pending` is a list of `{ toolCallId, toolName, input }`, and `ctx` carries the `event` and `deliveryId` that started the turn (both absent on a bound turn, such as a `chat.turn()` action answering into the thread). Return `null` to skip posting controls.
+</ParamField>
+
+<ParamField type="(event) => { toolCallId, output } | null">
+  Map a verified callback event to a resolution. The `output` is stitched onto the pending tool call matched by `toolCallId` and the run resumes. Return `null` to treat the event as a normal message instead (a new turn).
+</ParamField>
+
+<ParamField type="(event, resolution) => void">
+  Collapse the controls after a decision so they cannot be clicked again. Best effort: a failure here is logged and the run still resumes.
+</ParamField>
+
+<ParamField type="(cancelled, ctx) => void">
+  Take the controls down when a stop (`onControl` returning `{ kind: "stop", whenIdle: "drop" }`) arrives while the session waits on them. Each cancelled call carries the `ref` its controls were posted with. The calls are already resolved as stopped. Best effort: a failure is logged.
+</ParamField>
+
+Slack encodes the tool call id and the click's output in each button's `value` so `onInteraction` can resolve the exact call (see [Approvals and buttons](/docs/webhooks/slack#approvals-and-buttons) to customize the buttons or give a tool its own UI), and `finalizeInteraction` posts to the interaction's `response_url` with `replace_original` to swap the buttons for the outcome. On a custom surface you choose the encoding and how you edit the controls away.
+
+```ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { webhooks } from "@trigger.dev/sdk";
+
+const surface = webhooks.endpoint.define({
+  id: "my-surface",
+  source: webhooks.custom<MyEvent>({ /* verifier config */ }),
+});
+
+chat.channels.custom({
+  id: "my-surface",
+  endpoint: surface,
+  key: "{event.conversationId}",
+  inbound: (e) => e.text,
+  send: async (message, ctx) => ({ ref: await postToMySurface(ctx.event, message) }),
+  renderInteraction: (pending) => ({
+    text: `Approve: ${pending[0].input.action}?`,
+    buttons: pending.map((c) => [`${c.toolCallId}:yes`, `${c.toolCallId}:no`]),
+  }),
+  // called for every delivery: return null for anything that isn't one of these button clicks
+  onInteraction: (e) => {
+    if (typeof e.buttonValue !== "string" || !e.buttonValue.includes(":")) return null;
+    const [toolCallId, choice] = e.buttonValue.split(":");
+    return { toolCallId, output: { approved: choice === "yes" } };
+  },
+  finalizeInteraction: async (e) => {
+    await editMySurface(e.messageRef, "Decision recorded");
+  },
+});
+```
+
+The resolved `output` is whatever your tool expects to receive. The Slack default resolves `{ approved: boolean }`; if your tool needs a richer answer, supply your own `onInteraction` that returns the shape your tool reads.
+
+## The reply after a decision
+
+When the turn resumes, the channel reply shows the agent's answer, not the text it produced before pausing. The framework posts the assistant text generated after the tool call, so a preamble like "I'll need approval first" is not concatenated onto the final "done" message. The approval prompt itself already lives in the collapsed controls.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Channels" icon="comments" href="/docs/webhooks/channels">
+    Point Slack or any surface at an agent so messages become turns.
+  </Card>
+
+  <Card title="Browser human-in-the-loop" icon="hand" href="/docs/ai-chat/patterns/human-in-the-loop">
+    The same no-execute pause, rendered in a React frontend.
+  </Card>
+
+  <Card title="Sessions" icon="layer-group" href="/docs/ai-chat/sessions">
+    The durable per-conversation state a channel turn runs on.
+  </Card>
+
+  <Card title="Filters" icon="filter" href="/docs/webhooks/filters">
+    Gate which verified deliveries reach the agent.
+  </Card>
+</CardGroup>
+
+
+# Linear agents
+Source: https://trigger.dev/docs/webhooks/linear
+
+Turn a chat.agent into a Linear agent: assign it an issue or @mention it, and it works the issue inside Linear's agent session UI.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+Linear opens an **agent session** when someone @mentions your app in an issue or delegates (assigns) an issue to it. `linear()` from `@trigger.dev/linear` is a [channel](/docs/webhooks/channels) connector for those sessions: each one becomes a durable Trigger.dev [session](/docs/ai-chat/sessions), the user's prompt runs as a turn, and the agent's work shows up in Linear as thoughts, actions, a plan, an approval card when it needs a decision, and a response when it is done.
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { linear, webhookSource } from "@trigger.dev/linear";
+import { anthropic } from "@ai-sdk/anthropic";
+
+const linearEvents = webhooks.endpoint.define({ id: "linear", source: webhookSource() });
+
+export const triage = chat.agent({
+  id: "triage",
+  channels: [linear({ id: "linear", endpoint: linearEvents, token: process.env.LINEAR_ACCESS_TOKEN! })],
+  tools: { searchDocs, createSubIssues },
+  run: async ({ messages, tools, signal, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools, abortSignal: signal }),
+});
+```
+
+The `run()` loop is the same one a browser chat or a Slack thread uses. Verification, the five second webhook acknowledgment, the first activity Linear expects within ten seconds, per-session state, dedup of Linear's retries, replay and the transcript are handled for you.
+
+## Setup
+
+<Steps>
+  <Step title="Create the OAuth app">
+    In Linear, create an OAuth application under **Settings, API**. Enable **Webhooks** on it and turn on the **Agent session events** category (Inbox notifications and Permission changes are useful too). Copy the webhook **signing secret**.
+  </Step>
+
+  <Step title="Install it as an agent">
+    Authorize the app with `actor=app` in the authorization URL and request the `app:assignable` and `app:mentionable` scopes, so members can assign issues to it and @mention it. Installation needs a workspace admin. Keep the resulting access token; pass it as `token`.
+  </Step>
+
+  <Step title="Deploy and connect the endpoint">
+    Declare the endpoint with `webhookSource()` from `@trigger.dev/linear` and pass it to `linear({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect). Paste the app's webhook signing secret as the endpoint's signing secret, and set the app's webhook URL to the endpoint's URL. The endpoint's setup prompt walks an AI coding agent through these settings.
+  </Step>
+
+  <Step title="Try it">
+    Open an issue and assign it to the app, or write a comment that @mentions it. Linear shows the agent's first thought within a few seconds and then its work.
+  </Step>
+</Steps>
+
+## What the agent sees
+
+On the first turn of a session the connector frames Linear's payload for the model: who summoned it and on which issue, the workspace **guidance** rules for agents, Linear's formatted **issue context** (title, description, labels, project, comments), and the comment that mentioned it. An assignment with no comment reads as "assigned ENG-412 to you". Prior comments on the issue are seeded as transcript messages, so the agent can answer with the context a reader of the issue has.
+
+A follow-up prompt on the session is just the message. If the user hits **Stop** in Linear, see [Stopping](#stopping).
+
+Images and PDFs uploaded to Linear reach the model as files: screenshots in the prompt, in the comment that mentioned the agent, or in the issue description. The transcript keeps the upload link, and the `streamText` passed to `run()` downloads the file with the app's token when the model reads it, at most ten per message. A file that can't be downloaded reaches the model as a short note. A custom `inbound` keeps this by adding `linearFileParts(markdown)` to its message parts.
+
+Turn any of that off with `context`:
+
+```ts theme={"theme":"css-variables"}
+linear({ id: "linear", endpoint: linearEvents, token, context: { guidance: false, promptContext: true, previousComments: true } })
+```
+
+## What Linear shows
+
+| Moment | Activity in Linear |
+| - | - |
+| Turn starts | An ephemeral `thought` ("Looking into this...") |
+| A tool is called | An ephemeral `action` with the tool name and input, then the same action with its `result` |
+| The reply is ready | A `response` with the reply as markdown |
+| The turn fails | An `error` |
+| A tool needs a human decision | An `elicitation` with Approve and Deny options, or the tool's own options from `interactions` (see [Approvals and choices](#approvals-and-choices)) |
+| The user picks an option | A `thought` recording the decision ("Approved by Jane.", "Jane chose "High".") |
+| A prompt arrives while the agent works | A `thought` ("Got it, I'll take that into account.") as soon as it arrives (see [Prompts sent while the agent is working](#prompts-sent-while-the-agent-is-working)) |
+
+Tool mirroring is on by default; pass `progress: "off"` to post only the response. Bare Linear URLs in a reply become mentions, so link issues and documents by URL.
+
+## The plan
+
+Linear shows an agent's plan as a checklist under the conversation. The model owns it: add `linearPlanTool()` to the agent's tools and ask for a plan in the system prompt, and the model sets it when it starts and updates it as steps finish. The whole list is replaced on each call. On a turn that is not a Linear session the tool reports that nothing was updated, so `run()` needs no Linear-specific code.
+
+```ts theme={"theme":"css-variables"}
+import { linear, linearPlanTool } from "@trigger.dev/linear";
+
+export const triage = chat.agent({
+  id: "triage",
+  channels: [linear({ id: "linear", endpoint: linearEvents, token })],
+  tools: { searchDocs, createSubIssues, updatePlan: linearPlanTool() },
+  run: async ({ messages, tools, signal, streamText }) =>
+    streamText({
+      model,
+      messages,
+      tools,
+      abortSignal: signal,
+      system: "Start by setting a short plan with updatePlan and keep it current as you work.",
+    }),
+});
+```
+
+## Helpers
+
+For manual control, `chat.surface<LinearRunSurface>()` returns the current turn's helpers from anywhere inside the run, including a tool's `execute`. The same object is handed to `run()` as `channel`.
+
+| Helper | Effect |
+| - | - |
+| `plan(steps)` | Replace the session's plan. Each step is `{ content, status }` with status `pending`, `inProgress`, `completed` or `canceled`. What `linearPlanTool()` calls. |
+| `thought(text, { ephemeral })` | Post a thought. |
+| `action(action, parameter, result?)` | Post an action, optionally with its result. |
+| `link(label, url)` | Add an external link to the session header (a pull request, a dashboard). |
+| `summary(text)` | Set the one-line session summary. |
+| `session` | The bound agent session and issue ids. |
+
+## Approvals and choices
+
+A tool with no `execute` pauses the turn for a human decision, exactly as on [any channel](/docs/webhooks/human-in-the-loop). On Linear the connector posts an elicitation card with Approve and Deny options. The card lays the tool input out as markdown: a list of proposed items becomes a numbered list with a bold title per item, a flat object becomes key and value bullets, and only shapes it cannot lay out fall back to JSON. For a card written for the tool, pass a renderer per tool name:
+
+```ts theme={"theme":"css-variables"}
+linear({
+  id: "linear",
+  endpoint: linearEvents,
+  token,
+  approvals: {
+    createSubIssues: (input) => ({
+      title: "Create these sub-issues?",
+      body: (input as { issues: { title: string }[] }).issues.map((i) => `- ${i.title}`).join("\n"),
+    }),
+  },
+})
+```
+
+The user picks one and presses Continue; the choice shows in the session as "Approve createSubIssues \[call\_a]" (the tool and the call it applies to, so the decision always lands on the call whose input the card shows) and resumes the run with `{ approved: true | false }`, and the decision is recorded as a thought. Typing a free-text reply instead dismisses the options and runs as a normal turn, so the model can take the reply into account (and ask again) with the approval still pending.
+
+`interactions` gives a tool its own choices instead of Approve and Deny. The card is a select of `options`, and the chosen option resolves the tool to `{ selected }`:
+
+```ts theme={"theme":"css-variables"}
+linear({
+  id: "linear",
+  endpoint: linearEvents,
+  token,
+  interactions: {
+    pickPriority: (call) => ({
+      title: "What priority should this be?",
+      body: (call.input as { reason: string }).reason,
+      options: ["Urgent", "High", "Medium", "Low"],
+    }),
+  },
+})
+```
+
+The choice shows in the session as "High \[choice:call\_a]", resumes the run with `{ selected: "High" }`, and is recorded as a thought.
+
+## Stopping
+
+Pressing Stop in Linear sends the session a prompt with the `stop` signal. While a turn is running, the connector aborts it through the agent's stop signal (the same one the browser's stop button uses): generation halts, the text written so far posts as the response with `stopped: true`, and the stop prompt itself is consumed. Pressed while the agent is idle, the prompt runs as a turn that tells the model to stop taking actions and summarize. A Stop pressed while a turn was running that arrives after the turn finished is consumed, so pressing Stop twice never adds a wind-down turn.
+
+## Prompts sent while the agent is working
+
+A prompt sent while the agent is still working gets a thought as soon as it arrives ("Got it, I'll take that into account."), so the user knows it was picked up. It then waits and runs as the next turn. With [`pendingMessages`](/docs/ai-chat/pending-messages) on the agent, `shouldInject` can fold it into the work in progress at the next step instead; a prompt it declines still runs as its own turn. `receivedThought` changes the text, takes a function of the event for wording per prompt, and `null` posts nothing; since the prompt may be answered either way, keep the wording true for both. Stop and the approval card's options are never acknowledged or folded in.
+
+## Answering into the session from elsewhere
+
+The first Linear turn binds the session to the agent session ([bound sessions](/docs/webhooks/channels#bound-sessions)). A [`chat.event`](/docs/webhooks/session-routing) routed to the same session key, a Sentry alert keyed on the issue identifier for example, can return `chat.turn()` from `onAction` and its answer posts into the Linear session as a response, with no Linear event involved. Linear reopens a completed session when new activity arrives.
+
+## Options
+
+| Option | Type | Description |
+| - | - | - |
+| `id` | `string` | Connector id, unique per agent. |
+| `endpoint` | endpoint | The Linear endpoint, declared with `webhooks.endpoint.define({ id, source: webhookSource() })`. Other `webhook()` tasks can subscribe to the same endpoint. |
+| `token` | `string` or resolver | The app's OAuth access token, or a function of the event (keyed on `organizationId`) for multi-workspace installs. |
+| `key` | `string` | Session [key](/docs/webhooks/session-routing) template over `{event.*}`, `{header.*}` and `{webhook.*}`. Defaults to one session per Linear agent session. |
+| `filter` | filter string | Extra [filter](/docs/webhooks/filters), composed with the built-in agent-session guard. Checked against the endpoint's event type, like `webhook()`'s `filter`. |
+| `startOn` | filter string | Only start a session when the event matches. Existing sessions always resume. Checked against the endpoint's event type. |
+| `context` | `{ guidance?, promptContext?, previousComments? }` | What from Linear's payload is put in front of the model on the first turn. All on by default. |
+| `progress` | `"actions"` or `"off"` | Mirror tool calls as action activities (default) or post only the response. |
+| `summarize` | `boolean` | Set the session title from each response's first line. Off by default; Linear titles the session itself. |
+| `approvals` | `{ [toolName]: (input, call) => { title?, body } }` | Custom approval card body per tool. Default lays the tool input out as markdown. |
+| `interactions` | `{ [toolName]: (call) => { title?, body, options } }` | A tool's own select card; the chosen option resolves the tool to `{ selected }`. |
+| `receivedThought` | `string`, function or `null` | Thought posted as soon as a prompt arrives while the agent is working. Default "Got it, I'll take that into account.", null for none. |
+| `ack` | message, `null`, or function | The first thought. Pass `null` to post nothing before the response. |
+| `inbound` / `outbound` | functions | Map the event to the turn, and the reply to an activity. |
+| `delivery` | `"final"` or `"stream"` | `"final"` (default) posts the response when the turn ends. `"stream"` also posts ephemeral thoughts as the reply streams. |
+| `apiUrl` | `string` | Override the Linear GraphQL URL, for testing against a mock. Files on its origin are treated as Linear uploads. |
+
+<Note>
+  Linear expects the first activity within ten seconds of opening a session. The connector posts it at
+  the top of the run, so on a cold start close to that limit the session can show as unresponsive for a
+  moment; it recovers as soon as the thought lands. Linear retries a failed delivery after one minute,
+  one hour and six hours, and the endpoint deduplicates those retries.
+</Note>
+
+
+# Webhooks overview
+Source: https://trigger.dev/docs/webhooks/overview
+
+Receive provider webhooks on hosted, verified endpoints and route each event to tasks, agents, and waiting runs.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**A webhook endpoint is one hosted URL that you register with a provider.** Trigger.dev verifies every request against the endpoint's [source](/docs/webhooks/sources), records it as a [delivery](/docs/webhooks/deliveries), and hands the event to everything subscribed to the endpoint.
+
+Declare the endpoint once, then subscribe to it:
+
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({
+  id: "stripe",
+  source: webhooks.stripe(),
+});
+
+export const fulfillOrder = webhook({
+  id: "fulfill-order",
+  endpoint: stripe,
+  filter: "event.type == 'checkout.session.completed'",
+  onEvent: async ({ event }) => {
+    console.log("Fulfilling", event.data.object.id);
+  },
+});
+
+export const recordRefund = webhook({
+  id: "record-refund",
+  endpoint: stripe,
+  filter: "event.type == 'charge.refunded'",
+  onEvent: async ({ event, headers, endpoint, ctx }) => {
+    console.log("Refund", event.id, "on", endpoint?.id, "in run", ctx.run.id);
+  },
+});
+```
+
+Stripe gets one URL. A checkout event runs `fulfill-order`, a refund runs `record-refund`, and anything else is recorded as `FILTERED`.
+
+## What can subscribe
+
+| Subscriber | Declared with | What a delivery does |
+| - | - | - |
+| Task | `webhook({ endpoint, onEvent })` | Starts a run of the task with the event. |
+| Agent session | [`chat.event({ endpoint, key })`](/docs/webhooks/session-routing) listed on a `chat.agent` | Delivers an action to the session the `key` names. |
+| Chat frontend | a [channel connector](/docs/webhooks/channels) such as `chat.channels.custom({ endpoint })` | Runs a turn on the conversation's session and posts the reply back. |
+| Waiting run | [`webhooks.waiter.create(endpoint, { match })`](/docs/webhooks/waiters) | Resumes a run that is waiting for this event. |
+
+Each subscriber has its own [filter](/docs/webhooks/filters), so one delivery can reach several subscribers and skip the rest. An endpoint can have up to 25 subscribers. An endpoint with no subscribers still gets a URL, so you can register it with the provider before writing the handlers.
+
+## The handler
+
+`onEvent` receives:
+
+| Argument | Value |
+| - | - |
+| `event` | The verified request body, parsed as JSON. Its TypeScript type comes from the [source](/docs/webhooks/sources#typing-the-event). |
+| `headers` | Request headers as a Web `Headers` object, with case-insensitive `get()` and `has()` methods. Credentials such as signatures are removed. |
+| `endpoint` | The endpoint the delivery arrived on: `id`, `declaredId`, `tenantId`, `externalRef`, and the `metadata` you declared. |
+| `ctx` | The same [run context](/docs/context) that regular tasks receive. |
+
+`webhooks.endpoint.define` also takes a `description` and `metadata`. The metadata is passed to every subscriber as `endpoint.metadata`. The endpoint `id` can't start with `wh_`, which is reserved for the ids Trigger.dev generates.
+
+## How it works
+
+The CLI finds your endpoints and subscribers during `trigger dev` and deployment, and each environment gets one endpoint per declared id. The endpoint holds the URL and the credential used to verify requests.
+
+A request must pass verification before anything else happens. Provider handshakes are answered directly and create no delivery. A verified request is checked for duplicates, recorded, and then routed: each subscriber's filter is checked, matching subscribers run, and waiting runs whose match fits the event are resumed. The delivery records a result per subscriber.
+
+## Connect it
+
+Every endpoint can produce a setup prompt for an AI coding agent. It holds the URL, the events your subscribers filter on, and the steps for registering the endpoint and its signing secret with the provider. Copy it from the endpoints list or the endpoint's page, or read it with the MCP server's `get_webhook_endpoint_details` tool. See [Connect a provider](/docs/webhooks/connect).
+
+<CardGroup>
+  <Card title="Connect a provider" icon="plug" href="/docs/webhooks/connect">
+    Register the URL and signing secret, then send a test event.
+  </Card>
+
+  <Card title="Sources and verification" icon="shield-check" href="/docs/webhooks/sources">
+    Choose a provider source or define a custom verification scheme.
+  </Card>
+
+  <Card title="Filters" icon="filter" href="/docs/webhooks/filters">
+    Choose which events reach each subscriber.
+  </Card>
+
+  <Card title="Waiters" icon="hourglass" href="/docs/webhooks/waiters">
+    Pause a run until a matching webhook arrives.
+  </Card>
+
+  <Card title="Deliveries and endpoints" icon="inbox" href="/docs/webhooks/deliveries">
+    Inspect received events and where each one went.
+  </Card>
+
+  <Card title="Session routing" icon="arrows-to-dot" href="/docs/webhooks/session-routing">
+    Route deliveries to a durable per-key agent session.
+  </Card>
+
+  <Card title="Channels" icon="comments" href="/docs/webhooks/channels">
+    Turn a webhook into a chat frontend for an agent.
+  </Card>
+
+  <Card title="Human-in-the-loop" icon="user-check" href="/docs/webhooks/human-in-the-loop">
+    Approvals and interactive controls over a channel.
+  </Card>
+</CardGroup>
+
+
+# Routing to a session
+Source: https://trigger.dev/docs/webhooks/session-routing
+
+Route verified webhook deliveries to a durable per-key session instead of a fresh run.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+A plain [`webhook()`](/docs/webhooks/overview) runs a fresh, stateless run for every delivery. Sometimes you want the opposite: deliveries that share a key (a customer, an installation, an issue) should land on **one durable [session](/docs/ai-chat/sessions)** and be handled in order, with state carried across them. That is what session routing does.
+
+Instead of a handler, you declare a `chat.event` on an [endpoint](/docs/webhooks/overview) and list it on an agent. The verified delivery is routed to a find-or-created session and arrives as an [action](/docs/ai-chat/actions).
+
+## Declaring a chat event
+
+`chat.event` describes the routing only: the endpoint it subscribes to, a `key` that identifies the session, and a `type` label for the delivered action. It has no handler.
+
+```ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const orderEvents = chat.event({
+  id: "order-events",
+  endpoint: stripe,
+  // one session per customer
+  key: "{event.data.object.customer}",
+  // invoices always carry a customer; events without one would have no session to go to
+  filter: "event.type startsWith 'invoice.'",
+  type: "order.event",
+});
+```
+
+The endpoint's other subscribers, such as a `webhook()` task, still get the same deliveries.
+
+### The key
+
+The `key` is what makes routing durable: two deliveries that resolve to the same key reach the same session; a different key gets its own. It is a template string, evaluated server-side at ingest, whose `{...}` placeholders read three namespaces:
+
+* `{event.*}`: the parsed event body.
+* `{webhook.*}`: endpoint metadata (`externalRef`, `tenantId`, `id`, `source`, `deliveryId`).
+* `{header.name}`: an inbound header.
+
+These are the same namespaces [filter](/docs/webhooks/filters) expressions use. Every placeholder names one: a bare `{customer}` is an error.
+
+`{a || b}` falls back to `b` when `a` is missing or empty. Compose several placeholders into one key: `"{webhook.externalRef}-{event.issue.id}"`. Each placeholder is checked against the event type at build time, so a bad field is a red squiggle on the `key` line, not a runtime surprise.
+
+### The `type` label
+
+`type` is a name you choose for the delivered action. It flows straight through to `action.type` on the envelope, so your handler can tell webhook actions apart from each other and from browser actions. It is optional and defaults to the descriptor `id`.
+
+## Handling deliveries on an agent
+
+List the descriptor on a [`chat.agent`](/docs/ai-chat/overview) (or a session agent). The delivery arrives at `onAction`, not as a chat message:
+
+```ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { orderEvents } from "./order-events";
+
+export const orderAgent = chat.agent({
+  id: "order-agent",
+  events: [orderEvents],
+  onAction: async ({ action }) => {
+    switch (action.type) {
+      case "order.event":
+        // action.event is the verified Stripe event, fully typed
+        console.log("order for", action.event.data.object.customer);
+        break;
+    }
+  },
+  run: async ({ messages, signal }) => {
+    /* ... */
+  },
+});
+```
+
+`action.type` is a closed union of the `type` labels of the events you listed, and each arm narrows `action.event` to that event's payload type. The full envelope is `{ type, event, source, headers, deliveryId, externalDeliveryId, endpoint }`. `deliveryId` is the delivery's `whd_` id, as in the dashboard and the [deliveries API](/docs/webhooks/deliveries): a [replay](/docs/webhooks/deliveries#replay) gets a new one. `externalDeliveryId` is the provider's id for the delivery (Stripe's `evt_` id, for example), the same across replays. `endpoint` is the endpoint the delivery arrived on.
+
+Because it is an [action](/docs/ai-chat/actions), the handler is not a turn by default: it can read the event, mutate session state with `chat.history`, and return nothing. To have the agent answer, return `chat.turn()`: the edit is saved, then a full turn runs on the session's history exactly as a message turn does. Webhook actions bypass your `actionSchema` (their shape is fixed and already verified by the source), so `action.type` and `action.event` are typed from the descriptor, not the schema.
+
+## Answering into a channel
+
+When the same session is also a [channel](/docs/webhooks/channels) conversation (a Slack thread keyed to the same customer, say), a turn requested from a webhook action posts its answer into that thread. The first channel message **binds** the session to its connector; every later turn on the session, whatever started it, egresses through the binding.
+
+```ts theme={"theme":"css-variables"}
+export const orderAgent = chat.agent({
+  id: "order-agent",
+  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  events: [orderEvents],
+  onAction: async ({ action }) => {
+    if (action.type === "order.event") {
+      // A user-role note, so the model lane ends on a user message. A system-role
+      // injection becomes instructions and leaves the lane ending on the assistant's
+      // last reply, which most models treat as a prefill and answer with nothing.
+      chat.inject([
+        {
+          role: "user",
+          content: `[payments] Order ${action.event.data.object.id} was paid. Tell the thread in one sentence.`,
+        },
+      ]);
+      return chat.turn(); // the agent tells the thread about the payment
+    }
+  },
+  run: async ({ messages, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages }),
+});
+```
+
+A bound turn posts the final answer as a fresh message in the thread (no placeholder, since there is no triggering message to react to). If the session has never had a channel message, there is nothing to post into and the turn's answer stays on the session's stream only.
+
+<Note>
+  The descriptor never names the agent, and the agent references the descriptor, so there is no
+  circular dependency. Whichever agent lists it becomes the routing target.
+</Note>
+
+## Several agents on one endpoint
+
+Listing a descriptor on an agent subscribes that agent to the descriptor's endpoint, with the subscriber id `agentId:eventId`. If two agents list the same descriptor, the endpoint has two subscribers and every delivery goes to both, on the one URL the provider already knows.
+
+A session belongs to the agent that created it. When two agents compute the same key, the second agent's delivery to that session fails with an error naming the owner. Both agents see the same endpoint, so a `{webhook.*}` placeholder resolves the same for each and can't separate them. Give each agent its own descriptor with a constant prefix in the key instead, for example `"billing-{event.data.object.customer}"` and `"support-{event.data.object.customer}"`.
+
+An exported `chat.event` that no agent lists routes nothing. `trigger dev` warns about it (it is not an error, since declaring the descriptor before wiring the agent is a normal step), so wire it onto an agent once you are ready.
+
+## Filtering
+
+A [`filter`](/docs/webhooks/filters) works here exactly as on a `webhook()` task: a delivery that doesn't match never reaches the session, and the delivery records the reason.
+
+```ts theme={"theme":"css-variables"}
+export const orderEvents = chat.event({
+  id: "order-events",
+  endpoint: stripe,
+  key: "{event.data.object.customer}",
+  type: "order.event",
+  filter: "event.type == 'payment_intent.succeeded'",
+});
+```
+
+
+# Slack agents
+Source: https://trigger.dev/docs/webhooks/slack
+
+Turn a chat.agent into a Slack agent: users message it in Slack, it shows its status while it works, streams its reply with tool calls as task cards, asks for approvals, and stops on Slack's stop button.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**`slack()` from `@trigger.dev/slack` turns a `chat.agent` into a native Slack agent.** Each Slack agent session (a conversation with the agent, or a thread in a channel) becomes a durable Trigger.dev [session](/docs/ai-chat/sessions). A message runs as a turn, the session shows the agent working, the reply streams into the thread as the model writes it, and Slack's stop button stops the turn.
+
+```ts /trigger/support.ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { slack, webhookSource } from "@trigger.dev/slack";
+import { anthropic } from "@ai-sdk/anthropic";
+
+const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
+
+export const support = chat.agent({
+  id: "support",
+  channels: [slack({ id: "slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  tools: { searchDocs, refundOrder },
+  run: async ({ messages, tools, signal, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools, abortSignal: signal }),
+});
+```
+
+`run()` is the same function that answers a browser chat or a [Linear session](/docs/webhooks/linear). Signature verification, Slack's `url_verification` handshake, retry dedup, per-thread state, status updates and streaming are handled by the connector.
+
+## Setup
+
+<Steps>
+  <Step title="Deploy the agent">
+    Declare the endpoint with `webhookSource()` from `@trigger.dev/slack` and pass it to `slack({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect) and gives you its URL.
+  </Step>
+
+  <Step title="Create the Slack app from a manifest">
+    At [api.slack.com/apps](https://api.slack.com/apps), create an app **From a manifest** and paste this, with the endpoint's URL in both request URLs:
+
+    ```yaml manifest.yaml theme={"theme":"css-variables"}
+    display_information:
+      name: Support Agent
+    features:
+      bot_user:
+        display_name: Support Agent
+        always_online: true
+      app_home:
+        messages_tab_enabled: true
+        messages_tab_read_only_enabled: false
+      agent_view:
+        agent_description: Answers support questions and handles refunds.
+    oauth_config:
+      scopes:
+        bot:
+          - assistant:write
+          - chat:write
+          - files:read
+          - reactions:write
+          - im:history
+          - channels:history
+          - groups:history
+    settings:
+      event_subscriptions:
+        request_url: https://your-endpoint-url
+        bot_events:
+          - message.im
+          - message.channels
+          - message.groups
+          - agent_session_stopped
+      interactivity:
+        is_enabled: true
+        request_url: https://your-endpoint-url
+    ```
+
+    `agent_view` makes the app an agent, `agent_session_stopped` turns on the stop button, interactivity delivers clicks on the agent's buttons, `files:read` lets the agent read the images and PDFs users share with it, and `reactions:write` lets it mark a message it picked up mid-reply. Drop `message.channels`, `message.groups` and their `history` scopes if the agent should only answer in its own conversations.
+  </Step>
+
+  <Step title="Connect the endpoint">
+    Paste the app's **Signing Secret** (Basic Information, App Credentials) as the endpoint's signing secret. Until it is set the endpoint rejects Slack's signed requests, so Slack shows the request URL as not verified: once the secret is in, click **Verify** on the app's Event Subscriptions page (or **Click here to verify** on the App Manifest page). Install the app to your workspace and pass the bot token (`xoxb-...`) as `token`. The endpoint's setup prompt walks an AI coding agent through these settings.
+  </Step>
+
+  <Step title="Try it">
+    Open the agent in Slack and send it a message. The session shows it working within a second, and the reply streams in. In a channel, invite the bot (`/invite @Support Agent`) and message it in a thread.
+  </Step>
+</Steps>
+
+## What Slack shows
+
+| Moment | In Slack |
+| - | - |
+| A turn starts | The session's status is **processing**. On the first turn the session is titled with the prompt. |
+| The model writes | The reply streams into the thread with `chat.startStream`, `chat.appendStream` and `chat.stopStream`, as markdown. |
+| A tool is called | A task card in the reply, marked complete when the tool returns and failed if it throws. |
+| A tool needs a decision | Approve and Deny buttons, and the status is **suspended** (see [Approvals and buttons](#approvals-and-buttons)). |
+| The turn ends | The status goes back to **active**, whether it answered, stopped, failed or had nothing to say. |
+| `chat.close()` | The status is **closed**. |
+
+Set `title` to name the session yourself; return null to keep Slack's own. A title the user sets in Slack is never overwritten. Slack drops a processing status after an hour, so a longer turn re-sends it every 50 minutes. `progress: "off"` streams the reply without task cards, and `delivery: "final"` posts the whole reply once the turn ends instead of streaming it.
+
+```ts theme={"theme":"css-variables"}
+slack({
+  id: "slack",
+  endpoint: slackEvents,
+  token,
+  title: (prompt) => `Support: ${prompt.slice(0, 80)}`,
+});
+```
+
+If a streaming request fails in a way that leaves its outcome unknown (a timeout or a dropped connection), the connector does not retry it, since Slack may already have shown that text. It closes the stream and posts the rest of the reply as its own message, so nothing is lost, at the cost of possibly repeating one batch. If that post fails too, the whole reply is posted again as a normal message. Rate limits wait out `Retry-After` and resend the same batch. If the worker running a turn dies mid-stream, the next worker closes that stream with a short "Interrupted" note before it picks the conversation back up.
+
+## Approvals and buttons
+
+A tool with no `execute` pauses the turn until the user answers it in Slack. By default `slack()` posts Approve and Deny buttons, and a click resolves the tool to `{ approved: boolean }`, collapses the buttons to the decision and resumes the turn. See [human-in-the-loop](/docs/webhooks/human-in-the-loop) for the tool definition.
+
+`approval` replaces those buttons for every such tool. Build buttons with `button()`, whose `output` is what the click resolves the tool to:
+
+```ts theme={"theme":"css-variables"}
+slack({
+  id: "slack",
+  endpoint: slackEvents,
+  token,
+  approval: (call, { button }) => ({
+    text: `Run ${call.toolName}?`,
+    blocks: [
+      { type: "section", text: { type: "mrkdwn", text: `Run \`${call.toolName}\`?` } },
+      {
+        type: "actions",
+        elements: [
+          button({ text: "Ship it", style: "primary", output: { approved: true } }),
+          button({ text: "Not now", output: { approved: false } }),
+        ],
+      },
+    ],
+  }),
+});
+```
+
+`interactions` gives a single tool its own UI, keyed by tool name, so a tool can ask the user to pick, rate or choose and continue with the answer:
+
+```ts theme={"theme":"css-variables"}
+export const moji = chat.agent({
+  id: "moji",
+  channels: [
+    slack({
+      id: "slack",
+      endpoint: slackEvents,
+      token,
+      interactions: {
+        pickEmoji: (call, { button }) => {
+          const { options } = call.input as { options: { name: string }[] };
+          return {
+            text: "Pick one",
+            blocks: [
+              { type: "section", text: { type: "mrkdwn", text: "Which one should I add?" } },
+              {
+                type: "actions",
+                elements: options.map((o) => button({ text: `:${o.name}:`, output: { picked: o.name } })),
+              },
+            ],
+          };
+        },
+      },
+    }),
+  ],
+  tools: {
+    pickEmoji: tool({
+      description: "Ask the user to pick one of the generated emoji",
+      inputSchema: z.object({ options: z.array(z.object({ name: z.string() })) }),
+      outputSchema: z.object({ picked: z.string() }),
+    }),
+    addEmoji,
+  },
+  run: async ({ messages, tools, signal, streamText }) =>
+    streamText({ model, messages, tools, abortSignal: signal, stopWhen: stepCountIs(10) }),
+});
+```
+
+The click resolves `pickEmoji` to `{ picked: "wizard" }`, the buttons collapse to the choice, and the turn continues.
+
+### Buttons that send the agent an action
+
+Buttons that aren't answering a tool, such as follow-up questions, are built with `slackButton()` and posted with the surface's `post()`. A click reaches `onAction`, validated against `actionSchema` like a browser action, and returning `chat.turn(message)` answers it in the thread:
+
+```ts theme={"theme":"css-variables"}
+import { slackButton, type SlackSurface } from "@trigger.dev/slack";
+
+export const support = chat.agent({
+  id: "support",
+  channels: [slack({ id: "slack", endpoint: slackEvents, token })],
+  actionSchema: z.object({ type: z.literal("ask"), question: z.string() }),
+  tools: {
+    offerFollowUps: tool({
+      description: "Offer the user up to three follow-up questions as buttons",
+      inputSchema: z.object({ questions: z.array(z.string()).max(3) }),
+      execute: async ({ questions }) => {
+        await chat.surface<SlackSurface>()?.post({
+          text: "Follow-up questions",
+          blocks: [
+            {
+              type: "actions",
+              elements: questions.map((question) =>
+                slackButton({ text: question, action: { type: "ask", question } })
+              ),
+            },
+          ],
+        });
+        return "offered";
+      },
+    }),
+  },
+  onAction: async ({ action }) => chat.turn(action.question),
+  run: async ({ messages, tools, signal, streamText }) =>
+    streamText({ model, messages, tools, abortSignal: signal, stopWhen: stepCountIs(10) }),
+});
+```
+
+`onAction` also gets the click itself as `channel.event`, typed with `SlackBlockActions`: who clicked, and the message the button was on. An action doesn't have to answer; return nothing to only do work. Here `actionSchema` accepts a `pick` action alongside `ask`:
+
+```ts theme={"theme":"css-variables"}
+import type { SlackBlockActions } from "@trigger.dev/slack";
+
+actionSchema: z.discriminatedUnion("type", [
+  z.object({ type: z.literal("ask"), question: z.string() }),
+  z.object({ type: z.literal("pick"), name: z.string() }),
+]),
+onAction: async ({ action, channel }) => {
+  const click = channel?.event as SlackBlockActions | undefined;
+  if (action.type === "pick") {
+    await addEmoji.trigger({ name: action.name, pickedBy: click?.user?.id });
+    return; // no turn
+  }
+  return chat.turn(action.question);
+},
+```
+
+Only buttons built with `button()` or `slackButton()` reach the agent. Buttons your own code builds by hand go to a [`webhook()`](/docs/webhooks/overview) subscribed to the same endpoint, and never start a turn.
+
+## Stopping
+
+Slack shows a stop button while the agent is working. It aborts the running turn through the run's `signal`, exactly like a browser chat's stop: the model call and any tool that honours the signal stop, the partial reply stays in the thread, and the status goes back to active. The next message continues the conversation.
+
+* A stop pressed while nothing is running does nothing, and a repeated or delayed stop never stops a later turn.
+* A stop that reaches a session waiting on an approval cancels it: the buttons are replaced with "Stopped", the pending tool call is recorded as stopped so the model sees that on the next turn, and a later click resumes nothing.
+* Stopping cannot undo what already happened. A tool that finished before the stop has had its effect.
+
+## Channel threads
+
+In a channel the agent answers every thread it can see. To have it answer only when it is @mentioned, pass `startOn` with the `mentions` helper and your bot's user id. A mention in a channel starts a session and the agent answers in a thread under it, then follows the rest of that thread without being mentioned again. `startOn` only applies to channels: a message in the agent's own conversation always starts a session.
+
+```ts theme={"theme":"css-variables"}
+import { slack, mentions } from "@trigger.dev/slack";
+
+slack({ id: "slack", endpoint: slackEvents, token, startOn: mentions("U012BOT") });
+```
+
+When someone mentions the agent partway through a thread, `seedFromThread: true` loads the thread's earlier replies into the new session first, so the agent answers with the context a reader of the thread has. It loads the history once, on the session's first turn, paging through `conversations.replies` and keeping the newest 50 replies (`{ limit }` changes that). Slack limits new commercially distributed apps outside the Marketplace to 15 replies per call and one call a minute, so such an app may only get the thread's first page; internal apps keep the normal limits. A rate limit keeps what was fetched rather than failing the turn.
+
+## Messages sent while the agent is working
+
+A message sent while the agent is still answering gets 👀 as soon as it arrives, so the user knows it was seen (`receivedReaction` changes the emoji, null turns it off). It then waits and runs as the next turn, in the order messages arrived. With [`pendingMessages`](/docs/ai-chat/pending-messages) on the agent, it can be folded into the reply the agent is already writing instead: `shouldInject` decides at each step, and the message reaches the model before its next step. A message `shouldInject` declines still runs as its own turn.
+
+```ts theme={"theme":"css-variables"}
+export const support = chat.agent({
+  id: "support",
+  channels: [slack({ id: "slack", endpoint: slackEvents, token })],
+  pendingMessages: { shouldInject: () => true },
+  run: async ({ messages, signal, streamText }) =>
+    streamText({ model, messages, abortSignal: signal, stopWhen: stepCountIs(10) }),
+});
+```
+
+A message is only folded in at a step boundary, so a reply that is one long model step with no tool calls finishes first and the message runs next. The stop button and button clicks are never folded in.
+
+## Files
+
+Images (PNG, JPEG, GIF, WebP) and PDFs that a user shares in the conversation reach the model with their message, including a file sent with no text. The transcript keeps each file's Slack URL, and the `streamText` given to `run()` downloads it with the bot token when the model reads it, once per run. An image over 5 MB is sent as its largest Slack thumbnail.
+
+Other file types, files over 20 MB, and files the app can't read (deleted, or shared from another workspace) reach the model as a one-line note naming the file, so it can say it can't open them. A file that is deleted after it was shared becomes the same note on later turns, and the conversation carries on.
+
+A custom `inbound` keeps file support by adding `slackFileParts()` to its message:
+
+```ts theme={"theme":"css-variables"}
+import { slackFileParts } from "@trigger.dev/slack";
+
+inbound: (event) => ({
+  message: {
+    id: event.event?.ts ?? "",
+    role: "user",
+    parts: [{ type: "text", text: event.event?.text ?? "" }, ...slackFileParts(event.event?.files)],
+  },
+}),
+```
+
+The download happens in the `streamText` passed to `run()`. A `streamText` imported from `ai` sends the Slack URL to the model as is, which the model can't open.
+
+## Answering into the session from elsewhere
+
+The first Slack message binds the session to its thread and to the user it is answering. A [`chat.event`](/docs/webhooks/session-routing#answering-into-a-channel) action that returns `chat.turn()`, or a browser client on the same session, answers into that Slack thread with the same status, streaming and approval buttons.
+
+## Slash commands
+
+Slack posts a slash command as a form, which reaches subscribers as an object of its fields, and the endpoint acknowledges it with an empty `200` so Slack shows the user nothing until you reply. Give slash commands their own endpoint, typed with `SlackSlashCommand`, and set its URL as the command's Request URL under Slash Commands in the Slack app's settings. Use the same Signing Secret as the agent's endpoint. Reply through the command's `response_url`:
+
+```ts /trigger/commands.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+import { webhookSource, type SlackSlashCommand } from "@trigger.dev/slack";
+
+const slackCommands = webhooks.endpoint.define({
+  id: "slack-commands",
+  source: webhookSource<SlackSlashCommand>(),
+});
+
+export const deployCommand = webhook({
+  id: "deploy-command",
+  endpoint: slackCommands,
+  filter: "event.command == '/deploy'",
+  onEvent: async ({ event }) => {
+    await fetch(event.response_url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ response_type: "ephemeral", text: `Deploying ${event.text}` }),
+    });
+  },
+});
+```
+
+Any subscriber works here: a [`chat.event`](/docs/webhooks/session-routing) keyed on `{event.channel_id}:{event.user_id}` routes a user's commands to one session, and a [waiter](/docs/webhooks/waiters) can match on `event.command`.
+
+## Block Kit replies
+
+Replies are sent as markdown. For a reply that is posted rather than streamed (`delivery: "final"`), return `blocks` from `outbound` to post Block Kit. `toSlackBlocks()` splits markdown into `section` blocks under Slack's 3000-character limit, never inside a code fence:
+
+```ts theme={"theme":"css-variables"}
+import { slack, toSlackBlocks } from "@trigger.dev/slack";
+
+slack({
+  id: "slack",
+  endpoint: slackEvents,
+  token,
+  delivery: "final",
+  outbound: (reply) =>
+    reply.text
+      ? {
+          text: reply.text.slice(0, 3000), // notification fallback
+          blocks: [{ type: "header", text: { type: "plain_text", text: "Support" } }, ...toSlackBlocks(reply.text)],
+        }
+      : null,
+});
+```
+
+## Options
+
+| Option | Type | Description |
+| - | - | - |
+| `id` | `string` | Connector id, unique per agent. |
+| `endpoint` | endpoint | The Slack endpoint, declared with `webhooks.endpoint.define({ id, source: webhookSource() })`. `webhook()` tasks can subscribe to the same endpoint. |
+| `token` | `string` or resolver | Bot token (`xoxb-...`), or a function of the event (its `team_id`) for multi-workspace apps. |
+| `delivery` | `"stream"` or `"final"` | `"stream"` (default) streams the reply natively. `"final"` posts it once when the turn ends. |
+| `title` | `(prompt, event) => string \| null` | The session title, set on its first turn. Defaults to the first line of the prompt. |
+| `progress` | `"tasks"` or `"off"` | Tool calls as task cards in the streamed reply. Default `"tasks"`. |
+| `startOn` | filter string | Only start a session in a channel when the event matches (see `mentions`). Existing sessions always resume, and the agent's own conversation always starts one. Checked against the endpoint's event type. |
+| `filter` | filter string | Extra [filter](/docs/webhooks/filters) for message events, composed with the built-in guard that drops the bot's own messages. Checked against the endpoint's event type, like `webhook()`'s `filter`. |
+| `key` | `string` | Session [key](/docs/webhooks/session-routing) template. Defaults to one session per thread. |
+| `seedFromThread` | `boolean` or `{ limit }` | Load a thread's earlier replies into a new session. Off by default. |
+| `approval` | `(call, { button }) => message` | The UI for a tool with no `execute`. Defaults to Approve and Deny resolving to `{ approved }`. |
+| `interactions` | `{ [toolName]: (call, { button }) => message }` | A tool's own UI; a click resolves the tool with the button's `output`. |
+| `receivedReaction` | `string \| null` | Emoji added, on arrival, to a message sent while the agent is answering. Default `"eyes"`, null for none. |
+| `inbound` / `outbound` | functions | Map a Slack event to the turn, and a posted reply to a Slack message. |
+| `apiBaseUrl` | `string` | Override the Slack Web API base, for testing against a mock. |
+
+
+# Sources and verification
+Source: https://trigger.dev/docs/webhooks/sources
+
+Choose an endpoint's source, configure verification, and type the event its subscribers receive.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+An endpoint's `source` defines how Trigger.dev verifies requests and types the event every subscriber receives. Choose a named provider source or supply a verification configuration with `webhooks.custom()`.
+
+## Presets
+
+Presets supply the verification configuration, and most also carry the provider's part of the endpoint's [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent). Set the endpoint's signing secret or public key as described in [Connect a provider](/docs/webhooks/connect).
+
+<CodeGroup>
+  ```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+  import { webhook, webhooks } from "@trigger.dev/sdk";
+
+  export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+  export const stripeEvents = webhook({
+    id: "stripe-events",
+    endpoint: stripe,
+    onEvent: async ({ event }) => {
+      if (event.type === "payment_intent.succeeded") {
+        console.log(event.id);
+      }
+    },
+  });
+  ```
+
+  ```ts /trigger/github.ts theme={"theme":"css-variables"}
+  import { webhook, webhooks } from "@trigger.dev/sdk";
+
+  export const github = webhooks.endpoint.define({ id: "github", source: webhooks.github() });
+
+  export const githubEvents = webhook({
+    id: "github-events",
+    endpoint: github,
+    onEvent: async ({ headers }) => {
+      // GitHub puts the event type in a header
+      console.log(headers.get("x-github-event"));
+    },
+  });
+  ```
+
+  ```ts /trigger/svix.ts theme={"theme":"css-variables"}
+  import { webhook, webhooks } from "@trigger.dev/sdk";
+
+  export const svix = webhooks.endpoint.define({ id: "svix", source: webhooks.svix() });
+
+  export const svixEvents = webhook({
+    id: "svix-events",
+    endpoint: svix,
+    onEvent: async ({ event }) => {
+      console.log(event);
+    },
+  });
+  ```
+
+  ```ts /trigger/composio.ts theme={"theme":"css-variables"}
+  import { webhook, webhooks } from "@trigger.dev/sdk";
+
+  export const composio = webhooks.endpoint.define({ id: "composio", source: webhooks.standardWebhooks() });
+
+  export const composioEvents = webhook({
+    id: "composio-events",
+    endpoint: composio,
+    onEvent: async ({ event }) => {
+      console.log(event);
+    },
+  });
+  ```
+</CodeGroup>
+
+The available presets are `stripe()`, `github()`, `svix()`, `standardWebhooks()`, `square()`, and `discord()`.
+
+### Svix and Standard Webhooks
+
+`svix()` and `standardWebhooks()` use HMAC-SHA256 over `id.timestamp.body` with a base64-encoded `whsec_` secret. Their header names differ:
+
+| Source | Headers |
+| - | - |
+| `svix()` | `svix-id`, `svix-timestamp`, `svix-signature` |
+| `standardWebhooks()` | `webhook-id`, `webhook-timestamp`, `webhook-signature` |
+
+Named sources such as `webhooks.clerk()` and `webhooks.composio()` select the corresponding configuration.
+
+## Named providers
+
+Each function below returns a source with its provider's verification configuration. Call it through `webhooks`, for example `webhooks.calCom()`.
+
+| Verification | Source functions |
+| - | - |
+| Svix | `clerk()`, `resend()`, `brex()` |
+| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `composio()` |
+| HMAC-SHA256 with `X-Hub-Signature-256` | `whatsapp()` |
+| Shared secret in `X-Gitlab-Token` | `gitlab()` |
+| Provider-specific HMAC | `calendly()`, `calCom()`, `sentry()`, `pagerduty()`, `vercel()`, `linear()`, `notion()`, `typeform()`, `docusign()`, `jira()`, `intercom()`, `zendesk()`, `attio()`, `workos()`, `elevenlabs()`, `vapi()`, `retell()`, `shopify()` |
+
+Provider IDs containing a hyphen use a camel case function name: the `cal-com` provider is `webhooks.calCom()`.
+
+Slack also ships as a chat channel in `@trigger.dev/slack`.
+
+## Endpoint validation
+
+Some sources also define a response for the provider's endpoint-validation request. These requests don't create deliveries or task runs.
+
+`discord()` answers a verified `{ type: 0 }` PING with HTTP `204` and no body. It also returns `204` for accepted events and `401` for invalid signatures. Set the Discord application's public key as the endpoint's verification credential.
+
+Slack's `url_verification` challenge is handled the same way by `@trigger.dev/slack`.
+
+`whatsapp()` answers Meta's GET verification request when `hub.mode` is `subscribe` and `hub.verify_token` matches the endpoint's verify token. It returns `hub.challenge` as text. The verify token is separate from the App Secret used to verify event signatures; see [Verify a WhatsApp endpoint URL](/docs/webhooks/connect#verify-a-whatsapp-endpoint-url). Endpoints without GET verification return `405` to GET requests.
+
+## Custom providers
+
+`webhooks.custom()` accepts a verification configuration. This source verifies an HMAC-SHA256 signature over the raw body in `x-webhook-signature` and uses the event's `id` for deduplication:
+
+```ts /trigger/internal.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const internal = webhooks.endpoint.define({
+  id: "internal",
+  source: webhooks.custom<{ id: string; message: string }>(
+    {
+      scheme: "hmac",
+      algorithm: "sha256",
+      encoding: "hex",
+      signatureHeader: "x-webhook-signature",
+      signingString: "raw",
+      idempotencyField: { from: "body", name: "id" },
+    },
+    { setupPrompt: "Add the URL under Settings > Webhooks in the admin app and paste the secret there." }
+  ),
+});
+
+export const internalEvents = webhook({
+  id: "internal-events",
+  endpoint: internal,
+  onEvent: async ({ event }) => {
+    console.log(event.message);
+  },
+});
+```
+
+The optional `setupPrompt` is the provider-specific part of the endpoint's [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent): where the provider's webhook settings are and how to register a URL there. Trigger.dev adds the URL, the subscribers' filters and the signing secret steps around it.
+
+### Form-encoded bodies
+
+A verified body sent as `application/x-www-form-urlencoded` reaches subscribers as an object of its fields, so filters, `chat.event` keys and waiter `match` paths read form fields the way they read JSON fields. A repeated field becomes an array of its values. Slack slash commands and other providers that post forms work this way.
+
+By default an accepted request gets a `200` with a small JSON receipt. Some providers show the response body to the user who triggered the request, so pass `response: { acceptedBody: "empty" }` to answer with an empty `200` instead:
+
+```ts /trigger/forms.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const forms = webhooks.endpoint.define({
+  id: "forms",
+  source: webhooks.custom<{ command: string; text: string; user_id: string }>(
+    { scheme: "url-secret", placement: "query", paramName: "token" },
+    { response: { acceptedBody: "empty" } }
+  ),
+});
+
+export const commands = webhook({
+  id: "commands",
+  endpoint: forms,
+  filter: "event.command == '/deploy'",
+  onEvent: async ({ event }) => {
+    console.log(event.user_id, event.text);
+  },
+});
+```
+
+## Typing the event
+
+Stripe and GitHub sources provide default event shapes; other sources default to `unknown`. Pass an event type to the source function for typed handler parameters and autocomplete. This example uses `Stripe.Event` from the `stripe` package, which must be installed in your project:
+
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import type Stripe from "stripe";
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe<Stripe.Event>() });
+
+export const stripeEvents = webhook({
+  id: "stripe-events",
+  endpoint: stripe,
+  onEvent: async ({ event }) => {
+    console.log(event.type, event.id);
+  },
+});
+```
+
+For `webhooks.custom<T>()`, pass your own event type as `T`. The endpoint's event type flows to every subscriber: `webhook()` handlers, `chat.event` keys and filters, and [waiter](/docs/webhooks/waiters) `match` paths are all checked against it.
+
+<Note>
+  Event types are compile-time annotations. Signature verification doesn't validate the body against
+  a TypeScript type. Validate `event` inside `onEvent` if your handler needs runtime schema checks.
+</Note>
+
+## Verification schemes
+
+Requests must pass verification before they reach any subscriber. Sources can check a signature or credential, enforce a timestamp tolerance, and derive an idempotency key for [deduplication](/docs/webhooks/deliveries#deduplication). Verification failures return the source's rejected HTTP status (`400` by default).
+
+Custom sources support these schemes:
+
+| Scheme | Verification |
+| - | - |
+| `hmac` | Computes an HMAC over the raw body or a signing template and compares it with a request header. |
+| `shared-secret` | Compares a static token supplied in a header, bearer token, basic authentication, or request body. |
+| `url-secret` | Compares a token in a URL query parameter. Hosted endpoints don't support path placement. |
+| `asymmetric` | Verifies an Ed25519, ECDSA, or RSA signature using the provider's public key. |
+
+<Warning>
+  Query parameters can appear in access logs, proxies, and traces. Prefer a header-based scheme when
+  the provider supports one.
+</Warning>
+
+
+# Waiting for a webhook
+Source: https://trigger.dev/docs/webhooks/waiters
+
+Pause a run until a matching webhook arrives on an endpoint, then resume it with the verified event.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**A waiter pauses a run until a matching delivery arrives on an [endpoint](/docs/webhooks/overview).** Use it when your task starts something in another system and needs to know when that system reports back: a payment that settles, a build that finishes, a document that gets signed.
+
+```ts /trigger/checkout.ts theme={"theme":"css-variables"}
+import { task, webhooks } from "@trigger.dev/sdk";
+import { stripe } from "./stripe"; // webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() })
+
+export const checkout = task({
+  id: "checkout",
+  run: async ({
+    orderId,
+    customerId,
+    paymentMethodId,
+  }: {
+    orderId: string;
+    customerId: string;
+    paymentMethodId: string;
+  }) => {
+    const waiter = await webhooks.waiter.create(stripe, {
+      match: {
+        "event.type": "payment_intent.succeeded",
+        "event.data.object.metadata.orderId": orderId,
+      },
+      timeout: "1h",
+      // the same waiter (and its event) if this run is retried
+      idempotencyKey: `payment-${orderId}`,
+    });
+
+    // confirm: true charges the customer's saved payment method now, so Stripe sends payment_intent.succeeded.
+    // Stripe's own idempotency key stops a retry from creating a second intent for the order.
+    await stripeClient.paymentIntents.create(
+      {
+        amount: 4200,
+        currency: "usd",
+        customer: customerId,
+        payment_method: paymentMethodId,
+        confirm: true,
+        metadata: { orderId },
+      },
+      { idempotencyKey: `payment-intent-${orderId}` }
+    );
+
+    const { event, deliveryId } = await webhooks.waiter.wait(waiter).unwrap();
+    return { paymentIntent: event.data.object.id, deliveryId };
+  },
+});
+```
+
+While the run waits it is suspended, so it uses no compute. The endpoint's other subscribers still receive the delivery.
+
+## Create before you act
+
+A waiter only matches deliveries that arrive after it was created. Create it before the call that makes the provider send the webhook, as above, or a fast provider can deliver the event before anything is waiting for it.
+
+Match on values you control, such as your own order id in the provider object's metadata. Two runs waiting for the same values are both resumed by the delivery.
+
+## Matching
+
+`match` maps paths to the scalar each must equal. Paths use the same namespaces as a [filter](/docs/webhooks/filters):
+
+| Path | Reads |
+| - | - |
+| `event.*` | The verified event body, for example `event.data.object.id`. |
+| `header.*` | A request header, matched case-insensitively, for example `header.x-shop-domain`. |
+| `webhook.*` | The endpoint: `id`, `source`, `externalRef`, `tenantId`, or `deliveryId`. |
+
+A waiter can match up to five paths, and each value is a string, number or boolean. Paths are checked against the endpoint's event type at build time: an unknown field on a typed event, a path to an object, or a path without a namespace is a type error. The API refuses the same paths at create time.
+
+For conditions that aren't equality, add a `filter`. It is checked after `match`:
+
+```ts theme={"theme":"css-variables"}
+await webhooks.waiter.create(stripe, {
+  match: { "event.data.object.metadata.orderId": orderId },
+  filter: "event.type in ['payment_intent.succeeded', 'payment_intent.payment_failed']",
+});
+```
+
+## The result
+
+`webhooks.waiter.wait(waiter)` returns a result you can check, and `.unwrap()` returns the output or throws:
+
+```ts theme={"theme":"css-variables"}
+const result = await webhooks.waiter.wait(waiter);
+if (result.ok) {
+  console.log(result.output.event, result.output.headers, result.output.endpoint);
+} else {
+  console.log(result.error.name); // "WaitpointTimeoutError" or "WebhookWaiterCancelledError"
+}
+```
+
+| Output field | Value |
+| - | - |
+| `event` | The verified event body, typed by the endpoint's source. |
+| `headers` | The request headers, with credentials such as signatures removed. |
+| `deliveryId` | The delivery that resumed the run (`whd_...`). |
+| `endpoint` | The endpoint the delivery arrived on. |
+
+`timeout` accepts a duration such as `"30m"` or a `Date`. It defaults to 24 hours and can be up to 90 days. A waiter that times out fails the wait with `WaitpointTimeoutError`.
+
+A waiter is a [waitpoint](/docs/wait-for-token): its id starts with `waitpoint_` and it is tagged `webhook:<endpoint id>` plus any `tags` you pass (up to 10).
+
+## Providers that take a callback URL
+
+Some providers accept a webhook URL per request instead of one account-wide URL, such as Replicate's `webhook` parameter. Omit `match` and the waiter gets its own URL:
+
+```ts theme={"theme":"css-variables"}
+const waiter = await webhooks.waiter.create(replicateEndpoint, { timeout: "2h" });
+
+await replicate.predictions.create({ version, input, webhook: waiter.url });
+
+const { event } = await webhooks.waiter.wait(waiter).unwrap();
+```
+
+A delivery to `waiter.url` is verified with the endpoint's source, resumes only that waiter, and is not sent to the endpoint's subscribers.
+
+## Creating from your backend
+
+`webhooks.waiter.create` also works outside a run, for example in the API route that starts a checkout. Pass the waiter, or its id, to a task that waits on it:
+
+```ts theme={"theme":"css-variables"}
+const waiter = await webhooks.waiter.create(stripe, { match: { "event.data.object.metadata.orderId": orderId } });
+await fulfillWhenPaid.trigger({ waiterId: waiter.id });
+```
+
+```ts theme={"theme":"css-variables"}
+export const fulfillWhenPaid = task({
+  id: "fulfill-when-paid",
+  run: async ({ waiterId }: { waiterId: string }) => {
+    const { event } = await webhooks.waiter.wait(waiterId).unwrap();
+  },
+});
+```
+
+The same operations are on the REST API: [`POST /api/v1/webhooks/endpoints/{endpointId}/waiters`](/docs/management/webhooks/create-waiter) with `match`, `filter`, `timeout`, `tags` and `idempotencyKey`, and [`POST /api/v1/webhooks/waiters/{waiterId}/cancel`](/docs/management/webhooks/cancel-waiter). `endpointId` is the endpoint's declared id or its `wh_` id.
+
+## Retries and idempotency
+
+Pass an `idempotencyKey` so a task can be retried without losing its webhook. A create with a key it has seen returns the original waiter, with `isCached: true`, even if it has already completed, and waiting on a completed waiter returns its event straight away. Inside a task a string key is scoped to the run, as it is for [`trigger()`](/docs/idempotency), so a retried attempt gets the waiter (and the event) the attempt before it created:
+
+```ts theme={"theme":"css-variables"}
+const waiter = await webhooks.waiter.create(stripe, {
+  match: { "event.data.object.metadata.orderId": orderId },
+  idempotencyKey: `payment-${orderId}`,
+});
+```
+
+Use [`idempotencyKeys.create(key, { scope })`](/docs/idempotency) for a key scoped to one attempt or shared across runs, and `idempotencyKeyTTL` to set how long the key lasts.
+
+Without a key every call creates a new waiter, and a waiter only matches deliveries that arrive after it. If an attempt fails after its webhook arrived, the retry's new waiter waits for an event the provider already sent.
+
+## Cancelling
+
+`webhooks.waiter.cancel(waiter)` frees the waiter's slot and fails its wait with `WebhookWaiterCancelledError`. If a delivery has already claimed the waiter, the cancel is too late and the run resumes with that delivery:
+
+```ts theme={"theme":"css-variables"}
+const result = await webhooks.waiter.cancel(waiter);
+if (!result.cancelled) {
+  console.log("Already resumed by", result.deliveryId); // result.reason is "too_late"
+}
+```
+
+## Errors
+
+`webhooks.waiter.create` throws a typed error when nothing was created:
+
+| Error | Cause |
+| - | - |
+| `WebhookWaiterLimitError` | A limit was reached. `reason` is `endpoint_limit`, `environment_limit`, `shape_limit` or `timeout_too_long`. |
+| `WebhookEndpointNotFoundError` | The endpoint isn't in the environment's current deployment. |
+| `WebhookFilterError` | The `filter` doesn't parse. |
+
+## Limits
+
+| Limit | Default |
+| - | - |
+| Live waiters per endpoint | 10,000. This is also the most one delivery can resume. |
+| Live waiters per environment | 1,000,000 on self-hosted installs. |
+| Distinct sets of `match` paths per endpoint | 25 |
+| Paths per `match` | 5 |
+| Tags per waiter | 10 |
+| Timeout | 24 hours by default, 90 days at most |
+
+On Trigger.dev Cloud the per-endpoint and per-environment limits depend on your plan. Self-hosted installs can change them with `WEBHOOK_WAITER_MAX_PER_ENDPOINT`, `WEBHOOK_WAITER_MAX_PER_ENVIRONMENT` and `WEBHOOK_WAITER_MAX_SHAPES`.
+
+A delivery that resumes waiters shows one **Waiting runs** row on its [delivery page](/docs/webhooks/deliveries#where-a-delivery-went) with how many matched, resumed and failed. A delivery that arrives while runs are waiting but matches none of them, and no subscriber takes, is `UNMATCHED`.
 
 
 # Writing tasks: Overview

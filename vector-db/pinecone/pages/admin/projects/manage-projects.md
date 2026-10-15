@@ -14,10 +14,10 @@ This page shows you how to view project details, rename a project, and delete a 
 
 ## View project details
 
-You can view the details of a project, as in the following example:
+This example retrieves the details of a project:
 
 <Note>
-  An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+  To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 </Note>
 
 <CodeGroup>
@@ -67,12 +67,10 @@ The example returns a response like the following:
 </CodeGroup>
 
 <Tip>
-  You can view project details using the [Pinecone console](https://app.pinecone.io/organizations/-/settings/projects/-/indexes).
+  You can also view project details in the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
 </Tip>
 
 ## Rename a project
-
-You can change the name of your project:
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -80,18 +78,18 @@ You can change the name of your project:
 
     2. Click the **ellipsis (...) menu > Configure** icon next to the project you want to update.
 
-    3. Enter a new **Project Name**.
+    3. Enter a new **Name**.
 
        <Note>
          A project name can contain up to 512 characters.
        </Note>
 
-    4. Click **Save Changes**.
+    4. Click **Save changes**.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>
@@ -154,8 +152,8 @@ To add project tags, use the Pinecone console.
 
 1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
 2. Click the **ellipsis (...) menu > Configure** icon next to the project you want to update.
-3. Click **+ Add tag** and enter a tag key and value. Repeat for each tag you want to add.
-4. Click **Save Changes**.
+3. Click **Add tag(s)** and enter a tag key and value. Repeat for each tag you want to add.
+4. Click **Save changes**.
 
 <Tip>
   You can also [add tags to indexes](/guides/manage-data/manage-indexes#configure-index-tags).
@@ -163,19 +161,19 @@ To add project tags, use the Pinecone console.
 
 ## Delete a project
 
-To delete a project, you must first [delete all data](/guides/manage-data/delete-data), [indexes](/guides/manage-data/manage-indexes#delete-an-index), [collections](/guides/indexes/pods/back-up-a-pod-based-index#delete-a-collection), [backups](/guides/manage-data/back-up-an-index#delete-a-backup) and [assistants](/guides/assistant/manage-assistants#delete-an-assistant) associated with the project. Then, you can delete the project itself:
+To delete a project, you must first [delete all data](/guides/manage-data/delete-data), [indexes](/guides/manage-data/manage-indexes#delete-an-index), [collections](/guides/indexes/pods/back-up-a-pod-based-index#delete-a-collection), [backups](/guides/manage-data/back-up-an-index#delete-a-backup), and [assistants](/guides/assistant/manage-assistants#delete-an-assistant) associated with the project. Then you can delete the project itself.
 
 <Tabs>
   <Tab title="Pinecone console">
     1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
     2. For the project you want to delete, click the **ellipsis (...) menu > Delete**.
     3. Enter the project name to confirm the deletion.
-    4. Click **Delete Project**.
+    4. Click **Delete project**.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>

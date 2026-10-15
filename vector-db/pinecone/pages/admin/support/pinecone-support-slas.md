@@ -7,10 +7,10 @@ path: admin/support/pinecone-support-slas
 Look up Pinecone Support first-response SLAs by support plan and ticket severity, from 30 minutes on a Premium Sev-1 to business days at lower severities.
 
 <Note>
-  New first-response SLAs went into effect on September 16th, 2024. See the [pricing page](https://www.pinecone.io/pricing/?plans=support) for more details.
+  New first-response SLAs went into effect on September 16, 2024. See the [pricing page](https://www.pinecone.io/pricing/?plans=support) for more details.
 </Note>
 
-Pinecone Support has first-response SLAs based on the support plan of the ticket requester's organization and the selected severity. These SLAs are as follows:
+Pinecone Support has first-response SLAs based on the support plan of the ticket requester's organization and the selected severity.
 
 ### Premium
 
@@ -33,6 +33,6 @@ Pinecone Support has first-response SLAs based on the support plan of the ticket
 * **Sev-3**: 2 business days
 * **Sev-4**: 3 business days
 
-The current business hours for Pinecone Support are 8 AM to 8 PM Eastern Time. SLAs only apply outside of our business hours for Sev-1 tickets created by users subscribed to Pro or Premium support. All first-response SLAs only apply to tickets created by users in an organization subscribed to a [support plan](https://www.pinecone.io/pricing/?plans=support).
+Pinecone Support business hours are Monday to Friday from 8:00 AM to 8:00 PM Eastern Time. Outside business hours, SLAs apply only to Sev-1 tickets created by users subscribed to Pro or Premium support. First-response SLAs apply only to tickets created by users in an organization subscribed to a [support plan](https://www.pinecone.io/pricing/?plans=support).
 
-Pinecone Support is reserved for customers on the Standard billing plan. However, you can ask questions and find answers from other Pinecone users and the Pinecone team in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH).
+Pinecone Support is available to customers on the Builder, Standard, and Enterprise billing plans. On the Starter plan, you can ask questions and find answers from other Pinecone users and the Pinecone team in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH).

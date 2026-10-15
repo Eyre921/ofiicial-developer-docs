@@ -12,37 +12,36 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
   <Tab title="FireRouter">
     | Harness | Request API | FireRouter compatibility | Local provider credentials |
     | - | - | - | - |
-    | Claude Code | Messages | Supports `firerouter` and `firerouter/...` IDs | Anthropic login, OAuth, or `ANTHROPIC_API_KEY`; OpenAI key |
+    | Claude Code | Messages | Supports `firerouter` | Anthropic login, OAuth, or `ANTHROPIC_API_KEY`; OpenAI key |
     | Claude Agent SDK | Messages | Supported when the SDK reads the user settings written by FireConnect | Same as Claude Code |
-    | OpenCode | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic and OpenAI keys |
-    | Codex | Responses | Supports `firerouter` and `firerouter/...` IDs | `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` environment references |
-    | Codex app, ChatGPT desktop | Responses | Uses the FireRouter IDs registered through the shared Codex configuration | No separate local provider-key configuration |
-    | Pi | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic and OpenAI keys |
-    | Cursor IDE | Chat Completions | Supports `firerouter` and `firerouter/...` IDs. Closed models need Provider Keys | None |
-    | VS Code | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic and OpenAI keys |
-    | Copilot App | Chat Completions | Supports `firerouter` and `firerouter/...` IDs. Closed models need Provider Keys | None |
-    | Copilot CLI | Chat Completions | Supports `firerouter` and `firerouter/...` IDs. Closed models need Provider Keys or manual setup | Provider-key headers in manual setup |
-    | DeepSeek Harness | Chat Completions | Supports `firerouter` and `firerouter/...` IDs. Closed models need Provider Keys or manual setup | Provider-key headers in manual setup |
+    | OpenCode | Chat Completions | Supports `firerouter` | Anthropic and OpenAI keys |
+    | Codex CLI and ChatGPT desktop app | Responses | Supports `firerouter`. Defaults to `firerouter` | Your Codex sign-in for GPT models (validated in the Codex CLI). Claude models need an Anthropic [Provider Key](/nexus/provider-keys) |
+    | Pi | Chat Completions | Supports `firerouter` | Anthropic and OpenAI keys |
+    | Cursor IDE | Chat Completions | Supports `firerouter`. Closed models need Provider Keys | None |
+    | VS Code | Chat Completions | Supports `firerouter` | Anthropic and OpenAI keys |
+    | Copilot App | Chat Completions | Supports `firerouter`. Closed models need Provider Keys | None |
+    | Copilot CLI | Chat Completions | Supports `firerouter`. Closed models need Provider Keys or manual setup | Provider-key headers in manual setup |
+    | DeepSeek Harness | Chat Completions | Supports `firerouter`. Closed models need Provider Keys or manual setup | Provider-key headers in manual setup |
     | Claude Desktop | Messages | Not offered. The picker lists `auto` and Fireworks models | Not applicable |
 
     **Provide a local key.** Where a harness supports one, pass it when you
     connect, or store it once for every harness:
 
     ```bash wrap theme={null}
-    fireconnect opencode --model firerouter/opus --anthropic-api-key "$ANTHROPIC_API_KEY"
+    fireconnect opencode --model firerouter --anthropic-api-key "$ANTHROPIC_API_KEY"
     fireconnect configure --anthropic-api-key "$ANTHROPIC_API_KEY"
     fireconnect configure --openai-api-key "$OPENAI_API_KEY"
     ```
 
     * Both keys are optional. FireConnect connects without them and never prompts for an OpenAI key.
     * FireConnect also reads `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` from your environment.
-    * Codex stores environment references, so FireConnect adds a line to your shell config that exports the saved keys. Open a new terminal before starting Codex.
-    * The OpenAI key goes out on bare `firerouter` and on routes that name a GPT model ID, such as `firerouter/gpt-5.6-sol`. Family routes such as `firerouter/sol` and `firerouter/astra` need an OpenAI Provider Key or manual setup.
+    * Claude Code, OpenCode, Pi, and VS Code send a saved OpenAI key on `firerouter`, so FireRouter can reach GPT models.
+    * Claude Code pays for Claude turns with your Claude login. Codex pays for GPT turns with its own sign-in. See [Codex](/nexus/harnesses#codex).
+    * To clear a saved key from FireConnect and every harness that holds a copy, run `fireconnect configure --unset openai-api-key` or `--unset anthropic-api-key`.
 
     **Harnesses without a local key.** Cursor IDE, Copilot App, Copilot CLI,
-    and DeepSeek Harness accept every FireRouter ID, including bare
-    `firerouter`. Without a matching Provider Key, FireRouter serves those
-    routes with open models only.
+    and DeepSeek Harness accept `firerouter`. Without a matching Provider
+    Key, FireRouter serves every turn with open models only.
 
     * Cursor IDE and the Copilot App cannot send extra headers, so closed models there need a [Provider Key](/nexus/provider-keys).
     * Copilot CLI and DeepSeek Harness can send the headers with [manual setup](/nexus/firerouter/setup#set-up-your-harness).
@@ -55,7 +54,7 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
 
     Automated live-inference validation covers Claude Code, OpenCode, Codex,
     Pi, and DeepSeek Harness. Cursor IDE, VS Code, Copilot App, Copilot CLI,
-    and ChatGPT desktop are validated at the configuration layer.
+    and the ChatGPT desktop app are validated at the configuration layer.
   </Tab>
 
   <Tab title="MCP">
@@ -71,8 +70,9 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
       </Card>
 
       <Card title="Tool search stays on" icon="magnifying-glass">
-        In Claude Code, FireConnect sets `ENABLE_TOOL_SEARCH` so large MCP
-        tool sets still load on demand.
+        In Claude Code, FireConnect sets `ENABLE_TOOL_SEARCH`. In Codex and the
+        ChatGPT desktop app, it turns on tool search for every model. Large
+        MCP tool sets still load on demand.
       </Card>
 
       <Card title="Web search is built in" icon="globe" href="/nexus/web-search">
@@ -86,19 +86,12 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
     | Harness | What happens to MCP |
     | - | - |
     | Claude Code | Your servers stay in `~/.claude.json`. FireConnect removes only its retired `fireworks-websearch` server and sets `ENABLE_TOOL_SEARCH` |
-    | Codex | Your servers stay in `[mcp_servers]` in `~/.codex/config.toml` |
+    | Codex | Your servers stay in `[mcp_servers]` in `~/.codex/config.toml`. MCP and app connector tools load through Codex's tool search on every model. Connected with FireConnect 0.9.9 or earlier? Run `fireconnect upgrade` or `fireconnect codex` |
     | OpenCode | Your servers stay in the `mcp` block of `opencode.json` |
-    | Codex app | FireConnect doesn't touch MCP. Set up servers in the app as usual |
-    | ChatGPT desktop | <Badge>Unreliable</Badge> MCP servers and plugins don't work reliably while FireConnect is on |
+    | ChatGPT desktop app | Same as Codex. Connected with FireConnect 0.9.9 or earlier? Run `fireconnect upgrade` or `fireconnect chatgpt` |
     | Pi, Cursor IDE, VS Code, Copilot App, Copilot CLI, DeepSeek Harness | FireConnect doesn't touch MCP. Set up servers in the harness as usual |
     | Claude Agent SDK | FireConnect doesn't touch MCP. MCP follows the setting sources your application loads |
-    | Claude Desktop | Third-party mode hides the connector browser. Run `fireconnect claude-desktop mcp sync` after `on` to import your connectors, then sign in to each once. See [Claude Desktop](/nexus/harnesses#claude-desktop) |
-
-    <Warning>
-      MCP servers and plugins in ChatGPT desktop don't work reliably while
-      FireConnect is on. If you depend on them there, run
-      `fireconnect codex off` before using them.
-    </Warning>
+    | Claude Desktop | Third-party mode hides the connector browser. `on` imports your connectors. Run `fireconnect claude-desktop mcp sync` to add ones from your claude.ai organization or ones added later, then sign in to each once. See [Claude Desktop](/nexus/harnesses#claude-desktop) |
 
     ### Check that an MCP tool works
 
@@ -175,20 +168,22 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
   </Accordion>
 
   <Accordion title="ChatGPT says a model is not supported with a ChatGPT account">
-    The thread started on an OpenAI model, and ChatGPT and Codex app threads
+    The thread started on an OpenAI model, and ChatGPT desktop app threads
     keep their starting provider. This happens with any Fireworks model you
     pick in that thread, not only FireRouter, and the error names the model
-    you picked. Start a new thread to use Fireworks models and FireRouter. To
+    you picked. Start a new thread to use FireRouter and Fireworks models. To
     continue the old thread, switch back to an OpenAI model. See
-    [Codex](/nexus/harnesses#codex).
+    [ChatGPT desktop app](/nexus/harnesses#chatgpt-desktop-app).
   </Accordion>
 
-  <Accordion title="A FireRouter route never uses Claude or GPT">
-    The harness cannot send a local provider key, or the route does not pick
-    up your saved key. Connect the matching
+  <Accordion title="FireRouter never uses Claude or GPT">
+    The harness cannot send a local provider key. Connect the matching
     [Provider Key](/nexus/provider-keys), use
     [manual setup](/nexus/firerouter/setup#set-up-your-harness) on a harness
     that can send headers, or use a harness that supports a local key.
+
+    In Codex, check how Codex is signed in. If it uses only your Fireworks
+    key, GPT turns need an OpenAI Provider Key. See [Codex](/nexus/harnesses#codex).
   </Accordion>
 
   <Accordion title="Claude Code says auto mode classifier requests are billed">
@@ -205,6 +200,6 @@ FireRouter is not available on Microsoft Foundry, and Foundry support differs by
 ## Related setup
 
 * [Coding Harnesses](/nexus/harnesses): connect commands, files changed, and restart rules
-* [FireRouter](/nexus/firerouter): router IDs and composition
+* [FireRouter](/nexus/firerouter): how FireRouter picks a model for each turn
 * [Provider Keys](/nexus/provider-keys): account-level closed-model credentials
-* [Routing Preferences](/nexus/routing-preferences): quality and savings controls by harness
+* [Routing Preferences](/nexus/routing-preferences): the `x-routing-preference` header

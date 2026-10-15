@@ -6,7 +6,7 @@ path: nexus/routing-preferences
 
 Adjust how strongly a firerouter request favors its primary model or lower-cost models.
 
-Routing preference controls how strongly a `firerouter` request favors its primary model or lower-cost models. Set it per HTTP request with `x-routing-preference`, or configure it for a supported harness with FireConnect.
+Routing preference controls how strongly a `firerouter` request favors its primary model or lower-cost models. Set it per HTTP request with the `x-routing-preference` header.
 
 ## Preference levels
 
@@ -22,7 +22,7 @@ Send an integer from **1** (strongest preference for the primary model) to **5**
 
 ## HTTP header
 
-The HTTP header accepts only the integers `1` to `5`. Names such as `balanced` are FireConnect CLI values, not HTTP header values.
+The header accepts only the integers `1` to `5`. The names in the table are labels, not header values.
 
 Set the header on an API request:
 
@@ -40,35 +40,11 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 If the header is missing, invalid, or out of range, the router uses balanced behavior. It does not add a literal `x-routing-preference: 3` header.
 
-## FireConnect
+## In a coding harness
 
-When you connect a harness to `firerouter` or a supported `firerouter/...` ID, pass `--routing-preference` with the connect command:
+To set a preference in a harness, send the header with [manual setup](/nexus/firerouter/setup#set-up-your-harness), for example in `ANTHROPIC_CUSTOM_HEADERS` for Claude Code or `http_headers` for Codex. Cursor IDE and the Copilot App cannot send extra headers.
 
-```bash wrap theme={null}
-fireconnect claude --model firerouter --routing-preference 4
-fireconnect opencode --model firerouter --routing-preference 2
-fireconnect pi --model firerouter --routing-preference 5
-```
-
-Every harness can use any FireRouter ID. The table shows which IDs accept FireConnect's `--routing-preference` flag:
-
-| Harness | IDs that accept `--routing-preference` |
-| - | - |
-| Claude Code | Bare `firerouter`, as the main model or a pinned tier such as `--sonnet firerouter` |
-| OpenCode, Pi, VS Code | `firerouter` or any ID beginning with `firerouter/` |
-| Codex, Cursor IDE, Copilot App, Copilot CLI, DeepSeek Harness | None |
-
-FireConnect accepts values `1` to `5` or the corresponding level names.
-
-In Claude Code, at least one slot must be bare `firerouter`. `fireconnect claude` selects `firerouter` by default, so `fireconnect claude --routing-preference 4` works. With another main model, route a tier through `firerouter` instead:
-
-```bash wrap theme={null}
-fireconnect claude --model glm-latest --sonnet firerouter --routing-preference 4
-```
-
-Otherwise, FireConnect stops with `--routing-preference requires a Claude slot set to firerouter`. For example, `fireconnect claude --model firerouter/opus --routing-preference 4` fails, but `fireconnect claude --model firerouter/opus` alone works.
-
-To set a preference where FireConnect does not support it, send the `x-routing-preference` header with [manual setup](/nexus/firerouter/setup#set-up-your-harness), for example in `ANTHROPIC_CUSTOM_HEADERS` for Claude Code or `http_headers` for Codex. Cursor IDE and the Copilot App cannot send extra headers. Cursor CLI is not supported.
+FireConnect no longer sets routing preference. It ignores `--routing-preference` and prints a deprecation warning. On `on`, `off`, and `upgrade`, it also removes an `x-routing-preference` header from Claude Code, OpenCode, Pi, and VS Code configs, including one you added by hand.
 
 ## When to adjust
 
@@ -78,6 +54,6 @@ To set a preference where FireConnect does not support it, send the `x-routing-p
 
 ## Related
 
-* [FireRouter](/nexus/firerouter): `firerouter`, `firerouter/opus`, `firerouter/astra`, and `firerouter/sol`
+* [FireRouter](/nexus/firerouter): how `firerouter` picks a model for each turn
 * [APIs and SDKs](/nexus/apis-and-sdks): HTTP headers and Provider Keys
 * [FireConnect](/nexus/fireconnect): enable a router in a coding harness

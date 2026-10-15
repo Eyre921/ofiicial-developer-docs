@@ -56,7 +56,7 @@ You can choose whether to allow the following coding agents to be enabled in you
 * Anthropic Claude
 * OpenAI Codex
 
-Installed agent apps also appear under "Partner agents" and are enabled in the same way. For more information, see [About agent apps](/en/copilot/concepts/agents/agent-apps).
+Installed agent apps also appear under "Partner agents" and are enabled in the same way. For more information, see [Agent apps](/en/copilot/concepts/agent-capabilities/about-agents/agent-apps).
 
 Coding agents have access to the same repositories that Copilot cloud agent has been enabled in.
 

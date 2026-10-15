@@ -29,6 +29,25 @@ Architect works with the same objects you edit by hand: the system prompt, proce
 
 Architect is most useful for improving an agent you have already deployed. It is built around this loop:
 
+```mermaid
+flowchart LR
+    Prompt["<b>Prompt</b><br />Your requests"]
+
+    subgraph Architect
+        Triage["<b>Triage</b><br />Flagged issues"]
+        Draft["<b>Draft</b><br />Staged changes"]
+        Validate["<b>Validate</b><br />Tests + simulations"]
+        Propose["<b>Propose</b><br />Merge proposal"]
+    end
+
+    Deploy["<b>Deploy</b><br />Traffic split"]
+    Observe["<b>Observe</b><br />Agent-flagged issues"]
+
+    Prompt --> Triage --> Draft --> Validate --> Propose --> Deploy --> Observe
+    Observe --> Triage
+    Propose ~~~ Observe
+```
+
 1. **Investigate.** Read real conversations, Spotlight insights, alerts, triage tickets, and failing tests to find what is going wrong and why.
 2. **Change.** Edit the prompt, a procedure, a tool, the knowledge base, or guardrails. Agent configuration changes are staged as an unpublished draft, never applied to live callers directly.
 3. **Validate.** Write tests and simulations for the change and run them inside the same conversation, before you are asked to ship anything.

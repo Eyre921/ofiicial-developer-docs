@@ -10,7 +10,7 @@ path: docs/api-reference/realtime-translation/v-1-translation-realtime
 
 GET /v1/translation/realtime
 
-The Realtime Translation WebSocket API streams translation audio continuously to a target language given source audio.
+The Realtime Translation WebSocket API streams translation audio continuously to a target language given source audio. Currently for enterprise workspaces only.
 
 Reference: https://elevenlabs.io/docs/api-reference/realtime-translation/v-1-translation-realtime
 
@@ -23,12 +23,14 @@ info:
   version: subpackage_v1TranslationRealtime.v1TranslationRealtime
   description: >-
     The Realtime Translation WebSocket API streams translation audio
-    continuously to a target language given source audio.
+    continuously to a target language given source audio. Currently for
+    enterprise workspaces only.
 channels:
   /v1/translation/realtime:
     description: >-
       The Realtime Translation WebSocket API streams translation audio
-      continuously to a target language given source audio.
+      continuously to a target language given source audio. Currently for
+      enterprise workspaces only.
     bindings:
       ws:
         query:

@@ -1,5 +1,5 @@
 ---
-title: "Search with text"
+title: "Search with text (legacy Records API)"
 source: https://docs.pinecone.io/reference/api/2026-07/data-plane/search_records
 path: reference/api/2026-07/data-plane/search_records
 ---
@@ -7,7 +7,9 @@ path: reference/api/2026-07/data-plane/search_records
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /records/namespaces/{namespace}/search
 Search a namespace with a query text, query vector, or record ID and return the most similar records, along with their similarity scores. Optionally, rerank the initial results based on their relevance to the query. 
 
-Searching with text (`inputs`) is supported only for indexes with [integrated embedding](https://docs.pinecone.io/guides/index-data/indexing-overview#vector-embedding); for any other index a text query is rejected with `400`, and it is not available on BYOC indexes; reranking (`rerank`) is likewise unavailable on BYOC indexes. Searching with a query vector (`vector`) or a record ID (`id`) works on any index served by the vectors API.
+This operation is part of the legacy Records API, which legacy integrated indexes require. For new work, create a document index with a `string` field that uses integrated embedding (`embed` or `sparse_embed`), and search it with the Documents API's `search_documents` operation and an `embed` or `sparse_embed` scoring method.
+
+Searching with text (`inputs`) is supported only for [legacy integrated indexes](https://docs.pinecone.io/guides/index-data/indexing-overview#vector-embedding); for any other index a text query is rejected with `400`, and it is not available on BYOC indexes; reranking (`rerank`) is likewise unavailable on BYOC indexes. Searching with a query vector (`vector`) or a record ID (`id`) works on any index served by the vectors API.
 
 For guidance and examples, see [Search](https://docs.pinecone.io/guides/search/search-overview).
 

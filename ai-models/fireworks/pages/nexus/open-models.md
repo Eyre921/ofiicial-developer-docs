@@ -10,7 +10,7 @@ Use a Fireworks open model directly when you want Fireworks to serve every turn.
 
 ## Start with `auto`
 
-`auto` chooses from frontier open models for each new user turn. It is the default on a standard Fireworks key.
+`auto` chooses from frontier open models for each new user turn. FireConnect uses it by default, except in Codex, which uses `firerouter`. Claude Code also starts on `firerouter`, keeps Claude's models in its Opus, Sonnet, and Haiku slots, and also lists `auto` and Fireworks models in `/model`.
 
 Use `auto-instant` when you want a latency-first open-model mix. If fast models are disabled by model governance, use `auto`.
 
@@ -55,7 +55,7 @@ These are all serverless aliases as of September 27, 2026. Aliases can move to n
 
 <Note>
   Aliases may change as Fireworks adds and retires models. For example,
-  `deepseek-pro-latest` is deprecated. Check the current list before you
+  `deepseek-pro-latest` is retired. Check the current list before you
   hard-code an alias, as shown in [Find a model ID](#find-a-model-id).
 </Note>
 
@@ -80,9 +80,8 @@ curl "https://api.fireworks.ai/v1/serverless/models?use_cases=coding" \
 
 Each entry's `aliases` field lists the aliases that point to that model, such as `accounts/fireworks/routers/glm-latest` for `glm-5p3`. Use the last part, `glm-latest`, as the model ID. Remove `use_cases=coding` to list every serverless model.
 
-This command lists models for FireConnect. To construct a custom
-`firerouter/...` ID without FireConnect, use the
-[FireRouter supported models](/nexus/firerouter#supported-models).
+This command lists models for FireConnect. To choose the models
+FireRouter uses yourself, see [FireRouter](/nexus/firerouter).
 
 ## Check image support
 

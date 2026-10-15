@@ -26,7 +26,8 @@ Currently, the following models are natively supported and can be configured via
 |                | GLM 5.2                |
 |                | Qwen3.6-35B-A3B        |
 |                | Qwen3.5-397B-A17B      |
-| **Google**     | Gemini 3.8 Flash       |
+| **Google**     | Gemini 4 Argon         |
+|                | Gemini 3.8 Flash       |
 |                | Gemini 3.7 Flash       |
 |                | Gemini 3.6 Flash       |
 |                | Gemini 3.5 Flash       |
@@ -61,6 +62,7 @@ Currently, the following models are natively supported and can be configured via
 |                | Claude Opus 5          |
 |                | Claude Opus 4.8        |
 |                | Claude Opus 4.7        |
+|                | Claude Opus 4.6        |
 |                | Claude Sonnet 5.5      |
 |                | Claude Sonnet 5        |
 |                | Claude Sonnet 4.6      |

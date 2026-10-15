@@ -131134,22 +131134,29 @@ Interface-specific indexes:
 
 - [Add an OAuth provider](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-oauth-provider.md) `POST /projects/{project_id}/branches/{branch_id}/auth/oauth_providers`
 - [Add domain to redirect_uri whitelist](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-trusted-domain.md) `POST /projects/{project_id}/branches/{branch_id}/auth/domains`
+- [Create an OAuth client](https://neon.com/docs/reference/api/auth/create-neon-auth-o-auth-client.md) `POST /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients`
 - [Create new auth user](https://neon.com/docs/reference/api/auth/create-branch-neon-auth-new-user.md) `POST /projects/{project_id}/branches/{branch_id}/auth/users`
+- [Delete an OAuth client](https://neon.com/docs/reference/api/auth/delete-neon-auth-o-auth-client.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}`
 - [Delete auth user](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-user.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}`
 - [Delete domain from redirect_uri whitelist](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-trusted-domain.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/domains`
 - [Delete OAuth provider](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-oauth-provider.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
 - [Disable Neon Auth for the branch](https://neon.com/docs/reference/api/auth/disable-neon-auth.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth`
 - [Enable Neon Auth for the branch](https://neon.com/docs/reference/api/auth/create-neon-auth.md) `POST /projects/{project_id}/branches/{branch_id}/auth`
 - [List domains in redirect_uri whitelist](https://neon.com/docs/reference/api/auth/list-branch-neon-auth-trusted-domains.md) `GET /projects/{project_id}/branches/{branch_id}/auth/domains`
+- [List OAuth clients](https://neon.com/docs/reference/api/auth/list-neon-auth-o-auth-clients.md) `GET /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients`
 - [List OAuth providers for the branch](https://neon.com/docs/reference/api/auth/list-branch-neon-auth-oauth-providers.md) `GET /projects/{project_id}/branches/{branch_id}/auth/oauth_providers`
+- [Retrieve an OAuth client](https://neon.com/docs/reference/api/auth/get-neon-auth-o-auth-client.md) `GET /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}`
 - [Retrieve email and password configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-and-password-config.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
 - [Retrieve email provider configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-provider.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_provider`
 - [Retrieve localhost allow setting](https://neon.com/docs/reference/api/auth/get-neon-auth-allow-localhost.md) `GET /projects/{project_id}/branches/{branch_id}/auth/allow_localhost`
 - [Retrieve Neon Auth details for the branch](https://neon.com/docs/reference/api/auth/get-neon-auth.md) `GET /projects/{project_id}/branches/{branch_id}/auth`
 - [Retrieve Neon Auth plugin configurations](https://neon.com/docs/reference/api/auth/get-neon-auth-plugin-configs.md) `GET /projects/{project_id}/branches/{branch_id}/auth/plugins`
 - [Retrieve Neon Auth webhook configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-webhook-config.md) `GET /projects/{project_id}/branches/{branch_id}/auth/webhooks`
+- [Retrieve OAuth provider plugin configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-o-auth-provider-plugin.md) `GET /projects/{project_id}/branches/{branch_id}/auth/plugins/oauth-provider`
 - [Retrieve phone number plugin configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-phone-number-plugin.md) `GET /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number`
+- [Rotate an OAuth client secret](https://neon.com/docs/reference/api/auth/rotate-neon-auth-o-auth-client-secret.md) `POST /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}/rotate_secret`
 - [Send test email using the saved email provider](https://neon.com/docs/reference/api/auth/send-neon-auth-email-provider-test.md) `POST /projects/{project_id}/branches/{branch_id}/auth/email_provider/test`
+- [Update an OAuth client](https://neon.com/docs/reference/api/auth/update-neon-auth-o-auth-client.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}`
 - [Update auth configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-config.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/config`
 - [Update auth user role](https://neon.com/docs/reference/api/auth/update-neon-auth-user-role.md) `PUT /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role`
 - [Update email and password configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-and-password-config.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
@@ -131158,6 +131165,7 @@ Interface-specific indexes:
 - [Update magic link plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-magic-link-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/magic-link`
 - [Update Neon Auth webhook configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-webhook-config.md) `PUT /projects/{project_id}/branches/{branch_id}/auth/webhooks`
 - [Update OAuth provider](https://neon.com/docs/reference/api/auth/update-branch-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
+- [Update OAuth provider plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-o-auth-provider-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/oauth-provider`
 - [Update organization plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-organization-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/organization`
 - [Update phone number plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-phone-number-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number`
 - [Send test email](https://neon.com/docs/reference/api/auth/send-neon-auth-test-email.md) `POST /projects/{project_id}/branches/{branch_id}/auth/send_test_email`

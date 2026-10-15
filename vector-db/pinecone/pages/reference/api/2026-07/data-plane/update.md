@@ -5,8 +5,10 @@ path: reference/api/2026-07/data-plane/update
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /vectors/update
-Update records by ID or by metadata in a namespace. Updating by ID changes the vector and/or metadata of a single record. Updating by metadata changes metadata across multiple records using a metadata filter.
+Update records in a namespace, either by ID or with a metadata filter. By ID, you can change a single record's vector values, its metadata, or both. A filter updates metadata only, and applies to every record that matches.
+
 If a vector value is included, it will overwrite the previous value. If `set_metadata` is included, only the specified metadata fields are modified, and if a specified metadata field does not exist, it is added.
+
 For guidance and examples, see [Update data](https://docs.pinecone.io/guides/manage-data/update-data).
 
 <RequestExample>

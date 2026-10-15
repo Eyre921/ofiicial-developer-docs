@@ -6,20 +6,22 @@ path: nexus/cli-reference
 
 FireConnect global commands, providers, authentication, and model selection
 
-Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility.
+Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility. `fireconnect chatgpt` is an alias for `fireconnect codex`. Run `fireconnect` with no arguments to use the [interactive menu](/nexus/fireconnect#interactive-menu).
 
 For model selection, see [Open Models](/nexus/open-models). For router behavior and account-level credentials, see [FireRouter](/nexus/firerouter) and [Provider Keys](/nexus/provider-keys). For cross-harness support, see [Harness Compatibility](/nexus/harness-compatibility).
 
 ## Global commands
 
 ```bash wrap theme={null}
+fireconnect              # Pick a harness and an action from the interactive menu
 fireconnect login        # Sign in: browser (creates a key) or paste a key you have
 fireconnect logout       # Clear stored Fireworks credentials
 fireconnect status       # Sign-in state, environment, storage, and harness key sources
+fireconnect harnesses    # List every supported harness and whether it is connected (--json for machine-readable)
 fireconnect configure    # Set the provider, Foundry endpoint, or Anthropic and OpenAI keys
 fireconnect model list   # Browse the global Fireworks coding model catalog (alias: fireconnect models)
 fireconnect claude demo  # Race two models in live Claude Code sessions
-fireconnect upgrade      # Update FireConnect (curl/git install only)
+fireconnect upgrade      # Update FireConnect and refresh connected harnesses (curl/git install only)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
 fireconnect help         # Show help
 fireconnect --version    # Print the installed CLI version (-V also works; --json for machine-readable)
@@ -46,7 +48,9 @@ Run `fireconnect help` for the overview, or `fireconnect claude help` (and simil
 | `--with-token` | Read a key from stdin (handy in CI): `echo "$FIREWORKS_API_KEY" \| fireconnect login --with-token` |
 | `--account <id>` | Enterprise SSO sign-in (same account id as `firectl signin`) |
 | `--force` | Replace an existing stored key without a confirmation prompt |
-| `logout --revoke` | Clear local credentials **and** revoke the machine key on Fireworks |
+| `logout --revoke` | Clear local credentials **and** revoke the key that browser sign-in created on this machine |
+
+After you rotate your Fireworks key, run `fireconnect login`, even if you're signed in. It saves the key into your connected harnesses, including VS Code. For Cursor IDE and Claude Desktop, run `fireconnect cursor` or `fireconnect claude-desktop on` again.
 
 ```bash wrap theme={null}
 fireconnect status --json   # machine-readable sign-in and key-storage details
@@ -54,7 +58,7 @@ fireconnect status --json   # machine-readable sign-in and key-storage details
 
 For direct Fireworks routing, `~/.fireconnect/config.json` usually stores a secret-store reference or `{env:FIREWORKS_API_KEY}`, not the key itself. Run `fireconnect status` to see which backend is active.
 
-FireConnect may store an Anthropic or Azure key literally when you pass `--api-key`. It writes files containing literal keys with mode `0600`.
+FireConnect stores Anthropic, OpenAI, and Azure keys literally when you pass them to `configure`. It writes files containing literal keys with mode `0600`.
 
 ## Configure a provider
 
@@ -68,10 +72,13 @@ fireconnect configure \
 
 fireconnect configure --anthropic-api-key sk-ant-...
 fireconnect configure --openai-api-key sk-...
+fireconnect configure --unset openai-api-key
 fireconnect configure --provider fireworks
 ```
 
 In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provider azure`. For Fireworks keys, use `fireconnect login`.
+
+`--unset openai-api-key` and `--unset anthropic-api-key` clear a saved key from FireConnect and from every harness holding a copy. Restart those harnesses afterward. A key exported in your shell, such as `OPENAI_API_KEY`, still goes out until you unset it. If Claude Code signs in with an Anthropic key in its own settings, FireConnect leaves that key alone.
 
 ## Providers
 
@@ -80,7 +87,7 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 | `fireworks` (default) | Fireworks gateway | Fireworks API key |
 | `azure` | Fireworks on Microsoft Foundry | Azure API key |
 
-See [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path) for current compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
+See [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path) for current compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`. Add `--base-url` or `--api-key` to override the saved endpoint or key. OpenCode, Pi, Cursor IDE, and VS Code accept `--azure`.
 
 ## Harness commands
 
@@ -109,10 +116,10 @@ On Microsoft Foundry, pass the Azure deployment name, such as `FW-GLM-5.2`.
 
 When using a model router:
 
-* Pass any router ID with `--model`, such as `firerouter`, `firerouter/opus`, `firerouter/claude-opus-5-5`, or a custom route such as `firerouter/opus/glm-5p3`.
-* Pass `--anthropic-api-key sk-ant-...` when the route contains a Claude family alias or Anthropic model ID and the harness must forward a local key.
-* Optional: pass `--openai-api-key sk-...`, or save it once with `fireconnect configure`, so FireRouter can reach GPT models. FireConnect sends it on bare `firerouter` and on routes that name a GPT model ID. Harnesses that cannot send a local key, such as Cursor IDE, reject the flag.
-* Pass `--routing-preference <level>` on supported harnesses. Claude Code accepts this flag when a Claude slot is set to bare `firerouter`.
+* Pass `--model firerouter` to use FireRouter. To choose its models yourself, see [FireRouter](/nexus/firerouter).
+* Pass `--anthropic-api-key sk-ant-...` when FireRouter should reach Claude models and the harness must forward a local key. Only OpenCode, Pi, and VS Code accept it. Claude Code uses its own sign-in, and other harnesses need an Anthropic [Provider Key](/nexus/provider-keys).
+* Optional: pass `--openai-api-key sk-...`, or save it once with `fireconnect configure`, so FireRouter can reach GPT models. FireConnect sends it on `firerouter`. Harnesses that cannot send a local key, such as Cursor IDE, reject the flag. Codex rejects it too because GPT turns use its own sign-in. See [Codex](/nexus/harnesses#codex).
+* `--routing-preference` is deprecated. FireConnect ignores it and prints a warning. See [Routing Preferences](/nexus/routing-preferences).
 
 ## API key resolution
 

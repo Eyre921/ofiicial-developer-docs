@@ -6,7 +6,7 @@ path: guides/production/monitoring
 
 Monitor Pinecone index performance metrics (query latency, throughput, and errors) in the Pinecone console or via Prometheus and Datadog.
 
-Pinecone generates time-series performance metrics for each Pinecone index. You can monitor these metrics directly in the Pinecone console or with tools like Prometheus or Datadog.
+Pinecone generates time-series performance metrics for each Pinecone index. You can monitor these metrics directly in the Pinecone console or with tools like Prometheus or Datadog. These are performance metrics, not cost. For per-index cost, see [Download a usage report](/admin/billing/download-usage-report), which breaks usage down by individual index.
 
 ## Monitor in the Pinecone Console
 

@@ -317,7 +317,7 @@ The two are independent and almost always passed together:
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r">
   Open a public LangSmith run for this example.
 </Card>
 

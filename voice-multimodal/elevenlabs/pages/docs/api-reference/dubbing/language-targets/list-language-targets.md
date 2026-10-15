@@ -85,6 +85,7 @@ Validation Error
 Signed, time-limited download URLs for a language target's outputs.
 
 - `lossless_audio` (string, optional, nullable) — Signed URL for the dubbed lossless audio track, in FLAC. The link expires one hour after it is issued; re-read the language target for a fresh one.
+- `subtitles` (string, optional, nullable) — Signed URL for the translated lines as WebVTT subtitles, timed to the source speech. Null when none are available, such as for languages dubbed before subtitles were produced. The link expires one hour after it is issued.
 
 ### DubbingError
 
@@ -116,7 +117,8 @@ Signed, time-limited download URLs for a language target's outputs.
       "updated_at": "2026-07-03T10:20:45Z",
       "model_id": "dubbing_v2",
       "outputs": {
-        "lossless_audio": "https://storage.googleapis.com/eleven-dubbing/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/lang_1001kwkyxp0je6ktn4knsfrasx5s/output.flac?X-Goog-Signature=..."
+        "lossless_audio": "https://storage.googleapis.com/eleven-dubbing/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/lang_1001kwkyxp0je6ktn4knsfrasx5s/output.flac?X-Goog-Signature=...",
+        "subtitles": "https://storage.googleapis.com/eleven-dubbing/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/lang_1001kwkyxp0je6ktn4knsfrasx5s/subtitles.vtt?X-Goog-Signature=..."
       },
       "output_revision": 3,
       "warnings": []

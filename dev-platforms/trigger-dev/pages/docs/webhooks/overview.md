@@ -1,0 +1,114 @@
+---
+title: "Webhooks overview"
+source: https://trigger.dev/docs/webhooks/overview
+path: docs/webhooks/overview
+---
+
+Receive provider webhooks on hosted, verified endpoints and route each event to tasks, agents, and waiting runs.
+
+<PrivateBeta>
+  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
+  organization and send you the prerelease packages. Webhooks are open source, so they work
+  self-hosted too. APIs may change before general availability.
+</PrivateBeta>
+
+**A webhook endpoint is one hosted URL that you register with a provider.** Trigger.dev verifies every request against the endpoint's [source](/docs/webhooks/sources), records it as a [delivery](/docs/webhooks/deliveries), and hands the event to everything subscribed to the endpoint.
+
+Declare the endpoint once, then subscribe to it:
+
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({
+  id: "stripe",
+  source: webhooks.stripe(),
+});
+
+export const fulfillOrder = webhook({
+  id: "fulfill-order",
+  endpoint: stripe,
+  filter: "event.type == 'checkout.session.completed'",
+  onEvent: async ({ event }) => {
+    console.log("Fulfilling", event.data.object.id);
+  },
+});
+
+export const recordRefund = webhook({
+  id: "record-refund",
+  endpoint: stripe,
+  filter: "event.type == 'charge.refunded'",
+  onEvent: async ({ event, headers, endpoint, ctx }) => {
+    console.log("Refund", event.id, "on", endpoint?.id, "in run", ctx.run.id);
+  },
+});
+```
+
+Stripe gets one URL. A checkout event runs `fulfill-order`, a refund runs `record-refund`, and anything else is recorded as `FILTERED`.
+
+## What can subscribe
+
+| Subscriber | Declared with | What a delivery does |
+| - | - | - |
+| Task | `webhook({ endpoint, onEvent })` | Starts a run of the task with the event. |
+| Agent session | [`chat.event({ endpoint, key })`](/docs/webhooks/session-routing) listed on a `chat.agent` | Delivers an action to the session the `key` names. |
+| Chat frontend | a [channel connector](/docs/webhooks/channels) such as `chat.channels.custom({ endpoint })` | Runs a turn on the conversation's session and posts the reply back. |
+| Waiting run | [`webhooks.waiter.create(endpoint, { match })`](/docs/webhooks/waiters) | Resumes a run that is waiting for this event. |
+
+Each subscriber has its own [filter](/docs/webhooks/filters), so one delivery can reach several subscribers and skip the rest. An endpoint can have up to 25 subscribers. An endpoint with no subscribers still gets a URL, so you can register it with the provider before writing the handlers.
+
+## The handler
+
+`onEvent` receives:
+
+| Argument | Value |
+| - | - |
+| `event` | The verified request body, parsed as JSON. Its TypeScript type comes from the [source](/docs/webhooks/sources#typing-the-event). |
+| `headers` | Request headers as a Web `Headers` object, with case-insensitive `get()` and `has()` methods. Credentials such as signatures are removed. |
+| `endpoint` | The endpoint the delivery arrived on: `id`, `declaredId`, `tenantId`, `externalRef`, and the `metadata` you declared. |
+| `ctx` | The same [run context](/docs/context) that regular tasks receive. |
+
+`webhooks.endpoint.define` also takes a `description` and `metadata`. The metadata is passed to every subscriber as `endpoint.metadata`. The endpoint `id` can't start with `wh_`, which is reserved for the ids Trigger.dev generates.
+
+## How it works
+
+The CLI finds your endpoints and subscribers during `trigger dev` and deployment, and each environment gets one endpoint per declared id. The endpoint holds the URL and the credential used to verify requests.
+
+A request must pass verification before anything else happens. Provider handshakes are answered directly and create no delivery. A verified request is checked for duplicates, recorded, and then routed: each subscriber's filter is checked, matching subscribers run, and waiting runs whose match fits the event are resumed. The delivery records a result per subscriber.
+
+## Connect it
+
+Every endpoint can produce a setup prompt for an AI coding agent. It holds the URL, the events your subscribers filter on, and the steps for registering the endpoint and its signing secret with the provider. Copy it from the endpoints list or the endpoint's page, or read it with the MCP server's `get_webhook_endpoint_details` tool. See [Connect a provider](/docs/webhooks/connect).
+
+<CardGroup>
+  <Card title="Connect a provider" icon="plug" href="/docs/webhooks/connect">
+    Register the URL and signing secret, then send a test event.
+  </Card>
+
+  <Card title="Sources and verification" icon="shield-check" href="/docs/webhooks/sources">
+    Choose a provider source or define a custom verification scheme.
+  </Card>
+
+  <Card title="Filters" icon="filter" href="/docs/webhooks/filters">
+    Choose which events reach each subscriber.
+  </Card>
+
+  <Card title="Waiters" icon="hourglass" href="/docs/webhooks/waiters">
+    Pause a run until a matching webhook arrives.
+  </Card>
+
+  <Card title="Deliveries and endpoints" icon="inbox" href="/docs/webhooks/deliveries">
+    Inspect received events and where each one went.
+  </Card>
+
+  <Card title="Session routing" icon="arrows-to-dot" href="/docs/webhooks/session-routing">
+    Route deliveries to a durable per-key agent session.
+  </Card>
+
+  <Card title="Channels" icon="comments" href="/docs/webhooks/channels">
+    Turn a webhook into a chat frontend for an agent.
+  </Card>
+
+  <Card title="Human-in-the-loop" icon="user-check" href="/docs/webhooks/human-in-the-loop">
+    Approvals and interactive controls over a channel.
+  </Card>
+</CardGroup>

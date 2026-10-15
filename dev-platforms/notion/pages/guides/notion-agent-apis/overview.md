@@ -77,12 +77,23 @@ Find the Custom Agents your token can access, track their usage, and manage thei
 You can authenticate API requests with either a personal access token or a [connection token](/guides/get-started/authorization):
 
 * A **[personal access token](/guides/get-started/personal-access-tokens)** acts as you and uses your existing access to Custom Agents.
-* A **connection token** needs the **Interact with agents** capability and can access Custom Agents shared with its connection.
+* A **connection token** needs the **View sessions and interact with agents** capability and can access Custom Agents shared with its connection.
 
 **Access requirements**
 
 Access is evaluated per Custom Agent, using the same permissions that apply in Notion:
 
-* **Read access** lets you read a Custom Agent and its sessions.
+* **Read access** lets you read a Custom Agent. Session access has its own rules, described below.
 * **Edit access** lets you change a Custom Agent's status or delete it.
 * **Full access** lets you read or change a Custom Agent's credit limit. Otherwise, the limit is `hidden`.
+
+**Session access**
+
+Session access also depends on who created the session:
+
+* A connection token can read the sessions its connection created. To read other sessions on a Custom Agent, such as chats in the Notion app, trigger runs, or sessions from other connections, the connection also needs the **Edit selected agents** capability for that Custom Agent. That capability also lets the connection change the Custom Agent's status and properties and delete it, so grant it only when you need it.
+* A personal access token can read the sessions you created, in Notion or with any of your personal access tokens in that workspace. Replacing or revoking a token doesn't hide its sessions from your other tokens. It can read other sessions on a Custom Agent if you can comment on or edit that Custom Agent in Notion.
+* Wider read access does not extend to writes. A connection token can send messages to, update, or cancel only the sessions its connection created. A personal access token can do so only for sessions you created.
+* Retrieving a session you can't read, or its events, returns `404` `object_not_found`. Query sessions leaves it out of the results instead.
+
+Sessions created with a personal access token belong to that user, who can also continue them in the Notion app. Sessions created with a connection token have no user, so nobody can reply to them in Notion; continue them through the API. To share one conversation between Notion and the API, start the session with a personal access token for the user who will reply in Notion.

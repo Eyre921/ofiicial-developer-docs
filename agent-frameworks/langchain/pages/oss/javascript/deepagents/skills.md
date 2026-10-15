@@ -146,7 +146,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637067d5-ee65-481b-a13e-3b3944551e9a/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/39b1ef25-cf7f-4a4f-96b9-79e4902604d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Step>
@@ -185,6 +185,8 @@ In Deep Agents, [`SkillsMiddleware`](https://reference.langchain.com/javascript/
 1. **Discovery** (level 1): At agent start, the middleware scans the configured skill paths, parses each `SKILL.md` [frontmatter](#frontmatter-fields), and injects the [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) fields into the system prompt.
 2. **Read** (level 2): When the agent invokes a skill, it reads the full `SKILL.md` content via `read_file`.
 3. **Execute** (level 3): After invocation, the agent follows the skill's instructions and reads supporting files (scripts, references, assets) only as the instructions require.
+
+To give the agent a skill's instructions without waiting for it to choose the skill, [pin the skill](#pin-skills).
 
 ## When to use skills
 
@@ -368,6 +370,7 @@ Skill tools follow these rules:
 
 * Skill tools are gated. Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
 * When [summarization](/oss/javascript/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
+* [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.
 
 <Note>
   On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) integration pages.
@@ -480,6 +483,10 @@ const result = await agent.invoke(
 );
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2c02ac34-3a67-455e-9f14-12f5e0426a53/r">
+  Open a public LangSmith run for this example.
+</Card>
+
 When you write a resolver:
 
 * Keep it fast. It runs on every model call after the agent reads the skill, and again before each skill tool call.
@@ -576,6 +583,10 @@ Deep Agents supports different backends depending on how you want to store and m
       config,
     );
     ```
+
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
+      Open a public LangSmith run for this example.
+    </Card>
   </Tab>
 
   <Tab title="StoreBackend">
@@ -619,7 +630,7 @@ Deep Agents supports different backends depending on how you want to store and m
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/22308b4a-5e5b-4e0f-b7a2-ca787b56d542/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -664,7 +675,7 @@ Deep Agents supports different backends depending on how you want to store and m
     );
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ad536091-3da4-4c46-b2db-05f83a2ed2c0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
       Open a public LangSmith run for this example.
     </Card>
   </Tab>
@@ -754,10 +765,6 @@ const agent = await createDeepAgent({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3ced22a-c125-4ac0-90a1-7da0898dd262/r">
-  Open a public LangSmith run for this example.
-</Card>
-
 This keeps the agent configuration stable while the backend enforces which library the agent can access. The scope does not need to be user-specific. It can be any boundary your application uses, including role, tenant, workspace, organization, environment, or request type.
 
 To populate a shared library, seed the store from your application code or an admin workflow:
@@ -837,6 +844,64 @@ const reloadEditedSkills = createMiddleware({
 });
 ```
 
+## Pin skills
+
+The agent reads a skill only when it decides the skill matches the task. When a user names a skill in your app, for example by typing `/langgraph-docs` or choosing it from a menu, pin the skill. Deep Agents then adds the skill's instructions to the conversation, so the agent does not have to choose it.
+
+<Note>Pinning skills requires `deepagents>=1.15.0`.</Note>
+
+Pass skill names in `pinnedSkills` with the run input:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "What is LangGraph?" }],
+    pinnedSkills: ["langgraph-docs"],
+  },
+  { configurable: { thread_id: "1" } },
+);
+```
+
+Before the next model call, `SkillsMiddleware` reads each named skill's `SKILL.md` and appends it to the conversation as a `HumanMessage`. It adds one message per skill, in the order you name them. Each message holds the file without its frontmatter:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<skill name="langgraph-docs" path="/skills/langgraph-docs/SKILL.md">
+# langgraph-docs
+
+## Overview
+...
+</skill>
+```
+
+Each message also sets `additional_kwargs.lc_source` to `"pinned_skill"`, and puts the skill's `name`, `path`, and `description` in `additional_kwargs.skill`. A chat UI can use these fields to show a pinned skill as a label instead of its full text.
+
+Pinned skills follow these rules:
+
+* The message stays in the conversation as written. Editing `SKILL.md` later does not change it, and pinning the skill again appends the current text. Earlier messages never change, so the prompt cache stays valid.
+* The middleware skips a name that matches no loaded skill, and a skill whose `SKILL.md` it cannot read.
+* When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
+
+### Pin skills named in a message
+
+Deep Agents does not look for skill names in messages. Your app chooses the syntax, finds the names, and passes them in `pinnedSkills`. The following example pins each skill named as `/skill-name` anywhere in the message, and sends the text unchanged:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const SKILL_REFERENCE = /(?<!\S)\/([a-z0-9-]+)/g;
+
+const message = "/langgraph-docs How do I add a checkpointer to my graph?";
+const pinnedSkills = [...message.matchAll(SKILL_REFERENCE)].map((m) => m[1]); // ["langgraph-docs"]
+
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: message }],
+    pinnedSkills,
+  },
+  { configurable: { thread_id: "1" } },
+);
+```
+
+The pattern matches a `/` followed by a skill name, at the start of the message or after a space. It does not check names against your skills, because the middleware skips unknown names. To support another syntax, such as `$skill-name`, change the pattern.
+
 ## Skills for subagents
 
 When you use [subagents](/oss/javascript/deepagents/subagents), you can configure which skills each type has access to:
@@ -863,10 +928,6 @@ const agent = await createDeepAgent({
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/859b00b1-0085-4c4b-b785-cc7477582734/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 For more information on subagent configuration and skills inheritance, see [Subagents](/oss/javascript/deepagents/subagents).
 
@@ -1135,10 +1196,6 @@ const agent = await createDeepAgent({
   store,
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/27cdf1d8-3b6f-4a8e-9bbb-c8c2a63ebf99/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 The agent uses `write_file` and `edit_file` to create or update `SKILL.md` and supporting files under writable paths. To capture general learnings outside the skills format, route a separate path such as `/memories/` to another writable backend. See [Backends](/oss/javascript/deepagents/backends) for routing and store setup.
 
@@ -2180,7 +2237,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/35c73ef7-efb6-47f0-bf7a-b81975d5a6f4/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cca657b7-b162-47f9-9fca-a20bed29cb66/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -2211,6 +2268,8 @@ Use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm
 2. **Reduce overlap between skills.** If multiple skills have similar descriptions, the agent may skip the right one or pick the wrong one. Differentiate descriptions or [consolidate related skills](#write-effective-skills).
 
 3. **Confirm the skill is in the `skills` array.** Skills load only from paths you pass at agent creation or from subagent-specific `skills` parameters.
+
+4. **Pin the skill.** When the user or your app already knows which skill applies, [pin it](#pin-skills). The agent then gets the skill's instructions without having to choose the skill.
 
 ### Skills missing at startup
 

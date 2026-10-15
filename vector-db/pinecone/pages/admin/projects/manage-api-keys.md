@@ -11,12 +11,10 @@ Each Pinecone [project](/admin/projects/understanding-projects) has one or more 
 This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
 <Warning>
-  If you use custom API key permissions, ensure that you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
+  If you use custom API key permissions, make sure you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
 </Warning>
 
 ## Create an API key
-
-You can create a new API key for your project, as follows:
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -26,7 +24,7 @@ You can create a new API key for your project, as follows:
 
     3. Go to **API keys**.
 
-    4. Click **Create API key**.
+    4. Click **+ API key**.
 
     5. Enter an **API key name**.
 
@@ -41,7 +39,7 @@ You can create a new API key for your project, as follows:
     8. Copy and save the generated API key in a secure place for future use.
 
        <Warning>
-         You will not be able to see the API key again after you close the dialog.
+         You cannot view the API key again after you close the dialog.
        </Warning>
 
     9. Click **Close**.
@@ -49,7 +47,7 @@ You can create a new API key for your project, as follows:
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>
@@ -114,12 +112,12 @@ You can [view the API keys](/reference/api/latest/admin/api-keys/list-api-keys) 
     2. Select your project.
     3. Go to the **API keys** tab.
 
-    You will see a list of all API keys for the project, including their names, IDs, and permissions.
+    You'll see a list of all API keys for the project, including their names, creation dates, creators, partial values, and permissions.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>
@@ -192,12 +190,12 @@ You can [view the details of an API key](/reference/api/latest/admin/api-keys/ge
     3. Go to the **API keys** tab.
     4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
 
-    You will see the API key's name, ID, and permissions.
+    You'll see the API key's name and permissions.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>
@@ -250,7 +248,7 @@ You can [view the details of an API key](/reference/api/latest/admin/api-keys/ge
   Users on the Starter and Builder plans can't change API key permissions once they're set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 </Note>
 
-If you are a [project owner](/admin/projects/understanding-projects#project-roles), you can update the name and roles of an API key:
+If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can update an API key's permissions. To rename a key, use the API.
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -262,16 +260,16 @@ If you are a [project owner](/admin/projects/understanding-projects#project-role
 
     4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
 
-    5. Change the name and/or permissions for the API key as needed.
+    5. Change the permissions for the API key as needed.
 
-       For information about the different API key permissions, refer to [Project roles](/admin/projects/understanding-projects#project-roles).
+       For information about the different API key permissions, see [Project roles](/admin/projects/understanding-projects#project-roles).
 
     6. Click **Update**.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>
@@ -326,7 +324,7 @@ If you are a [project owner](/admin/projects/understanding-projects#project-role
 
 ## Delete an API key
 
-If you are a [project owner](/admin/projects/understanding-projects#project-roles), you can delete your API key:
+If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can delete an API key.
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -335,16 +333,16 @@ If you are a [project owner](/admin/projects/understanding-projects#project-role
     3. Go to the **API keys** tab.
     4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Delete**.
     5. Enter the **API key name**.
-    6. Click **Confirm deletion**.
+    6. Click **Delete API key**.
 
        <Warning>
-         Deleting an API key is irreversible and will immediately disable any applications using the API key.
+         Deleting an API key is irreversible and immediately disables any applications using the API key.
        </Warning>
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
     </Note>
 
     <CodeGroup>

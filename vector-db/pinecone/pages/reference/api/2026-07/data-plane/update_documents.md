@@ -12,6 +12,10 @@ Apply partial updates to documents in a namespace. Documents are selected either
 
 `documents` and the by-filter fields (`filter`, `set_fields`, `remove_fields`) are mutually exclusive.
 
+On an index whose schema declares `embed` or `sparse_embed`, a per-ID update that sets such a field provides its new text, and Pinecone re-embeds it with the field's model; an update that does not set the field leaves its text and vectors unchanged. A by-filter update can set or remove only metadata fields: it refuses every data field, that is, vector fields, full-text-searchable text and embedded text. An index that embeds a field accepts at most 96 documents per request.
+
+Pinecone embeds the text on every request that sets such a field, so a retried update is embedded, and metered, again. A per-ID update of a document that does not exist still embeds the text it sets. When the request embedded text, the response's `usage.embed_total_tokens` reports the tokens it consumed.
+
 <RequestExample>
   ```python Python theme={null}
   # pip install --upgrade pinecone

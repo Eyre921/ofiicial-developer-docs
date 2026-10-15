@@ -44,6 +44,8 @@ When creating an environment variable, you can mark it as a **Secret**. Secret v
 
 You can edit an environment variable's values. You cannot edit the key name, you must delete and create a new one.
 
+<RollingOut />
+
 <Note>
   An empty string is a valid value. Saving a variable with an empty value stores it as an empty
   string (your task sees the variable set to `""`), which is different from deleting the variable

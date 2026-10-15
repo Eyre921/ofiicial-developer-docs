@@ -200,7 +200,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/16b9c27f-3b1f-4eb2-99b1-a59eb58167c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/df7664f6-253f-4eba-b8aa-f55b59889b5a/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -2435,10 +2435,6 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9bcce461-cc36-4d39-a790-b5e02ac3da26/r">
-  Open a public LangSmith run for this example.
-</Card>
 
 ## Next steps
 
