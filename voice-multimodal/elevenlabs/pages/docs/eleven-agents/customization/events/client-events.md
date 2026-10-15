@@ -25,7 +25,7 @@ Client events are essential for maintaining the real-time nature of conversation
 
 ## Client event types
 
-#### conversation\_initiation\_metadata
+#### conversation_initiation_metadata
 
 * Automatically sent when starting a conversation
 * Initializes conversation settings and parameters
@@ -42,7 +42,7 @@ Client events are essential for maintaining the real-time nature of conversation
 }
 ```
 
-#### queue\_status
+#### queue_status
 
 * Sent only to callers held in the [call queue](/docs/eleven-agents/guides/call-queueing) while the agent is at its concurrency limit
 * `waiting` is sent once, after `conversation_initiation_metadata` and before any hold audio
@@ -144,7 +144,7 @@ websocket.on('audio', (event) => {
 });
 ```
 
-#### user\_transcript
+#### user_transcript
 
 * Contains finalized speech-to-text results
 * Represents complete user utterances
@@ -169,7 +169,7 @@ websocket.on('user_transcript', (event) => {
 });
 ```
 
-#### agent\_response
+#### agent_response
 
 * Contains the complete agent message
 * Sent once that message is finished, so in voice conversations it usually arrives after the message's audio has already started streaming.
@@ -199,7 +199,7 @@ websocket.on('agent_response', (event) => {
 });
 ```
 
-#### agent\_response\_correction
+#### agent_response_correction
 
 * Contains truncated response after interruption
 * Updates displayed message
@@ -225,7 +225,7 @@ websocket.on('agent_response_correction', (event) => {
 });
 ```
 
-#### agent\_response\_metadata
+#### agent_response_metadata
 
 * Contains arbitrary metadata from a custom LLM response
 * Only sent when using a [custom LLM](/docs/eleven-agents/customization/llm/custom-llm)
@@ -262,7 +262,7 @@ websocket.on('agent_response_metadata', (event) => {
 });
 ```
 
-#### client\_tool\_call
+#### client_tool_call
 
 * Represents a function call the agent wants the client to execute
 * Contains tool name, tool call ID, and parameters
@@ -316,7 +316,7 @@ websocket.on('client_tool_call', async (event) => {
 });
 ```
 
-#### agent\_tool\_response
+#### agent_tool_response
 
 * Indicates when the agent has executed a tool function
 * Contains tool metadata and execution status
@@ -349,7 +349,7 @@ websocket.on('agent_tool_response', (event) => {
 });
 ```
 
-#### agent\_tool\_response\_full\_payload
+#### agent_tool_response_full_payload
 
 * Mirrors `agent_tool_response` and additionally streams the tool's full result payload as a string in `full_tool_result`.
 * Surfaces tool output in the client for display or downstream processing.
@@ -429,7 +429,7 @@ const conversation = await Conversation.startSession({
 });
 ```
 
-#### vad\_score
+#### vad_score
 
 * Voice Activity Detection score event
 * Indicates the probability that the user is speaking
@@ -445,7 +445,7 @@ const conversation = await Conversation.startSession({
 }
 ```
 
-#### mcp\_tool\_call
+#### mcp_tool_call
 
 * Indicates when the agent has executed a MCP tool function
 * Contains tool name, tool call ID, and parameters
@@ -469,7 +469,7 @@ const conversation = await Conversation.startSession({
 }
 ```
 
-#### agent\_chat\_response\_part
+#### agent_chat_response_part
 
 * Streams the agent's response text as it is generated, as `start`, `delta` and `stop` messages
 * Always sent in text-only mode; in voice conversations it must be explicitly enabled in the agent's `client_events` configuration
@@ -531,7 +531,7 @@ websocket.on('agent_chat_response_part', (event) => {
 });
 ```
 
-#### agent\_reasoning\_response\_part
+#### agent_reasoning_response_part
 
 `agent_reasoning_response_part` streams model-provided reasoning during text-only conversations.
 Enable the event in `client_events` and turn on [Reasoning summary](/docs/eleven-agents/customization/llm#reasoning-summary) for the agent. The server sends
@@ -578,7 +578,7 @@ const conversation = await Conversation.startSession({
 });
 ```
 
-#### agent\_response\_complete
+#### agent_response_complete
 
 * Fires when the agent has finished its response, including any pending tool calls. After this event, the agent will only produce further output if the user provides new input or a turn timeout triggers a new turn.
 * Must be explicitly enabled in the agent's `client_events` configuration
@@ -603,7 +603,7 @@ websocket.on('agent_response_complete', (event) => {
 });
 ```
 
-#### guardrail\_triggered
+#### guardrail_triggered
 
 * Fires when a [guardrail](/docs/eleven-agents/best-practices/guardrails) violation ends the conversation. Not sent when a guardrail triggers a retry that succeeds.
 * The event itself is the signal - it carries no payload beyond the `type` field.

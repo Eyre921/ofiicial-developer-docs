@@ -14,24 +14,24 @@ Here is a list of the current models, and you can also find more information abo
 
 **Flagship Models**
 
-| Model Name                    | Model ID                      |
-| ----------------------------- | ----------------------------- |
-| Multilingual v2               | eleven\_multilingual\_v2      |
-| Flash v2.5                    | eleven\_flash\_v2\_5          |
-| Flash v2                      | eleven\_flash\_v2             |
-| Turbo v2.5                    | eleven\_turbo\_v2\_5          |
-| Turbo v2                      | eleven\_turbo\_v2             |
-| Multilingual Speech to Speech | eleven\_multilingual\_sts\_v2 |
-| English Speech to Speech      | eleven\_english\_sts\_v2      |
+| Model Name                    | Model ID                   |
+| ----------------------------- | -------------------------- |
+| Multilingual v2               | eleven_multilingual_v2     |
+| Flash v2.5                    | eleven_flash_v2_5          |
+| Flash v2                      | eleven_flash_v2            |
+| Turbo v2.5                    | eleven_turbo_v2_5          |
+| Turbo v2                      | eleven_turbo_v2            |
+| Multilingual Speech to Speech | eleven_multilingual_sts_v2 |
+| English Speech to Speech      | eleven_english_sts_v2      |
 
 ---
 
 **Older Models**
 
-| Model Name | Model ID             |
-| ---------- | -------------------- |
-| Turbo v2.5 | eleven\_turbo\_v2\_5 |
-| Turbo v2   | eleven\_turbo\_v2    |
+| Model Name | Model ID          |
+| ---------- | ----------------- |
+| Turbo v2.5 | eleven_turbo_v2_5 |
+| Turbo v2   | eleven_turbo_v2   |
 
 ---
 

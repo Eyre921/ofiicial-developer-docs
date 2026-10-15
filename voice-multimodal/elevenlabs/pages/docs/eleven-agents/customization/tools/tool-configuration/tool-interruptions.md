@@ -57,7 +57,7 @@ Click **Save** to apply the change.
 elevenlabs tools pull
 ```
 
-#### Edit \`tool\_configs/\<tool-name>.json\`
+#### Edit \`tool_configs/\<tool-name>.json\`
 
 Set `interruption_mode` on the tool:
 

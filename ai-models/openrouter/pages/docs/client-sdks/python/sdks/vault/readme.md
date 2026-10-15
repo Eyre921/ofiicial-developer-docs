@@ -185,6 +185,7 @@ with OpenRouter(
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.BadGatewayResponseError | 502 | application/json |
@@ -220,6 +221,29 @@ with OpenRouter(
 ```
 
 ### Example Usage: body-too-large
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.vault.store_intern_vault_secret(intern_id="7c9e6679-7425-40de-944b-e07fc1f90ae7", name="github_token", hosts=[
+        "api.github.com",
+    ], value="ghp_exampleTokenValue")
+
+    # Handle response
+    print(res)
+
+```
+
+### Example Usage: conflict
 
 ```python theme={null}
 from openrouter import OpenRouter
@@ -1103,6 +1127,7 @@ with OpenRouter(
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.BadGatewayResponseError | 502 | application/json |
@@ -1138,6 +1163,29 @@ with OpenRouter(
 ```
 
 ### Example Usage: body-too-large
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.vault.store_vault_secret(name="github_token", hosts=[
+        "api.github.com",
+    ], value="ghp_exampleTokenValue")
+
+    # Handle response
+    print(res)
+
+```
+
+### Example Usage: conflict
 
 ```python theme={null}
 from openrouter import OpenRouter
@@ -1484,6 +1532,7 @@ with OpenRouter(
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
 | errors.PayloadTooLargeResponseError | 413 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |

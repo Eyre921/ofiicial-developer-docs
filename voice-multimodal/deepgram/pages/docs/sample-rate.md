@@ -39,5 +39,5 @@ curl \
 >
 > When submitting audio encoded with the Adaptive Multi-Rate (AMR) codec, you must submit specific Sample Rate values:
 >
-> * `amr-nb`: AMR narrowband codec. When using this option, you must specify `sample_rate=8000` (encoding=amr-nb\&sample\_rate=8000).
-> * `amr-wb`: AMR wideband codec. When using this option, you must also specify `sample_rate=16000` (encoding=amr-wb\&sample\_rate=16000).
+> * `amr-nb`: AMR narrowband codec. When using this option, you must specify `sample_rate=8000` (encoding=amr-nb\&sample_rate=8000).
+> * `amr-wb`: AMR wideband codec. When using this option, you must also specify `sample_rate=16000` (encoding=amr-wb\&sample_rate=16000).

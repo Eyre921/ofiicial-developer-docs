@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/models/quantization
 path: models/quantization
 ---
 
-Reduce model precision to improve performance and lower costs
+Reduce Fireworks model precision to FP16, FP8, BF16, or INT8 to cut cost by 30-50% and speed up inference, with firectl prepare-model examples.
 
 Quantization reduces the number of bits used to serve a model, improving performance and reducing cost by 30-50%. However, this can change model numerics which may introduce small changes to the output.
 

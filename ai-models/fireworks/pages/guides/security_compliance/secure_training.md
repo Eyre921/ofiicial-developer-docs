@@ -1,10 +1,10 @@
 ---
-title: "Secure Training"
+title: "Secure training options on Fireworks: BYOB, CMEK, secure RFT"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training
 path: guides/security_compliance/secure_training
 ---
 
-Choose the right training surface for your data-privacy needs, and understand what Fireworks retains and how to delete it
+Pick the right Fireworks training surface for data-privacy needs across BYOB, CMEK, and secure RFT, and understand what Fireworks retains and how to delete it.
 
 Fireworks lets you fine-tune models while keeping your data and sensitive components under your control. Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**.
 

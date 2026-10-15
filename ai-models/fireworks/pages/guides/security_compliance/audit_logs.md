@@ -1,10 +1,10 @@
 ---
-title: "Audit & Access Logs"
+title: "Audit and access logs for Enterprise Fireworks accounts"
 source: https://docs.fireworks.ai/guides/security_compliance/audit_logs
 path: guides/security_compliance/audit_logs
 ---
 
-Monitor and track account activities with audit logging for Enterprise accounts
+Monitor and track account activity with audit logging on Fireworks Enterprise, including the dashboard view, REST API pagination, and event schema.
 
 Audit logs are available for Enterprise accounts. This feature enhances security visibility, incident investigation, and compliance reporting.
 

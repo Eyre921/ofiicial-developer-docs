@@ -5,6 +5,7 @@ path: api-reference/list-deployment-shape-versions
 ---
 
 get /v1/accounts/{account_id}/deploymentShapes/{deployment_shape_id}/versions
+List validated deployment shape versions for a shape you already know, filtered by base model and latest_validated using AIP-160 filter syntax.
 
 Use this endpoint to query available deployment shape versions for a given model. Use `-` as a wildcard for both `account_id` and `deployment_shape_id` to search across all accounts and shapes.
 

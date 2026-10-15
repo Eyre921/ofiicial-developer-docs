@@ -1,10 +1,10 @@
 ---
-title: "FiretitanServiceClient & TrainingClient"
+title: "FiretitanServiceClient and TrainingClient SDK reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/service-client
 path: fine-tuning/training-api/reference/service-client
 ---
 
-Connect to a trainer endpoint and use the training client for forward/backward passes, optimizer steps, and checkpointing.
+Connect to a Fireworks trainer endpoint and use the TrainingClient SDK for forward and backward passes, optimizer steps, sampling, and checkpointing.
 
 ## Overview
 

@@ -6,6 +6,8 @@ path: nexus/harness-compatibility
 
 Compare FireRouter support, closed-model credentials, and MCP behavior across coding harnesses connected through FireConnect.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Use this page to check whether FireConnect can add FireRouter to your harness and what it changes about Model Context Protocol (MCP) configuration. For setup commands and restart rules, see [Coding Harnesses](/nexus/harnesses).
 
 <Tabs>

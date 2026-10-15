@@ -1,10 +1,10 @@
 ---
-title: "Cleanup and Teardown"
+title: "Clean up Training API trainer jobs and deployments"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/cleanup
 path: fine-tuning/training-api/reference/cleanup
 ---
 
-Delete trainer jobs and deployments after experiments to avoid leaked resources.
+Delete Training API trainer jobs, deployments, and sampler resources after experiments to avoid leaked GPUs and unnecessary spend on Fireworks.
 
 ## What this is
 

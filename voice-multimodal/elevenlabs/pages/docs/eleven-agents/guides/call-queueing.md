@@ -90,7 +90,7 @@ Click **Publish** to apply the new settings.
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.queueing_config`:
 

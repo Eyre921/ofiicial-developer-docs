@@ -1,10 +1,10 @@
 ---
-title: "Account quotas"
+title: "Account quotas, spend limits, and GPU controls"
 source: https://docs.fireworks.ai/guides/quotas_usage/account-quotas
 path: guides/quotas_usage/account-quotas
 ---
 
-Account-wide request limits, spending tiers, spend limits, and on-demand GPU quotas
+Configure Fireworks account-wide request limits, spending tiers, monthly budget caps, and on-demand GPU quotas to control usage and costs.
 
 Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, monthly spend limits, on-demand GPU quotas, and account-wide request limits.
 

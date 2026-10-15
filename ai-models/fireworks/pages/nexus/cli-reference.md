@@ -4,7 +4,9 @@ source: https://docs.fireworks.ai/nexus/cli-reference
 path: nexus/cli-reference
 ---
 
-FireConnect global commands, providers, authentication, and model selection
+FireConnect CLI reference: global commands, providers, sign-in and key storage, configure defaults, and harness commands for connecting coding tools.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility. `fireconnect chatgpt` is an alias for `fireconnect codex`. Run `fireconnect` with no arguments to use the [interactive menu](/nexus/fireconnect#interactive-menu).
 

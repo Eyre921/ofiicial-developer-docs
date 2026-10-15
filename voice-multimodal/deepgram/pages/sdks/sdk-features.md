@@ -32,80 +32,80 @@ Below is a list of all the features supported by our SDKs. For more details on a
 
 ## Listen API (v1): Streaming
 
-| API Reference                                           | Query Options            | Status | SDK Availability                              |
-| ------------------------------------------------------- | ------------------------ | ------ | --------------------------------------------- |
-| [Streaming](/reference/speech-to-text/listen-streaming) | callback                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | callback\_method         | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
-| [Streaming](/reference/speech-to-text/listen-streaming) | channels                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | diarize                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | diarize\_version         | `GA`   | `JS`, `.NET`, `Python`,`Go` `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | encoding                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | endpointing              | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | extra                    | `GA`   | `JS`, `.NET`,`Python`, `Go`, `Rust`, `Java`   |
-| [Streaming](/reference/speech-to-text/listen-streaming) | interim\_results         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | keyterm                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Java`            |
-| [Streaming](/reference/speech-to-text/listen-streaming) | keywords                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | language                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | model                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | multichannel             | `GA`   | `JS`,`.NET`, `Python`,`Go` , `Rust`, `Java`   |
-| [Streaming](/reference/speech-to-text/listen-streaming) | numerals                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | punctuate                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | profanity\_filter        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | redact                   | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | replace                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | sample\_rate             | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | search                   | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | smart\_format            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | smart\_format: no\_delay | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | tag                      | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | utterance\_end\_ms       | `GA`   | `JS`, `.NET`,`Python`,`Go`, `Rust`, `Java`    |
-| [Streaming](/reference/speech-to-text/listen-streaming) | vad\_events              | `Beta` | `JS`, `.NET``Python`,`Go`, `Rust`, `Java`     |
-| [Streaming](/reference/speech-to-text/listen-streaming) | version                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| API Reference                                           | Query Options          | Status | SDK Availability                              |
+| ------------------------------------------------------- | ---------------------- | ------ | --------------------------------------------- |
+| [Streaming](/reference/speech-to-text/listen-streaming) | callback               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | callback_method        | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
+| [Streaming](/reference/speech-to-text/listen-streaming) | channels               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | diarize                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | diarize_version        | `GA`   | `JS`, `.NET`, `Python`,`Go` `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | encoding               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | endpointing            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | extra                  | `GA`   | `JS`, `.NET`,`Python`, `Go`, `Rust`, `Java`   |
+| [Streaming](/reference/speech-to-text/listen-streaming) | interim_results        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | keyterm                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Java`            |
+| [Streaming](/reference/speech-to-text/listen-streaming) | keywords               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | language               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | model                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | multichannel           | `GA`   | `JS`,`.NET`, `Python`,`Go` , `Rust`, `Java`   |
+| [Streaming](/reference/speech-to-text/listen-streaming) | numerals               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | punctuate              | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | profanity_filter       | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | redact                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | replace                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | sample_rate            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | search                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | smart_format           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | smart_format: no_delay | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | tag                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | utterance_end_ms       | `GA`   | `JS`, `.NET`,`Python`,`Go`, `Rust`, `Java`    |
+| [Streaming](/reference/speech-to-text/listen-streaming) | vad_events             | `Beta` | `JS`, `.NET``Python`,`Go`, `Rust`, `Java`     |
+| [Streaming](/reference/speech-to-text/listen-streaming) | version                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
 
 ## Listen API (v1): Pre-recorded
 
-| API Reference                                                       | Query Options     | Status | SDK Availability                             |
-| ------------------------------------------------------------------- | ----------------- | ------ | -------------------------------------------- |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | callback          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | callback\_method  | `GA`   | `JS`,`.NET`,`Python`, `Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | channels          | `GA`   | `.NET`,`Python`, `Go`, `Rust`, `Java`        |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize\_model    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize\_version  | `GA`   | `JS`,`.NET`, `Python`, `Rust`, `Java`        |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | detect\_language  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | dictation         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | encoding          | `GA`   | `.NET`,`Python`, `Go`, `Rust`, `Java`        |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | extra             | `GA`   | `JS`, `Python`, `Go`, .`NET`, `Rust`, `Java` |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | filler\_words     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | keyterm           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Java`           |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | keywords          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | language          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | measurements      | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | model             | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | multichannel      | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | numerals          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | paragraph         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | punctuate         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | profanity\_filter | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | redact            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | replace           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | sample\_rate      | `GA`   | `Python`,`Go`, `Java`                        |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | search            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | smart\_format     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | tag               | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | utterances        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | utt\_split        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
-| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | version           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| API Reference                                                       | Query Options    | Status | SDK Availability                             |
+| ------------------------------------------------------------------- | ---------------- | ------ | -------------------------------------------- |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | callback         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | callback_method  | `GA`   | `JS`,`.NET`,`Python`, `Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | channels         | `GA`   | `.NET`,`Python`, `Go`, `Rust`, `Java`        |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize_model    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | diarize_version  | `GA`   | `JS`,`.NET`, `Python`, `Rust`, `Java`        |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | detect_language  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | dictation        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | encoding         | `GA`   | `.NET`,`Python`, `Go`, `Rust`, `Java`        |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | extra            | `GA`   | `JS`, `Python`, `Go`, .`NET`, `Rust`, `Java` |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | filler_words     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | keyterm          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Java`           |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | keywords         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | language         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | measurements     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | model            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | multichannel     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | numerals         | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | paragraph        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | punctuate        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | profanity_filter | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | redact           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | replace          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | sample_rate      | `GA`   | `Python`,`Go`, `Java`                        |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | search           | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | smart_format     | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | tag              | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | utterances       | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | utt_split        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
+| [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | version          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
 
 ## Intelligence API: Pre-recorded
 
-| API Reference                                                       | Query Options    | Status | SDK Availability                              |
-| ------------------------------------------------------------------- | ---------------- | ------ | --------------------------------------------- |
-| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | detect\_entities | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java`  |
-| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | intents          | `GA`   | `JS`, `.NET`,`Python` , `Go`, `Rust`, `Java`  |
-| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | sentiment        | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
-| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | summarize        | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
-| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | topics           | `GA`   | `JS`, `.NET`,`Python` , `Go`, `Rust`, `Java`  |
+| API Reference                                                       | Query Options   | Status | SDK Availability                              |
+| ------------------------------------------------------------------- | --------------- | ------ | --------------------------------------------- |
+| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | detect_entities | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java`  |
+| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | intents         | `GA`   | `JS`, `.NET`,`Python` , `Go`, `Rust`, `Java`  |
+| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | sentiment       | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
+| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | summarize       | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
+| [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | topics          | `GA`   | `JS`, `.NET`,`Python` , `Go`, `Rust`, `Java`  |
 
 ## Intelligence API: Text
 
@@ -122,49 +122,49 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | ----------------------------------------------------------- | ------------- | ------ | ------------------------------------ |
 | [Text to Speech](/reference/text-to-speech/speak-streaming) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 | [Text to Speech](/reference/text-to-speech/speak-streaming) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-streaming) | sample\_rate  | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
+| [Text to Speech](/reference/text-to-speech/speak-streaming) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 
 ## Text to Speech API: REST
 
 | API Reference                                             | Query Options | Status | SDK Availability                             |
 | --------------------------------------------------------- | ------------- | ------ | -------------------------------------------- |
-| [Text to Speech](/reference/text-to-speech/speak-request) | bit\_rate     | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text to Speech](/reference/text-to-speech/speak-request) | bit_rate      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 | [Text to Speech](/reference/text-to-speech/speak-request) | callback      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 | [Text to Speech](/reference/text-to-speech/speak-request) | container     | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 | [Text to Speech](/reference/text-to-speech/speak-request) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 | [Text to Speech](/reference/text-to-speech/speak-request) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | sample\_rate  | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text to Speech](/reference/text-to-speech/speak-request) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 
 ## Manage API
 
-| API Reference                                                | Query Options                                                                                                                                                                                                              | Status | SDK Availability                           |
-| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------ |
-| [Create Key](/reference/manage/keys/create)                  | comment, scopes, tags, expiration\_date, time\_to\_live\_in\_seconds                                                                                                                                                       | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Delete Project](/reference/manage/projects/delete)          | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Delete Invites](/reference/manage/invites/delete)           | N/A                                                                                                                                                                                                                        | `GA`   | `JS`, `Python`,`Go`, `Java`                |
-| [Delete Key](/reference/manage/keys/delete)                  | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Balance](/reference/manage/billing/get)                 | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get All Balances](/reference/manage/billing/list)           | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Key](/reference/manage/keys/get)                        | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Members](/reference/manage/members/list)                | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Member Scopes](/reference/manage/invites/list)          | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Project](/reference/manage/projects/get)                | start, end, limit, page                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Projects](/reference/manage/projects/list)              | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Project Models](/reference/manage/projects/models/list) | include\_outdated                                                                                                                                                                                                          | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
-| [Get Project Model](/reference/manage/projects/models/get)   | N/A                                                                                                                                                                                                                        | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
-| [Leave Project](/reference/manage/projects/leave)            | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`Python`,`Go` ,`Rust` ,`.NET`, `Java` |
-| [List Invites](/reference/manage/invites/list)               | N/A                                                                                                                                                                                                                        | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
-| [List Keys](/reference/manage/keys/list)                     | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Get Models](/reference/manage/models/list)                  | include\_outdated                                                                                                                                                                                                          | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
-| [Get Model](/reference/manage/models/get)                    | N/A                                                                                                                                                                                                                        | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
-| [Remove Member](/reference/manage/members/delete)            | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Send Invites](/reference/manage/invites/create)             | email, scope                                                                                                                                                                                                               | `GA`   | `JS`, `Python`,`Go`, `Rust`, `Java`        |
-| [Summarize Usage](/reference/manage/usage/get)               | start, end, accessor, tag, method, model, multichannel, interim\_results, punctuate, ner, utterances, replace, profanity\_filter, keywords, detect\_topics, diarize, search, redact, alternatives, numerals, smart\_format | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Usage Get All Requests](/reference/manage/requests/list)    | start, end, limit, status, page                                                                                                                                                                                            | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Usage Get Fields](/reference/manage/billing/fields/get)     | start, end                                                                                                                                                                                                                 | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Usage Get Request](/reference/manage/requests/get)          | N/A                                                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Update Project](/reference/manage/projects/update)          | name                                                                                                                                                                                                                       | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
-| [Update Scope](/reference/manage/invites/list)               | scope                                                                                                                                                                                                                      | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| API Reference                                                | Query Options                                                                                                                                                                                                          | Status | SDK Availability                           |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------ |
+| [Create Key](/reference/manage/keys/create)                  | comment, scopes, tags, expiration_date, time_to_live_in_seconds                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Delete Project](/reference/manage/projects/delete)          | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Delete Invites](/reference/manage/invites/delete)           | N/A                                                                                                                                                                                                                    | `GA`   | `JS`, `Python`,`Go`, `Java`                |
+| [Delete Key](/reference/manage/keys/delete)                  | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Balance](/reference/manage/billing/get)                 | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get All Balances](/reference/manage/billing/list)           | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Key](/reference/manage/keys/get)                        | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Members](/reference/manage/members/list)                | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Member Scopes](/reference/manage/invites/list)          | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Project](/reference/manage/projects/get)                | start, end, limit, page                                                                                                                                                                                                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Projects](/reference/manage/projects/list)              | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Project Models](/reference/manage/projects/models/list) | include_outdated                                                                                                                                                                                                       | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
+| [Get Project Model](/reference/manage/projects/models/get)   | N/A                                                                                                                                                                                                                    | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
+| [Leave Project](/reference/manage/projects/leave)            | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`Python`,`Go` ,`Rust` ,`.NET`, `Java` |
+| [List Invites](/reference/manage/invites/list)               | N/A                                                                                                                                                                                                                    | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
+| [List Keys](/reference/manage/keys/list)                     | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Get Models](/reference/manage/models/list)                  | include_outdated                                                                                                                                                                                                       | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
+| [Get Model](/reference/manage/models/get)                    | N/A                                                                                                                                                                                                                    | `GA`   | `JS`, `Python`,`Go`, `.NET`, `Java`        |
+| [Remove Member](/reference/manage/members/delete)            | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Send Invites](/reference/manage/invites/create)             | email, scope                                                                                                                                                                                                           | `GA`   | `JS`, `Python`,`Go`, `Rust`, `Java`        |
+| [Summarize Usage](/reference/manage/usage/get)               | start, end, accessor, tag, method, model, multichannel, interim_results, punctuate, ner, utterances, replace, profanity_filter, keywords, detect_topics, diarize, search, redact, alternatives, numerals, smart_format | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Usage Get All Requests](/reference/manage/requests/list)    | start, end, limit, status, page                                                                                                                                                                                        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Usage Get Fields](/reference/manage/billing/fields/get)     | start, end                                                                                                                                                                                                             | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Usage Get Request](/reference/manage/requests/get)          | N/A                                                                                                                                                                                                                    | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Update Project](/reference/manage/projects/update)          | name                                                                                                                                                                                                                   | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
+| [Update Scope](/reference/manage/invites/list)               | scope                                                                                                                                                                                                                  | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java` |
 
 ## Self-Hosted API
 

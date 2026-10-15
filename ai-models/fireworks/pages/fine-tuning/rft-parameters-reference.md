@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/fine-tuning/rft-parameters-reference
 path: fine-tuning/rft-parameters-reference
 ---
 
-Checkpoint, resume, and GRPO metrics fields for reinforcement learning recipes.
+Reference for Fireworks reinforcement learning recipes: checkpoint and resume knobs, DCP save intervals, and GRPO metric interpretation.
 
 Use this page for training **checkpoint and resume** knobs and **GRPO metric interpretation** that are easy to miss when running cookbook-driven reinforcement learning. For sampling and scheduling configuration (completions per prompt, staleness budget, concurrency, loss behavior), see [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl#scheduling-controls).
 

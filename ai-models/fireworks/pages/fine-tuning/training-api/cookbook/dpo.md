@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Preference Optimization"
+title: "Direct Preference Optimization cookbook recipe"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo
 path: fine-tuning/training-api/cookbook/dpo
 ---
 
-Direct Preference Optimization with pairwise data using the cookbook recipe.
+Run Direct Preference Optimization (DPO) on Fireworks with the Training API cookbook recipe, using pairwise preference data and configurable reference models.
 
 ## What this is
 

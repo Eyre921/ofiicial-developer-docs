@@ -6,6 +6,8 @@ path: nexus/session-usage
 
 Use FireConnect commands to inspect Claude Code session cost, model mix, cache share, token buckets, and request-level estimates.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Claude Code session-cost tools run on the machine where the session ran. After you [connect Claude Code](/nexus/harnesses#claude-code), use the status line for a live estimate or `fireconnect claude usage` for a detailed breakdown.
 
 ## Read the status line

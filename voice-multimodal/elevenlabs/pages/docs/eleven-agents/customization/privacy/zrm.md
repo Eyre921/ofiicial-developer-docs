@@ -50,7 +50,7 @@ Open your agent in the dashboard, navigate to the **Privacy** settings block, se
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.zero_retention_mode`:
 

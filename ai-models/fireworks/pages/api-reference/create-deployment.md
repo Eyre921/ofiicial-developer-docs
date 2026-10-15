@@ -5,6 +5,7 @@ path: api-reference/create-deployment
 ---
 
 post /v1/accounts/{account_id}/deployments
+Create a dedicated Fireworks deployment by POSTing a baseModel and a validated deploymentShape, with example curl request and shape lookup guidance.
 
 ## Creating a deployment with a deployment shape
 

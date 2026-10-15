@@ -221,15 +221,15 @@ wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime&c
 
 ## Supported audio formats
 
-| Format     | Sample Rate | Description                             |
-| ---------- | ----------- | --------------------------------------- |
-| pcm\_8000  | 8 kHz       | 16-bit PCM, little-endian               |
-| pcm\_16000 | 16 kHz      | 16-bit PCM, little-endian (recommended) |
-| pcm\_22050 | 22.05 kHz   | 16-bit PCM, little-endian               |
-| pcm\_24000 | 24 kHz      | 16-bit PCM, little-endian               |
-| pcm\_44100 | 44.1 kHz    | 16-bit PCM, little-endian               |
-| pcm\_48000 | 48 kHz      | 16-bit PCM, little-endian               |
-| ulaw\_8000 | 8 kHz       | 8-bit μ-law encoding                    |
+| Format    | Sample Rate | Description                             |
+| --------- | ----------- | --------------------------------------- |
+| pcm_8000  | 8 kHz       | 16-bit PCM, little-endian               |
+| pcm_16000 | 16 kHz      | 16-bit PCM, little-endian (recommended) |
+| pcm_22050 | 22.05 kHz   | 16-bit PCM, little-endian               |
+| pcm_24000 | 24 kHz      | 16-bit PCM, little-endian               |
+| pcm_44100 | 44.1 kHz    | 16-bit PCM, little-endian               |
+| pcm_48000 | 48 kHz      | 16-bit PCM, little-endian               |
+| ulaw_8000 | 8 kHz       | 8-bit μ-law encoding                    |
 
 ## Best practices
 

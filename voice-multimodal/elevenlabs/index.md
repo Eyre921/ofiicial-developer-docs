@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1377 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -600,6 +600,7 @@
 - `docs/eleven-agents/best-practices/prompting-guide` — [Prompting guide](pages/docs/eleven-agents/best-practices/prompting-guide.md) · [原文](https://elevenlabs.io/docs/eleven-agents/best-practices/prompting-guide.md)
 - `docs/eleven-agents/build/overview` — [Build](pages/docs/eleven-agents/build/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/build/overview.md)
 - `docs/eleven-agents/customization/agent-analysis` — [Conversation analysis](pages/docs/eleven-agents/customization/agent-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis.md)
+- `docs/eleven-agents/customization/agent-analysis/data-collection` — [Data collection](pages/docs/eleven-agents/customization/agent-analysis/data-collection.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md)
 - `docs/eleven-agents/customization/agent-analysis/sentiment-analysis` — [Sentiment analysis](pages/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md)
 - `docs/eleven-agents/customization/agent-analysis/smart-search` — [Searching conversations](pages/docs/eleven-agents/customization/agent-analysis/smart-search.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/smart-search.md)
 - `docs/eleven-agents/customization/agent-analysis/success-evaluation` — [Success evaluation](pages/docs/eleven-agents/customization/agent-analysis/success-evaluation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/success-evaluation.md)
@@ -885,6 +886,7 @@
 - `docs/help-center/account/general/can-i-export-usage-data-for-my-account` — [Can I export usage data for my account?](pages/docs/help-center/account/general/can-i-export-usage-data-for-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-i-export-usage-data-for-my-account.md)
 - `docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook` — [Can I still log in using GitHub or Facebook?](pages/docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook.md)
 - `docs/help-center/account/general/can-users-have-more-than-one-account` — [Can users have more than one account?](pages/docs/help-center/account/general/can-users-have-more-than-one-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-users-have-more-than-one-account.md)
+- `docs/help-center/account/general/do-i-use-quota-on-every-generation` — [Do I use quota on every generation?](pages/docs/help-center/account/general/do-i-use-quota-on-every-generation.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/do-i-use-quota-on-every-generation.md)
 - `docs/help-center/account/general/have-characters-changed` — [Have characters changed?](pages/docs/help-center/account/general/have-characters-changed.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/have-characters-changed.md)
 - `docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account` — [How can I access usage analytics for my account?](pages/docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account.md)
 - `docs/help-center/account/general/how-can-i-delete-my-account` — [How can I delete my account?](pages/docs/help-center/account/general/how-can-i-delete-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/how-can-i-delete-my-account.md)

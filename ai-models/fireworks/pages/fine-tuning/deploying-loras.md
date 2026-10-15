@@ -1,10 +1,10 @@
 ---
-title: "Deploying Trained Models"
+title: "Deploy LoRA fine-tuned models on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 path: fine-tuning/deploying-loras
 ---
 
-Deploy one or multiple LoRA models trained on Fireworks using live merge or multi-LoRA
+Deploy LoRA adapters trained or imported on Fireworks to on-demand deployments using live merge for one adapter or multi-LoRA for many adapters.
 
 After training your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA trained models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 

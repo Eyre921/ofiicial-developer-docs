@@ -155,7 +155,7 @@ The integration provides over 30 tools organized into the following categories:
 
 ### Example tools
 
-#### zendesk\_create\_ticket
+#### zendesk_create_ticket
 
 Creates a new support ticket. The agent collects details from the caller and opens a ticket on their behalf.
 
@@ -171,7 +171,7 @@ Creates a new support ticket. The agent collects details from the caller and ope
 | `ticket.group_id`        | integer | Group ID to route the ticket to                         |
 | `ticket.custom_fields`   | array   | Array of `{id, value}` objects for custom fields        |
 
-#### zendesk\_search
+#### zendesk_search
 
 Searches Zendesk for tickets, users, or organizations using the Zendesk search query syntax.
 
@@ -179,7 +179,7 @@ Searches Zendesk for tickets, users, or organizations using the Zendesk search q
 | --------- | ------ | ------------------------------------------------------------------------------------ |
 | `query`   | string | Search query (e.g., `type:ticket status:open` or `type:user email:user@example.com`) |
 
-#### zendesk\_add\_comment
+#### zendesk_add_comment
 
 Adds a public or internal comment to an existing ticket — useful for posting call summaries or follow-up notes.
 
@@ -190,7 +190,7 @@ Adds a public or internal comment to an existing ticket — useful for posting c
 | `ticket.comment.html_body` | string  | HTML version of the comment (optional)          |
 | `ticket.comment.public`    | boolean | Whether the comment is visible to the requester |
 
-#### zendesk\_get\_user
+#### zendesk_get_user
 
 Retrieves a user's profile so the agent can greet callers by name or verify their identity.
 
@@ -225,9 +225,9 @@ Each tool's parameters are filled by the agent during the conversation based on 
 
 The legacy integration uses three webhook tools to create the support agent. Review each tool's configuration in the tabs below.
 
-#### zendesk\_get\_ticket\_comments
+#### zendesk_get_ticket_comments
 
-**Name:** zendesk\_get\_ticket\_comments
+**Name:** zendesk_get_ticket_comments
 **Description:** Retrieves the comments of a ticket.
 **Method:** GET
 **URL:** `https://acmecorp.zendesk.com/api/v2/tickets/{ticket_id}/comments.json`
@@ -239,7 +239,7 @@ The legacy integration uses three webhook tools to create the support agent. Rev
 
 **Path Parameters:**
 
-* **ticket\_id:** Extract the value from the `id` field in the get\_resolved\_tickets results.
+* **ticket_id:** Extract the value from the `id` field in the get_resolved_tickets results.
 
 **Tool JSON:**
 
@@ -284,9 +284,9 @@ The legacy integration uses three webhook tools to create the support agent. Rev
 }
 ```
 
-#### zendesk\_get\_resolved\_tickets
+#### zendesk_get_resolved_tickets
 
-**Name:** zendesk\_get\_resolved\_tickets
+**Name:** zendesk_get_resolved_tickets
 **Description:** Retrieves all resolved support tickets from Zendesk.
 **Method:** GET
 **URL:** `https://acmecorp.zendesk.com/api/v2/search.json?query=type:ticket+status:solved`
@@ -329,9 +329,9 @@ The legacy integration uses three webhook tools to create the support agent. Rev
 }
 ```
 
-#### zendesk\_open\_ticket
+#### zendesk_open_ticket
 
-**Name:** zendesk\_open\_ticket
+**Name:** zendesk_open_ticket
 **Description:** Opens a new support ticket.
 **Method:** POST
 **URL:** `https://acmecorp.zendesk.com/api/v2/tickets.json`

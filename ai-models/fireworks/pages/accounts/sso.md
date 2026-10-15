@@ -1,10 +1,10 @@
 ---
-title: "Custom SSO"
+title: "Custom SSO and SCIM provisioning for Fireworks"
 source: https://docs.fireworks.ai/accounts/sso
 path: accounts/sso
 ---
 
-Set up custom Single Sign-On (SSO) authentication and SCIM user and group provisioning for Fireworks AI
+Set up custom Single Sign-On (SSO) authentication and SCIM user provisioning for Fireworks accounts, including SAML setup, group mapping, and lifecycle sync.
 
 Fireworks uses single sign-on (SSO) as the primary mechanism to authenticate with the platform.
 By default, Fireworks supports Google SSO.

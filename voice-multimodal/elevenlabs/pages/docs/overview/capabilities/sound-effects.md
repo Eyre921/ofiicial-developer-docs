@@ -10,7 +10,7 @@ path: docs/overview/capabilities/sound-effects
 
 ## Overview
 
-ElevenLabs [sound effects](/docs/api-reference/text-to-sound-effects/convert) API turns text descriptions into high-quality audio effects with precise control over timing, style and complexity. The model understands both natural language and audio terminology, enabling you to:
+ElevenLabs [sound effects](/docs/api-reference/text-to-sound-effects/convert) API turns text descriptions into high-quality sound effects with precise control over timing, style and complexity. The model understands both natural language and audio terminology, enabling you to:
 
 * Generate cinematic sound design for films & trailers
 * Create custom sound effects for games & interactive media

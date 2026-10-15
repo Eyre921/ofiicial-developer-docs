@@ -1,10 +1,10 @@
 ---
-title: "Overview"
+title: "Fireworks Training API introduction and lifecycle"
 source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 path: fine-tuning/training-api/introduction
 ---
 
-Fireworks Training API — custom training loops with full Python control over objectives, while Fireworks handles distributed GPU infrastructure.
+The Fireworks Training API lets you write custom Python training loops with full control over objectives while Fireworks manages distributed GPU infrastructure.
 
 <Info>
   Serverless Training is generally available. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).

@@ -1,8 +1,10 @@
 ---
-title: "How do credits work?"
+title: "What happens after your $1 credit runs out"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 path: faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 ---
+
+What happens when your $1 starter credit is depleted on Fireworks, how to add a payment method, enable auto top-up, and lift account spend tier limits.
 
 <Note>
   Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.

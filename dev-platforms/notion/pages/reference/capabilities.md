@@ -40,6 +40,8 @@ Comment capabilities dictate how a connection can interact with the [comments](/
 
 * **Insert comments**: This capability gives the connection permission to [insert comments](/reference/create-a-comment) in a page or in an existing discussion.
 
+A connection with only comment capabilities can still call [Retrieve token's bot user](/reference/get-self) to learn its own bot ID.
+
 ## User capabilities
 
 A connection can request different levels of user capabilities, which affect how [user objects](/reference/user) are returned from the Notion API:
@@ -47,6 +49,8 @@ A connection can request different levels of user capabilities, which affect how
 * **No user information**: Selecting this option prevents a connection from requesting any information about users. User objects will not include any information about the user, including name, profile image, or their email address.
 * **User information without email addresses**: Selecting this option ensures that User objects will include all information about a user, including name and profile image, but omit the email address.
 * **User information with email addresses**: Selecting this option ensures that User objects will include all information about the user, including name, profile image, and their email address.
+
+User capabilities control what user objects show, and they grant access to [List all users](/reference/get-users) and [Retrieve a user](/reference/get-user).
 
 ## Capability behaviors and best practices
 

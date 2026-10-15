@@ -96,7 +96,7 @@ Click **Save** to apply your tool call sound settings.
 elevenlabs tools pull
 ```
 
-#### Edit \`tool\_configs/\<tool-name>.json\`
+#### Edit \`tool_configs/\<tool-name>.json\`
 
 Set `tool_call_sound` and `tool_call_sound_behavior`:
 

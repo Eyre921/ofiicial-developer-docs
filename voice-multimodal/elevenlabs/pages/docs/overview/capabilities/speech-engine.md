@@ -69,6 +69,15 @@ If you want a fully hosted solution where ElevenLabs provides the LLM, knowledge
 * **Streaming** - responses are streamed to the browser as they are generated. Pass a string, an async iterable, or a native LLM stream object.
 * **Turn-taking** - the SDK manages conversation turns, so your server only needs to respond to transcripts.
 
+## Conversation duration
+
+Speech Engine supports conversations of up to 40 minutes (2,400 seconds). By default, a
+conversation ends after 600 seconds (10 minutes). To allow longer conversations, raise
+`conversation.max_duration_seconds` in the API or **Max conversation duration** in the dashboard's
+**Advanced** tab. See
+[Configuring the maximum conversation duration](/docs/eleven-api/guides/cookbooks/speech-engine#configuring-the-maximum-conversation-duration).
+If you need conversations longer than 40 minutes, [contact our team](https://elevenlabs.io/contact-sales).
+
 ## IP allowlisting
 
 If your server is behind a firewall or uses IP-based access controls, you can allowlist the static egress IPs from which ElevenLabs WebSocket connections originate. See [IP allowlisting](/docs/eleven-api/resources/ip-allowlisting) for the complete list of IP addresses.

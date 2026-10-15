@@ -1,10 +1,10 @@
 ---
-title: "Serverless Training"
+title: "Serverless Training API on Fireworks: LoRA, DPO, and RL"
 source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 path: fine-tuning/training-api/serverless
 ---
 
-Run LoRA training, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
+Run LoRA training, preference optimization, and RL on the shared Fireworks Training API trainer pool with no provisioning and per-token pricing.
 
 <Info>
   Serverless training is generally available. Start with the [quickstart](#quickstart), or [contact us](https://fireworks.ai/contact-training) for help choosing between shared and dedicated training.

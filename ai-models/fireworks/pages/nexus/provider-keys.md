@@ -4,7 +4,9 @@ source: https://docs.fireworks.ai/nexus/provider-keys
 path: nexus/provider-keys
 ---
 
-Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once, where available, so model routers can call closed families without developers sending the key.
+Connect an Anthropic, OpenAI, or Amazon Bedrock Provider Key once so FireRouter can call closed models without developers sending the key.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [FireRouter](/nexus/firerouter) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When FireRouter selects a closed model, Fireworks sends the request with the stored provider credential.
 

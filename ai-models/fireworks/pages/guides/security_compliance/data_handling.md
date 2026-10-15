@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/guides/security_compliance/data_handling
 path: guides/security_compliance/data_handling
 ---
 
-Data retention policies at Fireworks
+How Fireworks handles zero data retention for prompts and generations by default, plus the Response API 30-day retention when store=True is enabled.
 
 ## Zero data retention
 

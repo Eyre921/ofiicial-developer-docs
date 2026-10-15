@@ -205,6 +205,27 @@ This setting boosts the similarity to the original speaker. However, using this 
 >
 > Speaker Boost is not available for the Eleven v3 model.
 
+#### Audio effects
+
+### Audio effects
+
+Audio effects process the generated speech so it sounds like it was recorded in a specific place or through a specific device. They are applied after generation and do not change the cost.
+
+Open the **Audio effects** section in the settings panel and click **Add effect**. Each effect type can be added once:
+
+* **Filter**: colors the voice, for example a phone line, an old radio or a robot.
+* **Noise**: loops a background bed, such as a café, a call center, a city or keyboard typing, under the voice.
+* **Space**: places the voice in a room or outdoor space with matching reverb, from a small room to a hall or a forest.
+* **Distance**: sets how far the speaker is from the microphone: **Near**, **Medium** or **Far**.
+
+Once an effect is added, click **Preview** to hear the current effects on a sample voice before you generate. To remove an effect, click the remove button on its row.
+
+> **Warning**
+>
+> Audio effects are only available on the Text to Speech tab. To apply effects to dialogue, use
+> the [`audio_effects`](/docs/api-reference/text-to-dialogue/convert#request.body.audio_effects)
+> parameter of the Text to Dialogue API.
+
 ## Generate
 
 Once you have selected your voice, chosen a model, and configured your settings, the generation process is straightforward: you input text, press "**Generate Speech**," and the audio is then generated.

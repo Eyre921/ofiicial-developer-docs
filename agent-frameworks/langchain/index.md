@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1649 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1654 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -273,12 +273,17 @@
 - `langsmith/enable-self-hosted-sandboxes` — [Enable Sandboxes on self-hosted LangSmith](pages/langsmith/enable-self-hosted-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-sandboxes)
 - `langsmith/encryption` — [Encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
 - `langsmith/endpoint-deprecation` — [API and SDK deprecation policy](pages/langsmith/endpoint-deprecation.md) · [原文](https://docs.langchain.com/langsmith/endpoint-deprecation)
-- `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
-- `langsmith/engine-github` — [Connect LangSmith Engine to GitHub](pages/langsmith/engine-github.md) · [原文](https://docs.langchain.com/langsmith/engine-github)
+- `langsmith/engine` — [LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
+- `langsmith/engine-fix-validation` — [Validate fixes automatically](pages/langsmith/engine-fix-validation.md) · [原文](https://docs.langchain.com/langsmith/engine-fix-validation)
+- `langsmith/engine-issues` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine-issues.md) · [原文](https://docs.langchain.com/langsmith/engine-issues)
 - `langsmith/engine-notifications` — [LangSmith Engine notifications](pages/langsmith/engine-notifications.md) · [原文](https://docs.langchain.com/langsmith/engine-notifications)
-- `langsmith/engine-overview` — [LangSmith Engine](pages/langsmith/engine-overview.md) · [原文](https://docs.langchain.com/langsmith/engine-overview)
+- `langsmith/engine-red-teaming` — [Proactively identify issues with Red Teaming](pages/langsmith/engine-red-teaming.md) · [原文](https://docs.langchain.com/langsmith/engine-red-teaming)
+- `langsmith/engine-repositories` — [Connect Engine to your repository](pages/langsmith/engine-repositories.md) · [原文](https://docs.langchain.com/langsmith/engine-repositories)
 - `langsmith/engine-security` — [LangSmith Engine security](pages/langsmith/engine-security.md) · [原文](https://docs.langchain.com/langsmith/engine-security)
 - `langsmith/engine-self-hosted` — [LangSmith Engine on Self-hosted](pages/langsmith/engine-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted)
+- `langsmith/engine-self-hosted-github` — [Configure GitHub for Engine on self-hosted](pages/langsmith/engine-self-hosted-github.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-github)
+- `langsmith/engine-self-hosted-model-providers` — [Configure model providers for Engine on self-hosted](pages/langsmith/engine-self-hosted-model-providers.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-model-providers)
+- `langsmith/engine-setup` — [Set up LangSmith Engine](pages/langsmith/engine-setup.md) · [原文](https://docs.langchain.com/langsmith/engine-setup)
 - `langsmith/enqueue-concurrent` — [Enqueue concurrent](pages/langsmith/enqueue-concurrent.md) · [原文](https://docs.langchain.com/langsmith/enqueue-concurrent)
 - `langsmith/enterprise` — [LangSmith for Enterprise](pages/langsmith/enterprise.md) · [原文](https://docs.langchain.com/langsmith/enterprise)
 - `langsmith/env-var-cloud` — [Cloud Agent Server environment variables](pages/langsmith/env-var-cloud.md) · [原文](https://docs.langchain.com/langsmith/env-var-cloud)

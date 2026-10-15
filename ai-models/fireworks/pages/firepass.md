@@ -1,10 +1,10 @@
 ---
-title: "Fire Pass"
+title: "Fire Pass setup for open-weight agentic coding models"
 source: https://docs.fireworks.ai/firepass
 path: firepass
 ---
 
-Use selected open-weight model routers for personal, non-production agentic coding
+Set up Fire Pass to access open-weight model routers like kimi-fast-latest for agentic coding in Claude Code, OpenCode, Cline, Kilo Code, and LangChain.
 
 Fire Pass gives eligible users access to selected open-weight model routers for personal, non-production agentic coding. Included requests are covered while the pass is active, subject to its limits and terms. Check the [Fire Pass page](https://app.fireworks.ai/fire-pass) for your status and currently enabled models.
 

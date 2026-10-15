@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/tools-sdks/firectl/commands/dpo-job-create
 path: tools-sdks/firectl/commands/dpo-job-create
 ---
 
-Creates a dpo job.
+Reference for the firectl dpo-job create command: launch a Fireworks managed DPO preference-tuning job from the CLI, with flags, dataset, and model options.
 
 ```
 firectl dpo-job create [flags]

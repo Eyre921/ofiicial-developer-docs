@@ -5,6 +5,7 @@ path: api-reference/list-api-keys
 ---
 
 get /v1/accounts/{account_id}/users/{user_id}/apiKeys
+List all Fireworks API keys for a user or use the wildcard user ID to fetch every key across an account, with pagination, filtering, and ordering.
 
 List API keys for the user named in `user_id`. Admins can pass `-` as `user_id` to list keys for all users and service accounts in the account (equivalent to [`firectl api-key list --all-users`](/tools-sdks/firectl/commands/api-key-list)).
 

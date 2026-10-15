@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/accounts/service-accounts
 path: accounts/service-accounts
 ---
 
-How to manage and use service accounts in Fireworks
+Create Fireworks service accounts with firectl, issue API keys on their behalf, assign and update roles, and track their billing and audit log activity.
 
 Service accounts in Fireworks allow applications, scripts, and automated systems to authenticate and perform actions securely—without relying on human credentials. They are ideal for CI/CD pipelines, backend services, and automated workflows. Service Accounts let you avoid shared credentials and easily distinguish between what automated systems did vs humans in audit logs.
 

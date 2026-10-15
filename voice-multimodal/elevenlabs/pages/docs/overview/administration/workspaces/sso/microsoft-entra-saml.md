@@ -184,7 +184,7 @@ Check the browser Network response for `accounts:signInWithIdp`. Microsoft Entra
 confirm that Entra authenticated the user. ElevenLabs can still reject the SAML response if the
 assertion values do not match the SSO configuration.
 
-#### INVALID\_IDP\_RESPONSE: Error when parsing certificate
+#### INVALID_IDP_RESPONSE: Error when parsing certificate
 
 The browser Network response may show `INVALID_IDP_RESPONSE: Error when parsing certificate`.
 Remove the certificate from ElevenLabs, then re-add the Entra **Certificate (Base64)** in valid

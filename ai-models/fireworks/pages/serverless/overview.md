@@ -1,10 +1,10 @@
 ---
-title: "Serverless Inference Overview"
+title: "Fireworks Serverless inference: how it works"
 source: https://docs.fireworks.ai/serverless/overview
 path: serverless/overview
 ---
 
-How Serverless Inference works on Fireworks: serverless modes, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
+How Serverless inference works on Fireworks: serverless modes, per-token billing, request headers, prompt caching, model lifecycle, and when to pick Serverless.
 
 ## What is Serverless Inference
 

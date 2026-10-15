@@ -64,7 +64,7 @@ Open your agent in the dashboard, navigate to the **Voice** tab, and locate the 
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.supported_voices`:
 

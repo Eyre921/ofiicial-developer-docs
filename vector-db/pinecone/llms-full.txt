@@ -3850,8 +3850,6 @@ Source: https://docs.pinecone.io/guides/index-data/dedicated-read-nodes/overview
 
 Dedicated read nodes give a Pinecone index its own provisioned read hardware for predictable, low-latency performance at high query volumes.
 
-## How it works
-
 Pinecone indexes built on dedicated read nodes use provisioned read hardware to provide predictable, consistent performance at sustained, high query volumes. They're designed for large-scale vector workloads such as semantic search, recommendation engines, and mission-critical services.
 
 Dedicated read nodes differ from on-demand indexes in how they handle read operations. While on-demand indexes use shared, multi-tenant capacity for reads, dedicated read nodes provision exclusive hardware for reads: memory, local SSDs, and compute. Both index types use Pinecone's serverless infrastructure for writes and storage.
@@ -3882,6 +3880,8 @@ However, every dedicated read nodes index has isolated hardware for read operati
 | Scaling | Automatic; Pinecone handles capacity | Manual; add [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) for storage, add [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) for throughput |
 | Query-time tuning | Parameters accepted but have no effect | Optional [`scan_factor` and `max_candidates`](/guides/index-data/dedicated-read-nodes/tune-queries) to trade recall for lower latency and higher throughput |
 | Best for | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates | Sustained high query rates, large single-namespace workloads, predictable performance and cost |
+
+In [BYOC](/guides/production/bring-your-own-cloud), on-demand indexes share one pool of nodes in your own cloud account instead of multi-tenant Pinecone infrastructure, and both modes are billed per node rather than per read unit. See [BYOC pricing](/guides/production/bring-your-own-cloud#pricing).
 
 ## When to use dedicated read nodes
 
@@ -23132,20 +23132,20 @@ In BYOC, that console CMEK flow doesn't apply. Your vectors and index data are s
 
 ## Limitations
 
-Some features available in the standard Pinecone service aren't yet supported or have constraints in BYOC:
+Some features available in the standard Pinecone service aren't supported or have constraints in BYOC:
 
 * Each organization can have up to 2 BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-* [Integrated embedding and inference](/guides/index-data/indexing-overview#integrated-embedding), which relies on models hosted by Pinecone outside your cloud account.
-* Reading and writing data from the index browser in the Pinecone console.
-* Pinecone CLI data plane operations (queries, upserts, fetches). Control plane operations (create, list, delete indexes) work as expected.
-* Imports from private cloud storage buckets, unless the bucket is in the same cloud account as your BYOC deployment.
-* On-demand indexes. BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) indexes only.
+* [Integrated embedding and inference](/guides/index-data/indexing-overview#integrated-embedding) isn't supported, because it relies on models Pinecone hosts outside your cloud account.
+* You can't read or write data from the index browser in the Pinecone console.
+* The Pinecone CLI can't run data plane operations (queries, upserts, fetches), though its control plane operations (create, list, delete indexes) work as expected.
+* You can't import from private cloud storage buckets unless the bucket is in the same cloud account as your BYOC deployment.
+* On-demand indexes in an environment share the pool, so per-index rate limits prevent a busy index from slowing down the others. If one index needs more capacity than the pool can share, create it as a dedicated read nodes index.
 
 To [monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus), you must configure Prometheus within your VPC.
 
 ## Pricing
 
-Your Pinecone bill for a BYOC environment has two parts: a flat platform fee and a rate for each dedicated read node you run. Separately, you pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, block storage, networking, etc.).
+Your Pinecone bill for a BYOC environment has two parts: a flat platform fee, and a rate for each node you run, across both the shared on-demand pool and your dedicated read nodes indexes. Separately, you pay your cloud provider directly for the underlying infrastructure (Kubernetes nodes, object storage, block storage, networking, etc.).
 
 ```
 Pinecone bill = platform fee + (node rate × number of nodes)
@@ -23154,10 +23154,12 @@ Pinecone bill = platform fee + (node rate × number of nodes)
 | Term | Description |
 | :- | :- |
 | **Platform fee** | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support. |
-| **Node rate** | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes/concepts#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
-| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) × [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) across every index in the environment, counted separately for each node type. |
+| **Node rate** | Monthly rate for each node running in your cluster, metered in node hours. It applies to the nodes of the on-demand pool (`od1`) and to the [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#node-types) of your dedicated read nodes indexes (`b1` or `t1`). The rate varies by node type. Unlike the standard service, it's the same in every cloud and region. |
+| **Number of nodes** | The nodes in the on-demand pool, plus the sum of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) × [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) across every dedicated read nodes index in the environment. Counted separately for each node type. |
 
-If an environment runs both `b1` and `t1` nodes, calculate the node cost for each type and add the results.
+If an environment runs more than one node type, calculate the node cost for each type and add the results.
+
+The on-demand pool starts with two `od1` nodes and is billed whether or not you create on-demand indexes. Creating on-demand indexes doesn't add nodes, because they share the pool, so you pay for more `od1` nodes only when the pool grows beyond its capacity. Each dedicated read nodes index adds its `shards × replicas`.
 
 Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
 
@@ -23165,7 +23167,11 @@ Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#c
   For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).
 </Tip>
 
-**Example:** An environment with one index using two shards and two replicas runs four `b1` nodes, so its monthly bill is the platform fee plus four times the `b1` node rate, plus what you pay your cloud provider.
+### Example
+
+An environment with one dedicated read nodes index using two shards and two replicas runs four `b1` nodes in addition to the on-demand pool, which starts with two nodes. Its monthly bill is the platform fee, plus four times the `b1` node rate, plus two times the `od1` node rate (the starting pool), plus what you pay your cloud provider. Adding on-demand indexes to that environment doesn't change the bill until the pool needs more nodes.
+
+### Metering and billing
 
 The Pinecone BYOC agent running in your cluster measures node usage, periodically reporting which nodes are provisioned. Billing follows the agent heartbeat connection to Pinecone's control plane:
 
@@ -23174,7 +23180,7 @@ The Pinecone BYOC agent running in your cluster measures node usage, periodicall
 * If heartbeats are missing for more than 60 minutes, billing stops and the deployment is marked disconnected.
 
 <Note>
-  Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster whether they're idle, actively processing queries, or experiencing errors.
+  Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster, including the on-demand pool, whether they're idle, actively processing queries, or experiencing errors.
 </Note>
 
 ## FAQs
@@ -23183,14 +23189,22 @@ Answers to common questions about BYOC:
 
 <AccordionGroup>
   <Accordion title="Does Pinecone have access to my cloud account?">
-    No. BYOC is designed so Pinecone never needs direct access to your infrastructure. Specifically:
+    No. BYOC uses a zero-access model, so Pinecone never needs direct access to your infrastructure. Specifically:
 
-    * Pinecone does not need SSH, VPN, or inbound access to your cluster.
+    * Pinecone does not need SSH, VPN, inbound access, or a standing cross-account role in your cloud account.
     * You control cloud account boundaries, networking, and Kubernetes access.
     * Operational changes run through explicit, software-mediated workflows.
     * You don't open inbound firewall ports for Pinecone operations.
 
-    Operations are executed via a pull-based model where your cluster retrieves and runs operations locally. All communication is outbound from your cluster.
+    Operations are executed via a pull-based model where your cluster retrieves and runs operations locally. All communication is outbound from your cluster. Pinecone monitors cluster health through operational metrics such as CPU and latency, without seeing your data. You choose what logs to share with [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+  </Accordion>
+
+  <Accordion title="What is the difference between on-demand and dedicated read nodes in BYOC?">
+    On-demand indexes share one pool of nodes that starts with two `od1` nodes, and Pinecone adds nodes when you need more capacity. Each dedicated read nodes index gets its own nodes. For how the two modes differ, see [On-demand vs. dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#on-demand-vs-dedicated-read-nodes).
+  </Accordion>
+
+  <Accordion title="Can I use on-demand indexes in an existing BYOC environment?">
+    Yes. On-demand is available in new and existing BYOC environments on AWS, GCP, and Azure. If on-demand isn't available in your environment, contact your Pinecone account team to enable it.
   </Accordion>
 
   <Accordion title="What data leaves my cluster?">
@@ -23428,12 +23442,29 @@ Once your BYOC environment is [deployed](/guides/production/bring-your-own-cloud
 Control plane operations like [creating](/reference/api/latest/control-plane/create_index), [listing](/reference/api/latest/control-plane/list_indexes), and [deleting](/reference/api/latest/control-plane/delete_index) indexes work via the standard Pinecone API regardless of your [network access mode](/guides/production/bring-your-own-cloud/connect-and-manage#connect-to-your-index).
 
 <Note>
-  BYOC supports [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) indexes, but not on-demand indexes.
+  BYOC supports both on-demand and [dedicated read nodes (DRN)](/guides/index-data/dedicated-read-nodes/overview) indexes.
+
+  * On-demand indexes and their namespaces share one pool of nodes in your BYOC environment.
+  * DRN indexes each get their own nodes, which you size with shards and replicas when you create the index.
+
+  Both index types support vector search and [full-text search](/guides/search/full-text-search).
 </Note>
 
-## Create an index
+To create an index in your BYOC environment, set these fields in the create request:
 
-Use the environment name from the [deployment output](/guides/production/bring-your-own-cloud/deploy) to create an index in your BYOC environment.
+* `deployment.deployment_type`: `byoc`
+* `deployment.environment`: The environment name from the [deployment output](/guides/production/bring-your-own-cloud/deploy)
+* `read_capacity.mode`: `OnDemand` for an on-demand index, or `Dedicated` for a DRN index
+
+The following examples use the API and SDKs.
+
+<Tip>
+  You can also create either index type in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/create-index/): select the **BYOC** tab under **Capacity mode**, set **Read capacity** to **On-demand** or **Dedicated read nodes**, and enter your **Environment ID**.
+</Tip>
+
+## Create a DRN index
+
+A DRN index runs on its own set of nodes. Set the node type, shards, and replicas in `read_capacity`.
 
 <CodeGroup>
   ```bash curl theme={null}
@@ -23452,7 +23483,9 @@ Use the environment name from the [deployment output](/guides/production/bring-y
              },
              "schema": {
                "fields": {
-                 "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+                 "title": { "type": "string", "full_text_search": {} },
+                 "body": { "type": "string", "full_text_search": {} },
+                 "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
                }
              },
              "read_capacity": {
@@ -23472,29 +23505,90 @@ Use the environment name from the [deployment output](/guides/production/bring-y
 
   ```python Python theme={null}
   from pinecone import Pinecone
-  from pinecone.db_control.models import ByocSpec
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.db.index.create(
+  pc.indexes.create(
       name="example-byoc-index",
-      dimension=1536,
-      metric="cosine",
-      vector_type="dense",
-      spec=ByocSpec(
-          environment="aws-us-east-1-26bf.byoc",
-          read_capacity={
-              "mode": "Dedicated",
-              "dedicated": {
-                  "node_type": "b1",
-                  "scaling": "Manual",
-                  "manual": {
-                      "shards": 1,
-                      "replicas": 1,
-                  },
+      schema={
+          "fields": {
+              "title": {"type": "string", "full_text_search": {}},
+              "body": {"type": "string", "full_text_search": {}},
+              "embedding": {"type": "dense_vector", "dimension": 1536, "metric": "cosine"},
+          }
+      },
+      deployment={
+          "deployment_type": "byoc",
+          "environment": "aws-us-east-1-26bf.byoc",
+      },
+      read_capacity={
+          "mode": "Dedicated",
+          "dedicated": {
+              "node_type": "b1",
+              "scaling": "Manual",
+              "manual": {
+                  "shards": 1,
+                  "replicas": 1,
               },
           },
-      ),
+      },
+      deletion_protection="disabled",
+  )
+  ```
+</CodeGroup>
+
+## Create an on-demand index
+
+An on-demand index sets no shards or replicas, because it runs on the shared on-demand pool.
+
+<CodeGroup>
+  ```bash curl theme={null}
+  PINECONE_API_KEY="YOUR_API_KEY"
+
+  curl -X POST "https://api.pinecone.io/indexes" \
+       -H "Accept: application/json" \
+       -H "Content-Type: application/json" \
+       -H "Api-Key: $PINECONE_API_KEY" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
+       -d '{
+             "name": "example-byoc-on-demand-index",
+             "deployment": {
+               "deployment_type": "byoc",
+               "environment": "aws-us-east-1-26bf.byoc"
+             },
+             "schema": {
+               "fields": {
+                 "title": { "type": "string", "full_text_search": {} },
+                 "body": { "type": "string", "full_text_search": {} },
+                 "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+               }
+             },
+             "read_capacity": {
+               "mode": "OnDemand"
+             },
+             "deletion_protection": "disabled"
+           }'
+  ```
+
+  ```python Python theme={null}
+  from pinecone import Pinecone
+
+  pc = Pinecone(api_key="YOUR_API_KEY")
+
+  pc.indexes.create(
+      name="example-byoc-on-demand-index",
+      schema={
+          "fields": {
+              "title": {"type": "string", "full_text_search": {}},
+              "body": {"type": "string", "full_text_search": {}},
+              "embedding": {"type": "dense_vector", "dimension": 1536, "metric": "cosine"},
+          }
+      },
+      deployment={
+          "deployment_type": "byoc",
+          "environment": "aws-us-east-1-26bf.byoc",
+      },
+      read_capacity={"mode": "OnDemand"},
       deletion_protection="disabled",
   )
   ```
@@ -26228,7 +26322,7 @@ Everything in this section applies to indexes with document schemas. For dense, 
 
 * **Entry points**: Use the REST API, a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDKs send it for you.
 * **Endpoint compatibility**: Indexes with document schemas use the `/namespaces/{namespace}/documents/*` endpoints. Dense, sparse, and integrated-inference indexes continue to use `/vectors/*`, and `/records/*` for integrated inference. The two endpoint families are index-type-specific and don't cross over.
-* **Deployment**: Only managed (serverless) deployments are supported, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
+* **Deployment**: Supported on managed (serverless) and [BYOC](/guides/production/bring-your-own-cloud) deployments, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
 
 ### Limits
 
@@ -31580,7 +31674,7 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
     }'
 
   # EXAMPLE REQUEST 5: Bring-your-own-cloud (BYOC) deployment.
-  # BYOC indexes require Dedicated read capacity — OnDemand is rejected.
+  # BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
   curl "https://api.pinecone.io/indexes" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
@@ -31589,7 +31683,7 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
       "name": "byoc-index",
       "deployment": {
         "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921"
+        "environment": "aws-us-east-1-b921.byoc"
       },
       "read_capacity": {
         "mode": "Dedicated",
@@ -31598,6 +31692,28 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
           "scaling": "Manual",
           "manual": { "shards": 1, "replicas": 1 }
         }
+      },
+      "schema": {
+        "fields": {
+          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+        }
+      }
+    }'
+
+  # EXAMPLE REQUEST 6: BYOC deployment with on-demand read capacity.
+  # The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "byoc-on-demand-index",
+      "deployment": {
+        "deployment_type": "byoc",
+        "environment": "aws-us-east-1-b921.byoc"
+      },
+      "read_capacity": {
+        "mode": "OnDemand"
       },
       "schema": {
         "fields": {
@@ -83841,6 +83957,12 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+<Update label="2026-10-15">
+  ### On-demand indexes in BYOC
+
+  [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) now supports on-demand indexes in addition to [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) indexes. All on-demand indexes and their namespaces in a BYOC environment share one pool of nodes. When you [create an index](/guides/production/bring-your-own-cloud/create-an-index), you choose your BYOC environment and then on-demand or dedicated read nodes as the capacity mode. On-demand is available in new and existing BYOC environments on AWS, GCP, and Azure. If it isn't available in your environment, contact your account team to enable it.
+</Update>
 
 <Update label="2026-10-14">
   ### Export usage and cost data with the Admin API

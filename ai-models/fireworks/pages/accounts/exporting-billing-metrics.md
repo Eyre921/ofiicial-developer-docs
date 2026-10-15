@@ -1,10 +1,10 @@
 ---
-title: "Exporting Billing Metrics"
+title: "Export Fireworks billing and usage metrics as CSV"
 source: https://docs.fireworks.ai/accounts/exporting-billing-metrics
 path: accounts/exporting-billing-metrics
 ---
 
-Export billing and usage metrics for all Fireworks services
+Export Fireworks billing and usage metrics as a per-event CSV dump across serverless, on-demand deployments, and fine-tuning for downstream reporting.
 
 ## Overview
 

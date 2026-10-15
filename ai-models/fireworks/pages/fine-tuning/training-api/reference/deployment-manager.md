@@ -1,10 +1,10 @@
 ---
-title: "DeploymentManager (Compatibility)"
+title: "DeploymentManager legacy Training API SDK reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-manager
 path: fine-tuning/training-api/reference/deployment-manager
 ---
 
-Legacy SDK reference for direct deployment lifecycle and weight-sync management.
+Legacy Training API SDK reference for DeploymentManager: direct deployment lifecycle, weight-sync, and rollout controls kept for backward compatibility.
 
 ## Overview
 

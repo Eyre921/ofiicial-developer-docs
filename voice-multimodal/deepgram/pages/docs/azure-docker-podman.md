@@ -48,7 +48,7 @@ The Azure virtual machine creation wizard includes multiple high-level groups/ta
 
       > **Warning**
       >
-      > Make sure to select a VM size that is powered by a NVIDIA GPU, such as the NCv3 series, NCasT4\_v3 series, or NC A100 v4 series. Some Azure VM types, such as the NVv4 series, are powered by AMD GPUs. These will not work with Deepgram services at this time.
+      > Make sure to select a VM size that is powered by a NVIDIA GPU, such as the NCv3 series, NCasT4_v3 series, or NC A100 v4 series. Some Azure VM types, such as the NVv4 series, are powered by AMD GPUs. These will not work with Deepgram services at this time.
       >
       > See [Azure support documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes-gpu) for up-to-date details on which VM sizes are powered by NVIDIA GPUs.
 

@@ -115,13 +115,13 @@ Exit strategies let you define what your agent does when a guardrail fires. You 
 **Retry** feedback can contain **any instructions** you want applied on the next turn - it is injected as system guidance before the model regenerates. This includes invoking system tools like `transfer_to_agent` or `transfer_to_number`. Here are some examples on how you can configure retry feedback:
 
 * **Generic refusal** (default) \
-  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?"*
+  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?"*
 * **Retry with corrective instructions**\
-  &#x20;*Your previous response was blocked by a guardrail. Your blocked response was: '\{\{agent\_message}}'. During your next turn you must provide a new answer and it must not violate: '\{\{trigger\_reason}}'*
+  &#x20;*Your previous response was blocked by a guardrail. Your blocked response was: '\{\{agent_message}}'. During your next turn you must provide a new answer and it must not violate: '\{\{trigger_reason}}'*
 * **Transfer to another agent**\
-  &#x20;*Your previous response was blocked by the guardrail. During your next turn you must use the transfer\_to\_agent tool and transfer to an agent. Your blocked response was: '\{\{agent\_message}}'. The guardrail blocks content that matches this condition/category: '\{\{trigger\_reason}}'.*
+  &#x20;*Your previous response was blocked by the guardrail. During your next turn you must use the transfer_to_agent tool and transfer to an agent. Your blocked response was: '\{\{agent_message}}'. The guardrail blocks content that matches this condition/category: '\{\{trigger_reason}}'.*
 * **Transfer to a person**\
-  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger\_reason}}'. During your next turn you MUST transfer the call to a human operator using the transfer\_to\_number tool.*
+  &#x20;*Your response was blocked by a guardrail that blocks content that matches this condition/category: '\{\{trigger_reason}}'. During your next turn you MUST transfer the call to a human operator using the transfer_to_number tool.*
 
 > **Tip**
 >
@@ -159,7 +159,7 @@ You can see an estimated cost (under the prompt) when creating or editing a cust
 > **Note**
 >
 > **Retry and cost:** Each attempt is an extra agent generation plus another guardrail evaluation,
-> so **retry** increases usage-based billing compared to **end\_call** (up to three attempts per
+> so **retry** increases usage-based billing compared to **end_call** (up to three attempts per
 > blocked turn).
 
 ## Configuration
@@ -197,7 +197,7 @@ Save your agent configuration. Changes take effect immediately for new conversat
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.guardrails`:
 

@@ -1,10 +1,10 @@
 ---
-title: "Enterprise features"
+title: "Enterprise administration features on Fireworks"
 source: https://docs.fireworks.ai/accounts/enterprise-features
 path: accounts/enterprise-features
 ---
 
-Administrative capabilities available to Enterprise accounts
+Administrative capabilities available to Fireworks Enterprise accounts, including SSO, role-based access control, audit logs, model access policies, and quotas.
 
 Fireworks Enterprise accounts can use additional governance and administration features beyond the standard platform. This section documents those capabilities and how account admins configure them.
 

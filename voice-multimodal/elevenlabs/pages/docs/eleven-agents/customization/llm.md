@@ -22,7 +22,8 @@ Currently, the following models are natively supported and can be configured via
 
 | Provider       | Model                  |
 | -------------- | ---------------------- |
-| **ElevenLabs** | DeepSeek Flash 4.1     |
+| **ElevenLabs** | Nemotron 3.5 Super VL  |
+|                | DeepSeek Flash 4.1     |
 |                | GLM 5.2                |
 |                | Qwen3.6-35B-A3B        |
 |                | Qwen3.5-397B-A17B      |

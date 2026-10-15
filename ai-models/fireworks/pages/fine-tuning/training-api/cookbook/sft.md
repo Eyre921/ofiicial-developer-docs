@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Supervised Fine-Tuning"
+title: "Supervised fine-tuning with the sft_loop cookbook recipe"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft
 path: fine-tuning/training-api/cookbook/sft
 ---
 
-Supervised fine-tuning via the cookbook's sft_loop recipe.
+Run supervised fine-tuning on Fireworks using the cookbook sft_loop recipe to handle dataset loading, tokenization, gradient accumulation, and checkpointing.
 
 ## What this is
 

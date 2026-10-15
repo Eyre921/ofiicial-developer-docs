@@ -5,6 +5,7 @@ path: api-reference/update-policy-settings
 ---
 
 patch /v1/accounts/{account_id}/policySettings
+Admin-only PATCH to update account PolicySettings: model access rules, data residency, Zero Data Retention scopes, and CMEK requirement with updateMask.
 
 Updates the account's governance settings. The API key must belong to an account **Admin** on an Enterprise account, either a user or a [service account](/accounts/service-accounts) with the Admin role. Requests with any other key fail with a permission error.
 

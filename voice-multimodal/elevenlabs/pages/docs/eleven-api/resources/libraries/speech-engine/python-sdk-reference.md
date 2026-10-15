@@ -77,7 +77,7 @@ When auth is disabled the server accepts any client that can reach it and emits 
 > network-level restriction in front of the server. Without one, anyone on the internet can open a
 > session and consume your compute and downstream LLM quota.
 
-### verify\_request
+### verify_request
 
 Verify that an incoming request originates from the ElevenLabs Speech Engine API. Checks the `X-Elevenlabs-Speech-Engine-Authorization` header for a valid JWT signed with the SHA-256 hash of your API key.
 
@@ -93,7 +93,7 @@ is_valid = engine.verify_request(headers)
 
 **Returns:** `bool` — `True` if the request is valid.
 
-### create\_session
+### create_session
 
 Wrap an accepted WebSocket in a `SpeechEngineSession`. Use this for custom server integration (e.g. FastAPI, Starlette, or manual WebSocket handling).
 
@@ -147,7 +147,7 @@ Register a handler that fires once then removes itself.
 session.once("init", handler)
 ```
 
-### send\_response
+### send_response
 
 Send an LLM response back to the Speech Engine API for text-to-speech synthesis. Must be called inside an `on_transcript` handler. Calling it outside of a handler emits a warning and returns without sending.
 

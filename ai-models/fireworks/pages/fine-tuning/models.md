@@ -1,10 +1,10 @@
 ---
-title: "Models"
+title: "Base models for fine-tuning on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/models
 path: fine-tuning/models
 ---
 
-Which base models you can train on Fireworks and the surfaces each one is available on.
+Base models supported for fine-tuning on Fireworks, with per-model training surfaces (managed, Training API, serverless, dedicated) and method availability.
 
 Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT and DPO), Training API jobs by parameter mode (LoRA or full-parameter) and method (SFT, DPO, and RL).
 

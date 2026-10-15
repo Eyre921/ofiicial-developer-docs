@@ -6,6 +6,8 @@ path: nexus/fireconnect
 
 Point Claude Code, Claude Desktop, Codex, the ChatGPT desktop app, OpenCode, Cursor IDE, VS Code, and Copilot at Fireworks with one FireConnect command
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 [FireConnect](https://github.com/fw-ai/fireconnect) is the easiest way to use Fireworks models in the coding harness you already use. It is an open-source CLI that rewrites your harness settings to call Fireworks, adds Fireworks models to the model picker, and restores your original settings when you turn it off. You do not need to host a service or edit config files by hand.
 
 **Command line**

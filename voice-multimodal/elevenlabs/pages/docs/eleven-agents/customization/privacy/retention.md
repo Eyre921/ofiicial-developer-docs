@@ -61,7 +61,7 @@ When modifying retention settings, you'll have the option to apply the new reten
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.retention_days`:
 

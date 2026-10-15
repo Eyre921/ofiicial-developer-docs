@@ -1,10 +1,10 @@
 ---
-title: "Managing users"
+title: "Managing users and roles in a Fireworks account"
 source: https://docs.fireworks.ai/accounts/users
 path: accounts/users
 ---
 
-Add, delete, and manage roles for users in your Fireworks account
+Add, delete, and manage roles for users in your Fireworks account, including admin, member, viewer, and service account roles for API keys and dashboard access.
 
 See the concepts [page](/getting-started/concepts#account) for definitions of accounts and users.
 

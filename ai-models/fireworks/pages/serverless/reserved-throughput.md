@@ -1,10 +1,10 @@
 ---
-title: "Reserved Throughput"
+title: "Reserved throughput for Fireworks serverless models"
 source: https://docs.fireworks.ai/serverless/reserved-throughput
 path: serverless/reserved-throughput
 ---
 
-Reserve throughput backed by an SLA
+Reserve dedicated serverless throughput on Fireworks backed by an SLA, with guaranteed rate limits, additive capacity, and predictable per-token billing.
 
 ## Overview
 

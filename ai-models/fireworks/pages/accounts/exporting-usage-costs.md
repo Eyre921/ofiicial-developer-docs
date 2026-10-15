@@ -1,10 +1,10 @@
 ---
-title: "Exporting Usage Costs"
+title: "Export Fireworks usage costs to CSV with firectl"
 source: https://docs.fireworks.ai/accounts/exporting-usage-costs
 path: accounts/exporting-usage-costs
 ---
 
-Export rated serverless usage costs to CSV, grouped by model, model tier, user, or API key
+Export rated Fireworks serverless usage costs to CSV using firectl billing export-usage-costs, grouped by model, model tier, user, or API key for reporting.
 
 ## Overview
 

@@ -1,10 +1,10 @@
 ---
-title: "Structured Outputs"
+title: "Structured outputs: JSON schemas and grammars"
 source: https://docs.fireworks.ai/structured-responses/structured-response-formatting
 path: structured-responses/structured-response-formatting
 ---
 
-Enforce output formats using JSON schemas or custom grammars
+Enforce Fireworks LLM output formats with JSON schemas or custom grammars, including supported schema features like pattern, length, size, and oneOf keywords.
 
 Structured outputs ensure model responses conform to your specified format, making them easy to parse and integrate into your application. Fireworks supports two methods: **JSON mode** (using JSON schemas) and **Grammar mode** (using custom BNF grammars).
 

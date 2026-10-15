@@ -39,7 +39,7 @@ Open your agent in the dashboard, navigate to the **Advanced** tab, and enable t
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.conversation.text_only`:
 

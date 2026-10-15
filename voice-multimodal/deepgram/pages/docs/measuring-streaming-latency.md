@@ -31,7 +31,7 @@ Streaming latency is composed of several distinct components. Understanding each
 
 Network latency has two distinct parts:
 
-**Connection latency** is the one-time cost of establishing a WebSocket connection. It includes DNS resolution, TCP connection, TLS handshake, and WebSocket upgrade. This only affects the start of a session. The [network\_latency](https://github.com/deepgram/support-toolkit/tree/main/network_latency) tool breaks down connection latency into these components.
+**Connection latency** is the one-time cost of establishing a WebSocket connection. It includes DNS resolution, TCP connection, TLS handshake, and WebSocket upgrade. This only affects the start of a session. The [network_latency](https://github.com/deepgram/support-toolkit/tree/main/network_latency) tool breaks down connection latency into these components.
 
 **Per-message latency** is the ongoing cost of generating and sending transcripts during streaming. It includes network transit time in both directions plus server-side transcription processing time. The TCP connection time (reported by the `network_latency` tool) is a good approximation of the network transit portion of per-message latency.
 
@@ -99,7 +99,7 @@ This approach provides a practical approximation of per-message latency that inc
 
 End-of-turn (EOT) latency—the time from when a user stops speaking to when an EOT event is received—is difficult to measure precisely without ground truth timestamps indicating exactly when speech ended.
 
-The [stt\_stream\_file](https://github.com/deepgram/support-toolkit/tree/main/stt_stream_file) tool measures EOT latency using voice activity detection (VAD) to determine when speech actually ended in the audio. It then calculates the wall-clock time from when that audio was sent over the WebSocket to when the EOT event arrived. For voice agent applications, this metric captures the delay between when a user finishes speaking and when the transcript is available to send to an LLM for processing.
+The [stt_stream_file](https://github.com/deepgram/support-toolkit/tree/main/stt_stream_file) tool measures EOT latency using voice activity detection (VAD) to determine when speech actually ended in the audio. It then calculates the wall-clock time from when that audio was sent over the WebSocket to when the EOT event arrived. For voice agent applications, this metric captures the delay between when a user finishes speaking and when the transcript is available to send to an LLM for processing.
 
 ### Estimating Transcription Latency
 
@@ -136,10 +136,10 @@ If you consistently see latencies significantly above the ranges in the table ab
 
 Deepgram provides tools in the [support-toolkit](https://github.com/deepgram/support-toolkit) repository to help diagnose latency issues:
 
-| Tool                                                                                       | Purpose                                                                                                                         |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| [network\_latency](https://github.com/deepgram/support-toolkit/tree/main/network_latency)  | Measure WebSocket connection latency broken down by DNS, TCP, TLS, and WebSocket upgrade phases                                 |
-| [stt\_stream\_file](https://github.com/deepgram/support-toolkit/tree/main/stt_stream_file) | Real-time audio transcription with an optional terminal UI, supporting microphone and file input with VAD-based latency metrics |
+| Tool                                                                                     | Purpose                                                                                                                         |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [network_latency](https://github.com/deepgram/support-toolkit/tree/main/network_latency) | Measure WebSocket connection latency broken down by DNS, TCP, TLS, and WebSocket upgrade phases                                 |
+| [stt_stream_file](https://github.com/deepgram/support-toolkit/tree/main/stt_stream_file) | Real-time audio transcription with an optional terminal UI, supporting microphone and file input with VAD-based latency metrics |
 
 Clone the repository and follow the setup instructions in the relevant README to get started.
 

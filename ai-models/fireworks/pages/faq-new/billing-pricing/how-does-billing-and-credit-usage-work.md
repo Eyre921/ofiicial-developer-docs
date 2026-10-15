@@ -1,8 +1,10 @@
 ---
-title: "How does billing and credit usage work?"
+title: "How Fireworks pre-paid credits and billing work"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 path: faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 ---
+
+How Fireworks pre-paid credits work across serverless, on-demand deployments, and fine-tuning, plus auto top-up, budget caps, and balance-zero behavior.
 
 <Note>
   Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.

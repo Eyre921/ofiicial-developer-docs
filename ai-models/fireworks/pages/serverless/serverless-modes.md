@@ -1,10 +1,10 @@
 ---
-title: "Serverless Modes"
+title: "Standard, Priority, and Fast serverless modes"
 source: https://docs.fireworks.ai/serverless/serverless-modes
 path: serverless/serverless-modes
 ---
 
-Standard, Priority, and Fast serverless modes on Fireworks Serverless
+Compare Standard, Priority, and Fast serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
 Fireworks Serverless offers three modes:
 

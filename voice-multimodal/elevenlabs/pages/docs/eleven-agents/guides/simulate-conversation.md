@@ -294,8 +294,8 @@ Crafting detailed and verbose simulated user prompts and evaluation criteria can
 
 #### Mock Tool Configurations
 
-Utilize mock tool configurations to test the decision-making process of your agent. This allows you to observe how the agent decides to make tool calls and react to different tool call results. For more details, check out the tool\_mock\_config input parameter from the [API reference](/docs/api-reference/agents/simulate-conversation#request.body.simulation_specification.tool_mock_config).
+Utilize mock tool configurations to test the decision-making process of your agent. This allows you to observe how the agent decides to make tool calls and react to different tool call results. For more details, check out the tool_mock_config input parameter from the [API reference](/docs/api-reference/agents/simulate-conversation#request.body.simulation_specification.tool_mock_config).
 
 #### Partial Conversation History
 
-Use partial conversation histories to evaluate how agents handle interactions from a specific point. This is particularly useful for assessing the agent's ability to manage conversations where the user has already set up a question in a specific way, or if there have been certain tool calls that have succeeded or failed. For more details, check out the partial\_conversation\_history input parameter from the [API reference](/docs/api-reference/agents/simulate-conversation#request.body.simulation_specification.partial_conversation_history).
+Use partial conversation histories to evaluate how agents handle interactions from a specific point. This is particularly useful for assessing the agent's ability to manage conversations where the user has already set up a question in a specific way, or if there have been certain tool calls that have succeeded or failed. For more details, check out the partial_conversation_history input parameter from the [API reference](/docs/api-reference/agents/simulate-conversation#request.body.simulation_specification.partial_conversation_history).

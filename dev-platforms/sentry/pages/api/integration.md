@@ -20,6 +20,7 @@ url: https://docs.sentry.io/api/integration/
 * #### [List an Issue's Tracker Integrations and Links](https://docs.sentry.io/api/integration/list-an-issues-tracker-integrations-and-links.md)
 * #### [List an Organization's Installed Sentry App Components](https://docs.sentry.io/api/integration/list-an-organizations-installed-sentry-app-components.md)
 * #### [List an Organization's Integration Platform Installations](https://docs.sentry.io/api/integration/list-an-organizations-integration-platform-installations.md)
+* #### [List Messaging Channels for an Integration](https://docs.sentry.io/api/integration/list-messaging-channels-for-an-integration.md)
 * #### [List Repositories Available to an Integration](https://docs.sentry.io/api/integration/list-repositories-available-to-an-integration.md)
 * #### [Retrieve a custom integration by ID or slug.](https://docs.sentry.io/api/integration/retrieve-a-custom-integration-by-id-or-slug.md)
 * #### [Retrieve a Sentry App's Select Field Options](https://docs.sentry.io/api/integration/retrieve-a-sentry-apps-select-field-options.md)
@@ -29,6 +30,7 @@ url: https://docs.sentry.io/api/integration/
 * #### [Unlink a Custom Integration's External Issue](https://docs.sentry.io/api/integration/unlink-a-custom-integrations-external-issue.md)
 * #### [Unlink an External Issue from an Issue](https://docs.sentry.io/api/integration/unlink-an-external-issue-from-an-issue.md)
 * #### [Update an existing custom integration.](https://docs.sentry.io/api/integration/update-an-existing-custom-integration.md)
+* #### [Validate a Messaging Channel for an Integration](https://docs.sentry.io/api/integration/validate-a-messaging-channel-for-an-integration.md)
 
 ## Pages in this section
 
@@ -41,6 +43,7 @@ url: https://docs.sentry.io/api/integration/
 - [List an Issue's Tracker Integrations and Links](https://docs.sentry.io/api/integration/list-an-issues-tracker-integrations-and-links.md)
 - [List an Organization's Installed Sentry App Components](https://docs.sentry.io/api/integration/list-an-organizations-installed-sentry-app-components.md)
 - [List an Organization's Integration Platform Installations](https://docs.sentry.io/api/integration/list-an-organizations-integration-platform-installations.md)
+- [List Messaging Channels for an Integration](https://docs.sentry.io/api/integration/list-messaging-channels-for-an-integration.md)
 - [List Repositories Available to an Integration](https://docs.sentry.io/api/integration/list-repositories-available-to-an-integration.md)
 - [Retrieve a custom integration by ID or slug.](https://docs.sentry.io/api/integration/retrieve-a-custom-integration-by-id-or-slug.md)
 - [Retrieve a Sentry App's Select Field Options](https://docs.sentry.io/api/integration/retrieve-a-sentry-apps-select-field-options.md)
@@ -50,4 +53,5 @@ url: https://docs.sentry.io/api/integration/
 - [Unlink a Custom Integration's External Issue](https://docs.sentry.io/api/integration/unlink-a-custom-integrations-external-issue.md)
 - [Unlink an External Issue from an Issue](https://docs.sentry.io/api/integration/unlink-an-external-issue-from-an-issue.md)
 - [Update an existing custom integration.](https://docs.sentry.io/api/integration/update-an-existing-custom-integration.md)
+- [Validate a Messaging Channel for an Integration](https://docs.sentry.io/api/integration/validate-a-messaging-channel-for-an-integration.md)
 

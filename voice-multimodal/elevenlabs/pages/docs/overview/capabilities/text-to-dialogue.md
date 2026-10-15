@@ -18,6 +18,8 @@ The ElevenLabs [Text to Dialogue](/docs/api-reference/text-to-dialogue/convert) 
 
 Several generations might be required to achieve the desired results. When integrating Text to Dialogue into your application, consider generating several generations and allowing the user to select the best one.
 
+To place the conversation in a scene, such as a phone call, a café or a large hall, pass [`audio_effects`](/docs/api-reference/text-to-dialogue/convert#request.body.audio_effects) with your request. The same filter presets, environments and background noises as [Text to Speech audio effects](/docs/overview/capabilities/text-to-speech#audio-effects) apply to the whole dialogue. Dialogue effects are available through the API only.
+
 Listen to a sample:
 
 <elevenlabs-audio-player audio-title="Dialogue example" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/dialogue.mp3" />

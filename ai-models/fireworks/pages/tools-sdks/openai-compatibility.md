@@ -1,8 +1,10 @@
 ---
-title: "OpenAI compatibility"
+title: "OpenAI SDK compatibility with Fireworks inference"
 source: https://docs.fireworks.ai/tools-sdks/openai-compatibility
 path: tools-sdks/openai-compatibility
 ---
+
+Use the OpenAI Python and JavaScript SDKs with Fireworks by pointing base_url at api.fireworks.ai, with notes on supported endpoints and request fields.
 
 You can use the [OpenAI Python client library](https://github.com/openai/openai-python) to interact with Fireworks. This makes migration of existing applications already using OpenAI particularly easy.
 

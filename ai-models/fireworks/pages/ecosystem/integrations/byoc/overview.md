@@ -1,10 +1,10 @@
 ---
-title: "Bring Your Own Cluster"
+title: "Bring Your Own Cluster on Fireworks"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/overview
 path: ecosystem/integrations/byoc/overview
 ---
 
-Run Fireworks inference in your own Kubernetes cluster, cloud account or data center, and network boundary.
+Run Fireworks inference inside your own Kubernetes cluster, cloud account, or data center to keep GPUs, data, and network boundaries under your control.
 
 Bring Your Own Cluster (BYOC) lets Enterprise customers run Fireworks inference inside their own Kubernetes cluster. Your inference compute runs in your cloud account or data center boundary, while Fireworks installs and operates the serving stack for you.
 

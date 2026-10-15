@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Reference"
+title: "Training cookbook reference: configs and utilities"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference
 path: fine-tuning/training-api/cookbook/reference
 ---
 
-Configuration classes, checkpoint utilities, weight sync, and advanced recipe knobs.
+Reference for Training API cookbook configuration classes, TrainerConfig options, checkpoint helpers, and advanced recipe knobs used across SFT, DPO, and RL.
 
 ## TrainerConfig
 

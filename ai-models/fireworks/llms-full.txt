@@ -1,14 +1,7 @@
-> ## Agent Instructions
-> For Fireworks Nexus, start at https://docs.fireworks.ai/nexus.
-> Use https://docs.fireworks.ai/nexus/quickstart for coding harnesses, custom agents, APIs, SDKs, and LLM gateways.
-> Use https://docs.fireworks.ai/nexus/firerouter for how model routers work, the supported model list, composition, closed-model credentials, and pricing.
-> Prefer canonical short model IDs such as firerouter/opus. In LiteLLM litellm_params.model, use the full path fireworks_ai/accounts/fireworks/routers/firerouter/opus.
-> Family names such as opus track the latest evaluated family version; do not describe them as fixed model versions.
-
-# Data residency
+# Data residency for Fireworks Enterprise accounts
 Source: https://docs.fireworks.ai/accounts/data-residency
 
-Restrict inference for your Enterprise account to a selected region
+Restrict inference for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
 
 Data residency restricts inference on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region.
 
@@ -121,10 +114,10 @@ The following are not supported while a region is set: calls are rejected, and s
 * [Data Security](/guides/security_compliance/data_security) — encryption, retention, and access controls
 
 
-# Enterprise features
+# Enterprise administration features on Fireworks
 Source: https://docs.fireworks.ai/accounts/enterprise-features
 
-Administrative capabilities available to Enterprise accounts
+Administrative capabilities available to Fireworks Enterprise accounts, including SSO, role-based access control, audit logs, model access policies, and quotas.
 
 Fireworks Enterprise accounts can use additional governance and administration features beyond the standard platform. This section documents those capabilities and how account admins configure them.
 
@@ -171,10 +164,10 @@ See [Managing users](/accounts/users) for role definitions.
 Enterprise features are enabled on your Fireworks account type. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account representative if you need Enterprise access or want to confirm which features are active on your account.
 
 
-# Exporting Billing Metrics
+# Export Fireworks billing and usage metrics as CSV
 Source: https://docs.fireworks.ai/accounts/exporting-billing-metrics
 
-Export billing and usage metrics for all Fireworks services
+Export Fireworks billing and usage metrics as a per-event CSV dump across serverless, on-demand deployments, and fine-tuning for downstream reporting.
 
 ## Overview
 
@@ -315,10 +308,10 @@ This export includes:
 * [Serverless rate limits](/serverless/rate-limits) - Adaptive serverless TPM bounds
 
 
-# Usage & Cost Breakdown
+# Break down Fireworks usage and cost by dimension
 Source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 
-Break down usage by deployment, model, API key, or custom tags, and read account-level rated costs — via firectl or the billingUsage API
+Break down Fireworks usage and rated costs by deployment, model, API key, or custom tags using firectl, billingUsage, and the usageCosts query API.
 
 ## Overview
 
@@ -750,10 +743,10 @@ done
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits
 
 
-# Exporting Usage Costs
+# Export Fireworks usage costs to CSV with firectl
 Source: https://docs.fireworks.ai/accounts/exporting-usage-costs
 
-Export rated serverless usage costs to CSV, grouped by model, model tier, user, or API key
+Export rated Fireworks serverless usage costs to CSV using firectl billing export-usage-costs, grouped by model, model tier, user, or API key for reporting.
 
 ## Overview
 
@@ -891,10 +884,10 @@ done
 * [Serverless pricing](/serverless/pricing) - Published per-token prices
 
 
-# Model access policy
+# Enterprise model access policy on Fireworks
 Source: https://docs.fireworks.ai/accounts/model-access-policy
 
-Restrict which models users on your Enterprise account can access for inference, deployments, and training
+Restrict which models users on your Fireworks Enterprise account can access for inference, deployments, and fine-tuning using an admin-configured allowlist.
 
 Model access policy lets Enterprise account admins control which models users on the account can use. You can allowlist models (deny by default, then permit specific models) or deny specific models while leaving the rest of the catalog open.
 
@@ -1057,7 +1050,7 @@ All four permission booleans are required whenever `defaultPermissions` or a rul
 # Service Accounts
 Source: https://docs.fireworks.ai/accounts/service-accounts
 
-How to manage and use service accounts in Fireworks
+Create Fireworks service accounts with firectl, issue API keys on their behalf, assign and update roles, and track their billing and audit log activity.
 
 Service accounts in Fireworks allow applications, scripts, and automated systems to authenticate and perform actions securely—without relying on human credentials. They are ideal for CI/CD pipelines, backend services, and automated workflows. Service Accounts let you avoid shared credentials and easily distinguish between what automated systems did vs humans in audit logs.
 
@@ -1117,10 +1110,10 @@ firectl user list --filter 'service_account=true'
 In audit logs users are referenced by their email id's. Service accounts are referenced by `my-service-account@my-account.sa.fireworks.ai`.
 
 
-# Custom SSO
+# Custom SSO and SCIM provisioning for Fireworks
 Source: https://docs.fireworks.ai/accounts/sso
 
-Set up custom Single Sign-On (SSO) authentication and SCIM user and group provisioning for Fireworks AI
+Set up custom Single Sign-On (SSO) authentication and SCIM user provisioning for Fireworks accounts, including SAML setup, group mapping, and lifecycle sync.
 
 Fireworks uses single sign-on (SSO) as the primary mechanism to authenticate with the platform.
 By default, Fireworks supports Google SSO.
@@ -1293,10 +1286,10 @@ See [Understanding SAML](https://developer.okta.com/docs/concepts/saml/#understa
 Same cause as above: an IdP-initiated login without IdP-initiated SSO enabled.
 
 
-# Managing users
+# Managing users and roles in a Fireworks account
 Source: https://docs.fireworks.ai/accounts/users
 
-Add, delete, and manage roles for users in your Fireworks account
+Add, delete, and manage roles for users in your Fireworks account, including admin, member, viewer, and service account roles for API keys and dashboard access.
 
 See the concepts [page](/getting-started/concepts#account) for definitions of accounts and users.
 
@@ -1529,6 +1522,7 @@ The Messages API can be used for either single queries or stateless multi-turn c
 Source: https://docs.fireworks.ai/api-reference/cancel-reinforcement-fine-tuning-job
 
 post /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}:cancel
+Cancel a running reinforcement fine-tuning job in your Fireworks account by POSTing to the :cancel endpoint with the account ID and job ID path parameters.
 
 
 
@@ -1536,6 +1530,7 @@ post /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_t
 Source: https://docs.fireworks.ai/api-reference/create-api-key
 
 post /v1/accounts/{account_id}/users/{user_id}/apiKeys
+Create a new API key for a user or service account in your Fireworks account by sending an apiKey object to that user's apiKeys endpoint.
 
 
 
@@ -1543,6 +1538,7 @@ post /v1/accounts/{account_id}/users/{user_id}/apiKeys
 Source: https://docs.fireworks.ai/api-reference/create-batch-inference-job
 
 post /v1/accounts/{account_id}/batchInferenceJobs
+Create a batch inference job that runs a model over an input dataset and writes results to an output dataset, with an optional system prompt.
 
 
 
@@ -1550,6 +1546,7 @@ post /v1/accounts/{account_id}/batchInferenceJobs
 Source: https://docs.fireworks.ai/api-reference/create-dataset
 
 post /v1/accounts/{account_id}/datasets
+Create a dataset in your Fireworks account from a dataset object and datasetId, or derive one from an existing dataset with sourceDatasetId and a filter.
 
 
 
@@ -1557,6 +1554,7 @@ post /v1/accounts/{account_id}/datasets
 Source: https://docs.fireworks.ai/api-reference/create-deployed-model
 
 post /v1/accounts/{account_id}/deployedModels
+Load a LoRA addon onto an existing Fireworks deployment by creating a deployed model, with options to make it the default target or publicly reachable.
 
 
 
@@ -1564,6 +1562,7 @@ post /v1/accounts/{account_id}/deployedModels
 Source: https://docs.fireworks.ai/api-reference/create-deployment
 
 post /v1/accounts/{account_id}/deployments
+Create a dedicated Fireworks deployment by POSTing a baseModel and a validated deploymentShape, with example curl request and shape lookup guidance.
 
 ## Creating a deployment with a deployment shape
 
@@ -1616,10 +1615,11 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments?a
 Deployments created this way skip shape validation and are far more likely to fail at creation. Enforcement is coming soon: shapeless creation will then require this flag, so use a shape (or `default`) now unless you deliberately need this path. If you need a configuration no shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
 
-# Create dpo job
+# Create DPO Job
 Source: https://docs.fireworks.ai/api-reference/create-dpo-job
 
 post /v1/accounts/{account_id}/dpoJobs
+Create a DPO fine-tuning job from a dataset, with training config, a loss config for DPO or ORPO, Weights & Biases logging, and S3 or Azure dataset access.
 
 
 
@@ -1627,6 +1627,7 @@ post /v1/accounts/{account_id}/dpoJobs
 Source: https://docs.fireworks.ai/api-reference/create-evaluation-job
 
 post /v1/accounts/{account_id}/evaluationJobs
+Create an evaluation job in your Fireworks account by POSTing an evaluationJob object and an optional evaluationJobId to the evaluationJobs endpoint.
 
 
 
@@ -1670,6 +1671,7 @@ Once active, reference the evaluator in [Create Evaluation Job](/api-reference/c
 Source: https://docs.fireworks.ai/api-reference/create-model
 
 post /v1/accounts/{account_id}/models
+Create a model resource in your Fireworks account by POSTing a model object, a modelId, and an optional cluster to the account's models endpoint.
 
 
 
@@ -1677,6 +1679,7 @@ post /v1/accounts/{account_id}/models
 Source: https://docs.fireworks.ai/api-reference/create-reinforcement-fine-tuning-job
 
 post /v1/accounts/{account_id}/reinforcementFineTuningJobs
+Create a reinforcement fine-tuning job with a training dataset, an evaluator, training and inference parameters, and an optional evaluation dataset.
 
 
 
@@ -1684,6 +1687,7 @@ post /v1/accounts/{account_id}/reinforcementFineTuningJobs
 Source: https://docs.fireworks.ai/api-reference/create-reinforcement-fine-tuning-step
 
 post /v1/accounts/{account_id}/rlorTrainerJobs
+Create a reinforcement fine-tuning step (RLOR trainer job) with a dataset, training and loss config, reward weights, rollout deployment, and training shape.
 
 
 
@@ -1691,13 +1695,15 @@ post /v1/accounts/{account_id}/rlorTrainerJobs
 Source: https://docs.fireworks.ai/api-reference/create-router
 
 post /v1/accounts/{account_id}/routers
+Create a router that sends requests for a model across multiple Fireworks deployments using weighted random or even load balancing, with optional aliases.
 
 
 
-# Create secret
+# Create Secret
 Source: https://docs.fireworks.ai/api-reference/create-secret
 
 post /v1/accounts/{account_id}/secrets
+Create a secret in your Fireworks account by sending a keyName and value. The value is input-only and is never returned in GET or LIST responses.
 
 
 
@@ -1705,6 +1711,7 @@ post /v1/accounts/{account_id}/secrets
 Source: https://docs.fireworks.ai/api-reference/create-supervised-fine-tuning-job
 
 post /v1/accounts/{account_id}/supervisedFineTuningJobs
+Create a supervised fine-tuning job via the Fireworks API, submitting training datasets, hyperparameters, and model configuration for managed SFT runs.
 
 ## Learning rate scheduler
 
@@ -1752,6 +1759,7 @@ See also [Training models](/fine-tuning/fine-tuning-models) for CLI equivalents 
 Source: https://docs.fireworks.ai/api-reference/create-user
 
 post /v1/accounts/{account_id}/users
+Create a user or service account in your Fireworks account, setting the display name, email, role, and permission preset in the request body.
 
 
 
@@ -1759,6 +1767,7 @@ post /v1/accounts/{account_id}/users
 Source: https://docs.fireworks.ai/api-reference/creates-an-embedding-vector-representing-the-input-text
 
 post /embeddings
+Generate embedding vectors for input text with a Fireworks embedding model, with options for output dimensions, a prompt template, and normalization.
 
 
 
@@ -1766,6 +1775,7 @@ post /embeddings
 Source: https://docs.fireworks.ai/api-reference/delete-api-key
 
 post /v1/accounts/{account_id}/users/{user_id}/apiKeys:delete
+Delete an API key belonging to a user or service account in your Fireworks account by POSTing its keyId to the user's apiKeys:delete endpoint.
 
 
 
@@ -1773,6 +1783,7 @@ post /v1/accounts/{account_id}/users/{user_id}/apiKeys:delete
 Source: https://docs.fireworks.ai/api-reference/delete-batch-inference-job
 
 delete /v1/accounts/{account_id}/batchInferenceJobs/{batch_inference_job_id}
+Delete a batch inference job from your Fireworks account by sending a DELETE request with the account ID and batch inference job ID path parameters.
 
 
 
@@ -1780,6 +1791,7 @@ delete /v1/accounts/{account_id}/batchInferenceJobs/{batch_inference_job_id}
 Source: https://docs.fireworks.ai/api-reference/delete-dataset
 
 delete /v1/accounts/{account_id}/datasets/{dataset_id}
+Delete a dataset from your Fireworks account by sending a DELETE request with the account ID and dataset ID path parameters to the datasets endpoint.
 
 
 
@@ -1787,6 +1799,7 @@ delete /v1/accounts/{account_id}/datasets/{dataset_id}
 Source: https://docs.fireworks.ai/api-reference/delete-deployed-model
 
 delete /v1/accounts/{account_id}/deployedModels/{deployed_model_id}
+Unload a LoRA addon from a Fireworks deployment by deleting its deployed model resource, identified by the account ID and deployed model ID parameters.
 
 
 
@@ -1794,13 +1807,15 @@ delete /v1/accounts/{account_id}/deployedModels/{deployed_model_id}
 Source: https://docs.fireworks.ai/api-reference/delete-deployment
 
 delete /v1/accounts/{account_id}/deployments/{deployment_id}
+Delete a Fireworks deployment by ID, using the hard query parameter for a hard deletion and ignoreChecks to force deleting a deployment that is in use.
 
 
 
-# Delete dpo job
+# Delete DPO Job
 Source: https://docs.fireworks.ai/api-reference/delete-dpo-job
 
 delete /v1/accounts/{account_id}/dpoJobs/{dpo_job_id}
+Delete a DPO fine-tuning job from your Fireworks account by sending a DELETE request with the account ID and DPO job ID path parameters.
 
 
 
@@ -1808,6 +1823,7 @@ delete /v1/accounts/{account_id}/dpoJobs/{dpo_job_id}
 Source: https://docs.fireworks.ai/api-reference/delete-evaluation-job
 
 delete /v1/accounts/{account_id}/evaluationJobs/{evaluation_job_id}
+Delete an evaluation job from your Fireworks account by sending a DELETE request with the account ID and evaluation job ID path parameters.
 
 
 
@@ -1823,6 +1839,7 @@ Deletes an evaluator and its associated versions and build artifacts.
 Source: https://docs.fireworks.ai/api-reference/delete-model
 
 delete /v1/accounts/{account_id}/models/{model_id}
+Delete a model resource from your Fireworks account by sending a DELETE request with the account ID and model ID path parameters to the models endpoint.
 
 
 
@@ -1830,6 +1847,7 @@ delete /v1/accounts/{account_id}/models/{model_id}
 Source: https://docs.fireworks.ai/api-reference/delete-reinforcement-fine-tuning-job
 
 delete /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}
+Delete a reinforcement fine-tuning job from your Fireworks account by sending a DELETE request with the account ID and job ID path parameters.
 
 
 
@@ -1837,6 +1855,7 @@ delete /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine
 Source: https://docs.fireworks.ai/api-reference/delete-reinforcement-fine-tuning-step
 
 delete /v1/accounts/{account_id}/rlorTrainerJobs/{rlor_trainer_job_id}
+Delete a reinforcement fine-tuning step (RLOR trainer job) from your Fireworks account using the account ID and RLOR trainer job ID path parameters.
 
 
 
@@ -1896,6 +1915,7 @@ get /v1/accounts/{account_id}/batchInferenceJobs/{batch_inference_job_id}
 Source: https://docs.fireworks.ai/api-reference/get-billing-summary
 
 get /v1/accounts/{account_id}/billing/summary
+Retrieve billing summary information for a Fireworks account by date range, including cost totals, daily breakdown, and per-product usage aggregation.
 
 
 
@@ -2052,6 +2072,7 @@ post /v1/accounts/{account_id}/models/{model_id}:getUploadEndpoint
 Source: https://docs.fireworks.ai/api-reference/get-policy-settings
 
 get /v1/accounts/{account_id}/policySettings
+Returns an account PolicySettings object with model access rules, data residency, Zero Data Retention, and CMEK enforcement for governance review.
 
 Returns the account's governance settings in one object:
 
@@ -2179,6 +2200,7 @@ get /v1/accounts
 Source: https://docs.fireworks.ai/api-reference/list-api-keys
 
 get /v1/accounts/{account_id}/users/{user_id}/apiKeys
+List all Fireworks API keys for a user or use the wildcard user ID to fetch every key across an account, with pagination, filtering, and ordering.
 
 List API keys for the user named in `user_id`. Admins can pass `-` as `user_id` to list keys for all users and service accounts in the account (equivalent to [`firectl api-key list --all-users`](/tools-sdks/firectl/commands/api-key-list)).
 
@@ -2220,6 +2242,7 @@ get /v1/accounts/{account_id}/deployedModels
 Source: https://docs.fireworks.ai/api-reference/list-deployment-shape-versions
 
 get /v1/accounts/{account_id}/deploymentShapes/{deployment_shape_id}/versions
+List validated deployment shape versions for a shape you already know, filtered by base model and latest_validated using AIP-160 filter syntax.
 
 Use this endpoint to query available deployment shape versions for a given model. Use `-` as a wildcard for both `account_id` and `deployment_shape_id` to search across all accounts and shapes.
 
@@ -2555,6 +2578,7 @@ patch /v1/accounts/{account_id}/models/{model_id}
 Source: https://docs.fireworks.ai/api-reference/update-policy-settings
 
 patch /v1/accounts/{account_id}/policySettings
+Admin-only PATCH to update account PolicySettings: model access rules, data residency, Zero Data Retention scopes, and CMEK requirement with updateMask.
 
 Updates the account's governance settings. The API key must belong to an account **Admin** on an Enterprise account, either a user or a [service account](/accounts/service-accounts) with the Admin role. Requests with any other key fail with a permission error.
 
@@ -2642,7 +2666,7 @@ get /v1/accounts/{account_id}/models/{model_id}:validateUpload
 # Autoscaling
 Source: https://docs.fireworks.ai/deployments/autoscaling
 
-Configure how your deployment scales based on traffic
+Configure replica counts, scale-up/down windows, scale-to-zero, and load targets for on-demand Fireworks deployments using firectl flags.
 
 Control how your deployment scales based on traffic and load.
 
@@ -3066,10 +3090,10 @@ This implementation:
 * Uses `asyncio.Semaphore` to control concurrency to avoid overwhelming the server
 
 
-# Deployment Tags
+# Deployment tags: key-value metadata on Fireworks
 Source: https://docs.fireworks.ai/deployments/deployment-tags
 
-Attach customer-defined metadata to dedicated deployments
+Attach key-value tags to dedicated Fireworks deployments to record environment, team, or workload, and manage them through firectl or the REST API.
 
 Deployment tags are key-value metadata attached to a dedicated deployment. Use them to record information such as an environment, team, or workload.
 
@@ -3356,10 +3380,10 @@ These gauge metrics show average resource usage:
 * `prefiller_prompt_cache_ttl:avg_by_deployment`: Average prompt cache time-to-live
 
 
-# Regions
+# Regions and GPU hardware for Fireworks deployments
 Source: https://docs.fireworks.ai/deployments/regions
 
-Fireworks runs a global fleet of hardware on which you can deploy your models.
+Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators.
 
 Fireworks runs a global fleet so you can deploy models close to users, meet data-residency needs, and scale across clouds. This page covers **multi-region** (default behavior and quota groupings), **single-region** availability and hardware, how to **use and change** regions, and **quotas**.
 
@@ -3669,10 +3693,10 @@ firectl router update my-router --deployments=new-deployment
 </Tip>
 
 
-# Speculative Decoding
+# Speculative decoding with draft models on Fireworks
 Source: https://docs.fireworks.ai/deployments/speculative-decoding
 
-Speed up generation with draft models and n-gram speculation
+Speed up token generation on Fireworks dedicated deployments with speculative decoding using draft models, n-gram speculation, and per-request configuration.
 
 Speculative decoding reduces generation latency by proposing multiple tokens and
 letting the target model verify them in parallel. The target model still verifies
@@ -3831,7 +3855,7 @@ model, quantization, or deployment shape changes.
 # Agent Frameworks
 Source: https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks
 
-Build production-ready AI agents with Fireworks and leading open-source frameworks
+Build production AI agents on Fireworks with LangChain, LlamaIndex, CrewAI, AutoGen, and other open-source frameworks using the OpenAI-compatible API.
 
 Fireworks AI seamlessly integrates with the best open-source agent frameworks, enabling you to build magical, production-ready applications powered by state-of-the-art language models.
 
@@ -3868,10 +3892,10 @@ Fireworks AI seamlessly integrates with the best open-source agent frameworks, e
 For assistance with agent framework integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).
 
 
-# Microsoft Foundry
+# Deploy Fireworks models on Microsoft Foundry and Azure
 Source: https://docs.fireworks.ai/ecosystem/integrations/azure-foundry
 
-Deploy frontier open models inside your Azure subscription, billed through Azure.
+Deploy frontier open-weight models inside your own Azure subscription through Microsoft Foundry, with Fireworks inference billed via your Azure account.
 
 Fireworks AI is a first-party inference provider inside Microsoft Foundry. You can access frontier open models through your existing Azure account, with usage billed through Azure and counting toward your Microsoft Azure Consumption Commitment (MACC).
 
@@ -3999,10 +4023,10 @@ This page covers enabling and operating Fireworks models in Foundry itself.
 * [Contact us](https://fireworks.ai/contact) for PTU provisioning and Custom Model support
 
 
-# How Setup Works
+# Bring Your Own Cluster setup and onboarding flow
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works
 
-Understand the high-level onboarding flow for Bring Your Own Cluster.
+How Bring Your Own Cluster onboarding works, from account and cluster prerequisites through Fireworks control-plane connection, node setup, and validation.
 
 This page describes the high-level setup flow for Enterprise customers onboarding to Bring Your Own Cluster (BYOC).
 
@@ -4074,10 +4098,10 @@ Once validation is complete, Fireworks operates the serving stack and model life
 For ongoing responsibilities, see [Operational Model](/ecosystem/integrations/byoc/operational-model).
 
 
-# Operational Model
+# Bring Your Own Cluster operational model
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model
 
-Learn how Fireworks operates Bring Your Own Cluster environments day to day.
+How Fireworks operates Bring Your Own Cluster environments day to day, including shared responsibilities, upgrades, monitoring, incident response, and support.
 
 Bring Your Own Cluster (BYOC) is designed so your team keeps ownership of the cloud or hardware environment while Fireworks operates the model serving stack inside it.
 
@@ -4156,10 +4180,10 @@ BYOC operations work best when Fireworks and the customer agree on:
 * Any environment-specific compliance requirements
 
 
-# Bring Your Own Cluster
+# Bring Your Own Cluster on Fireworks
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/overview
 
-Run Fireworks inference in your own Kubernetes cluster, cloud account or data center, and network boundary.
+Run Fireworks inference inside your own Kubernetes cluster, cloud account, or data center to keep GPUs, data, and network boundaries under your control.
 
 Bring Your Own Cluster (BYOC) lets Enterprise customers run Fireworks inference inside their own Kubernetes cluster. Your inference compute runs in your cloud account or data center boundary, while Fireworks installs and operates the serving stack for you.
 
@@ -4319,10 +4343,10 @@ Once configured, your AI coding agent can search the full Fireworks AI documenta
 * "Find the API reference for batch inference"
 
 
-# MLOps & Observability
+# MLOps and observability integrations for Fireworks
 Source: https://docs.fireworks.ai/ecosystem/integrations/mlops-observability
 
-Track and monitor your Fireworks AI deployments with leading MLOps and observability platforms
+Track and monitor Fireworks AI deployments with leading MLOps and observability platforms including Langfuse, Weights & Biases, LangSmith, and Helicone.
 
 Fireworks AI integrates with industry-leading MLOps and observability platforms to help you monitor, track, and optimize your AI applications in production.
 
@@ -4343,10 +4367,10 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 For assistance with MLOps and observability integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).
 
 
-# Cookbooks
+# Fireworks AI cookbooks: notebooks for advanced use cases
 Source: https://docs.fireworks.ai/examples/cookbooks
 
-Interactive Jupyter notebooks demonstrating advanced use cases and best practices with Fireworks AI
+Interactive Jupyter notebook cookbooks for Fireworks AI showing RAG, function calling, fine-tuning, structured outputs, and other advanced inference patterns.
 
 Explore our collection of notebooks that showcase real-world applications, best practices, and advanced techniques for building with Fireworks AI.
 
@@ -4419,10 +4443,10 @@ Explore our collection of notebooks that showcase real-world applications, best 
 </CardGroup>
 
 
-# Courses
+# Fireworks courses: end-to-end examples and use cases
 Source: https://docs.fireworks.ai/examples/introduction
 
-Standalone end-to-end examples showing how to use Fireworks to solve real-world use cases
+Standalone end-to-end courses showing how to use Fireworks for real-world use cases across fine-tuning, RAG, agents, and multi-modal inference.
 
 <CardGroup>
   <Card title="Text to SQL" href="/examples/text-to-sql">
@@ -4559,10 +4583,10 @@ Source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-discounts-fo
 We offer discounts for bulk or pre-paid purchases. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) to discuss volume pricing.
 
 
-# Are there extra fees for serving trained models?
+# Extra fees for serving trained models on Fireworks?
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 
-
+How Fireworks bills for serving trained LoRA models on dedicated deployments, including per-GPU-second hosting costs, training fees, and inference charges.
 
 Trained (LoRA) models require a dedicated deployment to serve. Here's what you need to know:
 
@@ -4581,10 +4605,10 @@ Trained (LoRA) models require a dedicated deployment to serve. Here's what you n
 </Tip>
 
 
-# How does billing and credit usage work?
+# How Fireworks pre-paid credits and billing work
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 
-
+How Fireworks pre-paid credits work across serverless, on-demand deployments, and fine-tuning, plus auto top-up, budget caps, and balance-zero behavior.
 
 <Note>
   Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
@@ -4719,10 +4743,10 @@ For instance, for Qwen2.5 VL, you can use the following code:
 </Steps>
 
 
-# How much does Fireworks cost?
+# How Fireworks pricing works for inference and tuning
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/how-much-does-fireworks-cost
 
-
+How Fireworks AI charges per token for serverless inference, per GPU time for on-demand deployments, and per training token for fine-tuning workloads.
 
 <Note>
   Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
@@ -4747,10 +4771,10 @@ Source: https://docs.fireworks.ai/faq-new/billing-pricing/is-prompt-caching-bill
 Yes, **cached prompt tokens are discounted compared to uncached tokens for serverless models**. The default discount is 50%, but the exact discount varies by model. Check the [Model Library](https://fireworks.ai/models) for model-specific cached and uncached input token pricing.
 
 
-# How do credits work?
+# What happens after your $1 credit runs out
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 
-
+What happens when your $1 starter credit is depleted on Fireworks, how to add a payment method, enable auto top-up, and lift account spend tier limits.
 
 <Note>
   Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
@@ -4803,10 +4827,10 @@ Receipts for purchased credits are sent via Stripe upon purchase. Check your ema
 </Note>
 
 
-# Why might my account be suspended even with remaining credits?
+# Why a Fireworks account is suspended despite credit balance
 Source: https://docs.fireworks.ai/faq-new/billing-pricing/why-might-my-account-be-suspended-even-with-remaining-credits
 
-
+Why a Fireworks account can be suspended despite remaining credits, including monthly budget caps, payment risk checks, and post-paid contract terms.
 
 Your account may be suspended due to several factors:
 
@@ -4987,10 +5011,10 @@ The request handling capacity is influenced by multiple factors:
 * **Deployment type** (serverless vs. on-demand)
 
 
-# What is a deployment shape, and why did my deployment fail to create?
+# What is a deployment shape on Fireworks?
 Source: https://docs.fireworks.ai/faq-new/deployment-infrastructure/what-is-a-deployment-shape
 
-
+Deployment shapes are validated Fireworks templates bundling GPU type, count, precision, and serving parameters for fast, throughput, or minimal profiles.
 
 A **deployment shape** is a pre-validated, pre-configured deployment template. It bundles a known-good combination of GPU type and count, precision, and serving parameters, optimized for speed (`fast`), cost per token at scale (`throughput`), or lowest cost (`minimal`). A deployment created from a shape starts from a configuration that is known to work for that model.
 
@@ -5275,46 +5299,31 @@ Request handling capacity depends on several factors:
 # Agent Skills
 Source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
 
-Install Fireworks training skills for your coding agent — research, configure, and debug.
+Set up your agent to train with Fireworks.
 
-One installation gives you three entry points. Open a chat and describe your goal in plain language.
+Paste this into your agent:
+
+```text wrap theme={null}
+Set up Fireworks training for me. Fetch https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents.md and follow it.
+```
 
 | Skill | Use it for |
 | - | - |
-| **research** | Choose method, data, evaluation, and the closest [cookbook](https://github.com/fw-ai/cookbook) entry. Read-only. |
-| **configure** | Plan, run, monitor, deploy, or resume training. Shows parameters and cost, then waits for approval before spend. |
+| **research** | Choose the method, data, evaluation, and cookbook example. Read-only. |
+| **configure** | Plan and run training. Shows the parameters and cost, then waits for approval. |
 | **debug** | Diagnose a stuck, failed, or low-quality run. Read-only until you approve a retry. |
 
-The **fireworks-training** compatibility skill carries shared detailed references that **configure** and **debug** load. Keep it installed with the three entry skills.
+**fireworks-training** holds the shared references that **configure** and **debug** load. Keep it installed with the other three.
 
 Works with Cursor, Codex, OpenCode, Claude Code, and other Agent Skills agents.
 
 ## Install
 
-### Paste this into your agent
-
-Copy this into the agent you already use. The agent installs the skills. You stay in the chat.
-
-```text theme={null}
-Install the Fireworks training skills in this agent: fireworks-training, research, configure, and debug. Do it yourself. Do not start a training run.
-
-Claude Code:
-claude plugin marketplace add fw-ai/cookbook
-claude plugin install fireworks-training@fw-ai-cookbook
-
-Cursor, Codex, or OpenCode. Set -a to cursor, codex, or opencode. Do not pass -a '*':
-npx --yes skills add fw-ai/cookbook -g -s fireworks-training research configure debug -a cursor -y
-
-If FIREWORKS_API_KEY is missing, walk me through https://app.fireworks.ai/settings/users/api-keys. Do not ask me to paste the key in chat. Then tell me which skills installed and how to invoke them.
-```
-
-<Note>
-  Every training page has a card that copies this prompt. Paste it into your agent. Installing the skills does not need a Fireworks account. The agent asks you to create an account and an API key before any training run.
-</Note>
+To install them yourself, use the commands below.
 
 ### Claude Code
 
-Install the auto-updating cookbook plugin. Here `fireworks-training` is the plugin name rather than a single skill, and the plugin ships all of the skills above:
+The `fireworks-training` plugin includes all four skills and updates with the plugin:
 
 ```bash theme={null}
 claude plugin marketplace add fw-ai/cookbook
@@ -5322,8 +5331,6 @@ claude plugin install fireworks-training@fw-ai-cookbook
 ```
 
 ### Cursor
-
-`npx skills` installs by skill directory, so name each skill you want:
 
 ```bash theme={null}
 npx --yes skills add fw-ai/cookbook -g \
@@ -5344,27 +5351,56 @@ npx --yes skills add fw-ai/cookbook -g \
   -s fireworks-training research configure debug -a opencode -y
 ```
 
-### Other compatible agents
+### Other agents
 
-Use the Cursor command and replace `cursor` with your agent's id. OpenCode's id is `opencode`.
+```bash theme={null}
+npx --yes skills add fw-ai/cookbook -g \
+  -s fireworks-training research configure debug -a <agent-id> -y
+```
 
-<Note>
-  `-a '*'` installs the skills into every agent the CLI supports, not only the agents on your machine. Pass one agent id unless you want that broader install.
-</Note>
+OpenCode's id is `opencode`.
 
-<Note>
-  The commands above install skills globally with `-g`. They do not update automatically. Refresh the global copies with `npx --yes skills update -g -y`.
-</Note>
+These commands install the skills globally with `-g`. They do not update on their own. Refresh them with `npx --yes skills update -g -y`. Claude Code uses the plugin update flow.
 
-Full post-install walkthrough: [cookbook `skills/GETTING-STARTED.md`](https://github.com/fw-ai/cookbook/blob/main/skills/GETTING-STARTED.md).
+## For a coding agent
+
+Run the install command that matches the agent you are running in. If `fireworks-training`, `research`, `configure`, and `debug` are already installed, update them instead.
+
+Tell the user which skills installed. They use the skills by describing a goal in a new chat.
+
+Training uses the Python SDK with `FIREWORKS_API_KEY`. If it is missing, walk the user through [app.fireworks.ai/settings/users/api-keys](https://app.fireworks.ai/settings/users/api-keys). Prefer a scoped service-account key. Have them set it with hidden terminal input or a gitignored `.env`:
+
+```bash theme={null}
+read -s FIREWORKS_API_KEY
+echo
+export FIREWORKS_API_KEY
+```
+
+Do not ask them to paste the key in chat.
+
+Python 3.11 or newer is needed when a run uses a cookbook example. [`firectl`](/tools-sdks/firectl/firectl) is optional and for the user. If it is already installed, the skills may record aggregate journey events with `firectl skill-journey record`.
+
+## How to use the skills
+
+Describe the goal. You do not need to name a skill. For example:
+
+```text theme={null}
+What can I try first with a preloaded dataset?
+```
+
+```text theme={null}
+Plan an SFT run for my labeled JSONL dataset.
+```
+
+```text theme={null}
+My training job is running but has made no progress for 15 minutes.
+```
 
 ## Prerequisites
 
 * A Fireworks API key in `FIREWORKS_API_KEY`, exported in the agent's terminal or set in a gitignored `.env`. The skills create and manage training through the Python SDK with this key. Prefer a **scoped** service-account key over a personal admin key for agent use.
 * Python 3.11 or newer for running cookbook examples. The agent installs the cookbook when a run needs it.
-* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) installed. The agent uses it for some read-only status checks, and gives you the `firectl` command when you ask to run a managed step yourself.
-
-Use [managed training](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
+* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) is optional. Use it yourself for read-only checks. The agent does not need it to train. If it is already installed, the skills may use it for aggregate journey events, and they can give you the `firectl` command when you ask to inspect or run a managed step yourself.
 
 ## Usage data and privacy
 
@@ -5375,16 +5411,12 @@ Before the first structured question, the skills show a one-line privacy notice.
 ## See also
 
 <CardGroup>
-  <Card title="Getting started (cookbook)" icon="rocket" href="https://github.com/fw-ai/cookbook/blob/main/skills/GETTING-STARTED.md">
-    Post-install guide and first run.
-  </Card>
-
   <Card title="Case studies" icon="book-open" href="https://github.com/fw-ai/cookbook/tree/main/training/case-studies">
     Runnable notebooks research routes to.
   </Card>
 
   <Card title="Training Overview" icon="compass" href="/fine-tuning/finetuning-intro#choose-a-surface">
-    Pick managed training vs the Training API before you install.
+    Compare managed training and the Training API.
   </Card>
 
   <Card title="Managed Training" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
@@ -5396,7 +5428,7 @@ Before the first structured question, the skills show a one-line privacy notice.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/tools-sdks/firectl/firectl">
-    Automate managed training with `firectl`.
+    Inspect managed training yourself with `firectl`.
   </Card>
 </CardGroup>
 
@@ -5461,10 +5493,10 @@ To compare the rollout inference cost of multi-turn agentic RL, use the separate
 does not estimate SFT or DPO training cost.
 
 
-# Deploying Trained Models
+# Deploy LoRA fine-tuned models on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 
-Deploy one or multiple LoRA models trained on Fireworks using live merge or multi-LoRA
+Deploy LoRA adapters trained or imported on Fireworks to on-demand deployments using live merge for one adapter or multi-LoRA for many adapters.
 
 After training your model on Fireworks, deploy it to make it available for inference. Fireworks supports two deployment methods for LoRA trained models: **live merge** and **multi-LoRA**. Each method has different tradeoffs around performance, cost, and flexibility.
 
@@ -5887,10 +5919,10 @@ Signs you have hit this failure mode:
 </CardGroup>
 
 
-# Preference Optimization with DPO or ORPO
+# Preference tuning with managed DPO and ORPO
 Source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 
-Train on preferred and non-preferred response pairs using managed DPO or ORPO.
+Train Fireworks-hosted models on preferred and non-preferred response pairs using managed DPO or ORPO preference optimization, with LoRA or full-parameter.
 
 Preference optimization trains models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
 
@@ -6078,10 +6110,10 @@ Explore other training methods to improve model output for different use cases.
 </CardGroup>
 
 
-# Evaluating Trained Models
+# Evaluate fine-tuned models before deployment on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 
-Evaluate a trained model before you create a production deployment.
+Evaluate a trained Fireworks model with in-session sampling during a serverless training run or a preemptible deployment for a promoted model.
 
 After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have and whether the training session is still active.
 
@@ -6239,10 +6271,10 @@ For more on preemptible capacity and guarantees, see [Preemptible deployments](/
 </CardGroup>
 
 
-# Supervised Fine-Tuning - Text
+# Supervised fine-tuning for text models on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 
-
+Fine-tune Fireworks-hosted text LLMs with supervised learning on your labeled datasets, including LoRA and full-parameter options, formats, and deployment.
 
 This guide will focus on using supervised fine-tuning to train a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving trained models.
 
@@ -6822,10 +6854,10 @@ Common fix: ensure assistant messages you intend to train have non-zero loss wei
 | The Render Samples row is missing | The job may predate this feature, may have failed before rendering, or may not have captured samples. | Create a new supervised fine-tuning job, or contact support with the job ID if the job should have rendered samples. |
 
 
-# Training Overview
+# Fine-tuning on Fireworks: SFT, DPO, and RFT
 Source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 
-
+Introduction to fine-tuning on Fireworks: choose between managed SFT, DPO, and reinforcement fine-tuning, and pick serverless or dedicated infrastructure.
 
 Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
 
@@ -6980,10 +7012,10 @@ For RL under strict governance, combine a [BYOB](#dataset-storage-byob) dataset 
 Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before upload, registration, paid inference, job creation, promotion, deployment, or another mutation. Material changes require approval again; promotion and deployment are confirmed separately.
 
 
-# Managed Training Overview
+# Managed fine-tuning on Fireworks-hosted infrastructure
 Source: https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro
 
-Train models with Fireworks-managed infrastructure — no custom code required.
+Fine-tune open-weight models on Fireworks-managed infrastructure with no custom training code, using supervised, preference, and reinforcement learning.
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
@@ -7040,10 +7072,10 @@ LoRA gives you efficient adapter training and flexible deployment, including [mu
 </Warning>
 
 
-# Models
+# Base models for fine-tuning on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/models
 
-Which base models you can train on Fireworks and the surfaces each one is available on.
+Base models supported for fine-tuning on Fireworks, with per-model training surfaces (managed, Training API, serverless, dedicated) and method availability.
 
 Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT and DPO), Training API jobs by parameter mode (LoRA or full-parameter) and method (SFT, DPO, and RL).
 
@@ -7096,10 +7128,10 @@ Vision support is model- and surface-specific. Use the catalog above to confirm 
 </CardGroup>
 
 
-# RL rollout cost comparison vs Tinker
+# Price comparison vs Tinker
 Source: https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison
 
-Compare rollout inference costs for multi-turn agentic RL on Fireworks and Tinker
+Estimate multi-turn agentic RL rollout cost on Fireworks and compare to Tinker per-token pricing with worked examples for GSM8K, SWE-bench, and browsing agents.
 
 This page estimates **rollout inference only**. To plan SFT or DPO training
 costs, use the separate [Training cost
@@ -7319,7 +7351,7 @@ and effective context window between providers before drawing conclusions.
 # RL parameters reference
 Source: https://docs.fireworks.ai/fine-tuning/rft-parameters-reference
 
-Checkpoint, resume, and GRPO metrics fields for reinforcement learning recipes.
+Reference for Fireworks reinforcement learning recipes: checkpoint and resume knobs, DCP save intervals, and GRPO metric interpretation.
 
 Use this page for training **checkpoint and resume** knobs and **GRPO metric interpretation** that are easy to miss when running cookbook-driven reinforcement learning. For sampling and scheduling configuration (completions per prompt, staleness budget, concurrency, loss behavior), see [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl#scheduling-controls).
 
@@ -7916,10 +7948,10 @@ Detailed scope mismatch, checkpoint retention, promotion, and recovery procedure
 </Note>
 
 
-# Thinking history in training
+# Render reasoning history in managed fine-tuning
 Source: https://docs.fireworks.ai/fine-tuning/thinking-history
 
-Choose how historical reasoning is rendered for managed training and match training behavior to inference.
+Choose how prior turn reasoning is rendered in Fireworks managed fine-tuning datasets so training behavior matches inference for thinking-capable models.
 
 Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
 
@@ -8067,10 +8099,10 @@ The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM
 </Card>
 
 
-# Cookbook: Agentic Reinforcement Learning
+# Agentic RL trajectories with TITO sidecars on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 
-Preserve exact token evidence when tool-using agents cross the token/message boundary.
+Run tool-using agents against environment-local TITO sidecars on the Fireworks Training API to return exact-token trajectories to async reinforcement learning.
 
 Agentic RL uses the same rollout and optimization contract described in
 [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).
@@ -8201,10 +8233,10 @@ or a centralized gateway as long as it preserves the exact prompt, action,
 logprob, loss-mask, and rollout-identity contracts.
 
 
-# Cookbook: Distillation
+# On-policy distillation with the Training API cookbook
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation
 
-On-policy distillation and top-K self-distillation recipes.
+Run on-policy distillation on Fireworks using cookbook recipes that combine frozen teacher scoring, student sampling, and reward-shaped loss.
 
 ## What this is
 
@@ -8289,10 +8321,10 @@ python -m training.examples.distillation.gsm8k_privileged.train_gsm8k_privileged
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) - how updated weights reach serving deployments
 
 
-# Cookbook: Preference Optimization
+# Direct Preference Optimization cookbook recipe
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo
 
-Direct Preference Optimization with pairwise data using the cookbook recipe.
+Run Direct Preference Optimization (DPO) on Fireworks with the Training API cookbook recipe, using pairwise preference data and configurable reference models.
 
 ## What this is
 
@@ -8965,10 +8997,10 @@ reports the results.
 * [Models](/fine-tuning/models): surfaces and methods each model supports
 
 
-# The Cookbook
+# Training API cookbook: recipes for SFT, DPO, and RL
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview
 
-Ready-to-run training recipes for GRPO, DPO, SFT, and distillation built on top of the Training API.
+Overview of the Training API cookbook: ready-to-run recipes for supervised fine-tuning, DPO, GRPO reinforcement learning, and distillation on Fireworks.
 
 ## What is the Cookbook?
 
@@ -9103,10 +9135,10 @@ The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/reci
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters
 
 
-# Cookbook: Reference
+# Training cookbook reference: configs and utilities
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference
 
-Configuration classes, checkpoint utilities, weight sync, and advanced recipe knobs.
+Reference for Training API cookbook configuration classes, TrainerConfig options, checkpoint helpers, and advanced recipe knobs used across SFT, DPO, and RL.
 
 ## TrainerConfig
 
@@ -9355,10 +9387,10 @@ cfg = Config(
 For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 
-# Cookbook: Reinforcement Learning
+# Async GRPO reinforcement learning cookbook recipe
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 
-Run experimental async GRPO with a custom rollout function while the recipe owns scheduling, training, and weight publication.
+Run the experimental async GRPO cookbook recipe with a custom rollout function while Fireworks handles scheduling, training, checkpoints, and weight sync.
 
 The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
@@ -9536,10 +9568,10 @@ scoring runs across the complete batch while advantage normalization remains
 group-local. Start with the [multi-hop QA example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa).
 
 
-# Cookbook: Supervised Fine-Tuning
+# Supervised fine-tuning with the sft_loop cookbook recipe
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft
 
-Supervised fine-tuning via the cookbook's sft_loop recipe.
+Run supervised fine-tuning on Fireworks using the cookbook sft_loop recipe to handle dataset loading, tokenization, gradient accumulation, and checkpointing.
 
 ## What this is
 
@@ -9644,10 +9676,10 @@ main(cfg)
 * [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — API-level SFT loss details
 
 
-# Dedicated Training
+# Dedicated Training API workloads on Fireworks
 Source: https://docs.fireworks.ai/fine-tuning/training-api/dedicated
 
-Run Training API workloads with provisioned trainer and deployment resources, explicit checkpoints, and lifecycle control.
+Run Training API workloads with provisioned trainer and deployment resources on Fireworks, with explicit checkpoints, weight-sync, and lifecycle control.
 
 <Info>
   Serverless Training is now generally available and a great starting point. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
@@ -9829,10 +9861,10 @@ See [Serverless vs dedicated](/fine-tuning/training-api/introduction#infrastruct
 </CardGroup>
 
 
-# Overview
+# Fireworks Training API introduction and lifecycle
 Source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 
-Fireworks Training API — custom training loops with full Python control over objectives, while Fireworks handles distributed GPU infrastructure.
+The Fireworks Training API lets you write custom Python training loops with full control over objectives while Fireworks manages distributed GPU infrastructure.
 
 <Info>
   Serverless Training is generally available. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
@@ -10113,10 +10145,10 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)
 
 
-# Cleanup and Teardown
+# Clean up Training API trainer jobs and deployments
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/cleanup
 
-Delete trainer jobs and deployments after experiments to avoid leaked resources.
+Delete Training API trainer jobs, deployments, and sampler resources after experiments to avoid leaked GPUs and unnecessary spend on Fireworks.
 
 ## What this is
 
@@ -10250,10 +10282,10 @@ Track the IDs you create (trainer job IDs + deployment ID) and clean those expli
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling)
 
 
-# DeploymentManager (Compatibility)
+# DeploymentManager legacy Training API SDK reference
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-manager
 
-Legacy SDK reference for direct deployment lifecycle and weight-sync management.
+Legacy Training API SDK reference for DeploymentManager: direct deployment lifecycle, weight-sync, and rollout controls kept for backward compatibility.
 
 ## Overview
 
@@ -10467,10 +10499,10 @@ You normally do not name a deployment shape at all: on the shape path the SDK re
 * [Cleanup](/fine-tuning/training-api/reference/cleanup) — resource cleanup
 
 
-# DeploymentSampler
+# DeploymentSampler for Training API tokenized sampling
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-sampler
 
-Client-side tokenized sampling for Training API rollouts and evaluation.
+SDK reference for the Training API DeploymentSampler: client-side tokenized sampling from inference deployments during training, evaluation, and RL rollouts.
 
 ## Overview
 
@@ -10751,10 +10783,10 @@ Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 * [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) — session affinity, KV-cache behavior, and rollout request fields
 
 
-# FireworksClient
+# FireworksClient reference for Training API accounts
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/fireworks-client
 
-Account-level operations that don't require a running trainer job.
+SDK reference for FireworksClient: account-level Training API operations, model and deployment management, and utilities that do not require a running trainer.
 
 ## Overview
 
@@ -10917,10 +10949,10 @@ Returned by `resolve_training_profile`:
 * [Training shapes](/fine-tuning/training-api/training-shapes) -- what a shape pins, and its deployment linkage
 
 
-# FiretitanServiceClient & TrainingClient
+# FiretitanServiceClient and TrainingClient SDK reference
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/service-client
 
-Connect to a trainer endpoint and use the training client for forward/backward passes, optimizer steps, and checkpointing.
+Connect to a Fireworks trainer endpoint and use the TrainingClient SDK for forward and backward passes, optimizer steps, sampling, and checkpointing.
 
 ## Overview
 
@@ -11300,10 +11332,10 @@ Enum for the advanced `optim_step` `grad_accumulation_normalization` parameter:
 * [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) — checkpoint details
 
 
-# TrainerJobManager (Compatibility)
+# TrainerJobManager legacy SDK compatibility reference
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/trainer-job-manager
 
-Legacy SDK reference for service-mode trainer job lifecycle management.
+Legacy Training API SDK reference for TrainerJobManager: service-mode trainer job lifecycle management retained for backward compatibility with older code.
 
 ## Overview
 
@@ -11542,10 +11574,10 @@ See [`FireworksClient` > TrainingShapeProfile](/fine-tuning/training-api/referen
 * [Cleanup](/fine-tuning/training-api/reference/cleanup) — resource cleanup
 
 
-# WeightSyncer (Legacy)
+# WeightSyncer legacy Training API reference
 Source: https://docs.fireworks.ai/fine-tuning/training-api/reference/weight-syncer
 
-Backward-compatibility reference for the old standalone checkpoint-then-sync helper.
+Legacy Training API reference for WeightSyncer, the standalone checkpoint-then-sync helper retained on Fireworks for backward compatibility with older code.
 
 ## Overview
 
@@ -11701,10 +11733,10 @@ for step in range(total_steps):
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 
 
-# Serverless Training
+# Serverless Training API on Fireworks: LoRA, DPO, and RL
 Source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 
-Run LoRA training, preference optimization, and RL on a shared pooled trainer, with no provisioning and per-token pricing.
+Run LoRA training, preference optimization, and RL on the shared Fireworks Training API trainer pool with no provisioning and per-token pricing.
 
 <Info>
   Serverless training is generally available. Start with the [quickstart](#quickstart), or [contact us](https://fireworks.ai/contact-training) for help choosing between shared and dedicated training.
@@ -12119,10 +12151,10 @@ This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route 
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl)
 
 
-# Training Shapes
+# Training shapes: GPU layouts for Fireworks trainers
 Source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 
-Pre-configured GPU and model training profiles that simplify distributed training setup.
+Training shapes are pre-configured GPU and model profiles that fix distributed training layout, context limits, and trainer images for Fireworks trainer jobs.
 
 In practice, a training shape is the user-facing launch input for trainer jobs. Most users only need to choose a training shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k` and pass it to the API as `training_shape_id`.
 
@@ -12257,10 +12289,10 @@ training_client = service.create_training_client(
 See the [Models](/fine-tuning/models) page for the searchable per-model matrix and training method support.
 
 
-# Fire Pass
+# Fire Pass setup for open-weight agentic coding models
 Source: https://docs.fireworks.ai/firepass
 
-Use selected open-weight model routers for personal, non-production agentic coding
+Set up Fire Pass to access open-weight model routers like kimi-fast-latest for agentic coding in Claude Code, OpenCode, Cline, Kilo Code, and LangChain.
 
 Fire Pass gives eligible users access to selected open-weight model routers for personal, non-production agentic coding. Included requests are covered while the pass is active, subject to its limits and terms. Check the [Fire Pass page](https://app.fireworks.ai/fire-pass) for your status and currently enabled models.
 
@@ -12509,10 +12541,10 @@ Fire Pass is intended for **non-production coding use only**. By activating Fire
 </AccordionGroup>
 
 
-# Concepts
+# Core concepts for the Fireworks AI platform
 Source: https://docs.fireworks.ai/getting-started/concepts
 
-This document outlines basic Fireworks AI concepts.
+Learn the core concepts for the Fireworks AI platform, including serverless inference, dedicated deployments, models, fine-tuning, and API keys.
 
 This page outlines core Fireworks resources and ideas. For definitions of technical terms (inference, LoRA, token, and many others), see the [**Glossary**](/getting-started/glossary).
 
@@ -12616,10 +12648,10 @@ Use one model ID while a router chooses the model for each user turn.
 Open the [FireRouter documentation](/nexus/firerouter).
 
 
-# Glossary
+# Fireworks AI glossary of platform and inference terms
 Source: https://docs.fireworks.ai/getting-started/glossary
 
-Definitions for key terms used across Fireworks AI documentation.
+Glossary of key Fireworks AI terms across serverless, deployments, fine-tuning, and inference, with concise definitions to help you navigate the documentation.
 
 This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, training, deployments, security, and the API.
 
@@ -12854,10 +12886,10 @@ One or more strings that cause the model to stop generating when produced. Usefu
 An instruction prepended to the conversation that sets the model's persona, task, or constraints.
 
 
-# Build with Fireworks AI
+# Build with Fireworks AI: fast inference and training
 Source: https://docs.fireworks.ai/getting-started/introduction
 
-Fast inference and training for open source models
+Fast inference and training for open-source models on Fireworks AI, covering serverless APIs, dedicated deployments, fine-tuning, and multi-modal workflows.
 
 Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and training with best-in-class speed, cost and quality.
 
@@ -12964,10 +12996,10 @@ Connect coding tools, agents, applications, and gateways to open models and mode
 Open the [Nexus documentation](/nexus).
 
 
-# Deployments Quickstart
+# Dedicated deployments quickstart on Fireworks
 Source: https://docs.fireworks.ai/getting-started/ondemand-quickstart
 
-Deploy models on dedicated GPUs in minutes
+Deploy open-source models on dedicated GPUs on Fireworks in minutes, covering deployment creation, GPU sizing, and calling the endpoint from the API.
 
 On-demand deployments are dedicated GPUs that give you better performance, no rate limits, fast autoscaling, and a wider selection of models than serverless. This quickstart will help you spin up your first on-demand deployment in minutes.
 
@@ -13260,10 +13292,10 @@ Ready to scale to production, explore other modalities, or customize your models
 </CardGroup>
 
 
-# Serverless Quickstart
+# Serverless inference quickstart on Fireworks AI
 Source: https://docs.fireworks.ai/getting-started/quickstart
 
-Make your first Serverless API call in minutes
+Make your first serverless API call to Fireworks AI in minutes: create an API key, pick a model, and send a chat completion with curl or the Python SDK.
 
 Serverless is the fastest way to get started with using open models. This quickstart will help you make your first API call in minutes.
 
@@ -14468,10 +14500,10 @@ Ready to scale to production, explore other modalities, or customize your models
 </CardGroup>
 
 
-# Batch API
+# Batch API for large-scale async inference on Fireworks
 Source: https://docs.fireworks.ai/guides/batch-inference
 
-Process large-scale async workloads at a discount
+Use the Fireworks Batch API to run large-scale asynchronous inference jobs at a discount, with job-level system prompts, file inputs, and result retrieval.
 
 Process large volumes of requests asynchronously at **50% off** [Serverless per-token prices](https://docs.fireworks.ai/serverless/pricing). Batch API is ideal for:
 
@@ -15446,10 +15478,10 @@ If you encounter an error not listed here:
 </Tip>
 
 
-# Deployments
+# On-demand deployments on dedicated Fireworks GPUs
 Source: https://docs.fireworks.ai/guides/ondemand-deployments
 
-Configure and manage on-demand deployments on dedicated GPUs
+Create and manage on-demand Fireworks deployments on dedicated GPUs: choose accelerator shapes, autoscaling, replicas, and lifecycle controls for production.
 
 <Info>
   **New to deployments?** Start with our [Deployments Quickstart](/getting-started/ondemand-quickstart) to deploy and query your first model in minutes, then return here to learn about configuration options.
@@ -15952,10 +15984,10 @@ firectl deployment delete <NAME> -a <ACCOUNT_ID>
 </CardGroup>
 
 
-# Using predicted outputs
+# Predicted outputs for faster editing and rewriting
 Source: https://docs.fireworks.ai/guides/predicted-outputs
 
-Use Predicted Outputs to boost output generation speeds for editing / rewriting use cases
+Use Predicted Outputs on Fireworks to boost token generation speed for code editing, document rewriting, and other tasks where most of the output is known.
 
 <Tip>
   This feature is in beta and we are working on improvements. We welcome your feedback on [Discord](https://discord.gg/fireworks-ai)
@@ -16386,10 +16418,10 @@ else:
 </Warning>
 
 
-# Embeddings & Reranking
+# Embeddings and reranking on Fireworks for semantic search
 Source: https://docs.fireworks.ai/guides/querying-embeddings-models
 
-Generate embeddings and rerank results for semantic search
+Generate text embeddings and rerank results on Fireworks using Voyage, Qwen, Nomic, and legacy models for semantic search, RAG, and retrieval pipelines.
 
 Fireworks hosts embedding and reranking models, which are useful for tasks like RAG and semantic search.
 
@@ -16887,10 +16919,10 @@ While Qwen3 Embedding 8b and Qwen3 Reranker 8b are available on serverless, you 
 </AccordionGroup>
 
 
-# Text Models
+# Querying text models on Fireworks: chat and completions
 Source: https://docs.fireworks.ai/guides/querying-text-models
 
-Query, track and manage inference for text models
+Query, track, and manage inference for text models on Fireworks with chat completions, streaming, tool use, and structured output via the OpenAI-compatible API.
 
 <Info>
   New to Fireworks? Start with the [Serverless Quickstart](/getting-started/quickstart) for a step-by-step guide to making your first API call.
@@ -17550,10 +17582,10 @@ Fireworks provides an OpenAI-compatible API, making migration from OpenAI straig
 </CardGroup>
 
 
-# Vision Models
+# Query vision-language models on Fireworks
 Source: https://docs.fireworks.ai/guides/querying-vision-language-models
 
-Query vision-language models to analyze images and visual content
+Query Fireworks vision-language models with image inputs to analyze photos, screenshots, charts, and documents through the chat completions API and OpenAI SDKs.
 
 Vision-language models (VLMs) process both text and images in a single request, enabling image captioning, visual question answering, document analysis, chart interpretation, OCR, and content moderation. Use VLMs via serverless inference or [dedicated deployments](/getting-started/ondemand-quickstart).
 
@@ -17875,10 +17907,10 @@ print(response.choices[0].text)
 5. **Llama 3.2 Vision models**: Pass images before text in the content field to avoid refusals (temporary limitation)
 
 
-# Account quotas
+# Account quotas, spend limits, and GPU controls
 Source: https://docs.fireworks.ai/guides/quotas_usage/account-quotas
 
-Account-wide request limits, spending tiers, spend limits, and on-demand GPU quotas
+Configure Fireworks account-wide request limits, spending tiers, monthly budget caps, and on-demand GPU quotas to control usage and costs.
 
 Fireworks uses different controls for serverless and on-demand deployments. This page is the canonical reference for spending tiers, monthly spend limits, on-demand GPU quotas, and account-wide request limits.
 
@@ -18026,10 +18058,10 @@ If your account is suspended due to payment issues:
 </Tip>
 
 
-# Reasoning
+# Reasoning mode for Fireworks chat and completion APIs
 Source: https://docs.fireworks.ai/guides/reasoning
 
-How to use reasoning with Fireworks models
+How to enable reasoning on Fireworks chat and completion APIs, including reasoning_effort, extracting reasoning traces, and tuning depth for supported models.
 
 For thinking/reasoning models, Fireworks provides access to the model's
 reasoning process through the `reasoning_content` field. This field contains the
@@ -18963,10 +18995,10 @@ Let me make the function call.</think><tool_call>calculator<arg_key>operation</a
 ```
 
 
-# Which model should I use?
+# Which Fireworks model should I use for my task?
 Source: https://docs.fireworks.ai/guides/recommended-models
 
-Find the best open models for your use case or migrate from closed source models like Claude, GPT, and Gemini
+Pick the best Fireworks open-weight model for chat, coding, vision, embeddings, and agents, or migrate off Claude, GPT, and Gemini to comparable open models.
 
 Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge.
 
@@ -19214,10 +19246,10 @@ If your client shows failures but the dashboard looks clean, the issue is likely
 Use [Exporting metrics](/deployments/exporting-metrics) for per-deployment Prometheus metrics that reflect what Fireworks infrastructure observed for dedicated deployments.
 
 
-# Responses API
+# Fireworks Responses API for stateful model calls
 Source: https://docs.fireworks.ai/guides/response-api
 
-Build stateful, tool-using applications on Fireworks with the OpenAI-compatible Responses API.
+Use the Fireworks Responses API for stateful model calls with reasoning, tool calls, and persisted conversation state as an OpenAI-compatible alternative.
 
 The Responses API is an OpenAI-compatible endpoint for stateful, tool-using applications. Unlike chat completions, it can store conversation state server-side, execute MCP tools on your behalf, and run long jobs in the background.
 
@@ -19561,10 +19593,10 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 </CardGroup>
 
 
-# Inference for RL Rollouts
+# Inference deployments for RL rollout traffic on Fireworks
 Source: https://docs.fireworks.ai/guides/rollout-inference
 
-Session affinity, KV-cache behavior, weight-swap behavior, and MoE Router Replay for rollout traffic on Fireworks inference deployments.
+Configure Fireworks inference deployments for RL rollout traffic, including session affinity, KV-cache behavior, weight-swap timing, and MoE Router Replay.
 
 When you use Fireworks inference to collect RL rollouts, the regular [`/v1/completions`](/api-reference/post-completions) and [`/v1/chat/completions`](/api-reference/post-chatcompletions) endpoints expose a few extra features tailored to multi-turn, stateful rollout traffic. You can use these whether or not the underlying deployment is a hot-load deployment.
 
@@ -19839,10 +19871,10 @@ Non-streaming responses are adding the same `model@snapshot_identity` convention
 </CardGroup>
 
 
-# Audit & Access Logs
+# Audit and access logs for Enterprise Fireworks accounts
 Source: https://docs.fireworks.ai/guides/security_compliance/audit_logs
 
-Monitor and track account activities with audit logging for Enterprise accounts
+Monitor and track account activity with audit logging on Fireworks Enterprise, including the dashboard view, REST API pagination, and event schema.
 
 Audit logs are available for Enterprise accounts. This feature enhances security visibility, incident investigation, and compliance reporting.
 
@@ -19960,7 +19992,7 @@ done
 # Zero Data Retention
 Source: https://docs.fireworks.ai/guides/security_compliance/data_handling
 
-Data retention policies at Fireworks
+How Fireworks handles zero data retention for prompts and generations by default, plus the Response API 30-day retention when store=True is enabled.
 
 ## Zero data retention
 
@@ -19994,10 +20026,10 @@ This retention policy is designed to be consistent with the OpenAI API while pro
 </Note>
 
 
-# Data Security
+# How Fireworks secures data for inference and training
 Source: https://docs.fireworks.ai/guides/security_compliance/data_security
 
-How we secure and handle your data for inference and training
+How Fireworks handles data for inference and training: zero data retention, encryption in transit and at rest, BYOB storage, and compliance certifications.
 
 At Fireworks, protecting customer data is at the core of our platform. We design all of our systems, infrastructure, and business processes to ensure customer trust through verifiable security & compliance.
 
@@ -20104,10 +20136,10 @@ These certifications are maintained through continuous monitoring and annual aud
 </Note>
 
 
-# Secure Training
+# Secure training options on Fireworks: BYOB, CMEK, secure RFT
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training
 
-Choose the right training surface for your data-privacy needs, and understand what Fireworks retains and how to delete it
+Pick the right Fireworks training surface for data-privacy needs across BYOB, CMEK, and secure RFT, and understand what Fireworks retains and how to delete it.
 
 Fireworks lets you fine-tune models while keeping your data and sensitive components under your control. Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**.
 
@@ -20238,10 +20270,10 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 </CardGroup>
 
 
-# Bring Your Own Bucket (BYOB)
+# Bring Your Own Bucket (BYOB) for Fireworks training data
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
 
-Keep training datasets in your own cloud storage; Fireworks reads them in place and never persists a copy
+Keep managed fine-tuning datasets in your own S3 or GCS bucket on Fireworks so training reads data in place, without persisting a copy in Fireworks storage.
 
 Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
 
@@ -20459,10 +20491,10 @@ firectl sftj create \
 </Warning>
 
 
-# Customer-Managed Encryption Keys (CMEK)
+# Customer-managed encryption keys (CMEK) on Fireworks
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 
-Use your own cloud KMS key to control encryption of your managed training data
+Use your own cloud KMS key on Fireworks to control encryption of managed fine-tuning data and revoke access at any time by disabling the key in your KMS.
 
 With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed training jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
 
@@ -20713,10 +20745,10 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 </CardGroup>
 
 
-# Secure Reinforcement Fine-Tuning
+# Secure reinforcement fine-tuning (RFT) on Fireworks
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
 
-Run RFT end to end with your dataset, reward pipeline, and rollout infrastructure under your own control
+Run RFT end to end on Fireworks with your dataset, reward pipeline, and rollout infrastructure under your own control for data-sensitive training workloads.
 
 Use reinforcement fine-tuning while keeping sensitive components and data under your control. This composes [BYOB](/guides/security_compliance/secure_training/byob) storage with a reward pipeline and rollout infrastructure that stay in your environment.
 
@@ -20815,7 +20847,7 @@ Use reinforcement fine-tuning while keeping sensitive components and data under 
 # Video & Audio Inputs
 Source: https://docs.fireworks.ai/guides/video-audio-inputs
 
-Query multimodal models to process video and audio content directly
+Query Fireworks multimodal models with video and audio inputs to transcribe, summarize, and reason over media directly through the chat completions API.
 
 Some multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. Availability depends on the model: GLM 5.3 Flash supports video input on Serverless, while Qwen3 Omni and Molmo2 use [dedicated deployments](/getting-started/ondemand-quickstart).
 
@@ -21266,7 +21298,7 @@ On a [dedicated deployment](/guides/ondemand-deployments), a precision profile c
 # Quantization
 Source: https://docs.fireworks.ai/models/quantization
 
-Reduce model precision to improve performance and lower costs
+Reduce Fireworks model precision to FP16, FP8, BF16, or INT8 to cut cost by 30-50% and speed up inference, with firectl prepare-model examples.
 
 Quantization reduces the number of bits used to serve a model, improving performance and reducing cost by 30-50%. However, this can change model numerics which may introduce small changes to the output.
 
@@ -21412,10 +21444,10 @@ If no FP8 shape exists for your model, start from the closest shape and override
 <Note>Quantized deployments can only be served using H100 GPUs.</Note>
 
 
-# Custom Models
+# Upload and deploy custom models on Fireworks
 Source: https://docs.fireworks.ai/models/uploading-custom-models
 
-Upload, verify, and deploy your own models from Hugging Face or elsewhere
+Upload, verify, and deploy custom models on Fireworks from Hugging Face or local checkpoints, including supported architectures and quantization options.
 
 Upload your own models from Hugging Face or elsewhere to deploy trained or custom-trained models optimized for your use case.
 
@@ -21779,10 +21811,10 @@ firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks
 </CardGroup>
 
 
-# Upload via REST API
+# Upload custom models to Fireworks via REST API
 Source: https://docs.fireworks.ai/models/uploading-custom-models-api
 
-Programmatically upload custom models using the Fireworks REST API
+Programmatically upload custom models to Fireworks using the REST API: create the model resource, upload weight shards, and finalize for dedicated deployment.
 
 Use the Fireworks REST API to upload custom models programmatically — ideal for automation, CI/CD pipelines, and notebooks. If you just want the quickest path from a terminal, use [`firectl`](/models/uploading-custom-models#uploading-your-model) instead.
 
@@ -21914,7 +21946,9 @@ If it returns `FAILED_PRECONDITION`, files are still landing — wait and retry.
 # Overview
 Source: https://docs.fireworks.ai/nexus
 
-Fireworks Nexus brings frontier open models and model routers to coding harnesses, agents, and gateways, with Fireworks usage visibility and per-user spend caps for supported serverless models.
+Fireworks Nexus connects coding harnesses, apps, and LLM gateways to open models and FireRouter, with usage visibility and per-user spend caps.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 New to Nexus? Start with the [Quickstart](/nexus/quickstart). For the product overview, see the [Nexus product page](https://fireworks.ai/nexus).
 
@@ -21971,6 +22005,8 @@ flowchart LR
 Source: https://docs.fireworks.ai/nexus/apis-and-sdks
 
 Call Fireworks from custom agents, background runners, services, HTTP APIs, and SDKs
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Call Fireworks from custom agents, background jobs, or services with curl, the OpenAI SDK, the Anthropic SDK, or the Fireworks SDK. Send requests to `https://api.fireworks.ai/inference` and use the same model ID across each supported API.
 
@@ -22058,7 +22094,9 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 # CLI Reference
 Source: https://docs.fireworks.ai/nexus/cli-reference
 
-FireConnect global commands, providers, authentication, and model selection
+FireConnect CLI reference: global commands, providers, sign-in and key storage, configure defaults, and harness commands for connecting coding tools.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Connect a harness with `fireconnect <harness>`. Use `off` to restore its previous settings, `status` to inspect the connection, and `help` to see harness-specific options. The optional `on` command remains available for backward compatibility. `fireconnect chatgpt` is an alias for `fireconnect codex`. Run `fireconnect` with no arguments to use the [interactive menu](/nexus/fireconnect#interactive-menu).
 
@@ -22202,6 +22240,8 @@ Source: https://docs.fireworks.ai/nexus/estimated-savings
 
 Compare eligible serverless usage at public list prices with what the same tokens would have cost on Claude Opus 5.5.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 The Savings view estimates how much your account saved by using Fireworks models and FireRouter instead of serving the same tokens entirely with the baseline model.
 
 Savings includes eligible direct Fireworks serverless usage as well as usage routed through FireRouter. It is not limited to requests where FireRouter selected an open model.
@@ -22293,6 +22333,8 @@ Groups with no comparable priced usage are omitted.
 Source: https://docs.fireworks.ai/nexus/fireconnect
 
 Point Claude Code, Claude Desktop, Codex, the ChatGPT desktop app, OpenCode, Cursor IDE, VS Code, and Copilot at Fireworks with one FireConnect command
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 [FireConnect](https://github.com/fw-ai/fireconnect) is the easiest way to use Fireworks models in the coding harness you already use. It is an open-source CLI that rewrites your harness settings to call Fireworks, adds Fireworks models to the model picker, and restores your original settings when you turn it off. You do not need to host a service or edit config files by hand.
 
@@ -22474,7 +22516,9 @@ For upgrade and uninstall commands, see the [CLI Reference](/nexus/cli-reference
 # FireRouter
 Source: https://docs.fireworks.ai/nexus/firerouter
 
-Learn what FireRouter is, how it picks a model for each user turn, which models it routes to, how to pass Anthropic or OpenAI credentials, and how to watch routing live.
+FireRouter picks a Fireworks open model or a closed Claude or GPT model for each user turn, using your Anthropic or OpenAI credentials when needed.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 FireRouter gives you one model ID, `firerouter`, and picks a model for each new user turn. Easy turns can go to a Fireworks open model. Harder turns can go to a closed model such as Claude Opus or GPT Sol. You pay the selected model's rate for each turn instead of a closed model's rate on every turn.
 
@@ -22697,6 +22741,8 @@ To pick models and copy a ready-to-run command, use the [interactive builder](/n
 Source: https://docs.fireworks.ai/nexus/firerouter/setup
 
 Set up FireRouter in a coding harness with FireConnect, in an LLM gateway such as LiteLLM or Portkey, or from the OpenAI, Anthropic, or Fireworks SDK.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Use the same model ID, `firerouter` or `auto`, from a coding harness, an LLM gateway, or your own code. Every path needs a Fireworks API key. To add Claude or GPT, also provide an Anthropic or OpenAI credential. See [Provide Anthropic and OpenAI credentials](/nexus/firerouter#provide-anthropic-and-openai-credentials).
 
@@ -23080,6 +23126,8 @@ Source: https://docs.fireworks.ai/nexus/harness-compatibility
 
 Compare FireRouter support, closed-model credentials, and MCP behavior across coding harnesses connected through FireConnect.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Use this page to check whether FireConnect can add FireRouter to your harness and what it changes about Model Context Protocol (MCP) configuration. For setup commands and restart rules, see [Coding Harnesses](/nexus/harnesses).
 
 <Tabs>
@@ -23282,7 +23330,9 @@ FireRouter is not available on Microsoft Foundry, and Foundry support differs by
 # Coding Harnesses
 Source: https://docs.fireworks.ai/nexus/harnesses
 
-Connect Claude Code, the Claude Agent SDK, Claude Desktop, Codex, the ChatGPT desktop app, OpenCode, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks, with FireConnect or by editing the harness settings yourself.
+Connect Claude Code, Claude Agent SDK, Claude Desktop, Codex, the ChatGPT app, OpenCode, Pi, Cursor, VS Code, Copilot, or DeepSeek Harness to Fireworks.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Most harnesses below work two ways. **FireConnect** writes the settings for you and restores them with `off`. **Manual setup** shows the same settings so you can apply them yourself, with no extra tool installed. Claude Desktop is FireConnect only.
 
@@ -24156,6 +24206,8 @@ Source: https://docs.fireworks.ai/nexus/llm-gateways
 
 Connect Fireworks to LiteLLM, Portkey, Vercel AI Gateway, Helicone, Keywords AI, AISIX, Requesty, OpenRouter, or Cloudflare AI Gateway
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Gateways integrate with Fireworks in two ways. Some connect to your Fireworks account and preserve Fireworks model IDs. Others expose selected Fireworks models through a gateway-managed catalog.
 
 ## Check whether your gateway can use FireRouter
@@ -24374,6 +24426,8 @@ Source: https://docs.fireworks.ai/nexus/metrics
 
 Track estimated Claude Code session cost and model mix locally. Then view Fireworks model usage by model, user, or API key and Fireworks account cost by model.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Track estimated cost and model choices for one Claude Code session, then review Fireworks model usage and cost across your account.
 
 | View | Best for | Open it |
@@ -24423,7 +24477,9 @@ To cap each user's spend on supported Fireworks serverless models, set [Spend Li
 # Foundry for Coding Harnesses
 Source: https://docs.fireworks.ai/nexus/microsoft-foundry
 
-Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses, through FireConnect, manual setup, or an LLM gateway.
+Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor, and VS Code via FireConnect, manual setup, or an LLM gateway.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Use Fireworks models deployed in your Azure subscription from the coding harness you already use. Azure bills this usage, and it counts toward your Microsoft Azure Consumption Commitment where applicable.
 
@@ -24656,6 +24712,8 @@ Source: https://docs.fireworks.ai/nexus/open-models
 
 Use auto, version-tracking aliases, fast tiers, or pinned Fireworks open models in coding workflows.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Use a Fireworks open model directly when you want Fireworks to serve every turn. FireConnect automatically registers the coding-ready catalog when you connect a harness.
 
 ## Start with `auto`
@@ -24751,7 +24809,9 @@ Open models bill to your Fireworks account at [Serverless Pricing](/serverless/p
 # Provider Keys
 Source: https://docs.fireworks.ai/nexus/provider-keys
 
-Connect an account-level Anthropic, OpenAI, or Amazon Bedrock Provider Key once, where available, so model routers can call closed families without developers sending the key.
+Connect an Anthropic, OpenAI, or Amazon Bedrock Provider Key once so FireRouter can call closed models without developers sending the key.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [FireRouter](/nexus/firerouter) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When FireRouter selects a closed model, Fireworks sends the request with the stored provider credential.
 
@@ -24937,6 +24997,8 @@ firectl provider-key delete KEY_ID
 Source: https://docs.fireworks.ai/nexus/provider-keys/bedrock
 
 Connect a Bedrock IAM role or API key so FireRouter can call supported models through your AWS account.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 An Amazon Bedrock Provider Key lets FireRouter use an IAM role or API key from your AWS account for supported models. Fireworks stores the credential securely. Bedrock usage and charges remain in your AWS account.
 
@@ -25312,6 +25374,8 @@ Source: https://docs.fireworks.ai/nexus/quickstart
 
 Connect a coding harness, application, or LLM gateway to Fireworks and make your first Nexus request.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Pick how you work. Each path takes a few minutes and uses the same Fireworks models, routers, and account controls.
 
 <Columns>
@@ -25548,6 +25612,8 @@ Source: https://docs.fireworks.ai/nexus/routing-preferences
 
 Adjust how strongly a firerouter request favors its primary model or lower-cost models.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Routing preference controls how strongly a `firerouter` request favors its primary model or lower-cost models. Set it per HTTP request with the `x-routing-preference` header.
 
 ## Preference levels
@@ -25606,6 +25672,8 @@ Source: https://docs.fireworks.ai/nexus/session-usage
 
 Use FireConnect commands to inspect Claude Code session cost, model mix, cache share, token buckets, and request-level estimates.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Claude Code session-cost tools run on the machine where the session ran. After you [connect Claude Code](/nexus/harnesses#claude-code), use the status line for a live estimate or `fireconnect claude usage` for a detailed breakdown.
 
 ## Read the status line
@@ -25658,6 +25726,8 @@ Each call is split into disjoint token buckets, priced at that model's rate:
 Source: https://docs.fireworks.ai/nexus/usage-limits
 
 Set account, group, and user-specific spend limits to cap per-user spend on supported Fireworks serverless models.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Set per-user spend caps for [supported serverless models](#supported-models). Fireworks counts a user's spend on those models toward that user's effective limit across the account.
 
@@ -25942,6 +26012,8 @@ Source: https://docs.fireworks.ai/nexus/web-search
 
 Use native web search and fetch in Claude Code, Codex, and ChatGPT while connected through FireConnect.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Web search is built into Fireworks. When Claude Code calls its native `WebSearch` tool, Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up. Connect the harness through [Coding Harnesses](/nexus/harnesses).
 
 | Harness | Search behavior | Wire API |
@@ -25977,10 +26049,10 @@ fireconnect upgrade
 The upgrade removes the retired MCP and legacy tool denials that FireConnect added. Restart Claude Code afterward.
 
 
-# Serverless Inference Overview
+# Fireworks Serverless inference: how it works
 Source: https://docs.fireworks.ai/serverless/overview
 
-How Serverless Inference works on Fireworks: serverless modes, billing, request/response headers, prompt caching, model lifecycle, and when to choose Serverless Inference over On-demand
+How Serverless inference works on Fireworks: serverless modes, per-token billing, request headers, prompt caching, model lifecycle, and when to pick Serverless.
 
 ## What is Serverless Inference
 
@@ -26096,10 +26168,10 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 </CardGroup>
 
 
-# Serverless Pricing
+# Serverless pricing for text, vision, and embedding models
 Source: https://docs.fireworks.ai/serverless/pricing
 
-Per-token serverless pricing for text, vision, and embedding models, including Priority and Fast serverless modes
+Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, and Fast serverless mode rates.
 
 ## Overview
 
@@ -26170,10 +26242,10 @@ Embeddings are billed per 1M input tokens.
 * For account-level controls (spend tiers, monthly spend limits, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).
 
 
-# Serverless Rate Limits
+# Adaptive rate limits on Fireworks serverless
 Source: https://docs.fireworks.ai/serverless/rate-limits
 
-Adaptive rate limits grow and shrink with your usage
+How adaptive rate limits work on Fireworks serverless inference: bounds, adjustment logic, and how RPS and TPS grow and shrink with your recent usage patterns.
 
 When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serverless-modes).
 
@@ -26350,10 +26422,10 @@ The same limits are also returned in the [response headers](/serverless/overview
 </AccordionGroup>
 
 
-# Reserved Throughput
+# Reserved throughput for Fireworks serverless models
 Source: https://docs.fireworks.ai/serverless/reserved-throughput
 
-Reserve throughput backed by an SLA
+Reserve dedicated serverless throughput on Fireworks backed by an SLA, with guaranteed rate limits, additive capacity, and predictable per-token billing.
 
 ## Overview
 
@@ -26472,10 +26544,10 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 </AccordionGroup>
 
 
-# Serverless Modes
+# Standard, Priority, and Fast serverless modes
 Source: https://docs.fireworks.ai/serverless/serverless-modes
 
-Standard, Priority, and Fast serverless modes on Fireworks Serverless
+Compare Standard, Priority, and Fast serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
 Fireworks Serverless offers three modes:
 
@@ -26538,10 +26610,10 @@ Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 * [Anthropic compatibility](/tools-sdks/anthropic-compatibility) — `service_tier` is supported on both OpenAI-compatible chat completions and the Anthropic `messages` API.
 
 
-# US-only Serverless
+# US-only Serverless inference for compliance workloads
 Source: https://docs.fireworks.ai/serverless/us-only-serverless
 
-Run Serverless inference exclusively in the US
+Run Fireworks Serverless inference exclusively on US infrastructure using US-scoped model routers like Kimi K3, for data-residency and compliance needs.
 
 US-only Serverless serves inference exclusively from the US, making it a good fit for compliance needs.
 
@@ -26555,6 +26627,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
 | GLM 5.3 | `accounts/fireworks/routers/glm-5p3-us` |
 | GLM 5.3 Flash | `accounts/fireworks/routers/glm-5p3-flash-us` |
+| Muse Spark Open | `accounts/fireworks/models/muse-spark-open` |
 
 ## How to use it
 
@@ -26601,10 +26674,10 @@ For EU-only Serverless, contact [sales](https://fireworks.ai/company/contact-us)
 * [Data Security](/guides/security_compliance/data_security)
 
 
-# Structured Outputs
+# Structured outputs: JSON schemas and grammars
 Source: https://docs.fireworks.ai/structured-responses/structured-response-formatting
 
-Enforce output formats using JSON schemas or custom grammars
+Enforce Fireworks LLM output formats with JSON schemas or custom grammars, including supported schema features like pattern, length, size, and oneOf keywords.
 
 Structured outputs ensure model responses conform to your specified format, making them easy to parse and integrate into your application. Fireworks supports two methods: **JSON mode** (using JSON schemas) and **Grammar mode** (using custom BNF grammars).
 
@@ -26864,10 +26937,10 @@ For advanced use cases where JSON isn't sufficient, use [Grammar mode](/structur
 Check out [Tool Calling](/guides/function-calling) for multi-turn capabilities and routing across multiple schemas.
 
 
-# Anthropic compatibility
+# Anthropic Messages API compatibility on Fireworks
 Source: https://docs.fireworks.ai/tools-sdks/anthropic-compatibility
 
-Use Anthropic SDKs with Fireworks, and understand the supported surface for the Anthropic-compatible Messages API.
+Use Anthropic SDKs with Fireworks through the Anthropic-compatible Messages API, including supported fields, tool search, defer_loading, and streaming behavior.
 
 You can use the [Anthropic Python SDK](https://github.com/anthropics/anthropic-sdk-python) or [Anthropic TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript) to interact with Fireworks, making it easy to migrate applications that already use Anthropic's Messages API.
 
@@ -27438,7 +27511,7 @@ firectl api-key get <key-id>
 # firectl api-key list
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/api-key-list
 
-Prints all API keys for the signed in user.
+Reference for the firectl api-key list command: print all Fireworks API keys for the signed-in user, with flags, output formats, and example invocations.
 
 ```
 firectl api-key list [flags]
@@ -28301,10 +28374,10 @@ firectl deployed-model update accounts/my-account/deployedModels/my-deployed-mod
 ```
 
 
-# firectl deployment create
+# firectl deployment create command reference
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-create
 
-Creates a new deployment.
+Reference for firectl deployment create: launch a new Fireworks on-demand deployment for a base or trained model with GPU, region, and scaling flags.
 
 ```
 firectl deployment create [flags]
@@ -28669,10 +28742,10 @@ firectl deployment undelete my-deployment
 ```
 
 
-# firectl deployment update
+# firectl deployment update command reference
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-update
 
-Update a deployment.
+Reference for firectl deployment update: modify an existing Fireworks on-demand deployment's scaling, replicas, autoscaling window, and other flags.
 
 ```
 firectl deployment update [flags]
@@ -28762,7 +28835,7 @@ firectl dpo-job cancel accounts/my-account/dpoJobs/my-dpo-job
 # firectl dpo-job create
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/dpo-job-create
 
-Creates a dpo job.
+Reference for the firectl dpo-job create command: launch a Fireworks managed DPO preference-tuning job from the CLI, with flags, dataset, and model options.
 
 ```
 firectl dpo-job create [flags]
@@ -29793,7 +29866,7 @@ firectl reinforcement-fine-tuning-job cancel accounts/my-account/reinforcementFi
 # firectl reinforcement-fine-tuning-job create
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-create
 
-Creates a reinforcement fine-tuning job.
+Reference for the firectl reinforcement-fine-tuning-job create command: launch a Fireworks managed RFT job from the CLI, with dataset and reward configuration.
 
 ```
 firectl reinforcement-fine-tuning-job create [flags]
@@ -30151,7 +30224,7 @@ firectl rlor-trainer-job cancel accounts/my-account/rlorTrainerJobs/my-rlor-job
 # firectl rlor-trainer-job create
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/rlor-trainer-job-create
 
-Creates a rlor trainer job.
+Reference for the firectl rlor-trainer-job create command: launch a Fireworks RL-on-rollouts trainer job from the CLI, with recipe, dataset, and model flags.
 
 ```
 firectl rlor-trainer-job create [flags]
@@ -30749,7 +30822,7 @@ firectl supervised-fine-tuning-job cancel accounts/my-account/supervisedFineTuni
 # firectl supervised-fine-tuning-job create
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/supervised-fine-tuning-job-create
 
-Creates a supervised fine-tuning job.
+Reference for the firectl supervised-fine-tuning-job create command: launch a Fireworks managed SFT job from the CLI, with dataset, model, and hyperparameters.
 
 ```
 firectl supervised-fine-tuning-job create [flags]
@@ -31623,10 +31696,10 @@ sudo firectl upgrade
 ```
 
 
-# NIM compatibility
+# NVIDIA NIM and vLLM compatibility on Fireworks
 Source: https://docs.fireworks.ai/tools-sdks/nim-compatibility
 
-Point NVIDIA NIM and vLLM OpenAI clients at Fireworks. We translate common extras like chat_template_kwargs so requests don't fail with Extra inputs are not permitted.
+Point NVIDIA NIM and vLLM OpenAI clients at Fireworks with translated request extras like chat_template_kwargs to avoid Extra inputs are not permitted errors.
 
 If you already call models through **NVIDIA NIM**, **vLLM**, or another OpenAI-compatible stack that sends NIM-style extras, you can point that client at Fireworks without rewriting every request.
 
@@ -31794,10 +31867,10 @@ client.chat.completions.create(
 </CardGroup>
 
 
-# OpenAI compatibility
+# OpenAI SDK compatibility with Fireworks inference
 Source: https://docs.fireworks.ai/tools-sdks/openai-compatibility
 
-
+Use the OpenAI Python and JavaScript SDKs with Fireworks by pointing base_url at api.fireworks.ai, with notes on supported endpoints and request fields.
 
 You can use the [OpenAI Python client library](https://github.com/openai/openai-python) to interact with Fireworks. This makes migration of existing applications already using OpenAI particularly easy.
 
@@ -31969,10 +32042,10 @@ data: [DONE]
 </Note>
 
 
-# Python SDK
+# Fireworks Python SDK overview and installation
 Source: https://docs.fireworks.ai/tools-sdks/python-sdk
 
-
+Overview of the Fireworks Python SDK, including installation, authentication, and calling chat, completion, image, and audio endpoints from a Python project.
 
 The official Python SDK for the Fireworks AI API is available on [GitHub](https://github.com/fw-ai-external/python-sdk) and [PyPI](https://pypi.org/project/fireworks-ai/).
 
@@ -32012,10 +32085,10 @@ started with serverless, see our [Serverless
 Quickstart](/getting-started/quickstart).
 
 
-# Changelog
+# Fireworks documentation changelog and updates
 Source: https://docs.fireworks.ai/updates/changelog
 
-
+Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 <ChangelogSearch />
 

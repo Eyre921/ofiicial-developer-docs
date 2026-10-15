@@ -238,8 +238,8 @@ path: v1/llms.txt
 ## OpenAPI Specification
 
 The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://docs.cohere.com/v1/openapi.json)
-- [OpenAPI YAML](https://docs.cohere.com/v1/openapi.yaml)
+- [OpenAPI JSON](https://docs.cohere.com/openapi.json)
+- [OpenAPI YAML](https://docs.cohere.com/openapi.yaml)
 
 
 > **Note:** This page contains both a page directory (above) and the landing page content (below). The page directory is generated for agent use and does not appear on the landing page.

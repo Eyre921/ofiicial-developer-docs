@@ -1,10 +1,10 @@
 ---
-title: "Usage & Cost Breakdown"
+title: "Break down Fireworks usage and cost by dimension"
 source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 path: accounts/exporting-usage-and-costs
 ---
 
-Break down usage by deployment, model, API key, or custom tags, and read account-level rated costs — via firectl or the billingUsage API
+Break down Fireworks usage and rated costs by deployment, model, API key, or custom tags using firectl, billingUsage, and the usageCosts query API.
 
 ## Overview
 

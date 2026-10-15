@@ -1,10 +1,10 @@
 ---
-title: "Regions"
+title: "Regions and GPU hardware for Fireworks deployments"
 source: https://docs.fireworks.ai/deployments/regions
 path: deployments/regions
 ---
 
-Fireworks runs a global fleet of hardware on which you can deploy your models.
+Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators.
 
 Fireworks runs a global fleet so you can deploy models close to users, meet data-residency needs, and scale across clouds. This page covers **multi-region** (default behavior and quota groupings), **single-region** availability and hardware, how to **use and change** regions, and **quotas**.
 

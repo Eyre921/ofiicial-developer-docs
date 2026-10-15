@@ -1,8 +1,10 @@
 ---
-title: "What is a deployment shape, and why did my deployment fail to create?"
+title: "What is a deployment shape on Fireworks?"
 source: https://docs.fireworks.ai/faq-new/deployment-infrastructure/what-is-a-deployment-shape
 path: faq-new/deployment-infrastructure/what-is-a-deployment-shape
 ---
+
+Deployment shapes are validated Fireworks templates bundling GPU type, count, precision, and serving parameters for fast, throughput, or minimal profiles.
 
 A **deployment shape** is a pre-validated, pre-configured deployment template. It bundles a known-good combination of GPU type and count, precision, and serving parameters, optimized for speed (`fast`), cost per token at scale (`throughput`), or lowest cost (`minimal`). A deployment created from a shape starts from a configuration that is known to work for that model.
 

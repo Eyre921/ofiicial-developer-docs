@@ -1,10 +1,10 @@
 ---
-title: "firectl deployment update"
+title: "firectl deployment update command reference"
 source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-update
 path: tools-sdks/firectl/commands/deployment-update
 ---
 
-Update a deployment.
+Reference for firectl deployment update: modify an existing Fireworks on-demand deployment's scaling, replicas, autoscaling window, and other flags.
 
 ```
 firectl deployment update [flags]

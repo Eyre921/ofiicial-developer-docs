@@ -1,8 +1,10 @@
 ---
-title: "Supervised Fine-Tuning - Text"
+title: "Supervised fine-tuning for text models on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 path: fine-tuning/fine-tuning-models
 ---
+
+Fine-tune Fireworks-hosted text LLMs with supervised learning on your labeled datasets, including LoRA and full-parameter options, formats, and deployment.
 
 This guide will focus on using supervised fine-tuning to train a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving trained models.
 

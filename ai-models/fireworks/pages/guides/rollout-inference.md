@@ -1,10 +1,10 @@
 ---
-title: "Inference for RL Rollouts"
+title: "Inference deployments for RL rollout traffic on Fireworks"
 source: https://docs.fireworks.ai/guides/rollout-inference
 path: guides/rollout-inference
 ---
 
-Session affinity, KV-cache behavior, weight-swap behavior, and MoE Router Replay for rollout traffic on Fireworks inference deployments.
+Configure Fireworks inference deployments for RL rollout traffic, including session affinity, KV-cache behavior, weight-swap timing, and MoE Router Replay.
 
 When you use Fireworks inference to collect RL rollouts, the regular [`/v1/completions`](/api-reference/post-completions) and [`/v1/chat/completions`](/api-reference/post-chatcompletions) endpoints expose a few extra features tailored to multi-turn, stateful rollout traffic. You can use these whether or not the underlying deployment is a hot-load deployment.
 

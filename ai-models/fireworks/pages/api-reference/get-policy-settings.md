@@ -5,6 +5,7 @@ path: api-reference/get-policy-settings
 ---
 
 get /v1/accounts/{account_id}/policySettings
+Returns an account PolicySettings object with model access rules, data residency, Zero Data Retention, and CMEK enforcement for governance review.
 
 Returns the account's governance settings in one object:
 

@@ -1,10 +1,10 @@
 ---
-title: "Batch API"
+title: "Batch API for large-scale async inference on Fireworks"
 source: https://docs.fireworks.ai/guides/batch-inference
 path: guides/batch-inference
 ---
 
-Process large-scale async workloads at a discount
+Use the Fireworks Batch API to run large-scale asynchronous inference jobs at a discount, with job-level system prompts, file inputs, and result retrieval.
 
 Process large volumes of requests asynchronously at **50% off** [Serverless per-token prices](https://docs.fireworks.ai/serverless/pricing). Batch API is ideal for:
 

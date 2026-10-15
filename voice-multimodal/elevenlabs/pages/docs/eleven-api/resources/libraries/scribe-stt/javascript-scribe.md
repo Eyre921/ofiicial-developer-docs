@@ -330,12 +330,12 @@ Register event listeners using `connection.on(event, listener)`. All events are 
 
 ### Transcription events
 
-| Event                                       | Data                                                            | Description                              |
-| ------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------- |
-| **SESSION\_STARTED**                        | `{ session_id: string }`                                        | Scribe session started.                  |
-| **PARTIAL\_TRANSCRIPT**                     | `{ text: string }`                                              | Interim transcription result.            |
-| **COMMITTED\_TRANSCRIPT**                   | `{ text: string }`                                              | Finalized transcription result.          |
-| **COMMITTED\_TRANSCRIPT\_WITH\_TIMESTAMPS** | `{ text: string; language_code?: string; words?: WordsItem[] }` | Finalized result with word-level timing. |
+| Event                                    | Data                                                            | Description                              |
+| ---------------------------------------- | --------------------------------------------------------------- | ---------------------------------------- |
+| **SESSION_STARTED**                      | `{ session_id: string }`                                        | Scribe session started.                  |
+| **PARTIAL_TRANSCRIPT**                   | `{ text: string }`                                              | Interim transcription result.            |
+| **COMMITTED_TRANSCRIPT**                 | `{ text: string }`                                              | Finalized transcription result.          |
+| **COMMITTED_TRANSCRIPT_WITH_TIMESTAMPS** | `{ text: string; language_code?: string; words?: WordsItem[] }` | Finalized result with word-level timing. |
 
 The `WordsItem` type contains word-level timing information:
 
@@ -361,20 +361,20 @@ interface WordsItem {
 
 All error events receive `{ error: string }`.
 
-| Event                              | Description                                           |
-| ---------------------------------- | ----------------------------------------------------- |
-| **AUTH\_ERROR**                    | Authentication error.                                 |
-| **QUOTA\_EXCEEDED**                | Usage quota exceeded.                                 |
-| **COMMIT\_THROTTLED**              | Commit request throttled.                             |
-| **TRANSCRIBER\_ERROR**             | Transcription engine error.                           |
-| **UNACCEPTED\_TERMS**              | Terms of service not accepted.                        |
-| **RATE\_LIMITED**                  | Rate limited.                                         |
-| **INPUT\_ERROR**                   | Invalid input format.                                 |
-| **QUEUE\_OVERFLOW**                | Processing queue full.                                |
-| **RESOURCE\_EXHAUSTED**            | Server resources at capacity.                         |
-| **SESSION\_TIME\_LIMIT\_EXCEEDED** | Maximum session time reached.                         |
-| **CHUNK\_SIZE\_EXCEEDED**          | Audio chunk too large.                                |
-| **INSUFFICIENT\_AUDIO\_ACTIVITY**  | Not enough audio activity to maintain the connection. |
+| Event                           | Description                                           |
+| ------------------------------- | ----------------------------------------------------- |
+| **AUTH_ERROR**                  | Authentication error.                                 |
+| **QUOTA_EXCEEDED**              | Usage quota exceeded.                                 |
+| **COMMIT_THROTTLED**            | Commit request throttled.                             |
+| **TRANSCRIBER_ERROR**           | Transcription engine error.                           |
+| **UNACCEPTED_TERMS**            | Terms of service not accepted.                        |
+| **RATE_LIMITED**                | Rate limited.                                         |
+| **INPUT_ERROR**                 | Invalid input format.                                 |
+| **QUEUE_OVERFLOW**              | Processing queue full.                                |
+| **RESOURCE_EXHAUSTED**          | Server resources at capacity.                         |
+| **SESSION_TIME_LIMIT_EXCEEDED** | Maximum session time reached.                         |
+| **CHUNK_SIZE_EXCEEDED**         | Audio chunk too large.                                |
+| **INSUFFICIENT_AUDIO_ACTIVITY** | Not enough audio activity to maintain the connection. |
 
 ## Commit strategies
 

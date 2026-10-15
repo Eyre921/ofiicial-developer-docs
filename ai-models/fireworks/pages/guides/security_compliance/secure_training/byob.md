@@ -1,10 +1,10 @@
 ---
-title: "Bring Your Own Bucket (BYOB)"
+title: "Bring Your Own Bucket (BYOB) for Fireworks training data"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
 path: guides/security_compliance/secure_training/byob
 ---
 
-Keep training datasets in your own cloud storage; Fireworks reads them in place and never persists a copy
+Keep managed fine-tuning datasets in your own S3 or GCS bucket on Fireworks so training reads data in place, without persisting a copy in Fireworks storage.
 
 Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
 

@@ -1,10 +1,10 @@
 ---
-title: "Build with Fireworks AI"
+title: "Build with Fireworks AI: fast inference and training"
 source: https://docs.fireworks.ai/getting-started/introduction
 path: getting-started/introduction
 ---
 
-Fast inference and training for open source models
+Fast inference and training for open-source models on Fireworks AI, covering serverless APIs, dedicated deployments, fine-tuning, and multi-modal workflows.
 
 Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and training with best-in-class speed, cost and quality.
 

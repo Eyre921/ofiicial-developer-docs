@@ -1,10 +1,10 @@
 ---
-title: "Reasoning"
+title: "Reasoning mode for Fireworks chat and completion APIs"
 source: https://docs.fireworks.ai/guides/reasoning
 path: guides/reasoning
 ---
 
-How to use reasoning with Fireworks models
+How to enable reasoning on Fireworks chat and completion APIs, including reasoning_effort, extracting reasoning traces, and tuning depth for supported models.
 
 For thinking/reasoning models, Fireworks provides access to the model's
 reasoning process through the `reasoning_content` field. This field contains the

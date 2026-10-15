@@ -1,10 +1,10 @@
 ---
-title: "Using predicted outputs"
+title: "Predicted outputs for faster editing and rewriting"
 source: https://docs.fireworks.ai/guides/predicted-outputs
 path: guides/predicted-outputs
 ---
 
-Use Predicted Outputs to boost output generation speeds for editing / rewriting use cases
+Use Predicted Outputs on Fireworks to boost token generation speed for code editing, document rewriting, and other tasks where most of the output is known.
 
 <Tip>
   This feature is in beta and we are working on improvements. We welcome your feedback on [Discord](https://discord.gg/fireworks-ai)

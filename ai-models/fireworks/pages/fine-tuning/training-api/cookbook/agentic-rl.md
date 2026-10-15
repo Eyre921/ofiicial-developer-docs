@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Agentic Reinforcement Learning"
+title: "Agentic RL trajectories with TITO sidecars on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 path: fine-tuning/training-api/cookbook/agentic-rl
 ---
 
-Preserve exact token evidence when tool-using agents cross the token/message boundary.
+Run tool-using agents against environment-local TITO sidecars on the Fireworks Training API to return exact-token trajectories to async reinforcement learning.
 
 Agentic RL uses the same rollout and optimization contract described in
 [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).

@@ -60,7 +60,7 @@ When audio saving is disabled, calls in the call history do not include audio.
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.record_voice`:
 

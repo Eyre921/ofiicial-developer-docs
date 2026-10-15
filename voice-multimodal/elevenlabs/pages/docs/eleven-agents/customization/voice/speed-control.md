@@ -40,7 +40,7 @@ Open your agent in the dashboard, navigate to the **Voice** tab, and adjust the 
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.speed`:
 

@@ -34,7 +34,7 @@ A NAT gateway lets many private hosts share a smaller pool of public IP addresse
 Managed NAT solutions (GCP Cloud NAT, Azure SNAT/NAT Gateway, AWS NAT Gateway, firewalls, etc.) have:
 
 * A finite number of ports per public IP
-* Idle / TIME\_WAIT timers that keep ports reserved for some time after a connection closes
+* Idle / TIME_WAIT timers that keep ports reserved for some time after a connection closes
 * Often, per-destination and per-IP limits, which can be hit even if overall utilization looks low
 
 ### What "NAT port exhaustion" means
@@ -42,7 +42,7 @@ Managed NAT solutions (GCP Cloud NAT, Azure SNAT/NAT Gateway, AWS NAT Gateway, f
 NAT port exhaustion / aggressive port reuse occurs when the NAT device:
 
 * Has too few ports and/or too few public IPs for the actual connection pattern, and/or
-* Holds ports in TIME\_WAIT for a long time, and/or
+* Holds ports in TIME_WAIT for a long time, and/or
 * Is asked to handle many short-lived connections opened and closed in quick succession (for example, frequent WebSocket opens/closes, or very bursty HTTP traffic)
 
 Once the NAT runs out of usable (public IP, port) combinations to a destination:
@@ -69,7 +69,7 @@ Real-time speech applications (voice agents, contact centers, streaming STT/TTS)
 This pattern can be NAT-intensive:
 
 * Each new connection consumes an ephemeral port on the NAT
-* Short idle timers on the application side don't necessarily align with NAT TIME\_WAIT behavior
+* Short idle timers on the application side don't necessarily align with NAT TIME_WAIT behavior
 * Aggressive retry loops can repeatedly hit the same ports/IPs
 
 When combined with a small NAT IP/port pool or long TCP idle timers, this creates a situation where NAT ports are frequently re-used for new connections *before* the previous flows are fully torn down at the network layer.
@@ -127,7 +127,7 @@ When troubleshooting on GCP, it's important to answer:
 * How many public IPs does the NAT gateway have?
 * What is the configured minimum ports per VM/instance?
 
-Environments that rely on shared NAT (e.g., default Cloud Run NAT) and have no visibility into port allocation or TIME\_WAIT behavior are much harder to tune.
+Environments that rely on shared NAT (e.g., default Cloud Run NAT) and have no visibility into port allocation or TIME_WAIT behavior are much harder to tune.
 
 #### What to check
 
@@ -142,8 +142,8 @@ In Cloud NAT / GKE scenarios, we recommend:
      * Is this large enough for your worst-case concurrency and retry behavior?
    * Number of NAT IPs:
      * A single NAT IP can become a bottleneck, even when aggregate utilization seems low
-   * TCP idle / TIME\_WAIT settings:
-     * Longer TIME\_WAIT → ports held longer → higher chance of collisions under churn
+   * TCP idle / TIME_WAIT settings:
+     * Longer TIME_WAIT → ports held longer → higher chance of collisions under churn
 3. **Look for forced / narrow source port ranges**
    * Make sure applications or load-testing tools are not forcing a tiny local port range (e.g., `-local-port 7000-7000`)
    * Allowing the OS to choose from the full ephemeral port range spreads load much more safely
@@ -158,7 +158,7 @@ In Cloud NAT / GKE scenarios, we recommend:
 For Cloud Run:
 
 * The default model uses a shared, provider-managed NAT where:
-  * Port allocation and TIME\_WAIT behavior are opaque
+  * Port allocation and TIME_WAIT behavior are opaque
   * You cannot easily tune NAT settings
 * For latency-sensitive, high-throughput workloads, we recommend:
   * Running Cloud Run with VPC egress and
@@ -199,7 +199,7 @@ On Azure, we recommend:
 3. **Capture and analyze traffic**
    * Capture packets from the outbound IP ranges used to reach Deepgram.
    * In Wireshark/tshark, filter to Deepgram IPs and check for:
-     * Source port reuse on still-active connections or within TIME\_WAIT
+     * Source port reuse on still-active connections or within TIME_WAIT
      * SYN retransmits with delayed or missing SYN-ACKs
 4. **Consider Azure NAT Gateway**
    * For more predictable behavior, we recommend:
@@ -283,7 +283,7 @@ We recommend the following for any environment using NAT to reach Deepgram:
    * Increase minimum ports per VM/instance (or equivalent setting) so each host has enough ephemeral ports.
    * Ensure traffic is not funneled through a single outbound IP when overall load grows.
 3. **Tune NAT TCP timeouts** (within provider guidelines)
-   * Shorter idle / TIME\_WAIT values (relative to your traffic pattern) help free ports more quickly.
+   * Shorter idle / TIME_WAIT values (relative to your traffic pattern) help free ports more quickly.
    * The goal is to avoid long-lived reservations of ports that are no longer in active use, without being so aggressive that you prematurely kill legitimate long-lived connections.
 4. **Avoid narrow source port ranges**
    * Do not pin traffic to a very narrow local port range except in controlled experiments.

@@ -381,7 +381,24 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
-    Not yet. Notion MCP currently requires you to complete the OAuth authorization flow. We're working on support for non-interactive authorization for automated workflows.
+    Yes, on Business and Enterprise plans. A workspace owner can create an MCP token with **New MCP token** in the Developer portal. The MCP client sends the token as a bearer token to `https://mcp.notion.com/mcp`, with no browser sign-in.
+
+    Enterprise workspaces that use SAML SSO can also use [enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization), where the company's identity provider grants access without a consent screen.
+  </Accordion>
+
+  <Accordion title="Which Notion plans can use Notion MCP?">
+    Notion MCP works on every plan. Some features depend on the workspace's plan:
+
+    * **MCP tokens**: Business and Enterprise. Only workspace owners can create them.
+    * **Enterprise-managed authorization**: Enterprise, with SAML SSO.
+    * **AI search** in `notion-search`, including connected apps: Business or Enterprise with Notion AI. Without it, `notion-search` runs a keyword search of Notion.
+    * **Database queries** with `notion-query-data-sources`: querying a saved view works on every plan. SQL queries are unlimited on Business or Enterprise with Notion AI. Other plans get a limited number of SQL queries on one data source at a time.
+    * **Some search filters**, such as last edited by and last edited date: Business and Enterprise. On other plans these filters are dropped, and the result says so.
+    * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/mcp-supported-tools#rate-limits).
+  </Accordion>
+
+  <Accordion title="Can workspace guests use Notion MCP?">
+    No. Only workspace members can connect Notion MCP. A guest who tries to connect sees a message that guests can't connect, and Notion refuses the authorization.
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
@@ -391,9 +408,9 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">
-    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and requires no infrastructure setup.
+    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and MCP tokens, and requires no infrastructure setup.
 
-    The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It supports bearer token authentication and the original JSON-based v1 APIs, which may be useful for automated workflows, but requires you to manage your own connection and deployment.
+    The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It authenticates with an integration token and requires you to manage your own connection and deployment.
 
     For most users, we recommend Notion MCP.
   </Accordion>

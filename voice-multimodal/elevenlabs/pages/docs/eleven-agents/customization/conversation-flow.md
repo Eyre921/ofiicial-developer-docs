@@ -132,7 +132,7 @@ Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust t
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.turn_timeout`:
 
@@ -229,7 +229,7 @@ Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust t
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.soft_timeout_config`:
 
@@ -402,7 +402,7 @@ Open your agent in the dashboard, navigate to the **Agent** settings, and select
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.turn_eagerness` to one of `"patient"`, `"normal"`, or `"eager"`:
 

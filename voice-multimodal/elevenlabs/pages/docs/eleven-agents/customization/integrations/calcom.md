@@ -153,7 +153,7 @@ Enable calendar bookings by creating two tools:
 
 Navigate to the **Tools** section of the dashboard and select **Add Tool**. Choose **Webhook** as the tool type, then fill in the following sections:
 
-#### Tool 1: get\_available\_slots
+#### Tool 1: get_available_slots
 
 #### Configuration
 
@@ -161,7 +161,7 @@ Metadata used by the agent to determine when the tool should be called:
 
 | Field       | Value                                                                    |
 | ----------- | ------------------------------------------------------------------------ |
-| Name        | get\_available\_slots                                                    |
+| Name        | get_available_slots                                                      |
 | Description | This tool checks if a particular time slot is available in the calendar. |
 | Method      | GET                                                                      |
 | URL         | [https://api.cal.com/v2/slots](https://api.cal.com/v2/slots)             |
@@ -185,7 +185,7 @@ Matches the request query parameters defined [here](https://cal.com/docs/api-ref
 | string    | end         | Yes      | End date/time (UTC) until which to fetch slots, e.g. '2024-08-13T17:00:00Z'.                                              |
 | string    | eventTypeId | Yes      | The ID of the event type that is booked. If 15 minutes, return abc. If 30 minutes, return def. If 60 minutes, return xyz. |
 
-#### Tool 2: book\_meeting
+#### Tool 2: book_meeting
 
 #### Configuration
 
@@ -193,7 +193,7 @@ Metadata used by the agent to determine when the tool should be called:
 
 | Field       | Value                                                              |
 | ----------- | ------------------------------------------------------------------ |
-| Name        | book\_meeting                                                      |
+| Name        | book_meeting                                                       |
 | Description | This tool books a meeting in the calendar once a time is agreed.   |
 | Method      | POST                                                               |
 | URL         | [https://api.cal.com/v2/bookings](https://api.cal.com/v2/bookings) |
@@ -226,11 +226,11 @@ Matches the request body parameters defined [here](https://cal.com/docs/api-refe
 
 **Attendee object:**
 
-| Identifier | Data Type | Required | Description                                                                                                     |
-| ---------- | --------- | -------- | --------------------------------------------------------------------------------------------------------------- |
-| name       | String    | Yes      | The full name of the person booking the meeting.                                                                |
-| email      | String    | Yes      | The email address of the person booking the meeting.                                                            |
-| timeZone   | String    | Yes      | The caller's timezone. Should be in the format of 'Continent/City' like 'Europe/London' or 'America/New\_York'. |
+| Identifier | Data Type | Required | Description                                                                                                    |
+| ---------- | --------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| name       | String    | Yes      | The full name of the person booking the meeting.                                                               |
+| email      | String    | Yes      | The email address of the person booking the meeting.                                                           |
+| timeZone   | String    | Yes      | The caller's timezone. Should be in the format of 'Continent/City' like 'Europe/London' or 'America/New_York'. |
 
 > **Success**
 >

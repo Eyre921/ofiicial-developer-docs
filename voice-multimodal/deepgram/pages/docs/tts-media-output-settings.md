@@ -27,9 +27,9 @@ Upon successful processing of a Deepgram text-to-speech request, you will receiv
 >
 > If you don't provide any values for encoding, container or sample rate in your request Deepgram will provide the following defaults depending on which API / Protocol you use.
 >
-> **Streaming Defaults** encoding: `Linear16`container: `n/a` sample\_rate: `24000`
+> **Streaming Defaults** encoding: `Linear16`container: `n/a` sample_rate: `24000`
 >
-> **REST Defaults** encoding: `Linear16` container: `wav` sample\_rate: `24000`
+> **REST Defaults** encoding: `Linear16` container: `wav` sample_rate: `24000`
 
 | Audio Format | Description                                                                                                                            | Use Cases                                                                                                                | API / Protocol      |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------- |

@@ -1675,6 +1675,6 @@ Here is an example of opting out for Voice Agent requests using the `Settings` m
 
 ## Viewing Opt Out Requests in Logs
 
-Within the [Deepgram Console](https://console.deepgram.com/), you can view the opted out requests in the Usage > Logs tab. In your logs you will see the feature mip\_opt\_out as `true`.
+Within the [Deepgram Console](https://console.deepgram.com/), you can view the opted out requests in the Usage > Logs tab. In your logs you will see the feature mip_opt_out as `true`.
 
 You can also use the [GET a Project Request](/reference/manage/usage/get) endpoint to view the opted out requests.

@@ -654,5 +654,5 @@ This removes the SageMaker Endpoint, Endpoint Configuration, Model, auto-scaling
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
-* [Terraform AWS Provider — aws\_sagemaker\_model](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_model)
-* [Terraform AWS Provider — aws\_sagemaker\_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_endpoint)
+* [Terraform AWS Provider — aws_sagemaker_model](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_model)
+* [Terraform AWS Provider — aws_sagemaker_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_endpoint)

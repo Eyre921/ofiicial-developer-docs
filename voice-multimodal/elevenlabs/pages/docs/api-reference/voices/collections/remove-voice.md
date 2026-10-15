@@ -58,12 +58,18 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "collection_id": "string",
-  "voice_id": "string"
+  "collection_id": "col_9f8b7a6d3c2e4f1a",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM"
 }
 ```
 
@@ -74,14 +80,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM"
 
-response = requests.delete(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.delete(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM';
-const options = {method: 'DELETE'};
+const options = {method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -97,6 +106,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -105,7 +115,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM"
 
-	req, _ := http.NewRequest("DELETE", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("DELETE", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -128,6 +142,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Delete.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -138,6 +154,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.delete("https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -147,7 +165,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM');
+$response = $client->request('DELETE', 'https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -157,16 +180,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.DELETE);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voices/collections/collection_id/voice/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

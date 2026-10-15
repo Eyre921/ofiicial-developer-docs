@@ -1,10 +1,10 @@
 ---
-title: "Serverless Quickstart"
+title: "Serverless inference quickstart on Fireworks AI"
 source: https://docs.fireworks.ai/getting-started/quickstart
 path: getting-started/quickstart
 ---
 
-Make your first Serverless API call in minutes
+Make your first serverless API call to Fireworks AI in minutes: create an API key, pick a model, and send a chat completion with curl or the Python SDK.
 
 Serverless is the fastest way to get started with using open models. This quickstart will help you make your first API call in minutes.
 

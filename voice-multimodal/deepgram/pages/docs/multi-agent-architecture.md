@@ -70,7 +70,7 @@ This approach solves critical problems:
 
 ### Session-Based Agent Switching
 
-This implementation creates separate Voice Agent sessions for each specialized agent. The `CallOrchestrator` (orchestrator/call\_orchestrator.py) manages these transitions while maintaining the Twilio connection.
+This implementation creates separate Voice Agent sessions for each specialized agent. The `CallOrchestrator` (orchestrator/call_orchestrator.py) manages these transitions while maintaining the Twilio connection.
 
 ### Audio Task Persistence Pattern
 
@@ -249,7 +249,7 @@ public static AgentV1Settings getQualifierConfig(String context) {
 
 ### Function Definitions
 
-Functions include detailed descriptions to guide the LLM's behavior. See `agents/shared/functions.py` for examples. For comprehensive function definition best practices, refer to [docs/FUNCTION\_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md).
+Functions include detailed descriptions to guide the LLM's behavior. See `agents/shared/functions.py` for examples. For comprehensive function definition best practices, refer to [docs/FUNCTION_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md).
 
 Key pattern: Functions should wait for customer confirmation:
 
@@ -480,5 +480,5 @@ Edit `utils/context_summarizer.py` to:
 
 ## Additional Resources
 
-* **[docs/PROMPT\_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/PROMPT_GUIDE.md)** - Voice agent prompt engineering best practices
-* **[docs/FUNCTION\_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md)** - Function definition best practices
+* **[docs/PROMPT_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/PROMPT_GUIDE.md)** - Voice agent prompt engineering best practices
+* **[docs/FUNCTION_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md)** - Function definition best practices

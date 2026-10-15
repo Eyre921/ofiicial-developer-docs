@@ -1,8 +1,10 @@
 ---
-title: "Python SDK"
+title: "Fireworks Python SDK overview and installation"
 source: https://docs.fireworks.ai/tools-sdks/python-sdk
 path: tools-sdks/python-sdk
 ---
+
+Overview of the Fireworks Python SDK, including installation, authentication, and calling chat, completion, image, and audio endpoints from a Python project.
 
 The official Python SDK for the Fireworks AI API is available on [GitHub](https://github.com/fw-ai-external/python-sdk) and [PyPI](https://pypi.org/project/fireworks-ai/).
 

@@ -24,7 +24,7 @@ It may not be the best choice when:
 
 * The entire input text is delivered at once. Given that the generations are partial, some buffering is involved, which could potentially result in slightly higher latency compared to a standard HTTP request. Instead, using only the output streaming endpoint is most likely the better option in cases like this.
 * You want to quickly experiment or prototype. Working with WebSockets can be harder and more complex than using a standard HTTP API, which might slow down rapid development and testing.
-* Where the highest possible consistency is of utmost importance, you need to consider the AI's context understanding. Since the AI is not given the full context at the beginning of the request, it will only have a partial understanding of the text, which in certain instances can cause issues. However, you can experiment with some of the settings available when using WebSocket streaming, such as the "chunk\_length\_schedule". This parameter will determine how big the chunks need to be before the AI starts generating text.
+* Where the highest possible consistency is of utmost importance, you need to consider the AI's context understanding. Since the AI is not given the full context at the beginning of the request, it will only have a partial understanding of the text, which in certain instances can cause issues. However, you can experiment with some of the settings available when using WebSocket streaming, such as the "chunk_length_schedule". This parameter will determine how big the chunks need to be before the AI starts generating text.
 
 In these cases, use the [Text to Speech API](/docs/api-reference/text-to-speech) instead.
 

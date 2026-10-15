@@ -66,13 +66,13 @@ Copy the output. The full `Authorization` header value is the word `Basic`, a si
 Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 ```
 
-#### Configure the \`send\_SMS\_verification\` and \`check\_SMS\_verification\` tools
+#### Configure the \`send_SMS_verification\` and \`check_SMS_verification\` tools
 
 `send_SMS_verification` calls Twilio Verify to send an SMS OTP. `check_SMS_verification` submits the digits the caller speaks. Both require the same Verify Service SID and the same `Authorization` secret.
 
 #### Add via the dashboard
 
-### send\_SMS\_verification
+### send_SMS_verification
 
 ![Agent conversation collecting a phone number, OTP code, and verification success](/docs/_fern-img/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e.webp)
 
@@ -96,7 +96,7 @@ Replace `YOUR_VERIFY_SERVICE_SID` with the `VA...` SID from the first step.
 | `string`  | `To`       | Caller phone number in E.164 format (for example `+14155552671`) |
 | `string`  | `Channel`  | Delivery channel; use `sms`                                      |
 
-### check\_SMS\_verification
+### check_SMS_verification
 
 Add a second webhook tool:
 
@@ -371,7 +371,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 >
 > If you configure **`Channel`** as an LLM-filled field in the dashboard, add instructions in your system prompt so the model always passes `sms`. The CLI and API examples above pin `sms` with `constant_value` / `constantValue`, so the model does not choose the channel.
 
-#### Enable the \`skip\_turn\` system tool
+#### Enable the \`skip_turn\` system tool
 
 Callers often need a moment to receive the SMS before they can read the code. Without `skip_turn`, the agent may talk over the pause or repeat prompts.
 

@@ -10,7 +10,7 @@ path: docs/help-center/technical/api-error-code-429
 
 API Error Code 429 can have two response messages: `too_many_concurrent_requests` or `system_busy`.
 
-### too\_many\_concurrent\_requests
+### too_many_concurrent_requests
 
 If you see the response message `too_many_concurrent_requests`, this means that you have exceeded the concurrency limit for your subscription.
 
@@ -25,6 +25,6 @@ The concurrency limit (concurrent requests running in parallel) depends on the p
 
 ElevenAgents has different concurrency limits. For details, please see [this article.](/docs/help-center/product/eleven-agents/how-many-eleven-agents-requests-can-i-make-and-can-i-increase-it)
 
-### system\_busy
+### system_busy
 
 If you see the response message `system_busy`, this means that our services were experiencing high levels of traffic and your request could not be processed.  Generally, if you retry the request, it will succeed.

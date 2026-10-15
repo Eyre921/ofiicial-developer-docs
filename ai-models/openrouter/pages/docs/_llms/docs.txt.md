@@ -33,7 +33,7 @@ path: docs/_llms/docs.txt
 - [Model Fallbacks](https://openrouter.ai/docs/guides/routing/model-fallbacks.md): Automatic failover between models
 - [Provider Routing](https://openrouter.ai/docs/guides/routing/provider-selection.md): Route requests to the best provider
 - [Auto Exacto](https://openrouter.ai/docs/guides/routing/auto-exacto.md): Automatic tool-calling provider optimization
-- [Private Models](https://openrouter.ai/docs/guides/routing/private-models.md): Bring your own model to OpenRouter, scoped to approved users and organizations
+- [Private Endpoints](https://openrouter.ai/docs/guides/routing/private-endpoints.md): Bring your own model endpoints to OpenRouter, scoped to approved users and organizations
 
 #### Model Variants
 

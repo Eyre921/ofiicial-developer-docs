@@ -69,7 +69,7 @@ A PAT acts as the user who created it:
 An internal connection operates as a separate bot user and can access only pages shared with that connection. A PAT uses a real user's permissions, so it is best for work owned by that user rather than team-owned automations.
 
 <Info>
-  [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve the authorized user, and [Retrieve a user](/reference/get-user) can retrieve that same user.
+  [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve its bot user. Its `bot.owner.user` is the PAT creator. [Retrieve a user](/reference/get-user) can retrieve the creator by ID.
 </Info>
 
 ## Workspace admin controls

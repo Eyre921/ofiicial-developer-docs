@@ -1,8 +1,10 @@
 ---
-title: "Training Overview"
+title: "Fine-tuning on Fireworks: SFT, DPO, and RFT"
 source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 path: fine-tuning/finetuning-intro
 ---
+
+Introduction to fine-tuning on Fireworks: choose between managed SFT, DPO, and reinforcement fine-tuning, and pick serverless or dedicated infrastructure.
 
 Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
 

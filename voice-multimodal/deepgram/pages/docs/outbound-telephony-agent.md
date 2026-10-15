@@ -253,7 +253,7 @@ Or use the setup wizard with `--twilio-only` to handle Twilio configuration:
 python setup.py --twilio-only
 ```
 
-See [docs/LOCAL\_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) for the full local development guide.
+See [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) for the full local development guide.
 
 ## Using `make_call.py`
 
@@ -404,7 +404,7 @@ outbound-telephony-voice-agent/
 
 ### Change the Agent's Personality
 
-Edit `_build_system_prompt()` in `voice_agent/agent_config.py`. The prompt is built dynamically with lead context data, so the agent knows who it's calling and why. See [docs/PROMPT\_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
+Edit `_build_system_prompt()` in `voice_agent/agent_config.py`. The prompt is built dynamically with lead context data, so the agent knows who it's calling and why. See [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
 
 ### Add or Modify Functions
 
@@ -412,7 +412,7 @@ Edit `_build_system_prompt()` in `voice_agent/agent_config.py`. The prompt is bu
 2. Add the handler in `voice_agent/function_handlers.py`
 3. Implement the backend logic in `backend/lead_service.py`
 
-See [docs/FUNCTION\_GUIDE.md](docs/FUNCTION_GUIDE.md) for function definition best practices.
+See [docs/FUNCTION_GUIDE.md](docs/FUNCTION_GUIDE.md) for function definition best practices.
 
 ### Swap the LLM or Voice
 
@@ -466,7 +466,7 @@ Developers deploying outbound voice agents should consult appropriate legal and/
 ## Additional Resources
 
 * [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Detailed architecture, data flow diagrams, and component details
-* [docs/PROMPT\_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts
-* [docs/FUNCTION\_GUIDE.md](docs/FUNCTION_GUIDE.md) - Best practices for defining agent functions
-* [docs/LOCAL\_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) - Step-by-step local development setup
+* [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts
+* [docs/FUNCTION_GUIDE.md](docs/FUNCTION_GUIDE.md) - Best practices for defining agent functions
+* [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) - Step-by-step local development setup
 * [Deepgram Voice Agent API Docs](https://developers.deepgram.com/docs/voice-agent) - Official API documentation

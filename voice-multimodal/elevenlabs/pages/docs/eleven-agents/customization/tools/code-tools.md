@@ -103,7 +103,7 @@ On the **Agent** section of your agent settings page, choose **Add Tool**. Selec
 
 | Field       | Value                                                 |
 | ----------- | ----------------------------------------------------- |
-| Name        | convert\_temperature                                  |
+| Name        | convert_temperature                                   |
 | Description | Converts a temperature between Celsius and Fahrenheit |
 
 #### Define the parameters
@@ -113,7 +113,7 @@ Add two parameters so the LLM knows what to provide:
 | Data Type | Identifier | Required | Description                              |
 | --------- | ---------- | -------- | ---------------------------------------- |
 | number    | value      | true     | The temperature value to convert         |
-| string    | from\_unit | true     | The unit to convert from: `"C"` or `"F"` |
+| string    | from_unit  | true     | The unit to convert from: `"C"` or `"F"` |
 
 #### Write the code
 

@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Distillation"
+title: "On-policy distillation with the Training API cookbook"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation
 path: fine-tuning/training-api/cookbook/distillation
 ---
 
-On-policy distillation and top-K self-distillation recipes.
+Run on-policy distillation on Fireworks using cookbook recipes that combine frozen teacher scoring, student sampling, and reward-shaped loss.
 
 ## What this is
 

@@ -1,10 +1,10 @@
 ---
-title: "Upload via REST API"
+title: "Upload custom models to Fireworks via REST API"
 source: https://docs.fireworks.ai/models/uploading-custom-models-api
 path: models/uploading-custom-models-api
 ---
 
-Programmatically upload custom models using the Fireworks REST API
+Programmatically upload custom models to Fireworks using the REST API: create the model resource, upload weight shards, and finalize for dedicated deployment.
 
 Use the Fireworks REST API to upload custom models programmatically — ideal for automation, CI/CD pipelines, and notebooks. If you just want the quickest path from a terminal, use [`firectl`](/models/uploading-custom-models#uploading-your-model) instead.
 

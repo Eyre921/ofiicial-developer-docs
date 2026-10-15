@@ -1,10 +1,10 @@
 ---
-title: "Microsoft Foundry"
+title: "Deploy Fireworks models on Microsoft Foundry and Azure"
 source: https://docs.fireworks.ai/ecosystem/integrations/azure-foundry
 path: ecosystem/integrations/azure-foundry
 ---
 
-Deploy frontier open models inside your Azure subscription, billed through Azure.
+Deploy frontier open-weight models inside your own Azure subscription through Microsoft Foundry, with Fireworks inference billed via your Azure account.
 
 Fireworks AI is a first-party inference provider inside Microsoft Foundry. You can access frontier open models through your existing Azure account, with usage billed through Azure and counting toward your Microsoft Azure Consumption Commitment (MACC).
 

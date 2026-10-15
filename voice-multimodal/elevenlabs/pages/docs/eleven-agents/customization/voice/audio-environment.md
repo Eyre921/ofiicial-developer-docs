@@ -54,7 +54,7 @@ repeats. Save your changes.
 elevenlabs agents pull --agent agent_7101k5zvyjhmfg983brhmhkd98n6
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.conversation.background_sound`. Valid `source_id` values are
 `office1`, `office2`, `restaurant`, `city`, `typing`, and `elevator1` through `elevator4`.
@@ -146,12 +146,73 @@ Valid `source_id` values are `office1`, `office2`, `restaurant`, `city`, `typing
 
 Voice filter reshapes the agent's generated voice. It does not equalize or denoise the background sound. The filter runs first; background sound is mixed under the filtered speech.
 
-> **Note**
->
-> Voice filter is dashboard-only. It is not part of the public agent API or CLI schema, and it may
-> not be available on all workspaces.
+Configure voice filter with `conversation_config.tts.audio_effects.filter_preset_id`. The dashboard offers the phone presets; through the CLI or API you can set any filter preset listed by the [audio effects catalog](/docs/api-reference/audio-effects/get-catalog).
 
-In the same **Audio environment** panel, set **Voice filter** to **Off** or a phone preset, then save.
+#### Update via the dashboard
+
+In the same **Audio environment** panel, set **Voice filter** to **Off** or a phone preset, then
+save.
+
+#### Update via the CLI
+
+In `agent_configs/<agent-name>.json`, set `conversation_config.tts.audio_effects`, then push the
+agent configuration:
+
+```json
+{
+  "conversation_config": {
+    "tts": {
+      "audio_effects": {
+        "filter_preset_id": "phone"
+      }
+    }
+  }
+}
+```
+
+To remove the filter, set `filter_preset_id` to `null`.
+
+#### Update via the API
+
+```python
+from elevenlabs import ElevenLabs
+
+elevenlabs = ElevenLabs()
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    conversation_config={
+        "tts": {
+            "audio_effects": {
+                "filter_preset_id": "phone",
+            }
+        }
+    },
+)
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient();
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  conversationConfig: {
+    tts: {
+      audioEffects: {
+        filterPresetId: "phone",
+      },
+    },
+  },
+});
+```
+
+To remove the filter, set `filter_preset_id` to `null`.
+
+> **Warning**
+>
+> Agent audio is mono. `pan` has no effect on agents, and reverb from an `environment_id` is mixed
+> down to mono.
 
 ## Limitations
 

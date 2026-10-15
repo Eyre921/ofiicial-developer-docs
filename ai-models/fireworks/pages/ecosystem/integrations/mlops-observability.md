@@ -1,10 +1,10 @@
 ---
-title: "MLOps & Observability"
+title: "MLOps and observability integrations for Fireworks"
 source: https://docs.fireworks.ai/ecosystem/integrations/mlops-observability
 path: ecosystem/integrations/mlops-observability
 ---
 
-Track and monitor your Fireworks AI deployments with leading MLOps and observability platforms
+Track and monitor Fireworks AI deployments with leading MLOps and observability platforms including Langfuse, Weights & Biases, LangSmith, and Helicone.
 
 Fireworks AI integrates with industry-leading MLOps and observability platforms to help you monitor, track, and optimize your AI applications in production.
 

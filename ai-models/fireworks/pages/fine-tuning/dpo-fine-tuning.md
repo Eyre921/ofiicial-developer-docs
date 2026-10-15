@@ -1,10 +1,10 @@
 ---
-title: "Preference Optimization with DPO or ORPO"
+title: "Preference tuning with managed DPO and ORPO"
 source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 path: fine-tuning/dpo-fine-tuning
 ---
 
-Train on preferred and non-preferred response pairs using managed DPO or ORPO.
+Train Fireworks-hosted models on preferred and non-preferred response pairs using managed DPO or ORPO preference optimization, with LoRA or full-parameter.
 
 Preference optimization trains models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
 

@@ -55,7 +55,7 @@ The CLI does not upload knowledge base documents directly. Create them via the d
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.prompt.knowledge_base`:
 

@@ -1,10 +1,10 @@
 ---
-title: "Speculative Decoding"
+title: "Speculative decoding with draft models on Fireworks"
 source: https://docs.fireworks.ai/deployments/speculative-decoding
 path: deployments/speculative-decoding
 ---
 
-Speed up generation with draft models and n-gram speculation
+Speed up token generation on Fireworks dedicated deployments with speculative decoding using draft models, n-gram speculation, and per-request configuration.
 
 Speculative decoding reduces generation latency by proposing multiple tokens and
 letting the target model verify them in parallel. The target model still verifies

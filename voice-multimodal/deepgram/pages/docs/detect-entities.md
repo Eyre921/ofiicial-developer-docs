@@ -419,7 +419,7 @@ with deepgram.listen.v1.connect(
 
 Each entity object in the `entities` array contains the following fields:
 
-* `label`: Type of entity identified (e.g., NAME, PHONE\_NUMBER, EMAIL, ADDRESS).
+* `label`: Type of entity identified (e.g., NAME, PHONE_NUMBER, EMAIL, ADDRESS).
 * `value`: The formatted text of the entity. When [Smart Formatting](/docs/smart-format) is enabled, this field reflects the formatted output.
 * `raw_value`: *(When formatting is enabled)* The original, non-formatted text as spoken. This field is included in both pre-recorded and streaming responses when formatting features (such as [Smart Formatting](/docs/smart-format)) are enabled.
 * `confidence`: Floating point value between 0 and 1 that indicates overall transcript reliability. Larger values indicate higher confidence.

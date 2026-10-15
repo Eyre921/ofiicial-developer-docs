@@ -1,10 +1,10 @@
 ---
-title: "Data Security"
+title: "How Fireworks secures data for inference and training"
 source: https://docs.fireworks.ai/guides/security_compliance/data_security
 path: guides/security_compliance/data_security
 ---
 
-How we secure and handle your data for inference and training
+How Fireworks handles data for inference and training: zero data retention, encryption in transit and at rest, BYOB storage, and compliance certifications.
 
 At Fireworks, protecting customer data is at the core of our platform. We design all of our systems, infrastructure, and business processes to ensure customer trust through verifiable security & compliance.
 

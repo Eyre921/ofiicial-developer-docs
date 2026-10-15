@@ -88,7 +88,7 @@ This is a demo: use a mock backend for the flower data, and "place the
 order" only needs to log the order.
 ```
 
-The `init` command creates a **GETTING\_STARTED.md** file with additional guidance for your coding agent.
+The `init` command creates a **GETTING_STARTED.md** file with additional guidance for your coding agent.
 
 ## Use the quickstart CLI command
 
@@ -191,10 +191,10 @@ DEEPGRAM_VOICE_ID=flux-alexis-en
 
 Replace the placeholder values with your API keys:
 
-* **DEEPGRAM\_API\_KEY** — from your [Deepgram Console](https://console.deepgram.com/)
+* **DEEPGRAM_API_KEY** — from your [Deepgram Console](https://console.deepgram.com/)
 * `DEEPGRAM_VOICE_ID` — the voice your agent speaks with. Choose a [Flux TTS voice](/docs/flux-tts/voices) such as `flux-alexis-en`, or an [Aura-2 voice](/docs/tts-models) if you switched to `DeepgramTTSService`.
-* **OPENAI\_API\_KEY** — from your [OpenAI dashboard](https://platform.openai.com/api-keys)
-* **DAILY\_API\_KEY** — from your [Daily dashboard](https://dashboard.daily.co/u/signup). Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
+* **OPENAI_API_KEY** — from your [OpenAI dashboard](https://platform.openai.com/api-keys)
+* **DAILY_API_KEY** — from your [Daily dashboard](https://dashboard.daily.co/u/signup). Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
 
 The remaining values are defaults you can change later.
 

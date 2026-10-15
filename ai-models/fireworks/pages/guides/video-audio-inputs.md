@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/guides/video-audio-inputs
 path: guides/video-audio-inputs
 ---
 
-Query multimodal models to process video and audio content directly
+Query Fireworks multimodal models with video and audio inputs to transcribe, summarize, and reason over media directly through the chat completions API.
 
 Some multimodal models can process audio and/or video inputs directly, enabling video captioning, scene analysis, content understanding, and multimodal question answering. Availability depends on the model: GLM 5.3 Flash supports video input on Serverless, while Qwen3 Omni and Molmo2 use [dedicated deployments](/getting-started/ondemand-quickstart).
 

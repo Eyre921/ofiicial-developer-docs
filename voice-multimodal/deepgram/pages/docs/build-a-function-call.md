@@ -239,7 +239,7 @@ You'll create two files:
 
 > **Info**
 >
-> This guide doesn't cover the development of the **business logic** for this application. Please see [business\_logic.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/common/business_logic.py) for more details.
+> This guide doesn't cover the development of the **business logic** for this application. Please see [business_logic.py](https://github.com/deepgram-devs/flask-agent-function-calling-demo/blob/main/common/business_logic.py) for more details.
 
 First, create a file called: `agent_functions.py`. Then in `agent_functions.py` set up the dependencies and import the business logic.
 

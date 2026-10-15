@@ -1,10 +1,10 @@
 ---
-title: "Vision Models"
+title: "Query vision-language models on Fireworks"
 source: https://docs.fireworks.ai/guides/querying-vision-language-models
 path: guides/querying-vision-language-models
 ---
 
-Query vision-language models to analyze images and visual content
+Query Fireworks vision-language models with image inputs to analyze photos, screenshots, charts, and documents through the chat completions API and OpenAI SDKs.
 
 Vision-language models (VLMs) process both text and images in a single request, enabling image captioning, visual question answering, document analysis, chart interpretation, OCR, and content moderation. Use VLMs via serverless inference or [dedicated deployments](/getting-started/ondemand-quickstart).
 

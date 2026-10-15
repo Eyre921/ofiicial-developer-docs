@@ -1,10 +1,10 @@
 ---
-title: "Managed Training Overview"
+title: "Managed fine-tuning on Fireworks-hosted infrastructure"
 source: https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro
 path: fine-tuning/managed-finetuning-intro
 ---
 
-Train models with Fireworks-managed infrastructure — no custom code required.
+Fine-tune open-weight models on Fireworks-managed infrastructure with no custom training code, using supervised, preference, and reinforcement learning.
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 

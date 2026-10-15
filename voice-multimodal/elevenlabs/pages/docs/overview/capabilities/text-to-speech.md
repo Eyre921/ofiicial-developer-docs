@@ -135,6 +135,26 @@ ElevenLabs offers thousands of voices across 32 languages through multiple creat
 
 Learn more about our [voice options](/docs/overview/capabilities/voices).
 
+### Audio effects
+
+Audio effects post-process generated speech so it sounds like it was recorded somewhere specific, without editing it afterwards. Set any combination of:
+
+* **Filter preset**: colors the voice, for example a phone line, an old radio or a robot.
+* **Distance**: moves the speaker away from the microphone.
+* **Environment**: places the voice in a reverberant space, such as a small room or a hall.
+* **Background noise**: loops an ambient bed, such as a café or keyboard typing, under the voice.
+* **Pan**: positions the voice between the left and right channels.
+
+Effects are available on the Text to Speech and Text to Dialogue endpoints, including streaming and timestamped requests, through the [`audio_effects`](/docs/api-reference/text-to-speech/convert#request.body.audio_effects) parameter. List the available filter presets, environments and background noises with the [audio effects catalog](/docs/api-reference/audio-effects/get-catalog). Agents can apply a voice filter too; see [Audio environment](/docs/eleven-agents/customization/voice/audio-environment). In the app, add effects from the [Text to Speech playground](/docs/eleven-creative/playground/text-to-speech).
+
+Effects do not change the cost of a request.
+
+> **Warning**
+>
+> Reverb (an `environment_id` with a `send_level` above 0) and a non-zero `pan` produce stereo
+> audio. Requests that combine them with the mono `pcm_*`, `ulaw_*` or `alaw_*` output formats are
+> rejected with a 400 error.
+
 #### Supported output formats
 
 The default response format is `mp3`, but other formats like `pcm` and `ulaw` are available.
@@ -228,6 +248,7 @@ To maintain natural prosody flow between chunks, include [previous/next text or 
 ## Key facts
 
 * **Determinism**: Output is nondeterministic — use the `seed` parameter for more consistent results
+* **Audio effects**: Add a filter preset, distance, reverb, background noise or panning with `audio_effects` at no extra cost
 * **Free regenerations**: Up to 2 free regenerations per generation (same content and parameters only)
 * **Ownership**: You retain ownership of generated audio; commercial use requires a paid plan
 * **Low-latency use cases**: Use Flash models (`eleven_flash_v2` or `eleven_flash_v2_5`) — see the [latency optimization guide](/docs/eleven-api/guides/how-to/best-practices/latency-optimization)

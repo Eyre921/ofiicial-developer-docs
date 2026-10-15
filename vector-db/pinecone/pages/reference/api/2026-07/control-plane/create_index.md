@@ -257,7 +257,7 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
     }'
 
   # EXAMPLE REQUEST 5: Bring-your-own-cloud (BYOC) deployment.
-  # BYOC indexes require Dedicated read capacity — OnDemand is rejected.
+  # BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
   curl "https://api.pinecone.io/indexes" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
@@ -266,7 +266,7 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
       "name": "byoc-index",
       "deployment": {
         "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921"
+        "environment": "aws-us-east-1-b921.byoc"
       },
       "read_capacity": {
         "mode": "Dedicated",
@@ -275,6 +275,28 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
           "scaling": "Manual",
           "manual": { "shards": 1, "replicas": 1 }
         }
+      },
+      "schema": {
+        "fields": {
+          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+        }
+      }
+    }'
+
+  # EXAMPLE REQUEST 6: BYOC deployment with on-demand read capacity.
+  # The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "byoc-on-demand-index",
+      "deployment": {
+        "deployment_type": "byoc",
+        "environment": "aws-us-east-1-b921.byoc"
+      },
+      "read_capacity": {
+        "mode": "OnDemand"
       },
       "schema": {
         "fields": {

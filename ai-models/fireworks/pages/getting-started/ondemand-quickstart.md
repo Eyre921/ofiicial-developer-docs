@@ -1,10 +1,10 @@
 ---
-title: "Deployments Quickstart"
+title: "Dedicated deployments quickstart on Fireworks"
 source: https://docs.fireworks.ai/getting-started/ondemand-quickstart
 path: getting-started/ondemand-quickstart
 ---
 
-Deploy models on dedicated GPUs in minutes
+Deploy open-source models on dedicated GPUs on Fireworks in minutes, covering deployment creation, GPU sizing, and calling the endpoint from the API.
 
 On-demand deployments are dedicated GPUs that give you better performance, no rate limits, fast autoscaling, and a wider selection of models than serverless. This quickstart will help you spin up your first on-demand deployment in minutes.
 

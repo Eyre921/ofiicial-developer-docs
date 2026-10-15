@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/tools-sdks/firectl/commands/rlor-trainer-job-c
 path: tools-sdks/firectl/commands/rlor-trainer-job-create
 ---
 
-Creates a rlor trainer job.
+Reference for the firectl rlor-trainer-job create command: launch a Fireworks RL-on-rollouts trainer job from the CLI, with recipe, dataset, and model flags.
 
 ```
 firectl rlor-trainer-job create [flags]

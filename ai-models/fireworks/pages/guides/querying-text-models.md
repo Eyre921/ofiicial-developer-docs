@@ -1,10 +1,10 @@
 ---
-title: "Text Models"
+title: "Querying text models on Fireworks: chat and completions"
 source: https://docs.fireworks.ai/guides/querying-text-models
 path: guides/querying-text-models
 ---
 
-Query, track and manage inference for text models
+Query, track, and manage inference for text models on Fireworks with chat completions, streaming, tool use, and structured output via the OpenAI-compatible API.
 
 <Info>
   New to Fireworks? Start with the [Serverless Quickstart](/getting-started/quickstart) for a step-by-step guide to making your first API call.

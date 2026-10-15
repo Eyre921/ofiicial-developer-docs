@@ -228,7 +228,7 @@ For ElevenLabs you can refer to [this article](https://help.elevenlabs.io/hc/en-
 }
 ```
 
-#### Example (eleven\_v3 via HTTPS)
+#### Example (eleven_v3 via HTTPS)
 
 Because `eleven_v3` does not support WebSocket streaming, use the HTTPS REST endpoint:
 

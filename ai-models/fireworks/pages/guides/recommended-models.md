@@ -1,10 +1,10 @@
 ---
-title: "Which model should I use?"
+title: "Which Fireworks model should I use for my task?"
 source: https://docs.fireworks.ai/guides/recommended-models
 path: guides/recommended-models
 ---
 
-Find the best open models for your use case or migrate from closed source models like Claude, GPT, and Gemini
+Pick the best Fireworks open-weight model for chat, coding, vision, embeddings, and agents, or migrate off Claude, GPT, and Gemini to comparable open models.
 
 Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge.
 

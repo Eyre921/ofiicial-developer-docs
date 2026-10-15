@@ -78,10 +78,10 @@ Validation Error
 
 ```json
 {
-  "collection_id": "string",
-  "title": "string",
-  "icon": "string",
-  "permission_on_resource": "admin"
+  "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+  "title": "My Favorite Voices",
+  "icon": "🎤",
+  "permission_on_resource": "editor"
 }
 ```
 

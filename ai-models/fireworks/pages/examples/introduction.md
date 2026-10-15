@@ -1,10 +1,10 @@
 ---
-title: "Courses"
+title: "Fireworks courses: end-to-end examples and use cases"
 source: https://docs.fireworks.ai/examples/introduction
 path: examples/introduction
 ---
 
-Standalone end-to-end examples showing how to use Fireworks to solve real-world use cases
+Standalone end-to-end courses showing how to use Fireworks for real-world use cases across fine-tuning, RAG, agents, and multi-modal inference.
 
 <CardGroup>
   <Card title="Text to SQL" href="/examples/text-to-sql">

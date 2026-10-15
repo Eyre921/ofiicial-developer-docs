@@ -1,10 +1,10 @@
 ---
-title: "Responses API"
+title: "Fireworks Responses API for stateful model calls"
 source: https://docs.fireworks.ai/guides/response-api
 path: guides/response-api
 ---
 
-Build stateful, tool-using applications on Fireworks with the OpenAI-compatible Responses API.
+Use the Fireworks Responses API for stateful model calls with reasoning, tool calls, and persisted conversation state as an OpenAI-compatible alternative.
 
 The Responses API is an OpenAI-compatible endpoint for stateful, tool-using applications. Unlike chat completions, it can store conversation state server-side, execute MCP tools on your behalf, and run long jobs in the background.
 

@@ -30,7 +30,7 @@ Open your agent in the dashboard, navigate to the **Workflow** tab, and use the 
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 The workflow graph lives under the top-level `workflow` key. `nodes` and `edges` are objects keyed by ID. Below is a minimal three-node workflow that routes the start node into a support subagent and then to an end node:
 

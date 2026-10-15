@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/tools-sdks/firectl/commands/api-key-list
 path: tools-sdks/firectl/commands/api-key-list
 ---
 
-Prints all API keys for the signed in user.
+Reference for the firectl api-key list command: print all Fireworks API keys for the signed-in user, with flags, output formats, and example invocations.
 
 ```
 firectl api-key list [flags]

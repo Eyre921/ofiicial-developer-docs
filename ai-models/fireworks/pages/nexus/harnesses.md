@@ -4,7 +4,9 @@ source: https://docs.fireworks.ai/nexus/harnesses
 path: nexus/harnesses
 ---
 
-Connect Claude Code, the Claude Agent SDK, Claude Desktop, Codex, the ChatGPT desktop app, OpenCode, Pi, Cursor IDE, VS Code, Copilot, or DeepSeek Harness to Fireworks, with FireConnect or by editing the harness settings yourself.
+Connect Claude Code, Claude Agent SDK, Claude Desktop, Codex, the ChatGPT app, OpenCode, Pi, Cursor, VS Code, Copilot, or DeepSeek Harness to Fireworks.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Most harnesses below work two ways. **FireConnect** writes the settings for you and restores them with `off`. **Manual setup** shows the same settings so you can apply them yourself, with no extra tool installed. Claude Desktop is FireConnect only.
 

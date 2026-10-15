@@ -258,7 +258,7 @@ Without the Connect applet in the flow, the agent's transfer attempts will fail 
 
 ## Troubleshooting
 
-#### \`exotel\_connect\_failed\` error when starting an outbound call
+#### \`exotel_connect_failed\` error when starting an outbound call
 
 ElevenLabs received a non-200 response from Exotel's Connect API. The most common causes are:
 

@@ -149,7 +149,7 @@ Dubbing Studio currently supports the following export formats:
 * .zip of audio clips
 * AAF (timeline data)
 * SRT (subtitles/captions)
-* CSV (speaker, start\_time, end\_time, transcription, translation)
+* CSV (speaker, start_time, end_time, transcription, translation)
 
 **Make sure you select the correct language** when exporting.
 
@@ -169,7 +169,7 @@ To create a Manual Dub, you'll need:
 1. Video file
 2. Background audio file
 3. Foreground audio file
-4. CSV where each row contains a speaker, start\_time, end\_time, transcription, and translation field
+4. CSV where each row contains a speaker, start_time, end_time, transcription, and translation field
 
 The CSV file must strictly follow the predefined format in order to be processed correctly. Please see below for samples in the three supported timecodes:
 
@@ -206,7 +206,7 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
 ```
 
-| speaker | start\_time | end\_time   | transcription                     | translation                                  |
+| speaker | start_time  | end_time    | transcription                     | translation                                  |
 | ------- | ----------- | ----------- | --------------------------------- | -------------------------------------------- |
 | Joe     | 0:00:00.000 | 0:00:02.000 | Hey!                              | Hallo!                                       |
 | Maria   | 0:00:02.000 | 0:00:06.000 | Oh, hi, Joe. It has been a while. | Oh, hallo, Joe. Es ist schon eine Weile her. |

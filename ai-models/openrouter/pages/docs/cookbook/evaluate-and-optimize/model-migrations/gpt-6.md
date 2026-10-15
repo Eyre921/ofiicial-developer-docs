@@ -291,7 +291,7 @@ A policy block is an HTTP 403 with `error_type: "refusal"` on every OpenRouter A
 
 On the Responses API the same block is a `response.failed` event with `response.error.code` set to the provider code and `error_type: "refusal"` on the response. On Anthropic Messages the error envelope carries `error.error_type: "refusal"` next to the native `error.type`, and the provider code is not exposed. OpenRouter does not resend a declined prompt to another endpoint serving the same model, and the block does not count against the provider's health. Treat a 403 `refusal` as a prompt problem rather than a transient failure. Retrying the same input returns the same block.
 
-A refusal that the model produces as its own completed output is not an error. The Responses API returns `status: "completed"` with a `refusal` content part, and Chat Completions returns `message.refusal` with `finish_reason: "content_filter"`. See [Errors and Debugging](/docs/api/api-reference/errors-and-debugging#content-policy) for the full contract.
+A refusal that the model produces as its own completed output is not an error. The Responses API returns `status: "completed"` with a `refusal` content part, and Chat Completions returns `message.refusal` with `finish_reason: "content_filter"`. See [Errors and Debugging](/docs/api_reference/errors-and-debugging#content-policy) for the full contract.
 
 ## Migration Checklist
 
@@ -320,8 +320,8 @@ None. Async tools and `configuration_update` are both optional:
 * [GPT-5.6 Migration Guide](/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6) for `reasoning.mode`, `reasoning.context`, and explicit prompt caching, which carry over to GPT-6
 * [Async tool calling](https://developers.openai.com/api/docs/guides/async-tool-calling), OpenAI's guide including the wait-tool pattern
 * [Change reasoning mid-conversation](https://developers.openai.com/api/docs/guides/reasoning?api-mode=responses#change-reasoning-mid-conversation) in OpenAI's reasoning guide
-* [Tool Calling on the Responses API](/docs/api/api-reference/responses/tool-calling) on OpenRouter
-* [Errors and Debugging](/docs/api/api-reference/errors-and-debugging#content-policy), the OpenRouter error contract for policy blocks and refusals
+* [Tool Calling on the Responses API](/docs/api_reference/responses/tool-calling) on OpenRouter
+* [Errors and Debugging](/docs/api_reference/errors-and-debugging#content-policy), the OpenRouter error contract for policy blocks and refusals
 * [Changing Effort Mid-Conversation](/docs/guides/best-practices/reasoning-tokens#mid-conversation-effort) in the OpenRouter reasoning guide
 * [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens)
 * [Prompt Caching](/docs/guides/best-practices/prompt-caching)

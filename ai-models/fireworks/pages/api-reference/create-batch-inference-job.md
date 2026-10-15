@@ -5,3 +5,4 @@ path: api-reference/create-batch-inference-job
 ---
 
 post /v1/accounts/{account_id}/batchInferenceJobs
+Create a batch inference job that runs a model over an input dataset and writes results to an output dataset, with an optional system prompt.

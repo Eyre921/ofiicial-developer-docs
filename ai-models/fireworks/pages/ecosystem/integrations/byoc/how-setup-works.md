@@ -1,10 +1,10 @@
 ---
-title: "How Setup Works"
+title: "Bring Your Own Cluster setup and onboarding flow"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works
 path: ecosystem/integrations/byoc/how-setup-works
 ---
 
-Understand the high-level onboarding flow for Bring Your Own Cluster.
+How Bring Your Own Cluster onboarding works, from account and cluster prerequisites through Fireworks control-plane connection, node setup, and validation.
 
 This page describes the high-level setup flow for Enterprise customers onboarding to Bring Your Own Cluster (BYOC).
 

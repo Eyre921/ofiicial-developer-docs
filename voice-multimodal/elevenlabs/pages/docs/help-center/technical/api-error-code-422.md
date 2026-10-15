@@ -8,7 +8,7 @@ path: docs/help-center/technical/api-error-code-422
 
 # API - Error Code 422
 
-### value\_error: Required value is not provided or is not in the correct format
+### value_error: Required value is not provided or is not in the correct format
 
 > Check [https://api.elevenlabs.io/docs#/](https://api.elevenlabs.io/docs#/) to see what parameters are required for the endpoint you are using. Ensure you are setting it properly.
 

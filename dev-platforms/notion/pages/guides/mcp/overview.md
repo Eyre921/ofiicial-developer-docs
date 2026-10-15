@@ -28,6 +28,6 @@ See [Supported tools](/guides/mcp/mcp-supported-tools) for the current tool list
 
 ## Admin controls
 
-Workspace owners can manage MCP client access in **Settings** → **Connections**. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
+Workspace owners can manage MCP client access in **Settings** → **Notion MCP** → **Manage workspace clients**. Limiting which clients members can connect needs the Enterprise plan. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
 
 See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) in the Notion Help Center for workspace settings and allowlists.

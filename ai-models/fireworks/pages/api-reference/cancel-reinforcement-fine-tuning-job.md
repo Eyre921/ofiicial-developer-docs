@@ -5,3 +5,4 @@ path: api-reference/cancel-reinforcement-fine-tuning-job
 ---
 
 post /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}:cancel
+Cancel a running reinforcement fine-tuning job in your Fireworks account by POSTing to the :cancel endpoint with the account ID and job ID path parameters.

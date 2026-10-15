@@ -78,9 +78,9 @@ Click on the "Create a batch call" button. This will open the "Create a batch ca
 > configuration:
 >
 > * language
-> * first\_message
-> * system\_prompt
-> * voice\_id
+> * first_message
+> * system_prompt
+> * voice_id
 >
 > The batch call will fail if those fields are passed but are not set to be overridable in the agent's security settings. See more
 > [here](/docs/eleven-agents/customization/personalization/overrides).

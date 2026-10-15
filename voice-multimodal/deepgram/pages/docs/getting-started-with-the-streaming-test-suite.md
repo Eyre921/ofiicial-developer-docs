@@ -132,7 +132,7 @@ Make sure you have the URL for direct audio stream to test with. A good way of t
 
 Here are two URLs for you to try:
 
-* BBC World Service: [http://stream.live.vc.bbcmedia.co.uk/bbc\_world\_service](http://stream.live.vc.bbcmedia.co.uk/bbc_world_service)
+* BBC World Service: [http://stream.live.vc.bbcmedia.co.uk/bbc_world_service](http://stream.live.vc.bbcmedia.co.uk/bbc_world_service)
 * France Inter: [https://direct.franceinter.fr/live/franceinter-midfi.mp3](https://direct.franceinter.fr/live/franceinter-midfi.mp3)
 
 If you use the French channel, be sure to add `language=fr` to your Deepgram URL.

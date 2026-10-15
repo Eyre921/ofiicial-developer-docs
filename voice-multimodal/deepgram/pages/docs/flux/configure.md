@@ -216,9 +216,9 @@ Different behaviors apply when you omit fields versus explicitly clearing them:
 | Empty keyterms array          | `{"type": "Configure", "keyterms": []}`         | Clears all keyterms                       |
 | Omit threshold property       | `{"thresholds": {"eot_threshold": 0.8}}`        | No change to other thresholds             |
 | Omit entire thresholds object | `{"type": "Configure", "keyterms": [...]}`      | No change to any thresholds               |
-| Omit language\_hints          | `{"type": "Configure", "keyterms": [...]}`      | No change to language hints               |
-| Empty language\_hints array   | `{"type": "Configure", "language_hints": []}`   | Clears all hints (reverts to auto-detect) |
-| Set language\_hints to null   | `{"type": "Configure", "language_hints": null}` | No change to language hints               |
+| Omit language_hints           | `{"type": "Configure", "keyterms": [...]}`      | No change to language hints               |
+| Empty language_hints array    | `{"type": "Configure", "language_hints": []}`   | Clears all hints (reverts to auto-detect) |
+| Set language_hints to null    | `{"type": "Configure", "language_hints": null}` | No change to language hints               |
 | Omit numerals                 | `{"type": "Configure", "keyterms": [...]}`      | No change to numerals                     |
 | Set numerals to null          | `{"type": "Configure", "numerals": null}`       | No change to numerals                     |
 

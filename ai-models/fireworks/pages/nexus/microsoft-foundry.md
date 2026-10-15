@@ -4,7 +4,9 @@ source: https://docs.fireworks.ai/nexus/microsoft-foundry
 path: nexus/microsoft-foundry
 ---
 
-Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses, through FireConnect, manual setup, or an LLM gateway.
+Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor, and VS Code via FireConnect, manual setup, or an LLM gateway.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 Use Fireworks models deployed in your Azure subscription from the coding harness you already use. Azure bills this usage, and it counts toward your Microsoft Azure Consumption Commitment where applicable.
 

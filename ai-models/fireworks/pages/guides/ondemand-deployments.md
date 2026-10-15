@@ -1,10 +1,10 @@
 ---
-title: "Deployments"
+title: "On-demand deployments on dedicated Fireworks GPUs"
 source: https://docs.fireworks.ai/guides/ondemand-deployments
 path: guides/ondemand-deployments
 ---
 
-Configure and manage on-demand deployments on dedicated GPUs
+Create and manage on-demand Fireworks deployments on dedicated GPUs: choose accelerator shapes, autoscaling, replicas, and lifecycle controls for production.
 
 <Info>
   **New to deployments?** Start with our [Deployments Quickstart](/getting-started/ondemand-quickstart) to deploy and query your first model in minutes, then return here to learn about configuration options.

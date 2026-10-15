@@ -1,10 +1,10 @@
 ---
-title: "Secure Reinforcement Fine-Tuning"
+title: "Secure reinforcement fine-tuning (RFT) on Fireworks"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
 path: guides/security_compliance/secure_training/secure_rft
 ---
 
-Run RFT end to end with your dataset, reward pipeline, and rollout infrastructure under your own control
+Run RFT end to end on Fireworks with your dataset, reward pipeline, and rollout infrastructure under your own control for data-sensitive training workloads.
 
 Use reinforcement fine-tuning while keeping sensitive components and data under your control. This composes [BYOB](/guides/security_compliance/secure_training/byob) storage with a reward pipeline and rollout infrastructure that stay in your environment.
 

@@ -472,9 +472,9 @@ By default, both Deepgram and Amazon will provide you with the following values:
 
 Additionally, Amazon and Deepgram provide the following:
 
-| Deepgram                                                              | Amazon                                                         |
-| --------------------------------------------------------------------- | -------------------------------------------------------------- |
-| - punctuate - interim\_results - language - is\_final - speech\_final | - Type - Stable - VocabularyFilterMatch - IsPartial - ResultID |
+| Deepgram                                                           | Amazon                                                         |
+| ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| - punctuate - interim_results - language - is_final - speech_final | - Type - Stable - VocabularyFilterMatch - IsPartial - ResultID |
 
 #### Configure Environment
 

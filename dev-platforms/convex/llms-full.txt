@@ -163,6 +163,13 @@
 - [convex-test](/testing/convex-test.md): Mock Convex backend for fast automated testing of functions
 - [Testing](/testing/overview.md): Testing your backend
 
+## linting
+
+- [Biome](/linting/biome.md): Use the Convex lint rules alongside Biome
+- [ESLint](/linting/eslint.md): Set up the Convex lint rules with ESLint
+- [Linting](/linting/overview.md): Lint rules that catch common mistakes in Convex code
+- [Oxlint](/linting/oxlint.md): Use the Convex lint rules with Oxlint
+
 ## production
 
 - [Abuse Protection](/production/abuse-protection.md): What Convex deployments are protected from by default, including DDoS attacks, and how to add your own Cloudflare or Vercel edge for more control
@@ -273,10 +280,6 @@
 ## error
 
 - [Errors and Warnings](/error.md): Understand specific errors thrown by Convex
-
-## eslint
-
-- [ESLint rules](/eslint.md): ESLint rules for Convex
 
 ## tutorial
 
@@ -1123,6 +1126,8 @@ Note: you can also search for messages without an agent. The main difference is 
 ```
 import { fetchRecentAndSearchMessages } from "@convex-dev/agent";
 
+import { embed } from "ai";
+
 
 
 const { recentMessages, searchMessages } = await fetchRecentAndSearchMessages(
@@ -1133,19 +1138,21 @@ const { recentMessages, searchMessages } = await fetchRecentAndSearchMessages(
 
   {
 
+    userId,
+
     threadId,
 
     searchText: prompt, // Optional unless you want text/vector search.
 
     targetMessageId: promptMessageId, // Optionally target the search.
 
-    contextOptions, // Optional, defaults are used if not provided.
+    contextOptions,
 
     getEmbedding: async (text) => {
 
-      const embedding = await textEmbeddingModel.embed(text);
+      const { embedding } = await embed({ model: embeddingModel, value: text });
 
-      return { embedding, textEmbeddingModel };
+      return { embedding, embeddingModel };
 
     },
 
@@ -1173,7 +1180,7 @@ This allows you to pass in messages that are not part of the thread history and 
 
 ## Manage embeddings manually[​](#manage-embeddings-manually "Direct link to Manage embeddings manually")
 
-The `textEmbeddingModel` argument to the Agent constructor allows you to specify a text embedding model to use for vector search.
+The `embeddingModel` argument to the Agent constructor allows you to specify a text embedding model to use for vector search.
 
 If you set this, the agent will automatically generate embeddings for messages and use them for vector search.
 
@@ -1190,7 +1197,7 @@ const embeddings = await embedMessages(
 
   ctx,
 
-  { userId, threadId, textEmbeddingModel, ...config },
+  { userId, threadId, embeddingModel, ...config },
 
   [{ role: "user", content: "What is love?" }],
 
@@ -1445,6 +1452,18 @@ You can go to the Data tab in the dashboard and select the agent component above
 
 If you get type errors about `components.agent`, ensure you've run `npx convex dev` to generate code for the component. The types expected by the library are in the npm library, and the types for `components.agent` currently come from generated code in your project (via `npx convex dev`).
 
+### `dynamic module import unsupported` from an unrelated query[​](#dynamic-module-import-unsupported-from-an-unrelated-query "Direct link to dynamic-module-import-unsupported-from-an-unrelated-query")
+
+Queries and mutations run in the Convex runtime, which cannot load Node.js built-in modules or packages that dynamically import them. If a tool's `execute` imports such a package, the whole module that defines the agent fails to load there, and the error surfaces from whichever query or mutation imports that module, typically the one listing thread messages.
+
+Keep the Node-only work in its own file marked `"use node"` as an `internalAction`, and have the tool call it with `ctx.runAction`. The agent module then stays loadable from the Convex runtime. To find an import of a Node built-in such as `fs`, run this (it requires `--once`):
+
+```
+npx convex dev --once --debug-node-apis
+```
+
+It re-bundles each non-`"use node"` entry point and names the first unresolvable import. A package that bundles but calls `import()` at runtime will not show up here.
+
 ### Circular dependencies[​](#circular-dependencies "Direct link to Circular dependencies")
 
 Having the return value of workflows depend on other Convex functions can lead to circular dependencies due to the `internal.foo.bar` way of specifying functions. The way to fix this is to explicitly type the return value of the workflow. When in doubt, add return types to more `handler` functions, like this:
@@ -1611,19 +1630,23 @@ Example:
 ```
 await thread.generateText({
 
-  message: {
+  prompt: [
 
-    role: "user",
+    {
 
-    content: [
+      role: "user",
 
-      { type: "image", image: imageBytes, mediaType: "image/png" },
+      content: [
 
-      { type: "text", text: "What is this image?" },
+        { type: "image", image: imageBytes, mediaType: "image/png" },
 
-    ],
+        { type: "text", text: "What is this image?" },
 
-  },
+      ],
+
+    },
+
+  ],
 
 });
 ```
@@ -1649,22 +1672,106 @@ const url = await ctx.storage.getUrl(storageId);
 
 await thread.generateText({
 
-  message: {
+  prompt: [
 
-    role: "user",
+    {
 
-    content: [
+      role: "user",
 
-      { type: "image", image: url, mediaType: blob.type },
+      content: [
 
-      { type: "text", text: "What is this image?" },
+        { type: "image", image: url, mediaType: blob.type },
 
-    ],
+        { type: "text", text: "What is this image?" },
+
+      ],
+
+    },
+
+  ],
+
+});
+```
+
+### `Timeout while downloading <url>` from the provider[​](#timeout-while-downloading-url-from-the-provider "Direct link to timeout-while-downloading-url-from-the-provider")
+
+When a message carries an image or file as a URL, the component stores the URL and hands it to the AI SDK. Providers that accept URLs for that media type (OpenAI does for `image/*`) download it themselves; for other providers the AI SDK downloads it inside your action before the request. If a provider error reports `Timeout while downloading` and names the image URL, the provider could not fetch that URL in time. The `AI_APICallError` request URL may be the provider's API endpoint; that alone does not identify which fetch timed out. Third-party hosts and CDNs can respond inconsistently, so the same image URL may work on a later attempt.
+
+To avoid relying on that host during generation, fetch the image in an action and pass its bytes in the message. You can set the fetch timeout or add retries. The bytes are sent inline on this call. When the message is saved, images over 64 KiB are moved to Convex file storage, so later turns replay a storage URL. Either way only your own fetch, not the provider request, depends on your image host:
+
+```
+export const ask = internalAction({
+
+  args: { threadId: v.string(), imageUrl: v.string(), prompt: v.string() },
+
+  handler: async (ctx, { threadId, imageUrl, prompt }) => {
+
+    const url = new URL(imageUrl);
+
+    if (
+
+      url.origin !== "https://images.example.com" ||
+
+      url.username ||
+
+      url.password
+
+    ) {
+
+      throw new Error("Untrusted image URL");
+
+    }
+
+    const response = await fetch(url, {
+
+      signal: AbortSignal.timeout(10_000),
+
+      redirect: "error",
+
+    });
+
+    if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+
+    const mediaType = response.headers.get("content-type");
+
+    if (!mediaType?.startsWith("image/")) {
+
+      throw new Error(`Not an image: ${mediaType}`);
+
+    }
+
+    const image = new Uint8Array(await response.arrayBuffer());
+
+    const { thread } = await agent.continueThread(ctx, { threadId });
+
+    await thread.generateText({
+
+      prompt: [
+
+        {
+
+          role: "user",
+
+          content: [
+
+            { type: "image", image, mediaType },
+
+            { type: "text", text: prompt },
+
+          ],
+
+        },
+
+      ],
+
+    });
 
   },
 
 });
 ```
+
+Replace `images.example.com` with a host your application trusts. Do not fetch arbitrary user-supplied URLs: a server that does so can be pointed at internal hosts. Apart from localhost URLs, which it inlines for local development, the component does not download URLs on your behalf.
 
 ## Generating images[​](#generating-images "Direct link to Generating images")
 
@@ -1905,7 +2012,7 @@ const askHuman = tool({
 
   description: "Ask a human a question",
 
-  parameters: z.object({
+  inputSchema: z.object({
 
     question: z.string().describe("The question to ask the human"),
 
@@ -1939,9 +2046,9 @@ export const ask = action({
 
     const supportRequests = result.toolCalls
 
-      .filter((tc) => tc.toolName === "askHuman")
+      .filter((tc) => tc.toolName === "askHuman" && !tc.dynamic)
 
-      .map(({ toolCallId, args: { question } }) => ({
+      .map(({ toolCallId, input: { question } }) => ({
 
         toolCallId,
 
@@ -2003,7 +2110,7 @@ export const humanResponseAsToolCall = internalAction({
 
             type: "tool-result",
 
-            result: args.response,
+            output: { type: "text", value: args.response },
 
             toolCallId: args.toolCallId,
 
@@ -2157,8 +2264,7 @@ The Agent component extends the AI SDK's `UIMessage` type to provide convenient 
 
 The core UIMessage type from the AI SDK is:
 
-* `parts` is an array of parts (e.g. "text", "file", "image", "toolCall", "toolResult")
-* `content` is a string of the message content.
+* `parts` is an array of parts (e.g. "text", "file", "reasoning", `tool-${toolName}`, "dynamic-tool")
 * `role` is the role of the message (e.g. "user", "assistant", "system").
 
 The helper adds these additional fields:
@@ -2795,9 +2901,9 @@ searchContext: createTool({
 
   description: "Search for context related to this user prompt",
 
-  args: z.object({ query: z.string().describe("Describe the context you're looking for") }),
+  inputSchema: z.object({ query: z.string().describe("Describe the context you're looking for") }),
 
-  handler: async (ctx, { query }) => {
+  execute: async (ctx, { query }) => {
 
     const context = await rag.search(ctx, { namespace: userId, query });
 
@@ -3417,7 +3523,7 @@ import { SmoothText } from "@convex-dev/agent/react";
 
 ## Consuming the stream yourself with the Agent[​](#consuming-the-stream-yourself-with-the-agent "Direct link to Consuming the stream yourself with the Agent")
 
-You can consume the stream in all the ways you can with the underlying AI SDK - for instance iterating over the content, or using [`result.toDataStreamResponse()`](https://ai-sdk.dev/docs/reference/ai-sdk-core/stream-text#to-data-stream-response).
+You can consume the stream in all the ways you can with the underlying AI SDK - for instance iterating over the content, or using [`result.toUIMessageStreamResponse()`](https://ai-sdk.dev/docs/reference/ai-sdk-core/stream-text#to-ui-message-stream-response).
 
 If you are not also saving the deltas, it might look like this:
 
@@ -3432,6 +3538,8 @@ for await (const textPart of result.textStream) {
 
 }
 ```
+
+`agent.streamObject` saves the object from the AI SDK's `onFinish`, which only runs once the stream has been read to the end. Read `result.partialObjectStream` to the end before the action returns: awaiting `result.object` alone does not read the stream.
 
 If you want to both iterate as the stream is happening, as well as save the deltas, you can pass `{ saveStreamDeltas: { returnImmediately: true } }` to `streamText`. This will return immediately, and you can then iterate over the stream live, or return the stream in an HTTP Response.
 
@@ -3454,6 +3562,158 @@ return result.toUIMessageStreamResponse();
 ```
 
 If you don't want to have the Agent involved at all, the next section will show you how to save the deltas yourself.
+
+### Using `useChat` from `@ai-sdk/react`[​](#using-usechat-from-ai-sdkreact "Direct link to using-usechat-from-ai-sdkreact")
+
+`toUIMessageStreamResponse()` returns the response shape `useChat` consumes, so the AI SDK's React hook and the tooling built around it work against an `httpAction`. The hook posts its `messages` array. Validate the last user message, use its text as the prompt, and let the agent load the rest of the history from the thread:
+
+```
+// convex/chat.ts
+
+import { z } from "zod";
+
+import { getThreadMetadata } from "@convex-dev/agent";
+
+import { components } from "./_generated/api";
+
+import { httpAction } from "./_generated/server";
+
+import { storyAgent } from "./agents/story";
+
+import { getAuthUserId } from "./utils";
+
+
+
+const chatRequest = z.object({
+
+  threadId: z.string().min(1),
+
+  messages: z.array(
+
+    z.object({ role: z.string(), parts: z.array(z.unknown()) }),
+
+  ),
+
+});
+
+const textPart = z.object({ type: z.literal("text"), text: z.string() });
+
+
+
+export const chat = httpAction(async (ctx, request) => {
+
+  const parsed = chatRequest.safeParse(await request.json().catch(() => null));
+
+  if (!parsed.success) return new Response("Invalid request", { status: 400 });
+
+  const { messages, threadId } = parsed.data;
+
+  const last = messages.at(-1);
+
+  if (last?.role !== "user") {
+
+    return new Response("Expected a user message", { status: 400 });
+
+  }
+
+  const prompt = last.parts
+
+    .flatMap((part) => {
+
+      const text = textPart.safeParse(part);
+
+      return text.success ? [text.data.text] : [];
+
+    })
+
+    .join("");
+
+  if (!prompt) return new Response("No prompt text", { status: 400 });
+
+  const userId = await getAuthUserId(ctx);
+
+  if (!userId) return new Response("Unauthorized", { status: 401 });
+
+  const thread = await getThreadMetadata(ctx, components.agent, { threadId });
+
+  if (thread.userId !== userId) {
+
+    return new Response("Forbidden", { status: 403 });
+
+  }
+
+  const result = await storyAgent.streamText(
+
+    ctx,
+
+    { threadId },
+
+    { prompt },
+
+    { saveStreamDeltas: { returnImmediately: true } },
+
+  );
+
+  return result.toUIMessageStreamResponse();
+
+});
+```
+
+Route it in `convex/http.ts` with CORS, as in [http.ts](https://github.com/get-convex/agent/blob/main/example/convex/http.ts):
+
+```
+// convex/http.ts
+
+import { httpRouter } from "convex/server";
+
+import { corsRouter } from "convex-helpers/server/cors";
+
+import { chat } from "./chat";
+
+
+
+const http = httpRouter();
+
+const cors = corsRouter(http, {
+
+  allowedHeaders: ["Authorization", "Content-Type"],
+
+});
+
+cors.route({ path: "/chat", method: "POST", handler: chat });
+
+export default http;
+```
+
+Then point the transport at it. `VITE_CONVEX_SITE_URL` is your deployment's `.convex.site` URL, which `npx convex dev` writes for Vite apps:
+
+```
+import { useChat } from "@ai-sdk/react";
+
+import { DefaultChatTransport } from "ai";
+
+
+
+const { messages, sendMessage } = useChat({
+
+  transport: new DefaultChatTransport({
+
+    api: `${import.meta.env.VITE_CONVEX_SITE_URL}/chat`,
+
+    body: { threadId },
+
+    headers: async () => ({ Authorization: `Bearer ${await getToken()}` }),
+
+  }),
+
+});
+```
+
+This example handles text-only user sends. Add handling for attachments or regeneration if your chat UI supports them.
+
+The access check returns 401 or 403 itself, so `useChat` sees the status instead of an opaque CORS failure, while unexpected errors still surface as server errors. `getAuthUserId` is the example app's demo stub (`example/convex/utils.ts`), which ignores the request, so in your app derive the user from `ctx.auth.getUserIdentity()` with [Convex auth](https://docs.convex.dev/auth) configured. `DefaultChatTransport` does not automatically send the Convex client's auth token to an HTTP action, so the transport passes it as an `Authorization: Bearer <token>` header, with `getToken` standing in for your auth provider's getter for the Convex JWT. See [HTTP action auth](https://docs.convex.dev/auth/functions-auth#http-actions).
+
+The trade-off is where state lives. `useChat` holds the conversation in the browser tab that made the request; the agent still persists every message, but a new `useChat` instance does not automatically load or subscribe to that history. On reload, seed its `messages` from a query over the thread. `useUIMessages` reads the same persisted messages and deltas reactively from the database, so every subscriber sees the stream. Use `useChat` when you need its ecosystem, and `useUIMessages` when you need the conversation to be shared.
 
 ## Advanced: Streaming deltas asynchronously without using an Agent[​](#advanced-streaming-deltas-asynchronously-without-using-an-agent "Direct link to Advanced: Streaming deltas asynchronously without using an Agent")
 
@@ -3749,6 +4009,44 @@ const threads = await ctx.runQuery(
 );
 ```
 
+### Listing threads by recent activity[​](#listing-threads-by-recent-activity "Direct link to Listing threads by recent activity")
+
+Threads carry no `updatedAt`. Keeping one on the thread would mean patching the thread document on every message, which makes concurrent generations in one thread contend on a single row. Keep the activity index in your app instead, where the mutation that accepts a user message already runs:
+
+```
+// convex/schema.ts
+
+threadActivity: defineTable({
+
+  userId: v.string(),
+
+  threadId: v.string(),
+
+  lastActivityAt: v.number(),
+
+})
+
+  .index("by_threadId", ["threadId"])
+
+  .index("by_userId_lastActivityAt", ["userId", "lastActivityAt"]),
+```
+
+Upsert the row by `by_threadId` in the same mutation that saves the prompt, delete it by the same index when the thread is deleted, and list with the activity index:
+
+```
+const recent = await ctx.db
+
+  .query("threadActivity")
+
+  .withIndex("by_userId_lastActivityAt", (q) => q.eq("userId", userId))
+
+  .order("desc")
+
+  .paginate(paginationOpts);
+```
+
+One write per user turn, no component reads to list, and the ordering is whatever your app defines as activity.
+
 ## Deleting all threads and messages associated with a user[​](#deleting-all-threads-and-messages-associated-with-a-user "Direct link to Deleting all threads and messages associated with a user")
 
 Asynchronously (from a mutation or action):
@@ -3885,7 +4183,7 @@ The typical approval flow involves four server functions:
 1. **Save the user's message** and schedule generation.
 2. **Generate a response.** If the model calls a tool that needs approval, generation pauses and the `tool-approval-request` is persisted in the thread.
 3. **Submit an approval or denial** for each pending tool call. `approveToolCall` and `denyToolCall` work from both mutations and actions.
-4. **Continue generation** once all pending approvals have been resolved.
+4. **Continue generation** from the returned message ID.
 
 ```
 import { approvalAgent } from "../agents/approval";
@@ -4000,7 +4298,7 @@ export const submitApproval = mutation({
 
 
 
-// 4. Continue generation after all approvals resolved.
+// 4. Continue generation from the saved approval decision.
 
 //    Pass the last approval message ID as promptMessageId so the agent
 
@@ -4035,9 +4333,39 @@ You can approve a tool call and continue generation in the same server function.
 
 ## Handling multiple tool calls[​](#handling-multiple-tool-calls "Direct link to Handling multiple tool calls")
 
-When the model calls several tools in a single step, some or all of them may require approval. **Every** pending approval must be resolved (approved or denied) before you continue generation.
+When the model calls several tools in a single step, some or all of them may require approval. Submit decisions from the same assistant request together with `respondToToolCallApprovals`. The batch uses one bounded lookup and one write, and either every decision is saved or none are.
 
-If a new generation starts while approvals are still unresolved, the unresolved approvals are **automatically denied** with the reason `"auto-denied: new generation started"`. This prevents broken message histories where tool calls lack results.
+```
+const { messageId } = await approvalAgent.respondToToolCallApprovals(ctx, {
+
+  threadId,
+
+  decisions: [
+
+    { approvalId: "delete-file", approved: true },
+
+    {
+
+      approvalId: "send-email",
+
+      approved: false,
+
+      reason: "Wrong recipient",
+
+    },
+
+  ],
+
+});
+```
+
+You may also submit and resume a subset. Sibling approvals that have not been decided remain pending and can be resumed later. `approveToolCall` and `denyToolCall` remain available for single decisions and use the same atomic path. For multiple decisions, use the batch method instead of looping over the single-decision helpers so the request history is read only once.
+
+If a partial continuation requests another approval, that newer request also remains pending while you resume an earlier sibling.
+
+If an unrelated generation starts while approvals are still unresolved, they are **automatically denied** with the reason `"auto-denied: new generation started"`. This prevents broken message histories where tool calls lack results. These denials are synthetic and only added to the model's context for that request; they are not saved, so the approvals remain pending in storage.
+
+This does not apply when resuming approvals: on that continuation, earlier approvals that were not part of the resume are omitted from that model request. No response is written for them, so they remain pending in storage.
 
 ## Client-side flow[​](#client-side-flow "Direct link to Client-side flow")
 
@@ -4178,6 +4506,36 @@ The Agent component will automatically handle passing tool call results back in 
 
 The tool call and result will be stored as messages in the thread associated with the source message. See [Messages](/agents/messages.md) for more details.
 
+### Stopping the tool loop[​](#stopping-the-tool-loop "Direct link to Stopping the tool loop")
+
+The loop stops after a step that makes no tool calls, after a step with a tool call still waiting on approval, or when a `stopWhen` condition matches. `stopWhen`, on the call or on the Agent, is the control over this. The Agent's `maxSteps` option is a fallback: `generateText` and `streamText` turn it into `stepCountIs(maxSteps)` only when neither the call nor the Agent sets `stopWhen`, and it is not accepted as a call argument. `asTextAction` is the exception: a `maxSteps` argument there replaces `stopWhen`.
+
+Conditions in an array are ORed, so the loop stops as soon as any of them holds. Pair a tool condition with a step cap, otherwise a model that keeps calling the tool without producing the result you wanted will loop until the action times out:
+
+```
+import { hasSuccessfulToolCall, stepCountIs } from "@convex-dev/agent";
+
+
+
+await agent.generateText(
+
+  ctx,
+
+  { threadId },
+
+  {
+
+    prompt,
+
+    stopWhen: [hasSuccessfulToolCall("generateImage"), stepCountIs(5)],
+
+  },
+
+);
+```
+
+`hasSuccessfulToolCall` matches only when the tool returned a result. The AI SDK's `hasToolCall` matches the call even if the tool fails, which can stop the loop before the model has a chance to retry.
+
 ## Creating a tool with a Convex context[​](#creating-a-tool-with-a-convex-context "Direct link to Creating a tool with a Convex context")
 
 There are two ways to create a tool that has access to the Convex context.
@@ -4189,9 +4547,13 @@ export const ideaSearch = createTool({
 
   description: "Search for ideas in the database",
 
-  args: z.object({ query: z.string().describe("The query to search for") }),
+  inputSchema: z.object({
 
-  handler: async (ctx, args, options): Promise<Array<Idea>> => {
+    query: z.string().describe("The query to search for"),
+
+  }),
+
+  execute: async (ctx, args, options): Promise<Array<Idea>> => {
 
     // ctx has agent, userId, threadId, messageId
 
@@ -4269,11 +4631,11 @@ type MyCtx = ToolCtx & { orgId: string };
 
 const myTool = createTool({
 
-  args: z.object({ ... }),
+  inputSchema: z.object({ ... }),
 
   description: "...",
 
-  handler: async (ctx: MyCtx, args) => {
+  execute: async (ctx: MyCtx, args) => {
 
     // use ctx.orgId
 
@@ -4281,6 +4643,56 @@ const myTool = createTool({
 
 });
 ```
+
+## Artifacts and canvases[​](#artifacts-and-canvases "Direct link to Artifacts and canvases")
+
+An artifact (a document, a code file, a canvas) can live in your application's tables rather than in message content. One pattern is to store a version per edit and give the model tools that write to it:
+
+```
+// convex/schema.ts
+
+artifacts: defineTable({
+
+  threadId: v.string(),
+
+  key: v.string(),
+
+  version: v.number(),
+
+  content: v.string(),
+
+}).index("by_threadId_key_version", ["threadId", "key", "version"]),
+```
+
+```
+const writeArtifact = createTool({
+
+  description: "Create or replace the named artifact with new content.",
+
+  inputSchema: z.object({ key: z.string(), content: z.string() }),
+
+  execute: async (ctx, { key, content }): Promise<{ version: number }> => {
+
+    if (!ctx.threadId) throw new Error("writeArtifact requires a thread");
+
+    return ctx.runMutation(internal.artifacts.write, {
+
+      threadId: ctx.threadId,
+
+      key,
+
+      content,
+
+    });
+
+  },
+
+});
+```
+
+The mutation must authorize the write and allocate the next version. The tool result stays small because it contains only the version, while the client reads the artifact with `useQuery` and receives updates reactively. Keeping each version as a separate row lets the app show earlier edits.
+
+Avoid asking the model to emit the artifact inside special tags in its text. The text is stored verbatim and streamed as it arrives, so a half-written tag is visible to users, and the parse has to be maintained per model. A tool call is validated against a schema and either happens or does not.
 
 ## Using an LLM or Agent as a tool[​](#using-an-llm-or-agent-as-a-tool "Direct link to Using an LLM or Agent as a tool")
 
@@ -4297,13 +4709,13 @@ const llmTool = createTool({
 
   description: "Ask a question to some LLM",
 
-  args: z.object({
+  inputSchema: z.object({
 
     message: z.string().describe("The message to ask the LLM"),
 
   }),
 
-  handler: async (ctx, args): Promise<string> => {
+  execute: async (ctx, args, options): Promise<string> => {
 
     const result = await generateText({
 
@@ -4331,13 +4743,13 @@ const agentTool = createTool({
 
   description: `Ask a question to agent ${agent.name}`,
 
-  args: z.object({
+  inputSchema: z.object({
 
     message: z.string().describe("The message to ask the agent"),
 
   }),
 
-  handler: async (ctx, args, options): Promise<string> => {
+  execute: async (ctx, args, options): Promise<string> => {
 
     const { userId } = ctx;
 
@@ -4692,6 +5104,12 @@ However, if you also want to manage multi-step workflows, you should use the [Wo
 When doing multi-step workflows that can fail mid-way, you need to ensure that the workflow can be resumed from where it left off, without duplicating work. The [Workflow](https://convex.dev/components/workflow) builds on the [Workpool](https://convex.dev/components/workpool) to provide durable execution of long running functions with retries and delays.
 
 Each step in the workflow is run, with the result recorded. Even if the server fails mid-way, it will resume with the latest incomplete step, with configurable retry settings.
+
+## Action time limits[​](#action-time-limits "Direct link to Action time limits")
+
+A `generateText` or `streamText` call runs inside a single Convex action, including every step of its tool loop. Actions in the Convex runtime can run for 30 minutes and Node actions (`"use node"`) for 10 minutes; see [limits](https://docs.convex.dev/production/state/limits). An agent that runs many tool calls for one user message can hit that ceiling.
+
+For longer work, split generation across actions so each call finishes within the limit. Completed steps are saved to the thread, and a later call can use `promptMessageId` to start from the original prompt's history. That does not resume a tool call that timed out or schedule the next action for you. The Workflow component below can chain the calls durably; tools run in retried steps must be safe to retry.
 
 ## Using the Workflow component for long-lived durable workflows[​](#using-the-workflow-component-for-long-lived-durable-workflows "Direct link to Using the Workflow component for long-lived durable workflows")
 
@@ -5519,7 +5937,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-10-09.
+ZDR endpoint catalog checked: 2026-10-15.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -5538,6 +5956,8 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `openai/gpt-4o-2024-11-20`
 * `openai/gpt-4o-mini` · ZDR
 * `openai/gpt-4o-mini-2024-07-18`
+* `openai/gpt-4o-mini-transcribe`
+* `openai/gpt-4o-transcribe`
 * `openai/gpt-5` · ZDR
 * `openai/gpt-5-image`
 * `openai/gpt-5-image-mini`
@@ -5569,6 +5989,7 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `openai/gpt-6-astra` · ZDR
 * `openai/gpt-6-astra-pro` · ZDR
 * `openai/gpt-6-luna` · ZDR
+* `openai/gpt-6-luna-decisions`
 * `openai/gpt-6-luna-pro` · ZDR
 * `openai/gpt-6-sol` · ZDR
 * `openai/gpt-6-sol-pro` · ZDR
@@ -5577,9 +5998,15 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `openai/gpt-audio`
 * `openai/gpt-audio-mini`
 * `openai/gpt-chat-latest`
+* `openai/gpt-image-1`
+* `openai/gpt-image-1-mini`
+* `openai/gpt-image-2`
+* `openai/gpt-image-2.5-flare`
+* `openai/gpt-image-2.5-sunburst`
 * `openai/gpt-oss-120b` · ZDR
 * `openai/gpt-oss-20b` · ZDR
 * `openai/gpt-oss-safeguard-20b` · ZDR
+* `openai/gpt-transcribe`
 * `openai/o1`
 * `openai/o1-pro`
 * `openai/o3`
@@ -5588,6 +6015,12 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `openai/o3-pro`
 * `openai/o4-mini`
 * `openai/o4-mini-high`
+* `openai/text-embedding-3-large` · ZDR
+* `openai/text-embedding-3-small` · ZDR
+* `openai/text-embedding-ada-002`
+* `openai/whisper-1`
+* `openai/whisper-large-v3` · ZDR
+* `openai/whisper-large-v3-turbo` · ZDR
 * `~openai/gpt-astra-latest`
 * `~openai/gpt-luna-latest`
 * `~openai/gpt-mini-latest`
@@ -5607,7 +6040,6 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `anthropic/claude-opus-4.8` · ZDR
 * `anthropic/claude-opus-5` · ZDR
 * `anthropic/claude-opus-5.5` · ZDR
-* `anthropic/claude-sonnet-4` · ZDR
 * `anthropic/claude-sonnet-4.5` · ZDR
 * `anthropic/claude-sonnet-4.6` · ZDR
 * `anthropic/claude-sonnet-5` · ZDR
@@ -5619,6 +6051,7 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## Google[​](#google "Direct link to Google")
 
+* `google/chirp-3` · ZDR
 * `google/gemini-2.5-flash` · ZDR
 * `google/gemini-2.5-flash-image` · ZDR
 * `google/gemini-2.5-flash-lite` · ZDR
@@ -5632,13 +6065,21 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `google/gemini-3.1-flash-lite` · ZDR
 * `google/gemini-3.1-flash-lite-image` · ZDR
 * `google/gemini-3.1-flash-lite-preview`
+* `google/gemini-3.1-flash-tts-preview` · ZDR
 * `google/gemini-3.1-pro-preview` · ZDR
 * `google/gemini-3.1-pro-preview-customtools`
 * `google/gemini-3.5-flash` · ZDR
 * `google/gemini-3.5-flash-lite` · ZDR
+* `google/gemini-3.5-transcribe`
 * `google/gemini-3.6-flash` · ZDR
 * `google/gemini-3.7-flash` · ZDR
 * `google/gemini-3.8-flash` · ZDR
+* `google/gemini-3.8-flash-lite-tts` · ZDR
+* `google/gemini-3.8-flash-tts` · ZDR
+* `google/gemini-4-argon` · ZDR
+* `google/gemini-embedding-001` · ZDR
+* `google/gemini-embedding-2` · ZDR
+* `google/gemini-embedding-2-preview`
 * `google/gemini-nano-banana-2.1`
 * `google/gemma-2-27b-it` · ZDR
 * `google/gemma-3-12b-it` · ZDR
@@ -5650,6 +6091,9 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `google/gemma-4-31b-it:free`
 * `google/lyria-3-clip-preview`
 * `google/lyria-3-pro-preview`
+* `google/veo-3.1`
+* `google/veo-3.1-fast`
+* `google/veo-3.1-lite`
 * `~google/gemini-flash-latest`
 * `~google/gemini-pro-latest`
 
@@ -5662,6 +6106,13 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `x-ai/grok-4.6` · ZDR
 * `x-ai/grok-4.7` · ZDR
 * `x-ai/grok-build-0.1` · ZDR
+* `x-ai/grok-imagine-image-2.0`
+* `x-ai/grok-imagine-image-quality`
+* `x-ai/grok-imagine-video`
+* `x-ai/grok-imagine-video-1.5`
+* `x-ai/grok-imagine-video-1.5-lite`
+* `x-ai/grok-stt-1.0`
+* `x-ai/grok-voice-tts-1.0`
 * `~x-ai/grok-latest`
 
 ## DeepSeek[​](#deepseek "Direct link to DeepSeek")
@@ -5695,19 +6146,24 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `meta-llama/llama-4-scout` · ZDR
 * `meta-llama/llama-guard-4-12b` · ZDR
 * `meta/muse-glimmer-30b` · ZDR
+* `meta/muse-image`
 * `meta/muse-spark-1.1`
 * `meta/muse-spark-1.2`
 * `meta/muse-spark-1.2-contributor`
 * `meta/muse-spark-1.3`
 * `meta/muse-spark-1.3-contributor`
+* `meta/muse-voice-transcribe-1.0`
+* `meta/muse-wonder`
 
 ## Mistral[​](#mistral "Direct link to Mistral")
 
 * `mistralai/codestral-2508` · ZDR
+* `mistralai/codestral-embed-2505` · ZDR
 * `mistralai/devstral-2512` · ZDR
 * `mistralai/ministral-14b-2512` · ZDR
 * `mistralai/ministral-3b-2512` · ZDR
 * `mistralai/ministral-8b-2512` · ZDR
+* `mistralai/mistral-embed-2312` · ZDR
 * `mistralai/mistral-large` · ZDR
 * `mistralai/mistral-large-2407` · ZDR
 * `mistralai/mistral-large-2512` · ZDR
@@ -5722,7 +6178,11 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `mistralai/mistral-small-3.1-24b-instruct`
 * `mistralai/mistral-small-3.2-24b-instruct` · ZDR
 * `mistralai/mixtral-8x22b-instruct` · ZDR
+* `mistralai/voxtral-mini-3b-2507` · ZDR
+* `mistralai/voxtral-mini-transcribe` · ZDR
+* `mistralai/voxtral-mini-tts-2603` · ZDR
 * `mistralai/voxtral-small-24b-2507` · ZDR
+* `mistralai/voxtral-small-24b-2507-stt` · ZDR
 
 ## Moonshot[​](#moonshot "Direct link to Moonshot")
 
@@ -5748,34 +6208,33 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `qwen/qwen-2.5-72b-instruct` · ZDR
 * `qwen/qwen-2.5-7b-instruct` · ZDR
 * `qwen/qwen-2.5-coder-32b-instruct`
+* `qwen/qwen-audio-3.0-tts-flash`
+* `qwen/qwen-audio-3.0-tts-plus`
+* `qwen/qwen-image-3`
+* `qwen/qwen-image-3-pro`
 * `qwen/qwen-plus`
-* `qwen/qwen-plus-2025-07-28`
 * `qwen/qwen2.5-vl-72b-instruct` · ZDR
 * `qwen/qwen3-14b` · ZDR
-* `qwen/qwen3-235b-a22b`
 * `qwen/qwen3-235b-a22b-2507` · ZDR
 * `qwen/qwen3-235b-a22b-thinking-2507` · ZDR
 * `qwen/qwen3-30b-a3b` · ZDR
 * `qwen/qwen3-30b-a3b-instruct-2507` · ZDR
-* `qwen/qwen3-30b-a3b-thinking-2507`
 * `qwen/qwen3-32b` · ZDR
-* `qwen/qwen3-8b`
+* `qwen/qwen3-asr-0.6b` · ZDR
+* `qwen/qwen3-asr-1.7b` · ZDR
 * `qwen/qwen3-coder` · ZDR
 * `qwen/qwen3-coder-30b-a3b-instruct` · ZDR
 * `qwen/qwen3-coder-flash`
 * `qwen/qwen3-coder-next` · ZDR
-* `qwen/qwen3-coder-plus`
-* `qwen/qwen3-max`
-* `qwen/qwen3-max-thinking`
+* `qwen/qwen3-embedding-4b` · ZDR
+* `qwen/qwen3-embedding-8b` · ZDR
 * `qwen/qwen3-next-80b-a3b-instruct` · ZDR
 * `qwen/qwen3-next-80b-a3b-thinking` · ZDR
+* `qwen/qwen3-reranker-8b` · ZDR
 * `qwen/qwen3-vl-235b-a22b-instruct` · ZDR
-* `qwen/qwen3-vl-235b-a22b-thinking`
 * `qwen/qwen3-vl-30b-a3b-instruct` · ZDR
 * `qwen/qwen3-vl-30b-a3b-thinking` · ZDR
-* `qwen/qwen3-vl-32b-instruct`
 * `qwen/qwen3-vl-8b-instruct` · ZDR
-* `qwen/qwen3-vl-8b-thinking`
 * `qwen/qwen3.5-122b-a10b` · ZDR
 * `qwen/qwen3.5-27b` · ZDR
 * `qwen/qwen3.5-35b-a3b` · ZDR
@@ -5787,7 +6246,6 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `qwen/qwen3.6-27b` · ZDR
 * `qwen/qwen3.6-35b-a3b` · ZDR
 * `qwen/qwen3.6-flash`
-* `qwen/qwen3.6-max-preview`
 * `qwen/qwen3.6-plus`
 * `qwen/qwen3.7-flash`
 * `qwen/qwen3.7-max`
@@ -5822,6 +6280,9 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## Perplexity[​](#perplexity "Direct link to Perplexity")
 
+* `perplexity/pplx-decider-v1.1-27b` · ZDR
+* `perplexity/pplx-embed-v1-0.6b` · ZDR
+* `perplexity/pplx-embed-v1-4b` · ZDR
 * `perplexity/sonar` · ZDR
 * `perplexity/sonar-deep-research` · ZDR
 * `perplexity/sonar-pro` · ZDR
@@ -5830,20 +6291,38 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## NVIDIA[​](#nvidia "Direct link to NVIDIA")
 
+* `nvidia/llama-nemotron-embed-vl-1b-v2:free`
+* `nvidia/llama-nemotron-rerank-vl-1b-v2:free`
+* `nvidia/nemotron-3-embed-1b:free`
 * `nvidia/nemotron-3-nano-30b-a3b` · ZDR
 * `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
 * `nvidia/nemotron-3-super-120b-a12b` · ZDR
 * `nvidia/nemotron-3-super-120b-a12b:free`
 * `nvidia/nemotron-3-ultra-550b-a55b` · ZDR
 * `nvidia/nemotron-3-ultra-550b-a55b:free`
+* `nvidia/nemotron-3.5-asr-streaming-multilingual-0.6b` · ZDR
 * `nvidia/nemotron-3.5-content-safety` · ZDR
 * `nvidia/nemotron-3.5-content-safety:free`
 * `nvidia/nemotron-3.5-lightning` · ZDR
 * `nvidia/nemotron-3.5-lightning:free`
+* `nvidia/nemotron-3.5-super-vl` · ZDR
+* `nvidia/nemotron-3.5-super-vl:free`
+* `nvidia/parakeet-tdt-0.6b-v3` · ZDR
 * `nvidia/switchyard`
 
 ## Microsoft[​](#microsoft "Direct link to Microsoft")
 
+* `microsoft/mai-image-2.5` · ZDR
+* `microsoft/mai-image-2.5-pro` · ZDR
+* `microsoft/mai-image-2.6` · ZDR
+* `microsoft/mai-image-2.6-flash` · ZDR
+* `microsoft/mai-transcribe-1.5` · ZDR
+* `microsoft/mai-transcribe-2` · ZDR
+* `microsoft/mai-voice-2` · ZDR
+* `microsoft/mai-voice-2-flash` · ZDR
+* `microsoft/mai-voice-2.1` · ZDR
+* `microsoft/mai-voice-2.1-flash` · ZDR
+* `microsoft/microsoft-decision-1` · ZDR
 * `microsoft/phi-4` · ZDR
 * `microsoft/wizardlm-2-8x22b` · ZDR
 
@@ -5855,9 +6334,15 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `cohere/command-r-plus-08-2024`
 * `cohere/command-r7b-12-2024`
 * `cohere/north-mini-code:free`
+* `cohere/rerank-4-fast`
+* `cohere/rerank-4-pro`
+* `cohere/rerank-v3.5`
 
 ## MiniMax[​](#minimax "Direct link to MiniMax")
 
+* `minimax/hailuo-2.3`
+* `minimax/hailuo-3`
+* `minimax/hailuo-3-max`
 * `minimax/minimax-01`
 * `minimax/minimax-m1` · ZDR
 * `minimax/minimax-m2` · ZDR
@@ -5866,10 +6351,13 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `minimax/minimax-m2.5` · ZDR
 * `minimax/minimax-m2.7` · ZDR
 * `minimax/minimax-m3` · ZDR
+* `minimax/speech-2.8-hd`
+* `minimax/speech-2.8-turbo`
 
 ## Tencent[​](#tencent "Direct link to Tencent")
 
 * `tencent/hunyuan-a13b-instruct` · ZDR
+* `tencent/hy-image-v3.5-preview` · ZDR
 * `tencent/hy-mt2-1.8b` · ZDR
 * `tencent/hy-mt2-30b-a3b` · ZDR
 * `tencent/hy-mt2-7b` · ZDR
@@ -5887,6 +6375,11 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## ByteDance[​](#bytedance "Direct link to ByteDance")
 
+* `bytedance/seedance-1-5-pro`
+* `bytedance/seedance-2.0`
+* `bytedance/seedance-2.0-fast`
+* `bytedance/seedance-2.0-mini`
+* `bytedance/seedance-2.5`
 * `bytedance/ui-tars-1.5-7b` · ZDR
 
 ## IBM Granite[​](#ibm-granite "Direct link to IBM Granite")
@@ -5928,6 +6421,11 @@ ZDR endpoint catalog checked: 2026-10-09.
 * `bytedance-seed/seed-2.0-code` · ZDR
 * `bytedance-seed/seed-2.0-lite` · ZDR
 * `bytedance-seed/seed-2.0-mini` · ZDR
+* `bytedance-seed/seed-audio-1-0` · ZDR
+* `bytedance-seed/seedream-4.5` · ZDR
+* `bytedance-seed/seedream-5-0-flash` · ZDR
+* `bytedance-seed/seedream-5-0-lite` · ZDR
+* `bytedance-seed/seedream-5-0-pro` · ZDR
 
 ## Cognitive Computations[​](#cognitive-computations "Direct link to Cognitive Computations")
 
@@ -5945,12 +6443,12 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 * `inception/mercury-2` · ZDR
 * `inception/mercury-2.5` · ZDR
+* `inception/mercury-decide` · ZDR
+* `inception/mercury-decide:free`
 
 ## Inclusion AI[​](#inclusion-ai "Direct link to Inclusion AI")
 
 * `inclusionai/ling-3.0-flash` · ZDR
-* `inclusionai/ling-3.0-flash-fin` · ZDR
-* `inclusionai/ling-3.0-flash-sante` · ZDR
 * `inclusionai/ling-3.0-flash-vl` · ZDR
 * `inclusionai/ling-3.1-flash` · ZDR
 
@@ -5961,7 +6459,10 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## Liquid AI[​](#liquid-ai "Direct link to Liquid AI")
 
+* `liquid/d1` · ZDR
 * `liquid/lfm-2.5-2.6b:free`
+* `liquid/lfm-2.5-24b-a2b` · ZDR
+* `liquid/lfm-2.5-embedding-350m:free`
 
 ## Mancer[​](#mancer "Direct link to Mancer")
 
@@ -6030,7 +6531,7 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 * `stepfun/step-3.5-flash` · ZDR
 * `stepfun/step-3.7-flash` · ZDR
-* `stepfun/step-5-preview`
+* `stepfun/step-5-preview` · ZDR
 
 ## TheDrummer[​](#thedrummer "Direct link to TheDrummer")
 
@@ -6047,8 +6548,7 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## Unbiased[​](#unbiased "Direct link to Unbiased")
 
-* `unbiased/pareto`
-* `unbiased/pareto-26.10-preview` · ZDR
+* `unbiased/pareto-26.9`
 
 ## Undi95[​](#undi95 "Direct link to Undi95")
 
@@ -6056,6 +6556,8 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 ## Upstage[​](#upstage "Direct link to Upstage")
 
+* `upstage/solar-decide` · ZDR
+* `upstage/solar-decide-flash` · ZDR
 * `upstage/solar-mini4` · ZDR
 * `upstage/solar-pro-3`
 * `upstage/solar-pro4` · ZDR
@@ -6064,17 +6566,212 @@ ZDR endpoint catalog checked: 2026-10-09.
 
 * `writer/palmyra-x5` · ZDR
 
-## apodex[​](#apodex "Direct link to apodex")
+## alibaba[​](#alibaba "Direct link to alibaba")
 
-* `apodex/apodex-1.1-mini:free` · ZDR
+* `alibaba/happyhorse-1.0`
+* `alibaba/happyhorse-1.1`
+* `alibaba/wan-2.6`
+* `alibaba/wan-2.7`
+* `alibaba/wan-3.0`
+* `alibaba/wan-3.0-prime`
+
+## assemblyai[​](#assemblyai "Direct link to assemblyai")
+
+* `assemblyai/universal-3-5-pro` · ZDR
+* `assemblyai/universal-3-6-pro` · ZDR
+
+## baai[​](#baai "Direct link to baai")
+
+* `baai/bge-base-en-v1.5` · ZDR
+* `baai/bge-large-en-v1.5` · ZDR
+* `baai/bge-m3` · ZDR
+
+## black-forest-labs[​](#black-forest-labs "Direct link to black-forest-labs")
+
+* `black-forest-labs/flux-3-image`
+* `black-forest-labs/flux-3-video`
+* `black-forest-labs/flux-video-edit`
+* `black-forest-labs/flux-video-upscale`
+* `black-forest-labs/flux.2-flex`
+* `black-forest-labs/flux.2-klein-4b`
+* `black-forest-labs/flux.2-max`
+* `black-forest-labs/flux.2-pro`
+
+## canopylabs[​](#canopylabs "Direct link to canopylabs")
+
+* `canopylabs/orpheus-3b-0.1-ft` · ZDR
+
+## cloudflare[​](#cloudflare "Direct link to cloudflare")
+
+* `cloudflare/clef` · ZDR
+* `cloudflare/clef-flash` · ZDR
+* `cloudflare/clef-omni`
+
+## deepgram[​](#deepgram "Direct link to deepgram")
+
+* `deepgram/aura-2` · ZDR
+* `deepgram/flux-tts` · ZDR
+* `deepgram/nova-3` · ZDR
+
+## elevenlabs[​](#elevenlabs "Direct link to elevenlabs")
+
+* `elevenlabs/eleven-flash-v2` · ZDR
+* `elevenlabs/eleven-flash-v2.5` · ZDR
+* `elevenlabs/eleven-multilingual-v2` · ZDR
+* `elevenlabs/eleven-turbo-v2` · ZDR
+* `elevenlabs/eleven-turbo-v2.5` · ZDR
+* `elevenlabs/eleven-v3` · ZDR
+* `elevenlabs/eleven-v3-conversational` · ZDR
+* `elevenlabs/eleven-v4` · ZDR
+* `elevenlabs/eleven-v4-turbo` · ZDR
+* `elevenlabs/scribe-v2` · ZDR
+* `elevenlabs/scribe-v2-medical` · ZDR
 
 ## fireworks[​](#fireworks "Direct link to fireworks")
 
 * `fireworks/ember-1` · ZDR
 
+## fish-audio[​](#fish-audio "Direct link to fish-audio")
+
+* `fish-audio/drama-3` · ZDR
+* `fish-audio/s1` · ZDR
+* `fish-audio/s2-pro` · ZDR
+* `fish-audio/s2.1-pro` · ZDR
+* `fish-audio/s2.1-pro-free:free` · ZDR
+* `fish-audio/transcribe-1` · ZDR
+* `fish-audio/transcribe-1-pro` · ZDR
+
+## hexgrad[​](#hexgrad "Direct link to hexgrad")
+
+* `hexgrad/kokoro-82m` · ZDR
+
+## heygen[​](#heygen "Direct link to heygen")
+
+* `heygen/avatar-iv`
+* `heygen/heygen-video-1`
+* `heygen/heygen-voice-1`
+* `heygen/heygen-voice-1-turbo`
+
+## intfloat[​](#intfloat "Direct link to intfloat")
+
+* `intfloat/e5-base-v2` · ZDR
+* `intfloat/e5-large-v2` · ZDR
+* `intfloat/multilingual-e5-large` · ZDR
+
+## jaredpalmer[​](#jaredpalmer "Direct link to jaredpalmer")
+
+* `jaredpalmer/kev-4b` · ZDR
+
+## krea[​](#krea "Direct link to krea")
+
+* `krea/krea-2-large` · ZDR
+* `krea/krea-2-medium` · ZDR
+* `krea/krea-2-medium-turbo` · ZDR
+
+## kwaivgi[​](#kwaivgi "Direct link to kwaivgi")
+
+* `kwaivgi/kling-v3.0-pro`
+* `kwaivgi/kling-v3.0-std`
+* `kwaivgi/kling-video-o1`
+
+## nace-ai[​](#nace-ai "Direct link to nace-ai")
+
+* `nace-ai/drex-v1.5` · ZDR
+* `nace-ai/drex-v2.0` · ZDR
+
+## recraft[​](#recraft "Direct link to recraft")
+
+* `recraft/recraft-v3`
+* `recraft/recraft-v4`
+* `recraft/recraft-v4-pro`
+* `recraft/recraft-v4-pro-vector`
+* `recraft/recraft-v4-styles`
+* `recraft/recraft-v4-styles-pro`
+* `recraft/recraft-v4-styles-pro-vector`
+* `recraft/recraft-v4-styles-vector`
+* `recraft/recraft-v4-vector`
+* `recraft/recraft-v4.1`
+* `recraft/recraft-v4.1-flash`
+* `recraft/recraft-v4.1-pro`
+* `recraft/recraft-v4.1-pro-vector`
+* `recraft/recraft-v4.1-utility`
+* `recraft/recraft-v4.1-utility-pro`
+* `recraft/recraft-v4.1-vector`
+
+## respan[​](#respan "Direct link to respan")
+
+* `respan/span-01`
+* `respan/span-01-lite`
+* `respan/span-01-lite:free`
+
+## runway[​](#runway "Direct link to runway")
+
+* `runway/aleph-2`
+* `runway/gen-4.5`
+
+## scaledown[​](#scaledown "Direct link to scaledown")
+
+* `scaledown/classify-1` · ZDR
+* `scaledown/extract` · ZDR
+* `scaledown/summarize` · ZDR
+
+## sentence-transformers[​](#sentence-transformers "Direct link to sentence-transformers")
+
+* `sentence-transformers/all-minilm-l12-v2` · ZDR
+* `sentence-transformers/all-minilm-l6-v2` · ZDR
+* `sentence-transformers/all-mpnet-base-v2` · ZDR
+* `sentence-transformers/multi-qa-mpnet-base-dot-v1` · ZDR
+* `sentence-transformers/paraphrase-minilm-l6-v2` · ZDR
+
+## sesame[​](#sesame "Direct link to sesame")
+
+* `sesame/csm-1b` · ZDR
+
+## sourceful[​](#sourceful "Direct link to sourceful")
+
+* `sourceful/riverflow-v2-fast`
+* `sourceful/riverflow-v2-pro`
+* `sourceful/riverflow-v2.5-fast`
+* `sourceful/riverflow-v2.5-pro`
+
+## thenlper[​](#thenlper "Direct link to thenlper")
+
+* `thenlper/gte-base` · ZDR
+* `thenlper/gte-large` · ZDR
+
+## togethercomputer[​](#togethercomputer "Direct link to togethercomputer")
+
+* `togethercomputer/tev1-4b-experimental` · ZDR
+
 ## typesafe[​](#typesafe "Direct link to typesafe")
 
+* `typesafe/jev-1.13` · ZDR
+* `typesafe/jev-1.14` · ZDR
 * `typesafe/jev-router`
+
+## voyageai[​](#voyageai "Direct link to voyageai")
+
+* `voyageai/rerank-2.5`
+* `voyageai/rerank-2.5-lite`
+* `voyageai/rerank-3`
+* `voyageai/rerank-3-lite`
+* `voyageai/voyage-4`
+* `voyageai/voyage-4-large`
+* `voyageai/voyage-4-lite`
+* `voyageai/voyage-code-4`
+* `voyageai/voyage-multimodal-3.5`
+
+## \~perplexity[​](#perplexity-1 "Direct link to ~perplexity")
+
+* `~perplexity/pplx-decider-latest`
+
+## \~typesafe[​](#typesafe-1 "Direct link to ~typesafe")
+
+* `~typesafe/jev-latest`
+
+## \~unbiased[​](#unbiased-1 "Direct link to ~unbiased")
+
+* `~unbiased/pareto-latest`
 
 See [Getting started](/ai-gateway/setup.md) to send a request.
 
@@ -6890,7 +7587,7 @@ Available tools that can be disabled: `data`, `envGet`, `envList`, `envRemove`, 
 
 ### Environment Variable Tools[​](#environment-variable-tools "Direct link to Environment Variable Tools")
 
-* **`envList`**: Lists all environment variables for a deployment
+* **`envList`**: Lists the names of all environment variables for a deployment. Pass `includeValues: true` to also get their values
 * **`envGet`**: Retrieves the value of a specific environment variable
 * **`envSet`**: Sets a new environment variable or updates an existing one
 * **`envRemove`**: Removes an environment variable from the deployment
@@ -9679,7 +10376,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/schema.ts:873](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L873)
+[server/schema.ts:895](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L895)
 
 ***
 
@@ -9689,7 +10386,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/schema.ts:874](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L874)
+[server/schema.ts:896](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L896)
 
 ***
 
@@ -9699,7 +10396,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/schema.ts:875](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L875)
+[server/schema.ts:897](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L897)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -9743,7 +10440,7 @@ A validator matching documents of that table.
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/schema.ts:902](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L902)
+[server/schema.ts:924](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L924)
 
 ***
 
@@ -9775,7 +10472,7 @@ A validator matching IDs of that table.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/schema.ts:916](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L916)
+[server/schema.ts:938](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L938)
 
 
 ---
@@ -10133,19 +10830,67 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this vector ind
 
 ***
 
+### staged[​](#staged "Direct link to staged")
+
+▸ **staged**(`documentSchema`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
+
+Stage changes to this table's document validator.
+
+Convex validates the staged validator against the table's existing documents in the background, while the validator passed to [defineTable](/api/modules/server.md#definetable) remains the one enforced on writes. Once the background validation succeeds, apply the staged changes and remove `.staged()`.
+
+For an object validator, pass only the fields to add or replace. Fields omitted from the changes keep their enforced validators. Set a field to `undefined` to remove it from the staged validator. For nested objects, you must specify the full object validator.
+
+```
+defineTable({
+
+  apple: v.string(),
+
+  banana: v.number(),
+
+  legacy: v.optional(v.string()),
+
+}).staged({
+
+  banana: v.union(v.string(), v.number()),
+
+  legacy: undefined,
+
+})
+```
+
+See [Staged validators](https://docs.convex.dev/database/schemas#staged-validators).
+
+#### Parameters[​](#parameters-7 "Direct link to Parameters")
+
+| Name             | Type                                                                                                                                                                                                | Description                                                                                                                                                                                     |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `documentSchema` | [`Validator`](/api/modules/values.md#validator)<`Record`<`string`, `any`>, `"required"`, `any`> \| `Record`<`string`, `undefined` \| [`GenericValidator`](/api/modules/values.md#genericvalidator)> | Field changes for a table defined as an object or `v.any()`, or a full schema validator specifying the proposed next document type. Use a full schema validator for a table defined as a union. |
+
+#### Returns[​](#returns-8 "Direct link to Returns")
+
+[`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
+
+A [TableDefinition](/api/classes/server.TableDefinition.md) with the staged validator attached.
+
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+
+[server/schema.ts:595](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L595)
+
+***
+
 ### self[​](#self "Direct link to self")
 
 ▸ `Protected` **self**(): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
 
 Work around for <https://github.com/microsoft/TypeScript/issues/57035>
 
-#### Returns[​](#returns-8 "Direct link to Returns")
+#### Returns[​](#returns-9 "Direct link to Returns")
 
 [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
 
-#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+#### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[server/schema.ts:605](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L605)
+[server/schema.ts:627](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L627)
 
 
 ---
@@ -14119,7 +14864,7 @@ By default, `schemaValidation` is `true`.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/schema.ts:981](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L981)
+[server/schema.ts:1003](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1003)
 
 ***
 
@@ -14141,7 +14886,7 @@ By default, `strictTableNameTypes` is `true`.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/schema.ts:1000](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1000)
+[server/schema.ts:1022](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1022)
 
 
 ---
@@ -18314,9 +19059,13 @@ Only available in actions and HTTP actions (not in mutations or queries).
 
 A Blob containing the file contents, or `null` if the file doesn't exist.
 
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+StorageWriter.get
+
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/storage.ts:235](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L235)
+[server/storage.ts:242](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L242)
 
 ▸ **get**<`T`>(`storageId`): `Promise`<`null` | `Blob`>
 
@@ -18342,9 +19091,13 @@ Get a Blob containing the file associated with the provided [StorageId](/api/mod
 
 `Promise`<`null` | `Blob`>
 
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+StorageWriter.get
+
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/storage.ts:242](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L242)
+[server/storage.ts:249](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L249)
 
 ***
 
@@ -18378,13 +19131,13 @@ const storageId = await ctx.storage.store(blob);
 
 The `Id<"_storage">` of the newly stored file.
 
-#### Overrides[​](#overrides "Direct link to Overrides")
+#### Overrides[​](#overrides-2 "Direct link to Overrides")
 
 StorageWriter.store
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/storage.ts:261](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L261)
+[server/storage.ts:268](https://github.com/get-convex/convex-js/blob/main/src/server/storage.ts#L268)
 
 
 ---
@@ -23625,7 +24378,7 @@ The validators for the system fields Convex adds to every document.
 
 #### Defined in[​](#defined-in-84 "Direct link to Defined in")
 
-[server/schema.ts:725](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L725)
+[server/schema.ts:747](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L747)
 
 ***
 
@@ -23646,7 +24399,7 @@ For a table defined with a union, the system fields are added to each member of 
 
 #### Defined in[​](#defined-in-85 "Direct link to Defined in")
 
-[server/schema.ts:754](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L754)
+[server/schema.ts:776](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L776)
 
 ***
 
@@ -23660,7 +24413,7 @@ This should be constructed using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in-86 "Direct link to Defined in")
 
-[server/schema.ts:842](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L842)
+[server/schema.ts:864](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L864)
 
 ***
 
@@ -23680,7 +24433,7 @@ Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [Ge
 
 #### Defined in[​](#defined-in-87 "Direct link to Defined in")
 
-[server/schema.ts:1079](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1079)
+[server/schema.ts:1101](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1101)
 
 ***
 
@@ -23690,7 +24443,7 @@ Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [Ge
 
 #### Defined in[​](#defined-in-88 "Direct link to Defined in")
 
-[server/schema.ts:1138](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1138)
+[server/schema.ts:1160](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1160)
 
 ***
 
@@ -25104,7 +25857,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
 #### Defined in[​](#defined-in-125 "Direct link to Defined in")
 
-[server/schema.ts:675](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L675)
+[server/schema.ts:697](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L697)
 
 ▸ **defineTable**<`DocumentSchema`>(`documentSchema`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<[`VObject`](/api/classes/values.VObject.md)<[`ObjectType`](/api/modules/values.md#objecttype)<`DocumentSchema`>, `DocumentSchema`>>
 
@@ -25156,7 +25909,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
 #### Defined in[​](#defined-in-126 "Direct link to Defined in")
 
-[server/schema.ts:703](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L703)
+[server/schema.ts:725](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L725)
 
 ***
 
@@ -25208,7 +25961,7 @@ A validator matching documents of the table.
 
 #### Defined in[​](#defined-in-127 "Direct link to Defined in")
 
-[server/schema.ts:822](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L822)
+[server/schema.ts:844](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L844)
 
 ***
 
@@ -25315,7 +26068,7 @@ The schema.
 
 #### Defined in[​](#defined-in-128 "Direct link to Defined in")
 
-[server/schema.ts:1062](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1062)
+[server/schema.ts:1084](https://github.com/get-convex/convex-js/blob/main/src/server/schema.ts#L1084)
 
 
 ---
@@ -31670,7 +32423,7 @@ Add `--details` to include recent events for each insight. Use `--prod` to check
 ### Read and write environment variables[​](#read-and-write-environment-variables "Direct link to Read and write environment variables")
 
 ```
-npx convex env list
+npx convex env list --names-only
 
 npx convex env get <name>
 
@@ -31716,9 +32469,9 @@ npx convex env set --from-file .env.defaults
 
 # Save environment variables to a file
 
-npx convex env list >> .env.convex  # append
+npx convex env list --include-values >> .env.convex  # append
 
-npx convex env list >  .env.convex  # overwrite
+npx convex env list --include-values >  .env.convex  # overwrite
 
 
 
@@ -32174,6 +32927,10 @@ npx convex deploy [options]
 
   Skip the confirmation prompt when this push creates, changes, or deletes an index on a large table. Creating or changing an index blocks the deploy until it is backfilled; consider staging it instead so it backfills in the background.
 
+* `--allow-unstaging-schema`
+
+  Skip the confirmation prompt when this push discards a staged table validator that is validating or already validated.
+
 
 ---
 
@@ -32616,8 +33373,8 @@ Set and view environment variables on your deployment
 * Set interactively: `npx convex env set NAME`
 * Set multiple from file: `npx convex env set --from-file .env`
 * Unset a variable: `npx convex env remove NAME`
-* List all variables and their values: `npx convex env list`
 * List only variable names (no values): `npx convex env list --names-only`
+* List all variables and their values: `npx convex env list --include-values`
 * Print a variable's value: `npx convex env get NAME`
 
 By default, this sets and views variables on your dev deployment.
@@ -32670,7 +33427,7 @@ To keep secrets out of your shell history, omit the value to pipe it in via stdi
 * `pbpaste | npx convex env set API_KEY` (macOS)
 * `Get-Clipboard | npx convex env set API_KEY` (Windows PowerShell)
 
-To update many variables at once, save them with `npx convex env list > .env.convex`, edit the file, then reapply the changes with `npx convex env set --force < .env.convex`.
+To update many variables at once, save them with `npx convex env list --include-values > .env.convex`, edit the file, then reapply the changes with `npx convex env set --force < .env.convex`.
 
 ### Syntax[​](#syntax-1 "Direct link to Syntax")
 
@@ -32737,10 +33494,10 @@ npx convex env remove [options] <name>
 
 ## `npx convex env list`[​](#list "Direct link to list")
 
-* List all variables and their values: `npx convex env list`
 * List only variable names (no values): `npx convex env list --names-only`
-* Save all variables to a file: `npx convex env list > .env.convex`
-* Append to a file: `npx convex env list >> .env.convex`
+* List all variables and their values: `npx convex env list --include-values`
+* Save all variables to a file: `npx convex env list --include-values > .env.convex`
+* Append to a file: `npx convex env list --include-values >> .env.convex`
 
 ### Syntax[​](#syntax-4 "Direct link to Syntax")
 
@@ -32754,6 +33511,10 @@ npx convex env list [options]
 
   List only the names of environment variables, without their values
 
+* `--include-values`
+
+  Print each variable's value alongside its name, in .env format (the default). Pass it explicitly in scripts that rely on the values.
+
 ## `npx convex env default`[​](#default "Direct link to default")
 
 Manage default environment variables for your project.
@@ -32762,8 +33523,8 @@ The default environment variables read and written to by this command are the on
 
 * Set a default variable: `npx convex env default set NAME 'value'`
 * Unset a default variable: `npx convex env default remove NAME`
-* List all default variables and their values: `npx convex env default list`
 * List only default variable names (no values): `npx convex env default list --names-only`
+* List all default variables and their values: `npx convex env default list --include-values`
 * Print a default variable's value: `npx convex env default get NAME`
 
 ### Syntax[​](#syntax-5 "Direct link to Syntax")
@@ -32884,8 +33645,8 @@ npx convex env default remove [options] <name>
 
 ### `npx convex env default list`[​](#default-list "Direct link to default-list")
 
-* List all default variables and their values: `npx convex env default list`
 * List only default variable names (no values): `npx convex env default list --names-only`
+* List all default variables and their values: `npx convex env default list --include-values`
 
 The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
@@ -32900,6 +33661,10 @@ npx convex env default list [options]
 * `--names-only`
 
   List only the names of environment variables, without their values
+
+* `--include-values`
+
+  Print each variable's value alongside its name, in .env format (the default). Pass it explicitly in scripts that rely on the values.
 
 * `--type <type>`
 
@@ -39685,16 +40450,110 @@ To test the functions that are exported from the component to run in the app's e
 
 The template component includes an example app in part for this purpose: to exercise the component's bundled code as it will be used by apps installing it.
 
+For focused tests, use [`defineTestApp`](/testing/convex-test.md#define-a-test-application) to define a small host app directly in the test. This is especially useful for testing client code that runs in the app's context and calls into the component. For example, combine exports from the [`makeCounterAPI` client above](#re-mounting-an-api) with a function defined in the test:
+
+src/client/index.test.ts
+
+```
+import { defineSchema } from "convex/server";
+
+import { v } from "convex/values";
+
+import { defineTestApp } from "convex-test";
+
+import { expect, test } from "vitest";
+
+import componentTest from "../test.js";
+
+import { makeCounterAPI } from "./index.js";
+
+
+
+const app = defineTestApp({
+
+  schema: defineSchema({}),
+
+  components: {
+
+    counter: componentTest,
+
+  },
+
+});
+
+const { add, get } = makeCounterAPI(app.components.counter, {
+
+  auth: async () => "test-user",
+
+});
+
+
+
+const { api, createTest } = app.defineModules({
+
+  testModule: {
+
+    add,
+
+    get,
+
+    addAndGet: app.mutation({
+
+      args: { value: v.number() },
+
+      returns: v.number(),
+
+      handler: async (ctx, args): Promise<number> => {
+
+        await ctx.runMutation(api.testModule.add, args);
+
+        return await ctx.runQuery(api.testModule.get, {});
+
+      },
+
+    }),
+
+  },
+
+});
+
+
+
+test("adds to the counter through the client API", async () => {
+
+  const t = createTest();
+
+  expect(await t.mutation(api.testModule.addAndGet, { value: 3 })).toBe(3);
+
+  expect(await t.query(api.testModule.get, {})).toBe(3);
+
+});
+```
+
+Here, `componentTest` is the [test helper](#exporting-test-helpers) exported by your component. Each `createTest()` call registers a fresh component instance named `counter`. The `register` function's return type supplies the API type for `app.components.counter`.
+
+We recommend explicitly annotating handler return types, such as `Promise<number>` above, to break TypeScript inference cycles when handlers reference `api` inside its own definition.
+
 ### Exporting test helpers[​](#exporting-test-helpers "Direct link to Exporting test helpers")
 
-Most components export testing helpers to make it easy to register the component with the test instance. Here is an example from the [template component’s `/test` entrypoint](https://github.com/get-convex/templates/blob/main/template-component/src/test.ts):
+Most components export testing helpers to make it easy to register the component with the test instance. Returning the component's API also provides typed references for direct callers and lets `defineTestApp` infer the API:
 
 ```
 /// <reference types="vite/client" />
 
 import type { TestConvex } from "convex-test";
 
-import type { GenericSchema, SchemaDefinition } from "convex/server";
+import {
+
+  componentsGeneric,
+
+  type GenericSchema,
+
+  type SchemaDefinition,
+
+} from "convex/server";
+
+import type { ComponentApi } from "./component/_generated/component.js";
 
 import schema from "./component/schema.js";
 
@@ -39712,15 +40571,15 @@ const modules = import.meta.glob("./component/**/*.ts");
 
  */
 
-export function register(
+export function register<
 
-  t: TestConvex<SchemaDefinition<GenericSchema, boolean>>,
+  Schema extends SchemaDefinition<GenericSchema, boolean>,
 
-  name: string = "sampleComponent",
-
-) {
+>(t: TestConvex<Schema>, name: string = "sampleComponent"): ComponentApi {
 
   t.registerComponent(name, schema, modules);
+
+  return componentsGeneric()[name] as unknown as ComponentApi;
 
 }
 
@@ -44242,6 +45101,100 @@ Schema validation is skipped if [`schemaValidation`](#schemavalidation-boolean) 
 
 Note that schemas only validate documents in the tables listed in the schema. You can still create and modify documents in other tables (they just won't be validated).
 
+### Staged validators[​](#staged-validators "Direct link to Staged validators")
+
+Staged validators let you validate a schema change in the background without delaying deployment. Use them when tightening a table's validator would require a long scan of existing documents. The current validator remains enforced on writes while validation runs. Once validation succeeds, you can promote the change without repeating the scan.
+
+For example, say a table's `value` field is declared as `v.union(v.string(), v.number())` because older documents store `"123"` as a string while newer ones store `123` as a number. You want to migrate the strings to numbers and enforce `value: v.number()`. You also want to remove an optional `legacy` field while keeping `label` unchanged.
+
+#### Stage and validate the change[​](#stage-and-validate-the-change "Direct link to Stage and validate the change")
+
+1. Update any functions that write documents to use the new field types, and migrate existing documents. For this example, convert string values to numbers and remove `legacy` from every document. The current validator must continue to accept these writes.
+
+2. Keep the current validator in `defineTable` and chain `.staged()` with only the fields you want to add, change, or remove:
+
+   ```
+   export default defineSchema({
+
+     documents: defineTable({
+
+       label: v.string(),
+
+       value: v.union(v.string(), v.number()),
+
+       legacy: v.optional(v.string()),
+
+     }).staged({
+
+       value: v.number(),
+
+       legacy: undefined,
+
+     }),
+
+   });
+   ```
+
+   Fields omitted from `.staged()` keep their current validators. Here, the staged validator keeps `label: v.string()`, tightens `value` to `v.number()`, and removes `legacy` by setting it to `undefined`. This will validate that no documents have that field. Use `v.optional(...)` to allow the field to be present or unset. Staging a removal does not delete data from existing documents.
+
+   Each supplied validator replaces the entire field validator. To change a nested object, pass `nested: v.object({ ... })` with the complete desired definition of that object, including any nested fields you want to keep. You can also pass a full schema validator, such as `v.object({ ... })` or `v.union(...)`, to specify the entire staged document type. Use this form for tables whose current validator is a union. For a table defined with `v.any()`, a field map defines the complete staged object type: include every field you want that object to allow.
+
+   Put all changes that require revalidating this table in `.staged()` and keep its enforced validator unchanged, so the scan runs in the background.
+
+3. Run `npx convex deploy`. Convex scans existing documents against the staged validator in the background and checks every new write against it. Writes continue to enforce the current validator. A write that passes the current validator but fails the staged validator succeeds and marks staged validation as failed, even if the background scan had already finished.
+
+4. Check progress with `npx convex deploy --dry-run`. The CLI reports each staged table as validating, validated, or failed, with a progress count or the first validation error. Wait for the state to be validated before promoting. If validation fails, follow the retry steps below.
+
+#### Promote a validated change[​](#promote-a-validated-change "Direct link to Promote a validated change")
+
+When you're ready to start enforcing the new validator, follow these steps.
+
+1. Confirm the staged validation state with `npx convex deploy --dry-run`.
+
+2. Update `defineTable` to the complete staged document type and remove `.staged()`:
+
+   ```
+   export default defineSchema({
+
+     documents: defineTable({
+
+       label: v.string(),
+
+       value: v.number(),
+
+     }),
+
+   });
+   ```
+
+3. Run `npx convex deploy` again. Convex reuses the completed staged validation, so this deploy skips the table scan and does not ask for confirmation to remove the staged validator. The new validator becomes enforced on writes.
+
+You can also reuse completed staged validation when the new enforced validator accepts every document the staged validator accepts, such as changing a staged field from `v.number()` to `v.union(v.number(), v.string())`.
+
+#### Retry a failed validation[​](#retry-a-failed-validation "Direct link to Retry a failed validation")
+
+If validation fails, follow these steps to resolve and retry a staged validation.
+
+1. Inspect the reported validation error. Each attempt reports only the first offending document it finds, so use a query or migration to find and fix all offending documents. Fix any functions that still write documents rejected by the staged validator.
+2. Keep the same `.staged()` definition and deploy again. This retries validation from the beginning, scanning the whole table in the background.
+3. Wait for the validation state to be validated, then follow the promotion steps above. Repeat the repair and retry steps if another document fails.
+
+#### Promote before validation succeeds[​](#promote-before-validation-succeeds "Direct link to Promote before validation succeeds")
+
+If you want to stop the background validation and start enforcing immediately, follow these steps. Note: this is generally not recommended, as it may take a long time to complete.
+
+1. Update `defineTable` to the desired validator and remove `.staged()`.
+2. Deploy. Convex runs normal schema validation because the pending or failed staged result cannot prove that all documents match. If this requires a full table scan, the deploy blocks until that expensive scan finishes. Existing documents that fail the new validator cause the deploy to fail.
+
+If staged validation is still running, the CLI asks for confirmation because this push cancels that background validation and clears its progress. Pass `--allow-unstaging-schema` to skip the prompt. If staged validation has failed, the CLI proceeds without this prompt; schema validation can still require the same full table scan.
+
+#### Change or remove a staged validator[​](#change-or-remove-a-staged-validator "Direct link to Change or remove a staged validator")
+
+* Deploying the same staged validator preserves validation that is running or already validated. Deploying it again after a failure retries the scan.
+* Changing a successfully validated `.staged()` validator to a more permissive one preserves its validated state without another scan. For example, you can change a staged field from `v.number()` to `v.union(v.number(), v.string())`. The replacement must accept every document the previous staged validator accepts. The CLI does not ask for confirmation because the completed validation is reused.
+* Other changes to `.staged()` start a new validation. Changing a validator that is still running or has failed restarts the scan, including when making it more permissive. Each table can have at most one staged validator.
+* Removing a staged validator, or changing it without reusing its validation, clears its validation progress. Staging it again later starts a new scan. The CLI asks for confirmation before clearing running or validated progress; pass `--allow-unstaging-schema` to skip the prompt. Promotion of a validated change follows the reuse rules above.
+
 ### Circular references[​](#circular-references "Direct link to Circular references")
 
 You might want to define a schema with circular ID references like:
@@ -45034,6 +45987,8 @@ Call this endpoint repeatedly, passing the opaque `pagination.nextCursor` from e
 
 To do a one time data sync, keep fetching pages until reaching an `upToDate` page. For a continuous streaming export, continue fetching pages periodically. It's recommended to sleep between `upToDate` pages to reduce overhead.
 
+The returned page should be applied atomically. In particular, it's important to save the returned cursor atomically with any table updates to ensure data consistency.
+
 The caller must have the `deployment:data:view` permission.
 
 ## Request[​](#request "Direct link to request")
@@ -45699,788 +46654,6 @@ npx madge convex/ --extensions ts --exclude api.d.ts --circular
 ```
 
 We exclude `api.d.ts` here because type-only imports are generally safe.
-
-
----
-
-# ESLint rules
-
-> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
-
-The Convex ESLint plugin provides linter rules that enforce best practices for Convex functions. Let us know if there's a rule you would find helpful!
-
-## Setup[​](#setup "Direct link to Setup")
-
-Install the plugin with:
-
-```
-npm i @convex-dev/eslint-plugin --save-dev
-```
-
-For **ESLint 9+** (flat config, using `eslint.config.js`), add this to your `eslint.config.js` file:
-
-```
-import { defineConfig } from "eslint/config";
-
-
-
-import convexPlugin from "@convex-dev/eslint-plugin";
-
-
-
-export default defineConfig([
-
-  // Other configurations
-
-
-
-  ...convexPlugin.configs.recommended,
-
-]);
-```
-
-If you’re using the deprecated `.eslintrc.js` format
-
-Install these two libraries:
-
-```
-npm i @typescript-eslint/eslint-plugin @convex-dev/eslint-plugin --save-dev
-```
-
-In `.eslintrc.js`, add:
-
-```
-module.exports =
-
-  extends: [
-
-    // Other configurations
-
-    "plugin:@typescript-eslint/recommended",
-
-    "plugin:@convex-dev/recommended",
-
-  ],
-
-  ignorePatterns: ["node_modules/", "dist/", "build/"],
-
-};
-```
-
-If your Convex functions are in a directory other than `convex`
-
-By default, the Convex ESLint plugin will only apply rules in the `convex` directory.
-
-If you’re [customizing the Convex directory location](/config/convex.json.md#changing-the-convex-folder-name-or-location), here’s how to adapt your ESLint configuration:
-
-```
-// eslint.config.js
-
-import { defineConfig } from "eslint/config";
-
-
-
-import convexPlugin from "@convex-dev/eslint-plugin";
-
-
-
-const recommendedConfig = convexPlugin.configs.recommended[0];
-
-const recommendedRules = recommendedConfig.rules;
-
-
-
-export default defineConfig([
-
-  // Other configurations go here...
-
-
-
-  // Custom configuration with modified directory pattern
-
-  {
-
-    files: ["**/src/convex/**/*.ts"],
-
-    plugins: {
-
-      "@convex-dev": convexPlugin,
-
-    },
-
-    rules: recommendedRules,
-
-  },
-
-]);
-```
-
-If you’re using the `next lint` command from Next.js
-
-For `next lint` to run ESLint on your `convex` directory you need to add that directory to the default set of directories. Add this section to your `next.config.ts`:
-
-```
-const nextConfig: NextConfig = {
-
-  /* other options here */
-
-
-
-  eslint: {
-
-    dirs: ["pages", "app", "components", "lib", "src", "convex"],
-
-  },
-
-};
-```
-
-You can also use the plugin **with Oxlint**. Add this to your `oxlint.config.ts` file:
-
-oxlint.config.ts
-
-```
-import { defineConfig } from "oxlint";
-
-import convexPlugin from "@convex-dev/eslint-plugin";
-
-
-
-export default defineConfig({
-
-  jsPlugins: ["@convex-dev/eslint-plugin"],
-
-  ignorePatterns: ["convex/_generated"],
-
-  overrides: [
-
-    {
-
-      files: ["**/convex/**/*.ts"],
-
-      rules: convexPlugin.configs.recommended[0].rules,
-
-    },
-
-  ],
-
-});
-```
-
-Oxlint limitations
-
-Oxlint does not expose TypeScript type information to JS plugins, so type-aware rules and their autofixes (`explicit-table-ids`, `no-collect-in-query`) are unavailable when running the plugin through Oxlint.
-
-## Rules[​](#rules "Direct link to Rules")
-
-| Rule                                                                                                                                     | Recommended | Auto-fixable |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------ |
-| [`@convex-dev/no-old-registered-function-syntax`](#no-old-registered-function-syntax)<br />Prefer object syntax for registered functions | ✅          | 🔧           |
-| [`@convex-dev/require-argument-validators`](#require-argument-validators)<br />Require argument validators for Convex functions          | ✅          | 🔧           |
-| [`@convex-dev/explicit-table-ids`](#explicit-table-ids)<br />Require explicit table names in database operations                         | ✅          | 🔧           |
-| [`@convex-dev/no-filter-in-query`](#no-filter-in-query)<br />Warn on `.filter()` in database queries (inefficient)                       | ✅          |              |
-| [`@convex-dev/no-top-of-hour-crons`](#no-top-of-hour-crons)<br />Warn on cron jobs scheduled exactly on the hour                         | ✅          |              |
-| [`@convex-dev/no-schema-import-cycle`](#no-schema-import-cycle)<br />Prevent using the schema in a file that the schema imports          | ✅          |              |
-| [`@convex-dev/no-duplicate-indexes`](#no-duplicate-indexes)<br />Warn on indexes whose fields are a prefix of another index's            | ✅          |              |
-| [`@convex-dev/no-process-env`](#no-process-env)<br />Prefer the typed `env` object over `process.env`                                    | ✅          | 🔧           |
-| [`@convex-dev/import-wrong-runtime`](#import-wrong-runtime)<br />Prevent Convex runtime files from importing from Node runtime files     |             |              |
-| [`@convex-dev/no-collect-in-query`](#no-collect-in-query)<br />Prefer `.take()` / `.paginate()` over `.collect()` in queries             |             |              |
-| [`@convex-dev/require-access-control`](#require-access-control)<br />Require an access control check in public functions                 |             |              |
-
-### no-old-registered-function-syntax[​](#no-old-registered-function-syntax "Direct link to no-old-registered-function-syntax")
-
-Prefer object syntax for registered functions.
-
-Convex queries, mutations, and actions can be defined with a single function or with an object containing a handler property. Using the objects makes it possible to add argument and return value validators, so is always preferable.
-
-```
-// ✅ Allowed by this rule:
-
-export const list = query({
-
-  handler: async (ctx) => {
-
-    const data = await ctx.db.query("messages").collect();
-
-    ...
-
-  },
-
-});
-
-
-
-// ❌ Not allowed by this rule:
-
-export const list = query(async (ctx) => {
-
-  const data = await ctx.db.query("messages").collect();
-
-  ...
-
-});
-```
-
-### require-argument-validators[​](#require-argument-validators "Direct link to require-argument-validators")
-
-Require argument validators for Convex functions.
-
-Convex queries, mutations, and actions can validate their arguments before beginning to run the handler function. Besides being a concise way to validate, the types of arguments, using argument validators enables generating more descriptive function specs and therefore OpenAPI bindings.
-
-```
-// ✅ Allowed by this rule:
-
-export const list = query({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    ...
-
-  },
-
-});
-
-
-
-// ✅ Allowed by this rule:
-
-export const list = query({
-
-  args: { channel: v.id('channel') },
-
-  handler: async (ctx, { channel }) => {
-
-    ...
-
-  },
-
-});
-
-
-
-// ❌ Not allowed with option { ignoreUnusedArguments: false } (default)
-
-// ✅ Allowed with option { ignoreUnusedArguments: true }
-
-export const list = query({
-
-  handler: async (ctx) => {
-
-    ...
-
-  },
-
-});
-
-
-
-// ❌ Not allowed by this rule:
-
-export const list = query({
-
-  handler: async (ctx, { channel }: { channel: Id<"channel"> }) => {
-
-    ...
-
-  },
-
-});
-```
-
-This rule can be customized to tolerate functions that don’t define an argument validator but don’t use their arguments. Here’s how you can set up the rule to work this way:
-
-```
-// eslint.config.js
-
-
-
-export default defineConfig([
-
-  // Your other rules…
-
-
-
-  {
-
-    files: ["**/convex/**/*.ts"],
-
-    rules: {
-
-      "@convex-dev/require-args-validator": [
-
-        "error",
-
-        {
-
-          ignoreUnusedArguments: true,
-
-        },
-
-      ],
-
-    },
-
-  },
-
-]);
-```
-
-### explicit-table-ids[​](#explicit-table-ids "Direct link to explicit-table-ids")
-
-Require explicit table names in database operations.
-
-Starting from version 1.31.0 of the `convex` npm package, we recommend including the table name as the first argument to database operations (`db.get`, `db.replace`, `db.patch`, `db.delete`).
-
-This approach is more secure because it prevents vulnerabilities when an ID from one table is incorrectly typed as belonging to another table. The implicit syntax (where table names are inferred from the ID) will be deprecated in the future to give developers more control over ID generation. For both these reasons, we recommend developers to migrate to the new format.
-
-This rule helps migrate code from the old implicit format to the new explicit format. It uses TypeScript type information to automatically infer the table name from the `Id<"tableName">` type and provides automatic fixes.
-
-```
-const messageId: Id<"messages"> = "123" as Id<"messages">;
-
-
-
-// ✅ Allowed by this rule:
-
-const message = await ctx.db.get("messages", messageId);
-
-await ctx.db.patch("messages", messageId, { text: "updated" });
-
-await ctx.db.replace("messages", messageId, {
-
-  text: "replaced",
-
-  author: "Alice",
-
-});
-
-await ctx.db.delete("messages", messageId);
-
-
-
-// ❌ Not allowed by this rule:
-
-const message = await ctx.db.get(messageId);
-
-await ctx.db.patch(messageId, { text: "updated" });
-
-await ctx.db.replace(messageId, { text: "replaced", author: "Alice" });
-
-await ctx.db.delete(messageId);
-```
-
-typescript-eslint required
-
-In order for this rule to work, [typescript-eslint](https://typescript-eslint.io) must be set up in your ESLint configuration. If typescript-eslint is installed and the rule doesn’t seem to work, please make sure that [type-aware linting](https://typescript-eslint.io/troubleshooting/typed-linting/) is enabled.
-
-Note that if you’re not using ESLint, you can alternatively use the `@convex-dev/codemod` CLI tool to automatically migrate to the new format:
-
-```
-npx @convex-dev/codemod@latest explicit-ids
-```
-
-[Learn more on news.convex.dev →](https://news.convex.dev/db-table-name/)
-
-### no-filter-in-query[​](#no-filter-in-query "Direct link to no-filter-in-query")
-
-Warn when using `.filter()` in database queries.
-
-Convex supports filtering queries with the `.filter()` method, but it is inefficient because the database will read all the documents, and only then filter out the documents that don’t match the filter.
-
-Try replacing the call to `.filter()` with a call to `.withIndex()` if possible. This is especially important if the number of documents you’re filtering on is large (1000+) or unbounded.
-
-Instead, you can use [indexes](/database/reading-data/indexes/.md) so that the database only needs to read the relevant documents.
-
-See [*Indexes and Query Performance*](/database/reading-data/indexes/indexes-and-query-perf.md) to learn more, and [*Using TypeScript to Write Complex Query Filters*](https://stack.convex.dev/complex-filters-in-convex) for more advanced filtering strategies.
-
-```
-// ❌ This looks through all the books, and then collects the ones authored by Jane Austen
-
-const books = await ctx.db
-
-  .query("books")
-
-  .filter((q) => q.eq(q.field("author"), "Jane Austen"))
-
-  .collect();
-
-
-
-// ✅ This only reads the books authored by Jane Austen
-
-const austenBooks = await ctx.db
-
-  .query("books")
-
-  .withIndex("by_author", (q) => q.eq("author", "Jane Austen"))
-
-  .collect();
-```
-
-If it is not possible to replace `.filter()` in your query, you can silence this warning with:
-
-```
-// eslint-disable-next-line @convex-dev/no-filter-in-query
-```
-
-### no-top-of-hour-crons[​](#no-top-of-hour-crons "Direct link to no-top-of-hour-crons")
-
-Warn when a cron job is scheduled at the exact top of the hour.
-
-The top of the hour is the busiest time on the clock: apps receive the most inbound traffic, webhooks, and scheduled work right at `:00`. Pinning a cron there means your background work competes with that peak, making it more likely to hit your app's limits.
-
-The simplest fix is to omit `minuteUTC`. Convex then picks a minute for you and spreads runs across the hour. You can also set a specific off-peak minute if you need the job to run at a predictable time.
-
-```
-// ❌ Runs at the busiest moment of the hour:
-
-crons.hourly("cleanup", { minuteUTC: 0 }, internal.tasks.cleanup);
-
-crons.cron("nightly", "0 3 * * *", internal.tasks.nightly);
-
-
-
-// ✅ Let Convex pick and spread the minute:
-
-crons.hourly("cleanup", internal.tasks.cleanup);
-
-crons.daily("nightly", { hourUTC: 3 }, internal.tasks.nightly);
-
-
-
-// ✅ Or choose a specific off-peak minute:
-
-crons.hourly("cleanup", { minuteUTC: 37 }, internal.tasks.cleanup);
-```
-
-If the job really must run at the top of the hour, you can silence this warning with:
-
-```
-// eslint-disable-next-line @convex-dev/no-top-of-hour-crons
-
-crons.hourly(
-
-  "send a message at the start of every hour",
-
-  { minuteUTC: 0 },
-
-  internal.messages.sendHourlyDigest,
-
-);
-```
-
-### no-schema-import-cycle[​](#no-schema-import-cycle "Direct link to no-schema-import-cycle")
-
-Prevent using the schema value in a file that `schema.ts` imports.
-
-`schema.doc()`, `schema.id()` and `schema.tables` read the schema object, so they only work once `schema.ts` has finished evaluating. If `schema.ts` imports the file that uses them, that file runs first and the schema is still `undefined`, so the push fails with `TypeError: Cannot read properties of undefined (reading 'id')`.
-
-```
-// convex/schema.ts
-
-import { userFields } from "./validators"; // <-- runs validators.ts first
-
-
-
-export default defineSchema({
-
-  users: defineTable(userFields),
-
-});
-```
-
-```
-// convex/validators.ts
-
-import schema from "./schema";
-
-
-
-export const userFields = { name: v.string() };
-
-
-
-// ❌ `schema` is undefined here, because schema.ts is still evaluating:
-
-export const userId = schema.id("users");
-
-
-
-// ✅ Use v.id() in files the schema imports:
-
-export const userId = v.id("users");
-```
-
-Files the schema doesn't import — the usual home for queries and mutations — can use `schema.doc()` and `schema.id()` freely. References inside a function body are also fine, since they run after both modules have loaded.
-
-### no-duplicate-indexes[​](#no-duplicate-indexes "Direct link to no-duplicate-indexes")
-
-Warn when a table's index indexes a prefix of the fields of another of its indexes.
-
-A Convex index sorts documents by its fields in order, so a query can filter on any leading subset of them. An index on `["author", "channel"]` selects the same documents as an index on `["author"]` for any query that only constrains `author`, so keeping both costs write throughput and storage — every insert and update to the table writes a row to every index on it — without widening what you can query.
-
-```
-// ❌ "by_author" indexes a prefix of "by_author_and_channel":
-
-defineTable({ author: v.string(), channel: v.string() })
-
-  .index("by_author", ["author"])
-
-  .index("by_author_and_channel", ["author", "channel"]);
-
-
-
-// ✅ Query the longer index with a prefix of its fields:
-
-defineTable({ author: v.string(), channel: v.string() }).index(
-
-  "by_author_and_channel",
-
-  ["author", "channel"],
-
-);
-
-
-
-await ctx.db
-
-  .query("messages")
-
-  .withIndex("by_author_and_channel", (q) => q.eq("author", author))
-
-  .collect();
-
-
-
-// ✅ Neither indexes a prefix of the other, so both are needed:
-
-defineTable({ author: v.string(), channel: v.string() })
-
-  .index("by_channel", ["channel"])
-
-  .index("by_author_and_channel", ["author", "channel"]);
-```
-
-[Staged indexes](/database/reading-data/indexes/.md#staged-indexes) are exempt from this rule, since staging the longer index while the shorter one is still live is how you replace one index with another without a slow backfill blocking your deploy.
-
-#### When not to use this rule[​](#when-not-to-use-this-rule "Direct link to When not to use this rule")
-
-There is one case where this rule might trigger a false positive. Convex [appends `_creationTime`](/database/reading-data/indexes/.md) to every index. If you need to query documents ordered by the fields of the shorter index *then* `_creationTime`, you will need to keep both indexes. For example, if in the example below you need to query documents sorted by `author` *then* `_creationTime`, keep the `by_author` index and disable the ESLint rule where the index is defined:
-
-```
-// eslint-disable-next-line @convex-dev/no-duplicate-indexes
-
-.index("by_author", ["author"])
-```
-
-### no-process-env[​](#no-process-env "Direct link to no-process-env")
-
-Prefer the typed `env` object over `process.env`.
-
-[Declaring your environment variables](/production/environment-variables.md#declaring) in `convex/convex.config.ts` gives you a typed `env` object to import from `_generated/server`. Reading them that way means TypeScript catches typos and tells you which variables are optional, and the deploy fails early when a required variable is missing.
-
-```
-// ❌ Not allowed by this rule:
-
-const apiKey = process.env.GIPHY_KEY; // `string | undefined`, and typos compile
-
-
-
-// ✅ Allowed by this rule:
-
-import { env } from "./_generated/server";
-
-
-
-const apiKey = env.GIPHY_KEY; // `string`, and typos are a build error
-```
-
-The rule provides an autofix when the environment variable is already declared in your `convex.config.ts` (or is one of the [system environment variables](/production/environment-variables.md#system-environment-variables)). If the variable isn't declared, the rewrite is offered as an editor suggestion instead of a fix.
-
-convex/convex.config.ts
-
-```
-import { defineApp } from "convex/server";
-
-import { v } from "convex/values";
-
-
-
-const app = defineApp({
-
-  env: { GIPHY_KEY: v.string() },
-
-});
-
-
-
-export default app;
-```
-
-### import-wrong-runtime[​](#import-wrong-runtime "Direct link to import-wrong-runtime")
-
-Prevent Convex runtime files from importing from Node runtime files (files with a `"use node"` directive).
-
-This rule is experimental. Please let us know if you find it helpful!
-
-```
-// In a file that doesn’t use `"use node"`:
-
-
-
-// ✅ Allowed by this rule:
-
-import { someFunction } from "./someOtherFile"; // where someOtherFile doesn't use `"use node"`
-
-
-
-// ❌ Not allowed by this rule:
-
-import { someFunction } from "./someNodeFile"; // where someNodeFile uses `"use node"`
-```
-
-### no-collect-in-query[​](#no-collect-in-query "Direct link to no-collect-in-query")
-
-Prefer `.take()` / `.paginate()` over `.collect()` in queries.
-
-typescript-eslint required
-
-In order for this rule to work, [typescript-eslint](https://typescript-eslint.io) must be set up in your ESLint configuration. If typescript-eslint is installed and the rule doesn’t seem to work, please make sure that [type-aware linting](https://typescript-eslint.io/troubleshooting/typed-linting/) is enabled.
-
-You should avoid using `.collect()` in queries that can return a large number of documents at once. In these queries, using `.collect()` can lead to excessive bandwidth usage and mutation conflicts, and the query can also fail if it reaches the [Convex query limits](/production/state/limits.md#transactions).
-
-Prefer `.take(N)` if you only need the first *N* results, or `.paginate()` if you want to page through results.
-
-If you know the query will always return a small number of results, you can disable this rule for that line with:
-
-```
-// eslint-disable-next-line @convex-dev/no-collect-in-query
-
-const results = await ctx.db.query("roles").collect();
-```
-
-### require-access-control[​](#require-access-control "Direct link to require-access-control")
-
-Require an access control check in public functions.
-
-Public queries, mutations and actions [can be called by anyone](/understanding/best-practices/.md#use-some-form-of-access-control-for-all-public-functions), so forgetting an access control check might cause malicious users to read or write data they shouldn’t have access to.
-
-This rule reports every exported `query`, `mutation` or `action` whose handler doesn’t call one of your access control functions. It recognizes these functions by name: by default, any call whose name starts with `require`, `assert`, `check`, `ensure`, `can` or `has`. This covers helpers that throw (`requireUser(ctx)`) as well as helpers that return a boolean (`canEditNote(ctx)`).
-
-```
-// ✅ Allowed by this rule:
-
-export const list = query({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    const user = await requireUser(ctx);
-
-    // …
-
-  },
-
-});
-
-
-
-// ✅ Allowed by this rule: a boolean check in the condition of an `if`
-
-export const update = mutation({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    if (!(await canEditNote(ctx))) {
-
-      throw new Error("Unauthorized");
-
-    }
-
-    // …
-
-  },
-
-});
-
-
-
-// ✅ Allowed by this rule: methods count too
-
-export const remove = mutation({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    await authz.require(ctx, userId, "documents:delete");
-
-    // …
-
-  },
-
-});
-
-
-
-// ✅ Not checked: internal functions can’t be called from the internet
-
-export const cleanup = internalMutation({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    // …
-
-  },
-
-});
-
-
-
-// ❌ Not allowed by this rule:
-
-export const send = mutation({
-
-  args: {},
-
-  handler: async (ctx) => {
-
-    await ctx.db.insert("messages", { body: "hello" });
-
-  },
-
-});
-```
-
-If your access control functions are named differently, you can customize the pattern in the ESLint settings:
-
-```
-"@convex-dev/require-access-control": [
-
-  "error",
-
-  {
-
-    pattern: "^(require|authorize)",
-
-  },
-
-],
-```
-
-When using this rule, please consider the following limitations:
-
-* The rule only verifies that a matching function is called. It can’t tell whether that check is the right one for this function (e.g. `requireIsLoggedIn` vs `requireIsAdmin`), or whether you act on the boolean it returns.
-* The call has to be a top-level statement of the handler or the condition of a top-level `if`, so a check nested in an `if` body or a `try` block isn’t detected.
-* This rule doesn’t check HTTP actions.
-* This rule doesn’t check [custom functions](https://github.com/get-convex/convex-helpers/blob/main/packages/convex-helpers/README.md#custom-functions).
 
 
 ---
@@ -50885,6 +51058,1034 @@ response = requests.get(url, headers=headers, body=json)
 
 ---
 
+# Biome
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+[Biome](https://biomejs.dev) can’t load ESLint plugins (its own plugins are written in [GritQL](https://biomejs.dev/linter/plugins/)), so it can’t run the Convex rules by itself. Instead, keep using Biome for formatting and general linting, and run the Convex rules on your `convex` directory with Oxlint or ESLint.
+
+## With Oxlint[​](#with-oxlint "Direct link to With Oxlint")
+
+[Oxlint](/linting/oxlint.md) is fast like Biome, and supports every Convex rule.
+
+```
+npm i oxlint @convex-dev/eslint-plugin --save-dev
+```
+
+Turn off Oxlint’s default rules so it doesn’t repeat what Biome already checks:
+
+```
+// oxlint.config.ts
+
+import { defineConfig } from "oxlint";
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+export default defineConfig({
+
+  // Only run the Convex rules, Biome takes care of the rest
+
+  categories: { correctness: "off" },
+
+  jsPlugins: ["@convex-dev/eslint-plugin"],
+
+  ignorePatterns: ["convex/_generated"],
+
+  overrides: [
+
+    {
+
+      files: ["**/convex/**/*.ts"],
+
+      rules: convexPlugin.configs.recommended[0].rules,
+
+    },
+
+  ],
+
+});
+```
+
+This turns on the [recommended rules](/linting/overview.md#rules). To turn on another rule as well, spread them into `rules` and add it:
+
+```
+rules: {
+
+  ...convexPlugin.configs.recommended[0].rules,
+
+  "@convex-dev/no-collect-in-query": "error",
+
+},
+```
+
+Then run both in your lint script:
+
+```
+// package.json
+
+"scripts": {
+
+  "lint": "biome check . && oxlint convex"
+
+}
+```
+
+A few rules work a bit differently without type information, see [Differences from ESLint](/linting/oxlint.md#differences-from-eslint).
+
+## With ESLint[​](#with-eslint "Direct link to With ESLint")
+
+If you want every autofix, run ESLint with only the Convex plugin, and only on your `convex` directory, so it stays quick. Install ESLint, typescript-eslint and the plugin:
+
+```
+npm i eslint typescript-eslint @convex-dev/eslint-plugin --save-dev
+```
+
+Use the `eslint.config.js` from [Type-aware linting](/linting/eslint.md#type-aware-linting), then add ESLint to your lint script:
+
+```
+// package.json
+
+"scripts": {
+
+  "lint": "biome check . && eslint convex"
+
+}
+```
+
+
+---
+
+# ESLint
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+The Convex lint rules are an [ESLint](https://eslint.org) plugin, so ESLint supports every rule and autofix.
+
+## Setup[​](#setup "Direct link to Setup")
+
+Install the plugin with:
+
+```
+npm i @convex-dev/eslint-plugin --save-dev
+```
+
+For **ESLint 9+** (flat config, using `eslint.config.js`), add this to your `eslint.config.js` file:
+
+```
+import { defineConfig } from "eslint/config";
+
+
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+export default defineConfig([
+
+  // Other configurations
+
+
+
+  ...convexPlugin.configs.recommended,
+
+]);
+```
+
+ESLint needs a TypeScript parser to read your Convex functions. If your config doesn’t set one up yet, use the config in [Type-aware linting](#type-aware-linting) below.
+
+If you’re using the deprecated `.eslintrc.js` format
+
+Install these two libraries:
+
+```
+npm i @typescript-eslint/eslint-plugin @convex-dev/eslint-plugin --save-dev
+```
+
+In `.eslintrc.js`, add:
+
+```
+module.exports = {
+
+  extends: [
+
+    // Other configurations
+
+    "plugin:@typescript-eslint/recommended",
+
+    "plugin:@convex-dev/recommended",
+
+  ],
+
+  ignorePatterns: ["node_modules/", "dist/", "build/"],
+
+};
+```
+
+If your Convex functions are in a directory other than `convex`
+
+By default, the Convex ESLint plugin will only apply rules in the `convex` directory.
+
+If you’re [customizing the Convex directory location](/config/convex.json.md#changing-the-convex-folder-name-or-location), here’s how to adapt your ESLint configuration:
+
+```
+// eslint.config.js
+
+import { defineConfig } from "eslint/config";
+
+
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+const recommendedConfig = convexPlugin.configs.recommended[0];
+
+const recommendedRules = recommendedConfig.rules;
+
+
+
+export default defineConfig([
+
+  // Other configurations go here...
+
+
+
+  // Custom configuration with modified directory pattern
+
+  {
+
+    files: ["**/src/convex/**/*.ts"],
+
+    plugins: {
+
+      "@convex-dev": convexPlugin,
+
+    },
+
+    rules: recommendedRules,
+
+  },
+
+]);
+```
+
+If you’re using the `next lint` command from Next.js
+
+For `next lint` to run ESLint on your `convex` directory you need to add that directory to the default set of directories. Add this section to your `next.config.ts`:
+
+```
+const nextConfig: NextConfig = {
+
+  /* other options here */
+
+
+
+  eslint: {
+
+    dirs: ["pages", "app", "components", "lib", "src", "convex"],
+
+  },
+
+};
+```
+
+## Type-aware linting[​](#type-aware-linting "Direct link to Type-aware linting")
+
+Some rules use TypeScript type information to give more precise results: [`explicit-table-ids`](/linting/overview.md#explicit-table-ids) reads the table name from `Id<"tableName">` types so it can fix calls for you, and [`no-collect-in-query`](/linting/overview.md#no-collect-in-query) (off by default) suggests replacements. The rules still work without it, but they fall back to matching code by name.
+
+To turn it on, set up [typed linting](https://typescript-eslint.io/getting-started/typed-linting/) with typescript-eslint:
+
+```
+npm i typescript-eslint --save-dev
+```
+
+```
+// eslint.config.js
+
+import { defineConfig } from "eslint/config";
+
+import tseslint from "typescript-eslint";
+
+
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+export default defineConfig([
+
+  // Other configurations
+
+
+
+  { ignores: ["convex/_generated/**"] },
+
+  {
+
+    files: ["**/*.ts"],
+
+    languageOptions: {
+
+      parser: tseslint.parser,
+
+      parserOptions: {
+
+        projectService: true,
+
+        tsconfigRootDir: import.meta.dirname,
+
+      },
+
+    },
+
+  },
+
+  ...convexPlugin.configs.recommended,
+
+]);
+```
+
+Type-aware linting is slower, since ESLint has to type check your code as it lints it.
+
+## Turning on more rules[​](#turning-on-more-rules "Direct link to Turning on more rules")
+
+The recommended config leaves a few rules off, like [`no-collect-in-query`](/linting/overview.md#no-collect-in-query) and [`require-access-control`](/linting/overview.md#require-access-control). To turn one on, add it after the recommended config:
+
+```
+// eslint.config.js
+
+export default defineConfig([
+
+  // Other configurations
+
+
+
+  ...convexPlugin.configs.recommended,
+
+  {
+
+    files: ["**/convex/**/*.ts"],
+
+    rules: {
+
+      "@convex-dev/no-collect-in-query": "error",
+
+    },
+
+  },
+
+]);
+```
+
+
+---
+
+# Linting
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+The Convex lint plugin, `@convex-dev/eslint-plugin`, adds rules that catch common mistakes in your `convex` directory, like a missing argument validator, a `.filter()` that should use an index, or reading `process.env` instead of the typed `env` object. Let us know if there's a rule you would find helpful!
+
+Each rule explains what to do instead, and many can fix the problem automatically. This makes them a useful safety net for code written by AI coding agents: an agent that runs your linter can see and fix its own mistakes.
+
+## Choose your linter[​](#choose-your-linter "Direct link to Choose your linter")
+
+The plugin is an ESLint plugin, and it also runs in Oxlint.
+
+| Linter                       | Convex rules                                                                                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ESLint](/linting/eslint.md) | Every rule and autofix.                                                                                                                             |
+| [Oxlint](/linting/oxlint.md) | Every rule. Oxlint doesn’t share type information with plugins, so `explicit-table-ids` can’t fill in table names and a few rules are less precise. |
+| [Biome](/linting/biome.md)   | Biome can’t load ESLint plugins, so run the Convex rules with Oxlint or ESLint alongside it.                                                        |
+
+## Rules[​](#rules "Direct link to Rules")
+
+The setup on each linter’s page turns on the recommended rules. To turn on another rule, add it to the `rules` for your `convex` files, for example `"@convex-dev/no-collect-in-query": "error"`. See [Turning on more rules](/linting/eslint.md#turning-on-more-rules) for an ESLint example.
+
+| Rule                                                                                                                                     | Recommended | Auto-fixable |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------ |
+| [`@convex-dev/no-old-registered-function-syntax`](#no-old-registered-function-syntax)<br />Prefer object syntax for registered functions | ✅          | 🔧           |
+| [`@convex-dev/require-args-validator`](#require-args-validator)<br />Require argument validators for Convex functions                    | ✅          | 🔧           |
+| [`@convex-dev/explicit-table-ids`](#explicit-table-ids)<br />Require explicit table names in database operations                         | ✅          | 🔧           |
+| [`@convex-dev/no-filter-in-query`](#no-filter-in-query)<br />Warn on `.filter()` in database queries (inefficient)                       | ✅          |              |
+| [`@convex-dev/no-top-of-hour-crons`](#no-top-of-hour-crons)<br />Warn on cron jobs scheduled exactly on the hour                         | ✅          |              |
+| [`@convex-dev/no-schema-import-cycle`](#no-schema-import-cycle)<br />Prevent using the schema in a file that the schema imports          | ✅          |              |
+| [`@convex-dev/no-duplicate-indexes`](#no-duplicate-indexes)<br />Warn on indexes whose fields are a prefix of another index's            | ✅          |              |
+| [`@convex-dev/no-process-env`](#no-process-env)<br />Prefer the typed `env` object over `process.env`                                    | ✅          | 🔧           |
+| [`@convex-dev/import-wrong-runtime`](#import-wrong-runtime)<br />Prevent Convex runtime files from importing from Node runtime files     |             |              |
+| [`@convex-dev/no-collect-in-query`](#no-collect-in-query)<br />Prefer `.take()` / `.paginate()` over `.collect()` in queries             |             |              |
+| [`@convex-dev/require-access-control`](#require-access-control)<br />Require an access control check in public functions                 |             |              |
+
+### no-old-registered-function-syntax[​](#no-old-registered-function-syntax "Direct link to no-old-registered-function-syntax")
+
+Prefer object syntax for registered functions.
+
+Convex queries, mutations, and actions can be defined with a single function or with an object containing a handler property. Using the objects makes it possible to add argument and return value validators, so is always preferable.
+
+```
+// ✅ Allowed by this rule:
+
+export const list = query({
+
+  handler: async (ctx) => {
+
+    const data = await ctx.db.query("messages").collect();
+
+    ...
+
+  },
+
+});
+
+
+
+// ❌ Not allowed by this rule:
+
+export const list = query(async (ctx) => {
+
+  const data = await ctx.db.query("messages").collect();
+
+  ...
+
+});
+```
+
+[]()
+
+### require-args-validator[​](#require-args-validator "Direct link to require-args-validator")
+
+Require argument validators for Convex functions.
+
+Convex queries, mutations, and actions can validate their arguments before beginning to run the handler function. Besides being a concise way to validate, the types of arguments, using argument validators enables generating more descriptive function specs and therefore OpenAPI bindings.
+
+```
+// ✅ Allowed by this rule:
+
+export const list = query({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    ...
+
+  },
+
+});
+
+
+
+// ✅ Allowed by this rule:
+
+export const list = query({
+
+  args: { channel: v.id('channel') },
+
+  handler: async (ctx, { channel }) => {
+
+    ...
+
+  },
+
+});
+
+
+
+// ❌ Not allowed with option { ignoreUnusedArguments: false } (default)
+
+// ✅ Allowed with option { ignoreUnusedArguments: true }
+
+export const list = query({
+
+  handler: async (ctx) => {
+
+    ...
+
+  },
+
+});
+
+
+
+// ❌ Not allowed by this rule:
+
+export const list = query({
+
+  handler: async (ctx, { channel }: { channel: Id<"channel"> }) => {
+
+    ...
+
+  },
+
+});
+```
+
+This rule can be customized to tolerate functions that don’t define an argument validator but don’t use their arguments. Here’s how you can set up the rule to work this way:
+
+```
+// eslint.config.js
+
+
+
+export default defineConfig([
+
+  // Your other rules…
+
+
+
+  {
+
+    files: ["**/convex/**/*.ts"],
+
+    rules: {
+
+      "@convex-dev/require-args-validator": [
+
+        "error",
+
+        {
+
+          ignoreUnusedArguments: true,
+
+        },
+
+      ],
+
+    },
+
+  },
+
+]);
+```
+
+### explicit-table-ids[​](#explicit-table-ids "Direct link to explicit-table-ids")
+
+Require explicit table names in database operations.
+
+Starting from version 1.31.0 of the `convex` npm package, we recommend including the table name as the first argument to database operations (`db.get`, `db.replace`, `db.patch`, `db.delete`).
+
+This approach is more secure because it prevents vulnerabilities when an ID from one table is incorrectly typed as belonging to another table. The implicit syntax (where table names are inferred from the ID) will be deprecated in the future to give developers more control over ID generation. For both these reasons, we recommend developers to migrate to the new format.
+
+This rule helps migrate code from the old implicit format to the new explicit format. It uses TypeScript type information to automatically infer the table name from the `Id<"tableName">` type and provides automatic fixes.
+
+```
+const messageId: Id<"messages"> = "123" as Id<"messages">;
+
+
+
+// ✅ Allowed by this rule:
+
+const message = await ctx.db.get("messages", messageId);
+
+await ctx.db.patch("messages", messageId, { text: "updated" });
+
+await ctx.db.replace("messages", messageId, {
+
+  text: "replaced",
+
+  author: "Alice",
+
+});
+
+await ctx.db.delete("messages", messageId);
+
+
+
+// ❌ Not allowed by this rule:
+
+const message = await ctx.db.get(messageId);
+
+await ctx.db.patch(messageId, { text: "updated" });
+
+await ctx.db.replace(messageId, { text: "replaced", author: "Alice" });
+
+await ctx.db.delete(messageId);
+```
+
+Works best with type-aware linting
+
+The autofix needs [type-aware linting](/linting/eslint.md#type-aware-linting) to read the table name from the `Id<"tableName">` type. Without it (for example in [Oxlint](/linting/oxlint.md)), the rule still reports `ctx.db` calls that are missing a table name, but can’t fill it in for you, and it may miss calls made through a different variable.
+
+Note that if you’re not using ESLint, you can alternatively use the `@convex-dev/codemod` CLI tool to automatically migrate to the new format:
+
+```
+npx @convex-dev/codemod@latest explicit-ids
+```
+
+[Learn more on news.convex.dev →](https://news.convex.dev/db-table-name/)
+
+### no-filter-in-query[​](#no-filter-in-query "Direct link to no-filter-in-query")
+
+Warn when using `.filter()` in database queries.
+
+Convex supports filtering queries with the `.filter()` method, but it is inefficient because the database will read all the documents, and only then filter out the documents that don’t match the filter.
+
+Try replacing the call to `.filter()` with a call to `.withIndex()` if possible. This is especially important if the number of documents you’re filtering on is large (1000+) or unbounded.
+
+Instead, you can use [indexes](/database/reading-data/indexes/.md) so that the database only needs to read the relevant documents.
+
+See [*Indexes and Query Performance*](/database/reading-data/indexes/indexes-and-query-perf.md) to learn more, and [*Using TypeScript to Write Complex Query Filters*](https://stack.convex.dev/complex-filters-in-convex) for more advanced filtering strategies.
+
+```
+// ❌ This looks through all the books, and then collects the ones authored by Jane Austen
+
+const books = await ctx.db
+
+  .query("books")
+
+  .filter((q) => q.eq(q.field("author"), "Jane Austen"))
+
+  .collect();
+
+
+
+// ✅ This only reads the books authored by Jane Austen
+
+const austenBooks = await ctx.db
+
+  .query("books")
+
+  .withIndex("by_author", (q) => q.eq("author", "Jane Austen"))
+
+  .collect();
+```
+
+If it is not possible to replace `.filter()` in your query, you can silence this warning with:
+
+```
+// eslint-disable-next-line @convex-dev/no-filter-in-query
+```
+
+### no-top-of-hour-crons[​](#no-top-of-hour-crons "Direct link to no-top-of-hour-crons")
+
+Warn when a cron job is scheduled at the exact top of the hour.
+
+The top of the hour is the busiest time on the clock: apps receive the most inbound traffic, webhooks, and scheduled work right at `:00`. Pinning a cron there means your background work competes with that peak, making it more likely to hit your app's limits.
+
+The simplest fix is to omit `minuteUTC`. Convex then picks a minute for you and spreads runs across the hour. You can also set a specific off-peak minute if you need the job to run at a predictable time.
+
+```
+// ❌ Runs at the busiest moment of the hour:
+
+crons.hourly("cleanup", { minuteUTC: 0 }, internal.tasks.cleanup);
+
+crons.cron("nightly", "0 3 * * *", internal.tasks.nightly);
+
+
+
+// ✅ Let Convex pick and spread the minute:
+
+crons.hourly("cleanup", internal.tasks.cleanup);
+
+crons.daily("nightly", { hourUTC: 3 }, internal.tasks.nightly);
+
+
+
+// ✅ Or choose a specific off-peak minute:
+
+crons.hourly("cleanup", { minuteUTC: 37 }, internal.tasks.cleanup);
+```
+
+If the job really must run at the top of the hour, you can silence this warning with:
+
+```
+// eslint-disable-next-line @convex-dev/no-top-of-hour-crons
+
+crons.hourly(
+
+  "send a message at the start of every hour",
+
+  { minuteUTC: 0 },
+
+  internal.messages.sendHourlyDigest,
+
+);
+```
+
+### no-schema-import-cycle[​](#no-schema-import-cycle "Direct link to no-schema-import-cycle")
+
+Prevent using the schema value in a file that `schema.ts` imports.
+
+`schema.doc()`, `schema.id()` and `schema.tables` read the schema object, so they only work once `schema.ts` has finished evaluating. If `schema.ts` imports the file that uses them, that file runs first and the schema is still `undefined`, so the push fails with `TypeError: Cannot read properties of undefined (reading 'id')`.
+
+```
+// convex/schema.ts
+
+import { userFields } from "./validators"; // <-- runs validators.ts first
+
+
+
+export default defineSchema({
+
+  users: defineTable(userFields),
+
+});
+```
+
+```
+// convex/validators.ts
+
+import schema from "./schema";
+
+
+
+export const userFields = { name: v.string() };
+
+
+
+// ❌ `schema` is undefined here, because schema.ts is still evaluating:
+
+export const userId = schema.id("users");
+
+
+
+// ✅ Use v.id() in files the schema imports:
+
+export const userId = v.id("users");
+```
+
+Files the schema doesn't import — the usual home for queries and mutations — can use `schema.doc()` and `schema.id()` freely. References inside a function body are also fine, since they run after both modules have loaded.
+
+### no-duplicate-indexes[​](#no-duplicate-indexes "Direct link to no-duplicate-indexes")
+
+Warn when a table's index indexes a prefix of the fields of another of its indexes.
+
+A Convex index sorts documents by its fields in order, so a query can filter on any leading subset of them. An index on `["author", "channel"]` selects the same documents as an index on `["author"]` for any query that only constrains `author`, so keeping both costs write throughput and storage — every insert and update to the table writes a row to every index on it — without widening what you can query.
+
+```
+// ❌ "by_author" indexes a prefix of "by_author_and_channel":
+
+defineTable({ author: v.string(), channel: v.string() })
+
+  .index("by_author", ["author"])
+
+  .index("by_author_and_channel", ["author", "channel"]);
+
+
+
+// ✅ Query the longer index with a prefix of its fields:
+
+defineTable({ author: v.string(), channel: v.string() }).index(
+
+  "by_author_and_channel",
+
+  ["author", "channel"],
+
+);
+
+
+
+await ctx.db
+
+  .query("messages")
+
+  .withIndex("by_author_and_channel", (q) => q.eq("author", author))
+
+  .collect();
+
+
+
+// ✅ Neither indexes a prefix of the other, so both are needed:
+
+defineTable({ author: v.string(), channel: v.string() })
+
+  .index("by_channel", ["channel"])
+
+  .index("by_author_and_channel", ["author", "channel"]);
+```
+
+[Staged indexes](/database/reading-data/indexes/.md#staged-indexes) are exempt from this rule, since staging the longer index while the shorter one is still live is how you replace one index with another without a slow backfill blocking your deploy.
+
+#### When not to use this rule[​](#when-not-to-use-this-rule "Direct link to When not to use this rule")
+
+There is one case where this rule might trigger a false positive. Convex [appends `_creationTime`](/database/reading-data/indexes/.md) to every index. If you need to query documents ordered by the fields of the shorter index *then* `_creationTime`, you will need to keep both indexes. For example, if in the example below you need to query documents sorted by `author` *then* `_creationTime`, keep the `by_author` index and disable the ESLint rule where the index is defined:
+
+```
+// eslint-disable-next-line @convex-dev/no-duplicate-indexes
+
+.index("by_author", ["author"])
+```
+
+### no-process-env[​](#no-process-env "Direct link to no-process-env")
+
+Prefer the typed `env` object over `process.env`.
+
+[Declaring your environment variables](/production/environment-variables.md#declaring) in `convex/convex.config.ts` gives you a typed `env` object to import from `_generated/server`. Reading them that way means TypeScript catches typos and tells you which variables are optional, and the deploy fails early when a required variable is missing.
+
+```
+// ❌ Not allowed by this rule:
+
+const apiKey = process.env.GIPHY_KEY; // `string | undefined`, and typos compile
+
+
+
+// ✅ Allowed by this rule:
+
+import { env } from "./_generated/server";
+
+
+
+const apiKey = env.GIPHY_KEY; // `string`, and typos are a build error
+```
+
+The rule provides an autofix when the environment variable is already declared in your `convex.config.ts` (or is one of the [system environment variables](/production/environment-variables.md#system-environment-variables)). If the variable isn't declared, the rewrite is offered as an editor suggestion instead of a fix.
+
+convex/convex.config.ts
+
+```
+import { defineApp } from "convex/server";
+
+import { v } from "convex/values";
+
+
+
+const app = defineApp({
+
+  env: { GIPHY_KEY: v.string() },
+
+});
+
+
+
+export default app;
+```
+
+[]()
+
+### import-wrong-runtime[​](#import-wrong-runtime "Direct link to import-wrong-runtime")
+
+Prevent Convex runtime files from importing from Node runtime files (files with a `"use node"` directive).
+
+This rule is experimental. Please let us know if you find it helpful!
+
+```
+// In a file that doesn’t use `"use node"`:
+
+
+
+// ✅ Allowed by this rule:
+
+import { someFunction } from "./someOtherFile"; // where someOtherFile doesn't use `"use node"`
+
+
+
+// ❌ Not allowed by this rule:
+
+import { someFunction } from "./someNodeFile"; // where someNodeFile uses `"use node"`
+```
+
+### no-collect-in-query[​](#no-collect-in-query "Direct link to no-collect-in-query")
+
+Prefer `.take()` / `.paginate()` over `.collect()` in queries.
+
+Works best with type-aware linting
+
+With [type-aware linting](/linting/eslint.md#type-aware-linting), this rule uses types to find `.collect()` calls on Convex queries, and suggests replacing them with `.take()` or `.paginate()`. Without it, the rule matches `db.query(...).collect()` chains by name instead, which is less precise and doesn’t offer suggestions.
+
+You should avoid using `.collect()` in queries that can return a large number of documents at once. In these queries, using `.collect()` can lead to excessive bandwidth usage and mutation conflicts, and the query can also fail if it reaches the [Convex query limits](/production/state/limits.md#transactions).
+
+Prefer `.take(N)` if you only need the first *N* results, or `.paginate()` if you want to page through results.
+
+If you know the query will always return a small number of results, you can disable this rule for that line with:
+
+```
+// eslint-disable-next-line @convex-dev/no-collect-in-query
+
+const results = await ctx.db.query("roles").collect();
+```
+
+### require-access-control[​](#require-access-control "Direct link to require-access-control")
+
+Require an access control check in public functions.
+
+Public queries, mutations and actions [can be called by anyone](/understanding/best-practices/.md#use-some-form-of-access-control-for-all-public-functions), so forgetting an access control check might cause malicious users to read or write data they shouldn’t have access to.
+
+This rule reports every exported `query`, `mutation` or `action` whose handler doesn’t call one of your access control functions. It recognizes these functions by name: by default, any call whose name starts with `require`, `assert`, `check`, `ensure`, `can` or `has`. This covers helpers that throw (`requireUser(ctx)`) as well as helpers that return a boolean (`canEditNote(ctx)`).
+
+```
+// ✅ Allowed by this rule:
+
+export const list = query({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    const user = await requireUser(ctx);
+
+    // …
+
+  },
+
+});
+
+
+
+// ✅ Allowed by this rule: a boolean check in the condition of an `if`
+
+export const update = mutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    if (!(await canEditNote(ctx))) {
+
+      throw new Error("Unauthorized");
+
+    }
+
+    // …
+
+  },
+
+});
+
+
+
+// ✅ Allowed by this rule: methods count too
+
+export const remove = mutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    await authz.require(ctx, userId, "documents:delete");
+
+    // …
+
+  },
+
+});
+
+
+
+// ✅ Not checked: internal functions can’t be called from the internet
+
+export const cleanup = internalMutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    // …
+
+  },
+
+});
+
+
+
+// ❌ Not allowed by this rule:
+
+export const send = mutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    await ctx.db.insert("messages", { body: "hello" });
+
+  },
+
+});
+```
+
+If your access control functions are named differently, you can customize the pattern in the ESLint settings:
+
+```
+"@convex-dev/require-access-control": [
+
+  "error",
+
+  {
+
+    pattern: "^(require|authorize)",
+
+  },
+
+],
+```
+
+When using this rule, please consider the following limitations:
+
+* The rule only verifies that a matching function is called. It can’t tell whether that check is the right one for this function (e.g. `requireIsLoggedIn` vs `requireIsAdmin`), or whether you act on the boolean it returns.
+* The call has to be a top-level statement of the handler or the condition of a top-level `if`, so a check nested in an `if` body or a `try` block isn’t detected.
+* This rule doesn’t check HTTP actions.
+* This rule doesn’t check [custom functions](https://github.com/get-convex/convex-helpers/blob/main/packages/convex-helpers/README.md#custom-functions).
+
+
+---
+
+# Oxlint
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+[Oxlint](https://oxc.rs/docs/guide/usage/linter) can load ESLint plugins as [JS plugins](https://oxc.rs/docs/guide/usage/linter/js-plugins), so it runs the same `@convex-dev/eslint-plugin` package as ESLint.
+
+## Setup[​](#setup "Direct link to Setup")
+
+Install the plugin with:
+
+```
+npm i @convex-dev/eslint-plugin --save-dev
+```
+
+Then add this to your `oxlint.config.ts` file:
+
+oxlint.config.ts
+
+```
+import { defineConfig } from "oxlint";
+
+import convexPlugin from "@convex-dev/eslint-plugin";
+
+
+
+export default defineConfig({
+
+  jsPlugins: ["@convex-dev/eslint-plugin"],
+
+  ignorePatterns: ["convex/_generated"],
+
+  overrides: [
+
+    {
+
+      files: ["**/convex/**/*.ts"],
+
+      rules: convexPlugin.configs.recommended[0].rules,
+
+    },
+
+  ],
+
+});
+```
+
+To silence a rule on one line, use the same comments as in ESLint, for example `// eslint-disable-next-line @convex-dev/no-filter-in-query`.
+
+## Differences from ESLint[​](#differences-from-eslint "Direct link to Differences from ESLint")
+
+Oxlint doesn’t give JS plugins TypeScript type information, so rules that use it fall back to matching code by name:
+
+* [`explicit-table-ids`](/linting/overview.md#explicit-table-ids) still reports `ctx.db` calls that are missing a table name, but can’t fill in the table name for you, and may miss calls made through a different variable.
+* [`no-collect-in-query`](/linting/overview.md#no-collect-in-query) and [`no-filter-in-query`](/linting/overview.md#no-filter-in-query) are a little less precise, and `no-collect-in-query` doesn’t suggest replacements.
+
+Every other rule and autofix works the same as in ESLint. Oxlint’s `--type-aware` flag doesn’t change this, since it only applies to Oxlint’s built-in rules.
+
+To add the missing table names in one go, run the codemod:
+
+```
+npx @convex-dev/codemod@latest explicit-ids
+```
+
+
+---
+
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Cancel a pending team invitation
@@ -52548,7 +53749,7 @@ You can modify environment variables using the pencil icon button:
 Environment variables can also be viewed and modified from the [command line](/cli/reference/env.md).
 
 ```
-npx convex env list
+npx convex env list --names-only
 
 npx convex env get NAME
 
@@ -52730,7 +53931,7 @@ function giphyUrl(query) {
 
 tip
 
-If you've [declared your environment variables](#declaring) in `convex.config.ts`, prefer using the typed `env` import from `_generated/server` instead of `process.env` for better type safety. You can use the [`@convex-dev/no-process-env`](/eslint.md#no-process-env) ESLint rule to automatically flag `process.env` reads, and suggest using `env.*` instead.
+If you've [declared your environment variables](#declaring) in `convex.config.ts`, prefer using the typed `env` import from `_generated/server` instead of `process.env` for better type safety. You can use the [`@convex-dev/no-process-env`](/linting/overview.md#no-process-env) lint rule to automatically flag `process.env` reads, and suggest using `env.*` instead.
 
 Note that you should not condition your Convex function exports on environment variables. The set of Convex functions that can be called is determined during deployment and is not reevaluated when you change an environment variable. The following code will throw an error at runtime, if the DEBUG environment variable changes between deployment and calling the function.
 
@@ -58546,7 +59747,7 @@ crons.daily(
 );
 ```
 
-The [`@convex-dev/no-top-of-hour-crons`](/eslint.md#no-top-of-hour-crons) ESLint rule flags schedules pinned to the top of the hour.
+The [`@convex-dev/no-top-of-hour-crons`](/linting/overview.md#no-top-of-hour-crons) lint rule flags schedules pinned to the top of the hour.
 
 ## Viewing your cron jobs[​](#viewing-your-cron-jobs "Direct link to Viewing your cron jobs")
 
@@ -61844,6 +63045,98 @@ test("request metadata", async () => {
 const modules = import.meta.glob("./**/*.ts");
 ```
 
+### Define a test application[​](#define-a-test-application "Direct link to Define a test application")
+
+Use `defineTestApp` to define a small application in your tests, such as a host app for a component or library. It provides schema-bound function builders and typed function references without needing to export test functions from files.
+
+convex/defineTestApp.test.ts
+
+```
+import { defineSchema, defineTable } from "convex/server";
+
+import { v } from "convex/values";
+
+import { defineTestApp } from "convex-test";
+
+import { expect, test } from "vitest";
+
+import { Workpool } from "@convex-dev/workpool";
+
+import workpoolTest from "@convex-dev/workpool/test";
+
+
+
+const app = defineTestApp({
+
+  schema: defineSchema({
+
+    events: defineTable({ key: v.string() }),
+
+  }),
+
+  components: {
+
+    myWorkpool: workpoolTest,
+
+  },
+
+});
+
+
+
+const { api, createTest } = app.defineModules({
+
+  events: {
+
+    add: app.mutation({
+
+      args: { key: v.string() },
+
+      returns: v.id("events"),
+
+      handler: async (ctx, args) => await ctx.db.insert("events", args),
+
+    }),
+
+  },
+
+});
+
+
+
+test("adds an event", async () => {
+
+  const t = createTest();
+
+  const id = await t.mutation(api.events.add, { key: "example" });
+
+  const event = await t.query(async (ctx) => await ctx.db.get("events", id));
+
+  expect(event?.key).toBe("example");
+
+});
+
+
+
+export const testWorkpool = new Workpool(app.components.myWorkpool, {});
+```
+
+The app provides builders for `query`, `mutation`, `action`, and their `internal*` variants with the same syntax as `convex/_generated/server`. Register functions with `app.defineModules`, which takes an object mapping module paths (such as `"test/callbacks"`) to objects of function exports. It returns public references in `api` and internal references in `internal`.
+
+We recommend explicitly annotating return types for handlers that reference this API to break TypeScript inference cycles.
+
+Call `createTest()` inside each test for fresh database, scheduler, and component registration state. You can also pass options such as `createTest({ transactionLimits: true })`.
+
+`defineTestApp` also returns a typed `components` object. Pass component testing helpers in its `components` option; each helper's `register` function runs on every `createTest()` call. The object keys specify component instance names, such as `myWorkpool` above.
+
+To infer the type of `app.components.myWorkpool`, the helper's `register` function must return the component's `ComponentApi`. Some existing helpers return `void` instead. For those helpers, supply the API type by configuring the component as `myWorkpool: { register: workpoolTest.register as ComponentRegistration<ComponentApi> }`.
+
+Import `ComponentRegistration` from `convex-test` and `ComponentApi` from the component package's `/_generated/component.js` entrypoint.
+
+Additional components can be registered with `t.registerComponent`.
+
+Note: `defineTestApp` does not load `convex.config.ts`. See the [component client testing example](/components/authoring.md#testing-the-api-and-client-code).
+
 ## Vitest tips[​](#vitest-tips "Direct link to Vitest tips")
 
 ### Asserting results[​](#asserting-results "Direct link to Asserting results")
@@ -62747,7 +64040,7 @@ const tomsMessages = allMessages.filter((m) => m.author === "Tom");
 
 Search for `.filter` in your Convex codebase — a regex like `\.filter\(\(?q` will probably find all the ones on database queries.
 
-You can also check automatically that your functions don’t use `.filter` with the [`@convex-dev/no-filter-in-query` ESLint rule](/eslint.md#no-filter-in-query).
+You can also check automatically that your functions don’t use `.filter` with the [`@convex-dev/no-filter-in-query` lint rule](/linting/overview.md#no-filter-in-query).
 
 Decide whether they should be replaced with a `.withIndex` condition — per [this section](/understanding/best-practices/.md#only-use-collect-with-a-small-number-of-results), if you are filtering over a large (1000+) or potentially unbounded number of documents, you should use an index. If not using a `.withIndex` / `.withSearchIndex` condition, consider replacing them with a filter in code for more readability and flexibility.
 
@@ -62875,7 +64168,7 @@ const watchedMoviesCount = await ctx.db
 
 Search for `.collect` in your Convex codebase (a regex like `\.collect\(` will probably find these). And think through whether the number of results is small. This function health page in the dashboard can also help surface these.
 
-You can also check automatically that `.collect()` is avoided by enabling the [`@convex-dev/no-collect-in-query` ESLint rule](/eslint.md#no-collect-in-query).
+You can also check automatically that `.collect()` is avoided by enabling the [`@convex-dev/no-collect-in-query` lint rule](/linting/overview.md#no-collect-in-query).
 
 The [aggregate component](https://www.npmjs.com/package/@convex-dev/aggregate) or [database triggers](https://stack.convex.dev/triggers) can be helpful patterns for denormalizing data.
 
@@ -62949,7 +64242,7 @@ const currentTeamMember = await ctx.db
 
 Look through your indexes, either in your `schema.ts` file or in the dashboard, and look for any indexes where one is a prefix of another.
 
-You can also check automatically that no index is a prefix of another with the [`@convex-dev/no-duplicate-indexes` ESLint rule](/eslint.md#no-duplicate-indexes).
+You can also check automatically that no index is a prefix of another with the [`@convex-dev/no-duplicate-indexes` lint rule](/linting/overview.md#no-duplicate-indexes).
 
 ### Exceptions[​](#exceptions-2 "Direct link to Exceptions")
 
@@ -63039,7 +64332,7 @@ export const updateMovie = mutation({
 
 Search for `query`, `mutation`, and `action` in your Convex codebase, and ensure that all of them have argument validators (and optionally return value validators).
 
-You can also check automatically that your functions have argument validators with the [`@convex-dev/require-argument-validators` ESLint rule](/eslint.md#require-argument-validators).
+You can also check automatically that your functions have argument validators with the [`@convex-dev/require-args-validator` lint rule](/linting/overview.md#require-args-validator).
 
 If you use HTTP actions, you may want to use an argument validation library like [Zod](https://zod.dev) to validate that the HTTP request is the shape you expect.
 
@@ -63251,7 +64544,7 @@ Some apps use Row Level Security (RLS) to check access to each document automati
 
 Helper functions for common checks and common operations can also be useful -- e.g. `isTeamMember`, `isTeamAdmin`, `loadTeam` (which throws if the current user does not have access to the team).
 
-If you name these helpers consistently, the [`@convex-dev/require-access-control` ESLint rule](/eslint.md#require-access-control) can check that every public function calls one of them, so that you don't forget a check as your app grows.
+If you name these helpers consistently, the [`@convex-dev/require-access-control` lint rule](/linting/overview.md#require-access-control) can check that every public function calls one of them, so that you don't forget a check as your app grows.
 
 ## Only schedule and `ctx.run*` internal functions[​](#only-schedule-and-ctxrun-internal-functions "Direct link to only-schedule-and-ctxrun-internal-functions")
 
@@ -64100,9 +65393,9 @@ await ctx.db.delete("movies", movieId);
 
 Search for calls of `db.get`, `db.patch`, `db.replace` and `db.delete` in your Convex codebase, and ensure that all of them pass a table name as the first argument.
 
-You can also check automatically that a table name argument is passed with the [`@convex-dev/explicit-table-ids` ESLint rule](/eslint.md#explicit-table-ids).
+You can also check automatically that a table name argument is passed with the [`@convex-dev/explicit-table-ids` lint rule](/linting/overview.md#explicit-table-ids).
 
-You can migrate existing code automatically by using the autofix in the ESLint rule, or with the `@convex-dev/codemod` standalone tool.
+You can migrate existing code automatically by using the autofix in the lint rule, or with the `@convex-dev/codemod` standalone tool.
 
 [Learn more on news.convex.dev →](https://news.convex.dev/db-table-name/)
 
@@ -64228,7 +65521,7 @@ if (webhookUrl !== undefined) {
 
 Search for `process.env` in your Convex codebase, declare each variable you find in `convex.config.ts`, and read it from the `env` import instead. System environment variables (`CONVEX_CLOUD_URL` and `CONVEX_SITE_URL`) are automatically declared.
 
-You can also check this automatically with the [`@convex-dev/no-process-env` ESLint rule](/eslint.md#no-process-env), which autofixes reads of variables that are already declared.
+You can also check this automatically with the [`@convex-dev/no-process-env` lint rule](/linting/overview.md#no-process-env), which autofixes reads of variables that are already declared.
 
 
 ---

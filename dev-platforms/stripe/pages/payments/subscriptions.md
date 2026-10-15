@@ -16,6 +16,8 @@ The Checkout Sessions API supports setting up a variety of pricing models, inclu
 
 [Build a subscriptions integration](https://docs.stripe.com/payments/checkout/build-subscriptions.md): Use the Checkout Sessions API to build your subscriptions integration.
 
+[Use Trial Offers with Checkout (Private preview)](https://docs.stripe.com/payments/checkout/trial-offers.md): Charge an introductory price for a subscription item, then transition to its regular price.
+
 [Configure free trials](https://docs.stripe.com/payments/checkout/free-trials.md): Delay payments on subscriptions using free trial periods.
 
 [Limit customers to one subscription](https://docs.stripe.com/payments/checkout/limit-subscriptions.md): Direct customers to manage their subscription when they already have one.

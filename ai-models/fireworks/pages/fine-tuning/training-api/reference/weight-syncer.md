@@ -1,10 +1,10 @@
 ---
-title: "WeightSyncer (Legacy)"
+title: "WeightSyncer legacy Training API reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/weight-syncer
 path: fine-tuning/training-api/reference/weight-syncer
 ---
 
-Backward-compatibility reference for the old standalone checkpoint-then-sync helper.
+Legacy Training API reference for WeightSyncer, the standalone checkpoint-then-sync helper retained on Fireworks for backward compatibility with older code.
 
 ## Overview
 

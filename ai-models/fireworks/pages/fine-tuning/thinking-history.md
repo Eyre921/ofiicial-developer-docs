@@ -1,10 +1,10 @@
 ---
-title: "Thinking history in training"
+title: "Render reasoning history in managed fine-tuning"
 source: https://docs.fireworks.ai/fine-tuning/thinking-history
 path: fine-tuning/thinking-history
 ---
 
-Choose how historical reasoning is rendered for managed training and match training behavior to inference.
+Choose how prior turn reasoning is rendered in Fireworks managed fine-tuning datasets so training behavior matches inference for thinking-capable models.
 
 Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
 

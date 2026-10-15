@@ -142,7 +142,7 @@ Check the browser Network response for `accounts:signInWithIdp`. Okta System Log
 `User single sign on to app SUCCESS` only confirm that Okta authenticated the user. ElevenLabs
 can still reject the SAML response if the assertion values do not match the SSO configuration.
 
-#### INVALID\_IDP\_RESPONSE: Error when parsing certificate
+#### INVALID_IDP_RESPONSE: Error when parsing certificate
 
 The browser Network response may show `INVALID_IDP_RESPONSE: Error when parsing certificate`.
 Remove the certificate from ElevenLabs, then re-add the Okta X.509 certificate in valid PEM

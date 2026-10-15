@@ -1,10 +1,10 @@
 ---
-title: "FireworksClient"
+title: "FireworksClient reference for Training API accounts"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/fireworks-client
 path: fine-tuning/training-api/reference/fireworks-client
 ---
 
-Account-level operations that don't require a running trainer job.
+SDK reference for FireworksClient: account-level Training API operations, model and deployment management, and utilities that do not require a running trainer.
 
 ## Overview
 

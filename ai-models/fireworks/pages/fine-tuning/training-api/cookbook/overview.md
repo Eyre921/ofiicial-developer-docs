@@ -1,10 +1,10 @@
 ---
-title: "The Cookbook"
+title: "Training API cookbook: recipes for SFT, DPO, and RL"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview
 path: fine-tuning/training-api/cookbook/overview
 ---
 
-Ready-to-run training recipes for GRPO, DPO, SFT, and distillation built on top of the Training API.
+Overview of the Training API cookbook: ready-to-run recipes for supervised fine-tuning, DPO, GRPO reinforcement learning, and distillation on Fireworks.
 
 ## What is the Cookbook?
 

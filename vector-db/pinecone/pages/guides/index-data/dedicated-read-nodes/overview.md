@@ -6,8 +6,6 @@ path: guides/index-data/dedicated-read-nodes/overview
 
 Dedicated read nodes give a Pinecone index its own provisioned read hardware for predictable, low-latency performance at high query volumes.
 
-## How it works
-
 Pinecone indexes built on dedicated read nodes use provisioned read hardware to provide predictable, consistent performance at sustained, high query volumes. They're designed for large-scale vector workloads such as semantic search, recommendation engines, and mission-critical services.
 
 Dedicated read nodes differ from on-demand indexes in how they handle read operations. While on-demand indexes use shared, multi-tenant capacity for reads, dedicated read nodes provision exclusive hardware for reads: memory, local SSDs, and compute. Both index types use Pinecone's serverless infrastructure for writes and storage.
@@ -38,6 +36,8 @@ However, every dedicated read nodes index has isolated hardware for read operati
 | Scaling | Automatic; Pinecone handles capacity | Manual; add [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) for storage, add [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) for throughput |
 | Query-time tuning | Parameters accepted but have no effect | Optional [`scan_factor` and `max_candidates`](/guides/index-data/dedicated-read-nodes/tune-queries) to trade recall for lower latency and higher throughput |
 | Best for | Variable workloads, multi-tenant applications with many namespaces, low to moderate query rates | Sustained high query rates, large single-namespace workloads, predictable performance and cost |
+
+In [BYOC](/guides/production/bring-your-own-cloud), on-demand indexes share one pool of nodes in your own cloud account instead of multi-tenant Pinecone infrastructure, and both modes are billed per node rather than per read unit. See [BYOC pricing](/guides/production/bring-your-own-cloud#pricing).
 
 ## When to use dedicated read nodes
 

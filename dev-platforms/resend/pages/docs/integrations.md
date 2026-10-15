@@ -180,6 +180,10 @@ Integrate Resend with the tools you already use.
   <Card title="Attio" href="/docs/guides/attio-integration" icon={<AttioIcon />}>
     Send emails and add contacts to segments from Attio
   </Card>
+
+  <Card title="Gravity Forms" href="https://docs.gravitysmtp.com/category/integrations/resend/" icon={<GravityFormsIcon />}>
+    Send emails from WordPress with Gravity Forms
+  </Card>
 </CardGroup>
 
 ## Notifications

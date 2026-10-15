@@ -1,10 +1,10 @@
 ---
-title: "Custom Models"
+title: "Upload and deploy custom models on Fireworks"
 source: https://docs.fireworks.ai/models/uploading-custom-models
 path: models/uploading-custom-models
 ---
 
-Upload, verify, and deploy your own models from Hugging Face or elsewhere
+Upload, verify, and deploy custom models on Fireworks from Hugging Face or local checkpoints, including supported architectures and quantization options.
 
 Upload your own models from Hugging Face or elsewhere to deploy trained or custom-trained models optimized for your use case.
 

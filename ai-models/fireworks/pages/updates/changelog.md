@@ -1,8 +1,10 @@
 ---
-title: "Changelog"
+title: "Fireworks documentation changelog and updates"
 source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
+
+Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 <ChangelogSearch />
 

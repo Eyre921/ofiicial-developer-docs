@@ -61,7 +61,7 @@ In your agent's settings, navigate to the **Knowledge Base** section and toggle 
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.prompt.rag`:
 

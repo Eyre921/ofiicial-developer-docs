@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks
 path: ecosystem/integrations/agent-frameworks
 ---
 
-Build production-ready AI agents with Fireworks and leading open-source frameworks
+Build production AI agents on Fireworks with LangChain, LlamaIndex, CrewAI, AutoGen, and other open-source frameworks using the OpenAI-compatible API.
 
 Fireworks AI seamlessly integrates with the best open-source agent frameworks, enabling you to build magical, production-ready applications powered by state-of-the-art language models.
 

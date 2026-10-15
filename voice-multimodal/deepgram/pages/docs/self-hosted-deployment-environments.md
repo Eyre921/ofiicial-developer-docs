@@ -101,7 +101,7 @@ For each machine running an STT Engine container, we recommend a machine with th
     * **GCP** - `g2-standard-8` instances
 
   * Other commonly used cloud GPUs: NVIDIA A10, NVIDIA L40S
-    * **Azure** - Standard\_NV36ads\_A10\_v5 instances (NVIDIA A10)
+    * **Azure** - Standard_NV36ads_A10_v5 instances (NVIDIA A10)
 
 * 4 CPU cores
 
@@ -133,7 +133,7 @@ For each machine running a TTS Engine container, we recommend the following spec
     * **GCP** - `g2-standard-24` or `g2-standard-48` instances
 
   * Other commonly used cloud GPUs: NVIDIA A10, NVIDIA A100
-    * **Azure** - Standard\_NV72ads\_A10\_v5 instances (NVIDIA A10)
+    * **Azure** - Standard_NV72ads_A10_v5 instances (NVIDIA A10)
 
 * 8 CPU cores (increased for TTS workloads and running multiple Engine instances)
 

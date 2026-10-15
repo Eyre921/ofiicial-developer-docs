@@ -81,7 +81,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     registerTelemetry(LangSmithTelemetry());
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -99,7 +99,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     registerTelemetry(LangSmithTelemetry());
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -136,7 +136,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const { generateText } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -152,7 +152,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const { generateText, tool } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -197,7 +197,7 @@ You can wrap `traceable` calls around AI SDK calls or within AI SDK tool calls. 
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -242,7 +242,7 @@ You can wrap `traceable` calls around AI SDK calls or within AI SDK tool calls. 
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -295,7 +295,7 @@ When tracing in serverless environments, wait for all runs to flush before your 
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -350,7 +350,7 @@ When tracing in serverless environments, wait for all runs to flush before your 
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -429,7 +429,7 @@ You can pass LangSmith-specific config such as metadata, run names, tags, and cu
     );
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -442,7 +442,7 @@ You can pass LangSmith-specific config such as metadata, run names, tags, and cu
     import { LangSmithTelemetry } from "langsmith/experimental/vercel";
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
         telemetry: {
             integrations: [
@@ -470,7 +470,7 @@ You can pass LangSmith-specific config such as metadata, run names, tags, and cu
     });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -488,7 +488,7 @@ You can pass LangSmith-specific config such as metadata, run names, tags, and cu
     const { generateText } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
         providerOptions: {
             langsmith: createLangSmithProviderOptions<typeof ai.generateText>({
@@ -554,7 +554,7 @@ Here's an example for `generateText`:
     });
 
     const { text } = await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "What is the capital of France?",
         telemetry: { integrations: [telemetry] },
     });
@@ -608,7 +608,7 @@ Here's an example for `generateText`:
     });
 
     const { text } = await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "What is the capital of France?",
         providerOptions: { langsmith },
     });
@@ -636,7 +636,7 @@ For redacting tool input/output, wrap your `execute` method in a `traceable` lik
     const telemetry = LangSmithTelemetry({ client });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -681,7 +681,7 @@ For redacting tool input/output, wrap your `execute` method in a `traceable` lik
     const { generateText, tool } = wrapAISDK(ai, { client });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",

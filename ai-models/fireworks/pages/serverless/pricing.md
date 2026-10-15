@@ -1,10 +1,10 @@
 ---
-title: "Serverless Pricing"
+title: "Serverless pricing for text, vision, and embedding models"
 source: https://docs.fireworks.ai/serverless/pricing
 path: serverless/pricing
 ---
 
-Per-token serverless pricing for text, vision, and embedding models, including Priority and Fast serverless modes
+Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, and Fast serverless mode rates.
 
 ## Overview
 

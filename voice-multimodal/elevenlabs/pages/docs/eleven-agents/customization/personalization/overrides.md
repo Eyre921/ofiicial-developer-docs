@@ -85,7 +85,7 @@ Navigate to your agent's settings and select the **Security** tab. Enable the `F
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set fields under `platform_settings.overrides.conversation_config_override` to `true` to allow runtime overrides for that field:
 

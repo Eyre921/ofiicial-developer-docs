@@ -10,4 +10,4 @@ path: docs/help-center/technical/can-i-reduce-api-latency
 
 To find the most comprehensive and up-to-date information about reducing latency, we recommend reading our [latency optimization best practices.](/docs/best-practices/latency-optimization)
 
-Through the API, you also have the option to optimize the generative process of the AI using the optimize\_streaming\_latency parameter, but this is deprecated, and we no longer recommend using it. To find out more, please see our [API documentation. ](/docs/api-reference/text-to-speech/convert#request.query.optimize_streaming_latency)
+Through the API, you also have the option to optimize the generative process of the AI using the optimize_streaming_latency parameter, but this is deprecated, and we no longer recommend using it. To find out more, please see our [API documentation. ](/docs/api-reference/text-to-speech/convert#request.query.optimize_streaming_latency)

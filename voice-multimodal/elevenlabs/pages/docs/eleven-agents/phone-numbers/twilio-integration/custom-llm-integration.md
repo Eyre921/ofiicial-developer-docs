@@ -485,7 +485,7 @@ python bridge.py
 
 Note the `https://` URL ngrok prints — Twilio will POST to it.
 
-#### Update the Speech Engine ws\_url
+#### Update the Speech Engine ws_url
 
 Set `speech_engine.ws_url` to the public WebSocket URL of your brain endpoint so ElevenLabs knows where to connect.
 

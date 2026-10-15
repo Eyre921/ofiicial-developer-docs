@@ -35,7 +35,7 @@ Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an 
 | Product           | Recommended      | Also supported                                                                               | Not supported                           |
 | ----------------- | ---------------- | -------------------------------------------------------------------------------------------- | --------------------------------------- |
 | Nova-3 STT        | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`, `ml.g4dn.2xlarge`      | —                                       |
-| Flux STT          | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`                         | `ml.g4dn.*` (no sm\_75 kernel)          |
+| Flux STT          | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`                         | `ml.g4dn.*` (no sm_75 kernel)           |
 | Aura-2 TTS        | `ml.g6.12xlarge` | `ml.g7.12xlarge`, `ml.g7e.12xlarge`, `ml.g5.12xlarge`, `ml.g6e.12xlarge`, `ml.g4dn.12xlarge` | Single-GPU types (Aura-2 needs 2+ GPUs) |
 | Flux TTS (Aura-3) | `ml.g6e.2xlarge` | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6.2xlarge`                                           | `ml.g5.*`, `ml.g4dn.*`                  |
 

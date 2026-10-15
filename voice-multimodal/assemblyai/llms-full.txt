@@ -106,6 +106,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-streaming-prompting-and-keyterms-mdx)
 - [Conversation Context](#conversation-context-docs-streaming-universal-3-5-pro-context-carryover-mdx)
 - [Multilingual Transcription](#multilingual-transcription-docs-streaming-multilingual-transcription-mdx)
+- [Real-time Translation](#real-time-translation-docs-streaming-real-time-translation-mdx)
 - [Medical Mode](#medical-mode-docs-streaming-medical-mode-mdx)
 - [Voice Focus](#voice-focus-docs-streaming-voice-focus-mdx)
 - [Streaming Diarization and Multichannel](#streaming-diarization-and-multichannel-docs-streaming-label-speakers-and-separate-channels-mdx)
@@ -23191,6 +23192,217 @@ See [Select the speech model](/streaming/select-the-speech-model) for a full mod
 ## Looking for pre-recorded code switching?
 
 This guide covers code switching for **streaming (real-time audio)**. If you're working with pre-recorded audio, see [Code Switching (Pre-recorded)](/pre-recorded-audio/code-switching).
+
+---
+
+<a id="real-time-translation-docs-streaming-real-time-translation-mdx"></a>
+
+# Real-time Translation
+
+URL: https://www.assemblyai.com/docs/streaming/real-time-translation
+Source: docs/streaming/real-time-translation.mdx
+Navigation: Real-time STT > Features
+Description: Translate each streaming transcript turn into another language on the same WebSocket connection using the llm_gateway connection parameter.
+
+Translate speech into another language as each turn completes.
+
+Real-time translation runs on [LLM Gateway](/llm-gateway/quickstart), configured through the `llm_gateway` connection parameter. When a turn ends, the server sends the final transcript to the gateway with your translation prompt and returns the translation on the same WebSocket as an `LLMGatewayResponse` message. You open one connection, receive the original transcript as usual, and receive the translation a moment later. There is no second API to call.
+
+## Quickstart
+
+Pass an `llm_gateway` object with a translation prompt. The example below translates English into Spanish.
+
+```python
+from assemblyai.streaming.v3 import RealTimeParameters
+from assemblyai.streaming.v3.models import LLMGatewayConfig, LLMGatewayMessage
+
+PROMPT = "Translate the following English into natural Spanish and reply with only the translation: {{turn}}"
+
+client.connect(
+    RealTimeParameters(
+        sample_rate=16000,
+        speech_model="universal-3-6-pro",
+        llm_gateway=LLMGatewayConfig(
+            model="qwen3.5-4b-32k-fast",
+            messages=[LLMGatewayMessage(role="user", content=PROMPT)],
+            max_tokens=400,
+        ),
+    )
+)
+```
+
+```python
+import json
+
+LLM_GATEWAY_CONFIG = {
+    "model": "qwen3.5-4b-32k-fast",
+    "prompt": "Translate the following English into natural Spanish and reply with only the translation: {{turn}}",
+}
+
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-6-pro",
+    "llm_gateway": json.dumps(LLM_GATEWAY_CONFIG),
+}
+```
+
+```javascript
+const LLM_GATEWAY_CONFIG = {
+  model: "qwen3.5-4b-32k-fast",
+  prompt: "Translate the following English into natural Spanish and reply with only the translation: {{turn}}",
+};
+
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-6-pro",
+  llm_gateway: JSON.stringify(LLM_GATEWAY_CONFIG),
+};
+```
+
+```javascript
+const PROMPT =
+  "Translate the following English into natural Spanish and reply with only the translation: {{turn}}";
+
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-6-pro",
+  llmGateway: {
+    model: "qwen3.5-4b-32k-fast",
+    messages: [{ role: "user", content: PROMPT }],
+    max_tokens: 400,
+  },
+});
+```
+
+`{{turn}}` is a template variable. The server replaces it with the final transcript of each turn before the prompt reaches the model, so leave it exactly as written. See [Prompt template variables](#prompt-template-variables) for giving the model previous turns as context.
+
+The `prompt` field is shorthand for a single user message. The SDK config types take the equivalent `messages` form, and either works on the raw WebSocket.
+
+### Example output
+
+The `Turn` messages arrive unchanged, in the spoken language. Each final turn is followed by an `LLMGatewayResponse` carrying its translation.
+
+```plain
+Turn 0   Hi, I'd like to make a reservation at a restaurant.
+         ¡Hola! Me gustaría hacer una reserva en un restaurante.
+Turn 1   Saturday around 7 PM.
+         Sábado a las 7 de la tarde.
+Turn 2   4 people total.
+         4 personas en total.
+Turn 3   No restrictions, but we'd like a quieter table if possible.
+         Sin restricciones, pero nos gustaría una mesa más tranquila si es posible.
+Turn 4   Great, what's my confirmation code?
+         ¡Genial! ¿Cuál es mi código de confirmación?
+```
+
+## Reading the translation
+
+Translations arrive as `LLMGatewayResponse` messages. The `data` field is the LLM Gateway chat completion for that turn, so the translated text is at `data.choices[0].message.content`.
+
+```json
+{
+  "type": "LLMGatewayResponse",
+  "turn_order": 2,
+  "transcript": "4 people total.",
+  "data": {
+    "model": "qwen3.5-4b-32k-fast",
+    "choices": [
+      {
+        "index": 0,
+        "message": { "role": "assistant", "content": "4 personas en total." },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": { "prompt_tokens": 38, "completion_tokens": 7, "total_tokens": 45 }
+  }
+}
+```
+
+```python
+from assemblyai.streaming.v3 import LLMGatewayResponseEvent, RealTimeEvents
+
+def on_llm_response(self, event: LLMGatewayResponseEvent):
+    translation = event.data["choices"][0]["message"]["content"].strip()
+    print(f"[{event.turn_order}] -> {translation}")
+
+client.on(RealTimeEvents.LLMGatewayResponse, on_llm_response)
+```
+
+```python
+def on_message(ws, message):
+    data = json.loads(message)
+
+    if data["type"] == "Turn" and data["end_of_turn"]:
+        print(f"[{data['turn_order']}] {data['transcript']}")
+
+    elif data["type"] == "LLMGatewayResponse":
+        translation = data["data"]["choices"][0]["message"]["content"].strip()
+        print(f"[{data['turn_order']}] -> {translation}")
+```
+
+```javascript
+ws.on("message", (message) => {
+  const data = JSON.parse(message);
+
+  if (data.type === "Turn" && data.end_of_turn) {
+    console.log(`[${data.turn_order}] ${data.transcript}`);
+  } else if (data.type === "LLMGatewayResponse") {
+    const translation = data.data.choices[0].message.content.trim();
+    console.log(`[${data.turn_order}] -> ${translation}`);
+  }
+});
+```
+
+```javascript
+transcriber.on("llmGatewayResponse", (response) => {
+  const translation = response.data.choices[0].message.content.trim();
+  console.log(`[${response.turn_order}] -> ${translation}`);
+});
+```
+
+Match each translation to its source turn by `turn_order`. The translation is produced in the background, so it does not delay the final `Turn` message, and translations for consecutive short turns can arrive out of order. If the gateway call fails or times out, no `LLMGatewayResponse` is sent for that turn. With a small model such as `qwen3.5-4b-32k-fast`, the translation typically lands within about 100 ms of the final turn.
+
+Only final turns are translated. Partial `Turn` messages stay in the spoken language.
+
+## Prompt template variables
+
+The prompt is a template. The server renders it for each turn with these variables.
+
+| Variable | Value |
+| --- | --- |
+| `{{turn}}` | The final transcript of the turn being translated. |
+| `{{history_1}}` to `{{history_10}}` | Up to the last ten final transcripts whose translation has already completed, oldest first, joined with spaces. The current turn is not included. |
+
+To give the model context, add `{{history_3}}` to the prompt above the current turn. A turn joins the history once its own translation returns, so when turns come in quick succession the immediately preceding turn may not be included yet. History is the main lever for translation quality. A single sentence like "Yes, that one." translates badly on its own and well with the question that preceded it. Three turns of history is a good default for conversations. Raise it for long monologues and lower it for a voice agent where each turn stands alone, since every turn of history adds prompt tokens.
+
+## Choosing a model and target language
+
+The `llm_gateway` object accepts the same fields as the [LLM Gateway chat completions API](/llm-gateway/chat-completions). The fields that matter for translation are listed below.
+
+| Key | Description |
+| --- | --- |
+| `model` | Any model from [Available models](/llm-gateway/available-models), which also lists per-model pricing. Pick a small, fast model so the translation keeps pace with speech. Defaults to `gemini-2.5-flash-lite` if omitted. |
+| `prompt` or `messages` | The prompt, as a string or as a `messages` array. State the source language, the target language, and that the model must reply with the translation only. |
+| `max_tokens` | Cap on the translation length. A few hundred tokens covers any single turn. |
+
+To translate into another language, change the two mentions of Spanish in the prompt. To translate from a language other than English, change the source language in the prompt, or combine translation with [multilingual transcription](/streaming/multilingual-transcription) and tell the model to translate "from whatever language is spoken".
+
+**Data retention**
+
+Translation requests are sent to LLM Gateway with zero data retention, so the prompt and the translated text are not stored by the gateway.
+
+## Combine with other features
+
+Translation runs after transcription, so it composes with the rest of the streaming pipeline.
+
+- [Multilingual transcription](/streaming/multilingual-transcription) to translate a conversation whose source language changes or is unknown in advance.
+- [Speaker labels](/streaming/label-speakers-and-separate-channels) to show who said each translated line. The `speaker_label` is on the `Turn` message, so join it to the translation by `turn_order`.
+- [Turn detection](/streaming/turn-detection) settings decide how often a translation is produced. Longer turns give the model more context per request and fewer, more complete translations.
+
+## Going further
+
+- [Real-time LLM Gateway guide](/streaming/guides/real_time_llm_gateway) for the full microphone-to-LLM example and the complete `llm_gateway` reference.
+- [Translate transcripts client-side](/streaming/guides/real_time_translation) if you prefer to call LLM Gateway from your own code with full control over batching and retries.
 
 ---
 

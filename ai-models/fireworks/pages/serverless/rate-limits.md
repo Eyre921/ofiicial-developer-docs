@@ -1,10 +1,10 @@
 ---
-title: "Serverless Rate Limits"
+title: "Adaptive rate limits on Fireworks serverless"
 source: https://docs.fireworks.ai/serverless/rate-limits
 path: serverless/rate-limits
 ---
 
-Adaptive rate limits grow and shrink with your usage
+How adaptive rate limits work on Fireworks serverless inference: bounds, adjustment logic, and how RPS and TPS grow and shrink with your recent usage patterns.
 
 When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serverless-modes).
 

@@ -6,6 +6,8 @@ path: nexus/provider-keys/bedrock
 
 Connect a Bedrock IAM role or API key so FireRouter can call supported models through your AWS account.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 An Amazon Bedrock Provider Key lets FireRouter use an IAM role or API key from your AWS account for supported models. Fireworks stores the credential securely. Bedrock usage and charges remain in your AWS account.
 
 Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each model also needs a Bedrock model ID and region. See <a href="/nexus/provider-keys">Provider Keys</a> for shared states, rotation, and security.

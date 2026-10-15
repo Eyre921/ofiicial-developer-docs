@@ -240,7 +240,7 @@ python main.py
 python dev_client.py
 ```
 
-Speak into your microphone to have a conversation with the agent. See [docs/LOCAL\_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) for more details and troubleshooting.
+Speak into your microphone to have a conversation with the agent. See [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) for more details and troubleshooting.
 
 > **Note:** `dev_client.py` is for local development only. If you've deployed to Fly.io, call the phone number directly instead.
 
@@ -325,7 +325,7 @@ telephony-voice-agent/
 
 ### Change the Agent's Personality
 
-Edit the `SYSTEM_PROMPT` in `voice_agent/agent_config.py`. This is where you define who the agent is, what it knows, and how it behaves. See [docs/PROMPT\_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
+Edit the `SYSTEM_PROMPT` in `voice_agent/agent_config.py`. This is where you define who the agent is, what it knows, and how it behaves. See [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
 
 ### Add or Modify Functions
 
@@ -333,7 +333,7 @@ Edit the `SYSTEM_PROMPT` in `voice_agent/agent_config.py`. This is where you def
 2. Add the handler in `voice_agent/function_handlers.py`
 3. Implement the backend logic in `backend/scheduling_service.py`
 
-See [docs/FUNCTION\_GUIDE.md](docs/FUNCTION_GUIDE.md) for function definition best practices.
+See [docs/FUNCTION_GUIDE.md](docs/FUNCTION_GUIDE.md) for function definition best practices.
 
 ### Swap the LLM or Voice
 
@@ -361,7 +361,7 @@ The function dispatch in `voice_agent/function_handlers.py` uses lazy imports, m
 ## Additional Resources
 
 * [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Detailed architecture, data flow diagrams, and component details
-* [docs/PROMPT\_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts
-* [docs/FUNCTION\_GUIDE.md](docs/FUNCTION_GUIDE.md) - Best practices for defining agent functions
-* [docs/LOCAL\_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) - Step-by-step local development setup
+* [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts
+* [docs/FUNCTION_GUIDE.md](docs/FUNCTION_GUIDE.md) - Best practices for defining agent functions
+* [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) - Step-by-step local development setup
 * [Deepgram Voice Agent API Docs](https://developers.deepgram.com/docs/voice-agent) - Official API documentation

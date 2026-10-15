@@ -687,8 +687,8 @@ app.post("/webhook/elevenlabs", async (req, res) => {
 Maintain conversation context across multiple interactions by storing and retrieving state:
 
 1. When a call starts, pass in your user id as a dynamic variable.
-2. When a call ends, set up your webhook endpoint to store conversation data in your database, based on the extracted user id from the dynamic\_variables.
-3. When the user calls again, you can retrieve this context and pass it to the new conversation into a \{\{previous\_topics}} dynamic variable.
+2. When a call ends, set up your webhook endpoint to store conversation data in your database, based on the extracted user id from the dynamic_variables.
+3. When the user calls again, you can retrieve this context and pass it to the new conversation into a `{{previous_topics}}` dynamic variable.
 4. This creates a seamless experience where the agent "remembers" previous interactions
 
 ```javascript

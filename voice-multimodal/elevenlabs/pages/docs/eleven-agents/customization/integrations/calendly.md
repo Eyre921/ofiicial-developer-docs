@@ -25,7 +25,7 @@ This integration uses a **Calendly Personal Access Token** for authentication.
 
 #### Navigate to API settings
 
-In your [Calendly](https://calendly.com) dashboard, go to **Integrations & Apps > API and Webhooks**. You can also navigate directly to [calendly.com/integrations/api\_webhooks](https://calendly.com/integrations/api_webhooks).
+In your [Calendly](https://calendly.com) dashboard, go to **Integrations & Apps > API and Webhooks**. You can also navigate directly to [calendly.com/integrations/api_webhooks](https://calendly.com/integrations/api_webhooks).
 
 #### Generate a token
 

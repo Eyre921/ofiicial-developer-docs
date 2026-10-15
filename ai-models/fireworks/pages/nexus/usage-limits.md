@@ -6,6 +6,8 @@ path: nexus/usage-limits
 
 Set account, group, and user-specific spend limits to cap per-user spend on supported Fireworks serverless models.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Set per-user spend caps for [supported serverless models](#supported-models). Fireworks counts a user's spend on those models toward that user's effective limit across the account.
 
 Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under **Settings**.

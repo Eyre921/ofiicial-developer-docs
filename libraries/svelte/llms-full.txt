@@ -17889,7 +17889,7 @@ SvelteKit has full support for [service workers](service-workers) allowing you t
 
 You can turn a [SvelteKit SPA](single-page-apps) into a mobile app with [Tauri](https://v2.tauri.app/start/frontend/sveltekit/) or [Capacitor](https://capacitorjs.com/solution/svelte). Mobile features like the camera, geolocation, and push notifications are available via plugins for both platforms.
 
-These mobile development platforms work by starting a local web server and then serving your application like a static host on your phone. You may find [`bundleStrategy: 'single'`](configuration#output) to be a helpful option to limit the number of requests made. E.g. at the time of writing, the Capacitor local server uses HTTP/1, which limits the number of concurrent connections.
+These mobile development platforms work by starting a local web server and then serving your application like a static host on your phone. You may find [`bundleStrategy: 'single'`](@sveltejs-kit-vite#output) to be a helpful option to limit the number of requests made. E.g. at the time of writing, the Capacitor local server uses HTTP/1, which limits the number of concurrent connections.
 
 ## Desktop app
 
@@ -17901,7 +17901,7 @@ You can build browser extensions using either [`adapter-static`](adapter-static)
 
 ## Embedded device
 
-Because of its efficient rendering, Svelte can be run on low power devices. Embedded devices like microcontrollers and TVs may limit the number of concurrent connections. In order to reduce the number of concurrent requests, you may find [`bundleStrategy: 'single'`](configuration#output) to be a helpful option in this deployment configuration.
+Because of its efficient rendering, Svelte can be run on low power devices. Embedded devices like microcontrollers and TVs may limit the number of concurrent connections. In order to reduce the number of concurrent requests, you may find [`bundleStrategy: 'single'`](@sveltejs-kit-vite#output) to be a helpful option in this deployment configuration.
 
 # Project structure
 
@@ -17947,10 +17947,10 @@ The `src` directory contains the meat of your project. Everything except `src/ro
 - `app.html` is your page template — an HTML document containing the following placeholders:
   - `%sveltekit.head%` — `<link>` and `<script>` elements needed by the app, plus any `<svelte:head>` content
   - `%sveltekit.body%` — the markup for a rendered page. This should live inside a `<div>` or other element, rather than directly inside `<body>`, to prevent bugs caused by browser extensions injecting elements that are then destroyed by the hydration process. SvelteKit will warn you in development if this is not the case
-  - `%sveltekit.assets%` — either [`paths.assets`](configuration#paths), if specified, or a relative path to [`paths.base`](configuration#paths)
-  - `%sveltekit.nonce%` — a [CSP](configuration#csp) nonce for manually included links and scripts, if used
+  - `%sveltekit.assets%` — either [`paths.assets`](@sveltejs-kit-vite#paths), if specified, or a relative path to [`paths.base`](@sveltejs-kit-vite#paths)
+  - `%sveltekit.nonce%` — a [CSP](@sveltejs-kit-vite#csp) nonce for manually included links and scripts, if used
   - `%sveltekit.env.[NAME]%` - this will be replaced at render time with the `[NAME]` environment variable, which must be defined as a public variable in `src/env`. It will fallback to `''` if not matched.
-  - `%sveltekit.version%` — the app version, which can be specified with the [`version`](configuration#version) configuration
+  - `%sveltekit.version%` — the app version, which can be specified with the [`version`](@sveltejs-kit-vite#version) configuration
 - `error.html` is the page that is rendered when everything else fails. It can contain the following placeholders:
   - `%sveltekit.status%` — the HTTP status
   - `%sveltekit.error.message%` — the error message
@@ -17980,7 +17980,7 @@ When you create a project with `npx sv create`, you'll also notice that `package
 
 ### vite.config.js
 
-A SvelteKit project is really just a [Vite](https://vitejs.dev) project that uses the [`@sveltejs/kit/vite`](@sveltejs-kit-vite) plugin, along with any other [Vite configuration](https://vitejs.dev/config/). The plugin accepts your Svelte and SvelteKit [configuration](configuration).
+A SvelteKit project is really just a [Vite](https://vitejs.dev) project that uses the [`@sveltejs/kit/vite`](@sveltejs-kit-vite) plugin, along with any other [Vite configuration](https://vitejs.dev/config/). The plugin accepts your Svelte and SvelteKit [configuration](@sveltejs-kit-vite).
 
 ### tsconfig.json
 
@@ -17990,7 +17990,7 @@ This file (or `jsconfig.json`, if you prefer type-checked `.js` files over `.ts`
 
 ### .svelte-kit
 
-As you develop and build your project, SvelteKit will generate files in a `.svelte-kit` directory (configurable as [`outDir`](configuration#outDir)). You can ignore its contents, and delete them at any time (they will be regenerated when you next `dev` or `build`).
+As you develop and build your project, SvelteKit will generate files in a `.svelte-kit` directory (configurable as [`outDir`](@sveltejs-kit-vite#outDir)). You can ignore its contents, and delete them at any time (they will be regenerated when you next `dev` or `build`).
 
 # Web standards
 
@@ -18085,7 +18085,7 @@ const foo = url.searchParams.get('foo');
 
 ## Web Crypto
 
-The [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) is made available via the `crypto` global. It's used internally for [Content Security Policy](configuration#csp) headers, but you can also use it for things like generating UUIDs:
+The [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) is made available via the `crypto` global. It's used internally for [Content Security Policy](@sveltejs-kit-vite#csp) headers, but you can also use it for things like generating UUIDs:
 
 ```js
 const uuid = crypto.randomUUID();
@@ -18099,7 +18099,7 @@ At the heart of SvelteKit is a _filesystem-based router_. The routes of your app
 - `src/routes/about` creates an `/about` route
 - `src/routes/blog/[slug]` creates a route with a _parameter_, `slug`, that can be used to load data dynamically when a user requests a page like `/blog/hello-world`
 
-> [!NOTE] You can change `src/routes` to a different directory by editing the [project config](configuration).
+> [!NOTE] You can change `src/routes` to a different directory by editing the [project config](@sveltejs-kit-vite).
 
 Each route directory contains one or more _route files_, which can be identified by their `+` prefix.
 
@@ -19926,7 +19926,7 @@ export const prerender = 'auto';
 
 > [!NOTE] If your entire app is suitable for prerendering, you can use [`adapter-static`](adapter-static), which will output files suitable for use with any static webserver.
 
-The prerenderer will start at the root of your app and generate files for any prerenderable pages or `+server.js` routes it finds. Each page is scanned for `<a>` elements that point to other pages that are candidates for prerendering — because of this, you generally don't need to specify which pages should be accessed. If you _do_ need to specify which pages should be accessed by the prerenderer, you can do so with [`config.prerender.entries`](configuration#prerender), or by exporting an [`entries`](#entries) function from your dynamic route.
+The prerenderer will start at the root of your app and generate files for any prerenderable pages or `+server.js` routes it finds. Each page is scanned for `<a>` elements that point to other pages that are candidates for prerendering — because of this, you generally don't need to specify which pages should be accessed. If you _do_ need to specify which pages should be accessed by the prerenderer, you can do so with [`config.prerender.entries`](@sveltejs-kit-vite#prerender), or by exporting an [`entries`](#entries) function from your dynamic route.
 
 While prerendering, the value of `building` imported from [`$app/env`]($app-env) will be `true`.
 
@@ -19973,7 +19973,7 @@ If you encounter an error like 'The following routes were marked as prerenderabl
 
 Since these routes cannot be dynamically server-rendered, this will cause errors when people try to access the route in question. There are a few ways to fix it:
 
-* Ensure that SvelteKit can find the route by following links from [`config.prerender.entries`](configuration#prerender) or the [`entries`](#entries) page option. Add links to dynamic routes (i.e. pages with `[parameters]` ) to this option if they are not found through crawling the other entry points, else they are not prerendered because SvelteKit doesn't know what value the parameters should have. Pages not marked as prerenderable will be ignored and their links to other pages will not be crawled, even if some of them would be prerenderable.
+* Ensure that SvelteKit can find the route by following links from [`config.prerender.entries`](@sveltejs-kit-vite#prerender) or the [`entries`](#entries) page option. Add links to dynamic routes (i.e. pages with `[parameters]` ) to this option if they are not found through crawling the other entry points, else they are not prerendered because SvelteKit doesn't know what value the parameters should have. Pages not marked as prerenderable will be ignored and their links to other pages will not be crawled, even if some of them would be prerenderable.
 * Ensure that SvelteKit can find the route by discovering a link to it from one of your other prerendered pages that have server-side rendering enabled.
 * Change `export const prerender = true` to `export const prerender = 'auto'`. Routes with `'auto'` can be dynamically server rendered
 
@@ -19991,7 +19991,7 @@ SvelteKit will discover pages to prerender automatically, by starting at _entry 
 
 Most of the time, that's enough. In some situations, links to pages like `/blog/hello-world` might not exist (or might not exist on prerendered pages), in which case we need to tell SvelteKit about their existence.
 
-This can be done with [`config.prerender.entries`](configuration#prerender), or by exporting an `entries` function from a `+page.js`, a `+page.server.js` or a `+server.js` belonging to a dynamic route:
+This can be done with [`config.prerender.entries`](@sveltejs-kit-vite#prerender), or by exporting an `entries` function from a `+page.js`, a `+page.server.js` or a `+server.js` belonging to a dynamic route:
 
 ```js
 /// file: src/routes/blog/[slug]/+page.server.js
@@ -22039,7 +22039,7 @@ SOCKET_PATH=/tmp/socket node build
 
 HTTP doesn't give SvelteKit a reliable way to know the URL that is currently being requested. By default, SvelteKit will derive the origin from the request's `host` header (and the `https` protocol, if no `PROTOCOL_HEADER` is set).
 
-If your app is served from an origin that isn't known at request time — for example because it's behind a reverse proxy that doesn't pass the `host` header, or because you want to use a canonical origin for CSRF checks that differs from the request's host — you can set the [`paths.origin`](configuration#paths) option in your `vite.config.js`:
+If your app is served from an origin that isn't known at request time — for example because it's behind a reverse proxy that doesn't pass the `host` header, or because you want to use a canonical origin for CSRF checks that differs from the request's host — you can set the [`paths.origin`](@sveltejs-kit-vite#paths) option in your `vite.config.js`:
 
 ```js
 // @errors: 2307
@@ -22260,13 +22260,7 @@ app.listen(3000, () => {
 
 ## Usage
 
-Install the adapter:
-
-```sh
-bun add -D @sveltejs/adapter-bun
-```
-
-Configure it in `vite.config.js`:
+Run `npx sv add sveltekit-adapter="adapter:bun"`, or install with `npm i -D @sveltejs/adapter-bun` and add the adapter to your `vite.config.js`:
 
 ```js
 // @errors: 2307 2554
@@ -22448,7 +22442,7 @@ SOCKET_PATH=/tmp/sveltekit.sock bun ./build
 
 ### Public origin behind a proxy
 
-If [`paths.origin`](configuration#paths) is configured, that value is the trusted origin for every request. Otherwise, the adapter derives the host from the `Host` header and assumes the scheme is `https`, since production deployments usually terminate TLS upstream. Configure `paths.origin` or `PROTOCOL_HEADER` if that assumption is wrong, for example when serving plain HTTP directly.
+If [`paths.origin`](@sveltejs-kit-vite#paths) is configured, that value is the trusted origin for every request. Otherwise, the adapter derives the host from the `Host` header and assumes the scheme is `https`, since production deployments usually terminate TLS upstream. Configure `paths.origin` or `PROTOCOL_HEADER` if that assumption is wrong, for example when serving plain HTTP directly.
 
 Behind a trusted reverse proxy, `PROTOCOL_HEADER`, `HOST_HEADER`, and `PORT_HEADER` name headers that contain the public scheme, host, and port:
 
@@ -22608,7 +22602,7 @@ By default, `adapter-static` checks that either all pages and endpoints (if any)
 
 ## GitHub Pages
 
-When building for [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages), if your repo name is not equivalent to `your-username.github.io`, make sure to update [`config.paths.base`](configuration#paths) to match your repo name. This is because the site will be served from `https://your-username.github.io/your-repo-name` rather than from the root.
+When building for [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages), if your repo name is not equivalent to `your-username.github.io`, make sure to update [`config.paths.base`](@sveltejs-kit-vite#paths) to match your repo name. This is because the site will be served from `https://your-username.github.io/your-repo-name` rather than from the root.
 
 You'll also want to generate a fallback `404.html` page to replace the default 404 page shown by GitHub Pages.
 
@@ -22646,6 +22640,14 @@ on:
   push:
     branches: 'main'
 
+permissions:
+  contents: read
+  pages: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build_site:
     runs-on: ubuntu-latest
@@ -22656,11 +22658,9 @@ jobs:
       # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
       # - name: Install pnpm
       #   uses: pnpm/action-setup@v6
-      #   with:
-      #     version: 8
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -22668,9 +22668,13 @@ jobs:
       - name: Install dependencies
         run: npm i
 
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
       - name: build
         env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
         run: |
           npm run build
 
@@ -22679,6 +22683,8 @@ jobs:
         with:
           # this should match the `pages` option in your adapter-static options
           path: 'build/'
+          # keep dotfiles such as `static/.well-known`
+          include-hidden-files: true
 
   deploy:
     needs: build_site
@@ -22740,7 +22746,7 @@ The `fallback` page is an HTML page created by SvelteKit from your page template
 
 On some hosts it may be something else entirely — consult your platform's documentation. We recommend avoiding `index.html` if possible as it may conflict with prerendering.
 
-> [!NOTE] Note that the fallback page will always contain absolute asset paths (i.e. beginning with `/` rather than `.`) regardless of the value of [`paths.relative`](configuration#paths), since it is used to respond to requests for arbitrary paths.
+> [!NOTE] Note that the fallback page will always contain absolute asset paths (i.e. beginning with `/` rather than `.`) regardless of the value of [`paths.relative`](@sveltejs-kit-vite#paths), since it is used to respond to requests for arbitrary paths.
 
 ## Prerendering individual pages
 
@@ -22886,8 +22892,7 @@ If you're using the [Git integration](https://developers.cloudflare.com/pages/ge
 - Build command – `npm run build` or `vite build`
 - Build output directory – `.svelte-kit/cloudflare`
 
-
-Once configured, go to the **Runtime** section of your project settings, and add the `nodejs_als` compatibility flag to enable the [Node.js AsyncLocalStorage](https://developers.cloudflare.com/workers/configuration/compatibility-flags/#nodejs-asynclocalstorage). Alternatively, do this in your wrangler config using the `compatibility_flags` array.
+To enable only the [Node.js AsyncLocalStorage](https://developers.cloudflare.com/workers/configuration/compatibility-flags/#nodejs-asynclocalstorage) API, add the `nodejs_als` compatibility flag in your wrangler config using the `compatibility_flags` array.
 
 ### Further reading
 
@@ -23920,7 +23925,7 @@ You can define multiple `handle` functions and execute them with the [`sequence`
 
 - `transformPageChunk(opts: { html: string, done: boolean }): MaybePromise<string | undefined>` — applies custom transforms to HTML. If `done` is true, it's the final chunk. Chunks are not guaranteed to be well-formed HTML (they could include an element's opening tag but not its closing tag, for example) but they will always be split at sensible boundaries such as `%sveltekit.head%` or layout/page components.
 - `filterSerializedResponseHeaders(name: string, value: string): boolean` — determines which headers should be included in serialized responses when a `load` function loads a resource with `fetch`. By default, none will be included.
-- `preload(input: { type: 'js' | 'css' | 'asset', path: string } | { type: 'font', path: string, filename: string }): boolean` — determines which files should be preloaded. Files are preloaded via `<link>` tags added to the `<head>` tag; if [`output.linkHeaderPreload`](configuration#output) is enabled, dynamically rendered pages use the [`Link` response header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link) instead. The method is called with each file that was found at build time while constructing the code chunks — so if you for example have `import './styles.css` in your `+page.svelte`, `preload` will be called with the resolved path to that CSS file when visiting that page. Note that in dev mode `preload` is _not_ called, since it depends on analysis that happens at build time. Preloading can improve performance by downloading assets sooner, but it can also hurt if too much is downloaded unnecessarily. By default, `js` and `css` files will be preloaded. `asset` files are not preloaded at all currently, but we may add this later after evaluating feedback. For `font` files, `input` also has a `filename` property, the source file's pathname relative to the project root, so that a filter can match on it instead of the hashed path.
+- `preload(input: { type: 'js' | 'css' | 'asset', path: string } | { type: 'font', path: string, filename: string }): boolean` — determines which files should be preloaded. Files are preloaded via `<link>` tags added to the `<head>` tag; if [`output.linkHeaderPreload`](@sveltejs-kit-vite#output) is enabled, dynamically rendered pages use the [`Link` response header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link) instead. The method is called with each file that was found at build time while constructing the code chunks — so if you for example have `import './styles.css` in your `+page.svelte`, `preload` will be called with the resolved path to that CSS file when visiting that page. Note that in dev mode `preload` is _not_ called, since it depends on analysis that happens at build time. Preloading can improve performance by downloading assets sooner, but it can also hurt if too much is downloaded unnecessarily. By default, `js` and `css` files will be preloaded. `asset` files are not preloaded at all currently, but we may add this later after evaluating feedback. For `font` files, `input` also has a `filename` property, the source file's pathname relative to the project root, so that a filter can match on it instead of the hashed path.
 
 ```js
 /// file: src/hooks.server.js
@@ -24708,7 +24713,7 @@ Service workers run in a different context to the rest of your app. As such, the
 
 ## Manual registration
 
-You can [disable automatic registration](configuration#serviceWorker) if you need to register the service worker with your own logic. The default registration, which is injected into server-rendered HTML, looks something like this:
+You can [disable automatic registration](@sveltejs-kit-vite#serviceWorker) if you need to register the service worker with your own logic. The default registration, which is injected into server-rendered HTML, looks something like this:
 
 ```js
 if ('serviceWorker' in navigator) {
@@ -24730,7 +24735,7 @@ if ('serviceWorker' in navigator) {
 
 Browsers check for an updated service worker when a full-page navigation happens within its scope, and after functional events such as `push` and `sync`. Client-side navigations are neither, so navigating around your app will not by itself cause a new deployment's service worker to be picked up.
 
-SvelteKit calls [`registration.update()`](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/update) only as part of error recovery — if a route module fails to load or a navigation results in an error status, and [version polling](configuration#version) detects that the app has been redeployed, the service worker is updated before SvelteKit falls back to a full-page navigation.
+SvelteKit calls [`registration.update()`](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/update) only as part of error recovery — if a route module fails to load or a navigation results in an error status, and [version polling](@sveltejs-kit-vite#version) detects that the app has been redeployed, the service worker is updated before SvelteKit falls back to a full-page navigation.
 
 If you want new deployments to be picked up more eagerly, you can trigger an update check yourself — for example on every client-side navigation, in your root layout:
 
@@ -26422,9 +26427,9 @@ export +++async+++ function load({ fetch }) {
 
 ## paths are now relative by default
 
-In SvelteKit 1, `%sveltekit.assets%` in your `app.html` was replaced with a relative path by default (i.e. `.` or `..` or `../..` etc, depending on the path being rendered) during server-side rendering unless the [`paths.relative`](configuration#paths) config option was explicitly set to `false`. The same was true for `base` and `assets` imported from `$app/paths`, but only if the `paths.relative` option was explicitly set to `true`.
+In SvelteKit 1, `%sveltekit.assets%` in your `app.html` was replaced with a relative path by default (i.e. `.` or `..` or `../..` etc, depending on the path being rendered) during server-side rendering unless the [`paths.relative`](@sveltejs-kit-vite#paths) config option was explicitly set to `false`. The same was true for `base` and `assets` imported from `$app/paths`, but only if the `paths.relative` option was explicitly set to `true`.
 
-This inconsistency is fixed in version 2. Paths are either always relative or always absolute, depending on the value of [`paths.relative`](configuration#paths). It defaults to `true` as this results in more portable apps: if the `base` is something other than the app expected (as is the case when viewed on the [Internet Archive](https://archive.org/), for example) or unknown at build time (as is the case when deploying to [IPFS](https://ipfs.tech/) and so on), fewer things are likely to break.
+This inconsistency is fixed in version 2. Paths are either always relative or always absolute, depending on the value of [`paths.relative`](@sveltejs-kit-vite#paths). It defaults to `true` as this results in more portable apps: if the `base` is something other than the app expected (as is the case when viewed on the [Internet Archive](https://archive.org/), for example) or unknown at build time (as is the case when deploying to [IPFS](https://ipfs.tech/) and so on), fewer things are likely to break.
 
 ## Server fetches are not trackable anymore
 
@@ -26481,7 +26486,7 @@ If a form contains an `<input type="file">` but does not have an `enctype="multi
 
 ## Generated `tsconfig.json` is more strict
 
-Previously, the generated `tsconfig.json` was trying its best to still produce a somewhat valid config when your `tsconfig.json` included `paths` or `baseUrl`. In SvelteKit 2, the validation is more strict and will warn when you use either `paths` or `baseUrl` in your `tsconfig.json`. These settings are used to generate path aliases and you should use [the `alias` config](configuration#alias) option of the SvelteKit plugin in your `vite.config.js` instead, to also create a corresponding alias for the bundler.
+Previously, the generated `tsconfig.json` was trying its best to still produce a somewhat valid config when your `tsconfig.json` included `paths` or `baseUrl`. In SvelteKit 2, the validation is more strict and will warn when you use either `paths` or `baseUrl` in your `tsconfig.json`. These settings are used to generate path aliases and you should use [the `alias` config](@sveltejs-kit-vite#alias) option of the SvelteKit plugin in your `vite.config.js` instead, to also create a corresponding alias for the bundler.
 
 ## `getRequest` no longer throws errors
 
@@ -26575,7 +26580,7 @@ export default defineConfig({
 });
 ```
 
-See the [configuration docs](configuration) for further examples.
+See the [configuration docs](@sveltejs-kit-vite) for further examples.
 
 ### Removed options
 
@@ -27248,7 +27253,7 @@ The bulk of your app, in `src/routes`, can be left where it is, but several proj
 
 ### Configuration
 
-Your `webpack.config.js` or `rollup.config.js` should be replaced with a `vite.config.js`, as documented [here](configuration). Svelte preprocessor options should be moved to the SvelteKit plugin `config.preprocess` setting.
+Your `webpack.config.js` or `rollup.config.js` should be replaced with a `vite.config.js`, as documented [here](@sveltejs-kit-vite). Svelte preprocessor options should be moved to the SvelteKit plugin `config.preprocess` setting.
 
 You will need to add an [adapter](adapters). `sapper build` is roughly equivalent to [adapter-node](adapter-node) while `sapper export` is roughly equivalent to [adapter-static](adapter-static), though you might prefer to use an adapter designed for the platform you're deploying to.
 
@@ -27471,7 +27476,7 @@ For content to be prerenderable, any two users hitting it directly must get the 
 
 Pre-rendered pages are not limited to static content. You can build personalized pages if user-specific data is fetched and rendered client-side. This is subject to the caveat that you will experience the downsides of not doing SSR for that content as discussed above.
 
-In SvelteKit, you can control prerendering with [the `prerender` page option](page-options#prerender) and [`prerender` config](configuration#prerender) of the SvelteKit plugin in `vite.config.js`.
+In SvelteKit, you can control prerendering with [the `prerender` page option](page-options#prerender) and [`prerender` config](@sveltejs-kit-vite#prerender) of the SvelteKit plugin in `vite.config.js`.
 
 
 ## PWA
@@ -27494,7 +27499,7 @@ In SvelteKit, you can [build SPAs with `adapter-static`](single-page-apps).
 
 Static Site Generation (SSG) is a term that refers to a site where every page is prerendered. One benefit of fully prerendering a site is that you do not need to maintain or pay for servers to perform SSR. Once generated, the site can be served from CDNs, leading to great “time to first byte” performance. This delivery model is often referred to as JAMstack.
 
-In SvelteKit, you can do static site generation by using [`adapter-static`](adapter-static) or by configuring every page to be [prerendered](#Prerendering) using [the `prerender` page option](page-options#prerender) or [`prerender` config](configuration#prerender) of the SvelteKit plugin in `vite.config.js`.
+In SvelteKit, you can do static site generation by using [`adapter-static`](adapter-static) or by configuring every page to be [prerendered](#Prerendering) using [the `prerender` page option](page-options#prerender) or [`prerender` config](@sveltejs-kit-vite#prerender) of the SvelteKit plugin in `vite.config.js`.
 
 ## SSR
 
@@ -30061,7 +30066,12 @@ should write the function to the filesystem and generate redirect manifests.
 
 ```dts
 namespace Csp {
-	type ActionSource = 'strict-dynamic' | 'report-sample';
+	type ActionSource =
+		| 'strict-dynamic'
+		| 'report-sample'
+		| 'report-sha256'
+		| 'report-sha384'
+		| 'report-sha512';
 	type BaseSource =
 		| 'self'
 		| 'unsafe-eval'
@@ -35963,7 +35973,7 @@ This module contains TypeScript configuration tailored for your app. Your own co
 
 You can extend this configuration with your own `compilerOptions`. Overriding the following properties may cause things to break — SvelteKit will warn you if this happens:
 
-- `paths` — this is derived from the (deprecated) [`alias`](configuration#alias) config option, together with any [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) specified in your `package.json`, to align behaviour between Vite and TypeScript. Ideally, configure subpath imports rather than using `paths` directly
+- `paths` — this is derived from the (deprecated) [`alias`](@sveltejs-kit-vite#alias) config option, together with any [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) specified in your `package.json`, to align behaviour between Vite and TypeScript. Ideally, configure subpath imports rather than using `paths` directly
 - `types` — your app needs to be able to 'see' generated module declarations for things like [environment variables](environment-variables), and as such this array must include `"$app/types"`
 - `isolatedModules` — must be `true`, as Vite compiles modules one at a time
 - `verbatimModuleSyntax` — must be `true`, so that you can safely use type imports in `.svelte` files
@@ -36062,7 +36072,7 @@ type Path = '' | 'my-route' | `my-other-route/${string}` & {};
 
 ## ResolvedPathname
 
-Similar to `Path`, but prefixed with a [base path](configuration#paths). Used for `page.url.pathname`.
+Similar to `Path`, but prefixed with a [base path](@sveltejs-kit-vite#paths). Used for `page.url.pathname`.
 
 <div class="ts-block">
 
@@ -36398,7 +36408,7 @@ A `string[]` array of prerendered pages. Empty during dev. Use [`prerendered`]($
 
 ## version
 
-The value of [`config.version.name`](configuration#version), used for populating caches. Use [`version`]($app-env#version) from `$app/env` instead.
+The value of [`config.version.name`](@sveltejs-kit-vite#version), used for populating caches. Use [`version`]($app-env#version) from `$app/env` instead.
 
 # $app/environment
 

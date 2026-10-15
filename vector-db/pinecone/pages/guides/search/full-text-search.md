@@ -480,7 +480,7 @@ Everything in this section applies to indexes with document schemas. For dense, 
 
 * **Entry points**: Use the REST API, a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDKs send it for you.
 * **Endpoint compatibility**: Indexes with document schemas use the `/namespaces/{namespace}/documents/*` endpoints. Dense, sparse, and integrated-inference indexes continue to use `/vectors/*`, and `/records/*` for integrated inference. The two endpoint families are index-type-specific and don't cross over.
-* **Deployment**: Only managed (serverless) deployments are supported, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
+* **Deployment**: Supported on managed (serverless) and [BYOC](/guides/production/bring-your-own-cloud) deployments, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
 
 ### Limits
 

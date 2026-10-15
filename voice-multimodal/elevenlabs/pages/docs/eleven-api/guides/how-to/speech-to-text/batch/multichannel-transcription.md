@@ -319,9 +319,9 @@ channel they speak on.
 
 **Solution**: Always set `diarize=false` when using multichannel mode.
 
-#### Providing num\_speakers parameter
+#### Providing num_speakers parameter
 
-**Error**: Cannot specify num\_speakers when use\_multi\_channel is enabled. The number of speakers
+**Error**: Cannot specify num_speakers when use_multi_channel is enabled. The number of speakers
 is automatically determined by the number of channels. **Solution**: Remove the `num_speakers`
 parameter from your request.
 
@@ -334,7 +334,7 @@ count.
 
 #### Using combined output without timestamps
 
-**Error**: multichannel\_output\_style='combined' requires timestamps; set timestamps\_granularity
+**Error**: multichannel_output_style='combined' requires timestamps; set timestamps_granularity
 to 'word' or 'character'.
 
 **Solution**: Combined output sorts words by time, so set `timestamps_granularity` to `word`
@@ -342,7 +342,7 @@ to 'word' or 'character'.
 
 #### Using combined output with webhooks
 
-**Error**: multichannel\_output\_style='combined' is not yet supported with webhook delivery.
+**Error**: multichannel_output_style='combined' is not yet supported with webhook delivery.
 
 **Solution**: Use a synchronous request with `combined`, or keep the default `separate` output
 when using webhooks and merge client-side.
@@ -524,8 +524,8 @@ delivery.
 
 #### How are speaker IDs assigned?
 
-Speaker IDs are deterministic based on channel number: channel 0 becomes speaker\_0, channel 1
-becomes speaker\_1, and so on.
+Speaker IDs are deterministic based on channel number: channel 0 becomes speaker_0, channel 1
+becomes speaker_1, and so on.
 
 #### Can channels have different languages?
 

@@ -1,10 +1,10 @@
 ---
-title: "Cookbooks"
+title: "Fireworks AI cookbooks: notebooks for advanced use cases"
 source: https://docs.fireworks.ai/examples/cookbooks
 path: examples/cookbooks
 ---
 
-Interactive Jupyter notebooks demonstrating advanced use cases and best practices with Fireworks AI
+Interactive Jupyter notebook cookbooks for Fireworks AI showing RAG, function calling, fine-tuning, structured outputs, and other advanced inference patterns.
 
 Explore our collection of notebooks that showcase real-world applications, best practices, and advanced techniques for building with Fireworks AI.
 

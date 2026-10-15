@@ -1,10 +1,10 @@
 ---
-title: "Data residency"
+title: "Data residency for Fireworks Enterprise accounts"
 source: https://docs.fireworks.ai/accounts/data-residency
 path: accounts/data-residency
 ---
 
-Restrict inference for your Enterprise account to a selected region
+Restrict inference for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
 
 Data residency restricts inference on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region.
 

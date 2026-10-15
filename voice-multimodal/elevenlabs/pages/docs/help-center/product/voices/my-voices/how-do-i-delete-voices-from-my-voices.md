@@ -18,6 +18,6 @@ Default and Legacy voices cannot be deleted, but these voices do not take up you
 
 Voices saved from the Voice Library do not take up your custom voice slots. If you remove a voice that has been removed from the Voice Library, you will not be able to save it to [My Voices](https://elevenlabs.io/app/voice-lab) again in the future.
 
-Unverified Professional Voice Clones cannot be deleted. Please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io) if you need help with this.
+You can delete an unverified Professional Voice Clone 24 hours after your most recent verification attempt. If you need to delete it sooner, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).
 
 If you have shared a voice with the Voice Library, you will need to stop sharing it before you can delete it. For details on how to do this, please see [How do I delete a voice I've shared with the Voice Library?](/docs/help-center/product/voices/voice-library/how-do-i-delete-a-voice-ive-shared-with-the-voice-library)

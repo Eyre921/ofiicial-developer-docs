@@ -1,10 +1,10 @@
 ---
-title: "Glossary"
+title: "Fireworks AI glossary of platform and inference terms"
 source: https://docs.fireworks.ai/getting-started/glossary
 path: getting-started/glossary
 ---
 
-Definitions for key terms used across Fireworks AI documentation.
+Glossary of key Fireworks AI terms across serverless, deployments, fine-tuning, and inference, with concise definitions to help you navigate the documentation.
 
 This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, training, deployments, security, and the API.
 

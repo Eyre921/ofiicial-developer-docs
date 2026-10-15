@@ -61,7 +61,7 @@ A recommended model:
 user_id | voice_id | permission_level
 ```
 
-Possible permission\_level values:
+Possible permission_level values:
 
 * `viewer`: can use the voice for speech generation
 * `editor`: can update voice settings

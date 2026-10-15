@@ -20,11 +20,11 @@ Update fields on an existing draft.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
@@ -118,78 +118,6 @@ returns a `409`.
   The ID of the draft.
 </ParamField>
 
-<ParamField type="string">
-  `reply` when the draft replies to an email in an existing thread. `standalone`
-  when the draft starts a new thread.
-</ParamField>
-
-<ParamField type="string[] | null">
-  Recipients. `null` or empty when no recipients are set.
-</ParamField>
-
-<ParamField type="string[]">
-  CC recipients.
-</ParamField>
-
-<ParamField type="string[]">
-  BCC recipients.
-</ParamField>
-
-<ParamField type="string | null">
-  The subject.
-</ParamField>
-
-<ParamField type="string | null">
-  The HTML body.
-</ParamField>
-
-<ParamField type="string | null">
-  The plain-text body.
-</ParamField>
-
-<ParamField type="string | null">
-  The Thread ID when this draft is a reply. `null` otherwise.
-</ParamField>
-
-<ParamField type="string | null">
-  The Email ID being replied to. `null` otherwise.
-</ParamField>
-
-<ParamField type="string | null">
-  The ID of the outbound email queued when the draft was sent. `null` until the
-  draft is sent.
-</ParamField>
-
-<ParamField type="string">
-  ISO 8601 timestamp when the draft was created.
-</ParamField>
-
-<ParamField type="string">
-  ISO 8601 timestamp when the draft was last saved.
-</ParamField>
-
-<ParamField type="array">
-  The files saved on the draft.
-
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the attachment.
-    </ParamField>
-
-    <ParamField type="string">
-      The filename of the attachment.
-    </ParamField>
-
-    <ParamField type="string">
-      The MIME type of the attachment, such as `application/pdf`.
-    </ParamField>
-
-    <ParamField type="number">
-      The size of the attachment in bytes.
-    </ParamField>
-  </Expandable>
-</ParamField>
-
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
   import { Resend } from 'resend';
@@ -222,27 +150,7 @@ returns a `409`.
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
     "object": "inbox_draft",
-    "id": "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
-    "type": "standalone",
-    "to": ["ada@example.org"],
-    "cc": [],
-    "bcc": [],
-    "subject": "Refund issued for order 1041",
-    "html": "<p>Refund issued for order 1041.</p>",
-    "text": "Refund issued for order 1041.",
-    "thread_id": null,
-    "reply_to_email_id": null,
-    "email_id": null,
-    "created_at": "2026-08-05T14:12:04.110Z",
-    "updated_at": "2026-08-05T14:13:22.004Z",
-    "attachments": [
-      {
-        "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-        "filename": "receipt.pdf",
-        "content_type": "application/pdf",
-        "size": 5
-      }
-    ]
+    "id": "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32"
   }
   ```
 </ResponseExample>

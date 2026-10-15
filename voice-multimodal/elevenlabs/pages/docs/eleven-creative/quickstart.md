@@ -60,7 +60,7 @@ Head to the [Text to Speech playground](https://elevenlabs.io/app/speech-synthes
 Once you're comfortable with basic text-to-speech:
 
 * [Voice Changer](/docs/eleven-creative/playground/voice-changer) - Transform your voice in real-time
-* [Sound Effects](/docs/eleven-creative/playground/sound-effects) - Generate custom audio effects
+* [Sound Effects](/docs/eleven-creative/playground/sound-effects) - Generate custom sound effects
 * [ElevenCreative Studio](/docs/eleven-creative/products/studio) - Create long-form content with advanced editing
 * [Dubbing](/docs/eleven-creative/products/dubbing) - Translate videos into 30+ languages
 * [Playground](/docs/eleven-creative/playground/text-to-speech) - Experiment with all features

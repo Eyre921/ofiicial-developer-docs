@@ -1,8 +1,10 @@
 ---
-title: "Are there extra fees for serving trained models?"
+title: "Extra fees for serving trained models on Fireworks?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 path: faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 ---
+
+How Fireworks bills for serving trained LoRA models on dedicated deployments, including per-GPU-second hosting costs, training fees, and inference charges.
 
 Trained (LoRA) models require a dedicated deployment to serve. Here's what you need to know:
 

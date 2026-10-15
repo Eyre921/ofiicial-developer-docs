@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine
 path: tools-sdks/firectl/commands/reinforcement-fine-tuning-job-create
 ---
 
-Creates a reinforcement fine-tuning job.
+Reference for the firectl reinforcement-fine-tuning-job create command: launch a Fireworks managed RFT job from the CLI, with dataset and reward configuration.
 
 ```
 firectl reinforcement-fine-tuning-job create [flags]

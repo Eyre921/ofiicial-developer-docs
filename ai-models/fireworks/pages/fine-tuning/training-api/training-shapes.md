@@ -1,10 +1,10 @@
 ---
-title: "Training Shapes"
+title: "Training shapes: GPU layouts for Fireworks trainers"
 source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 path: fine-tuning/training-api/training-shapes
 ---
 
-Pre-configured GPU and model training profiles that simplify distributed training setup.
+Training shapes are pre-configured GPU and model profiles that fix distributed training layout, context limits, and trainer images for Fireworks trainer jobs.
 
 In practice, a training shape is the user-facing launch input for trainer jobs. Most users only need to choose a training shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k` and pass it to the API as `training_shape_id`.
 

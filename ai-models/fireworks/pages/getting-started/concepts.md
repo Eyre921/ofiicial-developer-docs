@@ -1,10 +1,10 @@
 ---
-title: "Concepts"
+title: "Core concepts for the Fireworks AI platform"
 source: https://docs.fireworks.ai/getting-started/concepts
 path: getting-started/concepts
 ---
 
-This document outlines basic Fireworks AI concepts.
+Learn the core concepts for the Fireworks AI platform, including serverless inference, dedicated deployments, models, fine-tuning, and API keys.
 
 This page outlines core Fireworks resources and ideas. For definitions of technical terms (inference, LoRA, token, and many others), see the [**Glossary**](/getting-started/glossary).
 

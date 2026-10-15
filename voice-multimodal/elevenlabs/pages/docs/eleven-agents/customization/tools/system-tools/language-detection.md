@@ -96,7 +96,7 @@ Select the **Detect language** tool in the **Tools** tab and enable **Only at st
 elevenlabs agents pull
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `only_at_conversation_start` on the language detection tool. Surrounding fields are
 omitted here for brevity.

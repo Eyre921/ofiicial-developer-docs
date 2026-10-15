@@ -15,7 +15,7 @@ See [Pagination](/reference/intro#pagination) for details about how to use a cur
 The API does not guarantee a particular sort order for returned users.
 
 <Note>
-  [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT creator, or [Retrieve a user](/reference/get-user) with that user's ID.
+  [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT's bot user. Its `bot.owner.user` is the PAT creator. To retrieve the creator, use [Retrieve a user](/reference/get-user) with that user's ID.
 </Note>
 
 ### Errors

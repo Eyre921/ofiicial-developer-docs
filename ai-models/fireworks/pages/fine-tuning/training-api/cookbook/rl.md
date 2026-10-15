@@ -1,10 +1,10 @@
 ---
-title: "Cookbook: Reinforcement Learning"
+title: "Async GRPO reinforcement learning cookbook recipe"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 path: fine-tuning/training-api/cookbook/rl
 ---
 
-Run experimental async GRPO with a custom rollout function while the recipe owns scheduling, training, and weight publication.
+Run the experimental async GRPO cookbook recipe with a custom rollout function while Fireworks handles scheduling, training, checkpoints, and weight sync.
 
 The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 

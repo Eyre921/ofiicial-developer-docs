@@ -33,6 +33,8 @@ Use GitHub Copilot to get code suggestions in your editor.
 
 This guide demonstrates how to get coding suggestions from GitHub Copilot in a JetBrains IDE. To see instructions for other popular coding environments, use the tool switcher at the top of the page.
 
+GitHub Copilot provides suggestions for numerous languages and a wide variety of frameworks, but works especially well for Python, JavaScript, TypeScript, Ruby, Go, C# and C++. GitHub Copilot can also assist in query generation for databases, generating suggestions for APIs and frameworks, and can help with infrastructure as code development.
+
 The examples in this guide use Java, however other languages will work similarly.
 
 For more information, see [GitHub Copilot in IDEs](/en/copilot/concepts/copilot-surfaces/copilot-in-ides#code-suggestions).

@@ -1,10 +1,10 @@
 ---
-title: "firectl deployment create"
+title: "firectl deployment create command reference"
 source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-create
 path: tools-sdks/firectl/commands/deployment-create
 ---
 
-Creates a new deployment.
+Reference for firectl deployment create: launch a new Fireworks on-demand deployment for a base or trained model with GPU, region, and scaling flags.
 
 ```
 firectl deployment create [flags]

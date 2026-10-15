@@ -1,10 +1,10 @@
 ---
-title: "TrainerJobManager (Compatibility)"
+title: "TrainerJobManager legacy SDK compatibility reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/trainer-job-manager
 path: fine-tuning/training-api/reference/trainer-job-manager
 ---
 
-Legacy SDK reference for service-mode trainer job lifecycle management.
+Legacy Training API SDK reference for TrainerJobManager: service-mode trainer job lifecycle management retained for backward compatibility with older code.
 
 ## Overview
 

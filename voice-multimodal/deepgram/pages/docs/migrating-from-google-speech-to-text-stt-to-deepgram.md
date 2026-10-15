@@ -400,9 +400,9 @@ By default, both Deepgram and Google will provide you with the following values:
 
 Additionally, Google and Deepgram provide the following:
 
-| Deepgram                                  | StreamingRecognitionConfig                                                                                                                             | LongRunningRecognize                                             |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| - punctuate - interim\_results - language | - config - single\_utterance - interim\_results - alternatives - is\_final- stability - result\_end\_time - channel\_tag - language\_code - volatility | - results - total\_billed\_time - output\_config - output\_error |
+| Deepgram                                 | StreamingRecognitionConfig                                                                                                                      | LongRunningRecognize                                         |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| - punctuate - interim_results - language | - config - single_utterance - interim_results - alternatives - is_final- stability - result_end_time - channel_tag - language_code - volatility | - results - total_billed_time - output_config - output_error |
 
 #### Configure Environment
 

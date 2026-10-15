@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 15, 2026">
+  ### Comment-only connections can retrieve their own bot user
+
+  [Retrieve your token's bot user](/reference/get-self) now works for connections that have only comment capabilities. Before this change, those connections got a `403` `restricted_resource` error, so they had no direct way to look up their own bot ID.
+</Update>
+
 <Update label="October 14, 2026">
   ### Return fewer page properties from search
 

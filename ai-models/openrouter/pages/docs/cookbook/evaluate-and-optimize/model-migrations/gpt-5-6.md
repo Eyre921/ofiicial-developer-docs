@@ -111,7 +111,7 @@ See [Reasoning Context Mode](/docs/guides/best-practices/reasoning-tokens#reason
 
 Automatic prompt caching still works with no code changes. Explicit caching adds direct control over cache boundaries instead of relying on OpenAI's automatic breakpoint placement. Cached prefixes have a minimum 30-minute TTL.
 
-The fields work in both the [Chat Completions](/docs/api/api-reference/chat/send-a-chat-completion-request) and [Responses](/docs/api/api-reference/responses/create-a-response) APIs.
+The fields work in both the [Chat Completions](/docs/api/api-reference/chat/send-chat-completion-request) and [Responses](/docs/api/api-reference/responses/create-a-response) APIs.
 
 Two controls:
 

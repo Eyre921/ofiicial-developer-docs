@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/deployments/autoscaling
 path: deployments/autoscaling
 ---
 
-Configure how your deployment scales based on traffic
+Configure replica counts, scale-up/down windows, scale-to-zero, and load targets for on-demand Fireworks deployments using firectl flags.
 
 Control how your deployment scales based on traffic and load.
 

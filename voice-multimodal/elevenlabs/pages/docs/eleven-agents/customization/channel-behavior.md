@@ -76,7 +76,7 @@ settings](/docs/_fern-img/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d
 elevenlabs agents pull --agent agent_7101k5zvyjhmfg983brhmhkd98n6
 ```
 
-#### Edit the agent's config file under \`agent\_configs/\`
+#### Edit the agent's config file under \`agent_configs/\`
 
 Set `conversation_config.agent.text_behavior_overrides`:
 

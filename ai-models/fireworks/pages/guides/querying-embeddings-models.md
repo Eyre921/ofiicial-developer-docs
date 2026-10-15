@@ -1,10 +1,10 @@
 ---
-title: "Embeddings & Reranking"
+title: "Embeddings and reranking on Fireworks for semantic search"
 source: https://docs.fireworks.ai/guides/querying-embeddings-models
 path: guides/querying-embeddings-models
 ---
 
-Generate embeddings and rerank results for semantic search
+Generate text embeddings and rerank results on Fireworks using Voyage, Qwen, Nomic, and legacy models for semantic search, RAG, and retrieval pipelines.
 
 Fireworks hosts embedding and reranking models, which are useful for tasks like RAG and semantic search.
 

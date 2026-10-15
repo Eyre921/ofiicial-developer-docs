@@ -1,10 +1,10 @@
 ---
-title: "Dedicated Training"
+title: "Dedicated Training API workloads on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/training-api/dedicated
 path: fine-tuning/training-api/dedicated
 ---
 
-Run Training API workloads with provisioned trainer and deployment resources, explicit checkpoints, and lifecycle control.
+Run Training API workloads with provisioned trainer and deployment resources on Fireworks, with explicit checkpoints, weight-sync, and lifecycle control.
 
 <Info>
   Serverless Training is now generally available and a great starting point. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).

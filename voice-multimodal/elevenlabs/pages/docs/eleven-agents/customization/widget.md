@@ -178,7 +178,7 @@ Open your agent in the dashboard and navigate to the **Widget** tab to customize
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set fields under `platform_settings.widget`. For example, to change the orb colors and feedback mode:
 
@@ -302,7 +302,7 @@ Display custom terms and conditions before the conversation.
 **Available options**
 
 * **Terms content**: Use Markdown to format your policy text.
-* **Local storage key**: A key (e.g., "terms\_accepted") to avoid prompting returning users.
+* **Local storage key**: A key (e.g., "terms_accepted") to avoid prompting returning users.
 
 **Usage**
 

@@ -1,10 +1,10 @@
 ---
-title: "Model access policy"
+title: "Enterprise model access policy on Fireworks"
 source: https://docs.fireworks.ai/accounts/model-access-policy
 path: accounts/model-access-policy
 ---
 
-Restrict which models users on your Enterprise account can access for inference, deployments, and training
+Restrict which models users on your Fireworks Enterprise account can access for inference, deployments, and fine-tuning using an admin-configured allowlist.
 
 Model access policy lets Enterprise account admins control which models users on the account can use. You can allowlist models (deny by default, then permit specific models) or deny specific models while leaving the rest of the catalog open.
 

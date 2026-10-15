@@ -101,7 +101,7 @@ const writeStream = fs.createWriteStream(`${outputDir}/dialogue-ws.mp3`, { flags
 
 Send a **first message** that includes `voices` (required) and `xi_api_key` if you did not set the `xi-api-key` header. Then send one or more frames with `inputs`: each item has `text`, `voice_id`, and optional `new_turn`.
 
-The server buffers text until it has enough context (about **40 characters** and **8 words**), then emits `audio` chunks. Response fields use **snake\_case** (for example `is_final`).
+The server buffers text until it has enough context (about **40 characters** and **8 words**), then emits `audio` chunks. Response fields use **snake_case** (for example `is_final`).
 
 **`text-to-dialogue-websocket.py`**
 
@@ -232,7 +232,7 @@ Each open connection holds one dialogue session for as long as it stays open, dr
 
 ### Alignment
 
-Add `sync_alignment=true` to the query string to receive `alignment` objects (snake\_case timing arrays) on chunks when available. See the [API reference](/docs/api-reference/text-to-dialogue/ttd-websocket).
+Add `sync_alignment=true` to the query string to receive `alignment` objects (snake_case timing arrays) on chunks when available. See the [API reference](/docs/api-reference/text-to-dialogue/ttd-websocket).
 
 ## Next steps
 

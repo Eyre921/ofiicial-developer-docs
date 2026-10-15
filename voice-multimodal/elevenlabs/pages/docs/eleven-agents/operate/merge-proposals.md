@@ -116,7 +116,7 @@ A proposal can be closed without merging at any point while it's open. The autho
 
 * The author closing their own proposal records it as **withdrawn**.
 * Anyone else closing it records it as **rejected**.
-* Archiving the source branch closes any open proposal from or to it automatically, recorded as **branch\_archived**.
+* Archiving the source branch closes any open proposal from or to it automatically, recorded as **branch_archived**.
 
 ## Merge proposals and ElevenAgents Architect
 

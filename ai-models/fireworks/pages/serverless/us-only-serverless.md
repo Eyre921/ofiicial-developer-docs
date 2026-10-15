@@ -1,10 +1,10 @@
 ---
-title: "US-only Serverless"
+title: "US-only Serverless inference for compliance workloads"
 source: https://docs.fireworks.ai/serverless/us-only-serverless
 path: serverless/us-only-serverless
 ---
 
-Run Serverless inference exclusively in the US
+Run Fireworks Serverless inference exclusively on US infrastructure using US-scoped model routers like Kimi K3, for data-residency and compliance needs.
 
 US-only Serverless serves inference exclusively from the US, making it a good fit for compliance needs.
 
@@ -18,6 +18,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
 | GLM 5.3 | `accounts/fireworks/routers/glm-5p3-us` |
 | GLM 5.3 Flash | `accounts/fireworks/routers/glm-5p3-flash-us` |
+| Muse Spark Open | `accounts/fireworks/models/muse-spark-open` |
 
 ## How to use it
 

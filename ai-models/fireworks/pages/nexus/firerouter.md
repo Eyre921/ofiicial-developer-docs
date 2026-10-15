@@ -4,7 +4,9 @@ source: https://docs.fireworks.ai/nexus/firerouter
 path: nexus/firerouter
 ---
 
-Learn what FireRouter is, how it picks a model for each user turn, which models it routes to, how to pass Anthropic or OpenAI credentials, and how to watch routing live.
+FireRouter picks a Fireworks open model or a closed Claude or GPT model for each user turn, using your Anthropic or OpenAI credentials when needed.
+
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
 
 FireRouter gives you one model ID, `firerouter`, and picks a model for each new user turn. Easy turns can go to a Fireworks open model. Harder turns can go to a closed model such as Claude Opus or GPT Sol. You pay the selected model's rate for each turn instead of a closed model's rate on every turn.
 

@@ -6,6 +6,8 @@ path: nexus/firerouter/setup
 
 Set up FireRouter in a coding harness with FireConnect, in an LLM gateway such as LiteLLM or Portkey, or from the OpenAI, Anthropic, or Fireworks SDK.
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Use the same model ID, `firerouter` or `auto`, from a coding harness, an LLM gateway, or your own code. Every path needs a Fireworks API key. To add Claude or GPT, also provide an Anthropic or OpenAI credential. See [Provide Anthropic and OpenAI credentials](/nexus/firerouter#provide-anthropic-and-openai-credentials).
 
 | You are using | Setup |

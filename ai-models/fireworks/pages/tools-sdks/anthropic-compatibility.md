@@ -1,10 +1,10 @@
 ---
-title: "Anthropic compatibility"
+title: "Anthropic Messages API compatibility on Fireworks"
 source: https://docs.fireworks.ai/tools-sdks/anthropic-compatibility
 path: tools-sdks/anthropic-compatibility
 ---
 
-Use Anthropic SDKs with Fireworks, and understand the supported surface for the Anthropic-compatible Messages API.
+Use Anthropic SDKs with Fireworks through the Anthropic-compatible Messages API, including supported fields, tool search, defer_loading, and streaming behavior.
 
 You can use the [Anthropic Python SDK](https://github.com/anthropics/anthropic-sdk-python) or [Anthropic TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript) to interact with Fireworks, making it easy to migrate applications that already use Anthropic's Messages API.
 

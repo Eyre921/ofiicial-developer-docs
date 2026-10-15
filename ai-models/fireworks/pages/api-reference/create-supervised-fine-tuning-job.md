@@ -5,6 +5,7 @@ path: api-reference/create-supervised-fine-tuning-job
 ---
 
 post /v1/accounts/{account_id}/supervisedFineTuningJobs
+Create a supervised fine-tuning job via the Fireworks API, submitting training datasets, hyperparameters, and model configuration for managed SFT runs.
 
 ## Learning rate scheduler
 

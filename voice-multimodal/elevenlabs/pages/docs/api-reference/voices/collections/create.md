@@ -68,8 +68,8 @@ Validation Error
 
 ```json
 {
-  "title": "string",
-  "icon": "string"
+  "title": "My Favorite Voices",
+  "icon": "🎤"
 }
 ```
 
@@ -77,9 +77,9 @@ Validation Error
 
 ```json
 {
-  "collection_id": "string",
-  "title": "string",
-  "icon": "string",
+  "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef56gh78",
+  "title": "My Favorite Voices",
+  "icon": "🎤",
   "permission_on_resource": "admin"
 }
 ```
@@ -92,8 +92,8 @@ import requests
 url = "https://api.elevenlabs.io/v1/voices/collections"
 
 payload = {
-    "title": "string",
-    "icon": "string"
+    "title": "My Favorite Voices",
+    "icon": "🎤"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -107,7 +107,7 @@ const url = 'https://api.elevenlabs.io/v1/voices/collections';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"title":"string","icon":"string"}'
+  body: '{"title":"My Favorite Voices","icon":"🎤"}'
 };
 
 try {
@@ -133,7 +133,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/collections"
 
-	payload := strings.NewReader("{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"title\": \"My Favorite Voices\",\n  \"icon\": \"🎤\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -161,7 +161,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}"
+request.body = "{\n  \"title\": \"My Favorite Voices\",\n  \"icon\": \"🎤\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -173,7 +173,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/collections")
   .header("Content-Type", "application/json")
-  .body("{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}")
+  .body("{\n  \"title\": \"My Favorite Voices\",\n  \"icon\": \"🎤\"\n}")
   .asString();
 ```
 
@@ -185,8 +185,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/collections', [
   'body' => '{
-  "title": "string",
-  "icon": "string"
+  "title": "My Favorite Voices",
+  "icon": "🎤"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -202,7 +202,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/collections");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"title\": \"My Favorite Voices\",\n  \"icon\": \"🎤\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -211,8 +211,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "title": "string",
-  "icon": "string"
+  "title": "My Favorite Voices",
+  "icon": "🎤"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

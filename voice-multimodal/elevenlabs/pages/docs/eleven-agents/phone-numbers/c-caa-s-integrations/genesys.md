@@ -151,7 +151,7 @@ Genesys flow input session variables:
 * `system__override_first_message = "Hello! Welcome to our support line."`
 * `system__override_language = "en"`
 
-ElevenLabs agent prompt: Hi \{\{customer\_name}}, how can I help you today?
+ElevenLabs agent prompt: Hi \{\{customer_name}}, how can I help you today?
 
 ### Output session variables
 
@@ -179,7 +179,7 @@ In your ElevenLabs agent, add a data collection item with a detailed identifier 
 
 #### Update agent prompt
 
-Add instructions to your agent's system prompt to use the end\_call tool when a transfer is requested. For example:
+Add instructions to your agent's system prompt to use the end_call tool when a transfer is requested. For example:
 
 ```
 If the caller requests to be transferred to a specific department or asks to
@@ -198,7 +198,7 @@ In your Genesys Architect flow, add decision nodes after the Audio Connector act
 
 1. **Customer request**: "I need to speak with billing"
 2. **Agent response**: "I'll transfer you to our billing department"
-3. **Agent action**: Uses end\_call tool
+3. **Agent action**: Uses end_call tool
 4. **Data collection**: Data collection field is populated
 5. **Genesys flow**: Checks output variable and routes to billing queue
 
@@ -219,4 +219,4 @@ If there are any dynamic variables defined on your agent, they must be passed in
 
 #### Session variables not working
 
-Verify that input session variables are properly defined in your Genesys flow's "Call Audio Connector" action and that they're referenced correctly in your ElevenLabs agent using the \{\{variable\_name}} syntax.
+Verify that input session variables are properly defined in your Genesys flow's "Call Audio Connector" action and that they're referenced correctly in your ElevenLabs agent using the \{\{variable_name}} syntax.

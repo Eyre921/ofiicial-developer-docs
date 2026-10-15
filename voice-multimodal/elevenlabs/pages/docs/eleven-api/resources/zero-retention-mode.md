@@ -68,7 +68,7 @@ For ElevenAgents, Zero Retention Mode can be enabled per-agent via the agent's P
 
 For detailed instructions, see [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
 
-For example, in the Text to Speech API, you can set the query parameter [enable\_logging](https://elevenlabs.io/docs/api-reference/text-to-speech#parameter-enable-logging) to a `false` value:
+For example, in the Text to Speech API, you can set the query parameter [enable_logging](https://elevenlabs.io/docs/api-reference/text-to-speech#parameter-enable-logging) to a `false` value:
 
 **`Python`**
 

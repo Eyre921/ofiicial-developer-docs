@@ -199,9 +199,9 @@ When recording for AI, it is very important to be consistent. if you are recordi
     <td>
       #### How can I delete my unverified Professional Voice Clone (PVC)?
 
-      Unfortunately, this is not possible. As mentioned during the setup process of your Professional Voice Clone (PVC), once you advance to the verification stage, you are locked in until you've verified your voice.
+      You can delete an unverified Professional Voice Clone (PVC) from [My Voices](https://elevenlabs.io/app/voice-lab) 24 hours after your most recent verification attempt. If you need to delete it sooner, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).
 
-      If you need help with your Professional Voice Clone, please contact support by emailing us at [support@elevenlabs.io](mailto:support@elevenlabs.io).
+      If you have not started the verification process yet, you can delete your PVC at any time.
     </td>
   </tr>
 

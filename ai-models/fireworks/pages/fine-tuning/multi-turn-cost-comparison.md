@@ -1,10 +1,10 @@
 ---
-title: "RL rollout cost comparison vs Tinker"
+title: "Price comparison vs Tinker"
 source: https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison
 path: fine-tuning/multi-turn-cost-comparison
 ---
 
-Compare rollout inference costs for multi-turn agentic RL on Fireworks and Tinker
+Estimate multi-turn agentic RL rollout cost on Fireworks and compare to Tinker per-token pricing with worked examples for GSM8K, SWE-bench, and browsing agents.
 
 This page estimates **rollout inference only**. To plan SFT or DPO training
 costs, use the separate [Training cost

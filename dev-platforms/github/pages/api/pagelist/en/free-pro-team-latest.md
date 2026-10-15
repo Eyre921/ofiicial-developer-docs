@@ -340,7 +340,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-the-commit-signoff-policy-for-your-repository
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-the-push-policy-for-your-repository
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository
-/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/about-email-notifications-for-pushes-to-your-repository
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/configuring-autolinks-to-reference-external-resources
 /en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-auto-closing-issues
 /en/repositories/configuring-branches-and-merges-in-your-repository
@@ -938,8 +937,9 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/triage-alerts-in-pull-requests
 /en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/track-alerts-in-issues
 /en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/resolve-alerts
+/en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/managing-access-to-agentic-autofix-for-code-scanning
 /en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/enable-delegated-alert-dismissal
-/en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/disabling-autofix-for-code-scanning
+/en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/disabling-copilot-autofix-for-code-scanning
 /en/code-security/how-tos/manage-security-alerts/manage-dependabot-alerts
 /en/code-security/how-tos/manage-security-alerts/manage-dependabot-alerts/view-dependabot-alerts
 /en/code-security/how-tos/manage-security-alerts/manage-dependabot-alerts/manage-malware-alerts

@@ -1,8 +1,10 @@
 ---
-title: "Why might my account be suspended even with remaining credits?"
+title: "Why a Fireworks account is suspended despite credit balance"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/why-might-my-account-be-suspended-even-with-remaining-credits
 path: faq-new/billing-pricing/why-might-my-account-be-suspended-even-with-remaining-credits
 ---
+
+Why a Fireworks account can be suspended despite remaining credits, including monthly budget caps, payment risk checks, and post-paid contract terms.
 
 Your account may be suspended due to several factors:
 

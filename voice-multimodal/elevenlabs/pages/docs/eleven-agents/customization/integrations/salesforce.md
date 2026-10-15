@@ -36,7 +36,7 @@ This integration uses **Salesforce OAuth 2.0 Client Credentials** for authentica
    * **OAuth Start URL**: `https://api.elevenlabs.io/oauth/start`
    * **Selected OAuth Scopes**: add these scopes:
      * **Full access (full)**
-     * **Perform requests on your behalf at any time (refresh\_token, offline\_access)**
+     * **Perform requests on your behalf at any time (refresh_token, offline_access)**
      * **Manage user data via api**
 6. Click **Create**
 7. On the app page, open the **Settings** tab, go to **OAuth Settings**, and click **Consumer Key and Secret**
@@ -251,9 +251,9 @@ Once the connection is successful, save it and reference it in your webhook tool
 
 Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** section. Use the tabs below to review each tool's configuration.
 
-#### salesforce\_search\_records
+#### salesforce_search_records
 
-**Name:** salesforce\_search\_records
+**Name:** salesforce_search_records
 **Description:** Searches for existing records in Salesforce using SOQL queries. Always returns human-readable information including Names, not just IDs.
 **Method:** GET
 **URL:** `https://acme.my.salesforce.com/services/data/v58.0/query/?q={soql_query}`
@@ -304,9 +304,9 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
 }
 ```
 
-#### salesforce\_get\_record
+#### salesforce_get_record
 
-**Name:** salesforce\_get\_record
+**Name:** salesforce_get_record
 **Description:** Retrieves detailed information about a specific Salesforce record.
 **Method:** GET
 **URL:** `https://acme.my.salesforce.com/services/data/v58.0/sobjects/{object_type}/{record_id}`
@@ -317,8 +317,8 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
 
 **Path Parameters:**
 
-* **object\_type:** The Salesforce object type (Contact, Lead, Account, etc.)
-* **record\_id:** The unique Salesforce record ID
+* **object_type:** The Salesforce object type (Contact, Lead, Account, etc.)
+* **record_id:** The unique Salesforce record ID
 
 **Tool JSON:**
 
@@ -367,9 +367,9 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
 }
 ```
 
-#### salesforce\_create\_record
+#### salesforce_create_record
 
-**Name:** salesforce\_create\_record
+**Name:** salesforce_create_record
 **Description:** Creates a new record in Salesforce.
 **Method:** POST
 **URL:** `https://acme.my.salesforce.com/services/data/v58.0/sobjects/{object_type}/`
@@ -380,7 +380,7 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
 
 **Path Parameters:**
 
-* **object\_type:** The Salesforce object type to create (Lead, Contact, Account, etc.)
+* **object_type:** The Salesforce object type to create (Lead, Contact, Account, etc.)
 
 **Body Parameters:**
 

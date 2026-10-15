@@ -1,10 +1,10 @@
 ---
-title: "NIM compatibility"
+title: "NVIDIA NIM and vLLM compatibility on Fireworks"
 source: https://docs.fireworks.ai/tools-sdks/nim-compatibility
 path: tools-sdks/nim-compatibility
 ---
 
-Point NVIDIA NIM and vLLM OpenAI clients at Fireworks. We translate common extras like chat_template_kwargs so requests don't fail with Extra inputs are not permitted.
+Point NVIDIA NIM and vLLM OpenAI clients at Fireworks with translated request extras like chat_template_kwargs to avoid Extra inputs are not permitted errors.
 
 If you already call models through **NVIDIA NIM**, **vLLM**, or another OpenAI-compatible stack that sends NIM-style extras, you can point that client at Fireworks without rewriting every request.
 

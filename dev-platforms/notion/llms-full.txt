@@ -8493,7 +8493,7 @@ A PAT acts as the user who created it:
 An internal connection operates as a separate bot user and can access only pages shared with that connection. A PAT uses a real user's permissions, so it is best for work owned by that user rather than team-owned automations.
 
 <Info>
-  [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve the authorized user, and [Retrieve a user](/reference/get-user) can retrieve that same user.
+  [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve its bot user. Its `bot.owner.user` is the PAT creator. [Retrieve a user](/reference/get-user) can retrieve the creator by ID.
 </Info>
 
 ## Workspace admin controls
@@ -12420,7 +12420,24 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 
 <AccordionGroup>
   <Accordion title="Can I use Notion MCP without interactive authorization?">
-    Not yet. Notion MCP currently requires you to complete the OAuth authorization flow. We're working on support for non-interactive authorization for automated workflows.
+    Yes, on Business and Enterprise plans. A workspace owner can create an MCP token with **New MCP token** in the Developer portal. The MCP client sends the token as a bearer token to `https://mcp.notion.com/mcp`, with no browser sign-in.
+
+    Enterprise workspaces that use SAML SSO can also use [enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization), where the company's identity provider grants access without a consent screen.
+  </Accordion>
+
+  <Accordion title="Which Notion plans can use Notion MCP?">
+    Notion MCP works on every plan. Some features depend on the workspace's plan:
+
+    * **MCP tokens**: Business and Enterprise. Only workspace owners can create them.
+    * **Enterprise-managed authorization**: Enterprise, with SAML SSO.
+    * **AI search** in `notion-search`, including connected apps: Business or Enterprise with Notion AI. Without it, `notion-search` runs a keyword search of Notion.
+    * **Database queries** with `notion-query-data-sources`: querying a saved view works on every plan. SQL queries are unlimited on Business or Enterprise with Notion AI. Other plans get a limited number of SQL queries on one data source at a time.
+    * **Some search filters**, such as last edited by and last edited date: Business and Enterprise. On other plans these filters are dropped, and the result says so.
+    * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/mcp-supported-tools#rate-limits).
+  </Accordion>
+
+  <Accordion title="Can workspace guests use Notion MCP?">
+    No. Only workspace members can connect Notion MCP. A guest who tries to connect sees a message that guests can't connect, and Notion refuses the authorization.
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
@@ -12430,9 +12447,9 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">
-    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and requires no infrastructure setup.
+    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and MCP tokens, and requires no infrastructure setup.
 
-    The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It supports bearer token authentication and the original JSON-based v1 APIs, which may be useful for automated workflows, but requires you to manage your own connection and deployment.
+    The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It authenticates with an integration token and requires you to manage your own connection and deployment.
 
     For most users, we recommend Notion MCP.
   </Accordion>
@@ -12504,7 +12521,7 @@ Enable confirmation before actions that change content. This lets you review an 
 
 ## Admin controls
 
-Workspace owners can manage MCP client access in **Settings** → **Connections**. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections. See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) for details.
+Workspace owners can manage MCP client access in **Settings** → **Notion MCP** → **Manage workspace clients**. Limiting which clients members can connect needs the Enterprise plan. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections. See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) for details.
 
 
 # Supported tools
@@ -13420,7 +13437,7 @@ See [Supported tools](/guides/mcp/mcp-supported-tools) for the current tool list
 
 ## Admin controls
 
-Workspace owners can manage MCP client access in **Settings** → **Connections**. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
+Workspace owners can manage MCP client access in **Settings** → **Notion MCP** → **Manage workspace clients**. Limiting which clients members can connect needs the Enterprise plan. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
 
 See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) in the Notion Help Center for workspace settings and allowlists.
 
@@ -18203,6 +18220,12 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="October 15, 2026">
+  ### Comment-only connections can retrieve their own bot user
+
+  [Retrieve your token's bot user](/reference/get-self) now works for connections that have only comment capabilities. Before this change, those connections got a `403` `restricted_resource` error, so they had no direct way to look up their own bot ID.
+</Update>
+
 <Update label="October 14, 2026">
   ### Return fewer page properties from search
 
@@ -21825,6 +21848,8 @@ Comment capabilities dictate how a connection can interact with the [comments](/
 
 * **Insert comments**: This capability gives the connection permission to [insert comments](/reference/create-a-comment) in a page or in an existing discussion.
 
+A connection with only comment capabilities can still call [Retrieve token's bot user](/reference/get-self) to learn its own bot ID.
+
 ## User capabilities
 
 A connection can request different levels of user capabilities, which affect how [user objects](/reference/user) are returned from the Notion API:
@@ -21832,6 +21857,8 @@ A connection can request different levels of user capabilities, which affect how
 * **No user information**: Selecting this option prevents a connection from requesting any information about users. User objects will not include any information about the user, including name, profile image, or their email address.
 * **User information without email addresses**: Selecting this option ensures that User objects will include all information about a user, including name and profile image, but omit the email address.
 * **User information with email addresses**: Selecting this option ensures that User objects will include all information about the user, including name, profile image, and their email address.
+
+User capabilities control what user objects show, and they grant access to [List all users](/reference/get-users) and [Retrieve a user](/reference/get-user).
 
 ## Capability behaviors and best practices
 
@@ -23893,7 +23920,7 @@ Source: https://developers.notion.com/reference/get-self
 get /v1/users/me
 Retrieves the [User](/reference/user) associated with the token provided in the authorization header.
 
-For [personal access tokens](/guides/get-started/personal-access-tokens), this endpoint returns the user who created the token.
+For [personal access tokens](/guides/get-started/personal-access-tokens), this endpoint returns the token's bot user. Its `bot.owner.user` is the user who created the token.
 
 ### Errors
 
@@ -23902,7 +23929,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Info>
   **Connection capabilities**
 
-  This endpoint is accessible from by connections with any level of capabilities. The [user object](/reference/user) returned will adhere to the limitations of the connection's capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
+  This endpoint works for connections with any content, property, or comment capability. User information capabilities alone don't grant access. They only control what the owner fields in the [user object](/reference/user) show. To include the owner's email address, the connection needs user information with email addresses. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 </Info>
 
 
@@ -23939,7 +23966,7 @@ See [Pagination](/reference/intro#pagination) for details about how to use a cur
 The API does not guarantee a particular sort order for returned users.
 
 <Note>
-  [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT creator, or [Retrieve a user](/reference/get-user) with that user's ID.
+  [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT's bot user. Its `bot.owner.user` is the PAT creator. To retrieve the creator, use [Retrieve a user](/reference/get-user) with that user's ID.
 </Note>
 
 ### Errors

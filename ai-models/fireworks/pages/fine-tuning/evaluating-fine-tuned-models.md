@@ -1,10 +1,10 @@
 ---
-title: "Evaluating Trained Models"
+title: "Evaluate fine-tuned models before deployment on Fireworks"
 source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---
 
-Evaluate a trained model before you create a production deployment.
+Evaluate a trained Fireworks model with in-session sampling during a serverless training run or a preemptible deployment for a promoted model.
 
 After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have and whether the training session is still active.
 

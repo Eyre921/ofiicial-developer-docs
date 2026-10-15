@@ -6,6 +6,8 @@ path: nexus/apis-and-sdks
 
 Call Fireworks from custom agents, background runners, services, HTTP APIs, and SDKs
 
+Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+
 Call Fireworks from custom agents, background jobs, or services with curl, the OpenAI SDK, the Anthropic SDK, or the Fireworks SDK. Send requests to `https://api.fireworks.ai/inference` and use the same model ID across each supported API.
 
 ## Compatible APIs

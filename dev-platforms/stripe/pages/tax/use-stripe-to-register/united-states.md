@@ -8,7 +8,7 @@ path: tax/use-stripe-to-register/united-states
 
 Learn how Stripe can register you for sales tax in the US.
 
-Sales tax registration is the process of formally enrolling with a tax authority so you’re authorized to collect sales tax from customers in that location. In the US, you must register in a state before collecting sales tax there. This legal requirement applies after your sales to customers in that state exceed its economic nexus threshold.
+Sales tax registration is the process of formally enrolling with a tax authority so you’re authorized to collect sales tax from customers in that location. In the US, you must register in a state before collecting sales tax there. You might need to register when your sales exceed the state’s economic nexus threshold or when your business has physical presence there.
 
 If you’re an eligible remote seller with Tax Complete, select **Register for me** in the Dashboard to have Stripe prepare and submit your registration to the US tax authority.
 
@@ -174,7 +174,7 @@ In your application, you provided contact information including an email address
 
 If you see an “issue” status next to your registration in process, check the email address you provided as your contact information. One of our tax experts will have reached out to you explaining what additional information is needed to process your request.
 
-### No support for in-state registrations
+### Physical presence and in-state registrations 
 
 We can only support remote (out-of-state) sellers with no physical presence in the state. Physical presence laws vary by state, but generally include factors such as an office, storefront, employees, salespeople, contractors, warehouses, inventory, or trade show attendance. Consult your tax advisor if you’re unsure about whether you have physical presence in the state.
 

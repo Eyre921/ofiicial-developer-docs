@@ -1,10 +1,10 @@
 ---
-title: "Deployment Tags"
+title: "Deployment tags: key-value metadata on Fireworks"
 source: https://docs.fireworks.ai/deployments/deployment-tags
 path: deployments/deployment-tags
 ---
 
-Attach customer-defined metadata to dedicated deployments
+Attach key-value tags to dedicated Fireworks deployments to record environment, team, or workload, and manage them through firectl or the REST API.
 
 Deployment tags are key-value metadata attached to a dedicated deployment. Use them to record information such as an environment, team, or workload.
 

@@ -12,7 +12,7 @@ These error codes can have a number of causes.  The response message will indic
 
 ###
 
-### max\_character\_limit\_exceeded
+### max_character_limit_exceeded
 
 The maximum number of characters per request depends on the model.
 
@@ -25,19 +25,19 @@ The maximum number of characters per request depends on the model.
 
 ###
 
-### invalid\_api\_key
+### invalid_api_key
 
 This means that you have not set your API key correctly.  Please make sure you're using "xi-api-key" exactly, with no typos, when setting your API key.
 
 ###
 
-### voice\_not\_found
+### voice_not_found
 
-This means that you have entered the incorrect voice\_id.  Please check that you are using the correct voice\_id for the voice you want to use.  You can check this in My Voices.
+This means that you have entered the incorrect voice_id.  Please check that you are using the correct voice_id for the voice you want to use.  You can check this in My Voices.
 
 ###
 
-### quota\_exceeded
+### quota_exceeded
 
 You have insufficient quota to complete the request.  You can purchase [Pay As You Go credits](/docs/overview/administration/pay-as-you-go), or on legacy Creator, Pro, Scale and Business plans, you can enable [usage based billing](/docs/help-center/account/general/what-is-usage-based-billing) from your [Subscription](https://elevenlabs.io/app/subscription) page.
 

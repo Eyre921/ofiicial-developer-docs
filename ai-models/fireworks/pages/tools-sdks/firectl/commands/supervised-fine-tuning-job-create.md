@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/tools-sdks/firectl/commands/supervised-fine-tu
 path: tools-sdks/firectl/commands/supervised-fine-tuning-job-create
 ---
 
-Creates a supervised fine-tuning job.
+Reference for the firectl supervised-fine-tuning-job create command: launch a Fireworks managed SFT job from the CLI, with dataset, model, and hyperparameters.
 
 ```
 firectl supervised-fine-tuning-job create [flags]

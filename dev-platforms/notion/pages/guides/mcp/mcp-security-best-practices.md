@@ -31,4 +31,4 @@ Enable confirmation before actions that change content. This lets you review an 
 
 ## Admin controls
 
-Workspace owners can manage MCP client access in **Settings** → **Connections**. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections. See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) for details.
+Workspace owners can manage MCP client access in **Settings** → **Notion MCP** → **Manage workspace clients**. Limiting which clients members can connect needs the Enterprise plan. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections. See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) for details.

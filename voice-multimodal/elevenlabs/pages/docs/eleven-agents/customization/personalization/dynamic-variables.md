@@ -186,7 +186,7 @@ Set default values for each dynamic variable in the agent's dashboard.
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.dynamic_variables.dynamic_variable_placeholders`. Each key is the variable name; the value is the placeholder used during testing:
 
@@ -510,7 +510,7 @@ Verify that:
 
 * Variable names match exactly (case-sensitive)
 * Variables use double curly braces: `{{ variable_name }}`
-* Variables are included in your dynamic\_variables object
+* Variables are included in your dynamic_variables object
 
 #### Type errors
 

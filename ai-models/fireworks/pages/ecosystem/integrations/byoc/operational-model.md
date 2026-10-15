@@ -1,10 +1,10 @@
 ---
-title: "Operational Model"
+title: "Bring Your Own Cluster operational model"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model
 path: ecosystem/integrations/byoc/operational-model
 ---
 
-Learn how Fireworks operates Bring Your Own Cluster environments day to day.
+How Fireworks operates Bring Your Own Cluster environments day to day, including shared responsibilities, upgrades, monitoring, incident response, and support.
 
 Bring Your Own Cluster (BYOC) is designed so your team keeps ownership of the cloud or hardware environment while Fireworks operates the model serving stack inside it.
 

@@ -205,6 +205,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.BadGatewayResponseError | 502 | application/json |
@@ -252,6 +253,41 @@ func main() {
 ```
 
 ### Example Usage: body-too-large
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Vault.StoreInternVaultSecret(ctx, "7c9e6679-7425-40de-944b-e07fc1f90ae7", "github_token", components.VaultSecretWriteRequest{
+        Hosts: []string{
+            "api.github.com",
+        },
+        Value: "ghp_exampleTokenValue",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Example Usage: conflict
 
 ```go theme={null}
 package main
@@ -1500,6 +1536,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.BadGatewayResponseError | 502 | application/json |
@@ -1547,6 +1584,41 @@ func main() {
 ```
 
 ### Example Usage: body-too-large
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Vault.StoreVaultSecret(ctx, "github_token", components.VaultSecretWriteRequest{
+        Hosts: []string{
+            "api.github.com",
+        },
+        Value: "ghp_exampleTokenValue",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Example Usage: conflict
 
 ```go theme={null}
 package main
@@ -2058,6 +2130,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
 | sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |

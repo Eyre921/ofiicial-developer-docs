@@ -72,7 +72,7 @@ Open your agent in the dashboard, navigate to the **Security** tab, scroll to **
 elevenlabs agents pull --agent "<agent-name>"
 ```
 
-#### Edit \`agent\_configs/\<agent-name>.json\`
+#### Edit \`agent_configs/\<agent-name>.json\`
 
 Set `platform_settings.call_limits.bursting_enabled`:
 

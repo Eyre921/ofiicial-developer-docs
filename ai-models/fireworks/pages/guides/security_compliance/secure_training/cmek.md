@@ -1,10 +1,10 @@
 ---
-title: "Customer-Managed Encryption Keys (CMEK)"
+title: "Customer-managed encryption keys (CMEK) on Fireworks"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 path: guides/security_compliance/secure_training/cmek
 ---
 
-Use your own cloud KMS key to control encryption of your managed training data
+Use your own cloud KMS key on Fireworks to control encryption of managed fine-tuning data and revoke access at any time by disabling the key in your KMS.
 
 With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed training jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
 

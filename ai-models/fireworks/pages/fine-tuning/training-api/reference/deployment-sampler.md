@@ -1,10 +1,10 @@
 ---
-title: "DeploymentSampler"
+title: "DeploymentSampler for Training API tokenized sampling"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-sampler
 path: fine-tuning/training-api/reference/deployment-sampler
 ---
 
-Client-side tokenized sampling for Training API rollouts and evaluation.
+SDK reference for the Training API DeploymentSampler: client-side tokenized sampling from inference deployments during training, evaluation, and RL rollouts.
 
 ## Overview
 
