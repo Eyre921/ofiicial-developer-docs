@@ -1,5 +1,5 @@
 ---
-title: "Fireworks AI cookbooks: notebooks for advanced use cases"
+title: "Cookbooks"
 source: https://docs.fireworks.ai/examples/cookbooks
 path: examples/cookbooks
 ---

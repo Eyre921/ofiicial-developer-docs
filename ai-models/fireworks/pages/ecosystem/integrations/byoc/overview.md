@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Cluster on Fireworks"
+title: "Bring Your Own Cluster"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/overview
 path: ecosystem/integrations/byoc/overview
 ---

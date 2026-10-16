@@ -1,5 +1,5 @@
 ---
-title: "How Fireworks pre-paid credits and billing work"
+title: "How does billing and credit usage work?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 path: faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 ---

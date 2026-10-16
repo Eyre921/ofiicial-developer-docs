@@ -1,5 +1,5 @@
 ---
-title: "On-demand deployments on dedicated Fireworks GPUs"
+title: "Deployments"
 source: https://docs.fireworks.ai/guides/ondemand-deployments
 path: guides/ondemand-deployments
 ---
@@ -206,7 +206,7 @@ These are display labels computed from deployment fields; they are not new backe
 
 ## Deployment shapes
 
-Deployment shapes are the primary way to configure deployments. They're pre-configured templates optimized for speed, cost, or efficiency, including hardware, quantization, and other [performance factors](/faq/deployment/performance/optimization#performance-factors). Every shape is validated by Fireworks, so a deployment created from a shape uses a known-good configuration of GPU count, precision, and serving parameters.
+Deployment shapes are the primary way to configure deployments. They're pre-configured templates optimized for speed, cost, or efficiency, including hardware, quantization, and other [performance factors](/deployments/benchmarking). Every shape is validated by Fireworks, so a deployment created from a shape uses a known-good configuration of GPU count, precision, and serving parameters.
 
 <Warning>
   **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip these validation checks — mistakes like a GPU count that can't fit the model surface only at creation, where they cause failures. Most failed deployment creations on Fireworks are deployments without a shape. Enforcement is coming soon: shapeless creation will then require an explicit opt-in — see [Explicitly creating a deployment without a shape](#explicitly-creating-a-deployment-without-a-shape-advanced-users-only). If no shape fits your workload, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.

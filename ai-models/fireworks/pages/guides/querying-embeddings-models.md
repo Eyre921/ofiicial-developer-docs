@@ -1,5 +1,5 @@
 ---
-title: "Embeddings and reranking on Fireworks for semantic search"
+title: "Embeddings & Reranking"
 source: https://docs.fireworks.ai/guides/querying-embeddings-models
 path: guides/querying-embeddings-models
 ---
@@ -21,7 +21,7 @@ Every option below uses the same endpoint, `POST https://api.fireworks.ai/infere
 | **Qwen3 Embedding** | `fireworks/qwen3-embedding-8b` and similar | Yes | Default choice for serverless semantic search |
 | **Voyage AI** | Your deployment path | Yes | Retrieval quality with asymmetric query and document embeddings |
 | **Legacy BERT / sentence-transformers** | Hugging Face id, such as `BAAI/bge-small-en-v1.5` | **No** | Small, cheap vectors and existing sentence-transformers pipelines |
-| **Generative LLM** | `fireworks/gpt-oss-20b` and similar | Yes, as chat models | Hidden-state vectors when you are already using the model |
+| **Generative LLM** | `fireworks/gpt-oss-120b` and similar | Yes, as chat models | Hidden-state vectors when you are already using the model |
 | **Your own upload** | `accounts/<your-account>/models/<model-id>` | In your account | Custom or trained embedders |
 
 <Tabs>
@@ -132,9 +132,7 @@ The API usage for embedding models is identical for BERT-based and LLM-based emb
   <Accordion title="Use any LLM as an embeddings model">
     You can retrieve embeddings from many LLMs in our model library. Here are some examples that work with the embeddings API:
 
-    * `fireworks/gpt-oss-20b`
     * `fireworks/gpt-oss-120b`
-    * `fireworks/glm-5p2`
 
     A few caveats before you rely on this:
 
@@ -154,7 +152,7 @@ The API usage for embedding models is identical for BERT-based and LLM-based emb
       )
 
       resp = client.embeddings.create(
-          model="fireworks/glm-5p2",
+          model="fireworks/gpt-oss-120b",
           input=["First chunk to embed", "Second chunk to embed"],
           extra_body={"normalize": True},
       )
@@ -168,7 +166,7 @@ The API usage for embedding models is identical for BERT-based and LLM-based emb
         -H "Authorization: Bearer $FIREWORKS_API_KEY" \
         -H "Content-Type: application/json" \
         -d '{
-          "model": "fireworks/glm-5p2",
+          "model": "fireworks/gpt-oss-120b",
           "input": ["First chunk to embed", "Second chunk to embed"],
           "normalize": true
         }'

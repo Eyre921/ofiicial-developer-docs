@@ -1,12 +1,12 @@
 ---
-title: "How many tokens per image?"
+title: "How many tokens does a Qwen2.5 VL image use?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/how-many-tokens-per-image
 path: faq-new/billing-pricing/how-many-tokens-per-image
 ---
 
-Learn how to calculate token usage for images in vision models and understand pricing implications
+Count tokens for one Qwen2.5 VL image at common resolutions, or measure your own image with the Qwen2.5 VL processor.
 
-Image token consumption varies by model and resolution, typically ranging from 1,000 to 2,500 tokens per image for most common resolutions.
+Image token counts depend on the model and its image processor. The table and code below are for Qwen2.5 VL.
 
 ## Common resolution token counts
 

@@ -20,9 +20,9 @@ The same script runs the job on two surfaces:
   rows it held out.
 
 <Info>
-  Muse Glimmer 30B SFT is free via UI and Serverless Training API until 10/31.
+  Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30.
   No credit card required. See [Models](/fine-tuning/models). The starter applies
-  the promotion to LoRA SFT jobs started before `2026-11-01T00:00:00-07:00` and
+  the promotion to LoRA SFT jobs started before `2026-12-01T00:00:00-08:00` and
   refuses to launch after that unless you pass `--allow-paid`. RL, DPO,
   full-parameter training, deployments, and inference outside the training run
   are not covered.

@@ -1,5 +1,5 @@
 ---
-title: "Supervised fine-tuning for text models on Fireworks"
+title: "Supervised Fine-Tuning - Text"
 source: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
 path: fine-tuning/fine-tuning-models
 ---
@@ -8,7 +8,7 @@ Fine-tune Fireworks-hosted text LLMs with supervised learning on your labeled da
 
 This guide will focus on using supervised fine-tuning to train a model and deploy it to an on-demand (dedicated) deployment, which is the only supported method for serving trained models.
 
-For the full list of base models supported by managed training (SFT, DPO, and RFT) and their max context lengths, see [Models](/fine-tuning/models).
+For the full list of base models supported by managed training (SFT, DPO, and ORPO) and their max context lengths, see [Models](/fine-tuning/models).
 
 ## Fine-tuning a model using SFT
 

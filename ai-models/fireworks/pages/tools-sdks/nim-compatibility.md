@@ -1,5 +1,5 @@
 ---
-title: "NVIDIA NIM and vLLM compatibility on Fireworks"
+title: "NIM compatibility"
 source: https://docs.fireworks.ai/tools-sdks/nim-compatibility
 path: tools-sdks/nim-compatibility
 ---

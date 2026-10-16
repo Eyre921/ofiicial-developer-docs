@@ -103,18 +103,20 @@ Validation Error
 
 ```json
 {
-  "id": "string",
-  "name": "string",
+  "id": "ft_9a8b7c6d5e4f3a2b1c0d",
+  "name": "Chillwave Sunset Mix",
   "tags": [
-    "string"
+    "chillwave",
+    "sunset",
+    "electronic"
   ],
   "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",
   "status": "pending",
-  "training_progress": 1.1,
-  "primary_genre": "string",
+  "training_progress": 0,
+  "primary_genre": "electronic",
   "failure_reason": "audio_processing_failed"
 }
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Serverless Training API on Fireworks: LoRA, DPO, and RL"
+title: "Serverless Training"
 source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 path: fine-tuning/training-api/serverless
 ---

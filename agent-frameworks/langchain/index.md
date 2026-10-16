@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1654 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1655 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -1279,6 +1279,7 @@
 - `oss/deepagents/code/subagents` — [Use subagents in Deep Agents Code](pages/oss/deepagents/code/subagents.md) · [原文](https://docs.langchain.com/oss/deepagents/code/subagents)
 - `oss/javascript/common-errors` — [Errors](pages/oss/javascript/common-errors.md) · [原文](https://docs.langchain.com/oss/javascript/common-errors)
 - `oss/javascript/concepts/context` — [Context overview](pages/oss/javascript/concepts/context.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/context)
+- `oss/javascript/concepts/human-in-the-loop` — [Human-in-the-loop overview](pages/oss/javascript/concepts/human-in-the-loop.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/human-in-the-loop)
 - `oss/javascript/concepts/memory` — [Memory overview](pages/oss/javascript/concepts/memory.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/memory)
 - `oss/javascript/concepts/products` — [Runtimes, frameworks, and harnesses](pages/oss/javascript/concepts/products.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/products)
 - `oss/javascript/concepts/providers-and-models` — [Providers and models](pages/oss/javascript/concepts/providers-and-models.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/providers-and-models)

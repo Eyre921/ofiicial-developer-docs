@@ -1,5 +1,5 @@
 ---
-title: "How Fireworks secures data for inference and training"
+title: "Data Security"
 source: https://docs.fireworks.ai/guides/security_compliance/data_security
 path: guides/security_compliance/data_security
 ---

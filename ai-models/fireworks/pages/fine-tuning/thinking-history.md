@@ -1,5 +1,5 @@
 ---
-title: "Render reasoning history in managed fine-tuning"
+title: "Thinking history in training"
 source: https://docs.fireworks.ai/fine-tuning/thinking-history
 path: fine-tuning/thinking-history
 ---

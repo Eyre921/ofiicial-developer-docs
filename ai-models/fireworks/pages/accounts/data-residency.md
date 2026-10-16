@@ -1,5 +1,5 @@
 ---
-title: "Data residency for Fireworks Enterprise accounts"
+title: "Data residency"
 source: https://docs.fireworks.ai/accounts/data-residency
 path: accounts/data-residency
 ---

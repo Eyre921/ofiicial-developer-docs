@@ -1,5 +1,5 @@
 ---
-title: "Supervised fine-tuning with the sft_loop cookbook recipe"
+title: "Cookbook: Supervised Fine-Tuning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft
 path: fine-tuning/training-api/cookbook/sft
 ---

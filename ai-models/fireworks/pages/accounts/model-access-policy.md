@@ -1,5 +1,5 @@
 ---
-title: "Enterprise model access policy on Fireworks"
+title: "Model access policy"
 source: https://docs.fireworks.ai/accounts/model-access-policy
 path: accounts/model-access-policy
 ---

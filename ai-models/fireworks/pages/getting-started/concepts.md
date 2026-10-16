@@ -1,5 +1,5 @@
 ---
-title: "Core concepts for the Fireworks AI platform"
+title: "Concepts"
 source: https://docs.fireworks.ai/getting-started/concepts
 path: getting-started/concepts
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Secure reinforcement fine-tuning (RFT) on Fireworks"
+title: "Secure Reinforcement Fine-Tuning"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
 path: guides/security_compliance/secure_training/secure_rft
 ---

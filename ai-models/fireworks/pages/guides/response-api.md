@@ -1,5 +1,5 @@
 ---
-title: "Fireworks Responses API for stateful model calls"
+title: "Responses API"
 source: https://docs.fireworks.ai/guides/response-api
 path: guides/response-api
 ---

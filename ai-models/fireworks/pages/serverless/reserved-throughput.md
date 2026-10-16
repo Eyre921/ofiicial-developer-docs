@@ -1,5 +1,5 @@
 ---
-title: "Reserved throughput for Fireworks serverless models"
+title: "Reserved Throughput"
 source: https://docs.fireworks.ai/serverless/reserved-throughput
 path: serverless/reserved-throughput
 ---

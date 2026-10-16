@@ -1,5 +1,5 @@
 ---
-title: "On-policy distillation with the Training API cookbook"
+title: "Cookbook: Distillation"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation
 path: fine-tuning/training-api/cookbook/distillation
 ---

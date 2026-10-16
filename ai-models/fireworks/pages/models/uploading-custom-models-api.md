@@ -1,5 +1,5 @@
 ---
-title: "Upload custom models to Fireworks via REST API"
+title: "Upload via REST API"
 source: https://docs.fireworks.ai/models/uploading-custom-models-api
 path: models/uploading-custom-models-api
 ---

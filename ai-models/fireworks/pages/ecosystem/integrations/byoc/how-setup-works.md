@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Cluster setup and onboarding flow"
+title: "How Setup Works"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works
 path: ecosystem/integrations/byoc/how-setup-works
 ---

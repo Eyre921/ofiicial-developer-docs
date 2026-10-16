@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/list-drafts
 ---
 
 GET /inboxes/:inbox_id/drafts
-Retrieve the drafts on an inbox.
+Retrieve the unsent drafts in an inbox.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -30,9 +30,7 @@ Retrieve the drafts on an inbox.
   </CodeGroup>
 </Warning>
 
-Returns the unsent drafts on the inbox, most recently updated first. The
-`after` and `before` cursors take a Draft ID from the current page. A cursor
-that is not an unsent draft on this inbox returns a `404`.
+Returns the unsent drafts in the inbox, most recently updated first.
 
 ## Path Parameters
 
@@ -52,7 +50,7 @@ that is not an unsent draft on this inbox returns a `404`.
 
 <ParamField type="string">
   The ID of the first draft on the current page. Returns the previous, newer
-  page.
+  page. Cannot be combined with `after`.
 </ParamField>
 
 ## Response Fields

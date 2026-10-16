@@ -283,7 +283,7 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 
 ## Pick your agent
 
-- **[Antigravity](https://supabase.com/docs/guides/ai-tools/mcp):** Experience liftoff with the next-gen agent platform.
+- **[Antigravity](https://supabase.com/docs/guides/ai-tools/plugins):** Experience liftoff with the next-gen agent platform.
 - **[Claude Code](https://supabase.com/docs/guides/ai-tools/plugins):** Work with Claude directly in your codebase, from your terminal, IDE, and more.
 - **[Codex](https://supabase.com/docs/guides/ai-tools/plugins):** A lightweight coding agent that runs in your terminal.
 - **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins):** Your coding agent for building ambitious software.

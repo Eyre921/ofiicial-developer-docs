@@ -1,5 +1,5 @@
 ---
-title: "Fireworks courses: end-to-end examples and use cases"
+title: "Courses"
 source: https://docs.fireworks.ai/examples/introduction
 path: examples/introduction
 ---

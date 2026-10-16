@@ -1,5 +1,5 @@
 ---
-title: "US-only Serverless inference for compliance workloads"
+title: "US-only Serverless"
 source: https://docs.fireworks.ai/serverless/us-only-serverless
 path: serverless/us-only-serverless
 ---

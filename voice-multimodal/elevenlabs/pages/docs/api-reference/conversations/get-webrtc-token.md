@@ -62,12 +62,18 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "token": "string",
-  "conversation_id": "string"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb252YW5zYXRpb25fMTIzNDU2IiwiaWF0IjoxNjg3MjM0NTY3LCJleHAiOjE2ODcyMzgxNjd9.4f8e7d6c5b4a3e2f1d0c9b8a7d6c5b4a3e2f1d0c9b8a7d6c5b4a3e2f1d0c9b8a7",
+  "conversation_id": "conv_9f8e7d6c5b4a3e2f1d0c9b8a7"
 }
 ```
 
@@ -78,16 +84,29 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/conversation/token"
 
-querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz"}
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","branch_id":"branch_9f8e7d6c5b4a3","debug_events_request":"false","environment":"production","participant_name":"jane_doe_92","version_id":"v1.3.0"}
 
-response = requests.get(url, params=querystring)
+payload = {}
+headers = {
+    "xi-api-key": "sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, json=payload, headers=headers, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz';
-const options = {method: 'GET'};
+const url = 'https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0';
+const options = {
+  method: 'GET',
+  headers: {
+    'xi-api-key': 'sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7',
+    'Content-Type': 'application/json'
+  },
+  body: '{}'
+};
 
 try {
   const response = await fetch(url, options);
@@ -103,15 +122,21 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz"
+	url := "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("xi-api-key", "sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7")
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -128,12 +153,15 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz")
+url = URI("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["xi-api-key"] = 'sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7'
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -143,7 +171,10 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0")
+  .header("xi-api-key", "sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -153,7 +184,13 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'xi-api-key' => 'sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -161,18 +198,31 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0");
 var request = new RestRequest(Method.GET);
+request.AddHeader("xi-api-key", "sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7");
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz")! as URL,
+let headers = [
+  "xi-api-key": "sk_live_4f8e7d6c5b4a3e2f1d0c9b8a7",
+  "Content-Type": "application/json"
+]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3&debug_events_request=false&environment=production&participant_name=jane_doe_92&version_id=v1.3.0")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

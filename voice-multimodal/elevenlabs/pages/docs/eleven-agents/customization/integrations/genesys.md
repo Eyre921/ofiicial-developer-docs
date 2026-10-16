@@ -10,9 +10,11 @@ path: docs/eleven-agents/customization/integrations/genesys
 
 ## Overview
 
-Integrate ElevenLabs conversational AI with Genesys Cloud to power your contact center with natural-sounding voice and text agents. This integration supports both voice-based interactions through the Audio Connector and text-based conversations through the Bot Connector, enabling seamless customer experiences across multiple channels.
+Integrate ElevenLabs conversational AI with Genesys Cloud to power your contact center with natural-sounding voice and text agents. The integration works in two directions, and you choose the direction with the credential you connect with.
 
-With this integration, you can deploy AI agents that handle inbound calls, chat conversations, and messaging interactions in your Genesys Cloud environment.
+With the **OAuth2 Client** credential, Genesys Cloud routes conversations to your agent: voice calls through the Audio Connector and chats through the Bot Connector, both called from an Architect flow.
+
+With the **OAuth2 Client + Open Messaging** credential, your agent hands a chat that started in ElevenLabs, for example on WhatsApp, over to a human agent in Genesys Cloud. The human agent replies from Genesys Cloud, and the chat history stays in ElevenLabs.
 
 ## Capabilities
 
@@ -24,7 +26,14 @@ With this integration, you can deploy AI agents that handle inbound calls, chat 
 
 ## Setup
 
-This integration uses **OAuth 2.0 Client Credentials** for authentication.
+This integration uses **OAuth 2.0 Client Credentials** for authentication. Both credentials use the same OAuth client fields and differ only in what the connection is for.
+
+| Credential                     | Use it when                                                                 | Available in ElevenLabs                    |
+| ------------------------------ | --------------------------------------------------------------------------- | ------------------------------------------ |
+| OAuth2 Client                  | Genesys Cloud calls your agent from an Architect flow.                      | Bot Connector and Audio Connector triggers |
+| OAuth2 Client + Open Messaging | Your agent hands an ElevenLabs chat over to a human agent in Genesys Cloud. | Transfer to Open Messaging tool            |
+
+A connection serves one direction. To use both, create two connections, one per credential.
 
 #### Create OAuth client in Genesys Cloud
 
@@ -47,7 +56,15 @@ Identify your Genesys Cloud region (e.g., `mypurecloud.com` for US, `mypurecloud
 #### Connect to ElevenLabs
 
 In the ElevenLabs dashboard, go to **Agents > Integrations**, click **Add Integration** and select **Genesys**.
-Under the **Configure** tab, enter your **region**, **Client ID**, and **Client Secret**.
+Under the **Configure** tab, select the credential, then enter your **region**, **Client ID**, and **Client Secret**. The **OAuth2 Client + Open Messaging** credential also takes an optional **Integration Name** of up to 100 characters.
+
+> **Note**
+>
+> Connecting with the **OAuth2 Client + Open Messaging** credential creates an Open Messaging
+> integration with the Integration Name you enter in your Genesys Cloud organization. Choose a name
+> you can recognize when you assign a message route to it. If you leave it empty, ElevenLabs picks a
+> random name such as `ElevenLabs - Fierce Tiger`. The OAuth client needs permission to create Open
+> Messaging integrations, or the connection fails with a permission error.
 
 ## Triggers
 
@@ -119,7 +136,49 @@ Include escalation scenarios in your agent's business rules. For example:
 
 When the agent sets `genesys_should_escalate` to `true`, the Bot Connector will return the `escalate` intent, triggering the escalation flow you configured in Architect.
 
+## Chat handover with Open Messaging
+
+Use the **Transfer to Open Messaging** tool when a chat starts in ElevenLabs and your agent needs to hand it over to a human agent in Genesys Cloud. The tool requires a connection made with the **OAuth2 Client + Open Messaging** credential.
+
+### How it works
+
+When the agent calls the tool, ElevenLabs opens a conversation on the Open Messaging integration that the connection created. Genesys Cloud routes it through the inbound message flow assigned to that integration, so it reaches a queue and a human agent. The human agent sees a summary and the chat so far. Messages from the human agent reach the customer on the original channel, and the customer's replies reach the human agent, until the human agent ends the conversation in Genesys Cloud. The ElevenLabs agent then takes the chat back. The chat history stays in ElevenLabs.
+
+Open Messaging handover is available in text conversations only.
+
+### Configure the handover
+
+#### Connect with the OAuth2 Client + Open Messaging credential
+
+Follow the [Setup](#setup) steps, select **OAuth2 Client + Open Messaging** as the credential, and optionally enter an **Integration Name**. ElevenLabs creates an Open Messaging integration with that name, or a random one, in your Genesys Cloud organization.
+
+#### Assign an inbound message flow in Genesys Cloud
+
+In Genesys Cloud, create an inbound message flow in Architect that transfers the message to a queue, then add a message route that uses the new integration as the inbound address for that flow. See [Add an inbound message route](https://help.genesys.cloud/articles/add-inbound-message-route/) in the Genesys Cloud documentation. Without a route, a handed-over chat reaches no human agent.
+
+#### Add the tool to your agent
+
+In your agent configuration, open **Tools**, click **Add tool**, and select **Transfer to Open Messaging** from the Genesys integration. Pick the connection you created with the OAuth2 Client + Open Messaging credential.
+
+#### Tell the agent when to hand over
+
+Add handover instructions to your agent's system prompt, for example:
+
+```text
+### Handover
+
+If the user asks to speak to a human, or you cannot resolve the request, call the transfer_to_open_messaging tool with a short reason. Do not ask follow-up questions first.
+```
+
+### Removing the connection
+
+Deleting the connection in ElevenLabs also deletes the Open Messaging integration it created in Genesys Cloud. Genesys Cloud refuses to delete an integration that still has an inbound message flow assigned. Remove the flow from the integration first, then delete the connection.
+
 ## FAQ
+
+### Can one Genesys connection use both the triggers and the handover tool?
+
+No. A connection made with the OAuth2 Client credential offers the triggers, and a connection made with the OAuth2 Client + Open Messaging credential offers the Transfer to Open Messaging tool. Create one connection per credential, with the same OAuth client if you prefer.
 
 ### Why did my Bot Connector trigger setup fail?
 
@@ -144,4 +203,5 @@ In the Genesys Architect, check the execution history of your flow. Find it in t
 * [Genesys Cloud OAuth documentation](https://developer.genesys.cloud/authorization/platform-auth/use-client-credentials)
 * [Genesys Architect overview](https://help.mypurecloud.com/articles/architect-overview/)
 * [Genesys Bot Connector documentation](https://help.genesys.cloud/articles/about-genesys-bot-connector/)
+* [Genesys Open Messaging documentation](https://help.genesys.cloud/articles/about-open-messaging/)
 * [ElevenLabs Audio Connector for Genesys](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys)

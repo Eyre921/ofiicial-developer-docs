@@ -1,5 +1,5 @@
 ---
-title: "Fire Pass setup for open-weight agentic coding models"
+title: "Fire Pass"
 source: https://docs.fireworks.ai/firepass
 path: firepass
 ---

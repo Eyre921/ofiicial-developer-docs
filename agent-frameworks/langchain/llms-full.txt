@@ -35927,7 +35927,12 @@ Confirm that a LangSmith Engine issue reproduces on your deployment, and that En
   Fix validation is in private [beta](/langsmith/release-stages#beta). It is available only on LangSmith Cloud, for organizations where it has been enabled. It supports only agents running on [LangSmith Cloud deployments](/langsmith/deploy-to-cloud), not externally hosted agents. To request access, [join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access).
 </Note>
 
-Engine validates fixes by running your agent. It replays the traces linked to an [issue](/langsmith/engine-issues) against a deployment of your agent to confirm that the issue reproduces. It then replays the same traces against a preview deployment of Engine's fix to confirm that the fix resolves it. Engine records each validation as an [experiment](/langsmith/evaluation-concepts#experiment) on a dataset built from the issue's traces, so you can compare the baseline and the fix trace by trace.
+Engine validates issues and fixes by running your agent:
+
+* To validate an issue, Engine replays its linked traces against a configured baseline deployment to confirm that the issue reproduces.
+* To verify a fix, Engine replays the same traces against a preview deployment built from Engine's proposed fix.
+
+Engine records each validation as an [experiment](/langsmith/evaluation-concepts#experiment) on a dataset built from the issue's traces, so you can compare the baseline and the fix trace by trace.
 
 ## Set the baseline deployment
 
@@ -35936,7 +35941,7 @@ The baseline deployment is the deployment Engine replays issue traces against. [
 To set the baseline deployment:
 
 1. On the **Engine** page, select the tracing project, then click **Configure Engine**.
-2. In the **Preview deployments** section, find the **Baseline deployment** field.
+2. In the **Deployment** section, find the **Baseline deployment** field.
 3. Search for a deployment, or paste its LangSmith URL or deployment ID. Preview deployments and deployments that are not ready cannot be selected from the list. The baseline can be a production or staging deployment, but use staging when possible so validation does not exercise production credentials and services.
 4. Click **Save**.
 
@@ -35946,7 +35951,7 @@ By default, Engine calls your deployment with a LangSmith credential, and the de
 
 If your deployment authenticates callers itself, give Engine the headers it expects:
 
-1. In the **Preview deployments** section, under **Deployment authentication**, click **Add custom headers**.
+1. In the **Deployment** section, under **Deployment authentication**, click **Add custom headers**.
 2. Enter every header your deployment requires, then click **Save**.
 3. In your deployment's authentication handler, map those headers to an identity with the least access validation needs.
 
@@ -35967,7 +35972,7 @@ To have Engine verify its own fixes against a preview deployment:
    * Select **Label only** and set **Trigger label** to `preview`. Engine applies this label to its fix pull request.
    * Set **Idle TTL** to 6 hours.
    * Set **Max concurrent previews** to 20.
-4. In the **Preview deployments** section of **Configure Engine**, select **Verify fixes with preview deployments**.
+4. In the **Deployment** section of **Configure Engine**, select **Verify fixes with preview deployments**.
 5. Click **Save**.
 
 With this setup, Engine applies the preview label, waits for LangSmith to build a temporary deployment from the proposed fix, replays the validation against it, and shows the verdict and replay traces on the issue.
@@ -38232,7 +38237,7 @@ On the **Engine** page, click the **Configure Engine** <Icon icon="settings" /> 
 
 * **Code repository** and **Context repository**: Connect or update the GitHub repositories Engine reads when diagnosing issues. Each GitHub repository can have its own **Subfolder** and **Branch** (defaults to the repository default). A Context Hub repository lets Engine propose fixes to instructions, docs, and linked skills. See [Connect Engine to your repository](/langsmith/engine-repositories).
 * **Notifications**: See [Engine notifications](/langsmith/engine-notifications).
-* **Preview deployments**: Set the baseline deployment Engine replays issue traces against, and turn on fix verification with preview deployments. See [Validate fixes automatically](/langsmith/engine-fix-validation).
+* **Deployment**: Set the baseline deployment Engine replays issue traces against. To verify Engine's proposed fixes automatically, turn on fix verification with preview deployments. See [Validate fixes automatically](/langsmith/engine-fix-validation).
 * **Analysis level**: See [Set the analysis level](/langsmith/engine#set-the-analysis-level).
 * **Spend limit**: See [Set spend limits and monitor usage](/langsmith/engine#set-spend-limits-and-monitor-usage).
 * **Pause** and **Delete all issues**: See [Pause Engine or delete its issues](#pause-engine-or-delete-its-issues).
@@ -169134,6 +169139,170 @@ await graph.invoke(
 </div>
 
 
+# Human-in-the-loop overview
+Source: https://docs.langchain.com/oss/javascript/concepts/human-in-the-loop
+
+How agents pause tool calls for human review, and how per-call and batched interrupts differ.
+
+Human-in-the-loop (HITL) pauses an agent before a tool call runs so a person can review it. The reviewer approves the call, edits its arguments, rejects it with feedback, or answers in place of the tool. Use it for actions that are hard to undo or that need sign-off, such as deleting records, sending email, or writing files.
+
+You add review with [`humanInTheLoopMiddleware`](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware) in [LangChain](/oss/javascript/langchain/human-in-the-loop), or with the `interruptOn` parameter in [Deep Agents](/oss/javascript/deepagents/human-in-the-loop). The middleware pauses in one of two modes:
+
+* **Per-call**: One pause for each tool call that needs review.
+* **Batched**: One pause per model turn, covering every tool call in that turn. Batched mode is the current default.
+
+<Note>
+  Per-call mode requires `langchain>=1.5.18`. Deep Agents uses batched mode.
+</Note>
+
+## Follow an approval from pause to resume
+
+Every approval follows the same steps in either mode:
+
+1. The model proposes one or more tool calls.
+2. The middleware checks each call against your `interruptOn` policy. Calls that need review pause the agent with an [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt).
+3. The [checkpointer](/oss/javascript/langgraph/persistence) saves the agent's state, so the run can stop and resume later, even in another process.
+4. Your application shows the pending calls to a reviewer and collects a decision for each one.
+5. You resume the agent with a `new Command({ resume })`. The middleware applies each decision, and the agent continues.
+
+A decision is one of four types:
+
+| Decision Type | Description | Example Use Case |
+| - | - | - |
+| ✅ `approve` | Execute the tool with the original arguments as proposed by the agent. | Send an email draft exactly as written |
+| ✏️ `edit` | Modify the tool arguments before execution. | Change the recipient before sending an email |
+| ❌ `reject` | Skip executing this tool call entirely and return rejection feedback to the agent. | Deny file deletion and explain why |
+| 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
+
+The examples on this page use an agent with three tools. `write_file` allows every decision type. `execute_sql` allows only `approve` and `reject`. `read_data` runs without review. In one turn, the model calls all three.
+
+## Review each tool call separately
+
+In per-call mode, each tool call that needs review pauses on its own as it starts:
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sequenceDiagram
+    participant App as Your app
+    participant Agent
+    participant Tools
+
+    App->>Agent: invoke(user message)
+    Agent->>Tools: write_file, execute_sql, read_data
+    Tools-->>Agent: read_data result (not gated, runs right away)
+    Tools-->>App: interrupt for write_file
+    Tools-->>App: interrupt for execute_sql
+    App->>Agent: resume {write_file ID: approve, execute_sql ID: reject}
+    Note over Agent: Each answer is checked against its response_schema before it is saved
+    Agent->>Tools: run write_file
+    Agent-->>App: final result
+```
+
+Each interrupt value describes one call and has `type: "tool_approval"`. The `execute_sql` interrupt looks like this:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  type: "tool_approval",
+  tool_call_id: "call_sql",
+  name: "execute_sql",
+  args: { query: "DELETE FROM orders WHERE created_at < '2025-01-01'" },
+  description: "Tool execution requires approval\n\nTool: execute_sql\nArgs: {\n  \"query\": \"DELETE FROM orders WHERE created_at < '2025-01-01'\"\n}",
+}
+```
+
+Each interrupt also carries a [`response_schema`](/oss/javascript/langgraph/interrupts#define-an-interrupt-response-schema), a JSON schema of the answers that call accepts. For `execute_sql`, the schema allows `approve` and `reject`. For `write_file`, it also allows `respond` and `edit`. The `edit` branch includes `write_file`'s own argument schema. Clients can render a form from the schema instead of hardcoding the decision types. The [LangChain guide](/oss/javascript/langchain/human-in-the-loop#read-the-response-schema) shows the schema for each decision type.
+
+You answer each interrupt with one decision, keyed by the interrupt's ID:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new Command({
+  resume: {
+    [writeFileInterrupt.id]: { type: "approve" },
+    [executeSqlInterrupt.id]: { type: "reject", message: "Archive the rows before deleting them." },
+  },
+});
+```
+
+LangGraph rejects an invalid answer before saving it, so the reviewer can correct it and answer again. Interrupts you do not answer stay pending, which lets a reviewer answer them one at a time.
+
+## Review a whole turn at once
+
+In batched mode, the middleware pauses once after the model responds, before any tool runs. `read_data` waits for the review too, even though it is not gated. One interrupt lists every gated call in `actionRequests`, and each call's allowed decisions in a separate `reviewConfigs` list:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  actionRequests: [
+    { name: "write_file", args: { path: "orders_archive.csv", content: "id,total\n1,20\n" }, description: "..." },
+    { name: "execute_sql", args: { query: "DELETE FROM orders WHERE created_at < '2025-01-01'" }, description: "..." },
+  ],
+  reviewConfigs: [
+    { actionName: "write_file", allowedDecisions: ["approve", "edit", "reject", "respond"] },
+    { actionName: "execute_sql", allowedDecisions: ["approve", "reject"] },
+  ],
+}
+```
+
+You answer with one list of decisions, in the same order as `actionRequests`:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new Command({
+  resume: {
+    decisions: [
+      { type: "approve" },
+      { type: "reject", message: "Archive the rows before deleting them." },
+    ],
+  },
+});
+```
+
+The interrupt has no `response_schema`. The middleware checks each decision only when it applies it, after LangGraph has saved the answer.
+
+## Compare batched-mode problems
+
+Batched mode matches answers to calls by position, and checks each answer only after saving it. Each row shows a problem the example agent hits in batched mode, and how per-call mode avoids it:
+
+| In batched mode | What happens | In per-call mode |
+| - | - | - |
+| Decisions match calls by position | A reviewer means to approve `write_file` and reject `execute_sql`, but sends `[reject, approve]`. The rejection goes to `write_file`. | Each decision is keyed by its call's interrupt ID. |
+| Allowed decisions live in `reviewConfigs` | Clients pair two lists by position and hardcode a button for each decision type. | Each interrupt's `response_schema` lists its decisions and edit arguments. |
+| An answer is saved before it is checked | One decision for two calls throws `Error: Number of human decisions (1) does not match number of hanging tool calls (2).` The corrected answer then fails with the same error, so the thread stays stuck. | The answer is checked first. Fix it and answer again. |
+| Edited arguments are not checked | An edit to `write_file` without `content` still runs the tool, and the model receives an error for a call it never made. | The edit is rejected with `edited_action.args.content Invalid input: expected string, received undefined`. |
+| One `reject` stops the whole turn | Approving `write_file` and rejecting `execute_sql` runs neither tool, nor the ungated `read_data`. The model receives only the rejection. | Each call runs or is rejected on its own. |
+
+## Choose an interrupt mode
+
+| | Per-call | Batched (default) |
+| - | - | - |
+| **When it pauses** | As each gated tool call starts | After the model responds, before any tool runs |
+| **Interrupts per turn** | One per gated tool call | One for the whole turn |
+| **Ungated calls in the turn** | Run right away | Wait for the review |
+| **Answer** | One decision per interrupt, keyed by interrupt ID | A list of decisions, matched by position |
+| **Best for** | New agents, one approval card or message per call, forms built from the schema | Approval UIs that already read `actionRequests` |
+
+Use per-call mode for new agents. LangChain plans to make it the default in the next major release.
+
+Keep batched mode while your approval UI reads the batched format, such as one built with the [`useStream` approval pattern](/oss/javascript/langchain/frontend/human-in-the-loop).
+
+Per-call mode also changes how middleware order and multi-answer resumes behave. Before you switch, read [Order middleware for per-call review](/oss/javascript/langchain/human-in-the-loop#order-middleware-for-per-call-review) and [Resume each call by ID](/oss/javascript/langchain/human-in-the-loop#resume-each-call-by-id).
+
+## See also
+
+* [Human-in-the-loop in LangChain](/oss/javascript/langchain/human-in-the-loop): configure the middleware and answer each decision type.
+* [Human-in-the-loop in Deep Agents](/oss/javascript/deepagents/human-in-the-loop): approvals for deep agents and their subagents.
+* [Define an interrupt response schema](/oss/javascript/langgraph/interrupts#define-an-interrupt-response-schema): how LangGraph checks resume values.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Memory overview
 Source: https://docs.langchain.com/oss/javascript/concepts/memory
 
@@ -184899,6 +185068,7 @@ The `allowed_decisions` list controls what actions a human can take when reviewi
 | ✅ `approve` | Execute the tool with the original arguments as proposed by the agent. | Send an email draft exactly as written |
 | ✏️ `edit` | Modify the tool arguments before execution. | Change the recipient before sending an email |
 | ❌ `reject` | Skip executing this tool call entirely and return rejection feedback to the agent. | Deny file deletion and explain why |
+| 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
 
 Use `reject` when the human denies a proposed action.
 
@@ -215135,6 +215305,10 @@ durable. A user can refresh the page, a reviewer can answer from a different
 component, and the agent still resumes from the exact point where execution
 stopped instead of replaying the whole run.
 
+<Note>
+  This page uses the default batched interrupt mode. For per-call interrupts (`interruptMode: "per_call"`), see [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call).
+</Note>
+
 <PatternEmbed />
 
 ## How interrupts work
@@ -220737,24 +220911,26 @@ When a model proposes an action that might require review—for example, writing
 
 It does this by checking each tool call against a configurable policy. If intervention is needed, the middleware issues an [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) that halts execution. The graph state is saved using LangGraph's [persistence layer](/oss/javascript/langgraph/persistence), so execution can pause safely and resume later.
 
-A human decision then determines what happens next: the action can be approved as-is (`approve`), modified before running (`edit`), or rejected with feedback (`reject`).
+A human decision then determines what happens next: the action can be approved as-is (`approve`), modified before running (`edit`), rejected with feedback (`reject`), or responded to directly (`respond`) for "ask user" style tools.
 
 ## Interrupt decision types
 
-The [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) defines three built-in ways a human can respond to an interrupt:
+The [middleware](/oss/javascript/langchain/middleware/built-in#human-in-the-loop) defines four built-in ways a human can respond to an interrupt:
 
 | Decision Type | Description | Example Use Case |
 | - | - | - |
 | ✅ `approve` | Execute the tool with the original arguments as proposed by the agent. | Send an email draft exactly as written |
 | ✏️ `edit` | Modify the tool arguments before execution. | Change the recipient before sending an email |
 | ❌ `reject` | Skip executing this tool call entirely and return rejection feedback to the agent. | Deny file deletion and explain why |
+| 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
 
-The available decision types for each tool depend on the policy you configure in `interrupt_on`.
+The available decision types for each tool depend on the policy you configure in `interruptOn`.
+
 When multiple tool calls are paused at the same time, each action requires a separate decision.
 
-Decisions must be provided in the same order as the actions appear in the interrupt request.
+In the default batched mode, provide decisions in the same order as the actions appear in the interrupt request. In [per-call mode](#pause-once-per-tool-call), each tool call has its own interrupt and takes one decision.
 
-Use `reject` when the human is denying the requested action.
+Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
 <Tip>
   When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
@@ -220766,6 +220942,8 @@ To use HITL, add the [middleware](/oss/javascript/langchain/middleware/built-in#
 
 You configure it with a mapping of tool actions to the decision types that are allowed for each action. The middleware will interrupt execution when a tool call matches an action in the mapping.
 
+This example uses the default batched mode. To pause once per tool call, see [Set the interrupt mode](#set-the-interrupt-mode).
+
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
 import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
@@ -220776,7 +220954,7 @@ const agent = createAgent({
     middleware: [
         humanInTheLoopMiddleware({
             interruptOn: {
-                write_file: true, // All decisions (approve, edit, reject) allowed
+                write_file: true, // All decisions (approve, edit, reject, respond) allowed
                 execute_sql: {
                     allowedDecisions: ["approve", "reject"],
                     // No editing allowed
@@ -220815,10 +220993,18 @@ const agent = createAgent({
     Prefix for action request descriptions
   </ParamField>
 
+  <ParamField type="string">
+    How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.5.18`. See [Set the interrupt mode](#set-the-interrupt-mode).
+  </ParamField>
+
+  <ParamField type="string | null">
+    In per-call mode, text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `null` to add nothing.
+  </ParamField>
+
   **`InterruptOnConfig` options:**
 
   <ParamField type="string[]">
-    List of allowed decisions: `'approve'`, `'edit'`, or `'reject'`
+    List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
   </ParamField>
 
   <ParamField type="string | callable">
@@ -220832,7 +221018,7 @@ const agent = createAgent({
 
 ## Conditional interrupts
 
-By default, every tool call listed in `interrupt_on` pauses for review. To pause only some calls, add a `when` predicate to a tool's `InterruptOnConfig`. The predicate receives a `ToolCallRequest` and returns `True` to interrupt or `False` to auto-approve, so you can gate on the tool's arguments.
+By default, every tool call listed in `interruptOn` pauses for review. To pause only some calls, add a `when` predicate to a tool's `InterruptOnConfig`. The predicate receives a `ToolCallRequest` and returns `true` to interrupt or `false` to auto-approve, so you can gate on the tool's arguments.
 
 <Note>
   Conditional interrupts require `langchain>=1.4.6`.
@@ -220875,11 +221061,549 @@ const agent = createAgent({
 });
 ```
 
-When the `when` predicate returns `false`, the call runs without interrupting. When it returns `true`, or when you omit `when`, the call pauses as usual. Calls that evaluate to `false` are never added to the interrupt batch, so a reviewer only sees the actions that need a decision.
+When the `when` predicate returns `false`, the call runs without interrupting. When it returns `true`, or when you omit `when`, the call pauses as usual. Calls that evaluate to `false` never pause, so a reviewer only sees the actions that need a decision.
+
+The predicate runs again when the agent resumes, so it must return the same result for the same call. If it returns `false` on resume, the tool runs and the reviewer's answer is ignored, even a `reject`. In batched mode, if the result changes for only some of the calls, the middleware throws an error.
+
+## Set the interrupt mode
+
+The middleware pauses in one of two modes, set with `interruptMode`:
+
+* **`"per_call"`**: Each tool call that needs review raises its own interrupt as it starts. Each interrupt carries a [`response_schema`](/oss/javascript/langgraph/interrupts#define-an-interrupt-response-schema) of the answers it accepts. You answer it with one decision, keyed by the interrupt ID.
+* **`"batched"`** (default): One interrupt per model turn lists every call that needs review. You answer with a list of decisions in the same order.
+
+Use per-call mode for new agents. LangChain plans to make it the default in the next major release. For a side-by-side comparison and the problems per-call mode solves, see the [human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop).
+
+## Pause once per tool call
+
+<Note>
+  Per-call interrupts require `langchain>=1.5.18` and `createAgent` version `"v2"`, the default.
+</Note>
+
+Set `interruptMode: "per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
+
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "google:gemini-3.6-flash",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "openai:gpt-5.5",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "anthropic:claude-sonnet-5",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { MemorySaver } from "@langchain/langgraph";
+  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+  import * as z from "zod";
+
+  const writeFile = tool(
+    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+    {
+      name: "write_file",
+      description: "Write content to a file.",
+      schema: z.object({ path: z.string(), content: z.string() }),
+    },
+  );
+
+  const executeSql = tool(() => "Deleted 42 rows", {
+    name: "execute_sql",
+    description: "Run a SQL query.",
+    schema: z.object({ query: z.string() }),
+  });
+
+  const readData = tool(({ table }) => `3 rows from ${table}`, {
+    name: "read_data",
+    description: "Read rows from a table.",
+    schema: z.object({ table: z.string() }),
+  });
+
+  let agent = createAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools: [writeFile, executeSql, readData],
+    middleware: [
+      humanInTheLoopMiddleware({
+        interruptOn: {
+          write_file: true,
+          execute_sql: { allowedDecisions: ["approve", "reject"] },
+          read_data: false,
+        },
+        interruptMode: "per_call", // [!code highlight]
+      }),
+    ],
+    checkpointer: new MemorySaver(),
+  });
+  ```
+</CodeGroup>
+
+### Read the interrupts
+
+When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { isToolApprovalInterrupt } from "langchain";
+
+let config = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "Archive old orders, then delete them." },
+    ],
+  },
+  config,
+);
+
+// One interrupt per gated tool call, in no fixed order
+const approvals = (result.__interrupt__ ?? []).filter(isToolApprovalInterrupt);
+for (const interrupt of approvals) {
+  console.log(interrupt.value);
+}
+// > {
+// >   type: 'tool_approval',
+// >   tool_call_id: 'call_write',
+// >   name: 'write_file',
+// >   args: { path: 'orders_archive.csv', content: 'id,total\n1,20\n' },
+// >   description: 'Tool execution requires approval\n\nTool: write_file\nArgs: {\n  "path": "orders_archive.csv",\n  "content": "id,total\\n1,20\\n"\n}'
+// > }
+// > {
+// >   type: 'tool_approval',
+// >   tool_call_id: 'call_sql',
+// >   name: 'execute_sql',
+// >   args: { query: "DELETE FROM orders WHERE created_at < '2025-01-01'" },
+// >   description: `Tool execution requires approval\n\nTool: execute_sql\nArgs: {\n  "query": "DELETE FROM orders WHERE created_at < '2025-01-01'"\n}`
+// > }
+```
+
+Each interrupt value has `type: "tool_approval"`, so a client can tell it apart from other interrupts. The `isToolApprovalInterrupt` function checks for it and narrows the value's type. The `tool_call_id`, `name`, and `args` fields identify the call under review.
+
+### Read the response schema
+
+Each interrupt also carries a `response_schema`: a JSON schema with one branch per decision the tool allows, matched on the decision's `type`. The `execute_sql` schema has `approve` and `reject` branches. The `write_file` schema has all four. For a tool that allows one decision, `response_schema` is that decision's schema alone, with no `oneOf`.
+
+Each tab shows one `write_file` branch, an answer that matches it, and the [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) the model receives. For readability, the branches below omit the `additionalProperties` fields.
+
+<Tabs>
+  <Tab title="approve">
+    Run the call as proposed.
+
+    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
+    ```
+
+    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    { type: "approve" }
+    ```
+
+    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    Wrote 14 characters to orders_archive.csv
+    ```
+  </Tab>
+
+  <Tab title="edit">
+    Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are handled the same way as when the model sends them: a `z.object` schema drops them, and a `z.looseObject` schema keeps them.
+
+    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {
+      "type": "object",
+      "properties": {
+        "type": {"type": "string", "const": "edit"},
+        "edited_action": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "const": "write_file"},
+            "args": {
+              "type": "object",
+              "properties": {
+                "path": {"type": "string"},
+                "content": {"type": "string"}
+              },
+              "required": ["path", "content"]
+            }
+          },
+          "required": ["name", "args"]
+        }
+      },
+      "required": ["type", "edited_action"]
+    }
+    ```
+
+    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {
+      type: "edit",
+      edited_action: {
+        name: "write_file",
+        args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
+      },
+    }
+    ```
+
+    The model receives the tool's result after a note that a reviewer replaced the call. Set `editNotice` on the middleware to change the note, or pass `null` to remove it.
+
+    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
+
+    Tool response:
+    Wrote 14 characters to archive/orders_2024.csv
+    ```
+  </Tab>
+
+  <Tab title="reject">
+    Skip the call. The `message` is optional and tells the model why.
+
+    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
+    ```
+
+    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    { type: "reject", message: "Write to the archive/ folder instead." }
+    ```
+
+    ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    Write to the archive/ folder instead.
+    ```
+  </Tab>
+
+  <Tab title="respond">
+    Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
+
+    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
+    ```
+
+    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    { type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
+    ```
+
+    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    Saved orders_archive.csv to the shared drive myself.
+    ```
+  </Tab>
+</Tabs>
+
+### Resume each call by ID
+
+Answer each interrupt with one decision, keyed by its ID:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Command } from "@langchain/langgraph";
+
+const decisions = Object.fromEntries(
+  approvals.map((interrupt) => [
+    interrupt.id,
+    interrupt.value.name === "execute_sql"
+      ? { type: "reject", message: "Archive the rows before deleting them." }
+      : { type: "approve" },
+  ]),
+);
+
+result = await agent.invoke(new Command({ resume: decisions }), config);
+```
+
+You can also answer interrupts one at a time. An interrupt you do not answer stays pending, and its tool runs once it gets an answer.
+
+<Warning>
+  If one of several answers sent together is invalid, the tools for the others can run while their interrupts still show as pending. Answering them again runs those tools twice. Check answers against `response_schema` before you send them together, or send one at a time.
+</Warning>
+
+### Correct an invalid answer
+
+LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer throws an error and nothing is saved, so you can send a corrected answer to the same interrupt ID. The middleware wraps the error in a `MiddlewareError`, and its `cause` is the Zod error with the list of issues. Here, the edit leaves out `content`:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const writeFileInterrupt = (result.__interrupt__ ?? [])
+  .filter(isToolApprovalInterrupt)
+  .find((interrupt) => interrupt.value.name === "write_file")!;
+const args: Record<string, string> = { path: "archive/orders_2024.csv" };
+const edit = { type: "edit", edited_action: { name: "write_file", args } };
+
+try {
+  await agent.invoke(
+    new Command({ resume: { [writeFileInterrupt.id]: edit } }),
+    config,
+  );
+} catch (error) {
+  // The middleware wraps the error; its `cause` lists what failed
+  if (!(error instanceof Error && error.cause instanceof z.core.$ZodError)) {
+    throw error;
+  }
+  for (const issue of error.cause.issues) {
+    console.log(`${issue.path.join(".")} ${issue.message}`);
+  }
+}
+// > edited_action.args.content Invalid input: expected string, received undefined
+
+// Nothing was saved, so answer the same interrupt again
+args.content = "id,total\n1,20\n";
+result = await agent.invoke(
+  new Command({ resume: { [writeFileInterrupt.id]: edit } }),
+  config,
+);
+```
+
+Each issue names the field that failed, so you can show it to the reviewer. LangGraph checks edits only for tools with a Zod v4 object schema. For other tools, such as ones with a JSON schema, `response_schema` accepts any `args` object, and the tool checks the arguments when it runs.
+
+### Order middleware for per-call review
+
+In per-call mode, the review happens as the tool call starts, inside the tool-call middleware chain:
+
+* List `humanInTheLoopMiddleware` before tool retry or error-handling middleware, such as [toolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) and [toolErrorMiddleware](https://reference.langchain.com/javascript/langchain/index/toolErrorMiddleware), so it wraps them. Otherwise a retried call asks the reviewer again, and an invalid answer is retried or returned to the model as a tool error.
+* When the agent resumes, middleware listed before `humanInTheLoopMiddleware` runs again up to the pause, so it must not have side effects before it calls its handler. The tool runs only after the answer.
+* A [`when` predicate](#conditional-interrupts) runs as each call starts, so the [ToolCallRequest](https://reference.langchain.com/javascript/langchain/index/ToolCallRequest) it receives includes the tool.
 
 ## Responding to interrupts
 
-When you invoke the agent, it runs until it either completes or an interrupt is raised. An interrupt is triggered when a tool call matches the policy you configured in `interrupt_on`. With `version="v2"`, the result is a `GraphOutput` with an `interrupts` attribute containing the actions that require review. You can then present those actions to a reviewer and resume execution once decisions are provided.
+When you invoke the agent, it runs until it either completes or an interrupt is raised. An interrupt is triggered when a tool call matches the policy you configured in `interruptOn`. The result has an `__interrupt__` field containing the actions that require review. You can then present those actions to a reviewer and resume execution once decisions are provided.
+
+The examples in this section and the decision types below use the default batched mode. For per-call mode, see [Pause once per tool call](#pause-once-per-tool-call).
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
@@ -220898,7 +221622,7 @@ const result = await agent.invoke(
 );
 
 
-// The interrupt contains the full HITL request with action_requests and review_configs
+// The interrupt contains the full HITL request with actionRequests and reviewConfigs
 console.log(result.__interrupt__);
 // > [
 // >    Interrupt(
@@ -220906,7 +221630,7 @@ console.log(result.__interrupt__);
 // >          actionRequests: [
 // >             {
 // >                name: 'execute_sql',
-// >                arguments: { query: 'DELETE FROM records WHERE created_at < NOW() - INTERVAL \'30 days\';' },
+// >                args: { query: 'DELETE FROM records WHERE created_at < NOW() - INTERVAL \'30 days\';' },
 // >                description: 'Tool execution pending approval\n\nTool: execute_sql\nArgs: {...}'
 // >             }
 // >          ],
@@ -221015,6 +221739,32 @@ await agent.invoke(
 
     The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
   </Tab>
+
+  <Tab title="respond">
+    Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    await agent.invoke(
+        new Command({
+            // Decisions are provided as a list, one per action under review.
+            // The order of decisions must match the order of actions
+            // in the interrupt request.
+            resume: {
+                decisions: [
+                    {
+                        type: "respond",
+                        // The human's reply, returned directly as the tool result
+                        message: "Blue.",
+                    }
+                ]
+            }
+        }),
+        config  // Same thread ID to resume the paused conversation
+    );
+    ```
+
+    The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
+  </Tab>
 </Tabs>
 
 ***
@@ -221079,21 +221829,39 @@ for await (const message of resumeStream.messages) {  // [!code highlight]
 }
 ```
 
+In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one entry per gated tool call, with the interrupt value in `payload` and no `response_schema`. Resume with an object keyed by `interruptId`:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const streamDecisions = Object.fromEntries(
+  stream.interrupts.map((interrupt) => [
+    interrupt.interruptId,
+    { type: "approve" },
+  ]),
+);
+stream = await agent.streamEvents(new Command({ resume: streamDecisions }), {
+  ...config,
+  version: "v3",
+});
+for await (const message of stream.messages) {
+  for await (const token of message.text) {
+    process.stdout.write(token);
+  }
+}
+```
+
 See the [Streaming](/oss/javascript/langchain/streaming) guide for more details on stream modes.
 
 ## Execution lifecycle
 
-The middleware defines an `after_model` hook that runs after the model generates a response but before any tool calls are executed:
+The middleware defines an `afterModel` hook that runs after the model generates a response but before any tool calls are executed:
 
 1. The agent invokes the model to generate a response.
-
 2. The middleware inspects the response for tool calls.
-
-3. If any calls require human input, the middleware builds a [HITLRequest](https://reference.langchain.com/javascript/langchain/index/HITLRequest) with `action_requests` and `review_configs` and calls [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt).
-
+3. If any calls require human input, the middleware builds a [HITLRequest](https://reference.langchain.com/javascript/langchain/index/HITLRequest) with `actionRequests` and `reviewConfigs` and calls [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt).
 4. The agent waits for human decisions.
+5. Based on the `HITLResponse` decisions, the middleware executes approved or edited calls, synthesizes [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)'s for rejected calls, returns human replies directly as [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)'s for `respond` decisions, and resumes execution.
 
-5. Based on the `HITLResponse` decisions, the middleware executes approved or edited calls, synthesizes [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)'s for rejected calls, and resumes execution.
+In [per-call mode](#pause-once-per-tool-call), the `afterModel` hook does nothing. The middleware instead pauses each gated call as it runs, with one [interrupt](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) per call, and runs the tool once that call's decision arrives.
 
 ## Custom HITL logic
 
@@ -226453,6 +227221,8 @@ Pause agent execution for human approval, editing, or rejection of tool calls be
 * High-stakes operations requiring human approval (e.g. database writes, financial transactions).
 * Compliance workflows where human oversight is mandatory.
 * Long-running conversations where human feedback guides the agent.
+
+The middleware pauses once per model turn by default. Set `interruptMode: "per_call"` to pause once per tool call, with each interrupt answered by its ID. See [Set the interrupt mode](/oss/javascript/langchain/human-in-the-loop#set-the-interrupt-mode).
 
 <Warning>
   Human-in-the-loop middleware requires a [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) to maintain state across interruptions.
@@ -263713,6 +264483,25 @@ Log of updates and improvements to our JavaScript/TypeScript packages
 <Callout icon="rss">
   **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 </Callout>
+
+<Update label="Oct 15, 2026">
+  ## `langchain` v1.5.18
+
+  `humanInTheLoopMiddleware` can now pause once per tool call. Set `interruptMode: "per_call"` and each gated call raises its own interrupt, which you answer by interrupt ID. Batched mode is still the default.
+
+  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
+  ```
+
+  ### Features
+
+  * **Typed answers**: each interrupt carries a `response_schema` listing the decisions that call allows, so a client can build its form from the schema. See [Read the response schema](/oss/javascript/langchain/human-in-the-loop#read-the-response-schema).
+  * **Checked before saving**: LangGraph rejects an invalid answer before it is saved, so you can correct it and answer the same interrupt again. See [Correct an invalid answer](/oss/javascript/langchain/human-in-the-loop#correct-an-invalid-answer).
+  * **Edits stay on the called tool**: an `edit` can't switch tools, and its arguments are checked against the tool's own schema.
+  * **`respond` everywhere**: `interruptOn: { tool: true }` now allows every decision, `respond` included, in both modes, as in Python.
+
+  Use per-call mode for new agents. LangChain plans to make it the default in the next major release. See [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call) and the [human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop).
+</Update>
 
 <Update label="Mar 24, 2026">
   ## `deepagents` v1.9.0-alpha.0
@@ -318555,6 +319344,7 @@ The [middleware](/oss/python/langchain/middleware/built-in#human-in-the-loop) de
 | 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
 
 The available decision types for each tool depend on the policy you configure in `interrupt_on`.
+
 When multiple tool calls are paused at the same time, each action requires a separate decision.
 
 In the default batched mode, provide decisions in the same order as the actions appear in the interrupt request. In [per-call mode](#pause-once-per-tool-call), each tool call has its own interrupt and takes one decision.

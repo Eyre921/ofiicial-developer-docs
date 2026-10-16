@@ -30,8 +30,6 @@ Update the internal inbox name or the name recipients see when sending.
   </CodeGroup>
 </Warning>
 
-At least one of `name` or `from_name` is required.
-
 ## Path Parameters
 
 <ResendParamField type="string">
@@ -46,12 +44,18 @@ At least one of `name` or `from_name` is required.
 </ParamField>
 
 <ResendParamField type="string">
-  The name recipients see when mail is sent from this inbox. A plain name, not
-  a `Name <email>` address. Max 78 characters. It cannot contain a colon, `<`,
-  `>`, line breaks, or other control characters. An email address inside the
-  name must be on a domain the team has verified for sending. An empty string
-  removes it.
+  The name recipients see when mail is sent from this inbox. Max 78 characters.
 </ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `inbox`.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the inbox.
+</ParamField>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

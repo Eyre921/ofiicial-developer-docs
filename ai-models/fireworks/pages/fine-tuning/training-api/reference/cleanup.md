@@ -1,5 +1,5 @@
 ---
-title: "Clean up Training API trainer jobs and deployments"
+title: "Cleanup and Teardown"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/cleanup
 path: fine-tuning/training-api/reference/cleanup
 ---

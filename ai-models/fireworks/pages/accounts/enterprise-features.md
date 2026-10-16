@@ -1,5 +1,5 @@
 ---
-title: "Enterprise administration features on Fireworks"
+title: "Enterprise features"
 source: https://docs.fireworks.ai/accounts/enterprise-features
 path: accounts/enterprise-features
 ---

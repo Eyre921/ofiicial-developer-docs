@@ -1,5 +1,5 @@
 ---
-title: "How Fireworks pricing works for inference and tuning"
+title: "How much does Fireworks cost?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/how-much-does-fireworks-cost
 path: faq-new/billing-pricing/how-much-does-fireworks-cost
 ---

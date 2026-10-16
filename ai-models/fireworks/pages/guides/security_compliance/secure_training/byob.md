@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Bucket (BYOB) for Fireworks training data"
+title: "Bring Your Own Bucket (BYOB)"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
 path: guides/security_compliance/secure_training/byob
 ---

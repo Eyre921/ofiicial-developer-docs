@@ -1,5 +1,5 @@
 ---
-title: "FireworksClient reference for Training API accounts"
+title: "FireworksClient"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/fireworks-client
 path: fine-tuning/training-api/reference/fireworks-client
 ---

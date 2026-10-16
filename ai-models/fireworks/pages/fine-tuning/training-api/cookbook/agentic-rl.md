@@ -1,5 +1,5 @@
 ---
-title: "Agentic RL trajectories with TITO sidecars on Fireworks"
+title: "Cookbook: Agentic Reinforcement Learning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 path: fine-tuning/training-api/cookbook/agentic-rl
 ---

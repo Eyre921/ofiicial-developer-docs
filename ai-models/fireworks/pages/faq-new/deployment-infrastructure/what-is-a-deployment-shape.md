@@ -1,5 +1,5 @@
 ---
-title: "What is a deployment shape on Fireworks?"
+title: "What is a deployment shape, and why did my deployment fail to create?"
 source: https://docs.fireworks.ai/faq-new/deployment-infrastructure/what-is-a-deployment-shape
 path: faq-new/deployment-infrastructure/what-is-a-deployment-shape
 ---

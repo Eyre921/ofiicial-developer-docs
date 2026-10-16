@@ -1,5 +1,5 @@
 ---
-title: "Fireworks documentation changelog and updates"
+title: "Changelog"
 source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---

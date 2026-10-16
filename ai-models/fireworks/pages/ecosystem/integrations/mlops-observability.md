@@ -1,5 +1,5 @@
 ---
-title: "MLOps and observability integrations for Fireworks"
+title: "MLOps & Observability"
 source: https://docs.fireworks.ai/ecosystem/integrations/mlops-observability
 path: ecosystem/integrations/mlops-observability
 ---

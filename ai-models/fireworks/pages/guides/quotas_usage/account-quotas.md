@@ -1,5 +1,5 @@
 ---
-title: "Account quotas, spend limits, and GPU controls"
+title: "Account quotas"
 source: https://docs.fireworks.ai/guides/quotas_usage/account-quotas
 path: guides/quotas_usage/account-quotas
 ---

@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 230 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 231 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -39,6 +39,12 @@
 - `cli-reference` — [CLI reference](pages/cli-reference.md) · [原文](https://code.claude.com/docs/en/cli-reference)
 - `cloud-environments` — [Configure cloud environments](pages/cloud-environments.md) · [原文](https://code.claude.com/docs/en/cloud-environments)
 - `code-review` — [Code Review](pages/code-review.md) · [原文](https://code.claude.com/docs/en/code-review)
+- `code-review-costs` — [Code Review costs and usage](pages/code-review-costs.md) · [原文](https://code.claude.com/docs/en/code-review-costs)
+- `code-review-customize` — [Customize Code Review](pages/code-review-customize.md) · [原文](https://code.claude.com/docs/en/code-review-customize)
+- `code-review-local` — [Review locally with /code-review](pages/code-review-local.md) · [原文](https://code.claude.com/docs/en/code-review-local)
+- `code-review-pull-requests` — [Read and request reviews on a pull request](pages/code-review-pull-requests.md) · [原文](https://code.claude.com/docs/en/code-review-pull-requests)
+- `code-review-setup` — [Set up Code Review](pages/code-review-setup.md) · [原文](https://code.claude.com/docs/en/code-review-setup)
+- `code-review-troubleshooting` — [Troubleshoot Code Review](pages/code-review-troubleshooting.md) · [原文](https://code.claude.com/docs/en/code-review-troubleshooting)
 - `commands` — [Commands](pages/commands.md) · [原文](https://code.claude.com/docs/en/commands)
 - `common-workflows` — [Common workflows](pages/common-workflows.md) · [原文](https://code.claude.com/docs/en/common-workflows)
 - `communications-kit` — [Communications kit](pages/communications-kit.md) · [原文](https://code.claude.com/docs/en/communications-kit)
@@ -144,10 +150,8 @@
 ## agent-sdk
 
 - `agent-sdk/agent-loop` — [How the agent loop works](pages/agent-sdk/agent-loop.md) · [原文](https://code.claude.com/docs/en/agent-sdk/agent-loop)
-- `agent-sdk/agent-loop` — [How the agent loop works](pages/agent-sdk/agent-loop-2.md) · [原文](https://code.claude.com/docs/en/agent-sdk/agent-loop)
 - `agent-sdk/claude-code-features` — [Use Claude Code features in the SDK](pages/agent-sdk/claude-code-features.md) · [原文](https://code.claude.com/docs/en/agent-sdk/claude-code-features)
 - `agent-sdk/configuration` — [Configure your agent](pages/agent-sdk/configuration.md) · [原文](https://code.claude.com/docs/en/agent-sdk/configuration)
-- `agent-sdk/configuration` — [Configure your agent](pages/agent-sdk/configuration-2.md) · [原文](https://code.claude.com/docs/en/agent-sdk/configuration)
 - `agent-sdk/cost-tracking` — [Track cost and usage](pages/agent-sdk/cost-tracking.md) · [原文](https://code.claude.com/docs/en/agent-sdk/cost-tracking)
 - `agent-sdk/custom-tools` — [Give Claude custom tools](pages/agent-sdk/custom-tools.md) · [原文](https://code.claude.com/docs/en/agent-sdk/custom-tools)
 - `agent-sdk/examples` — [Examples](pages/agent-sdk/examples.md) · [原文](https://code.claude.com/docs/en/agent-sdk/examples)
@@ -188,7 +192,6 @@
 - `plugins/create` — [Create a Claude Code plugin](pages/plugins/create.md) · [原文](https://code.claude.com/docs/en/plugins/create)
 - `plugins/create` — [Create a Claude Code plugin](pages/plugins/create-2.md) · [原文](https://code.claude.com/docs/en/plugins/create)
 - `plugins/create-marketplace` — [Create a marketplace](pages/plugins/create-marketplace.md) · [原文](https://code.claude.com/docs/en/plugins/create-marketplace)
-- `plugins/create-marketplace` — [Create a marketplace](pages/plugins/create-marketplace-2.md) · [原文](https://code.claude.com/docs/en/plugins/create-marketplace)
 - `plugins/dependencies` — [Plugin dependencies](pages/plugins/dependencies.md) · [原文](https://code.claude.com/docs/en/plugins/dependencies)
 - `plugins/host-marketplace` — [Host and maintain a marketplace](pages/plugins/host-marketplace.md) · [原文](https://code.claude.com/docs/en/plugins/host-marketplace)
 - `plugins/install` — [Install and manage plugins](pages/plugins/install.md) · [原文](https://code.claude.com/docs/en/plugins/install)
@@ -209,13 +212,11 @@
 - `plugins/mods/test` — [Test a mod](pages/plugins/mods/test.md) · [原文](https://code.claude.com/docs/en/plugins/mods/test)
 - `plugins/mods/troubleshoot` — [Troubleshoot a mod](pages/plugins/mods/troubleshoot.md) · [原文](https://code.claude.com/docs/en/plugins/mods/troubleshoot)
 - `plugins/org` — [Manage Claude Code plugins for your organization](pages/plugins/org.md) · [原文](https://code.claude.com/docs/en/plugins/org)
-- `plugins/org` — [Manage Claude Code plugins for your organization](pages/plugins/org-2.md) · [原文](https://code.claude.com/docs/en/plugins/org)
 - `plugins/overview` — [Plugins overview](pages/plugins/overview.md) · [原文](https://code.claude.com/docs/en/plugins/overview)
 - `plugins/publish` — [Publish and distribute a plugin](pages/plugins/publish.md) · [原文](https://code.claude.com/docs/en/plugins/publish)
 - `plugins/relevance` — [Recommend plugins for your org](pages/plugins/relevance.md) · [原文](https://code.claude.com/docs/en/plugins/relevance)
 - `plugins/security` — [Plugin security and trust](pages/plugins/security.md) · [原文](https://code.claude.com/docs/en/plugins/security)
 - `plugins/troubleshooting` — [Troubleshoot plugins](pages/plugins/troubleshooting.md) · [原文](https://code.claude.com/docs/en/plugins/troubleshooting)
-- `plugins/troubleshooting` — [Troubleshoot plugins](pages/plugins/troubleshooting-2.md) · [原文](https://code.claude.com/docs/en/plugins/troubleshooting)
 
 ## whats-new
 

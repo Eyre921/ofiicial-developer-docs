@@ -1,5 +1,5 @@
 ---
-title: "Break down Fireworks usage and cost by dimension"
+title: "Usage & Cost Breakdown"
 source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 path: accounts/exporting-usage-and-costs
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Secure training options on Fireworks: BYOB, CMEK, secure RFT"
+title: "Secure Training"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training
 path: guides/security_compliance/secure_training
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Async GRPO reinforcement learning cookbook recipe"
+title: "Cookbook: Reinforcement Learning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 path: fine-tuning/training-api/cookbook/rl
 ---

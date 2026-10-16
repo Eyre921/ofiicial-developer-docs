@@ -30,14 +30,25 @@ Remove an existing inbox.
   </CodeGroup>
 </Warning>
 
-An inbox that does not exist or was already removed returns a `404`
-`not_found`.
-
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`
 </ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `inbox`.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the inbox.
+</ParamField>
+
+<ParamField type="boolean">
+  Returns `true` when the inbox is deleted.
+</ParamField>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

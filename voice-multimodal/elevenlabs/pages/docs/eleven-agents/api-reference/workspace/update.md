@@ -105,13 +105,13 @@ Used to reference a secret from the agent's secret store.
 ```json
 {
   "conversation_initiation_client_data_webhook": {
-    "url": "https://example.com/webhook",
+    "url": "https://hooks.mycompany.com/convai/initiate",
     "request_headers": {
       "Content-Type": "application/json"
     }
   },
   "webhooks": {
-    "post_call_webhook_id": "post_call_webhook_id",
+    "post_call_webhook_id": "webhook_123abc456def",
     "events": [
       "transcript"
     ],
@@ -120,8 +120,8 @@ Used to reference a secret from the agent's secret store.
     "send_audio": true
   },
   "can_use_mcp_servers": true,
-  "rag_retention_period_days": 1,
-  "conversation_embedding_retention_days": 1,
+  "rag_retention_period_days": 7,
+  "conversation_embedding_retention_days": 30,
   "default_livekit_stack": "standard"
 }
 ```

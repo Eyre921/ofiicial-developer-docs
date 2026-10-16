@@ -214,7 +214,7 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ```json
 {
-  "file": "<file: [object Object]>"
+  "file": "<file: SGVsbG8gV29ybGQ=>"
 }
 ```
 
@@ -222,41 +222,41 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ```json
 {
+  "type": "file",
   "access_info": {
-    "access_source": "creator",
-    "creator_email": "john.doe@example.com",
-    "creator_name": "John Doe",
     "is_creator": true,
-    "role": "admin"
+    "creator_name": "John Doe",
+    "creator_email": "john.doe@example.com",
+    "role": "admin",
+    "access_source": "creator"
   },
-  "auto_sync_info": {
-    "auto_discover": false,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "minimum_frequency_days": 7,
-    "next_refresh_by": 1
-  },
-  "content_format": "html",
-  "extracted_inner_html": "string",
-  "folder_parent_id": "string",
-  "folder_path": [
-    {
-      "id": "string",
-      "name": "string"
-    }
-  ],
-  "id": "string",
+  "extracted_inner_html": "<p>This is the extracted content from the product manual PDF.</p>",
+  "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1,
-    "last_updated_at_unix_secs": 1,
-    "size_bytes": 1
+    "created_at_unix_secs": 1685600000,
+    "last_updated_at_unix_secs": 1688201600,
+    "size_bytes": 2457600
   },
-  "name": "string",
+  "name": "Product_Manual_2024.pdf",
   "supported_usages": [
     "auto"
   ],
-  "type": "string",
-  "url": "string"
+  "auto_sync_info": {
+    "minimum_frequency_days": 7,
+    "auto_remove": false,
+    "consec_failures": 0,
+    "next_refresh_by": 1688806400,
+    "auto_discover": false
+  },
+  "content_format": "html",
+  "folder_parent_id": "folder_987654321",
+  "folder_path": [
+    {
+      "id": "folder_123456789",
+      "name": "Product Documentation"
+    }
+  ],
+  "url": "https://storage.elevenlabs.io/docs/Product_Manual_2024.pdf"
 }
 ```
 
@@ -267,7 +267,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-files = { "file": "open('[object Object]', 'rb')" }
+files = { "file": "open('SGVsbG8gV29ybGQ=', 'rb')" }
 
 response = requests.patch(url, files=files)
 
@@ -277,7 +277,7 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file';
 const form = new FormData();
-form.append('file', '[object Object]');
+form.append('file', 'SGVsbG8gV29ybGQ=');
 
 const options = {method: 'PATCH'};
 
@@ -306,7 +306,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -331,7 +331,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -342,7 +342,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -356,7 +356,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => '[object Object]',
+        'filename' => 'SGVsbG8gV29ybGQ=',
         'contents' => null
     ]
   ]
@@ -370,7 +370,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -379,7 +379,7 @@ import Foundation
 let parameters = [
   [
     "name": "file",
-    "fileName": "[object Object]"
+    "fileName": "SGVsbG8gV29ybGQ="
   ]
 ]
 

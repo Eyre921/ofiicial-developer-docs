@@ -119006,19 +119006,19 @@ In Neon, the `pg_stat_activity` system view only holds data on currently running
 
 --- [Document source](https://neon.com/docs/introduction/monitor-logs.md) ---
 
-> Summary: Logs for Functions and Object Storage live on the Monitoring page, split across the Functions and Storage tabs (one viewer per service, no combined view). Filter by level (DEBUG, INFO, NOTICE, WARN, ERROR, FATAL) or service name, search log bodies, poll for new lines with Go live, and download the current view as a .log file. Logs are retained for 3 days.
+> Summary: Logs for Functions, Object Storage, and Realtime live on the Monitoring page, split across the Functions, Storage, and Realtime tabs (one viewer per service, no combined view). Filter by level (DEBUG, INFO, NOTICE, WARN, ERROR, FATAL) or service name, search log bodies, poll for new lines with Go live, and download the current view as a .log file. Logs are retained for 3 days.
 
 # Monitor logs
 
-View, search, and download logs for Functions and Object Storage
+View, search, and download logs for Functions, Object Storage, and Realtime
 
-The Monitoring page shows service logs in two tabs, **Functions** and **Storage**. Each tab is a log viewer for that service on the current branch; there is no combined, all-services view. The two tabs share the same controls, described below.
+The Monitoring page shows service logs in three tabs: **Functions**, **Storage**, and **Realtime**. Each tab is a log viewer for that service on the current branch; there is no combined, all-services view. The tabs share the same controls, described below. The **Realtime** tab appears only on branches where [Realtime](https://neon.com/docs/realtime/overview) is available.
 
 ## View logs
 
 1. In the Neon Console, select a project and branch.
 2. Go to **Monitoring**.
-3. Open the **Functions** or **Storage** tab.
+3. Open the **Functions**, **Storage**, or **Realtime** tab.
 
 Each tab shows logs from every function or bucket on the branch. Narrow to a single service with the service name field (see [Scope by service](https://neon.com/docs/introduction/monitor-logs#scope-by-service)).
 
@@ -119256,7 +119256,7 @@ For strategies to reduce your Neon costs across compute, storage, branches, and 
 
 The **Monitoring** dashboard in the Neon console provides several graphs for monitoring system and database metrics. You can access the **Monitoring** dashboard from the sidebar in the Neon Console.
 
-The Monitoring page is organized into **Postgres**, **Storage**, and **Functions** tabs. This page describes the **Postgres** tab, which holds the metrics graphs below along with the **Active queries**, **Query performance**, **Data API Advisors**, and **System operations** views. The **Storage** and **Functions** tabs show [logs](https://neon.com/docs/introduction/monitor-logs) for Object Storage and Functions.
+The Monitoring page is organized into **Postgres**, **Storage**, **Functions**, and **Realtime** tabs. This page describes the **Postgres** tab, which holds the metrics graphs below along with the **Active queries**, **Query performance**, **Data API Advisors**, and **System operations** views. The **Storage**, **Functions**, and **Realtime** tabs show [logs](https://neon.com/docs/introduction/monitor-logs) for Object Storage, Functions, and Realtime.
 
 Your Neon plan defines the range of data you can view.
 
@@ -136951,6 +136951,7 @@ Copy this to your coding agent to get started with Realtime. [View prompt](https
 - read the guides on [defining](./guides/queries) and [subscribing](./guides/subscribing) to queries, [reactivity](./guides/reactivity), [optimistic mutations](./guides/mutations) and [server-side rendering](./guides/ssr)
 - see the [Next.js](./examples/nextjs) and [TanStack](./examples/tanstack) examples showing how to build full-stack reactive apps with auth and SSR support
 - see the [Mastra](./examples/mastra) example showing how users and background agents work on the same data in real time
+- view Realtime logs in the **Realtime** tab of the [Monitoring page](https://neon.com/docs/introduction/monitor-logs)
 
 --- [Document source](https://neon.com/docs/realtime/reference/api.md) ---
 

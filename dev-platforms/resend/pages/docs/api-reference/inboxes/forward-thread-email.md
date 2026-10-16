@@ -30,9 +30,7 @@ Forward a message in an inbox thread to new recipients.
   </CodeGroup>
 </Warning>
 
-Forwards a message from the inbox address right away, with no stored draft.
-`to` is required. The original message is quoted under a forwarded-message
-banner, below the optional `html` or `text` note.
+Forwards a message from the inbox address.
 
 The attachments of the original message are sent with the forward, together
 with any `attachments` you add. The request fails when they exceed 10 files or
@@ -69,13 +67,11 @@ be set or overridden.
 </ParamField>
 
 <ParamField type="string | string[]">
-  CC recipient email address. For multiple addresses, send as an array of
-  strings. Counts toward the 50-recipient limit with `to`.
+  CC recipient email address.
 </ParamField>
 
 <ParamField type="string | string[]">
-  BCC recipient email address. For multiple addresses, send as an array of
-  strings. Counts toward the 50-recipient limit with `to`.
+  BCC recipient email address.
 </ParamField>
 
 <ParamField type="string">
@@ -87,19 +83,11 @@ be set or overridden.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the forward. Max 2000 characters. Cannot contain a line break.
-  When omitted, the thread subject is used, prefixed with `Fwd:` if it does not
-  already start with it.
+  The subject of the forward. Max 2000 characters.
 </ParamField>
 
 <ParamField type="array">
-  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email). Each one
-  needs `content` or `path`. They share one limit with the attachments of the
-  original message, which the forward also sends. Together they can have up to
-  10 files and at most 25 MB of `content`. A `path` file counts toward the 10
-  files only, because it is fetched when the email is sent. An empty file, a
-  blocked file type, or a `path` that is not an `http` or `https` URL, or that
-  points to `localhost`, returns a `422`.
+  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email).
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -127,11 +115,7 @@ be set or overridden.
 </ParamField>
 
 <ParamField type="object">
-  Custom headers to add to the email. Resend sets the `In-Reply-To`,
-  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
-  of them, in any letter case, returns a `422`. A header name cannot be empty,
-  and names and values cannot contain line breaks or null characters, or the
-  request returns a `422`.
+  Custom headers to add to the email.
 </ParamField>
 
 ## Headers

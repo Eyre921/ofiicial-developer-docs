@@ -1,5 +1,5 @@
 ---
-title: "TrainerJobManager legacy SDK compatibility reference"
+title: "TrainerJobManager (Compatibility)"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/trainer-job-manager
 path: fine-tuning/training-api/reference/trainer-job-manager
 ---

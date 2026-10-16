@@ -155,6 +155,10 @@ supported usage across our different plans, [see our music terms](https://eleven
 
 Generated audio is available in MP3 (44.1kHz, 128-192kbps) and WAV formats.
 
+#### Does the Music API support Zero Retention Mode?
+
+Yes, for enterprise customers using the API. See [Zero Retention Mode](/docs/eleven-api/resources/zero-retention-mode#music) for the covered endpoints.
+
 #### What is Audio Reference?
 
 Audio Reference lets you upload a track of up to approximately 30 seconds to guide the style and sound of a new

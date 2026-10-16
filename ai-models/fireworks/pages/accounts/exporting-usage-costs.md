@@ -1,5 +1,5 @@
 ---
-title: "Export Fireworks usage costs to CSV with firectl"
+title: "Exporting Usage Costs"
 source: https://docs.fireworks.ai/accounts/exporting-usage-costs
 path: accounts/exporting-usage-costs
 ---

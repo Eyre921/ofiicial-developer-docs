@@ -1,5 +1,5 @@
 ---
-title: "Standard, Priority, and Fast serverless modes"
+title: "Serverless Modes"
 source: https://docs.fireworks.ai/serverless/serverless-modes
 path: serverless/serverless-modes
 ---
@@ -23,7 +23,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/models/glm-5p2",
+    "model": "accounts/fireworks/models/glm-5p3",
     "service_tier": "priority",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
@@ -41,10 +41,6 @@ Fast is available for select models. To use Fast, change the `model` ID as liste
 | - | - |
 | Kimi K3 Fast | `accounts/fireworks/routers/kimi-k3-fast` |
 | GLM 5.3 Fast | `accounts/fireworks/routers/glm-5p3-fast` |
-| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast` |
-| GLM 5.2 Fast (US) | `accounts/fireworks/routers/glm-5p2-fast-us` |
-
-For the US-only Fast variant, call `https://us.api.fireworks.ai`. See [US-only Serverless](/serverless/us-only-serverless).
 
 ```bash theme={null}
 curl https://api.fireworks.ai/inference/v1/chat/completions \

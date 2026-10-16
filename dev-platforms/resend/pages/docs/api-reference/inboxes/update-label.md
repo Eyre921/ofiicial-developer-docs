@@ -30,10 +30,6 @@ Rename or recolor an existing label.
   </CodeGroup>
 </Warning>
 
-Omitted fields keep their current value. A new name must not match another
-label on the inbox, compared without case, or the request returns a `422`
-`validation_error`.
-
 ## Path Parameters
 
 <ResendParamField type="string">
@@ -47,13 +43,21 @@ label on the inbox, compared without case, or the request returns a `422`
 ## Body Parameters
 
 <ParamField type="string">
-  A new name for the label. Max 64 characters. Leading and trailing whitespace
-  is trimmed.
+  A new name for the label. Max 64 characters.
 </ParamField>
 
 <ParamField type="string">
-  A new color for the label as a `#RRGGBB` hex code, like `#E93D82`. It is
-  stored in uppercase.
+  A new color for the label as a `#RRGGBB` hex code, like `#E93D82`.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `inbox_label`.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the label.
 </ParamField>
 
 <RequestExample>

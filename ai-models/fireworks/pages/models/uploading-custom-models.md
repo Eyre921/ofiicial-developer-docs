@@ -1,5 +1,5 @@
 ---
-title: "Upload and deploy custom models on Fireworks"
+title: "Custom Models"
 source: https://docs.fireworks.ai/models/uploading-custom-models
 path: models/uploading-custom-models
 ---

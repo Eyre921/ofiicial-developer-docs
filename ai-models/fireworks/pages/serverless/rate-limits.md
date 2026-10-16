@@ -1,5 +1,5 @@
 ---
-title: "Adaptive rate limits on Fireworks serverless"
+title: "Serverless Rate Limits"
 source: https://docs.fireworks.ai/serverless/rate-limits
 path: serverless/rate-limits
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Training API cookbook: recipes for SFT, DPO, and RL"
+title: "The Cookbook"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview
 path: fine-tuning/training-api/cookbook/overview
 ---

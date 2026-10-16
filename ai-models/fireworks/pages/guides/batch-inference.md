@@ -1,5 +1,5 @@
 ---
-title: "Batch API for large-scale async inference on Fireworks"
+title: "Batch API"
 source: https://docs.fireworks.ai/guides/batch-inference
 path: guides/batch-inference
 ---

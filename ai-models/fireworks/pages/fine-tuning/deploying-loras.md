@@ -1,5 +1,5 @@
 ---
-title: "Deploy LoRA fine-tuned models on Fireworks"
+title: "Deploying Trained Models"
 source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 path: fine-tuning/deploying-loras
 ---

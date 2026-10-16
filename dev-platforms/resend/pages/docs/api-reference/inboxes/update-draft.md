@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/update-draft
 ---
 
 PATCH /inboxes/:inbox_id/drafts/:draft_id
-Update fields on an existing draft.
+Update an unsent draft.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -20,30 +20,17 @@ Update fields on an existing draft.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
-Updates the content of an unsent draft. Send at least one of `to`, `cc`, `bcc`,
-`subject`, `text`, `html`, or `attachments`. An empty body is rejected even when
-the draft already has files. A body with none of these keys returns a `422`, even
-when it has other keys.
-
-Fields you leave out stay as they are. `html` and `text` are the exception:
-sending either one replaces both, and the one you leave out is saved as `null`.
-For `attachments`, a present array replaces every file on the draft, `[]` or
-`null` removes them, and leaving the field out keeps them.
-
-After the update, the draft must still contain at least one non-empty field.
-Files already on the draft count toward that. The combined recipients cannot
-exceed 50. A draft that was already sent, or that changed during the request,
-returns a `409`.
+Updates the content of an unsent draft.
 
 ## Path Parameters
 
@@ -58,26 +45,23 @@ returns a `409`.
 ## Body Parameters
 
 <ParamField type="string | string[] | null">
-  Recipients. For multiple addresses, send an array of strings. Each value can
-  include a friendly name. Pass `null` to clear.
+  Recipients.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  CC recipients. Pass `null` or `[]` to clear.
+  CC recipients.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  BCC recipients. Pass `null` or `[]` to clear.
+  BCC recipients.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Max 2000 characters. Must not contain a line break. Pass `null`
-  to clear.
+  The subject. Max 2000 characters.
 </ParamField>
 
 <ParamField type="string | null">
-  The HTML body. Pass `null` to clear. Sending `html` or `text` replaces both,
-  and the one you leave out is saved as `null`.
+  The HTML body.
 </ParamField>
 
 <ParamField type="string | null">
@@ -86,12 +70,7 @@ returns a `409`.
 </ParamField>
 
 <ParamField type="array | null">
-  Files to store on the draft. Each one needs `content`, `filename`, and
-  `content_type`. `path` and `content_id` return `422`. An empty file or a
-  blocked file type, such as `.exe`, returns `422`. The files on a draft can
-  total at most 25 MB. A present array
-  replaces every file on the draft. `[]` or `null` removes them. Leave the field out to
-  keep the current files.
+  Files to store on the draft.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">

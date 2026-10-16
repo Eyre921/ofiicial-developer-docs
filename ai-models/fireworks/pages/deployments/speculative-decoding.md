@@ -1,5 +1,5 @@
 ---
-title: "Speculative decoding with draft models on Fireworks"
+title: "Speculative Decoding"
 source: https://docs.fireworks.ai/deployments/speculative-decoding
 path: deployments/speculative-decoding
 ---

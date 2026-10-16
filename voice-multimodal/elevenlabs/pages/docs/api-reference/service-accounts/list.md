@@ -100,6 +100,9 @@ Unified container for all platform limits. Can be used by: - Billing groups (Wor
   - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `all_resources_access`, `copy_resources_cross_workspace`, `voice_design`
 - `group_usage_limit` (WorkspaceGroupResponseModelGroupUsageLimit, optional, nullable)
 - `group_pvc_limit` (WorkspaceGroupResponseModelGroupPvcLimit, optional, nullable)
+- `group_concurrency_limit` (WorkspaceGroupResponseModelGroupConcurrencyLimit, optional, nullable)
+- `group_dubbing_concurrency_limit` (WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit, optional, nullable)
+- `group_music_concurrency_limit` (WorkspaceGroupResponseModelGroupMusicConcurrencyLimit, optional, nullable)
 - `character_count` (integer, optional, nullable)
 - `is_scim_synced` (boolean, optional, default: false)
 - `scim_group` (ScimGroupResponseModel, optional, nullable)
@@ -122,6 +125,12 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 
 ### WorkspaceGroupResponseModelGroupPvcLimit
 
+### WorkspaceGroupResponseModelGroupConcurrencyLimit
+
+### WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit
+
+### WorkspaceGroupResponseModelGroupMusicConcurrencyLimit
+
 ### ScimGroupResponseModel
 
 - `scim_external_id` (string, required, nullable)
@@ -133,74 +142,90 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "service-accounts": [
     {
-      "service_account_user_id": "string",
-      "name": "string",
+      "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
+      "name": "Audio Processing Service",
       "api-keys": [
         {
-          "name": "string",
-          "hint": "string",
-          "key_id": "string",
-          "service_account_user_id": "string",
-          "hashed_xi_api_key": "string",
-          "created_at_unix": 1,
+          "name": "Primary API Key",
+          "hint": "Key for audio processing tasks",
+          "key_id": "key_123abc456def789ghi",
+          "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
+          "hashed_xi_api_key": "a1b2c3d4e5f67890abcdef1234567890",
+          "created_at_unix": 1688006400,
           "is_disabled": false,
           "permissions": [
-            "text_to_speech"
+            "text_to_speech",
+            "voices_read",
+            "speech_history_read"
           ],
-          "disable_reason": "trial_ended",
-          "character_limit": 1,
-          "character_count": 1,
+          "disable_reason": null,
+          "character_limit": 1000000,
+          "character_count": 250000,
           "allowed_ips": [
-            "string"
+            "192.168.1.100",
+            "10.0.0.5"
           ],
           "third_party_disable_allowed": true,
           "platform_limits": {
             "credits": {
-              "limit": 1,
-              "usage": 0
+              "limit": 1000000,
+              "usage": 250000
             },
             "pvc": {
-              "limit": 1
+              "limit": 10
             },
             "concurrency": {
-              "limit": 1
+              "limit": 5
             },
             "dubbing_concurrency": {
-              "limit": 1
+              "limit": 3
             },
             "music_concurrency": {
-              "limit": 1
+              "limit": 2
             }
           }
         }
       ],
-      "created_at_unix": 1,
+      "created_at_unix": 1688006400,
       "default_sharing_groups": [
         {
           "group": {
-            "name": "string",
-            "id": "string",
+            "name": "Engineering Team",
+            "id": "grp_456def789abc123ghi",
             "members": [
-              "string"
+              "user_001",
+              "user_002",
+              "user_003"
             ],
             "permissions": [
-              "text_to_speech"
+              "text_to_speech",
+              "speech_to_text",
+              "voice_lab"
             ],
-            "group_usage_limit": 1,
-            "group_pvc_limit": 1,
-            "character_count": 1,
-            "is_scim_synced": false,
+            "group_usage_limit": 5000000,
+            "group_pvc_limit": 50,
+            "group_concurrency_limit": 20,
+            "group_dubbing_concurrency_limit": 10,
+            "group_music_concurrency_limit": 5,
+            "character_count": 1200000,
+            "is_scim_synced": true,
             "scim_group": {
-              "scim_external_id": "string",
-              "display_name": "string",
-              "created_at_unix": 1,
-              "updated_at_unix": 1,
+              "scim_external_id": "scim_ext_789xyz456uvw123",
+              "display_name": "Engineering SCIM Group",
+              "created_at_unix": 1672531200,
+              "updated_at_unix": 1680393600,
               "seat_type": "workspace_admin"
             },
             "scim_frozen": false
@@ -220,14 +245,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/service-accounts"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/service-accounts';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -243,6 +271,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -251,7 +280,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -274,6 +307,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -284,6 +319,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/service-accounts")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -293,7 +330,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -303,16 +345,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/service-accounts")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

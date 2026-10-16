@@ -207,45 +207,51 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
+  "type": "url",
   "access_info": {
-    "access_source": "creator",
-    "creator_email": "john.doe@example.com",
-    "creator_name": "John Doe",
     "is_creator": true,
-    "role": "admin"
+    "creator_name": "Alice Johnson",
+    "creator_email": "alice.johnson@elevenlabs.io",
+    "role": "admin",
+    "access_source": "creator"
   },
-  "auto_sync_info": {
-    "auto_discover": false,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "minimum_frequency_days": 7,
-    "next_refresh_by": 1
-  },
-  "content_format": "html",
-  "extracted_inner_html": "string",
-  "folder_parent_id": "string",
-  "folder_path": [
-    {
-      "id": "string",
-      "name": "string"
-    }
-  ],
-  "id": "string",
+  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides details on how to use our API programmatically.</p>",
+  "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1,
-    "last_updated_at_unix_secs": 1,
-    "size_bytes": 1
+    "created_at_unix_secs": 1680307200,
+    "last_updated_at_unix_secs": 1682899200,
+    "size_bytes": 4523
   },
-  "name": "string",
+  "name": "ElevenLabs API Overview",
   "supported_usages": [
     "auto"
   ],
-  "type": "string",
-  "url": "string"
+  "url": "https://docs.elevenlabs.io/api-overview",
+  "auto_sync_info": {
+    "minimum_frequency_days": 7,
+    "auto_remove": false,
+    "consec_failures": 0,
+    "next_refresh_by": 1683504000,
+    "auto_discover": false
+  },
+  "content_format": "html",
+  "folder_parent_id": null,
+  "folder_path": [
+    {
+      "id": "root",
+      "name": "Knowledge Base"
+    }
+  ]
 }
 ```
 
@@ -256,14 +262,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -279,6 +288,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -287,7 +297,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -310,6 +324,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -320,6 +336,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -329,7 +347,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -339,16 +362,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

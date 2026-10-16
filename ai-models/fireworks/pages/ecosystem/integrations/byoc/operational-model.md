@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Cluster operational model"
+title: "Operational Model"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model
 path: ecosystem/integrations/byoc/operational-model
 ---

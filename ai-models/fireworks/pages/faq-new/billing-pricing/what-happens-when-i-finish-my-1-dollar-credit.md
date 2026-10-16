@@ -1,5 +1,5 @@
 ---
-title: "What happens after your $1 credit runs out"
+title: "How do credits work?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 path: faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 ---

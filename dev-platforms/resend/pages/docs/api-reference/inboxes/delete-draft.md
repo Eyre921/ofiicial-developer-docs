@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/delete-draft
 ---
 
 DELETE /inboxes/:inbox_id/drafts/:draft_id
-Discard an existing draft.
+Discard an unsent draft.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -30,8 +30,7 @@ Discard an existing draft.
   </CodeGroup>
 </Warning>
 
-Discards an unsent draft. A draft that was already sent, or that changed during
-the request, returns a `409`.
+Discards an unsent draft.
 
 ## Path Parameters
 
@@ -42,6 +41,20 @@ the request, returns a `409`.
 <ResendParamField type="string">
   The Draft ID.
 </ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `inbox_draft`.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the draft.
+</ParamField>
+
+<ParamField type="boolean">
+  Returns `true` when the draft is deleted.
+</ParamField>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

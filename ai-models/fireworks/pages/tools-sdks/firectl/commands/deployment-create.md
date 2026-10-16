@@ -1,5 +1,5 @@
 ---
-title: "firectl deployment create command reference"
+title: "firectl deployment create"
 source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-create
 path: tools-sdks/firectl/commands/deployment-create
 ---

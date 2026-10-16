@@ -1,5 +1,5 @@
 ---
-title: "Preference tuning with managed DPO and ORPO"
+title: "Preference Optimization with DPO or ORPO"
 source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 path: fine-tuning/dpo-fine-tuning
 ---

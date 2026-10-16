@@ -1,5 +1,5 @@
 ---
-title: "firectl deployment update command reference"
+title: "firectl deployment update"
 source: https://docs.fireworks.ai/tools-sdks/firectl/commands/deployment-update
 path: tools-sdks/firectl/commands/deployment-update
 ---

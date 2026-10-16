@@ -79,28 +79,39 @@ Used to reference a secret from the agent's secret store.
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "conversation_initiation_client_data_webhook": {
-    "url": "https://example.com/webhook",
+    "url": "https://hooks.mycompany.com/convai/initiate",
     "request_headers": {
+      "Authorization": {
+        "secret_id": "secret_12345abcdef"
+      },
       "Content-Type": "application/json"
     }
   },
   "webhooks": {
-    "post_call_webhook_id": "post_call_webhook_id",
+    "post_call_webhook_id": "webhook_9876543210abcdef",
     "events": [
-      "transcript"
+      "transcript",
+      "call_initiation_failure",
+      "answering_machine_detection"
     ],
     "transcript_format": "json",
     "exclude_transcript": true,
-    "send_audio": true
+    "send_audio": false
   },
   "can_use_mcp_servers": true,
-  "rag_retention_period_days": 1,
-  "conversation_embedding_retention_days": 1,
+  "rag_retention_period_days": 14,
+  "conversation_embedding_retention_days": 30,
   "default_livekit_stack": "standard"
 }
 ```
@@ -112,14 +123,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/settings"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/settings';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -135,6 +149,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -143,7 +158,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/settings"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -166,6 +185,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -176,6 +197,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/settings")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -185,7 +208,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/settings', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -195,16 +223,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/settings");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/settings")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

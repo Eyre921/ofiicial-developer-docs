@@ -1,5 +1,5 @@
 ---
-title: "Export Fireworks billing and usage metrics as CSV"
+title: "Exporting Billing Metrics"
 source: https://docs.fireworks.ai/accounts/exporting-billing-metrics
 path: accounts/exporting-billing-metrics
 ---

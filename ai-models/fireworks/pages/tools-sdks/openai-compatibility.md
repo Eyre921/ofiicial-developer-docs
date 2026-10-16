@@ -1,5 +1,5 @@
 ---
-title: "OpenAI SDK compatibility with Fireworks inference"
+title: "OpenAI compatibility"
 source: https://docs.fireworks.ai/tools-sdks/openai-compatibility
 path: tools-sdks/openai-compatibility
 ---

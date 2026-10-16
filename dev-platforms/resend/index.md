@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 417 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -283,10 +283,6 @@
 - `docs/knowledge-base/how-can-i-receive-emails-with-resend` — [Can You Receive Emails with Resend?](pages/docs/knowledge-base/how-can-i-receive-emails-with-resend.md) · [原文](https://resend.com/docs/knowledge-base/how-can-i-receive-emails-with-resend)
 - `docs/knowledge-base/how-do-dedicated-ips-work` — [How do Dedicated IPs work?](pages/docs/knowledge-base/how-do-dedicated-ips-work.md) · [原文](https://resend.com/docs/knowledge-base/how-do-dedicated-ips-work)
 - `docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records` — [How to avoid conflicts with your MX records](pages/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records)
-- `docs/knowledge-base/how-do-i-avoid-gmails-spam-folder` — [How to avoid Gmail's spam folder](pages/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder)
-- `docs/knowledge-base/how-do-i-avoid-icloud-spam-folder` — [How to avoid iCloud's spam folder](pages/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder)
-- `docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder` — [How to avoid Outlook's spam folder](pages/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder)
-- `docs/knowledge-base/how-do-i-avoid-yahoos-spam-folder` — [How to avoid Yahoo's spam folder](pages/docs/knowledge-base/how-do-i-avoid-yahoos-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-yahoos-spam-folder)
 - `docs/knowledge-base/how-do-i-cancel-a-broadcast` — [How to cancel a Broadcast](pages/docs/knowledge-base/how-do-i-cancel-a-broadcast.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-cancel-a-broadcast)
 - `docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend` — [Sender email addresses in Resend](pages/docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend.md) · [原文](https://resend.com/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend)
 - `docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend` — [How to ensure sensitive data isn't stored on Resend](pages/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend)
@@ -315,7 +311,6 @@
 - `docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls` — [What's the difference between Opportunistic TLS vs Enforced TLS?](pages/docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls.md) · [原文](https://resend.com/docs/knowledge-base/whats-the-difference-between-opportunistic-tls-vs-enforced-tls)
 - `docs/knowledge-base/why-are-my-emails-going-to-spam` — [Why Are My Emails Going to Spam?](pages/docs/knowledge-base/why-are-my-emails-going-to-spam.md) · [原文](https://resend.com/docs/knowledge-base/why-are-my-emails-going-to-spam)
 - `docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list` — [Why are my emails landing on the Suppression List?](pages/docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list.md) · [原文](https://resend.com/docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list)
-- `docs/knowledge-base/why-are-my-open-rates-not-accurate` — [Why are my open rates not accurate?](pages/docs/knowledge-base/why-are-my-open-rates-not-accurate.md) · [原文](https://resend.com/docs/knowledge-base/why-are-my-open-rates-not-accurate)
 - `docs/knowledge-base/why-use-topics` — [Why and when to use Topics?](pages/docs/knowledge-base/why-use-topics.md) · [原文](https://resend.com/docs/knowledge-base/why-use-topics)
 - `docs/leap-new-integration` — [Send emails with Leap and Resend](pages/docs/leap-new-integration.md) · [原文](https://resend.com/docs/leap-new-integration)
 - `docs/lovable-integration` — [Send emails with Lovable and Resend](pages/docs/lovable-integration.md) · [原文](https://resend.com/docs/lovable-integration)

@@ -1,5 +1,5 @@
 ---
-title: "Inference deployments for RL rollout traffic on Fireworks"
+title: "Inference for RL Rollouts"
 source: https://docs.fireworks.ai/guides/rollout-inference
 path: guides/rollout-inference
 ---

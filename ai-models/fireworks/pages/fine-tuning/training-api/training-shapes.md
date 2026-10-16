@@ -1,5 +1,5 @@
 ---
-title: "Training shapes: GPU layouts for Fireworks trainers"
+title: "Training Shapes"
 source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 path: fine-tuning/training-api/training-shapes
 ---

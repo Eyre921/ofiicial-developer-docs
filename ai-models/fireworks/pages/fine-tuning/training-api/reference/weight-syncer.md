@@ -1,5 +1,5 @@
 ---
-title: "WeightSyncer legacy Training API reference"
+title: "WeightSyncer (Legacy)"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/weight-syncer
 path: fine-tuning/training-api/reference/weight-syncer
 ---

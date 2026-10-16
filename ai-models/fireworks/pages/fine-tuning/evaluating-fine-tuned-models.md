@@ -1,5 +1,5 @@
 ---
-title: "Evaluate fine-tuned models before deployment on Fireworks"
+title: "Evaluating Trained Models"
 source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---

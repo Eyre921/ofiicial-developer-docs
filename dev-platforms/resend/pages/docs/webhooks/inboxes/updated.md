@@ -89,6 +89,11 @@ Event triggered whenever an **inbox's settings change**.
       <ParamField type="string">
         ISO 8601 timestamp when the inbox was created
       </ParamField>
+
+      <ParamField type="string">
+        ISO 8601 timestamp set when the inbox is created and updated whenever its name
+        or from name changes
+      </ParamField>
     </Expandable>
   </ParamField>
 </ResponseBodyParameters>
@@ -112,7 +117,8 @@ Event triggered whenever an **inbox's settings change**.
         "unread": 3,
         "drafts": 2,
         "last_received": "2026-09-29T11:42:08.000Z",
-        "created_at": "2026-09-01T09:30:00.000Z"
+        "created_at": "2026-09-01T09:30:00.000Z",
+        "updated_at": "2026-09-03T09:30:00.000Z"
       }
     }
   }

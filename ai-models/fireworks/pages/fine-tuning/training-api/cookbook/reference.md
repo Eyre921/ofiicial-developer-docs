@@ -1,5 +1,5 @@
 ---
-title: "Training cookbook reference: configs and utilities"
+title: "Cookbook: Reference"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/reference
 path: fine-tuning/training-api/cookbook/reference
 ---

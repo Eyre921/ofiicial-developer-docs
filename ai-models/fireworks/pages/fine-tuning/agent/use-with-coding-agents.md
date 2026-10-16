@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
 path: fine-tuning/agent/use-with-coding-agents
 ---
 
-Set up your agent to train with Fireworks.
+Install the Fireworks training Agent Skills in Claude Code, Cursor, Codex, or OpenCode so your agent can research, configure, and debug training runs.
 
 Paste this into your agent:
 

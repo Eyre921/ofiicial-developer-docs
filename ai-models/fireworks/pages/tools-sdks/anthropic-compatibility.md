@@ -1,5 +1,5 @@
 ---
-title: "Anthropic Messages API compatibility on Fireworks"
+title: "Anthropic compatibility"
 source: https://docs.fireworks.ai/tools-sdks/anthropic-compatibility
 path: tools-sdks/anthropic-compatibility
 ---

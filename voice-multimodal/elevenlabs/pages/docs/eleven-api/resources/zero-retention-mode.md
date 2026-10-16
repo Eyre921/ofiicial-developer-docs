@@ -10,34 +10,17 @@ path: docs/eleven-api/resources/zero-retention-mode
 
 ## Background
 
-By default, ElevenLabs retains data, in accordance with the Privacy Policy, to enhance services, troubleshoot issues, and ensure the security of ElevenLabs'systems. However, for some enterprise customers, ElevenLabs offers a "Zero Retention Mode" option for specific products. In this Zero Retention Mode, most data in requests and responses are immediately deleted once the request is completed.
-
-> **Warning**
->
-> Zero Retention Mode applies to **API use only**. Traffic through the ElevenLabs web UI or
-> playground is not covered by ZRM. For ElevenAgents, you can enable ZRM per agent in the dashboard,
-> but that setting applies to the agent's API traffic — UI traffic remains non-ZRM. See [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
+By default, ElevenLabs retains data, in accordance with the Privacy Policy, to enhance services, troubleshoot issues, and ensure the security of ElevenLabs' systems. However, for some enterprise customers, ElevenLabs offers a "Zero Retention Mode" option for specific products. In this Zero Retention Mode, most data in requests and responses are immediately deleted once the request is completed.
 
 ElevenLabs has agreements in place with each third-party LLM provider which expressly prohibit such providers from training their models on customer content, whether or not Zero Retention Mode is enabled.
 
 ## What is Zero Retention Mode?
 
-Zero Retention Mode provides an additional level of security and peace of mind for especially sensitive workflows. When enabled, logging of certain data points is restricted, including:
-
-* TTS text input
-* TTS audio output
-* TTD text input
-* TTD audio output
-* Voice Changer audio input
-* Voice Changer audio output
-* STT audio input
-* STT text output
-* ElevenLabs Agents: all input and output
-* Email associated with the account generating the input in our logs
+Zero Retention Mode (ZRM) provides an additional level of security and peace of mind for especially sensitive workflows. When enabled, logging of the inputs and outputs of eligible API requests is restricted. Logging of the email address of the account making the request is also restricted. See [What products are configured for Zero Retention Mode?](#what-products-are-configured-for-zero-retention-mode) for the data covered per product.
 
 This data is related to the processing of the request, and can only be seen by the user doing the request and the volatile memory of the process serving the request. None of this data is sent at any point to a database where data is stored long term.
 
-ZRM covers only the inputs and outputs listed above. It does not apply to any other data you send to ElevenLabs outside of those API request and response payloads — for example, support tickets, account emails, or files shared with ElevenLabs outside of an eligible API call.
+Zero Retention Mode applies only to requests made through eligible API endpoints. Traffic through the web UI is never covered. It also does not apply to any other data you send to ElevenLabs outside of those API request and response payloads — for example, support tickets, account emails, or files shared with ElevenLabs outside of an eligible API call.
 
 ## Who has access to Zero Retention Mode?
 
@@ -47,28 +30,9 @@ Enterprise customers can use Zero Retention Mode. It is primarily intended for u
 
 Zero Retention Mode is available to select enterprise customers. However, access to this feature may be restricted if ElevenLabs determines a customer's use case to be high risk, if an account is flagged by an automated system for additional moderation or at ElevenLabs' sole discretion. In such cases, the enterprise administrator will be promptly notified of the restriction.
 
-## How does Zero Retention Mode work?
+## API products
 
-Zero Retention Mode applies to API use only. UI traffic is never ZRM-covered. It can be enabled in different ways depending on the product:
-
-### API products
-
-For API-based products, Zero Retention Mode is enabled by sending `enable_logging=false` with your requests. Generations made through the web UI are not covered by ZRM:
-
-* **Text to Speech**: All endpoints beginning with `/v1/text-to-speech/` and the TTS websocket connection.
-* **Text to Dialogue**: All endpoints beginning with `/v1/text-to-dialogue/`.
-* **Voice Changer**: All endpoints starting with `/v1/speech-to-speech/`.
-* **Speech to Text**: All endpoints starting with `/v1/speech-to-text/`.
-
-After setup, check the TTS request history to verify Zero Retention Mode is enabled. If enabled, there should be no requests in the history with saved audio. Usage Analytics will still show a request was made but no data points will be saved from those requests.
-
-### ElevenAgents
-
-For ElevenAgents, Zero Retention Mode can be enabled per-agent via the agent's Privacy settings in the UI. Navigate to your agent's settings, go to **Privacy** > **Advanced**, and toggle "Zero Retention Mode" to enabled. This setting applies to the agent's API traffic only; UI traffic is not covered by ZRM.
-
-For detailed instructions, see [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
-
-For example, in the Text to Speech API, you can set the query parameter [enable_logging](https://elevenlabs.io/docs/api-reference/text-to-speech#parameter-enable-logging) to a `false` value:
+For API products, Zero Retention Mode is enabled per request by sending `enable_logging=false` as a query parameter on any of the endpoints below. For example, in the Text to Speech API, set the query parameter [enable_logging](https://elevenlabs.io/docs/api-reference/text-to-speech#parameter-enable-logging) to `false`:
 
 **`Python`**
 
@@ -112,43 +76,90 @@ curl --request POST \
   --header 'Content-Type: application/json'
 ```
 
-## What products are configured for Zero Retention Mode?
+### Text to Speech
 
-| Product                                                          | Type                 | Default Retention | Eligible for Zero Retention | Why not eligible                                                              |
-| ---------------------------------------------------------------- | -------------------- | ----------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| Text to Speech                                                   | Text Input           | Enabled           | Yes                         | —                                                                             |
-|                                                                  | Audio Output         | Enabled           | Yes                         |                                                                               |
-| Voice Changer                                                    | Audio Input          | Enabled           | Yes                         | —                                                                             |
-|                                                                  | Audio Output         | Enabled           | Yes                         |                                                                               |
-| Speech to Text                                                   | Audio Input          | Enabled           | Yes                         | —                                                                             |
-|                                                                  | Text Output          | Enabled           | Yes                         |                                                                               |
-| Text to Dialogue                                                 | Text Input           | Enabled           | Yes                         | —                                                                             |
-|                                                                  | Audio Output         | Enabled           | Yes                         |                                                                               |
-| Music                                                            | Text Input           | Enabled           | No                          | Not yet supported                                                             |
-|                                                                  | Audio Output         | Enabled           | No                          |                                                                               |
-| Image & Video                                                    | All Input and Output | Enabled           | No                          | Processed by third-party providers that do not support Zero Retention Mode    |
-| Instant Voice Cloning                                            | Audio Samples        | Enabled           | No                          | Voice cloning requires storing the clone to generate speech                   |
-| Professional Voice Cloning                                       | Audio Samples        | Enabled           | No                          | Voice cloning requires storing the clone to generate speech                   |
-| Dubbing                                                          | Audio/Video Input    | Enabled           | No                          | Designed for larger files that require retention during processing            |
-|                                                                  | Audio Output         | Enabled           | No                          |                                                                               |
-| ElevenCreative Studio                                            | Text Input           | Enabled           | No                          | Studio is an editor that works with large project files that must be retained |
-|                                                                  | Audio Output         | Enabled           | No                          |                                                                               |
-| [Agents Platform](/docs/eleven-agents/customization/privacy/zrm) | All Input and Output | Enabled           | Yes                         | —                                                                             |
+All endpoints beginning with `/v1/text-to-speech/` and the TTS WebSocket connection are covered by ZRM.
+
+To verify that Zero Retention Mode is active, open the Text to Speech request history. There should be no requests in the history with saved audio. Usage Analytics still records that a request was made, but no content from the request is stored.
+
+### Text to Dialogue
+
+All endpoints beginning with `/v1/text-to-dialogue/` are covered by ZRM.
+
+### Voice Changer
+
+All endpoints beginning with `/v1/speech-to-speech/` are covered by ZRM.
+
+### Speech to Text
+
+All endpoints beginning with `/v1/speech-to-text/` are covered by ZRM.
+
+### Music
+
+Zero Retention Mode covers the Music endpoints that generate audio or composition plans. Endpoints that must retain audio to work, such as upload and fine-tuning, are not covered.
+
+| Endpoint                         | Zero Retention Mode | Note                                                                                                          |
+| -------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `POST /v1/music`                 | Supported           | Requests with `store_for_inpainting=true` are rejected, since the parameter asks ElevenLabs to store the song |
+| `POST /v1/music/stream`          | Supported           | Requests with `store_for_inpainting=true` are rejected, since the parameter asks ElevenLabs to store the song |
+| `POST /v1/music/detailed`        | Supported           | Requests with `store_for_inpainting=true` are rejected, since the parameter asks ElevenLabs to store the song |
+| `POST /v1/music/detailed/stream` | Supported           | Requests with `store_for_inpainting=true` are rejected, since the parameter asks ElevenLabs to store the song |
+| `POST /v1/music/plan`            | Supported           | —                                                                                                             |
+| `POST /v1/music/stem-separation` | Supported           | —                                                                                                             |
+| `POST /v1/music/video-to-music`  | Supported           | —                                                                                                             |
+| `POST /v1/music/upload`          | Not supported       | Storing the uploaded audio is the purpose of the endpoint                                                     |
+| `/v1/music/finetunes` endpoints  | Not supported       | Training data is retained for 30 days and the trained model is retained                                       |
+
+### Sound Effects
+
+`POST /v1/sound-generation` is covered by ZRM.
+
+## ElevenAgents
+
+For ElevenAgents, Zero Retention Mode is enabled per agent in the agent's Privacy settings. Open the agent, go to **Privacy** > **Advanced**, and toggle **Zero Retention Mode** on. This setting applies to the agent's API traffic only. UI traffic is not covered.
+
+For detailed instructions, see [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
 
 > **Warning**
 >
-> For ElevenLabs Agents, Gemini, Claude, and ElevenLabs-hosted Qwen LLMs can be used in Zero
-> Retention Mode. Qwen3.5-397b-a17b is available only in US residency workspaces. MCP support is not
-> currently available for users on Zero Retention Mode or those requiring HIPAA compliance. See
-> [Zero Retention Mode (per-agent)](/docs/eleven-agents/customization/privacy/zrm).
+> Gemini, Claude, and ElevenLabs-hosted Qwen LLMs can be used in Zero Retention Mode.
+> Qwen3.5-397b-a17b is available only in US residency workspaces. MCP support is not currently
+> available for users on Zero Retention Mode or those requiring HIPAA compliance.
+
+## What products are configured for Zero Retention Mode?
+
+| Product                                                       | Type                 | Default Retention | Eligible for Zero Retention | Why not eligible                                                              |
+| ------------------------------------------------------------- | -------------------- | ----------------- | --------------------------- | ----------------------------------------------------------------------------- |
+| Text to Speech                                                | Text Input           | Enabled           | Yes                         | —                                                                             |
+|                                                               | Audio Output         | Enabled           | Yes                         |                                                                               |
+| Voice Changer                                                 | Audio Input          | Enabled           | Yes                         | —                                                                             |
+|                                                               | Audio Output         | Enabled           | Yes                         |                                                                               |
+| Speech to Text                                                | Audio Input          | Enabled           | Yes                         | —                                                                             |
+|                                                               | Text Output          | Enabled           | Yes                         |                                                                               |
+| Text to Dialogue                                              | Text Input           | Enabled           | Yes                         | —                                                                             |
+|                                                               | Audio Output         | Enabled           | Yes                         |                                                                               |
+| Music Generation                                              | Text Input           | Enabled           | Yes                         | —                                                                             |
+|                                                               | Audio/Video Input    | Enabled           | Yes                         | Upload endpoint is not eligible                                               |
+|                                                               | Audio Output         | Enabled           | Yes                         |                                                                               |
+| Music Finetunes                                               | Audio Samples        | Enabled           | No                          | Training data and the trained model must be stored to generate music          |
+| Sound Effects                                                 | Text Input           | Enabled           | Yes                         | —                                                                             |
+|                                                               | Audio Output         | Enabled           | Yes                         |                                                                               |
+| Image & Video                                                 | All Input and Output | Enabled           | No                          | Processed by third-party providers that do not support Zero Retention Mode    |
+| Instant Voice Cloning                                         | Audio Samples        | Enabled           | No                          | Voice cloning requires storing the clone to generate speech                   |
+| Professional Voice Cloning                                    | Audio Samples        | Enabled           | No                          | Voice cloning requires storing the clone to generate speech                   |
+| Dubbing                                                       | Audio/Video Input    | Enabled           | No                          | Designed for larger files that require retention during processing            |
+|                                                               | Audio Output         | Enabled           | No                          |                                                                               |
+| ElevenCreative Studio                                         | Text Input           | Enabled           | No                          | Studio is an editor that works with large project files that must be retained |
+|                                                               | Audio Output         | Enabled           | No                          |                                                                               |
+| [ElevenAgents](/docs/eleven-agents/customization/privacy/zrm) | All Input and Output | Enabled           | Yes                         | —                                                                             |
 
 ## FAQ
 
 #### What are some limitations of Zero Retention Mode?
 
 Troubleshooting and support for Zero Retention Mode is limited. Because of the configuration, we
-will not be able to diagnose issues with TTS/STS generations. Debugging will be more difficult
-as a result.
+will not be able to diagnose issues with your requests. Debugging will be more difficult as a
+result.
 
 #### How does retention work if Zero Retention Mode is not active?
 
@@ -161,7 +172,7 @@ generation.
 
 For any retained data, we regularly back up such data to prevent data loss in the event of any
 unexpected incidents. Following data deletion, database items are retained in backups for up to
-30 days After this period, the data expires and is not recoverable.
+30 days. After this period, the data expires and is not recoverable.
 
 #### Account deletion (When Zero Retention Mode is not used)
 

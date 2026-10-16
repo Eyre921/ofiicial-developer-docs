@@ -1,5 +1,5 @@
 ---
-title: "Managing users and roles in a Fireworks account"
+title: "Managing users"
 source: https://docs.fireworks.ai/accounts/users
 path: accounts/users
 ---

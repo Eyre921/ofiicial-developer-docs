@@ -1,5 +1,5 @@
 ---
-title: "Predicted outputs for faster editing and rewriting"
+title: "Using predicted outputs"
 source: https://docs.fireworks.ai/guides/predicted-outputs
 path: guides/predicted-outputs
 ---

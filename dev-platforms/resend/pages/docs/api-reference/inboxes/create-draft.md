@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/create-draft
 ---
 
 POST /inboxes/:inbox_id/drafts
-Create a draft on an inbox, either as a new conversation or as a reply.
+Create a draft in an inbox, either to start a new thread or reply to an existing thread.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -30,26 +30,7 @@ Create a draft on an inbox, either as a new conversation or as a reply.
   </CodeGroup>
 </Warning>
 
-A draft is an unsent message. Omit `thread_id` and `reply_to_email_id` for a
-draft that starts a new thread. Pass both together for a reply draft in an
-existing thread.
-
-A reply draft without `to` is addressed to the sender of the email it replies
-to, or to its Reply-To when set. For an email the inbox sent, it defaults to
-that email's `to` recipients. Send `to: []` to leave it empty. `cc`, `bcc`, and
-`subject` are never filled in.
-
-At least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or `attachments`
-must be non-empty. The combined recipients of `to`, `cc`, and `bcc` cannot
-exceed 50.
-
-Returns `201` for a new draft. Only one unsent reply draft can target an email,
-so a reply draft request for an email that already has one returns `200` with
-the ID of the existing draft. That request ignores every other field, except
-`attachments`, which replaces the attachments of the existing draft.
-
-A reply draft created without `subject` stores an empty subject and gets no
-`Re:` prefix. Set a subject before you send it.
+A draft lets you prepare a message before sending it.
 
 ## Path Parameters
 
@@ -65,16 +46,15 @@ A reply draft created without `subject` stores an empty subject and gets no
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  CC recipients. For multiple addresses, send an array of strings.
+  CC recipients.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  BCC recipients. For multiple addresses, send an array of strings.
+  BCC recipients.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Max 2000 characters. A string that is only whitespace, or that
-  contains a line break, is rejected.
+  The subject. Max 2000 characters.
 </ParamField>
 
 <ParamField type="string | null">
@@ -86,11 +66,7 @@ A reply draft created without `subject` stores an empty subject and gets no
 </ParamField>
 
 <ParamField type="array">
-  Files to store on the draft. Each one needs `content`, `filename`, and
-  `content_type`. `path` and `content_id` return `422`. An empty file or a
-  blocked file type, such as `.exe`, returns `422`. The files on a draft can
-  total at most 25 MB. A file counts as
-  draft content.
+  Files to store on the draft.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">

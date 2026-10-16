@@ -1,5 +1,5 @@
 ---
-title: "Querying text models on Fireworks: chat and completions"
+title: "Text Models"
 source: https://docs.fireworks.ai/guides/querying-text-models
 path: guides/querying-text-models
 ---
@@ -24,7 +24,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
     client = Fireworks()
 
     response = client.chat.completions.create(
-      model="accounts/fireworks/models/deepseek-v3p1",
+      model="accounts/fireworks/models/glm-5p3-flash",
       messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
     )
 
@@ -43,7 +43,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{
             "role": "user",
             "content": "Explain quantum computing in simple terms"
@@ -64,7 +64,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
     });
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       messages: [
         {
           role: "user",
@@ -83,7 +83,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/deepseek-v3p1",
+        "model": "accounts/fireworks/models/glm-5p3-flash",
         "messages": [
           {
             "role": "user",
@@ -137,7 +137,7 @@ messages = [
 ]
 
 response = client.chat.completions.create(
-    model="accounts/fireworks/models/deepseek-v3p1",
+    model="accounts/fireworks/models/glm-5p3-flash",
     messages=messages
 )
 
@@ -157,7 +157,7 @@ messages = [
 ]
 
 response = client.chat.completions.create(
-    model="accounts/fireworks/models/deepseek-v3p1",
+    model="accounts/fireworks/models/glm-5p3-flash",
     messages=messages
 )
 ```
@@ -170,7 +170,7 @@ Stream tokens as they're generated for real time, interactive UX. Covered in det
 
 ```python theme={null}
 stream = client.chat.completions.create(
-    model="accounts/fireworks/models/deepseek-v3p1",
+    model="accounts/fireworks/models/glm-5p3-flash",
     messages=[{"role": "user", "content": "Tell me a story"}],
     stream=True
 )
@@ -203,7 +203,7 @@ Use async clients to make multiple concurrent requests for better throughput:
 
     async def main():
       response = await client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}]
       )
       print(response.choices[0].message.content)
@@ -224,7 +224,7 @@ Use async clients to make multiple concurrent requests for better throughput:
 
     async def main():
         response = await client.chat.completions.create(
-            model="accounts/fireworks/models/deepseek-v3p1",
+            model="accounts/fireworks/models/glm-5p3-flash",
             messages=[{"role": "user", "content": "Hello"}]
         )
         print(response.choices[0].message.content)
@@ -244,7 +244,7 @@ Use async clients to make multiple concurrent requests for better throughput:
 
     async function main() {
       const response = await client.chat.completions.create({
-        model: "accounts/fireworks/models/deepseek-v3p1",
+        model: "accounts/fireworks/models/glm-5p3-flash",
         messages: [{ role: "user", content: "Hello" }],
       });
       console.log(response.choices[0].message.content);
@@ -275,7 +275,7 @@ Every response includes token usage information and performance metrics for debu
   <Tab title="Non-streaming">
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}]
     )
 
@@ -292,7 +292,7 @@ Every response includes token usage information and performance metrics for debu
   <Tab title="Streaming (usage only)">
     ```python theme={null}
     stream = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         stream=True
     )
@@ -311,7 +311,7 @@ Every response includes token usage information and performance metrics for debu
   <Tab title="Streaming (with performance metrics)">
     ```python theme={null}
     stream = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello, world!"}],
         stream=True,
         extra_body={"perf_metrics_in_response": True}
@@ -385,7 +385,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Write a poem"}],
         temperature=0.7  # Override model default
     )
@@ -459,7 +459,7 @@ Extend text models with additional features for structured outputs, tool integra
       <Tab title="Python">
         ```python theme={null}
         response = client.chat.completions.with_raw_response.create(
-          model="accounts/fireworks/models/deepseek-v3p1",
+          model="accounts/fireworks/models/glm-5p3-flash",
           messages=[{"role": "user", "content": "Hello"}]
         )
 
@@ -482,7 +482,7 @@ Extend text models with additional features for structured outputs, tool integra
         });
 
         const response = await client.chat.completions.with_raw_response.create({
-          model: "accounts/fireworks/models/deepseek-v3p1",
+          model: "accounts/fireworks/models/glm-5p3-flash",
           messages: [{ role: "user", content: "Hello" }],
         });
 
@@ -504,7 +504,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Tell me a joke"}],
         n=3  # Generate 3 different jokes
     )
@@ -519,7 +519,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         logprobs=True,
         top_logprobs=5  # Show top 5 alternatives per token
@@ -537,7 +537,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         echo=True
     )
@@ -547,7 +547,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         return_token_ids=True
     )
@@ -564,7 +564,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         raw_output=True
     )
@@ -578,7 +578,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         ignore_eos=True,
         max_tokens=100  # Will always generate exactly 100 tokens
@@ -595,7 +595,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         logit_bias={
             123: 10.0,   # Strongly encourage token ID 123
@@ -610,7 +610,7 @@ Extend text models with additional features for structured outputs, tool integra
 
     ```python theme={null}
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[{"role": "user", "content": "Hello"}],
         mirostat_target=5.0,  # Target perplexity
         mirostat_lr=0.1       # Learning rate for adjustments

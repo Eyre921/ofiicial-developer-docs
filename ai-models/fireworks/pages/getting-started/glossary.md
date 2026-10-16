@@ -1,5 +1,5 @@
 ---
-title: "Fireworks AI glossary of platform and inference terms"
+title: "Glossary"
 source: https://docs.fireworks.ai/getting-started/glossary
 path: getting-started/glossary
 ---
@@ -7,6 +7,91 @@ path: getting-started/glossary
 Glossary of key Fireworks AI terms across serverless, deployments, fine-tuning, and inference, with concise definitions to help you navigate the documentation.
 
 This glossary covers terms you'll encounter when working with the Fireworks AI platform — across inference, training, deployments, security, and the API.
+
+Start with the words in an API call. The later sections cover how Fireworks runs a model, then training, billing, and security.
+
+## Start here
+
+**Inference**\
+A request that sends tokens to a model and gets tokens back. On Fireworks, inference is either [Serverless](/serverless/overview) (pay per token) or [on-demand](/guides/ondemand-deployments) (pay for GPUs you reserve).
+
+**Token**\
+The unit a model reads and writes. A token is a piece of a word, not a whole word. Fireworks bills Serverless usage in tokens: uncached input, cached input, and generated output. See [Serverless pricing](/serverless/pricing).
+
+**Prompt tokens**\
+The tokens you send, including the system prompt, conversation, and tool definitions. Also called input tokens.
+
+**Cached prompt tokens**\
+Prompt tokens served from [prompt caching](/guides/prompt-caching) because they repeat a prefix Fireworks already computed. They cost less than uncached prompt tokens. The discount depends on the model.
+
+**Generated tokens**\
+The tokens the model writes back. Also called output tokens or completion tokens.
+
+**Open-weight model**\
+A model whose weights you can run yourself. Fireworks hosts open-weight models such as DeepSeek, GLM, Kimi, and Qwen. A closed model, such as Claude or GPT, stays on that provider's API.
+
+**Model ID**\
+The string that names a model in a request. A Fireworks base model looks like `accounts/fireworks/models/glm-5p3-flash`. A short ID such as `glm-latest` can point at the current model in a family. See [Which model should I use?](/guides/recommended-models).
+
+**Chat Completions API**\
+The request format for a conversation: a list of `messages` with roles such as `system`, `user`, and `assistant`. Fireworks accepts the OpenAI Chat Completions shape at `https://api.fireworks.ai/inference/v1`.
+
+**Serverless**\
+Shared, Fireworks-managed inference. You send a request and pay per token. You do not choose the GPU or the replica count. See [Serverless overview](/serverless/overview).
+
+**On-demand deployment**\
+A deployment on GPUs reserved for your account. You pay for GPU time, including idle replicas, and you choose the model, hardware, and scaling. Docs also call this a dedicated deployment. LoRA adapters run on on-demand deployments.
+
+**Standard, Priority, and Fast**\
+Three Serverless modes. Standard is the default. Priority is more likely to stay available when Fireworks is busy, at a higher price. Fast is a separate high-speed model ID, such as `accounts/fireworks/routers/glm-5p3-fast`. See [Serverless Modes](/serverless/serverless-modes).
+
+**Prompt caching**\
+Reuse of a repeated prompt prefix so the next request starts faster. It is on by default. Cached prompt tokens are billed at a model-specific discount. See [Prompt caching](/guides/prompt-caching).
+
+**Embedding**\
+A list of numbers that represents a piece of text, used for search and similarity. Fireworks serves embedding models at `/v1/embeddings`. See [Embeddings and reranking](/guides/querying-embeddings-models).
+
+**Reranker**\
+A model that reorders search results by how well each passage matches a query. It does not write a chat reply.
+
+**Instruct model**\
+A model trained to follow chat instructions. Use it with Chat Completions. A base model that only continues raw text is a better fit for the [Completions API](/guides/completions-api).
+
+**Reasoning model**\
+A model that can spend extra tokens thinking before it answers. `reasoning_effort` controls that work. The thinking tokens still count as generated tokens.
+
+**Vision model**\
+A model that accepts images as well as text. Video and audio support depends on the model. See [Vision models](/guides/querying-vision-language-models) and [Video and audio inputs](/guides/video-audio-inputs).
+
+**TPM (tokens per minute)**\
+The Serverless rate-limit unit. Fireworks limits total prompt tokens per minute and generated tokens per minute. A `429` means you crossed a limit. A `503` means Fireworks is overloaded. See [Serverless rate limits](/serverless/rate-limits).
+
+**Managed Training**\
+Fireworks runs the training loop for you. You supply data and a method. Managed Training currently accepts SFT, DPO, and ORPO. It is LoRA-only. See [Managed Training](/fine-tuning/managed-finetuning-intro).
+
+**Training API**\
+You write the training loop in Python, and Fireworks runs it on GPUs. Use it for custom losses, full-parameter training, and reinforcement learning. See [Training API](/fine-tuning/training-api/introduction).
+
+**DPO (Direct Preference Optimization)**\
+Training on pairs of answers: one you prefer and one you do not. Use it when you can say which reply is better but cannot score a reply with a rule. ORPO is a related preference method. See [Preference optimization](/fine-tuning/dpo-fine-tuning).
+
+**Full-parameter training**\
+Training that updates all of the model weights, not only a LoRA adapter. This runs on the Training API.
+
+**Fireworks Nexus**\
+The product for using Fireworks models inside a coding harness, app, or gateway, with usage visibility and spend limits. See [Nexus](/nexus).
+
+**FireConnect**\
+The CLI that points a coding harness at Fireworks. The command is `fireconnect <harness>`. `fireconnect <harness> off` restores the harness settings. See [FireConnect](/nexus/fireconnect).
+
+**FireRouter**\
+One model ID, `firerouter`, that picks a model for each new user turn. Open-model turns run on Fireworks. Closed-model turns use a Provider Key. See [FireRouter](/nexus/firerouter).
+
+**Provider Key**\
+An Anthropic, OpenAI, or Amazon Bedrock key stored once on the Fireworks account so FireRouter can call a closed model. Developers still send only their Fireworks API key. Provider Keys are not available on every account. See [Provider Keys](/nexus/provider-keys).
+
+**Session cost**\
+The cost estimate Claude Code shows for the current session, through the FireConnect status line or `fireconnect claude usage`. It is an estimate, not the invoice. Account spend by model is the Cost tab on the usage page.
 
 ***
 
@@ -19,10 +104,10 @@ Your Fireworks AI organization identity. All deployments, models, training jobs,
 The unit used for prepaid usage on Fireworks. Credits are consumed as you use inference and training resources.
 
 **Rate limiting / 429 errors**\
-A `429 Too Many Requests` response means your account or deployment has hit a concurrency or request-per-minute limit. On serverless, limits scale automatically with usage tier. On dedicated deployments, adding replicas or adjusting autoscaling increases capacity.
+A `429 Too Many Requests` response means the request exceeded an adaptive Serverless token-per-minute limit. A `503` means Fireworks is overloaded. Priority mode is less likely to return a 503. On a dedicated deployment, add replicas or raise the autoscaling maximum to add capacity. See [Serverless rate limits](/serverless/rate-limits).
 
 **Quota**\
-A per-account cap on a resource — such as requests per minute (RPM), GPU hours, or concurrent replicas. Quotas can be increased by contacting support.
+A per-account cap on a resource, such as Serverless tokens per minute or on-demand GPUs. See [Account quotas](/guides/quotas_usage/account-quotas).
 
 **ZDR (Zero Data Retention)**\
 The default behavior for all open model inference on Fireworks: no prompts, completions, or request logs are stored after the response is returned. ZDR is on by default — it is not an opt-in feature.
@@ -136,7 +221,7 @@ A hyperparameter that controls the size of the LoRA adapter. Higher rank = more 
 A reinforcement learning variant used in RFT. Optimizes model outputs using group-relative reward scoring rather than a separate value model.
 
 **RFT (Reinforcement Fine-Tuning)**\
-Fine-tuning using reinforcement learning signals rather than labeled examples. Trains the model to maximize a reward function — useful for tasks with verifiable outcomes such as math, code, and reasoning.
+Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT is paused and does not accept new jobs. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
 
 **Training shape**\
 A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.

@@ -1,5 +1,5 @@
 ---
-title: "Deploy Fireworks models on Microsoft Foundry and Azure"
+title: "Microsoft Foundry"
 source: https://docs.fireworks.ai/ecosystem/integrations/azure-foundry
 path: ecosystem/integrations/azure-foundry
 ---

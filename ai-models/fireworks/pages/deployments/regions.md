@@ -1,5 +1,5 @@
 ---
-title: "Regions and GPU hardware for Fireworks deployments"
+title: "Regions"
 source: https://docs.fireworks.ai/deployments/regions
 path: deployments/regions
 ---

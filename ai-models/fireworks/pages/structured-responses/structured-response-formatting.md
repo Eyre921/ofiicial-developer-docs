@@ -1,5 +1,5 @@
 ---
-title: "Structured outputs: JSON schemas and grammars"
+title: "Structured Outputs"
 source: https://docs.fireworks.ai/structured-responses/structured-response-formatting
 path: structured-responses/structured-response-formatting
 ---

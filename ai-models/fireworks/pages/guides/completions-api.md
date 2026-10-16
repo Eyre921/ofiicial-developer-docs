@@ -29,7 +29,7 @@ The completions API provides raw text generation without automatic message forma
     client = Fireworks()
 
     response = client.completions.create(
-      model="accounts/fireworks/models/deepseek-v3p1",
+      model="accounts/fireworks/models/glm-5p3-flash",
       prompt="Once upon a time"
     )
 
@@ -48,7 +48,7 @@ The completions API provides raw text generation without automatic message forma
     )
 
     response = client.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         prompt="Once upon a time"
     )
 
@@ -66,7 +66,7 @@ The completions API provides raw text generation without automatic message forma
     });
 
     const response = await client.completions.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       prompt: "Once upon a time",
     });
 
@@ -80,7 +80,7 @@ The completions API provides raw text generation without automatic message forma
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/deepseek-v3p1",
+        "model": "accounts/fireworks/models/glm-5p3-flash",
         "prompt": "Once upon a time"
       }'
     ```
@@ -109,7 +109,7 @@ Text: The weather is nice today.
 Sentiment:"""
 
 response = client.completions.create(
-    model="accounts/fireworks/models/deepseek-v3p1",
+    model="accounts/fireworks/models/glm-5p3-flash",
     prompt=prompt,
     max_tokens=10,
     temperature=0

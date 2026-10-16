@@ -1,5 +1,5 @@
 ---
-title: "Custom SSO and SCIM provisioning for Fireworks"
+title: "Custom SSO"
 source: https://docs.fireworks.ai/accounts/sso
 path: accounts/sso
 ---

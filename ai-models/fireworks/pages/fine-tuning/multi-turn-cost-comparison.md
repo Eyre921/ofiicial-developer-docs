@@ -1,5 +1,5 @@
 ---
-title: "Price comparison vs Tinker"
+title: "RL rollout cost comparison vs Tinker"
 source: https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison
 path: fine-tuning/multi-turn-cost-comparison
 ---

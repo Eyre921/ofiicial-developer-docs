@@ -30,22 +30,7 @@ Send a reply to a message in an inbox thread.
   </CodeGroup>
 </Warning>
 
-Sends a reply from the inbox address right away, with no stored draft. The `to`
-recipients come from the message you reply to:
-
-* For a message the inbox received, the reply goes to its `Reply-To` addresses,
-  or to its sender when it has no `Reply-To`.
-* For a message the inbox sent, the reply goes to that message's `to`
-  recipients.
-
-Set `reply_all` to also copy the other recipients of the message.
-
-At least one of `html` or `text` must contain more than whitespace.
-
-The reply is threaded for the recipient. `In-Reply-To` is set to the
-`Message-ID` of the message you reply to, and `References` to that message's
-`References` followed by its `Message-ID`. These headers can't be set or
-overridden.
+Sends a reply from the inbox address.
 
 ## Path Parameters
 
@@ -65,16 +50,11 @@ overridden.
 ## Body Parameters
 
 <ParamField type="string | string[]">
-  CC recipient email address. For multiple addresses, send as an array of
-  strings. Without `reply_all`, the reply copies only these addresses. With
-  `reply_all`, these addresses are merged with the copied recipients, without
-  duplicates. `cc` and `bcc` combined must be fewer than 50 addresses. After the
-  `to` recipients are added, the reply cannot exceed 50 recipients.
+  CC recipient email address.
 </ParamField>
 
 <ParamField type="string | string[]">
-  BCC recipient email address. For multiple addresses, send as an array of
-  strings. BCC recipients of the original message are never copied.
+  BCC recipient email address.
 </ParamField>
 
 <ParamField type="string">
@@ -86,28 +66,15 @@ overridden.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the reply. Max 2000 characters. Cannot contain a line break.
-  When omitted, the thread subject is used, prefixed with `Re:` if it does not
-  already start with it.
+  The subject of the reply. Max 2000 characters.
 </ParamField>
 
 <ResendParamField type="boolean">
-  Reply to everyone on the original message. For a message the inbox received,
-  the reply goes to its `Reply-To` addresses, or to its sender when it has none.
-  It copies the other addresses of its `To` header and its `cc` recipients in
-  `cc`. For a message the inbox sent, the reply goes to that message's
-  `Reply-To` addresses when they are not the inbox address, otherwise to its
-  `to` recipients. It copies its `cc` recipients. The inbox address is always
-  excluded, and duplicates are removed.
+  Reply to everyone on the original message.
 </ResendParamField>
 
 <ParamField type="array">
-  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email). Each one
-  needs `content` or `path`. Up to 10 files. The `content` of all files can total
-  at most 25 MB. A `path` file counts toward the 10 files only, because it is
-  fetched when the email is sent. An empty file, a blocked file type, or a
-  `path` that is not an `http` or `https` URL, or that points to `localhost`,
-  returns a `422`.
+  Files to attach, as on [Send Email](/docs/api-reference/emails/send-email).
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -135,11 +102,7 @@ overridden.
 </ParamField>
 
 <ParamField type="object">
-  Custom headers to add to the email. Resend sets the `In-Reply-To`,
-  `References`, and `Reply-To` headers, so you cannot set them here. Sending one
-  of them, in any letter case, returns a `422`. A header name cannot be empty,
-  and names and values cannot contain line breaks or null characters, or the
-  request returns a `422`.
+  Custom headers to add to the email.
 </ParamField>
 
 ## Headers

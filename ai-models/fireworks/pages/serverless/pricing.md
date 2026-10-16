@@ -1,5 +1,5 @@
 ---
-title: "Serverless pricing for text, vision, and embedding models"
+title: "Serverless Pricing"
 source: https://docs.fireworks.ai/serverless/pricing
 path: serverless/pricing
 ---

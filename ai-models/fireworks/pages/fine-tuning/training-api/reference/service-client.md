@@ -1,5 +1,5 @@
 ---
-title: "FiretitanServiceClient and TrainingClient SDK reference"
+title: "FiretitanServiceClient & TrainingClient"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/service-client
 path: fine-tuning/training-api/reference/service-client
 ---

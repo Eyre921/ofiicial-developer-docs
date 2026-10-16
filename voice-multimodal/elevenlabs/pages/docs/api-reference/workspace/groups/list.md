@@ -49,6 +49,9 @@ Validation Error
   - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `voice_lab`, `sound_effects`, `projects`, `voiceover_studio`, `dubbing`, `audio_native`, `conversational_ai`, `conversational_ai_read`, `voice_isolator`, `ai_speech_classifier`, `synthid_detector`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `create_user_api_key`, `publish_studio_project`, `music`, `image_video_generation`, `flows`, `templates`, `share_voice_externally`, `publish_voice_to_voice_library`, `view_fiat_balance`, `workspace_analytics_full_read`, `service_accounts_manage`, `webhooks_manage`, `group_members_manage`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `all_resources_access`, `copy_resources_cross_workspace`, `voice_design`
 - `group_usage_limit` (WorkspaceGroupResponseModelGroupUsageLimit, optional, nullable)
 - `group_pvc_limit` (WorkspaceGroupResponseModelGroupPvcLimit, optional, nullable)
+- `group_concurrency_limit` (WorkspaceGroupResponseModelGroupConcurrencyLimit, optional, nullable)
+- `group_dubbing_concurrency_limit` (WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit, optional, nullable)
+- `group_music_concurrency_limit` (WorkspaceGroupResponseModelGroupMusicConcurrencyLimit, optional, nullable)
 - `character_count` (integer, optional, nullable)
 - `is_scim_synced` (boolean, optional, default: false)
 - `scim_group` (ScimGroupResponseModel, optional, nullable)
@@ -64,6 +67,12 @@ Validation Error
 
 ### WorkspaceGroupResponseModelGroupPvcLimit
 
+### WorkspaceGroupResponseModelGroupConcurrencyLimit
+
+### WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit
+
+### WorkspaceGroupResponseModelGroupMusicConcurrencyLimit
+
 ### ScimGroupResponseModel
 
 - `scim_external_id` (string, required, nullable)
@@ -77,10 +86,76 @@ Validation Error
 
 ## Examples
 
-**Response**
+**Request**
 
 ```json
 {}
+```
+
+**Response**
+
+```json
+{
+  "engineering_group": {
+    "name": "Engineering",
+    "id": "grp_9a7b6c5d4e3f2108",
+    "members": [
+      "user_11223",
+      "user_44556",
+      "user_77889",
+      "user_99001"
+    ],
+    "permissions": [
+      "text_to_speech",
+      "speech_to_text",
+      "voice_lab",
+      "voice_isolator",
+      "ai_speech_classifier",
+      "workspace_analytics_full_read",
+      "service_accounts_manage"
+    ],
+    "group_usage_limit": "unlimited",
+    "group_pvc_limit": 1000,
+    "group_concurrency_limit": "unlimited",
+    "group_dubbing_concurrency_limit": 8,
+    "group_music_concurrency_limit": 4,
+    "character_count": null,
+    "is_scim_synced": false,
+    "scim_group": null,
+    "scim_frozen": false
+  },
+  "marketing_team": {
+    "name": "Marketing Team",
+    "id": "grp_8f3b2c1d4e5f6789",
+    "members": [
+      "user_12345",
+      "user_67890",
+      "user_54321"
+    ],
+    "permissions": [
+      "text_to_speech",
+      "voice_lab",
+      "projects",
+      "workspace_members_invite",
+      "group_members_manage"
+    ],
+    "group_usage_limit": 500000,
+    "group_pvc_limit": "unlimited",
+    "group_concurrency_limit": 10,
+    "group_dubbing_concurrency_limit": 5,
+    "group_music_concurrency_limit": 3,
+    "character_count": 1200000,
+    "is_scim_synced": true,
+    "scim_group": {
+      "scim_external_id": "scim-7890-marketing",
+      "display_name": "Marketing Team SCIM",
+      "created_at_unix": 1672531200,
+      "updated_at_unix": 1688208000,
+      "seat_type": "workspace_member"
+    },
+    "scim_frozen": false
+  }
+}
 ```
 
 **SDK Code**
@@ -90,14 +165,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/workspace/groups"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/workspace/groups';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -113,6 +191,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -121,7 +200,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/groups"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -144,6 +227,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -154,6 +239,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/groups")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -163,7 +250,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/groups', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -173,16 +265,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/groups");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/groups")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

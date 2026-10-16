@@ -1,5 +1,5 @@
 ---
-title: "Dedicated Training API workloads on Fireworks"
+title: "Dedicated Training"
 source: https://docs.fireworks.ai/fine-tuning/training-api/dedicated
 path: fine-tuning/training-api/dedicated
 ---

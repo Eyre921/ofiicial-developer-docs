@@ -1,5 +1,5 @@
 ---
-title: "Customer-managed encryption keys (CMEK) on Fireworks"
+title: "Customer-Managed Encryption Keys (CMEK)"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 path: guides/security_compliance/secure_training/cmek
 ---

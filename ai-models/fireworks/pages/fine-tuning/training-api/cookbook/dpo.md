@@ -1,5 +1,5 @@
 ---
-title: "Direct Preference Optimization cookbook recipe"
+title: "Cookbook: Preference Optimization"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo
 path: fine-tuning/training-api/cookbook/dpo
 ---

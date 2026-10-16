@@ -1,5 +1,5 @@
 ---
-title: "DeploymentSampler for Training API tokenized sampling"
+title: "DeploymentSampler"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-sampler
 path: fine-tuning/training-api/reference/deployment-sampler
 ---

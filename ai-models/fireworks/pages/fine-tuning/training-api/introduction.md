@@ -1,5 +1,5 @@
 ---
-title: "Fireworks Training API introduction and lifecycle"
+title: "Overview"
 source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 path: fine-tuning/training-api/introduction
 ---

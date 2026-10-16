@@ -1,5 +1,5 @@
 ---
-title: "Build with Fireworks AI: fast inference and training"
+title: "Build with Fireworks AI"
 source: https://docs.fireworks.ai/getting-started/introduction
 path: getting-started/introduction
 ---

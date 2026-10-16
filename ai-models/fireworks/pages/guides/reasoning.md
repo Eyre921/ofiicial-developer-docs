@@ -1,5 +1,5 @@
 ---
-title: "Reasoning mode for Fireworks chat and completion APIs"
+title: "Reasoning"
 source: https://docs.fireworks.ai/guides/reasoning
 path: guides/reasoning
 ---
@@ -22,15 +22,15 @@ reasoning, as it supports Fireworks-specific parameters and response fields.
 </Note>
 
 <CodeGroup>
-  ```bash pip theme={null}
+  ```bash pip theme={null} theme={null}
   pip install --pre fireworks-ai
   ```
 
-  ```bash poetry theme={null}
+  ```bash poetry theme={null} theme={null}
   poetry add --pre fireworks-ai
   ```
 
-  ```bash uv theme={null}
+  ```bash uv theme={null} theme={null}
   uv add --pre fireworks-ai
   ```
 </CodeGroup>

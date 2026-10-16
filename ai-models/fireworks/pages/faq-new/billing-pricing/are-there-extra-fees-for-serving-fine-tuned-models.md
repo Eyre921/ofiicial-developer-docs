@@ -1,5 +1,5 @@
 ---
-title: "Extra fees for serving trained models on Fireworks?"
+title: "Are there extra fees for serving trained models?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 path: faq-new/billing-pricing/are-there-extra-fees-for-serving-fine-tuned-models
 ---

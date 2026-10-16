@@ -1,5 +1,5 @@
 ---
-title: "Audit and access logs for Enterprise Fireworks accounts"
+title: "Audit & Access Logs"
 source: https://docs.fireworks.ai/guides/security_compliance/audit_logs
 path: guides/security_compliance/audit_logs
 ---

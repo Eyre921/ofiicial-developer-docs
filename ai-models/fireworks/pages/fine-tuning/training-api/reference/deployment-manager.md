@@ -1,5 +1,5 @@
 ---
-title: "DeploymentManager legacy Training API SDK reference"
+title: "DeploymentManager (Compatibility)"
 source: https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-manager
 path: fine-tuning/training-api/reference/deployment-manager
 ---

@@ -1,10 +1,10 @@
 ---
-title: "Fine-tuning on Fireworks: SFT, DPO, and RFT"
+title: "Training Overview"
 source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 path: fine-tuning/finetuning-intro
 ---
 
-Introduction to fine-tuning on Fireworks: choose between managed SFT, DPO, and reinforcement fine-tuning, and pick serverless or dedicated infrastructure.
+Choose managed SFT, DPO, or ORPO, or run RL on the Training API, then pick serverless or dedicated infrastructure.
 
 Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
 
@@ -53,9 +53,11 @@ Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loo
 
 | Choose Managed Training when | Choose the Training API when |
 | - | - |
-| You need a standard SFT, DPO, ORPO, or RFT job | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop |
+| You need a standard SFT, DPO, or ORPO job | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop |
 | You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic |
 | A supported model and managed configuration cover the task | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
+
+Managed RFT is paused and does not accept new jobs. Run RL on the [Training API](/fine-tuning/training-api/cookbook/rl).
 
 <CardGroup>
   <Card title="Managed Training" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
@@ -116,7 +118,7 @@ Check quota with `firectl quota list`. HTTP 403 `quota_exceeded` or `tier_requir
 
 ## Models
 
-Model availability is decided per model and per surface — managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter). Check the live catalog before you launch.
+Model availability is decided per model and per surface — managed jobs by method (SFT, DPO, ORPO), Training API jobs by parameter mode (LoRA or full-parameter). Managed RFT is paused. Check the live catalog before you launch.
 
 <Card title="Models" icon="microchip" href="/fine-tuning/models">
   Browse the base model catalog with per-model surface, method, and training-shape support.

@@ -88,10 +88,65 @@ Validation Error
 
 ## Examples
 
-**Response**
+**Request**
 
 ```json
 {}
+```
+
+**Response**
+
+```json
+{
+  "J3Pbu5gP6NNKBscdCdwB": {
+    "status": "success",
+    "data": {
+      "agent_id": "J3Pbu5gP6NNKBscdCdwB",
+      "name": "Customer Support Bot",
+      "voice_id": "UCaNsl8F6Xh4GALkVMLS",
+      "tags": [
+        "Customer Support",
+        "FAQ",
+        "English"
+      ],
+      "created_at_unix_secs": 1688208000,
+      "access_info": {
+        "is_creator": true,
+        "creator_name": "Alice Johnson",
+        "creator_email": "alice.johnson@company.com",
+        "role": "admin",
+        "anonymous_access_level_override": null,
+        "access_source": "creator"
+      },
+      "last_call_time_unix_secs": 1688294400,
+      "archived": false
+    }
+  },
+  "K4Qcu6hQ7OOLCtdeDeXC": {
+    "status": "success",
+    "data": {
+      "agent_id": "K4Qcu6hQ7OOLCtdeDeXC",
+      "name": "Technical Help Assistant",
+      "voice_id": "VbXyT9F7Zk3QWErtyLNM",
+      "tags": [
+        "Technical Support",
+        "Troubleshooting",
+        "English"
+      ],
+      "created_at_unix_secs": 1688121600,
+      "access_info": {
+        "is_creator": false,
+        "creator_name": "Bob Smith",
+        "creator_email": "bob.smith@company.com",
+        "role": "editor",
+        "anonymous_access_level_override": "viewer",
+        "access_source": "explicit"
+      },
+      "last_call_time_unix_secs": null,
+      "archived": false
+    }
+  }
+}
 ```
 
 **SDK Code**
@@ -101,16 +156,19 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/summaries"
 
-querystring = {"agent_ids":"[\"J3Pbu5gP6NNKBscdCdwB\"]"}
+querystring = {"agent_ids":"[\"J3Pbu5gP6NNKBscdCdwB\",\"K4Qcu6hQ7OOLCtdeDeXC\"]"}
 
-response = requests.get(url, params=querystring)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D';
-const options = {method: 'GET'};
+const url = 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D';
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -126,15 +184,20 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -151,12 +214,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -166,7 +231,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -176,7 +243,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -184,18 +256,27 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")! as URL,
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

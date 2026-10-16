@@ -1,5 +1,5 @@
 ---
-title: "Why a Fireworks account is suspended despite credit balance"
+title: "Why might my account be suspended even with remaining credits?"
 source: https://docs.fireworks.ai/faq-new/billing-pricing/why-might-my-account-be-suspended-even-with-remaining-credits
 path: faq-new/billing-pricing/why-might-my-account-be-suspended-even-with-remaining-credits
 ---

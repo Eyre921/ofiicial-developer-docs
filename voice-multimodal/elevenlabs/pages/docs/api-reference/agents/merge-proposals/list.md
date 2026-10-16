@@ -128,45 +128,51 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "results": [
     {
-      "id": "string",
-      "agent_id": "string",
-      "source_branch_id": "string",
-      "target_branch_id": "string",
-      "source_tip_version_id_at_creation": "string",
-      "title": "string",
-      "created_at": 1,
-      "updated_at": 1,
-      "description": "",
+      "id": "mergeprop_9f8d7c6b5a4e3d2c1b0a",
+      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+      "source_branch_id": "branch_feature_voice_update",
+      "target_branch_id": "branch_main",
+      "source_tip_version_id_at_creation": "version_20240604123000",
+      "title": "Update voice modulation parameters",
+      "created_at": 1717489200,
+      "updated_at": 1717507200,
+      "description": "This proposal updates the voice modulation settings to improve naturalness in responses.",
       "requested_reviewer_user_ids": [
-        "string"
+        "user_84a7c9d2f1b3e6a5"
       ],
       "reviews": [
         {
-          "user_id": "string",
+          "user_id": "user_84a7c9d2f1b3e6a5",
           "state": "approved",
-          "submitted_at": 1,
-          "comment": "",
+          "submitted_at": 1717507200,
+          "comment": "Looks good to me, the new parameters improve clarity.",
           "reviewer_role": "admin"
         }
       ],
       "comments": [
         {
-          "id": "string",
-          "user_id": "string",
-          "body": "string",
-          "created_at": 1
+          "id": "comment_5d4c3b2a1f0e9d8c7b6a",
+          "user_id": "user_92b8d7e6f5a4c3b2",
+          "body": "Can we also consider adding a fallback voice option?",
+          "created_at": 1717492800
         }
       ],
       "outcome": {
         "status": "open"
       },
-      "author_user_id": "string",
+      "author_user_id": "user_73a6b5c4d3e2f1a0",
       "access_info": {
         "is_creator": true,
         "creator_name": "John Doe",
@@ -176,7 +182,7 @@ Validation Error
       }
     }
   ],
-  "next_cursor": "string",
+  "next_cursor": "cursor_20240604123000",
   "has_more": true
 }
 ```
@@ -188,14 +194,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -211,6 +220,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -219,7 +229,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -242,6 +256,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -252,6 +268,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -261,7 +279,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -271,16 +294,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

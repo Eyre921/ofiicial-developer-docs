@@ -476,7 +476,7 @@ The ChatGPT desktop app reads the same `~/.codex/config.toml` as the [Codex CLI]
     fireconnect opencode status
     ```
 
-    Restart OpenCode. The default model is `auto`, stored as `fireworks-ai/auto`. Short IDs such as `glm-5p2` expand to full Fireworks paths.
+    Restart OpenCode. The default model is `auto`, stored as `fireworks-ai/auto`. Short IDs such as `glm-latest` expand to full Fireworks paths.
 
     <Frame>
       <img alt="OpenCode model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and other models" />

@@ -1,10 +1,10 @@
 ---
-title: "Serverless inference quickstart on Fireworks AI"
+title: "Serverless Quickstart"
 source: https://docs.fireworks.ai/getting-started/quickstart
 path: getting-started/quickstart
 ---
 
-Make your first serverless API call to Fireworks AI in minutes: create an API key, pick a model, and send a chat completion with curl or the Python SDK.
+Make your first serverless API call with GLM 5.3 Flash: create an API key and send a chat completion with curl or the Python SDK.
 
 Serverless is the fastest way to get started with using open models. This quickstart will help you make your first API call in minutes.
 
@@ -39,15 +39,15 @@ Once you have your API key, export it as an environment variable in your termina
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null}
+      ```bash pip theme={null} theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null}
+      ```bash poetry theme={null} theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null}
+      ```bash uv theme={null} theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>
@@ -599,7 +599,7 @@ Get reliable JSON responses that match your schema:
     client = Fireworks()
 
     response = client.chat.completions.create(
-      model="accounts/fireworks/models/deepseek-v3p1",
+      model="accounts/fireworks/models/glm-5p3-flash",
       messages=[
         {
           "role": "user",
@@ -637,7 +637,7 @@ Get reliable JSON responses that match your schema:
     )
 
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         messages=[
             {
                 "role": "user",
@@ -672,7 +672,7 @@ Get reliable JSON responses that match your schema:
     )
 
     response = client.messages.create(
-        model="accounts/fireworks/models/deepseek-v3p1",
+        model="accounts/fireworks/models/glm-5p3-flash",
         max_tokens=1024,
         output_config={
             "format": {
@@ -709,7 +709,7 @@ Get reliable JSON responses that match your schema:
     });
 
     const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       messages: [
         {
           role: "user",
@@ -746,7 +746,7 @@ Get reliable JSON responses that match your schema:
     });
 
     const response = await client.messages.create({
-      model: "accounts/fireworks/models/deepseek-v3p1",
+      model: "accounts/fireworks/models/glm-5p3-flash",
       max_tokens: 1024,
       output_config: {
         format: {
@@ -779,7 +779,7 @@ Get reliable JSON responses that match your schema:
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $FIREWORKS_API_KEY" \
       -d '{
-        "model": "accounts/fireworks/models/deepseek-v3p1",
+        "model": "accounts/fireworks/models/glm-5p3-flash",
         "messages": [
           {
             "role": "user",

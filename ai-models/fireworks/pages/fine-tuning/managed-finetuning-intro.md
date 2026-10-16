@@ -1,10 +1,10 @@
 ---
-title: "Managed fine-tuning on Fireworks-hosted infrastructure"
+title: "Managed Training Overview"
 source: https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro
 path: fine-tuning/managed-finetuning-intro
 ---
 
-Fine-tune open-weight models on Fireworks-managed infrastructure with no custom training code, using supervised, preference, and reinforcement learning.
+Fine-tune open-weight models on Fireworks-managed infrastructure with no custom training code, using supervised fine-tuning or preference optimization.
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
@@ -36,7 +36,7 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
   </Card>
 
   <Card title="Reinforcement Learning" href="/fine-tuning/training-api/cookbook/rl" icon="brain">
-    Train against a reward function on the Training API. Managed RFT is deprecated.
+    Train against a reward function on the Training API. Managed RFT is paused.
   </Card>
 </CardGroup>
 

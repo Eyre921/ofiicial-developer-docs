@@ -1,5 +1,5 @@
 ---
-title: "Which Fireworks model should I use for my task?"
+title: "Which model should I use?"
 source: https://docs.fireworks.ai/guides/recommended-models
 path: guides/recommended-models
 ---

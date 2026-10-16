@@ -1,5 +1,5 @@
 ---
-title: "Fireworks Serverless inference: how it works"
+title: "Serverless Inference Overview"
 source: https://docs.fireworks.ai/serverless/overview
 path: serverless/overview
 ---
