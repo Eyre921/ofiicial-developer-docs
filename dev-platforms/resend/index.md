@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 415 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -80,6 +80,7 @@
 - `docs/api-reference/events/list-events` — [List Events](pages/docs/api-reference/events/list-events.md) · [原文](https://resend.com/docs/api-reference/events/list-events)
 - `docs/api-reference/events/send-event` — [Send Event](pages/docs/api-reference/events/send-event.md) · [原文](https://resend.com/docs/api-reference/events/send-event)
 - `docs/api-reference/events/update-event` — [Update Event](pages/docs/api-reference/events/update-event.md) · [原文](https://resend.com/docs/api-reference/events/update-event)
+- `docs/api-reference/inboxes/add-thread-labels` — [Add Thread Labels](pages/docs/api-reference/inboxes/add-thread-labels.md) · [原文](https://resend.com/docs/api-reference/inboxes/add-thread-labels)
 - `docs/api-reference/inboxes/create-draft` — [Create Draft](pages/docs/api-reference/inboxes/create-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/create-draft)
 - `docs/api-reference/inboxes/create-inbox` — [Create Inbox](pages/docs/api-reference/inboxes/create-inbox.md) · [原文](https://resend.com/docs/api-reference/inboxes/create-inbox)
 - `docs/api-reference/inboxes/create-label` — [Create Label](pages/docs/api-reference/inboxes/create-label.md) · [原文](https://resend.com/docs/api-reference/inboxes/create-label)
@@ -98,9 +99,11 @@
 - `docs/api-reference/inboxes/list-labels` — [List Labels](pages/docs/api-reference/inboxes/list-labels.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-labels)
 - `docs/api-reference/inboxes/list-thread-emails` — [List Thread Emails](pages/docs/api-reference/inboxes/list-thread-emails.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-thread-emails)
 - `docs/api-reference/inboxes/list-threads` — [List Threads](pages/docs/api-reference/inboxes/list-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-threads)
+- `docs/api-reference/inboxes/remove-thread-label` — [Remove Thread Label](pages/docs/api-reference/inboxes/remove-thread-label.md) · [原文](https://resend.com/docs/api-reference/inboxes/remove-thread-label)
 - `docs/api-reference/inboxes/reply-thread-email` — [Reply to Thread Email](pages/docs/api-reference/inboxes/reply-thread-email.md) · [原文](https://resend.com/docs/api-reference/inboxes/reply-thread-email)
 - `docs/api-reference/inboxes/search-threads` — [Search Threads](pages/docs/api-reference/inboxes/search-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/search-threads)
 - `docs/api-reference/inboxes/send-draft` — [Send Draft](pages/docs/api-reference/inboxes/send-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/send-draft)
+- `docs/api-reference/inboxes/set-thread-labels` — [Set Thread Labels](pages/docs/api-reference/inboxes/set-thread-labels.md) · [原文](https://resend.com/docs/api-reference/inboxes/set-thread-labels)
 - `docs/api-reference/inboxes/update-agent` — [Update Agent Settings](pages/docs/api-reference/inboxes/update-agent.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-agent)
 - `docs/api-reference/inboxes/update-draft` — [Update Draft](pages/docs/api-reference/inboxes/update-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-draft)
 - `docs/api-reference/inboxes/update-inbox` — [Update Inbox](pages/docs/api-reference/inboxes/update-inbox.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-inbox)

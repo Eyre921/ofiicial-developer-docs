@@ -284,6 +284,7 @@ Here are a few things you can try next:
 * [Jev SDK for TypeScript and Python](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe SDK
 * [Jev documentation hub](/docs/guides/community/jev) for the [Jev tutorial](/docs/guides/community/jev-tutorial), the other cookbooks, and the TypeSafe docs on writing questions
 * [Jev model page](https://openrouter.ai/typesafe/jev-1.13) and [Jev Lab](https://openrouter.ai/labs/jev) for pricing and interactive demos
+* [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
 * [RAG with Embeddings & Rerank](/docs/cookbook/evaluate-and-optimize/rag)
 * [Add Human-in-the-Loop Controls to an Agent SDK Agent](/docs/cookbook/building-agents/hitl-tools)
 

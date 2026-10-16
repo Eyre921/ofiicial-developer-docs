@@ -8,7 +8,7 @@ path: connect/onboarding/quickstart
 
 # Onboard accounts to your Connect platform 
 
-Create a connected account and collect information from it to enable payments. We recommend selecting properties before downloading a sample app, because your integration will change significantly.
+Create a connected account and collect information from it to enable payments. We recommend selecting integration options before downloading a sample app, because your integration will change significantly.
 
 const stripe = require("stripe")(
   // This is a placeholder - it should be replaced with your secret API key.
@@ -3616,7 +3616,7 @@ npm install --save stripe@20.1.0
 
 ### Overview
 
-Your Connect integration changes significantly based on how you create your connected accounts. We’ve customized the connected account properties based on your choices when onboarding your platform account to Connect. Changes made here don’t update your platform settings and aren’t reflected in the Stripe Dashboard.
+Your Connect integration changes significantly based on how you create your connected accounts. The integration selections in this guide reflect the settings you chose when onboarding your platform account to Connect. Changes made here don’t update your platform settings and aren’t reflected in the Stripe Dashboard.
 
 See [Design an integration](https://docs.stripe.com/connect/interactive-platform-guide.md) to learn more about making these choices.
 
@@ -4080,7 +4080,7 @@ To use Stripe-hosted onboarding, first go to your [onboarding settings](https://
 
 ### Overview
 
-Your Connect integration changes significantly based on how you create your connected accounts. We’ve customized the connected account properties based on your choices when onboarding your platform account to Connect. Changes made here don’t update your platform settings and aren’t reflected in the Stripe Dashboard.
+Your Connect integration changes significantly based on how you create your connected accounts. The integration selections in this guide reflect the settings you chose when onboarding your platform account to Connect. Changes made here don’t update your platform settings and aren’t reflected in the Stripe Dashboard.
 
 See [Design an integration](https://docs.stripe.com/connect/interactive-platform-guide.md) to learn more about making these choices.
 

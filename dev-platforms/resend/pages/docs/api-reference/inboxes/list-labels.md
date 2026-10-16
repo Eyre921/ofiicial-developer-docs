@@ -33,7 +33,7 @@ Retrieve the labels on an inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -61,10 +61,6 @@ Retrieve the labels on an inbox.
 
     <ParamField type="string">
       ISO 8601 timestamp when the label was created.
-    </ParamField>
-
-    <ParamField type="string">
-      ISO 8601 timestamp when the label was last updated.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -99,15 +95,13 @@ Retrieve the labels on an inbox.
         "id": "2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d",
         "name": "Billing",
         "color": "#00A2C7",
-        "created_at": "2026-08-01T09:12:03.004Z",
-        "updated_at": "2026-08-01T09:12:03.004Z"
+        "created_at": "2026-08-01T09:12:03.004Z"
       },
       {
         "id": "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34",
         "name": "Urgent",
         "color": "#E93D82",
-        "created_at": "2026-08-05T14:07:42.881Z",
-        "updated_at": "2026-08-05T14:07:42.881Z"
+        "created_at": "2026-08-05T14:07:42.881Z"
       }
     ]
   }

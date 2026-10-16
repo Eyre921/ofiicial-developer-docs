@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1379 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -780,6 +780,7 @@
 - `docs/eleven-api/guides/cookbooks/sound-effects` — [Sound Effects quickstart](pages/docs/eleven-api/guides/cookbooks/sound-effects.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/sound-effects.md)
 - `docs/eleven-api/guides/cookbooks/speech-engine` — [Speech Engine quickstart](pages/docs/eleven-api/guides/cookbooks/speech-engine.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-engine.md)
 - `docs/eleven-api/guides/cookbooks/speech-to-text` — [Speech to Text quickstart](pages/docs/eleven-api/guides/cookbooks/speech-to-text.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-to-text.md)
+- `docs/eleven-api/guides/cookbooks/templates` — [Templates quickstart](pages/docs/eleven-api/guides/cookbooks/templates.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/templates.md)
 - `docs/eleven-api/guides/cookbooks/text-to-dialogue` — [Text to Dialogue quickstart](pages/docs/eleven-api/guides/cookbooks/text-to-dialogue.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/text-to-dialogue.md)
 - `docs/eleven-api/guides/cookbooks/voice-changer` — [Voice Changer quickstart](pages/docs/eleven-api/guides/cookbooks/voice-changer.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/voice-changer.md)
 - `docs/eleven-api/guides/cookbooks/voice-isolator` — [Voice Isolator quickstart](pages/docs/eleven-api/guides/cookbooks/voice-isolator.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/voice-isolator.md)
@@ -808,6 +809,7 @@
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming` — [Server-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies` — [Transcripts and commit strategies](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md)
+- `docs/eleven-api/guides/how-to/templates/run-a-template` — [Run your team's template](pages/docs/eleven-api/guides/how-to/templates/run-a-template.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/templates/run-a-template.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries` — [Using pronunciation dictionaries](pages/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/request-stitching` — [Stitching multiple requests](pages/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/streaming` — [Streaming text to speech](pages/docs/eleven-api/guides/how-to/text-to-speech/streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/streaming.md)

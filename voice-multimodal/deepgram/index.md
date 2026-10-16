@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 390 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 393 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -138,6 +138,7 @@
 - `docs/health-checks-sagemaker` — [Health Checks & Automatic Recovery](pages/docs/health-checks-sagemaker.md) · [原文](https://developers.deepgram.com/docs/health-checks-sagemaker.md)
 - `docs/improving-aura-2-formatting` — [Formatting Text for Aura-2](pages/docs/improving-aura-2-formatting.md) · [原文](https://developers.deepgram.com/docs/improving-aura-2-formatting.md)
 - `docs/inbound-telephony-agent` — [Build an Inbound Telephony Agent](pages/docs/inbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/inbound-telephony-agent.md)
+- `docs/inbound-telephony-agent-plivo` — [Build an Inbound Telephony Agent with Plivo](pages/docs/inbound-telephony-agent-plivo.md) · [原文](https://developers.deepgram.com/docs/inbound-telephony-agent-plivo.md)
 - `docs/integrate-deepgram-stt-with-audiocodes` — [AudioCodes (LiveHub) and Deepgram STT](pages/docs/integrate-deepgram-stt-with-audiocodes.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-stt-with-audiocodes.md)
 - `docs/integrate-deepgram-voice-agent-with-audiocodes` — [AudioCodes (LiveHub) and Deepgram Voice Agent API](pages/docs/integrate-deepgram-voice-agent-with-audiocodes.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-voice-agent-with-audiocodes.md)
 - `docs/integrate-deepgram-with-zoom` — [Zoom and Deepgram](pages/docs/integrate-deepgram-with-zoom.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-with-zoom.md)
@@ -179,9 +180,11 @@
 - `docs/observability-sagemaker` — [Observability for Amazon SageMaker](pages/docs/observability-sagemaker.md) · [原文](https://developers.deepgram.com/docs/observability-sagemaker.md)
 - `docs/oci-docker-podman` — [Oracle Cloud Infrastructure](pages/docs/oci-docker-podman.md) · [原文](https://developers.deepgram.com/docs/oci-docker-podman.md)
 - `docs/outbound-telephony-agent` — [Build an Outbound Telephony Agent](pages/docs/outbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/outbound-telephony-agent.md)
+- `docs/outbound-telephony-agent-plivo` — [Build an Outbound Telephony Agent with Plivo](pages/docs/outbound-telephony-agent-plivo.md) · [原文](https://developers.deepgram.com/docs/outbound-telephony-agent-plivo.md)
 - `docs/paragraphs` — [Paragraphs](pages/docs/paragraphs.md) · [原文](https://developers.deepgram.com/docs/paragraphs.md)
 - `docs/payload-too-large` — [When Callback Is Not Received](pages/docs/payload-too-large.md) · [原文](https://developers.deepgram.com/docs/payload-too-large.md)
 - `docs/pipecat-integration` — [Pipecat and Deepgram](pages/docs/pipecat-integration.md) · [原文](https://developers.deepgram.com/docs/pipecat-integration.md)
+- `docs/plivo-and-deepgram-voice-agent` — [Plivo and Deepgram Voice Agent](pages/docs/plivo-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/plivo-and-deepgram-voice-agent.md)
 - `docs/pre-recorded-audio` — [Getting Started](pages/docs/pre-recorded-audio.md) · [原文](https://developers.deepgram.com/docs/pre-recorded-audio.md)
 - `docs/profanity-filter` — [Profanity Filtering](pages/docs/profanity-filter.md) · [原文](https://developers.deepgram.com/docs/profanity-filter.md)
 - `docs/prometheus-integration` — [Prometheus Integration](pages/docs/prometheus-integration.md) · [原文](https://developers.deepgram.com/docs/prometheus-integration.md)

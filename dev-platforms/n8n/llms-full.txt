@@ -151,164 +151,207 @@ For the current plans, editions, licenses, and prices, always check the [pricing
 
 Create your first workflow in n8n and learn some key concepts.
 
-This guide will show you how to construct a workflow[^1] in n8n, explaining key concepts along the way. You will:
+In this quick start, you’ll build a workflow that fetches the weather for Berlin every morning and turns it into a short report anyone can read at a glance. The workflow saves each report to a data table, so you build up a weather log over time.
 
-* Create a workflow from scratch.
-* Understand key concepts and skills, including:
-  * Starting workflows with trigger nodes
-  * Configuring credentials[^2]
-  * Processing data
-  * Representing logic in an n8n workflow
-  * Using expressions[^3]
+![8 AM schedule trigger connected to Get Berlin Weather, Format Weather Message, and Save Weather Report](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-3e3553a50a6bcd4a9cfd1b315b9cf039e5d96625%2Fbuild-your-first-workflow.png?alt=media)
 
-![The completed workflow: Schedule Trigger connected to NASA, then an If node branching into two PostBin nodes](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-289bd849cb70d5b09e7d12b4bcd9787d4cd4905e%2Ftutorial-first.png?alt=media)
+When it runs, your workflow produces a report like this:
 
-This quickstart uses [n8n Cloud](/deploy/use-n8n-cloud), which is recommended for new users. A free trial is available. If you haven't already, [sign up](https://app.n8n.cloud/register) for an account now.
+```
+The temperature in berlin is 7.4°C. It's currently overcast.
+```
 
-Prefer to self-host? Run `curl -fsSL https://get.n8n.io | sh` to get n8n running locally in one step (see the [one-line setup guide](/deploy/host-n8n/install-options/one-line-setup)), then come back and follow the steps below at `http://localhost:5678` instead of your Cloud instance.
+The build takes about 15 minutes. Apart from n8n, you don’t need any accounts, API keys, or coding experience. The weather data comes from Mockingbird, a sample-data service n8n provides for tutorials, so you’ll get similar results to this guide.
 
-## Step one: Create a new workflow <a href="#step-one-create-a-new-workflow" id="step-one-create-a-new-workflow"></a>
+## Before you start
 
-When you open n8n, you'll see either:
+You need an n8n instance. Either:
 
-* A window with a welcome message and two large buttons: Choose **Start from Scratch** to create a new workflow.
-* The **Workflows** list on the **Overview** page. Select the **Create Workflow** to create a new workflow.
+* **n8n Cloud**: [sign up for a free trial](https://go.n8n.io/ekXKXJ), or
+* **Self-hosted**: follow the [host n8n](/deploy/host-n8n) guide
 
-## Step two: Add a trigger node <a href="#step-two-add-a-trigger-node" id="step-two-add-a-trigger-node"></a>
+## 1. Create the workflow
 
-n8n provides two ways to start a workflow:
+Log in to your n8n instance, then:
 
-* Manually, by selecting **Execute Workflow**.
-* Automatically, using a trigger node as the first node. The trigger node runs the workflow in response to an external event, or based on your settings.
+1. Select **Personal** in the left menu. This is where your workflows live.
 
-This tutorial uses the [Schedule trigger](/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger), which lets you run the workflow on a schedule:
+   ![Personal in the left menu](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-85c3edcf10180966c40f0f826da0a4ab7679beec%2Fbuild-your-first-workflow-create-workflow-01.png?alt=media)
+2. Select **Create workflow** at the top right. This opens the canvas, where you’ll build your workflow and spend most of this tutorial.
 
-1. Select **Add first step**.
-2. Search for **Schedule**. n8n shows a list of nodes that match the search.
-3. Select **Schedule Trigger** to add the node to the canvas. n8n opens the node.
-4. For **Trigger Interval**, select **Weeks**.
-5. For **Weeks Between Triggers**, enter `1`.
-6. Enter a time and day. For this example, select **Monday** in **Trigger on Weekdays**, select **9am** in **Trigger at Hour**, and enter `0` in **Trigger at Minute**.
-7. Close the **node details view** to return to the canvas.
+   ![Create workflow button](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-55758edc996be986a974008c1ead88254fb638ab%2Fbuild-your-first-workflow-create-workflow-02.png?alt=media)
+3. Select the workflow’s name and change it to `Weather Log`. Select anywhere on the canvas to save the name.
 
-## Step three: Add the NASA node and set up credentials <a href="#step-three-add-the-nasa-node-and-set-up-credentials" id="step-three-add-the-nasa-node-and-set-up-credentials"></a>
+## 2. Run it at 8 AM every day
 
-The [NASA node](/integrations/builtin/app-nodes/n8n-nodes-base.nasa) interacts with NASA's [public APIs](https://api.nasa.gov/) to fetch useful data. This tutorial uses the real-time data from the API to find solar events.
+You’ll use: **Schedule Trigger**
 
-<details>
+When building a workflow, the first question to answer is: “How should this workflow start?” On a schedule, for example 8 AM every day? When a user submits a form? When an application like Telegram sends a message?
 
-<summary>Credentials</summary>
+For this first build, you’ll set it to run at 8 AM every day. While you build, you’ll run the workflow yourself to test it. Once you publish it at the end, the schedule runs it for you:
 
-Credentials are private pieces of information issued by apps and services to authenticate you as a user and allow you to connect and share information between the app or service and the n8n node. The required information varies by app or service. You should be careful about sharing or revealing the credentials outside of n8n.
+1. Select **Add first step**, then select **On a schedule**.
 
-</details>
+   ![On a schedule option](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-db32a1a9d08b479307fee1ae22bee73bfea707ab%2Fbuild-your-first-workflow-schedule-01.png?alt=media)
+2. In the Node details view, select `8am` from the **Trigger at Hour** field.
 
-1. Select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector on the Schedule Trigger node.
-2. Search for **NASA**. n8n shows a list of nodes that match the search.
-3. Select **NASA** to view a list of operations.
-4. Search for and select **Get a DONKI solar flare**. This operation returns a report about recent solar flares. When you select the operation, n8n adds the node to the canvas and opens it.
-5. To access the NASA APIs, you need to set up credentials:
-   1. Select the **Credential for NASA API** dropdown.
-   2. Select **Create new credential**. n8n opens the credentials view.
-   3. Go to [NASA APIs](https://api.nasa.gov/) and fill out the form from the **Generate API Key** link. The NASA site generates the key and emails it to the address you entered.
-   4. Check your email account for the API key. If you don’t see it, check your junk or spam folder. Copy the key, and paste it into **API Key** in n8n.
-   5. Select **Save**.
-   6. Close the credentials screen. n8n returns to the node. The new credentials should be automatically selected in **Credential for NASA API**.
-6. By default, DONKI Solar Flare provides data for the past 30 days. To limit it to just the last week, use **Additional Fields**:<br>
+   ![Trigger at Hour set to 8 AM](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-e6289e358a060588fe74a9f891890d664749254e%2Fbuild-your-first-workflow-schedule-02.png?alt=media)
+3. Select **Schedule Trigger** at the top left and rename it to `Every day at 8am`.
 
-   1. Select **Add field**.
-   2. Select **Start date**.
-   3. To get a report starting from a week ago, you can use an expression: next to **Start date**, select the **Expression** tab, then select the expand button <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-f7569083fc194ce1fc7283fef2b7e69ed93d7418%2Fopen-expression-editor.png?alt=media" alt="Add node icon" data-size="line"> to open the full expressions editor.
-   4. In the **Expression** field, enter the following expression:
+   ![Renamed Schedule Trigger](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-a726fca721b5f51a5d028a380638bb3b5139ced0%2Fbuild-your-first-workflow-schedule-03.png?alt=media)
+4. Select the **x** at the top right to close the Node details view and return to the canvas.
 
-   ```js
-   {{ $today.minus(7, 'days') }}
+## 3. Get the weather for Berlin
+
+You’ll use: **HTTP Request**
+
+You’ve got your trigger, so it’s time to fetch the weather. The **HTTP Request** node sends a request to a web address, called an endpoint, and returns the data that address provides. Services that share data this way are APIs.
+
+1. Select **+** after the trigger, type `http` in the **Search nodes** box, and select **HTTP Request**.
+
+   ![HTTP Request in the search results](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-dbff1108a1e96b30be91c2064f47f3fce4547972%2Fbuild-your-first-workflow-get-weather-01.png?alt=media)
+2. In the Node details view, paste `https://mockingbird.n8n.io/v1/weather/berlin` into the **URL** field.
+
+   ![Mockingbird URL in the URL field](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-dfd8b6c447ae4234cfd7055e754fc6071133807f%2Fbuild-your-first-workflow-get-weather-02.png?alt=media)
+
+   <div data-gb-custom-block data-tag="hint" data-style="info" class="hint hint-info"><p>Mockingbird is a sample API with weather for about 40 European cities. Other cities return an error.</p></div>
+3. Select the node’s name at the top left and rename it to `Get Berlin Weather`, then select **Execute step**. You should see the weather for Berlin in the output, including the `city`, `temp_c`, and `condition` fields you’ll use in the next step.
+
+   ![Berlin weather output](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-3a20c5d051a86ed2683538f0e49e55844559ced9%2Fbuild-your-first-workflow-get-weather-03.png?alt=media)
+
+## 4. Turn the weather into a report
+
+You’ll use: **Edit Fields (Set)**
+
+Next, you’ll turn the weather data into a short report that anyone can read at a glance.
+
+1. Select **+** after **Get Berlin Weather**, select **Data transformation**, then select **Edit Fields (Set)**.
+
+   ![Edit Fields (Set) under Data transformation](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-c53c0359ccfdc43e61d3bb8cf84be9692091503c%2Fbuild-your-first-workflow-report-01.png?alt=media)
+2. Select **Add Field** in the middle of the Node details view. For **Name**, enter `report`.
+
+   ![Add Field button](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-8fc806bef9f6c5e0b136831b4a5e36fc928cb1f5%2Fbuild-your-first-workflow-report-02.png?alt=media)
+
+   ![Field named report](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-a1523afe781822ad3a89e085c19db914c2a1a3e0%2Fbuild-your-first-workflow-report-03.png?alt=media)
+3. For **Value**, enter `The temperature in`, then drag `city` from the input panel on the left. When you drop a field in, n8n switches **Value** to **Expression** mode, and you see:
+
+   ```
+   The temperature in {{ $json.city }}
    ```
 
-   This generates a date in the correct format, seven days before the current date.
+   ![city dragged into the Value field](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-9a1dd63851210c02e888c7bfd173ad4620537197%2Fbuild-your-first-workflow-report-04.png?alt=media)
 
-   ![Start Date expression editor, with the Result panel showing a resolved date one week before today](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-4f5687df151212756d9f6c4f6408464b80eaeedc%2Ftutorial-date.png?alt=media)
-7. Close the **Edit Expression** modal to return to the NASA node.
-8. You can now check that the node is working and returning the expected date: select **Execute step** to run the node manually. n8n calls the NASA API and displays details of solar flares in the past seven days in the **OUTPUT** section.
-9. Close the NASA node to return to the workflow canvas.
+   <div data-gb-custom-block data-tag="hint" data-style="info" class="hint hint-info"><p><strong>What's an expression?</strong></p><p><code>{{ $json.city }}</code> is a placeholder, called an expression. When the workflow runs, n8n swaps it for the real value. The input panel shows the output from <strong>Get Berlin Weather</strong>, which becomes the input to this node. You drag fields in rather than typing them, and the preview under the field shows you the finished sentence. To learn more, see <a href="/build/work-with-data/expressions-versus-data-nodes#expressions">Expressions</a>.</p></div>
+4. Drag `temp_c` in and update the wording to:
 
-## Step four: Add logic with the If node <a href="#step-four-add-logic-with-the-if-node" id="step-four-add-logic-with-the-if-node"></a>
+   ```
+   The temperature in {{ $json.city }} is {{ $json.temp_c }}°C.
+   ```
 
-n8n supports complex logic in workflows. This tutorial uses the [If node](/integrations/builtin/core-nodes/n8n-nodes-base.if) to create two branches that each generate a report from the NASA data. Solar flares have five possible classifications. The If node sends a report with the lower classifications to one output, and the higher classifications to another.
+   ![Value with city and temperature](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-a946b896d2f0002dc643c4bab00d5e562f131f3b%2Fbuild-your-first-workflow-report-05.png?alt=media)
 
-Add the If node:
+   Add `It's currently` to the end, then drag `condition` in:
 
-1. Select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector on the NASA node.
-2. Search for **If**. n8n shows a list of nodes that match the search.
-3. Select **If** to add the node to the canvas. n8n opens the node.
-4. You need to check the value of the `classType` property in the NASA data. To do this:
-   1. Drag **classType** into **Value 1**.<br>
+   ```
+   The temperature in {{ $json.city }} is {{ $json.temp_c }}°C. It's currently {{ $json.condition }}.
+   ```
 
-      <div data-gb-custom-block data-tag="hint" data-style="info" class="hint hint-info"><p><strong>Make sure you ran the NASA node in the previous section</strong></p><p>If you didn't follow the step in the previous section to run the NASA node, you won't see any data to work with in this step.</p></div>
-   2. Change the comparison operation to **String > Contains**.
-   3. In **Value 2**, enter **X**. This is the highest classification of solar flare. In the next step, you will create two reports: one for X class solar flares, and one for all the smaller solar flares.
-5. You can now check that the node is working and returning the expected date: select **Execute step** to run the node manually. n8n tests the data against the condition, and shows which results match true or false in the **OUTPUT** panel.<br>
+   ![Value with city, temperature, and condition](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-a91f40acf4e03eb6a63b3504a6e6ec3e447e5132%2Fbuild-your-first-workflow-report-06.png?alt=media)
+5. Rename the node to `Format Weather Message` and select **Execute step**. You should see output like:
 
-   <div data-gb-custom-block data-tag="hint" data-style="info" class="hint hint-info"><p><strong>Weeks without large solar flares</strong></p><p>In this tutorial, you are working with live data. If you find there aren't any X class solar flares when you run the workflow, try replacing <strong>X</strong> in <strong>Value 2</strong> with either <strong>A</strong>, <strong>B</strong>, <strong>C</strong>, or <strong>M</strong>.</p></div>
-6. Once you are happy the node will return some events, you can close the node to return to the canvas.
+   ```
+   The temperature in berlin is 7.4°C. It's currently overcast.
+   ```
 
-## Step five: Output data from your workflow <a href="#step-five-output-data-from-your-workflow" id="step-five-output-data-from-your-workflow"></a>
+   ![Finished weather report output](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-37aca0f9c68733a81d296ec954f160b6daa54d3e%2Fbuild-your-first-workflow-report-07.png?alt=media)
 
-The last step of the workflow is to send the two reports about solar flares. For this example, you'll send data to [Postbin](https://www.toptal.com/developers/postbin/). Postbin is a service that receives data and displays it on a temporary web page.
+## 5. Save the data
 
-1. On the If node, select the **Add node** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-73e6ba16c5921db1159055c997764094715b508e%2Fadd-node-small.png?alt=media" alt="Add node icon" data-size="line"> connector labeled **true**.
-2. Search for **PostBin**. n8n shows a list of nodes that match the search.
-3. Select **PostBin**.
-4. Select **Send a request**. n8n adds the node to the canvas and opens it.
-5. Go to [Postbin](https://www.toptal.com/developers/postbin/) and select **Create Bin**. Leave the tab open so you can come back to it when testing the workflow.
-6. Copy the bin ID. It looks like `1651063625300-2016451240051`.
-7. In n8n, paste your Postbin ID into **Bin ID**.
-8. Now, configure the data to send to Postbin. Next to **Bin Content**, select the **Expression** tab (you will need to mouse-over the **Bin Content** for the tab to appear), then select the expand button <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-f7569083fc194ce1fc7283fef2b7e69ed93d7418%2Fopen-expression-editor.png?alt=media" alt="Add node icon" data-size="line"> to open the full expressions editor.
-9. You can now click and drag the correct field from the If node output into the expressions editor to automatically create a reference for this label. In this case, the field you want is `classType`.
-10. Once dropped into the expressions editor it will transform into this reference: `{{$json["classType"]}}`. Add a message to it, so that the full expression is:
+You’ll use: **Data table**
 
-    ```js
-    There was a solar flare of class {{$json["classType"]}}
-    ```
+You’ve fetched the data and formatted it, so now it’s time to store it. For this, you’ll use n8n’s [data tables](/build/work-with-data/data-tables).
 
-    ![Expression editor for Bin Content, with the Result panel showing the rendered message text](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-9e0ced87946b726548b5c0a0c81cf077ddcd03eb%2Ftutorial-expression.png?alt=media)
-11. Close the expressions editor to return to the node.
-12. Close the Postbin node to return to the canvas.
-13. Add another Postbin node, to handle the **false** output path from the If node:
-    1. Hover over the Postbin node, then select **Node context menu** <img src="https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-d32a8d59c9322093771e1e567f5ad2cf0a916558%2Fnode-context-menu.png?alt=media" alt="Node context menu icon" data-size="line"> > **Duplicate node** to duplicate the first Postbin node.
-    2. Drag the **false** connector from the If node to the left side of the new Postbin node.
+1. Select **Personal** in the left menu, then select **Data tables**.
 
-## Step six: Test the workflow <a href="#step-six-test-the-workflow" id="step-six-test-the-workflow"></a>
+   ![Data tables tab](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-e660228d53104e41ad8b920aa8e200993da2e280%2Fbuild-your-first-workflow-save-data-01.png?alt=media)
+2. Select **Create data table**, name it `weather_data`, and select **Create**.
 
-1. You can now test the entire workflow. Select **Execute Workflow**. n8n runs the workflow, showing each stage in progress.
-2. Go back to your Postbin bin. Refresh the page to see the output.
-3. If you want to use this workflow (in other words, if you want it to run once a week automatically), you need to publish it by clicking **Publish**.
+   ![New, empty data table](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-3f6616340ff863600c830f548a8be3dcadd99ce5%2Fbuild-your-first-workflow-save-data-02.png?alt=media)
+3. Select **Add Column**, enter `report` for **Name**, then select **Add Column** again. This gives you a column to store the weather report in.
+
+   ![report column in the new data table](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-58619b8d0cfd7559ab0529189517a0292e445f97%2Fbuild-your-first-workflow-save-data-03.png?alt=media)
+4. Open your **Weather Log** workflow (**Personal** > **Weather Log**). Add a **Data table** node after **Format Weather Message** and select **Insert row** as the action.
+
+   ![Insert row action](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-35cc54ebabca312e4319d1047aa887b942ff0b4e%2Fbuild-your-first-workflow-save-data-04.png?alt=media)
+5. Rename the node to `Save Weather Report`.
+6. Select `weather_data` from the **Data table** list and change **Mapping Column Mode** to **Map Automatically**. The `report` field from **Format Weather Message** has the same name as the column in the data table, so n8n maps them for you.
+
+   ![Save Weather Report node with the data table selected and Map Automatically set](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-df49c194eda35f0d1e212a603e60d3a392b909c3%2Fbuild-your-first-workflow-save-data-05.png?alt=media)
+
+## 6. Test and publish the workflow
+
+Your workflow is complete. Test it, then publish it so it runs every day at 8 AM.
+
+1. Select **Execute workflow** to test it, then open the `weather_data` table to check that n8n inserted a row.
+
+   ![Successful workflow run](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-53cf4f42dad3bc60799e8098a0ce3fe787988663%2Fbuild-your-first-workflow-test-and-publish-01.png?alt=media)
+
+   ![New row in the data table](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-e57ea288225db8034eb9604a54593352b443ca67%2Fbuild-your-first-workflow-test-and-publish-02.png?alt=media)
+2. Select **Publish** in the Canvas header and follow the prompts to publish the workflow.
+
+   ![Publish button](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-8ee33c9c6572b62398b6406836390de6a4fafb18%2Fbuild-your-first-workflow-test-and-publish-03.png?alt=media)
+
+## What you learned
+
+Congratulations, your workflow now runs at 8 AM every day. Along the way, you’ve learned how to:
+
+* **Start a workflow with a trigger.** Yours runs on a schedule. [Schedule Trigger](/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger)
+* **Add and connect nodes.** Each node does one job and passes its result to the next. [Work with nodes](/build/understand-workflows/workflow-components/work-with-nodes)
+* **Fetch data from an API.** You used the HTTP Request node to get weather data from a web address. [HTTP Request](/integrations/builtin/core-nodes/n8n-nodes-base.httprequest)
+* **Work with data between nodes.** The output of one node becomes the input of the next. [Understand n8n's data structure](/build/work-with-data/understand-n8ns-data-structure)
+* **Use expressions.** Dragging fields in builds an expression for you, so you can use live data without writing code. [Expressions for data transformation](/build/work-with-data/transform-data/expressions-for-data-transformation)
+* **Store data.** Each run saves a new row to your data table, so you keep every report after the workflow finishes. [Data tables](/build/work-with-data/data-tables)
+
+## Optional: Build with n8n Assistant
 
 {% hint style="info" %}
-**Time limit**
+**Preview status**
 
-Postbin's bins exist for 30 minutes after creation. You may need to create a new bin and update the ID in the Postbin nodes, if you exceed this time limit.
+n8n Assistant is in Preview and may change in future releases. See [Use the n8n Assistant](/build/ways-of-building-workflows/n8n-assistant) page for availability.
 {% endhint %}
 
-## Congratulations <a href="#congratulations" id="congratulations"></a>
+n8n Assistant is another way to build workflows, using prompts. Now that you’ve built **Weather Log** yourself, you’ll understand what n8n Assistant creates.
 
-You now have a fully functioning workflow that does something useful! It should look something like this:
+1. Open your **Weather Log** workflow, select **Published** at the top right, and select **Unpublish**. Otherwise your workflow and the one n8n Assistant creates both run at 8 AM.
 
-{% @n8n-blocks/n8n-workflow-demo content="%7B%0A%20%20%22name%22%3A%20%22Tutorial-workflow%22%2C%0A%20%20%22nodes%22%3A%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22rule%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22interval%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22field%22%3A%20%22weeks%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22triggerAtDay%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22triggerAtHour%22%3A%209%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.scheduleTrigger%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%201.2%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-680%2C%0A%20%20%20%20%20%20%20%20100%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%22ef14445c-2f5f-4c78-96c8-66732feb7a8f%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22Schedule%20Trigger%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22resource%22%3A%20%22donkiSolarFlare%22%2C%0A%20%20%20%20%20%20%20%20%22additionalFields%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22startDate%22%3A%20%22%3D%7B%7B%20%24today.minus%287%2C%20%27days%27%29%20%7D%7D%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.nasa%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%201%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-460%2C%0A%20%20%20%20%20%20%20%20100%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%2252c58b93-c780-4aff-a216-d67b28195a45%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22NASA%22%2C%0A%20%20%20%20%20%20%22credentials%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22nasaApi%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22id%22%3A%20%22sSVnxV9AcBmBOYn8%22%2C%0A%20%20%20%20%20%20%20%20%20%20%22name%22%3A%20%22NASA%20account%22%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22conditions%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%22options%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22caseSensitive%22%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22leftValue%22%3A%20%22%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22typeValidation%22%3A%20%22strict%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22version%22%3A%202%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%22conditions%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22id%22%3A%20%222f469c8e-12b3-4ee5-95fc-ff81508d0b43%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22leftValue%22%3A%20%22%3D%7B%7B%20%24json.classType%20%7D%7D%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22rightValue%22%3A%20%22C%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22operator%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22string%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22operation%22%3A%20%22contains%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%22combinator%22%3A%20%22and%22%0A%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%22options%22%3A%20%7B%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.if%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%202.2%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-240%2C%0A%20%20%20%20%20%20%20%20100%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%22b54e3289-9ebb-451f-8bac-87edeeeced13%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22If%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22resource%22%3A%20%22request%22%2C%0A%20%20%20%20%20%20%20%20%22operation%22%3A%20%22send%22%2C%0A%20%20%20%20%20%20%20%20%22binId%22%3A%20%221741914338605-0907339996192%22%2C%0A%20%20%20%20%20%20%20%20%22binContent%22%3A%20%22%3DThere%20was%20a%20solar%20flare%20of%20class%20%7B%7B%24json%5B%5C%22classType%5C%22%5D%7D%7D%22%2C%0A%20%20%20%20%20%20%20%20%22requestOptions%22%3A%20%7B%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.postBin%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%201%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-20%2C%0A%20%20%20%20%20%20%20%200%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%22a8b602b6-17b1-4274-8d33-73344b6bb8fb%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22PostBin%28true%29%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22resource%22%3A%20%22request%22%2C%0A%20%20%20%20%20%20%20%20%22operation%22%3A%20%22send%22%2C%0A%20%20%20%20%20%20%20%20%22binId%22%3A%20%221741914338605-0907339996192%22%2C%0A%20%20%20%20%20%20%20%20%22binContent%22%3A%20%22%3DThere%20was%20a%20solar%20flare%20of%20class%20%7B%7B%24json%5B%5C%22classType%5C%22%5D%7D%7D%22%2C%0A%20%20%20%20%20%20%20%20%22requestOptions%22%3A%20%7B%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.postBin%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%201%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-20%2C%0A%20%20%20%20%20%20%20%20200%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%2209c2c7a4-c229-430d-a5b0-8d7491515d9f%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22PostBin%28false%29%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22parameters%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22content%22%3A%20%22%23%23%20Setup%20required%5Cn%5CnYou%20need%20to%20create%20a%20NASA%20account%20and%20create%20credentials%2C%20and%20create%20a%20bin%20with%20Postbin%20and%20enter%20the%20ID%20-%20see%20%5Bthe%20documentation%5D%28https%3A%2F%2Fdocs.n8n.io%2Ftry-it-out%2Flonger-introduction%2F%29%22%2C%0A%20%20%20%20%20%20%20%20%22height%22%3A%20120%2C%0A%20%20%20%20%20%20%20%20%22width%22%3A%20600%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22n8n-nodes-base.stickyNote%22%2C%0A%20%20%20%20%20%20%22typeVersion%22%3A%201%2C%0A%20%20%20%20%20%20%22position%22%3A%20%5B%0A%20%20%20%20%20%20%20%20-720%2C%0A%20%20%20%20%20%20%20%20-60%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22id%22%3A%20%2208e0b8f9-c90e-4c9c-a663-01aca805b9be%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22Sticky%20Note%22%0A%20%20%20%20%7D%0A%20%20%5D%2C%0A%20%20%22pinData%22%3A%20%7B%7D%2C%0A%20%20%22connections%22%3A%20%7B%0A%20%20%20%20%22Schedule%20Trigger%22%3A%20%7B%0A%20%20%20%20%20%20%22main%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22node%22%3A%20%22NASA%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22main%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22index%22%3A%200%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22NASA%22%3A%20%7B%0A%20%20%20%20%20%20%22main%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22node%22%3A%20%22If%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22main%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22index%22%3A%200%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22If%22%3A%20%7B%0A%20%20%20%20%20%20%22main%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22node%22%3A%20%22PostBin%28true%29%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22main%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22index%22%3A%200%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22node%22%3A%20%22PostBin%28false%29%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22main%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22index%22%3A%200%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22active%22%3A%20false%2C%0A%20%20%22settings%22%3A%20%7B%0A%20%20%20%20%22executionOrder%22%3A%20%22v1%22%0A%20%20%7D%2C%0A%20%20%22versionId%22%3A%20%2237de4877-e4f6-4b9a-b6f0-9b7e7aea0163%22%2C%0A%20%20%22meta%22%3A%20%7B%0A%20%20%20%20%22templateCredsSetupCompleted%22%3A%20true%2C%0A%20%20%20%20%22instanceId%22%3A%20%22cb484ba7b742928a2048bf8829668bed5b5ad9787579adea888f05980292a4a7%22%0A%20%20%7D%2C%0A%20%20%22id%22%3A%20%22DPzMzTIyDrYohiw4%22%2C%0A%20%20%22tags%22%3A%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22createdAt%22%3A%20%222021-06-25T07%3A47%3A07.640Z%22%2C%0A%20%20%20%20%20%20%22updatedAt%22%3A%20%222021-06-25T07%3A47%3A07.640Z%22%2C%0A%20%20%20%20%20%20%22id%22%3A%20%221%22%2C%0A%20%20%20%20%20%20%22name%22%3A%20%22docs%22%0A%20%20%20%20%7D%0A%20%20%5D%0A%7D" url="<https://raw.githubusercontent.com/n8n-io/n8n-docs/refs/heads/main/docs/_workflows/try-it-out/quickstart/tutorial.json>" %}
+   ![Unpublish option](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-2af858a635ef8e2c3b1d0cc15a7bd35ec5220ef1%2Fbuild-your-first-workflow-assistant-01.png?alt=media)
+2. Select **n8n Assistant** in the left menu.
 
-Along the way you have discovered:
+   ![n8n Assistant in the left menu](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-1c04671444ce81d21bafe3e9910a2807ce324251%2Fbuild-your-first-workflow-assistant-02.png?alt=media)
+3. Enter this prompt:
 
-* How to find the nodes you want and join them together
-* How to use expressions to manipulate data
-* How to create credentials and attach them to nodes
-* How to use logic in your workflows
+   ```
+   Every day at 8am:
+   - Get the weather for Berlin from https://mockingbird.n8n.io/v1/weather/berlin
+   - Add a report field that contains the city, temperature, and conditions
+   - Save the report to a data table called weather_data
+   ```
 
-There are plenty of things you could add to this (perhaps add some more credentials and a node to send you an email of the results), or maybe you have a specific project in mind. Whatever your next steps, the resources linked below should help.
+   ![Prompt entered in n8n Assistant](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-1504f55cc2ac2cdf74dd63036d4956b7c61afa45%2Fbuild-your-first-workflow-assistant-03.png?alt=media)
 
-## Next steps <a href="#next-steps" id="next-steps"></a>
+   <div data-gb-custom-block data-tag="hint" data-style="info" class="hint hint-info"><p>n8n Assistant may detect your existing <strong>Weather Log</strong> workflow. Ask it to “build a fresh, separate copy”.</p></div>
+4. Approve each step when n8n Assistant asks. When it finishes, you should see a workflow like this:
 
-* Interested in what you could do with AI? Find out [how to build an AI chat agent with n8n](/build/integrate-ai).
-* Take [courses at n8n Academy](https://learn.n8n.io).
+   ![Workflow built by n8n Assistant](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-4f7071d43ae23de9b7ad18cfc9a92fa7305f3882%2Fbuild-your-first-workflow-assistant-04.png?alt=media)
+5. Select **Execute workflow**, then check the data table for a new row:
+
+   ![Successful run of the copied workflow](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-b7e8e57c17f481caf58e38f1e8875a1b5c2f1c70%2Fbuild-your-first-workflow-assistant-05.png?alt=media)
+
+   ![Second row in the data table](https://2446198290-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FCxSeOtVxqqhfxMSac0AV%2Fuploads%2Fgit-blob-67ddea35a114e2b3759c57a6cd848745affef6a2%2Fbuild-your-first-workflow-assistant-06.png?alt=media)
+
+## Next steps
+
+* Take [courses at n8n Academy](https://go.n8n.io/gfzWgF).
 * Explore more examples in [workflow templates](https://n8n.io/workflows/).
 
 ## Related resources
@@ -317,12 +360,6 @@ There are plenty of things you could add to this (perhaps add some more credenti
 * [Choose how to use n8n](/choose-how-to-use-n8n)
 * [Learning paths](/learning-paths)
 * [Key concept glossary](/key-concept-glossary)
-
-[^1]: An n8n workflow is a collection of nodes that automate a process. Workflows begin execution when a trigger condition occurs and execute sequentially to achieve complex tasks.
-
-[^2]: In n8n, credentials store authentication information to connect with specific apps and services. After creating credentials with your authentication information (username and password, API key, OAuth secrets, etc.), you can use the associated app node to interact with the service.
-
-[^3]: In n8n, expressions allow you to populate node parameters dynamically by executing JavaScript code. Instead of providing a static value, you can use the n8n expression syntax to define the value using data from previous nodes, other workflows, or your n8n environment.
 
 
 # Learning paths
@@ -2249,7 +2286,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2504,7 +2541,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2876,7 +2913,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2978,7 +3015,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3342,7 +3379,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3557,7 +3594,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3773,7 +3810,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4056,7 +4093,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -5350,7 +5387,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.6 Current `beta`: 2.44.2
+Current `stable`: 2.43.7 Current `beta`: 2.44.3
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>

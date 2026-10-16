@@ -10,7 +10,7 @@ A context turns your sources into queryable knowledge. Its manifest tells curati
 
 ## The manifest
 
-A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
+A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. A `search` section sets query-time defaults, like standing instructions every answer should follow. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
 
 You author a manifest through the [Nexus API](/reference/api/nexus/authentication), supplying it in the `manifest` field when you create or update a context, then curating. You can start from a prebuilt template or write the types yourself:
 
@@ -49,3 +49,34 @@ Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. 
 ## Artifact formats
 
 Each artifact type is written in one of two formats: `markdown`, a prose file per artifact, or `sqlite`, rows in a queryable table with a column schema. To set a type's format and, for `sqlite`, its columns and keys, see [Configure artifact formats](/guides/nexus/configure-artifact-formats).
+
+## Context-default instructions
+
+A context's default instructions act as a system prompt for every query against the context: the role to take, the tone to use, how to format answers, or how to handle conflicting sources. You set them once on the context instead of resending them with every query.
+
+Set them in the manifest's `search.instructions` field, alongside `curate`:
+
+```json theme={null}
+{
+  "curate": {
+    "artifacts": {
+      "enabled": true,
+      "artifact_types": [
+        { "name": "Filing", "kind": "entity", "scope": "corpus",
+          "description": "One regulatory filing in the corpus." },
+        { "name": "Risk", "kind": "topic", "scope": "corpus",
+          "description": "A risk factor disclosed across the filings." }
+      ]
+    }
+  },
+  "search": {
+    "instructions": "You're a financial analyst. Keep answers precise and neutral, and cite the filing and section behind every figure. When filings disagree, prefer the most recent and note the discrepancy."
+  }
+}
+```
+
+Supply the manifest in the `manifest` field when you create or update a context, as described in [Design your own manifest](/guides/nexus/design-your-own-manifest). Nexus reads the instructions at query time, so a change takes effect on your next query without a re-curate.
+
+The instructions apply to every query against the context. When a query's `scope` lists more than one context, the instructions from the first context in the list apply. The field accepts up to 16,000 characters, and a longer value fails the manifest save with a `400` error. It defaults to empty, so a context has no default instructions until you set some.
+
+A single session can layer its own instructions on top of this default. See [Set session instructions](/guides/nexus/set-session-instructions).

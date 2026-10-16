@@ -1,7 +1,7 @@
 ---
 title: "Nexus queries"
-source: https://docs.pinecone.io/guides/nexus/how-queries-work
-path: guides/nexus/how-queries-work
+source: https://docs.pinecone.io/guides/nexus/queries
+path: guides/nexus/queries
 ---
 
 Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
@@ -81,3 +81,7 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 **Citations that trace to a source.** Inline citation markers map back to real source spans: the file, page, and verbatim text behind every claim.
 
 **Optional structured output.** When a `shape` is supplied, the answer is routed through structured synthesis to produce a schema-conforming document instead of prose.
+
+## Session instructions
+
+A session can carry its own answer instructions on top of a context's default, a system prompt that shapes how it answers every turn. See [Set session instructions](/guides/nexus/set-session-instructions).

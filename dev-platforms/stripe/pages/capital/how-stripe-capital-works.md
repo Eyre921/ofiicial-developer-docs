@@ -40,7 +40,7 @@ Each offer specifies the type of financing being offered, which might be a loan 
 
 Stripe, together with our financing partner, determines your eligibility for an offer based on a variety of factors related to your Stripe accounts, including your processing volume and the size of your customer base. We regularly review your business for offer eligibility. If you become eligible, you receive an email, and can view your offer in the Dashboard under the [Capital tab](https://dashboard.stripe.com/capital). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, Employer Identification Number (EIN), and business address.
 
@@ -80,16 +80,16 @@ We don’t:
 - Offer account-specific insights regarding future eligibility.
 - Have emergency or on-demand access to Capital.
 - Offer a manual review process for account eligibility.
+- Provide timelines, guarantees, or previews of future offers or terms.
+- Use additional documents or information submitted outside the Stripe Capital flow to create a separate eligibility review.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information.
+See our [Privacy Center](https://stripe.com/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information.
 
 ## Review your offer
 
-Your offer is typically valid for 30 days, after which we re-evaluate your business to see if you’re eligible for an additional offer. Go to the [Capital tab](https://dashboard.stripe.com/capital) in the Stripe Dashboard to customize the amount of your offer up to the maximum offer amount. The offer terms adjust based on the amount you choose. If you’re seeking financing at a later time, continue checking your email and the **Capital** tab of the Dashboard to make sure you’re reviewing your most current offer. In some cases, we extend additional offers to you while you’re actively paying your current financing.
+Your offer is typically valid for 30 days, after which we re-evaluate your business to see if you’re eligible for an additional offer. Go to the [Capital tab](https://dashboard.stripe.com/capital) in the Stripe Dashboard to customize the amount of your offer up to the maximum offer amount. The offer terms adjust based on the amount you choose. The amount and terms shown in your Dashboard reflect the financing offer currently available to your business at that time. If you’re seeking financing at a later time, continue checking your email and the **Capital** tab of the Dashboard to make sure you’re reviewing your most current offer. In some cases, we extend additional offers to you while you’re actively paying your current financing.
 
-After you select an offer, we review your application. There might be requests for additional information related to your business to complete the review of your application. If you’re approved, we transfer the funds to your Stripe account, typically in as few as 1–2 business days. To make sure funds successfully disburse from your Stripe account, you must set a valid bank account as your primary payout method.
+After you select an offer, we review your application. There might be requests for additional information related to your business to complete the review of your application. If you’re approved, we transfer the funds to your Stripe account, typically in as few as 1–2 business days. To make sure funds successfully disburse from your Stripe account, you must set a valid bank account as your primary payout method. If you’re declined, that decision is final. The Notice of Adverse Action provides the most detailed explanation available for that decision.
 
 ## No impact to your personal credit
 
@@ -118,7 +118,7 @@ The total cost of your financing is your loan or advance amount plus a flat fee.
 
 There’s no prepayment penalty, and you can make additional payments or pay the total amount you owe in full at any point in the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard.
 
-Stripe automatically evaluates you for a new offer as you pay down your financing, regardless of whether you make additional payments or pay it off early.
+Stripe automatically evaluates you for a new offer as you pay down your financing, regardless of whether you make additional payments or pay it off early. Paying down or paying off financing early doesn’t guarantee a new offer. The timing and terms of any future offer vary based on your business profile at that time.
 
 ## Financing payments
 

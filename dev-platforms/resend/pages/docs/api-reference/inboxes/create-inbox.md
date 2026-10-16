@@ -45,7 +45,7 @@ An inbox sends and receives email at an address on one of your domains, such as
 </ParamField>
 
 <ResendParamField type="string">
-  The name recipients see when mail is sent from this inbox Max 78 characters.
+  The name recipients see when mail is sent from this inbox. Max 78 characters.
 </ResendParamField>
 
 <ParamField type="boolean">

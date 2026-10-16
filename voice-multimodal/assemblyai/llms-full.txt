@@ -172,6 +172,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Prompting and keyterms](#prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx)
 - [Language selection](#language-selection-docs-dictation-language-selection-mdx)
 - [Transcribe dictated audio](#transcribe-dictated-audio-docs-api-reference-dictation-api-transcribe-live-mdx)
+- [Transcribe recorded audio](#transcribe-recorded-audio-docs-api-reference-dictation-api-transcribe-mdx)
 - [Audio requirements](#audio-requirements-docs-dictation-audio-requirements-mdx)
 - [Error handling](#error-handling-docs-dictation-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
@@ -242,6 +243,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Speech Threshold](#speech-threshold-docs-guardrails-set-minimum-speech-threshold-mdx)
 - [Quickstart](#quickstart-docs-llm-gateway-quickstart-mdx)
 - [Model Catalog](#model-catalog-docs-nav-links-llm-gateway-models-mdx)
+- [Choose a model](#choose-a-model-docs-llm-gateway-choose-a-model-mdx)
 - [Providers](#providers-docs-llm-gateway-providers-mdx)
 - [Model Fallbacks](#model-fallbacks-docs-llm-gateway-fallback-mdx)
 - [Prompt Caching](#prompt-caching-docs-llm-gateway-prompt-caching-mdx)
@@ -402,8 +404,8 @@ This breaks down into a few core APIs, suited to different parts of your voice p
 | --- | --- |
 | [Pre-recorded Speech-to-Text API](/pre-recorded-audio/getting-started/transcribe-an-audio-file) | Transcribes recorded audio and video asynchronously across 99 languages, with support on speaker diarization, PII redaction, and more features. Built for teams processing recorded calls, podcasts, or meetings at scale. |
 | [Streaming Speech-to-Text API](/streaming/getting-started/transcribe-streaming-audio) | Handles live audio over WebSocket with ~150ms p50 latency, powering voice agents, live captions, and real-time agent-assist tools in contact centers. |
-| [Synchronous Speech-to-Text API](/sync-stt/getting-started/transcribe-a-short-audio-file) | Transcribes short audio clips (up to 120 seconds) in a single request-response call — no polling or webhooks needed. It's suited for quick, low-latency transcription use cases with need for limited transcription features. |
-| [Dictation API](/dictation) | Transcribes short audio clips (up to 120 seconds) and formats the text with an LLM in the same request. You include formatting instructions with your audio, and the transcript comes back already cleaned up and formatted. |
+| [Synchronous Speech-to-Text API](/sync-stt/getting-started/transcribe-a-short-audio-file) | Transcribes audio up to 20 minutes long over HTTP (up to 120 seconds through the SDKs or when uploading while recording) in a single request-response call — no polling or webhooks needed. It's suited for quick, low-latency transcription use cases with need for limited transcription features. |
+| [Dictation API](/dictation) | Transcribes audio up to 20 minutes long over HTTP (up to 120 seconds through the SDK or when uploading while recording) and formats the text with an LLM in the same request. You include formatting instructions with your audio, and the transcript comes back already cleaned up and formatted. |
 | [Voice Agent API](/voice-agents/voice-agent-api) | A fully managed speech-to-speech pipeline — one connection handles STT, LLM reasoning, and TTS together at roughly one second end-to-end latency, for teams that want AssemblyAI to own the whole voice-agent stack rather than assembling it themselves. |
 | [Speech Understanding API](/speech-understanding/getting-started) | Layers speech analysis on top of transcripts — summarization, sentiment, topic detection, and more over audio — for extracting structured insight. |
 | [Guardrails API](/guardrails/getting-started) | Provides safety, privacy, and compliance controls — PII handling, content moderation, and related safeguards — for teams that need to govern what audio data flows through their pipeline. |
@@ -22407,20 +22409,32 @@ Streaming transcription is delivered in **turns**. A turn is one continuous unit
 
 ## How turn detection works
 
-Universal-3.6 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates what has been said so far to judge whether the speaker is finished or just pausing mid-thought.
+Universal-3.6 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates what has been said so far to judge whether the speaker is finished or just pausing mid-thought. If the turn ends in an entity that may still continue, such as part of a phone number, the turn stays open. This is called [entity-aware endpointing](#entity-aware-endpointing).
 
 Two silence thresholds control this behavior.
 
 | Parameter | What it does | Default |
 | --- | --- | --- |
-| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 128`, `max_accuracy: 512`) |
-| `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete. | Set by `mode` (`min_latency: 640`, `balanced: 1280`, `max_accuracy: 2560`) |
+| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. A turn that ends in an entity still in progress also stays open. | Set by `mode` (`min_latency: 128`, `balanced: 128`, `max_accuracy: 512`) |
+| `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete, and the limit on how long an entity in progress is held open. | Set by `mode` (`min_latency: 640`, `balanced: 1280`, `max_accuracy: 2560`) |
 
 Lower values end turns faster. Higher values tolerate longer pauses without fragmenting the turn. Both parameters can be set on the connection and [updated mid-stream](#capturing-entities-like-phone-numbers), and their defaults come from the [`mode` preset](/streaming/getting-started/optimizing-accuracy-and-latency) you select.
 
 **Speaker labels change the defaults**
 
 When `speaker_labels` is enabled, the server applies diarization-tuned defaults instead (`min_turn_silence: 640`, `max_turn_silence: 768`) so turns break cleanly at speaker changes.
+
+### Entity-aware endpointing
+
+Phone numbers, account IDs, email addresses, and spelled-out names are the hardest turns to endpoint. Speakers read them out in chunks with real pauses in between, the chunks have no grammatical ending, and the model may already have written a chunk as a finished sentence. An endpointer that ends the turn at the first pause splits the entity across several turns, and your LLM or validation logic receives fragments.
+
+Entity-aware endpointing keeps the entity in one turn. When the `min_turn_silence` check runs and the transcript so far ends like an entity that may still continue, the turn is held open even if it reads as a complete sentence. This covers digits, alphanumeric and spelled-out codes, email addresses and usernames, street addresses, dates, and names. If the speaker continues, the new speech stays in the same turn. If they don't, the turn ends once the silence reaches `max_turn_silence`. Turns that end in an ordinary complete sentence still end at `min_turn_silence`.
+
+While a turn is held, you keep receiving partial `Turn` messages for it, and `end_of_turn_confidence` rises toward `1.0` as the silence approaches `max_turn_silence`.
+
+Entity-aware endpointing is on by default in every `mode` on both Universal-3.6 Pro and Universal-3.5 Pro, and needs no parameters. Because a held turn ends at `max_turn_silence`, the preset you choose also sets how long the session waits for the rest of an entity: 640 ms in `min_latency`, 1280 ms in `balanced`, and 2560 ms in `max_accuracy`.
+
+On our voice-agent benchmark (Universal-3.6 Pro, `balanced` mode), entity-aware endpointing cuts the phone-number entity error rate from 7.0% to 2.2% and leaves the median end-of-turn latency unchanged. The latency cost falls only on held turns, roughly one turn in ten, so the 90th-percentile end-of-turn latency rises from 0.83 s to 1.64 s. See the [Universal-3.6 Pro Realtime research post](https://www.assemblyai.com/blog/universal-3-6-pro-realtime-research) for the full evaluation.
 
 ## The lifecycle of a turn
 
@@ -22460,7 +22474,7 @@ While the speaker talks, the session emits `Turn` messages with `end_of_turn: fa
 Partials are emitted at three points.
 
 - **Early partials** are emitted shortly after speech begins, timed by the `interruption_delay` parameter.
-- **Pause partials** are emitted when a pause triggers an end-of-turn check but the turn reads as incomplete.
+- **Pause partials** are emitted when a pause triggers an end-of-turn check but the turn reads as incomplete or ends in an entity that may still continue. While an [entity hold](#entity-aware-endpointing) lasts, they repeat until the turn ends.
 - **Continuous partials** are emitted roughly every second during uninterrupted speech, so long utterances keep updating even without pauses.
 
 Partials are suited to live captions, barge-in handling, and speculative LLM prefetching, where you want text immediately and can tolerate it being revised.
@@ -22497,7 +22511,7 @@ Like the silence thresholds, both can be set on the connection and updated mid-s
 
 ## Capturing entities like phone numbers
 
-Speakers naturally pause between the groups of a phone number, credit card, or address, and each of those pauses can read as a completed thought, splitting one entity across several turns. When your application knows an entity is coming (for example, your voice agent just asked for a callback number), raise `min_turn_silence` mid-stream so those pauses don't end the turn. Afterward, set your `mode` again to restore the preset's defaults. Changes take effect immediately, without reconnecting.
+[Entity-aware endpointing](#entity-aware-endpointing) keeps most entities in one turn without any configuration. When your application knows an entity is coming (for example, your voice agent just asked for a callback number) and you want extra margin, raise `min_turn_silence` mid-stream so that no pause ends the turn early, including a pause after a chunk that doesn't read as an entity. Afterward, set your `mode` again to restore the preset's defaults. Changes take effect immediately, without reconnecting.
 
 ```python
 # Before capturing the entity
@@ -22531,7 +22545,7 @@ transcriber.updateConfiguration({ minTurnSilence: 1000 });
 transcriber.updateConfiguration({ mode: "balanced" });
 ```
 
-If turns are still force-ended during very long pauses, raise `max_turn_silence` the same way. See [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) for the full list of mid-stream parameters.
+A held entity still ends at `max_turn_silence`. If speakers pause longer than that between chunks, for example while reading a card number off a card, raise `max_turn_silence` the same way. See [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) for the full list of mid-stream parameters.
 
 ## Bring your own turn detection
 
@@ -27342,127 +27356,33 @@ Source: docs/streaming/self-hosted-streaming.mdx
 Navigation: Real-time STT > Advanced
 Description: Deploy AssemblyAI's streaming transcription solution within your own infrastructure
 
-The **AssemblyAI Self-Hosted Streaming Solution** provides a secure, low-latency real-time transcription service that can be deployed within your own infrastructure. Audio, transcripts, and PII never leave your network — only license validation and usage metadata are transmitted back to AssemblyAI.
+The **AssemblyAI Self-Hosted Streaming Solution** lets you run our real-time transcription service inside your own infrastructure. Audio, transcripts, and PII never leave your network. The only outbound traffic is license validation and, for usage-based contracts, usage metadata sent to AssemblyAI.
 
-Self-hosted streaming requires an upfront commercial commitment of $20,000. [Contact our sales team](https://www.assemblyai.com/contact/sales) to discuss your needs and learn more about our self-hosted offering.
+Self-hosted streaming requires an upfront commercial commitment of $50,000. [Contact our sales team](https://www.assemblyai.com/contact/sales) to discuss your needs and learn more about our self-hosted offering.
 
-The deployment instructions, Compose files, nginx configuration, and example clients are maintained in the public [`streaming-self-hosting-stack`](https://github.com/AssemblyAI/streaming-self-hosting-stack) repository. This page covers what self-hosted streaming is, what you need to run it, and how the stack is shaped. **Go to the repo for the actual setup steps.**
+Everything you need to deploy and operate the stack lives in the public [`streaming-self-hosting-stack`](https://github.com/AssemblyAI/streaming-self-hosting-stack) repository, and that repository is the source of truth. This page explains what the offering is and where to find things. It deliberately does not repeat hardware requirements, setup steps, or configuration details, because those change with each release.
 
-## What you can self-host
+## How it works
 
-Self-hosted streaming ships as **two separate stacks**. Each stack serves one model family, runs from its own Docker Compose file, and uses its own GPU. You pick the stack that matches the model you want to serve — they are not designed to run side by side.
+The stack is a set of Docker Compose services. A WebSocket gateway accepts client connections, one or more GPU-backed ASR containers run the models, and a license proxy validates your license and reports usage. Clients connect over the same WebSocket protocol as the hosted [Streaming API](/streaming), pointed at your own endpoint, and choose the model per session.
 
-| Stack | Model(s) served | Compose file | Best for |
-|-------|-----------------|--------------|----------|
-| **Universal Streaming** | Universal Streaming English + Multilingual | [`streaming/docker-compose.english-multilang.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/docker-compose.english-multilang.yml) | English and multilingual transcription workloads, telephony, captioning |
-| **Universal-3.5 Pro Streaming** | Universal-3.5 Pro | [`streaming/docker-compose.universal-3-5-pro.yml`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/docker-compose.universal-3-5-pro.yml) | Voice agents — short utterances, low end-of-turn latency, continuous partials |
+## What the repository contains
 
-For product capabilities and accuracy details, see the [Universal Streaming](/streaming) and [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) overview pages.
-
-## Core principle
-
-- **Complete data isolation.** Audio, transcripts, and PII stay inside your infrastructure. The only outbound traffic is license validation and (for usage-based contracts) usage metadata to `https://usage-tracker.assemblyai.com`.
-
-## System requirements
-
-### Hardware
-
-- **Universal Streaming.** NVIDIA T4 or newer per ASR container. We recommend at least 4 CPU and 16 GB RAM per ASR container.
-- **Universal-3.5 Pro Streaming.** NVIDIA L4, A10, A100, L40S, H100, or equivalent with **at least 24 GB VRAM**. The container also bundles ~14 GB of model weights, so plan disk accordingly. T4 GPUs are **not** sufficient for U3.5 Pro.
-
-### Software
-
-- **Operating system.** Linux
-- **Container runtime.** Docker and Docker Compose (v2 — the `docker compose` command, not `docker-compose`)
-- **NVIDIA Container Toolkit.** Required for Docker to access the GPU
-- **AWS credentials.** AssemblyAI provisions a scoped AWS access key for your team so you can pull container images from our private ECR registry
-
-## Architecture
-
-Both stacks share the same gateway, load balancer, and license proxy — they only differ in the ASR backend.
-
-### Shared services (both stacks)
-
-- **`streaming-api`** — Gateway WebSocket service that clients connect to. Handles session lifecycle, audio framing, and routing to the ASR backend.
-- **`license-and-usage-proxy`** — Validates the license file at startup and reports usage metadata (for usage-based contracts).
-- **`streaming-asr-lb`** — `nginx:alpine` load balancer that routes ASR gRPC requests to the right backend based on the `X-Model-Version` header.
-
-### Universal Streaming stack
-
-Adds two ASR backends:
-
-- **`streaming-asr-english`** — English speech recognition.
-- **`streaming-asr-multilang`** — Multilingual speech recognition.
-
-### Universal-3.5 Pro Streaming stack
-
-Adds a single ASR backend:
-
-- **`streaming-asr-u3pro`** — Universal-3.5 Pro speech recognition. Available as of v0.6.0.
-
-### Connection flow
-
-```
-WebSocket client ──→ streaming-api:8080
-                          │
-                          ├─ License validation ──→ license-and-usage-proxy:8080
-                          │                              │
-                          ├─ Usage reporting ────────────┴──→ https://usage-tracker.assemblyai.com
-                          │                                  (usage-based billing only)
-                          │
-                          └─ ASR (gRPC) ──────────→ streaming-asr-lb:80
-                                                       │
-                                                       └─ Header-based routing (X-Model-Version):
-                                                          ├── en-default → streaming-asr-english:50051 (gRPC)
-                                                          ├── ml-default → streaming-asr-multilang:50051 (gRPC)
-                                                          └── u3-pro     → streaming-asr-u3pro:50051 (gRPC)
-```
-
-The load balancer only forwards to backends that are actually deployed in the running stack — Universal Streaming routes for `en-default` and `ml-default`, U3.5 Pro routes for `u3-pro`.
+- **Supported models and GPU requirements.** The top-level README lists which models you can serve and the GPU each one needs.
+- **Prerequisites.** License file, Docker, NVIDIA Container Toolkit, and credentials for pulling images.
+- **Streaming stack.** Compose files, environment reference, an example client, and production sizing and deployment recommendations live in the repository's [`streaming` directory](https://github.com/AssemblyAI/streaming-self-hosting-stack/tree/main/streaming).
+- **Serverless option.** Each stack can also be deployed to serverless GPUs on Modal. The same directory documents it.
+- **Changelog.** Model improvements, new API features, and breaking changes are recorded in the README changelog, and tagged versions appear on the [Releases page](https://github.com/AssemblyAI/streaming-self-hosting-stack/releases).
 
 ## Getting started
 
-Follow the [upstream repo's README](https://github.com/AssemblyAI/streaming-self-hosting-stack#setup-instructions) for the actual setup steps. At a high level:
+1. Ask your AssemblyAI representative for a license file and image-pull credentials.
+2. Complete the prerequisites in the [repository README](https://github.com/AssemblyAI/streaming-self-hosting-stack#readme).
+3. Follow the streaming stack's README to configure, start, and test the stack.
 
-1. **Get credentials and a license file** from your AssemblyAI representative — an AWS access key scoped to ECR, and a `license.jwt` file. The same license file works for both stacks.
-2. **Install Docker, Docker Compose, and the NVIDIA Container Toolkit.** See the README's [setup section](https://github.com/AssemblyAI/streaming-self-hosting-stack#setup-instructions) for verification commands.
-3. **Authenticate to ECR** with the provided AWS credentials.
-4. **Pick a stack and configure `.env`** with the image references from the repo's [`.env.example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/.env.example).
-5. **Start the stack** with `docker compose up -d` (Universal Streaming) or `docker compose -f docker-compose.u3pro.yml up -d` (Universal-3.5 Pro Streaming).
+## Staying up to date
 
-Universal Streaming ASR containers take roughly **2 minutes** to become ready and log `Ready to serve!`. The Universal-3.5 Pro Streaming ASR container takes roughly **5 minutes** and logs `U3Pro ASR Server ready!`. Health checks may report `unhealthy` during startup — that is expected.
-
-## Running a test client
-
-The [repo](https://github.com/AssemblyAI/streaming-self-hosting-stack) ships an example Python client under [`streaming/example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/tree/main/streaming/example) that streams a pre-recorded WAV file to the WebSocket endpoint. It supports all three speech models via the `--speech-model` flag:
-
-- `universal-streaming-english` — Universal Streaming, English
-- `universal-streaming-multilingual` — Universal Streaming, multilingual
-- `universal-3-5-pro` — Universal-3.5 Pro Streaming
-
-The client routes to the correct ASR backend automatically via the `X-Model-Version` header. Make sure the value you pass matches a backend deployed in the stack you started.
-
-## Switching between stacks
-
-The two stacks listen on the same ports (`streaming-api` on `8080`, ASR load balancer on the gRPC backend), so they cannot run simultaneously. To switch:
-
-```bash
-# Stop the running stack first.
-docker compose down                                # if Universal Streaming is running
-docker compose -f docker-compose.u3pro.yml down    # if Universal-3.5 Pro Streaming is running
-
-# Update .env for the new stack (image vars differ), then start.
-docker compose up -d                               # Universal Streaming
-docker compose -f docker-compose.u3pro.yml up -d   # Universal-3.5 Pro Streaming
-```
-
-## Production deployment
-
-Per-service deployment strategy, resource sizing, autoscaling thresholds, health-check tuning, and the `license-and-usage-proxy` `/v1/status` endpoint reference all live in the repo's [Production Deployment Recommendations](https://github.com/AssemblyAI/streaming-self-hosting-stack#production-deployment-recommendations) section.
-
-## Release notes and changelog
-
-Release notes for the self-hosted stack — including per-version model improvements, API additions, and breaking changes — live in the repo's [README changelog](https://github.com/AssemblyAI/streaming-self-hosting-stack#changelog). Tagged releases are visible on the [Releases page](https://github.com/AssemblyAI/streaming-self-hosting-stack/releases).
+New releases can change the models served, the GPU requirements, and the `speech_model` values clients pass. Review the changelog before upgrading and watch the [Releases page](https://github.com/AssemblyAI/streaming-self-hosting-stack/releases) for breaking changes.
 
 ## Support
 
@@ -44116,7 +44036,7 @@ Source: docs/sync-stt/getting-started/quickstart.mdx
 Navigation: Sync STT > Getting started
 Description: Go from a microphone to a finished transcript in one HTTP call, with the upload happening while the person is still talking.
 
-The Sync API turns up to 120 seconds of speech into one finished transcript, returned in the same HTTP call. No job to poll, no WebSocket to manage. This page gets you from a microphone to that transcript on the fastest path the API offers. The upload runs while the person is still speaking, so what you wait for at the end is only the last stretch of audio.
+The Sync API turns speech into one finished transcript, returned in the same HTTP call. No job to poll, no WebSocket to manage. This page gets you from a microphone to that transcript on the fastest path the API offers. The upload runs while the person is still speaking, so when they stop, the audio is already on the server. The SDKs accept up to 120 seconds of audio; for a finished recording of up to 20 minutes, post it to `POST /v1/transcribe` [over HTTP](/sync-stt/getting-started/transcribe-a-short-audio-file#using-the-http-api-directly).
 
 ## Before you begin
 
@@ -44257,19 +44177,20 @@ console.log(result.text);
 
 `warm()` opens the HTTPS connection ahead of the request. Call it as soon as you know audio is coming, so the handshake is done by the time you have the clip; [Connection pre-warming](/sync-stt/connection-pre-warming) explains what it saves.
 
-The Sync API uses our flagship Universal-3.5 Pro model and accepts audio from 80 milliseconds up to 120 seconds. It transcribes with state-of-the-art accuracy in [32 languages](/sync-stt/language-selection#supported-languages).
+The Sync API uses our flagship Universal-3.5 Pro model. The SDKs' `transcribe()` accepts WAV or raw PCM audio up to 120 seconds. To send up to 20 minutes, or a compressed format such as MP3, post the file to `POST /v1/transcribe` [over HTTP](#using-the-http-api-directly). It transcribes with state-of-the-art accuracy in [32 languages](/sync-stt/language-selection#supported-languages).
 
 Not using an SDK? The same flow works over plain HTTP — see [Using the HTTP API directly](#using-the-http-api-directly).
 
   **When to use Sync STT**
 
-  Sync STT is ideal for pre-recorded audio clips under 2 minutes where you need
+  Sync STT is ideal for pre-recorded audio up to 20 minutes where you need
   an immediate response without polling — for example, voice message transcription,
   short call recordings, or voice agent pipelines that handle turn detection
   externally and submit completed utterances for transcription. For audio longer
-  than 120 seconds, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
+  than 20 minutes, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
   For audio still being recorded, upload it as you capture it with
-  [live audio](/sync-stt/getting-started/transcribe-live-audio); for words returned
+  [live audio](/sync-stt/getting-started/transcribe-live-audio), which accepts up to
+  120 seconds; for words returned
   _while_ the speaker is still talking, use
   [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
 
@@ -44283,7 +44204,7 @@ To complete this guide, you need:
   export ASSEMBLYAI_API_KEY=<your-key>
   ```
 
-- **An audio file** in WAV format (or raw PCM S16LE), between 80 milliseconds and 120 seconds long.
+- **An audio file** in WAV format (or raw PCM S16LE), up to 120 seconds long for the SDKs, or up to 20 minutes [over HTTP](#using-the-http-api-directly).
 - **Python 3.8+** for the Python SDK, or **Node.js 18+** for the JavaScript SDK. The HTTP examples at the bottom of this page need Python 3.8+, Node.js 18+, or cURL.
 
 ## Transcribe your first file
@@ -44525,29 +44446,30 @@ try {
 
 ## Errors
 
-Errors return a JSON body in one of two shapes. Audio, capacity, and inference
-failures use `{"error_code", "message"}`, where `error_code` is machine-readable:
-`bad_audio`, `audio_too_short`, `audio_too_large`, `unsupported_media_type`,
-`capacity_exceeded`, `service_unavailable`, `inference_timeout`, or
-`inference_error`. Auth failures (`401`) and rate limits (`429`) use
-`{"detail"}`. Read both shapes.
+Every error returns an RFC 9457 problem-details body,
+`{"status", "title", "detail"}`, with Content-Type `application/problem+json`.
+`title` is the stable identity of the error, such as `Audio Too Large` or
+`Capacity Exceeded`; `detail` is a human-readable explanation.
 
 The SDKs raise `SyncTranscriptError` for every failed request. It carries the
-HTTP status, the error code, and the `Retry-After` value in seconds on `429`
-and `503` responses: `status_code`/`error_code`/`retry_after` in Python and
+HTTP status, an error code (the `title` in snake case, such as
+`audio_too_large`), and the `Retry-After` value in seconds when the response
+sets one: `status_code`/`error_code`/`retry_after` in Python and
 `status`/`errorCode`/`retryAfter` in JavaScript.
 
-A request that exceeds the 30-second server deadline returns `504` with
-`inference_timeout`. The audio itself is capped at 120 seconds.
+The SDKs send every request, `transcribe()` included, through
+`/v1/transcribe/live`, which caps audio at 120 seconds. Over HTTP,
+`POST /v1/transcribe` accepts up to 20 minutes and returns `504`
+(`Inference Timeout`) if the request passes its 30-second server deadline.
 
 See [Error handling](/sync-stt/error-handling) for the full status code table
 and retry guidance.
 
 ## Using the HTTP API directly
 
-If you prefer to call the Sync API over HTTP without an SDK, post the audio to `POST https://sync.assemblyai.com/v1/transcribe` and read the transcript out of the JSON response.
+If you prefer to call the Sync API over HTTP without an SDK, post the audio to `POST https://sync.assemblyai.com/v1/transcribe` and read the transcript out of the JSON response. This endpoint accepts audio up to 20 minutes long and 256 MB, in WAV, raw PCM, or a compressed format (AAC, MP3, M4A, Ogg/Opus, FLAC, or WebM); see [Audio requirements](/sync-stt/audio-requirements).
 
-The Sync API accepts `multipart/form-data` with an `audio` part. For WAV files, set the part's Content-Type to `audio/wav`. Authenticate with your key in the `Authorization` header (no `Bearer` prefix), and send the `X-AAI-Model: universal-3-5-pro` header — it is required on every request.
+The Sync API accepts `multipart/form-data` with an `audio` part. For WAV files, set the part's Content-Type to `audio/wav`. Authenticate with your key in the `Authorization` header (a `Bearer ` prefix is optional), and send the `X-AAI-Model: universal-3-5-pro` header — it is required on every request.
 
 For the lowest latency, send an unauthenticated `GET /v1/warm` request (with the same `X-AAI-Model` header) through the same HTTP client as soon as you know audio is coming. The `/transcribe` request then reuses the already-open connection instead of paying for DNS, TCP, and TLS setup first.
 
@@ -44644,7 +44566,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
 
 if (!response.ok) {
   const error = await response.json();
-  throw new Error(error.message || error.detail);
+  throw new Error(`${error.title}: ${error.detail}`);
 }
 
 const result = await response.json();
@@ -44774,16 +44696,18 @@ Description: Upload audio to the Sync API as it is recorded, so the transcript i
 
 ## Overview
 
-[`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file) needs the whole clip before it can send anything. `transcribe_live()` starts the request on the first chunk and uploads audio as your code produces it, so by the time the speaker stops, most of the work is already done. What is left to wait for is the tail of the audio.
+[`transcribe()`](/sync-stt/getting-started/transcribe-a-short-audio-file) needs the whole clip before it can send anything. `transcribe_live()` starts the request on the first chunk and uploads audio as your code produces it, so by the time the speaker stops, the upload is already done. On recordings past roughly 90 seconds, the earlier speech is also already transcribed.
 
 Both return the same result and post to `POST https://sync.assemblyai.com/v1/transcribe/live`.
 
   **For short audio only**
 
-  Live upload is for short clips: the Sync API caps audio at 120 seconds, and it
-  returns one finished transcript when the audio ends. If you need words back
-  _while_ the speaker is still talking, or you need to capture more than 2 minutes
-  of audio, use the
+  Live upload is for short clips: it caps audio at 120 seconds, and it returns
+  one finished transcript when the audio ends. For a recording of up to 20
+  minutes that can wait until the speaker stops, record it first and post it to
+  `POST /v1/transcribe` [over HTTP](/sync-stt/getting-started/transcribe-a-short-audio-file#using-the-http-api-directly).
+  If you need words back _while_ the speaker is still talking, or you need to
+  capture more than 20 minutes of audio, use the
   [Real-time STT API](/streaming/getting-started/transcribe-streaming-audio), which
   opens a WebSocket connection for up to 3 hours.
 
@@ -44904,9 +44828,9 @@ Audio you already hold in full, such as a buffer, a `Blob`, or a file on disk, b
 ## What to keep in mind
 
 - **Keep producing until you're done.** An upload that goes silent for too long is aborted server-side. Finish by ending the source (or calling `close()`), not by pausing it.
-- **The saving comes from overlap.** All but the last speech segment are transcribed while you record, so the win grows with clip length. Below roughly a minute there is only one segment, so the only saving is the elided upload.
+- **The saving comes from overlap.** The upload runs while you record, so it is off the critical path. A speech segment is transcribed early once two later segments have arrived, so past roughly 90 seconds of audio the earlier segments are also transcribed while you record. Below that, the saving is the elided upload.
 - **Errors can surface mid-upload.** Authorization, rate-limit, and capacity failures can arrive part-way through the upload rather than at the end, as a `SyncTranscriptError`. Call [`warm()`](/sync-stt/connection-pre-warming) before you start recording to open the connection ahead of time.
-- **The audio limit is unchanged.** The Sync API still caps audio at 120 seconds. The default request budget is 180 seconds, covering the recording as well as the transcription.
+- **Live upload caps audio at 120 seconds.** Audio past that is rejected with `413` mid-upload, as soon as it crosses the limit. Over HTTP, `POST /v1/transcribe` accepts up to 20 minutes. The SDKs time a live request out after 180 seconds by default, covering the recording as well as the transcription; the server allows 300 seconds.
 
 ## Next steps
 
@@ -44945,11 +44869,11 @@ Both improve recognition accuracy for your use case. Neither changes the output 
 
 Universal-3.5 Pro is trained to use context about the audio — its domain, topic, or scenario — to better recognize the vocabulary that context makes likely. A clip described as a cardiology consultation primes the model for medical terminology; one described as an order-status check primes it for order IDs and product names.
 
-Write the `prompt` as a **description of your audio**, not as instructions to the model. Transcription behavior — punctuation, formatting, verbatim style — is already optimized out of the box, and a managed default prompt is applied when you don't provide one.
+Write the `prompt` as a **description of your audio**, not as instructions to the model. Transcription behavior — punctuation, formatting, verbatim style — is already optimized out of the box, and your `prompt` is added in front of a managed default prompt rather than replacing it.
 
 - Maximum length: **6000 characters**
-- When omitted, a managed default prompt is applied
-- `language_codes` is **ignored** when a custom `prompt` is set — state the language as part of your description if you need both (see [Specifying the language](#specifying-the-language))
+- When omitted, only the managed default prompt is applied
+- `language_codes` still applies when a custom `prompt` is set (see [Specifying the language](#specifying-the-language))
 
 **Start with no prompt**
 
@@ -44982,19 +44906,11 @@ Guidelines for writing contextual prompts:
 
 ### Specifying the language
 
-A custom `prompt` replaces the managed default, including any language steering from `language_codes`. When you use a custom prompt with non-English audio, state the language as part of your description:
+A custom `prompt` is added in front of the managed default prompt, so language steering from `language_codes` still applies. Set the language with `language_codes` — see [Language selection](/sync-stt/language-selection) — and keep the `prompt` a description of the audio:
 
 ```
 Spanish customer support call about a billing inquiry.
 ```
-
-For multilingual audio, name all expected languages:
-
-```
-Multilingual conversation in English, Spanish, and German.
-```
-
-If you don't need a custom prompt, prefer the `language_codes` config field — see [Language selection](/sync-stt/language-selection).
 
 ```python
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
@@ -45451,8 +45367,8 @@ Description: Steer Sync STT transcription toward one or more languages with the 
 Pass `language_codes` in the `config` part to steer transcription toward a specific language. For multilingual or code-switching audio, pass an array of codes instead of a single code.
 
 - Accepts a single ISO language code (`"es"`) or a list of codes (`["en", "es"]`)
-- Defaults to English (`en`) when omitted
-- Ignored when a custom `prompt` is set — state the language as part of your contextual prompt if you use both (see [Specifying the language](/sync-stt/prompting-and-keyterms#specifying-the-language))
+- When omitted, no language steering is applied
+- Applies alongside a custom `prompt` — see [Specifying the language](/sync-stt/prompting-and-keyterms#specifying-the-language)
 
 ```python
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
@@ -45701,7 +45617,7 @@ With `timestamps` enabled, each entry in `words` includes its timing:
 URL: https://www.assemblyai.com/docs/api-reference/sync-api/transcribe
 Source: docs/api-reference/sync-api/transcribe.mdx
 Navigation: Sync STT > API reference
-Description: Synchronously transcribe an audio file up to 120 seconds.
+Description: Synchronously transcribe an audio file up to 20 minutes long.
 
 Metadata:
 - openapi: ../specs/sync-api.yaml POST /v1/transcribe
@@ -45745,23 +45661,33 @@ Source: docs/sync-stt/audio-requirements.mdx
 Navigation: Sync STT > Advanced
 Description: Duration, size, format, and sample-rate constraints for Sync STT audio.
 
-The Sync API accepts short audio clips with the following constraints:
+The Sync API has two endpoints with different limits. [`POST /v1/transcribe`](/sync-stt/getting-started/transcribe-a-short-audio-file#using-the-http-api-directly) takes audio you already hold in full. [`POST /v1/transcribe/live`](/sync-stt/getting-started/transcribe-live-audio) takes audio while it is still being recorded. The SDKs send every request through `/v1/transcribe/live`, including `transcribe()` for a complete file, so their limits are the live column's.
+
+| Constraint | `/v1/transcribe` (HTTP) | `/v1/transcribe/live` (HTTP and SDKs) |
+|------------|-------------------------|---------------------------------------|
+| Minimum duration | 80 ms | None |
+| Maximum duration | 20 minutes | 120 s |
+| Maximum file size | 256 MB | 256 MB |
+| Formats | WAV, raw PCM, AAC, MP3, M4A, Ogg/Opus, FLAC, or WebM | WAV or raw PCM |
+| Server deadline | 30 s | 300 s, covering the recording as well as the transcription |
+| Over-limit audio | Rejected with `413` before transcription | Rejected with `413` mid-upload, as soon as it passes 120 s |
+
+WAV and raw PCM audio must meet these constraints on both endpoints:
 
 | Constraint | Value |
 |------------|-------|
-| Minimum duration | 80 ms |
-| Maximum duration | 120 s |
-| Maximum file size | 40 MB |
 | Sample width | 16-bit only |
 | Channels | Mono or stereo (stereo is down-mixed internally) |
 | Sample rates | 8000, 16000, 22050, 24000, 32000, 44100, 48000 Hz |
-| Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) |
+| Content-Type | `audio/wav` for WAV, `audio/pcm` for raw PCM S16LE |
+
+Compressed audio on `/v1/transcribe` takes its Content-Type from the format: `audio/aac`, `audio/mpeg`, `audio/mp4`, `audio/ogg`, `audio/flac`, or `audio/webm`. Its stream parameters are read from the file, so no config parameters are needed.
 
 For WAV, the sample rate and channel count are read from the file header. For raw PCM, pass `sample_rate` and `channels` in the `config` part — see [Sending raw PCM audio](/sync-stt/getting-started/transcribe-a-short-audio-file#sending-raw-pcm-audio).
 
 Audio that violates a constraint is rejected with a `400`, `413`, or `415` — see [Error handling](/sync-stt/error-handling) for the full error table.
 
-For audio longer than 120 seconds, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file). For live audio, use [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
+For a recording longer than 120 seconds, wait until it finishes and post it to `/v1/transcribe` over HTTP. For audio longer than 20 minutes, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file). For words returned while the speaker is still talking, use [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
 
 ---
 
@@ -45774,25 +45700,27 @@ Source: docs/sync-stt/error-handling.mdx
 Navigation: Sync STT > Advanced
 Description: Sync STT error responses, status codes, and retry guidance.
 
-Errors return a JSON body with either an `error_code` field (audio, capacity, and inference errors) or a `detail` field (auth and rate-limit errors).
+Every error returns an RFC 9457 problem-details body with Content-Type `application/problem+json`. `title` is the stable identity of the error; `detail` explains this occurrence.
 
 ```json
-{ "error_code": "audio_too_large", "message": "audio duration 130000 ms exceeds limit 120000 ms" }
+{ "status": 413, "title": "Audio Too Large", "detail": "audio duration 1300000 ms exceeds limit 1200000 ms" }
 ```
 
-| HTTP | `error_code` | Cause |
-|------|-------------|-------|
-| 400 | `bad_audio` | Malformed WAV, misaligned PCM, or missing `sample_rate`/`channels` for PCM |
-| 400 | `audio_too_short` | Audio below 80 ms |
-| 400 | `bad_request` | Missing `audio` part, invalid config JSON, or field limits exceeded |
-| 401 | — | Missing or invalid API key |
-| 413 | `audio_too_large` | Duration > 120 s or file > 40 MB |
-| 415 | `unsupported_media_type` | Unsupported format, non-16-bit audio, or unsupported sample rate |
-| 429 | — | Rate limit exceeded — retry after `Retry-After` header |
-| 503 | `capacity_exceeded` | Server at rate limit cap — retry after `Retry-After: 1` |
-| 503 | `service_unavailable` | Model still loading (cold start) |
-| 504 | `inference_timeout` | Request exceeded the 30 s deadline |
-| 500 | `inference_error` | Internal model error |
+The SDKs raise `SyncTranscriptError` and expose `title` in snake case as the error code (`error_code` in Python, `errorCode` in JavaScript), so `Audio Too Large` becomes `audio_too_large`.
+
+| HTTP | `title` | Cause |
+|------|---------|-------|
+| 400 | `Bad Audio` | Malformed WAV, misaligned PCM, or missing `sample_rate`/`channels` for PCM |
+| 400 | `Audio Too Short` | Audio below 80 ms on `/v1/transcribe` |
+| 400 | `Bad Request` | Missing `audio` part, invalid config JSON, or field limits exceeded |
+| 401 | `Unauthorized` | Missing or invalid API key |
+| 413 | `Audio Too Large` | Duration > 20 minutes on `/v1/transcribe`, or > 120 s on `/v1/transcribe/live` (returned mid-upload); or file > 256 MB |
+| 415 | `Unsupported Media Type` | Unsupported format, non-16-bit audio, or unsupported sample rate |
+| 429 | `Too Many Requests` | Rate limit exceeded — retry after the `Retry-After` header |
+| 503 | `Capacity Exceeded` | Server at its concurrency limit — retry after `Retry-After: 1` |
+| 503 | `Service Unavailable` | Model still loading (cold start) |
+| 504 | `Inference Timeout` | Request exceeded the server deadline: 30 s on `/v1/transcribe`; 300 s on `/v1/transcribe/live`, covering recording and transcription, or a live upload idle for 120 s |
+| 500 | `Inference Error` | Internal model error |
 
 ## Retry guidance
 
@@ -46133,7 +46061,7 @@ Include the same `X-AAI-Model` header you'll use for transcription, so the warme
 Pooled connections don't live forever:
 
 - **Client-side pool expiry** — HTTP clients evict idle connections from their pool, some aggressively (for example, `httpx` drops idle connections after 5 seconds by default).
-- **Server-side idle timeout** — the endpoint closes connections that stay idle for a few minutes.
+- **Server-side idle timeout** — the endpoint closes connections that stay idle for about two minutes.
 
 If the connection has been evicted or closed by the time you call `/v1/transcribe`, the request silently opens a fresh one and pays the full handshake anyway — the warm-up bought nothing.
 
@@ -46280,7 +46208,7 @@ Your local VAD decides where a turn ends; when it does, the segment is POSTed an
 ```mermaid
 flowchart LR
   U["User audio"] --> VAD["VAD<br/>(Silero)"]
-  VAD -->|"one segment<br/>per turn"| STT["AssemblyAI Sync STT<br/>POST /transcribe"]
+  VAD -->|"one segment<br/>per turn"| STT["AssemblyAI Sync STT<br/>POST /v1/transcribe"]
   STT --> LLM["LLM"]
   LLM --> TTS["TTS"]
   TTS --> U
@@ -46297,13 +46225,13 @@ The Sync service is a different service class against a different API — not a 
 | API | Sync — one request per turn | Real-time — persistent WebSocket |
 | Turn detection | Your VAD only | Pipecat VAD **or** [AssemblyAI's built-in turn detection](/voice-agents/pipecat-universal-3-5-pro#turn-detection) |
 | Partial transcripts | None — one final transcript per turn | Interim frames throughout the turn |
-| Turn length | **120 s maximum** | Unbounded |
+| Turn length | **20 minutes maximum** | Unbounded |
 | Conversation context | Automatic, client-side rolling buffer | Automatic, server-side carryover |
 | Connection | Opened per turn (pre-warmed by default) | Held open for the session |
 
 **Reach for the Sync service when** your agent already relies on local VAD for turn-taking, when you want per-turn request/response semantics that are simple to retry, log, and reason about, or when you need [per-word timestamps](/sync-stt/word-timestamps) on each turn.
 
-**Reach for the streaming service when** you want AssemblyAI to detect end-of-turn for you, when you need interim transcripts to drive UI or speculative inference, or when turns can run longer than 120 seconds.
+**Reach for the streaming service when** you want AssemblyAI to detect end-of-turn for you, when you need interim transcripts to drive UI or speculative inference, or when turns can run longer than 20 minutes.
 
   
         <path d="M45.7718 70.7701C50.4477 69.0096 55.7252 70.3307 59.0204 74.0864L101.936 123.001H230.064L272.98 74.0864C276.275 70.3307 281.552 69.0096 286.228 70.7701C290.904 72.5306 294 77.0042 294 82.0005V190H332V214H270V113.873L244.52 142.915C242.242 145.512 238.955 147.001 235.5 147.001H96.5C93.0452 147.001 89.7581 145.512 87.4796 142.915L62 113.873V214H0V190H38V82.0005C38 77.0042 41.0958 72.5306 45.7718 70.7701Z" fill="currentColor" />
@@ -46479,8 +46407,8 @@ Speak into your microphone after hearing the greeting. Because there are no inte
 
 Transcription runs off the audio path: segments are queued and transcribed in order by a background task while audio keeps flowing through the service. A graceful stop transcribes what's queued; a cancel drops it.
 
-  **Turns are capped at 120 seconds.** The Sync API rejects longer audio with a
-  `413`. If your callers can monologue past two minutes, use the
+  **Turns are capped at 20 minutes.** The Sync API rejects longer audio with a
+  `413`. If your callers can talk past that, use the
   [streaming service](/voice-agents/pipecat-universal-3-5-pro) instead. See
   [Audio requirements](/sync-stt/audio-requirements) for the full constraints.
 
@@ -46542,9 +46470,9 @@ Set these inside `AssemblyAISyncSTTService.Settings(...)`.
   small added latency. Unset means the API default (`false`) applies. See
   [Word timestamps](/sync-stt/word-timestamps).
 
-  **`language` and `language_codes` are ignored when `prompt` is set.** If you use
-  a custom prompt and need a non-English language, state the language as part of
-  the prompt text — see
+  **`language` and `language_codes` still apply when `prompt` is set.** The
+  service sends both, and the Sync API adds your prompt in front of the
+  language-steered default — see
   [Specifying the language](/sync-stt/prompting-and-keyterms#specifying-the-language).
 
 ## Conversation context
@@ -46862,9 +46790,9 @@ A few things to expect from that payload:
 
 ## Limits
 
-- **Audio duration** — [80 ms to 120 s](/sync-stt/audio-requirements). This is the Sync API's limit; OpenRouter adds none of its own.
+- **Audio duration** — [80 ms to 20 minutes](/sync-stt/audio-requirements). This is the Sync API's limit; OpenRouter adds none of its own, but its request size limit binds first for long audio.
 - **Processing timeout** — 60 s at the gateway.
-- **Request size** — 25 MB for a multipart upload. Duration binds long before size does: 120 seconds of 16 kHz mono WAV is under 4 MB, roughly 5 MB once base64-encoded.
+- **Request size** — 25 MB for a multipart upload. For long audio, size binds before duration does: 16 kHz mono WAV is about 1.9 MB per minute, so 25 MB holds about 13 minutes, or about 10 minutes once base64-encoded.
 
 ### Audio
 
@@ -46921,10 +46849,13 @@ arrives in `llm_response` and the words exactly as spoken arrive in `text`. Set
 `llm_instruction` when your app needs a particular shape instead, such as a
 bulleted task list or a clinical note.
 
-Dictation runs on Universal-3.5 Pro across 32 languages and accepts up to 120
-seconds of audio per call. You can start the request before the user stops
-talking, so most of the utterance is uploaded by the time they finish; see
-[Uploading while recording](/dictation/uploading-while-recording).
+Dictation runs on Universal-3.5 Pro across 32 languages. The SDK accepts up to
+120 seconds of audio per call, and you can start the request before the user
+stops talking, so most of the utterance is uploaded by the time they finish;
+see [Uploading while recording](/dictation/uploading-while-recording). For a
+finished recording of up to 20 minutes, or a compressed format such as MP3,
+post it to `POST /v1/transcribe` over HTTP; see
+[Transcribing a finished recording](#transcribing-a-finished-recording).
 
 ```python
 import assemblyai as aai
@@ -46951,7 +46882,7 @@ API directly](#using-the-http-api-directly).
 To complete this guide, you need:
 
 - **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
-- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds.
+- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds through the SDK, or 20 minutes [over HTTP](#transcribing-a-finished-recording).
 - **Python 3.8+** for the SDK. The HTTP examples lower down need Python 3.8+ with `requests` or `httpx`, Node.js 18+ with `fetch`, or cURL.
 
 ## Send your first dictation
@@ -47025,18 +46956,18 @@ Every field except `llm_instruction` controls transcription. `llm_instruction` c
 |---|---|---|
 | `sample_rate` | integer | Sample rate of the audio. Required for raw PCM (for example `16000`). Ignored for WAV — the sample rate is read from the file header. |
 | `channels` | integer | Channel count. Required for raw PCM. |
-| `language_codes` | array of strings | Language(s) of the audio as ISO codes. See [Language selection](/dictation/language-selection#supported-languages) for the full list. Defaults to `["en"]`. |
+| `language_codes` | array of strings | Language(s) of the audio as ISO codes. See [Language selection](/dictation/language-selection#supported-languages) for the full list. When omitted, no language steering is applied. |
 | `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
 | `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
-| `llm_instruction` | string | Plain-English description of the rewrite you want (max 2048 characters). Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
+| `llm_instruction` | string | Plain-English description of the rewrite you want. Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
 
-The config accepts exactly the fields above. An unknown field is rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
+Unknown fields are rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
 
 ### Rewriting the transcript
 
 Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, self-corrections resolve to what the speaker landed on, and punctuation and capitalization are applied. The speaker's own phrasing and tone survive it.
 
-To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want (max 2048 characters). It replaces the default cleanup task:
+To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want. It replaces the default cleanup task:
 
 ```json
 { "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
@@ -47076,14 +47007,16 @@ A successful call returns `200` with JSON:
 
 ## Errors
 
-Most errors return a `{"status", "title", "detail"}` body, including auth
-failures (`401`), config validation failures (`400`), and unsupported audio
-formats (`415`). The `{"error", "error_code"}` shape is used only for the
-errors Dictation raises while parsing the request itself, such as a malformed
-`config` part. Read both shapes.
+Errors come in two body shapes. Auth failures (`401`), rate limiting
+(`429`), and errors from the transcription step, such as an unknown `config`
+field or an unsupported audio format (`415`), return
+`{"status", "title", "detail"}`. Errors Dictation raises itself, such as a
+malformed request, audio over the limit (`413`), capacity (`503`), and
+upstream failures (`502`, `504`), return `{"error", "error_code"}`. Read both
+shapes.
 
 Set the HTTP client timeout to 90 seconds. Typical short clips respond in under
-one second. The rewrite has a 5-second internal deadline, after which the
+one second. The rewrite has an internal deadline; past it, the
 response returns with `llm_error: "timeout"` and the transcription intact.
 
 See [Error handling](/dictation/error-handling) for the full status code table
@@ -47093,7 +47026,24 @@ and retry guidance.
 
 The SDK wraps a single HTTP request. Call it directly from any language.
 
-### Endpoint
+### Endpoints
+
+Dictation has two transcription endpoints. Choose by whether the audio is still
+being recorded when you send it:
+
+| | `POST /v1/transcribe/live` | `POST /v1/transcribe` |
+|---|---|---|
+| Use for | Audio still being recorded, uploaded as it is captured | A finished recording you hold in full |
+| Maximum duration | 120 seconds | 20 minutes |
+| Maximum size | 256 MB | 256 MB |
+| Formats | WAV or raw 16-bit PCM | WAV, raw 16-bit PCM, AAC, MP3, M4A, Ogg/Opus, FLAC, or WebM |
+| `config` part | Required, sent before `audio` | Optional, in any order |
+| SDK | `DictationTranscriber` | HTTP only |
+
+Both return the same response. The rest of this section covers
+`/v1/transcribe/live`; see
+[Transcribing a finished recording](#transcribing-a-finished-recording) for
+`/v1/transcribe`.
 
 ```
 POST https://dictation.assemblyai.com/v1/transcribe/live
@@ -47195,6 +47145,56 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
+### Transcribing a finished recording
+
+```
+POST https://dictation.assemblyai.com/v1/transcribe
+```
+
+For a recording you already hold in full, post it to `/v1/transcribe`. It
+accepts audio from 80 milliseconds up to 20 minutes and 256 MB, and the
+response is the same as `/v1/transcribe/live`'s, rewrite included.
+
+The server reads the whole body before it starts transcribing, so the request
+is simpler:
+
+- **`config` is optional** and can come before or after `audio`. Leave it out to
+  transcribe with defaults, including the default rewrite.
+- **Compressed formats are accepted.** Set the `audio` part's Content-Type to
+  the format: `audio/wav`, `audio/pcm`, `audio/aac`, `audio/mpeg` (MP3),
+  `audio/mp4` (M4A), `audio/ogg` (Ogg/Opus), `audio/flac`, or `audio/webm`.
+  Raw PCM still needs `sample_rate` and `channels` in `config`.
+- **Nothing is transcribed until the upload finishes**, so for audio that is
+  still being recorded, `/v1/transcribe/live` returns sooner.
+
+The SDK uses `/v1/transcribe/live`, so call this endpoint over HTTP. It is also
+served at `/transcribe`, without the version prefix.
+
+```python
+import requests
+
+with open("recording.mp3", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://dictation.assemblyai.com/v1/transcribe",
+    headers={"Authorization": "<YOUR_API_KEY>"},
+    files={"audio": ("recording.mp3", audio, "audio/mpeg")},
+    timeout=90,
+)
+response.raise_for_status()
+result = response.json()
+
+print(result["text"])          # verbatim transcript
+print(result["llm_response"])  # cleaned-up text, ready to send
+```
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'audio=@recording.mp3;type=audio/mpeg'
+```
+
 ## Next steps
 
 - [Uploading while recording](/dictation/uploading-while-recording) — start the request before the speaker stops
@@ -47219,11 +47219,13 @@ Source: docs/dictation/uploading-while-recording.mdx
 Navigation: Dictation API > Getting started
 Description: Start the request before the speaker stops, so most of the utterance is uploaded by the time they finish.
 
-The endpoint transcribes the audio it has while the rest is still arriving, so
-a client that uploads during the recording gets its transcript sooner. What the
-user waits for after they stop speaking is the last stretch of audio rather
-than the whole clip. The saving grows with clip length; on a clip of a few
-seconds there is little uploaded-but-unprocessed audio to save.
+The endpoint reads the body as it arrives, so a client that uploads during
+the recording gets its transcript sooner: the connection, authentication, and
+upload all overlap the recording instead of following it. On a long recording
+the endpoint can also start transcribing early. Audio is split into speech
+segments of up to about 32 seconds, and a segment is transcribed once two later
+segments exist, so early transcription only begins on recordings longer than
+roughly 90 seconds.
 
 ## Rules for a chunked upload
 
@@ -47598,9 +47600,8 @@ print(result.llm_response)
 
 ## Customizing the rewrite
 
-Set `llm_instruction` to a plain-English description of the task you want, up
-to 2048 characters. It replaces the default cleanup task rather than adding to
-it:
+Set `llm_instruction` to a plain-English description of the task you want. It
+replaces the default cleanup task rather than adding to it:
 
 ```json
 { "llm_instruction": "Remove filler words and fix punctuation." }
@@ -47901,7 +47902,7 @@ such as `["es"]` for monolingual audio, and several codes for multilingual or
 code-switching audio.
 
 - Accepts ISO language codes in a list: `["es"]`, or `["en", "es"]`
-- Defaults to English (`en`) when omitted
+- When omitted, no language steering is applied
 - Applies to the transcript only. The rewrite in `llm_response` follows the
   language of the transcript unless your
   [`llm_instruction`](/dictation/transcript-rewriting) says otherwise.
@@ -48025,6 +48026,20 @@ Metadata:
 
 ---
 
+<a id="transcribe-recorded-audio-docs-api-reference-dictation-api-transcribe-mdx"></a>
+
+# Transcribe recorded audio
+
+URL: https://www.assemblyai.com/docs/api-reference/dictation-api/transcribe
+Source: docs/api-reference/dictation-api/transcribe.mdx
+Navigation: Dictation API > API reference
+Description: Send a finished recording of up to 20 minutes, including compressed formats, to the Dictation API and receive send-ready cleaned-up text alongside the verbatim transcript.
+
+Metadata:
+- openapi: ../specs/dictation.yaml POST /v1/transcribe
+
+---
+
 <a id="audio-requirements-docs-dictation-audio-requirements-mdx"></a>
 
 # Audio requirements
@@ -48034,18 +48049,23 @@ Source: docs/dictation/audio-requirements.mdx
 Navigation: Dictation API > Advanced
 Description: Duration, format, and sample-rate constraints for Dictation audio.
 
-The Dictation API accepts short clips with the following constraints:
+Dictation has two transcription endpoints with different limits.
+`/v1/transcribe/live` takes audio while it is still being recorded and is what
+the SDK uses. `/v1/transcribe` takes a finished recording over HTTP; see
+[Transcribing a finished recording](/dictation#transcribing-a-finished-recording).
 
-| Constraint | Value |
-|------------|-------|
-| Maximum duration | 120 s |
-| Sample width | 16-bit only |
-| Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) |
+| Constraint | `/v1/transcribe/live` (SDK and HTTP) | `/v1/transcribe` (HTTP) |
+|------------|--------------------------------------|-------------------------|
+| Minimum duration | None | 80 ms |
+| Maximum duration | 120 s | 20 minutes |
+| Maximum size | 256 MB | 256 MB |
+| Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) | WAV, raw PCM, AAC (`audio/aac`), MP3 (`audio/mpeg`), M4A (`audio/mp4`), Ogg/Opus (`audio/ogg`), FLAC (`audio/flac`), or WebM (`audio/webm`) |
+| Sample width (WAV and PCM) | 16-bit only | 16-bit only |
 
-Set the `audio` part's Content-Type to match the format you send. This endpoint
-decodes audio as it arrives, and compressed formats (MP3, M4A, FLAC, OGG, and
-WebM) cannot be decoded incrementally, so they are rejected with `415`. Decode
-them to WAV or raw PCM before sending.
+Set the `audio` part's Content-Type to match the format you send.
+`/v1/transcribe/live` decodes audio as it arrives, and compressed formats cannot
+be decoded incrementally, so it rejects them with `415`. Send compressed audio
+to `/v1/transcribe`, or decode it to WAV or raw PCM first.
 
 ## WAV and raw PCM
 
@@ -48070,7 +48090,8 @@ a chunked upload the `413` can arrive part-way through the request rather than
 at the end, because the server is measuring the audio as it arrives. See
 [Error handling](/dictation/error-handling) for the full table.
 
-For audio longer than 120 seconds, use
+For a recording longer than 120 seconds, wait until it finishes and post it to
+`/v1/transcribe`. For audio longer than 20 minutes, use
 [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
 For a live transcript while the speaker is still talking, use
 [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
@@ -48086,15 +48107,17 @@ Source: docs/dictation/error-handling.mdx
 Navigation: Dictation API > Advanced
 Description: Dictation API error responses, status codes, and retry guidance.
 
-Most errors return a JSON body with `status`, `title`, and `detail` fields:
+Errors use one of two JSON body shapes. Auth failures, rate limiting, and
+errors from the transcription step return `status`, `title`, and `detail`
+fields:
 
 ```json
 { "status": 401, "title": "Unauthorized", "detail": "Invalid API key" }
 ```
 
-A second shape, with an `error` message and a machine-readable `error_code`,
-is used only for the errors Dictation raises while parsing the request itself,
-before the config is validated:
+Errors Dictation raises itself, such as a malformed request, audio over the
+limit, capacity, and upstream failures, return an `error` message and a
+machine-readable `error_code`:
 
 ```json
 { "error": "`config` is not valid JSON: Expecting property name enclosed in double quotes", "error_code": "bad_request" }
@@ -48107,15 +48130,16 @@ falling back to `error` covers every case.
 
 | HTTP | Body shape | Cause |
 |------|-----------|-------|
-| 400 | `error` / `error_code` | A malformed request body: a missing or empty `audio` part, a missing `config` part or one sent after `audio`, or `config` that is not valid JSON |
-| 400 | `status` / `title` / `detail` | A well-formed `config` that fails validation: an unknown field, a value out of range, or a field over its length limit |
+| 400 | `error` / `error_code` | A malformed request body (a missing or empty `audio` part, a missing `config` part or one sent after `audio`, or `config` that is not valid JSON), or a Dictation-specific field such as `stt_prompt` failing validation |
+| 400 | `status` / `title` / `detail` | A transcription `config` field that fails validation: an unknown field, a value out of range, or a field over its length limit |
 | 401 | `status` / `title` / `detail` | Missing `Authorization` header, or an invalid API key |
-| 413 | `status` / `title` / `detail` | Audio exceeded the size cap |
-| 415 | `status` / `title` / `detail` | The `audio` part is not `audio/wav` or `audio/pcm` |
+| 413 | `error` / `error_code` | `audio_too_large` on `/v1/transcribe/live`: audio passed 120 seconds or the size cap, returned mid-upload |
+| 413 | `status` / `title` / `detail` | `Audio Too Large` on `/v1/transcribe`: audio longer than 20 minutes |
+| 415 | `status` / `title` / `detail` | The `audio` part's format is not accepted: anything but `audio/wav` or `audio/pcm` on `/v1/transcribe/live`, or an unsupported format on `/v1/transcribe` |
 | 429 | `status` / `title` / `detail` | Rate limit exceeded |
-| 502 | `status` / `title` / `detail` | Transcription upstream unavailable |
-| 503 | `status` / `title` / `detail` | Server at capacity |
-| 504 | `status` / `title` / `detail` | Transcription upstream timed out |
+| 502 | `error` / `error_code` | `upstream_error`: transcription upstream unavailable |
+| 503 | `error` / `error_code` | `capacity_exceeded`: server at capacity |
+| 504 | `error` / `error_code` | `upstream_timeout`: transcription upstream timed out, the upload went silent for too long, or the request ran past its overall limit |
 
   Both auth failures return `401`. A missing header gives `detail: "Missing
   Authorization header"`, and a bad key gives `detail: "Invalid API key"`.
@@ -48128,7 +48152,7 @@ transcript, `llm_response` is `null`, and `llm_error` says what went wrong:
 
 | `llm_error` | Meaning |
 |-------------|---------|
-| `timeout` | The rewrite passed its 5-second internal deadline |
+| `timeout` | The rewrite passed its internal deadline |
 | `error` | The rewrite failed for another reason |
 
 Fall back to `text` when `llm_response` is `null`. Never treat a non-`null`
@@ -48145,7 +48169,7 @@ decide what to do next:
 |-----------|---------|
 | `status_code` | The HTTP status from the table above |
 | `error_code` | The machine-readable code, when the response carried one |
-| `retry_after` | Seconds to wait, from the `Retry-After` header on a `429` or `503` |
+| `retry_after` | Seconds to wait, from the `Retry-After` header on a `429` |
 
 ```python
 import time
@@ -48239,7 +48263,8 @@ as described below.
 | EU data residency | `https://dictation.eu.assemblyai.com` | EU locations listed above |
 
 The request format, headers, and parameters are identical on all three. Only
-the host changes.
+the host changes. Each host serves both `/v1/transcribe/live` and
+`/v1/transcribe`.
 
   The global endpoint routes to the nearest available region, so your data may
   be processed in any of the US or EU locations listed above. If you need data
@@ -62206,6 +62231,7 @@ For details on debugging specific status codes (400/401/403/429/5xx) and what in
 
 ## Next steps
 
+- [Choose a model](/llm-gateway/choose-a-model) - Pick the best model for your use case using benchmark data
 - [Basic Chat Completions](/llm-gateway/chat-completions) - Learn how to send simple messages and receive responses
 - [Multi-turn Conversations](/llm-gateway/conversations) - Maintain context across multiple exchanges
 - [Structured Outputs](/llm-gateway/structured-outputs) - Constrain model responses to follow a specific JSON schema
@@ -62228,6 +62254,206 @@ URL: https://www.assemblyai.com/docs/nav-links/llm-gateway-models
 Source: docs/nav-links/llm-gateway-models.mdx
 Navigation: LLM Gateway > Getting started
 Description: Open the LLM Gateway model catalog.
+
+---
+
+<a id="choose-a-model-docs-llm-gateway-choose-a-model-mdx"></a>
+
+# Choose a model
+
+URL: https://www.assemblyai.com/docs/llm-gateway/choose-a-model
+Source: docs/llm-gateway/choose-a-model.mdx
+Navigation: LLM Gateway > Getting started
+Description: Pick the best LLM Gateway model for voice post-processing tasks like summarization, extraction, text correction, and dictation, using the benchmark data from the models endpoint.
+
+## Overview
+
+LLM Gateway gives you access to dozens of models, and the best one depends on your task, how long your audio is, and whether you care most about quality, speed, or cost. The [models endpoint](/llm-gateway/api-reference/list-available-models) answers this for you. Alongside each model's pricing and supported parameters, it returns a `performance` block with benchmark results for voice post-processing tasks.
+
+The numbers come from [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench), AssemblyAI's open source benchmark. It runs every model behind LLM Gateway on real call transcripts and measures quality, latency, and cost.
+
+  Field names and values can change as the benchmark grows, so read it from the endpoint instead of copying numbers into your code.
+
+## How the numbers work
+
+### Tasks
+
+Each model is tested on four voice post-processing tasks. Your model's score for each task is in `task_quality`.
+
+| Task                   | Key in `task_quality`    | What the model does                                                                  | How it's scored                                                                            |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Summarization          | `summarization`          | Summarizes a call transcript.                                                        | An LLM judge scores faithfulness, coverage, and conciseness against the source transcript. |
+| Information extraction | `information_extraction` | Pulls participants, action items, decisions, and entities from a transcript as JSON. | An LLM judge scores groundedness and completeness against the source transcript.           |
+| Text correction        | `text_correction`        | Cleans up disfluencies and errors in a transcript without changing its meaning.      | An LLM judge scores faithfulness and improvement.                                          |
+| Dictation              | `dictation`              | Applies spoken commands such as "comma", "all caps", and "new paragraph".            | Scored mechanically against an answer key, with no LLM judge.                              |
+
+Quality scores run from 1 to 100, where higher is better. The overall `quality_score` is the equal-weight average of the tasks that have data.
+
+### Audio length buckets
+
+Every row in `performance.data` is for one audio length, in the `bucket` field: `30s`, `120s`, `900s`, or `3600s`. Pick the bucket closest to the transcripts you process. Scores generally drop as transcripts get longer, so a model that is excellent on 30-second calls can be a different choice for hour-long recordings.
+
+### Fields
+
+| Field                                | Meaning                                                                                                                                                             |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `quality_score`                      | Combined quality, 1 to 100.                                                                                                                                         |
+| `task_quality`                       | Quality per task, 1 to 100.                                                                                                                                         |
+| `cost_per_hour_usd`                  | Estimated cost to process one hour of audio. Use this to compare cost across models, buckets, and tasks. `task_cost_per_hour_usd` gives the same estimate per task. |
+| `total_cost_usd`, `cost_per_quality` | Cost of the benchmark samples behind the score. `cost_per_quality` is cost per call per quality point, in cents, where lower is more efficient.                     |
+| `latency`                            | End-to-end request latency in seconds, with `p50`, `p95`, `mean`, `min`, `max`, and sample count `n`.                                                               |
+| `ttft`                               | Time to first token in seconds from a separate streaming run, with the same statistics as `latency`.                                                                |
+| `tokens_per_second`                  | Output speed.                                                                                                                                                       |
+| `reasoning_effort`                   | The reasoning setting the row was measured with. See [Reasoning effort rows](#reasoning-effort-rows).                                                               |
+
+### Reading the numbers carefully
+
+- **A `0` means no data, not a bad score.** Dictation isn't measured on the `900s` and `3600s` buckets, so its `task_quality` is `0` there. A `ttft` of `0` means it wasn't measured. Skip zeros instead of ranking on them.
+- **Small gaps are noise.** A one- or two-point difference between models doesn't tell you much. Prefer the cheaper or faster model when scores are close.
+- **Cross-check outliers.** If a single task score is far above the model's `quality_score` or its other tasks, it may come from very few usable samples. Check `latency.n` and the other tasks before trusting it.
+- **Look at `p95`, not just `p50`.** A model with a fast median can still have a slow tail, which matters for real-time use.
+- **Costs use global pricing.** They don't include the regional surcharge shown on the [Models](/llm-gateway/available-models#pricing-details) page. `cost_per_hour_usd` is an estimate based on average tokens per hour of audio, so fast or slow talkers shift your real cost.
+- **The benchmark uses fixed prompts.** Your prompts, your audio, and your domain will differ. Treat the numbers as a way to build a shortlist, then test the shortlist on your own data.
+
+### Reasoning effort rows
+
+Most models have one row per bucket with `reasoning_effort` set to `default`. That means the benchmark didn't send the `reasoning_effort` parameter. A few models have extra rows measured with a specific value, such as `none`, `low`, or `high`. Each row is a separate configuration with its own quality, latency, and cost, so a lower setting can be much faster and cheaper at a small cost in quality.
+
+To use a non-default row, send that value in the `reasoning_effort` parameter of your [chat completions](/llm-gateway/chat-completions) request. Only models that list `reasoning_effort` in `supported_parameters` accept it.
+
+## Pick a model
+
+Work through these filters in order. They're the same ones the coding agent prompt below applies.
+
+1. **Match the bucket.** Choose the `bucket` closest to your typical audio length. If your audio falls between buckets, use the longer one.
+2. **Rank by the task you run.** Use `task_quality` for that task. Use `quality_score` only if you run several tasks with the same model.
+3. **Filter to what you can use.** Drop models where `retirement_date` isn't `0`, models whose `available_regions` don't include your region (see [Cloud endpoints and data residency](/llm-gateway/cloud-endpoints-and-data-residency)), and models whose `supported_parameters` lack what you need, such as `response_format` for [structured outputs](/llm-gateway/structured-outputs) or `tools` for [tool calling](/llm-gateway/tool-calling).
+4. **Apply your constraint.** For lowest cost, sort by `cost_per_hour_usd`. For real-time responses, sort by `latency.p50` and check `latency.p95` (or `ttft` if you stream). For best quality, take the top score.
+5. **Break ties on cost.** Among models within a couple of quality points of the top, choose the cheapest or fastest.
+6. **Add a fallback.** Pick the runner-up as a [fallback](/llm-gateway/fallback) so requests keep working if your primary model fails.
+
+### Example from the data
+
+This snapshot is from October 15, 2026. For each bucket it shows the top-scoring model and the cheapest model within 3 points of it, excluding models with a retirement date. Quality is the combined `quality_score`. The endpoint is the source of truth, so query it for current results.
+
+| Audio length | Goal                     | Model                  | Quality | Cost per hour | p50 latency | Regions        |
+| ------------ | ------------------------ | ---------------------- | ------- | ------------- | ----------- | -------------- |
+| `30s`        | Top score                | `gpt-6-luna` (`high`)  | 96      | $0.0054       | 2.5 s       | US, global     |
+| `30s`        | Cheapest within 3 points | `gpt-6-luna` (`none`)  | 94      | $0.0028       | 0.9 s       | US, global     |
+| `120s`       | Top score                | `gemini-4-argon`       | 94      | $0.073        | 2.6 s       | US, EU, global |
+| `120s`       | Cheapest within 3 points | `gemma-4-31b` (`none`) | 91      | $0.0036       | 1.7 s       | US             |
+| `900s`       | Top score                | `claude-opus-5`        | 89      | $0.32         | 14.9 s      | US, global     |
+| `900s`       | Cheapest within 3 points | `gpt-6-luna`           | 87      | $0.0048       | 15.5 s      | US, global     |
+| `3600s`      | Top score                | `gpt-6-astra`          | 88      | $0.35         | 24.1 s      | US             |
+| `3600s`      | Cheapest within 3 points | `gpt-6-luna`           | 85      | $0.0039       | 19.0 s      | US, global     |
+
+Models with no setting in parentheses were measured at `default` reasoning effort. Per-task winners differ from these overall winners, so rank on `task_quality` for your task before you decide.
+
+## Query the models endpoint
+
+The endpoint is public, so you don't need an API key. This example lists the five best models for summarization on 2-minute audio, skipping retiring models and models with no summarization data:
+
+```bash
+curl -s https://llm-gateway.assemblyai.com/v1/models | jq -r '
+  [ .data[] | select(.retirement_date == 0) | . as $m
+    | .performance.data[]
+    | select(.bucket == "120s" and .task_quality.summarization > 0)
+    | { model: $m.id, reasoning_effort, summarization: .task_quality.summarization,
+        cost_per_hour_usd, p50_latency_s: .latency.p50 } ]
+  | sort_by(-.summarization) | .[:5][]
+  | [.model, .reasoning_effort, .summarization, .cost_per_hour_usd, .p50_latency_s] | @tsv'
+```
+
+Each model in the response has this shape. Fields not used for model selection are omitted here:
+
+```json
+{
+  "id": "gpt-6-luna",
+  "available_regions": ["us", "global"],
+  "retirement_date": 0,
+  "supported_parameters": ["max_tokens", "tools", "tool_choice", "stream", "response_format", "reasoning_effort"],
+  "performance": {
+    "status": "beta",
+    "data": [
+      {
+        "model": "gpt-6-luna",
+        "reasoning_effort": "default",
+        "bucket": "30s",
+        "quality_score": 95,
+        "task_quality": { "dictation": 97, "information_extraction": 88, "summarization": 97, "text_correction": 96 },
+        "cost_per_hour_usd": 0.00427,
+        "latency": { "n": 100, "p50": 1.694, "p95": 5.055 },
+        "ttft": { "n": 50, "p50": 0.992, "p95": 3.565 }
+      }
+    ]
+  }
+}
+```
+
+To use the EU endpoint, replace `llm-gateway.assemblyai.com` with `llm-gateway.eu.assemblyai.com`.
+
+## Choose a model with a coding agent
+
+Describe what you're building in plain language, and your coding agent can read the endpoint, work out which tasks, audio length, and constraints apply, and write the integration code for the model it picks. Paste this prompt into Claude Code, Cursor, or your agent of choice, and replace the bracketed text with your description. For example: "a meeting notetaker that summarizes hour-long recordings and lists action items, with data kept in the EU."
+
+```text
+Help me choose the best AssemblyAI LLM Gateway model for what I'm building, then wire it into my code.
+
+What I'm building: [describe what you want to do with your audio or transcripts]
+
+Work out my requirements from that description and from my codebase, instead of asking me for a list of settings. Infer:
+- Which of the benchmark's tasks I need: summarization, information_extraction, text_correction, and/or dictation. A use case can need more than one, such as meeting notes (summarization and information_extraction) or cleaning up a transcript before display (text_correction).
+- How long my audio is, and so which benchmark bucket to use: 30s, 120s, 900s, or 3600s.
+- What I'm optimizing for: lowest cost, lowest latency, highest quality, or a balance. Real-time and interactive use points to latency. High-volume batch work points to cost. Clinical, legal, or customer-facing output points to quality.
+- Which region I need. Mentions of EU, GDPR, or data residency point to eu.
+- Which features I need, such as structured outputs (`response_format`), tool calling (`tools`), or streaming (`stream`).
+
+State each of these as an assumption. Only ask me a question if the description leaves out something that would change the answer, and ask all such questions at once.
+
+Then pick a model:
+1. Fetch https://llm-gateway.assemblyai.com/v1/models. It is public and needs no API key.
+2. Read https://www.assemblyai.com/docs/llm-gateway/choose-a-model.md to understand the `performance` fields before you rank anything.
+3. Each model has `performance.data`, with one row per `bucket` and `reasoning_effort` value. Use the bucket closest to my audio length, rounding up to the longer bucket if it falls between two.
+4. Rank on `task_quality[<task>]` for each task I need. If I need several tasks with one model, use their average, or `quality_score` if all four tasks have data.
+5. Treat a `task_quality` value of 0 as "not measured", never as a poor score. Dictation has no data for 900s or 3600s.
+6. Drop any model that has a non-zero `retirement_date`, whose `available_regions` doesn't include my region, or whose `supported_parameters` is missing something I need.
+7. Compare cost with `cost_per_hour_usd`. Compare latency with `latency.p50` and `latency.p95`, and `ttft` if I stream.
+8. Treat scores within about 2 points as ties and break them with my priority.
+9. Each `reasoning_effort` row is a separate configuration. If the best row is not "default", send that value as the `reasoning_effort` request parameter.
+10. Show me a shortlist of 3 models as a table with the score for my task, cost per hour, p50 and p95 latency, bucket, and reasoning effort. Explain the tradeoffs in one or two sentences each, and recommend one.
+
+After I pick a model:
+- Write the code to call POST /v1/chat/completions on the LLM Gateway with that model, reading my API key from the ASSEMBLYAI_API_KEY environment variable. Use https://llm-gateway.eu.assemblyai.com if I need EU data residency.
+- Set the runner-up from the shortlist as a fallback using the `fallbacks` parameter. See https://www.assemblyai.com/docs/llm-gateway/fallback.md
+- Put the model ID and reasoning effort in configuration, not hardcoded in the logic.
+
+Do not copy benchmark scores into the code or comments. They change. Remind me that the numbers come from fixed benchmark prompts, and suggest I test the shortlist on a few of my own transcripts before going to production.
+```
+
+  To keep your agent on current information in an ongoing project, see [Build with AI agents](/coding-agent-prompts) for how to pin AssemblyAI docs in your project instructions.
+
+## Run Voice Standard Bench
+
+The endpoint reflects one benchmark run on AssemblyAI's own transcripts and prompts. [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench) is open source (MIT), so you can see exactly how every number is produced and run it yourself.
+
+**What it measures.** For every model behind LLM Gateway, it runs the four tasks above on transcripts grouped by audio length. It records latency, token usage, cost, and quality, and rolls them up into the fields you see in the endpoint.
+
+**What the repository gives you:**
+
+- **Published results.** Open `use_cases.html` in `results/canonical/` for a browsable report that groups the best models by use case and audio length, with no setup. `summary.csv` and `summary.json` hold every row.
+- **The prompts.** The task prompts, judge prompts, and scoring rubrics live in `src/prompts`. Read them to see what a score is measuring.
+- **The harness.** A Go CLI that benchmarks models through LLM Gateway. Use it to benchmark a specific shortlist of models, try a different `reasoning_effort`, or replay a run with a different judge without calling the models again.
+
+**When to run it yourself.** Run it when the published numbers aren't enough to decide, for example if your transcripts look very different from call audio, or you want to compare models on your own data. Otherwise the endpoint and the published results are the faster route.
+
+  The benchmark reads its transcripts from a `normalized/` directory that isn't included in the repository, and running it makes billable LLM Gateway calls. Read the [README](https://github.com/AssemblyAI/voice-standard-bench#readme) before you start. It covers the dataset layout, the flags, and how scores are calculated.
+
+## Related
+
+- [Models](/llm-gateway/available-models): every model with its ID, parameters, and pricing.
+- [Model fallbacks](/llm-gateway/fallback): automatically retry on a backup model.
+- [Cloud endpoints and data residency](/llm-gateway/cloud-endpoints-and-data-residency): which models are available in which regions.
+- [Improve latency](/llm-gateway/improve-latency): reduce request overhead with keep-alive connections.
 
 ---
 
@@ -86927,7 +87153,7 @@ paths:
       x-fern-sdk-group-name: LLM Gateway
       x-fern-display-name: List available models
       summary: List available models
-      description: "\n\n<Note>To use our EU server for LLM Gateway, replace `llm-gateway.assemblyai.com` with `llm-gateway.eu.assemblyai.com`.</Note>\n\nReturns the list of models available through LLM Gateway, including the supported parameters, context length, pricing, and regional availability of each model. This endpoint doesn't require authentication."
+      description: "\n\n<Note>To use our EU server for LLM Gateway, replace `llm-gateway.assemblyai.com` with `llm-gateway.eu.assemblyai.com`.</Note>\n\nReturns the list of models available through LLM Gateway, including the supported parameters, context length, pricing, regional availability, and benchmark performance of each model. See [Choose a model](https://www.assemblyai.com/docs/llm-gateway/choose-a-model) for how to use the performance data. This endpoint doesn't require authentication."
       operationId: listAvailableModels
       security: []
       responses:
@@ -86965,6 +87191,60 @@ paths:
                             completions: 0.5
                         retirement_date: 0
                         available_regions: ["us", "eu"]
+                        providers:
+                          - id: "assemblyai"
+                            name: "AssemblyAI"
+                        default_provider:
+                          id: "assemblyai"
+                          name: "AssemblyAI"
+                        date_added: null
+                        performance:
+                          status: "beta"
+                          data:
+                            - model: "qwen3.5-4b-32k-fast"
+                              reasoning_effort: "default"
+                              bucket: "30s"
+                              quality_score: 74
+                              total_cost_usd: 0.006874
+                              cost_per_quality: 0.00009289
+                              hourly_prompt_tokens: 13717
+                              hourly_completion_tokens: 2911
+                              cost_per_hour_usd: 0.00262
+                              latency:
+                                n: 100
+                                min: 0.14
+                                max: 0.675
+                                mean: 0.33
+                                p50: 0.28
+                                p95: 0.573
+                              tokens_per_second: 186.145
+                              ttft:
+                                n: 50
+                                min: 0.058
+                                max: 0.325
+                                mean: 0.138
+                                p50: 0.108
+                                p95: 0.322
+                              task_quality:
+                                dictation: 81
+                                information_extraction: 80
+                                summarization: 76
+                                text_correction: 62
+                              task_cost_usd:
+                                dictation: 0.002237
+                                information_extraction: 0.001633
+                                summarization: 0.001248
+                                text_correction: 0.001756
+                              task_cost_per_quality:
+                                dictation: 0.00006904
+                                information_extraction: 0.0001021
+                                summarization: 0.00008211
+                                text_correction: 0.0001416
+                              task_cost_per_hour_usd:
+                                dictation: 0.002114
+                                information_extraction: 0.002742
+                                summarization: 0.002768
+                                text_correction: 0.003383
                       - id: "claude-sonnet-4-6"
                         name: "Sonnet 4.6"
                         description: ""
@@ -87774,6 +88054,180 @@ components:
           items:
             type: string
           description: The regions where the model is available (`us`, `eu`, and/or `global`). See [Cloud endpoints & data residency](https://www.assemblyai.com/docs/llm-gateway/cloud-endpoints-and-data-residency) for more details.
+        providers:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModelProvider"
+          description: The providers that can serve the model. See [Providers](https://www.assemblyai.com/docs/llm-gateway/providers) for more details.
+        default_provider:
+          $ref: "#/components/schemas/ModelProvider"
+          description: The provider that serves requests for this model by default.
+        date_added:
+          type: string
+          nullable: true
+          description: The date the model was added. `null` for older models.
+        performance:
+          $ref: "#/components/schemas/ModelPerformance"
+          description: Benchmark results for the model on voice post-processing tasks. See [Choose a model](https://www.assemblyai.com/docs/llm-gateway/choose-a-model).
+
+    ModelProvider:
+      type: object
+      description: A provider that serves a model.
+      properties:
+        id:
+          type: string
+          description: The provider ID.
+          examples: ["assemblyai"]
+        name:
+          type: string
+          description: The human-readable name of the provider.
+          examples: ["AssemblyAI"]
+
+    ModelPerformance:
+      type: object
+      description: >
+        Benchmark results for a model on voice post-processing tasks, produced by
+        [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench).
+        `data` has one entry per audio length bucket and reasoning effort the model was measured with.
+      properties:
+        status:
+          type: string
+          description: The maturity of the performance data. Currently `beta`, which means field names and values can change.
+          examples: ["beta"]
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModelPerformanceData"
+          description: The benchmark results, one entry per bucket and reasoning effort.
+
+    ModelPerformanceData:
+      type: object
+      description: >
+        Benchmark results for one model at one audio length bucket and reasoning effort.
+        Scores are on a 1 to 100 scale, where higher is better. A score of `0` means the
+        benchmark has no data for it, not that the model scored poorly.
+      properties:
+        model:
+          type: string
+          description: The model ID the result is for.
+          examples: ["qwen3.5-4b-32k-fast"]
+        reasoning_effort:
+          type: string
+          description: The `reasoning_effort` the model was measured with. `default` means the benchmark didn't set the parameter. Other values, such as `none`, `low`, and `high`, are separate configurations with their own results.
+          examples: ["default"]
+        bucket:
+          type: string
+          description: The audio length of the transcripts the result is for.
+          enum: ["30s", "120s", "900s", "3600s"]
+        quality_score:
+          type: integer
+          description: The combined quality score. It is the equal-weight average of the tasks that have data.
+        total_cost_usd:
+          type: number
+          format: float
+          description: The total cost in USD of the benchmark samples behind the score.
+        cost_per_quality:
+          type: number
+          format: float
+          description: The mean cost of one benchmark sample, in cents, divided by `quality_score`. Lower is more cost-efficient.
+        hourly_prompt_tokens:
+          type: integer
+          description: The mean prompt tokens for one hour of audio, used to estimate `cost_per_hour_usd`.
+        hourly_completion_tokens:
+          type: integer
+          description: The mean completion tokens for one hour of audio, used to estimate `cost_per_hour_usd`.
+        cost_per_hour_usd:
+          type: number
+          format: float
+          description: The estimated cost in USD to process one hour of audio. It is based on average tokens per hour, so actual cost varies with how fast speakers talk.
+        latency:
+          $ref: "#/components/schemas/ModelPerformanceStats"
+          description: Request latency in seconds.
+        tokens_per_second:
+          type: number
+          format: float
+          description: The output speed, in completion tokens per second.
+        ttft:
+          $ref: "#/components/schemas/ModelPerformanceStats"
+          description: Time to first token in seconds, measured in a separate streaming run. Values of `0` mean it wasn't measured.
+        task_quality:
+          $ref: "#/components/schemas/ModelPerformanceTaskQuality"
+          description: The quality score for each task.
+        task_cost_usd:
+          $ref: "#/components/schemas/ModelPerformanceTaskCost"
+          description: The total cost in USD of the benchmark samples for each task.
+        task_cost_per_quality:
+          $ref: "#/components/schemas/ModelPerformanceTaskCost"
+          description: The `cost_per_quality` value for each task.
+        task_cost_per_hour_usd:
+          $ref: "#/components/schemas/ModelPerformanceTaskCost"
+          description: The estimated cost in USD to process one hour of audio for each task.
+
+    ModelPerformanceStats:
+      type: object
+      description: Summary statistics for a measurement, in seconds.
+      properties:
+        n:
+          type: integer
+          description: The number of samples.
+        min:
+          type: number
+          format: float
+          description: The minimum value.
+        max:
+          type: number
+          format: float
+          description: The maximum value.
+        mean:
+          type: number
+          format: float
+          description: The mean value.
+        p50:
+          type: number
+          format: float
+          description: The median value.
+        p95:
+          type: number
+          format: float
+          description: The 95th percentile value.
+
+    ModelPerformanceTaskQuality:
+      type: object
+      description: A quality score, from 1 to 100, for each task. `0` means the task wasn't measured for this bucket. For example, dictation isn't measured on the `900s` and `3600s` buckets.
+      properties:
+        dictation:
+          type: integer
+          description: Applying spoken dictation commands such as "comma" and "new paragraph". Scored mechanically against an answer key.
+        information_extraction:
+          type: integer
+          description: Extracting participants, action items, decisions, and entities from a transcript as JSON. Scored by an LLM judge.
+        summarization:
+          type: integer
+          description: Summarizing a call transcript. Scored by an LLM judge.
+        text_correction:
+          type: integer
+          description: Cleaning up disfluencies and errors in a transcript without changing its meaning. Scored by an LLM judge.
+
+    ModelPerformanceTaskCost:
+      type: object
+      description: A cost measurement for each task. `0` means the task wasn't measured for this bucket.
+      properties:
+        dictation:
+          type: number
+          format: float
+          description: The value for the dictation task.
+        information_extraction:
+          type: number
+          format: float
+          description: The value for the information extraction task.
+        summarization:
+          type: number
+          format: float
+          description: The value for the summarization task.
+        text_correction:
+          type: number
+          format: float
+          description: The value for the text correction task.
 
     DefaultParameters:
       type: object

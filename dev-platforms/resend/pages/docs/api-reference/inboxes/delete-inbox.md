@@ -33,7 +33,7 @@ Remove an existing inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields

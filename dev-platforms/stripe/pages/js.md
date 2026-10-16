@@ -3509,8 +3509,6 @@ Initialize the Checkout Elements SDK
 
 `stripe.initCheckoutFormSdk(options?: object)`
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 This method initializes Checkout for [embedded form](https://docs.stripe.com/elements/embeddable-payment-form.md) integrations, where a single form handles payment, address, and other elements.
 
 - `options`
@@ -5066,16 +5064,12 @@ Load additional custom fonts
 
 ## Embedded form methods
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 Use the [Embedded form SDK](https://docs.stripe.com/js/custom_checkout/form_init.md)
 instance to create and manage the embedded form.
 
 ## Create an embedded form
 
 `checkoutFormSdk.createForm(options?: object)`
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 This method creates an instance of an embedded form. Call [initCheckoutFormSdk](https://docs.stripe.com/js/custom_checkout/form_init.md) first to obtain the `checkoutFormSdk` object.
 
@@ -5165,8 +5159,6 @@ Create an embedded form
 
 `checkoutFormSdk.createCurrencySelectorElement()`
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 This method creates an instance of a Currency Selector Element. The `checkoutFormSdk` object is obtained by calling [initCheckoutFormSdk](https://docs.stripe.com/js/custom_checkout/form_init.md).
 
 ### Example
@@ -5178,8 +5170,6 @@ Create a Currency Selector Element
 ## Get the embedded form
 
 `checkoutFormSdk.getForm()`
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 This method gets the previously created embedded form instance, if it exists. You can obtain the `checkoutFormSdk` by calling [initCheckoutFormSdk](https://docs.stripe.com/js/custom_checkout/form_init.md).
 
@@ -5193,8 +5183,6 @@ Get the embedded form
 
 `checkoutFormSdk.getCurrencySelectorElement()`
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 This method gets the previously created Currency Selector Element instance, if it exists. The `checkoutFormSdk` object is obtained by calling [initCheckoutFormSdk](https://docs.stripe.com/js/custom_checkout/form_init.md).
 
 ### Example
@@ -5206,8 +5194,6 @@ Get the Currency Selector Element
 ## Set the view on the embedded form
 
 `checkoutForm.setView(viewIndex: number)`
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 Programmatically sets the active view on the embedded form. This method is only available when `options[layout]` is `'compact'`.
 The compact layout is in private preview. [Request access](https://docs.stripe.com/checkout/form/quickstart.md#request-access-to-the-compact-layout).
@@ -5983,8 +5969,6 @@ Call useCheckoutElements hook
 ```
 
 ## useCheckout
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 *`useCheckout` is deprecated. Use [useCheckoutElements](https://docs.stripe.com/js/react_stripe_js/checkout/use_checkout_elements.md) inside a [CheckoutElementsProvider](https://docs.stripe.com/js/react_stripe_js/checkout/checkout_provider.md), or [useCheckoutForm](https://docs.stripe.com/js/react_stripe_js/checkout_form/use_checkout_form.md) inside a [CheckoutFormProvider](https://docs.stripe.com/js/react_stripe_js/checkout_form/checkout_form_provider.md). The new hooks provide compile-time type safety for the actions available under each provider.*
 
@@ -7500,8 +7484,6 @@ Render TaxIdElement
 
 ## Using the Embedded form provider
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 Build your Stripe integration using React and the [embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form), a single unified form that bundles payment, address, and other elements.
 
 See [build an integration with an embedded form](https://docs.stripe.com/checkout/form/quickstart.md) for steps on using the embedded form with the Checkout Sessions API.
@@ -7509,8 +7491,6 @@ See [build an integration with an embedded form](https://docs.stripe.com/checkou
 The following React components and hooks are available to use as part of your integration.
 
 ## CheckoutFormProvider
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 The `CheckoutFormProvider` component wraps your React tree for the [embedded form integration](https://docs.stripe.com/elements/embeddable-payment-form.md).
 It initializes the Embedded form SDK and provides it in a context so nested components can render the `CheckoutForm` component and access session data.
@@ -7549,8 +7529,6 @@ Mount CheckoutFormProvider
 ```
 
 ## useCheckoutForm
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 The `useCheckoutForm` hook returns a disjoint union describing the loading state:
 
@@ -8066,8 +8044,6 @@ Call useCheckoutForm hook
 
 ## useCheckout
 
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
-
 *`useCheckout` is deprecated. Use [useCheckoutElements](https://docs.stripe.com/js/react_stripe_js/checkout/use_checkout_elements.md) inside a [CheckoutElementsProvider](https://docs.stripe.com/js/react_stripe_js/checkout/checkout_provider.md), or [useCheckoutForm](https://docs.stripe.com/js/react_stripe_js/checkout_form/use_checkout_form.md) inside a [CheckoutFormProvider](https://docs.stripe.com/js/react_stripe_js/checkout_form/checkout_form_provider.md). The new hooks provide compile-time type safety for the actions available under each provider.*
 
 The `useCheckout` hook returns a disjoint union describing the loading state:
@@ -8581,8 +8557,6 @@ Call useCheckout hook
 ```
 
 ## CheckoutForm
-
-> This feature is in public preview. See [Embedded form](https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=checkout-form) for more information.
 
 Use the `CheckoutForm` from `@stripe/react-stripe-js/checkout` to render the embedded form; a single form that handles payment, address, and other elements.
 

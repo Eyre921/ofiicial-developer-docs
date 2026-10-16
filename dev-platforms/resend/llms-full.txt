@@ -13470,6 +13470,130 @@ Update an existing event schema.
 </ResponseExample>
 
 
+# Add Thread Labels
+Source: https://resend.com/docs/api-reference/inboxes/add-thread-labels
+
+POST /inboxes/:inbox_id/threads/:thread_id/labels
+Apply one or more labels to a thread.
+
+<Warning>
+  Inboxes are currently in private beta and only available to a limited
+  number of users. The response shape might change before GA.
+
+  <span />
+
+  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the new methods:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
+    ```
+
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
+    ```
+  </CodeGroup>
+</Warning>
+
+Labels already on the thread stay on it. If any label ID is not found, nothing
+changes. To replace the thread's labels instead, use
+[Set Thread Labels](/docs/api-reference/inboxes/set-thread-labels).
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The Inbox ID or the inbox email address, such as `support@example.com`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The Thread ID.
+</ResendParamField>
+
+## Body Parameters
+
+<ParamField type="string[]">
+  The IDs of the labels to apply. Between 1 and 10 IDs, each belonging to the
+  inbox.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="array">
+  Every label on the thread after the change.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The name of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The color of the label as an uppercase `#RRGGBB` hex code, like
+      `#E93D82`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.inboxes.threads.labels.add({
+    inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+    threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
+    labels: ['7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34'],
+  });
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/labels' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "labels": ["7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34"]
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend inboxes threads labels add b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
+    --labels 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d",
+        "name": "Billing",
+        "color": "#00A2C7"
+      },
+      {
+        "id": "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34",
+        "name": "Urgent",
+        "color": "#E93D82"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # Create Draft
 Source: https://resend.com/docs/api-reference/inboxes/create-draft
 
@@ -13504,7 +13628,7 @@ A draft lets you prepare a message before sending it.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters
@@ -13705,7 +13829,7 @@ An inbox sends and receives email at an address on one of your domains, such as
 </ParamField>
 
 <ResendParamField type="string">
-  The name recipients see when mail is sent from this inbox Max 78 characters.
+  The name recipients see when mail is sent from this inbox. Max 78 characters.
 </ResendParamField>
 
 <ParamField type="boolean">
@@ -13796,12 +13920,12 @@ Create a label on an inbox.
 </Warning>
 
 A label is a named, colored tag that belongs to one inbox. An inbox can have at
-most 100 labels. Labels names are unique per inbox.
+most 100 labels. Label names are unique per inbox.
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters
@@ -13898,7 +14022,7 @@ Discards an unsent draft.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -13985,7 +14109,7 @@ Remove an existing inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -14068,7 +14192,7 @@ Deletes the label and removes it from every thread that carries it.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14164,7 +14288,7 @@ days.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14239,11 +14363,11 @@ Forward a message in an inbox thread to new recipients.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
@@ -14252,8 +14376,8 @@ Forward a message in an inbox thread to new recipients.
 Forwards a message from the inbox address.
 
 The attachments of the original message are sent with the forward, together
-with any `attachments` you add. The request fails when they exceed 10 files or
-25 MB of `content` in total. An original
+with any `attachments` you add. The request fails when they exceed 25 MB of
+`content` in total. An original
 attachment that was sent from a URL (`path`) cannot be forwarded, and the
 request returns a `422`.
 
@@ -14265,7 +14389,7 @@ be set or overridden.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14405,7 +14529,10 @@ be set or overridden.
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes threads emails forward b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
     --to colleague@example.org \
-    --text "Flagging this refund request for you."
+    --cc billing@example.com \
+    --bcc records@example.com \
+    --text "Flagging this refund request for you." \
+    --attachment ./invoice.pdf
   ```
 </RequestExample>
 
@@ -14450,7 +14577,7 @@ Retrieve the agent settings for an inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -14481,8 +14608,8 @@ Retrieve the agent settings for an inbox.
   * `add_labels`: Add labels to a thread.
   * `assign_thread`: Assign a thread.
   * `mark_as_spam`: Mark a thread as spam.
-  * `archive_thread`: Archive a thread.
-  * `delete_thread`: Delete a thread.
+  * `archive`: Archive a thread.
+  * `move_to_trash`: Move a thread to the trash.
 </ParamField>
 
 <RequestExample>
@@ -14550,7 +14677,7 @@ Retrieve a single draft by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14854,7 +14981,7 @@ Thread Emails](/docs/api-reference/inboxes/list-thread-emails).
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -14972,7 +15099,7 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -15146,7 +15273,7 @@ Returns the unsent drafts in the inbox, most recently updated first.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Query Parameters
@@ -15469,7 +15596,7 @@ Retrieve the labels on an inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -15497,10 +15624,6 @@ Retrieve the labels on an inbox.
 
     <ParamField type="string">
       ISO 8601 timestamp when the label was created.
-    </ParamField>
-
-    <ParamField type="string">
-      ISO 8601 timestamp when the label was last updated.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -15535,15 +15658,13 @@ Retrieve the labels on an inbox.
         "id": "2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d",
         "name": "Billing",
         "color": "#00A2C7",
-        "created_at": "2026-08-01T09:12:03.004Z",
-        "updated_at": "2026-08-01T09:12:03.004Z"
+        "created_at": "2026-08-01T09:12:03.004Z"
       },
       {
         "id": "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34",
         "name": "Urgent",
         "color": "#E93D82",
-        "created_at": "2026-08-05T14:07:42.881Z",
-        "updated_at": "2026-08-05T14:07:42.881Z"
+        "created_at": "2026-08-05T14:07:42.881Z"
       }
     ]
   }
@@ -15586,7 +15707,7 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -15791,7 +15912,7 @@ A thread is a conversation within an inbox, made up of one or more messages.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Query Parameters
@@ -15969,6 +16090,117 @@ Threads](/docs/api-reference/inboxes/search-threads).
 </ResponseExample>
 
 
+# Remove Thread Label
+Source: https://resend.com/docs/api-reference/inboxes/remove-thread-label
+
+DELETE /inboxes/:inbox_id/threads/:thread_id/labels/:label_id
+Take one label off a thread.
+
+<Warning>
+  Inboxes are currently in private beta and only available to a limited
+  number of users. The response shape might change before GA.
+
+  <span />
+
+  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the new methods:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
+    ```
+
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
+    ```
+  </CodeGroup>
+</Warning>
+
+The label itself is kept, and stays on every other thread that carries it. To
+delete the label everywhere, use
+[Delete Label](/docs/api-reference/inboxes/delete-label).
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The Inbox ID or the inbox email address, such as `support@example.com`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The Thread ID.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The Label ID.
+</ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="array">
+  Every label on the thread after the change.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The name of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The color of the label as an uppercase `#RRGGBB` hex code, like
+      `#E93D82`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.inboxes.threads.labels.remove({
+    inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+    threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
+    labelId: '7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34',
+  });
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X DELETE 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/labels/7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend inboxes threads labels remove b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d",
+        "name": "Billing",
+        "color": "#00A2C7"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # Reply to Thread Email
 Source: https://resend.com/docs/api-reference/inboxes/reply-thread-email
 
@@ -15988,11 +16220,11 @@ Send a reply to a message in an inbox thread.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
@@ -16003,7 +16235,7 @@ Sends a reply from the inbox address.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16140,8 +16372,11 @@ Sends a reply from the inbox address.
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes threads emails reply b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60 \
+    --cc billing@example.com \
+    --bcc records@example.com \
     --html "<p>Refund issued for order 1041.</p>" \
-    --text "Refund issued for order 1041."
+    --text "Refund issued for order 1041." \
+    --attachment ./invoice.pdf
   ```
 </RequestExample>
 
@@ -16189,7 +16424,7 @@ whether they have attachments, and their dates.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Query Parameters
@@ -16364,9 +16599,9 @@ whether they have attachments, and their dates.
       Identifies the email in the thread that matched the search. When `query`
       has words or phrases, it's the most relevant match. Otherwise, it's the
       newest. [Retrieve Thread Email](/docs/api-reference/inboxes/get-thread-email),
-      reply, and forward accept it as `email_id`, but it is not equal to the
-      `id` those endpoints return. `null` when the search index returns no
-      matched email for the thread.
+      reply, and forward accept it as `email_id`. It is the same `id` that
+      [List Thread Emails](/docs/api-reference/inboxes/list-thread-emails) returns.
+      `null` when the search index returns no matched email for the thread.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -16510,7 +16745,7 @@ Sends the draft from the inbox address.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16581,6 +16816,134 @@ body.
 </ResponseExample>
 
 
+# Set Thread Labels
+Source: https://resend.com/docs/api-reference/inboxes/set-thread-labels
+
+PUT /inboxes/:inbox_id/threads/:thread_id/labels
+Replace every label on a thread.
+
+<Warning>
+  Inboxes are currently in private beta and only available to a limited
+  number of users. The response shape might change before GA.
+
+  <span />
+
+  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the new methods:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.33.0
+    ```
+
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.25.0
+    ```
+  </CodeGroup>
+</Warning>
+
+The thread ends up with exactly the labels given, in one atomic change. Labels
+on the thread that are not listed are taken off, and the labels themselves are
+kept.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The Inbox ID or the inbox email address, such as `support@example.com`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  The Thread ID.
+</ResendParamField>
+
+## Body Parameters
+
+<ParamField type="string[]">
+  The IDs of the labels the thread should carry. Up to 100 IDs, each belonging
+  to the inbox. Pass an empty array to take every label off the thread.
+</ParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="array">
+  Every label on the thread after the change.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The name of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The color of the label as an uppercase `#RRGGBB` hex code, like
+      `#E93D82`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.inboxes.threads.labels.set({
+    inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+    threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
+    labels: ['2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d'],
+  });
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X PUT 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/labels' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "labels": ["2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d"]
+  }'
+  ```
+
+  ```bash Clear all labels theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X PUT 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/labels' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "labels": []
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend inboxes threads labels set b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 \
+    --labels 2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "data": [
+      {
+        "id": "2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d",
+        "name": "Billing",
+        "color": "#00A2C7"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # Update Agent Settings
 Source: https://resend.com/docs/api-reference/inboxes/update-agent
 
@@ -16613,7 +16976,7 @@ Update the agent settings for an inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters
@@ -16640,8 +17003,8 @@ Update the agent settings for an inbox.
   * `add_labels`: Add labels to a thread.
   * `assign_thread`: Assign a thread.
   * `mark_as_spam`: Mark a thread as spam.
-  * `archive_thread`: Archive a thread.
-  * `delete_thread`: Delete a thread.
+  * `archive`: Archive a thread.
+  * `move_to_trash`: Move a thread to the trash.
 </ParamField>
 
 ## Response Fields
@@ -16731,7 +17094,7 @@ Updates the content of an unsent draft.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -16863,7 +17226,7 @@ Update the internal inbox name or the name recipients see when sending.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters
@@ -16958,7 +17321,7 @@ Rename or recolor an existing label.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -17027,7 +17390,7 @@ Rename or recolor an existing label.
 Source: https://resend.com/docs/api-reference/inboxes/update-thread
 
 PATCH /inboxes/:inbox_id/threads/:thread_id
-Mark a thread read or unread, move it, or add and remove labels.
+Mark a thread read or unread, or move it to another folder.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -17052,13 +17415,15 @@ Mark a thread read or unread, move it, or add and remove labels.
   </CodeGroup>
 </Warning>
 
-At least one of `read`, `folder`, `add_label_ids`, or `remove_label_ids` is
-required.
+At least one of `read` or `folder` is required. To change a thread's labels, use
+[Add Thread Labels](/docs/api-reference/inboxes/add-thread-labels),
+[Set Thread Labels](/docs/api-reference/inboxes/set-thread-labels), or
+[Remove Thread Label](/docs/api-reference/inboxes/remove-thread-label).
 
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">
@@ -69734,7 +70099,7 @@ Event triggered whenever an **outbound email is accepted for delivery** and adde
 
 *Note: `source` is always `system`, because the email pipeline sends this event, even when the API or an agent sent the email.*
 
-*Note: When the email comes from a draft, `inbox.draft.sent` fires first, from the send call. This event follows once the email is accepted for delivery.*
+*Note: When the email comes from a draft, `inbox.draft.sent` is also sent, from the send call. The two events come from separate paths, so their delivery order is not fixed.*
 
 <ResponseBodyParameters type="inbox.email.sent">
   <ParamField type="api | dashboard | agent | system">
@@ -70339,11 +70704,11 @@ Event triggered whenever a **label is applied to or removed from a thread**.
 
 <ResponseBodyParameters type="inbox.thread.labels.updated">
   <ParamField type="array">
-    The labels applied, each with an `id`, `name`, and `color`. One event carries one label
+    The labels applied, each with an `id`, `name`, and `color`. One event carries every label changed by the same request
   </ParamField>
 
   <ParamField type="array">
-    The labels removed, each with an `id`, `name`, and `color`. One event carries one label
+    The labels removed, each with an `id`, `name`, and `color`. One event carries every label changed by the same request
   </ParamField>
 
   <ParamField type="api | dashboard | agent | system">

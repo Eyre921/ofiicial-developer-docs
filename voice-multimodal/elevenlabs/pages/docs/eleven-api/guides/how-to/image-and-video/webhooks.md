@@ -34,8 +34,9 @@ need it to verify incoming events.
 
 #### Subscribe it to generation events
 
-Under **Select events to listen to**, tick **Image & Video API generation completed**. A webhook
-that exists but is not subscribed to this event is never called.
+Under **Select events to listen to**, tick **Image & Video API generation or template run
+completed**. The same event delivers finished [template runs](/docs/eleven-api/guides/how-to/templates/run-a-template).
+A webhook that exists but is not subscribed to this event is never called.
 
 You can do the same through the API by passing the `flows` event to
 [Update workspace webhook](/docs/api-reference/webhooks/update):

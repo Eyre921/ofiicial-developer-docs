@@ -52,6 +52,8 @@ The payment details component shows different information and supports different
 - For [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md), your connected accounts can only see the transfer object associated with the selected charge, which contains limited information.
 - For destination charges with the [on_behalf_of](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-on_behalf_of) attribute, your connected accounts can view the complete set of information when the `destination_on_behalf_of_charge_management` feature is enabled. When this feature is turned on, you can also enable refund and disputes management by enabling the corresponding features.
 
+Refunds initiated in the component don’t refund application fees, which is consistent with the default behavior on the [Refunds API](https://docs.stripe.com/api/refunds/create.md#create_refund-refund_application_fee).
+
 ### Allow your connected accounts to manage destination charges
 
 When you set the `destination_on_behalf_of_charge_management` feature to `true`, your connected accounts can use the payments component to view and manage [destination charges](https://docs.stripe.com/connect/destination-charges.md) that have the [on_behalf_of](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-on_behalf_of) attribute. If you also turn on the `dispute_management` feature, your connected accounts can [participate directly in handling their disputes](https://docs.stripe.com/connect/supported-embedded-components/payments.md#dispute-management-for-destination-charges).
@@ -60,6 +62,8 @@ Enabling the `destination_on_behalf_of_charge_management` feature has the follow
 
 1. You can’t filter by charge status or payment methods.
 2. You can’t export certain data columns.
+
+Any destination charge refunds performed in the embedded component with `destination_on_behalf_of_charge_management` enabled will also [reverse its associated transfer](https://docs.stripe.com/api/refunds/create.md#create_refund-reverse_transfer).
 
 ## Dispute management for destination charges
 

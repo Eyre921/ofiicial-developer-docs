@@ -33,7 +33,7 @@ Update the internal inbox name or the name recipients see when sending.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters

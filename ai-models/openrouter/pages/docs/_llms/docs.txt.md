@@ -185,8 +185,8 @@ path: docs/_llms/docs.txt
 - [Data Collection](https://openrouter.ai/docs/guides/privacy/data-collection.md): What data OpenRouter collects
 - [Provider Logging](https://openrouter.ai/docs/guides/privacy/provider-logging.md): Provider logging and data retention policies
 - [Zero Data Retention](https://openrouter.ai/docs/guides/features/zdr.md): How OpenRouter gives you control over your data
-- [In-Region Routing](https://openrouter.ai/docs/guides/features/in-region-routing.md): Keep prompts and completions inside the EU or the US
-- [Sovereign AI](https://openrouter.ai/docs/guides/features/sovereign-ai.md): Keep AI workloads within national and regional boundaries
+- [In-Region Routing](https://openrouter.ai/docs/guides/features/in-region-routing.md): Keep prompts and completions in Europe or the US
+- [Sovereign AI](https://openrouter.ai/docs/guides/features/sovereign-ai.md): EU and US in-region routing, and what it does and does not cover
 
 ### Best Practices
 

@@ -39,15 +39,15 @@ Once you have your API key, export it as an environment variable in your termina
     </Note>
 
     <CodeGroup>
-      ```bash pip theme={null} theme={null}
+      ```bash pip theme={null}
       pip install --pre fireworks-ai
       ```
 
-      ```bash poetry theme={null} theme={null}
+      ```bash poetry theme={null}
       poetry add --pre fireworks-ai
       ```
 
-      ```bash uv theme={null} theme={null}
+      ```bash uv theme={null}
       uv add --pre fireworks-ai
       ```
     </CodeGroup>

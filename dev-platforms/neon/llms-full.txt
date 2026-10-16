@@ -16399,7 +16399,7 @@ Lakebase Search is built on three Postgres extensions:
 
 - **[`lakebase_vector`](https://neon.com/docs/extensions/lakebase-vector)**: adds the `lakebase_ann` index type for vector similarity search. No migration from `pgvector` required. The same `vector` types, distance operators, and query syntax work unchanged. Scales to over 1 billion vectors on a single index.
 - **[`lakebase_text`](https://neon.com/docs/extensions/lakebase-text)**: adds the `lakebase_bm25` index type for BM25 keyword search. No migration from Postgres full-text search required. Standard `tsvector` types and query operators work unchanged. Adds BM25 ranking and top-K pushdown that native GIN lacks.
-- **[`lakebase_tokenizer`](https://neon.com/docs/extensions/lakebase-tokenizer)**: adds configurable whole-word tokenization through Postgres's text-search dictionary interface. It produces standard `tsvector` values that work with GIN and `lakebase_bm25` indexes.
+- **[`lakebase_tokenizer`](https://neon.com/docs/extensions/lakebase-tokenizer)**: adds configurable whole-word tokenization and Chinese, Japanese, and Korean (CJK) morphological analysis through Postgres's text-search dictionary interface. It produces standard `tsvector` values that work with GIN and `lakebase_bm25` indexes.
 
 ## How `lakebase_ann` scales
 
@@ -16417,7 +16417,7 @@ It uses IVF (Inverted File) partitioning to divide the vector space into lists a
 - [Quickstart](https://neon.com/docs/ai/lakebase-search-get-started): Install lakebase_vector and lakebase_text, create a schema, insert documents with embeddings, and run your first searches
 - [lakebase_vector reference](https://neon.com/docs/extensions/lakebase-vector): Index options, operator classes, and tuning reference for lakebase_vector
 - [lakebase_text reference](https://neon.com/docs/extensions/lakebase-text): BM25 operators, functions, fallback parameters, and prefilter reference for lakebase_text
-- [lakebase_tokenizer reference](https://neon.com/docs/extensions/lakebase-tokenizer): Whole-word tokenization options, custom stop words, synonyms, and stemming
+- [lakebase_tokenizer reference](https://neon.com/docs/extensions/lakebase-tokenizer): Whole-word and CJK tokenization, built-in language configurations, custom stop words, synonyms, and stemming
 
 --- [Document source](https://neon.com/docs/ai/langchain.md) ---
 
@@ -16751,7 +16751,7 @@ Append `?readonly=true` to restrict the server to read operations:
 https://mcp.neon.tech/mcp?readonly=true
 ```
 
-`SELECT` queries and schema inspection remain available. Write operations (creating branches, running migrations, modifying auth config) are disabled.
+`SELECT` queries and schema inspection remain available. Write operations (creating branches, running migrations, modifying auth config) are disabled. `run_sql_transaction` isn't available in read-only mode; use `run_sql` for read queries.
 
 With OAuth, you can also choose read-only scope during the authorization flow instead of using the URL parameter.
 
@@ -16793,6 +16793,8 @@ The role must exist on each branch you query and be able to log in. For example,
 CREATE ROLE app_reader LOGIN PASSWORD '<password>';
 GRANT SELECT ON public.orders TO app_reader;
 ```
+
+Create the role with SQL, as shown above. Roles created in the Neon Console, CLI, or API are members of [`neon_superuser`](https://neon.com/docs/manage/roles#the-neonsuperuser-role), which can read all data, so pinning one of those roles doesn't limit what the agent can read. See [Manage database access](https://neon.com/docs/manage/database-access) for least-privilege role examples.
 
 - `role_name` arguments that name a different role are rejected, and a role that cannot log in fails the call without falling back to the owner.
 - `get_connection_string` is not available on a pinned connection.
@@ -16842,6 +16844,7 @@ Tools are grouped into categories. Use the `?category=` URL parameter to restric
 | Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
 | Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
 | Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
+| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                         |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -17099,7 +17102,7 @@ You can also enable Managed Better Auth in the [Neon Console](https://console.ne
 
 Managed Better Auth is powered by [Better Auth](https://www.better-auth.com/), which means you get familiar APIs. You can use Better Auth UI components or call auth methods directly to build your own UI.
 
-Managed Better Auth runs Better Auth version **1.7.6**. The `@neondatabase/auth` SDK uses a Better Auth 1.6 client, and Managed Better Auth keeps 1.6 clients working, so you don't need to upgrade your SDK.
+Managed Better Auth runs Better Auth version **1.7.6**. `@neondatabase/auth` 0.6.0-beta and later use a Better Auth 1.7 client. Older SDK versions keep working, so you don't need to upgrade. If you use your own Better Auth client, use Better Auth 1.7 or later.
 
 ### When to use Managed Better Auth vs. self-hosting Better Auth
 
@@ -28923,7 +28926,7 @@ The supported agents are `antigravity`, `cline`, `cline-cli`, `claude-code`, `co
 By default the server exposes every MCP tool. Use these flags to narrow what an agent can do:
 
 - `--read-only` hides the write tools by adding `?readonly=true` to the server URL.
-- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `endpoints`, `snapshots`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, `docs`, `functions`, and `storage`.
+- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `endpoints`, `snapshots`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, `docs`, `functions`, `storage`, and `realtime`.
 - `--project-id <id>` pins the tools to a single Neon project with `?projectId=`, and limits a newly minted key to that project.
 
 `--read-only` and `--category` shape the server URL only; they don't change a key's scope, and neither does reusing an already-configured key.
@@ -33944,6 +33947,7 @@ Tools are grouped into categories. Use the `?category=` URL parameter to restric
 | Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
 | Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
 | Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
+| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                         |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -48986,15 +48990,15 @@ Prefilter is recommended when the filter is **strict** (eliminates many rows) or
 
 --- [Document source](https://neon.com/docs/extensions/lakebase-tokenizer.md) ---
 
-> Summary: The lakebase_tokenizer extension adds configurable whole-word tokenization to Postgres full-text search, including lowercase conversion, Unicode normalization, accent removal, English possessive removal, custom stop words, one-to-one synonyms, and English stemming.
+> Summary: The lakebase_tokenizer extension adds configurable whole-word tokenization and Chinese, Japanese, and Korean morphological analysis to Postgres full-text search, with normalization, custom stop words, synonyms, and English stemming.
 
 # The lakebase_tokenizer extension
 
 Configurable tokenization for Postgres full-text search
 
-The `lakebase_tokenizer` extension adds configurable whole-word tokenization to Postgres full-text search. Text-search configurations built with the extension work with `to_tsvector`, the `@@` operator, ranking functions, and GIN indexes. You can also use generated `tsvector` values with [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) for BM25 ranking.
+The `lakebase_tokenizer` extension adds configurable tokenization to Postgres full-text search, including whole-word processing and morphological analysis for Chinese, Japanese, and Korean (CJK) text. Text-search configurations built with the extension work with `to_tsvector`, the `@@` operator, ranking functions, and GIN indexes. You can also use generated `tsvector` values with [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) for BM25 ranking.
 
-The extension provides the `tokenizer_wholeword` template through Postgres's standard text-search dictionary interface. The template supports lowercase conversion, Unicode normalization, accent removal, English possessive removal, custom stop words, one-to-one synonyms, and English stemming.
+The extension provides the `tokenizer_wholeword` and `tokenizer_morph` templates through Postgres's standard text-search dictionary interface. Use `tokenizer_wholeword` for whole-word processing, including lowercase conversion, Unicode normalization, accent removal, English possessive removal, custom stop words, one-to-one synonyms, and English stemming. Use `tokenizer_morph` for CJK morphological analysis.
 
 ## Install the extension
 
@@ -49009,13 +49013,32 @@ CREATE EXTENSION IF NOT EXISTS lakebase_tokenizer WITH SCHEMA tokenizer_ext;
 
 ### Upgrade the extension
 
-A new Lakebase Search release can add features, fixes, and performance improvements. Although Lakebase Search is released as part of Neon updates, it does not upgrade everything automatically.
+Neon ships new Lakebase Search releases as part of its regular updates, but it doesn't upgrade the extension in your database for you. To see which version you have and which is available:
 
-Upgrading is not urgent. The extension is compatible with SQL objects from older versions, but staying current keeps you on the supported, best-performing path and avoids a larger migration later, so upgrade when convenient rather than deferring indefinitely.
+```sql
+SELECT installed_version, default_version
+FROM pg_available_extensions
+WHERE name = 'lakebase_tokenizer';
+```
 
-`ALTER EXTENSION` does not regenerate stored `tsvector` values or rebuild dependent GIN or `lakebase_bm25` indexes. If an update changes tokenization output, regenerate stored `tsvector` values and follow the release notes for any required index maintenance.
+To upgrade, run:
 
-## Quick start with `tokenizer_wholeword`
+```sql
+ALTER EXTENSION lakebase_tokenizer UPDATE;
+```
+
+There's no rush. Older versions keep working, but upgrading when it's convenient keeps you on the supported version and saves you a bigger jump later.
+
+`ALTER EXTENSION` doesn't regenerate stored `tsvector` values or rebuild GIN or `lakebase_bm25` indexes. That only matters when a release changes how text is tokenized. Upgrading from 0.1.x to 0.2.0 doesn't: 0.2.0 adds the [`tokenizer_morph`](https://neon.com/docs/extensions/lakebase-tokenizer#template-tokenizermorph) template and the built-in CJK configurations and leaves your existing configurations alone, so you don't need to reindex.
+
+## Quick start
+
+Choose a path based on the language of your text:
+
+- For English and other whitespace-delimited languages, create a dictionary from the `tokenizer_wholeword` template.
+- For Chinese, Japanese, or Korean text, use a built-in configuration. You don't need to create a dictionary.
+
+### Whole-word text
 
 The following example creates a dictionary from the `tokenizer_wholeword` template, then maps common Postgres token types to it in a text-search configuration:
 
@@ -49057,6 +49080,74 @@ WHERE search_vector @@ plainto_tsquery('documents_cfg', 'running café');
 ```
 
 Use the same text-search configuration for documents and queries so both sides apply the same tokenization strategy and options.
+
+### CJK text
+
+Installing the extension creates the `tokenizer_chinese`, `tokenizer_japanese`, and `tokenizer_korean` text-search configurations. Use one of them directly to produce a `tsvector`, create a GIN index, and run full-text queries:
+
+**Chinese**
+
+```sql
+CREATE TABLE chinese_documents (
+  id            BIGSERIAL PRIMARY KEY,
+  body          TEXT NOT NULL,
+  search_vector TSVECTOR GENERATED ALWAYS AS (
+    to_tsvector('tokenizer_ext.tokenizer_chinese', body)
+  ) STORED
+);
+
+INSERT INTO chinese_documents (body) VALUES
+  ('现代分布式文件系统架构');
+
+CREATE INDEX chinese_idx ON chinese_documents USING gin (search_vector);
+
+-- Use plainto_tsquery for the built-in Chinese configuration's mixed mode.
+SELECT id, body
+FROM chinese_documents
+WHERE search_vector @@ plainto_tsquery('tokenizer_ext.tokenizer_chinese', '现代分布式');
+```
+
+**Japanese**
+
+```sql
+CREATE TABLE japanese_documents (
+  id            BIGSERIAL PRIMARY KEY,
+  body          TEXT NOT NULL,
+  search_vector TSVECTOR GENERATED ALWAYS AS (
+    to_tsvector('tokenizer_ext.tokenizer_japanese', body)
+  ) STORED
+);
+
+INSERT INTO japanese_documents (body) VALUES
+  ('関西国際空港へのアクセス');
+
+CREATE INDEX japanese_idx ON japanese_documents USING gin (search_vector);
+
+SELECT id, body
+FROM japanese_documents
+WHERE search_vector @@ to_tsquery('tokenizer_ext.tokenizer_japanese', '関西国際空港');
+```
+
+**Korean**
+
+```sql
+CREATE TABLE korean_documents (
+  id            BIGSERIAL PRIMARY KEY,
+  body          TEXT NOT NULL,
+  search_vector TSVECTOR GENERATED ALWAYS AS (
+    to_tsvector('tokenizer_ext.tokenizer_korean', body)
+  ) STORED
+);
+
+INSERT INTO korean_documents (body) VALUES
+  ('선생님께서 도서관에 갑니다');
+
+CREATE INDEX korean_idx ON korean_documents USING gin (search_vector);
+
+SELECT id, body
+FROM korean_documents
+WHERE search_vector @@ to_tsquery('tokenizer_ext.tokenizer_korean', '선생님께서');
+```
 
 ## Template: `tokenizer_wholeword`
 
@@ -49162,10 +49253,114 @@ Specify `tokenizer_wholeword` options in `CREATE TEXT SEARCH DICTIONARY` or `ALT
 
 ### Catalog tables
 
-| Table                          | Columns                                  | Description                                                                                                              |
-| :----------------------------- | :--------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| `lakebase_tokenizer_stopwords` | `name text`, `word text`                 | Stores named stop-word sets for tokenizer templates that support `Stopwords`. The primary key is `(name, word)`.         |
-| `lakebase_tokenizer_synonyms`  | `name text`, `word text`, `synonym text` | Stores named one-to-one replacements for tokenizer templates that support `Synonyms`. The primary key is `(name, word)`. |
+| Table                          | Columns                                  | Description                                                                                        |
+| :----------------------------- | :--------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `lakebase_tokenizer_stopwords` | `name text`, `word text`                 | Stores named stop-word sets for `tokenizer_wholeword`. The primary key is `(name, word)`.          |
+| `lakebase_tokenizer_synonyms`  | `name text`, `word text`, `synonym text` | Stores named one-to-one replacements for `tokenizer_wholeword`. The primary key is `(name, word)`. |
+
+## Template: `tokenizer_morph`
+
+The `tokenizer_morph` template analyzes Chinese, Japanese, and Korean text for Postgres full-text search. Use a built-in text-search configuration or define a custom one to control term generation.
+
+### How it works
+
+`tokenizer_morph` uses the Lindera analyzer with bundled dictionaries: Jieba for Chinese, IPADIC for Japanese, and MeCab KoDic for Korean.
+
+For Korean parser tokens, `tokenizer_morph` first replaces `ㆍ` (U+318D) with a token boundary.
+
+For each token passed to the dictionary by Postgres's text-search parser, `tokenizer_morph` applies these operations in order:
+
+1. `Normalize`: Apply Unicode normalization to the parser token.
+2. `Language`: Segment the parser token with the selected language analyzer.
+3. Symbol filter: Discard segments that contain no letters or digits.
+4. Language-specific analysis: Turn each remaining segment into zero or more terms, as described below.
+5. `Lowercase`: Convert each term to lowercase.
+6. `Stemmer`: If enabled, stem terms made entirely of ASCII letters with the bundled English stemmer. This step does not stem CJK terms.
+
+The language-specific analysis step applies these rules:
+
+**Chinese**
+
+- Subword expansion: In `mixed` mode, add the two-character and three-character terms that the bundled dictionary contains.
+
+**Japanese**
+
+- Part-of-speech filtering: Discard recognized particles, auxiliary verbs, conjunctions, fillers, non-verbal sounds, non-alphabetic symbols, and segments tagged `その他,間投`.
+- Base-form conversion: Use the dictionary base form of each remaining recognized segment when available. Otherwise, keep its surface form.
+- Stop-word filtering: Discard terms that match the built-in list of common Japanese function words.
+- Katakana stemming: Remove a trailing `ー` from a term of at least four characters whose characters all fall in the katakana block (U+30A0 to U+30FF).
+
+**Korean**
+
+- Decomposition: In `discard` and `mixed` modes, split a recognized compound, inflected, or preanalyzed segment when the dictionary provides its components. `discard` emits the components in place of the full term, and `mixed` emits both.
+- Part-of-speech filtering: Apply filtering to the full term and to each component independently. Omit terms tagged as particles, endings, affixes, adverbs, determiners, interjections, punctuation, symbols, or unanalyzable forms.
+- Hangul reading conversion: Use the dictionary's Hangul reading for a retained full term when available. Components keep their dictionary form.
+
+Postgres's text-search parser splits text at whitespace and punctuation before calling `tokenizer_morph`. Each parser token can contain up to 2046 bytes. Longer tokens are skipped with a `NOTICE`. Most Chinese, Japanese, and Korean characters use 3 bytes in UTF-8, so a run of more than 682 of these characters without whitespace or punctuation is omitted from `to_tsvector` results.
+
+### Supported languages and modes
+
+The available modes depend on the language. Each example shows source text → emitted terms.
+
+| Language | Mode      | Behavior                                                                                       | Example                                                              |
+| :------- | :-------- | :--------------------------------------------------------------------------------------------- | :------------------------------------------------------------------- |
+| Chinese  | `none`    | Emits words from standard segmentation without adding shorter search terms.                    | `现代分布式文件系统架构` → `现代`, `分布式文件系统`, `架构`                                |
+| Chinese  | `mixed`   | Keeps words from standard segmentation and adds shorter search terms from some longer words.   | `现代分布式文件系统架构` → `现代`, `分布式文件系统`, `分布`, `分布式`, `布式`, `文件`, `系统`, `架构` |
+| Japanese | `none`    | Favors longer dictionary compounds.                                                            | `関西国際空港へのアクセス` → `関西国際空港`, `アクセス`                                    |
+| Japanese | `discard` | Produces finer-grained terms for some long compounds without retaining their full form.        | `関西国際空港へのアクセス` → `関西`, `国際`, `空港`, `アクセス`                            |
+| Korean   | `none`    | Keeps compound and inflected dictionary entries as whole terms.                                | `한국어 형태소 분석` → `한국어`, `형태소`, `분석`                                    |
+| Korean   | `discard` | Emits the parts of a compound or inflected form instead of the full term when it can be split. | `한국어 형태소 분석` → `한국`, `어`, `형태`, `소`, `분석`                            |
+| Korean   | `mixed`   | Emits both the full term and its parts when a compound or inflected form can be split.         | `한국어 형태소 분석` → `한국어`, `한국`, `어`, `형태소`, `형태`, `소`, `분석`              |
+
+In `mixed` mode, query with `plainto_tsquery`. When one query word produces multiple lexemes, `to_tsquery`, `websearch_to_tsquery`, and `phraseto_tsquery` join them with the `<->` operator, which requires adjacent positions. `mixed` mode inserts extra positions for the additional terms, so these phrase conditions can miss expected matches. For position-based queries, define a custom configuration with `none` or `discard` mode.
+
+### Use the built-in configurations
+
+The extension provides these text-search configurations in its installation schema:
+
+| Configuration        | Dictionary                | Language | Mode      |
+| :------------------- | :------------------------ | :------- | :-------- |
+| `tokenizer_chinese`  | `tokenizer_chinese_dict`  | Chinese  | `mixed`   |
+| `tokenizer_japanese` | `tokenizer_japanese_dict` | Japanese | `discard` |
+| `tokenizer_korean`   | `tokenizer_korean_dict`   | Korean   | `discard` |
+
+All three dictionaries set `Stemmer = 'english'` and use the defaults `Normalize = 'NFKC'` and `Lowercase = 'true'`.
+
+For end-to-end examples that use these configurations, see [CJK text](https://neon.com/docs/extensions/lakebase-tokenizer#cjk-text).
+
+### Define a custom configuration
+
+To choose another mode or change the default options, create a dictionary from the `tokenizer_morph` template and a text-search configuration that maps Postgres token types to it. This example uses Chinese `none` mode for phrase queries:
+
+```sql
+CREATE TEXT SEARCH DICTIONARY chinese_none_dict (
+  TEMPLATE = tokenizer_ext.tokenizer_morph,
+  Language = 'chinese',
+  Mode = 'none',
+  Stemmer = 'english'
+);
+
+CREATE TEXT SEARCH CONFIGURATION chinese_none_cfg (COPY = pg_catalog.simple);
+
+ALTER TEXT SEARCH CONFIGURATION chinese_none_cfg
+  ALTER MAPPING FOR asciiword, word, numword, hword_asciipart, hword_part, hword_numpart
+  WITH chinese_none_dict;
+
+SELECT to_tsvector('chinese_none_cfg', '现代分布式文件系统架构')
+  @@ phraseto_tsquery('chinese_none_cfg', '分布式文件系统 架构');
+```
+
+### Options
+
+Specify `tokenizer_morph` options in `CREATE TEXT SEARCH DICTIONARY` or `ALTER TEXT SEARCH DICTIONARY`. Option names are case-insensitive.
+
+| Option      | Type                               | Default  | Description                                                                                                                                                                                      |
+| :---------- | :--------------------------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Language`  | `chinese`, `japanese`, or `korean` | Required | Selects the language-specific analyzer.                                                                                                                                                          |
+| `Mode`      | `none`, `discard`, or `mixed`      | Required | Controls compound and subword output. Supported modes depend on `Language`: `none` or `mixed` for Chinese, `none` or `discard` for Japanese, and `none`, `discard`, or `mixed` for Korean.       |
+| `Normalize` | `NFC`, `NFKC`, or `none`           | `NFKC`   | Normalizes text before segmentation. `NFC` preserves compatibility distinctions. For example, full-width `ＡＢＣ` is lowercased to `ａｂｃ` instead of being converted to `abc`, so it is not stemmed. |
+| `Lowercase` | boolean                            | `true`   | Converts emitted lexemes to lowercase. `Stemmer = 'english'` requires `Lowercase = 'true'`.                                                                                                      |
+| `Stemmer`   | `english`                          | None     | Stems only lexemes made entirely of ASCII letters. Omit this option to disable English stemming.                                                                                                 |
 
 ## Use BM25 ranking with lakebase_text
 
@@ -53291,7 +53486,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [ip4r](https://github.com/RhodiumToad/ip4r)                                                                    |    2.4 |    2.4 |    2.4 |    2.4 |    2.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [isn](https://www.postgresql.org/docs/16/isn.html)                                                             |    1.2 |    1.2 |    1.2 |    1.2 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |      - |      - |  0.1.3 |  0.1.3 |  0.1.3 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
-| [lakebase\_tokenizer](https://neon.com/docs/extensions/lakebase-tokenizer)                                     |      - |      - |  0.1.1 |  0.1.1 |  0.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
+| [lakebase\_tokenizer](https://neon.com/docs/extensions/lakebase-tokenizer)                                     |      - |      - |  0.2.0 |  0.2.0 |  0.2.0 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |      - |      - |  1.1.1 |  1.1.1 |  1.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lo](https://www.postgresql.org/docs/16/lo.html)                                                               |    1.1 |    1.1 |    1.1 |    1.1 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [ltree](https://neon.com/docs/extensions/ltree)                                                                |    1.2 |    1.2 |    1.2 |    1.3 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -121272,7 +121467,7 @@ All Neon users have access to the [Neon Discord Server](https://neon.com/discord
 
 Neon AI chat assistance is available to all Neon users. You can access it from these locations:
 
-- **Neon Console**: Open the Help menu (`?`) in the top right corner and select **Support**. This opens the **Neon AI Assistant** so you can ask questions about Neon.
+- **Neon Console**: Open the [support center](https://neon.com/docs/introduction/support#open-the-support-center) and select **Ask the AI assistant**.
 - **Neon documentation**: Toggle **Ask Neon AI** on the [Neon documentation](https://neon.com/docs/introduction) site
 - **Discord**: Join the **#gpt-help** channel on the [Neon Discord server](https://neon.com/discord)
 - **Neon CLI**: Run [`neon ask`](https://neon.com/docs/cli/ask) to ask questions about Neon from your terminal
@@ -121283,18 +121478,54 @@ Neon AI Chat assistants are updated regularly and built on various sources inclu
 
 ### Support tickets
 
-**Launch** plan (**Billing support**): you can get help with **billing and invoices** (for example through [Request billing support](https://neon.com/docs/introduction/manage-billing#request-billing-support) on the Billing page). Support tickets tied to the console are limited to **billing-related** issues on this plan.
+**Launch** plan (**Billing support**): you can open support tickets for **billing-related** issues only, such as questions about an invoice, charge, refund, or your plan.
 
 **Scale** plan (**Standard support**): you can open support tickets for **any** Neon issue.
 
 **Vercel-managed Neon integration**: if you use Neon through the Vercel-managed Neon integration and are on Neon's Scale plan, you can also open support tickets for any Neon issue.
 
-You can reach the ticketing flow in these ways:
+You open support tickets from the support center in the Neon Console.
 
-1. **Neon AI Assistant**: Open the Help menu (`?`) in the top right corner and select **Support**. This opens the **Neon AI Assistant**. When your account is allowed to file a ticket, use **Open Support Ticket** in the assistant. **Launch** plan: use this only for **billing-related** problems (for invoice-specific requests, **Request billing support** on the Billing page is usually simpler). **Scale** and above: you can use **Open Support Ticket** for any eligible issue.
-2. **Billing page (paid plans)**: On the **Billing** page, select **Request billing support** in the page header (next to **View past invoices**). In the form, select a related invoice if you have one and describe your issue. You can also select **View past invoices**, open an invoice's actions menu, and select **Request support** to open the same form with that invoice pre-selected. If you have no invoices yet, the header button may be disabled; open **Support** from the Help menu (`?`) to reach the Neon AI Assistant for billing-related help. Step-by-step detail is in [Manage billing](https://neon.com/docs/introduction/manage-billing#request-billing-support).
+#### Open the support center
 
-**Tip:** To ensure you receive responses from our support team, please whitelist the `help@databricks.com` email address in your email client. This prevents support responses from being filtered to your spam or junk folder.
+1. In the Neon Console, open the organization menu in the top right corner.
+2. Select **Help** > **Get help**.
+
+The **Support center** drawer opens. Under **Which organization needs support?**, select the organization the request is for. The options under **How can we help?** depend on that organization's plan:
+
+- **Ask the AI assistant**: Get answers sourced from the Neon docs. See [Neon AI chat assistance](https://neon.com/docs/introduction/support#neon-ai-chat-assistance).
+- **Read the docs**: Browse Neon guides, references, and quickstarts.
+- **Contact our support team**: Open a technical support ticket. Available on the **Scale** plan.
+- **Ask a billing question**: Open a billing support ticket about an invoice, charge, refund, or your plan. Available on the **Launch** and **Scale** plans.
+- **Get help from the community**: Join the [Neon Discord Server](https://neon.com/docs/introduction/support#neon-discord-server).
+
+On the **Free** plan, the support center offers the AI assistant, the docs, and the community. To unlock support tickets, [upgrade to a paid plan](https://neon.com/docs/introduction/manage-billing#change-your-plan).
+
+#### Open a technical support ticket (Scale plan)
+
+1. In the support center, select **Contact our support team**.
+2. In the **Create support ticket** form, fill in:
+   - **Organization**: The organization the issue affects.
+   - **Subject**: A short summary of the issue. Required.
+   - **Priority**: How urgent the issue is.
+   - **Project**, **Branch**, and **Compute**: Optional. Select the affected resources to help support find the problem faster.
+   - **Problem description**: A detailed description of the issue.
+   - **Attachments**: Optional. Add screenshots, logs, or other files.
+3. Leave **I consent to Neon employees connecting to my database to help resolve this support case** selected if you want support to be able to connect to your database. Clear it if you don't.
+4. Select **Submit support ticket**.
+
+Responses go to the contact email shown in the form, which is the email address for your Neon account.
+
+#### Open a billing support ticket (Launch and Scale plans)
+
+1. In the support center, select **Ask a billing question**.
+2. Under **Related invoice**, select the invoice your question is about, if any.
+3. Under **How can we help?**, describe your question or problem.
+4. Select **Submit request**.
+
+You can also open a billing support ticket from the **Billing** page. Select **Request billing support** in the page header, or select **View past invoices**, open an invoice's actions menu, and select **Request support** to open the form with that invoice pre-selected. See [Request billing support](https://neon.com/docs/introduction/manage-billing#request-billing-support).
+
+**Tip:** To ensure you receive responses from our support team, allowlist the `help@databricks.com` email address in your email client. This prevents support responses from being filtered to your spam or junk folder.
 
 ### Slack channel
 
@@ -139364,6 +139595,8 @@ Content-Type: application/json
 
 `postgres` is always requested. Add `data_api` or `auth` only when the app needs them.
 
+`region_id` is optional. Without it, the project is created in `aws-us-east-2`. Pass any AWS [region](https://neon.com/docs/introduction/regions) that accepts new projects, for example `"region_id": "aws-eu-central-1"`.
+
 The response has this shape:
 
 ```json
@@ -139373,6 +139606,7 @@ The response has this shape:
   "project": {
     "id": "quiet-fog-12345678",
     "branch_id": "br-...",
+    "region_id": "aws-us-east-2",
     "expires_at": "2026-08-14T12:00:00.000Z"
   },
   "capabilities": [
@@ -141915,7 +142149,7 @@ const { data, error } = await client
 Method: `.is(column, value)`
 
 Filters rows based on whether a column is null or not null.
-Use `null` to find rows where the column is null, or `'not.null'` to find rows where it's not null.
+Use `.is(column, null)` to find rows where the column is null, or `.not(column, 'is', null)` to find rows where it's not null.
 
 **Is null**
 
@@ -141926,7 +142160,7 @@ const { data, error } = await client.from('todos').select('*').is('deleted_at', 
 **Is not null**
 
 ```typescript
-const { data, error } = await client.from('todos').select('*').is('completed_at', 'not.null');
+const { data, error } = await client.from('todos').select('*').not('completed_at', 'is', null);
 ```
 
 ## Column value is in an array
@@ -141959,15 +142193,16 @@ const { data, error } = await client
 
 ## Column value is between two values
 
-Method: `.range(column, start, end)`
+Method: `.gte(column, start).lte(column, end)`
 
-Range is inclusive (includes both start and end values).
+Use `.gte()` and `.lte()` to include both the start and end values.
 
 ```typescript
 const { data, error } = await client
   .from('todos')
   .select('*')
-  .range('priority', 5, 10)
+  .gte('priority', 5)
+  .lte('priority', 10)
 ```
 
 ## Auth method differences by adapter
@@ -142723,12 +142958,14 @@ env.storage.endpoint;             // AWS_ENDPOINT_URL_S3
 env.storage.region;               // AWS_REGION
 env.realtime.url;                 // NEON_REALTIME_URL        (env.realtime when preview.realtime enabled)
 env.realtime.secret;              // NEON_REALTIME_SECRET
-env.functions['<slug>'].baseUrl;  // a deployed function's URL, keyed by slug (env.functions when functions declared)
+env.functions?.['<slug>'].baseUrl; // NEON_FUNCTION_<SLUG>_BASE_URL (env.functions when functions declared and their URLs are set)
 ```
 
 Each namespace exists only when its service is declared: `env.auth` when `auth: true`, `env.storage` when you declare `buckets`, and so on. If you access a namespace your config doesn't declare, TypeScript catches it.
 
-`env.functions` (plural) is a map of every declared function's slug to its `baseUrl`. It's distinct from `env.function` (singular), which you get from `parseEnv(config, '<slug>')`: the scoped env for code running inside that function, exposing the `env` vars declared in its `neon.ts` definition.
+`env.functions` (plural) is a map of every declared function's slug to its `baseUrl`, read from `NEON_FUNCTION_<SLUG>_BASE_URL`. `neon env pull`, `neon dev`, and `neon-env run` set those variables, but deployed functions don't receive them, so `env.functions` is present only when every declared function's URL is set. Read it with optional chaining (`env.functions?.hello.baseUrl`). To require a URL, select its key explicitly: `parseEnv(config, ['NEON_FUNCTION_HELLO_BASE_URL'])` throws if it's missing. Requires `@neon/env` 1.6.2 or later; earlier versions throw inside deployed functions when these URLs are unset.
+
+`env.functions` is distinct from `env.function` (singular), which you get from `parseEnv(config, '<slug>')`: the scoped env for code running inside that function, exposing the `env` vars declared in its `neon.ts` definition.
 
 Pass an array of keys to validate and return only a subset. Useful when a process needs just one or two variables:
 
@@ -147026,6 +147263,36 @@ url = client.generate_presigned_url(
 print(url)
 ```
 
+To set the filename the browser saves the download under, sign the URL with a `ResponseContentDisposition` override. The override is covered by the URL's signature, so it can't be changed after signing.
+
+**S3 Client**
+
+```typescript
+const url = await getSignedUrl(
+  client,
+  new GetObjectCommand({
+    Bucket: 'my-bucket',
+    Key: 'report.pdf',
+    ResponseContentDisposition: 'attachment; filename="report.pdf"',
+  }),
+  { expiresIn: 3600 }, // 1 hour
+);
+```
+
+**Python**
+
+```python
+url = client.generate_presigned_url(
+    'get_object',
+    Params={
+        'Bucket': 'my-bucket',
+        'Key': 'report.pdf',
+        'ResponseContentDisposition': 'attachment; filename="report.pdf"',
+    },
+    ExpiresIn=3600,  # 1 hour
+)
+```
+
 **Presigned PUT (upload from browser):**
 
 **Files SDK**
@@ -147199,16 +147466,17 @@ Neon Object Storage is compatible with the S3 API for core operations. It works 
 
 ### Objects
 
-| Operation                                                       | Notes                                                                                          |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `GetObject`                                                     | Supports `Range` header for partial reads                                                      |
-| `HeadObject`                                                    | Returns object metadata                                                                        |
-| `PutObject`                                                     | Supports `Content-Type`, `Content-Disposition`, `Cache-Control`, custom `x-amz-meta-*` headers |
-| `DeleteObject`                                                  | Soft-deletes the object on the current branch                                                  |
-| `DeleteObjects`                                                 | Batch delete up to 1,000 keys per request                                                      |
-| `GetObjectAcl`                                                  | Read-only                                                                                      |
-| `GetObjectTagging` / `PutObjectTagging` / `DeleteObjectTagging` | Tag management                                                                                 |
-| `GetObjectAttributes`                                           | Returns ETag, size, and checksum                                                               |
+| Operation                                                       | Notes                                                                                                                                               |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GetObject`                                                     | Supports `Range` header for partial reads, and `response-*` header overrides (e.g. `response-content-disposition`) on signed and presigned requests |
+| `HeadObject`                                                    | Returns object metadata; honors `response-*` overrides on signed requests                                                                           |
+| `CopyObject`                                                    | Server-side copy; `x-amz-copy-source` may be fully URL-encoded                                                                                      |
+| `PutObject`                                                     | Supports `Content-Type`, `Content-Disposition`, `Cache-Control`, custom `x-amz-meta-*` headers                                                      |
+| `DeleteObject`                                                  | Soft-deletes the object on the current branch                                                                                                       |
+| `DeleteObjects`                                                 | Batch delete up to 1,000 keys per request                                                                                                           |
+| `GetObjectAcl`                                                  | Read-only                                                                                                                                           |
+| `GetObjectTagging` / `PutObjectTagging` / `DeleteObjectTagging` | Tag management                                                                                                                                      |
+| `GetObjectAttributes`                                           | Returns ETag, size, and checksum                                                                                                                    |
 
 ### Multipart upload
 
@@ -147260,6 +147528,7 @@ The following operations return `501 Not Implemented`:
 
 - **Path-style addressing only.** Virtual-hosted-style requests (`bucket.host/key`) are not supported. Always set `forcePathStyle: true` in the AWS SDK for JavaScript, or use `endpoint_url` in boto3.
 - **SigV4 only.** AWS Signature Version 2 (SigV2) is not supported.
+- **`response-*` overrides are ignored on anonymous requests.** Unsigned requests to public-read objects always return the stored headers, while AWS S3 returns `400 InvalidRequest`. Use a presigned URL to set a download filename or content type.
 - **Lifecycle rules stored but not enforced.** `PutBucketLifecycle` accepts and stores configuration, but expiration and transition rules do not run.
 - **Versioning stored but not enforced.** Versioning configuration is stored and echoed. Objects always return `x-amz-version-id: null`.
 - **No bucket notifications.** SNS/SQS integration is not available.

@@ -34,7 +34,7 @@ Artifacts are the condensed knowledge that curation produces. Each artifact has 
 
 ## Query
 
-A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Query a single context from its **Query this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context).
+A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Query a single context from its **Query this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context). To steer how a context answers every query, set [context-default instructions](/guides/nexus/context-design#context-default-instructions) in its manifest.
 
 ## KnowQL
 

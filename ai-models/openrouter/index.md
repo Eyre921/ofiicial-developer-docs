@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 200 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 201 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -199,6 +199,7 @@
 - `docs/cookbook/get-started/migrate-to-openrouter` — [Migrate to OpenRouter in One Prompt](pages/docs/cookbook/get-started/migrate-to-openrouter.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/migrate-to-openrouter.md)
 - `docs/cookbook/get-started/quickstart` — [Quickstart: Build a Chat App](pages/docs/cookbook/get-started/quickstart.md) · [原文](https://openrouter.ai/docs/cookbook/get-started/quickstart.md)
 - `docs/cookbook/image-generation/preset-enhanced-images` — [Enhance Image Generation with Presets](pages/docs/cookbook/image-generation/preset-enhanced-images.md) · [原文](https://openrouter.ai/docs/cookbook/image-generation/preset-enhanced-images.md)
+- `docs/cookbook/image-understanding/find-objects-in-images` — [Find and Mark Objects in Any Image](pages/docs/cookbook/image-understanding/find-objects-in-images.md) · [原文](https://openrouter.ai/docs/cookbook/image-understanding/find-objects-in-images.md)
 - `docs/cookbook/video-generation/choose-video-model` — [Choose a Video Generation Model](pages/docs/cookbook/video-generation/choose-video-model.md) · [原文](https://openrouter.ai/docs/cookbook/video-generation/choose-video-model.md)
 - `docs/cookbook/video-generation/image-to-video` — [Turn an Image into a Video](pages/docs/cookbook/video-generation/image-to-video.md) · [原文](https://openrouter.ai/docs/cookbook/video-generation/image-to-video.md)
 - `docs/cookbook/video-generation/provider-specific-video-options` — [Use Provider-Specific Video Options](pages/docs/cookbook/video-generation/provider-specific-video-options.md) · [原文](https://openrouter.ai/docs/cookbook/video-generation/provider-specific-video-options.md)

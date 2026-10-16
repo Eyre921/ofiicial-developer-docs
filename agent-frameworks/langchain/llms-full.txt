@@ -2467,6 +2467,12 @@ Service keys are prefixed with `lsv2_sk_`
   To see how to create a service key or Personal Access Token, see the [setup guide](/langsmith/create-account-api-key)
 </Note>
 
+#### Tracing keys
+
+Tracing keys are organization-owned credentials with fixed permissions to submit traces and create projects in selected workspaces. They do not grant access to stored traces, experiments, saved views, or administration.
+
+Tracing keys use the `lsv2_tr_` prefix. Their scope is fixed at creation, and they remain valid when the creator leaves the organization. They follow service-key expiry limits. For creation permissions, scope limits, and deletion rules, refer to [Tracing keys](/langsmith/create-account-api-key#tracing-keys).
+
 ### Organization roles
 
 Organization roles are distinct from the [Enterprise feature workspace RBAC](#workspace-roles-rbac) and are used in the context of multiple [workspaces](#workspaces). Your organization role determines your workspace membership characteristics and your [organization-level permissions](/langsmith/organization-workspace-operations).
@@ -14412,7 +14418,7 @@ The following features are supported:
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**: Connect MCP-compatible clients to LangSmith to query data.
 * **[Fleet](/langsmith/fleet/index)**: Build and run no-code agents from templates, connectors, and channels.
 * **[SmithDB](/langsmith/smithdb-sdk-migration)**: The purpose-built observability backend for trace data, persisting to S3 in your account.
-* **[Engine](/langsmith/engine)**: Automatic detection, diagnosis, and resolution of recurring issues found in production traces. Engine runs its models on the LangSmith Intelligence service or on your own model providers. See [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) for details.
+* **[Engine](/langsmith/engine)**: Automatic detection, diagnosis, and resolution of recurring issues found in production traces. On BYOC, Engine runs its models on your own model providers, and you configure your GitHub App and Slack app in the LangSmith UI. See [Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc).
 
 The following features are planned but not yet supported:
 
@@ -15288,13 +15294,14 @@ The tool migrates the following resources between a source instance and a destin
 | Prompts | Prompts with the full commit history. |
 | Charts | Monitoring charts and dashboards. |
 | Custom model pricing | Workspace-custom model price entries. |
+| Engine issues | Per-project Engine configuration and detected issues. Issues migrate as metadata, including the proposed fix, without their linked traces or pull requests. |
 | Fleet | Agents, shared skills, MCP servers, integrations, auth providers, schedules, triggers, webhooks, usage limits, sandbox policies, and workspace secrets. |
 | Context Hub | Context Hub agents and skills, including files, repository metadata, commit history, and commit tags. |
 
 Each resource type has its own command, flags, and caveats. For the command reference, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
 
 <Note>
-  Resources belonging to a feature that BYOC does not support yet, such as [Engine](/langsmith/engine), cannot be migrated. See [Available features](/langsmith/byoc#available-features).
+  Resources belonging to a feature that BYOC does not support yet, such as [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview), cannot be migrated. See [Available features](/langsmith/byoc#available-features).
 </Note>
 
 ## Migrate with the tool
@@ -15377,6 +15384,19 @@ Each resource type has its own command, flags, and caveats. For the command refe
 * **Configure infrastructure-level settings**: OAuth providers, the GitHub App, and the Slack app can be recreated in the `Settings > Oauth Providers` and `Fleet > Integrations` UI.
 
 Fleet migrators never overwrite resources that already exist on the destination, so re-running `fleet` is safe.
+
+## Complete the Engine manual steps
+
+[Engine](/langsmith/engine) issues migrate with the `issues` command. The command creates any tracing project that has Engine data and is missing on the destination. Issues migrate as metadata only, and the command skips issues and project configurations that already exist on the destination.
+
+To run Engine in the data plane, complete these steps in order:
+
+1. **Enable Engine for the data plane**: A LangChain operator enables Engine for your data plane. Contact your LangChain account team to request it.
+2. **Turn on Engine**: An Organization Admin goes to **Settings** > **Engine**, selects the data plane, and turns on Engine.
+3. **Add model provider credentials**: An Organization Admin adds credentials for your own model providers. Credentials are not migrated. See [Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc).
+4. **Reconnect GitHub**: Configure your GitHub App in the destination, then reconnect repositories in each Engine project. Repository settings migrate, but they work only after the destination has a GitHub connection. See [Configure GitHub for Engine on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc).
+5. **Recreate notification destinations**: Connect your Slack app and add Slack, Jira, or webhook destinations again. See [Engine notifications](/langsmith/engine-notifications).
+6. **Let Engine re-detect traces**: Migrated issues have no linked traces, pull requests, or suggested actions. Engine links new traces to the issues as it analyzes traces in the data plane.
 
 ## Move data the tool does not migrate
 
@@ -19147,7 +19167,7 @@ For LangSmith API operations (traces, evaluations, datasets):
 For self-hosted LangSmith instances, use `http(s)://<langsmith-url>/api` where `<langsmith-url>` is your self-hosted instance URL.
 
 <Note>
-  If you're setting the endpoint in the `LANGSMITH_ENDPOINT` environment variable, use the full API URL without a trailing slash (e.g., `https://api.smith.langchain.com` or `http(s)://<langsmith-url>/api` if self-hosted). A trailing slash can cause authentication errors with some endpoints.
+  If you set the endpoint in the `LANGSMITH_ENDPOINT` environment variable, use the API URL, such as `https://api.smith.langchain.com` or `http(s)://<langsmith-url>/api` if self-hosted.
 </Note>
 
 #### LangSmith Deployment API (Deployments)
@@ -19851,7 +19871,7 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
 
 <Tabs>
   <Tab title="Python">
-    <Note>This command is in [beta](/langsmith/release-stages) and under active development. Expect frequent updates and improvements. `langgraph deploy` is not yet supported on LangSmith Cloud (SaaS) in AWS.</Note>
+    <Note>This command is in [beta](/langsmith/release-stages) and under active development. Expect frequent updates and improvements. On LangSmith Cloud (SaaS) in AWS, local builds require `langgraph-cli` 0.4.35 or later.</Note>
 
     Build and deploy a LangGraph image directly to [LangSmith Deployments](/langsmith/deployment). This command builds a Docker image locally, pushes it to a managed registry, and creates or updates a deployment—all in a single step. If Docker is not installed, it triggers a remote build.
 
@@ -25292,12 +25312,15 @@ To get started with LangSmith, you need to create an account. You can sign up fo
 
 ## API keys
 
-LangSmith supports two types of API keys. You can use both types of token to authenticate requests to the LangSmith API, but they have different use cases:
+LangSmith supports three types of API keys with different permissions and lifecycles:
 
 * [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats) inherit the permissions of the user who created them. Use PATs for personal scripts or tools.
+* [**Tracing keys**](#tracing-keys) submit traces in selected workspaces without access to stored traces or administrative operations.
 * [**Service keys**](/langsmith/administration-overview#service-keys) scope to specific [workspaces](/langsmith/administration-overview#workspaces) or the entire [organization](/langsmith/administration-overview#organizations). Use service keys for applications and production services.
 
-To log [traces](/langsmith/observability-concepts#traces) and run [evaluations](/langsmith/evaluation) with LangSmith, create an API key to authenticate your requests.
+Use a tracing key to log [traces](/langsmith/observability-concepts#traces). Use a PAT or service key with the required permissions for [evaluations](/langsmith/evaluation) and other API operations.
+
+To create a PAT or service key in the UI:
 
 <Steps>
   <Step title="Open API Keys settings" icon="settings">
@@ -25352,6 +25375,59 @@ Authentication results are cached, so a deactivated or deleted token stops worki
 [Audit logs](/langsmith/audit-logs) record deactivation as `revoke_personal_access_token` and reactivation as `reinstate_personal_access_token`.
 
 Service keys can only be deleted, not deactivated. Open the **Service** tab and select **Delete key** in the **Actions** column, then confirm with the typed description that deleting a PAT requires.
+
+## Tracing keys
+
+Tracing keys are organization-owned credentials for submitting traces in selected workspaces. They limit an application's access to `runs:create` and `projects:create`.
+
+A tracing key can create projects and submit run updates through the tracing ingestion APIs. It cannot read stored traces, update project configuration, create saved views, run experiments, or manage keys. Project upsert requests are also denied. Use a separate credential for operations that require those permissions.
+
+### Create a tracing key
+
+Tracing-key creation requires active organization membership and active membership in every selected workspace. You need `workspaces:tracing-keys:create` in each workspace, including permissions granted through teams. Built-in Workspace Admin and Workspace Editor roles receive this permission; Workspace Viewers do not. Administrators must grant it explicitly to custom roles. You do not need `runs:create` yourself.
+
+To create a key in LangSmith:
+
+1. Go to **Settings** > **API Keys** and select **API Key**.
+2. Select **Tracing Only** and enter a description.
+3. Select the workspaces and an expiration date, then select **Create API Key**.
+4. Copy the key before closing the dialog.
+
+The tracing option requires a supported deployment. For BYOC workspaces, the data plane must also support tracing keys. Only workspaces where you have the creation permission and the deployment supports tracing keys are available for selection.
+
+You can also create the key with `POST /api/v1/orgs/current/tracing-keys`. Authenticate as a user, including through a PAT if organization policy permits API keys to create keys. Service-account keys cannot create tracing keys.
+
+The request accepts:
+
+* **`workspaces`**: A required list of one or more workspace IDs. The key has no organization-wide scope.
+* **`description`**: An optional label for the key.
+* **`expires_at`**: An optional expiration timestamp, subject to service-key expiry limits.
+
+The response returns `201 Created`, a `Location` header, and the secret in `key`. Copy the secret when you create it; list responses do not return it. Tracing keys have the `lsv2_tr_` prefix.
+
+Use the key as `LANGSMITH_API_KEY` with the [SDK configuration](#configure-the-sdk) below. For a key scoped to multiple workspaces, set `LANGSMITH_WORKSPACE_ID` to a selected workspace. Direct API requests use `X-Tenant-Id`.
+
+### Scope and lifecycle
+
+A tracing key has fixed permissions across its selected workspaces. It does not inherit the creator's roles or project-tag access policies. Its workspace scope and permissions cannot be edited. Create a replacement key to change the scope.
+
+Removing or disabling the creator does not disable tracing with the key. Deleting a selected workspace removes access to that workspace; it does not add access to other workspaces. Expiration and key deletion stop authentication, subject to authentication caching.
+
+### List and delete tracing keys
+
+In **Settings** > **API Keys**, select **Tracing** to view keys. To delete a key, select its delete action and enter its description to confirm. The delete action appears only when you have permission to delete that key.
+
+`GET /api/v1/orgs/current/tracing-keys` lists keys visible to the authenticated user. It returns `items` and `next_cursor`. Use `page_size` to request 1–100 keys per page; the default is 50. Pass `next_cursor` as `cursor` to request the next page. The optional `workspace_ids` filter limits results to matching visible workspaces.
+
+Listing a key does not necessarily grant permission to delete it. Hidden workspace IDs and names are omitted for callers without access to the full scope. Check `can_delete` for deletion authority.
+
+`DELETE /api/v1/orgs/current/tracing-keys/{api_key_id}` deletes a tracing key. Repeated deletion returns `204 No Content`. Deletion is allowed for:
+
+* **Creators**: The creator must remain an active organization member.
+* **Organization key managers**: Callers with `organization:service-key:manage`, including service-account automation.
+* **Workspace key managers**: Active members with `workspaces:manage-keys` in every remaining selected workspace.
+
+The create, list, and delete endpoints are available over HTTP. Generated SDK key-management methods do not expose them. An issued tracing key works with the SDK's tracing APIs.
 
 ## Configure the SDK
 
@@ -31912,364 +31988,6 @@ This section is a reference for the SDKs, CLI, and APIs you use to deploy and in
 </div>
 
 
-# Enable LangSmith Deployment
-Source: https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform
-
-Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
-
-[LangSmith Deployment](/langsmith/deployment) adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) to your installation. It lets you deploy and manage agents through the LangSmith UI.
-
-Deployment is optional for observability and evaluation. Complete the [Kubernetes installation](/langsmith/kubernetes) first. For other optional features, see [Configure additional features](/langsmith/self-host-additional-features). For Agent Servers without a control plane, see [Standalone servers](/langsmith/deploy-standalone-server).
-
-<Info>
-  LangSmith Deployment requires an [Enterprise](https://langchain.com/pricing) plan.
-</Info>
-
-## Prerequisites
-
-<Steps>
-  <Step title="Install the base LangSmith platform">
-    Follow the [Kubernetes installation guide](/langsmith/kubernetes) to install the base LangSmith platform before continuing.
-  </Step>
-
-  <Step title="Install KEDA">
-    Run the following commands to install `KEDA` on your cluster:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm repo add kedacore https://kedacore.github.io/charts
-    helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
-    ```
-
-    <Info>
-      KEDA automatically scales the deployment system based on queue size.
-    </Info>
-  </Step>
-
-  <Step title="Configure an ingress">
-    Configure an ingress, gateway, or Istio for your LangSmith instance. All agents will be deployed as Kubernetes services behind this ingress. See [Set up an ingress](/langsmith/self-host-ingress). You must provide a `hostname` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts).
-  </Step>
-
-  <Step title="Verify cluster capacity">
-    Ensure your cluster has available capacity for multiple deployments. A cluster autoscaler is recommended.
-  </Step>
-
-  <Step title="Verify storage">
-    Ensure a valid dynamic PV provisioner or PVs are available on your cluster.
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get storageclass
-    ```
-
-    At least one StorageClass should have a `PROVISIONER` value (not `kubernetes.io/no-provisioner`) and be marked `(default)`, or you must configure one before proceeding.
-  </Step>
-
-  <Step title="Verify egress">
-    Ensure egress to `https://beacon.langchain.com` is available. See the [egress documentation](/langsmith/self-host-egress).
-  </Step>
-</Steps>
-
-## Enable LangSmith Deployment
-
-### Components
-
-Enabling LangSmith Deployment provisions the following resources in your cluster:
-
-* `listener`: Listens to the [control plane](/langsmith/control-plane) for changes to your deployments and creates or updates downstream CRDs.
-* `LangGraphPlatform CRD`: Manages instances of LangSmith Deployment.
-* `operator`: Handles changes to your LangSmith CRDs.
-* `host-backend`: The [control plane](/langsmith/control-plane).
-
-### Enable the feature
-
-To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts):
-
-<Steps>
-  <Step title="Enable deployment in your config">
-    In your `langsmith_config.yaml`, enable the `deployment` option. You must also have a valid ingress configured.
-
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    config:
-      deployment:
-        enabled: true
-    ```
-
-    <Note>
-      As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
-    </Note>
-  </Step>
-
-  <Step title="(Optional) Configure image mirroring">
-    If you need to mirror images to a private registry, configure the `hostBackendImage` and `operatorImage` options in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Use the image tags specified in the [latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases).
-
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    hostBackendImage:
-      repository: "docker.io/langchain/hosted-langserve-backend"
-      pullPolicy: IfNotPresent
-    operatorImage:
-      repository: "docker.io/langchain/langgraph-operator"
-      pullPolicy: IfNotPresent
-    ```
-  </Step>
-
-  <Step title="(Optional) Configure base agent templates">
-    Override the [base agent templates in `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428) if you need to customize how the operator creates agent Kubernetes resources. The most common use case is adding `imagePullSecrets` to authenticate with a private container registry. See [Configure authentication for private registries](#configure-authentication-for-private-registries) for details.
-  </Step>
-
-  <Step title="Apply the changes">
-    Run the following command to apply the changes. This command is used throughout this guide whenever you are asked to apply changes. Replace `<version>` and `<namespace>` with your values:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
-
-    Verify that the new pods are running before continuing:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get pods -n <namespace>
-    ```
-
-    Your instance is now ready to create deployments.
-  </Step>
-</Steps>
-
-## Optional configuration
-
-### Configure additional data planes
-
-<Warning>
-  **Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
-</Warning>
-
-In addition to the data plane created above, you can create more data planes in different Kubernetes clusters or in the same cluster under a different namespace. There are different ways to achieve this, so implement the solution that works best for your use case.
-
-#### Prerequisites
-
-<Steps>
-  <Step title="Review cluster organization">
-    Read through the cluster organization guide in the [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) to understand how to organize this for your use case.
-  </Step>
-
-  <Step title="Verify hybrid prerequisites">
-    Verify the prerequisites in the [hybrid section](/langsmith/hybrid-legacy#prerequisites) for the new cluster. In step 5 of the [prerequisites](/langsmith/hybrid-legacy#prerequisites), configure egress to your [self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith) instead of `https://api.host.langchain.com` and `https://api.smith.langchain.com`.
-  </Step>
-
-  <Step title="Enable the feature in Postgres">
-    Run the following against your LangSmith Postgres instance to enable this feature. Note the workspace ID for later steps.
-
-    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    update organizations set config = config || '{"enable_lgp_listeners_page": true}' where id = '<org id here>';
-    update tenants set config = config || '{"langgraph_remote_reconciler_enabled": true}' where id = '<workspace id here>';
-    ```
-  </Step>
-</Steps>
-
-#### Deploy to a different cluster
-
-<Steps>
-  <Step title="Follow the hybrid setup guide">
-    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step.
-  </Step>
-
-  <Step title="(Optional) Add more data planes to the same cluster">
-    To add more than one data plane to the same cluster, follow the instructions for [configuring additional data planes in the same cluster](/langsmith/hybrid-legacy#configuring-additional-data-planes-in-the-same-cluster).
-  </Step>
-</Steps>
-
-#### Deploy to a different namespace in the same cluster
-
-<Steps>
-  <Step title="Update your config">
-    In your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), make the following modifications:
-
-    * Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
-    * Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
-  </Step>
-
-  <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
-  </Step>
-
-  <Step title="Follow the hybrid setup guide">
-    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step. Set `config.watchNamespaces` to a different namespace than the one used by the existing data plane.
-  </Step>
-
-  <Step title="(Optional) Configure log access">
-    Configure access for the control plane to read Agent Server deployment logs from the new namespace. See [Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces).
-  </Step>
-</Steps>
-
-### Configure authentication for private registries
-
-If your [Agent Server deployments](/langsmith/agent-server) will use images from private container registries (for example, AWS ECR, Azure ACR, or GCP Artifact Registry), configure image pull secrets. This configuration applies to all deployments automatically, allowing them to authenticate with your private registry.
-
-<Steps>
-  <Step title="Create a Kubernetes image pull secret">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl create secret docker-registry langsmith-registry-secret \
-        --docker-server=myregistry.com \
-        --docker-username=your-username \
-        --docker-password=your-password \
-        --docker-email=your-email@example.com \
-        -n langsmith
-    ```
-
-    Replace the values with your registry credentials:
-
-    * `myregistry.com`: Your registry URL
-    * `your-username`: Your registry username
-    * `your-password`: Your registry password or access token
-    * `langsmith`: The Kubernetes namespace where LangSmith is installed
-  </Step>
-
-  <Step title="Configure the deployment template in your langsmith_config.yaml">
-    To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
-
-    ```yaml {21-22} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    operator:
-      templates:
-        deployment: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: ${name}
-            namespace: ${namespace}
-          spec:
-            replicas: ${replicas}
-            revisionHistoryLimit: 10
-            selector:
-              matchLabels:
-                app: ${name}
-            template:
-              metadata:
-                labels:
-                  app: ${name}
-              spec:
-                enableServiceLinks: false
-                imagePullSecrets:
-                - name: langsmith-registry-secret
-                containers:
-                - name: api-server
-                  image: ${image}
-                  ports:
-                  - name: api-server
-                    containerPort: 8000
-                    protocol: TCP
-                  livenessProbe:
-                    httpGet:
-                      path: /ok
-                      port: 8000
-                    periodSeconds: 15
-                    timeoutSeconds: 5
-                    failureThreshold: 6
-                  readinessProbe:
-                    httpGet:
-                      path: /ok
-                      port: 8000
-                    periodSeconds: 15
-                    timeoutSeconds: 5
-                    failureThreshold: 6
-    ```
-  </Step>
-
-  <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
-
-    All user deployments created through the LangSmith UI will inherit these registry credentials.
-  </Step>
-</Steps>
-
-For registry-specific authentication methods, refer to the [Kubernetes documentation on pulling images from private registries](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
-
-### Read Agent Server logs from other namespaces
-
-<Warning>
-  Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
-</Warning>
-
-For deployments where the control plane and data plane are in the same cluster, ensure the control plane Kubernetes deployment (`host-backend`) has permission to `get`, `list`, and `watch` Kubernetes `deployments`, `pods`, `replicasets`, and `logs` from the namespace where the Agent Server deployment exists. There are different ways to achieve this. The following example uses Kubernetes RBAC, but use the approach that best fits your use case:
-
-<Steps>
-  <Step title="Create a Role with the required permissions">
-    Create a `Role` in the Agent Server namespace. Replace `<data_plane_namespace>`:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl apply -n <data_plane_namespace> -f - <<EOF
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      name: read-agent-server-logs-role
-    rules:
-    - apiGroups: [""]
-      resources: ["pods"]
-      verbs: ["get","list","watch"]
-    - apiGroups: [""]
-      resources: ["pods/log"]
-      verbs: ["get","watch"]
-    - apiGroups: ["apps"]
-      resources: ["deployments"]
-      verbs: ["get","list","watch"]
-    - apiGroups: ["apps"]
-      resources: ["replicasets"]
-      verbs: ["get","list","watch"]
-    EOF
-    ```
-  </Step>
-
-  <Step title="Get the control plane ServiceAccount">
-    Replace `<control_plane_namespace>`:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get serviceaccounts -n <control_plane_namespace> | grep host-backend
-    ```
-  </Step>
-
-  <Step title="Bind the Role to the control plane ServiceAccount">
-    Replace `<data_plane_namespace>`, `<control_plane_namespace>`, and `<control_plane_service_account>`:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl apply -n <data_plane_namespace> -f - <<EOF
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: read-agent-server-logs-role-binding
-    subjects:
-    - kind: ServiceAccount
-      name: <control_plane_service_account>
-      namespace: <control_plane_namespace>
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: read-agent-server-logs-role
-    EOF
-    ```
-  </Step>
-</Steps>
-
-<Note>
-  In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
-</Note>
-
-## Next steps
-
-Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith/deploy-with-control-plane) to build and deploy your applications via the LangSmith UI.
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-self-hosted-full-platform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
-
-
 # Self-host standalone servers
 Source: https://docs.langchain.com/langsmith/deploy-standalone-server
 
@@ -32347,7 +32065,7 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
    </Tip>
 6. `LANGSMITH_API_KEY`: LangSmith API key.
 7. `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
-8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance. Do not add a trailing slash to the URL, as this can cause authentication errors.
+8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance.
 9. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
 
 <Note>
@@ -33031,8 +32749,8 @@ In return, you can integrate with your own [Postgres](/langsmith/self-hosted-pla
     Compare standalone server, full platform, and hybrid to find the right fit.
   </Card>
 
-  <Card title="Install the full platform" icon="book" href="/langsmith/deploy-self-hosted-full-platform">
-    Deploy LangSmith on Kubernetes with the control plane and data plane.
+  <Card title="Enable LangSmith Deployment" icon="book" href="/langsmith/enable-self-hosted-deployment">
+    Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
   </Card>
 </CardGroup>
 
@@ -33383,7 +33101,7 @@ Source: https://docs.langchain.com/langsmith/deploy-with-control-plane
 Build Docker images and deploy applications to a self-hosted LangSmith instance using the control plane UI.
 
 <Info>
-  **This guide is for self-hosted LangSmith customers** who have [enabled LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment) on their instance. For Cloud customers, see [Deploy on Cloud](/langsmith/deploy-to-cloud). For standalone Agent Servers without a control plane, see [Self-host standalone servers](/langsmith/deploy-standalone-server).
+  **This guide is for self-hosted LangSmith customers** who have [enabled LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) on their instance. For Cloud customers, see [Deploy on Cloud](/langsmith/deploy-to-cloud). For standalone Agent Servers without a control plane, see [Self-host standalone servers](/langsmith/deploy-standalone-server).
 </Info>
 
 This guide shows you how to deploy your applications to a [self-hosted](/langsmith/self-hosted) LangSmith instance using a [control plane](/langsmith/control-plane). With a control plane, you build Docker images locally, push them to a registry that your Kubernetes cluster has access to, and deploy them with the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-with-control-plane).
@@ -33392,7 +33110,7 @@ This guide shows you how to deploy your applications to a [self-hosted](/langsmi
 
 Enabling LangSmith Deployment on an existing self-hosted LangSmith instance adds a control plane, a data plane listener, and an operator that provisions Agent Servers in your cluster. The base LangSmith platform continues to handle observability, evaluation, and prompts; deployed Agent Servers send traces back to it.
 
-For details on the components added by enabling LangSmith Deployment, see [Enable LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment).
+For details on the components added by enabling LangSmith Deployment, see [Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment).
 
 ## Overview
 
@@ -33407,7 +33125,7 @@ Applications deployed to a self-hosted LangSmith instance with a control plane u
 
 Before completing this guide, you'll need the following:
 
-* [LangSmith Deployment enabled](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment) on your self-hosted LangSmith instance.
+* [LangSmith Deployment enabled](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) on your self-hosted LangSmith instance.
 * Access to the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-with-control-plane) with LangSmith Deployment enabled.
 * A container registry accessible by your Kubernetes cluster. If using a private registry that requires authentication, you must configure image pull secrets as part of your infrastructure setup. Refer to [Private registry authentication](#private-registry-authentication).
 
@@ -33501,7 +33219,7 @@ If your container registry requires authentication (e.g., AWS ECR, Azure ACR, GC
   **This configuration is done at the infrastructure level, not per-deployment.** Once configured, all deployments automatically inherit the registry credentials.
 </Note>
 
-Configure `imagePullSecrets` in your LangSmith Helm chart's `values.yaml` file. See the detailed steps in the [Enable LangSmith Deployment guide](/langsmith/deploy-self-hosted-full-platform#enable-langsmith-deployment).
+Configure `imagePullSecrets` in your LangSmith Helm chart's `values.yaml` file. See the detailed steps in the [Enable LangSmith Deployment guide](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment).
 
 For detailed steps on creating image pull secrets for different registry providers, refer to the [Kubernetes documentation on pulling images from private registries](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
 
@@ -33671,7 +33389,7 @@ This quickstart shows you how to deploy an application to LangSmith Cloud in GCP
 </Tip>
 
 <Note>
-  The `langgraph deploy` command is in **[beta](/langsmith/release-stages)**. `langgraph deploy` is not yet supported on LangSmith Cloud (SaaS) in AWS.
+  The `langgraph deploy` command is in **[beta](/langsmith/release-stages)**. On LangSmith Cloud (SaaS) in AWS, local builds require `langgraph-cli` 0.4.35 or later.
 </Note>
 
 ## Prerequisites
@@ -34440,6 +34158,364 @@ For configuring the rollback double text option, refer to the [how-to guide](/la
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Enable LangSmith Deployment
+Source: https://docs.langchain.com/langsmith/enable-self-hosted-deployment
+
+Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
+
+[LangSmith Deployment](/langsmith/deployment) adds a [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) to your installation. It lets you deploy and manage agents through the LangSmith UI.
+
+Deployment is optional for observability and evaluation. Complete the [Kubernetes installation](/langsmith/kubernetes) first. For other optional features, see [Configure additional features](/langsmith/self-host-additional-features). For Agent Servers without a control plane, see [Standalone servers](/langsmith/deploy-standalone-server).
+
+<Info>
+  LangSmith Deployment requires an [Enterprise](https://langchain.com/pricing) plan.
+</Info>
+
+## Prerequisites
+
+<Steps>
+  <Step title="Install the base LangSmith platform">
+    Follow the [Kubernetes installation guide](/langsmith/kubernetes) to install the base LangSmith platform before continuing.
+  </Step>
+
+  <Step title="Install KEDA">
+    Run the following commands to install `KEDA` on your cluster:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm repo add kedacore https://kedacore.github.io/charts
+    helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
+    ```
+
+    <Info>
+      KEDA automatically scales the deployment system based on queue size.
+    </Info>
+  </Step>
+
+  <Step title="Configure an ingress">
+    Configure an ingress, gateway, or Istio for your LangSmith instance. All agents will be deployed as Kubernetes services behind this ingress. See [Set up an ingress](/langsmith/self-host-ingress). You must provide a `hostname` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts).
+  </Step>
+
+  <Step title="Verify cluster capacity">
+    Ensure your cluster has available capacity for multiple deployments. A cluster autoscaler is recommended.
+  </Step>
+
+  <Step title="Verify storage">
+    Ensure a valid dynamic PV provisioner or PVs are available on your cluster.
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl get storageclass
+    ```
+
+    At least one StorageClass should have a `PROVISIONER` value (not `kubernetes.io/no-provisioner`) and be marked `(default)`, or you must configure one before proceeding.
+  </Step>
+
+  <Step title="Verify egress">
+    Ensure egress to `https://beacon.langchain.com` is available. See the [egress documentation](/langsmith/self-host-egress).
+  </Step>
+</Steps>
+
+## Enable LangSmith Deployment
+
+### Components
+
+Enabling LangSmith Deployment provisions the following resources in your cluster:
+
+* `listener`: Listens to the [control plane](/langsmith/control-plane) for changes to your deployments and creates or updates downstream CRDs.
+* `LangGraphPlatform CRD`: Manages instances of LangSmith Deployment.
+* `operator`: Handles changes to your LangSmith CRDs.
+* `host-backend`: The [control plane](/langsmith/control-plane).
+
+### Enable the feature
+
+To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts):
+
+<Steps>
+  <Step title="Enable deployment in your config">
+    In your `langsmith_config.yaml`, enable the `deployment` option. You must also have a valid ingress configured.
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    config:
+      deployment:
+        enabled: true
+    ```
+
+    <Note>
+      As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
+    </Note>
+  </Step>
+
+  <Step title="(Optional) Configure image mirroring">
+    If you need to mirror images to a private registry, configure the `hostBackendImage` and `operatorImage` options in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Use the image tags specified in the [latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases).
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    hostBackendImage:
+      repository: "docker.io/langchain/hosted-langserve-backend"
+      pullPolicy: IfNotPresent
+    operatorImage:
+      repository: "docker.io/langchain/langgraph-operator"
+      pullPolicy: IfNotPresent
+    ```
+  </Step>
+
+  <Step title="(Optional) Configure base agent templates">
+    Override the [base agent templates in `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428) if you need to customize how the operator creates agent Kubernetes resources. The most common use case is adding `imagePullSecrets` to authenticate with a private container registry. See [Configure authentication for private registries](#configure-authentication-for-private-registries) for details.
+  </Step>
+
+  <Step title="Apply the changes">
+    Run the following command to apply the changes. This command is used throughout this guide whenever you are asked to apply changes. Replace `<version>` and `<namespace>` with your values:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+
+    Verify that the new pods are running before continuing:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl get pods -n <namespace>
+    ```
+
+    Your instance is now ready to create deployments.
+  </Step>
+</Steps>
+
+## Optional configuration
+
+### Configure additional data planes
+
+<Warning>
+  **Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
+</Warning>
+
+In addition to the data plane created above, you can create more data planes in different Kubernetes clusters or in the same cluster under a different namespace. There are different ways to achieve this, so implement the solution that works best for your use case.
+
+#### Prerequisites
+
+<Steps>
+  <Step title="Review cluster organization">
+    Read through the cluster organization guide in the [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) to understand how to organize this for your use case.
+  </Step>
+
+  <Step title="Verify hybrid prerequisites">
+    Verify the prerequisites in the [hybrid section](/langsmith/hybrid-legacy#prerequisites) for the new cluster. In step 5 of the [prerequisites](/langsmith/hybrid-legacy#prerequisites), configure egress to your [self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith) instead of `https://api.host.langchain.com` and `https://api.smith.langchain.com`.
+  </Step>
+
+  <Step title="Enable the feature in Postgres">
+    Run the following against your LangSmith Postgres instance to enable this feature. Note the workspace ID for later steps.
+
+    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    update organizations set config = config || '{"enable_lgp_listeners_page": true}' where id = '<org id here>';
+    update tenants set config = config || '{"langgraph_remote_reconciler_enabled": true}' where id = '<workspace id here>';
+    ```
+  </Step>
+</Steps>
+
+#### Deploy to a different cluster
+
+<Steps>
+  <Step title="Follow the hybrid setup guide">
+    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step.
+  </Step>
+
+  <Step title="(Optional) Add more data planes to the same cluster">
+    To add more than one data plane to the same cluster, follow the instructions for [configuring additional data planes in the same cluster](/langsmith/hybrid-legacy#configuring-additional-data-planes-in-the-same-cluster).
+  </Step>
+</Steps>
+
+#### Deploy to a different namespace in the same cluster
+
+<Steps>
+  <Step title="Update your config">
+    In your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), make the following modifications:
+
+    * Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
+    * Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
+  </Step>
+
+  <Step title="Apply the changes">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+  </Step>
+
+  <Step title="Follow the hybrid setup guide">
+    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step. Set `config.watchNamespaces` to a different namespace than the one used by the existing data plane.
+  </Step>
+
+  <Step title="(Optional) Configure log access">
+    Configure access for the control plane to read Agent Server deployment logs from the new namespace. See [Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces).
+  </Step>
+</Steps>
+
+### Configure authentication for private registries
+
+If your [Agent Server deployments](/langsmith/agent-server) will use images from private container registries (for example, AWS ECR, Azure ACR, or GCP Artifact Registry), configure image pull secrets. This configuration applies to all deployments automatically, allowing them to authenticate with your private registry.
+
+<Steps>
+  <Step title="Create a Kubernetes image pull secret">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl create secret docker-registry langsmith-registry-secret \
+        --docker-server=myregistry.com \
+        --docker-username=your-username \
+        --docker-password=your-password \
+        --docker-email=your-email@example.com \
+        -n langsmith
+    ```
+
+    Replace the values with your registry credentials:
+
+    * `myregistry.com`: Your registry URL
+    * `your-username`: Your registry username
+    * `your-password`: Your registry password or access token
+    * `langsmith`: The Kubernetes namespace where LangSmith is installed
+  </Step>
+
+  <Step title="Configure the deployment template in your langsmith_config.yaml">
+    To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
+
+    ```yaml {21-22} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    operator:
+      templates:
+        deployment: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: ${name}
+            namespace: ${namespace}
+          spec:
+            replicas: ${replicas}
+            revisionHistoryLimit: 10
+            selector:
+              matchLabels:
+                app: ${name}
+            template:
+              metadata:
+                labels:
+                  app: ${name}
+              spec:
+                enableServiceLinks: false
+                imagePullSecrets:
+                - name: langsmith-registry-secret
+                containers:
+                - name: api-server
+                  image: ${image}
+                  ports:
+                  - name: api-server
+                    containerPort: 8000
+                    protocol: TCP
+                  livenessProbe:
+                    httpGet:
+                      path: /ok
+                      port: 8000
+                    periodSeconds: 15
+                    timeoutSeconds: 5
+                    failureThreshold: 6
+                  readinessProbe:
+                    httpGet:
+                      path: /ok
+                      port: 8000
+                    periodSeconds: 15
+                    timeoutSeconds: 5
+                    failureThreshold: 6
+    ```
+  </Step>
+
+  <Step title="Apply the changes">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+
+    All user deployments created through the LangSmith UI will inherit these registry credentials.
+  </Step>
+</Steps>
+
+For registry-specific authentication methods, refer to the [Kubernetes documentation on pulling images from private registries](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
+
+### Read Agent Server logs from other namespaces
+
+<Warning>
+  Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
+</Warning>
+
+For deployments where the control plane and data plane are in the same cluster, ensure the control plane Kubernetes deployment (`host-backend`) has permission to `get`, `list`, and `watch` Kubernetes `deployments`, `pods`, `replicasets`, and `logs` from the namespace where the Agent Server deployment exists. There are different ways to achieve this. The following example uses Kubernetes RBAC, but use the approach that best fits your use case:
+
+<Steps>
+  <Step title="Create a Role with the required permissions">
+    Create a `Role` in the Agent Server namespace. Replace `<data_plane_namespace>`:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl apply -n <data_plane_namespace> -f - <<EOF
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      name: read-agent-server-logs-role
+    rules:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get","list","watch"]
+    - apiGroups: [""]
+      resources: ["pods/log"]
+      verbs: ["get","watch"]
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get","list","watch"]
+    - apiGroups: ["apps"]
+      resources: ["replicasets"]
+      verbs: ["get","list","watch"]
+    EOF
+    ```
+  </Step>
+
+  <Step title="Get the control plane ServiceAccount">
+    Replace `<control_plane_namespace>`:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl get serviceaccounts -n <control_plane_namespace> | grep host-backend
+    ```
+  </Step>
+
+  <Step title="Bind the Role to the control plane ServiceAccount">
+    Replace `<data_plane_namespace>`, `<control_plane_namespace>`, and `<control_plane_service_account>`:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl apply -n <data_plane_namespace> -f - <<EOF
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: read-agent-server-logs-role-binding
+    subjects:
+    - kind: ServiceAccount
+      name: <control_plane_service_account>
+      namespace: <control_plane_namespace>
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: read-agent-server-logs-role
+    EOF
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
+</Note>
+
+## Next steps
+
+Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith/deploy-with-control-plane) to build and deploy your applications via the LangSmith UI.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -35841,7 +35917,7 @@ Engine never merges a pull request. Every change it proposes goes through your r
 ### Understand LSU costs
 
 <Note>
-  LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can also use [their own model providers](/langsmith/engine-self-hosted-model-providers), with API keys or cloud identity. With your own providers, you pay them for model calls and LangChain charges a lower LSU rate for Engine usage.
+  LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can also use [their own model providers](/langsmith/engine-self-hosted-model-providers), with API keys or cloud identity. [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) deployments use only their own model providers. With your own providers, you pay them for model calls and LangChain charges a lower LSU rate for Engine usage.
 </Note>
 
 Engine charges in **LangChain Standard Units (LSUs)**, a normalized unit of work covering compute, storage, and memory, plus model inference when LangChain provides it. LSU consumption scales with the number of traces analyzed, the number and complexity of the LLM calls Engine makes to diagnose and fix issues, and the size of any connected repository. LSUs cost **\$1 USD each**. For an estimate of your expected LSU usage, see the [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc).
@@ -35903,7 +35979,7 @@ For offline self-hosted deployments, spend reporting and limit enforcement diffe
 * [Validate fixes automatically](/langsmith/engine-fix-validation): Replay an issue's traces to confirm it reproduces and that Engine's fix resolves it (beta, LangSmith Cloud only).
 * [Proactively identify issues with Red Teaming](/langsmith/engine-red-teaming): Probe a deployed agent with synthetic requests before failures reach production (beta, LangSmith Cloud only).
 * [Engine security](/langsmith/engine-security): How Engine handles your data, and its GitHub and model subprocessor controls.
-* [Engine on self-hosted](/langsmith/engine-self-hosted): Install and run Engine on a self-hosted LangSmith instance.
+* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted): Install and run Engine on a self-hosted LangSmith instance or a BYOC data plane.
 
 ***
 
@@ -36406,7 +36482,7 @@ Severity thresholds do not apply to [`issue.agent_run.failed`](#issue-agent_run-
 
 ## Notify a Slack channel
 
-If Slack is not configured on your self-hosted instance, the **Slack** tab shows **Contact your operator to enable Slack notifications**. The operator [creates a Slack app and configures its credentials](/langsmith/self-host-slack). You then connect a workspace through Slack authorization.
+If Slack is not configured on your self-hosted instance, the **Slack** tab shows **Contact your operator to enable Slack notifications**. The operator [creates a Slack app and configures its credentials](/langsmith/self-host-slack). On a [BYOC](/langsmith/byoc) data plane, an Organization Admin [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc) under **Settings** > **General Settings** > **Slack**. You then connect a workspace through Slack authorization.
 
 To add a Slack destination:
 
@@ -36960,12 +37036,13 @@ Engine connects to repositories on GitHub:
 
 * **LangSmith Cloud**: Use the LangChain-managed GitHub App on GitHub.com. Start with [Connect GitHub repositories](#connect-repositories).
 * **Self-hosted LangSmith**: An operator first completes [GitHub configuration for self-hosted](/langsmith/engine-self-hosted-github) for your GitHub instance. Then, workspace users follow the same repository connection steps below.
+* **BYOC**: An Organization Admin first registers a GitHub App and saves it in the LangSmith UI. See [Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc). Then, workspace users follow the same repository connection steps below.
 
 ## GitHub
 
 ### Connect repositories
 
-These steps apply to LangSmith Cloud and to self-hosted deployments with a configured GitHub App.
+These steps apply to LangSmith Cloud, and to self-hosted and BYOC deployments with a configured GitHub App.
 
 Enable [Engine](/langsmith/engine) for your tracing project or agent environment. You need permission to configure Engine in that project and to connect a GitHub integration in your LangSmith workspace. Ask a workspace administrator if those actions are unavailable.
 
@@ -37049,11 +37126,15 @@ Engine does not fetch Git LFS file contents or initialize Git submodules.
 
 On self-hosted LangSmith, an operator registers a GitHub App and configures LangSmith before anyone can connect repositories. See [Configure GitHub for Engine on self-hosted](/langsmith/engine-self-hosted-github).
 
+## BYOC
+
+On a BYOC data plane, an Organization Admin registers a GitHub App and saves its credentials from an Engine project in the LangSmith UI before anyone can connect repositories. See [Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc).
+
 ## See also
 
 * [Set up Engine](/langsmith/engine-setup): Turn on Engine for a tracing project and select its repositories.
 * [Why connect GitHub](/langsmith/engine#why-connect-github): What Engine gains from source access, and the permissions it uses.
-* [Configure GitHub for Engine on self-hosted](/langsmith/engine-self-hosted-github): Register and configure the GitHub App on self-hosted LangSmith.
+* [Configure GitHub for Engine on self-hosted and BYOC](/langsmith/engine-self-hosted-github): Register and configure the GitHub App on self-hosted LangSmith or a BYOC data plane.
 * [Engine security](/langsmith/engine-security): How Engine handles your data and repository access.
 
 ***
@@ -37100,7 +37181,7 @@ Engine outputs are advisory. It surfaces and tracks issues, proposes pull reques
 
 ## GitHub integration
 
-In LangSmith Cloud, Engine connects to GitHub.com through a LangChain-managed GitHub App. Self-hosted deployments use an [operator-managed App for their GitHub environment](/langsmith/engine-self-hosted-github). GitLab, Bitbucket, and other version control providers are not yet supported.
+In LangSmith Cloud, Engine connects to GitHub.com through a LangChain-managed GitHub App. Self-hosted deployments use an [operator-managed App for their GitHub environment](/langsmith/engine-self-hosted-github). [BYOC](/langsmith/byoc) deployments use an App you register and [configure in the LangSmith UI](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc). GitLab, Bitbucket, and other version control providers are not yet supported.
 
 The App is scoped to:
 
@@ -37121,6 +37202,8 @@ In self-hosted deployments, each organization chooses how Engine runs its models
 
 * **LangSmith Intelligence (LSI):** Engine uses Amazon Bedrock through LSI, under the commitments on this page.
 * **Your own model providers:** Engine calls Anthropic, OpenAI, Amazon Bedrock, Google Vertex AI, or Azure AI Foundry with your credentials. Those providers process Engine's requests under your agreements with them, and LangChain receives only usage metadata.
+
+In [BYOC](/langsmith/byoc) deployments, Engine runs only on your own model providers.
 
 See [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models).
 
@@ -37154,7 +37237,7 @@ The following risks are inherent to AI-assisted code generation. LangChain mitig
 
 * [LangSmith Engine](/langsmith/engine)
 * [Set up Engine](/langsmith/engine-setup)
-* [Engine on self-hosted](/langsmith/engine-self-hosted)
+* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)
 * [Engine notifications](/langsmith/engine-notifications)
 * [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)
 * [Data purging for compliance](/langsmith/data-purging-compliance)
@@ -37179,10 +37262,10 @@ For security questions, contact [trust@langchain.dev](mailto:trust@langchain.dev
 </div>
 
 
-# LangSmith Engine on Self-hosted
+# LangSmith Engine on Self-hosted and BYOC
 Source: https://docs.langchain.com/langsmith/engine-self-hosted
 
-Set up LangSmith Engine on a self-hosted LangSmith instance, including model provider options and external network requirements.
+Set up LangSmith Engine on a self-hosted LangSmith instance or a BYOC data plane, including model provider options and external network requirements.
 
 <Info>
   Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
@@ -37194,9 +37277,31 @@ In self-hosted LangSmith, [LangSmith Engine](/langsmith/engine)'s analysis and f
 
 This page covers how to [choose how Engine runs its models](#choose-how-engine-runs-its-models), where Engine processes data, and how to [install Engine](#install-engine). To configure your own model providers, see [Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers). To give Engine access to source code, also [configure a GitHub App](/langsmith/engine-self-hosted-github). GitHub is optional for trace analysis.
 
+Engine also runs on [BYOC](/langsmith/byoc) data planes, where LangChain installs and operates it for you. See [Engine on BYOC](#engine-on-byoc) for what differs.
+
 <Note>
-  Red teaming and automatic issue validation are unavailable on self-hosted LangSmith. You can investigate issues, generate fixes, and open PRs without those features.
+  Red teaming and automatic issue validation are unavailable on self-hosted LangSmith and BYOC. You can investigate issues, generate fixes, and open PRs without those features.
 </Note>
+
+## Engine on BYOC
+
+On a BYOC data plane, LangChain installs Engine and generates its keys, and you do not need to edit Helm values. To enable Engine on your data plane, contact your LangChain account team.
+
+Engine on BYOC differs from self-hosted LangSmith in the following ways:
+
+* **Model providers**: Engine runs only on [your own model providers](/langsmith/engine-self-hosted-model-providers). LangSmith Intelligence is not available. Amazon Bedrock can use your data plane's cloud identity instead of saved credentials. Enable access to the required models in the AWS account that hosts the data plane.
+* **GitHub**: An Organization Admin registers a GitHub App and saves its credentials from an Engine project in the LangSmith UI. See [Connect Engine to GitHub on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc).
+* **Slack**: An Organization Admin configures a Slack app for the organization under **Settings** > **General Settings** > **Slack**. See [Create your Slack app on BYOC](/langsmith/self-host-slack#create-your-slack-app-on-byoc).
+
+To set up Engine after LangChain enables it on your data plane:
+
+1. An Organization Admin goes to **Settings** > **Engine**, selects the data plane, and turns on Engine. This setting applies to all workspaces on the data plane. Other data planes and LangSmith Cloud are unaffected.
+2. An Organization Admin [chooses model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) under **Settings** > **Engine** > **Model providers**. Saving credentials requires the `organization:manage-model-secrets` permission.
+3. A user whose [role](/langsmith/rbac) can update tracing projects turns on Engine for a tracing project. See [Set up Engine](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project).
+4. (Optional) An Organization Admin [configures the GitHub App](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc), and workspace users connect repositories.
+5. (Optional) An Organization Admin [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc) and adds [notification destinations](/langsmith/engine-notifications).
+
+To move Engine issues from LangSmith Cloud or self-hosted LangSmith to a data plane, see [Migrate to BYOC](/langsmith/byoc-migration#complete-the-engine-manual-steps).
 
 ## Choose how Engine runs its models
 
@@ -37260,6 +37365,8 @@ For LangChain-managed inference, the model-provider retention and training commi
 
 ## Install Engine
 
+This section applies to self-hosted LangSmith. On BYOC, LangChain installs Engine. See [Engine on BYOC](#engine-on-byoc).
+
 Engine is disabled by default. It requires [Sandboxes](/langsmith/enable-self-hosted-sandboxes), a connection to [LangSmith Intelligence](#allow-egress-to-langsmith-intelligence) unless your installation is [air-gapped](#air-gapped-installations), an externally reachable [`config.hostname`](#verify-your-hostname-is-externally-reachable), and [Engine's keys](#generate-engines-keys). Complete the prerequisites before enabling Engine.
 
 Engine and [Insights](/langsmith/self-host-insights-chat) run from the same image and share one deployment. Insights is not required for Engine. If your installation already runs Insights, enabling Engine adds configuration rather than new pods.
@@ -37319,7 +37426,9 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
   <Step title="Verify your hostname is externally reachable">
     Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
 
-    Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine's sandbox network policy permits access to your LangSmith hostname, the configured GitHub hosts, and the Python package registries. Per-run credentials are injected by a proxy outside the sandbox rather than being readable inside it.
+    Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine's sandbox network policy permits access to your LangSmith hostname, the configured GitHub hosts, and the public PyPI and npm registries. A proxy outside the sandbox injects per-run credentials, so they are not readable inside it.
+
+    When Engine generates a code fix, it installs dependencies from `pypi.org`, `files.pythonhosted.org`, and `registry.npmjs.org`. The registry hosts are not configurable, so Engine cannot use an internal PyPI or npm mirror, and dependency installs fail if your network blocks the public registries. Sandboxes cannot reach Go module proxies such as `proxy.golang.org`, so Engine uses your connected code repository's `vendor/` directory when it is present.
 
     For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-self-hosted-github#allow-network-access) required by your GitHub environment. Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
   </Step>
@@ -37495,7 +37604,8 @@ Air-gapped installations do not show Engine spend, and spend limits other than `
 * [Connect Engine to your repository](/langsmith/engine-repositories)
 * [Engine security](/langsmith/engine-security)
 * [Engine notifications](/langsmith/engine-notifications)
-* [Connect self-hosted LangSmith to Slack](/langsmith/self-host-slack)
+* [Connect self-hosted and BYOC LangSmith to Slack](/langsmith/self-host-slack)
+* [BYOC](/langsmith/byoc)
 * [Enable additional LangSmith features](/langsmith/self-host-additional-features)
 
 ***
@@ -37511,14 +37621,68 @@ Air-gapped installations do not show Engine spend, and spend limits other than `
 </div>
 
 
-# Configure GitHub for Engine on self-hosted
+# Configure GitHub for Engine on self-hosted and BYOC
 Source: https://docs.langchain.com/langsmith/engine-self-hosted-github
 
-Register a GitHub App and configure self-hosted LangSmith so LangSmith Engine can read repositories and open pull requests, on GitHub.com, Enterprise Cloud with data residency, or Enterprise Server.
+Register a GitHub App and configure self-hosted LangSmith or a BYOC data plane so LangSmith Engine can read repositories and open pull requests, on GitHub.com, Enterprise Cloud with data residency, or Enterprise Server.
 
-On self-hosted LangSmith, [LangSmith Engine](/langsmith/engine) reads repositories and opens pull requests through a GitHub App that your operator registers and configures. An operator registers the App, configures LangSmith, and verifies the connection. Complete this setup once per LangSmith installation. Workspace users then [connect repositories](/langsmith/engine-repositories#connect-repositories) with that App.
+[LangSmith Engine](/langsmith/engine) reads repositories and opens pull requests through a GitHub App that you register. Complete this setup once per LangSmith installation or BYOC data plane. Workspace users then [connect repositories](/langsmith/engine-repositories#connect-repositories) with that App.
+
+* **BYOC**: An Organization Admin saves the App's credentials in the LangSmith UI. See [Configure the App on BYOC](#configure-the-app-on-byoc).
+* **Self-hosted**: An operator configures the App's credentials in Helm values. See [Configure the App on self-hosted](#configure-the-app-on-self-hosted).
 
 This configuration is separate from GitHub setup for LangSmith Deployments builds and previews.
+
+## Configure the App on BYOC
+
+On a [BYOC](/langsmith/byoc) data plane, you register your own GitHub App and save its credentials from an Engine project in the LangSmith UI. You do not set environment variables or Helm values. Complete this setup once per data plane: every workspace on the data plane shares the App.
+
+Configuring the App requires the `organization:manage` permission in the organization that owns the data plane. Other users see **An installation administrator must configure the GitHub App.**
+
+To configure the App:
+
+<Steps>
+  <Step title="Open the GitHub App settings">
+    Open a tracing project or agent environment. In its **Engine** tab, select **Configure Engine**. Under **Code repository**, the **GitHub is not configured** notice appears. Click **Configure GitHub App**.
+
+    You can also configure the App while first setting up Engine for a project.
+  </Step>
+
+  <Step title="Register the App on GitHub">
+    In the **Set up Engine GitHub App** dialog, click **Create App on GitHub**. The dialog lists the **Homepage URL**, **Redirect URI**, and **Webhook URL** for your data plane. Copy these values into the GitHub registration form.
+
+    Configure the remaining settings, permissions, and event subscriptions as described in [Complete the registration form](#complete-the-registration-form). Use the URLs from the dialog, not the self-hosted examples. To choose the App's owner and visibility, see [Choose who owns the App](#choose-who-owns-the-app).
+  </Step>
+
+  <Step title="Generate the App credentials">
+    In the App's settings on GitHub, generate a client secret and a private key. Use the webhook secret that you entered during registration. For details, see [Save the App values](#save-the-app-values). You do not need an OAuth state secret on BYOC.
+  </Step>
+
+  <Step title="Save the credentials in LangSmith">
+    In the dialog, enter:
+
+    * **App ID**: The numeric App ID, not the Client ID or installation ID.
+    * **GitHub App Name**: The name from the App's public URL, for example `my-engine-app`.
+    * **Client ID**: The App's Client ID.
+    * **Client secret**: The client secret you generated.
+    * **Private key (PEM)**: The complete contents of the downloaded PEM file, including newlines.
+    * **Webhook secret**: The same webhook secret that you entered in GitHub.
+
+    Click **Save configuration**. LangSmith stores the secrets encrypted and does not display them again.
+  </Step>
+
+  <Step title="Connect repositories">
+    [Connect repositories](/langsmith/engine-repositories#connect-repositories) and [verify the connection](/langsmith/engine-repositories#verify-the-connection). While you test, check that GitHub delivers webhooks, as described in [Verify webhook delivery](#verify-webhook-delivery).
+  </Step>
+</Steps>
+
+GitHub sends pull request webhooks to the **Webhook URL** on your data plane. If GitHub cannot reach that URL, Engine can still read code, generate fixes, and open pull requests. Pull request linking and automatic issue completion after a merge do not work.
+
+To change the App later, click **Manage GitHub App**, then **Edit or replace App**. To remove it, click **Delete configuration**. Replacing the App requires you to reconnect repositories. For rotation guidance, see [Change or rotate configuration](#change-or-rotate-configuration).
+
+## Configure the App on self-hosted
+
+On self-hosted LangSmith, an operator registers the App, configures LangSmith, and verifies the connection.
 
 <Note>
   Configuring GitHub for Engine on self-hosted requires LangSmith Helm chart version 0.17.2 or later. Earlier charts expose the `/api-host` routes that GitHub authorization and webhooks use only when LangSmith Deployment is enabled (`config.deployment.enabled`).
@@ -37526,7 +37690,7 @@ This configuration is separate from GitHub setup for LangSmith Deployments build
 
 Use the LangSmith application images supplied with your Helm chart release.
 
-## Before you start
+### Before you start
 
 You need:
 
@@ -37534,7 +37698,7 @@ You need:
 * **GitHub administration**: Permission to register and install an App on the target repositories. Enterprise or organization policies may require approval.
 * **Network access**: Browser, service, and sandbox connectivity, plus a webhook route reachable from GitHub. See [Allow network access](#allow-network-access).
 
-## Choose your GitHub environment
+### Choose your GitHub environment
 
 Configure one GitHub instance and one App per LangSmith installation.
 
@@ -37550,7 +37714,7 @@ Replace the example enterprise address or GHES hostname placeholder with your ow
 
 Use HTTPS on port 443 and a fully qualified hostname, without a path such as `/api/v3` or an organization name. LangSmith determines the API endpoints automatically. SSH Git URLs and custom GitHub ports are not supported.
 
-### Allow network access
+#### Allow network access
 
 All connections use HTTPS. Configure DNS, routing, and certificate trust for each source:
 
@@ -37575,13 +37739,13 @@ Sandbox Git traffic requires direct routing to GitHub. Mandatory upstream HTTP/H
 
 For private IP addresses or a private CA, include the [private-GHES settings](#private-ghes-deployments) when configuring LangSmith below.
 
-## Register a GitHub App
+### Register a GitHub App
 
 Register the App on the GitHub instance that hosts your repositories. An App registered on GitHub.com cannot be reused on GHES or a `ghe.com` enterprise.
 
 For `ghe.com`, sign in through your enterprise's identity provider. Use that site throughout registration and installation; your personal GitHub.com account and its Apps are separate.
 
-### Choose who owns the App
+#### Choose who owns the App
 
 The App's **owner** manages its registration and credentials. An **installation** grants access to selected repositories in an organization or account.
 
@@ -37610,7 +37774,7 @@ Enterprise-owned Apps have internal visibility and cannot be installed on person
   An organization owner can install the App. Repository administrators in an EMU enterprise can install it only when it requests no organization permissions and enterprise policy permits installation.
 </Accordion>
 
-### Open the registration form
+#### Open the registration form
 
 Choose the tab for the account that owns the App. These paths apply on the GitHub instance selected above:
 
@@ -37644,7 +37808,7 @@ Choose the tab for the account that owns the App. These paths apply on the GitHu
   </Tab>
 </Tabs>
 
-### Complete the registration form
+#### Complete the registration form
 
 Use these settings for all GitHub environments and App owners. For field definitions, see [Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app). Replace `https://langsmith.example.com` with the browser-facing URL of your LangSmith deployment.
 
@@ -37687,7 +37851,7 @@ Under **Subscribe to events**, select **Pull request**. These events let Engine 
 
 Select **Create GitHub App**.
 
-### Save the App values
+#### Save the App values
 
 After creating the App, open its settings and prepare the credentials:
 
@@ -37713,15 +37877,15 @@ Copy the numeric **App ID**, not the Client ID or installation ID. Copy **Public
 
 Use the exact authorization callback URL and webhook secret entered in GitHub. Include any LangSmith base path in the callback URL. The GitHub web address is the one selected in [Choose your GitHub environment](#choose-your-github-environment).
 
-## Configure LangSmith
+### Configure LangSmith
 
-### Store credentials
+#### Store credentials
 
 Using your [existing secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret in the LangSmith namespace for the Client secret, private key, webhook secret, and OAuth state secret. The Helm example references a Secret named `langsmith-engine-github`. You can choose a different Secret name and keys; update the `secretKeyRef` entries to match.
 
 Store credentials in Secrets, not in committed Helm values or command-line arguments. App IDs, Client IDs, and URLs can be included in Helm values.
 
-### Set Helm values
+#### Set Helm values
 
 Enable `hostBackend` and place all `ENGINE_GITHUB_*` settings in `commonEnv`. Merge the following with your existing Helm values, preserving unrelated entries. Replace the placeholders and example URLs:
 
@@ -37766,7 +37930,7 @@ Remove these variables from component-specific `extraEnv` lists, including `host
 
 The chart's `config.hostname`, `config.frontendHostname` if used, and `config.basePath` must also describe the URL users open in their browser.
 
-### Private GHES deployments
+#### Private GHES deployments
 
 If GHES uses private IP addresses or a private CA, include the applicable settings below before applying the values file.
 
@@ -37792,13 +37956,13 @@ Also set `REQUESTS_CA_BUNDLE` in `hostBackend.deployment.extraEnv` to `/etc/ssl/
 
 Check that the bundle reaches the GitHub integration, platform API and workers, Engine execution workers, and sandbox hosts. Keep TLS verification enabled. The sandbox proxy's own CA is separate from the CA used to verify GHES.
 
-### Apply the configuration
+#### Apply the configuration
 
 Apply the complete values file through your normal deployment process, using a matching LangSmith image and chart release. For Helm upgrades, see [Upgrade a self-hosted deployment](/langsmith/self-host-upgrades).
 
 Wait for the affected API and worker rollouts to finish before connecting repositories. Updating a Secret in place does not reload environment variables in running containers; restart affected workloads after credential changes.
 
-## Verify webhook delivery
+### Verify webhook delivery
 
 After the rollout, [connect a test repository and verify the connection](/langsmith/engine-repositories#verify-the-connection). While creating and merging the test PR, check the App's webhook deliveries:
 
@@ -37807,7 +37971,7 @@ After the rollout, [connect a test repository and verify the connection](/langsm
 
 A successful webhook response alone does not prove the event matched an Engine issue. Complete the merge check in [Verify the connection](/langsmith/engine-repositories#verify-the-connection).
 
-## Troubleshoot setup
+### Troubleshoot setup
 
 | Symptom | What to check |
 | - | - |
@@ -37828,7 +37992,7 @@ For missing organizations or repositories, see [Troubleshoot repository selectio
 
 When asking for help, include your LangSmith and Helm chart versions, GitHub environment and GHES version if applicable, App ownership type, and the step that fails. Do not include private keys, client secrets, webhook secrets, or access tokens.
 
-## Change or rotate configuration
+### Change or rotate configuration
 
 For a private-key rotation, add the new key in GitHub, update the deployment Secret, and restart affected workloads. Validate the connection before removing the old key. Follow the same overlap approach where GitHub supports multiple client secrets.
 
@@ -37841,7 +38005,7 @@ Do not change `ENGINE_GITHUB_WEB_BASE_URL` on an existing connected deployment a
 ## See also
 
 * [Connect Engine to your repository](/langsmith/engine-repositories): Connect repositories once the GitHub App is configured.
-* [Engine on self-hosted](/langsmith/engine-self-hosted): Install Engine and choose how it runs its models.
+* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted): Install Engine and choose how it runs its models.
 * [Engine security](/langsmith/engine-security): How Engine handles your data and repository access.
 
 ***
@@ -37857,7 +38021,7 @@ Do not change `ENGINE_GITHUB_WEB_BASE_URL` on an existing connected deployment a
 </div>
 
 
-# Configure model providers for Engine on self-hosted
+# Configure model providers for Engine on self-hosted and BYOC
 Source: https://docs.langchain.com/langsmith/engine-self-hosted-model-providers
 
 Choose the model providers LangSmith Engine uses on a self-hosted LangSmith instance, authenticate with credentials or cloud identity, and keep model traffic on private networking.
@@ -37867,6 +38031,10 @@ Choose the model providers LangSmith Engine uses on a self-hosted LangSmith inst
 </Info>
 
 On self-hosted LangSmith, an Organization Admin chooses where [LangSmith Engine](/langsmith/engine) runs its model calls: on LangSmith Intelligence (LSI), on your own model providers, or both. Running Engine on your own providers keeps prompts and responses under your agreements with those providers. This page covers how to select providers, authenticate to them, and connect to them or to LSI over private networking. For a comparison of the two options, see [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models). Complete [Install Engine](/langsmith/engine-self-hosted#install-engine) first.
+
+<Info>
+  On [BYOC](/langsmith/engine-self-hosted#engine-on-byoc), LangSmith Intelligence is not available, and Engine runs only on your own model providers. Amazon Bedrock can use your data plane's cloud identity, which LangChain configures. The [cloud identity](#use-cloud-identity-for-your-model-providers) and [private connection](#connect-privately) sections apply to self-hosted LangSmith only.
+</Info>
 
 ## Use your own model providers
 
@@ -38174,7 +38342,7 @@ Enable LangSmith Engine for your organization, turn it on for a tracing project,
 Setting up [LangSmith Engine](/langsmith/engine) takes two steps. An [Organization Admin](/langsmith/rbac#organization-admin) first enables Engine for the organization. Then any user whose [role](/langsmith/rbac) can update tracing projects turns on Engine for each tracing project or agent environment. Once Engine is running, [configure it](#configure-engine) to focus on the issues and traces that matter to you.
 
 <Note>
-  On self-hosted LangSmith, an operator must enable Engine in the LangSmith Helm chart before either step is available. See [Engine on self-hosted](/langsmith/engine-self-hosted).
+  On self-hosted LangSmith, an operator must enable Engine in the LangSmith Helm chart before either step is available. On [BYOC](/langsmith/byoc), an Organization Admin must also add model provider credentials before Engine runs. See [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted).
 </Note>
 
 ## Enable Engine for your organization
@@ -47259,11 +47427,43 @@ To include extended stats:
 
 [Code evaluators](/langsmith/online-evaluations-code) receive these fields in the `run` object, including `feedback_stats`, `total_tokens`, and `total_cost`. They also receive [individual feedback records](/langsmith/feedback-data-format) in `run["feedback"]`, regardless of whether you enable extended stats. For [LLM-as-a-judge evaluators](/langsmith/online-evaluations-llm-as-judge), map the corresponding `run.*` field to a prompt variable. For example, map `{{correctness_average}}` to `run.feedback_stats.correctness.avg` to include a `correctness` feedback average in the prompt. The available `run.*` fields also include prompt and completion token, cost, and detail fields. For the full run data schema, see [Run data format](/langsmith/run-data-format).
 
-### Chain evaluators
+## Chain evaluators
 
-Extended stats can be used to chain evaluators, where a code evaluator reads a score that another evaluator already produced. Filter the second evaluator on the first evaluator's feedback key (for example, `has(feedback_key, "answer_usefulness")`), then enable extended stats. The filter makes the code evaluator run only after the score exists, and extended stats make the score readable at `run["feedback_stats"]["answer_usefulness"]["avg"]`.
+A chained evaluator is an online evaluator that triggers only on runs another evaluator has already scored. Chaining lets you use a more specific evaluator or reserve a more expensive evaluator for the runs that need it. For example, you can run an [LLM-as-a-judge evaluator](/langsmith/online-evaluations-llm-as-judge) only when an earlier `correctness` score is below a threshold.
 
-The filter matches on the feedback key rather than the evaluator that produced it, so feedback from any source with that key triggers the code evaluator. To configure the filter, see [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-code#configure-online-evaluators).
+The second evaluator must be a run-level evaluator because [multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn) cannot filter on feedback. The first evaluator can be either type. A multi-turn evaluator attaches its feedback to the last run in the thread, so a second evaluator chained onto it evaluates that run, not the full thread.
+
+To chain a second evaluator onto a first:
+
+1. Create or open the second evaluator and expand its filter. For more information, see [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator) for LLM-as-a-judge evaluators or [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter) for code evaluators.
+
+2. Filter on the first evaluator's feedback key. The filter matches on the key rather than the evaluator that produced it, so feedback from any source with that key triggers the second evaluator, including [user feedback](/langsmith/attach-user-feedback). Use a key that only the first evaluator produces.
+   * To trigger on every run the first evaluator scored, filter on the key alone:
+
+     ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     eq(feedback_key, "correctness")
+     ```
+
+   * To trigger only when the score meets a condition, combine the key with a `feedback_score` comparison. For example, to trigger only when `correctness` is below `0.5`:
+
+     ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     and(eq(feedback_key, "correctness"), lt(feedback_score, 0.5))
+     ```
+
+3. If the second evaluator reads the first score, [include extended stats](#include-extended-stats). LLM-as-a-judge evaluators require it, and code evaluators use it to read the score reliably. For more information, see [Read the first score](#read-the-first-score).
+
+4. Save the evaluator.
+
+The second evaluator picks up a run only after the first evaluator's score is attached to it, so the order in which the evaluators run does not matter. For the full filter syntax, see [Trace query syntax](/langsmith/trace-query-syntax).
+
+### Read the first score
+
+How the second evaluator reads the first evaluator's score depends on its type:
+
+* **LLM-as-a-judge evaluators**: [Include extended stats](#include-extended-stats), then map a prompt variable to `run.feedback_stats.<feedback_key>.avg`. For example, map `{{correctness_average}}` to `run.feedback_stats.correctness.avg`.
+* **Code evaluators**: Read the [feedback record](/langsmith/feedback-data-format) in `run["feedback"]` whose `key` is the first evaluator's feedback key, and use its `score`. `run["feedback"]` holds at most 100 feedback records across each batch of runs the evaluator processes, and the oldest records are dropped first, so the score can be missing when the batch carries many feedback records. To read the score reliably, include extended stats and read the average from `run["feedback_stats"]["<feedback_key>"]["avg"]`.
+
+The `avg` field averages every feedback record with that key on the run, so it equals the first evaluator's score only when the run has one record with that key. Another record with the same key, such as user feedback, changes the average.
 
 ## Delete an evaluator
 
@@ -48538,30 +48738,7 @@ The following Python example demonstrates how to export retriever inputs and out
 
 ## Rate limits
 
-The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint ([`list_runs`](https://reference.langchain.com/python/langsmith/client/Client/list_runs) in Python, [`listRuns`](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) in JavaScript) has per-tenant rate limits that vary based on query parameters:
-
-| **Query type** | **Limit** | **Window** |
-| - | - | - |
-| Short time window (≤ 7 days) | 10 requests | 10 seconds |
-| Large time window (> 7 days) | 3 requests | 10 seconds |
-| Full-text search, short time window (≤ 7 days) | 3 requests | 10 seconds |
-| Full-text search, large time window (> 7 days) | 1 request | 10 seconds |
-| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests | 10 seconds |
-| Select `child_run_ids`, large time window (> 7 days) | 1 request | 10 seconds |
-
-The time window is determined by `end_time - start_time`. If `end_time` is not provided, LangSmith will use the current time. Queries without a `start_time` are treated as large time window queries.
-
-### Best practices
-
-To avoid hitting rate limits and reduce query time, especially for runs with large inputs/outputs:
-
-* **Set `start_time`**: omitting it triggers the large time window rate limit tier (3 requests per 10 seconds instead of 10). Use a window of 7 days or less when possible.
-* **Use `select`**: by default all fields are returned. Specifying only the fields you need (e.g., `select=["inputs", "outputs"]`) substantially reduces response size and query time, especially for runs with large inputs/outputs.
-* **Set `limit`**: cap the number of results if you don't need to paginate through everything.
-* **Avoid full-text search**: `filter='search("...")'` has the strictest rate limits; use structured filters (e.g., `eq()`, `has()`) when possible.
-* **Avoid selecting `child_run_ids`**: this also triggers a stricter rate limit tier.
-
-When you exceed these limits, the API returns a `429 Too Many Requests` response. For general rate limit information, refer to [Administration overview](/langsmith/usage-and-billing#rate-limits).
+The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint has per-tenant rate limits based on query parameters. See [Run query endpoint rate limits](/langsmith/usage-and-billing#run-query-endpoint) for the full table and best practices.
 
 ***
 
@@ -49935,6 +50112,38 @@ Fleet gives you the control layer for scaling agents across your organization: t
 
 ## Permissions and sharing
 
+Fleet combines workspace role permissions with agent sharing. Your role determines which actions you can perform. Agent ownership and sharing determine which agents you can access.
+
+<Note>
+  Custom roles are an Enterprise feature. The permissions below apply when Fleet RBAC is enabled for your workspace. For self-hosted v0.17, Fleet RBAC requires LangSmith 0.17.44 or a later v0.17 patch and the [deployment flag](#enable-fleet-rbac-on-self-hosted).
+</Note>
+
+### Configure a Fleet role
+
+To let users use and manage Fleet, create a [custom workspace role](/langsmith/rbac#custom-roles) with these permissions:
+
+| Area | Permissions | Needed for |
+| - | - | - |
+| Workspace | <span>`workspaces:read`</span> | Access the workspace. |
+| Agents | <span>`fleet-agents:read`<br />`fleet-agents:invoke`<br />`fleet-agents:create`<br />`fleet-agents:update`<br />`fleet-agents:delete`</span> | View, run, create, edit, clone, and delete agents. Manage agent connections. |
+| Skills | <span>`fleet-skills:read`<br />`fleet-skills:create`<br />`fleet-skills:update`<br />`fleet-skills:delete`</span> | Browse, create, edit, and delete workspace skills. |
+| MCP servers | <span>`mcp-servers:read`<br />`mcp-servers:invoke`<br />`mcp-servers:create`<br />`mcp-servers:update`<br />`mcp-servers:delete`</span> | Use tools and install, update, or remove workspace integrations. |
+| Deployments | <span>`deployments:read`<br />`deployments:create`<br />`deployments:update`<br />`deployments:delete`</span> | Configure OAuth providers and manage connected accounts through the current Fleet UI. |
+
+Grant each permission explicitly. Create, update, delete, and invoke permissions do not include read permission. Existing agent and skill ownership and sharing checks still apply.
+
+The `deployments:*` permissions also grant access to deployment resources outside Fleet.
+
+### Optional administration permissions
+
+* **View Fleet usage and limits**: Add `fleet:read-admin-config` to view usage reports and usage limits.
+* **Manage Fleet limits**: Add `fleet:write-admin-config` to create, update, and delete usage limits. Grant both Fleet admin permissions to view and manage limits.
+* **Manage workspace settings**: Add `workspaces:manage` for workspace settings, integration access controls, and OAuth provider management in **Settings**.
+
+For more information, see [Workspace administration](/langsmith/fleet/workspace-admin).
+
+### Share agents
+
 Fleet provides granular control over every agent in two dimensions: **who gets access** and **what they can do**.
 
 * **Who**: Share with individual users or your entire workspace.
@@ -49946,6 +50155,32 @@ Fleet provides granular control over every agent in two dimensions: **who gets a
 You can layer these permissions. Give a core team edit access, share run-only with the broader organization, and revoke at any time.
 
 For setup instructions, see [Change access to the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent).
+
+### Enable Fleet RBAC on self-hosted
+
+Fully self-hosted LangSmith installations enable Fleet role-based access control (RBAC) with a deployment flag. Cloud and hybrid (BYOC) deployments do not need this step.
+
+<Note>
+  Fleet RBAC on self-hosted requires LangSmith 0.17.44 or a later v0.17 patch.
+</Note>
+
+To enable Fleet RBAC:
+
+1. Upgrade all services to the required LangSmith version.
+2. Create or update [custom roles](#configure-a-fleet-role) with Fleet permissions, and assign them to users. The upgrade does not add Fleet permissions to existing roles.
+3. Add the flag to your Helm values, preserving existing `extraEnv` entries:
+
+   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   platformBackend:
+     deployment:
+       extraEnv:
+         - name: FLEET_RBAC_PERMISSIONS_ENABLED
+           value: "true"
+   ```
+
+   The flag defaults to `false`. Setting it to `true` enables Fleet RBAC across all workspaces in the deployment.
+4. Apply the values through your normal Helm upgrade process.
+5. Call `GET /v1/fleet/config` with your API key and workspace ID. Confirm that the response contains `"rbac_permissions_enabled": true`.
 
 ## Agent identity and credentials
 
@@ -49979,7 +50214,7 @@ The following permissions are available for MCP servers and integrations:
 | Permission | Description |
 | - | - |
 | `mcp-servers:read` | Discover and list MCP servers and integrations |
-| `mcp-servers:invoke` | Execute tools from MCP servers and integrations, including OAuth connect/disconnect |
+| `mcp-servers:invoke` | Execute tools from MCP servers and integrations |
 | `mcp-servers:create` | Create new MCP server configurations |
 | `mcp-servers:update` | Modify MCP server configurations |
 | `mcp-servers:delete` | Remove MCP server configurations |
@@ -52684,7 +52919,7 @@ To add a remote MCP server to all agents in the workspace:
 
 Select an authentication type based on the server's requirements:
 
-* **Headers**: Add key-value pairs sent with every request. The most common pattern is using an Authorization bearer token:
+* **Static Headers**: Add key-value pairs sent with every request. The most common pattern is using an Authorization bearer token:
 
   * **Key**: `Authorization`
   * **Value**: `Bearer API_KEY`
@@ -52693,9 +52928,65 @@ Select an authentication type based on the server's requirements:
     You can add multiple headers if your MCP server requires additional authentication or configuration parameters. Each header key-value pair is sent with every request to the server.
   </Info>
 
-* **OAuth 2.1 (Auto)**: Select this for servers that support OAuth via dynamic client registration. You'll be prompted to log in with your account for that service.
+* **OAuth 2.1 (Auto)**: Select this for servers that support OAuth via dynamic client registration (DCR). Fleet registers a client for you and prompts you to log in with your account for that service. No setup is required, so prefer this option when the server supports it.
 
-* **OAuth 2.1 (Manual)**: Select this for servers that support OAuth, but require specifying the client ID/secret beforehand. OAuth providers used in this flow must have **PKCE** enabled.
+* **OAuth 2.1 (Manual)**: Select this for servers that support OAuth but not dynamic client registration. Select an OAuth provider that you [registered](#register-an-oauth-provider) in advance with your client ID and secret. The provider uses one of two grant types:
+  * **Authorization Code**: Each user logs in with their own account for that service. The provider must have **PKCE** enabled.
+  * **Client Credentials**: The agent authenticates machine-to-machine as your app, so no user logs in. Fleet requests a new access token from the provider's token URL when it calls the server.
+
+### Register an OAuth provider
+
+An OAuth provider stores your OAuth application's client ID, secret, and endpoints at the organization level. Register a provider once, then select it whenever you add an MCP server with **OAuth 2.1 (Manual)**.
+
+<Note>
+  Managing OAuth providers requires the `workspaces:manage` permission, included in the [Workspace Admin](/langsmith/rbac#workspace-admin) role.
+</Note>
+
+<Note>
+  On self-hosted LangSmith v0.17, the Client Credentials grant requires v0.17.32 or later (Helm chart 0.17.5 or later). Also set `FF_FLEET_OAUTH_CLIENT_CREDENTIALS_ENABLED=true` on both `hostBackend` and `platformBackend`, for example through `hostBackend.deployment.extraEnv` and `platformBackend.deployment.extraEnv`.
+</Note>
+
+To register an OAuth provider:
+
+<Steps>
+  <Step title="Create the OAuth application with your identity provider">
+    In your identity provider (for example, GitHub or Google), create an OAuth application. Note its client ID and client secret.
+
+    For the Authorization Code grant, set the application's redirect (callback) URL to:
+
+    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    https://<your-langsmith-host>/host-oauth-callback/<provider-id>
+    ```
+
+    Replace `<provider-id>` with the Provider ID you choose in the next step. The Client Credentials grant does not use a redirect URL.
+  </Step>
+
+  <Step title="Register the provider in LangSmith">
+    Go to **Settings** > **OAuth providers** and click **OAuth Provider**. Fill in the fields for every provider:
+
+    * **Provider ID**: A short identifier using letters, numbers, hyphens, and underscores (for example, `github`). This value appears in the redirect URL.
+    * **Display Name**: A human-readable name (for example, `GitHub OAuth`).
+    * **Client ID** and **Client Secret**: From the OAuth application you created.
+    * **Grant Type**: **Authorization Code** or **Client Credentials**.
+    * **Token URL**: The provider's token endpoint (for example, `https://example.com/oauth/token`).
+
+    For **Authorization Code**, also set:
+
+    * **Authorization URL**: The provider's authorization endpoint (for example, `https://example.com/oauth/authorize`).
+    * **Enable PKCE**: Turn this on. Only providers with PKCE enabled appear when you add a manual-OAuth MCP server.
+    * **Scope** (under **Advanced**): Optional. Overrides the `scope` parameter sent to the authorization URL.
+
+    For **Client Credentials**, also set:
+
+    * **Token Authentication**: How Fleet sends the client ID and secret to the token URL, either **HTTP Basic** (the default) or **Request body**.
+    * **Scope** (under **Advanced**): Optional. Space-separated scopes sent with the token request.
+    * **Audience** (under **Advanced**): Optional. Some providers, such as Auth0, require it.
+  </Step>
+
+  <Step title="Select the provider when adding the server">
+    When you [add the MCP server](#add-a-remote-mcp-server), choose **OAuth 2.1 (Manual)** and select the provider you registered. For an Authorization Code provider, each user connects their account. For a Client Credentials provider, Fleet authorizes as the agent, so no user is prompted to connect.
+  </Step>
+</Steps>
 
 ## Update your MCP server URL
 
@@ -67450,7 +67741,7 @@ On self-hosted LangSmith, [enable the gateway in the Helm chart](/langsmith/llm-
 
 Skip this step for LangChain-hosted models: they use your LangSmith API key, not provider secrets. See [Gateway Credits](/langsmith/llm-gateway-credits) for paid chat models. Continue with step 2 to grant gateway access.
 
-The gateway resolves provider API keys from your workspace's Provider Secrets—this is how it proxies calls to upstream providers without individual users needing local copies of provider keys.
+The gateway resolves provider credentials from your workspace's Provider Secrets. This lets it proxy calls to upstream providers without individual users needing local copies of provider credentials.
 
 Go to **Settings > Integrations > Provider Secrets** and add the keys for the providers you want to proxy through the gateway:
 
@@ -67467,7 +67758,11 @@ Go to **Settings > Integrations > Provider Secrets** and add the keys for the pr
 | `SCALEDOWN_API_KEY` | ScaleDown |
 | `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini Enterprise Agent Platform |
 
-Add only the providers your organization uses. The gateway will return an error if a user tries to call a provider whose key hasn't been added.
+Add only the providers your organization uses. The gateway returns an error if a user calls a provider whose credentials have not been added.
+
+<Tip>
+  Azure Foundry also supports Microsoft Entra ID service principal authentication, for resources that disable API keys. For setup steps, see [Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry).
+</Tip>
 
 ## 2. Configure gateway access for users
 
@@ -68054,6 +68349,27 @@ For organizations rolling the gateway out to all developers, distribute the conf
 
 Provider API keys stay centralized in LangSmith workspace secrets. Gateway Credits models do not require provider API keys.
 
+## Group calls into conversation threads
+
+The gateway maps recognized coding-agent session headers to LangSmith `thread_id` metadata. Calls with the same ID belong to the same conversation thread within a tracing project.
+
+Header detection works across all providers, request paths, and API formats. The gateway checks these headers in order:
+
+1. `X-Claude-Code-Session-Id`
+2. `X-Deepseek-Harness-Session-Id`
+3. `thread-id`
+4. `thread_id`
+5. `session-id`
+6. `session_id`
+
+The gateway trims whitespace, skips blank values, and uses the first nonblank header value.
+
+If no header supplies an ID, the gateway can read the ID from the body of a Chat Completions or Responses request. It uses the `conversation` field, either a string or an object's `id`, and falls back to `prompt_cache_key`. The gateway reads these fields only when it already loads the request body for another reason, such as a guard policy. Send a header for consistent threading.
+
+To set a thread ID explicitly, send `X-Gateway-Thread-Id` or set `thread_id` in the JSON object in `X-Gateway-Metadata`. A nonblank explicit value overrides automatic detection. If both metadata headers specify a thread ID, `X-Gateway-Metadata` takes precedence.
+
+If the gateway finds no explicit ID, recognized session header, or body field, it does not add `thread_id` metadata.
+
 ## Verify the setup
 
 After configuring a coding agent, make a test call and confirm that:
@@ -68594,7 +68910,7 @@ Append a provider path to your regional gateway base URL:
 | - | - | - |
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS Bedrock | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
-| Azure Foundry | `/azure` | `AZURE_FOUNDRY_API_KEY`, `AZURE_FOUNDRY_RESOURCE_NAME` |
+| Azure Foundry | `/azure` | `AZURE_FOUNDRY_API_KEY`, `AZURE_FOUNDRY_RESOURCE_NAME`. For Entra ID, see [Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry). |
 | Baseten | `/baseten` | `BASETEN_API_KEY` |
 | Fireworks | `/fireworks` | `FIREWORKS_API_KEY` |
 | Google Gemini | `/gemini` | `GOOGLE_API_KEY` |
@@ -69470,6 +69786,91 @@ The detailed view has its own entity filter, time range, and granularity control
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-monitoring.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Provider authentication
+Source: https://docs.langchain.com/langsmith/llm-gateway-provider-authentication
+
+Configure identity-based authentication between the LLM Gateway and model providers that support more than an API key.
+
+<Note>
+  The LLM Gateway is in [beta](/langsmith/release-stages).
+</Note>
+
+The gateway authenticates to each model provider with credentials stored in your workspace's Provider Secrets. Most providers need only an API key, which you add in [Admin setup](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). Some providers also support identity-based authentication, which lets you use the gateway when your organization disables provider API keys.
+
+## Configure Azure Foundry
+
+Azure Foundry supports either an API key or a Microsoft Entra ID service principal. Service principal authentication lets you use resources that [disable local authentication](https://learn.microsoft.com/en-us/azure/ai-services/disable-local-auth).
+
+Both methods require `AZURE_FOUNDRY_RESOURCE_NAME`. Set it to the Azure resource name, not a URL or deployment name. The gateway sends requests to `<resource-name>.openai.azure.com` in the Azure public cloud.
+
+For API key authentication, add `AZURE_FOUNDRY_API_KEY` and `AZURE_FOUNDRY_RESOURCE_NAME` through the Azure Foundry provider form, as described in [Admin setup](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+
+### Use an Entra ID service principal
+
+To use an Entra ID service principal instead of an API key:
+
+1. Deploy a model on a Foundry resource, or use an existing deployment. Record the resource name and the deployment name. Use the deployment name as the `model` value in requests.
+
+2. [Register an application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) in Microsoft Entra ID, or use an existing app registration. Record its directory (tenant) ID and application (client) ID.
+
+3. [Add a client secret](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials) to the app registration. Record the secret's value, not its ID.
+
+4. On the Foundry resource, not a project inside it, [assign the app's service principal](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry) the `Foundry User` role (formerly `Azure AI User`). The generic `Owner`, `Contributor`, and `Reader` roles do not [grant permission to call models](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry#permissions-for-each-built-in-role).
+
+5. In LangSmith, select the workspace that routes Azure requests. Go to **Settings > Integrations > Provider Secrets** and add each of the following as a custom secret:
+
+   | Secret name | Value |
+   | - | - |
+   | `AZURE_FOUNDRY_RESOURCE_NAME` | Azure resource name. |
+   | `AZURE_TENANT_ID` | Directory (tenant) ID. |
+   | `AZURE_CLIENT_ID` | Application (client) ID. |
+   | `AZURE_CLIENT_SECRET` | Client secret value. |
+
+   Select **Custom** in the provider selector to enter each secret's name and value. The Azure Foundry provider form only exposes API key authentication.
+
+6. Remove `AZURE_FOUNDRY_API_KEY` from the workspace if it is set. An API key takes precedence over service principal credentials, even when the resource disables API key authentication.
+
+All three Entra ID secrets are required. The gateway obtains and refreshes Azure access tokens automatically. Users continue to authenticate to the gateway with their LangSmith API key, not the Azure credentials.
+
+This method uses a client secret. It does not use managed identity or workload identity federation. Client secrets expire, so update `AZURE_CLIENT_SECRET` when you rotate the secret in Entra ID.
+
+### Verify the setup
+
+After you [configure gateway access](/langsmith/llm-gateway-admin-setup#2-configure-gateway-access-for-users), send a test request through the gateway with your LangSmith API key:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
+  --header "Authorization: Bearer $LANGSMITH_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "model": "<deployment-name>",
+    "messages": [{"role": "user", "content": "Say hello"}]
+  }'
+```
+
+A `chat.completion` response confirms the setup. For other Cloud regions, replace the hostname with your [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
+
+If Azure returns `PermissionDenied`, confirm that the `Foundry User` role is assigned on the Foundry resource, not a project. A new role assignment can take [up to 10 minutes](https://learn.microsoft.com/en-us/azure/role-based-access-control/troubleshooting#symptom---role-assignment-changes-are-not-being-detected) to take effect.
+
+## See also
+
+* [Admin setup](/langsmith/llm-gateway-admin-setup): add provider secrets and grant gateway access.
+* [Direct model access](/langsmith/llm-gateway-direct-model-access): call provider APIs through provider-specific gateway paths.
+* [Self-hosted LLM Gateway](/langsmith/llm-gateway-self-hosted): enable the gateway on self-hosted LangSmith.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-provider-authentication.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -75514,6 +75915,8 @@ Workspace level:
 
 ## API keys
 
+For tracing-only credentials, refer to [Create, list, and delete tracing keys](/langsmith/create-account-api-key#tracing-keys). Creation requires the dedicated workspace permission; organization key managers can use service-account credentials for deletion.
+
 * [Create a service key](/langsmith/smith-api/api-key/generate-api-key)
 * [Update a service key role](/langsmith/smith-api/orgs/update-org-service-key)
 * [Delete a service key](/langsmith/smith-api/api-key/delete-api-key)
@@ -76762,7 +77165,7 @@ These conversion methods rely on logic from within LangChain integration package
 
 ## List, delete, and like prompts
 
-You can also list, delete, and like/unlike prompts using the `list prompts`, `delete prompt`, `like prompt` and `unlike prompt` methods. See the [LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk) for extensive documentation on these methods.
+You can also list, delete, and like/unlike prompts using the `list prompts`, `delete prompt`, `like prompt` and `unlike prompt` methods. See the [Python SDK](https://github.com/langchain-ai/langsmith-python) and [JavaScript SDK](https://github.com/langchain-ai/langsmith-javascript) for extensive documentation on these methods.
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -80834,7 +81237,7 @@ This example uses OpenAI as the LLM provider. You can adapt it for your own prov
        </tbody>
      </table>
 
-     For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
+     For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
    </Note>
 
    If you are using Anthropic, use the [Anthropic wrapper](/langsmith/trace-anthropic). If you are using Google Gemini, use the [Gemini wrapper](/langsmith/trace-with-google-gemini). For other providers, use the [`@traceable` decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) to trace calls manually.
@@ -81533,7 +81936,7 @@ For example, you may want to apply specific evaluators based on:
 
 Evaluators use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
-To process feedback from an earlier evaluator, filter this evaluator for the feedback key, then [include extended stats](/langsmith/evaluators#include-extended-stats). For example, use `has(feedback_key, "answer_usefulness")` to run when the `answer_usefulness` feedback exists. The filter is based on the feedback key, not the evaluator that produced it, so feedback from any source with that key triggers the code evaluator.
+To process feedback from an earlier evaluator, filter this evaluator for the feedback key, then read the score from `run["feedback"]`, or [include extended stats](/langsmith/evaluators#include-extended-stats) to read it from `run["feedback_stats"]`. For example, use `eq(feedback_key, "answer_usefulness")` to run when the `answer_usefulness` feedback exists. The filter is based on the feedback key, not the evaluator that produced it, so feedback from any source with that key triggers the code evaluator. For more information, see [Chain evaluators](/langsmith/evaluators#chain-evaluators).
 
 <Tip>
   It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
@@ -81842,6 +82245,7 @@ You can apply a filter to the runs that trigger the evaluator. You may want to a
 * Runs where a [user left feedback](/langsmith/attach-user-feedback) indicating the response was unsatisfactory.
 * Runs that invoke a specific tool call. See [filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls) for more information.
 * Runs that match a particular piece of metadata (e.g. if you log traces with a `plan_type` and only want to run evaluations on traces from your enterprise customers). See [adding metadata to your traces](/langsmith/add-metadata-tags) for more information.
+* Runs where another evaluator's score meets a condition, such as a `correctness` score below `0.5`. See [Chain evaluators](/langsmith/evaluators#chain-evaluators) for more information.
 
 Evaluators use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
@@ -81850,7 +82254,7 @@ Evaluators use the filter builder, with the same fields and operators described 
 </Tip>
 
 <Tip>
-  If you also have a webhook automation rule on this project and want the webhook payload to include this evaluator's scores, add a feedback filter to the webhook rule rather than relying on rule ordering. For example, filter on `has(feedback_key, "answer_usefulness")` so the webhook only fires after the score exists. See [Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires) for details.
+  If you also have a webhook automation rule on this project and want the webhook payload to include this evaluator's scores, add a feedback filter to the webhook rule rather than relying on rule ordering. For example, filter on `eq(feedback_key, "answer_usefulness")` so the webhook only fires after the score exists. See [Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires) for details.
 </Tip>
 
 ## Configure a sampling rate
@@ -82875,6 +83279,16 @@ These operations are controlled by [workspace-level roles and permissions](/lang
   To understand what each role means and their overall capabilities, refer to the [Role-based access control](/langsmith/rbac) guide.
 </Tip>
 
+### Tracing keys
+
+[Tracing keys](/langsmith/create-account-api-key#tracing-keys) grant fixed trace-writing permissions in selected workspaces.
+
+| Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required permission |
+| - | :-: | :-: | :-: | - |
+| Create a tracing key | ✓ | ✓ | ✗ | `workspaces:tracing-keys:create` in every selected workspace |
+
+Custom roles require an explicit creation grant. An active creator or organization key manager can delete a tracing key. A workspace key manager needs `workspaces:manage-keys` in every remaining selected workspace.
+
 ### Projects
 
 Projects organize traces and runs from your LLM applications.
@@ -82890,7 +83304,7 @@ Projects organize traces and runs from your LLM applications.
 | Update project metadata (name, description, tags) | ✓ | ✓ | ✗ | `projects:update` |
 | Increase project trace retention (base → extended) | ✓ | ✓ | ✗ | `projects:increase-trace-tier`\* |
 | Decrease project trace retention (extended → base) | ✓ | ✓ | ✗ | `projects:decrease-trace-tier`\* |
-| Create filter view | ✓ | ✗ | ✗ | `projects:create` |
+| Create filter view | ✓ | ✓ | ✗ | `projects:update` |
 | View filter views | ✓ | ✓ | ✓ | `projects:read` |
 | View specific filter view | ✓ | ✓ | ✓ | `projects:read` |
 | Update filter view | ✓ | ✓ | ✗ | `projects:update` |
@@ -82912,6 +83326,10 @@ Projects organize traces and runs from your LLM applications.
 
 <Note>
   \* `projects:increase-trace-tier` and `projects:decrease-trace-tier` are independent and can be granted separately in custom roles. For example, you can allow a role to decrease retention without allowing it to increase retention. If a user lacks both permissions, the retention settings UI is hidden entirely. If they have only one, the UI is partially enabled (the disallowed direction is disabled).
+</Note>
+
+<Note>
+  Creating a saved filter view modifies an existing project and requires `projects:update`. Comparative-experiment creation requires `experiments:run`. Custom roles that only grant `projects:create` need the corresponding permission for these operations. Tracing keys do not support either operation.
 </Note>
 
 ### Runs
@@ -83043,7 +83461,7 @@ Comparative experiments for evaluating LLM outputs.
 | Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
 | - | :-: | :-: | :-: | - |
 | View comparative experiments | ✓ | ✓ | ✓ | `projects:read` |
-| Create comparative experiment | ✓ | ⚠ | ✗ | `projects:create` |
+| Create comparative experiment | ✓ | ✓ | ✗ | `experiments:run` |
 | Delete comparative experiment | ✓ | ✗ | ✗ | `projects:delete` |
 | View examples with runs | ✓ | ✓ | ✓ | `datasets:read` |
 | View grouped examples with runs | ✓ | ✓ | ✓ | `datasets:read` |
@@ -100019,7 +100437,7 @@ Both SDKs provide typed exceptions for specific error handling:
 </CodeGroup>
 
 <Note>
-  For more details, see the sandbox SDK reference on GitHub for [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) or [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox).
+  For more details, see the sandbox SDK reference on GitHub for [Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) or [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox).
 </Note>
 
 ***
@@ -101600,7 +102018,15 @@ which will output the count of daily traces by workspace ID and organization ID.
 
 ## Export usage data
 
-All export methods produce the same data: LangSmith trace counts, LangSmith Deployments node usage, and Fleet run counts across all workspaces and organizations.
+The UI and API exports cover all workspaces and organizations, with usage for:
+
+* LangSmith traces
+* LangSmith Deployments
+* Fleet (Agent Builder)
+* Usage snapshots (daily entity counts)
+* Sandboxes
+* LangSmith Engine
+* LangSmith LLM Gateway
 
 <Note>
   The UI and API exports require both of the following:
@@ -101632,7 +102058,7 @@ curl -OJ \
 
 ### Export via SQL scripts
 
-You can also run SQL scripts directly against your PostgreSQL database to export usage data. This requires database access credentials — no application-level permissions apply.
+You can also run SQL scripts directly against your PostgreSQL database to export trace, node, Fleet, and usage snapshot data. This requires database access credentials. No application-level permissions apply.
 
 To export trace usage (requires Helm chart version 0.11.4 or later):
 
@@ -101694,7 +102120,7 @@ Each feature has its own setup guide. Follow only the guides for the features yo
 * **[Engine](/langsmith/engine-self-hosted)**: Diagnose recurring issues and propose fixes. Engine requires Sandboxes, a license with the Engine entitlement, a model configuration, and Helm chart version 0.16.0 or later. [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) and your own model providers require Helm chart version 0.17.0 or later.
 * **[Fleet](/langsmith/enable-self-hosted-fleet)**: Create and manage no-code agents. Its guide covers Fleet services and optional tools and triggers.
 * **[LLM Gateway](/langsmith/llm-gateway-self-hosted)**: Route model calls and apply policies. It requires Helm chart version 0.17.1 or later. Its guide covers service connectivity, provider configuration, and your first gateway call.
-* **[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)**: Deploy and manage Agent Servers through the LangSmith UI. Its guide covers KEDA, ingress, the control plane, and the data plane.
+* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)**: Deploy and manage Agent Servers through the LangSmith UI. Its guide covers KEDA, ingress, the control plane, and the data plane.
 
 ***
 
@@ -105690,7 +106116,7 @@ Grafana's Sandbox tab does not assume that Datadog-derived metrics exist in Prom
 
 ## Check prerequisites
 
-Use an existing [self-hosted LangSmith deployment](/langsmith/deploy-self-hosted-full-platform) and monitoring installation. Enable collection only for components you operate. The examples do not install monitoring software or enable SmithDB or sandboxes.
+Use an existing [self-hosted LangSmith deployment](/langsmith/self-hosted) and monitoring installation. Enable collection only for components you operate. The examples do not install monitoring software or enable SmithDB or sandboxes.
 
 * **Datadog**: Use an Agent with Kubernetes Autodiscovery and the [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/). Sandbox annotations require Agent 7.36 or later.
 * **Grafana**: Use Grafana 13 or later for native tabs and the V2 dashboard resource format. Configure an existing Prometheus data source.
@@ -107178,14 +107604,39 @@ commonEnv:
 </div>
 
 
-# Connect self-hosted LangSmith to Slack
+# Connect self-hosted and BYOC LangSmith to Slack
 Source: https://docs.langchain.com/langsmith/self-host-slack
 
-Configure your own Slack app for Engine and alert notifications on self-hosted LangSmith.
+Configure your own Slack app for Engine and alert notifications on self-hosted LangSmith or a BYOC data plane.
 
-Self-hosted LangSmith uses a Slack app that your operator creates and configures. The operator is the person who manages your LangSmith deployment. The deployment exchanges OAuth codes and sends [Engine notifications](/langsmith/engine-notifications) and [alert notifications](/langsmith/alerts) directly to Slack. LangSmith stores the app credentials and encrypted workspace bot tokens in your deployment.
+LangSmith sends [Engine notifications](/langsmith/engine-notifications) and [alert notifications](/langsmith/alerts) to Slack through a Slack app that you create. Complete this setup once per self-hosted installation or BYOC data plane. Users then [connect a Slack workspace](#connect-a-slack-workspace) with that app, without supplying app credentials themselves.
 
-If Slack is not configured on your instance, contact your operator. This notice appears in organization settings and in the **Slack** tab under each Engine project's **Notifications** settings. The operator follows the setup instructions below. After setup, users connect a workspace through Slack authorization without supplying app credentials themselves.
+* **BYOC**: An Organization Admin saves the app's credentials in the LangSmith UI. See [Create your Slack app on BYOC](#create-your-slack-app-on-byoc).
+* **Self-hosted**: An operator configures the app's credentials in the deployment. See [Create your Slack app on self-hosted](#create-your-slack-app-on-self-hosted).
+
+## Create your Slack app on BYOC
+
+On a BYOC data plane, you create the Slack app and save its credentials in your organization settings. You do not set environment variables or Helm values. The app and its workspace connections apply only to the selected data plane. Other data planes and LangSmith Cloud are unaffected.
+
+Configuring the app requires the `organization:manage` permission in the organization that owns the data plane.
+
+To configure the app:
+
+1. In LangSmith, go to **Settings** > **General Settings** > **Slack**, and select your data plane.
+2. Click **Configure Slack App**. The **Set up Slack App** dialog opens.
+3. Check the **Callback URL**. It defaults to `https://<data-plane-host>/v1/platform/slack/callback`. If your data plane uses a custom ingress, update the URL before you copy the manifest. The URL must use HTTPS and have no query string or fragment.
+4. Click **Copy Slack App manifest**, then click **Create App in Slack**. In Slack, select **Create New App** > **From a manifest**, paste the manifest into the **JSON** tab, and create and install the app. The manifest already contains your callback URL.
+5. In the new Slack app, open **Basic Information** > **App Credentials**. Copy the **Client ID** and **Client Secret** into the dialog, then save. Use the Client ID, not the App ID or Signing Secret.
+
+LangSmith stores the credentials encrypted and does not display them again. To change them later, click **Edit or replace Slack App**. To remove them, click **Delete configuration**.
+
+After you save the app, [connect a Slack workspace](#connect-a-slack-workspace). Connecting a workspace requires the `organization:integrations:manage` permission.
+
+## Create your Slack app on self-hosted
+
+On self-hosted LangSmith, your operator creates the Slack app and configures it in the deployment. The operator is the person who manages your LangSmith deployment. The deployment exchanges OAuth codes and sends notifications directly to Slack. LangSmith stores the app credentials and encrypted workspace bot tokens in your deployment.
+
+If Slack is not configured on your instance, contact your operator. This notice appears in organization settings and in the **Slack** tab under each Engine project's **Notifications** settings. The operator follows the setup instructions below.
 
 <Note>
   This connection requires LangSmith self-hosted v0.17 or later.
@@ -107197,8 +107648,6 @@ Before starting, make sure you have:
 * **Slack access:** Permission to create and install an app in the Slack workspace that receives notifications. Obtain administrator approval if your workspace restricts app installation.
 * **LangSmith access:** The `organization:manage` permission to connect or disconnect a Slack workspace. An organization administrator can complete this step after the operator configures the deployment.
 * **Network access:** Backend HTTPS access to Slack and browser access to your deployment's HTTPS callback. See [Allow network access](#allow-network-access).
-
-## Create your Slack app
 
 Your operator creates one Slack app for the deployment. An [app manifest](https://docs.slack.dev/reference/app-manifest/) is a JSON configuration that creates the bot and sets its permissions. Users reuse this app when connecting a workspace; they do not create an app for each user or project.
 
@@ -107254,9 +107703,9 @@ The manifest contains configuration, not credentials. Slack generates the app cr
 
 Keep token rotation disabled. The integration stores bot tokens and does not refresh rotating tokens. Leave Socket Mode disabled; Event Subscriptions and an app-level token are not required for notification delivery.
 
-Creating or installing the app in Slack does not connect it to LangSmith. Complete [Connect a Slack workspace](#connect-a-slack-workspace) after configuring the deployment. LangSmith obtains and stores the workspace bot token through that authorization flow; you do not copy a bot token into the deployment.
+Creating or installing the app in Slack does not connect it to LangSmith. Complete [Connect a Slack workspace](#connect-a-slack-workspace) after you [configure the deployment](#configure-your-deployment). LangSmith obtains and stores the workspace bot token through that authorization flow; you do not copy a bot token into the deployment.
 
-## Configure your deployment
+### Configure your deployment
 
 Configure these variables on the LangSmith platform backend using your deployment's [environment variable configuration](/langsmith/self-host-environment-variables):
 
@@ -107331,7 +107780,7 @@ The backend checks that the app credentials are present and the callback URL is 
 
 Changing or removing app credentials does not delete stored workspace connections or notification destinations. Previously stored bot tokens can continue delivering notifications. To stop delivery, disconnect the workspace or delete its notification destinations.
 
-## Allow network access
+### Allow network access
 
 For this integration, allow the following connections:
 
@@ -110134,7 +110583,7 @@ On AWS and Azure, start from the `terraform.tfvars.example`, `terraform.tfvars.m
 
 Each module exposes flags for the optional LangSmith add-ons. Toggle each in `terraform.tfvars`. Each module's deploy scripts read the flags and generate the matching Helm values.
 
-* **[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)** (`enable_deployments`): Agent Server plus the host-backend, listener, and operator that run and manage deployed agents.
+* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`): Agent Server plus the host-backend, listener, and operator that run and manage deployed agents.
 * **[Fleet](/langsmith/fleet)** (`enable_fleet`): The agent-building product, formerly Agent Builder, deployed as a standalone service.
 * **Insights** (`enable_insights`): ClickHouse-backed analytics.
 * **Polly** (`enable_polly`): AI evaluation and monitoring.
@@ -110152,7 +110601,7 @@ Each module exposes flags for the optional LangSmith add-ons. Toggle each in `te
 * Pick a provider above and follow the deployment guide.
 * Review [required dependency versions](/langsmith/self-host-dependency-versions) for PostgreSQL, ClickHouse, Redis, and Kubernetes.
 * Plan capacity with the [scaling guide](/langsmith/self-host-scale).
-* After the application is running, enable [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) to add agent deployment and management to the UI.
+* After the application is running, enable [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) to add agent deployment and management to the UI.
 
 ***
 
@@ -110991,7 +111440,7 @@ make deploy
 
 `enable_agent_builder` was removed in chart v16. Setting it to `true` fails validation at `terraform plan`, so delete it from existing `tfvars` files and use `enable_fleet`. `enable_standalone_polly` and `enable_standalone_insights` remain as legacy shorthand that enables the add-on with external storage (`enable_polly = true` with `polly_storage = "external"`, and the same for Insights).
 
-For details on agent deployment, see [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
+For details on agent deployment, see [LangSmith Deployment](/langsmith/enable-self-hosted-deployment).
 
 ### Fleet
 
@@ -111120,7 +111569,7 @@ The manifest targets the `langsmith-agents` namespace; edit it for a different n
 * Reference the [AWS variables](/langsmith/self-host-terraform-aws-variables) and the [quick reference](/langsmith/self-host-terraform-aws-quick-reference).
 * Review the [AWS architecture](/langsmith/self-host-terraform-aws-architecture) for platform layers, IRSA, and module dependencies.
 * When something breaks, check the [AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting).
-* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
+* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/enable-self-hosted-deployment).
 
 ***
 
@@ -113147,7 +113596,7 @@ Each add-on is gated by a flag in `infra/terraform.tfvars`. Set the flag, re-run
 
 ### LangSmith Deployment
 
-Enables [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform), which lets you deploy and manage agents as API servers directly from the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy). This adds three new pods.
+Enables [LangSmith Deployment](/langsmith/enable-self-hosted-deployment), which lets you deploy and manage agents as API servers directly from the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy). This adds three new pods.
 
 | Pod | Role | Workload Identity |
 | - | - | - |
@@ -113473,7 +113922,7 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 * Reference the [Azure variables](/langsmith/self-host-terraform-azure-variables) and the [quick reference](/langsmith/self-host-terraform-azure-quick-reference).
 * Review the [Azure architecture](/langsmith/self-host-terraform-azure-architecture) for module structure, traffic flow, and Workload Identity.
 * When something breaks, check the [Azure troubleshooting guide](/langsmith/self-host-terraform-azure-troubleshooting).
-* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
+* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/enable-self-hosted-deployment).
 
 ***
 
@@ -115826,7 +116275,7 @@ For the full list of changes, see [`MIGRATION-0.16-to-0.17.md`](https://github.c
 * Reference the [GCP variables](/langsmith/self-host-terraform-gcp-variables) and the [quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
 * Review the [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) for module structure, traffic flow, and Workload Identity.
 * When something breaks, check the [GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting).
-* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform).
+* Enable agent deployment in the UI with [LangSmith Deployment](/langsmith/enable-self-hosted-deployment).
 
 ***
 
@@ -117767,7 +118216,7 @@ Self-hosted LangSmith runs the LangSmith platform in your own infrastructure so 
 | [Engine](/langsmith/engine-self-hosted) | Optional | Sandboxes, a license with the Engine entitlement, and Helm chart version 0.16.0 or later. Air-gapped installations require Helm chart version 0.17.0 or later. |
 | [Fleet](/langsmith/enable-self-hosted-fleet) | Optional | Fleet services in your cluster. Does not require LangSmith Deployment. |
 | [LLM Gateway](/langsmith/llm-gateway-self-hosted) | Optional (beta) | Helm chart version 0.17.1 or later. The `agent-gateway` service needs access to PostgreSQL, Redis, and other LangSmith pods. |
-| [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) | Optional | KEDA, an ingress, and a control plane and data plane. To run Agent Servers without a control plane, see [standalone servers](/langsmith/deploy-standalone-server). |
+| [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) | Optional | KEDA, an ingress, and a control plane and data plane. To run Agent Servers without a control plane, see [standalone servers](/langsmith/deploy-standalone-server). |
 
 ## Architecture
 
@@ -149917,7 +150366,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     </tbody>
   </table>
 
-  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
+  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
 </Note>
 
 <Info>
@@ -150659,7 +151108,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     </tbody>
   </table>
 
-  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
+  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
 </Note>
 
 <Info>
@@ -150881,7 +151330,7 @@ export OPENAI_API_KEY=<your-openai-api-key>
     </tbody>
   </table>
 
-  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`. Do not add a trailing slash to the URL, as this can cause authentication errors.
+  For example, EU accounts: `export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`.
 </Note>
 
 <Info>
@@ -152818,10 +153267,18 @@ When sending traces to LangSmith via OpenTelemetry, the following attributes are
 | - | - | - |
 | `gen_ai.usage.input_tokens` | `usage_metadata.input_tokens` | Number of input tokens used |
 | `gen_ai.usage.output_tokens` | `usage_metadata.output_tokens` | Number of output tokens used |
-| `gen_ai.usage.total_tokens` | `usage_metadata.total_tokens` | Total number of tokens used |
+| `gen_ai.usage.total_tokens` | `usage_metadata.total_tokens` | Total number of tokens used. Not part of the current GenAI semantic conventions |
+| `gen_ai.usage.cache_read.input_tokens` | `usage_metadata.input_token_details.cache_read` | Input tokens read from the provider cache |
+| `gen_ai.usage.cache_write.input_tokens` | `usage_metadata.input_token_details.cache_creation` | Input tokens written to the provider cache |
+| `gen_ai.usage.reasoning.output_tokens` | `usage_metadata.output_token_details.reasoning` | Number of reasoning tokens used |
 | `gen_ai.usage.prompt_tokens` | `usage_metadata.input_tokens` | Number of input tokens used (deprecated) |
 | `gen_ai.usage.completion_tokens` | `usage_metadata.output_tokens` | Number of output tokens used (deprecated) |
-| `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.reasoning_tokens` | Number of reasoning tokens used |
+| `gen_ai.usage.cache_creation.input_tokens` | `usage_metadata.input_token_details.cache_creation` | Input tokens written to the provider cache (deprecated) |
+| `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.output_token_details.reasoning` | Number of reasoning tokens used (deprecated) |
+| `gen_ai.usage.cache_read_input_tokens` | `usage_metadata.input_token_details.cache_read` | Input tokens read from the provider cache (OpenLLMetry spelling) |
+| `gen_ai.usage.cache_creation_input_tokens` | `usage_metadata.input_token_details.cache_creation` | Input tokens written to the provider cache (OpenLLMetry spelling) |
+
+If a span sets more than one attribute for the same cache or reasoning field, LangSmith uses the current semantic convention attribute first, then the deprecated dotted spelling, then the OpenLLMetry underscore spelling.
 
 ### TraceLoop attributes
 
@@ -158239,7 +158696,55 @@ Each trace is limited to a maximum of 25,000 runs. Once the trace reaches this l
 
 ### Run query endpoint
 
-The [`POST /runs/query`](/langsmith/smith-api/run/query-runs) endpoint has additional per-tenant rate limits based on query parameters. See [Query traces using the SDK](/langsmith/export-traces#rate-limits) for details.
+LangSmith exposes two versions of the run query endpoint with different rate limit profiles.
+
+**v2 (recommended):** `POST /v2/runs/query` ([`list_runs`](https://reference.langchain.com/python/langsmith/client/Client/list_runs) in Python, [`listRuns`](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) in JavaScript) is backed by SmithDB and has a flat per-API-key limit with no time-window tiers:
+
+| **Limit** | **Window** |
+| - | - |
+| 300 requests | 10 seconds |
+
+API key requests that set `sem_filter` (semantic search) are also limited to 10 requests per minute per workspace.
+
+**v1:** `POST /runs/query` has per-tenant rate limits that vary based on query parameters:
+
+| **Query type** | **Limit** | **Window** |
+| - | - | - |
+| Short time window (≤ 7 days) | 10 requests | 10 seconds |
+| Large time window (> 7 days) | 3 requests | 10 seconds |
+| Full-text search, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Full-text search, large time window (> 7 days) | 1 request | 10 seconds |
+| Select `child_run_ids`, short time window (≤ 7 days) | 3 requests | 10 seconds |
+| Select `child_run_ids`, large time window (> 7 days) | 1 request | 10 seconds |
+
+The time window is determined by `end_time - start_time`. If `end_time` is not provided, LangSmith will use the current time. Queries without a `start_time` are treated as large time window queries.
+
+To avoid hitting v1 rate limits and reduce query time:
+
+* **Set `start_time`**: omitting it triggers the large time window tier (3 requests per 10 seconds instead of 10). Use a window of 7 days or less when possible.
+* **Use `select`**: by default all fields are returned. Specifying only the fields you need (e.g., `select=["inputs", "outputs"]`) substantially reduces response size and query time.
+* **Set `limit`**: cap the number of results if you don't need to paginate through everything.
+* **Avoid full-text search**: `filter='search("...")'` has the strictest rate limits; use structured filters (e.g., `eq()`, `has()`) when possible.
+* **Avoid selecting `child_run_ids`**: this also triggers a stricter rate limit tier.
+
+### Run stats endpoint
+
+The [`POST /runs/stats`](/langsmith/smith-api/run/stats-runs) endpoint has per-tenant rate limits that vary based on the query time window:
+
+| **Query type** | **Limit** | **Window** |
+| - | - | - |
+| Short time window (≤ 14 days) | 10 requests | 10 seconds |
+| Large time window (> 14 days and \< 90 days) | 3 requests | 10 seconds |
+| Extra-large time window (≥ 90 days) or no `start_time` | 1 request | 10 seconds |
+
+The time window is determined by `end_time - start_time`. If `end_time` is not provided, LangSmith uses the current time. Queries without a `start_time` are subject to the strictest limit.
+
+In the GCP-hosted US region, API key requests to this endpoint are also limited to 1 request per 10 seconds per API key.
+
+To avoid hitting rate limits:
+
+* **Set `start_time`**: use a window of 14 days or less when possible.
+* **Avoid open-ended queries**: always provide a `start_time` to stay in the less-restrictive tier.
 
 ### Workspace invite batch endpoint
 
@@ -162427,8 +162932,8 @@ For example, you have an online evaluator that produces an `answer_usefulness` s
 
 2. Edit the rule's filter to require the feedback key. In the filter builder, add a condition:
 
-   ```
-   has(feedback_key, "answer_usefulness")
+   ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   eq(feedback_key, "answer_usefulness")
    ```
 
 3. Save the rule.
@@ -162438,8 +162943,8 @@ Now the webhook rule will skip any run that does not yet have an `answer_usefuln
 <Tip>
   You can also filter on the score value itself, not just its presence. For example, to only send runs with a low usefulness score to your endpoint:
 
-  ```
-  has(feedback_key, "answer_usefulness") and feedback_score < 0.5
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  and(eq(feedback_key, "answer_usefulness"), lt(feedback_score, 0.5))
   ```
 
   For the full filter syntax, refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
@@ -168909,7 +169414,7 @@ Subagent `AGENTS.md` files use YAML frontmatter followed by a markdown body:
 ---
 name: researcher
 description: Research topics on the web before writing content
-model: anthropic:claude-haiku-4-5-20251001
+model: anthropic:claude-haiku-5-5
 ---
 
 You are a research assistant with access to web search.
@@ -168941,7 +169446,7 @@ Use a cheaper, faster model for simple delegation tasks while keeping the main a
 ---
 name: general-purpose
 description: General-purpose agent for research and multi-step tasks
-model: anthropic:claude-haiku-4-5-20251001
+model: anthropic:claude-haiku-5-5
 ---
 
 You are a general-purpose assistant. Complete the task efficiently and return a concise summary.
@@ -206519,6 +207024,10 @@ Connect LangGraph agents to front ends and observability platforms.
 ## Tools
 
 <Columns>
+  <Card title="AgentSearch" href="https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js&utm_medium=integration-listing&utm_campaign=promo-oct26" icon="link">
+    Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
+  </Card>
+
   <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
     Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
   </Card>
@@ -208746,6 +209255,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SnapRender`](https://snap-render.com) | <span><a href="https://www.npmjs.com/package/langchain-snaprender">  <img alt="Downloads per month" /></a></span> |
   | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | <span><a href="https://www.npmjs.com/package/signa-langchain">  <img alt="Downloads per month" /></a></span> |
   | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia">  <img alt="Downloads per month" /></a></span> |
+  | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span>N/A</span> |
   | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | <span>N/A</span> |
@@ -265536,12 +266046,17 @@ openwiki visualize
 openwiki visualize openwiki --port 4400 --no-open
 openwiki visualize openwiki --export docs/openwiki-visualizer
 
+# Link repository wikis into a workspace
+openwiki link
+openwiki workspace use payments
+openwiki workspace current
+openwiki workspace clear
+
 # Coding-agent integrations
 openwiki integrations list
 openwiki integrations install codex
-openwiki integrations install claude
-openwiki integrations install opencode
-openwiki integrations install cursor
+openwiki integrations install omp
+openwiki integrations install antigravity
 openwiki integrations uninstall codex
 
 # Help
@@ -265558,6 +266073,7 @@ openwiki --help
 | `--mode <personal\|code>` | Choose personal brain or repository docs. |
 | `-p`, `--print` | Run once, print the final assistant output, and exit. Provide a message or command. Interactive chat without `--print` stays open for follow-ups. |
 | `--modelId` / `--model-id` | Choose a model ID for the run. |
+| `--debug` | Print fuller failure detail, including the innermost cause behind wrapped errors such as "Connection error." |
 | `--telemetry-file=<path>` | Also write the telemetry payload for the run to a local JSON file. |
 | `-h`, `--help` | Print usage. |
 
@@ -265574,17 +266090,32 @@ openwiki visualize ~/.openwiki/wiki
 
 For details, see [Visualize your wiki](/oss/openwiki/visualize).
 
+## Search and link
+
+Group related repository wikis and manage the active search workspace:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki link [directory]
+openwiki workspace use <name>
+openwiki workspace current
+openwiki workspace clear
+```
+
+For MCP search and read tools, workspace scope rules, and examples, see [Search and link wikis](/oss/openwiki/search-and-link).
+
 ## Coding-agent integrations
 
 Install OpenWiki into a host coding agent so the host's model and repository tools drive generation while OpenWiki owns the durable page-job lifecycle:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations list [--project [path]]
-openwiki integrations install <codex|claude|opencode|cursor> [--force] [--project [path]]
-openwiki integrations uninstall <codex|claude|opencode|cursor> [--project [path]]
+openwiki integrations install <codex|claude|opencode|cursor|bob|kiro|omp|antigravity> [--force] [--project [path]]
+openwiki integrations uninstall <codex|claude|opencode|cursor|bob|kiro|omp|antigravity> [--project [path]]
 ```
 
 For details, see [Coding-agent integrations](/oss/openwiki/integrations).
+
+Native CLI runs can raise page worker concurrency with `OPENWIKI_PAGE_CONCURRENCY` (`1` to `8`, default `1`). See [Parallel page workers](/oss/openwiki/code-mode#parallel-page-workers).
 
 ## Auth and connectors
 
@@ -265631,13 +266162,14 @@ In interactive chat mode, you can use the following commands:
 * `/api-key`: Update the current provider API key (masked prompt)
 * `/langsmith-key`: Update or clear LangSmith tracing credentials (masked prompt)
 * `/provider` and `/model`: Change provider or model for the session (persisted to `~/.openwiki/.env`)
-* `/effort`: Set reasoning effort for supported OpenAI GPT-5.6 and NVIDIA NIM models, or `/effort default` to restore the provider default
+* `/effort`: Set reasoning effort for supported OpenAI GPT-5.6, NVIDIA NIM, Gemini, and opted-in openai-compatible models, or `/effort default` to restore the provider default
 * `/init` and `/update`: Launch init or update from the session
 * `/exit`: Exit the app
 
 ## See also
 
 * [Coding-agent integrations](/oss/openwiki/integrations)
+* [Search and link wikis](/oss/openwiki/search-and-link)
 * [Personal mode](/oss/openwiki/personal-mode)
 * [Model providers](/oss/openwiki/providers)
 * [Automate updates](/oss/openwiki/automate-updates)
@@ -265660,7 +266192,7 @@ Source: https://docs.langchain.com/oss/openwiki/code-mode
 
 Generate and maintain repository documentation for coding agents with OpenWiki
 
-Code mode builds a repository wiki in `openwiki/` with durable details such as architecture, integrations, and workflows. Coding agents use that wiki as context so they can work in the package more efficiently, with less rediscovery and fewer tokens. Humans can read the same Markdown, but agents are the primary audience. Agents discover the wiki through pointers OpenWiki adds to `AGENTS.md` and `CLAUDE.md`.
+Code mode builds a repository wiki in `openwiki/` with durable details such as architecture, integrations, and workflows. Coding agents use that wiki as context so they can work in the package more efficiently, with less rediscovery and fewer tokens. Humans can read the same Markdown, but agents are the primary audience. Agents discover the wiki through the pointer OpenWiki maintains in `AGENTS.md`, and through an `@AGENTS.md` import in `CLAUDE.md` when that file already exists.
 
 `openwiki`, `openwiki --init`, and `openwiki --update` run in code mode. You can also pass the mode explicitly:
 
@@ -265678,7 +266210,21 @@ To generate wiki pages in another language, pass a BCP-47 locale such as `ko`, `
 openwiki --init --language ko
 ```
 
-You can also run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor. See [Coding-agent integrations](/oss/openwiki/integrations).
+You can also run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, or Antigravity. See [Coding-agent integrations](/oss/openwiki/integrations).
+
+## Parallel page workers
+
+Native CLI init and update runs can document multiple pages concurrently. Set concurrency with:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OPENWIKI_PAGE_CONCURRENCY=4 openwiki --update
+```
+
+Concurrency defaults to `1` and accepts values from `1` to `8`. Start at `2` to `4` and watch your provider's rate limits. Coding-agent integrations keep the host's sequential page lifecycle; this setting controls native CLI workers only.
+
+Each worker owns exactly one page, and completed pages remain durable resume units. The quickstart page is written last so it can link to the pages it routes to. A worker that fails on a provider rate limit lowers the run's concurrency by one for the rest of the run; the page it was writing is restored and picked up by the next update.
+
+Provider retries default to `3`, or `5` when `OPENWIKI_PAGE_CONCURRENCY` is above `1`. Override with `OPENWIKI_PROVIDER_RETRY_ATTEMPTS` (a positive integer).
 
 ## What code mode produces
 
@@ -265689,7 +266235,8 @@ After a successful init or update, the repository typically includes:
 * **`openwiki/.claims/`**: Structured Claim sidecars that ground factual pages in versioned repository evidence
 * **`openwiki/.page-manifest.json`**: Per-page progress and source checkpoints for resumable generation
 * **`openwiki/.last-update.json`**: Metadata for the last successful documentation check (including no-op updates)
-* **`AGENTS.md` / `CLAUDE.md`**: OpenWiki inserts or refreshes an `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block that tells coding agents when to consult the wiki. Existing content outside that block is left untouched
+* **`AGENTS.md`**: Created when missing, then refreshed inside an `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block that tells coding agents when to consult the wiki
+* **`CLAUDE.md`**: Refreshed only when the file already exists. The managed block imports `@AGENTS.md` so Claude Code still loads the same instructions. OpenWiki does not create `CLAUDE.md` when it is absent
 
 During an active run, `openwiki/.run.json` checkpoints the ordered page queue. OpenWiki deletes that file after a successful finish.
 
@@ -265698,6 +266245,8 @@ During an active run, `openwiki/.run.json` checkpoints the ordered page queue. O
 OpenWiki makes code wikis self-correcting by tracking the material propositions behind factual pages, not only when a Markdown file was last generated. Claims cover truths future agents rely on: behavior, responsibilities, architecture, data flow, invariants, failure semantics, configuration, and security boundaries. Each Claim points to exact repository evidence such as `repo://src/server.ts#L40-L82`, with the evidence version OpenWiki observed when the Claim was established.
 
 The Markdown stays clean. Structured Claim state lives under `openwiki/.claims/`. Page completion persists reconciled Claims, projects verification into OKF front matter, and proves the complete result before marking that page job complete. Grounded Claims apply to repository code wikis and repository evidence. Connector-derived facts, including LangSmith-only observations, are not included as Claims.
+
+Updates reconcile Claims sparsely. The page worker submits decisions for Claims that need attention (confirm, revise, add, or retract). Unaffected Claims keep their stable identifiers and do not round-trip their statements and evidence through the model. Host-driven runs expose the complete Claims set for the current page through the optional `openwiki_inspect_page_claims` MCP tool.
 
 ## Markdown output
 
@@ -265739,7 +266288,7 @@ secrets/
 !logs/keep.log
 ```
 
-When `.openwikiignore` has active rules, OpenWiki filters filesystem discovery and restricts shell execute so ignored paths stay out of the run.
+When `.openwikiignore` has active rules, OpenWiki filters filesystem discovery and restricts shell execute so ignored paths stay out of the run. Repository agents use constrained filesystem tools rather than arbitrary host shell commands or unrestricted repository inspection.
 
 <Note>
   This is a read boundary: ignored paths are never read, scanned, or reproduced in the generated docs. It does not guarantee a topic will never be mentioned, because the agent may still infer an ignored area from other allowed evidence such as tests, the README, commit messages, or the existing wiki.
@@ -265770,6 +266319,7 @@ Normal `--init` and `--update` runs do not rewrite this file.
 ## See also
 
 * [Coding-agent integrations](/oss/openwiki/integrations)
+* [Search and link wikis](/oss/openwiki/search-and-link)
 * [Visualize your wiki](/oss/openwiki/visualize)
 * [Automate updates](/oss/openwiki/automate-updates)
 * [Customize OpenWiki](/oss/openwiki/customize)
@@ -265812,13 +266362,12 @@ Normal `--init` and `--update` runs do not rewrite these files.
 
 ## Agent instruction files
 
-On each code run, OpenWiki maintains `AGENTS.md` and `CLAUDE.md` at the repository root:
+On each code run, OpenWiki maintains agent instruction pointers at the repository root:
 
-* Creates the file if it does not exist
-* Rewrites only the `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block when the file already exists
-* Leaves the rest of your content untouched
+* **`AGENTS.md`**: Created when missing. OpenWiki rewrites only the `<!-- OPENWIKI:START -->` … `<!-- OPENWIKI:END -->` block and leaves the rest of your content untouched
+* **`CLAUDE.md`**: Updated only when the file already exists. The managed block imports `@AGENTS.md` so Claude Code reads the same instructions. OpenWiki does not create `CLAUDE.md` when it is absent, and it leaves a file that is only `@AGENTS.md` unchanged
 
-That block instructs coding agents to consult the generated wiki when they need repository context.
+That managed content tells coding agents when to consult the generated wiki for repository context.
 
 ## Local configuration directory
 
@@ -265894,21 +266443,26 @@ To inspect exactly what a run would send, add `--telemetry-file=<path>` to any r
 # Coding-agent integrations
 Source: https://docs.langchain.com/oss/openwiki/integrations
 
-Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and tools
+Run OpenWiki inside Codex, Claude Code, GitHub Copilot, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, or Antigravity using the host model and tools
 
 OpenWiki can run inside an existing coding agent instead of launching its own model. The coding agent investigates the repository, plans the wiki, and writes each assigned page with its native repository tools. OpenWiki owns the durable page-job lifecycle, Claims validation and persistence, source-drift handling, and deterministic finalization.
 
-Host-driven runs support only repository [code mode](/oss/openwiki/code-mode) wikis, not [personal mode](/oss/openwiki/personal-mode). They use the coding agent's authenticated model session, so OpenWiki provider credentials are not required. Connector-sourced context, including LangSmith, is not yet supported on this path.
+Host-driven runs support only repository [code mode](/oss/openwiki/code-mode) wikis, not [personal mode](/oss/openwiki/personal-mode). They use the coding agent's authenticated model session, so OpenWiki provider credentials are not required. Connector-sourced context, including LangSmith, is not yet supported on this path. Host-driven page authoring is sequential; [parallel page workers](/oss/openwiki/code-mode#parallel-page-workers) apply to the native CLI only.
 
 ## Install an integration
 
-Supported hosts are **Codex**, **Claude Code**, **OpenCode**, and **Cursor**. Installations default to user level, so one install works from any Git repository:
+Supported hosts are **Codex**, **Claude Code**, **GitHub Copilot**, **OpenCode**, **Cursor**, **IBM Bob** (Bob Shell), **Kiro**, **Oh My Pi** (`omp`), and **Antigravity CLI**. Installations default to user level, so one install works from any Git repository:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations install codex
 openwiki integrations install claude
+openwiki integrations install copilot
 openwiki integrations install opencode
 openwiki integrations install cursor
+openwiki integrations install bob
+openwiki integrations install kiro
+openwiki integrations install omp
+openwiki integrations install antigravity
 ```
 
 Restart the coding agent after installation. Then open the repository and ask:
@@ -265923,21 +266477,44 @@ For an existing wiki, ask:
 Update this repository's OpenWiki for changes since its last successful run.
 ```
 
+Installed integrations also expose [search and read tools](/oss/openwiki/search-and-link) so the host can query an existing wiki without starting a generation run.
+
 ### Inspect or uninstall
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations list
-openwiki integrations uninstall <codex|claude|opencode|cursor>
+openwiki integrations uninstall <codex|claude|copilot|opencode|cursor|bob|kiro|omp|antigravity>
 ```
 
-Add `--project [path]` to `list`, `install`, or `uninstall` for repository-scoped state. Project paths resolve to the Git repository root. User-level OpenCode integrations live under `~/.config/opencode`.
+Add `--project [path]` to `list`, `install`, or `uninstall` for repository-scoped state. Project paths resolve to the Git repository root.
+
+Host-specific user-level locations:
+
+* **OpenCode**: `~/.config/opencode`
+* **IBM Bob / Bob Shell**: `~/.agents/skills` and `~/.bob/settings/mcp.json` (project scope uses `.agents/skills` and `.bob/mcp.json`)
+* **Kiro**: `~/.kiro/skills` and `~/.kiro/settings/mcp.json`
+* **Oh My Pi**: `~/.omp/agent` for the default profile. Use `--project` for named profiles or a relocated `PI_CODING_AGENT_DIR`
+* **Antigravity CLI**: `~/.gemini/antigravity-cli/skills` and `~/.gemini/config/mcp_config.json`
+
+## Pi package
+
+Pi loads OpenWiki's skill and lifecycle tools from the npm package:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pi install npm:openwiki
+```
+
+Use `pi install --local npm:openwiki` for a project-local install. The Pi extension starts OpenWiki's CLI through Node, so `openwiki` need not be on `PATH`. Pi is not a target of `openwiki integrations install`.
 
 ## How host-driven runs work
 
 Host-driven runs follow the same resumable page-job lifecycle as native `openwiki --init` and `openwiki --update`. The coding agent drives repository research and page authoring; OpenWiki validates each completion, persists [Grounded Claims](/oss/openwiki/code-mode#grounded-claims), and finalizes metadata through MCP.
 
+On each page, the host submits sparse Claim decisions (confirm, revise, add, or retract). OpenWiki retains unaffected Claims, applies the explicit decisions, and refuses to finish until the final Claims state is durable. The host can call `openwiki_inspect_page_claims` when it needs the complete Claims set for the current page.
+
 ## See also
 
+* [Search and link wikis](/oss/openwiki/search-and-link)
 * [Code mode](/oss/openwiki/code-mode)
 * [CLI reference](/oss/openwiki/cli-reference)
 * [Quickstart](/oss/openwiki/quickstart)
@@ -265975,7 +266552,7 @@ npm install -g openwiki
 openwiki --init
 ```
 
-See the [Quickstart](/oss/openwiki/quickstart) to choose a model provider, generate docs, and keep them up to date. To run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations).
+See the [Quickstart](/oss/openwiki/quickstart) to choose a model provider, generate docs, and keep them up to date. To run OpenWiki inside a coding agent instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations). To search an existing wiki or group related repositories, see [Search and link wikis](/oss/openwiki/search-and-link).
 
 ## Modes
 
@@ -265992,11 +266569,15 @@ Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki p
 
 <CardGroup>
   <Card title="Repository wikis" icon="folder-code" href="/oss/openwiki/code-mode">
-    Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` and `CLAUDE.md` so coding agents can find them.
+    Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` (and `CLAUDE.md` when present) so coding agents can find them.
   </Card>
 
   <Card title="Coding-agent integrations" icon="robot" href="/oss/openwiki/integrations">
-    Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and repository tools.
+    Run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, Antigravity, or Pi.
+  </Card>
+
+  <Card title="Search and link" icon="search" href="/oss/openwiki/search-and-link">
+    Query wiki pages over MCP and group related repository wikis into workspaces.
   </Card>
 
   <Card title="Personal brain" icon="brain" href="/oss/openwiki/personal-mode">
@@ -266012,7 +266593,7 @@ Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki p
   </Card>
 
   <Card title="Model providers" icon="cpu" href="/oss/openwiki/providers">
-    Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, and other providers out of the box.
+    Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, IBM Bob, and other providers out of the box.
   </Card>
 
   <Card title="Open Knowledge Format" icon="file-text" href="/oss/openwiki/code-mode#open-knowledge-format">
@@ -266063,7 +266644,7 @@ openwiki personal --update
 openwiki personal --update "Refresh the wiki from configured connectors"
 ```
 
-To store personal wiki state somewhere other than `~/.openwiki`, set `OPENWIKI_CONFIG_DIR`. See [Customize OpenWiki](/oss/openwiki/customize#override-the-state-directory).
+Personal mode does not enable host shell execution for the agent. To store personal wiki state somewhere other than `~/.openwiki`, set `OPENWIKI_CONFIG_DIR`. See [Customize OpenWiki](/oss/openwiki/customize#override-the-state-directory).
 
 ## First-run onboarding
 
@@ -266218,6 +266799,7 @@ OpenWiki supports the following providers:
 | `copilot` | GitHub CLI session or `COPILOT_API_KEY` | Optional `COPILOT_BASE_URL`. CI needs an OAuth token, not a classic PAT |
 | `openrouter` | `OPENROUTER_API_KEY` | Optional `OPENWIKI_OPENROUTER_PROVIDER_ONLY` allowlist |
 | `anthropic` | `ANTHROPIC_API_KEY` | Optional `ANTHROPIC_BASE_URL` |
+| `bob` | `BOB_API_KEY` | Optional `BOB_BASE_URL`. Fixed model ID `premium`; no model picker |
 | `gemini` | `GEMINI_API_KEY` | Google AI Studio |
 | `gemini-enterprise` | Google ADC + `GOOGLE_CLOUD_PROJECT` | Optional `GOOGLE_CLOUD_LOCATION` (defaults to `global`) |
 | `bedrock` | AWS credentials + region | Explicit Bedrock keys or the AWS SDK default chain |
@@ -266244,7 +266826,7 @@ Override retries after the first provider request:
 OPENWIKI_PROVIDER_RETRY_ATTEMPTS=3
 ```
 
-The value must be a positive integer. If unset, OpenWiki defaults to 3 retries.
+The value must be a positive integer. If unset, OpenWiki defaults to 3 retries, or 5 when `OPENWIKI_PAGE_CONCURRENCY` is above `1`.
 
 ### Output token limits
 
@@ -266287,10 +266869,33 @@ Leave it unset to preserve the provider default. Invalid provider, model, or eff
 | `openai` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
 | `openai-chatgpt` | `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-5.6-sol` | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` |
 | `nvidia` | `nvidia/nemotron-3-super-120b-a12b` | `none`, `low`, `high` | Chat Completions `reasoning_effort` |
+| `gemini` | `gemini-3.6-flash` | `low`, `medium`, `high` | Gemini thinking level |
+| `openai-compatible` | Any model ID, when enabled | `none`, `low`, `medium`, `high`, `xhigh`, `max` | Responses API `reasoning.effort` or Chat Completions `reasoning_effort` |
 
 All other provider and model combinations, including OpenRouter, do not offer reasoning effort selection.
 
+For `openai-compatible`, reasoning effort stays off until you opt in:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OPENWIKI_OPENAI_COMPATIBLE_REASONING_EFFORT_SUPPORTED=true
+```
+
+When that flag is set, OpenWiki maps `OPENWIKI_REASONING_EFFORT` through the Responses API if `OPENWIKI_OPENAI_COMPATIBLE_USE_RESPONSES_API=true`, and through Chat Completions `reasoning_effort` otherwise.
+
 In interactive chat, use `/effort` to choose an available value or `/effort default` to restore the provider default.
+
+## IBM Bob
+
+IBM Bob is an API-key provider with a fixed model ID of `premium`, so OpenWiki skips the model picker:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OPENWIKI_PROVIDER=bob
+BOB_API_KEY=your-bob-api-key
+```
+
+Optional `BOB_BASE_URL` overrides the default inference endpoint (`https://api.us-east.bob.ibm.com/inference/v1`). Streaming is always on for this provider.
+
+To run OpenWiki inside IBM Bob / Bob Shell instead of configuring Bob as the standalone provider, see [Coding-agent integrations](/oss/openwiki/integrations).
 
 ## GitHub Copilot
 
@@ -266305,6 +266910,37 @@ OpenWiki leaves the GitHub CLI token in the GitHub CLI credential store. It does
 OPENWIKI_PROVIDER=copilot
 OPENWIKI_MODEL_ID=gpt-5.5
 ```
+
+## Microsoft Entra auth
+
+OpenWiki supports Microsoft Entra ID (formerly Azure Active Directory) as a token provider for OpenAI-compatible endpoints that require Entra bearer tokens instead of static API keys.
+
+<Note>
+  Entra ID authentication requires OpenWiki v0.7.0 or later.
+</Note>
+
+To configure Entra auth interactively, run `openwiki --init`, select **OpenAI-compatible**, then select **Microsoft Entra ID**. Enter the HTTPS API root, the token scope your gateway accepts, and the model ID. OpenWiki saves these settings for later `--update` runs. It does not ask for or store an access token.
+
+For non-interactive runs, set the same values as environment variables:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OPENWIKI_PROVIDER=openai-compatible
+OPENAI_COMPATIBLE_AUTH=entra-id
+OPENAI_COMPATIBLE_BASE_URL=https://gateway.example.com/openai/v1
+OPENAI_COMPATIBLE_ENTRA_SCOPE=api://gateway-application-id/.default
+OPENWIKI_MODEL_ID=your-gateway-model
+```
+
+* **`OPENAI_COMPATIBLE_AUTH`**: Set to `entra-id` to enable Entra auth. The default is `api-key`. In Entra mode, `OPENAI_COMPATIBLE_API_KEY` is not required.
+* **`OPENAI_COMPATIBLE_BASE_URL`**: Must use HTTPS and cannot contain embedded credentials.
+* **`OPENAI_COMPATIBLE_ENTRA_SCOPE`**: Optional. Defaults to `https://cognitiveservices.azure.com/.default`, the Azure OpenAI scope. Custom gateways may require a different scope.
+
+OpenWiki obtains tokens through [Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme), which caches them and refreshes them before expiry. Configure an Azure Identity credential separately in each environment that runs OpenWiki:
+
+* **Workload identity federation**: Set `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_FEDERATED_TOKEN_FILE`. When `AZURE_FEDERATED_TOKEN_FILE` is set, OpenWiki uses `WorkloadIdentityCredential`. Point the file variable at the runner-provided token file. Do not commit the file.
+* **Other environments**: OpenWiki uses `DefaultAzureCredential`, which accepts credentials such as `az login`, a managed identity, or environment credentials.
+
+Generated CI workflows keep the auth mode and scope, but you still need to configure an unattended Azure Identity credential in CI.
 
 ## OpenAI (ChatGPT login)
 
@@ -266413,6 +267049,8 @@ OpenWiki is a CLI that writes and maintains a Markdown wiki for your codebase or
 
 <Steps>
   <Step title="Install the CLI" icon="package">
+    OpenWiki requires [Node.js 22.22.0 or later](https://nodejs.org).
+
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     npm install -g openwiki
     ```
@@ -266438,11 +267076,11 @@ OpenWiki is a CLI that writes and maintains a Markdown wiki for your codebase or
 
     Running `--init` again regenerates the repository wiki and Claims from scratch while preserving `openwiki/INSTRUCTIONS.md`. Interrupted runs on a persistent checkout resume from `openwiki/.run.json`.
 
-    To run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations).
+    To run OpenWiki inside a coding agent instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations). After the wiki exists, you can [search it or link related repositories](/oss/openwiki/search-and-link).
   </Step>
 
   <Step title="Review the generated wiki" icon="book">
-    OpenWiki writes documentation to `openwiki/` in the repository, including a quickstart entrypoint and topic pages. It also maintains an `AGENTS.md` and `CLAUDE.md` at the repository root, adding a block that instructs coding agents to consult the wiki for codebase context. Factual pages are grounded with Claims under `openwiki/.claims/`.
+    OpenWiki writes documentation to `openwiki/` in the repository, including a quickstart entrypoint and topic pages. It creates or refreshes `AGENTS.md` at the repository root with a block that instructs coding agents to consult the wiki for codebase context. When `CLAUDE.md` already exists, OpenWiki refreshes a managed block that imports `@AGENTS.md`. Factual pages are grounded with Claims under `openwiki/.claims/`.
 
     Repository-specific wiki instructions live in `openwiki/INSTRUCTIONS.md`. OpenWiki reads this file for scope and priorities. To change it, edit the file, or ask OpenWiki in chat to change the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`). Normal `--init` and `--update` runs do not rewrite it.
 
@@ -266507,7 +267145,8 @@ To enrich the repository wiki from LangSmith traces (separate from tracing OpenW
 ## Next steps
 
 * [Code mode](/oss/openwiki/code-mode): repository wikis, Claims, OKF output, and agent instruction files
-* [Coding-agent integrations](/oss/openwiki/integrations): run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor
+* [Coding-agent integrations](/oss/openwiki/integrations): run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, Antigravity, or Pi
+* [Search and link wikis](/oss/openwiki/search-and-link): MCP search and read, plus multi-repo workspaces
 * [Personal mode](/oss/openwiki/personal-mode): local brain and connectors
 * [Model providers](/oss/openwiki/providers): supported providers and credentials
 * [Automate updates](/oss/openwiki/automate-updates): GitHub Actions, GitLab CI, and Bitbucket Pipelines
@@ -266522,6 +267161,81 @@ To enrich the repository wiki from LangSmith traces (separate from tracing OpenW
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Search and link wikis
+Source: https://docs.langchain.com/oss/openwiki/search-and-link
+
+Search OpenWiki pages over MCP and group related repository wikis into workspaces
+
+OpenWiki exposes local, read-only retrieval tools so coding agents can answer concrete questions from an existing wiki without starting a generation run. Use `openwiki link` to group related repository wikis into a named workspace, then search and read across that workspace.
+
+## Search and read
+
+Ask your coding agent to look up a question in the wiki:
+
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Search this repository's OpenWiki for how retry handling works, then read the
+relevant sections.
+```
+
+* **`openwiki_search`**: Returns compact, ranked results for a concrete question
+* **`openwiki_read`**: Retrieves the complete sections your agent selects from those results
+
+Agents are guided to use retrieval for concrete architecture or dependency questions, read the relevant sections, and stop once grounded. Retrieval is optional context, not a routine step at the start of every task. The tools are model-free: they do not start a generation run or make their own model calls.
+
+When repositories are linked into workspaces, `openwiki_list_workspaces` and `openwiki_list_wikis` provide discovery. Workspace search results identify their supplying `wiki`; pass that ID to `openwiki_read` with the result's page and section anchors.
+
+These tools ship with [coding-agent integrations](/oss/openwiki/integrations). After you install an integration, restart the host and ask it to search the wiki.
+
+## Create wiki workspaces
+
+A service often spans several repositories. Use `openwiki link` to group their existing wikis into a named workspace so your agent can search across the whole service and read sections from any member wiki.
+
+Start the workspace manager from a directory that contains the repositories, for example `~/dev`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd ~/dev
+openwiki link
+```
+
+Create a workspace such as `Payments`, then select the repositories to include. Member repositories keep their own wikis, can belong to more than one workspace, and do not need to share a parent directory. The finder streams Git repositories below an editable path starting at the launch directory. Repositories without OpenWiki documentation are dimmed. The registry is stored under `~/.openwiki` (or `OPENWIKI_CONFIG_DIR`).
+
+### Search scope
+
+Search chooses its scope as follows:
+
+1. A wiki in no workspace searches itself.
+2. A wiki in one workspace searches that workspace automatically.
+3. A wiki in multiple workspaces uses its active workspace.
+4. If it belongs to multiple workspaces without an active selection, search returns `workspace_required` and the agent asks which workspace to use.
+
+Set, inspect, or clear a repository's persistent active workspace from anywhere inside that repository:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki workspace use payments
+openwiki workspace current
+openwiki workspace clear
+```
+
+## See also
+
+* [Coding-agent integrations](/oss/openwiki/integrations)
+* [Code mode](/oss/openwiki/code-mode)
+* [CLI reference](/oss/openwiki/cli-reference)
+* [Visualize your wiki](/oss/openwiki/visualize)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/search-and-link.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -300911,6 +301625,7 @@ Middleware enables context engineering, harness customization, and runtime safet
   | [`comply54`](https://comply54.io/langchain) | Runtime compliance enforcement for AI agents under African data protection and financial-sector regulations (deny, escalate, audit, or allow). | [`comply54/langchain-comply54`](https://github.com/comply54/langchain-comply54) | <span><a href="https://pypi.org/project/langchain-comply54/">  <img alt="Downloads per month" /></a></span> |
   | [`text2sql-framework`](https://github.com/Text2SqlAgent/text2sql-framework) | Replaces RAG with recursive tool use: the agent explores, writes, tests, and self-corrects using one execute\_sql tool. | [`Text2SqlAgent/text2sql-framework`](https://github.com/Text2SqlAgent/text2sql-framework) | <span><a href="https://pypi.org/project/text2sql-framework/">  <img alt="Downloads per month" /></a></span> |
   | [`langgraph-state-machine`](https://github.com/mahmoud661/langgraph-state-machine) | Section-based flow control for LangGraph React agents. Divides conversations into discrete phases with scoped tools, prompts, auto-transitions, branching, and optional per-section LLM override. | [`mahmoud661/langgraph-state-machine`](https://github.com/mahmoud661/langgraph-state-machine) | <span><a href="https://pypi.org/project/langgraph-state-machine/">  <img alt="Downloads per month" /></a></span> |
+  | [`GoAT`](https://pypi.org/project/langgraph-goat/) | langgraph-goat records candidate plans, scores, and why each was chosen or rejected as a LangGraph agent plans, then renders a natural-language explanation for debugging and end-user transparency. | [`Samsung/langgraph-goat`](https://github.com/Samsung/langgraph-goat) | <span><a href="https://pypi.org/project/langgraph-goat/">  <img alt="Downloads per month" /></a></span> |
   | [`VecrContextCompressor`](https://github.com/h2cker/vecr) | Deterministic LLM context compression with a regex retention whitelist for structured tokens before the model call. | [`h2cker/vecr`](https://github.com/h2cker/vecr) | <span><a href="https://pypi.org/project/vecr-compress/">  <img alt="Downloads per month" /></a></span> |
   | [`ATR Guardrail`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | Runtime detection of prompt injection, tool poisoning, and unsafe tool calls using Agent Threat Rules. Halts the agent or blocks the tool call on a critical finding and keeps an audit trail. | [`Agent-Threat-Rule/agent-threat-rules`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | <span>N/A</span> |
   | [`eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | Reduces agent wall-clock latency by dispatching each tool call the moment its streaming block closes, overlapping tool execution with LLM generation. | [`cloudthinker-ai/eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | <span>N/A</span> |
@@ -301610,6 +302325,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Google's AI services and cloud platform.
   </Card>
 
+  <Card title="GoAT" href="https://pypi.org/project/langgraph-goat/" icon="link">
+    langgraph-goat records candidate plans, scores, and why each was chosen or rejected as a LangGraph agent plans, then renders a natural-language explanation for debugging and end-user transparency.
+  </Card>
+
   <Card title="GPTZZZ" href="https://gptzzz.ai/docs/" icon="link">
     OpenAI-compatible API gateway for models from multiple providers, with Chinese-language docs.
   </Card>
@@ -302144,6 +302863,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="OpenAI" href="/oss/python/integrations/providers/openai" icon="brand-openai">
     GPT models and comprehensive AI platform.
+  </Card>
+
+  <Card title="OpenAlexSearch" href="https://github.com/ourresearch/langchain-openalex#readme" icon="link">
+    OpenAlex is a free, open index of scholarly works (papers, books, datasets, preprints) with their authors, sources and citations; the package provides a search tool, a lookup-by-DOI tool and a retriever.
   </Card>
 
   <Card title="OpenBox" href="https://docs.openbox.ai/getting-started/langgraph" icon="link">
@@ -304651,7 +305374,7 @@ For async usage, import `AsyncAzureCosmosDBNoSqlSemanticCache`.
 
 ### Azure cosmos DB
 
-AI agents can rely on Azure Cosmos DB as a unified [memory system](https://learn.microsoft.com/en-us/azure/cosmos-db/ai-agents#memory-can-make-or-break-agents) solution, enjoying speed, scale, and simplicity. This service successfully [enabled OpenAI's ChatGPT service](https://www.youtube.com/watch?v=6IIUtEFKJec\&t) to scale dynamically with high reliability and low maintenance. Powered by an atom-record-sequence engine, it is the world's first globally distributed [NoSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-nosql), [relational](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-relational), and [vector database](https://learn.microsoft.com/en-us/azure/cosmos-db/vector-database) service that offers a serverless mode.
+AI agents can rely on Azure Cosmos DB as a unified [memory system](https://learn.microsoft.com/en-us/azure/cosmos-db/ai-agents#ai-agent-memory-system) solution, enjoying speed, scale, and simplicity. This service successfully [enabled OpenAI's ChatGPT service](https://www.youtube.com/watch?v=6IIUtEFKJec\&t) to scale dynamically with high reliability and low maintenance. Powered by an atom-record-sequence engine, it is the world's first globally distributed [NoSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-nosql), [relational](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-relational), and [vector database](https://learn.microsoft.com/en-us/azure/cosmos-db/vector-database) service that offers a serverless mode.
 
 Below are two available Azure Cosmos DB APIs that can provide vector store functionalities.
 
@@ -305445,7 +306168,7 @@ Integrate with Ollama using LangChain Python.
 
 This page covers all LangChain integrations with [Ollama](https://ollama.com/).
 
-Ollama allows you to run open-source models (like [`gpt-oss`](https://ollama.com/library/gpt-oss)) locally.
+Ollama allows you to run open-source models (like [`gpt-oss`](https://ollama.com/library/gpt-oss)) locally or in the cloud.
 
 For a complete list of supported models and variants, see the [Ollama model library](https://ollama.ai/library).
 
@@ -306424,6 +307147,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
   | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
+  | [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |
 </div>
 

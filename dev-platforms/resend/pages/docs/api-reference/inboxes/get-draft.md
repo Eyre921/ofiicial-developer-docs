@@ -33,7 +33,7 @@ Retrieve a single draft by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 <ResendParamField type="string">

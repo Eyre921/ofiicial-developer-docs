@@ -43,8 +43,8 @@ You can contact [Stripe support](https://support.stripe.com/) to appeal any Affi
 
 Review the list of *merchant category codes* (A Merchant Category Code (MCC) is a four-digit number that classifies the type of goods or services a business offers) that are prohibited or restricted for Affirm.
 
-- **Prohibited** MCCs are not supported by this payment method.
-- **Restricted** MCCs may be supported, but require additional information at account creation.
+- **Prohibited**: You can’t use this payment method with these MCCs.
+- **Restricted**: You might be able to use this payment method with these MCCs, but you must provide additional information when you create the account.
 
 | MCC | Description | Type |
 | --- | --- | --- |
@@ -54,11 +54,11 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 1731 | Electrical Services | Restricted |
 | 1740 | Masonry, Stonework, and Plaster | Restricted |
 | 1750 | Carpentry Services | Restricted |
-| 1761 | Roofing/Siding, Sheet Metal | Restricted |
+| 1761 | Roofing and Siding, Sheet Metal | Restricted |
 | 1771 | Concrete Work Services | Restricted |
 | 1799 | Special Trade Services | Restricted |
 | 4723 | TUI Travel - Germany | Prohibited |
-| 4761 | OTA / Travel Package | Prohibited |
+| 4761 | OTA and Travel Package | Prohibited |
 | 4815 | Software | Prohibited |
 | 4829 | Money Orders - Wire Transfers | Prohibited |
 | 4900 | Utilities | Prohibited |
@@ -97,7 +97,7 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 6012 | Financial Institutions | Prohibited |
 | 6050 | Software | Prohibited |
 | 6051 | Cryptocurrency exchanges and wallets | Prohibited |
-| 6211 | Security Brokers/Dealers | Prohibited |
+| 6211 | Security Brokers and Dealers | Prohibited |
 | 6300 | Insurance Underwriting, Premiums | Prohibited |
 | 6381 | Software | Prohibited |
 | 6399 | Software | Prohibited |
@@ -111,7 +111,7 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 6536 | Software | Prohibited |
 | 6537 | Software | Prohibited |
 | 6538 | Software | Prohibited |
-| 6540 | Non-FI, Stored Value Card Purchase/Load | Prohibited |
+| 6540 | Non-FI, Stored Value Card Purchase and Load | Prohibited |
 | 7276 | Tax Preparation Services | Restricted |
 | 7277 | Counseling Services | Restricted |
 | 7297 | Massage Parlors | Restricted |
@@ -120,7 +120,7 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 7322 | Financial Service | Prohibited |
 | 7332 | Software | Prohibited |
 | 7333 | Commercial Photography, Art and Graphics | Prohibited |
-| 7361 | Employment/Temp Agencies | Prohibited |
+| 7361 | Employment and Temp Agencies | Prohibited |
 | 7372 | Computer Programming | Prohibited |
 | 7375 | Information Retrieval Services | Prohibited |
 | 7392 | Consulting, Public Relations | Prohibited |
@@ -131,22 +131,22 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 7778 | Software | Prohibited |
 | 7800 | Government-Owned Lotteries (US Region only) | Prohibited |
 | 7801 | Government Licensed On-line Casinos (On-Line Gambling) | Prohibited |
-| 7802 | Government-Licensed Horse/Dog Racing | Prohibited |
-| 7829 | Picture/Video Production | Prohibited |
-| 7995 | Betting/Casino Gambling | Prohibited |
+| 7802 | Government-Licensed Horse and Dog Racing | Prohibited |
+| 7829 | Picture and Video Production | Prohibited |
+| 7995 | Betting and Casino Gambling | Prohibited |
 | 8111 | Legal Services, Attorneys | Restricted |
 | 8220 | Colleges, Universities | Prohibited |
 | 8241 | Correspondence Schools | Restricted |
-| 8244 | Business/Secretarial Schools | Restricted |
-| 8249 | Vocational/Trade Schools | Restricted |
+| 8244 | Business and Secretarial Schools | Restricted |
+| 8249 | Vocational and Trade Schools | Restricted |
 | 8299 | Educational Services | Restricted |
 | 8398 | Charitable and Social Service Organizations - Fundraising | Prohibited |
 | 8651 | Political Organizations | Prohibited |
 | 8661 | Religious Organizations | Prohibited |
 | 8699 | Membership Organizations | Prohibited |
 | 8734 | Testing Laboratories | Restricted |
-| 8911 | Architectural/Surveying Services | Restricted |
-| 8931 | Accounting/Bookkeeping Services | Restricted |
+| 8911 | Architectural and Surveying Services | Restricted |
+| 8931 | Accounting and Bookkeeping Services | Restricted |
 | 9211 | Court Costs | Prohibited |
 | 9222 | Fines - Government Administrative Entities | Prohibited |
 | 9223 | Bail and Bond Payments | Prohibited |
@@ -161,10 +161,10 @@ Review the list of *merchant category codes* (A Merchant Category Code (MCC) is 
 | 9702 | Emergency Services (GCAS) | Prohibited |
 | 9751 | Software | Prohibited |
 | 9752 | Software | Prohibited |
-| 9754 | Lodging - Hotels/Motels/Resorts (Continued) | Prohibited |
+| 9754 | Lodging - Hotels, Motels, and Resorts (Continued) | Prohibited |
 | 9950 | Intra-Company Purchases | Prohibited |
 
-Stripe accounts in the following countries can accept Affirm payments with local currency settlement.
+Stripe accounts in the following countries can accept Affirm payments that settle in a supported currency.
 
 AMER: CA, US
 
@@ -179,7 +179,7 @@ EMEA: [Preview] GB
 ### Payment support
 Customer location: CA, US
 Private preview customer location: GB
-Presentment currency: USD, CAD
+Presentment currency: CAD, USD
 Private preview presentment currency: GBP
 Geographic coverage: ✓ Domestic, ✗ Crossborder
 Transaction limits: Minimum amount: 35.00 USD
@@ -297,9 +297,9 @@ Disputes:
   ✓ Full disputes
 ### Refunds 
 
-You have up to 120 days from the original payment to submit a refund using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API.](https://docs.stripe.com/api/refunds/create.md) This is the maximum the payment method allows-your return policy determines what you offer customers.
+Affirm requires that you submit a refund within 120 days from the original payment using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API](https://docs.stripe.com/api/refunds/create.md). This is the maximum the payment method allows. Your return policy determines what you offer customers.
 
-Refunds for Affirm payments are asynchronous and take up to 2 days to complete. Affirm refunds can’t be canceled. 
+Refunds for Affirm payments are asynchronous and take up to 2 days to complete. You can’t cancel Affirm refunds.
 
 #### Refund process 
 
@@ -307,13 +307,13 @@ Affirm refunds are never processed as reversals. When you issue a refund, Affirm
 
 #### Tracking refunds 
 
-You can view refund status in the [Dashboard](https://dashboard.stripe.com/payments). Open the payment and click **View Details** on the refund entry, or [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field. Stripe also notifies you of the final refund status using the `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the status of the [Refund](https://docs.stripe.com/api/refunds/object.md) object transitions to `succeeded`. If a refund fails, the status transitions to `failed`, Stripe returns the amount to your Stripe balance, and you must arrange an alternative way to provide your customer with a refund.
+To check a refund’s status, open the payment in the [Dashboard](https://dashboard.stripe.com/payments) and click **View details** on the refund entry. You can also [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field.
+
+Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
 
 ### Disputes 
 
-There’s no set time limit for customers to file Affirm disputes.
-
-Affirm payments can only be disputed once.
+There’s no set time limit for customers to file Affirm disputes. Affirm payments can be disputed more than once. Each dispute is treated as an independent object, must be handled separately, and counts individually toward your dispute metrics.
 
 #### Dispute process 
 
@@ -322,11 +322,11 @@ Affirm payments can only be disputed once.
 
 #### Dispute notifications 
 
-When a Affirm dispute is opened, Stripe notifies you through:
+When Affirm disputes are opened, Stripe notifies you through:
 
 - Email
 - The [Stripe Dashboard](https://dashboard.stripe.com/disputes)
-- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) webhook event
+- A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) event
 
 The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_due_by` field of the Dispute object.
 
@@ -342,7 +342,7 @@ We request that you upload compelling evidence proving that you fulfilled the pu
 - Record of purchase for services or physical goods, such as phone number or proof of receipt
 - Record of refund (for purchases you’ve already refunded)
 
-You can submit evidence and manage Affirm disputes in the [Dashboard](https://dashboard.stripe.com/disputes) or programmatically using the [Disputes API](https://docs.stripe.com/api/disputes/update.md). In the Dashboard, go to the **Needs Response** tab, click the disputed payment, then click **Counter dispute** to submit your evidence, or **Accept dispute** to accept the loss. To submit evidence through the API, upload supporting files using the [Files API](https://docs.stripe.com/api/files/create.md) and include the returned file IDs when you update the [Dispute Evidence object](https://docs.stripe.com/api/disputes/update.md).
+You can submit evidence and manage Affirm disputes in the [Dashboard](https://dashboard.stripe.com/disputes) or programmatically using the [Disputes API](https://docs.stripe.com/api/disputes/update.md). In the Dashboard, go to the **Needs response** tab, click the disputed payment, then click **Counter dispute** to submit your evidence, or **Accept dispute** to accept the loss. To submit evidence through the API, upload supporting files using the [Files API](https://docs.stripe.com/api/files/create.md) and include the returned file IDs when you update the [Dispute Evidence object](https://docs.stripe.com/api/disputes/update.md).
 
 #### Dispute outcomes 
 
@@ -423,7 +423,7 @@ After the payment completes, expand `latest_charge` on the PaymentIntent to retr
 
 ## Enable Affirm 
 
-If you use our front-end products, you can enable Affirm directly from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe then automatically determines the most relevant payment methods to display to your customers.
+If you use Stripe front-end products, enable Affirm in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe automatically determines which payment methods are most relevant to each customer.
 
-If your integration requires manually listing payment methods, learn how to [manually configure Affirm as a payment](https://docs.stripe.com/payments/affirm/accept-a-payment.md).
+If your integration requires manually listing payment methods, you can [configure Affirm as an accepted payment method](https://docs.stripe.com/payments/affirm/accept-a-payment.md).
 

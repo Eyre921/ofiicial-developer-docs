@@ -602,7 +602,7 @@ curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
-[Create an Outbound Payment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) to move the money from your financial account to the recipient’s payout method banking account.
+[Create an Outbound Payment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) to move the money from your financial account to the recipient’s payout method banking account. The Stripe-Context header for this request identifies just your account (`{{CONNECTED_ACCOUNT_ID}}`) to request the funds from your financial account.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \

@@ -79563,14 +79563,6 @@ Workspaces are created asynchronously. On success the workspace is returned in t
 
 
 
-# Describe a workspace
-Source: https://docs.pinecone.io/api-reference/manage-workspaces/describe-a-workspace
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_control_2026-07.oas.yaml get /workspaces/{workspace_name}
-Get a description of a workspace.
-
-
-
 # List workspaces
 Source: https://docs.pinecone.io/api-reference/manage-workspaces/list-workspaces
 
@@ -80076,7 +80068,7 @@ Artifacts are the condensed knowledge that curation produces. Each artifact has 
 
 ## Query
 
-A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Query a single context from its **Query this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context).
+A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Query a single context from its **Query this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context). To steer how a context answers every query, set [context-default instructions](/guides/nexus/context-design#context-default-instructions) in its manifest.
 
 ## KnowQL
 
@@ -80239,7 +80231,7 @@ A context turns your sources into queryable knowledge. Its manifest tells curati
 
 ## The manifest
 
-A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
+A *manifest* is a single validated JSON document that describes how a context curates its sources into knowledge. One generic runtime reads it, the same for every context. Its main section, `curate`, defines how to build knowledge from the sources, what to chunk and embed, and which artifacts to derive. A `search` section sets query-time defaults, like standing instructions every answer should follow. Change the manifest, change the behavior. A never-tuned context still works, because the schema ships sensible defaults.
 
 You author a manifest through the [Nexus API](/reference/api/nexus/authentication), supplying it in the `manifest` field when you create or update a context, then curating. You can start from a prebuilt template or write the types yourself:
 
@@ -80279,13 +80271,44 @@ Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. 
 
 Each artifact type is written in one of two formats: `markdown`, a prose file per artifact, or `sqlite`, rows in a queryable table with a column schema. To set a type's format and, for `sqlite`, its columns and keys, see [Configure artifact formats](/guides/nexus/configure-artifact-formats).
 
+## Context-default instructions
+
+A context's default instructions act as a system prompt for every query against the context: the role to take, the tone to use, how to format answers, or how to handle conflicting sources. You set them once on the context instead of resending them with every query.
+
+Set them in the manifest's `search.instructions` field, alongside `curate`:
+
+```json theme={null}
+{
+  "curate": {
+    "artifacts": {
+      "enabled": true,
+      "artifact_types": [
+        { "name": "Filing", "kind": "entity", "scope": "corpus",
+          "description": "One regulatory filing in the corpus." },
+        { "name": "Risk", "kind": "topic", "scope": "corpus",
+          "description": "A risk factor disclosed across the filings." }
+      ]
+    }
+  },
+  "search": {
+    "instructions": "You're a financial analyst. Keep answers precise and neutral, and cite the filing and section behind every figure. When filings disagree, prefer the most recent and note the discrepancy."
+  }
+}
+```
+
+Supply the manifest in the `manifest` field when you create or update a context, as described in [Design your own manifest](/guides/nexus/design-your-own-manifest). Nexus reads the instructions at query time, so a change takes effect on your next query without a re-curate.
+
+The instructions apply to every query against the context. When a query's `scope` lists more than one context, the instructions from the first context in the list apply. The field accepts up to 16,000 characters, and a longer value fails the manifest save with a `400` error. It defaults to empty, so a context has no default instructions until you set some.
+
+A single session can layer its own instructions on top of this default. See [Set session instructions](/guides/nexus/set-session-instructions).
+
 
 # Design your own manifest
 Source: https://docs.pinecone.io/guides/nexus/design-your-own-manifest
 
 Author a Pinecone Nexus context's manifest through the API by defining custom artifact and edge types, then curating.
 
-When a template doesn't fit your corpus, you can author a Pinecone Nexus context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types curation builds, send them in the `manifest` field when you create or update a context, then curate.
+When a template doesn't fit your corpus, you can author a Pinecone Nexus context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types curation builds, supply them in the `manifest` field when you create or update a context, then curate.
 
 ## Artifact and edge types
 
@@ -80302,7 +80325,7 @@ These steps use the data-plane base URL and session token from [Authentication](
 
 <Steps>
   <Step title="Create the context with your manifest">
-    Send the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
+    Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
 
     ```bash curl theme={null}
     curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
@@ -80368,7 +80391,7 @@ These steps use the data-plane base URL and session token from [Authentication](
 
 ## More example manifests
 
-Each of these is a `curate.artifacts` manifest for a different corpus. Send one in the `manifest` field the same way, and adjust the types to your own documents.
+Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
 <AccordionGroup>
   <Accordion title="Contracts, obligations, and key dates">
@@ -80582,88 +80605,6 @@ Curated artifacts are only half the story. At query time the model doesn't just 
 Distilling artifacts up front plus writing retrieval code at query time means higher-quality answers on large, messy corpora: exact counts, real relationships, and citations you can trust, without dumping everything into the model's context.
 
 
-# Nexus queries
-Source: https://docs.pinecone.io/guides/nexus/how-queries-work
-
-Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
-
-A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
-
-<img alt="A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer" />
-
-<img alt="A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer" />
-
-## Retrieval as code
-
-The usual ways to answer over a corpus both struggle. Agentic RAG issues many retrieval calls and burns tokens stitching them together, and a coding agent greps and parses raw files, which is powerful but slow, expensive, and unreliable.
-
-A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
-
-## The query runtime
-
-A query is run by the Nexus runtime, a single generic Python image the orchestrator launches fresh for each turn. There is no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
-
-1. **A fresh container per turn:** Each query spawns one isolated container that runs exactly that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
-2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
-3. **The agent loop:** The model writes Python into a persistent REPL to call the retrieval SDK, reading artifacts, running search, walking the graph, querying structured tables.
-4. **Step events:** Each step is posted back as it happens, powering the live answer stream you see in the console. You can replay the full sequence for any query with [query tracing](/guides/nexus/query-tracing).
-5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
-
-## The agent loop
-
-The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
-
-If the first pass misses, the model refines its code and searches again, so hard questions get more work, not a worse answer. The loop stops as soon as the model can answer.
-
-```python theme={null}
-# One turn: find an artifact, read it, drill its sources.
-art = await search_knowledge("acquisition terms", kind="summary")
-srcs = read_artifact(art[0].name).sources
-for h in await search_in_sources(srcs, "purchase price"):
-    print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
-```
-
-Independent searches run concurrently, and lookups already held in a variable are never repeated. The loop is capped, so the model is pushed to extract everything it needs and answer in a few steps.
-
-## The retrieval SDK
-
-The Composable Retriever pre-binds these primitives into the REPL. Read artifacts cheaply off disk, fall back to search over the index, and reach for SQL when the question is a count or enumeration.
-
-### Read artifacts
-
-| Primitive | What it does |
-| - | - |
-| `outline_knowledge()` | a map of every artifact in the context |
-| `read_artifact(name)` | a condensed artifact: its body, edges, and sources |
-| `read_rosters()` | "all X" rosters for list-everything questions |
-| `describe_type(name)` | the full manifest spec for an artifact type |
-
-### Search
-
-| Primitive | What it does |
-| - | - |
-| `search_knowledge(query)` | semantic search over artifacts (optionally by kind) |
-| `search_source(query)` | semantic search over raw source chunks |
-| `search_source_by_keyword(query)` | lexical/BM25 for exact IDs, codes, and phrases |
-| `search_in_sources(sources, query)` | semantic search within a specific artifact's source chunks |
-| `cite_from_artifact(name)` | drill an artifact's sources for a verbatim span |
-
-### Structured tables
-
-| Primitive | What it does |
-| - | - |
-| `query_db(sql)` | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
-| `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
-
-## Synthesis
-
-**Synthesis from surfaced evidence.** The answer is composed from just the evidence the code surfaced, never the raw corpus, so the model reasons over a small, relevant context instead of the whole document set.
-
-**Citations that trace to a source.** Inline citation markers map back to real source spans: the file, page, and verbatim text behind every claim.
-
-**Optional structured output.** When a `shape` is supplied, the answer is routed through structured synthesis to produce a schema-conforming document instead of prose.
-
-
 # MCP server
 Source: https://docs.pinecone.io/guides/nexus/mcp-server
 
@@ -80836,6 +80777,92 @@ Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
 </CardGroup>
 
 
+# Nexus queries
+Source: https://docs.pinecone.io/guides/nexus/queries
+
+Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
+
+A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
+
+<img alt="A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer" />
+
+<img alt="A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer" />
+
+## Retrieval as code
+
+The usual ways to answer over a corpus both struggle. Agentic RAG issues many retrieval calls and burns tokens stitching them together, and a coding agent greps and parses raw files, which is powerful but slow, expensive, and unreliable.
+
+A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
+
+## The query runtime
+
+A query is run by the Nexus runtime, a single generic Python image the orchestrator launches fresh for each turn. There is no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
+
+1. **A fresh container per turn:** Each query spawns one isolated container that runs exactly that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
+2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
+3. **The agent loop:** The model writes Python into a persistent REPL to call the retrieval SDK, reading artifacts, running search, walking the graph, querying structured tables.
+4. **Step events:** Each step is posted back as it happens, powering the live answer stream you see in the console. You can replay the full sequence for any query with [query tracing](/guides/nexus/query-tracing).
+5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
+
+## The agent loop
+
+The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
+
+If the first pass misses, the model refines its code and searches again, so hard questions get more work, not a worse answer. The loop stops as soon as the model can answer.
+
+```python theme={null}
+# One turn: find an artifact, read it, drill its sources.
+art = await search_knowledge("acquisition terms", kind="summary")
+srcs = read_artifact(art[0].name).sources
+for h in await search_in_sources(srcs, "purchase price"):
+    print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
+```
+
+Independent searches run concurrently, and lookups already held in a variable are never repeated. The loop is capped, so the model is pushed to extract everything it needs and answer in a few steps.
+
+## The retrieval SDK
+
+The Composable Retriever pre-binds these primitives into the REPL. Read artifacts cheaply off disk, fall back to search over the index, and reach for SQL when the question is a count or enumeration.
+
+### Read artifacts
+
+| Primitive | What it does |
+| - | - |
+| `outline_knowledge()` | a map of every artifact in the context |
+| `read_artifact(name)` | a condensed artifact: its body, edges, and sources |
+| `read_rosters()` | "all X" rosters for list-everything questions |
+| `describe_type(name)` | the full manifest spec for an artifact type |
+
+### Search
+
+| Primitive | What it does |
+| - | - |
+| `search_knowledge(query)` | semantic search over artifacts (optionally by kind) |
+| `search_source(query)` | semantic search over raw source chunks |
+| `search_source_by_keyword(query)` | lexical/BM25 for exact IDs, codes, and phrases |
+| `search_in_sources(sources, query)` | semantic search within a specific artifact's source chunks |
+| `cite_from_artifact(name)` | drill an artifact's sources for a verbatim span |
+
+### Structured tables
+
+| Primitive | What it does |
+| - | - |
+| `query_db(sql)` | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
+| `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
+
+## Synthesis
+
+**Synthesis from surfaced evidence.** The answer is composed from just the evidence the code surfaced, never the raw corpus, so the model reasons over a small, relevant context instead of the whole document set.
+
+**Citations that trace to a source.** Inline citation markers map back to real source spans: the file, page, and verbatim text behind every claim.
+
+**Optional structured output.** When a `shape` is supplied, the answer is routed through structured synthesis to produce a schema-conforming document instead of prose.
+
+## Session instructions
+
+A session can carry its own answer instructions on top of a context's default, a system prompt that shapes how it answers every turn. See [Set session instructions](/guides/nexus/set-session-instructions).
+
+
 # Query tracing
 Source: https://docs.pinecone.io/guides/nexus/query-tracing
 
@@ -80871,7 +80898,7 @@ The trace lists each span with its duration, from the model's own reasoning step
 * **A reasoning step** shows its input and output tokens, its timing (split into decide time while the model reasons and execute time while the code runs), its cost, and the generated code the model wrote and ran.
 * **A tool call** (for example, `query_db()`) shows its arguments (the query it ran), its result (such as the number of rows returned), and its timing.
 
-This is the same agent loop described in [Queries](/guides/nexus/how-queries-work), made visible one span at a time.
+This is the same agent loop described in [Queries](/guides/nexus/queries), made visible one span at a time.
 
 ## Final answer
 
@@ -81093,7 +81120,54 @@ Questions that span multiple documents work the same way. Asking "Which purchase
 >
 > **\[1]** `policies/expenses.pdf`  **\[2]** `policies/vendors.pdf`
 
-To answer this, Nexus draws on the artifacts it compiled from your policies during curation, gathering the matching rules from across your documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Reaching across your whole corpus is a core reason to use Nexus over RAG. For exact counts and enumerations over structured data, define a SQLite artifact, covered in [artifact formats](/guides/nexus/configure-artifact-formats). See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
+To answer this, Nexus draws on the artifacts it compiled from your policies during curation, gathering the matching rules from across your documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Reaching across your whole corpus is a core reason to use Nexus over RAG. For exact counts and enumerations over structured data, define a SQLite artifact, covered in [artifact formats](/guides/nexus/configure-artifact-formats). See [how queries work](/guides/nexus/queries) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
+
+
+# Set session instructions
+Source: https://docs.pinecone.io/guides/nexus/set-session-instructions
+
+Set a per-session system prompt on a Pinecone Nexus query to shape how a session answers, layered over the context's default instructions.
+
+A session can carry its own answer instructions, a system prompt that shapes how it answers every turn: the role to take, the tone to use, or how to format the result. These layer on top of a context's [default instructions](/guides/nexus/context-design#context-default-instructions) rather than replacing them. The context default always applies, and the session prompt adds to it, except where it only repeats the default, which Nexus skips.
+
+You pass `system_prompt` on the query that starts the session, and it stays pinned for the rest of the session.
+
+<Steps>
+  <Step title="Start a session with a system prompt">
+    Pass `system_prompt` alongside `scope` and `ask` on the opening query. These fields are set only when a session starts.
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{
+        "scope": ["company-knowledge"],
+        "ask": "What changed in the latest contract?",
+        "system_prompt": "Answer as a contracts analyst. Be concise, and cite the clause behind every claim."
+      }'
+    ```
+
+    The response carries a `session_id` and the query's `id`.
+  </Step>
+
+  <Step title="Continue the session">
+    Reference the previous turn with `previous_query_id`. Follow-up turns keep the system prompt, so you don't resend it, and the context default still applies.
+
+    ```bash curl theme={null}
+    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+      -H "Authorization: Bearer $NEXUS_TOKEN" \
+      -H 'Content-Type: application/json' \
+      -H 'X-Pinecone-Api-Version: 2026-07' \
+      -d '{
+        "previous_query_id": "qry_...",
+        "ask": "Who owns the renewal?"
+      }'
+    ```
+  </Step>
+</Steps>
+
+In the console, open **Advanced options** in the new session composer and set the **System prompt**.
 
 
 # Delete a project
@@ -82014,6 +82088,14 @@ Source: https://docs.pinecone.io/api-reference/manage-workspaces/delete-a-worksp
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_control_2026-07.oas.yaml delete /workspaces/{workspace_name}
 Delete an existing workspace. Deletion is asynchronous: the workspace transitions to the `Terminating` state and its contexts are deleted, after which the workspace itself is removed.
 
+
+
+
+# Describe a workspace
+Source: https://docs.pinecone.io/api-reference/manage-workspaces/describe-a-workspace
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_control_2026-07.oas.yaml get /workspaces/{workspace_name}
+Get a description of a workspace.
 
 
 

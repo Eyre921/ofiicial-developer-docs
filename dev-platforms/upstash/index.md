@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 981 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 985 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -122,10 +122,12 @@
 - `docs/devops/developer-api/authentication` — [Authentication](pages/docs/devops/developer-api/authentication.md) · [原文](https://upstash.com/docs/devops/developer-api/authentication)
 - `docs/devops/developer-api/http_status_codes` — [HTTP Status Codes](pages/docs/devops/developer-api/http_status_codes.md) · [原文](https://upstash.com/docs/devops/developer-api/http_status_codes)
 - `docs/devops/developer-api/introduction` — [Getting Started](pages/docs/devops/developer-api/introduction.md) · [原文](https://upstash.com/docs/devops/developer-api/introduction)
+- `docs/devops/developer-api/redis/backup/analyze_backup` — [Analyze Backup](pages/docs/devops/developer-api/redis/backup/analyze_backup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/analyze_backup)
 - `docs/devops/developer-api/redis/backup/create_backup` — [Create Backup](pages/docs/devops/developer-api/redis/backup/create_backup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/create_backup)
 - `docs/devops/developer-api/redis/backup/delete_backup` — [Delete Backup](pages/docs/devops/developer-api/redis/backup/delete_backup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/delete_backup)
 - `docs/devops/developer-api/redis/backup/disable_dailybackup` — [Disable Daily Backup](pages/docs/devops/developer-api/redis/backup/disable_dailybackup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/disable_dailybackup)
 - `docs/devops/developer-api/redis/backup/enable_dailybackup` — [Enable Daily Backup](pages/docs/devops/developer-api/redis/backup/enable_dailybackup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/enable_dailybackup)
+- `docs/devops/developer-api/redis/backup/get_backup_analysis` — [Get Backup Analysis](pages/docs/devops/developer-api/redis/backup/get_backup_analysis.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/get_backup_analysis)
 - `docs/devops/developer-api/redis/backup/list_backup` — [List Backup](pages/docs/devops/developer-api/redis/backup/list_backup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/list_backup)
 - `docs/devops/developer-api/redis/backup/restore_backup` — [Restore Backup](pages/docs/devops/developer-api/redis/backup/restore_backup.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/backup/restore_backup)
 - `docs/devops/developer-api/redis/change_plan` — [Change Database Plan](pages/docs/devops/developer-api/redis/change_plan.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/change_plan)
@@ -137,7 +139,9 @@
 - `docs/devops/developer-api/redis/enable_eviction` — [Enable Eviction](pages/docs/devops/developer-api/redis/enable_eviction.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/enable_eviction)
 - `docs/devops/developer-api/redis/enable_tls` — [Enable TLS](pages/docs/devops/developer-api/redis/enable_tls.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/enable_tls)
 - `docs/devops/developer-api/redis/get_database` — [Get Database](pages/docs/devops/developer-api/redis/get_database.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/get_database)
+- `docs/devops/developer-api/redis/get_database_insights` — [Get Database Insights](pages/docs/devops/developer-api/redis/get_database_insights.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/get_database_insights)
 - `docs/devops/developer-api/redis/get_database_stats` — [Get Database Stats](pages/docs/devops/developer-api/redis/get_database_stats.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/get_database_stats)
+- `docs/devops/developer-api/redis/get_database_traffic` — [Get Database Traffic](pages/docs/devops/developer-api/redis/get_database_traffic.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/get_database_traffic)
 - `docs/devops/developer-api/redis/list_databases` — [List Databases](pages/docs/devops/developer-api/redis/list_databases.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/list_databases)
 - `docs/devops/developer-api/redis/moveto_team` — [Move To Team](pages/docs/devops/developer-api/redis/moveto_team.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/moveto_team)
 - `docs/devops/developer-api/redis/rename_database` — [Rename Database](pages/docs/devops/developer-api/redis/rename_database.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/rename_database)

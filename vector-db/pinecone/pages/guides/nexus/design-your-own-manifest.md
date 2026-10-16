@@ -6,7 +6,7 @@ path: guides/nexus/design-your-own-manifest
 
 Author a Pinecone Nexus context's manifest through the API by defining custom artifact and edge types, then curating.
 
-When a template doesn't fit your corpus, you can author a Pinecone Nexus context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types curation builds, send them in the `manifest` field when you create or update a context, then curate.
+When a template doesn't fit your corpus, you can author a Pinecone Nexus context's [manifest](/guides/nexus/context-design) yourself. You define the artifact types and edge types curation builds, supply them in the `manifest` field when you create or update a context, then curate.
 
 ## Artifact and edge types
 
@@ -23,7 +23,7 @@ These steps use the data-plane base URL and session token from [Authentication](
 
 <Steps>
   <Step title="Create the context with your manifest">
-    Send the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
+    Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
 
     ```bash curl theme={null}
     curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
@@ -89,7 +89,7 @@ These steps use the data-plane base URL and session token from [Authentication](
 
 ## More example manifests
 
-Each of these is a `curate.artifacts` manifest for a different corpus. Send one in the `manifest` field the same way, and adjust the types to your own documents.
+Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
 <AccordionGroup>
   <Accordion title="Contracts, obligations, and key dates">

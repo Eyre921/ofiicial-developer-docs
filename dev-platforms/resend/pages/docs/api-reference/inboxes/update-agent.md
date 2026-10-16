@@ -33,7 +33,7 @@ Update the agent settings for an inbox.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID. An email address is not accepted.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Body Parameters
@@ -60,8 +60,8 @@ Update the agent settings for an inbox.
   * `add_labels`: Add labels to a thread.
   * `assign_thread`: Assign a thread.
   * `mark_as_spam`: Mark a thread as spam.
-  * `archive_thread`: Archive a thread.
-  * `delete_thread`: Delete a thread.
+  * `archive`: Archive a thread.
+  * `move_to_trash`: Move a thread to the trash.
 </ParamField>
 
 ## Response Fields

@@ -1,7 +1,7 @@
 ---
 title: "Enable LangSmith Deployment"
-source: https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform
-path: langsmith/deploy-self-hosted-full-platform
+source: https://docs.langchain.com/langsmith/enable-self-hosted-deployment
+path: langsmith/enable-self-hosted-deployment
 ---
 
 Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
@@ -354,6 +354,6 @@ Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-self-hosted-full-platform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>

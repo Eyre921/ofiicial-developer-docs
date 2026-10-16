@@ -12,12 +12,14 @@ path: docs/eleven-api/resources/webhooks
 
 Certain events within ElevenLabs can be configured to trigger webhooks, allowing external applications and systems to receive and process these events as they occur. Currently supported event types include:
 
-| Event type                       | Description                                                  |
-| -------------------------------- | ------------------------------------------------------------ |
-| `post_call_transcription`        | A Agents Platform call has finished and analysis is complete |
-| `voice_removal_notice`           | A shared voice is scheduled to be removed                    |
-| `voice_removal_notice_withdrawn` | A shared voice is no longer scheduled for removal            |
-| `voice_removed`                  | A shared voice has been removed and is no longer useable     |
+| Event type                       | Description                                                                                                      |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `post_call_transcription`        | A Agents Platform call has finished and analysis is complete                                                     |
+| `voice_removal_notice`           | A shared voice is scheduled to be removed                                                                        |
+| `voice_removal_notice_withdrawn` | A shared voice is no longer scheduled for removal                                                                |
+| `voice_removed`                  | A shared voice has been removed and is no longer useable                                                         |
+| `flows_generation`               | An [Image & Video generation](/docs/eleven-api/guides/how-to/image-and-video/webhooks) has completed or failed   |
+| `flows_template_run`             | A [template run](/docs/eleven-api/guides/how-to/templates/run-a-template#get-the-result) has completed or failed |
 
 ## Configuration
 
@@ -26,6 +28,8 @@ Webhooks can be created, disabled and deleted from the general settings page. Fo
 ![HMAC webhook configuration](/docs/_fern-img/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6.webp)
 
 After creation, the webhook can be selected to listen for events within product settings such as [Agents Platform](/docs/eleven-agents/workflows/post-call-webhooks).
+
+The `flows_generation` and `flows_template_run` events are both enabled by one subscription: under **Select events to listen to**, tick **Image & Video API generation or template run completed**, or pass the `flows` event to [Update workspace webhook](/docs/api-reference/webhooks/update). A generation or run sends its event only when its create request includes a `webhook` field.
 
 Webhooks can be disabled from the general settings page at any time. Webhooks that repeatedly fail are auto-disabled if there are 10 or more consecutive failures and the last successful delivery was more than 7 days ago or has never been successfully delivered. Auto-disabled webhooks require re-enabling from the settings page. Webhooks can be deleted if not in use by any products.
 

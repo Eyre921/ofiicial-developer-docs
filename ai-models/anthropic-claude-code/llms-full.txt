@@ -19113,8 +19113,7 @@ Claude Code runs as a process on the remote machine, under a background helper t
 </Warning>
 
 * **After sleep or a network loss**: you get the running task back if the process [still runs](#limits-while-desktop-is-disconnected) and Desktop can log in without a prompt. If it can't, [send a message](#reconnect-after-sleep-or-a-network-loss).
-* **After a quit, with Desktop on macOS or Linux and a Claude account**: you get the running task back if Desktop can [rejoin the process](#reopen-a-session-after-you-quit-desktop). If it can't, the task stops. If it stays stopped, send a message.
-* **After a quit, with Desktop on Windows or a [third-party provider](/docs/en/third-party-integrations)**: you lose the running task, because Desktop ends the process when the session opens. Send a message to continue.
+* **After a quit**: the task keeps running, but you lose it when the session opens again unless Desktop can rejoin its process. Check [when Desktop can rejoin](#reopen-a-session-after-you-quit-desktop) before you quit. If you lost the task, send a message to continue.
 
 When you come back and the task isn't done, check for word that Desktop can't reconnect, an authentication error, or a waiting request:
 
@@ -19126,7 +19125,7 @@ When you come back and the task isn't done, check for word that Desktop can't re
 ##### Prepare a long task
 
 * **Update first**: update Desktop before you start a long task. On macOS and Windows, Desktop can restart on its own to install an update that it has downloaded. That restart waits while Claude is working on an SSH task. On macOS with a Claude account, by default the restart can go ahead anyway once the update has waited 72 hours.
-* **Don't quit Desktop**: if Desktop runs on Windows or uses a third-party provider, leave it open while the long task runs. After a quit, it [ends the running task](#reopen-a-session-after-you-quit-desktop) when the session opens. Leaving it open doesn't protect a request that [waits for you](#handle-requests-that-arrive-while-you-are-away).
+* **Don't quit on Windows, or before v2.42304.0 with a third-party provider**: after a quit there you lose the running task, so leave Desktop open during the task. In any other case, see [what you get back](#reopen-a-session-after-you-quit-desktop) before you quit.
 * **Reduce requests**: choose a permission mode, rules, or hooks that [make the task wait for you less often](#handle-requests-that-arrive-while-you-are-away)
 * **Check the jump host**: if your jump host asks for a sign-in, for example a push to a phone, switch to a login that works without a prompt. Otherwise Desktop can send another push each time it tries to reconnect.
 * **Test the remote machine**: start a short task, quit Desktop while the task is still running, and open the session again well after the task should be done. If the task isn't finished and the session shows no authentication error, check the remote machine for [what can end a task](#limits-while-desktop-is-disconnected).
@@ -19170,7 +19169,7 @@ File edits and some tools can fail while Desktop is disconnected. If the task ne
 
 If Claude needs your approval or asks you a question while Desktop is disconnected, Claude waits on the remote machine. The wait has no time limit of its own. When Desktop rejoins the process, it shows you the request. If Desktop starts a new process instead, you lose the request.
 
-While a task waits for you, Desktop can restart on its own, for example to install an update. If Desktop runs on Windows or uses a third-party provider, you lose the request after that restart.
+If a request that waited for you is gone when you come back, one cause is that Desktop restarted on its own, for example to install an update. You keep a request through a restart only if Desktop can rejoin the process, so check [when Desktop can rejoin](#reopen-a-session-after-you-quit-desktop) before you leave a task running.
 
 If you lose a request, send a message to continue.
 
@@ -19198,16 +19197,18 @@ If Desktop hasn't reconnected when you come back, send a message in the session.
   - **Jump host, pushes keep coming**: where Desktop can't tell that nobody answers, as with Desktop on Windows, it keeps trying while it has a process to rejoin, whether or not that process still runs. You can get another push with each attempt. To end the attempts, quit Desktop, which [can cost you the running task](#reopen-a-session-after-you-quit-desktop).
   - **Long outage**: Desktop slows to about one attempt every five minutes. To reconnect sooner, retry in the session or send a message, which Desktop delivers once it is connected.
   - **Missing output**: while Desktop is disconnected, the helper keeps each session's most recent Claude Code output in a 16 MiB buffer and drops older output. After Desktop reconnects, the session can show `Loading recent output from <host>…`. If Desktop can't load all of the output, you see the row `Some output produced while you were disconnected may be missing here.` The row doesn't mean that the task stopped.
-  - **Process gone**: if the process is gone when Desktop reconnects, Desktop can start a new one from the conversation's saved history and tell Claude to continue the task. Desktop doesn't continue the task on its own if the process keeps ending, or if Desktop uses a third-party provider. Send a message to continue.
+  - **Process gone**: the process ended while Desktop was disconnected, as when the remote machine restarts. Desktop can then start a new one from the conversation's saved history and tell Claude to continue the task. If the task stays stopped, send a message. With a third-party provider, update to Claude Desktop v2.42304.0 or later, because earlier versions never continue the task on their own.
 </Accordion>
 
 ##### Reopen a session after you quit Desktop
 
-After you quit Desktop, the task keeps running on the remote machine until it finishes, needs you, or reaches one of the [limits](#limits-while-desktop-is-disconnected).
+After you quit Desktop, the task keeps running on the remote machine, but it stops when the session opens again unless Desktop can rejoin its process. While Desktop is closed, the task runs until it finishes, needs you, or reaches one of the [limits](#limits-while-desktop-is-disconnected).
 
-* **Desktop on macOS or Linux, with a Claude account**: start Desktop and open the session. You get the running task back when Desktop can rejoin the process. It can't always rejoin, for example after some Desktop updates or after your organization changes its managed settings.
-* **On macOS or Linux, when Desktop can't rejoin**: Desktop ends the process and starts a new one from the conversation's saved history. Your running task stops, and you lose any approval or question that was waiting for you. After an update, Desktop can then tell Claude to continue. If the task stays stopped, send a message.
-* **Desktop on Windows, or with a third-party provider on any platform**: start Desktop again only when you expect the task to be done. You don't get the running task back, because Desktop never rejoins after a quit. It ends the process when the session opens, which can happen as Desktop starts. Send a message to continue.
+* **Desktop on Windows**: you don't get the running task back, because Desktop never rejoins after a quit. Start Desktop again only when you expect the task to be done, because the session can open as Desktop starts.
+* **Third-party provider, task from an earlier version**: if you started the task in a Desktop version before v2.42304.0, you don't get it back on macOS or Linux either. Start Desktop again only when you expect the task to be done.
+* **Any other task, with Desktop on macOS or Linux**: start Desktop and open the session, and the task goes on if Desktop rejoins. It can't always rejoin, for example after some Desktop updates, so [update before a long task](#prepare-a-long-task).
+
+When Desktop can't rejoin, you also lose any approval or question that was waiting for you. If the task doesn't continue on its own, send a message, and Claude continues from the conversation's saved history.
 
 For third-party deployments, see [SSH remote sessions in Claude Desktop on 3P](https://claude.com/docs/third-party/claude-desktop/ssh-remote-sessions).
 
@@ -64047,7 +64048,7 @@ To run a hook when a specific file changes on disk, whatever wrote it, use [File
 
 Use [PreToolUse decision control](#pretooluse-decision-control) to allow, deny, ask, or defer the tool call.
 
-An [Agent SDK callback hook](/docs/en/agent-sdk/hooks) on `PreToolUse` that exceeds its timeout blocks the tool call, and Claude receives an error result naming the timeout. An explicit deny returned by another hook still takes precedence.
+An [Agent SDK callback hook](/docs/en/agent-sdk/hooks) on `PreToolUse` that exceeds its timeout blocks the tool call, and Claude receives an error result naming the timeout.
 
 #### PreToolUse input
 
@@ -99204,7 +99205,7 @@ Intercept and customize agent behavior at key execution points with hooks
 Hooks are callback functions that run your code in response to agent events, like a tool being called, a session starting, or execution stopping. With hooks, you can:
 
 * **Block dangerous operations** before they execute, like destructive shell commands or unauthorized file access
-* **Log and audit** every tool call for compliance, debugging, or analytics
+* **Log and audit** tool calls for compliance, debugging, or analytics
 * **Transform inputs and outputs** to sanitize data, inject credentials, or redirect file paths
 * **Require human approval** for sensitive actions like database writes or API calls
 * **Track session lifecycle** to manage state, clean up resources, or send notifications
@@ -99233,7 +99234,7 @@ Hooks are callback functions that run your code in response to agent events, lik
   </Step>
 </Steps>
 
-The following example puts these steps together. It registers a `PreToolUse` hook (step 1) with a `"Write|Edit"` matcher (step 3) so the callback only fires for file-writing tools. When triggered, the callback receives the tool's input (step 4), checks if the file path targets a `.env` file, and returns `permissionDecision: "deny"` to block the operation (step 5):
+This example registers a `PreToolUse` hook (step 1) with a `"Write|Edit"` matcher (step 3) so the callback fires for the Write and Edit tools. When triggered, the callback receives the tool's input (step 4), checks if the file path targets a `.env` file, and returns `permissionDecision: "deny"` to block the operation (step 5):
 
 <CodeGroup>
   ```python Python theme={null}
@@ -99254,7 +99255,7 @@ The following example puts these steps together. It registers a `PreToolUse` hoo
       file_name = file_path.split("/")[-1]
 
       # Block the operation if targeting a .env file
-      if file_name == ".env":
+      if file_name.lower() == ".env":
           return {
               "hookSpecificOutput": {
                   "hookEventName": input_data["hook_event_name"],
@@ -99301,7 +99302,7 @@ The following example puts these steps together. It registers a `PreToolUse` hoo
     const fileName = filePath?.split("/").pop();
 
     // Block the operation if targeting a .env file
-    if (fileName === ".env") {
+    if (fileName?.toLowerCase() === ".env") {
       return {
         hookSpecificOutput: {
           hookEventName: preInput.hook_event_name,
@@ -99333,7 +99334,11 @@ The following example puts these steps together. It registers a `PreToolUse` hoo
   ```
 </CodeGroup>
 
-When you run either script, Claude attempts to create the `.env` file and the hook denies the tool call.
+The hook denies a Write or Edit call whose `file_path` ends in `/.env`, in any letter case. On Windows, `file_path` uses backslashes, such as `C:\project\.env`, and this hook allows a Write or Edit call to `C:\project\.env`.
+
+<Warning>
+  The `Write|Edit` matcher limits this hook to the Write and Edit tools. If Claude writes `.env` with a Bash command, the hook doesn't run. To block Bash writes to a file where [the sandbox runs](/docs/en/sandboxing), see the sandbox configuration for [Python](/docs/en/agent-sdk/python#sandbox-configuration) or [TypeScript](/docs/en/agent-sdk/typescript#sandbox-configuration).
+</Warning>
 
 ## Available hooks
 
@@ -99342,7 +99347,7 @@ The SDK provides hooks for different stages of agent execution. Some hooks are a
 | Hook Event | Python SDK | TypeScript SDK | What triggers it | Example use case |
 | - | - | - | - | - |
 | `PreToolUse` | Yes | Yes | Tool call request (can block or modify) | Block dangerous shell commands |
-| `PostToolUse` | Yes | Yes | Tool execution result | Log all file changes to audit trail |
+| `PostToolUse` | Yes | Yes | Tool execution result | Log file changes to an audit trail |
 | `PostToolUseFailure` | Yes | Yes | Tool execution failure | Handle or log tool errors |
 | `PostToolBatch` | No | Yes | A full batch of tool calls resolves, once per batch before the next model call | Inject conventions once for the whole batch |
 | [`UserPromptSubmit`](/docs/en/hooks#userpromptsubmit) | Yes | Yes | A prompt is submitted, including a turn Claude Code starts on its own | Inject additional context into prompts |
@@ -99422,7 +99427,7 @@ SDK matchers follow the same rules as [matchers in settings files](/docs/en/hook
 | `hooks` | `HookCallback[]` | - | Required. Array of callback functions to execute when the pattern matches |
 | `timeout` | `number` | `undefined` | Timeout in seconds. When omitted, Claude Code applies the [event's default timeout](#hook-timeout). Your SDK callbacks follow the `command` hook defaults |
 
-Use the `matcher` pattern to target specific tools whenever possible. A matcher with `'Bash'` only runs for Bash commands, while omitting the pattern runs your callbacks for every occurrence of the event. Omit it on purpose to log every tool call your session makes.
+Use the `matcher` pattern to target specific tools whenever possible. A matcher with `'Bash'` only runs for Bash commands, while omitting the pattern runs your callbacks for every occurrence of the event.
 
 ### Callback functions
 
@@ -99449,7 +99454,7 @@ Your callback returns an object with two categories of fields:
 Return `{}` to allow the operation without changes. SDK callback hooks use the same JSON output format as [Claude Code shell command hooks](/docs/en/hooks#json-output), which documents every field and event-specific option. For the SDK type definitions, see the [TypeScript](/docs/en/agent-sdk/typescript#synchookjsonoutput) and [Python](/docs/en/agent-sdk/python#synchookjsonoutput) SDK references.
 
 <Note>
-  When multiple hooks or permission rules apply, `deny` takes priority over `defer`, which takes priority over `ask`, which takes priority over `allow`. If any hook returns `deny`, the operation is blocked regardless of other hooks.
+  When multiple `PreToolUse` hooks return different [decisions](/docs/en/hooks#pretooluse-decision-control), `deny` takes priority over `defer`, which takes priority over `ask`, which takes priority over `allow`.
 </Note>
 
 #### Asynchronous output
@@ -99488,7 +99493,7 @@ Several examples in this section show only the callback function. To run one, re
 
 ### Modify tool input
 
-This example intercepts Write tool calls and rewrites the `file_path` argument to prepend `/sandbox`, redirecting all file writes to a sandboxed directory. The callback returns `updatedInput` with the modified path and `permissionDecision: 'allow'` to auto-approve the rewritten operation:
+This example intercepts Write tool calls and rewrites the `file_path` argument to prepend `/sandbox`. The callback returns `updatedInput` with the modified path and `permissionDecision: 'allow'` to auto-approve the rewritten operation:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -99543,10 +99548,10 @@ To confirm the redirect, set the prefix to a path you can write to, such as `./s
 
 ### Add context and block a tool
 
-This example blocks writes to the `/etc` directory and explains why to both the model and the user:
+This example denies tool calls whose `file_path` starts with `/etc` and explains why to both the model and the user:
 
 * `permissionDecision: 'deny'` stops the tool call.
-* `permissionDecisionReason` tells the model why, so it avoids retrying.
+* `permissionDecisionReason` tells the model why.
 * `systemMessage` shows the user what happened.
 
 <CodeGroup>
@@ -99637,9 +99642,9 @@ By default, the agent may prompt for permission before using certain tools. This
 
 ### Register multiple hooks
 
-When an event fires, all matching hooks run in parallel. For permission decisions, the most restrictive result applies: a single `deny` blocks the tool call regardless of what the other hooks return. Because completion order is non-deterministic, write each hook to act independently rather than relying on another hook having run first.
+When an event fires, the matching hooks run in parallel. For permission decisions, the most restrictive result applies. One hook's `deny` blocks the tool call. Because completion order is non-deterministic, write each hook to act independently rather than relying on another hook having run first.
 
-The example below registers three independent checks for every tool call. The hook names in it, such as `audit_logger` in Python or `auditLogger` in TypeScript, stand in for callbacks you define:
+The example below registers three independent checks, each with an [omitted matcher](/docs/en/hooks#matcher-patterns). The hook names in it, such as `audit_logger` in Python or `auditLogger` in TypeScript, stand in for callbacks you define:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -99671,9 +99676,9 @@ The example below registers three independent checks for every tool call. The ho
 
 Use multi-tool matchers to share one callback across related tools. This example registers three matchers with different scopes, and each hook it names stands in for a callback you define:
 
-* A pipe-separated exact list (`Write|Edit|NotebookEdit`) triggers `file_security_hook` only for file modification tools.
+* A pipe-separated exact list (`Write|Edit|NotebookEdit`) triggers `file_security_hook` for the Write, Edit, and NotebookEdit tools.
 * A regex (`^mcp__`) triggers `mcp_audit_hook` for any MCP tool whose name starts with `mcp__`.
-* An omitted matcher triggers `global_logger` for every tool call regardless of name.
+* An omitted matcher triggers `global_logger` without filtering by tool name.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -99985,9 +99990,9 @@ Claude Code runs each callback with a timeout, which you set in seconds with the
 
 When a callback exceeds its timeout, Claude Code cancels it and discards its output, and the session continues rather than hanging. What happens next depends on the event:
 
-* `PreToolUse`: Claude Code doesn't run the tool call, Claude receives a tool result stating the hook didn't respond before its timeout, and the turn continues. If another `PreToolUse` hook returned an explicit deny, Claude receives that denial instead of the timeout error. Before v2.1.210, Claude Code reported the timeout to Claude as a user rejection, which made unattended sessions stop and wait for input.
+* `PreToolUse`: Claude Code blocks the tool call. In its place, Claude receives a tool result saying the hook didn't respond before its timeout, and the turn continues. Before v2.1.210, Claude Code reported the timeout to Claude as a user rejection, which made unattended sessions stop and wait for input.
 * `PostToolUse` and `PostToolUseFailure`: Claude Code keeps the tool result and the turn continues.
-* `UserPromptSubmit` and [`UserPromptExpansion`](/docs/en/hooks#userpromptexpansion): Claude Code blocks the prompt with a message naming the hook and the timeout, and the session continues. Because a callback on these events can act as a policy gate, Claude Code never lets a timed-out prompt through unscreened. Before v2.1.208, Claude Code ended the query with `error_during_execution` when a callback on these events timed out.
+* `UserPromptSubmit` and [`UserPromptExpansion`](/docs/en/hooks#userpromptexpansion): Claude Code blocks the prompt with a message naming the hook and the timeout, and the session continues. Before v2.1.208, Claude Code ended the query with `error_during_execution` when a callback on these events timed out.
 * `Stop` and `SubagentStop`: the timed-out callback counts as returning no decision. The agent or subagent stops as if that callback had allowed it, and a decision from your other hooks on the event still applies. Before Claude Code v2.1.273, a timed-out `Stop` or `SubagentStop` callback counted as a failed hook run, and Claude Code discarded the decisions of your other hooks on the event.
 * `SessionStart`: the timed-out callback counts as returning no output, and the session continues with the output of your other `SessionStart` hooks.
 * `PreModelSwitch`: Claude Code blocks the model switch. A hook that doesn't answer hasn't approved the switch.
@@ -106601,8 +106606,10 @@ class SandboxSettings(TypedDict, total=False):
 <Note>
   The sandbox depends on platform support and, on Linux, tools like `bubblewrap` and `socat`. By default, when `enabled` is `True` but the sandbox can't start, commands run unsandboxed with a warning on stderr. This default differs from the TypeScript SDK, where `failIfUnavailable` defaults to `true`.
 
-  Set `"failIfUnavailable": True` in your sandbox settings to stop instead. The key isn't declared on `SandboxSettings` yet, but the SDK forwards it to Claude Code, which honors it. `query()` then reports a `ResultMessage` with `subtype="error_during_execution"` and the reason in `errors`. Because this is a single-shot `query()` call, the SDK raises after yielding that error result, so wrap the loop in a try block to continue past it. See [Handle the result](/docs/en/agent-sdk/agent-loop#handle-the-result) for the error contract.
+  Set `"failIfUnavailable": True` in your sandbox settings to stop instead. The SDK forwards `failIfUnavailable` to Claude Code along with the declared `SandboxSettings` fields. `query()` then reports a `ResultMessage` with `subtype="error_during_execution"` and the reason in `errors`. Because this is a single-shot `query()` call, the SDK raises after yielding that error result, so wrap the loop in a try block to continue past it. See [Handle the result](/docs/en/agent-sdk/agent-loop#handle-the-result) for the error contract.
 </Note>
+
+To keep sandboxed commands from writing to a file, list its absolute path under [`denyWrite`](/docs/en/settings-reference#sandbox-filesystem-denywrite) in your sandbox settings, such as `"filesystem": {"denyWrite": ["/home/user/project/.env"]}`. The SDK forwards `filesystem` to Claude Code along with the declared `SandboxSettings` fields. Once the sandbox starts, it blocks writes to each listed path. If you list `.env` or `./.env`, sandboxed commands can write to the `.env` file in the session's working directory.
 
 #### Example usage
 
@@ -116749,7 +116756,7 @@ type SandboxFilesystemConfig = {
 | Property | Type | Default | Description |
 | :- | :- | :- | :- |
 | `allowWrite` | `string[]` | `[]` | File path patterns to allow write access to |
-| `denyWrite` | `string[]` | `[]` | File path patterns to deny write access to |
+| `denyWrite` | `string[]` | `[]` | File path patterns to deny write access to. To block sandboxed writes to a file in the session's working directory, list its absolute path. If you list `.env` or `./.env`, sandboxed commands can write to the `.env` file in the session's working directory |
 | `denyRead` | `string[]` | `[]` | File path patterns to deny read access to |
 
 ### Permissions Fallback for Unsandboxed Commands

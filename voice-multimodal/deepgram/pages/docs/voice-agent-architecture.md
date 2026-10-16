@@ -61,7 +61,7 @@ Each of these stages maps to a concrete WebSocket message: `Settings` configures
 The API is the conversational core, and it extends in three directions:
 
 * **External systems** — within a turn, your LLM and [function calls](/docs/voice-agents-function-calling) can reach embedding models, databases, and retrieval APIs to ground responses in your own data.
-* **Telephony** — connect the agent to phone networks for [inbound](/docs/inbound-telephony-agent) and [outbound](/docs/outbound-telephony-agent) calls through providers like [Twilio](/docs/twilio-and-deepgram-voice-agent), [Genesys](/docs/genesys-and-deepgram-voice-agent), [Amazon Connect](/docs/amazon-connect-and-deepgram-voice-agent), and [AudioCodes](/docs/integrate-deepgram-voice-agent-with-audiocodes).
+* **Telephony** — connect the agent to phone networks for [inbound](/docs/inbound-telephony-agent) and [outbound](/docs/outbound-telephony-agent) calls through providers like [Twilio](/docs/twilio-and-deepgram-voice-agent), [Plivo](/docs/plivo-and-deepgram-voice-agent), [Genesys](/docs/genesys-and-deepgram-voice-agent), [Amazon Connect](/docs/amazon-connect-and-deepgram-voice-agent), and [AudioCodes](/docs/integrate-deepgram-voice-agent-with-audiocodes).
 * **Response injections** — [push messages](/docs/voice-agent-inject-agent-message) into the conversation from your application, so server-side events can shape what the agent says.
 
 ## Next steps

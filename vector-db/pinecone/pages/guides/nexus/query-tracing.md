@@ -36,7 +36,7 @@ The trace lists each span with its duration, from the model's own reasoning step
 * **A reasoning step** shows its input and output tokens, its timing (split into decide time while the model reasons and execute time while the code runs), its cost, and the generated code the model wrote and ran.
 * **A tool call** (for example, `query_db()`) shows its arguments (the query it ran), its result (such as the number of rows returned), and its timing.
 
-This is the same agent loop described in [Queries](/guides/nexus/how-queries-work), made visible one span at a time.
+This is the same agent loop described in [Queries](/guides/nexus/queries), made visible one span at a time.
 
 ## Final answer
 

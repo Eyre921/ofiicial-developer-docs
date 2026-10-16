@@ -14,15 +14,25 @@ For new integrations, use separate general sandboxes for local development and c
 
 ## Automate billing
 [Build a subscriptions integration, and set up pricing models](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md)
-## No code options
+## Invoicing
 
-[No code](https://docs.stripe.com/no-code/subscriptions.md): Not ready for a full integration? See some of our options for getting started without code.
+[How invoicing works](https://docs.stripe.com/invoicing/overview.md): Learn how invoices work in Stripe.
 
-[Pricing table](https://docs.stripe.com/payments/checkout/pricing-table.md): Display a pricing table on your website and take customers directly to Stripe Checkout.
+[Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md): Create an invoice and bill a customer from the Dashboard.
 
-[Integrate the customer portal](https://docs.stripe.com/customer-management.md): The simplest way to build a subscription and billing management Dashboard.
+[Customize invoices](https://docs.stripe.com/invoicing/customize.md): Customize the content and branding of your invoices.
 
-## Get started with subscriptions
+[Send customer emails](https://docs.stripe.com/invoicing/send-email.md): Send invoice notifications and reminders with or without code.
+
+## Quotes
+
+[How quotes work](https://docs.stripe.com/quotes.md): Learn about the quotes workflow.
+
+[Create a quote](https://docs.stripe.com/quotes/create.md): Learn how to create a quote and provide a pricing estimate to customers before starting a subscription or sending an invoice.
+
+[Renegotiate a quote](https://docs.stripe.com/quotes/clone.md): Update a finalized quote and share it with your customers.
+
+## Subscriptions
 
 [Sample integration (Quickstart)](https://docs.stripe.com/billing/quickstart.md): Build a full, working subscription integration using Stripe Billing and Stripe Checkout and your test data.
 
@@ -39,24 +49,6 @@ For new integrations, use separate general sandboxes for local development and c
 [Overview](https://docs.stripe.com/billing/usage-based.md): Learn how usage-based billing works with Stripe and Metronome.
 
 [How Metronome works with Stripe](https://docs.stripe.com/billing/how-metronome-works-with-stripe.md): Understand how Metronome integrates with Stripe for usage-based billing.
-
-## Get started with invoicing
-
-[How invoicing works](https://docs.stripe.com/invoicing/overview.md): Learn how invoices work in Stripe.
-
-[Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md): Create an invoice and bill a customer from the Dashboard.
-
-[Customize invoices](https://docs.stripe.com/invoicing/customize.md): Customize the content and branding of your invoices.
-
-[Send customer emails](https://docs.stripe.com/invoicing/send-email.md): Send invoice notifications and reminders with or without code.
-
-## Get started with quotes
-
-[How quotes work](https://docs.stripe.com/quotes.md): Learn about the quotes workflow.
-
-[Create a quote](https://docs.stripe.com/quotes/create.md): Learn how to create a quotes and provide a pricing estimate to customers before starting a subscription or sending an invoice.
-
-[Renegotiate a quote](https://docs.stripe.com/quotes/clone.md): Update a finalized quote and share it with your customers.
 
 ## Clone a sample billing project
 

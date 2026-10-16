@@ -139,7 +139,7 @@ await store.set(key, value, { metadata, onlyIfMatch, onlyIfNew })
 - **`key`:** a string representing the object key
 - **`value`:** the value as an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob), or string
 - **`metadata`** (optional)**:** a JSON object with arbitrary metadata to attach to the object
-- **`onlyIfMatch`** (optional)**:** when set, the write will only succeed if the entry exists and has an [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) matching this value
+- **`onlyIfMatch`** (optional)**:** when set, the write will only succeed if the entry exists and has an [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) matching this value
 - **`onlyIfNew`** (optional)**:** when set, the write will only succeed if the entry does not exist
 
 #### Return value
@@ -147,7 +147,7 @@ await store.set(key, value, { metadata, onlyIfMatch, onlyIfNew })
 A `Promise` that resolves with an object containing the following properties:
 
 - **`modified`** (boolean): Whether the operation has actually generated a new entry
-- **`etag`** (string): The [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of the entry, if the operation has generated a new entry; if not, this property will be omitted
+- **`etag`** (string): The [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of the entry, if the operation has generated a new entry; if not, this property will be omitted
 
 #### Example
 
@@ -288,7 +288,7 @@ setJSON(key, value, { metadata, onlyIfMatch, onlyIfNew })
 - **`key`:** a string representing the object key
 - **`value`:** any value that is [serializable to JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
 - **`metadata`** (optional)**:** a JSON object with arbitrary metadata to attach to the object
-- **`onlyIfMatch`** (optional)**:** when set, the write will only succeed if the entry exists and has an [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) matching this value
+- **`onlyIfMatch`** (optional)**:** when set, the write will only succeed if the entry exists and has an [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) matching this value
 - **`onlyIfNew`** (optional)**:** when set, the write will only succeed if the entry does not exist
 
 #### Return value
@@ -296,7 +296,7 @@ setJSON(key, value, { metadata, onlyIfMatch, onlyIfNew })
 A `Promise` that resolves with an object containing the following properties:
 
 - **`modified`** (boolean): Whether the operation has actually generated a new entry
-- **`etag`** (string): The [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of the entry, if the operation has generated a new entry; if not, this property will be omitted
+- **`etag`** (string): The [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of the entry, if the operation has generated a new entry; if not, this property will be omitted
 
 #### Example
 
@@ -468,7 +468,7 @@ await store.getWithMetadata(key, { consistency, etag, type })
 
 - **`key`:** a string representing the object key
 - **`consistency`** (optional)**:** a string representing the [consistency model](#consistency) for the operation
-- **`etag`** (optional)**:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of any version of this blob you may have cached  - this allows you to do [conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests)
+- **`etag`** (optional)**:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of any version of this blob you may have cached  - this allows you to do [conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests)
 - **`type`** (optional)**:** the format in which the object should be returned - the default format is a string but you can specify one of the following values instead:
   - **`arrayBuffer`:** returns the entry as an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
   - **`blob`:** returns the entry as a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
@@ -481,7 +481,7 @@ await store.getWithMetadata(key, { consistency, etag, type })
 A `Promise` that resolves with an object containing the following properties:
 
 - **`data`:** the blob contents in the format specified by the `type` parameter, or `null` if the `etag` property is the same as the `etag` parameter (meaning the cached object is still fresh)
-- **`etag`:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of the object
+- **`etag`:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of the object
 - **`metadata`:** object with arbitrary metadata
 
 If an object with the given key is not found, a `Promise` that resolves with `null` is returned.
@@ -729,7 +729,7 @@ await store.getMetadata(key, { consistency, etag, type })
 
 - **`key`:** a string representing the object key
 - **`consistency`** (optional)**:** a string representing the [consistency model](#consistency) for the operation
-- **`etag`** (optional)**:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of any version of this blob you may have cached  - this allows you to do [conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests)
+- **`etag`** (optional)**:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of any version of this blob you may have cached  - this allows you to do [conditional requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests)
 - **`type`** (optional)**:** the format in which the object should be returned - the default format is a string but you can specify one of the following values instead:
   - **`arrayBuffer`:** returns the entry as an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
   - **`blob`:** returns the entry as a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
@@ -742,7 +742,7 @@ await store.getMetadata(key, { consistency, etag, type })
 A `Promise` that resolves with an object containing the following properties:
 
 - **`metadata`:** object with arbitrary metadata
-- **`etag`:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) of the object
+- **`etag`:** an opaque quoted string, possibly prefixed by a weakness indicator, representing the [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) of the object
 
 If an object with the given key is not found, a `Promise` that resolves with `null` is returned.
 
@@ -826,7 +826,7 @@ await store.list({ directories, paginate, prefix })
 
 A `Promise` that resolves with an object containing the following properties:
 
-- **`blobs`:** an array of blobs that match the query parameters, shown as objects with `etag` and `key` properties, which represent an object's [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) and key, respectively
+- **`blobs`:** an array of blobs that match the query parameters, shown as objects with `etag` and `key` properties, which represent an object's [`ETag` value](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag) and key, respectively
 - **`directories`:** an array of strings representing any directories matching the query parameters
 
 #### Example

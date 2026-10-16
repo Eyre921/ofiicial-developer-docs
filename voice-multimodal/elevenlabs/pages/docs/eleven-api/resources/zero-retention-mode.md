@@ -122,9 +122,10 @@ For detailed instructions, see [Zero Retention Mode (per-agent)](/docs/eleven-ag
 
 > **Warning**
 >
-> Gemini, Claude, and ElevenLabs-hosted Qwen LLMs can be used in Zero Retention Mode.
-> Qwen3.5-397b-a17b is available only in US residency workspaces. MCP support is not currently
-> available for users on Zero Retention Mode or those requiring HIPAA compliance.
+> Gemini, Claude, OpenAI, and ElevenLabs-hosted Qwen LLMs can be used in Zero Retention Mode. OpenAI
+> LLMs are available only in EU and US residency workspaces. Qwen3.5-397b-a17b is available only in
+> US residency workspaces. MCP support is not currently available for users on Zero Retention Mode
+> or those requiring HIPAA compliance.
 
 ## What products are configured for Zero Retention Mode?
 

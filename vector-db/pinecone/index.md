@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 550 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 551 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -189,12 +189,13 @@
 - `guides/nexus/design-your-own-manifest` — [Design your own manifest](pages/guides/nexus/design-your-own-manifest.md) · [原文](https://docs.pinecone.io/guides/nexus/design-your-own-manifest)
 - `guides/nexus/how-curation-works` — [Nexus curation](pages/guides/nexus/how-curation-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-curation-works)
 - `guides/nexus/how-it-works` — [How Nexus works](pages/guides/nexus/how-it-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-it-works)
-- `guides/nexus/how-queries-work` — [Nexus queries](pages/guides/nexus/how-queries-work.md) · [原文](https://docs.pinecone.io/guides/nexus/how-queries-work)
 - `guides/nexus/mcp-server` — [MCP server](pages/guides/nexus/mcp-server.md) · [原文](https://docs.pinecone.io/guides/nexus/mcp-server)
 - `guides/nexus/models` — [Nexus model guidance](pages/guides/nexus/models.md) · [原文](https://docs.pinecone.io/guides/nexus/models)
 - `guides/nexus/overview` — [Pinecone Nexus](pages/guides/nexus/overview.md) · [原文](https://docs.pinecone.io/guides/nexus/overview)
+- `guides/nexus/queries` — [Nexus queries](pages/guides/nexus/queries.md) · [原文](https://docs.pinecone.io/guides/nexus/queries)
 - `guides/nexus/query-tracing` — [Query tracing](pages/guides/nexus/query-tracing.md) · [原文](https://docs.pinecone.io/guides/nexus/query-tracing)
 - `guides/nexus/quickstart` — [Nexus quickstart](pages/guides/nexus/quickstart.md) · [原文](https://docs.pinecone.io/guides/nexus/quickstart)
+- `guides/nexus/set-session-instructions` — [Set session instructions](pages/guides/nexus/set-session-instructions.md) · [原文](https://docs.pinecone.io/guides/nexus/set-session-instructions)
 - `guides/operations/build-a-knowledge-agent` — [Build a knowledge retrieval agent](pages/guides/operations/build-a-knowledge-agent.md) · [原文](https://docs.pinecone.io/guides/operations/build-a-knowledge-agent)
 - `guides/operations/integrations/integrate-with-amazon-s3` — [Integrate with Amazon S3](pages/guides/operations/integrations/integrate-with-amazon-s3.md) · [原文](https://docs.pinecone.io/guides/operations/integrations/integrate-with-amazon-s3)
 - `guides/operations/integrations/integrate-with-azure-blob-storage` — [Integrate with Azure Blob Storage](pages/guides/operations/integrations/integrate-with-azure-blob-storage.md) · [原文](https://docs.pinecone.io/guides/operations/integrations/integrate-with-azure-blob-storage)

@@ -378,4 +378,5 @@ Here are a few things you can try next:
 * [Jev documentation hub](/docs/guides/community/jev) for every Jev page on OpenRouter and the TypeSafe docs on writing questions and choosing thresholds
 * [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe JS or Python SDK instead of raw `fetch`
 * [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request)
+* [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
 

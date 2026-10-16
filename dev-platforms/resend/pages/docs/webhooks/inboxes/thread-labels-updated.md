@@ -37,11 +37,11 @@ Event triggered whenever a **label is applied to or removed from a thread**.
 
 <ResponseBodyParameters type="inbox.thread.labels.updated">
   <ParamField type="array">
-    The labels applied, each with an `id`, `name`, and `color`. One event carries one label
+    The labels applied, each with an `id`, `name`, and `color`. One event carries every label changed by the same request
   </ParamField>
 
   <ParamField type="array">
-    The labels removed, each with an `id`, `name`, and `color`. One event carries one label
+    The labels removed, each with an `id`, `name`, and `color`. One event carries every label changed by the same request
   </ParamField>
 
   <ParamField type="api | dashboard | agent | system">

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1655 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1657 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -254,7 +254,6 @@
 - `langsmith/deploy-nuxt` — [Deploy with Nuxt](pages/langsmith/deploy-nuxt.md) · [原文](https://docs.langchain.com/langsmith/deploy-nuxt)
 - `langsmith/deploy-other-frameworks` — [Deploy other frameworks](pages/langsmith/deploy-other-frameworks.md) · [原文](https://docs.langchain.com/langsmith/deploy-other-frameworks)
 - `langsmith/deploy-reference-overview` — [Reference](pages/langsmith/deploy-reference-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-reference-overview)
-- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
 - `langsmith/deploy-to-agent-environment` — [Deploy to an agent environment](pages/langsmith/deploy-to-agent-environment.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-agent-environment)
@@ -269,6 +268,7 @@
 - `langsmith/diagnostics-self-hosted` — [Troubleshooting for self-hosted deployments](pages/langsmith/diagnostics-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/diagnostics-self-hosted)
 - `langsmith/distributed-tracing` — [Implement distributed tracing](pages/langsmith/distributed-tracing.md) · [原文](https://docs.langchain.com/langsmith/distributed-tracing)
 - `langsmith/double-texting` — [Double texting](pages/langsmith/double-texting.md) · [原文](https://docs.langchain.com/langsmith/double-texting)
+- `langsmith/enable-self-hosted-deployment` — [Enable LangSmith Deployment](pages/langsmith/enable-self-hosted-deployment.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-deployment)
 - `langsmith/enable-self-hosted-fleet` — [Enable Fleet on self-hosted LangSmith](pages/langsmith/enable-self-hosted-fleet.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-fleet)
 - `langsmith/enable-self-hosted-sandboxes` — [Enable Sandboxes on self-hosted LangSmith](pages/langsmith/enable-self-hosted-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-sandboxes)
 - `langsmith/encryption` — [Encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
@@ -280,9 +280,9 @@
 - `langsmith/engine-red-teaming` — [Proactively identify issues with Red Teaming](pages/langsmith/engine-red-teaming.md) · [原文](https://docs.langchain.com/langsmith/engine-red-teaming)
 - `langsmith/engine-repositories` — [Connect Engine to your repository](pages/langsmith/engine-repositories.md) · [原文](https://docs.langchain.com/langsmith/engine-repositories)
 - `langsmith/engine-security` — [LangSmith Engine security](pages/langsmith/engine-security.md) · [原文](https://docs.langchain.com/langsmith/engine-security)
-- `langsmith/engine-self-hosted` — [LangSmith Engine on Self-hosted](pages/langsmith/engine-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted)
-- `langsmith/engine-self-hosted-github` — [Configure GitHub for Engine on self-hosted](pages/langsmith/engine-self-hosted-github.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-github)
-- `langsmith/engine-self-hosted-model-providers` — [Configure model providers for Engine on self-hosted](pages/langsmith/engine-self-hosted-model-providers.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-model-providers)
+- `langsmith/engine-self-hosted` — [LangSmith Engine on Self-hosted and BYOC](pages/langsmith/engine-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted)
+- `langsmith/engine-self-hosted-github` — [Configure GitHub for Engine on self-hosted and BYOC](pages/langsmith/engine-self-hosted-github.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-github)
+- `langsmith/engine-self-hosted-model-providers` — [Configure model providers for Engine on self-hosted and BYOC](pages/langsmith/engine-self-hosted-model-providers.md) · [原文](https://docs.langchain.com/langsmith/engine-self-hosted-model-providers)
 - `langsmith/engine-setup` — [Set up LangSmith Engine](pages/langsmith/engine-setup.md) · [原文](https://docs.langchain.com/langsmith/engine-setup)
 - `langsmith/enqueue-concurrent` — [Enqueue concurrent](pages/langsmith/enqueue-concurrent.md) · [原文](https://docs.langchain.com/langsmith/enqueue-concurrent)
 - `langsmith/enterprise` — [LangSmith for Enterprise](pages/langsmith/enterprise.md) · [原文](https://docs.langchain.com/langsmith/enterprise)
@@ -410,6 +410,7 @@
 - `langsmith/llm-gateway-model-access-policies` — [Model access policies](pages/langsmith/llm-gateway-model-access-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-access-policies)
 - `langsmith/llm-gateway-model-configurations` — [Custom model configurations](pages/langsmith/llm-gateway-model-configurations.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-configurations)
 - `langsmith/llm-gateway-monitoring` — [Monitor LLM Gateway spend](pages/langsmith/llm-gateway-monitoring.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-monitoring)
+- `langsmith/llm-gateway-provider-authentication` — [Provider authentication](pages/langsmith/llm-gateway-provider-authentication.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-provider-authentication)
 - `langsmith/llm-gateway-quickstart` — [LLM Gateway quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
 - `langsmith/llm-gateway-self-hosted` — [Enable the LLM Gateway](pages/langsmith/llm-gateway-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-self-hosted)
@@ -563,7 +564,7 @@
 - `langsmith/self-host-sandbox-operations` — [Operate self-hosted Sandboxes](pages/langsmith/self-host-sandbox-operations.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-operations)
 - `langsmith/self-host-sandbox-scaling` — [Scale self-hosted Sandboxes](pages/langsmith/self-host-sandbox-scaling.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-scaling)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
-- `langsmith/self-host-slack` — [Connect self-hosted LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
+- `langsmith/self-host-slack` — [Connect self-hosted and BYOC LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
 - `langsmith/self-host-smithdb-features` — [SmithDB feature availability](pages/langsmith/self-host-smithdb-features.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-features)
 - `langsmith/self-host-smithdb-infrastructure` — [Prepare SmithDB supporting infrastructure](pages/langsmith/self-host-smithdb-infrastructure.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure)
@@ -1480,6 +1481,7 @@
 - `oss/openwiki/personal-mode` — [Personal mode](pages/oss/openwiki/personal-mode.md) · [原文](https://docs.langchain.com/oss/openwiki/personal-mode)
 - `oss/openwiki/providers` — [Model providers](pages/oss/openwiki/providers.md) · [原文](https://docs.langchain.com/oss/openwiki/providers)
 - `oss/openwiki/quickstart` — [Quickstart](pages/oss/openwiki/quickstart.md) · [原文](https://docs.langchain.com/oss/openwiki/quickstart)
+- `oss/openwiki/search-and-link` — [Search and link wikis](pages/oss/openwiki/search-and-link.md) · [原文](https://docs.langchain.com/oss/openwiki/search-and-link)
 - `oss/openwiki/visualize` — [Visualize your wiki](pages/oss/openwiki/visualize.md) · [原文](https://docs.langchain.com/oss/openwiki/visualize)
 - `oss/python/common-errors` — [Errors](pages/oss/python/common-errors.md) · [原文](https://docs.langchain.com/oss/python/common-errors)
 - `oss/python/concepts/context` — [Context overview](pages/oss/python/concepts/context.md) · [原文](https://docs.langchain.com/oss/python/concepts/context)

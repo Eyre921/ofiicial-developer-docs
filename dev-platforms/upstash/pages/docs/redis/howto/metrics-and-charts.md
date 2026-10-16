@@ -39,51 +39,44 @@ Total number of requests per day, over the last 5 days.
 
 ## Database Usage
 
-If you click on the "Usage" tab, you can see more detailed charts about the usage of your database.
+The "Usage" tab of a database shows detailed charts. Pick the period at the top of the tab: the past hour, 3 hours, 12 hours, day, 3 days or week. Databases on a Pro plan or with the Production Pack can also select the past month. Charts refresh every minute.
+
+### Top Commands
+
+The ten most executed commands over the period, one line each.
 
 ### Throughput
 
   <img alt="Redis throughput chart" width="100%" />
 
-Throughput chart shows throughput values for reads, writes and commands (all
-commands including reads and writes) per second. The chart covers the last 1
-hour and it is updated every 10 seconds.
+Reads, writes and all commands per second.
 
 ### Service Time Latency
 
   <img alt="Redis latency chart" width="100%" />
 
-This chart shows the processing time of the request between it is received by
-the server and the response is sent to the caller. It shows the times in max,
-mean, min, 99.9 percentile and 99.99 percentile. The chart covers the last 1
-hour and it is updated every 10 seconds.
+The time between a request reaching the server and its response leaving it, for reads and writes separately, as the median (p50) and the 99th percentile (p99). Every latency chart describes a sliding ten-minute window, so it reacts within minutes; an idle database shows no data rather than zero.
 
 ### Data Size
 
   <img alt="Redis data size chart" width="100%" />
 
-This chart shows the data size of your database. The chart covers the last 24
-hours and it is updated every 10 seconds.
+The data size of your database on disk.
 
 ### Connections
 
   <img alt="Redis connection count chart" width="100%" />
 
-This chart shows the number of active client connections. It shows the number of
-open connections plus the number of short-lived connections that started and
-terminated in 10 seconds period. The chart covers the last 1 hour and it is
-updated every 10 seconds.
+Open TCP connections and open REST connections.
 
 ### Key Space
 
   <img alt="Redis keyspace chart" width="100%" />
 
-This chart shows the number of keys. The chart covers the last 24 hours and it
-is updated every 10 seconds.
+The number of keys in the database.
 
 ### Hits / Misses
 
   <img alt="Redis cache hits and misses chart" width="100%" />
 
-This chart shows the number of hits per second and misses per second. The chart
-covers the last 1 hour and it is updated every 10 seconds.
+Key hits and misses per second.

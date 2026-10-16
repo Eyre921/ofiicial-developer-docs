@@ -75,7 +75,7 @@ Infrastructure applies to the **Training API** only. Managed Training uses platf
 
 | Choose Serverless Training when | Choose Dedicated Training when |
 | - | - |
-| Supported LoRA SFT or RL covers the workload | You need full-parameter, DPO, ORPO, distillation, or broader model support |
+| LoRA covers the workload (SFT, DPO, ORPO, RL, or distillation) on a model in the serverless pool | You need full-parameter training or a model outside the serverless pool |
 | You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
 | Per-token billing fits a small or bursty experiment | A sustained, highly utilized time-based run fits the workload |
 | In-session sampling is sufficient | You need provisioned rollout or evaluation deployments |
