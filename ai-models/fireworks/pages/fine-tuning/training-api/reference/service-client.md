@@ -248,10 +248,10 @@ result = training_client.forward_backward_custom(
 Apply optimizer update after accumulating gradients:
 
 ```python theme={null}
-import tinker
+from fireworks.training.sdk import AdamParams
 
 training_client.optim_step(
-    tinker.AdamParams(
+    AdamParams(
         learning_rate=1e-5,
         beta1=0.9,
         beta2=0.999,

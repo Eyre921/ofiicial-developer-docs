@@ -58,6 +58,8 @@ firectl deployment-shape-version match \
   --model "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
 ```
 
+Matching against the fine-tuned model returns only shapes that can live-merge it; live merge needs the FireAttention engine, so some shapes for the base model are excluded. If a deployment on a shape you picked yourself fails with "live merge is not supported for this deployment configuration", use a shape from the match results, or deploy with [multi-LoRA](#multi-lora-deployment) instead.
+
 Deploy with one of the matched shapes — or pass `default` to have Fireworks pick one:
 
 ```bash theme={null}

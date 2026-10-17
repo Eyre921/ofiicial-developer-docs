@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15004 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -58,7 +58,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 551,
+    "pages": 553,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -101,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -151,7 +151,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 251,
+    "pages": 254,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -186,15 +186,15 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 89,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 471,
+    "pages": 472,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 201,
+    "pages": 204,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1381,
+    "pages": 1380,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-16T23:30:48Z"
+  "_last_crawl": "2026-10-17T11:30:34Z"
 }

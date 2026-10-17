@@ -4473,9 +4473,9 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2'
 
 `v2` puts a meeting note's transcript in a `<meeting-notes-section-transcript>` tag inside `<meeting-notes>`. Without `include_transcript=true`, the tag holds a placeholder that starts with `Transcript omitted.` and says how to load the transcript.
 
-### Parser warnings
+### Update warnings
 
-A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored:
+A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored. In either version, an `update_content` edit whose `old_str` matches nothing is skipped while the matching edits apply, and each skipped edit appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation:
 
 ```json theme={null}
 {
@@ -4490,7 +4490,7 @@ A `v2` update can contain syntax that the parser doesn't support, such as an unk
 }
 ```
 
-`code` is the warning category. The field is left out when there are no warnings, and it's never returned for `v1` requests or by other endpoints. Async updates (`allow_async: true`) don't return warnings in the task result.
+`code` is the warning category. The field is left out when there are no warnings, and other endpoints never return it. Async updates (`allow_async: true`) don't return warnings in the task result.
 
 ## Block type support
 
@@ -4998,7 +4998,7 @@ All variants return the full page content as markdown after the update:
 
 | Error code | Condition |
 | - | - |
-| `validation_error` | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found. |
+| `validation_error` | The `content_range` or `after` selection matches no content, or an `update_content` edit misses and no content-changing edit matches. If at least one content-changing edit matches, matching edits apply and each miss appears in `warnings`. |
 | `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target. |
 | `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`. |
 | `validation_error` | An `old_str` in `update_content` is an empty string. |
@@ -12835,10 +12835,10 @@ An MCP client can call several tools in one task. For example, it can search for
     Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command.
 
     <Note>
-      The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
+      The `update_content` command applies each search-and-replace operation whose `old_str` matches the page and skips the rest. Each skipped operation appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. If an operation misses and no content-changing operation matches, the call returns a validation error naming the unmatched values and the page is left unchanged. An operation whose `old_str` and `new_str` are identical doesn't change the page and doesn't count as a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
     </Note>
 
-    When part of the input was changed or ignored, the result includes a `warnings` array. Examples are lines dropped for incorrect indentation and text auto-corrected to match the page. Each warning has a `code` and a `message`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length, such as `… (truncated from 12000 characters)`. Markdown parser warnings also carry `category`, such as `unsupported_tag`, and `autofix`, which is `true` when the parser changed the content to apply it. A clean update has no `warnings` key. Read any warnings before you treat the edit as done.
+    When part of the input was changed or ignored, the result includes a `warnings` array. Examples are operations whose `old_str` matched nothing, lines dropped for incorrect indentation, and text auto-corrected to match the page. Each warning has a `code` and a `message`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length, such as `… (truncated from 12000 characters)`. Markdown parser warnings also carry `category`, such as `unsupported_tag`, and `autofix`, which is `true` when the parser changed the content to apply it. A clean update has no `warnings` key. Read any warnings before you treat the edit as done.
 
     ```json theme={null}
     {
@@ -18220,6 +18220,12 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="October 16, 2026">
+  ### Partial `update_content` edits return warnings
+
+  When some `update_content` edits match and others don't, [Update page markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool now apply the edits that match and list each miss in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. This works for both markdown versions. The request fails only when no content-changing edit matches. Before, REST skipped misses without saying so, and MCP failed the whole call. See [Update warnings](/guides/data-apis/working-with-markdown-content#update-warnings).
+</Update>
+
 <Update label="October 15, 2026">
   ### Comment-only connections can retrieve their own bot user
 
@@ -19645,6 +19651,48 @@ The organization bot token must have the following scopes:
 * `workflows:read`
 
 
+# Get ai usage analytics report
+Source: https://developers.notion.com/reference/admin/get-ai-usage-analytics-report
+
+openapi-adminApi.json GET /v1/analytics/ai_usage/reports/{job_id}
+Fetch a AI usage analytics report.
+
+The organization bot token must have the following scopes:
+
+* `analytics:ai-analytics`
+
+Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:ai-analytics` scope can fetch a report created by another bot.
+
+Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
+
+Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+
+Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
+
+
+# Get content pages analytics report
+Source: https://developers.notion.com/reference/admin/get-content-pages-analytics-report
+
+openapi-adminApi.json GET /v1/analytics/content_pages/reports/{job_id}
+Fetch a content pages analytics report.
+
+The organization bot token must have the following scopes:
+
+* `analytics:page-content`
+
+Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:page-content` scope can fetch a report created by another bot.
+
+Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
+
+Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+
+Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
+
+
 # Retrieve a legal hold
 Source: https://developers.notion.com/reference/admin/get-legal-hold
 
@@ -19665,6 +19713,27 @@ Get workspace export status.
 The organization bot token must have the following scopes:
 
 * `workspace:export`
+
+
+# Get user activity analytics report
+Source: https://developers.notion.com/reference/admin/get-user-activity-analytics-report
+
+openapi-adminApi.json GET /v1/analytics/user_activity/reports/{job_id}
+Fetch a user activity analytics report.
+
+The organization bot token must have the following scopes:
+
+* `analytics:user-activity`
+
+Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:user-activity` scope can fetch a report created by another bot.
+
+Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
+
+Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+
+Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
 
 
 # Get agents in a space
@@ -32445,7 +32514,7 @@ Returns a `page_markdown` object containing the full page content as markdown af
 
 Set `allow_async: true` at the top level of the request body to receive an HTTP `202` response with an `async_task` object instead of waiting for the markdown update to finish in the original request. This is useful for high block-count markdown updates, especially `replace_content` requests and large batches of `update_content` operations.
 
-Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous `v2` response can include a `warnings` array when the parser changed or ignored part of your content. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous response can include a `warnings` array when the parser changed or ignored content, or when an `old_str` did not match. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
 
@@ -32477,7 +32546,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 
 | Error code | Condition |
 | - | - |
-| `validation_error` | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found. |
+| `validation_error` | The `content_range` or `after` selection matches no content, or an `update_content` edit misses and no content-changing edit matches. If at least one content-changing edit matches, matching edits apply and each miss appears in `warnings`. |
 | `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target. |
 | `validation_error` | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. |
 | `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`. |

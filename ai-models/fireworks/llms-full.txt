@@ -5539,6 +5539,8 @@ firectl deployment-shape-version match \
   --model "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>"
 ```
 
+Matching against the fine-tuned model returns only shapes that can live-merge it; live merge needs the FireAttention engine, so some shapes for the base model are excluded. If a deployment on a shape you picked yourself fails with "live merge is not supported for this deployment configuration", use a shape from the match results, or deploy with [multi-LoRA](#multi-lora-deployment) instead.
+
 Deploy with one of the matched shapes — or pass `default` to have Fireworks pick one:
 
 ```bash theme={null}
@@ -5978,8 +5980,8 @@ Use either method for:
     Save this dataset as jsonl file locally, for example `einstein_dpo.jsonl`.
   </Step>
 
-  <Step title="Create and upload the dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
+  <Step title="Upload the dataset">
+    Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
     <Tabs>
       <Tab title="UI">
@@ -6036,6 +6038,10 @@ Use either method for:
 
   <Step title="Create a DPO or ORPO Job">
     <Tabs>
+      <Tab title="UI">
+        In the `Training` tab, click `New job` and choose **Direct Preference**, which is how the UI labels DPO. Select your base model and preference dataset, then follow the wizard.
+      </Tab>
+
       <Tab title="firectl">
         ```bash theme={null}
         firectl dpo-job create \
@@ -6044,8 +6050,6 @@ Use either method for:
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
-
-        For reservation capacity: add `--use-reservation` with firectl (default off). REST and the Python SDK (`>=1.2.8`) default to reservation-first placement; set `useReservation: false` or `use_reservation=False` to opt out. For full-parameter DPO, policy and dedicated reference trainers try independently.
 
         For ORPO, use the same preference dataset and select the ORPO objective:
 
@@ -6057,10 +6061,52 @@ Use either method for:
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
+      </Tab>
 
-        Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
+      <Tab title="REST API">
+        ```bash theme={null}
+        curl -X POST "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs" \
+          -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "dataset": "accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+            "trainingConfig": {
+              "baseModel": "accounts/fireworks/models/<BASE_MODEL_ID>",
+              "outputModel": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+              "loraRank": 8
+            },
+            "lossConfig": {"method": "DPO"}
+          }'
+        ```
+
+        For ORPO, set `"method": "ORPO"`. If `lossConfig` is omitted, the job uses DPO.
+      </Tab>
+
+      <Tab title="Python SDK">
+        ```python theme={null}
+        from fireworks import Fireworks
+
+        client = Fireworks()  # reads FIREWORKS_API_KEY and FIREWORKS_ACCOUNT_ID
+
+        job = client.dpo_jobs.create(
+            dataset="accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+            training_config={
+                "base_model": "accounts/fireworks/models/<BASE_MODEL_ID>",
+                "output_model": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+                "lora_rank": 8,
+            },
+            loss_config={"method": "DPO"},  # "ORPO" for ORPO
+        )
+        print(job.name)
+        ```
       </Tab>
     </Tabs>
+
+    `firectl` trains a LoRA adapter with rank 8 by default. With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `trainingConfig.loraRank` in the job body, or `training_config={"lora_rank": 8}` in `dpo_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
+
+    Reservation placement is off unless you request it: add `--use-reservation` with firectl, set `useReservation: true` in the REST body, or pass `use_reservation=True` to `dpo_jobs.create(...)` in the Python SDK. With a matching active reservation, the job runs only on that reservation, not on shared capacity; without one, the setting is ignored. For full-parameter DPO, policy and dedicated reference trainers try independently.
+
+    Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
   </Step>
 
   <Step title="Monitor the preference job">
@@ -6070,13 +6116,27 @@ Use either method for:
         firectl dpo-job get dpo-job-id
         ```
       </Tab>
+
+      <Tab title="REST API">
+        ```bash theme={null}
+        curl "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs/<DPO_JOB_ID>" \
+          -H "Authorization: Bearer $FIREWORKS_API_KEY"
+        ```
+      </Tab>
+
+      <Tab title="Python SDK">
+        ```python theme={null}
+        job = client.dpo_jobs.get("<DPO_JOB_ID>")
+        print(job.state)
+        ```
+      </Tab>
     </Tabs>
 
-    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the trained model can be deployed.
+    Once the job is complete, the state is `JOB_STATE_COMPLETED`, and the trained model can be deployed.
   </Step>
 
   <Step title="Deploy the DPO trained model">
-    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details.
+    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details. Deployments scale to zero when idle, and the first request after that returns 503 while the deployment scales back up; see [Scaling from zero behavior](/deployments/autoscaling#scaling-from-zero-behavior).
   </Step>
 </Steps>
 
@@ -6430,8 +6490,8 @@ For the full list of base models supported by managed training (SFT, DPO, and OR
     </Card>
   </Step>
 
-  <Step title="Create and upload a dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
+  <Step title="Upload a dataset">
+    Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
     <Tabs>
       <Tab title="UI">
@@ -6688,7 +6748,9 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="LoRA Rank">
-    LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. LoRA rank must be a power of 2 up to 32. Our default value is 8.
+    LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. The maximum rank depends on the base model's training shape, up to 128; higher values are rejected. `firectl` defaults to 8.
+
+    With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `loraRank` in the job body, or `lora_rank` in `supervised_fine_tuning_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
 
     ```shell theme={null}
     firectl sftj create \
@@ -6737,10 +6799,11 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Reservation placement">
-    Try your account's reservation capacity before falling back to shared trainer capacity.
+    Reservation placement is off unless you request it. If you request it and your account has an active reservation for the job's accelerator type, the job runs only on that reservation, not on shared trainer capacity. If the account has no matching reservation, the setting is ignored and the job uses shared capacity.
 
-    * **firectl**: add `--use-reservation` (default off).
-    * **REST / Python SDK** (`>=1.2.8`): defaults to `useReservation: true` / `use_reservation=True`. Set to `false` to opt out.
+    * **firectl**: add `--use-reservation`.
+    * **REST**: set `useReservation: true` in the job body.
+    * **Python SDK**: pass `use_reservation=True` to `supervised_fine_tuning_jobs.create(...)`.
 
     ```shell theme={null}
     firectl sftj create \
@@ -10180,9 +10243,9 @@ Cookbook recipes use the same service-client lifecycle internally and close the 
 
 ## Trainer inactivity cleanup
 
-Long-running RLOR trainer jobs are automatically stopped after 10 minutes with no tracked activity. The trainer reports this activity to the control plane, and tracked activity includes trainer API operations and active-session heartbeats.
+Long-running RLOR trainer jobs are automatically stopped after 60 minutes with no tracked activity, unless you set a different timeout. The trainer reports this activity to the control plane, and tracked activity includes trainer API operations and active-session heartbeats.
 
-When creating a trainer through the REST API (`POST /v1/accounts/{account_id}/rlorTrainerJobs`), set `inactivityTimeout` to a positive protobuf JSON duration to choose a different timeout:
+When creating a trainer through the REST API (`POST /v1/accounts/{account_id}/rlorTrainerJobs`), set `inactivityTimeout` to a positive protobuf JSON duration of at most 3 hours (`"10800s"`) to choose a different timeout:
 
 ```json theme={null}
 {
@@ -10203,9 +10266,9 @@ config = TrainerJobConfig(
 )
 ```
 
-With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 10-minute default.
+With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 60-minute default. Values above 3 hours are rejected.
 
-To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
+Disabling inactivity cleanup (`disableInactivityCleanup` in the REST API, `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or `--disable-inactivity-cleanup` in `firectl`) is supported only for trainers in the `fireworks` account; requests from other accounts are rejected. To keep a trainer alive through longer idle periods, set a timeout of up to 3 hours, and delete the trainer when you no longer need it. GPU usage accrues while the trainer is running.
 
 ## Manual compatibility cleanup
 
@@ -11187,10 +11250,10 @@ result = training_client.forward_backward_custom(
 Apply optimizer update after accumulating gradients:
 
 ```python theme={null}
-import tinker
+from fireworks.training.sdk import AdamParams
 
 training_client.optim_step(
-    tinker.AdamParams(
+    AdamParams(
         learning_rate=1e-5,
         beta1=0.9,
         beta2=0.999,
@@ -11512,8 +11575,8 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | `display_name` | `str \| None` | `None` | Human-readable trainer name |
 | `region` | `str \| None` | `None` | Region for the job |
 | `forward_only` | `bool` | `False` | Deprecated. Created a forward-only reference trainer. Use the model's LoRA shape with the adapter disabled instead. |
-| `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 10-minute default. String values must use protobuf JSON duration format, such as `"1800s"`. |
-| `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. GPU usage continues to accrue while the trainer is running. |
+| `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 60-minute default. The maximum is 3 hours. String values must use protobuf JSON duration format, such as `"1800s"`. |
+| `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. Supported only for trainers in the `fireworks` account; requests from other accounts are rejected. GPU usage continues to accrue while the trainer is running. |
 
 <Warning>
   `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
@@ -11901,15 +11964,17 @@ This doubles as your setup check: if it prints a session id beginning with `ts-`
 
 ### Step 4: Train, checkpoint, and sample
 
-The complete example defines `datums`, `tinker`, `tokenizer`, `prompt`, and
+The complete example defines `datums`, `tokenizer`, `prompt`, and
 `params`, and rejects prompt plus completion lengths above `max_seq_len`. The
 excerpt below shows the operation order:
 
 ```python theme={null}
+from fireworks.training.sdk import AdamParams
+
 # One optimizer step
 training_client.forward_backward(datums, "importance_sampling").result()
 training_client.optim_step(
-    tinker.AdamParams(learning_rate=2.5e-5, beta1=0.9, beta2=0.95, eps=1e-8, weight_decay=0.0)
+    AdamParams(learning_rate=2.5e-5, beta1=0.9, beta2=0.95, eps=1e-8, weight_decay=0.0)
 ).result()
 
 # Save weights and open a sampler bound to that exact snapshot
@@ -12105,7 +12170,14 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 ### Capacity and rate limits
 
-* **Concurrent runs:** The default quota is 8, although account overrides may differ. Slots are released when runs become terminal after session expiration.
+* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires.
+* **Free a slot now:** Closing the client does not end the session right away. To release its slot, promote any checkpoint you need, then delete the session (`service.training_session_id`, which starts with `ts-`):
+
+  ```bash theme={null}
+  curl -X DELETE \
+    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+    https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/trainingSessions/<SESSION_ID>
+  ```
 * **Request and token limits:** Contact Fireworks for the current limits on your account.
 * **Shared-pool capacity:** if the pool is full, `create_lora_training_client` returns an out-of-capacity error; retry, or switch to the dedicated path.
 
@@ -20395,16 +20467,20 @@ gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
   --role=roles/storage.objectViewer
 ```
 
-**Your Company's Fireworks Service Account**
+**Your Fireworks Account Email**
 
-* **Account**: Your company's Fireworks account email (get it with `firectl account get`)
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
+* **Account**: Your company's Fireworks account email (get it with `firectl account get`). Grant it as a `user:` principal, not a service account.
+* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`), in the same role binding as the inference service account above
 
 ```bash theme={null}
 gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
+  --member=user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
   --role=roles/storage.objectViewer
 ```
+
+<Warning>
+  Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
+</Warning>
 
 <Tip>
   After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
@@ -30349,8 +30425,8 @@ firectl rlor-trainer-job create \
       --eval-auto-carveout                        If set, the evaluation dataset will be auto-carved.
       --training-shape string                     Training shape selector for service-mode launches. Accepts training shape names or training shape version names; a shape name uses its latest validated version.
       --trainer-replicas int32                    Data-parallel replica count for service-mode trainers. If not specified, defaults to 1.
-      --inactivity-timeout duration               Trainer inactivity timeout (for example, 30m or 2h). The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. If omitted or 0, defaults to 10 minutes. Use --disable-inactivity-cleanup to disable automatic cleanup. GPU usage continues to accrue while the trainer is running.
-      --disable-inactivity-cleanup                Disable trainer inactivity cleanup. The trainer is not automatically stopped due to inactivity, and GPU usage continues to accrue while the trainer is running.
+      --inactivity-timeout duration               Trainer inactivity timeout (for example, 30m or 2h, maximum 3h). The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. If omitted or 0, defaults to 60 minutes. GPU usage continues to accrue while the trainer is running.
+      --disable-inactivity-cleanup                Disable trainer inactivity cleanup. Only supported when creating trainers in the fireworks account; GPU usage continues to accrue while the trainer is running.
       --dry-run                                   Print the request proto without running it.
   -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
   -h, --help                                      help for create

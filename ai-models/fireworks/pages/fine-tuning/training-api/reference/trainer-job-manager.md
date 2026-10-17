@@ -190,8 +190,8 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | `display_name` | `str \| None` | `None` | Human-readable trainer name |
 | `region` | `str \| None` | `None` | Region for the job |
 | `forward_only` | `bool` | `False` | Deprecated. Created a forward-only reference trainer. Use the model's LoRA shape with the adapter disabled instead. |
-| `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 10-minute default. String values must use protobuf JSON duration format, such as `"1800s"`. |
-| `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. GPU usage continues to accrue while the trainer is running. |
+| `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 60-minute default. The maximum is 3 hours. String values must use protobuf JSON duration format, such as `"1800s"`. |
+| `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. Supported only for trainers in the `fireworks` account; requests from other accounts are rejected. GPU usage continues to accrue while the trainer is running. |
 
 <Warning>
   `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).

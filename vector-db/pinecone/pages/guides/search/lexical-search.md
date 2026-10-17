@@ -25,7 +25,7 @@ Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-
 To search an index of sparse vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
-* `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
+* `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
 * `query.top_k`:  The number of records to return.
 * `query.match_terms`: (Optional) A list of terms that must be present in each search result. For more details, see [Filter by required terms](#filter-by-required-terms).
 * `fields`: (Optional) The fields to return in the response. If not specified, the response includes all fields.

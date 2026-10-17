@@ -128,7 +128,7 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
     After the index is created, [upsert](/guides/index-data/upsert-data) or [import](/guides/index-data/import-data) your data.
 
     <Tip>
-      To upsert and search with text instead of vectors, create the index with a [hosted embedding model](/guides/index-data/create-an-index#embedding-models) instead. Call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to configure dedicated read nodes.
+      To upsert and search with text instead of vectors, create the index with a [hosted embedding model](/guides/index-data/index-configuration#embedding-models) instead. Call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to configure dedicated read nodes.
     </Tip>
   </Step>
 </Steps>

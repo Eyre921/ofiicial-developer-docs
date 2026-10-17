@@ -26188,6 +26188,7 @@ neon claim create [options]
 | `--config`                      | Path to neon.ts for registration and the bundled env pull. Defaults to the neon.ts in the project directory (next to .neon, or cwd without one)                                                                                              | string  | —       |    No    |
 | `--env-pull`                    | Write the same Neon env vars `env pull` would                                                                                                                                                                                                | boolean | `true`  |    No    |
 | `--file`                        | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
+| `--region-id`                   | Region ID for the new project (e.g. aws-eu-central-1). Defaults to aws-us-east-2                                                                                                                                                             | string  | —       |    No    |
 | `--service`, `-s`, `--services` | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
 
 ```bash
@@ -26199,6 +26200,12 @@ neon claim create \
   --service data-api \
   --service auth \
   --env-pull
+```
+
+`claim create` uses `aws-us-east-2` unless you pass `--region-id` with another AWS [region](https://neon.com/docs/introduction/regions) that accepts new projects. The output includes the project's `region_id`.
+
+```bash
+neon claim create --region-id aws-eu-central-1
 ```
 
 `--env-pull` is on by default. It writes provisioned vars to an existing `.env`, otherwise `.env.local`, and gitignores that file. If `.env` or `.env.local` already has a `DATABASE_URL` (or other Neon-managed keys), pass `--file <path>` or `--no-env-pull`.
@@ -27939,7 +27946,7 @@ When `init` writes a new `neon.ts` for a linked project, it lists next steps und
 | `--package-manager`             | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                                                                                                       | string  | —       |    No    |
 | `--project-id`                  | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                                 | string  | —       |    No    |
 | `--project-name`                | Forwarded to link: name for a new project                                                                                                                                                                                                                                         | string  | —       |    No    |
-| `--region-id`                   | Forwarded to link: region for a new project                                                                                                                                                                                                                                       | string  | —       |    No    |
+| `--region-id`                   | Region for a new project, forwarded to link or to the claimable project                                                                                                                                                                                                           | string  | —       |    No    |
 | `--services`, `-s`, `--service` | Services to declare in neon.ts: postgres, auth, data-api, functions, object-storage, ai-gateway, realtime. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Implies creating neon.ts. Cannot be combined with --no-config. | array   | —       |    No    |
 | `--skill`                       | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                                                                                                   | array   | —       |    No    |
 | `--yes`, `-y`                   | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                                                                                                 | boolean | `false` |    No    |
@@ -27948,7 +27955,7 @@ Pass `-y` (alias `--yes`) to run each step with its defaults instead of promptin
 
 Pass `--agent` (alias `-a`) to name the coding agents to set up, which skips both detection and the picker. It's repeatable (`neon init --agent cursor --agent claude-code`) and works with `-y`. Without skill or MCP flags, it installs the plugin, plus skills and MCP for any agent the plugin can't cover. Run `neon init --help` to see which agents each family supports. Passing `--agent` with no value returns an error.
 
-Pass `--claimable` to create a [claimable project](https://neon.com/docs/reference/claimable-neon) that expires in 72 hours unless it's claimed. This selects the custom setup.
+Pass `--claimable` to create a [claimable project](https://neon.com/docs/reference/claimable-neon) that expires in 72 hours unless it's claimed. This selects the custom setup. The project goes in `aws-us-east-2` unless you add `--region-id`. `--claimable` can't be combined with `--no-link`, `--org-id`, `--project-id`, `--project-name`, or `--branch`.
 
 ## Run it non-interactively
 
@@ -28032,6 +28039,7 @@ Installed the Neon plugin (project).
 Creating a claimable project...
 Project ID            sweet-breeze-12345678
 Branch ID             br-restless-wildflower-a1b2c3d4
+Region ID             aws-us-east-2
 State                 unclaimed
 Project Expires At    2026-09-29T01:51:07.360Z
 Granted Capabilities  postgres
@@ -113698,15 +113706,15 @@ If you had trouble with any of the steps outlined above, refer to the video guid
 
 What's changing, what to do, and answers to common questions
 
-**Warning:** Neon Azure regions were deprecated on April 7, 2026.
+**Warning:** Neon Azure regions were deprecated on April 7, 2026, and stopped receiving platform updates on October 5, 2026.
 
-We recommend [migrating projects in Azure regions to another region](https://neon.com/docs/import/azure-regions-deprecation#what-to-do-next) by **October 5, 2026**.
+[Migrate or delete any projects in Azure regions](https://neon.com/docs/import/azure-regions-deprecation#what-to-do-next) immediately.
 
-As of April 7, 2026, Neon's Azure regions are deprecated, and you can no longer create new projects in those regions.
+Neon's Azure regions were deprecated on April 7, 2026. New projects can no longer be created in those regions, and as of October 5, 2026, these regions no longer receive Neon platform updates.
 
-After **October 5, 2026**, these regions will not receive Neon feature updates. Also on October 5, projects on Free plans that have been inactive for 90 days or more are subject to deletion.
+Projects still running in Azure regions should be [migrated to another region or deleted](https://neon.com/docs/import/azure-regions-deprecation#what-to-do-next) immediately. Projects on Free plans that have been inactive for 90 days or more are subject to deletion.
 
-Users with projects in Neon Azure regions will receive a personalized email about specific projects and next steps. This guide explains what's changing and what to do.
+Users with projects in Neon Azure regions have already received email about specific projects and next steps. This guide explains what's changing and what to do.
 
 ## Affected regions
 
@@ -139525,6 +139533,8 @@ neon claim create \
   --service auth \
   --env-pull
 ```
+
+`neon claim create` uses `aws-us-east-2` unless you pass `--region-id`, for example `--region-id aws-eu-central-1`.
 
 The CLI saves the project's identity assertion in its secure credential store. Existing commands then use the claimable project automatically:
 

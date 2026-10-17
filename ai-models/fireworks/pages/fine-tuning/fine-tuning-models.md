@@ -171,8 +171,8 @@ For the full list of base models supported by managed training (SFT, DPO, and OR
     </Card>
   </Step>
 
-  <Step title="Create and upload a dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
+  <Step title="Upload a dataset">
+    Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
     <Tabs>
       <Tab title="UI">
@@ -429,7 +429,9 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="LoRA Rank">
-    LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. LoRA rank must be a power of 2 up to 32. Our default value is 8.
+    LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. The maximum rank depends on the base model's training shape, up to 128; higher values are rejected. `firectl` defaults to 8.
+
+    With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `loraRank` in the job body, or `lora_rank` in `supervised_fine_tuning_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
 
     ```shell theme={null}
     firectl sftj create \
@@ -478,10 +480,11 @@ Additional tuning settings are available when starting an SFT or preference (DPO
   </Accordion>
 
   <Accordion title="Reservation placement">
-    Try your account's reservation capacity before falling back to shared trainer capacity.
+    Reservation placement is off unless you request it. If you request it and your account has an active reservation for the job's accelerator type, the job runs only on that reservation, not on shared trainer capacity. If the account has no matching reservation, the setting is ignored and the job uses shared capacity.
 
-    * **firectl**: add `--use-reservation` (default off).
-    * **REST / Python SDK** (`>=1.2.8`): defaults to `useReservation: true` / `use_reservation=True`. Set to `false` to opt out.
+    * **firectl**: add `--use-reservation`.
+    * **REST**: set `useReservation: true` in the job body.
+    * **Python SDK**: pass `use_reservation=True` to `supervised_fine_tuning_jobs.create(...)`.
 
     ```shell theme={null}
     firectl sftj create \

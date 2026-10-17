@@ -22,7 +22,7 @@ To create a pod index, use the [Create an index](/reference/api/latest/control-p
 
 * Provide a `name` for the index.
 * Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
-* Set `spec.environment` to the [environment](/guides/index-data/create-an-index#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+* Set `spec.environment` to the [environment](/guides/index-data/index-configuration#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
 * Set `spec.pod_type` to the [pod type](/guides/indexes/pods/understanding-pod-based-indexes#pod-types) and [size](/guides/index-data/indexing-overview#pod-size-and-performance) that you want.
 
 Other parameters are optional. See the [API reference](/reference/api/latest/control-plane/create_index) for details.

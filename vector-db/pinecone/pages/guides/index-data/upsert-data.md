@@ -1242,7 +1242,7 @@ Send upserts in batches to help increase throughput.
   | 768 | 500 | 559 |
   | 1536 | 2000 | 245 |
 
-* When upserting records with text, a batch can contain up to 96 records. This limit comes from the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) used during integrated embedding rather than the batch size limit for upserting raw vectors.
+* When upserting records with text, a batch can contain up to 96 records. This limit comes from the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) used during integrated embedding rather than the batch size limit for upserting raw vectors.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -1788,6 +1788,6 @@ async_results = [
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.

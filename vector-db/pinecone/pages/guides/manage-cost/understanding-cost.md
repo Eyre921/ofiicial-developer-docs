@@ -379,7 +379,7 @@ A [backup](/guides/manage-data/backups-overview) is a static copy of a serverles
 
 ## Embedding
 
-Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
+Pinecone hosts several [embedding models](/guides/index-data/index-configuration#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
 
 Embedding is billed by the number of [tokens](https://www.pinecone.io/learn/tokenization/) in a request. The more words in your passage or query, the more tokens it generates.
 

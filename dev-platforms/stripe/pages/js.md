@@ -1594,8 +1594,6 @@ Use [elements.fetchUpdates()](https://docs.stripe.com/js/elements_object/fetch_u
 An object can also be passed to specify the layout with additional configuration.
       - `type`
         Defines the layout to render the Payment Element.
-      - `defaultCollapsed`
-        Controls if the Payment Element renders in a collapsed state (where no payment method is selected by default). When you leave this `undefined`, Stripe renders the experience that it determines will have the best conversion.
       - `radios`
         Controls when to render each Payment Method with a radio input next to its logo. The radios visually indicate the current selection of the Payment Element. Defaults to `'auto'`.
 
@@ -1611,10 +1609,6 @@ _This property is only applicable to the `accordion` layout._
 _This property is only applicable to the `accordion` layout._
       - `visibleAccordionItemsCount`
         Sets the max number of Payment Methods visible before using the "More" button to hide additional Payment Methods. Set this value to `0` to disable the "More" button and render all available Payment Methods. Default is `5`.
-
-_This property is only applicable to the `accordion` layout._
-      - `paymentMethodLogoPosition`
-        Sets the position of the payment method logo in each accordion item. Default is `start`.
 
 _This property is only applicable to the `accordion` layout._
     - `defaultValues`

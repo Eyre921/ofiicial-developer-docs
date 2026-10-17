@@ -56,9 +56,9 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2'
 
 `v2` puts a meeting note's transcript in a `<meeting-notes-section-transcript>` tag inside `<meeting-notes>`. Without `include_transcript=true`, the tag holds a placeholder that starts with `Transcript omitted.` and says how to load the transcript.
 
-### Parser warnings
+### Update warnings
 
-A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored:
+A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored. In either version, an `update_content` edit whose `old_str` matches nothing is skipped while the matching edits apply, and each skipped edit appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation:
 
 ```json theme={null}
 {
@@ -73,7 +73,7 @@ A `v2` update can contain syntax that the parser doesn't support, such as an unk
 }
 ```
 
-`code` is the warning category. The field is left out when there are no warnings, and it's never returned for `v1` requests or by other endpoints. Async updates (`allow_async: true`) don't return warnings in the task result.
+`code` is the warning category. The field is left out when there are no warnings, and other endpoints never return it. Async updates (`allow_async: true`) don't return warnings in the task result.
 
 ## Block type support
 
@@ -581,7 +581,7 @@ All variants return the full page content as markdown after the update:
 
 | Error code | Condition |
 | - | - |
-| `validation_error` | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found. |
+| `validation_error` | The `content_range` or `after` selection matches no content, or an `update_content` edit misses and no content-changing edit matches. If at least one content-changing edit matches, matching edits apply and each miss appears in `warnings`. |
 | `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target. |
 | `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`. |
 | `validation_error` | An `old_str` in `update_content` is an empty string. |

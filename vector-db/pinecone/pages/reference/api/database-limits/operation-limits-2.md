@@ -29,7 +29,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 

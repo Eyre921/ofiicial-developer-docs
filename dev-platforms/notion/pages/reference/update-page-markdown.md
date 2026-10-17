@@ -39,7 +39,7 @@ Returns a `page_markdown` object containing the full page content as markdown af
 
 Set `allow_async: true` at the top level of the request body to receive an HTTP `202` response with an `async_task` object instead of waiting for the markdown update to finish in the original request. This is useful for high block-count markdown updates, especially `replace_content` requests and large batches of `update_content` operations.
 
-Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous `v2` response can include a `warnings` array when the parser changed or ignored part of your content. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous response can include a `warnings` array when the parser changed or ignored content, or when an `old_str` did not match. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
 
@@ -71,7 +71,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 
 | Error code | Condition |
 | - | - |
-| `validation_error` | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found. |
+| `validation_error` | The `content_range` or `after` selection matches no content, or an `update_content` edit misses and no content-changing edit matches. If at least one content-changing edit matches, matching edits apply and each miss appears in `warnings`. |
 | `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target. |
 | `validation_error` | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. |
 | `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`. |

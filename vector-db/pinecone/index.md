@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 551 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 553 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -151,6 +151,7 @@
 - `guides/index-data/design-for-multitenancy` — [Design for multitenancy](pages/guides/index-data/design-for-multitenancy.md) · [原文](https://docs.pinecone.io/guides/index-data/design-for-multitenancy)
 - `guides/index-data/implement-multitenancy` — [Implement multitenancy](pages/guides/index-data/implement-multitenancy.md) · [原文](https://docs.pinecone.io/guides/index-data/implement-multitenancy)
 - `guides/index-data/import-data` — [Import records](pages/guides/index-data/import-data.md) · [原文](https://docs.pinecone.io/guides/index-data/import-data)
+- `guides/index-data/index-configuration` — [Index configuration](pages/guides/index-data/index-configuration.md) · [原文](https://docs.pinecone.io/guides/index-data/index-configuration)
 - `guides/index-data/indexing-overview` — [Index data overview](pages/guides/index-data/indexing-overview.md) · [原文](https://docs.pinecone.io/guides/index-data/indexing-overview)
 - `guides/index-data/migrate-from-pgvector` — [Migrate from pgvector](pages/guides/index-data/migrate-from-pgvector.md) · [原文](https://docs.pinecone.io/guides/index-data/migrate-from-pgvector)
 - `guides/index-data/upsert-data` — [Upsert records](pages/guides/index-data/upsert-data.md) · [原文](https://docs.pinecone.io/guides/index-data/upsert-data)
@@ -298,6 +299,7 @@
 
 - `reference/api/2026-04/admin-assistant/create_api_key` — [Create an API key](pages/reference/api/2026-04/admin-assistant/create_api_key.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_api_key)
 - `reference/api/2026-04/admin-assistant/create_project` — [Create a new project](pages/reference/api/2026-04/admin-assistant/create_project.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project)
+- `reference/api/2026-04/admin-assistant/create_project` — [Create a new project](pages/reference/api/2026-04/admin-assistant/create_project-2.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project)
 - `reference/api/2026-04/admin-assistant/delete_api_key` — [Delete an API key](pages/reference/api/2026-04/admin-assistant/delete_api_key.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_api_key)
 - `reference/api/2026-04/admin-assistant/delete_project` — [Delete a project](pages/reference/api/2026-04/admin-assistant/delete_project.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project)
 - `reference/api/2026-04/admin-assistant/delete_project` — [Delete a project](pages/reference/api/2026-04/admin-assistant/delete_project-2.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project)
@@ -452,6 +454,7 @@
 - `reference/api/database-limits/operation-limits` — [Operation limits](pages/reference/api/database-limits/operation-limits-3.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/operation-limits)
 - `reference/api/database-limits/operation-limits` — [Operation limits](pages/reference/api/database-limits/operation-limits-4.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/operation-limits)
 - `reference/api/database-limits/operation-limits` — [Operation limits](pages/reference/api/database-limits/operation-limits-5.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/operation-limits)
+- `reference/api/database-limits/operation-limits` — [Operation limits](pages/reference/api/database-limits/operation-limits-6.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/operation-limits)
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-2.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-3.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
@@ -520,7 +523,6 @@
 - `reference/sdks/go/reference` — [Reference](pages/reference/sdks/go/reference-3.md) · [原文](https://docs.pinecone.io/reference/sdks/go/reference)
 - `reference/sdks/go/reference` — [Reference](pages/reference/sdks/go/reference-4.md) · [原文](https://docs.pinecone.io/reference/sdks/go/reference)
 - `reference/sdks/go/reference` — [Reference](pages/reference/sdks/go/reference-5.md) · [原文](https://docs.pinecone.io/reference/sdks/go/reference)
-- `reference/sdks/go/reference` — [Reference](pages/reference/sdks/go/reference-6.md) · [原文](https://docs.pinecone.io/reference/sdks/go/reference)
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-2.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-3.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)

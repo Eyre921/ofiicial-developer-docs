@@ -45,9 +45,9 @@ Cookbook recipes use the same service-client lifecycle internally and close the 
 
 ## Trainer inactivity cleanup
 
-Long-running RLOR trainer jobs are automatically stopped after 10 minutes with no tracked activity. The trainer reports this activity to the control plane, and tracked activity includes trainer API operations and active-session heartbeats.
+Long-running RLOR trainer jobs are automatically stopped after 60 minutes with no tracked activity, unless you set a different timeout. The trainer reports this activity to the control plane, and tracked activity includes trainer API operations and active-session heartbeats.
 
-When creating a trainer through the REST API (`POST /v1/accounts/{account_id}/rlorTrainerJobs`), set `inactivityTimeout` to a positive protobuf JSON duration to choose a different timeout:
+When creating a trainer through the REST API (`POST /v1/accounts/{account_id}/rlorTrainerJobs`), set `inactivityTimeout` to a positive protobuf JSON duration of at most 3 hours (`"10800s"`) to choose a different timeout:
 
 ```json theme={null}
 {
@@ -68,9 +68,9 @@ config = TrainerJobConfig(
 )
 ```
 
-With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 10-minute default.
+With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 60-minute default. Values above 3 hours are rejected.
 
-To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
+Disabling inactivity cleanup (`disableInactivityCleanup` in the REST API, `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or `--disable-inactivity-cleanup` in `firectl`) is supported only for trainers in the `fireworks` account; requests from other accounts are rejected. To keep a trainer alive through longer idle periods, set a timeout of up to 3 hours, and delete the trainer when you no longer need it. GPU usage accrues while the trainer is running.
 
 ## Manual compatibility cleanup
 

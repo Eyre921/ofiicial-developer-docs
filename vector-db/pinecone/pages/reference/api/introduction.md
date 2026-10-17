@@ -32,7 +32,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 

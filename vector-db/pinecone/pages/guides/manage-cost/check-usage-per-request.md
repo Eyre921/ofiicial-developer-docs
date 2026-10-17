@@ -238,7 +238,7 @@ For a worked example of inspecting read costs, see the [read units notebook](htt
 
 ## Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
 
 For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 

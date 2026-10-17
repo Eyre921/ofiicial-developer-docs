@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -336,6 +336,7 @@
 - `payments/afterpay-clearpay` — [Afterpay and Clearpay payments](pages/payments/afterpay-clearpay.md) · [原文](https://docs.stripe.com/payments/afterpay-clearpay.md)
 - `payments/analytics` — [Payments analytics](pages/payments/analytics.md) · [原文](https://docs.stripe.com/payments/analytics.md)
 - `payments/analytics/acceptance` — [Acceptance analytics](pages/payments/analytics/acceptance.md) · [原文](https://docs.stripe.com/payments/analytics/acceptance.md)
+- `payments/analytics/optimization` — [Authorization Boost](pages/payments/analytics/optimization.md) · [原文](https://docs.stripe.com/payments/analytics/optimization.md)
 - `payments/bank-debits` — [Bank Debits](pages/payments/bank-debits.md) · [原文](https://docs.stripe.com/payments/bank-debits.md)
 - `payments/bank-redirects` — [Bank redirects](pages/payments/bank-redirects.md) · [原文](https://docs.stripe.com/payments/bank-redirects.md)
 - `payments/bank-transfers` — [Bank transfer payments](pages/payments/bank-transfers.md) · [原文](https://docs.stripe.com/payments/bank-transfers.md)

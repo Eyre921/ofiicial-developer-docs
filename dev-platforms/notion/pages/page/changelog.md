@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 16, 2026">
+  ### Partial `update_content` edits return warnings
+
+  When some `update_content` edits match and others don't, [Update page markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool now apply the edits that match and list each miss in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. This works for both markdown versions. The request fails only when no content-changing edit matches. Before, REST skipped misses without saying so, and MCP failed the whole call. See [Update warnings](/guides/data-apis/working-with-markdown-content#update-warnings).
+</Update>
+
 <Update label="October 15, 2026">
   ### Comment-only connections can retrieve their own bot user
 

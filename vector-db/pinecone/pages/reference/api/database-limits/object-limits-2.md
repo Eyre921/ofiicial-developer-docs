@@ -19,7 +19,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 

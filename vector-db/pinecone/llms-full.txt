@@ -31,7 +31,7 @@ The global control plane manages your organizational resources like projects and
 
 ### Data plane
 
-The data plane handles all requests to write and read records in [indexes](/guides/index-data/indexing-overview) within a specific [cloud region](/guides/index-data/create-an-index#cloud-regions). Each index is divided into one or more logical [namespaces](/guides/index-data/indexing-overview#namespaces), and all your data read and write requests target a specific namespace.
+The data plane handles all requests to write and read records in [indexes](/guides/index-data/indexing-overview) within a specific [cloud region](/guides/index-data/index-configuration#cloud-regions). Each index is divided into one or more logical [namespaces](/guides/index-data/indexing-overview#namespaces), and all your data read and write requests target a specific namespace.
 
 Pinecone separates write and read operations into different paths, with each scaling independently based on demand. This separation ensures that your queries never slow down your writes, and your writes never slow down your queries.
 
@@ -170,7 +170,7 @@ A dense vector, also referred to as a vector embedding or simply a vector, is a 
 
 Dense vectors are stored in indexes (see [Index with dense vectors](#index-with-dense-vectors)).
 
-You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/create-an-index#embedding-models) and integrated with an index.
+You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
 
 For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
 
@@ -180,7 +180,7 @@ Sparse vectors are often used to represent documents or queries in a way that ca
 
 Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
 
-Sparse vectors are stored in indexes (see [Index with sparse vectors](#index-with-sparse-vectors)) and can also coexist with dense vectors in a single index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To combine a keyword signal with a dense signal in an index with a document schema, restrict a dense search with a text-match filter on a `string` field with `full_text_search` enabled or run separate searches and merge the results client-side. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/create-an-index#embedding-models) and integrated with an index.
+Sparse vectors are stored in indexes (see [Index with sparse vectors](#index-with-sparse-vectors)) and can also coexist with dense vectors in a single index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To combine a keyword signal with a dense signal in an index with a document schema, restrict a dense search with a text-match filter on a `string` field with `full_text_search` enabled or run separate searches and merge the results client-side. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
 
 For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
 
@@ -233,7 +233,7 @@ For more information, see [Understanding backups](/guides/manage-data/backups-ov
 
 ### Pinecone Inference
 
-Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 ### Read unit (RU)
 
@@ -1400,6 +1400,8 @@ A Pinecone index can hold any combination of the following:
   You can create an index using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/create-index/serverless).
 </Tip>
 
+For index naming rules, available cloud regions, similarity metrics, and hosted embedding models, see [Index configuration](/guides/index-data/index-configuration).
+
 ## Create an index for full-text search
 
 An index with a document schema stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types; at query time, pick the ranking signal with `score_by`. Metadata fields (anything else you upsert) aren't declared in the schema — they're auto-indexed for filtering at upsert time.
@@ -1524,8 +1526,8 @@ You can create an index that stores dense vectors with [integrated vector embedd
 If you want to upsert and search with source text and have Pinecone convert it to dense vectors automatically, [create an index with integrated embedding](/reference/api/latest/control-plane/create_for_model) as follows:
 
 * Provide a `name` for the index.
-* Set `cloud` and `region` to the [cloud and region](/guides/index-data/create-an-index#cloud-regions) where the index should be deployed.
-* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+* Set `cloud` and `region` to the [cloud and region](/guides/index-data/index-configuration#cloud-regions) where the index should be deployed.
+* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the data for embedding.
 
 Other parameters are optional. See the [API reference](/reference/api/latest/control-plane/create_for_model) for details.
@@ -1685,7 +1687,7 @@ If you use an external embedding model to convert your data to dense vectors, [c
 * Provide a `name` for the index.
 * Set the `vector_type` to `dense`.
 * Specify the `dimension` and similarity `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
-* Set `spec.cloud` and `spec.region` to the [cloud and region](/guides/index-data/create-an-index#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+* Set `spec.cloud` and `spec.region` to the [cloud and region](/guides/index-data/index-configuration#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
 
 Other parameters are optional. See the [API reference](/reference/api/2026-04/control-plane/create_index) for details.
 
@@ -1863,8 +1865,8 @@ You can create an index that stores sparse vectors with [integrated vector embed
 If you want to upsert and search with source text and have Pinecone convert it to sparse vectors automatically, [create an index with integrated embedding](/reference/api/latest/control-plane/create_for_model) as follows:
 
 * Provide a `name` for the index.
-* Set `cloud` and `region` to the [cloud and region](/guides/index-data/create-an-index#cloud-regions) where the index should be deployed.
-* Set `embed.model` to one of [Pinecone's hosted sparse embedding models](/guides/index-data/create-an-index#embedding-models).
+* Set `cloud` and `region` to the [cloud and region](/guides/index-data/index-configuration#cloud-regions) where the index should be deployed.
+* Set `embed.model` to one of [Pinecone's hosted sparse embedding models](/guides/index-data/index-configuration#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the text for embedding.
 * If needed, `embed.read_parameters` and `embed.write_parameters` can be used to override the default model embedding behavior.
 
@@ -2178,145 +2180,6 @@ A new index of any type can't accept data until its `status.ready` field is `tru
 ## Create an index from a backup
 
 You can restore an index from a backup, regardless of whether it stores dense or sparse vectors. For more details, see [Restore an index](/guides/manage-data/restore-an-index).
-
-## Index options
-
-To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/index-data/configure-metadata-indexing).
-
-### Index names
-
-An index name must be unique within its project and 1 to 45 characters long. It can contain only lowercase letters, numbers, and hyphens (`-`), and it must start and end with a letter or number.
-
-### Cloud regions
-
-When creating an index, you must choose the cloud and region where you want the index to be hosted. The following table lists the available public clouds and regions and the plans that support them:
-
-| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
-| - | - | - | - |
-| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
-| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
-| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
-| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
-| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
-| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
-| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
-| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
-
-The cloud and region can't be changed after a serverless index is created.
-
-<Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
-
-### Similarity metrics
-
-When creating an index that stores dense vectors, you can choose from the following similarity metrics. For the most accurate results, choose the similarity metric used to train the embedding model for your vectors. For more information, see [Vector Similarity Explained](https://www.pinecone.io/learn/vector-similarity/).
-
-<Note>Indexes that store [sparse vectors](#sparse-indexes) must use the `dotproduct` metric.</Note>
-
-<AccordionGroup>
-  <Accordion title="Euclidean">
-    Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
-
-    This metric calculates the square of the distance between two data points in a plane. It's one of the most commonly used distance metrics. For an example, see our [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
-
-    When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
-  </Accordion>
-
-  <Accordion title="Cosine">
-    This is often used to find similarities between different documents. The advantage is that the scores are normalized to \[-1,1] range. For an example, see our [generative question answering example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb).
-  </Accordion>
-
-  <Accordion title="Dotproduct">
-    This is used to multiply two vectors. You can use it to tell us how similar the two vectors are. The more positive the answer is, the closer the two vectors are in terms of their directions. For an example, see our [semantic search example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb).
-  </Accordion>
-</AccordionGroup>
-
-### Embedding models
-
-[Dense vectors](/guides/core-concepts/key-terms#dense-vector) and [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) are the basic units of data in Pinecone and what Pinecone was specially designed to store and work with. Dense vectors represents the semantics of data such as text, images, and audio recordings, while sparse vectors represent documents or queries in a way that captures keyword information.
-
-To transform data into vector format, you use an embedding model. Pinecone hosts several embedding models so it's easy to manage your vector storage and search process on a single platform. You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
-
-The following embedding models are hosted by Pinecone.
-
-<Note>
-  To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
-</Note>
-
-#### multilingual-e5-large
-
-[`multilingual-e5-large`](/models/multilingual-e5-large) is an efficient dense embedding model trained on a mixture of multilingual datasets. It works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension: 1024
-* Recommended similarity metric: Cosine
-* Max sequence length: 507 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `multilingual-e5-large` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-
-#### llama-text-embed-v2
-
-[`llama-text-embed-v2`](/models/llama-text-embed-v2) is a high-performance dense embedding model optimized for text retrieval and ranking tasks. It's trained on a diverse range of text corpora and provides strong performance on longer passages and structured documents.
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension: 1024 (default), 2048, 768, 512, 384
-* Recommended similarity metric: Cosine
-* Max sequence length: 2048 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `llama-text-embed-v2` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-| `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
-
-#### pinecone-sparse-english-v0
-
-[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/lexical-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
-
-**Details**
-
-* Vector type: Sparse
-* Modality: Text
-* Recommended similarity metric: Dotproduct
-* Max sequence length: 512 or 2048
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `pinecone-sparse-english-v0` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `max_tokens_per_sequence` | integer | Optional | Maximum number of tokens to embed. Accepted values: `512` or `2048`. | `512` |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
-| `return_tokens` | boolean | Optional | Whether to return the string tokens. | `false` |
 
 
 # Data ingestion overview
@@ -2692,7 +2555,7 @@ The same document model supports several common schema shapes. Pick the one that
 
 ## Records
 
-Records are how you model data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors). Each record carries one vector (dense, sparse, or both for single-index hybrid) plus optional metadata, and you can upsert raw text in place of a vector when the index is [integrated with an embedding model](/guides/index-data/create-an-index#embedding-models).
+Records are how you model data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors). Each record carries one vector (dense, sparse, or both for single-index hybrid) plus optional metadata, and you can upsert raw text in place of a vector when the index is [integrated with an embedding model](/guides/index-data/index-configuration#embedding-models).
 
 <Tabs>
   <Tab title="Vectors">
@@ -2770,7 +2633,7 @@ Records are how you model data for [indexes with dense vectors](/guides/core-con
     When you upsert raw text for Pinecone to convert to vectors automatically, each record consists of the following:
 
     * **ID**: A unique string identifier for the record.
-    * **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
+    * **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
     * **Metadata** (optional): All additional fields are stored as record metadata. You can filter by metadata when searching or deleting records.
 
     <Note>
@@ -3381,7 +3244,7 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
     After the index is created, [upsert](/guides/index-data/upsert-data) or [import](/guides/index-data/import-data) your data.
 
     <Tip>
-      To upsert and search with text instead of vectors, create the index with a [hosted embedding model](/guides/index-data/create-an-index#embedding-models) instead. Call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to configure dedicated read nodes.
+      To upsert and search with text instead of vectors, create the index with a [hosted embedding model](/guides/index-data/index-configuration#embedding-models) instead. Call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to configure dedicated read nodes.
     </Tip>
   </Step>
 </Steps>
@@ -3410,7 +3273,7 @@ Use a hosted embedding model, monitor fullness, change node types, pause, or con
 
 ## Use a hosted embedding model
 
-To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
+To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/index-configuration#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
 
 To create a dedicated read nodes index with a hosted embedding model, call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to set the node type, shards, and replicas.
 
@@ -6963,6 +6826,149 @@ When an import fails, you'll see an error message with the reason for the failur
 * [Pinecone's pricing](https://www.pinecone.io/pricing/)
 
 
+# Index configuration
+Source: https://docs.pinecone.io/guides/index-data/index-configuration
+
+Reference for the naming rules, cloud regions, similarity metrics, and hosted embedding models you choose when you create a Pinecone index.
+
+When you create a Pinecone index, you choose a name, the cloud region where it's hosted, a similarity metric for dense vectors, and, for integrated embedding, a hosted embedding model. To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/index-data/configure-metadata-indexing).
+
+## Index names
+
+An index name must be unique within its project and 1 to 45 characters long. It can contain only lowercase letters, numbers, and hyphens (`-`), and it must start and end with a letter or number.
+
+## Cloud regions
+
+When creating an index, you must choose the cloud and region where you want the index to be hosted. The following table lists the available public clouds and regions and the plans that support them:
+
+| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
+| - | - | - | - |
+| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
+| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
+| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
+| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
+
+The cloud and region can't be changed after a serverless index is created.
+
+<Note>
+  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
+</Note>
+
+## Similarity metrics
+
+When creating an index that stores dense vectors, you can choose from the following similarity metrics. For the most accurate results, choose the similarity metric used to train the embedding model for your vectors. For more information, see [Vector Similarity Explained](https://www.pinecone.io/learn/vector-similarity/).
+
+<Note>Indexes that store [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) must use the `dotproduct` metric.</Note>
+
+<AccordionGroup>
+  <Accordion title="Euclidean">
+    Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
+
+    This metric calculates the square of the distance between two data points in a plane. It's one of the most commonly used distance metrics. For an example, see the [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
+
+    When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
+  </Accordion>
+
+  <Accordion title="Cosine">
+    This is often used to find similarities between different documents. The advantage is that the scores are normalized to \[-1,1] range. For an example, see the [generative question answering example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb).
+  </Accordion>
+
+  <Accordion title="Dotproduct">
+    This multiplies two vectors to measure how similar they are. The more positive the result, the closer the two vectors are in direction. For an example, see the [semantic search example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb).
+  </Accordion>
+</AccordionGroup>
+
+## Embedding models
+
+[Dense vectors](/guides/core-concepts/key-terms#dense-vector) and [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) are the basic units of data in Pinecone and what Pinecone was specially designed to store and work with. Dense vectors represent the semantics of data such as text, images, and audio recordings, while sparse vectors represent documents or queries in a way that captures keyword information.
+
+To transform data into vector format, you use an embedding model. Pinecone hosts several embedding models so it's easy to manage your vector storage and search process on a single platform. You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
+
+The following embedding models are hosted by Pinecone.
+
+<Note>
+  To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
+</Note>
+
+### multilingual-e5-large
+
+[`multilingual-e5-large`](/models/multilingual-e5-large) is an efficient dense embedding model trained on a mixture of multilingual datasets. It works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
+
+**Details**
+
+* Vector type: Dense
+* Modality: Text
+* Dimension: 1024
+* Recommended similarity metric: Cosine
+* Max sequence length: 507 tokens
+* Max batch size: 96 sequences
+
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**Parameters**
+
+The `multilingual-e5-large` model supports the following parameters:
+
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+
+### llama-text-embed-v2
+
+[`llama-text-embed-v2`](/models/llama-text-embed-v2) is a high-performance dense embedding model optimized for text retrieval and ranking tasks. It's trained on a diverse range of text corpora and provides strong performance on longer passages and structured documents.
+
+**Details**
+
+* Vector type: Dense
+* Modality: Text
+* Dimension: 1024 (default), 2048, 768, 512, 384
+* Recommended similarity metric: Cosine
+* Max sequence length: 2048 tokens
+* Max batch size: 96 sequences
+
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**Parameters**
+
+The `llama-text-embed-v2` model supports the following parameters:
+
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END`, `NONE`, or `START`.<br /><br />`END` truncates the input sequence at the input token limit, keeping the start. `START` truncates from the start, keeping the end. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+| `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
+
+### pinecone-sparse-english-v0
+
+[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/lexical-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
+
+**Details**
+
+* Vector type: Sparse
+* Modality: Text
+* Recommended similarity metric: Dotproduct
+* Max sequence length: 512 or 2048
+* Max batch size: 96 sequences
+
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**Parameters**
+
+The `pinecone-sparse-english-v0` model supports the following parameters:
+
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `max_tokens_per_sequence` | integer | Optional | Maximum number of tokens to embed. Accepted values: `512` or `2048`. | `512` |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
+| `return_tokens` | boolean | Optional | Whether to return the string tokens. | `false` |
+
+
 # Index data overview
 Source: https://docs.pinecone.io/guides/index-data/indexing-overview
 
@@ -7086,7 +7092,7 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 Integrated-embedding indexes are created with `pc.create_index_for_model` and read and written through the Records API. Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
 
-1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 2. [Upsert](/guides/index-data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
 3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
 
@@ -8864,7 +8870,7 @@ Send upserts in batches to help increase throughput.
   | 768 | 500 | 559 |
   | 1536 | 2000 | 245 |
 
-* When upserting records with text, a batch can contain up to 96 records. This limit comes from the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) used during integrated embedding rather than the batch size limit for upserting raw vectors.
+* When upserting records with text, a batch can contain up to 96 records. This limit comes from the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) used during integrated embedding rather than the batch size limit for upserting raw vectors.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -9410,7 +9416,7 @@ async_results = [
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -9925,7 +9931,7 @@ To create a pod index, use the [Create an index](/reference/api/latest/control-p
 
 * Provide a `name` for the index.
 * Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
-* Set `spec.environment` to the [environment](/guides/index-data/create-an-index#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+* Set `spec.environment` to the [environment](/guides/index-data/index-configuration#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
 * Set `spec.pod_type` to the [pod type](/guides/indexes/pods/understanding-pod-based-indexes#pod-types) and [size](/guides/index-data/indexing-overview#pod-size-and-performance) that you want.
 
 Other parameters are optional. See the [API reference](/reference/api/latest/control-plane/create_index) for details.
@@ -12993,7 +12999,7 @@ For a worked example of inspecting read costs, see the [read units notebook](htt
 
 ## Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
 
 For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 
@@ -13789,7 +13795,7 @@ A [backup](/guides/manage-data/backups-overview) is a static copy of a serverles
 
 ## Embedding
 
-Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
+Pinecone hosts several [embedding models](/guides/index-data/index-configuration#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
 
 Embedding is billed by the number of [tokens](https://www.pinecone.io/learn/tokenization/) in a request. The more words in your passage or query, the more tokens it generates.
 
@@ -17759,7 +17765,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 
-* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the data for embedding.
 
 <Warning>
@@ -22551,7 +22557,7 @@ When you target an index for upserting or querying, the client establishes a TCP
 
 ## Use a cloud environment
 
-If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/create-an-index#cloud-regions) as your index.
+If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/index-configuration#cloud-regions) as your index.
 
 ## Avoid batching queries
 
@@ -27625,7 +27631,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Generate vectors">
-    Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-vectors).
+    Use Pinecone's [hosted embedding models](/guides/index-data/index-configuration#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-vectors).
 
     ```python Python [expandable] theme={null}
     # Define the records
@@ -28120,7 +28126,7 @@ Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-
 To search an index of sparse vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
-* `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
+* `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
 * `query.top_k`:  The number of records to return.
 * `query.match_terms`: (Optional) A list of terms that must be present in each search result. For more details, see [Filter by required terms](#filter-by-required-terms).
 * `fields`: (Optional) The fields to return in the response. If not specified, the response includes all fields.
@@ -30718,7 +30724,7 @@ For example, the following code searches for the 2 records most semantically rel
   ```
 </CodeGroup>
 
-The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/create-an-index#similarity-metrics) for the index.
+The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/index-configuration#similarity-metrics) for the index.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -30993,7 +30999,7 @@ For example, the following code uses a dense vector representation of the query 
   ```
 </CodeGroup>
 
-The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/create-an-index#similarity-metrics) for the index.
+The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/index-configuration#similarity-metrics) for the index.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -31418,313 +31424,6 @@ if __name__ == "__main__":
 ```
 
 
-# Create an index
-Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes
-Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields, and string fields with integrated embedding — and, optionally, the deployment infrastructure (managed serverless or BYOC).
-
-The index is a document index, read and written through the Documents API. To enable integrated embedding on a field, declare a `string` field with `embed` (dense) and/or `sparse_embed` (sparse): Pinecone embeds the field's text when documents are written and the query text when a search scores the field. BYOC indexes cannot declare `embed` or `sparse_embed`.
-
-**The index schema cannot be modified after creation.** Field types, dimensions, metrics, embedding models, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
-
-To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
-
-For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
-
-[Create a legacy integrated index](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model) creates legacy integrated indexes, which require the legacy Records API.
-
-The index initializes asynchronously. Before sending data plane requests, poll [Describe an index](/reference/api/2026-07/control-plane/describe_index) until `status.ready` is `true` (and, for `Dedicated` read capacity, until `read_capacity.status.state` is `"Ready"`). The response shows each `full_text_search` field's resolved analyzer settings (`language`, `stemming`, and `stop_words`), including any defaults applied at creation.
-
-## Cloud regions
-
-For managed (serverless) indexes, the `cloud` and `region` fields in `deployment` accept the following values:
-
-| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
-| - | - | - | - |
-| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
-| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
-| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
-| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
-| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
-| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
-| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
-| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
-
-The cloud and region can't be changed after a serverless index is created.
-
-<Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
-
-For BYOC indexes, set `deployment.environment` to the environment ID provisioned for your account instead. See [Bring Your Own Cloud](/guides/production/bring-your-own-cloud) for details.
-
-<RequestExample>
-  ```python Python theme={null}
-  # pip install --upgrade pinecone
-  import os
-  from pinecone import Pinecone, SchemaBuilder
-
-  pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-
-  schema = (
-      SchemaBuilder()
-        .add_string_field(name="title", full_text_search={})
-        .add_string_field(name="body", full_text_search={"language": "en", "stemming": True, "stop_words": True})
-        .build()
-  )
-
-  index_model = pc.indexes.create(
-      name="articles",
-      schema=schema,
-      read_capacity={"mode": "OnDemand"},
-  )
-
-  host = index_model.host
-  ```
-
-  ```javascript JavaScript theme={null}
-  // npm install @pinecone-database/pinecone
-  import { Pinecone } from '@pinecone-database/pinecone';
-
-  // Reads PINECONE_API_KEY from the environment
-  const pc = new Pinecone();
-
-  const indexModel = await pc.indexes.create({
-    name: 'articles',
-    schema: {
-      fields: {
-        title: {
-          type: 'string',
-          fullTextSearch: {},
-        },
-        body: {
-          type: 'string',
-          fullTextSearch: {
-            language: 'en',
-            stemming: true,
-            stopWords: true,
-          },
-        },
-      },
-    },
-    readCapacity: {
-      mode: 'OnDemand',
-    },
-  });
-
-  const host = indexModel.host;
-  ```
-
-  ```go Go theme={null}
-  package main
-
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
-
-      "github.com/pinecone-io/go-pinecone/v7/pinecone"
-  )
-
-  func main() {
-      ctx := context.Background()
-
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: os.Getenv("PINECONE_API_KEY"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
-
-      language := "en"
-      stemming := true
-      stopWords := true
-
-      idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
-          Name: "articles",
-          Schema: pinecone.IndexSchema{
-              Fields: map[string]pinecone.IndexSchemaField{
-                  "title": {
-                      String: &pinecone.StringField{
-                          FullTextSearch: &pinecone.FullTextSearchConfig{},
-                      },
-                  },
-                  "body": {
-                      String: &pinecone.StringField{
-                          FullTextSearch: &pinecone.FullTextSearchConfig{
-                              Language:  &language,
-                              Stemming:  &stemming,
-                              StopWords: &stopWords,
-                          },
-                      },
-                  },
-              },
-          },
-          ReadCapacity: &pinecone.ReadCapacityParams{
-              OnDemand: &pinecone.ReadCapacityOnDemandConfig{},
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to create index: %v", err)
-      }
-
-      host := idx.Host
-      fmt.Println(host)
-  }
-  ```
-
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  # EXAMPLE REQUEST 1: On-demand read capacity (default)
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "title": {
-            "type": "string",
-            "full_text_search": {}
-          },
-          "body": {
-            "type": "string",
-            "full_text_search": {}
-          }
-        }
-      },
-      "read_capacity": { "mode": "OnDemand" },
-      "deletion_protection": "disabled"
-    }'
-
-  # EXAMPLE REQUEST 2: Dedicated read capacity
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles-dedicated",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "content": {
-            "type": "string",
-            "full_text_search": {}
-          }
-        }
-      },
-      "read_capacity": {
-        "mode": "Dedicated",
-        "dedicated": {
-          "node_type": "b1",
-          "scaling": "Manual",
-          "manual": { "shards": 1, "replicas": 1 }
-        }
-      },
-      "deletion_protection": "disabled"
-    }'
-
-  # EXAMPLE REQUEST 3: Multi-field schema (text + dense + sparse ranking fields)
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles-multifield",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "title":     { "type": "string",        "full_text_search": {} },
-          "body":      { "type": "string",        "full_text_search": { "language": "en", "stemming": true, "stop_words": true } },
-          "embedding": { "type": "dense_vector",  "dimension": 1536, "metric": "cosine" },
-          "sparse_embedding": { "type": "sparse_vector" }
-        }
-      }
-    }'
-
-  # EXAMPLE REQUEST 4: Classic vector index — reserved `_values` field, served by the Vectors API.
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "classic-index",
-      "schema": {
-        "fields": {
-          "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
-        }
-      }
-    }'
-
-  # EXAMPLE REQUEST 5: Bring-your-own-cloud (BYOC) deployment.
-  # BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "byoc-index",
-      "deployment": {
-        "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921.byoc"
-      },
-      "read_capacity": {
-        "mode": "Dedicated",
-        "dedicated": {
-          "node_type": "b1",
-          "scaling": "Manual",
-          "manual": { "shards": 1, "replicas": 1 }
-        }
-      },
-      "schema": {
-        "fields": {
-          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
-        }
-      }
-    }'
-
-  # EXAMPLE REQUEST 6: BYOC deployment with on-demand read capacity.
-  # The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "byoc-on-demand-index",
-      "deployment": {
-        "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921.byoc"
-      },
-      "read_capacity": {
-        "mode": "OnDemand"
-      },
-      "schema": {
-        "fields": {
-          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
-        }
-      }
-    }'
-  ```
-</RequestExample>
-
-
 # List indexes
 Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/list_indexes
 
@@ -32050,7 +31749,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
@@ -32100,7 +31799,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -32518,7 +32217,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 
@@ -33186,6 +32885,313 @@ For guidance and examples, see [Create an index](https://docs.pinecone.io/guides
       "embed": {
         "model": "multilingual-e5-large",
         "field_map": {"text": "chunk_text"}
+      }
+    }'
+  ```
+</RequestExample>
+
+
+# Create an index
+Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml post /indexes
+Create a Pinecone index. Define the schema for your index — dense vector, sparse vector, and full-text search fields, and string fields with integrated embedding — and, optionally, the deployment infrastructure (managed serverless or BYOC).
+
+The index is a document index, read and written through the Documents API. To enable integrated embedding on a field, declare a `string` field with `embed` (dense) and/or `sparse_embed` (sparse): Pinecone embeds the field's text when documents are written and the query text when a search scores the field. BYOC indexes cannot declare `embed` or `sparse_embed`.
+
+**The index schema cannot be modified after creation.** Field types, dimensions, metrics, embedding models, and text-analysis settings are permanent. Choose your schema carefully before creating an index.
+
+To create an index from a backup, use [Create index from backup](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_from_backup).
+
+For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
+
+[Create a legacy integrated index](https://docs.pinecone.io/reference/api/2026-07/control-plane/create_index_for_model) creates legacy integrated indexes, which require the legacy Records API.
+
+The index initializes asynchronously. Before sending data plane requests, poll [Describe an index](/reference/api/2026-07/control-plane/describe_index) until `status.ready` is `true` (and, for `Dedicated` read capacity, until `read_capacity.status.state` is `"Ready"`). The response shows each `full_text_search` field's resolved analyzer settings (`language`, `stemming`, and `stop_words`), including any defaults applied at creation.
+
+## Cloud regions
+
+For managed (serverless) indexes, the `cloud` and `region` fields in `deployment` accept the following values:
+
+| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
+| - | - | - | - |
+| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
+| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
+| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
+| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
+
+The cloud and region can't be changed after a serverless index is created.
+
+<Note>
+  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
+</Note>
+
+For BYOC indexes, set `deployment.environment` to the environment ID provisioned for your account instead. See [Bring Your Own Cloud](/guides/production/bring-your-own-cloud) for details.
+
+<RequestExample>
+  ```python Python theme={null}
+  # pip install --upgrade pinecone
+  import os
+  from pinecone import Pinecone, SchemaBuilder
+
+  pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+  schema = (
+      SchemaBuilder()
+        .add_string_field(name="title", full_text_search={})
+        .add_string_field(name="body", full_text_search={"language": "en", "stemming": True, "stop_words": True})
+        .build()
+  )
+
+  index_model = pc.indexes.create(
+      name="articles",
+      schema=schema,
+      read_capacity={"mode": "OnDemand"},
+  )
+
+  host = index_model.host
+  ```
+
+  ```javascript JavaScript theme={null}
+  // npm install @pinecone-database/pinecone
+  import { Pinecone } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_API_KEY from the environment
+  const pc = new Pinecone();
+
+  const indexModel = await pc.indexes.create({
+    name: 'articles',
+    schema: {
+      fields: {
+        title: {
+          type: 'string',
+          fullTextSearch: {},
+        },
+        body: {
+          type: 'string',
+          fullTextSearch: {
+            language: 'en',
+            stemming: true,
+            stopWords: true,
+          },
+        },
+      },
+    },
+    readCapacity: {
+      mode: 'OnDemand',
+    },
+  });
+
+  const host = indexModel.host;
+  ```
+
+  ```go Go theme={null}
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v7/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      pc, err := pinecone.NewClient(pinecone.NewClientParams{
+          ApiKey: os.Getenv("PINECONE_API_KEY"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create Client: %v", err)
+      }
+
+      language := "en"
+      stemming := true
+      stopWords := true
+
+      idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
+          Name: "articles",
+          Schema: pinecone.IndexSchema{
+              Fields: map[string]pinecone.IndexSchemaField{
+                  "title": {
+                      String: &pinecone.StringField{
+                          FullTextSearch: &pinecone.FullTextSearchConfig{},
+                      },
+                  },
+                  "body": {
+                      String: &pinecone.StringField{
+                          FullTextSearch: &pinecone.FullTextSearchConfig{
+                              Language:  &language,
+                              Stemming:  &stemming,
+                              StopWords: &stopWords,
+                          },
+                      },
+                  },
+              },
+          },
+          ReadCapacity: &pinecone.ReadCapacityParams{
+              OnDemand: &pinecone.ReadCapacityOnDemandConfig{},
+          },
+      })
+      if err != nil {
+          log.Fatalf("Failed to create index: %v", err)
+      }
+
+      host := idx.Host
+      fmt.Println(host)
+  }
+  ```
+
+  ```shell curl theme={null}
+  PINECONE_API_KEY="YOUR_API_KEY"
+
+  # EXAMPLE REQUEST 1: On-demand read capacity (default)
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "articles",
+      "deployment": {
+        "deployment_type": "managed",
+        "cloud": "aws",
+        "region": "us-east-1"
+      },
+      "schema": {
+        "fields": {
+          "title": {
+            "type": "string",
+            "full_text_search": {}
+          },
+          "body": {
+            "type": "string",
+            "full_text_search": {}
+          }
+        }
+      },
+      "read_capacity": { "mode": "OnDemand" },
+      "deletion_protection": "disabled"
+    }'
+
+  # EXAMPLE REQUEST 2: Dedicated read capacity
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "articles-dedicated",
+      "deployment": {
+        "deployment_type": "managed",
+        "cloud": "aws",
+        "region": "us-east-1"
+      },
+      "schema": {
+        "fields": {
+          "content": {
+            "type": "string",
+            "full_text_search": {}
+          }
+        }
+      },
+      "read_capacity": {
+        "mode": "Dedicated",
+        "dedicated": {
+          "node_type": "b1",
+          "scaling": "Manual",
+          "manual": { "shards": 1, "replicas": 1 }
+        }
+      },
+      "deletion_protection": "disabled"
+    }'
+
+  # EXAMPLE REQUEST 3: Multi-field schema (text + dense + sparse ranking fields)
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "articles-multifield",
+      "deployment": {
+        "deployment_type": "managed",
+        "cloud": "aws",
+        "region": "us-east-1"
+      },
+      "schema": {
+        "fields": {
+          "title":     { "type": "string",        "full_text_search": {} },
+          "body":      { "type": "string",        "full_text_search": { "language": "en", "stemming": true, "stop_words": true } },
+          "embedding": { "type": "dense_vector",  "dimension": 1536, "metric": "cosine" },
+          "sparse_embedding": { "type": "sparse_vector" }
+        }
+      }
+    }'
+
+  # EXAMPLE REQUEST 4: Classic vector index — reserved `_values` field, served by the Vectors API.
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "classic-index",
+      "schema": {
+        "fields": {
+          "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+        }
+      }
+    }'
+
+  # EXAMPLE REQUEST 5: Bring-your-own-cloud (BYOC) deployment.
+  # BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "byoc-index",
+      "deployment": {
+        "deployment_type": "byoc",
+        "environment": "aws-us-east-1-b921.byoc"
+      },
+      "read_capacity": {
+        "mode": "Dedicated",
+        "dedicated": {
+          "node_type": "b1",
+          "scaling": "Manual",
+          "manual": { "shards": 1, "replicas": 1 }
+        }
+      },
+      "schema": {
+        "fields": {
+          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+        }
+      }
+    }'
+
+  # EXAMPLE REQUEST 6: BYOC deployment with on-demand read capacity.
+  # The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
+  curl "https://api.pinecone.io/indexes" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "name": "byoc-on-demand-index",
+      "deployment": {
+        "deployment_type": "byoc",
+        "environment": "aws-us-east-1-b921.byoc"
+      },
+      "read_capacity": {
+        "mode": "OnDemand"
+      },
+      "schema": {
+        "fields": {
+          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+        }
       }
     }'
   ```
@@ -35746,13 +35752,6 @@ func main() {
 ```
 
 
-# Reference
-Source: https://docs.pinecone.io/reference/sdks/go/reference
-
-Reference documentation for the Pinecone Go SDK, including client setup, types, and methods for managing indexes and vector data operations.
-
-
-
 # OpenTelemetry support
 Source: https://docs.pinecone.io/reference/sdks/java/open-telemetry
 
@@ -37024,7 +37023,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
@@ -37074,7 +37073,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -37492,7 +37491,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 
@@ -42841,7 +42840,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
@@ -42891,7 +42890,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -43309,7 +43308,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 
@@ -48658,7 +48657,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
@@ -48708,7 +48707,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -49126,7 +49125,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 
@@ -54475,7 +54474,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/create-an-index#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
@@ -54525,7 +54524,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -54943,7 +54942,7 @@ The following Pinecone SDKs support the Database API:
 
 ## Inference
 
-Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Use the Inference API to generate vector embeddings and rerank results using [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 There are two ways to use the Inference API:
 
@@ -60232,103 +60231,6 @@ Use service accounts to automate infrastructure management and integrate Pinecon
 
 * [Manage organization members](/admin/organizations/manage-organization-members)
 * [Manage project members](/admin/projects/manage-project-members)
-
-
-# Create a project
-Source: https://docs.pinecone.io/admin/projects/create-a-project
-
-Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
-
-If you're an [organization owner or organization manager](/admin/organizations/understanding-organizations#organization-roles), you can create a project in your organization.
-
-<Tabs>
-  <Tab title="Pinecone console">
-    1. In the Pinecone console, go to [**your profile > Organization settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
-
-    2. Click **+ Create project**.
-
-    3. Enter a project name in **Give your project a name**.
-
-       <Note>
-         A project name can contain up to 512 characters. For more information, see [Object identifiers](/reference/api/database-limits/identifier-limits).
-       </Note>
-
-    4. (Optional) Tags are key-value pairs that you can use to categorize and identify the project. To add a tag, click **+ Add tag** and enter a tag key and value.
-
-    5. (Optional, Enterprise plan) Turn on **Enforce customer managed encryption (CMEK)**. For more information, see [Configure CMEK](/guides/production/configure-cmek).
-
-    6. Click **Create project**.
-
-       To create an index from a sample movies dataset, go to **Database > Quickstart** and click **Load from dataset**.
-
-    <Note>
-      The number of projects per organization varies by plan. For details, see [Projects per organization](/reference/api/database-limits/object-limits). To create additional projects, [upgrade your plan](/admin/billing/upgrade-billing-plan).
-    </Note>
-  </Tab>
-
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
-
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-
-      curl "https://api.pinecone.io/admin/projects" \
-          -H "X-Pinecone-Api-Version: 2026-07" \
-      	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-      	-d '{
-                "name":"example-project"
-              }'
-      ```
-
-      ```bash CLI theme={null}
-      # Target the organization for which you want to 
-      # create a project.
-      pc target -o "example-org"
-      # Create the project and set it as the target 
-      # project for the CLI.
-      pc project create -n "example-project" --target
-      ```
-    </CodeGroup>
-
-    The example returns a response like the following:
-
-    <CodeGroup>
-      ```json curl theme={null}
-      {
-        "id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-        "name": "example-project",
-        "max_pods": 0,
-        "force_encryption_with_cmek": false,
-        "organization_id": "-NM7af6f234168c4e44a",
-        "created_at": "2025-03-16T22:46:45.030Z"
-      }
-      ```
-
-      ```text CLI theme={null}
-      [SUCCESS] Project example-cli-project created successfully.
-
-      ATTRIBUTE           VALUE
-      Name                example-project
-      ID                  32c8235a-5220-4a80-a9f1-69c24109e6f2
-      Organization ID     -NM7af6f234168c4e44a
-      Created At          2025-10-27 23:27:46.370088 +0000 UTC
-      Force Encryption    false
-      Max Pods            5
-
-      [SUCCESS] Target project set to example-cli-project
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
-
-## Next steps
-
-* [Add users to your project](/admin/projects/manage-project-members#add-members-to-a-project)
-* [Create an index](/guides/index-data/create-an-index)
-* [Create an assistant](/guides/assistant/create-assistant)
 
 
 # Projects overview
@@ -65906,6 +65808,128 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 | [Namespace](/guides/core-concepts/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/manage-data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
 | [Record](/guides/core-concepts/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+
+
+# Operation limits
+Source: https://docs.pinecone.io/reference/api/database-limits/operation-limits
+
+Fixed limits on Pinecone Database operations, including upsert, update, import, query, fetch, and delete batch sizes and metadata filter expressions.
+
+Operation limits are restrictions on the size, number, or other characteristics of operations in Pinecone. Operation limits are fixed and don't vary based on pricing plan.
+
+If one of these limits is blocking you, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case. There's often a workaround.
+
+## Upsert limits
+
+| Metric | Limit |
+| :- | :- |
+| Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
+| Max batch size for records with text | 96 records |
+| Max documents per upsert request | 1,000 |
+| Max document upsert request size | 2 MB |
+| Max document size | 2 MB |
+| Max `full_text_search` string fields per schema | 100 |
+| Max size per `full_text_search` string field | 100 KB |
+| Max tokens per `full_text_search` string field | 10,000 |
+| Max bytes per token | 256 bytes |
+| Max filterable metadata size per document | 40 KB |
+| Max length for a record ID | 512 characters |
+| Max dimensionality for dense vectors | 20,000 |
+| Max non-zero values for sparse vectors | 2048 |
+| Max dimensionality for sparse vectors | 4.2 billion |
+
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
+
+The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
+
+## Update limits
+
+| Metric | Limit |
+| :- | :- |
+| Max documents per by-ID document update request | 1,000 |
+| Max records per update-by-metadata request | 100,000 |
+
+## Import limits
+
+<Note>
+  If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/index-data/import-data#troubleshooting) for details.
+</Note>
+
+| Metric | Limit |
+| :- | :- |
+| Max namespaces per import | 10,000 |
+| Max total input data size (on-demand indexes) | 1 TB |
+| Max total input data size (DRN indexes) | Unlimited |
+| Max files per import | 100,000 |
+| Max size per file | 10 GB |
+
+The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+
+## Query limits
+
+| Metric | Limit |
+| :- | :- |
+| Max `top_k` value | 10,000 |
+| Max result size | 4MB |
+
+The query result size is affected by the dimension of the dense vectors and whether or not dense vector values and metadata are included in the result.
+
+<Tip>
+  If a query fails due to exceeding the 4MB result size limit, choose a lower `top_k` value, or use `include_metadata=False` or `include_values=False` to exclude metadata or values from the result. For better performance, especially with higher `top_k` values, avoid including vector values unless you need them.
+</Tip>
+
+## Fetch limits
+
+**Fetch by ID limits:**
+
+| Metric | Limit |
+| :- | :- |
+| Max record IDs per fetch request | 1,000 |
+
+**Fetch by metadata limits:**
+
+| Metric | Limit |
+| :- | :- |
+| Max records per response | 10,000 |
+| Max response size | 4 MB |
+| Max request rate | 5 requests per second per namespace |
+
+To retrieve more than 10,000 matching records, paginate through results using the `paginationToken` parameter. See [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
+
+## Delete limits
+
+| Metric | Limit |
+| :- | :- |
+| Max record IDs per delete request | 1,000 |
+
+## Metadata filter limits
+
+The following limits apply to [metadata filter expressions](/guides/search/filter-by-metadata#metadata-filter-expressions) used in query, delete, update, and fetch operations.
+
+| Limit | Value | Description |
+| :- | :- | :- |
+| Maximum values per `$in` or `$nin` operator | 10,000 | Each `$in` or `$nin` operator accepts up to 10,000 values in its array. This limit applies per operator. If you have multiple `$in` operators in a single filter, each is independently limited to 10,000 values. |
+
+When you exceed this limit, the request returns a `400 - BAD_REQUEST` error.
+
+### Rationale
+
+Large `$in` operators can impact query performance and cost. Filters with thousands of values increase request payload size and end-to-end latency. Additionally, using large filters typically indicates a shared namespace architecture, which increases query costs. Queries scan the entire namespace regardless of filters.
+
+### Alternative approaches
+
+If you need to filter by more than 10,000 values, consider these alternatives:
+
+* **Use namespaces for tenant isolation**: Instead of filtering by tenant IDs within a single namespace, create separate namespaces for each tenant or tenant group. This can also reduce query costs. See [Design for multitenancy](/guides/index-data/design-for-multitenancy).
+* **Use broader access control groups**: Instead of filtering by individual user IDs, filter by organization, project, or role. This reduces the number of values in your `$in` filter. See [Design for multitenancy](/guides/index-data/design-for-multitenancy#use-access-control-groups-instead-of-individual-ids).
+* **Post-filter client-side**: Retrieve a larger top K without filtering (for example, top 1000), then filter results client-side.
+* **Run multiple queries**: Split your filter into multiple queries with smaller `$in` operators and combine the results client-side.
+
+<Tip>
+  To avoid hitting this limit in production, validate the size of your `$in` and `$nin` arrays in your application code before making the request to Pinecone.
+</Tip>
 
 
 # Errors
@@ -71653,7 +71677,7 @@ When you downgrade to the Starter plan in the Pinecone console, you choose which
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
-* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/index-configuration#cloud-regions) can't be kept on Starter.
 * **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
 * **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index before you start the downgrade, because the migration saves your index as a collection and the downgrade deletes all collections.
 * **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
@@ -72016,7 +72040,7 @@ The Standard trial lets you evaluate Pinecone without any up-front payment. You 
   * [Backup and restore](/guides/manage-data/backups-overview)
   * [RBAC (role-based access control)](/admin/security/security-overview#role-based-access-controls-rbac)
 * [Higher limits](/reference/api/database-limits/object-limits) for testing at scale
-* Access to all [cloud regions](/guides/index-data/create-an-index#cloud-regions)
+* Access to all [cloud regions](/guides/index-data/index-configuration#cloud-regions)
 * Access to [Developer Support](https://www.pinecone.io/pricing/?plans=support)
 
 ## Expiration
@@ -72041,7 +72065,7 @@ When you downgrade to the Starter plan in the Pinecone console, you choose which
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
-* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/create-an-index#cloud-regions) can't be kept on Starter.
+* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/index-data/create-an-index) in `us-east-1`, [re-upsert your data](/guides/index-data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/index-data/index-configuration#cloud-regions) can't be kept on Starter.
 * **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/manage-data/back-up-an-index) and [restore it](/guides/manage-data/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
 * **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index before you start the downgrade, because the migration saves your index as a collection and the downgrade deletes all collections.
 * **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
@@ -72168,6 +72192,103 @@ After your organization is connected and upgraded, you'll receive a confirmation
 12. Click **Connect to Pinecone** and follow the prompts.
 
 After your organization is connected and upgraded, you'll receive a confirmation message. You'll then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
+
+
+# Create a project
+Source: https://docs.pinecone.io/admin/projects/create-a-project
+
+Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
+
+If you're an [organization owner or organization manager](/admin/organizations/understanding-organizations#organization-roles), you can create a project in your organization.
+
+<Tabs>
+  <Tab title="Pinecone console">
+    1. In the Pinecone console, go to [**your profile > Organization settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
+
+    2. Click **+ Create project**.
+
+    3. Enter a project name in **Give your project a name**.
+
+       <Note>
+         A project name can contain up to 512 characters. For more information, see [Object identifiers](/reference/api/database-limits/identifier-limits).
+       </Note>
+
+    4. (Optional) Tags are key-value pairs that you can use to categorize and identify the project. To add a tag, click **+ Add tag** and enter a tag key and value.
+
+    5. (Optional, Enterprise plan) Turn on **Enforce customer managed encryption (CMEK)**. For more information, see [Configure CMEK](/guides/production/configure-cmek).
+
+    6. Click **Create project**.
+
+       To create an index from a sample movies dataset, go to **Database > Quickstart** and click **Load from dataset**.
+
+    <Note>
+      The number of projects per organization varies by plan. For details, see [Projects per organization](/reference/api/database-limits/object-limits). To create additional projects, [upgrade your plan](/admin/billing/upgrade-billing-plan).
+    </Note>
+  </Tab>
+
+  <Tab title="Code">
+    <Note>
+      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
+    </Note>
+
+    <CodeGroup>
+      ```bash curl theme={null}
+      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+
+      curl "https://api.pinecone.io/admin/projects" \
+          -H "X-Pinecone-Api-Version: 2026-07" \
+      	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+      	-d '{
+                "name":"example-project"
+              }'
+      ```
+
+      ```bash CLI theme={null}
+      # Target the organization for which you want to 
+      # create a project.
+      pc target -o "example-org"
+      # Create the project and set it as the target 
+      # project for the CLI.
+      pc project create -n "example-project" --target
+      ```
+    </CodeGroup>
+
+    The example returns a response like the following:
+
+    <CodeGroup>
+      ```json curl theme={null}
+      {
+        "id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+        "name": "example-project",
+        "max_pods": 0,
+        "force_encryption_with_cmek": false,
+        "organization_id": "-NM7af6f234168c4e44a",
+        "created_at": "2025-03-16T22:46:45.030Z"
+      }
+      ```
+
+      ```text CLI theme={null}
+      [SUCCESS] Project example-cli-project created successfully.
+
+      ATTRIBUTE           VALUE
+      Name                example-project
+      ID                  32c8235a-5220-4a80-a9f1-69c24109e6f2
+      Organization ID     -NM7af6f234168c4e44a
+      Created At          2025-10-27 23:27:46.370088 +0000 UTC
+      Force Encryption    false
+      Max Pods            5
+
+      [SUCCESS] Target project set to example-cli-project
+      ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+## Next steps
+
+* [Add users to your project](/admin/projects/manage-project-members#add-members-to-a-project)
+* [Create an index](/guides/index-data/create-an-index)
+* [Create an assistant](/guides/assistant/create-assistant)
 
 
 # Manage API keys
@@ -79552,17 +79673,6 @@ During a [chat](/guides/assistant/chat-with-assistant), the assistant processes 
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
 
 
-# Create a workspace
-Source: https://docs.pinecone.io/api-reference/manage-workspaces/create-a-workspace
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_control_2026-07.oas.yaml post /workspaces
-Create a Nexus workspace. The workspace name must be unique within the project.
-
-Workspaces are created asynchronously. On success the workspace is returned in the `Initializing` state with `ready` set to `false`. Poll [Describe workspace](#operation/describe_workspace) until the workspace reaches the `Ready` state before using it.
-
-
-
-
 # List workspaces
 Source: https://docs.pinecone.io/api-reference/manage-workspaces/list-workspaces
 
@@ -81170,6 +81280,91 @@ You pass `system_prompt` on the query that starts the session, and it stays pinn
 In the console, open **Advanced options** in the new session composer and set the **System prompt**.
 
 
+# Create a new project
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
+Create a new project.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const project = await admin.projects.create({ name: 'example-project' });
+  console.log(project);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      project, err := adminClient.Project.Create(ctx, &pinecone.CreateProjectParams{
+          Name: "example-project",
+      })
+      if err != nil {
+          log.Fatalf("Failed to create project: %v", err)
+      }
+      fmt.Printf("Successfully created project: %v\n", project.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  resource "pinecone_project" "example" {
+    name = "example-project"
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+
+  curl "https://api.pinecone.io/admin/projects" \
+      -H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-d '{
+          "name":"example-project"
+          }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "example-project",
+    "max_pods": 0,
+    "force_encryption_with_cmek": false,
+    "organization_id": "string",
+    "created_at": "2025-03-16T22:46:45.030Z"
+  }
+  ```
+</ResponseExample>
+
+
 # Delete a project
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project
 
@@ -82082,6 +82277,17 @@ The raw bytes of one curated knowledge file.
 
 
 
+# Create a workspace
+Source: https://docs.pinecone.io/api-reference/manage-workspaces/create-a-workspace
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_control_2026-07.oas.yaml post /workspaces
+Create a Nexus workspace. The workspace name must be unique within the project.
+
+Workspaces are created asynchronously. On success the workspace is returned in the `Initializing` state with `ready` set to `false`. Poll [Describe workspace](#operation/describe_workspace) until the workspace reaches the `Ready` state before using it.
+
+
+
+
 # Delete a workspace
 Source: https://docs.pinecone.io/api-reference/manage-workspaces/delete-a-workspace
 
@@ -82748,7 +82954,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 <Update label="2024-12-03">
   ### Launch week: Integrated Inference
 
-  You can now use [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone as an integrated part of upserting and searching.
+  You can now use [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone as an integrated part of upserting and searching.
 </Update>
 
 <Update label="2024-12-05">
@@ -83000,7 +83206,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 
   ***
 
-  Serverless indexes are now in [general availability on GCP and Azure](/guides/index-data/create-an-index#cloud-regions) for Standard and Enterprise plans.
+  Serverless indexes are now in [general availability on GCP and Azure](/guides/index-data/index-configuration#cloud-regions) for Standard and Enterprise plans.
 
   ***
 
@@ -83071,7 +83277,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 </Update>
 
 <Update label="2024-07-17">
-  Serverless indexes are now in [public preview on Azure](/guides/index-data/create-an-index#cloud-regions) for Standard and Enterprise plans.
+  Serverless indexes are now in [public preview on Azure](/guides/index-data/index-configuration#cloud-regions) for Standard and Enterprise plans.
 </Update>
 
 <Update label="2024-07-10">
@@ -83079,7 +83285,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 </Update>
 
 <Update label="2024-07-01">
-  Serverless indexes are now in [public preview on GCP](/guides/index-data/create-an-index#cloud-regions) for Standard and Enterprise plans.
+  Serverless indexes are now in [public preview on GCP](/guides/index-data/index-configuration#cloud-regions) for Standard and Enterprise plans.
 </Update>
 
 <Update label="2024-07-01">
@@ -83593,7 +83799,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 <Update label="2025-07-28">
   ### Increased context window for `pinecone-sparse-english-v0`
 
-  You can now raise the context window for Pinecone's hosted [`pinecone-sparse-english-v0`](/guides/index-data/create-an-index#pinecone-sparse-english-v0) embedding model from `512` to `2048` using the `max_tokens_per_sequence` parameter.
+  You can now raise the context window for Pinecone's hosted [`pinecone-sparse-english-v0`](/guides/index-data/index-configuration#pinecone-sparse-english-v0) embedding model from `512` to `2048` using the `max_tokens_per_sequence` parameter.
 </Update>
 
 <Update label="2025-07-23">
@@ -84310,7 +84516,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
   * **Lower latency and data residency** — Deploy indexes closer to your application or in a region that meets your data residency requirements, without upgrading to Standard or Enterprise.
   * **No pricing change** — Builder remains a flat \$20/month plan with no usage overages.
 
-  The Starter plan continues to support the `us-east-1` region of AWS only. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions). For plan quotas, see [Database limits](/reference/api/database-limits/object-limits).
+  The Starter plan continues to support the `us-east-1` region of AWS only. For the full list of supported regions, see [Cloud regions](/guides/index-data/index-configuration#cloud-regions). For plan quotas, see [Database limits](/reference/api/database-limits/object-limits).
 </Update>
 
 <Update label="2026-06-01">
@@ -84371,7 +84577,7 @@ All Pinecone products share this changelog. Use the filters to narrow the list.
 <Update label="2026-05-01">
   ### New AWS regions for serverless indexes
 
-  You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/create-an-index#cloud-regions).
+  You can now deploy [serverless indexes](/guides/index-data/indexing-overview) in two new AWS regions: `eu-central-1` (Frankfurt) and `ap-southeast-1` (Singapore). Both regions are available on Standard and Enterprise plans. For the full list of supported regions, see [Cloud regions](/guides/index-data/index-configuration#cloud-regions).
 </Update>
 
 <Update label="2026-04-28">

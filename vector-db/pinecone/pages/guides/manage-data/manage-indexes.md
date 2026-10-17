@@ -683,7 +683,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 
-* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+* Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the data for embedding.
 
 <Warning>

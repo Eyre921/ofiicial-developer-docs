@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 251 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -90,8 +90,11 @@
 - `reference/admin/get-agent-credit-usage` — [Get credit usage for an agent in a space](pages/reference/admin/get-agent-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agent-credit-usage)
 - `reference/admin/get-agent-permissions` — [Get a custom agent's sharing permissions](pages/reference/admin/get-agent-permissions.md) · [原文](https://developers.notion.com/reference/admin/get-agent-permissions)
 - `reference/admin/get-agents-credit-usage` — [Get credit usage for agents in a space](pages/reference/admin/get-agents-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/get-agents-credit-usage)
+- `reference/admin/get-ai-usage-analytics-report` — [Get ai usage analytics report](pages/reference/admin/get-ai-usage-analytics-report.md) · [原文](https://developers.notion.com/reference/admin/get-ai-usage-analytics-report)
+- `reference/admin/get-content-pages-analytics-report` — [Get content pages analytics report](pages/reference/admin/get-content-pages-analytics-report.md) · [原文](https://developers.notion.com/reference/admin/get-content-pages-analytics-report)
 - `reference/admin/get-legal-hold` — [Retrieve a legal hold](pages/reference/admin/get-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/get-legal-hold)
 - `reference/admin/get-space-export-status` — [Get workspace export status](pages/reference/admin/get-space-export-status.md) · [原文](https://developers.notion.com/reference/admin/get-space-export-status)
+- `reference/admin/get-user-activity-analytics-report` — [Get user activity analytics report](pages/reference/admin/get-user-activity-analytics-report.md) · [原文](https://developers.notion.com/reference/admin/get-user-activity-analytics-report)
 - `reference/admin/get-workflows-metadata-for-space` — [Get agents in a space](pages/reference/admin/get-workflows-metadata-for-space.md) · [原文](https://developers.notion.com/reference/admin/get-workflows-metadata-for-space)
 - `reference/admin/intro` — [Introduction](pages/reference/admin/intro.md) · [原文](https://developers.notion.com/reference/admin/intro)
 - `reference/admin/list-analytics-reports` — [List analytics reports](pages/reference/admin/list-analytics-reports.md) · [原文](https://developers.notion.com/reference/admin/list-analytics-reports)

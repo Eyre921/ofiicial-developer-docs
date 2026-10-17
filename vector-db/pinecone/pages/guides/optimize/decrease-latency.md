@@ -95,7 +95,7 @@ When you target an index for upserting or querying, the client establishes a TCP
 
 ## Use a cloud environment
 
-If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/create-an-index#cloud-regions) as your index.
+If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/index-configuration#cloud-regions) as your index.
 
 ## Avoid batching queries
 

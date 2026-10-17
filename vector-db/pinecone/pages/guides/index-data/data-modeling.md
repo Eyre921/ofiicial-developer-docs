@@ -336,7 +336,7 @@ The same document model supports several common schema shapes. Pick the one that
 
 ## Records
 
-Records are how you model data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors). Each record carries one vector (dense, sparse, or both for single-index hybrid) plus optional metadata, and you can upsert raw text in place of a vector when the index is [integrated with an embedding model](/guides/index-data/create-an-index#embedding-models).
+Records are how you model data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors). Each record carries one vector (dense, sparse, or both for single-index hybrid) plus optional metadata, and you can upsert raw text in place of a vector when the index is [integrated with an embedding model](/guides/index-data/index-configuration#embedding-models).
 
 <Tabs>
   <Tab title="Vectors">
@@ -414,7 +414,7 @@ Records are how you model data for [indexes with dense vectors](/guides/core-con
     When you upsert raw text for Pinecone to convert to vectors automatically, each record consists of the following:
 
     * **ID**: A unique string identifier for the record.
-    * **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
+    * **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
     * **Metadata** (optional): All additional fields are stored as record metadata. You can filter by metadata when searching or deleting records.
 
     <Note>

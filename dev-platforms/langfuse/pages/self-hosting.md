@@ -93,7 +93,7 @@ For more details, please refer to the [configuration guide](/self-hosting/config
 - [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
 - [Caching](/self-hosting/configuration/caching)
 - [Code evaluators](/self-hosting/configuration/code-evaluators)
-- [Langfuse Assistant](/self-hosting/configuration/langfuse-assistant)
+- [Halo](/self-hosting/configuration/halo)
 - [Custom Base Path](/self-hosting/configuration/custom-base-path)
 - [Encryption](/self-hosting/configuration/encryption)
 - [Headless Initialization](/self-hosting/administration/headless-initialization)

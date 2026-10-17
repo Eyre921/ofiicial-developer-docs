@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 201 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 204 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -159,8 +159,10 @@
 - `docs/cookbook/audio/push-to-talk-button` — [Add a Push-to-Talk Voice Button to Your App](pages/docs/cookbook/audio/push-to-talk-button.md) · [原文](https://openrouter.ai/docs/cookbook/audio/push-to-talk-button.md)
 - `docs/cookbook/audio/two-voice-podcast` — [Turn Any Text into a Two-Voice Podcast](pages/docs/cookbook/audio/two-voice-podcast.md) · [原文](https://openrouter.ai/docs/cookbook/audio/two-voice-podcast.md)
 - `docs/cookbook/building-agents/advisor-server-tool` — [Build a Token-Efficient Review Agent](pages/docs/cookbook/building-agents/advisor-server-tool.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/advisor-server-tool.md)
+- `docs/cookbook/building-agents/compact-agent-sessions-with-scaledown` — [Compact Long Agent Sessions with ScaleDown Summarize](pages/docs/cookbook/building-agents/compact-agent-sessions-with-scaledown.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/compact-agent-sessions-with-scaledown.md)
 - `docs/cookbook/building-agents/create-agent-harness-tui` — [Build Your Own Agent TUI](pages/docs/cookbook/building-agents/create-agent-harness-tui.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-agent-harness-tui.md)
 - `docs/cookbook/building-agents/create-headless-agent` — [Build Your Own Headless Agent](pages/docs/cookbook/building-agents/create-headless-agent.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-headless-agent.md)
+- `docs/cookbook/building-agents/detect-agent-loops-with-scaledown` — [Detect Stuck and Looping Agents with ScaleDown Classify](pages/docs/cookbook/building-agents/detect-agent-loops-with-scaledown.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/detect-agent-loops-with-scaledown.md)
 - `docs/cookbook/building-agents/gate-tool-calls-with-jev` — [Gate Agent Tool Calls with Jev](pages/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/gate-tool-calls-with-jev.md)
 - `docs/cookbook/building-agents/hitl-tools` — [Add Human-in-the-Loop Controls to an Agent SDK Agent](pages/docs/cookbook/building-agents/hitl-tools.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/hitl-tools.md)
 - `docs/cookbook/building-agents/long-horizon-agents` — [Build a Long-Horizon Agent](pages/docs/cookbook/building-agents/long-horizon-agents.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/long-horizon-agents.md)
@@ -179,6 +181,7 @@
 - `docs/cookbook/coding-agents/opencode-integration` — [OpenCode](pages/docs/cookbook/coding-agents/opencode-integration.md) · [原文](https://openrouter.ai/docs/cookbook/coding-agents/opencode-integration.md)
 - `docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev` — [Classify Reddit and YouTube Comments with Jev and ScrapeCreators](pages/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev.md)
 - `docs/cookbook/evaluate-and-optimize/distillation` — [Distillation](pages/docs/cookbook/evaluate-and-optimize/distillation.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/distillation.md)
+- `docs/cookbook/evaluate-and-optimize/extract-invoice-fields-with-scaledown` — [Extract Invoice Fields with ScaleDown Extract](pages/docs/cookbook/evaluate-and-optimize/extract-invoice-fields-with-scaledown.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/extract-invoice-fields-with-scaledown.md)
 - `docs/cookbook/evaluate-and-optimize/jev-classification` — [Classify and Tag Text at Scale with Jev](pages/docs/cookbook/evaluate-and-optimize/jev-classification.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-classification.md)
 - `docs/cookbook/evaluate-and-optimize/jev-verified-cascade` — [Cut LLM Cost with a Jev-Verified Cascade](pages/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)

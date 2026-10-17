@@ -91,7 +91,7 @@ A dense vector, also referred to as a vector embedding or simply a vector, is a 
 
 Dense vectors are stored in indexes (see [Index with dense vectors](#index-with-dense-vectors)).
 
-You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/create-an-index#embedding-models) and integrated with an index.
+You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
 
 For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
 
@@ -101,7 +101,7 @@ Sparse vectors are often used to represent documents or queries in a way that ca
 
 Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
 
-Sparse vectors are stored in indexes (see [Index with sparse vectors](#index-with-sparse-vectors)) and can also coexist with dense vectors in a single index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To combine a keyword signal with a dense signal in an index with a document schema, restrict a dense search with a text-match filter on a `string` field with `full_text_search` enabled or run separate searches and merge the results client-side. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/create-an-index#embedding-models) and integrated with an index.
+Sparse vectors are stored in indexes (see [Index with sparse vectors](#index-with-sparse-vectors)) and can also coexist with dense vectors in a single index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To combine a keyword signal with a dense signal in an index with a document schema, restrict a dense search with a text-match filter on a `string` field with `full_text_search` enabled or run separate searches and merge the results client-side. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
 
 For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
 
@@ -154,7 +154,7 @@ For more information, see [Understanding backups](/guides/manage-data/backups-ov
 
 ### Pinecone Inference
 
-Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/create-an-index#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 ### Read unit (RU)
 

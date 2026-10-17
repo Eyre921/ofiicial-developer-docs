@@ -8,7 +8,7 @@ Use a hosted embedding model, monitor fullness, change node types, pause, or con
 
 ## Use a hosted embedding model
 
-To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
+To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/index-configuration#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
 
 To create a dedicated read nodes index with a hosted embedding model, call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to set the node type, shards, and replicas.
 

@@ -60,7 +60,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Generate vectors">
-    Use Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-vectors).
+    Use Pinecone's [hosted embedding models](/guides/index-data/index-configuration#embedding-models) to [convert data into dense and sparse vectors](/reference/api/latest/inference/generate-vectors).
 
     ```python Python [expandable] theme={null}
     # Define the records

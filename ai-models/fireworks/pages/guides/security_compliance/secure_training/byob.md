@@ -52,16 +52,20 @@ gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
   --role=roles/storage.objectViewer
 ```
 
-**Your Company's Fireworks Service Account**
+**Your Fireworks Account Email**
 
-* **Account**: Your company's Fireworks account email (get it with `firectl account get`)
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
+* **Account**: Your company's Fireworks account email (get it with `firectl account get`). Grant it as a `user:` principal, not a service account.
+* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`), in the same role binding as the inference service account above
 
 ```bash theme={null}
 gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
+  --member=user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
   --role=roles/storage.objectViewer
 ```
+
+<Warning>
+  Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
+</Warning>
 
 <Tip>
   After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.

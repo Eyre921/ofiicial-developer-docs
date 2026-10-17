@@ -170,7 +170,7 @@ For example, the following code searches for the 2 records most semantically rel
   ```
 </CodeGroup>
 
-The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/create-an-index#similarity-metrics) for the index.
+The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/index-configuration#similarity-metrics) for the index.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -445,7 +445,7 @@ For example, the following code uses a dense vector representation of the query 
   ```
 </CodeGroup>
 
-The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/create-an-index#similarity-metrics) for the index.
+The response will look as follows. Each record is returned with a similarity score that represents its distance to the query vector, calculated according to the [similarity metric](/guides/index-data/index-configuration#similarity-metrics) for the index.
 
 <CodeGroup>
   ```python Python theme={null}

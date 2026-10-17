@@ -71,8 +71,8 @@ Use either method for:
     Save this dataset as jsonl file locally, for example `einstein_dpo.jsonl`.
   </Step>
 
-  <Step title="Create and upload the dataset">
-    There are a couple ways to upload the dataset to Fireworks platform for training: `firectl`, `Restful API` , `builder SDK` or `UI`.
+  <Step title="Upload the dataset">
+    Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
     <Tabs>
       <Tab title="UI">
@@ -129,6 +129,10 @@ Use either method for:
 
   <Step title="Create a DPO or ORPO Job">
     <Tabs>
+      <Tab title="UI">
+        In the `Training` tab, click `New job` and choose **Direct Preference**, which is how the UI labels DPO. Select your base model and preference dataset, then follow the wizard.
+      </Tab>
+
       <Tab title="firectl">
         ```bash theme={null}
         firectl dpo-job create \
@@ -137,8 +141,6 @@ Use either method for:
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
-
-        For reservation capacity: add `--use-reservation` with firectl (default off). REST and the Python SDK (`>=1.2.8`) default to reservation-first placement; set `useReservation: false` or `use_reservation=False` to opt out. For full-parameter DPO, policy and dedicated reference trainers try independently.
 
         For ORPO, use the same preference dataset and select the ORPO objective:
 
@@ -150,10 +152,52 @@ Use either method for:
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
+      </Tab>
 
-        Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
+      <Tab title="REST API">
+        ```bash theme={null}
+        curl -X POST "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs" \
+          -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "dataset": "accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+            "trainingConfig": {
+              "baseModel": "accounts/fireworks/models/<BASE_MODEL_ID>",
+              "outputModel": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+              "loraRank": 8
+            },
+            "lossConfig": {"method": "DPO"}
+          }'
+        ```
+
+        For ORPO, set `"method": "ORPO"`. If `lossConfig` is omitted, the job uses DPO.
+      </Tab>
+
+      <Tab title="Python SDK">
+        ```python theme={null}
+        from fireworks import Fireworks
+
+        client = Fireworks()  # reads FIREWORKS_API_KEY and FIREWORKS_ACCOUNT_ID
+
+        job = client.dpo_jobs.create(
+            dataset="accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+            training_config={
+                "base_model": "accounts/fireworks/models/<BASE_MODEL_ID>",
+                "output_model": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+                "lora_rank": 8,
+            },
+            loss_config={"method": "DPO"},  # "ORPO" for ORPO
+        )
+        print(job.name)
+        ```
       </Tab>
     </Tabs>
+
+    `firectl` trains a LoRA adapter with rank 8 by default. With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `trainingConfig.loraRank` in the job body, or `training_config={"lora_rank": 8}` in `dpo_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
+
+    Reservation placement is off unless you request it: add `--use-reservation` with firectl, set `useReservation: true` in the REST body, or pass `use_reservation=True` to `dpo_jobs.create(...)` in the Python SDK. With a matching active reservation, the job runs only on that reservation, not on shared capacity; without one, the setting is ignored. For full-parameter DPO, policy and dedicated reference trainers try independently.
+
+    Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
   </Step>
 
   <Step title="Monitor the preference job">
@@ -163,13 +207,27 @@ Use either method for:
         firectl dpo-job get dpo-job-id
         ```
       </Tab>
+
+      <Tab title="REST API">
+        ```bash theme={null}
+        curl "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs/<DPO_JOB_ID>" \
+          -H "Authorization: Bearer $FIREWORKS_API_KEY"
+        ```
+      </Tab>
+
+      <Tab title="Python SDK">
+        ```python theme={null}
+        job = client.dpo_jobs.get("<DPO_JOB_ID>")
+        print(job.state)
+        ```
+      </Tab>
     </Tabs>
 
-    Once the job is complete, the `STATE` will be set to `JOB_STATE_COMPLETED`, and the trained model can be deployed.
+    Once the job is complete, the state is `JOB_STATE_COMPLETED`, and the trained model can be deployed.
   </Step>
 
   <Step title="Deploy the DPO trained model">
-    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details.
+    Once training completes, you can create a deployment to interact with the trained model. Refer to [deploying a trained model](/fine-tuning/fine-tuning-models#deploying-a-trained-model) for more details. Deployments scale to zero when idle, and the first request after that returns 503 while the deployment scales back up; see [Scaling from zero behavior](/deployments/autoscaling#scaling-from-zero-behavior).
   </Step>
 </Steps>
 

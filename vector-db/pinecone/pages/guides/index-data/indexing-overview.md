@@ -124,7 +124,7 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 Integrated-embedding indexes are created with `pc.create_index_for_model` and read and written through the Records API. Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
 
-1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/create-an-index#embedding-models).
+1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 2. [Upsert](/guides/index-data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
 3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
 

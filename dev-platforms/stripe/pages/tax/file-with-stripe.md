@@ -104,7 +104,7 @@ Stripe files your sales tax returns based on the amount of tax you actually coll
 
 ### View additional transaction details
 
-The details for each location will show the transactions Stripe will include in your filing. To review additional transaction-level detail, you can either click on any individual transaction or export itemized transaction data from Stripe.
+The details for each location will show the transactions Stripe will include in your filing. To review additional transaction-level detail, you can either click any individual transaction or export itemized transaction data from Stripe.
 
 1. Log in to the [Stripe Dashboard](https://dashboard.stripe.com/).
 2. Select **+ Quick actions > Export transactions**.

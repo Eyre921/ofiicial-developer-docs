@@ -178,15 +178,17 @@ This doubles as your setup check: if it prints a session id beginning with `ts-`
 
 ### Step 4: Train, checkpoint, and sample
 
-The complete example defines `datums`, `tinker`, `tokenizer`, `prompt`, and
+The complete example defines `datums`, `tokenizer`, `prompt`, and
 `params`, and rejects prompt plus completion lengths above `max_seq_len`. The
 excerpt below shows the operation order:
 
 ```python theme={null}
+from fireworks.training.sdk import AdamParams
+
 # One optimizer step
 training_client.forward_backward(datums, "importance_sampling").result()
 training_client.optim_step(
-    tinker.AdamParams(learning_rate=2.5e-5, beta1=0.9, beta2=0.95, eps=1e-8, weight_decay=0.0)
+    AdamParams(learning_rate=2.5e-5, beta1=0.9, beta2=0.95, eps=1e-8, weight_decay=0.0)
 ).result()
 
 # Save weights and open a sampler bound to that exact snapshot
@@ -382,7 +384,14 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 ### Capacity and rate limits
 
-* **Concurrent runs:** The default quota is 8, although account overrides may differ. Slots are released when runs become terminal after session expiration.
+* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires.
+* **Free a slot now:** Closing the client does not end the session right away. To release its slot, promote any checkpoint you need, then delete the session (`service.training_session_id`, which starts with `ts-`):
+
+  ```bash theme={null}
+  curl -X DELETE \
+    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+    https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/trainingSessions/<SESSION_ID>
+  ```
 * **Request and token limits:** Contact Fireworks for the current limits on your account.
 * **Shared-pool capacity:** if the pool is full, `create_lora_training_client` returns an out-of-capacity error; retry, or switch to the dedicated path.
 
