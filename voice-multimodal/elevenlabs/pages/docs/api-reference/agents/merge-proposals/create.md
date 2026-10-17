@@ -72,9 +72,9 @@ Validation Error
 
 ```json
 {
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "title": "string"
+  "source_branch_id": "branch_8x2mq9nfvp34krd1c6wjt7yhaelo5",
+  "target_branch_id": "branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu",
+  "title": "Add multilingual greeting support to onboarding flow"
 }
 ```
 
@@ -82,7 +82,7 @@ Validation Error
 
 ```json
 {
-  "created_merge_proposal_id": "string"
+  "created_merge_proposal_id": "mp_5v9kn2rwqx47ydj8b1czt6mhfpuoe3"
 }
 ```
 
@@ -94,9 +94,9 @@ import requests
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals"
 
 payload = {
-    "source_branch_id": "string",
-    "target_branch_id": "string",
-    "title": "string"
+    "source_branch_id": "branch_8x2mq9nfvp34krd1c6wjt7yhaelo5",
+    "target_branch_id": "branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu",
+    "title": "Add multilingual greeting support to onboarding flow"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -110,7 +110,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"source_branch_id":"string","target_branch_id":"string","title":"string"}'
+  body: '{"source_branch_id":"branch_8x2mq9nfvp34krd1c6wjt7yhaelo5","target_branch_id":"branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu","title":"Add multilingual greeting support to onboarding flow"}'
 };
 
 try {
@@ -136,7 +136,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals"
 
-	payload := strings.NewReader("{\n  \"source_branch_id\": \"string\",\n  \"target_branch_id\": \"string\",\n  \"title\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"source_branch_id\": \"branch_8x2mq9nfvp34krd1c6wjt7yhaelo5\",\n  \"target_branch_id\": \"branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu\",\n  \"title\": \"Add multilingual greeting support to onboarding flow\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -164,7 +164,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"source_branch_id\": \"string\",\n  \"target_branch_id\": \"string\",\n  \"title\": \"string\"\n}"
+request.body = "{\n  \"source_branch_id\": \"branch_8x2mq9nfvp34krd1c6wjt7yhaelo5\",\n  \"target_branch_id\": \"branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu\",\n  \"title\": \"Add multilingual greeting support to onboarding flow\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -176,7 +176,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals")
   .header("Content-Type", "application/json")
-  .body("{\n  \"source_branch_id\": \"string\",\n  \"target_branch_id\": \"string\",\n  \"title\": \"string\"\n}")
+  .body("{\n  \"source_branch_id\": \"branch_8x2mq9nfvp34krd1c6wjt7yhaelo5\",\n  \"target_branch_id\": \"branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu\",\n  \"title\": \"Add multilingual greeting support to onboarding flow\"\n}")
   .asString();
 ```
 
@@ -188,9 +188,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals', [
   'body' => '{
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "title": "string"
+  "source_branch_id": "branch_8x2mq9nfvp34krd1c6wjt7yhaelo5",
+  "target_branch_id": "branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu",
+  "title": "Add multilingual greeting support to onboarding flow"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -206,7 +206,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"source_branch_id\": \"string\",\n  \"target_branch_id\": \"string\",\n  \"title\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"source_branch_id\": \"branch_8x2mq9nfvp34krd1c6wjt7yhaelo5\",\n  \"target_branch_id\": \"branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu\",\n  \"title\": \"Add multilingual greeting support to onboarding flow\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -215,9 +215,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "title": "string"
+  "source_branch_id": "branch_8x2mq9nfvp34krd1c6wjt7yhaelo5",
+  "target_branch_id": "branch_main_4k7tz2nqvr19pxw3b8cjm6ysdfehu",
+  "title": "Add multilingual greeting support to onboarding flow"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

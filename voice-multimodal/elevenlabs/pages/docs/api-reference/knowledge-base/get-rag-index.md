@@ -82,12 +82,12 @@ Validation Error
 {
   "indexes": [
     {
-      "id": "ragidx_9f8b7c6d5e4a3b2c1d0e",
+      "id": "21m00Tcm4TlvDq8ikWAM",
       "model": "e5_mistral_7b_instruct",
-      "status": "processing",
-      "progress_percentage": 45.7,
+      "status": "succeeded",
+      "progress_percentage": 100,
       "document_model_index_usage": {
-        "used_bytes": 5242880
+        "used_bytes": 204800
       }
     }
   ]

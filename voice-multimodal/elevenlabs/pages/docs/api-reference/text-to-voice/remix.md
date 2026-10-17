@@ -96,7 +96,7 @@ Validation Error
 
 ```json
 {
-  "voice_description": "Make the voice have a higher pitch and a more energetic tone."
+  "voice_description": "Make the voice have a higher pitch."
 }
 ```
 
@@ -106,11 +106,11 @@ Validation Error
 {
   "previews": [
     {
-      "audio_base_64": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=",
-      "generated_voice_id": "remix_7f3a2b9c8d4e5f6a7b8c9d0e",
+      "audio_base_64": "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhAC",
+      "generated_voice_id": "9F4C8IG7cm4T1EAKqnVn",
       "media_type": "audio/mpeg",
-      "duration_secs": 12.5,
-      "language": "en-US"
+      "duration_secs": 5.4,
+      "language": "en"
     }
   ],
   "text": "Every act of kindness, no matter how small, carries value and can make a difference, as no gesture of goodwill is ever wasted."
@@ -124,7 +124,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix"
 
-payload = { "voice_description": "Make the voice have a higher pitch and a more energetic tone." }
+payload = { "voice_description": "Make the voice have a higher pitch." }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -137,7 +137,7 @@ const url = 'https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/rem
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"voice_description":"Make the voice have a higher pitch and a more energetic tone."}'
+  body: '{"voice_description":"Make the voice have a higher pitch."}'
 };
 
 try {
@@ -163,7 +163,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix"
 
-	payload := strings.NewReader("{\n  \"voice_description\": \"Make the voice have a higher pitch and a more energetic tone.\"\n}")
+	payload := strings.NewReader("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -191,7 +191,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"voice_description\": \"Make the voice have a higher pitch and a more energetic tone.\"\n}"
+request.body = "{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -203,7 +203,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix")
   .header("Content-Type", "application/json")
-  .body("{\n  \"voice_description\": \"Make the voice have a higher pitch and a more energetic tone.\"\n}")
+  .body("{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}")
   .asString();
 ```
 
@@ -215,7 +215,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix', [
   'body' => '{
-  "voice_description": "Make the voice have a higher pitch and a more energetic tone."
+  "voice_description": "Make the voice have a higher pitch."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -231,7 +231,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/text-to-voice/21m00Tcm4TlvDq8ikWAM/remix");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"voice_description\": \"Make the voice have a higher pitch and a more energetic tone.\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"voice_description\": \"Make the voice have a higher pitch.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -239,7 +239,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["voice_description": "Make the voice have a higher pitch and a more energetic tone."] as [String : Any]
+let parameters = ["voice_description": "Make the voice have a higher pitch."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

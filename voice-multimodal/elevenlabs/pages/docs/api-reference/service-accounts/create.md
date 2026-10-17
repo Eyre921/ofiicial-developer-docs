@@ -70,7 +70,7 @@ Validation Error
 
 ```json
 {
-  "name": "analytics-service-account"
+  "name": "Production TTS Service Account"
 }
 ```
 
@@ -78,7 +78,7 @@ Validation Error
 
 ```json
 {
-  "service-account-user-id": "svc-123e4567-e89b-12d3-a456-426614174000"
+  "service-account-user-id": "sa_3f8a2b1c9d4e5f6a7b8c9d0e"
 }
 ```
 
@@ -89,7 +89,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/service-accounts"
 
-payload = { "name": "analytics-service-account" }
+payload = { "name": "Production TTS Service Account" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -102,7 +102,7 @@ const url = 'https://api.elevenlabs.io/v1/service-accounts';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"name":"analytics-service-account"}'
+  body: '{"name":"Production TTS Service Account"}'
 };
 
 try {
@@ -128,7 +128,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts"
 
-	payload := strings.NewReader("{\n  \"name\": \"analytics-service-account\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"Production TTS Service Account\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -156,7 +156,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"analytics-service-account\"\n}"
+request.body = "{\n  \"name\": \"Production TTS Service Account\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -168,7 +168,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/service-accounts")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"analytics-service-account\"\n}")
+  .body("{\n  \"name\": \"Production TTS Service Account\"\n}")
   .asString();
 ```
 
@@ -180,7 +180,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/service-accounts', [
   'body' => '{
-  "name": "analytics-service-account"
+  "name": "Production TTS Service Account"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -196,7 +196,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"analytics-service-account\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"Production TTS Service Account\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -204,7 +204,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "analytics-service-account"] as [String : Any]
+let parameters = ["name": "Production TTS Service Account"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

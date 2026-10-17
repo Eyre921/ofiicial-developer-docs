@@ -71,12 +71,12 @@ Validation Error
 
 ```json
 {
-  "tag_id": "tag_9f8b7c6d5e4a3b2c1d0e",
-  "workspace_id": "workspace_1234567890abcdef",
-  "owner_user_id": "user_9876543210fedcba",
+  "tag_id": "tag_9f8e7d6c5b4a3210",
+  "workspace_id": "wsp_3a2b1c4d5e6f7890",
+  "owner_user_id": "usr_1234567890abcdef",
   "title": "Customer Support",
-  "description": "Tags related to customer support conversations and issues.",
-  "created_at_unix_secs": 1685606400
+  "description": "Tag for conversations related to customer support inquiries",
+  "created_at_unix_secs": 1711900200
 }
 ```
 

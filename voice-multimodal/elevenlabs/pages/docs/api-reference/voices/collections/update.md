@@ -78,9 +78,9 @@ Validation Error
 
 ```json
 {
-  "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
-  "title": "My Favorite Voices",
-  "icon": "🎤",
+  "collection_id": "a1b2c3d4e5f6789012345678",
+  "title": "My Favorite Narrators",
+  "icon": "microphone",
   "permission_on_resource": "editor"
 }
 ```

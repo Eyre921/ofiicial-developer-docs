@@ -95,7 +95,7 @@ Validation Error
 {
   "items": [
     {
-      "document_id": "doc_9f8b7c6a2d3e4f1a",
+      "document_id": "doc_3f8a2b1c9e4d7f6a",
       "create_if_missing": true,
       "model": "e5_mistral_7b_instruct"
     }
@@ -106,7 +106,20 @@ Validation Error
 **Response**
 
 ```json
-{}
+{
+  "key": {
+    "status": "success",
+    "data": {
+      "id": "idx_7c4e9a2d1b8f3e5c",
+      "model": "e5_mistral_7b_instruct",
+      "status": "succeeded",
+      "progress_percentage": 100,
+      "document_model_index_usage": {
+        "used_bytes": 204800
+      }
+    }
+  }
+}
 ```
 
 **SDK Code**
@@ -118,7 +131,7 @@ url = "https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index"
 
 payload = { "items": [
         {
-            "document_id": "doc_9f8b7c6a2d3e4f1a",
+            "document_id": "doc_3f8a2b1c9e4d7f6a",
             "create_if_missing": True,
             "model": "e5_mistral_7b_instruct"
         }
@@ -135,7 +148,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"items":[{"document_id":"doc_9f8b7c6a2d3e4f1a","create_if_missing":true,"model":"e5_mistral_7b_instruct"}]}'
+  body: '{"items":[{"document_id":"doc_3f8a2b1c9e4d7f6a","create_if_missing":true,"model":"e5_mistral_7b_instruct"}]}'
 };
 
 try {
@@ -161,7 +174,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index"
 
-	payload := strings.NewReader("{\n  \"items\": [\n    {\n      \"document_id\": \"doc_9f8b7c6a2d3e4f1a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}")
+	payload := strings.NewReader("{\n  \"items\": [\n    {\n      \"document_id\": \"doc_3f8a2b1c9e4d7f6a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -189,7 +202,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"items\": [\n    {\n      \"document_id\": \"doc_9f8b7c6a2d3e4f1a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}"
+request.body = "{\n  \"items\": [\n    {\n      \"document_id\": \"doc_3f8a2b1c9e4d7f6a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -201,7 +214,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index")
   .header("Content-Type", "application/json")
-  .body("{\n  \"items\": [\n    {\n      \"document_id\": \"doc_9f8b7c6a2d3e4f1a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}")
+  .body("{\n  \"items\": [\n    {\n      \"document_id\": \"doc_3f8a2b1c9e4d7f6a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}")
   .asString();
 ```
 
@@ -215,7 +228,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowle
   'body' => '{
   "items": [
     {
-      "document_id": "doc_9f8b7c6a2d3e4f1a",
+      "document_id": "doc_3f8a2b1c9e4d7f6a",
       "create_if_missing": true,
       "model": "e5_mistral_7b_instruct"
     }
@@ -235,7 +248,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"items\": [\n    {\n      \"document_id\": \"doc_9f8b7c6a2d3e4f1a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"items\": [\n    {\n      \"document_id\": \"doc_3f8a2b1c9e4d7f6a\",\n      \"create_if_missing\": true,\n      \"model\": \"e5_mistral_7b_instruct\"\n    }\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -245,7 +258,7 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = ["items": [
     [
-      "document_id": "doc_9f8b7c6a2d3e4f1a",
+      "document_id": "doc_3f8a2b1c9e4d7f6a",
       "create_if_missing": true,
       "model": "e5_mistral_7b_instruct"
     ]

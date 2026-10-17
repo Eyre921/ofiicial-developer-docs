@@ -124,7 +124,7 @@ Validation Error
 
 ```json
 {
-  "body": "string"
+  "body": "I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing."
 }
 ```
 
@@ -132,39 +132,39 @@ Validation Error
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "source_tip_version_id_at_creation": "string",
-  "title": "string",
-  "created_at": 1,
-  "updated_at": 1,
-  "description": "",
+  "id": "agtmprop_8901k4t9z5defmb8vh3e9361y7nj",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "source_branch_id": "branch_4521m7ppbq34fxr9c8sv6tguabcd",
+  "target_branch_id": "branch_1100a2kkzm89wxq5d3nt7yruvefg",
+  "source_tip_version_id_at_creation": "ver_7712b9ccnr56hyt4e1mw8zspqrst",
+  "title": "Add multilingual support and improved fallback responses",
+  "created_at": 1717948800,
+  "updated_at": 1718121600,
+  "description": "This proposal introduces multilingual handling for Spanish and French, along with improved fallback messages when the agent cannot understand the user's intent.",
   "requested_reviewer_user_ids": [
-    "string"
+    "user_5523f8ddos67iuz5f2nx9atbcdef"
   ],
   "reviews": [
     {
-      "user_id": "string",
+      "user_id": "user_5523f8ddos67iuz5f2nx9atbcdef",
       "state": "approved",
-      "submitted_at": 1,
-      "comment": "",
-      "reviewer_role": "admin"
+      "submitted_at": 1718035200,
+      "comment": "The multilingual support looks solid. Approved with minor suggestions.",
+      "reviewer_role": "editor"
     }
   ],
   "comments": [
     {
-      "id": "string",
-      "user_id": "string",
-      "body": "string",
-      "created_at": 1
+      "id": "cmt_9934g1eept78jva6g3oy0bucdghi",
+      "user_id": "user_6634g9eept78jva6g3oy0buvwxyz",
+      "body": "I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing.",
+      "created_at": 1718121600
     }
   ],
   "outcome": {
     "status": "open"
   },
-  "author_user_id": "string",
+  "author_user_id": "user_6634g9eept78jva6g3oy0buvwxyz",
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",
@@ -182,7 +182,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj/comments"
 
-payload = { "body": "string" }
+payload = { "body": "I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing." }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -195,7 +195,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"body":"string"}'
+  body: '{"body":"I\'ve reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing."}'
 };
 
 try {
@@ -221,7 +221,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj/comments"
 
-	payload := strings.NewReader("{\n  \"body\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"body\": \"I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -249,7 +249,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"body\": \"string\"\n}"
+request.body = "{\n  \"body\": \"I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -261,7 +261,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj/comments")
   .header("Content-Type", "application/json")
-  .body("{\n  \"body\": \"string\"\n}")
+  .body("{\n  \"body\": \"I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing.\"\n}")
   .asString();
 ```
 
@@ -273,7 +273,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj/comments', [
   'body' => '{
-  "body": "string"
+  "body": "I\'ve reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -289,7 +289,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj/comments");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"body\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"body\": \"I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -297,7 +297,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["body": "string"] as [String : Any]
+let parameters = ["body": "I've reviewed the updated prompt configuration and the fallback handling looks good. One suggestion: consider adding a more explicit error message when the user provides an unsupported language code, as the current response may be confusing."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

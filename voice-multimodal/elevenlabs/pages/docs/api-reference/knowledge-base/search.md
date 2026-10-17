@@ -266,26 +266,26 @@ Metadata for a KB folder that mirrors an external source folder.
           "role": "admin",
           "access_source": "creator"
         },
-        "id": "d4f7a9e2-3c1b-4f8a-9b2d-5e6f7a8c9d0e",
+        "id": "kb_doc_3f8a2c1e9b4d7e6f",
         "metadata": {
-          "created_at_unix_secs": 1688208000,
-          "last_updated_at_unix_secs": 1690886400,
-          "size_bytes": 2540000
+          "created_at_unix_secs": 1710000000,
+          "last_updated_at_unix_secs": 1712500000,
+          "size_bytes": 204800
         },
-        "name": "Introduction to Machine Learning.pdf",
+        "name": "ElevenLabs API Voice Cloning Guide",
         "supported_usages": [
           "auto"
         ],
-        "url": "https://example.com/resources/intro-to-ml.pdf",
+        "url": "https://elevenlabs.io/docs/api-reference/voice-cloning",
         "dependent_agents": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1672531200,
-            "id": "agent-1234",
-            "name": "ML Assistant",
+            "created_at_unix_secs": 1709500000,
+            "id": "agent_7c9e2f4a1b8d3e5f",
+            "name": "Customer Support Agent",
             "referenced_resource_ids": [
-              "agent-1234"
+              "kb_doc_3f8a2c1e9b4d7e6f"
             ]
           }
         ],
@@ -293,33 +293,34 @@ Metadata for a KB folder that mirrors an external source folder.
           "minimum_frequency_days": 7,
           "auto_remove": false,
           "consec_failures": 0,
-          "next_refresh_by": 1693497600,
+          "next_refresh_by": 1713100000,
           "auto_discover": false
         },
-        "folder_parent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "folder_parent_id": "folder_a1b2c3d4e5f6",
         "folder_path": [
           {
-            "id": "root-folder-001"
-          },
-          {
-            "id": "ml-resources-folder"
+            "id": "folder_a1b2c3d4e5f6"
           }
         ]
       },
-      "score": 0.95,
+      "score": 0.92,
       "search_snippet": [
         {
-          "value": "Machine learning is a subset of artificial intelligence that provides systems the ability to automatically learn and improve from experience without being explicitly programmed.",
+          "value": "To clone a voice using the ElevenLabs API, you must first upload at least one audio sample. ",
+          "is_hit": false
+        },
+        {
+          "value": "voice cloning",
           "is_hit": true
         },
         {
-          "value": "This document covers supervised and unsupervised learning techniques.",
+          "value": " requires a minimum of 1 minute of clear audio for best results.",
           "is_hit": false
         }
       ]
     }
   ],
-  "next_cursor": "eyJwYWdlIjoxLCJpZCI6ImQ0ZjdhOWUyLTNjMWItNGY4YS05YjJkLTVlNmY3YThjOWQwZSJ9"
+  "next_cursor": "eyJwYWdlIjoyLCJsaW1pdCI6MzB9"
 }
 ```
 
@@ -330,13 +331,10 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/search"
 
-querystring = {"cursor":"eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0=","page_size":"25","query":"machine learning algorithms","types":"[\"file\",\"url\"]"}
+querystring = {"query":"query"}
 
 payload = {}
-headers = {
-    "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-    "Content-Type": "application/json"
-}
+headers = {"Content-Type": "application/json"}
 
 response = requests.get(url, json=payload, headers=headers, params=querystring)
 
@@ -344,15 +342,8 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D';
-const options = {
-  method: 'GET',
-  headers: {
-    'xi-api-key': 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
-    'Content-Type': 'application/json'
-  },
-  body: '{}'
-};
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query';
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -375,13 +366,12 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query"
 
 	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("GET", url, payload)
 
-	req.Header.Add("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
 	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -399,13 +389,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c'
 request["Content-Type"] = 'application/json'
 request.body = "{}"
 
@@ -417,8 +406,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D")
-  .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -430,11 +418,10 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
   ],
 ]);
 
@@ -444,9 +431,8 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -455,15 +441,12 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-  "Content-Type": "application/json"
-]
+let headers = ["Content-Type": "application/json"]
 let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxLCJpZCI6IjYyMzQ1In0%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22url%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

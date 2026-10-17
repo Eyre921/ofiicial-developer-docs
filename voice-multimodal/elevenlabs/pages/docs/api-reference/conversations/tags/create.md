@@ -69,7 +69,7 @@ Validation Error
 
 ```json
 {
-  "title": "Urgent Support"
+  "title": "Escalated Support"
 }
 ```
 
@@ -77,12 +77,12 @@ Validation Error
 
 ```json
 {
-  "tag_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef56gh78",
-  "workspace_id": "workspace_987654321",
-  "owner_user_id": "user_123456789",
-  "title": "Urgent Support",
-  "description": "Tag for conversations requiring immediate attention",
-  "created_at_unix_secs": 1712000000
+  "tag_id": "tag_3f8a2b1c9d4e5f6a7b8c9d0e",
+  "workspace_id": "wsp_1a2b3c4d5e6f7a8b9c0d1e2f",
+  "owner_user_id": "usr_9c8b7a6f5e4d3c2b1a0f9e8d",
+  "title": "Escalated Support",
+  "description": "Conversations that have been escalated to a human support agent for further assistance.",
+  "created_at_unix_secs": 1718035200
 }
 ```
 
@@ -93,7 +93,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/tags"
 
-payload = { "title": "Urgent Support" }
+payload = { "title": "Escalated Support" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -106,7 +106,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/tags';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"title":"Urgent Support"}'
+  body: '{"title":"Escalated Support"}'
 };
 
 try {
@@ -132,7 +132,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/tags"
 
-	payload := strings.NewReader("{\n  \"title\": \"Urgent Support\"\n}")
+	payload := strings.NewReader("{\n  \"title\": \"Escalated Support\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -160,7 +160,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"title\": \"Urgent Support\"\n}"
+request.body = "{\n  \"title\": \"Escalated Support\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -172,7 +172,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/tags")
   .header("Content-Type", "application/json")
-  .body("{\n  \"title\": \"Urgent Support\"\n}")
+  .body("{\n  \"title\": \"Escalated Support\"\n}")
   .asString();
 ```
 
@@ -184,7 +184,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/tags', [
   'body' => '{
-  "title": "Urgent Support"
+  "title": "Escalated Support"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -200,7 +200,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/tags");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"title\": \"Urgent Support\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"title\": \"Escalated Support\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -208,7 +208,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["title": "Urgent Support"] as [String : Any]
+let parameters = ["title": "Escalated Support"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -118,39 +118,39 @@ Validation Error
 {
   "results": [
     {
-      "id": "invocation_8f3a2b7c-4d9e-4a1f-9b2e-3c7d5e6f8a9b",
-      "created_at_unix_secs": 1685606400,
-      "test_run_count": 25,
-      "passed_count": 20,
-      "failed_count": 3,
+      "id": "inv_3f8a2b1c9d4e5f6a7b8c9d0e",
+      "created_at_unix_secs": 1718035200,
+      "test_run_count": 12,
+      "passed_count": 9,
+      "failed_count": 2,
       "pending_count": 1,
-      "cancelled_count": 1,
-      "title": "Regression Test Suite - April 2024",
-      "agent_id": "agent_123e4567-e89b-12d3-a456-426614174000",
-      "branch_id": "branch_main",
-      "version_id": "v1.2.3",
+      "cancelled_count": 0,
+      "title": "Customer Support Suite",
+      "agent_id": "agt_7c2d4e6f8a1b3c5d7e9f0a2b",
+      "branch_id": "brn_1a2b3c4d5e6f7a8b9c0d1e2f",
+      "version_id": "ver_9e8d7c6b5a4f3e2d1c0b9a8f",
       "ran_against_draft": false,
       "runs_diverged_from_version": false,
       "access_info": {
         "is_creator": true,
-        "creator_name": "Alice Johnson",
-        "creator_email": "alice.johnson@elevenlabs.io",
+        "creator_name": "John Doe",
+        "creator_email": "john.doe@example.com",
         "role": "admin",
         "access_source": "creator"
       },
-      "repeat_count": 1,
+      "repeat_count": 3,
       "cancelled": false,
-      "credits_used": 150,
-      "total_price": 12.75
+      "credits_used": 1450,
+      "total_price": 0.29
     }
   ],
-  "has_more": false,
+  "has_more": true,
   "meta": {
-    "total": 1,
+    "total": 47,
     "page": 1,
     "page_size": 30
   },
-  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
+  "next_cursor": "eyJpZCI6Imludl8zZjhhMmIxYzlkNGU1ZjZhN2I4YzlkMGUiLCJjcmVhdGVkX2F0IjoxNzE4MDM1MjAwfQ=="
 }
 ```
 

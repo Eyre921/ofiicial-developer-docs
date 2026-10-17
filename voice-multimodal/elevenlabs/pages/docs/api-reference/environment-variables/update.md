@@ -105,16 +105,14 @@ Validation Error
 
 ```json
 {
-  "label": "DATABASE_URL",
-  "created_at_unix_secs": 1685600000,
-  "updated_at_unix_secs": 1688201600,
-  "type": "string",
-  "id": "envvar_123abc456def",
-  "workspace_id": "workspace_789xyz123",
-  "values": {
-    "key": "postgres://user:password@db.example.com:5432/mydatabase"
-  },
-  "created_by_user_id": "user_987654321"
+  "label": "OPENAI_API_KEY",
+  "created_at_unix_secs": 1710510600,
+  "updated_at_unix_secs": 1710597000,
+  "type": "secret",
+  "id": "env_var_7fHjKmNpQxTvWsYd",
+  "workspace_id": "ws_4bCdEfGhIjKlMnOp",
+  "values": {},
+  "created_by_user_id": "user_3kR9mNpQxTvWsYdL"
 }
 ```
 

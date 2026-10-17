@@ -221,41 +221,41 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ```json
 {
+  "type": "url",
   "access_info": {
-    "access_source": "creator",
-    "creator_email": "john.doe@example.com",
-    "creator_name": "John Doe",
     "is_creator": true,
-    "role": "admin"
+    "creator_name": "John Doe",
+    "creator_email": "john.doe@example.com",
+    "role": "admin",
+    "access_source": "creator"
   },
-  "auto_sync_info": {
-    "auto_discover": false,
-    "auto_remove": false,
-    "consec_failures": 0,
-    "minimum_frequency_days": 7,
-    "next_refresh_by": 1
-  },
-  "content_format": "html",
-  "extracted_inner_html": "string",
-  "folder_parent_id": "string",
-  "folder_path": [
-    {
-      "id": "string",
-      "name": "string"
-    }
-  ],
-  "id": "string",
+  "extracted_inner_html": "<h1>Frequently Asked Questions</h1><p>Welcome to our product FAQ page. Here you will find answers to the most common questions about our platform.</p>",
+  "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1,
-    "last_updated_at_unix_secs": 1,
-    "size_bytes": 1
+    "created_at_unix_secs": 1710000000,
+    "last_updated_at_unix_secs": 1710086400,
+    "size_bytes": 24576
   },
-  "name": "string",
+  "name": "Product FAQ Documentation",
   "supported_usages": [
     "auto"
   ],
-  "type": "string",
-  "url": "string"
+  "url": "https://docs.example.com/product/faq",
+  "auto_sync_info": {
+    "minimum_frequency_days": 7,
+    "auto_remove": false,
+    "consec_failures": 0,
+    "next_refresh_by": 1710691200,
+    "auto_discover": false
+  },
+  "content_format": "html",
+  "folder_parent_id": "9BkTRm2XpQwNs5cLvEaF",
+  "folder_path": [
+    {
+      "id": "3Hk9PnWqYtMxRdCuJbLs",
+      "name": "Support Documents"
+    }
+  ]
 }
 ```
 

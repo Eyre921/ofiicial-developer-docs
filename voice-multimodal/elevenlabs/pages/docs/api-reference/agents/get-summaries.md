@@ -97,56 +97,7 @@ Validation Error
 **Response**
 
 ```json
-{
-  "J3Pbu5gP6NNKBscdCdwB": {
-    "status": "success",
-    "data": {
-      "agent_id": "J3Pbu5gP6NNKBscdCdwB",
-      "name": "Customer Support Bot",
-      "voice_id": "UCaNsl8F6Xh4GALkVMLS",
-      "tags": [
-        "Customer Support",
-        "FAQ",
-        "English"
-      ],
-      "created_at_unix_secs": 1688208000,
-      "access_info": {
-        "is_creator": true,
-        "creator_name": "Alice Johnson",
-        "creator_email": "alice.johnson@company.com",
-        "role": "admin",
-        "anonymous_access_level_override": null,
-        "access_source": "creator"
-      },
-      "last_call_time_unix_secs": 1688294400,
-      "archived": false
-    }
-  },
-  "K4Qcu6hQ7OOLCtdeDeXC": {
-    "status": "success",
-    "data": {
-      "agent_id": "K4Qcu6hQ7OOLCtdeDeXC",
-      "name": "Technical Help Assistant",
-      "voice_id": "VbXyT9F7Zk3QWErtyLNM",
-      "tags": [
-        "Technical Support",
-        "Troubleshooting",
-        "English"
-      ],
-      "created_at_unix_secs": 1688121600,
-      "access_info": {
-        "is_creator": false,
-        "creator_name": "Bob Smith",
-        "creator_email": "bob.smith@company.com",
-        "role": "editor",
-        "anonymous_access_level_override": "viewer",
-        "access_source": "explicit"
-      },
-      "last_call_time_unix_secs": null,
-      "archived": false
-    }
-  }
-}
+{}
 ```
 
 **SDK Code**
@@ -156,7 +107,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/summaries"
 
-querystring = {"agent_ids":"[\"J3Pbu5gP6NNKBscdCdwB\",\"K4Qcu6hQ7OOLCtdeDeXC\"]"}
+querystring = {"agent_ids":"[\"J3Pbu5gP6NNKBscdCdwB\"]"}
 
 payload = {}
 headers = {"Content-Type": "application/json"}
@@ -167,7 +118,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D';
+const url = 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D';
 const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
@@ -191,7 +142,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D"
 
 	payload := strings.NewReader("{}")
 
@@ -214,7 +165,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -231,7 +182,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -243,7 +194,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -256,7 +207,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -271,7 +222,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

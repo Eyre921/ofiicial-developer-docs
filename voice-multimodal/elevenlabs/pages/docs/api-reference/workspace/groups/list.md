@@ -95,67 +95,7 @@ Validation Error
 **Response**
 
 ```json
-{
-  "engineering_group": {
-    "name": "Engineering",
-    "id": "grp_9a7b6c5d4e3f2108",
-    "members": [
-      "user_11223",
-      "user_44556",
-      "user_77889",
-      "user_99001"
-    ],
-    "permissions": [
-      "text_to_speech",
-      "speech_to_text",
-      "voice_lab",
-      "voice_isolator",
-      "ai_speech_classifier",
-      "workspace_analytics_full_read",
-      "service_accounts_manage"
-    ],
-    "group_usage_limit": "unlimited",
-    "group_pvc_limit": 1000,
-    "group_concurrency_limit": "unlimited",
-    "group_dubbing_concurrency_limit": 8,
-    "group_music_concurrency_limit": 4,
-    "character_count": null,
-    "is_scim_synced": false,
-    "scim_group": null,
-    "scim_frozen": false
-  },
-  "marketing_team": {
-    "name": "Marketing Team",
-    "id": "grp_8f3b2c1d4e5f6789",
-    "members": [
-      "user_12345",
-      "user_67890",
-      "user_54321"
-    ],
-    "permissions": [
-      "text_to_speech",
-      "voice_lab",
-      "projects",
-      "workspace_members_invite",
-      "group_members_manage"
-    ],
-    "group_usage_limit": 500000,
-    "group_pvc_limit": "unlimited",
-    "group_concurrency_limit": 10,
-    "group_dubbing_concurrency_limit": 5,
-    "group_music_concurrency_limit": 3,
-    "character_count": 1200000,
-    "is_scim_synced": true,
-    "scim_group": {
-      "scim_external_id": "scim-7890-marketing",
-      "display_name": "Marketing Team SCIM",
-      "created_at_unix": 1672531200,
-      "updated_at_unix": 1688208000,
-      "seat_type": "workspace_member"
-    },
-    "scim_frozen": false
-  }
-}
+{}
 ```
 
 **SDK Code**

@@ -117,41 +117,41 @@ Validation Error
 {
   "users": [
     {
-      "user_id": "user_9f8b7c6d5e4a3b2c1d0e",
-      "last_contact_unix_secs": 1685404800,
-      "first_contact_unix_secs": 1677628800,
-      "conversation_count": 42,
-      "last_contact_conversation_id": "conv_5a3f9b8c7d6e4f2a1b0c",
+      "user_id": "user_8f3k2mxp9qrst4uvwxyz1234",
+      "last_contact_unix_secs": 1718035200,
+      "first_contact_unix_secs": 1715356800,
+      "conversation_count": 14,
+      "last_contact_conversation_id": "conv_9a2b4c6d8e0f1a3b5c7d9e2f",
       "sentiment": {
-        "scored_conversation_count": 40,
-        "positive_count": 25,
-        "neutral_count": 10,
-        "negative_count": 5,
-        "average_sentiment_score": 0.75,
-        "average_frustration_score": 0.2,
-        "recent_scored_conversation_count": 10,
-        "recent_positive_count": 6,
-        "recent_neutral_count": 3,
+        "scored_conversation_count": 14,
+        "positive_count": 8,
+        "neutral_count": 4,
+        "negative_count": 2,
+        "average_sentiment_score": 0.65,
+        "average_frustration_score": 0.22,
+        "recent_scored_conversation_count": 5,
+        "recent_positive_count": 3,
+        "recent_neutral_count": 1,
         "recent_negative_count": 1,
-        "recent_average_sentiment_score": 0.8,
-        "recent_average_frustration_score": 0.15
+        "recent_average_sentiment_score": 0.58,
+        "recent_average_frustration_score": 0.31
       },
       "last_contact_agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "last_contact_agent_name": "SupportBot Alpha",
+      "last_contact_agent_name": "Customer Support Agent",
       "most_frustrated_conversations": [
         {
-          "conversation_id": "conv_7e4d3c2b1a0f9e8d7c6b",
+          "conversation_id": "conv_1c3e5f7a9b2d4e6f8a0b2c4d",
           "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-          "start_time_unix_secs": 1685318400,
+          "start_time_unix_secs": 1716566400,
           "overall_label": "negative",
-          "overall_sentiment_score": -0.6,
-          "overall_frustration_score": 0.9
+          "overall_sentiment_score": -0.72,
+          "overall_frustration_score": 0.85
         }
       ]
     }
   ],
   "has_more": true,
-  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
+  "next_cursor": "eyJ1c2VyX2lkIjoidXNlcl84ZjNrMm14cDlxcnN0NHV2d3h5ejEyMzQiLCJsYXN0X2NvbnRhY3QiOjE3MTgwMzUyMDB9"
 }
 ```
 

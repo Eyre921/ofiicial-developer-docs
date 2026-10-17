@@ -132,39 +132,32 @@ Validation Error
 {
   "executions": [
     {
-      "tool_id": "tool_9f8b7c6d5e4a3b2c1d0e",
-      "tool_request_id": "req_1234567890abcdef",
-      "conversation_id": "conv_abcdef1234567890",
-      "agent_id": "agent_0011223344556677",
-      "timestamp": 1685606400,
-      "latency_secs": 2.35,
-      "id": "exec_0987654321fedcba",
-      "branch_id": "branch_main",
+      "tool_id": "tool_abc123xyz",
+      "tool_request_id": "req_7f3d9e2a1b4c",
+      "conversation_id": "conv_5e8f1a2b3c4d",
+      "agent_id": "agent_9d2c4f6e8a1b",
+      "timestamp": 1718035200,
+      "latency_secs": 0.842,
+      "id": "exec_3b7e9f1d2a4c",
+      "branch_id": "branch_main_v2",
       "is_error": false,
-      "request_payload": "{\"query\":\"Get weather forecast for New York\"}",
-      "response_payload": "{\"forecast\":\"Sunny with a high of 75°F\"}",
-      "error_message": null,
-      "error_type": null,
+      "request_payload": "{\"location\": \"New York\", \"unit\": \"celsius\"}",
+      "response_payload": "{\"temperature\": 22, \"condition\": \"partly cloudy\", \"humidity\": 65}",
+      "error_message": "string",
+      "error_type": "string",
       "tool_call_details": {
         "type": "webhook",
         "method": "POST",
-        "url": "https://api.weatherprovider.com/v1/forecast",
-        "body": "{\"date\":\"2024-06-01\"}",
-        "headers": {
-          "Authorization": "Bearer abcdef1234567890",
-          "Content-Type": "application/json"
-        },
-        "path_params": {
-          "location": "New York"
-        },
-        "query_params": {
-          "units": "imperial"
-        }
+        "url": "https://api.weatherservice.com/v1/current",
+        "body": "{\"location\": \"New York\", \"unit\": \"celsius\"}",
+        "headers": {},
+        "path_params": {},
+        "query_params": {}
       }
     }
   ],
   "has_more": true,
-  "next_cursor": "cursor_abcdef123456"
+  "next_cursor": "eyJpZCI6ImV4ZWNfM2I3ZTlmMWQyYTRjIiwidHMiOjE3MTgwMzUyMDB9"
 }
 ```
 

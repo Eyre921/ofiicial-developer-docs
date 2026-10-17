@@ -91,7 +91,7 @@ Describing the perceived age of the voice helps define its maturity, vocal textu
 
 **Useful descriptors:**
 
-* “Adolscent male” / “adolescent female”
+* “Old man” / “old woman”
 * “Young adult” / “in their 20s” / “early 30s”
 * “Middle-aged man” / “woman in her 40s”
 * “Elderly man” / “older woman” / “man in his 80s”

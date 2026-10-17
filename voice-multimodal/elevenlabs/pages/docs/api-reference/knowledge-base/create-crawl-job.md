@@ -82,7 +82,7 @@ Validation Error
 
 ```json
 {
-  "url": "string"
+  "url": "https://docs.elevenlabs.io/api-reference"
 }
 ```
 
@@ -90,14 +90,14 @@ Validation Error
 
 ```json
 {
-  "id": "string",
+  "id": "crawl_9f3a2b1c4d5e6f7a8b9c0d1e",
   "type": "discovery",
-  "root_folder_id": "string",
-  "status": "string",
-  "created_at": 1,
+  "root_folder_id": "folder_4e7b2a1d3c5f6e8a9b0c1d2e",
+  "status": "in_progress",
+  "created_at": 1718035200,
   "folder_path": [
     {
-      "id": "string"
+      "id": "folder_1a2b3c4d5e6f7a8b9c0d1e2f"
     }
   ]
 }
@@ -110,7 +110,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
-payload = { "url": "string" }
+payload = { "url": "https://docs.elevenlabs.io/api-reference" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -123,7 +123,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"url":"string"}'
+  body: '{"url":"https://docs.elevenlabs.io/api-reference"}'
 };
 
 try {
@@ -149,7 +149,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
-	payload := strings.NewReader("{\n  \"url\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"url\": \"https://docs.elevenlabs.io/api-reference\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -177,7 +177,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"url\": \"string\"\n}"
+request.body = "{\n  \"url\": \"https://docs.elevenlabs.io/api-reference\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -189,7 +189,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl")
   .header("Content-Type", "application/json")
-  .body("{\n  \"url\": \"string\"\n}")
+  .body("{\n  \"url\": \"https://docs.elevenlabs.io/api-reference\"\n}")
   .asString();
 ```
 
@@ -201,7 +201,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl', [
   'body' => '{
-  "url": "string"
+  "url": "https://docs.elevenlabs.io/api-reference"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -217,7 +217,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"url\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"url\": \"https://docs.elevenlabs.io/api-reference\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -225,7 +225,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["url": "string"] as [String : Any]
+let parameters = ["url": "https://docs.elevenlabs.io/api-reference"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

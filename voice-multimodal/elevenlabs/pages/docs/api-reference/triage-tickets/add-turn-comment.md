@@ -131,8 +131,8 @@ Validation Error
 
 ```json
 {
-  "turn_index": 1,
-  "comment": "string"
+  "turn_index": 3,
+  "comment": "The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base."
 }
 ```
 
@@ -140,64 +140,65 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
-  "needs_clustering": true,
-  "title": "string",
-  "issue_type": "knowledge_gap",
+  "agentqa_ticket_id": "tkt_3f8a2b1c9d4e5f6a7b8c9d0e",
+  "workspace_id": "ws_7a1b2c3d4e5f6a7b8c9d0e1f",
+  "owner_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2",
+  "agent_id": "agt_b2c3d4e5f6a7b8c9d0e1f2a3",
+  "needs_clustering": false,
+  "title": "Agent provides incorrect pricing information for Pro plan",
+  "issue_type": "incorrect_information",
   "labels": [
-    "string"
+    "pricing",
+    "knowledge-base"
   ],
   "conversation_ids": [
-    "string"
+    "conv_c3d4e5f6a7b8c9d0e1f2a3b4"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1718000000,
+  "last_seen_unix_secs": 1718086400,
+  "qa_comment": "This issue has been observed in multiple conversations. The agent consistently quotes the wrong price for the Pro plan.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "Confirmed this is a recurring issue across at least 5 conversations this week. Escalating priority.",
+      "created_at_unix_secs": 1718050000,
+      "owner_user_id": "usr_d4e5f6a7b8c9d0e1f2a3b4c5"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 3,
+      "comment": "The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base.",
+      "created_at_unix_secs": 1718086400,
+      "owner_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2"
     }
   ],
-  "status": "open",
-  "priority": "low",
+  "status": "in_progress",
+  "priority": "high",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "high",
+      "changed_by_user_id": "usr_d4e5f6a7b8c9d0e1f2a3b4c5",
+      "changed_at_unix_secs": 1718050000
     }
   ],
   "status_changes": [
     {
-      "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "status": "in_progress",
+      "changed_by_user_id": "usr_d4e5f6a7b8c9d0e1f2a3b4c5",
+      "changed_at_unix_secs": 1718050000
     }
   ],
   "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
+  "assignee_user_id": "usr_e5f6a7b8c9d0e1f2a3b4c5d6",
+  "created_at_unix_secs": 1718000000,
+  "updated_at_unix_secs": 1718086400,
+  "merged_into_ticket_id": null,
   "search_match": {
-    "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
+    "field": "turn_comment",
+    "snippet": "...agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month...",
+    "highlight_start": 7,
+    "highlight_end": 47,
+    "turn_index": 3
   }
 }
 ```
@@ -210,8 +211,8 @@ import requests
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/turn-comments"
 
 payload = {
-    "turn_index": 1,
-    "comment": "string"
+    "turn_index": 3,
+    "comment": "The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base."
 }
 headers = {"Content-Type": "application/json"}
 
@@ -225,7 +226,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_i
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"turn_index":1,"comment":"string"}'
+  body: '{"turn_index":3,"comment":"The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base."}'
 };
 
 try {
@@ -251,7 +252,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/turn-comments"
 
-	payload := strings.NewReader("{\n  \"turn_index\": 1,\n  \"comment\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"turn_index\": 3,\n  \"comment\": \"The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -279,7 +280,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"turn_index\": 1,\n  \"comment\": \"string\"\n}"
+request.body = "{\n  \"turn_index\": 3,\n  \"comment\": \"The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -291,7 +292,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/turn-comments")
   .header("Content-Type", "application/json")
-  .body("{\n  \"turn_index\": 1,\n  \"comment\": \"string\"\n}")
+  .body("{\n  \"turn_index\": 3,\n  \"comment\": \"The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base.\"\n}")
   .asString();
 ```
 
@@ -303,8 +304,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/turn-comments', [
   'body' => '{
-  "turn_index": 1,
-  "comment": "string"
+  "turn_index": 3,
+  "comment": "The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -320,7 +321,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/turn-comments");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"turn_index\": 1,\n  \"comment\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"turn_index\": 3,\n  \"comment\": \"The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -329,8 +330,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "turn_index": 1,
-  "comment": "string"
+  "turn_index": 3,
+  "comment": "The agent provided incorrect pricing information at this turn, stating the Pro plan costs $49/month when it actually costs $99/month. This needs to be corrected in the knowledge base."
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

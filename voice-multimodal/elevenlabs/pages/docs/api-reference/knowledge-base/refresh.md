@@ -221,31 +221,31 @@ Metadata for a KB folder that mirrors an external source folder.
     "role": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<div><h1>ElevenLabs API Documentation</h1><p>Welcome to the API docs.</p></div>",
+  "extracted_inner_html": "<h1>ElevenLabs API Reference</h1><p>Welcome to the ElevenLabs API documentation. Use this API to integrate text-to-speech and voice cloning capabilities into your applications.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 45230
+    "created_at_unix_secs": 1710000000,
+    "last_updated_at_unix_secs": 1712500000,
+    "size_bytes": 48320
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [
     "auto"
   ],
-  "url": "https://elevenlabs.io/docs/api",
+  "url": "https://elevenlabs.io/docs/api-reference/introduction",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
     "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1688806400,
+    "next_refresh_by": 1713100000,
     "auto_discover": false
   },
   "content_format": "html",
-  "folder_parent_id": null,
+  "folder_parent_id": "pMsqKZn8Wr3LxYtNvBcH",
   "folder_path": [
     {
-      "id": "folder123",
-      "name": "API Documentation"
+      "id": "pMsqKZn8Wr3LxYtNvBcH",
+      "name": "Product Documentation"
     }
   ]
 }

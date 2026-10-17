@@ -136,7 +136,7 @@ Validation Error
 
 ```json
 {
-  "conversation_id": "string"
+  "conversation_id": "conv_3f8a2b1c9d4e5f6a7b8c9d0e"
 }
 ```
 
@@ -144,64 +144,64 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
+  "agentqa_ticket_id": "ticket_7d4e2f1a3b5c8d9e0f1a2b3c",
+  "workspace_id": "ws_1a2b3c4d5e6f7a8b9c0d1e2f",
+  "owner_user_id": "user_9c8b7a6f5e4d3c2b1a0f9e8d",
+  "agent_id": "agent_4f3e2d1c0b9a8f7e6d5c4b3a",
   "needs_clustering": true,
-  "title": "string",
+  "title": "Agent provided incorrect refund policy information",
   "issue_type": "knowledge_gap",
   "labels": [
-    "string"
+    "refund-policy"
   ],
   "conversation_ids": [
-    "string"
+    "conv_3f8a2b1c9d4e5f6a7b8c9d0e"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1718000000,
+  "last_seen_unix_secs": 1718003600,
+  "qa_comment": "The agent incorrectly stated that refunds take 3-5 business days when the actual policy is 7-10 business days. This caused customer confusion and a follow-up complaint.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "Confirmed the agent's knowledge base entry for refund timelines is outdated. Needs to be updated to reflect the current 7-10 business day policy.",
+      "created_at_unix_secs": 1718004200,
+      "owner_user_id": "user_9c8b7a6f5e4d3c2b1a0f9e8d"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 4,
+      "comment": "Agent stated '3-5 business days' for refund processing, which contradicts the current policy of 7-10 business days.",
+      "created_at_unix_secs": 1718004200,
+      "owner_user_id": "user_9c8b7a6f5e4d3c2b1a0f9e8d"
     }
   ],
   "status": "open",
-  "priority": "low",
+  "priority": "high",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "high",
+      "changed_by_user_id": "user_9c8b7a6f5e4d3c2b1a0f9e8d",
+      "changed_at_unix_secs": 1718004500
     }
   ],
   "status_changes": [
     {
       "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "changed_by_user_id": "user_9c8b7a6f5e4d3c2b1a0f9e8d",
+      "changed_at_unix_secs": 1718004200
     }
   ],
   "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
+  "assignee_user_id": "user_2a3b4c5d6e7f8a9b0c1d2e3f",
+  "created_at_unix_secs": 1718004200,
+  "updated_at_unix_secs": 1718004500,
+  "merged_into_ticket_id": null,
   "search_match": {
     "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
+    "snippet": "Agent provided incorrect refund policy information",
+    "highlight_start": 25,
+    "highlight_end": 38,
+    "turn_index": null
   }
 }
 ```
@@ -213,7 +213,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
-payload = { "conversation_id": "string" }
+payload = { "conversation_id": "conv_3f8a2b1c9d4e5f6a7b8c9d0e" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -226,7 +226,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"conversation_id":"string"}'
+  body: '{"conversation_id":"conv_3f8a2b1c9d4e5f6a7b8c9d0e"}'
 };
 
 try {
@@ -252,7 +252,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
-	payload := strings.NewReader("{\n  \"conversation_id\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"conversation_id\": \"conv_3f8a2b1c9d4e5f6a7b8c9d0e\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -280,7 +280,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"conversation_id\": \"string\"\n}"
+request.body = "{\n  \"conversation_id\": \"conv_3f8a2b1c9d4e5f6a7b8c9d0e\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -292,7 +292,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/triage-tickets")
   .header("Content-Type", "application/json")
-  .body("{\n  \"conversation_id\": \"string\"\n}")
+  .body("{\n  \"conversation_id\": \"conv_3f8a2b1c9d4e5f6a7b8c9d0e\"\n}")
   .asString();
 ```
 
@@ -304,7 +304,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/triage-tickets', [
   'body' => '{
-  "conversation_id": "string"
+  "conversation_id": "conv_3f8a2b1c9d4e5f6a7b8c9d0e"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -320,7 +320,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"conversation_id\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"conversation_id\": \"conv_3f8a2b1c9d4e5f6a7b8c9d0e\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -328,7 +328,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["conversation_id": "string"] as [String : Any]
+let parameters = ["conversation_id": "conv_3f8a2b1c9d4e5f6a7b8c9d0e"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

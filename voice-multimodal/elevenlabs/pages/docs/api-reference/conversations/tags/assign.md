@@ -66,7 +66,8 @@ Validation Error
 ```json
 {
   "tag_ids": [
-    "tag_9f8b7c6d5e4a3b2c1d0e"
+    "tag_abc123def456",
+    "tag_xyz789ghi012"
   ]
 }
 ```
@@ -84,7 +85,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags"
 
-payload = { "tag_ids": ["tag_9f8b7c6d5e4a3b2c1d0e"] }
+payload = { "tag_ids": ["tag_abc123def456", "tag_xyz789ghi012"] }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -97,7 +98,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/t
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"tag_ids":["tag_9f8b7c6d5e4a3b2c1d0e"]}'
+  body: '{"tag_ids":["tag_abc123def456","tag_xyz789ghi012"]}'
 };
 
 try {
@@ -123,7 +124,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags"
 
-	payload := strings.NewReader("{\n  \"tag_ids\": [\n    \"tag_9f8b7c6d5e4a3b2c1d0e\"\n  ]\n}")
+	payload := strings.NewReader("{\n  \"tag_ids\": [\n    \"tag_abc123def456\",\n    \"tag_xyz789ghi012\"\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -151,7 +152,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"tag_ids\": [\n    \"tag_9f8b7c6d5e4a3b2c1d0e\"\n  ]\n}"
+request.body = "{\n  \"tag_ids\": [\n    \"tag_abc123def456\",\n    \"tag_xyz789ghi012\"\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -163,7 +164,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags")
   .header("Content-Type", "application/json")
-  .body("{\n  \"tag_ids\": [\n    \"tag_9f8b7c6d5e4a3b2c1d0e\"\n  ]\n}")
+  .body("{\n  \"tag_ids\": [\n    \"tag_abc123def456\",\n    \"tag_xyz789ghi012\"\n  ]\n}")
   .asString();
 ```
 
@@ -176,7 +177,8 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags', [
   'body' => '{
   "tag_ids": [
-    "tag_9f8b7c6d5e4a3b2c1d0e"
+    "tag_abc123def456",
+    "tag_xyz789ghi012"
   ]
 }',
   'headers' => [
@@ -193,7 +195,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"tag_ids\": [\n    \"tag_9f8b7c6d5e4a3b2c1d0e\"\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"tag_ids\": [\n    \"tag_abc123def456\",\n    \"tag_xyz789ghi012\"\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -201,7 +203,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["tag_ids": ["tag_9f8b7c6d5e4a3b2c1d0e"]] as [String : Any]
+let parameters = ["tag_ids": ["tag_abc123def456", "tag_xyz789ghi012"]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

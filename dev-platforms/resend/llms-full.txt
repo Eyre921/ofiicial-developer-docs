@@ -24887,9 +24887,14 @@ Build conversational email experiences using the Vercel Chat SDK and Resend.
         { type: 'text', content: 'Your order #1234 has been shipped.' },
         { type: 'divider' },
         {
-          type: 'link-button',
-          label: 'Track Order',
-          url: 'https://example.com/track/1234',
+          type: 'actions',
+          children: [
+            {
+              type: 'link-button',
+              label: 'Track Order',
+              url: 'https://example.com/track/1234',
+            },
+          ],
         },
       ],
     },
@@ -24897,7 +24902,7 @@ Build conversational email experiences using the Vercel Chat SDK and Resend.
   });
   ```
 
-  Cards render to HTML via `@react-email/components`. Always include `fallbackText` for plain-text clients.
+  Cards render to HTML via `react-email`. Always include `fallbackText` for plain-text clients.
 
   ***
 
@@ -24906,9 +24911,8 @@ Build conversational email experiences using the Vercel Chat SDK and Resend.
   Start a new email thread without waiting for inbound:
 
   ```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
-  const threadId = await chat.adapters.resend.openDM('user@example.com');
-  const thread = await chat.thread('resend', threadId);
-  await thread.post('Hello from the bot!');
+  const threadId = await resend.openDM('user@example.com');
+  await resend.postMessage(threadId, 'Hello from the bot!');
   ```
 
   ***
@@ -24918,10 +24922,13 @@ Build conversational email experiences using the Vercel Chat SDK and Resend.
   Inbound email attachments are available on `message.raw.attachments`:
 
   ```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import type { ResendRawMessage } from '@resend/chat-sdk-adapter';
+
   chat.onNewMention(async (thread, message) => {
-    const attachments = message.raw?.attachments ?? [];
+    const raw = message.raw as ResendRawMessage;
+    const attachments = raw.attachments ?? [];
     for (const file of attachments) {
-      console.log(file.filename, file.contentType, file.url);
+      console.log(file.filename, file.contentType);
     }
   });
   ```
@@ -25108,33 +25115,45 @@ Source: https://resend.com/docs/chat-sdk-attachments
 
 Handle inbound email attachments with the Chat SDK adapter.
 
-When someone sends an email with file attachments, the adapter makes them available on `message.raw.attachments`. Each attachment includes the filename, MIME type, and a URL to download the content.
+When someone sends an email with file attachments, the adapter makes them available on `message.raw.attachments`. The adapter does not download the attachment content.
+
+* An attachment of an `email.received` email has `filename` and `contentType`.
+* An attachment of an inbox email has `id`, `filename`, `size` and `contentType`. The inbox API does not return the MIME type, so `contentType` is always `application/octet-stream`.
 
 ## Attachment shape
 
 ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
 interface ResendAttachment {
-  filename: string;
+  content?: string;
   contentType: string;
+  filename: string;
+  id?: string;
+  size?: number;
   url?: string;
 }
 ```
 
 | Field | Type | Description |
 | - | - | - |
+| `content` | `string` | Base64-encoded content. The adapter does not set it |
+| `contentType` | `string` | MIME type (e.g., `application/pdf`). Always `application/octet-stream` for an inbox email |
 | `filename` | `string` | Original filename (e.g., `invoice.pdf`) |
-| `contentType` | `string` | MIME type (e.g., `application/pdf`) |
-| `url` | `string` | Optional download URL for the attachment content |
+| `id` | `string` | Attachment ID. Set on inbox emails only |
+| `size` | `number` | Size in bytes. Set on inbox emails only |
+| `url` | `string` | Download URL. The adapter does not set it |
 
 ## Detecting and processing attachments
 
 ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+import type { ResendRawMessage } from '@resend/chat-sdk-adapter';
+
 chat.onNewMention(async (thread, message) => {
-  const attachments = message.raw?.attachments ?? [];
+  const raw = message.raw as ResendRawMessage;
+  const attachments = raw.attachments ?? [];
 
   if (attachments.length === 0) {
     await thread.subscribe();
-    await thread.post('Got your email — no attachments found.');
+    await thread.post('Got your email. No attachments found.');
     return;
   }
 
@@ -25161,7 +25180,7 @@ Source: https://resend.com/docs/chat-sdk-card-emails
 
 Send rich HTML card emails using the Chat SDK and React Email.
 
-The Chat SDK adapter renders Card elements into styled HTML emails using `@react-email/components`. This lets you send structured, branded messages without writing raw HTML.
+The Chat SDK adapter renders Card elements into styled HTML emails using `react-email`. This lets you send structured, branded messages without writing raw HTML.
 
 ## Card structure
 
@@ -25255,12 +25274,11 @@ By default, the Chat SDK adapter responds to inbound emails. With `openDM`, you 
 
 ## Sending a proactive email
 
-Call `openDM` on the adapter to create a new thread, then post a message to it.
+Call `openDM` on the adapter from `createResendAdapter` to create a new thread. Then call `postMessage` to send a message to the thread.
 
 ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-const threadId = await chat.adapters.resend.openDM('user@example.com');
-const thread = await chat.thread('resend', threadId);
-await thread.post('Hello from the bot!');
+const threadId = await resend.openDM('user@example.com');
+await resend.postMessage(threadId, 'Hello from the bot!');
 ```
 
 You can also send card emails in proactive threads. The same card structure from [Card Emails](/docs/chat-sdk-card-emails) works here.
@@ -25270,12 +25288,21 @@ You can also send card emails in proactive threads. The same card structure from
 A common pattern is exposing an HTTP endpoint that triggers outbound emails. This lets external systems (cron jobs, webhooks from other services, admin dashboards) send emails through your bot.
 
 ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-async function handleNotify(req, res) {
+import type { IncomingMessage, ServerResponse } from 'node:http';
+
+async function readBody(req: IncomingMessage): Promise<string> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of req) {
+    chunks.push(Buffer.from(chunk));
+  }
+  return Buffer.concat(chunks).toString();
+}
+
+async function handleNotify(req: IncomingMessage, res: ServerResponse) {
   const { to, message } = JSON.parse(await readBody(req));
 
-  const threadId = await chat.adapters.resend.openDM(to);
-  const thread = await chat.thread('resend', threadId);
-  await thread.post(message);
+  const threadId = await resend.openDM(to);
+  await resend.postMessage(threadId, message);
 
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ ok: true, threadId }));

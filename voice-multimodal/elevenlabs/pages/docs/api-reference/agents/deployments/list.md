@@ -102,12 +102,11 @@ Validation Error
 {
   "results": [
     {
-      "id": "deploy_9f8b7c6d5e4a3b2c1d0e",
-      "deployed_at_unix_secs": 1716604800,
+      "id": "agdpl_7k2m9xqr4wnbce5fh8j1p6t3svuy",
+      "deployed_at_unix_secs": 1718035200,
       "is_active": true,
       "traffic_percentage_branch_id_map": {
-        "agtbrch_1234abcd5678efgh9012": 30,
-        "agtbrch_8901k4t9z5defmb8vh3e9361y7nj": 70
+        "agtbrch_8901k4t9z5defmb8vh3e9361y7nj": 50
       },
       "source": "manual",
       "access_info": {
@@ -117,38 +116,12 @@ Validation Error
         "role": "admin",
         "access_source": "creator"
       }
-    },
-    {
-      "id": "deploy_8e7d6c5b4a392817f6e5",
-      "deployed_at_unix_secs": 1716000000,
-      "is_active": false,
-      "traffic_percentage_branch_id_map": {
-        "agtbrch_8901k4t9z5defmb8vh3e9361y7nj": 100
-      },
-      "source": "branch_merge",
-      "access_info": {
-        "is_creator": false,
-        "creator_name": "Jane Smith",
-        "creator_email": "jane.smith@example.com",
-        "role": "editor",
-        "access_source": "explicit"
-      }
-    },
-    {
-      "id": "deploy_7d6c5b4a392817f6e5d4",
-      "deployed_at_unix_secs": 1715400000,
-      "is_active": false,
-      "traffic_percentage_branch_id_map": {
-        "agtbrch_5678efgh9012abcd3456": 100
-      },
-      "source": null,
-      "access_info": null
     }
   ],
   "meta": {
-    "total": 3,
+    "total": 42,
     "page": 1,
-    "page_size": 3
+    "page_size": 30
   }
 }
 ```

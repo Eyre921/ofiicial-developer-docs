@@ -99,23 +99,36 @@ transcript_index: index of the message in the conversation transcript chunk_text
 {
   "results": [
     {
-      "conversation_id": "conv_20240615_093045_abc123",
+      "conversation_id": "conv_8f3k2mxp9qr1tz5wy6nb4jdce7",
       "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
       "transcript_index": 5,
-      "chunk_text": "I understand you'd like to cancel your order and receive a refund. Let me check the details for you.",
-      "score": 0.92,
-      "conversation_start_time_unix_secs": 1718471405,
-      "agent_name": "Support Agent Jane",
-      "chunk_highlights": null
+      "chunk_text": "I'd like to cancel my subscription and get a full refund for the charges on my account this month.",
+      "score": 0.9423,
+      "conversation_start_time_unix_secs": 1711900800,
+      "agent_name": "Customer Support Agent",
+      "chunk_highlights": [
+        {
+          "value": "I'd like to ",
+          "is_hit": false
+        },
+        {
+          "value": "cancel my subscription and get a full refund",
+          "is_hit": true
+        },
+        {
+          "value": " for the charges on my account this month.",
+          "is_hit": false
+        }
+      ]
     }
   ],
-  "has_more": false,
+  "has_more": true,
   "meta": {
-    "total": 1,
+    "total": 47,
     "page": 1,
-    "page_size": 10
+    "page_size": 20
   },
-  "next_cursor": null
+  "next_cursor": "eyJwYWdlIjoyLCJwYWdlX3NpemUiOjIwfQ=="
 }
 ```
 
@@ -126,13 +139,10 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search"
 
-querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","branch_id":"branch_nyc_001","cursor":"eyJwYWdlIjoxfQ==","page_size":"10","text_query":"Customer requesting refund for a recent order"}
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","text_query":"Customer asking to cancel and get money back"}
 
 payload = {}
-headers = {
-    "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-    "Content-Type": "application/json"
-}
+headers = {"Content-Type": "application/json"}
 
 response = requests.get(url, json=payload, headers=headers, params=querystring)
 
@@ -140,15 +150,8 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order';
-const options = {
-  method: 'GET',
-  headers: {
-    'xi-api-key': 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
-    'Content-Type': 'application/json'
-  },
-  body: '{}'
-};
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back';
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -171,13 +174,12 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back"
 
 	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("GET", url, payload)
 
-	req.Header.Add("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
 	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -195,13 +197,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c'
 request["Content-Type"] = 'application/json'
 request.body = "{}"
 
@@ -213,8 +214,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order")
-  .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -226,11 +226,10 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
   ],
 ]);
 
@@ -240,9 +239,8 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -251,15 +249,12 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-  "Content-Type": "application/json"
-]
+let headers = ["Content-Type": "application/json"]
 let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_nyc_001&cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=10&text_query=Customer+requesting+refund+for+a+recent+order")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

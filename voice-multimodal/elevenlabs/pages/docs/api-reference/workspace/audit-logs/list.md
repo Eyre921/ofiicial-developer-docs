@@ -157,67 +157,59 @@ OCSF URL object. Spec: https://schema.ocsf.io/1.6.0/objects/url
   "entries": [
     {
       "activity_id": 1,
-      "activity_name": "User Login",
+      "activity_name": "Create",
       "status_id": 1,
       "actor": {
         "user": {
-          "name": "jdoe",
-          "uid": "user-1234",
+          "name": "jane.doe",
+          "uid": "usr_4f8a2b1c9e3d7f6a",
           "type_id": 1,
-          "type": "Standard User",
-          "email_addr": "jdoe@example.com",
-          "full_name": "John Doe",
-          "domain": "example.com"
+          "type": "User",
+          "email_addr": "jane.doe@acme-corp.com",
+          "full_name": "Jane Doe",
+          "domain": "acme-corp.com"
         },
-        "app_name": "ElevenLabs Web Portal",
-        "app_uid": "app-5678",
-        "session": {
-          "ip": "192.168.1.15",
-          "session_id": "sess-7890"
-        }
+        "app_name": "ElevenLabs Web App",
+        "app_uid": "app_9c3e1d7b2f4a8e5c",
+        "session": {}
       },
-      "message": "User jdoe successfully logged in.",
-      "id": "auditlog-0001",
-      "time_dt": "2023-06-15T12:00:00Z",
-      "type_uid": 201,
-      "type_name": "Authentication User Login",
-      "metadata": {
-        "ip_address": "192.168.1.15",
-        "location": "New York, USA"
-      },
-      "time": 1686825600000,
+      "message": "User jane.doe invited john.smith@acme-corp.com to the workspace.",
+      "id": "auditlog_7d3f1a2b4c8e9f0d",
+      "time_dt": "2024-06-10T12:00:00Z",
+      "type_uid": 300101,
+      "type_name": "Account Change: Create",
+      "metadata": {},
+      "time": 1718035200000,
       "category_name": "Identity & Access Management",
       "category_uid": 3,
-      "class_name": "Authentication",
-      "class_uid": 2,
+      "class_name": "Account Change",
+      "class_uid": 3001,
       "severity_id": 1,
       "device": {
-        "ip": "192.168.1.15",
-        "hostname": "johns-laptop",
-        "type_id": 3
+        "ip": "203.0.113.42",
+        "hostname": "macbook-jane.acme-corp.com",
+        "type_id": 99
       },
       "http_request": {
         "http_method": "POST",
         "url": {
-          "url_string": "https://api.elevenlabs.io/v1/auth/login",
+          "url_string": "https://api.elevenlabs.io/v1/workspace/members/invite",
           "scheme": "https",
           "hostname": "api.elevenlabs.io",
           "port": 443,
-          "path": "/v1/auth/login",
-          "query_string": "redirect=/dashboard"
+          "path": "/v1/workspace/members/invite",
+          "query_string": null
         },
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
         "x_forwarded_for": [
-          "203.0.113.195"
+          "203.0.113.42"
         ]
       },
-      "unmapped": {
-        "custom_field": "custom_value"
-      }
+      "unmapped": {}
     }
   ],
   "has_more": true,
-  "next_cursor": "cursor_abcdef123456"
+  "next_cursor": "eyJsYXN0X2lkIjoiYXVkaXRsb2dfN2QzZjFhMmI0YzhlOWYwZCIsInRpbWUiOjE3MTgwMzUyMDAwMDB9"
 }
 ```
 

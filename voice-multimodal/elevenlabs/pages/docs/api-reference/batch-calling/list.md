@@ -117,40 +117,40 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 {
   "batch_calls": [
     {
-      "id": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5a",
-      "phone_number_id": "pn_9876543210",
+      "id": "batch_7f3a2c1d9e4b5f8a",
+      "phone_number_id": "pn_4d8e2f1a3c7b9d5e",
       "phone_provider": "twilio",
       "whatsapp_params": {
-        "whatsapp_call_permission_request_template_name": "customer_permission_request",
+        "whatsapp_call_permission_request_template_name": "call_permission_request_v1",
         "whatsapp_call_permission_request_template_language_code": "en_US",
-        "whatsapp_phone_number_id": "wa_1234567890"
+        "whatsapp_phone_number_id": "wa_9b3c5e7f1a2d4e6f"
       },
-      "name": "March Campaign Batch Call",
-      "agent_id": "agent_42f7e8d9-5678-4abc-9def-1234567890ab",
-      "branch_id": "branch_nyc_001",
+      "name": "Q4 Customer Outreach Campaign",
+      "agent_id": "agent_3e5f7a9b1c2d4e6f",
+      "branch_id": "branch_2a4c6e8f0b1d3e5f",
       "environment": "production",
-      "created_at_unix": 1712000000,
-      "scheduled_time_unix": 1712604800,
+      "created_at_unix": 1711900800,
+      "scheduled_time_unix": 1711987200,
       "timezone": "America/New_York",
-      "total_calls_dispatched": 150,
-      "total_calls_scheduled": 200,
-      "total_calls_finished": 140,
-      "last_updated_at_unix": 1712650000,
-      "status": "pending",
-      "retry_count": 1,
+      "total_calls_dispatched": 320,
+      "total_calls_scheduled": 500,
+      "total_calls_finished": 298,
+      "last_updated_at_unix": 1711990400,
+      "status": "in_progress",
+      "retry_count": 2,
       "telephony_call_config": {
-        "ringing_timeout_secs": 45,
+        "ringing_timeout_secs": 30,
         "twilio_call_recording_enabled": true,
         "twilio_machine_detection": {
-          "mode": "enable"
+          "mode": "detect_message_end"
         }
       },
-      "target_concurrency_limit": 10,
-      "agent_name": "Support Agent Alpha",
-      "branch_name": "New York City Office"
+      "target_concurrency_limit": 25,
+      "agent_name": "Sales Outreach Agent",
+      "branch_name": "North America Sales"
     }
   ],
-  "next_doc": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5b",
+  "next_doc": "batch_1a2b3c4d5e6f7a8b",
   "has_more": true
 }
 ```

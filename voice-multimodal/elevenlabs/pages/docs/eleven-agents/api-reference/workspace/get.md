@@ -90,27 +90,22 @@ Used to reference a secret from the agent's secret store.
 ```json
 {
   "conversation_initiation_client_data_webhook": {
-    "url": "https://hooks.mycompany.com/convai/initiate",
+    "url": "https://example.com/webhook",
     "request_headers": {
-      "Authorization": {
-        "secret_id": "secret_12345abcdef"
-      },
       "Content-Type": "application/json"
     }
   },
   "webhooks": {
-    "post_call_webhook_id": "webhook_9876543210abcdef",
+    "post_call_webhook_id": "wh_9f3a2b1c4d5e6f7a8b9c0d1e",
     "events": [
-      "transcript",
-      "call_initiation_failure",
-      "answering_machine_detection"
+      "transcript"
     ],
     "transcript_format": "json",
-    "exclude_transcript": true,
+    "exclude_transcript": false,
     "send_audio": false
   },
   "can_use_mcp_servers": true,
-  "rag_retention_period_days": 14,
+  "rag_retention_period_days": 10,
   "conversation_embedding_retention_days": 30,
   "default_livekit_stack": "standard"
 }

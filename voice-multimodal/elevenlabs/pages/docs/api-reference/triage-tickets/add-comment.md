@@ -130,7 +130,7 @@ Validation Error
 
 ```json
 {
-  "comment": "string"
+  "comment": "After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket."
 }
 ```
 
@@ -138,65 +138,66 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
-  "needs_clustering": true,
-  "title": "string",
+  "agentqa_ticket_id": "tkt_3f8a2b1c9d4e5f6a7b8c9d0e",
+  "workspace_id": "ws_7a1b2c3d4e5f6a7b8c9d0e1f",
+  "owner_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2",
+  "agent_id": "agt_b2c3d4e5f6a7b8c9d0e1f2a3",
+  "needs_clustering": false,
+  "title": "Agent unable to answer refund policy questions for subscription plans",
   "issue_type": "knowledge_gap",
   "labels": [
-    "string"
+    "refund-policy",
+    "subscriptions"
   ],
   "conversation_ids": [
-    "string"
+    "conv_c3d4e5f6a7b8c9d0e1f2a3b4",
+    "conv_d4e5f6a7b8c9d0e1f2a3b4c5"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1718000000,
+  "last_seen_unix_secs": 1718086400,
+  "qa_comment": "The agent consistently fails to provide accurate refund information, redirecting users to human support unnecessarily.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket.",
+      "created_at_unix_secs": 1718090000,
+      "owner_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 3,
+      "comment": "At this turn the agent incorrectly stated that refunds are not available for annual plans, which contradicts our current policy.",
+      "created_at_unix_secs": 1718088000,
+      "owner_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2"
     }
   ],
-  "status": "open",
-  "priority": "low",
+  "status": "in_progress",
+  "priority": "medium",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "medium",
+      "changed_by_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2",
+      "changed_at_unix_secs": 1718005000
     }
   ],
   "status_changes": [
     {
       "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "changed_by_user_id": null,
+      "changed_at_unix_secs": 1718000000
+    },
+    {
+      "status": "in_progress",
+      "changed_by_user_id": "usr_a1b2c3d4e5f6a7b8c9d0e1f2",
+      "changed_at_unix_secs": 1718050000
     }
   ],
   "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
-  "search_match": {
-    "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
-  }
+  "assignee_user_id": "usr_e5f6a7b8c9d0e1f2a3b4c5d6",
+  "created_at_unix_secs": 1718000000,
+  "updated_at_unix_secs": 1718090000,
+  "merged_into_ticket_id": null,
+  "search_match": null
 }
 ```
 
@@ -207,7 +208,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments"
 
-payload = { "comment": "string" }
+payload = { "comment": "After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket." }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -220,7 +221,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_i
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"comment":"string"}'
+  body: '{"comment":"After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket."}'
 };
 
 try {
@@ -246,7 +247,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments"
 
-	payload := strings.NewReader("{\n  \"comment\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"comment\": \"After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -274,7 +275,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"comment\": \"string\"\n}"
+request.body = "{\n  \"comment\": \"After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -286,7 +287,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments")
   .header("Content-Type", "application/json")
-  .body("{\n  \"comment\": \"string\"\n}")
+  .body("{\n  \"comment\": \"After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket.\"\n}")
   .asString();
 ```
 
@@ -298,7 +299,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments', [
   'body' => '{
-  "comment": "string"
+  "comment": "After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -314,7 +315,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"comment\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"comment\": \"After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -322,7 +323,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["comment": "string"] as [String : Any]
+let parameters = ["comment": "After reviewing the related conversations, it appears the agent lacks knowledge about our refund policy for subscription plans. We should update the knowledge base with the current refund terms and add example Q&A pairs covering the most common refund scenarios to resolve this ticket."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

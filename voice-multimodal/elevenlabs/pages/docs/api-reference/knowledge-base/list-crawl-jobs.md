@@ -90,23 +90,23 @@ Validation Error
 {
   "crawl_jobs": [
     {
-      "seed_url": "https://www.example.com/start-page",
+      "seed_url": "https://docs.elevenlabs.io",
       "max_pages": 50,
-      "root_folder_id": "folder_9a8b7c6d5e4f3g2h1i0j",
-      "updated_at": 1685600000,
-      "id": "crawljob_1234567890abcdef",
-      "created_at": 1685596400,
+      "root_folder_id": "folder_9a3f2c1e8b7d4e6a",
+      "updated_at": 1711900800,
+      "id": "crawl_4d7e2a1b9c3f5e8d",
+      "created_at": 1711897200,
       "type": "discovery",
-      "pattern": "/articles/*",
+      "pattern": "https://docs.elevenlabs.io/.*",
       "auto_discover": true,
-      "status": "processing",
-      "pages_identified": 120,
+      "status": "succeeded",
+      "pages_identified": 48,
       "pages_scraped": 45,
-      "pages_skipped": 5,
-      "pages_failed": 2
+      "pages_skipped": 2,
+      "pages_failed": 1
     }
   ],
-  "next_cursor": "cursor_abcdef1234567890"
+  "next_cursor": "eyJjcmF3bF9qb2JfaWQiOiAiY3Jhd2xfNGQ3ZTJhMWI5YzNmNWU4ZCJ9"
 }
 ```
 

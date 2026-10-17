@@ -73,7 +73,7 @@ Validation Error
 
 ```json
 {
-  "id": "folder_9f8b7c6d5e4a3b2c1d0e",
+  "id": "folder_9f3a2b1c8d7e4f56",
   "name": "Customer Support Tests"
 }
 ```

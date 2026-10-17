@@ -73,28 +73,12 @@ Public workspace member fields exposed via GET /v1/workspace/members.
 ```json
 [
   {
-    "user_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
-    "email": "jane.doe@example.com",
-    "first_name": "Jane",
+    "user_id": "9f8e7d6c5b4a3f2e1d0c9b8a",
+    "email": "sarah.johnson@acmecorp.com",
+    "first_name": "Sarah",
     "seat_type": "workspace_admin",
     "is_owner": true,
     "is_locked": false
-  },
-  {
-    "user_id": "f9e8d7c6-b5a4-3210-9876-5432fedcba10",
-    "email": "john.smith@example.com",
-    "first_name": "John",
-    "seat_type": "workspace_member",
-    "is_owner": false,
-    "is_locked": false
-  },
-  {
-    "user_id": "123e4567-e89b-12d3-a456-426614174000",
-    "email": "alice.williams@example.com",
-    "first_name": "Alice",
-    "seat_type": "workspace_lite_member",
-    "is_owner": false,
-    "is_locked": true
   }
 ]
 ```

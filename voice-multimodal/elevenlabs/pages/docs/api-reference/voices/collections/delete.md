@@ -66,7 +66,7 @@ Validation Error
 
 ```json
 {
-  "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+  "collection_id": "vc_4f8a2b1e9d3c7f6e0a5b"
 }
 ```
 

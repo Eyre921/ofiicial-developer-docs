@@ -89,9 +89,9 @@ Validation Error
   "id": "21m00Tcm4TlvDq8ikWAM",
   "model": "e5_mistral_7b_instruct",
   "status": "processing",
-  "progress_percentage": 45.7,
+  "progress_percentage": 47.5,
   "document_model_index_usage": {
-    "used_bytes": 1048576
+    "used_bytes": 204800
   }
 }
 ```

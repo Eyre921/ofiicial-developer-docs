@@ -97,24 +97,24 @@ Validation Error
 {
   "finetunes": [
     {
-      "id": "ftn_9a8b7c6d5e4f3a2b1c0d",
-      "name": "Chillwave Sunset",
+      "id": "ft_3a8b2c1d4e5f6g7h8i9j0k",
+      "name": "Cinematic Orchestral Style",
       "tags": [
-        "chillwave",
-        "electronic",
-        "summer vibes"
+        "orchestral",
+        "cinematic",
+        "epic"
       ],
       "model_id": "music_v2_5",
-      "created_at": "2024-01-15T09:30:00Z",
+      "created_at": "2024-11-20T14:35:00Z",
       "visibility": "private",
       "created_by": "self",
-      "status": "in_progress",
-      "training_progress": 0.65,
-      "primary_genre": "electronic",
+      "status": "completed",
+      "training_progress": 1,
+      "primary_genre": "Orchestral",
       "failure_reason": null
     }
   ],
-  "next_cursor": "eyJwYWdlIjoxLCJpZCI6ImZ0bl8xMjM0NTY3ODkwIn0=",
+  "next_cursor": "eyJpZCI6ImZ0XzNhOGIyYzFkNGU1ZjZnN2g4aTlqMGsifQ==",
   "has_more": true
 }
 ```

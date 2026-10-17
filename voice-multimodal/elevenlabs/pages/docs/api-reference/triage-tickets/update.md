@@ -141,64 +141,76 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
-  "needs_clustering": true,
-  "title": "string",
+  "agentqa_ticket_id": "tkt_01h9x2k4m7n3p8q5r6s9t0u1v2",
+  "workspace_id": "wsp_3f8a2b1c9d4e5f6a7b8c9d0e1f2",
+  "owner_user_id": "usr_7a3b2c1d9e4f5a6b7c8d9e0f1a2",
+  "agent_id": "agt_5c4d3e2f1a0b9c8d7e6f5a4b3c2",
+  "needs_clustering": false,
+  "title": "Agent fails to answer questions about pricing plans",
   "issue_type": "knowledge_gap",
   "labels": [
-    "string"
+    "pricing",
+    "knowledge-base"
   ],
   "conversation_ids": [
-    "string"
+    "conv_1a2b3c4d5e6f7a8b9c0d1e2f3a4b",
+    "conv_9z8y7x6w5v4u3t2s1r0q9p8o7n6m"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1718000000,
+  "last_seen_unix_secs": 1718345600,
+  "qa_comment": "The agent consistently fails to provide accurate pricing information when users ask about enterprise plans.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "Confirmed this is a recurring issue across multiple conversations. The knowledge base needs to be updated with the latest pricing tiers.",
+      "created_at_unix_secs": 1718100000,
+      "owner_user_id": "usr_7a3b2c1d9e4f5a6b7c8d9e0f1a2"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 3,
+      "comment": "Agent incorrectly quoted the starter plan price as $29/month instead of $39/month.",
+      "created_at_unix_secs": 1718050000,
+      "owner_user_id": "usr_7a3b2c1d9e4f5a6b7c8d9e0f1a2"
     }
   ],
-  "status": "open",
-  "priority": "low",
+  "status": "in_progress",
+  "priority": "high",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "medium",
+      "changed_by_user_id": "usr_7a3b2c1d9e4f5a6b7c8d9e0f1a2",
+      "changed_at_unix_secs": 1718010000
+    },
+    {
+      "priority": "high",
+      "changed_by_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c6d7e",
+      "changed_at_unix_secs": 1718200000
     }
   ],
   "status_changes": [
     {
       "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "changed_by_user_id": "usr_7a3b2c1d9e4f5a6b7c8d9e0f1a2",
+      "changed_at_unix_secs": 1718000000
+    },
+    {
+      "status": "in_progress",
+      "changed_by_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c6d7e",
+      "changed_at_unix_secs": 1718250000
     }
   ],
   "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
+  "assignee_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c6d7e",
+  "created_at_unix_secs": 1718000000,
+  "updated_at_unix_secs": 1718345600,
+  "merged_into_ticket_id": null,
   "search_match": {
     "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
+    "snippet": "Agent fails to answer questions about pricing plans",
+    "highlight_start": 0,
+    "highlight_end": 49,
+    "turn_index": null
   }
 }
 ```

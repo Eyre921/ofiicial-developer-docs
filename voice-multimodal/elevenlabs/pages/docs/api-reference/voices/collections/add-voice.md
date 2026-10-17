@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 {
-  "collection_id": "col_9f8a7b6c5d4e3f21",
+  "collection_id": "col_7Xt9mK2pLqRvNwYdBhJc",
   "voice_id": "21m00Tcm4TlvDq8ikWAM"
 }
 ```

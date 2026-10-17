@@ -131,7 +131,8 @@ Validation Error
 ```json
 {
   "source_ticket_ids": [
-    "string"
+    "tkt_01h9x2k4m7n3p8q5r6s9t0u1v2",
+    "tkt_03j7y5l2n8o4q1r9s3t6u8v0w4"
   ]
 }
 ```
@@ -140,64 +141,77 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
-  "needs_clustering": true,
-  "title": "string",
+  "agentqa_ticket_id": "tkt_09a1b2c3d4e5f6g7h8i9j0k1l2",
+  "workspace_id": "ws_4f8e2a1b3c7d9e0f1a2b3c4d5e6f",
+  "owner_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d",
+  "agent_id": "agt_2b4d6f8a0c2e4f6a8b0c2d4e6f8a",
+  "needs_clustering": false,
+  "title": "Agent fails to retrieve account balance information from knowledge base",
   "issue_type": "knowledge_gap",
   "labels": [
-    "string"
+    "billing",
+    "knowledge-base"
   ],
   "conversation_ids": [
-    "string"
+    "conv_1a2b3c4d5e6f7a8b9c0d1e2f3a4b",
+    "conv_5e6f7a8b9c0d1e2f3a4b5c6d7e8f",
+    "conv_9c0d1e2f3a4b5c6d7e8f9a0b1c2d"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1717200000,
+  "last_seen_unix_secs": 1717372800,
+  "qa_comment": "The agent consistently fails to answer questions about account balance retrieval. Knowledge base articles need to be updated with current API endpoints.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "Confirmed this issue affects multiple users. Escalating priority to high.",
+      "created_at_unix_secs": 1717286400,
+      "owner_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 3,
+      "comment": "Agent incorrectly states that balance information is unavailable when it should be accessible via the billing tool.",
+      "created_at_unix_secs": 1717243200,
+      "owner_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d"
     }
   ],
-  "status": "open",
-  "priority": "low",
+  "status": "in_progress",
+  "priority": "high",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "medium",
+      "changed_by_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d",
+      "changed_at_unix_secs": 1717200000
+    },
+    {
+      "priority": "high",
+      "changed_by_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d",
+      "changed_at_unix_secs": 1717286400
     }
   ],
   "status_changes": [
     {
       "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "changed_by_user_id": null,
+      "changed_at_unix_secs": 1717200000
+    },
+    {
+      "status": "in_progress",
+      "changed_by_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d",
+      "changed_at_unix_secs": 1717243200
     }
   ],
   "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
+  "assignee_user_id": "usr_7c3d5e8f1a2b4c6d8e0f2a4b6c8d",
+  "created_at_unix_secs": 1717200000,
+  "updated_at_unix_secs": 1717372800,
+  "merged_into_ticket_id": null,
   "search_match": {
     "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
+    "snippet": "Agent fails to retrieve account balance information from knowledge base",
+    "highlight_start": 22,
+    "highlight_end": 37,
+    "turn_index": null
   }
 }
 ```
@@ -209,7 +223,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge"
 
-payload = { "source_ticket_ids": ["string"] }
+payload = { "source_ticket_ids": ["tkt_01h9x2k4m7n3p8q5r6s9t0u1v2", "tkt_03j7y5l2n8o4q1r9s3t6u8v0w4"] }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -222,7 +236,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_i
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"source_ticket_ids":["string"]}'
+  body: '{"source_ticket_ids":["tkt_01h9x2k4m7n3p8q5r6s9t0u1v2","tkt_03j7y5l2n8o4q1r9s3t6u8v0w4"]}'
 };
 
 try {
@@ -248,7 +262,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge"
 
-	payload := strings.NewReader("{\n  \"source_ticket_ids\": [\n    \"string\"\n  ]\n}")
+	payload := strings.NewReader("{\n  \"source_ticket_ids\": [\n    \"tkt_01h9x2k4m7n3p8q5r6s9t0u1v2\",\n    \"tkt_03j7y5l2n8o4q1r9s3t6u8v0w4\"\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -276,7 +290,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"source_ticket_ids\": [\n    \"string\"\n  ]\n}"
+request.body = "{\n  \"source_ticket_ids\": [\n    \"tkt_01h9x2k4m7n3p8q5r6s9t0u1v2\",\n    \"tkt_03j7y5l2n8o4q1r9s3t6u8v0w4\"\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -288,7 +302,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge")
   .header("Content-Type", "application/json")
-  .body("{\n  \"source_ticket_ids\": [\n    \"string\"\n  ]\n}")
+  .body("{\n  \"source_ticket_ids\": [\n    \"tkt_01h9x2k4m7n3p8q5r6s9t0u1v2\",\n    \"tkt_03j7y5l2n8o4q1r9s3t6u8v0w4\"\n  ]\n}")
   .asString();
 ```
 
@@ -301,7 +315,8 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge', [
   'body' => '{
   "source_ticket_ids": [
-    "string"
+    "tkt_01h9x2k4m7n3p8q5r6s9t0u1v2",
+    "tkt_03j7y5l2n8o4q1r9s3t6u8v0w4"
   ]
 }',
   'headers' => [
@@ -318,7 +333,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"source_ticket_ids\": [\n    \"string\"\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"source_ticket_ids\": [\n    \"tkt_01h9x2k4m7n3p8q5r6s9t0u1v2\",\n    \"tkt_03j7y5l2n8o4q1r9s3t6u8v0w4\"\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -326,7 +341,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["source_ticket_ids": ["string"]] as [String : Any]
+let parameters = ["source_ticket_ids": ["tkt_01h9x2k4m7n3p8q5r6s9t0u1v2", "tkt_03j7y5l2n8o4q1r9s3t6u8v0w4"]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -135,34 +135,57 @@ Validation Error
   "secrets": [
     {
       "type": "stored",
-      "secret_id": "sec_9f8b7c6d5e4a3b2c1d0e",
-      "name": "PaymentGatewayAPIKey",
+      "secret_id": "sec_a1b2c3d4e5f6789012345678",
+      "name": "OPENAI_API_KEY",
       "used_by": {
         "tools": [
           {
             "type": "available",
-            "access_level": "admin",
-            "created_at_unix_secs": 1685000000,
-            "id": "tool_123abc456def",
-            "name": "Stripe Integration"
+            "access_level": "editor",
+            "created_at_unix_secs": 1718035200,
+            "id": "tool_9f8e7d6c5b4a321098765432",
+            "name": "Web Search Tool"
           }
         ],
         "agents": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1685100000,
-            "id": "agent_789xyz012uvw",
-            "name": "Billing Agent"
+            "created_at_unix_secs": 1718121600,
+            "id": "agent_3c2b1a0f9e8d7c6b5a4f3e2d",
+            "name": "Customer Support Agent",
+            "referenced_resource_ids": [
+              "tool_9f8e7d6c5b4a321098765432"
+            ]
           }
         ],
         "others": [
           "conversation_initiation_webhook"
+        ],
+        "tools_has_more": false,
+        "agents_has_more": false,
+        "phone_numbers": [
+          {
+            "phone_number_id": "pn_7d6e5f4a3b2c1d0e9f8a7b6c",
+            "phone_number": "+14155552671",
+            "label": "US Support Line",
+            "provider": "twilio"
+          }
+        ],
+        "phone_numbers_has_more": false,
+        "mcp_servers": [
+          {
+            "type": "available",
+            "access_level": "viewer",
+            "created_at_unix_secs": 1718208000,
+            "id": "mcp_2e3f4a5b6c7d8e9f0a1b2c3d",
+            "name": "Internal Data MCP Server"
+          }
         ]
       }
     }
   ],
-  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
+  "next_cursor": "eyJsYXN0X2lkIjoic2VjX2ExYjJjM2Q0ZTVmNjc4OTAxMjM0NTY3OCJ9"
 }
 ```
 

@@ -103,10 +103,7 @@ Validation Error
 ```json
 {
   "type": "string",
-  "label": "API_ENDPOINT_URL",
-  "values": {
-    "key": "https://api.production.example.com"
-  }
+  "label": "API_BASE_URL"
 }
 ```
 
@@ -114,16 +111,14 @@ Validation Error
 
 ```json
 {
-  "label": "API_ENDPOINT_URL",
-  "created_at_unix_secs": 1712000000,
-  "updated_at_unix_secs": 1712003600,
+  "label": "API_BASE_URL",
+  "created_at_unix_secs": 1718035200,
+  "updated_at_unix_secs": 1718035200,
   "type": "string",
-  "id": "envvar_1234567890abcdef",
-  "workspace_id": "workspace_9876543210fedcba",
-  "values": {
-    "key": "https://api.production.example.com"
-  },
-  "created_by_user_id": "user_7890abc"
+  "id": "env_var_3c7d2e1a9b4f8c5d",
+  "workspace_id": "workspace_1a2b3c4d5e6f7890",
+  "values": {},
+  "created_by_user_id": "user_4f8a2b1c9e3d7f6a"
 }
 ```
 
@@ -136,8 +131,7 @@ url = "https://api.elevenlabs.io/v1/convai/environment-variables"
 
 payload = {
     "type": "string",
-    "label": "API_ENDPOINT_URL",
-    "values": { "key": "https://api.production.example.com" }
+    "label": "API_BASE_URL"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -151,7 +145,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/environment-variables';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"type":"string","label":"API_ENDPOINT_URL","values":{"key":"https://api.production.example.com"}}'
+  body: '{"type":"string","label":"API_BASE_URL"}'
 };
 
 try {
@@ -177,7 +171,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/environment-variables"
 
-	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}")
+	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -205,7 +199,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}"
+request.body = "{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -217,7 +211,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/environment-variables")
   .header("Content-Type", "application/json")
-  .body("{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}")
+  .body("{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}")
   .asString();
 ```
 
@@ -230,10 +224,7 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/environment-variables', [
   'body' => '{
   "type": "string",
-  "label": "API_ENDPOINT_URL",
-  "values": {
-    "key": "https://api.production.example.com"
-  }
+  "label": "API_BASE_URL"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -249,7 +240,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/environment-variables");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -259,8 +250,7 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = [
   "type": "string",
-  "label": "API_ENDPOINT_URL",
-  "values": ["key": "https://api.production.example.com"]
+  "label": "API_BASE_URL"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

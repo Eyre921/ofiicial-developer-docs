@@ -67,7 +67,7 @@ Validation Error
 
 ```json
 {
-  "file_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+  "file_id": "file_3a8f2b1c9d4e5f6a7b8c9d0e"
 }
 ```
 

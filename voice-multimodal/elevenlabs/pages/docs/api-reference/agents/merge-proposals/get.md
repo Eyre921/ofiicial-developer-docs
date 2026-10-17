@@ -113,43 +113,49 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "source_tip_version_id_at_creation": "string",
-  "title": "string",
-  "created_at": 1,
-  "updated_at": 1,
-  "description": "",
+  "id": "agtmprop_8901k4t9z5defmb8vh3e9361y7nj",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "source_branch_id": "branch_4521m7nnbq34fxp9c8rv6sghtaly",
+  "target_branch_id": "branch_1100a2mmzp01ewq7d5ku3rfmainb",
+  "source_tip_version_id_at_creation": "ver_7823j9qqcr56gyt1e4sw8thuvbxd",
+  "title": "Add multilingual support and update greeting prompts",
+  "created_at": 1717948800,
+  "updated_at": 1718035200,
+  "description": "This proposal introduces multilingual greeting capabilities and refines the agent's initial prompts for improved user engagement.",
   "requested_reviewer_user_ids": [
-    "string"
+    "user_5612p8kkdm23hxo0b9qt7rfnwcvy"
   ],
   "reviews": [
     {
-      "user_id": "string",
+      "user_id": "user_5612p8kkdm23hxo0b9qt7rfnwcvy",
       "state": "approved",
-      "submitted_at": 1,
-      "comment": "",
-      "reviewer_role": "admin"
+      "submitted_at": 1718035200,
+      "comment": "Looks good! The prompt changes are clear and well-structured.",
+      "reviewer_role": "editor"
     }
   ],
   "comments": [
     {
-      "id": "string",
-      "user_id": "string",
-      "body": "string",
-      "created_at": 1
+      "id": "cmt_3309r1llep45iyn2f7pu0sgmxbwz",
+      "user_id": "user_9874q2ttfn67jzr3g0xv1smkdcua",
+      "body": "Should we also update the fallback responses to match the new tone?",
+      "created_at": 1718020800
     }
   ],
   "outcome": {
     "status": "open"
   },
-  "author_user_id": "string",
+  "author_user_id": "user_9874q2ttfn67jzr3g0xv1smkdcua",
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",
@@ -167,14 +173,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -190,6 +199,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -198,7 +208,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -221,6 +235,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -231,6 +247,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -240,7 +258,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -250,16 +273,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals/agtmprop_8901k4t9z5defmb8vh3e9361y7nj")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

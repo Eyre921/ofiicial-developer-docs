@@ -82,16 +82,14 @@ Validation Error
 
 ```json
 {
-  "label": "DATABASE_URL",
-  "created_at_unix_secs": 1686000000,
-  "updated_at_unix_secs": 1688601600,
-  "type": "string",
-  "id": "env_var_1234567890abcdef",
-  "workspace_id": "workspace_abcdef1234567890",
-  "values": {
-    "connection_string": "postgres://user:password@db.example.com:5432/mydb"
-  },
-  "created_by_user_id": "user_9f8b7c6d5e4a3b2c1d0e"
+  "label": "OPENAI_API_KEY",
+  "created_at_unix_secs": 1710505800,
+  "updated_at_unix_secs": 1710592200,
+  "type": "secret",
+  "id": "env_var_4jK7nQ1wZxBcMpR5",
+  "workspace_id": "workspace_9aT2uE6yHdFgNsV3",
+  "values": {},
+  "created_by_user_id": "user_3kX9mP2qRtYvWnL8"
 }
 ```
 

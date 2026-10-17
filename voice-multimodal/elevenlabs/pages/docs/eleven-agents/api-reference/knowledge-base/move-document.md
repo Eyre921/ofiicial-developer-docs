@@ -58,14 +58,6 @@ Validation Error
 **Request**
 
 ```json
-{
-  "move_to": "project_documents/marketing_campaigns"
-}
-```
-
-**Response**
-
-```json
 {}
 ```
 
@@ -76,7 +68,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move"
 
-payload = { "move_to": "project_documents/marketing_campaigns" }
+payload = {}
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -86,11 +78,7 @@ print(response.json())
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move';
-const options = {
-  method: 'POST',
-  headers: {'Content-Type': 'application/json'},
-  body: '{"move_to":"project_documents/marketing_campaigns"}'
-};
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -115,7 +103,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move"
 
-	payload := strings.NewReader("{\n  \"move_to\": \"project_documents/marketing_campaigns\"\n}")
+	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -143,7 +131,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"move_to\": \"project_documents/marketing_campaigns\"\n}"
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -155,7 +143,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move")
   .header("Content-Type", "application/json")
-  .body("{\n  \"move_to\": \"project_documents/marketing_campaigns\"\n}")
+  .body("{}")
   .asString();
 ```
 
@@ -166,9 +154,7 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move', [
-  'body' => '{
-  "move_to": "project_documents/marketing_campaigns"
-}',
+  'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
   ],
@@ -183,7 +169,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"move_to\": \"project_documents/marketing_campaigns\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -191,7 +177,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["move_to": "project_documents/marketing_campaigns"] as [String : Any]
+let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

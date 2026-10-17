@@ -92,20 +92,20 @@ Validation Error
 
 ```json
 {
-  "id": "ftn_9a8b7c6d5e4f3g2h1i0j",
-  "name": "Chillwave Sunset",
+  "id": "ft_8a3b2c1d4e5f6a7b8c9d0e1f",
+  "name": "Ambient Electronic Style",
   "tags": [
-    "chillwave",
-    "synth",
-    "summer"
+    "electronic",
+    "ambient",
+    "instrumental"
   ],
   "model_id": "music_v2_5",
-  "created_at": "2024-01-15T09:30:00Z",
+  "created_at": "2024-03-12T10:45:00Z",
   "visibility": "private",
   "created_by": "self",
   "status": "completed",
   "training_progress": 1,
-  "primary_genre": "electronic",
+  "primary_genre": "Electronic",
   "failure_reason": null
 }
 ```

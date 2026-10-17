@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -301,6 +301,7 @@
 - `docs/api-reference/text-to-dialogue/stream` — [Stream dialogue](pages/docs/api-reference/text-to-dialogue/stream.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream.md)
 - `docs/api-reference/text-to-dialogue/stream-with-timestamps` — [Stream dialogue with timestamps](pages/docs/api-reference/text-to-dialogue/stream-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with-timestamps.md)
 - `docs/api-reference/text-to-dialogue/ttd-multi-websocket` — [Multi-Context WebSocket](pages/docs/api-reference/text-to-dialogue/ttd-multi-websocket.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-multi-websocket.md)
+- `docs/api-reference/text-to-dialogue/ttd-websocket` — [WebSocket](pages/docs/api-reference/text-to-dialogue/ttd-websocket.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-websocket.md)
 - `docs/api-reference/text-to-sound-effects/convert` — [Create sound effect](pages/docs/api-reference/text-to-sound-effects/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert.md)
 - `docs/api-reference/text-to-speech/convert` — [Create speech](pages/docs/api-reference/text-to-speech/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/convert.md)
 - `docs/api-reference/text-to-speech/convert-with-timestamps` — [Create speech with timing](pages/docs/api-reference/text-to-speech/convert-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps.md)

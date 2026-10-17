@@ -103,21 +103,21 @@ Validation Error
 
 ```json
 {
-  "id": "ft_9a8b7c6d5e4f3a2b1c0d",
-  "name": "Chillwave Sunset Mix",
+  "id": "ft_3a8b2c1d4e5f6g7h8i9j0k",
+  "name": "Indie Folk Guitar Style",
   "tags": [
-    "chillwave",
-    "sunset",
-    "electronic"
+    "acoustic",
+    "indie",
+    "folk"
   ],
-  "model_id": "music_v1",
-  "created_at": "2024-01-15T09:30:00Z",
-  "visibility": "private",
+  "model_id": "music_v2_5",
+  "created_at": "2024-03-12T10:45:00Z",
+  "visibility": "workspace",
   "created_by": "self",
-  "status": "pending",
-  "training_progress": 0,
-  "primary_genre": "electronic",
-  "failure_reason": "audio_processing_failed"
+  "status": "completed",
+  "training_progress": 1,
+  "primary_genre": "Folk",
+  "failure_reason": null
 }
 ```
 

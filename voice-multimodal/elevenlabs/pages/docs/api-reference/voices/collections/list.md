@@ -70,22 +70,10 @@ Validation Error
 {
   "collections": [
     {
-      "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+      "collection_id": "a3f5b2c1-8e4d-4f7a-b6c9-d2e1f0a9b8c7",
       "title": "Narration Voices",
-      "icon": "🎙️",
+      "icon": "microphone",
       "permission_on_resource": "admin"
-    },
-    {
-      "collection_id": "f0e1d2c3-b4a5-6789-0abc-def123456789",
-      "title": "Character Voices",
-      "icon": "🗣️",
-      "permission_on_resource": "editor"
-    },
-    {
-      "collection_id": "123e4567-e89b-12d3-a456-426614174000",
-      "title": "Assistant Voices",
-      "icon": "🤖",
-      "permission_on_resource": "viewer"
     }
   ]
 }

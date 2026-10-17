@@ -79,13 +79,13 @@ Validation Error
   "dependencies": [
     {
       "access_level": "editor",
-      "created_at_unix_secs": 1685000000,
-      "id": "tool_9f8b7c6d",
-      "name": "Data Enrichment API",
+      "created_at_unix_secs": 1711900800,
+      "id": "tool_9f3a2b1c4d5e6f7a8b9c0d1e",
+      "name": "Weather Lookup API",
       "type": "available"
     }
   ],
-  "next_cursor": "eyJwYWdlIjoxLCJpZCI6InRvb2xfOWY4YjdjNmQifQ=="
+  "next_cursor": "eyJwYWdlIjoyLCJsaW1pdCI6MjB9"
 }
 ```
 

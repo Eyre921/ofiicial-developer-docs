@@ -97,41 +97,47 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "id": "id",
-  "name": "name",
-  "agent_id": "agent_id",
-  "created_at_unix": 1,
-  "scheduled_time_unix": 1,
-  "total_calls_dispatched": 1,
-  "total_calls_scheduled": 1,
-  "total_calls_finished": 1,
-  "last_updated_at_unix": 1,
-  "status": "pending",
-  "retry_count": 1,
+  "id": "batch_3f8a2c1d9e4b7a6f",
+  "name": "Q4 Customer Outreach Campaign",
+  "agent_id": "agent_7d4e2f1a9b3c8e5d",
+  "created_at_unix": 1718000000,
+  "scheduled_time_unix": 1718003600,
+  "total_calls_dispatched": 142,
+  "total_calls_scheduled": 500,
+  "total_calls_finished": 138,
+  "last_updated_at_unix": 1718005200,
+  "status": "cancelled",
+  "retry_count": 2,
   "telephony_call_config": {
-    "ringing_timeout_secs": 1,
-    "twilio_call_recording_enabled": true,
+    "ringing_timeout_secs": 30,
+    "twilio_call_recording_enabled": false,
     "twilio_machine_detection": {
-      "mode": "enable"
+      "mode": "detect_message_end"
     }
   },
-  "agent_name": "agent_name",
-  "phone_number_id": "phone_number_id",
+  "agent_name": "Customer Support Agent",
+  "phone_number_id": "PN4e2a1b8c3d7f9e5a",
   "phone_provider": "twilio",
   "whatsapp_params": {
-    "whatsapp_call_permission_request_template_name": "whatsapp_call_permission_request_template_name",
-    "whatsapp_call_permission_request_template_language_code": "whatsapp_call_permission_request_template_language_code",
-    "whatsapp_phone_number_id": "whatsapp_phone_number_id"
+    "whatsapp_call_permission_request_template_name": "call_permission_request_v1",
+    "whatsapp_call_permission_request_template_language_code": "en_US",
+    "whatsapp_phone_number_id": "WA7b3c9d2e1f4a8b6c"
   },
-  "branch_id": "branch_id",
-  "environment": "environment",
-  "timezone": "timezone",
-  "target_concurrency_limit": 1,
-  "branch_name": "branch_name"
+  "branch_id": "branch_2c5f8a1d4e7b9c3f",
+  "environment": "production",
+  "timezone": "America/New_York",
+  "target_concurrency_limit": 10,
+  "branch_name": "North America Sales"
 }
 ```
 
@@ -142,14 +148,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel"
 
-response = requests.post(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel';
-const options = {method: 'POST'};
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -165,6 +174,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -173,7 +183,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel"
 
-	req, _ := http.NewRequest("POST", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -196,6 +210,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -206,6 +222,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -215,7 +233,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel');
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -225,16 +248,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel");
 var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/cancel")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

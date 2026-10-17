@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 {
-  "avatar_file": "<file: [object Object]>"
+  "avatar_file": "<file: agent_avatar.png>"
 }
 ```
 
@@ -76,8 +76,8 @@ Validation Error
 
 ```json
 {
-  "agent_id": "string",
-  "avatar_url": "string"
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "avatar_url": "https://storage.elevenlabs.io/convai/avatars/agent_3701k3ttaq12ewp8b7qv5rfyszkz/agent_avatar.png"
 }
 ```
 
@@ -88,7 +88,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar"
 
-files = { "avatar_file": "open('[object Object]', 'rb')" }
+files = { "avatar_file": "open('agent_avatar.png', 'rb')" }
 
 response = requests.post(url, files=files)
 
@@ -98,7 +98,7 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar';
 const form = new FormData();
-form.append('avatar_file', '[object Object]');
+form.append('avatar_file', 'agent_avatar.png');
 
 const options = {method: 'POST'};
 
@@ -127,7 +127,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -152,7 +152,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -163,7 +163,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -177,7 +177,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents
   'multipart' => [
     [
         'name' => 'avatar_file',
-        'filename' => '[object Object]',
+        'filename' => 'agent_avatar.png',
         'contents' => null
     ]
   ]
@@ -191,7 +191,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/avatar");
 var request = new RestRequest(Method.POST);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"avatar_file\"; filename=\"agent_avatar.png\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -200,7 +200,7 @@ import Foundation
 let parameters = [
   [
     "name": "avatar_file",
-    "fileName": "[object Object]"
+    "fileName": "agent_avatar.png"
   ]
 ]
 

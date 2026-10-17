@@ -62,9 +62,7 @@ Validation Error
 **Request**
 
 ```json
-{
-  "third_party_disable_allowed": true
-}
+{}
 ```
 
 **Response**
@@ -80,7 +78,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling"
 
-payload = { "third_party_disable_allowed": True }
+payload = {}
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -90,11 +88,7 @@ print(response.json())
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling';
-const options = {
-  method: 'POST',
-  headers: {'Content-Type': 'application/json'},
-  body: '{"third_party_disable_allowed":true}'
-};
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -119,7 +113,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling"
 
-	payload := strings.NewReader("{\n  \"third_party_disable_allowed\": true\n}")
+	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -147,7 +141,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"third_party_disable_allowed\": true\n}"
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -159,7 +153,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling")
   .header("Content-Type", "application/json")
-  .body("{\n  \"third_party_disable_allowed\": true\n}")
+  .body("{}")
   .asString();
 ```
 
@@ -170,9 +164,7 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling', [
-  'body' => '{
-  "third_party_disable_allowed": true
-}',
+  'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
   ],
@@ -187,7 +179,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"third_party_disable_allowed\": true\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -195,7 +187,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["third_party_disable_allowed": true] as [String : Any]
+let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

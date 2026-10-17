@@ -63,7 +63,7 @@ Validation Error
 **Response**
 
 ```json
-"<html><head><title>Knowledge Base Document</title></head><body><h1>Introduction to Conversational AI</h1><p>This document provides an overview of conversational AI technologies, including natural language processing, machine learning, and dialogue management systems.</p><h2>Key Concepts</h2><ul><li>Natural Language Understanding (NLU)</li><li>Intent Recognition</li><li>Entity Extraction</li><li>Context Management</li></ul><h2>Applications</h2><p>Conversational AI is used in chatbots, virtual assistants, customer support automation, and more.</p></body></html>"
+"<html><body><h1>ElevenLabs Conversational AI Overview</h1><p>This document provides an introduction to the ElevenLabs Conversational AI platform, including how to configure agents, manage knowledge bases, and integrate voice capabilities into your applications.</p></body></html>"
 ```
 
 **SDK Code**

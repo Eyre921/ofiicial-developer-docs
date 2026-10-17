@@ -113,55 +113,61 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "topics": [
     {
-      "topic_id": "string",
-      "label": "string",
-      "description": "string",
-      "conversation_count": 1,
-      "parent_topic_id": "string",
-      "x_2d": 1.1,
-      "y_2d": 1.1,
+      "topic_id": "topic_a1b2c3d4e5f6",
+      "label": "Billing & Payment Issues",
+      "description": "Users asking about invoice discrepancies, failed payments, subscription charges, and refund requests.",
+      "conversation_count": 342,
+      "parent_topic_id": null,
+      "x_2d": -0.47,
+      "y_2d": 0.83,
       "metrics": {
-        "conversation_count": 0,
+        "conversation_count": 342,
         "sentiment": {
           "sentiment": {
-            "count": 0,
-            "sum": 0,
-            "min": 1.1,
-            "max": 1.1
+            "count": 318,
+            "sum": 142.6,
+            "min": -0.92,
+            "max": 0.87
           },
           "frustration": {
-            "count": 0,
-            "sum": 0,
-            "min": 1.1,
-            "max": 1.1
+            "count": 318,
+            "sum": 210.4,
+            "min": 0.02,
+            "max": 0.98
           },
-          "positive_count": 0,
-          "neutral_count": 0,
-          "negative_count": 0
+          "positive_count": 89,
+          "neutral_count": 124,
+          "negative_count": 105
         },
         "evaluation_criteria": [
           {
-            "criteria_id": "string",
-            "success_count": 0,
-            "failure_count": 0,
-            "unknown_count": 0
+            "criteria_id": "crit_resolved_issue",
+            "success_count": 198,
+            "failure_count": 112,
+            "unknown_count": 32
           }
         ]
       },
-      "success_rate": 1.1
+      "success_rate": 0.638
     }
   ],
-  "window_start_unix_secs": 1,
-  "window_end_unix_secs": 1,
-  "aggregated_run_count": 0,
-  "has_more": false,
-  "next_cursor": "string"
+  "window_start_unix_secs": 1745452800,
+  "window_end_unix_secs": 1748044800,
+  "aggregated_run_count": 30,
+  "has_more": true,
+  "next_cursor": "eyJvZmZzZXQiOjEwLCJydW5faWQiOiJydW5fMjAyNTA1MDEifQ=="
 }
 ```
 
@@ -172,14 +178,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -195,6 +204,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -203,7 +213,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -226,6 +240,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -236,6 +252,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -245,7 +263,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -255,16 +278,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/topics");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

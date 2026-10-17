@@ -68,7 +68,7 @@ Validation Error
 
 ```json
 {
-  "target_workspace_id": "string"
+  "target_workspace_id": "wksp_eu_4f8a2b1c9d3e7f6a"
 }
 ```
 
@@ -87,7 +87,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment"
 
-payload = { "target_workspace_id": "string" }
+payload = { "target_workspace_id": "wksp_eu_4f8a2b1c9d3e7f6a" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -100,7 +100,7 @@ const url = 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"target_workspace_id":"string"}'
+  body: '{"target_workspace_id":"wksp_eu_4f8a2b1c9d3e7f6a"}'
 };
 
 try {
@@ -126,7 +126,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment"
 
-	payload := strings.NewReader("{\n  \"target_workspace_id\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"target_workspace_id\": \"wksp_eu_4f8a2b1c9d3e7f6a\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -154,7 +154,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"target_workspace_id\": \"string\"\n}"
+request.body = "{\n  \"target_workspace_id\": \"wksp_eu_4f8a2b1c9d3e7f6a\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -166,7 +166,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment")
   .header("Content-Type", "application/json")
-  .body("{\n  \"target_workspace_id\": \"string\"\n}")
+  .body("{\n  \"target_workspace_id\": \"wksp_eu_4f8a2b1c9d3e7f6a\"\n}")
   .asString();
 ```
 
@@ -178,7 +178,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment', [
   'body' => '{
-  "target_workspace_id": "string"
+  "target_workspace_id": "wksp_eu_4f8a2b1c9d3e7f6a"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -194,7 +194,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/replicate-to-isolated-environment");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"target_workspace_id\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"target_workspace_id\": \"wksp_eu_4f8a2b1c9d3e7f6a\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -202,7 +202,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["target_workspace_id": "string"] as [String : Any]
+let parameters = ["target_workspace_id": "wksp_eu_4f8a2b1c9d3e7f6a"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

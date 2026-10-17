@@ -142,75 +142,87 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "agent_conversation_tickets": [
     {
-      "agentqa_ticket_id": "string",
-      "workspace_id": "string",
-      "owner_user_id": "string",
-      "agent_id": "string",
-      "needs_clustering": true,
-      "title": "string",
+      "agentqa_ticket_id": "tkt_3f8a2b1c9d4e5f6a7b8c9d0e",
+      "workspace_id": "ws_a1b2c3d4e5f6g7h8i9j0k1l2",
+      "owner_user_id": "usr_7c4d2e1f8a3b5c6d9e0f1a2b",
+      "agent_id": "agt_9e8d7c6b5a4f3e2d1c0b9a8f",
+      "needs_clustering": false,
+      "title": "Agent unable to answer questions about enterprise pricing tiers",
       "issue_type": "knowledge_gap",
       "labels": [
-        "string"
+        "pricing",
+        "enterprise"
       ],
       "conversation_ids": [
-        "string"
+        "conv_1a2b3c4d5e6f7g8h9i0j1k2l"
       ],
-      "first_seen_unix_secs": 1,
-      "last_seen_unix_secs": 1,
-      "qa_comment": "string",
+      "first_seen_unix_secs": 1718000400,
+      "last_seen_unix_secs": 1718086800,
+      "qa_comment": "Agent repeatedly failed to provide accurate pricing information for enterprise plans, leading to user frustration.",
       "ticket_comments": [
         {
-          "comment": "string",
-          "created_at_unix_secs": 1,
-          "owner_user_id": "string"
+          "comment": "Confirmed the knowledge base is missing the updated enterprise pricing page. Escalating to content team.",
+          "created_at_unix_secs": 1718090000,
+          "owner_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c"
         }
       ],
       "turn_comments": [
         {
-          "turn_index": 1,
-          "comment": "string",
-          "created_at_unix_secs": 1,
-          "owner_user_id": "string"
+          "turn_index": 4,
+          "comment": "Agent gave an outdated price of $299/month instead of the current $349/month for the enterprise tier.",
+          "created_at_unix_secs": 1718091200,
+          "owner_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c"
         }
       ],
       "status": "open",
-      "priority": "low",
+      "priority": "high",
       "priority_changes": [
         {
-          "priority": "low",
-          "changed_by_user_id": "string",
-          "changed_at_unix_secs": 1
+          "priority": "medium",
+          "changed_by_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c",
+          "changed_at_unix_secs": 1718088000
+        },
+        {
+          "priority": "high",
+          "changed_by_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c",
+          "changed_at_unix_secs": 1718091500
         }
       ],
       "status_changes": [
         {
           "status": "open",
-          "changed_by_user_id": "string",
-          "changed_at_unix_secs": 1
+          "changed_by_user_id": "usr_7c4d2e1f8a3b5c6d9e0f1a2b",
+          "changed_at_unix_secs": 1718000400
         }
       ],
       "source": "qa",
-      "assignee_user_id": "string",
-      "created_at_unix_secs": 1,
-      "updated_at_unix_secs": 1,
-      "merged_into_ticket_id": "string",
+      "assignee_user_id": "usr_4d5e6f7a8b9c0d1e2f3a4b5c",
+      "created_at_unix_secs": 1718000400,
+      "updated_at_unix_secs": 1718091500,
+      "merged_into_ticket_id": null,
       "search_match": {
         "field": "title",
-        "snippet": "string",
-        "highlight_start": 1,
-        "highlight_end": 1,
-        "turn_index": 1
+        "snippet": "Agent unable to answer questions about enterprise pricing tiers",
+        "highlight_start": 31,
+        "highlight_end": 49,
+        "turn_index": null
       }
     }
   ],
   "has_more": true,
-  "next_cursor": "string"
+  "next_cursor": "eyJjcmVhdGVkX2F0IjoxNzE4MDAwMDAwLCJpZCI6InRrdF8zZjhhMmIxYzlkNGU1ZjZhN2I4YzlkMGUifQ=="
 }
 ```
 
@@ -221,14 +233,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -244,6 +259,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -252,7 +268,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -275,6 +295,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -285,6 +307,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/triage-tickets")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -294,7 +318,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/triage-tickets');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/triage-tickets', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -304,16 +333,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/triage-tickets")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -134,39 +134,39 @@ Validation Error
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "source_tip_version_id_at_creation": "string",
-  "title": "string",
-  "created_at": 1,
-  "updated_at": 1,
-  "description": "",
+  "id": "agtmprop_8901k4t9z5defmb8vh3e9361y7nj",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "source_branch_id": "branch_4521m7ppbq34fxr9c8sv6tguabcd",
+  "target_branch_id": "branch_1100a2mmzp01ewq7d5rt3shijklm",
+  "source_tip_version_id_at_creation": "ver_7823n9qqcr45gys0e6uw7vhxefgh",
+  "title": "Add multilingual greeting support to customer service agent",
+  "created_at": 1717948800,
+  "updated_at": 1718035200,
+  "description": "This proposal adds support for Spanish and French greetings in the customer service agent's opening prompt, improving accessibility for non-English speakers.",
   "requested_reviewer_user_ids": [
-    "string"
+    "user_5612b8nnds23hzt1f7qx4wijklmn"
   ],
   "reviews": [
     {
-      "user_id": "string",
+      "user_id": "user_5612b8nnds23hzt1f7qx4wijklmn",
       "state": "approved",
-      "submitted_at": 1,
-      "comment": "",
+      "submitted_at": 1718035200,
+      "comment": "The multilingual greetings look great and are contextually appropriate. Approved.",
       "reviewer_role": "admin"
     }
   ],
   "comments": [
     {
-      "id": "string",
-      "user_id": "string",
-      "body": "string",
-      "created_at": 1
+      "id": "cmt_3309c1ooet56iav2g8ry5xjklmno",
+      "user_id": "user_5612b8nnds23hzt1f7qx4wijklmn",
+      "body": "Could you also consider adding a Portuguese greeting for Brazilian users?",
+      "created_at": 1718020800
     }
   ],
   "outcome": {
     "status": "open"
   },
-  "author_user_id": "string",
+  "author_user_id": "user_2201d6llcr12gys0e5pt3vhijklm",
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",

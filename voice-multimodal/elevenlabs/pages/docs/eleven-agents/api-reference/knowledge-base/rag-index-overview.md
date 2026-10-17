@@ -68,16 +68,12 @@ Validation Error
 
 ```json
 {
-  "total_used_bytes": 524288000,
+  "total_used_bytes": 157286400,
   "total_max_bytes": 1073741824,
   "models": [
     {
       "model": "e5_mistral_7b_instruct",
-      "used_bytes": 314572800
-    },
-    {
-      "model": "multilingual_e5_large_instruct",
-      "used_bytes": 209715200
+      "used_bytes": 104857600
     }
   ]
 }

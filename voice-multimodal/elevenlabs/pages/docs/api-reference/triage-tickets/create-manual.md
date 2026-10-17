@@ -133,7 +133,7 @@ Validation Error
 
 ```json
 {
-  "qa_comment": "string"
+  "qa_comment": "Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request."
 }
 ```
 
@@ -141,64 +141,64 @@ Validation Error
 
 ```json
 {
-  "agentqa_ticket_id": "string",
-  "workspace_id": "string",
-  "owner_user_id": "string",
-  "agent_id": "string",
-  "needs_clustering": true,
-  "title": "string",
+  "agentqa_ticket_id": "tkt_3f8a2b1c9d4e5f6a7b8c9d0e",
+  "workspace_id": "ws_a1b2c3d4e5f6g7h8i9j0k1l2",
+  "owner_user_id": "usr_9k8j7h6g5f4e3d2c1b0a9z8y",
+  "agent_id": "agt_c4d5e6f7a8b9c0d1e2f3a4b5",
+  "needs_clustering": false,
+  "title": "Add KB article on refund policy and return request process",
   "issue_type": "knowledge_gap",
   "labels": [
-    "string"
+    "knowledge-base"
   ],
   "conversation_ids": [
-    "string"
+    "conv_1a2b3c4d5e6f7g8h9i0j1k2l"
   ],
-  "first_seen_unix_secs": 1,
-  "last_seen_unix_secs": 1,
-  "qa_comment": "string",
+  "first_seen_unix_secs": 1718000000,
+  "last_seen_unix_secs": 1718003600,
+  "qa_comment": "Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request.",
   "ticket_comments": [
     {
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "comment": "This has been flagged multiple times in recent conversations. Prioritizing for next sprint.",
+      "created_at_unix_secs": 1718004200,
+      "owner_user_id": "usr_9k8j7h6g5f4e3d2c1b0a9z8y"
     }
   ],
   "turn_comments": [
     {
-      "turn_index": 1,
-      "comment": "string",
-      "created_at_unix_secs": 1,
-      "owner_user_id": "string"
+      "turn_index": 3,
+      "comment": "Agent failed to provide refund policy details here.",
+      "created_at_unix_secs": 1718001800,
+      "owner_user_id": "usr_9k8j7h6g5f4e3d2c1b0a9z8y"
     }
   ],
   "status": "open",
-  "priority": "low",
+  "priority": "medium",
   "priority_changes": [
     {
-      "priority": "low",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "priority": "medium",
+      "changed_by_user_id": "usr_9k8j7h6g5f4e3d2c1b0a9z8y",
+      "changed_at_unix_secs": 1718004500
     }
   ],
   "status_changes": [
     {
       "status": "open",
-      "changed_by_user_id": "string",
-      "changed_at_unix_secs": 1
+      "changed_by_user_id": "usr_9k8j7h6g5f4e3d2c1b0a9z8y",
+      "changed_at_unix_secs": 1718000100
     }
   ],
-  "source": "qa",
-  "assignee_user_id": "string",
-  "created_at_unix_secs": 1,
-  "updated_at_unix_secs": 1,
-  "merged_into_ticket_id": "string",
+  "source": "manual",
+  "assignee_user_id": "usr_2m3n4o5p6q7r8s9t0u1v2w3x",
+  "created_at_unix_secs": 1718000100,
+  "updated_at_unix_secs": 1718004500,
+  "merged_into_ticket_id": null,
   "search_match": {
     "field": "title",
-    "snippet": "string",
-    "highlight_start": 1,
-    "highlight_end": 1,
-    "turn_index": 1
+    "snippet": "Add KB article on refund policy and return request process",
+    "highlight_start": 10,
+    "highlight_end": 22,
+    "turn_index": null
   }
 }
 ```
@@ -210,7 +210,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets"
 
-payload = { "qa_comment": "string" }
+payload = { "qa_comment": "Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request." }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -223,7 +223,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets'
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"qa_comment":"string"}'
+  body: '{"qa_comment":"Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request."}'
 };
 
 try {
@@ -249,7 +249,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets"
 
-	payload := strings.NewReader("{\n  \"qa_comment\": \"string\"\n}")
+	payload := strings.NewReader("{\n  \"qa_comment\": \"Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request.\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -277,7 +277,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"qa_comment\": \"string\"\n}"
+request.body = "{\n  \"qa_comment\": \"Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request.\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -289,7 +289,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets")
   .header("Content-Type", "application/json")
-  .body("{\n  \"qa_comment\": \"string\"\n}")
+  .body("{\n  \"qa_comment\": \"Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request.\"\n}")
   .asString();
 ```
 
@@ -301,7 +301,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets', [
   'body' => '{
-  "qa_comment": "string"
+  "qa_comment": "Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request."
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -317,7 +317,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"qa_comment\": \"string\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"qa_comment\": \"Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request.\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -325,7 +325,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["qa_comment": "string"] as [String : Any]
+let parameters = ["qa_comment": "Add a knowledge base article covering our refund policy and the steps users need to follow to initiate a return request."] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -131,39 +131,39 @@ Validation Error
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "source_tip_version_id_at_creation": "string",
-  "title": "string",
-  "created_at": 1,
-  "updated_at": 1,
-  "description": "",
+  "id": "agtmprop_8901k4t9z5defmb8vh3e9361y7nj",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "source_branch_id": "branch_4521m7ppbq34fxr9c8sv6tguabcd",
+  "target_branch_id": "branch_1100a2zzwm00abc1d0ef2ghijk34",
+  "source_tip_version_id_at_creation": "ver_7812n9qqcr45gys0d9tw7uhvbcde",
+  "title": "Update greeting prompt and add FAQ knowledge base",
+  "created_at": 1717862400,
+  "updated_at": 1718035200,
+  "description": "This proposal updates the agent's greeting message to be more concise and integrates the new FAQ knowledge base for improved response accuracy.",
   "requested_reviewer_user_ids": [
-    "string"
+    "user_5623p8rrds56hzt1e0ux8vivwxyz"
   ],
   "reviews": [
     {
-      "user_id": "string",
+      "user_id": "user_5623p8rrds56hzt1e0ux8vivwxyz",
       "state": "approved",
-      "submitted_at": 1,
-      "comment": "",
+      "submitted_at": 1718035200,
+      "comment": "Changes look good. The updated greeting is cleaner and the FAQ integration is well-structured.",
       "reviewer_role": "admin"
     }
   ],
   "comments": [
     {
-      "id": "string",
-      "user_id": "string",
-      "body": "string",
-      "created_at": 1
+      "id": "cmt_9034q1sseu67iau2f1vy9wjwxyza",
+      "user_id": "user_2211b3aaxn11bcd2e1fg3hijkl56",
+      "body": "Please make sure the FAQ knowledge base covers the billing-related questions before merging.",
+      "created_at": 1717948800
     }
   ],
   "outcome": {
     "status": "open"
   },
-  "author_user_id": "string",
+  "author_user_id": "user_2211b3aaxn11bcd2e1fg3hijkl56",
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",

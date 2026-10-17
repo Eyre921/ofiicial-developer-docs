@@ -133,43 +133,43 @@ Validation Error
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "source_branch_id": "string",
-  "target_branch_id": "string",
-  "source_tip_version_id_at_creation": "string",
-  "title": "string",
-  "created_at": 1,
-  "updated_at": 1,
-  "description": "",
+  "id": "agtmprop_8901k4t9z5defmb8vh3e9361y7nj",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "source_branch_id": "agntbrnch_4521k3ttaq12ewp8b7qv5rfyszkz",
+  "target_branch_id": "agntbrnch_1100k3ttaq12ewp8b7qv5rfyszkz",
+  "source_tip_version_id_at_creation": "agntver_7823k4t9z5defmb8vh3e9361y7nj",
+  "title": "Update greeting prompt for improved user onboarding",
+  "created_at": 1717948800,
+  "updated_at": 1718035200,
+  "description": "This proposal updates the agent's greeting message to be more welcoming and informative for new users, based on feedback from the UX team.",
   "requested_reviewer_user_ids": [
-    "string"
+    "usr_4821k3ttaq12ewp8b7qv5rfyszkz"
   ],
   "reviews": [
     {
-      "user_id": "string",
+      "user_id": "usr_4821k3ttaq12ewp8b7qv5rfyszkz",
       "state": "approved",
-      "submitted_at": 1,
-      "comment": "",
-      "reviewer_role": "admin"
+      "submitted_at": 1718035200,
+      "comment": "Looks good! The new greeting is much more friendly.",
+      "reviewer_role": "editor"
     }
   ],
   "comments": [
     {
-      "id": "string",
-      "user_id": "string",
-      "body": "string",
-      "created_at": 1
+      "id": "agtmpropcmt_3301k4t9z5defmb8vh3e9361y7nj",
+      "user_id": "usr_9921k3ttaq12ewp8b7qv5rfyszkz",
+      "body": "Should we also update the fallback response to match the new tone?",
+      "created_at": 1718020800
     }
   ],
   "outcome": {
     "status": "open"
   },
-  "author_user_id": "string",
+  "author_user_id": "usr_9921k3ttaq12ewp8b7qv5rfyszkz",
   "access_info": {
     "is_creator": true,
-    "creator_name": "John Doe",
-    "creator_email": "john.doe@example.com",
+    "creator_name": "Jane Smith",
+    "creator_email": "jane.smith@example.com",
     "role": "admin",
     "access_source": "creator"
   }

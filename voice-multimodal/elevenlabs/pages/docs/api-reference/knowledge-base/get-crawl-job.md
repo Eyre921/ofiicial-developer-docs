@@ -81,20 +81,20 @@ Validation Error
 
 ```json
 {
-  "seed_url": "https://www.example.com",
-  "max_pages": 100,
-  "root_folder_id": "folder_9a8b7c6d5e4f3g2h1i0j",
-  "updated_at": 1687804800,
-  "id": "crawljob_1234567890abcdef",
-  "created_at": 1687718400,
+  "seed_url": "https://docs.elevenlabs.io",
+  "max_pages": 50,
+  "root_folder_id": "kb_folder_9f3a2c1e8b7d4e56",
+  "updated_at": 1711900800,
+  "id": "crawl_4d7e2a1b9c3f5e08",
+  "created_at": 1711897200,
   "type": "discovery",
-  "pattern": "/blog/*",
-  "auto_discover": true,
+  "pattern": "https://docs.elevenlabs.io/api-reference/*",
+  "auto_discover": false,
   "status": "processing",
-  "pages_identified": 75,
-  "pages_scraped": 50,
-  "pages_skipped": 5,
-  "pages_failed": 2
+  "pages_identified": 42,
+  "pages_scraped": 27,
+  "pages_skipped": 3,
+  "pages_failed": 1
 }
 ```
 

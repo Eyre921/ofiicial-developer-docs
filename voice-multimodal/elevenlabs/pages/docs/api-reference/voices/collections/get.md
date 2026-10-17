@@ -70,9 +70,9 @@ Validation Error
 
 ```json
 {
-  "collection_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
-  "title": "Professional Narrators",
-  "icon": "🎙️",
+  "collection_id": "3LFDDMGmFqBbMFMCFnBd",
+  "title": "Narration Voices",
+  "icon": "microphone",
   "permission_on_resource": "editor"
 }
 ```

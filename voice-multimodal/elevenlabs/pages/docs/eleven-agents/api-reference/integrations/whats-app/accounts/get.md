@@ -68,22 +68,28 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "business_account_id": "business_account_id",
-  "phone_number_id": "phone_number_id",
-  "business_account_name": "business_account_name",
-  "phone_number_name": "phone_number_name",
-  "phone_number": "phone_number",
+  "business_account_id": "102938475610293",
+  "phone_number_id": "109876543210123",
+  "business_account_name": "Acme Corp",
+  "phone_number_name": "Acme Support Line",
+  "phone_number": "+14155552671",
   "account_type": "cloud_api",
-  "assigned_agent_id": "assigned_agent_id",
+  "assigned_agent_id": "agent_8f3k2m9p1x7q4n6r",
   "enable_messaging": true,
   "enable_audio_message_response": true,
   "enable_typing_indicator": true,
-  "assigned_agent_name": "assigned_agent_name",
-  "is_token_expired": true
+  "assigned_agent_name": "Customer Support Agent",
+  "is_token_expired": false
 }
 ```
 
@@ -94,14 +100,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -117,6 +126,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -125,7 +135,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -148,6 +162,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -158,6 +174,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -167,7 +185,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -177,16 +200,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

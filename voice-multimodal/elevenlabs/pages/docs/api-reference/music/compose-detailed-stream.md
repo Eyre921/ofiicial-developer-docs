@@ -142,7 +142,7 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 ```json
 [
-  "event: composition_plan\ndata: {\"chunks\":[{\"duration_ms\":15000,\"positive_styles\":[\"pop\",\"warm synths\",\"steady groove\",\"layered harmonies\"],\"text\":\"[Verse]\\nCity lights are fading\\nWe keep moving через\\"
+  "data: {\"type\":\"audio_chunk\",\"audio\":\"SGVsbG8gV29ybGQ=\",\"words_timestamps\":[],\"waveform_visual\":[]}"
 ]
 ```
 

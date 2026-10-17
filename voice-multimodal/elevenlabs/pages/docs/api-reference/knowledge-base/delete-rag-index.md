@@ -82,7 +82,7 @@ Validation Error
   "status": "succeeded",
   "progress_percentage": 100,
   "document_model_index_usage": {
-    "used_bytes": 5242880
+    "used_bytes": 204800
   }
 }
 ```

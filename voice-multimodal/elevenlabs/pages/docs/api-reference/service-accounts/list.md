@@ -154,16 +154,16 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 {
   "service-accounts": [
     {
-      "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
-      "name": "Audio Processing Service",
+      "service_account_user_id": "sa_3f8a2b1c9d4e5f6a7b8c9d0e",
+      "name": "Production TTS Service Account",
       "api-keys": [
         {
-          "name": "Primary API Key",
-          "hint": "Key for audio processing tasks",
-          "key_id": "key_123abc456def789ghi",
-          "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
-          "hashed_xi_api_key": "a1b2c3d4e5f67890abcdef1234567890",
-          "created_at_unix": 1688006400,
+          "name": "Production API Key",
+          "hint": "sk_...a3f2",
+          "key_id": "key_7c4d2e1f8a9b3c5d6e7f8a9b",
+          "service_account_user_id": "sa_3f8a2b1c9d4e5f6a7b8c9d0e",
+          "hashed_xi_api_key": "a3f2c1d4e5b6a7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+          "created_at_unix": 1710505200,
           "is_disabled": false,
           "permissions": [
             "text_to_speech",
@@ -171,23 +171,23 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
             "speech_history_read"
           ],
           "disable_reason": null,
-          "character_limit": 1000000,
-          "character_count": 250000,
+          "character_limit": 500000,
+          "character_count": 124350,
           "allowed_ips": [
-            "192.168.1.100",
-            "10.0.0.5"
+            "203.0.113.42",
+            "198.51.100.15"
           ],
-          "third_party_disable_allowed": true,
+          "third_party_disable_allowed": false,
           "platform_limits": {
             "credits": {
-              "limit": 1000000,
-              "usage": 250000
+              "limit": 500000,
+              "usage": 124350
             },
             "pvc": {
-              "limit": 10
+              "limit": 5
             },
             "concurrency": {
-              "limit": 5
+              "limit": 10
             },
             "dubbing_concurrency": {
               "limit": 3
@@ -198,39 +198,39 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
           }
         }
       ],
-      "created_at_unix": 1688006400,
+      "created_at_unix": 1710505200,
       "default_sharing_groups": [
         {
           "group": {
             "name": "Engineering Team",
-            "id": "grp_456def789abc123ghi",
+            "id": "grp_1a2b3c4d5e6f7a8b9c0d1e2f",
             "members": [
-              "user_001",
-              "user_002",
-              "user_003"
+              "user_4a5b6c7d8e9f0a1b2c3d4e5f",
+              "user_9f8e7d6c5b4a3f2e1d0c9b8a"
             ],
             "permissions": [
               "text_to_speech",
-              "speech_to_text",
-              "voice_lab"
+              "voices_read",
+              "speech_history_read",
+              "projects_read"
             ],
-            "group_usage_limit": 5000000,
-            "group_pvc_limit": 50,
+            "group_usage_limit": 1000000,
+            "group_pvc_limit": 10,
             "group_concurrency_limit": 20,
-            "group_dubbing_concurrency_limit": 10,
-            "group_music_concurrency_limit": 5,
-            "character_count": 1200000,
-            "is_scim_synced": true,
+            "group_dubbing_concurrency_limit": 5,
+            "group_music_concurrency_limit": 4,
+            "character_count": 348200,
+            "is_scim_synced": false,
             "scim_group": {
-              "scim_external_id": "scim_ext_789xyz456uvw123",
-              "display_name": "Engineering SCIM Group",
-              "created_at_unix": 1672531200,
-              "updated_at_unix": 1680393600,
-              "seat_type": "workspace_admin"
+              "scim_external_id": "scim_ext_7f3a2b1c9d4e5f6a",
+              "display_name": "Engineering Team",
+              "created_at_unix": 1709200000,
+              "updated_at_unix": 1710505200,
+              "seat_type": "workspace_member"
             },
             "scim_frozen": false
           },
-          "permission_level": "admin"
+          "permission_level": "editor"
         }
       ]
     }

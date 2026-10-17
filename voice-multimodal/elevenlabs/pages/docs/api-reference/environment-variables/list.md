@@ -95,21 +95,18 @@ Validation Error
 {
   "environment_variables": [
     {
-      "label": "API_ENDPOINT",
-      "created_at_unix_secs": 1685000000,
-      "updated_at_unix_secs": 1687600000,
-      "type": "string",
-      "id": "envvar_123abc456def",
-      "workspace_id": "workspace_789xyz123",
-      "values": {
-        "production": "https://api.production.example.com",
-        "staging": "https://api.staging.example.com"
-      },
-      "created_by_user_id": "user_987654321"
+      "label": "OPENAI_API_KEY",
+      "created_at_unix_secs": 1711900800,
+      "updated_at_unix_secs": 1714492800,
+      "type": "secret",
+      "id": "env_var_7aB2cD4eF6gH8iJ0kL",
+      "workspace_id": "wsp_1mN3oP5qR7sT9uV0wX",
+      "values": {},
+      "created_by_user_id": "user_3kR9mNpQxTvWbLcYdZeF"
     }
   ],
   "has_more": false,
-  "next_cursor": "cursor_abcdef123456"
+  "next_cursor": "eyJpZCI6ImVudl92YXJfN2FCMmNENGVGNmdIOGlKMGtMIn0="
 }
 ```
 

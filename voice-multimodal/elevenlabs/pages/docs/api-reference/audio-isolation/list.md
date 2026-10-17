@@ -86,18 +86,18 @@ Validation Error
 {
   "items": [
     {
-      "id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
-      "title": "Interview with Dr. Smith - Noise Isolated",
-      "created_at_unix": 1685000000,
+      "id": "a3f8c2d1e4b5678901234567890abcde",
+      "title": "Podcast Interview - Episode 42",
+      "created_at_unix": 1710505800,
       "format": "mp3",
-      "duration_seconds": 245.7,
-      "download_url": "https://cdn.elevenlabs.io/audio-isolation/a1b2c3d4-e5f6-7890-ab12-cd34ef567890.mp3",
-      "icon_url": "https://cdn.elevenlabs.io/icons/audio-isolation-icon.png",
-      "source_video_url": "https://videos.example.com/interview-dr-smith.mp4",
+      "duration_seconds": 183.5,
+      "download_url": "https://api.elevenlabs.io/v1/audio-isolation/history/a3f8c2d1e4b5678901234567890abcde/audio",
+      "icon_url": "https://storage.elevenlabs.io/icons/audio-isolation/a3f8c2d1e4b5678901234567890abcde.png",
+      "source_video_url": "https://storage.elevenlabs.io/source/a3f8c2d1e4b5678901234567890abcde.mp4",
       "supports_video": true,
       "processing": false,
       "video_processing_failed": false,
-      "preview_b64": "UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
+      "preview_b64": "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA"
     }
   ],
   "has_more": false

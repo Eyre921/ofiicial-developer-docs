@@ -140,39 +140,39 @@ Validation Error
 {
   "results": [
     {
-      "id": "mergeprop_9f8d7c6b5a4e3d2c1b0a",
+      "id": "mp_9x2k4mabcd78efg1h3ij5klmno",
       "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "source_branch_id": "branch_feature_voice_update",
-      "target_branch_id": "branch_main",
-      "source_tip_version_id_at_creation": "version_20240604123000",
-      "title": "Update voice modulation parameters",
-      "created_at": 1717489200,
-      "updated_at": 1717507200,
-      "description": "This proposal updates the voice modulation settings to improve naturalness in responses.",
+      "source_branch_id": "branch_feature_update_greeting_flow",
+      "target_branch_id": "branch_main_production",
+      "source_tip_version_id_at_creation": "ver_7a1b2c3d4e5f6g7h8i9j0k1l2m3n",
+      "title": "Update greeting flow and add FAQ responses",
+      "created_at": 1717948800,
+      "updated_at": 1718035200,
+      "description": "This proposal updates the initial greeting message and adds 12 new FAQ response templates to improve user experience.",
       "requested_reviewer_user_ids": [
-        "user_84a7c9d2f1b3e6a5"
+        "user_4f8e2a1b9c3d7e6f0a5b2c8d1e4f"
       ],
       "reviews": [
         {
-          "user_id": "user_84a7c9d2f1b3e6a5",
+          "user_id": "user_4f8e2a1b9c3d7e6f0a5b2c8d1e4f",
           "state": "approved",
-          "submitted_at": 1717507200,
-          "comment": "Looks good to me, the new parameters improve clarity.",
-          "reviewer_role": "admin"
+          "submitted_at": 1718035200,
+          "comment": "Looks good! The new FAQ responses are clear and concise.",
+          "reviewer_role": "editor"
         }
       ],
       "comments": [
         {
-          "id": "comment_5d4c3b2a1f0e9d8c7b6a",
-          "user_id": "user_92b8d7e6f5a4c3b2",
-          "body": "Can we also consider adding a fallback voice option?",
-          "created_at": 1717492800
+          "id": "cmt_3b5d7f9a1c2e4g6h8i0j2k4l6m8",
+          "user_id": "user_9d1e3f5a7b2c4d6e8f0a1b3c5d7e",
+          "body": "Should we also update the fallback message to match the new tone?",
+          "created_at": 1718020800
         }
       ],
       "outcome": {
         "status": "open"
       },
-      "author_user_id": "user_73a6b5c4d3e2f1a0",
+      "author_user_id": "user_9d1e3f5a7b2c4d6e8f0a1b3c5d7e",
       "access_info": {
         "is_creator": true,
         "creator_name": "John Doe",
@@ -182,8 +182,8 @@ Validation Error
       }
     }
   ],
-  "next_cursor": "cursor_20240604123000",
-  "has_more": true
+  "next_cursor": "cursor_eyJpZCI6Im1wXzl4Mms0bWFiY2Q3OGVmZzFoM2lqNWtsbW5vIiwiY3JlYXRlZF9hdCI6MTcxNzk0ODgwMH0",
+  "has_more": false
 }
 ```
 

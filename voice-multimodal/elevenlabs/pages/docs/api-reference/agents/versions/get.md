@@ -86,23 +86,29 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
-  "id": "string",
-  "agent_id": "string",
-  "branch_id": "string",
-  "version_description": "string",
-  "seq_no_in_branch": 1,
-  "time_committed_secs": 1,
+  "id": "agtvrsn_0901k4aafjxxfxt93gd841r7tv5t",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "branch_id": "agtbrnch_main_7f3k9pqr2mxw1yz",
+  "version_description": "Updated system prompt to improve customer support responses and added new FAQ knowledge base",
+  "seq_no_in_branch": 5,
+  "time_committed_secs": 1718035200,
   "parents": {
-    "in_branch_parent_id": "string",
-    "out_of_branch_parent_id": "string",
-    "merged_into_branch_id": "string",
-    "merged_from_branch_id": "string",
-    "merged_from_version_id": "string",
-    "rebased_from_version_id": "string"
+    "in_branch_parent_id": "agtvrsn_0801k3zzfjxxfxt93gd841r7tv4s",
+    "out_of_branch_parent_id": null,
+    "merged_into_branch_id": null,
+    "merged_from_branch_id": null,
+    "merged_from_version_id": null,
+    "rebased_from_version_id": null
   },
   "access_info": {
     "is_creator": true,
@@ -113,12 +119,12 @@ Validation Error
   },
   "merged_authors": [
     {
-      "is_creator": true,
-      "creator_name": "string",
-      "creator_email": "string",
-      "role": "admin",
-      "anonymous_access_level_override": "admin",
-      "access_source": "creator"
+      "is_creator": false,
+      "creator_name": "Jane Smith",
+      "creator_email": "jane.smith@example.com",
+      "role": "editor",
+      "anonymous_access_level_override": null,
+      "access_source": "explicit"
     }
   ]
 }
@@ -131,14 +137,17 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t"
 
-response = requests.get(url)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -154,6 +163,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -162,7 +172,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -185,6 +199,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -195,6 +211,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -204,7 +222,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -214,16 +237,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/versions/agtvrsn_0901k4aafjxxfxt93gd841r7tv5t")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
