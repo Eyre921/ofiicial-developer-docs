@@ -265,10 +265,31 @@ FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It
 
 * Connectors move automatically with `on`. Sign in to each one once the first time you use it.
 * Connector OAuth clients you register are saved and survive `off` and `on`.
-* `on` copies your custom skills and plugins. Conversations stay where they are. Third-party mode does not show your claude.ai sessions, and your subscription does not show sessions you start while connected. Nothing is deleted.
+* `on` copies your custom skills and plugins once. Run `fireconnect claude-desktop on` again to copy ones you add later. Changes you make while connected do not copy back.
 * MCPs that need an OAuth client ID and secret do not move. Create your own client, such as a **Desktop app** client in Google Cloud for the Google-hosted connectors. If you need one of these connectors, [reach out to the team](https://fireworks.ai/contact).
 
 Run `fireconnect claude-desktop mcp sync` when you add a connector later and want it in third-party mode too.
+
+**What stays with your claude.ai subscription**
+
+Third-party mode does not show your claude.ai chats, projects, artifacts, memory, or scheduled tasks. Nothing is deleted. Run `fireconnect claude-desktop off` and reopen Claude Desktop to get them back.
+
+| claude.ai item | While connected |
+| - | - |
+| Chats | Hidden. New chats start empty. |
+| Projects | Hidden. You can create new projects. |
+| Artifacts | Hidden in the app. New artifacts save as files in `~/Claude/`. |
+| Memory | Not carried over. New memory builds up on this computer. |
+| Scheduled tasks | Not carried over. You can create new ones. |
+
+New work while connected:
+
+* Chats, projects, artifacts, and memory save only on this computer. They do not appear on claude.ai web or mobile, and you cannot share them.
+* Scheduled tasks run only while the computer is awake. A missed run starts when it wakes.
+* Chat cannot search past chats and does not get nightly memory summaries. Chat uses memory only inside a project.
+* Voice mode is not available.
+
+Anthropic lists these limits in its [third-party feature matrix](https://claude.com/docs/third-party/claude-desktop/feature-matrix) and [local data guide](https://claude.com/docs/third-party/claude-desktop/data-storage).
 
 <AccordionGroup>
   <Accordion title="Where did my previous conversations go?">

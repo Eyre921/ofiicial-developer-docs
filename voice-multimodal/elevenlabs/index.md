@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1378 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -44,7 +44,6 @@
 - `docs/api-reference/agents/procedures/update` — [Update Procedure Draft](pages/docs/api-reference/agents/procedures/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/update.md)
 - `docs/api-reference/agents/simulate-conversation` — [Simulate conversation](pages/docs/api-reference/agents/simulate-conversation.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation.md)
 - `docs/api-reference/agents/simulate-conversation-stream` — [Stream simulate conversation](pages/docs/api-reference/agents/simulate-conversation-stream.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation-stream.md)
-- `docs/api-reference/agents/update` — [Update agent](pages/docs/api-reference/agents/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/update.md)
 - `docs/api-reference/agents/versions/get` — [Get agent version metadata](pages/docs/api-reference/agents/versions/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/versions/get.md)
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
 - `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
@@ -871,7 +870,6 @@
 - `docs/eleven-creative/voices/payouts` — [Payouts](pages/docs/eleven-creative/voices/payouts.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/payouts.md)
 - `docs/eleven-creative/voices/voice-cloning` — [Voice Cloning](pages/docs/eleven-creative/voices/voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-cloning.md)
 - `docs/eleven-creative/voices/voice-cloning/instant-voice-cloning` — [Instant Voice Cloning](pages/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning.md)
-- `docs/eleven-creative/voices/voice-cloning/professional-voice-cloning` — [Professional Voice Cloning](pages/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning.md)
 - `docs/eleven-creative/voices/voice-design` — [Voice Design](pages/docs/eleven-creative/voices/voice-design.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-design.md)
 - `docs/eleven-creative/voices/voice-library` — [Voice Library](pages/docs/eleven-creative/voices/voice-library.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-library.md)
 - `docs/help-center/account` — [Account](pages/docs/help-center/account.md) · [原文](https://elevenlabs.io/docs/help-center/account.md)
@@ -913,7 +911,6 @@
 - `docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month` — [What happens to my subscription and quota at the end of the month?](pages/docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month.md)
 - `docs/help-center/account/general/what-happens-when-i-run-out-of-credits` — [What happens when I run out of credits?](pages/docs/help-center/account/general/what-happens-when-i-run-out-of-credits.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-when-i-run-out-of-credits.md)
 - `docs/help-center/account/general/what-is-a-subscription` — [What is a subscription?](pages/docs/help-center/account/general/what-is-a-subscription.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-is-a-subscription.md)
-- `docs/help-center/account/general/what-is-the-price-for-usage-based-billing` — [What is the price for usage based billing?](pages/docs/help-center/account/general/what-is-the-price-for-usage-based-billing.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-is-the-price-for-usage-based-billing.md)
 - `docs/help-center/account/general/what-is-two-factor-authentication-2-fa` — [What is two-factor authentication (2FA)?](pages/docs/help-center/account/general/what-is-two-factor-authentication-2-fa.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-is-two-factor-authentication-2-fa.md)
 - `docs/help-center/account/general/what-is-usage-based-billing` — [What is usage based billing?](pages/docs/help-center/account/general/what-is-usage-based-billing.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-is-usage-based-billing.md)
 - `docs/help-center/account/general/when-do-my-credits-reset` — [When do my credits reset?](pages/docs/help-center/account/general/when-do-my-credits-reset.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/when-do-my-credits-reset.md)

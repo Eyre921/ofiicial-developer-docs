@@ -1,5 +1,5 @@
 ---
-title: "API Reference (166 pages)"
+title: "API Reference (167 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -265,6 +265,7 @@ path: docs/_llms/api-reference.txt
 
 #### Vault
 
+- [List the connections an intern can use](https://openrouter.ai/docs/api/api-reference/vault/list-the-connections-an-intern-can-use.md): Lists the connections in scope for the intern, by the key of their card on the dashboard's Connections tab: `github`, `slack`, `google`, a catalog MCP server such as `linear` or `notion`, or `mcp:<host>` for a custom MCP server. A connection is listed when it is stored, enabled, and not turned off o…
 - [List the secrets an intern receives](https://openrouter.ai/docs/api/api-reference/vault/list-the-secrets-an-intern-receives.md): Lists, one entry per name, the secret the intern's outbound requests receive: its own secrets, secrets from an attached vault, and workspace secrets, including ones stored before workspace-scoped storage. Where several vaults hold a name, the entry is the one that wins, in the order intern, attached…
 - [List intern secrets](https://openrouter.ai/docs/api/api-reference/vault/list-intern-secrets.md): Lists secret metadata stored for one intern. The list includes secrets stored from the dashboard or at provisioning before workspace-scoped storage; where both exist under one name, the one stored through this API is listed. Those older secrets cannot be deleted or copied through this API, and stori…
 - [Store an intern secret](https://openrouter.ai/docs/api/api-reference/vault/store-an-intern-secret.md): Creates or replaces a secret stored for one intern. The value is encrypted at rest and released only to the exact hostnames in `hosts`. The response carries metadata only. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on…
