@@ -32,6 +32,13 @@ Create a draft in an inbox, either to start a new thread or reply to an existing
 
 A draft lets you prepare a message before sending it.
 
+Omit `thread_id` and `reply_to_email_id` to start a new thread. Pass both for a
+reply draft.
+
+An email can have only one unsent reply draft. A request for an email that
+already has one returns a `200` with the existing Draft ID. It changes only the
+`attachments` of that draft.
+
 ## Path Parameters
 
 <ResendParamField type="string">
@@ -40,9 +47,15 @@ A draft lets you prepare a message before sending it.
 
 ## Body Parameters
 
+At least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or `attachments`
+must be non-empty. `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+
 <ParamField type="string | string[] | null">
   Recipients. For multiple addresses, send an array of strings. Each value can
-  include a friendly name, for example `Ada Lovelace <ada@example.org>`.
+  include a friendly name, for example `Ada Lovelace <ada@example.org>`. On a
+  reply draft, when you omit `to` or send `null`, the draft gets the recipients
+  of a [reply](/docs/api-reference/inboxes/reply-thread-email). Send `[]` for no
+  recipients.
 </ParamField>
 
 <ParamField type="string | string[] | null">
@@ -54,7 +67,7 @@ A draft lets you prepare a message before sending it.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Max 2000 characters.
+  The subject. 1 to 2000 characters, with no line breaks.
 </ParamField>
 
 <ParamField type="string | null">
@@ -65,8 +78,9 @@ A draft lets you prepare a message before sending it.
   The plain-text body.
 </ParamField>
 
-<ParamField type="array">
-  Files to store on the draft.
+<ParamField type="array | null">
+  Files to store on the draft, up to 25 MB in total. Drafts do not accept
+  `path` or `content_id`.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -78,7 +92,8 @@ A draft lets you prepare a message before sending it.
     </ParamField>
 
     <ResendParamField type="string">
-      Content type for the attachment.
+      Content type for the attachment. Must be a valid MIME type, such as
+      `application/pdf`.
     </ResendParamField>
   </Expandable>
 </ParamField>

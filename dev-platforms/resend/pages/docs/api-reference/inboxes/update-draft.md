@@ -30,7 +30,8 @@ Update an unsent draft.
   </CodeGroup>
 </Warning>
 
-Updates the content of an unsent draft.
+Updates the content of an unsent draft. A draft that was already sent returns
+a `409`.
 
 ## Path Parameters
 
@@ -44,33 +45,40 @@ Updates the content of an unsent draft.
 
 ## Body Parameters
 
+Send at least one field. Omitted fields keep their current value. A request
+with `html` or `text` replaces both, and the one you leave out is saved as
+`null`. After the update, the draft must still have at least one non-empty
+field, and `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+
 <ParamField type="string | string[] | null">
-  Recipients.
+  Recipients. Send `null` or `[]` to clear them.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  CC recipients.
+  CC recipients. Send `null` or `[]` to clear them.
 </ParamField>
 
 <ParamField type="string | string[] | null">
-  BCC recipients.
+  BCC recipients. Send `null` or `[]` to clear them.
 </ParamField>
 
 <ParamField type="string | null">
-  The subject. Max 2000 characters.
+  The subject. 1 to 2000 characters, with no line breaks. Send `null` to clear
+  it.
 </ParamField>
 
 <ParamField type="string | null">
-  The HTML body.
+  The HTML body. Send `null` to clear it.
 </ParamField>
 
 <ParamField type="string | null">
-  The plain-text body. Pass `null` to clear. Sending `html` or `text` replaces
-  both, and the one you leave out is saved as `null`.
+  The plain-text body. Send `null` to clear it.
 </ParamField>
 
 <ParamField type="array | null">
-  Files to store on the draft.
+  Files to store on the draft, up to 25 MB in total. Sending the field replaces
+  every attachment on the draft. Send `null` or `[]` to remove them all. Drafts
+  do not accept `path` or `content_id`.
 
   <Expandable title="properties">
     <ParamField type="buffer | string">
@@ -82,7 +90,8 @@ Updates the content of an unsent draft.
     </ParamField>
 
     <ResendParamField type="string">
-      Content type for the attachment.
+      Content type for the attachment. Must be a valid MIME type, such as
+      `application/pdf`.
     </ResendParamField>
   </Expandable>
 </ParamField>

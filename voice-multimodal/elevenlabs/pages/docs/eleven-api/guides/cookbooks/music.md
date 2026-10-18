@@ -28,7 +28,7 @@ This guide will show you how to generate music with our Music API.
 
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
-Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
+Store the key as a managed secret and pass it to the SDKs either as an environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
 
 **`.env`**
 

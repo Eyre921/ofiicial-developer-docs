@@ -164,8 +164,8 @@ Retrieve a single draft by its ID.
     "attachments": [
       {
         "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-        "filename": "receipt.pdf",
-        "content_type": "application/pdf",
+        "filename": "note.txt",
+        "content_type": "text/plain",
         "size": 5
       }
     ]

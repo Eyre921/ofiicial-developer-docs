@@ -93,7 +93,7 @@ Event triggered whenever the **first email of a thread** lands in the inbox, inb
       </ParamField>
 
       <ParamField type="string">
-        Sender email address
+        Sender email address. Can include the display name.
       </ParamField>
 
       <ParamField type="string[]">

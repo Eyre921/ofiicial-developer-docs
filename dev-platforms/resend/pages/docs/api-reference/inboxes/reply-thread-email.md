@@ -20,17 +20,24 @@ Send a reply to a message in an inbox thread.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.33.0
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.25.0
     ```
   </CodeGroup>
 </Warning>
 
 Sends a reply from the inbox address.
+
+The reply goes to the `Reply-To` addresses of the message. Without them, it goes
+to the sender. A reply to a message the inbox sent goes to that message's `to`
+recipients.
+
+Attachments can have at most 25 MB of `content` in total. Files sent with
+`path` do not count toward it. The whole email can be at most 40 MB.
 
 ## Path Parameters
 
@@ -49,11 +56,14 @@ Sends a reply from the inbox address.
 
 ## Body Parameters
 
-<ParamField type="string | string[]">
+At least one of `html` or `text` is required. `cc` and `bcc` combined can have
+at most 49 addresses, and the whole reply at most 50 recipients.
+
+<ParamField type="string | string[] | null">
   CC recipient email address.
 </ParamField>
 
-<ParamField type="string | string[]">
+<ParamField type="string | string[] | null">
   BCC recipient email address.
 </ParamField>
 
@@ -66,14 +76,15 @@ Sends a reply from the inbox address.
 </ParamField>
 
 <ParamField type="string">
-  The subject of the reply. Max 2000 characters.
+  The subject of the reply. 1 to 2000 characters, with no line breaks. Defaults
+  to the thread subject with a `Re:` prefix.
 </ParamField>
 
 <ResendParamField type="boolean">
   Reply to everyone on the original message.
 </ResendParamField>
 
-<ParamField type="array">
+<ParamField type="array | null">
   Files to attach, as on [Send Email](/docs/api-reference/emails/send-email).
 
   <Expandable title="properties">
@@ -101,8 +112,9 @@ Sends a reply from the inbox address.
   </Expandable>
 </ParamField>
 
-<ParamField type="object">
-  Custom headers to add to the email.
+<ParamField type="object | null">
+  Custom headers to add to the email. You cannot set `In-Reply-To`,
+  `References`, or `Reply-To`.
 </ParamField>
 
 ## Headers

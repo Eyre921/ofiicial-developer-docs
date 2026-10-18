@@ -151,7 +151,7 @@ path: docs/_llms/docs.txt
 
 ### Authentication
 
-- [OAuth PKCE](https://openrouter.ai/docs/guides/overview/auth/oauth.md): Connect your users to OpenRouter
+- [OAuth PKCE](https://openrouter.ai/docs/guides/overview/auth/oauth.md): Let users bring their own OpenRouter API key and pay for their own inference
 - [Workload Identity Federation](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation.md): Call OpenRouter from workloads signed in with your own identity provider, without long-lived API keys
 - [Management API Keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md): Manage API keys programmatically
 - [Security settings](https://openrouter.ai/docs/guides/overview/auth/security-settings.md): Review and manage API key security settings

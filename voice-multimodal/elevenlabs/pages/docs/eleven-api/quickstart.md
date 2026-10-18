@@ -8,25 +8,36 @@ path: docs/eleven-api/quickstart
 
 # ElevenAPI quickstart
 
-By the end of this guide you will have a working script that sends a text string to the ElevenLabs API and plays the returned audio through your speakers. You will learn how to authenticate with an API key, install the SDK, and make your first text-to-speech request.
+By the end of this guide you will have ElevenLabs set up in your project and can make your first text to speech request. There are two ways to get there: let your coding agent do the setup, or do it by hand.
 
 For guides covering other capabilities — streaming, voice cloning, speech-to-text — see the [Tutorials](/docs/eleven-api/guides/cookbooks) section.
 
-> **Tip**
->
-> Use the [ElevenLabs text-to-speech skill](https://github.com/elevenlabs/skills/tree/main/text-to-speech) to generate speech from your AI coding assistant:
->
-> ```bash
-> npx skills add elevenlabs/skills --skill text-to-speech
-> ```
+## Set up with your coding agent
 
-## Using the Text to Speech API
+You do not need an account or an API key before you start. Paste this into your coding agent:
+
+```text
+Add ElevenLabs to my project: run `npx -y @elevenlabs/cli@latest onboard init` and follow what it prints.
+```
+
+The ElevenLabs CLI takes it from there and tells your agent each step. Your browser opens once so you can sign in or create an account and click **Authorize**. The key is saved in your project's env file (`.env.local`, or `.env` in a Python project) and kept out of git; it is never shown in the chat. The agent then asks what you'd like to build, installs the SDK, adds the code to your app, and asks whether to send a test request.
+
+> **Note**
+>
+> If your agent runs somewhere your browser cannot reach, such as a remote machine over SSH or a
+> cloud sandbox, the CLI asks you to [create a key](https://elevenlabs.io/app/api/api-keys?quickstart=true) yourself and paste it into the env
+> file, then continues. The command needs [Node.js](https://nodejs.org) for `npx`. Without it,
+> [install the ElevenLabs CLI](https://github.com/elevenlabs/cli#installation) with Homebrew (macOS
+> and Linux) or Scoop (Windows), or update it if you already have it (`brew upgrade elevenlabs`,
+> `scoop update elevenlabs`), and ask your agent to run `elevenlabs onboard init` instead.
+
+## Set up by hand
 
 #### Create an API key
 
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
-Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
+Store the key as a managed secret and pass it to the SDKs either as an environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
 
 **`.env`**
 

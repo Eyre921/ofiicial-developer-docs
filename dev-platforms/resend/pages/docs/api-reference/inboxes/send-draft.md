@@ -32,6 +32,11 @@ Send an existing draft from the inbox address.
 
 Sends the draft from the inbox address.
 
+The draft needs a `to` recipient and `html` or `text`. A draft that is not a
+reply also needs a `subject`. Otherwise, the request returns a `422`. A reply
+draft without a subject uses the thread subject with a `Re:` prefix. The whole
+email can be at most 40 MB. A draft that was already sent returns a `409`.
+
 ## Path Parameters
 
 <ResendParamField type="string">
@@ -47,8 +52,9 @@ Sends the draft from the inbox address.
 The request body is optional and takes only `headers`. Without headers, send no
 body.
 
-<ParamField type="object">
-  Custom headers to add to the email.
+<ParamField type="object | null">
+  Custom headers to add to the email. You cannot set `In-Reply-To`,
+  `References`, or `Reply-To`.
 </ParamField>
 
 ## Headers

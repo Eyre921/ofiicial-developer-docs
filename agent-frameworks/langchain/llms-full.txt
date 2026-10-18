@@ -303623,7 +303623,7 @@ Browse the complete collection of integrations available for Python. LangChain P
     Text-embedding API (Forge) with turbo, pro, and ultra model tiers.
   </Card>
 
-  <Card title="VoyageAI" href="/oss/python/integrations/providers/voyageai" icon="link">
+  <Card title="VoyageAI by MongoDB" href="/oss/python/integrations/providers/voyageai" icon="link">
     Embedding models and semantic search.
   </Card>
 

@@ -53,6 +53,12 @@ You can rearrange the order of the rules by clicking **Change rule order** as sh
 After clicking **Change rule order**, you can reorder the rules to adjust their priorities.
 ![Rule order](https://b.stripecdn.com/docs-statics-srv/assets/rule-order.95fe64bb19ec313d3e4a8320e8a57978.png)
 
+## Review rule changes 
+
+Revenue Recognition records rule creation, updates, deletions, and changes to rule order in [activity logs](https://docs.stripe.com/revenue-recognition/activity-logs.md). When investigating a reporting difference, use these logs to check who changed a rule and when.
+
+Go to the [Rules page](https://dashboard.stripe.com/revenue-recognition/rules) in the Dashboard, open the page menu, and select **View activity**.
+
 ## Best practices for effectively maintaining your rules
 
 As your business grows, it’s important to make sure you regularly maintain your rules to ensure the accuracy of your revenue reports. The following are some best practices to keep rules correct for your Revenue Recognition reports.

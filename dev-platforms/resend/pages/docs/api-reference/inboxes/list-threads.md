@@ -41,7 +41,8 @@ A thread is a conversation within an inbox, made up of one or more messages.
 ## Query Parameters
 
 <ParamField type="string">
-  Comma-separated folders to list.
+  Comma-separated folders to list. Defaults to `inbox`, or to
+  `inbox,archive,sent` when `labels` is set.
 
   * `inbox`: The default. The thread holds at least one received message.
   * `archive`: The thread was archived.
@@ -51,7 +52,8 @@ A thread is a conversation within an inbox, made up of one or more messages.
 </ParamField>
 
 <ParamField type="string">
-  Comma-separated label IDs.
+  Comma-separated label IDs. Returns threads with any of these labels. Up to
+  `50` IDs.
 </ParamField>
 
 <ParamField type="boolean">
@@ -121,8 +123,21 @@ Threads](/docs/api-reference/inboxes/search-threads).
     </ParamField>
 
     <ParamField type="array">
-      The labels attached to the thread, each with an `id`, `name`, and
-      `color`.
+      The labels attached to the thread.
+
+      <Expandable title="properties">
+        <ParamField type="string">
+          The ID of the label.
+        </ParamField>
+
+        <ParamField type="string">
+          The name of the label.
+        </ParamField>
+
+        <ParamField type="string">
+          The color of the label as an uppercase `#RRGGBB` hex code.
+        </ParamField>
+      </Expandable>
     </ParamField>
 
     <ParamField type="number">

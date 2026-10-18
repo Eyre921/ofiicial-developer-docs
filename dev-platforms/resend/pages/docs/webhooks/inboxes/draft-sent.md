@@ -31,7 +31,7 @@ Received when a draft is sent.
 
 Event triggered whenever a **draft is sent**.
 
-*Note: This event fires from the send call. `inbox.email.sent` follows once the email is accepted for delivery.*
+*Note: A sent draft also triggers `inbox.email.sent`.*
 
 <ResponseBodyParameters type="inbox.draft.sent">
   <ParamField type="api | dashboard | agent | system">
@@ -97,7 +97,7 @@ Event triggered whenever a **draft is sent**.
       </ParamField>
 
       <ParamField type="string">
-        Sender email address
+        Sender email address. Can include the display name.
       </ParamField>
 
       <ParamField type="string[]">

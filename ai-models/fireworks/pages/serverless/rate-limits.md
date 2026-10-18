@@ -46,7 +46,7 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
   <tbody>
     <tr>
       <td><strong>Small</strong></td>
-      <td>\< 600B</td>
+      <td>\< 800B</td>
       <td>216M</td>
       <td>54M</td>
       <td>2.16M</td>
@@ -54,7 +54,7 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
 
     <tr>
       <td><strong>Medium</strong></td>
-      <td>600B – \< 1.6T</td>
+      <td>800B – \< 1.6T</td>
       <td>43.2M</td>
       <td>10.8M</td>
       <td>432k</td>
@@ -76,8 +76,8 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 
 | Tier | Models |
 | - | - |
-| **Small** | DeepSeek V4.1 Flash, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B |
-| **Medium** | GLM 5.3 |
+| **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B |
+| **Medium** | Muse Spark Open |
 | **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
 
 Models not listed here are tiered by total parameter count using the thresholds above.
@@ -165,7 +165,7 @@ The same limits are also returned in the [response headers](/serverless/overview
   </Accordion>
 
   <Accordion title="How is my model's ceiling tier determined?">
-    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 600B), **Medium** (600B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values and [Models by tier](#models-by-tier) for where each Serverless model falls.
+    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 800B), **Medium** (800B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values and [Models by tier](#models-by-tier) for where each Serverless model falls.
   </Accordion>
 
   <Accordion title="What should I do first when I see 429s?">

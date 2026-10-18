@@ -30,7 +30,7 @@ Mark a thread read or unread, or move it to another folder.
   </CodeGroup>
 </Warning>
 
-At least one of `read` or `folder` is required. To change a thread's labels, use
+To change a thread's labels, use
 [Add Thread Labels](/docs/api-reference/inboxes/add-thread-labels),
 [Set Thread Labels](/docs/api-reference/inboxes/set-thread-labels), or
 [Remove Thread Label](/docs/api-reference/inboxes/remove-thread-label).
@@ -46,6 +46,9 @@ At least one of `read` or `folder` is required. To change a thread's labels, use
 </ResendParamField>
 
 ## Body Parameters
+
+At least one of `read` or `folder` is required. Omitted fields keep their
+current value.
 
 <ParamField type="boolean">
   Marks every message in the thread read or unread.
@@ -86,7 +89,21 @@ At least one of `read` or `folder` is required. To change a thread's labels, use
 </ParamField>
 
 <ParamField type="array">
-  The labels attached to the thread, each with an `id`, `name`, and `color`.
+  The labels attached to the thread.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The name of the label.
+    </ParamField>
+
+    <ParamField type="string">
+      The color of the label as an uppercase `#RRGGBB` hex code.
+    </ParamField>
+  </Expandable>
 </ParamField>
 
 <ParamField type="boolean">

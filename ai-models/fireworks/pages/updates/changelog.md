@@ -8,12 +8,22 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 <ChangelogSearch />
 
+<Update label="2026-10-18">
+  <Badge>Inference</Badge>
+
+  # Expanded Small serverless rate-limit tier
+
+  The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
+
+  This moves models such as [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) into the Small tier. The ceiling values for each tier are unchanged. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for the current thresholds and ceilings.
+</Update>
+
 <Update label="2026-10-07">
   <Badge>Inference</Badge>
 
   # Doubled serverless rate limits for Small models
 
-  We doubled the adaptive rate-limit ceilings for **Small** serverless models (less than **600B** total parameters).
+  We doubled the adaptive rate-limit ceilings for **Small** serverless models.
 
   The Small tier now has these ceilings:
 
@@ -29,7 +39,7 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
   # Higher serverless rate limits for Small models
 
-  We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier to cover models with **less than 600B total parameters**.
+  We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier.
 
   The Small tier now has these ceilings:
 

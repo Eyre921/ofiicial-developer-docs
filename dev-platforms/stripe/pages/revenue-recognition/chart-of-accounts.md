@@ -130,5 +130,11 @@ After you set up these rules, your journal entries will contain three line items
 
 If you need to create multiple mapping rules at once, you can use our [bulk account mapping feature](https://docs.stripe.com/revenue-recognition/chart-of-accounts/bulk-account-mappings.md#upload-mappings) to upload mappings via CSV file. This reduces manual effort and minimizes the risk of errors when configuring numerous GL accounts.
 
+## Review account and mapping changes 
+
+Revenue Recognition records changes to your general ledger accounts and account mappings in [activity logs](https://docs.stripe.com/revenue-recognition/activity-logs.md). When investigating a reporting difference, use these logs to check who changed an account or mapping and when.
+
+Go to the [Chart of accounts page](https://dashboard.stripe.com/revenue-recognition/chart-of-accounts) in the Dashboard, open the page menu, and select **View activity**.
+
 \* For a default Stripe account, you can only pick one attribute to create a rule. Please [create a ticket](https://support.stripe.com/contact/email?topic=financial_reports) on our support page if you have any questions.\** Don’t import any personally identifiable information and/or protected health information.
 

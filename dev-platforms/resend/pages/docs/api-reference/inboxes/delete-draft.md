@@ -30,7 +30,7 @@ Discard an unsent draft.
   </CodeGroup>
 </Warning>
 
-Discards an unsent draft.
+Discards an unsent draft. A draft that was already sent returns a `409`.
 
 ## Path Parameters
 
