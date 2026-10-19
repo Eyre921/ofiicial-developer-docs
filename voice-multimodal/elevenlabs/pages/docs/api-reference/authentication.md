@@ -10,6 +10,18 @@ path: docs/api-reference/authentication
 
 ## API Keys
 
+> **Tip**
+>
+> Skip the key. Let your coding agent set it up.
+>
+> Paste this into Claude Code, Cursor or Codex. It signs you in or creates an account, creates a key, and adds the SDK to your project.
+>
+> ```text
+> Add ElevenLabs to my project: run `npx -y @elevenlabs/cli@latest onboard init` and follow what it prints.
+> ```
+>
+> [See how it works](/docs/eleven-api/quickstart#set-up-with-your-coding-agent), or read the [`onboard` command's source](https://github.com/elevenlabs/cli/tree/main/cli/elevenlabs/workflow/onboard) to see exactly what it tells your agent.
+
 The ElevenLabs API uses API keys for authentication. Every request to the API must include your API key, used to authenticate your requests and track usage quota.
 
 Each API key can be configured with the following restrictions:

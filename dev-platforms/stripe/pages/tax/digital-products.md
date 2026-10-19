@@ -44,6 +44,12 @@ Select the PTC that most closely matches your product’s delivery method, acces
 3. [Assign PTCs](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md) to your products using the tax codes that most closely match your product. Use the [digital products filter](https://docs.stripe.com/tax/tax-codes.md?type=digital) to browse all available digital product tax codes.
 4. File tax returns with [Stripe or our filing partners](https://docs.stripe.com/tax/filing.md).
 
+## In-person payments
+
+Paying at a reader doesn’t change where a customer receives a digital product for tax purposes. Use the customer’s location, typically their billing address. Product tax codes for digital goods don’t support `performance_location`.
+
+For carts that include digital products and in-person goods or services, review [performance location eligibility](https://docs.stripe.com/tax/optional-tax-location/integration-guide.md#eligible-tax-codes) and [mixed-cart guidance](https://docs.stripe.com/tax/optional-tax-location/integration-guide.md#mixed-carts).
+
 ## Regional considerations
 
 ### United States

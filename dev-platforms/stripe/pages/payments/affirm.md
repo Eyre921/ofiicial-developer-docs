@@ -295,6 +295,7 @@ Refunds:
 Disputes:
   ✗ Partial disputes
   ✓ Full disputes
+  Submission window: 120 days
 ### Refunds 
 
 Affirm requires that you submit a refund within 120 days from the original payment using the [Dashboard](https://dashboard.stripe.com/payments) or [Refunds API](https://docs.stripe.com/api/refunds/create.md). This is the maximum the payment method allows. Your return policy determines what you offer customers.
@@ -313,7 +314,7 @@ Stripe notifies you of the final status through a `refund.updated` or `refund.fa
 
 ### Disputes 
 
-There’s no set time limit for customers to file Affirm disputes. Affirm payments can be disputed more than once. Each dispute is treated as an independent object, must be handled separately, and counts individually toward your dispute metrics.
+Customers have up to 120 calendar days from the date of purchase to file Affirm disputes. Affirm payments can be disputed more than once. Each dispute is treated as an independent object, must be handled separately, and counts individually toward your dispute metrics.
 
 #### Dispute process 
 

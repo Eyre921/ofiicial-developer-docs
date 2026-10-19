@@ -135,6 +135,10 @@ Connect LangGraph agents to front ends and observability platforms.
     GPT models and OpenAI's comprehensive chat capabilities.
   </Card>
 
+  <Card title="RecallToolkit" href="https://recallmem.dev/guides/langchain" icon="link">
+    Tools for agents to search Recall memory, ask it a question about the user, and save a fact.
+  </Card>
+
   <Card title="SCX" href="https://scx.ai/">
     Open-weight chat and multimodal models with image and video input over SCX's OpenAI-compatible API.
   </Card>
@@ -405,6 +409,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
   </Card>
 
+  <Card title="agentsvc" href="https://agentsvc.io/docs/langchain" icon="link">
+    Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
+  </Card>
+
   <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
     Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
   </Card>
@@ -459,6 +467,10 @@ Connect LangGraph agents to front ends and observability platforms.
 
   <Card title="MCP Toolbox" href="/oss/javascript/integrations/tools/mcp_toolbox">
     Model Context Protocol tools and utilities.
+  </Card>
+
+  <Card title="Mercedes-Benz Service Reminder" href="https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme" icon="link">
+    MCP tools from SilberArrows for Mercedes-Benz Service A/B reminders, service explanations, and warning-light guidance.
   </Card>
 
   <Card title="OpenAPI" href="/oss/javascript/integrations/tools/openapi">
@@ -565,6 +577,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Retriever returning Documents from the Perplexity Search API.
   </Card>
 
+  <Card title="RecallRetriever" href="https://recallmem.dev/guides/langchain" icon="link">
+    Retrieves the facts Recall learned about a user, and the user's matching messages, as documents.
+  </Card>
+
   <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
     Self-querying retriever over SAP HANA Cloud Vector Engine.
   </Card>
@@ -607,6 +623,14 @@ Connect LangGraph agents to front ends and observability platforms.
 <Columns>
   <Card title="BRYDGE" href="https://github.com/contactkontey-dotcom/langchain-brydge#readme" icon="link">
     Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted.
+  </Card>
+
+  <Card title="RecallChatMessageHistory" href="https://recallmem.dev/guides/langchain" icon="link">
+    Chat message history stored in a Recall session, so Recall also learns about the user from it.
+  </Card>
+
+  <Card title="RecallMiddleware" href="https://recallmem.dev/guides/langchain" icon="link">
+    Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
   </Card>
 </Columns>
 

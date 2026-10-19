@@ -52,7 +52,7 @@ With this charge type:
 - Your platform’s balance increases with any application fees you collect for a charge.
 - Refunds and chargebacks reduce the connected account’s balance.
 - You can choose whether to have Stripe debit fees directly from connected accounts or from your platform account.
-- You can use Managed Risk if you meet the [availability requirements](https://docs.stripe.com/connect/risk-management/managed-risk.md#availability).
+- You can use Managed Risk if you meet the [availability requirements](https://docs.stripe.com/connect/risk-management/managed-risk.md#set-up-managed-risk).
 - You create parent payment method configurations for your connected accounts, who can customize their own child configurations.
 ![Direct charges funds flow diagram](https://b.stripecdn.com/docs-statics-srv/assets/direct_charges.a2a8b68037ac95fe22140d6dde9740d3.svg)
 
@@ -73,6 +73,7 @@ With this charge type:
 - Refunds and chargebacks reduce your platform’s balance.
 - Stripe debits fees from your platform’s balance.
 - Charges use your platform’s payment method configurations, unless they use `on_behalf_of`.
+- You can use Managed Risk if you meet the [availability requirements](https://docs.stripe.com/connect/risk-management/managed-risk.md#set-up-managed-risk). (Private preview)
 ![Destination charges with fee deducted funds flow diagram](https://b.stripecdn.com/docs-statics-srv/assets/platform_charges.6a14fd660d7433ba617e816ff09f10b5.svg)
 
 Funds flow for destination charges with the platform fee deducted from the transferred amount

@@ -8,7 +8,7 @@ path: docs/help-center/product/mobile-apps/eleven-reader/which-devices-is-eleven
 
 # Which devices is ElevenReader available on?
 
-ElevenReader is available in countries and on devices where supported, and supports 32 languages.
+ElevenReader is available in countries and on devices where supported, and supports more than 90 languages.
 
 * [Download for iPhone](https://apps.apple.com/us/app/elevenreader-text-to-speech/id6479373050?platform=iphone) - Requires iOS 17.0 or later.
 * [Download for iPad](https://apps.apple.com/us/app/elevenreader-text-to-speech/id6479373050?platform=ipad) - Requires iPadOS 17.0 or later.

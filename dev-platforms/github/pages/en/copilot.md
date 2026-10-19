@@ -90,10 +90,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Find out about the various ways you can customize Copilot: what they do, and when to use them.
 
-* [Managing context in GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/context-management)
-
-  Understand how Copilot manages conversation context, what happens during long sessions, and how to stay in control of your context window.
-
 * [About custom agents](/en/copilot/concepts/agents/copilot-cli/about-custom-agents)
 
   Custom agents enhance Copilot with assistance tailored to your needs.
@@ -105,14 +101,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [About extensions for GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-cli-extensions)
 
   Extensions let you add your own tools and slash commands to GitHub Copilot CLI, using only the SDK that ships with the CLI.
-
-* [Understanding filesystem policies for local sandboxing in GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/understanding-local-sandboxing)
-
-  When local sandboxing is enabled, Copilot CLI runs each sandboxed process or operation under a filesystem policy that controls which files and directories it can read and write. Learn how that policy is built and how to check the access it grants.
-
-* [About GitHub Copilot Memory](/en/copilot/concepts/agents/copilot-memory)
-
-  Copilot Memory helps Copilot become more effective over time by remembering facts about your repositories and your personal coding preferences.
 
 * [About hooks for GitHub Copilot](/en/copilot/concepts/agents/hooks)
 
@@ -198,25 +186,37 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Copilot can interact with desktop applications to automate tasks that cannot be completed with a more direct tool.
 
-* [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering)
+* [Prompt engineering for GitHub Copilot](/en/copilot/concepts/prompting-and-context/prompt-engineering)
 
   Follow these strategies to improve your Copilot results.
 
-* [About customizing GitHub Copilot responses](/en/copilot/concepts/prompting/response-customization)
+* [Managing context for GitHub Copilot](/en/copilot/concepts/prompting-and-context/context-management)
 
-  Learn about customizing the behavior of GitHub Copilot to fit with your preferences and requirements.
+  Understand how Copilot manages conversation context, what happens during long sessions, and how to stay in control of your context window.
+
+* [Custom instructions for GitHub Copilot](/en/copilot/concepts/prompting-and-context/custom-instructions)
+
+  Customize GitHub Copilot responses to your preferences, project conventions, and organization requirements.
+
+* [Prompt files for GitHub Copilot](/en/copilot/concepts/prompting-and-context/prompt-files)
+
+  Save task-specific instructions and context in reusable Markdown prompt files for individual Copilot interactions.
+
+* [Indexing repositories for GitHub Copilot](/en/copilot/concepts/prompting-and-context/repository-indexing)
+
+  Copilot improves responses by indexing your repositories.
+
+* [About GitHub Copilot Spaces](/en/copilot/concepts/prompting-and-context/spaces)
+
+  Understand how organizing and sharing context with Copilot Spaces can improve your Copilot Chat in GitHub results and help your collaborators.
+
+* [About GitHub Copilot Memory](/en/copilot/concepts/prompting-and-context/copilot-memory)
+
+  Copilot Memory helps Copilot become more effective over time by remembering facts about your repositories and your personal coding preferences.
 
 * [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp)
 
   Model Context Protocol (MCP) is a protocol that allows you to extend the capabilities of GitHub Copilot by integrating it with other systems.
-
-* [About GitHub Copilot Spaces](/en/copilot/concepts/context/spaces)
-
-  Understand how organizing and sharing context with Copilot Spaces can improve your Copilot Chat in GitHub results and help your collaborators.
-
-* [Indexing repositories for GitHub Copilot](/en/copilot/concepts/context/repository-indexing)
-
-  Copilot improves responses by indexing your repositories.
 
 * [Models in GitHub Copilot](/en/copilot/concepts/models/overview)
 
@@ -262,6 +262,46 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Copilot usage metrics provide visibility into how Copilot is adopted and used across your organization, including engagement, activity, code generation, and pull request lifecycle trends.
 
+* [Viewing the Copilot usage metrics dashboard](/en/copilot/how-tos/administer-copilot/view-usage-and-adoption)
+
+  Monitor adoption trends and use of Copilot to support long-term enablement.
+
+* [Viewing the code generation dashboard](/en/copilot/how-tos/administer-copilot/view-code-generation)
+
+  The code generation dashboard shows how Copilot generates code across your enterprise, including activity from both users and agents.
+
+* [Viewing the Copilot impact dashboard](/en/copilot/how-tos/administer-copilot/view-impact-dashboard)
+
+  The impact dashboard shows how deeply your organization has adopted Copilot, and how that adoption connects to pull request output.
+
+* [Data available in Copilot usage metrics](/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics)
+
+  Copilot usage metrics data is available through the dashboard and APIs, using a consistent set of fields to represent adoption, usage, and code generation activity.
+
+* [Interpreting usage and adoption metrics for GitHub Copilot](/en/copilot/reference/copilot-usage-metrics/interpret-copilot-metrics)
+
+  Copilot usage and adoption metrics reveal patterns in how developers engage with Copilot across your enterprise.
+
+* [Reconciling Copilot usage metrics across dashboards, APIs, and reports](/en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics)
+
+  Copilot usage metrics are derived from the same underlying telemetry but are aggregated and presented differently across dashboards, APIs, and exported reports.
+
+* [Lines of Code metrics](/en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics)
+
+  Lines of Code metrics provide a directional measure of Copilot output by quantifying the lines of code suggested, added, or deleted across completions, chat, and agent features.
+
+* [Measuring the success of a GitHub Copilot trial](/en/copilot/tutorials/roll-out-at-scale/measure-success)
+
+  Measure the success of a Copilot trial by analyzing adoption, engagement, and early usage patterns using Copilot usage metrics.
+
+* [Tracking license activation and initial usage with Copilot usage metrics](/en/copilot/tutorials/roll-out-at-scale/assign-licenses/track-usage-and-adoption)
+
+  Identify and act on GitHub Copilot adoption signals and activation with usage metrics.
+
+* [Example schema for Copilot usage metrics](/en/copilot/reference/copilot-usage-metrics/example-schema)
+
+  See an example schema of the data returned by the Copilot usage metrics API.
+
 * [Content exclusion for GitHub Copilot](/en/copilot/concepts/security-governance-and-network-settings/content-exclusion)
 
   You can prevent Copilot from accessing certain files.
@@ -273,6 +313,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [About cloud and local sandboxes for GitHub Copilot](/en/copilot/concepts/security-governance-and-network-settings/about-cloud-and-local-sandboxes)
 
   Cloud and local sandboxes provide isolated execution environments that let Copilot safely interact with code, tools, filesystem, and network resources securely on your local machine or in fully isolated cloud environments.
+
+* [Understanding filesystem policies for local sandboxing in GitHub Copilot CLI](/en/copilot/concepts/security-governance-and-network-settings/understanding-local-sandboxing)
+
+  When local sandboxing is enabled, Copilot CLI runs each sandboxed process or operation under a filesystem policy that controls which files and directories it can read and write. Learn how that policy is built and how to check the access it grants.
 
 * [Risks and mitigations for GitHub Copilot cloud agent](/en/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations)
 
@@ -506,10 +550,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Use spaces to ground Copilot's responses in the right context for a specific task.
 
-* [Getting started with prompts for GitHub Copilot Chat in your IDE](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/get-started-with-chat-in-your-ide)
-
-  Get an overview of ways to use Copilot Chat in your IDE.
-
 * [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide)
 
   Use Copilot Chat in your editor to give you code suggestions, explain code, generate unit tests, and suggest code fixes.
@@ -568,7 +608,7 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 * [Configuring GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/configure-copilot-cli)
 
-  Configure trusted directories, tool access, and path and URL permissions for Copilot CLI
+  Configure trusted directories, tool access, path and URL permissions, and client-side telemetry for Copilot CLI.
 
 * [Adding LSP servers for GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/add-lsp-servers)
 
@@ -689,6 +729,38 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using Copilot CLI in GitHub Actions with GITHUB\_TOKEN](/en/copilot/how-tos/copilot-cli/use-copilot-cli-in-actions)
 
   Run Copilot CLI in a GitHub Actions workflow using the built-in `GITHUB_TOKEN`, without a personal access token.
+
+* [Using dynamic workflows](/en/copilot/how-tos/use-copilot-agents/use-dynamic-workflows)
+
+  Find, run, monitor, and resume dynamic workflows in GitHub Copilot CLI and the GitHub Copilot app.
+
+* [Copilot CLI ACP server](/en/copilot/reference/copilot-cli-reference/acp-server)
+
+  Learn about GitHub Copilot CLI's Agent Client Protocol server.
+
+* [GitHub Copilot CLI command reference](/en/copilot/reference/copilot-cli-reference/cli-command-reference)
+
+  Find commands and keyboard shortcuts to help you use Copilot CLI effectively.
+
+* [GitHub Copilot CLI plugin reference](/en/copilot/reference/copilot-cli-reference/cli-plugin-reference)
+
+  Find commands and configuration details for CLI plugins.
+
+* [GitHub Copilot CLI programmatic reference](/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference)
+
+  Find options for running Copilot CLI programmatically.
+
+* [GitHub Copilot hooks reference](/en/copilot/reference/hooks-reference)
+
+  Find hook events, configuration formats, and input payloads for hooks in Copilot CLI and Copilot cloud agent.
+
+* [Application card: GitHub Copilot Agents](/en/copilot/responsible-use/agents)
+
+  Learn how to use GitHub Copilot agentic features responsibly by understanding their purposes, capabilities, and limitations.
+
+* [Using hooks with Copilot CLI for predictable, policy-compliant execution](/en/copilot/tutorials/copilot-cli-hooks)
+
+  Use hooks to log user prompts and control which tools Copilot CLI can run in a repository, so teams can automate safely within your organization's security and compliance requirements.
 
 * [Using local sandboxing](/en/copilot/how-tos/cloud-and-local-sandboxes/using-local-sandboxing)
 
@@ -962,10 +1034,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Learn how to request a code review from GitHub Copilot.
 
-* [Using dynamic workflows](/en/copilot/how-tos/use-copilot-agents/use-dynamic-workflows)
-
-  Find, run, monitor, and resume dynamic workflows in GitHub Copilot CLI and the GitHub Copilot app.
-
 * [Integrating Copilot cloud agent with Slack](/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-slack)
 
   Provide context to the Copilot cloud agent and open pull requests, all from within your Slack workspace.
@@ -1178,18 +1246,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Monitor Copilot license usage with a detailed report.
 
-* [Viewing the Copilot usage metrics dashboard](/en/copilot/how-tos/administer-copilot/view-usage-and-adoption)
-
-  Monitor adoption trends and use of Copilot to support long-term enablement.
-
-* [Viewing the code generation dashboard](/en/copilot/how-tos/administer-copilot/view-code-generation)
-
-  The code generation dashboard shows how Copilot generates code across your enterprise, including activity from both users and agents.
-
-* [Viewing the Copilot impact dashboard](/en/copilot/how-tos/administer-copilot/view-impact-dashboard)
-
-  The impact dashboard shows how deeply your organization has adopted Copilot, and how that adoption connects to pull request output.
-
 * [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues)
 
   This guide describes the most common issues with GitHub Copilot and how to resolve them.
@@ -1238,22 +1294,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Find a list of keyboard shortcuts for GitHub Copilot in the IDEs that support it.
 
-* [GitHub Copilot CLI command reference](/en/copilot/reference/copilot-cli-reference/cli-command-reference)
-
-  Find commands and keyboard shortcuts to help you use Copilot CLI effectively.
-
-* [GitHub Copilot CLI plugin reference](/en/copilot/reference/copilot-cli-reference/cli-plugin-reference)
-
-  Find commands and configuration details for CLI plugins.
-
-* [GitHub Copilot CLI programmatic reference](/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference)
-
-  Find options for running Copilot CLI programmatically.
-
-* [Copilot CLI ACP server](/en/copilot/reference/copilot-cli-reference/acp-server)
-
-  Learn about GitHub Copilot CLI's Agent Client Protocol server.
-
 * [GitHub Copilot CLI configuration directory](/en/copilot/reference/copilot-cli-reference/cli-config-dir-reference)
 
   Find information about the `~/.copilot` directory, where Copilot CLI stores configuration, session data, and customizations.
@@ -1277,10 +1317,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Support for different types of custom instructions](/en/copilot/reference/custom-instructions-support)
 
   Find out which environments support which types of custom instructions.
-
-* [GitHub Copilot hooks reference](/en/copilot/reference/hooks-reference)
-
-  Find hook events, configuration formats, and input payloads for hooks in Copilot CLI and Copilot cloud agent.
 
 * [Supported surfaces for GitHub Copilot policies](/en/copilot/reference/supported-surfaces-for-policies)
 
@@ -1334,29 +1370,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Understand the types of files that are excluded from a review by Copilot.
 
-* [Data available in Copilot usage metrics](/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics)
-
-  Copilot usage metrics data is available through the dashboard and APIs, using a consistent set of fields to represent adoption, usage, and code generation activity.
-
-* [Interpreting usage and adoption metrics for GitHub Copilot](/en/copilot/reference/copilot-usage-metrics/interpret-copilot-metrics)
-
-  Copilot usage and adoption metrics reveal patterns in how developers engage with Copilot across your enterprise.
-
-* [Reconciling Copilot usage metrics across dashboards, APIs, and reports](/en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics)
-
-  Copilot usage metrics are derived from the same underlying telemetry but are aggregated and presented differently across dashboards, APIs, and exported reports.
-
-* [Lines of Code metrics](/en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics)
-
-  Lines of Code metrics provide a directional measure of Copilot output by quantifying the lines of code suggested, added, or deleted across completions, chat, and agent features.
-
 * [Team-level Copilot usage metrics](/en/copilot/reference/copilot-usage-metrics/team-level-metrics)
 
   Construct team-level GitHub Copilot usage metrics by joining the daily user-teams report with the daily per-user usage metrics report.
-
-* [Example schema for Copilot usage metrics](/en/copilot/reference/copilot-usage-metrics/example-schema)
-
-  See an example schema of the data returned by the Copilot usage metrics API.
 
 * [Available filters for agent sessions](/en/copilot/reference/enterprise-administrators/agent-session-filters)
 
@@ -1602,10 +1618,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Learn how users can request a license and receive access immediately.
 
-* [Tracking license activation and initial usage with Copilot usage metrics](/en/copilot/tutorials/roll-out-at-scale/assign-licenses/track-usage-and-adoption)
-
-  Identify and act on GitHub Copilot adoption signals and activation with usage metrics.
-
 * [Reminding inactive users to use their GitHub Copilot license](/en/copilot/tutorials/roll-out-at-scale/assign-licenses/remind-inactive-users)
 
   Use the GitHub API to identify inactive users and help them get started.
@@ -1658,10 +1670,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Understanding how Copilot is used across your enterprise is the first step to demonstrating its value. Follow this path to establish a usage baseline, see how code is being generated, and connect adoption to measurable outcomes.
 
-* [Measuring the success of a GitHub Copilot trial](/en/copilot/tutorials/roll-out-at-scale/measure-success)
-
-  Measure the success of a Copilot trial by analyzing adoption, engagement, and early usage patterns using Copilot usage metrics.
-
 * [Using GitHub Copilot to explore a codebase](/en/copilot/tutorials/explore-a-codebase)
 
   GitHub Copilot Chat can help you gain an understanding of the content, structure, and functionality of a codebase.
@@ -1702,10 +1710,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Create an application without writing any code yourself.
 
-* [Using hooks with Copilot CLI for predictable, policy-compliant execution](/en/copilot/tutorials/copilot-cli-hooks)
-
-  Use hooks to log user prompts and control which tools Copilot CLI can run in a repository, so teams can automate safely within your organization's security and compliance requirements.
-
 * [Using Copilot CLI as your AI SME](/en/copilot/tutorials/use-an-ai-sme)
 
   Use Copilot CLI as an always-available subject matter expert to learn how a codebase works, so you can confidently maintain it or add new features.
@@ -1721,11 +1725,3 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Application card: GitHub Copilot inline suggestions](/en/copilot/responsible-use/inline-suggestions)
 
   Learn how to use GitHub Copilot inline suggestions responsibly by understanding their purposes, capabilities, and limitations.
-
-* [Application card: GitHub Copilot Agents](/en/copilot/responsible-use/agents)
-
-  Learn how to use GitHub Copilot agentic features responsibly by understanding their purposes, capabilities, and limitations.
-
-* [GitHub Copilot on GitHub Enterprise Server](/en/copilot-on-ghes)
-
-  Specific documentation about using GitHub Copilot in a server-hosted enterprise.

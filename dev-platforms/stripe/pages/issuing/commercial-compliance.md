@@ -4,21 +4,20 @@ source: https://docs.stripe.com/issuing/commercial-compliance.md
 path: issuing/commercial-compliance
 ---
 
-# Commercial Issuing and Treasury product marketing, design, and compliance guidelines
+# Commercial Issuing and Treasury for platforms product marketing, design, and compliance guidelines
 
-Learn how to launch and maintain compliant Issuing and Treasury programs.
+Learn how to launch and maintain compliant US commercial Issuing and Treasury for platforms programs.
 
-> #### Legal Disclaimer
+> #### Legal disclaimer
 > 
 > Don’t consider any of the information in this guide as legal advice. If you use Stripe Treasury for platforms and Stripe Issuing, consult your own legal counsel for advice about product branding and using Stripe products to offer financial services.
 
-This information applies to both Treasury for platforms and Issuing integrations. To offer and promote Treasury for platforms and Issuing products to your customers and connected accounts, your marketing and user interfaces must adhere to the guidelines that we outline here. These guidelines help you navigate the financial regulations that apply to Stripe products. We’ve organized them into the following sections:
+This information applies to both commercial Treasury for platforms and Issuing integrations. If you’re interested in learning about a consumer program, see the [consumer program documentation](https://docs.stripe.com/issuing/consumer-compliance.md). To offer and promote Treasury for platforms and Issuing products to your customers and connected accounts, your marketing and user interfaces must adhere to the guidelines that we outline here. These guidelines help you navigate the financial regulations that apply to Stripe products. We’ve organized them into the following sections:
 
+- [Your Connect configuration](https://docs.stripe.com/issuing/commercial-compliance.md#connect-configuration)
 - [Account management](https://docs.stripe.com/issuing/commercial-compliance.md#account-management)
-- [Required agreements and disclosures for Issuing](https://docs.stripe.com/issuing/commercial-compliance.md#issuing-terms)
-- [Required agreements and disclosures for Treasury for platforms](https://docs.stripe.com/issuing/commercial-compliance.md#treasury-terms)
-- [Required agreements and disclosures for fees, credits, and rewards programs](https://docs.stripe.com/issuing/commercial-compliance.md#fees-credits-rewards-terms)
-- [Customer communications and documents](https://docs.stripe.com/issuing/commercial-compliance.md#customer-communications-and-documents)
+- [Customer communications and documents](https://docs.stripe.com/issuing/commercial-compliance.md#customer-communications)
+- [Onboarding](https://docs.stripe.com/issuing/commercial-compliance.md#onboarding)
 - [Going live and marketing](https://docs.stripe.com/issuing/commercial-compliance.md#going-live)
 - [Recordkeeping](https://docs.stripe.com/issuing/commercial-compliance.md#recordkeeping)
 
@@ -33,33 +32,70 @@ If you make changes to any items in the table at a later date, you must submit a
 - Includes required agreements
 - Required KYC fields
 - Approved by Stripe Compliance | Treasury for platforms and Issuing |
-| Fees and credits | You’ve [submitted your planned fees and credits to Stripe](https://docs.stripe.com/treasury/connect/legacy/v1/compliance.md#fees-credits-rewards-terms) | Treasury for platforms and Issuing |
+| Fees, credits, and rewards | You’ve [submitted your planned fees, credits, and any rewards program information](https://docs.stripe.com/issuing/commercial-compliance.md#fees-credits-rewards-terms) to Stripe, as well as corresponding terms and conditions. | Treasury for platforms and Issuing |
 | Marketing and user interfaces | Your marketing materials, including your website landing pages, dashboards, and support pages:
-- Are approved by Stripe Compliance (or align with messaging guidelines)
+- Are approved by Stripe Compliance
+- Align with messaging guidelines
 - Include bank disclosures | Treasury for platforms and Issuing |
 | Customer service channels | Your customers can access your customer service channels and they can:
 - Submit complaints
 - Submit disputes | Treasury for platforms and Issuing |
 | Account statements (optional) | If you choose to send account statements, they must:
 - Be approved by Stripe Compliance
-- Include Bank disclosures and relevant contact information | Treasury for platforms |
+- Include bank disclosures and relevant contact information | Treasury for platforms |
 | Receipts | You have a mechanism to send your customers Stripe-generated money transmission receipts | Treasury for platforms and Issuing |
-| Regulated customer notices | You send regulated customer notices to applicants and accountholders, and they’re either:
-- Sent by Stripe on your behalf
-- Sent by your platform with templates approved by Stripe Compliance | Issuing Spend Card and Charge Card |
+| Regulated customer notices | You send regulated customer notices to applicants and account holders in accordance with the [Issuing regulated customer notices](https://docs.stripe.com/issuing/commercial-compliance/issuing-regulated-customer-notices.md) guidelines. | Issuing Spend Card and Charge Card |
 | Recordkeeping | You have a mechanism to retain copies of:
 - Customer consent to open accounts
 - Marketing materials and user interfaces
 - Customer communications, such as support emails
 - Account statements, if applicable | Treasury for platforms and Issuing |
 
-## Account management
+## Your Connect configuration 
+
+Stripe allows you to configure your connected accounts to define the interactions between your platform, connected accounts, and Stripe.
+
+### Stripe-managed configurations
+
+Your customers interact directly with Stripe when you enable Treasury for platforms or Issuing and all of the following conditions apply:
+
+- Stripe collects fees directly from the connected account.
+- Connected accounts have full access to the Stripe Dashboard.
+- Stripe is liable for the connected account’s negative balances.
+
+In this configuration, you must:
+
+- Promptly refer any questions or inquiries you receive regarding Issuing or Treasury to Stripe.
+- Not charge fees associated with your connected account’s use of Issuing or Treasury.
+- Not market Issuing or Treasury. Stripe conducts all marketing for this configuration.
+- Use embedded onboarding and all embedded components made available to you, if you choose to use embedded components.
+
+Your customers also interact directly with Stripe when you enable Treasury for platforms or Issuing and all of the following conditions apply:
+
+- Stripe collects fees directly from the connected account.
+- Stripe is liable for the connected account’s negative balances.
+- Connected accounts don’t have access to the Stripe Dashboard.
+
+In this configuration, you must:
+
+- Use embedded onboarding and all embedded components made available to you.
+- Promptly refer any questions or inquiries you receive regarding Issuing or Treasury to Stripe.
+- Not charge fees associated with your connected account’s use of Issuing or Treasury.
+- Get Stripe’s prior express approval before marketing Issuing or Treasury. If Stripe approves your marketing, follow the requirements in [Going live and marketing](https://docs.stripe.com/issuing/commercial-compliance.md#going-live).
+
+Stripe offers Issuing and Treasury in partnership with partner banks. Stripe might disable your Issuing or Treasury for platforms integration if your platform or the connected accounts you onboard pose an unacceptable regulatory, reputational, or financial risk to Stripe or its partner banks.
+
+### Other configurations
+
+For all other Connect configurations, Stripe must approve your marketing and user interfaces. They must adhere to the guidelines in the following sections to offer and promote Treasury for platforms and Issuing products to your customers and connected accounts.
+
+## Account management 
 
 Before you launch Treasury for platforms or Issuing, you must implement the proper internal compliance controls. You also need to build the processes described in this section into your various workflows, customer service, and product channels.
 
 ### Complaints program guidance
 
-Complaints are any expression of dissatisfaction with a product, service, policy, or employee related to Treasury for platforms or Issuing, except those expressions made by employees of your company. Properly handling complaints is mandatory when offering financial services products. See the [Handling complaints](https://docs.stripe.com/treasury/connect/legacy/v1/handling-complaints.md) guide for detailed complaint management requirements.
+Complaints are any expression of dissatisfaction with a product, service, policy, or employee related to Treasury for platforms or Issuing, except those expressions made by employees of your company. Properly handling complaints is mandatory when offering financial services products. You must report all complaints you receive to Stripe. See the [Handling complaints](https://docs.stripe.com/treasury/connect/legacy/v1/handling-complaints.md) guide for detailed complaint management requirements.
 
 ### Disputes and charge errors
 
@@ -68,7 +104,9 @@ As part of providing customer support, you might be notified of suspected disput
 - You or your customer believe a charge is unauthorized
 - You or your customer see an error on an account statement
 
-If these errors occur, submit the dispute through the Stripe Dashboard. Select the relevant transactions and choose **Dispute**. Be prepared to provide Stripe with specific information to investigate the dispute, such as:
+If these errors occur, submit the dispute through the Stripe Dashboard. Select the relevant transactions and choose **Dispute**.
+
+Stripe also provides the [Issuing Disputes API](https://docs.stripe.com/api/issuing/disputes.md), which you can configure to let your connected accounts submit disputes directly to Stripe. Be prepared to provide Stripe with specific information to investigate the dispute, such as:
 
 - Details about the authorized user
 - Details about the disputed charge amount
@@ -77,15 +115,42 @@ If these errors occur, submit the dispute through the Stripe Dashboard. Select t
 
 You must report any disputed charge or error immediately upon notification of it. Failure to do so might impact your financial liability. To avoid a sustained reduction to your available balance, you can pay the disputed charge while we determine the validity of the dispute. If Stripe deems the dispute valid, we credit the disputed charge amount back to the appropriate account.
 
-### Application flow
+## Customer communications and documents 
 
-Your platform must provide for three main compliance requirement workflows:
+To comply with applicable laws and regulations, you must send certain communications to both your applicants and account holders upon certain trigger events.
+
+To learn about customer communication requirements when using Issuing and Treasury for platforms together, see [Issuing regulated customer notices](https://docs.stripe.com/issuing/commercial-compliance/issuing-regulated-customer-notices.md).
+
+### Statements
+
+Providing statements, while optional, is a best practice that allows your Treasury for platforms or Issuing customers to periodically check their transaction history. If you send statements, make sure they contain the following information:
+
+- [Company] name and address
+- Your company’s customer support contact number and website
+- Customer account number
+- Customer name and address
+- Required disclosures
+- Transaction history (including opening and closing balances for the statement period)
+- Fees and credits
+- Information about how you resolve errors and complaints
+
+### Receipts
+
+You must provide customers with money transmission receipts as part of your ongoing Treasury for platforms or Issuing program responsibilities. Each regulated transaction that a customer initiates generates a compliant hosted receipt URL. Share this URL with the customer by email, through their Dashboard, or by another appropriate method. To learn how to access hosted receipts, see the [Regulatory receipts guide](https://docs.stripe.com/treasury/connect/legacy/v1/moving-money/regulatory-receipts.md). If you charge connected account owners transaction or recurring monthly fees, describe each fee on the receipt. This information helps them reconcile fees with the corresponding transactions or monthly statements.
+
+## Onboarding 
+
+Stripe offers several Issuing integrations in partnership with the partner banks referenced in these guidelines. Spend Card and Charge Card are credit products through which eligible connected accounts may access bank-issued credit. Prepaid and debit programs, including Stablecoin-backed issuing, allow connected accounts to make debit transactions from a card account at a partner bank. Stripe also offers Treasury for platforms integrations in partnership with partner banks.
+
+The required agreements and acceptance process for your Issuing or Treasury for platforms integration depend on the unique features of your program. However, in all cases, your platform must provide for three main workflows as part of your Issuing or Treasury application and onboarding process:
 
 - Collection of required KYC information
 - Presentation of the required bank disclosure
 - Ensuring that your applicant reads and accepts the required legal agreements
 
-## Required agreements and disclosures for Issuing 
+Refer to the relevant section for your particular Issuing or Treasury for platforms program for information about your integration, including specific agreements you must present as part of the onboarding process.
+
+### Required agreements and disclosures for Issuing 
 
 If you’re a platform and you’re not using [Stripe-hosted onboarding](https://docs.stripe.com/connect/hosted-onboarding.md), you must:
 
@@ -93,15 +158,18 @@ If you’re a platform and you’re not using [Stripe-hosted onboarding](https:/
 - Provide connected accounts with ongoing access to these agreements.
 - Present each agreement separately. You can’t combine them into one agreement for your cardholders to accept.
 
-*Connected Account Agreements and Disclosures.*
+#### Spend card users
+
+*Connected Account Agreements and Disclosures*
 
 You must provide the following agreements to your connected accounts before they can start using the Issuing Spend Card Program:
 
 - [Stripe Connected Account Agreement](https://stripe.com/legal/connect-account)
 - [Stripe Issuing Accountholder Terms](https://stripe.com/legal/ssa-services-terms#stripe-issuing-accountholder-united-states)
 - **Issuing Bank Terms**
-  - *Celtic Bank Users only:* [Issuing Bank Terms - Spend Card (Celtic Bank)](https://stripe.com/legal/celtic-spend-card)
-  - *Cross River Bank Users only:* [Issuing Bank Terms - Spend Card (Cross River Bank)](https://stripe.com/legal/issuing/crb-spend-card)
+  - *Celtic Bank Users only*: [Issuing Bank Terms - Spend Card (Celtic Bank)](https://stripe.com/legal/celtic-spend-card)
+  - *Cross River Bank Users only*: [Issuing Bank Terms - Spend Card (Cross River Bank)](https://stripe.com/legal/issuing/crb-spend-card)
+  - *Fifth Third Bank Users only*: [Issuing Bank Terms - Spend Card (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-bank-terms)
 - **Apple Pay Terms** (if enabled for your program)
   - [Apple Pay Accountholder Terms](https://stripe.com/issuing/celtic/apple-payment-platform-program-manager-customer-terms-and-conditions/legal#exhibit-c-pass-through-provisions)
 
@@ -110,39 +178,41 @@ In addition to the above agreements, you must provide the following disclosures 
 - **Electronic Signature Consent**: You must include text near the “Issuing Bank Terms” link that states: “By clicking “submit application,” you agree to the Issuing Bank Terms, Stripe Connected Account Agreement, and Stripe Issuing Accountholder Terms, and you consent to electronic signatures as set forth in the Issuing Bank Terms.”
 - **Commercial Financing Disclosure**: For Connected Accounts with a business address in NY or UT, you must present one of the following disclosures:
   - For platforms that don’t charge fees:
-    - *Celtic Bank Users only:* [Commercial Financing Disclosure (Celtic Bank) (no fee)](https://stripe.com/legal/issuing-offer-document)
-    - *Cross River Bank Users only:* [Commercial Financing Disclosure (Cross River Bank) (no fee)](https://stripe.com/legal/crb-issuing-offer-document)
+    - *Celtic Bank Users only*: [Commercial Financing Disclosure (Celtic Bank) (no fee)](https://stripe.com/legal/issuing-offer-document)
+    - *Cross River Bank Users only*: [Commercial Financing Disclosure (Cross River Bank) (no fee)](https://stripe.com/legal/crb-issuing-offer-document)
+    - *Fifth Third Bank Users only*: Commercial Financing Disclosure (Fifth Third Bank) (no fee)
   - For platforms that charge a 0.10 USD fee when creating cards for users:
-    - *Celtic Bank Users only:* [Commercial Financing Disclosure (Celtic Bank) (fee included)](https://stripe.com/legal/issuing-offer-document-fees)
-    - *Cross River Bank Users only:* [Commercial Financing Disclosure (Cross River Bank) (fee included)](https://stripe.com/legal/crb-issuing-offer-document-fees)
+    - *Celtic Bank Users only*: [Commercial Financing Disclosure (Celtic Bank) (fee included)](https://stripe.com/legal/issuing-offer-document-fees)
+    - *Cross River Bank Users only*: [Commercial Financing Disclosure (Cross River Bank) (fee included)](https://stripe.com/legal/crb-issuing-offer-document-fees)
+    - *Fifth Third Bank Users only*: Commercial Financing Disclosure (Fifth Third Bank) (fee included)
   - For platforms that charge fees other than a 0.10 USD fee when creating cards for users:
     - If you charge fees beyond Stripe’s fee of 0.10 USD, you might be required to create your own commercial financing disclosure to present to your connected accounts for creating virtual cards. You must report custom fees through Stripe’s [Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835), and you must submit custom commercial financing disclosures to [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com). Both the custom fee and custom disclosure are subject to Stripe’s review and approval. To assess the applicability of commercial financing disclosures to your program, contact [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com).
 
-*Authorized User Agreements and Disclosures.*
+*Authorized User Agreements and Disclosures*
 
 If you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
 
 - [Stripe E-Sign Disclosure](https://stripe.com/issuing/e-sign-disclosure/legal)
-- Authorized User Terms
-  - *Celtic Bank Users only:* [Authorized User Terms (Celtic Bank)](https://stripe.com/legal/issuing/celtic-authorized-user-terms)
-  - *Cross River Bank Users only:* [Authorized User Terms (Cross River Bank)](https://stripe.com/legal/issuing/crb-authorized-user-terms)
-  - *Fifth Third Bank Users only:* [Authorized User Terms (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-authorized-user-terms)
+- **Authorized User Terms**
+  - *Celtic Bank Users only*: [Authorized User Terms (Celtic Bank)](https://stripe.com/legal/issuing/celtic-authorized-user-terms)
+  - *Cross River Bank Users only*: [Authorized User Terms (Cross River Bank)](https://stripe.com/legal/issuing/crb-authorized-user-terms)
+  - *Fifth Third Bank Users only*: [Authorized User Terms (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-authorized-user-terms)
 
-### Charge card users
+#### Charge card users
 
-*Connected Account Agreements and Disclosures.*
+*Connected Account Agreements and Disclosures*
 
 You must provide the following agreements to your connected accounts before they can start using the Issuing Charge Card Program:
 
 - [Stripe Connected Account Agreement](https://stripe.com/legal/connect-account)
-- [Stripe Issuing Accountholder Terms](https://stripe.com/legal/ssa-services-terms#stripe-issuing-accountholder-united-states) or Custom Platform Accountholder Terms
 - **Issuing Bank Terms**
-  - *Celtic Bank Users only:* [Issuing Bank Terms - Charge Card (Celtic Bank)](https://stripe.com/legal/celtic-charge-card)
-  - *Cross River Bank Users only:* [Issuing Bank Terms - Charge Card (Cross River Bank)](https://stripe.com/legal/issuing/crb-charge-card)
-  - *Fifth Third Bank Users only:* [Issuing Bank Terms - Charge Card (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-bank-terms)
+  - *Celtic Bank Users only*: [Issuing Bank Terms - Charge Card (Celtic Bank)](https://stripe.com/legal/celtic-charge-card)
+  - *Cross River Bank Users only*: [Issuing Bank Terms - Charge Card (Cross River Bank)](https://stripe.com/legal/issuing/crb-charge-card)
+  - *Fifth Third Bank Users only*: [Issuing Bank Terms - Charge Card (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-bank-terms)
 - **Apple Pay Terms** (if enabled for your program)
   - [Apple Pay Accountholder Terms](https://stripe.com/issuing/celtic/apple-payment-platform-program-manager-customer-terms-and-conditions/legal#exhibit-c-pass-through-provisions)
-- **Card Program Terms**: These are your bespoke program terms that supplement the Issuing Bank Terms. At a minimum, consider including the following items in your terms. Consult your legal counsel about which items to define within your own Card Program Terms.
+- [Stripe Issuing Accountholder Terms](https://stripe.com/legal/ssa-services-terms#stripe-issuing-accountholder-united-states) or Custom Platform Accountholder Terms
+- **Card Program Terms**: Either standalone or within your Custom Platform Accountholder Terms if you choose that approach. These are your bespoke program terms that supplement the Issuing Bank Terms. At a minimum, consider including the following items in your terms. Consult your legal counsel about which items to define within your own Card Program Terms.
   - Repayment methods, including automatic withdrawal consents
   - Billing cycles, including due dates
   - Fees
@@ -150,20 +220,22 @@ You must provide the following agreements to your connected accounts before they
   - Credit limits
   - Account closure requirements
 
-In addition to the above agreements, you must provide the following disclosures to your connected accounts before they can start using the Issuing Spend Card Program:
+In addition to the above agreements, you must provide the following disclosures to your connected accounts before they can start using the Issuing Charge Card Program:
 
 - **Electronic Signature Consent**: You must include text near the **Issuing Bank Terms** link stating that signing the Issuing Bank Terms signifies consent to electronic signatures and communications. For example, your message might read: “By clicking the submit application button, you agree to the Issuing Bank Terms, Stripe Connected Account Agreement, and Stripe Issuing Accountholder Terms; and you consent to electronic signatures as set forth in the Issuing Bank Terms.”
 - **Commercial Financing Disclosure**: For connected accounts with a business address in NY or UT, you must present your own custom commercial financing disclosure. You must report custom fees through Stripe’s [Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835), and you must submit custom commercial financing disclosures to [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com). Both the custom fee and custom disclosure are subject to Stripe’s review and approval. Contact [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com) to assess the commercial financing disclosure requirements of your program.
 
-In the context of authorized user agreements and disclosures, if you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
+*Authorized User Agreements and Disclosures*
+
+If you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
 
 - [Stripe E-Sign Disclosure](https://stripe.com/issuing/e-sign-disclosure/legal)
-- Authorized User Terms
-  - *Celtic Bank Users only:* [Authorized User Terms (Celtic Bank)](https://stripe.com/legal/issuing/celtic-authorized-user-terms)
-  - *Cross River Bank Users only:* [Authorized User Terms (Cross River Bank)](https://stripe.com/legal/issuing/crb-authorized-user-terms)
-  - *Fifth Third Bank Users only:* [Authorized User Terms (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-authorized-user-terms)
+- **Authorized User Terms**
+  - *Celtic Bank Users only*: [Authorized User Terms (Celtic Bank)](https://stripe.com/legal/issuing/celtic-authorized-user-terms)
+  - *Cross River Bank Users only*: [Authorized User Terms (Cross River Bank)](https://stripe.com/legal/issuing/crb-authorized-user-terms)
+  - *Fifth Third Bank Users only*: [Authorized User Terms (Fifth Third Bank)](https://stripe.com/legal/issuing/fifth-third-authorized-user-terms)
 
-### Commercial prepaid debit users
+#### Commercial prepaid debit users
 
 You must provide the following agreements to your connected accounts before they can start using your Issuing Commercial Prepaid Debit Card Program:
 
@@ -172,15 +244,50 @@ You must provide the following agreements to your connected accounts before they
 - **Issuing Bank Terms**
   - *Sutton Bank users only*: [Issuing Bank Terms - Payout Card (Sutton Bank)](https://stripe.com/legal/issuing/sutton/payout-card-terms)
   - *Cross River Bank users only*: [Issuing Bank Terms - Commercial Prepaid Card (Cross River Bank)](https://stripe.com/legal/crb-commercial-prepaid-card)
+  - *Lead Bank users only*: [Issuing Bank Terms - Commercial Prepaid Card (Lead Bank)](https://stripe.com/legal/lead-commercial-prepaid-card)
 
-In the context of authorized user agreements and disclosures, if you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
+**Electronic Signature Consent**:
+
+- Sutton Bank And Cross River Bank users only: You must include text near the “Issuing Bank Terms” link that states: “By clicking “submit application,” you agree to the Issuing Bank Terms, Stripe Connected Account Agreement, and Stripe Issuing Accountholder Terms, and you consent to electronic signatures as set forth in the Issuing Bank Terms.”
+- Lead Bank users only: You must include a separate call to action (either a checkbox or a separate screen) for customers to agree to the [Stripe E-Sign Disclosure](https://stripe.com/issuing/e-sign-disclosure/legal) before they can submit the application.
+
+*Authorized User Agreements and Disclosures*
+
+If you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
 
 - [Stripe E-Sign Disclosure](https://stripe.com/issuing/e-sign-disclosure/legal)
 - **Authorized User Terms**
-  - *Sutton Bank users only*: [Sutton Bank Authorized User Terms](https://stripe.com/legal/issuing/sutton-authorized-user-terms)
-  - *Cross River Bank users only*: [Cross River Bank Authorized User Terms](https://stripe.com/legal/issuing/crb-authorized-user-terms)
+  - *Sutton Bank users only*: [Authorized User Terms (Sutton Bank)](https://stripe.com/legal/issuing/sutton-authorized-user-terms)
+  - *Cross River Bank users only*: [Authorized User Terms (Cross River Bank)](https://stripe.com/legal/issuing/crb-authorized-user-terms)
+  - *Lead Bank users only*: [Authorized User Terms (Lead Bank)](https://stripe.com/legal/issuing/lead-authorized-user-terms)
 
-## Required agreements and disclosures for Treasury for platforms 
+#### Stablecoin-backed issuing users
+
+You must provide the following agreements to your connected accounts before they can start using a Stablecoin-backed issuing program:
+
+*Connected Account Agreements and Disclosures*
+
+- [Stripe Connected Account Agreement](https://stripe.com/legal/connect-account)
+- [Global Issuing Accountholder Terms](https://stripe.com/legal/global-issuing-accountholder)
+- [Issuing Bank Terms - Commercial Prepaid Card (Lead Bank)](https://stripe.com/legal/lead-commercial-prepaid-card)
+- **Apple Pay Terms** (if enabled for your program)
+  - [Apple Pay Accountholder Terms](https://stripe.com/issuing/celtic/apple-payment-platform-program-manager-customer-terms-and-conditions/legal#exhibit-c-pass-through-provisions)
+
+In addition to the above agreements, you must provide the following disclosure to your connected accounts before they can be onboarded:
+
+- You must include a separate call to action (either a checkbox or a separate screen) for customers to agree to the Stripe E-Sign Disclosure before they can submit the application.
+- You must include text near the “Issuing Bank Terms” link that states: “By clicking ‘submit application,’ you agree to the Issuing Bank Terms, Stripe Connected Account Agreement, and Global Issuing Accountholder Terms.”
+
+*Authorized User Agreements and Disclosures*
+
+If you or your connected accounts create an `individual` type [Cardholder](https://docs.stripe.com/api/issuing/cardholders/object.md), also known as an “authorized user,” you must present to cardholders—typically during the card activation process—the following agreements:
+
+- [Stripe E-Sign Disclosure](https://stripe.com/issuing/e-sign-disclosure/legal)
+- [Authorized User Terms (Lead Bank)](https://stripe.com/legal/issuing/lead-authorized-user-terms)
+
+If you have questions about Stablecoin-backed issuing programs, contact the Stripe Compliance team at [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com).
+
+### Required agreements and disclosures for Treasury for platforms 
 
 You must provide the following terms of service to your connected accounts and record their agreement before they can start using your Treasury for platforms Program:
 
@@ -188,34 +295,11 @@ You must provide the following terms of service to your connected accounts and r
 - [Treasury for platforms Terms - Connected Accounts](https://stripe.com/legal/ssa-services-terms#stripe-financial-accounts-for-platforms-formerly-stripe-treasury-connected-accounts)
 - [Connected Account Agreement](https://stripe.com/legal/connect-account)
 
-## Required agreements and disclosures for fees, credits, and rewards programs 
+### Required agreements and disclosures for fees, credits, and rewards programs 
 
 In addition to the previous agreements, your terms of service and fee schedule must clearly outline the fees and terms that you implement as part of your Treasury for platforms or Issuing program.
 
 You must report to Stripe the details of any fees, credits, and rewards programs that you plan to offer. That helps make sure your user interfaces and marketing materials are compliant with financial regulations regarding fees or offer credits, especially in the form of rewards programs. Use the [Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
-
-## Customer communications and documents
-
-To comply with applicable laws and regulations, you must send certain communications to both your applicants and accountholders upon certain trigger events.
-
-To learn about customer communication requirements when using Issuing and Treasury for platforms together, see [Issuing regulated customer notices](https://docs.stripe.com/issuing/commercial-compliance/issuing-regulated-customer-notices.md).
-
-### Statements
-
-Providing statements, while optional, is a best practice that allows your Treasury for platforms or Issuing customers to periodically check their transaction history. If you send statements, make sure they contain the following information:
-
-- [Company] name and address.
-- Your company’s customer support contact number and website
-- Customer account number
-- Customer name and address
-- Required disclosures
-- Transaction history (including opening and closing balances for the statement period)
-- Fees and credits.
-- Information about how you resolve errors and complaints
-
-### Receipts
-
-One of the most important ongoing obligations you have in overseeing your Treasury for platforms or Issuing program is providing your customers with money transmissions receipts. Every regulated transaction your customers initiate generates a compliant money transmission receipt URL that you must share with your customer. You can provide these URL receipts in a few different ways, such as emailing them or making them available in your customer’s Dashboard. See the [Regulatory receipts guide](https://docs.stripe.com/treasury/connect/legacy/v1/moving-money/regulatory-receipts.md) for more information on how to access hosted receipts. If you plan to charge your connected account owners any fees, whether they’re transactional or monthly recurring, include a description of the fee on the receipt so that they can reconcile it to corresponding transactions or monthly statements.
 
 ## Going live and marketing 
 
@@ -233,10 +317,10 @@ Make sure that marketing materials use clear messaging that fully explains produ
 
 | Do | Don’t |
 | --- | --- |
-| Only use statements about products that are true, accurate, and aligned with how users engage with the products. | Don’t leave out key information from marketing content. If the information is likely to affect whether someone uses the product, then it’s “key." |
+| Only use statements about products that are true, accurate, and aligned with how users engage with the products. | Don’t leave out key information from marketing content. If the information is likely to affect whether someone uses the product, then it’s “key.” |
 | If you make claims that require additional data to support them, or if an end user needs to know more details to know how a certain claim is true, you must:
 - Provide documented evidence
-- Disclose that information | Make exaggerated claims that are hard to prove. Don’t make absolute statements that are disproved by a single exception. For example, “number 1," “every," “only," “all," “never," “always." |
+- Disclose that information | Make exaggerated claims that are hard to prove. Don’t make absolute statements that are disproved by a single exception. For example, “number 1,” “every,” “only,” “all,” “never,” “always.” |
 | Clearly explain all qualifying limitations and requirements needed by end users to get the product or features that you’ve advertised. | Don’t advertise features or programs that only a few applicants actually qualify for. |
 | All disclosures must meet a “clear and conspicuous” standard:
 - Font size must be large enough to read.
@@ -265,7 +349,7 @@ The following table provides guidelines for you to follow when developing messag
 
 | Topic category | Do | Don’t |
 | --- | --- | --- |
-| Logo and name usage | Your card program name and your brand name must have equal status, as with plain text: Widget balance® + Stripe. When referencing registered brand products, you must adhere to their separate brand guidelines. You only need to use the ®, ™, SM, mark once per asset. | Don’t maintain unequal status between the card program name and your brand name:
+| Logo and name usage | Your card program name and your brand name must have equal status, as with plain text: Widget balance® + Stripe. When referencing registered brand products, you must adhere to their separate brand guidelines. You only need to use the ®, ™, or SM mark once per asset. | Don’t maintain unequal status between the card program name and your brand name:
 
 **Widget balance®** + Stripe |
 | Comparison value propositions | Use language promoting the benefits of the card:
@@ -310,8 +394,8 @@ The following table provides guidelines for you to follow when developing messag
 | Card | Do | Don’t |
 | --- | --- | --- |
 | Spend card only | Use phrases like:
-- …is a commercial credit program
-- A business credit card | Don’t use phrases like:
+- …is a commercial card program
+- A business card | Don’t use phrases like:
 - Debit card
 - Prepaid card
 - Better than a debit card |
@@ -322,27 +406,30 @@ The following table provides guidelines for you to follow when developing messag
 - Checking account
 - Savings account
 - Similar terms to the previous ones that connote a traditional bank account product |
+| Charge Card only | Use phrases like:
+- Access a line of credit | Don’t use phrases like:
+- Get credit from [platform name] |
 
 #### Treasury for platforms messaging guidelines 
 
-Don’t use words like “bank account,” “deposit account," “checking account,” “savings account,” or similar terms that imply a traditional bank account product because Stripe isn’t a bank. Pre-approved terms include the following:
+In the US, Stripe Treasury is a stored value product offered by Stripe Payments Company under its money transmission licenses in partnership with FDIC-insured banks. It’s not a banking product. Many states have statutory prohibitions on references to “banking,” “banks,” and “bank accounts” when the entities making these references aren’t state- or federally-chartered banks or credit unions.
+
+Don’t use terms such as “bank account,” “deposit account,” “checking account,” “savings account,” or similar terms that imply a traditional bank account product because they can only be used in connection with banking products. Pre-approved terms include the following:
 
 - Business account
 - Cash management account
-- Financial account
 - Money transfer account
 
-See [Marketing Treasury for platforms-based services](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md) for a full list of terms you can and can’t use to describe your accounts and to learn how to talk about FDIC pass-through insurance eligibility. If you’re planning to describe FDIC pass-through insurance at all, your content must include [Stripe’s required FDIC pass-through insurance disclosure language](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md#how-to-talk-about-fdic-pass-through-insurance-eligibility). Inaccurately referring to financial accounts as “bank accounts” could result in regulatory action, including fines.
+See [Marketing Treasury for platforms-based services](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md) for a full list of terms you can and can’t use to describe your accounts and to learn how to talk about FDIC pass-through insurance eligibility. Using imprecise terminology for Treasury for platforms can confuse customers.
 
 | Category | Do | Don’t |
 | --- | --- | --- |
-| Logo and name usage | When referencing registered/® brand products, you must adhere to their separate brand guidelines. You only need to reference the ®, ™, SM mark once per asset. | Don’t apply unequal status between the card program name and your brand name:
+| Logo and name usage | When referencing registered (®) brand products, you must adhere to their separate brand guidelines. You only need to reference the ®, ™, or SM mark once per asset. | Don’t maintain unequal status between the card program name and your brand name:
 
 **Widget balance®** + Stripe |
 | Description of account value propositions | Use the following terms:
 - Business account
 - Cash management account
-- Financial account
 - Money transfer account | Don’t use the following terms:
 - “Bank account”
 - “Deposit account”
@@ -351,7 +438,7 @@ See [Marketing Treasury for platforms-based services](https://docs.stripe.com/tr
 - Similar terms to the previous ones that imply a traditional bank account product, because Stripe isn’t a bank |
 | FDIC insurance | Use the following terms that incorporate the term “eligible”:
 - “Eligible for FDIC pass-through insurance”
-- “Eligible for FDIC pass-through insurance up to the standard maximum deposit insurance per depositor in the same category"
+- “Eligible for FDIC pass-through insurance up to the standard maximum deposit insurance per depositor in the same category”
 - “Eligible for FDIC pass-through insurance up to 250K USD” | Don’t use the following terms:
 - “FDIC insured”
 - “FDIC insured accounts”
@@ -404,17 +491,17 @@ If you offer Issuing products, you must include the following information in an 
 - The name for your card program (for example, Rocket Rides Corporate Card).
 - The relevant statement from the following table identifying the issuing bank. It can be in the footers section of your materials; however, the font must be a legible size and a contrasting color to the background.
 
-| Statement for Celtic Bank users | Statement for Sutton Bank users | Statement for Cross River Bank users (Charge Card) | Statement for Cross River Bank users (Commercial Prepaid) | Statement for Fifth Third Bank users |
-| --- | --- | --- | --- | --- |
-| [Card Program Name] Visa® Commercial cards are powered by Stripe and issued by Celtic Bank. | [Card Program Name] Visa® Prepaid Cards are issued by Sutton Bank®, Member FDIC, pursuant to a license from Visa USA Inc. | [Card Program Name] Charge Cards are issued by Cross River Bank, Member FDIC. | [Card Program Name] Debit Cards are issued by Cross River Bank, Member FDIC. | [Card Program Name] Charge Cards are issued by Fifth Third Bank, N.A., Member FDIC. |
+| Statement for Celtic Bank users | Statement for Sutton Bank users | Statement for Cross River Bank users (Charge Card) | Statement for Cross River Bank users (Commercial Prepaid) | Statement for Fifth Third Bank users | Statement for Lead Bank users |
+| --- | --- | --- | --- | --- | --- |
+| [Card Program Name] Visa® Commercial cards are powered by Stripe and issued by Celtic Bank. | [Card Program Name] Visa® Prepaid Cards are issued by Sutton Bank®, Member FDIC, pursuant to a license from Visa USA Inc. | [Card Program Name] Charge Cards are issued by Cross River Bank, Member FDIC. | [Card Program Name] Prepaid Cards are issued by Cross River Bank, Member FDIC. | [Card Program Name] Charge Cards are issued by Fifth Third Bank, N.A., Member FDIC. | [Card Program Name] Prepaid Cards are issued by Lead Bank. |
 
-In addition to the disclosures above, if you offer an Issuing Spend Card, you must also include the following statement. You can place it in the footers section of your materials, but the font must be a legible size and have a contrasting color as the background
+In addition to the disclosures above, if you offer an Issuing Spend Card, you must also include the following statement. You can place it in the footers section of your materials, but the font must be a legible size and have a contrasting color to the background. The words “Stripe Payments Company” must contain a hyperlink to `https://stripe.com/legal/spc/licenses`.
 
 | Statement for Issuing Spend Card users |
 | --- |
 | Stripe Issuing balances are provided in the US by Stripe Payments Company, licensed money transmitter, with funds held at Stripe’s bank partners, Members FDIC. |
 
-In addition to the disclosures above, if you offer a Commercial Prepaid Debit Card, you must also include the following statement. You can place it in the footers section of your materials, but the font must be a legible size and have a contrasting color as the background.
+In addition to the disclosures above, if you offer a Commercial Prepaid Debit Card, you must also include the following statement. You can place it in the footers section of your materials, but the font must be a legible size and have a contrasting color to the background. The words “Stripe Payments Company” must contain a hyperlink to `https://stripe.com/legal/spc/licenses`.
 
 | Statement for Commercial Prepaid Debit Users |
 | --- |
@@ -426,11 +513,13 @@ If you offer Treasury for platforms products, you must include the following inf
 
 - A statement that you’re neither a bank nor a money transmitter.
 - Statement of partnership with Stripe.
-- “Stripe Payments Company” must be hyperlinked and point to `https://stripe.com`.
+- “Stripe Payments Company” must be hyperlinked and point to `https://stripe.com/legal/spc/licenses`.
 
-| Statement for Fifth Third bank users |
+| Statement for Fifth Third Bank users |
 | --- |
-| [Company Name] partners with [Stripe Payments Company](https://stripe.com/) for money transmission services and account services with funds held at Fifth Third Bank N.A., Member FDIC. |
+| [Company Name] partners with [Stripe Payments Company](https://stripe.com/legal/spc/licenses) for money transmission services and account services with funds held at Fifth Third Bank N.A., Member FDIC. |
+
+If you’re planning to describe FDIC pass-through insurance, your content must include [Stripe’s required FDIC pass-through insurance disclosure language](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md#how-to-talk-about-fdic-pass-through-insurance-eligibility).
 
 #### Disclosures when marketing both Treasury for platforms and Issuing
 
@@ -441,7 +530,9 @@ If you offer both Treasury for platforms and Issuing products, you must include 
 
 | Example combined statement |
 | --- |
-| [Company Name] partners with [Stripe Payments Company](https://stripe.com/) for money transmission services and account services with funds held at Fifth Third Bank, N.A., Member FDIC. [Card Program Name] Visa® Prepaid Cards are issued by [Issuing bank], Member FDIC. |
+| [Company Name] partners with [Stripe Payments Company](https://stripe.com/legal/spc/licenses) for money transmission services and account services with funds held at Fifth Third Bank, N.A., Member FDIC. [Card Program Name] Visa® Prepaid Cards are issued by [Issuing bank], Member FDIC. |
+
+If you’re planning to describe FDIC pass-through insurance, your content must include [Stripe’s required FDIC pass-through insurance disclosure language](https://docs.stripe.com/treasury/connect/legacy/v1/marketing-financial-accounts.md#how-to-talk-about-fdic-pass-through-insurance-eligibility).
 
 ### Materials submission
 
@@ -458,6 +549,26 @@ Send any additional questions to our team at [platform-compliance@stripe.com](ma
 
 We might request that you change your marketing materials to comply with regulatory requirements. If we request a change, it’s your responsibility to update the materials and provide evidence of the change to Stripe. Failure to update materials at our request might result in Stripe disabling your Treasury for platforms or Issuing capabilities.
 
+### Continuous oversight
+
+After your program goes live, Stripe continues to oversee it through change management, website monitoring, and quarterly audits.
+
+#### Change management
+
+Before you publish new content or changes to existing content, you must submit it to Stripe’s compliance team. The partner bank must review and approve the content before you publish it.
+
+Use the [Stripe Compliance Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835) to submit new or changing content to Stripe’s compliance team.
+
+A partner bank typically completes its review within 7–10 business days. However, timing depends on the complexity of the submission, the required revisions, and how much documentation you prepare in advance. Detailed user experience documents and application flows usually require more time than launch announcement emails or landing pages. Stripe reviews material submissions in parallel to reduce your overall onboarding review time.
+
+#### Website monitoring
+
+Stripe regularly monitors your public-facing website, social media content, and other marketing materials to make sure your program remains compliant. Stripe’s compliance team initiates outreach if it identifies non-compliant material.
+
+#### Quarterly audits
+
+Stripe’s compliance team performs an audit each quarter on a random selection of programs. After your program has been live for 12 months, you might receive an audit request from [platform-compliance@stripe.com](mailto:platform-compliance@stripe.com). The request might ask you to provide comprehensive documentation similar to the materials you submitted during onboarding.
+
 ## Recordkeeping
 
 You must demonstrate your adherence to the requirements listed in this guide. Keep thorough records of all marketing materials, customer data, account information, and other disclosures you make to customers for at least 5 years. The following is a list of all records to keep, with examples of record types.
@@ -467,7 +578,6 @@ You must demonstrate your adherence to the requirements listed in this guide. Ke
 | Product user experience | Screenshots of all deployed versions of the product user experience and their deployment dates. Include application flow, customer dashboard, support pages, and so on. |
 | Marketing | Inventory of all marketing copy deployed, email distribution lists used, and email solicitation opt-out lists, including timestamps of user opt-outs. |
 | Customer communications and complaints | Email interactions and documentation developed in the course of resolving complaints. |
-| Receipts | Receipts provided by Stripe and evidence that they’re uploaded to the customer’s Dashboard. |
 | Customer statements | Historical statements generated and made available to customers for download. |
 
 ## See also

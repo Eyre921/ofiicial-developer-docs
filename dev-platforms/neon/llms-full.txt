@@ -29979,7 +29979,7 @@ neon profile create work --api-key "$KEY"
 
 `create` ignores `NEON_API_KEY`, so exporting that variable doesn't supply the key here. Pass it explicitly with `--api-key`.
 
-By default the credential is saved to a `credentials.json` file. Pass `--keyring` to store it in your operating system's keyring instead. The choice is saved per profile and shown in the `Storage` column of `neon profile list`.
+By default the credential is saved to a `credentials.json` file. Pass `--keyring` to store it in your operating system's keyring instead. The choice is saved per profile. `neon profile list` shows `keyring` in the `Credentials` column for a keyring profile, and `-o json` includes a `storage` field.
 
 ## neon profile list
 
@@ -29995,16 +29995,16 @@ neon profile list
 
 ```text filename="Output"
 Profiles
-Active  Name     Account                               Auth     Scope                           File  Storage  Credentials
-*       DEFAULT  3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53  oauth    -                               ok    file     credentials.json
-        work     alex@example.com                      oauth    -                               ok    file     credentials.work.json
-        ci       alex@example.com                      api key  account                         ok    file     credentials.ci.json
-        org      org-example-12345678                  api key  org org-example-12345678        ok    file     credentials.org.json
-        project  org-example-12345678                  api key  project cool-darkness-12345678  ok    file     credentials.project.json
-        laptop   alex@example.com                      oauth    -                               ok    keyring  keyring
+Active  Name     Account                               Auth     Credentials               Scope
+*       DEFAULT  3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53  oauth    credentials.json          account
+        work     alex@example.com                      oauth    credentials.work.json     account
+        ci       alex@example.com                      api key  credentials.ci.json       account
+        org      org-example-12345678                  api key  credentials.org.json      org org-example-12345678
+        project  org-example-12345678                  api key  credentials.project.json  project cool-darkness-12345678
+        laptop   alex@example.com                      oauth    keyring                   account
 ```
 
-`Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon login`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` reports whether the credential could be read: `ok` when it's present and readable, otherwise `missing`, `invalid`, or `unreadable`. `Storage` shows where the credential lives, `file` or `keyring`, and `Credentials` gives the file's name, or `keyring` when it's kept in the OS keyring.
+`Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon login`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key). `Credentials` gives the credentials file's name, or `keyring` when the credential is kept in the OS keyring. `Scope` shows what the credential can reach: `account` for a browser sign-in or an account key, or `org <org-id>` or `project <project-id>` for a key limited to that organization or project. Pass `-o json` to also get two more fields: `file`, which reports whether the credential could be read (`ok`, or else `missing`, `invalid`, or `unreadable`), and `storage`, which is `file` or `keyring`.
 
 ## neon profile rotate-key
 
@@ -40883,7 +40883,36 @@ You can also view active connections on the [Monitoring page](https://neon.com/d
 
 Connection pooling solves the `max_connections` limit by maintaining a pool of reusable connections. Instead of opening a new Postgres connection for each client, PgBouncer routes multiple client connections through a smaller pool of actual Postgres connections.
 
-![Connection](https://neon.com/docs/connect/connection.png)
+```mermaid
+flowchart LR
+  subgraph client["Client application"]
+    c1["user 1"]
+    c2["user 1"]
+    c3["..."]
+    c4["user 2"]
+    c5["user 1"]
+  end
+
+  subgraph pooler["PgBouncer connection pooler"]
+    p1["user1/database1 pool"]
+    p2["user2/database1 pool"]
+    p3["user1/database2 pool"]
+  end
+
+  subgraph postgres["Postgres (max_connections limit)"]
+    d1[("database 1")]
+    d2[("database 2")]
+  end
+
+  c1 --> p1
+  c2 --> p1
+  c3 --> p1
+  c4 --> p2
+  c5 --> p3
+  p1 --> d1
+  p2 --> d1
+  p3 --> d2
+```
 
 _The diagram shows how multiple client connections from different users route through separate PgBouncer pools (one per user/database combination), which share a limited number of actual Postgres connections to access the databases._
 
@@ -76998,12 +77027,12 @@ YYYY-MM-DDTHH:MM:SS-HH:MM    (Negative UTC offset)
 
 **Requirements:**
 
-- Time zone is required: use either `Z` for UTC or a numeric offset like `+05:00`
+- Time zone is required in API requests: use either `Z` for UTC or a numeric offset like `+05:00`. The Neon CLI accepts a timestamp without one and reads it as your local time, so include it to be explicit.
 - Fractional seconds are optional but only second precision is stored
 - Timestamp must be in the future
 - Maximum expiration is 30 days from the current time
 
-**Note:** Common errors include missing timezone (`2025-07-15T18:02:16`), past timestamps, or combining `Z` with offset (`2025-07-15T18:02:16Z-05:00`).
+**Note:** Common errors include past timestamps, combining `Z` with an offset (`2025-07-15T18:02:16Z-05:00`), and, in API requests, a missing time zone (`2025-07-15T18:02:16`).
 
 ## Restrictions
 
@@ -77101,7 +77130,7 @@ curl --request POST \
 
 **CLI**
 
-```bash {4,12,18}
+```bash {4,12}
 # Update expiration to new timestamp
 neon branches set-expiration \
   <branch-id> \
@@ -77116,10 +77145,9 @@ neon branches set-expiration \
   --expires-at "$(date -u -d '+7 days' +%Y-%m-%dT%H:%M:%SZ)" \
   --project-id <project-id>
 
-# Remove expiration from a branch
+# Remove expiration from a branch (omit --expires-at)
 neon branches set-expiration \
   <branch-id> \
-  --expires-at null \
   --project-id <project-id>
 ```
 
@@ -78035,8 +78063,8 @@ You can also update or remove expiration from existing branches:
 # Update expiration to a new timestamp
 neon branches set-expiration <branch-id> --expires-at "2025-07-20T12:00:00Z" --project-id <project-id>
 
-# Remove expiration from a branch
-neon branches set-expiration <branch-id> --expires-at null --project-id <project-id>
+# Remove expiration from a branch (omit --expires-at)
+neon branches set-expiration <branch-id> --project-id <project-id>
 ```
 
 For details and configuration instructions, refer to our [Branch expiration guide](https://neon.com/docs/guides/branch-expiration).
@@ -121042,6 +121070,10 @@ We're accelerating work on improving and scaling the core database on Neon as we
 
 ## What we've shipped recently 🚢
 
+- **Neon Realtime (public beta)**: Turn any SQL query into a live query that stays up to date as your data changes, running directly from Lakebase Postgres with support for scale to zero and branching. [Learn more](https://neon.com/docs/realtime/overview).
+- **Sync Stripe data to Neon in real time**: Stripe Data Pipeline can now stream your Stripe data into a Neon database and keep it in sync, so you can join payments and subscriptions with your app data without webhook handlers. [Read the blog post](https://neon.com/blog/stripe-data-pipeline-realtime-sync-to-postgres).
+- **CJK full-text search in Lakebase Search**: The `lakebase_tokenizer` extension now splits Chinese, Japanese, and Korean text into search terms, so you can run keyword and BM25 search over CJK content. [Learn more](https://neon.com/docs/extensions/lakebase-tokenizer#cjk-text).
+- **New AI Gateway models**: Eleven new models from Anthropic, OpenAI, Google, xAI, and open-weight providers joined the AI Gateway catalog, including `claude-sonnet-5-5` and `gpt-6-sol`. [Learn more](https://neon.com/docs/ai-gateway/overview#available-models).
 - **All AI Gateway models with prepaid credits**: Paid plan users with prepaid credits can now call every model in the AI Gateway catalog, including frontier models from OpenAI, Anthropic, and Google, without requesting access. [Learn more](https://neon.com/docs/ai-gateway/models#available-models).
 - **Send feedback from the CLI and MCP server**: Send feedback to Neon with `neon feedback` in the Neon CLI or the `send_feedback` tool in the Neon MCP server. Only your message is sent, with no account or project details. [Learn more](https://neon.com/docs/introduction/feedback).
 - **Enable backend services at project creation**: Turn on Object Storage, Functions, AI Gateway, and Auth alongside Postgres when you create a project, so it comes up with your whole stack ready. [Learn more](https://neon.com/docs/manage/projects#create-a-project).

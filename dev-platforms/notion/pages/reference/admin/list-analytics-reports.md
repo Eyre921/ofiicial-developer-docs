@@ -12,6 +12,6 @@ The organization bot token must have every scope in one of the following sets:
 * Option 1:
   * `analytics:ai-analytics`
 * Option 2:
-  * `analytics:user-activity`
+  * `user-analytics:read`
 * Option 3:
   * `analytics:page-content`

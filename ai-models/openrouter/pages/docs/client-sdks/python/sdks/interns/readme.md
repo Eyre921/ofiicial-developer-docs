@@ -27,6 +27,7 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [~~get\_intern\_daemon\_access~~](#get_intern_daemon_access) - Get an intern's daemon access (deprecated alias) ⚠️ **Deprecated**
 * [~~sign\_intern\_daemon\_access\_request~~](#sign_intern_daemon_access_request) - Sign a daemon request with the caller's identity (deprecated alias) ⚠️ **Deprecated**
 * [sign\_intern\_daemon\_request](#sign_intern_daemon_request) - Sign a daemon request with the caller's identity
+* [get\_intern\_icon](#get_intern_icon) - Get an intern's icon
 * [provision\_intern](#provision_intern) - Provision an intern
 * [suspend\_intern](#suspend_intern) - Suspend an intern
 * [chat](#chat) - Stream a chat completion with an intern
@@ -476,6 +477,54 @@ with OpenRouter(
 | - | - | - |
 | errors.InternLifecycleError | 400, 401, 403, 404, 408, 413, 415 | application/json |
 | errors.InternLifecycleError | 429 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
+## get\_intern\_icon
+
+Returns the icon image of one visible intern. Pass the intern's `icon_sha256` as `v` to receive a response that can be cached indefinitely. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.interns.get_intern_icon(intern_id="7c9e6679-7425-40de-944b-e07fc1f90ae7")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `v` | *Optional\[str]* | ➖ | The `icon_sha256` the caller expects. | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
+
+### Response
+
+**[operations.GetInternIconResponse](../../operations/getinterniconresponse.mdx)**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408 | application/json |
 | errors.InternLifecycleError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

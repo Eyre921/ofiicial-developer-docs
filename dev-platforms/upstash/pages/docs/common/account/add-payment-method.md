@@ -14,6 +14,12 @@ Upstash does not require a credit card for Free databases. For paid databases, y
 
   <img alt="Add a Payment Method: Credit card form" />
 
+<Note>
+  Adding your first payment method moves every free resource on the account to
+  its paid plan, including all Redis databases and your QStash, Vector, Search
+  and Blob resources. See [Upgrade Your Database](/docs/redis/howto/upgrade-database).
+</Note>
+
 You can save multiple cards and pick one as the default. Payments are charged from the default card.
 
   <img alt="Add a Payment Method: Saved payment methods" />

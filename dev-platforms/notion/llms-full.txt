@@ -2695,7 +2695,7 @@ Other blocks:
 - <page url="..." color="...">Title</page>; represents a subpage on the current page. Warning: an update_content, replace_content, or replace_content_range update that leaves out this tag deletes the subpage when allow_deleting_content is true. Otherwise the update fails with a validation_error. Omit url only when creating a new subpage.
 - <folder url="...">Title</folder>; represents an existing folder. Use the retrieve page markdown endpoint to read its immediate children, then follow nested folder URLs to continue traversing. Preserve the tag unless intentionally moving or deleting the folder; folders cannot be created from Markdown.
 - <database url="..." data-source-url="..." inline="true|false" icon="emoji" wiki="true|false" color="...">Title</database>; same url/title rules. Wiki databases set wiki="true"; their pages use parent type "page" with the wiki page URL, not "dataSource".
-- <synced-block url="...">...</synced-block> (omit url for new); <synced-block-reference url="..." notice="...">...</synced-block-reference>.
+- <synced-block url="...">...</synced-block> is an original synced block; omit url for new. <synced-block-reference url="..." notice="...">...</synced-block-reference> shows an original from elsewhere. Copy its url from an existing <synced-block> or <synced-block-reference>; a page url is never valid, so a whole page cannot be synced. If no such url is available, don't add a reference or a note; tell the user why in your reply. Editing its children edits the original everywhere it appears.
 - <meeting-notes attendees="user://id,..." view-url="...">Title<meeting-notes-section-notes>Notes</meeting-notes-section-notes><meeting-notes-section-summary>Summary</meeting-notes-section-summary></meeting-notes>; content outside <meeting-notes-section-notes> is ignored; omit view-url and the summary section for new. An existing <meeting-notes> may also have an optional read-only <meeting-notes-section-transcript> child: a "Transcript omitted" body means the transcript was not loaded, so follow its instructions to load it; never edit its contents, and never add it to new meeting notes.
 - <custom-block definition-id="UUID" url="..." />; places an instance of a custom block definition deployed in this workspace. Use a self-closing tag on its own line; the instance inherits the definition's bindings. Omit url for a new instance; readback adds its instance URL. Preserve that URL when editing, reordering, or moving an existing instance.
 - Columns: <columns><column ratio="50">...</column><column ratio="50">...</column></columns>. ratio is an optional percentage of the column-list width.
@@ -19723,9 +19723,9 @@ Fetch a user activity analytics report.
 
 The organization bot token must have the following scopes:
 
-* `analytics:user-activity`
+* `user-analytics:read`
 
-Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:user-activity` scope can fetch a report created by another bot.
+Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `user-analytics:read` scope can fetch a report created by another bot.
 
 Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
 
@@ -19788,7 +19788,7 @@ The organization bot token must have every scope in one of the following sets:
 * Option 1:
   * `analytics:ai-analytics`
 * Option 2:
-  * `analytics:user-activity`
+  * `user-analytics:read`
 * Option 3:
   * `analytics:page-content`
 

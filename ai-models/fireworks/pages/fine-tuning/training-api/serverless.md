@@ -375,7 +375,23 @@ For the full SDK-level checkpoint reference (base/delta sampler types, weight sy
 
 ## Pricing
 
-Serverless training is billed per token, across three meters: prefill, sample, and train. Available models, meter definitions, and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and current rates on the [pricing page](https://fireworks.ai/pricing) before launch.
+Serverless training is billed per token, across three meters: prefill, sample, and train. Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.
+
+| Base model | Context | Prefill | Cached prefill | Sample | Train |
+| - | - | - | - | - | - |
+| Muse Spark Open | 256K | \$6.19 | \$1.239 | \$15.48 | \$18.58 |
+| DeepSeek V4.1 Flash | 256K | \$0.60 | \$0.12 | \$3.60 | \$4.98 |
+| DeepSeek V4.1 Flash 1017 | 256K | \$0.60 | \$0.12 | \$3.60 | \$4.98 |
+| NVIDIA Nemotron 3.5 Super VL 120B | 256K | \$0.57 | \$0.114 | \$1.44 | \$2.32 |
+| GLM 5.3 Flash | 200K | \$2.96 | \$0.593 | \$7.41 | \$8.89 |
+| GLM 5.3 | 262K | \$4.86 | \$0.972 | \$12.15 | \$14.58 |
+| Qwen 3.6 35B A3B | 256K | \$0.45 | \$0.09 | \$1.335 | \$2.14 |
+| Qwen 3.8 27B | 128K | \$1.86 | \$0.372 | \$5.595 | \$4.103 |
+| Kimi K3 | 192K | \$10.87 | \$2.17 | \$27.11 | \$32.55 |
+| DeepSeek V4 Flash 0731 | 262K | \$1.74 | \$0.35 | \$4.33 | \$5.20 |
+| Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |
+
+Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount. DeepSeek V4.1 Flash 1017 uses the same rates as DeepSeek V4.1 Flash.
 
 ### What the meters mean
 

@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 390 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -111,7 +111,9 @@
 - `api-reference/match-deployment-shape-versions` — [Match Deployment Shape Versions](pages/api-reference/match-deployment-shape-versions.md) · [原文](https://docs.fireworks.ai/api-reference/match-deployment-shape-versions)
 - `api-reference/post-chatcompletions` — [Create Chat Completion](pages/api-reference/post-chatcompletions.md) · [原文](https://docs.fireworks.ai/api-reference/post-chatcompletions)
 - `api-reference/post-completions` — [Create Completion](pages/api-reference/post-completions.md) · [原文](https://docs.fireworks.ai/api-reference/post-completions)
+- `api-reference/post-decisions` — [Decisions API (OpenAI-compatible)](pages/api-reference/post-decisions.md) · [原文](https://docs.fireworks.ai/api-reference/post-decisions)
 - `api-reference/post-responses` — [Create Response](pages/api-reference/post-responses.md) · [原文](https://docs.fireworks.ai/api-reference/post-responses)
+- `api-reference/post-systemone` — [System One decisions API](pages/api-reference/post-systemone.md) · [原文](https://docs.fireworks.ai/api-reference/post-systemone)
 - `api-reference/prepare-model` — [Prepare Model for different precisions](pages/api-reference/prepare-model.md) · [原文](https://docs.fireworks.ai/api-reference/prepare-model)
 - `api-reference/query-usage-costs` — [Query grouped usage cost subtotals for an account.](pages/api-reference/query-usage-costs.md) · [原文](https://docs.fireworks.ai/api-reference/query-usage-costs)
 - `api-reference/rerank-documents` — [Rerank documents](pages/api-reference/rerank-documents.md) · [原文](https://docs.fireworks.ai/api-reference/rerank-documents)

@@ -277,7 +277,7 @@ Yes, you can pause a project at any time. Our Free Plan gives you 2 free project
 
 Connect your AI coding agent to Supabase.
 
-Supabase provides everything you need to connect an AI coding agent to your project: a live connection to your database and platform (MCP), portable instructions your agent can reuse (Agent Skills), a one-step bundle of both (Plugin), and copy-paste prompts for tools that don't support any of the above.
+Supabase provides everything you need to connect an AI coding agent to your project: a live connection to your database and platform (MCP), portable instructions your agent can reuse ([Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills)), a one-step bundle of both (Plugin), and copy-paste prompts for tools that don't support any of the above.
 
 Note: See how these tools perform on real Supabase tasks in [Supabase Evals](https://supabase.com/evals), our open-source benchmark for AI coding agents.
 
@@ -4918,7 +4918,7 @@ Deno.serve(async (req) => {
 })
 ```
 
-This uses OpenAI's `text-embedding-3-large` model to generate embeddings (shortened to 512 dimensions for faster retrieval). Swap in your preferred embedding model (and dimension size) accordingly.
+This uses OpenAI's `text-embedding-3-large` model to [generate embeddings](https://supabase.com/docs/guides/ai/quickstarts/generate-text-embeddings) (shortened to 512 dimensions for faster retrieval). Swap in your preferred embedding model (and dimension size) accordingly.
 
 To test this, make a `POST` request to the function's endpoint while passing in a JSON payload containing the user's query. Here is an example `POST` request using cURL:
 
@@ -5642,7 +5642,7 @@ export const run = async () => {
 
 ## Hybrid search
 
-LangChain supports the concept of a hybrid search, which combines Similarity Search with Full Text Search. Read the official docs to get started: [Supabase Hybrid Search](https://js.langchain.com/docs/modules/indexes/retrievers/supabase-hybrid).
+LangChain supports the concept of a hybrid search, which combines Similarity Search with [Full Text Search](https://supabase.com/docs/guides/database/full-text-search). Read the official docs to get started: [Supabase Hybrid Search](https://js.langchain.com/docs/modules/indexes/retrievers/supabase-hybrid).
 
 You can install the LangChain Hybrid Search function through our [database.dev package manager](https://database.dev/langchain/hybrid_search).
 
@@ -7486,7 +7486,7 @@ Like skip lists, search starts at the top layer and works its way down until it 
 
 HNSW should be your default choice when creating a vector index. Add the index when you don't need 100% accuracy and are willing to trade a small amount of accuracy for a lot of throughput.
 
-Unlike IVFFlat indexes, you are safe to build an HNSW index immediately after the table is created. HNSW indexes are based on graphs which inherently are not affected by the same limitations as IVFFlat. As new data is added to the table, the index will be filled automatically and the index structure will remain optimal.
+Unlike [IVFFlat indexes](https://supabase.com/docs/guides/ai/vector-indexes/ivf-indexes), you are safe to build an HNSW index immediately after the table is created. HNSW indexes are based on graphs which inherently are not affected by the same limitations as IVFFlat. As new data is added to the table, the index will be filled automatically and the index structure will remain optimal.
 
 ## Filtering with HNSW indexes
 
@@ -10647,7 +10647,7 @@ Magic Links are a form of passwordless sign-in where users click on a link sent 
 
 Email authentication methods, including Magic Links, are enabled by default.
 
-Configure the Site URL and any additional redirect URLs. These are the only URLs that are allowed as redirect destinations after the user clicks a Magic Link. You can change the URLs on the [URL Configuration page](https://supabase.com/dashboard/project/_/auth/url-configuration) for hosted projects, in the `config.toml` [file](https://supabase.com/docs/guides/local-development/cli/config#auth.additional_redirect_urls) for local development, or in the `.env` configuration file for [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting/docker).
+Configure the Site URL and any additional [redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls). These are the only URLs that are allowed as redirect destinations after the user clicks a Magic Link. You can change the URLs on the [URL Configuration page](https://supabase.com/dashboard/project/_/auth/url-configuration) for hosted projects, in the `config.toml` [file](https://supabase.com/docs/guides/local-development/cli/config#auth.additional_redirect_urls) for local development, or in the `.env` configuration file for [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting/docker).
 
 By default, a user can only request a magic link once every 60 seconds and they expire after 1 hour.
 
@@ -14533,7 +14533,7 @@ In the example above, the user will be redirected to Google to complete the OAut
 
 **JavaScript**
 
-For native mobile applications, you can link an identity using an ID token obtained from a third-party OAuth provider. This is useful when you want to use native OAuth flows (like Google Sign-In or Sign in with Apple) rather than web-based OAuth redirects.
+For native mobile applications, you can link an identity using an ID token obtained from a third-party OAuth provider. This is useful when you want to use native OAuth flows (like Google Sign-In or [Sign in with Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple)) rather than web-based OAuth redirects.
 
 ```js
 // Example with Google Sign-In (using a native Google Sign-In library)
@@ -17195,7 +17195,7 @@ Supabase Auth provides these [general configuration options](https://supabase.co
   - Having **Confirm Email** disabled assumes that the user's email does not need to be verified in order to sign in and implicitly confirms the user's email in the database.
   - This option can be found in the email provider under the provider-specific configuration.
 
-- **Allow anonymous sign-ins**: Allow anonymous users to be created.
+- **Allow [anonymous sign-ins](https://supabase.com/docs/guides/auth/auth-anonymous)**: Allow anonymous users to be created.
 
 - **Allow manual linking**: Allow users to link their accounts manually.
 
@@ -23974,7 +23974,7 @@ curl -X PATCH "https://api.supabase.com/v1/projects/$PROJECT_REF/config/auth" \
 
 Supabase Auth uses a token bucket algorithm for endpoint operations that are limited by IP address.
 
-Most buckets have a maximum capacity of 30 requests. When a bucket is full, brief bursts of up to 30 requests can be allowed in a short period. Anonymous sign-ins are an exception: the bucket capacity matches the configured number of anonymous sign-ins per hour. Once a bucket empties, requests are rate limited until tokens refill. The rate limit defines the rate at which the bucket is refilled.
+Most buckets have a maximum capacity of 30 requests. When a bucket is full, brief bursts of up to 30 requests can be allowed in a short period. [Anonymous sign-ins](https://supabase.com/docs/guides/auth/auth-anonymous) are an exception: the bucket capacity matches the configured number of anonymous sign-ins per hour. Once a bucket empties, requests are rate limited until tokens refill. The rate limit defines the rate at which the bucket is refilled.
 
 This means a client that has been idle will tolerate a brief spike in traffic, but sustained requests above the rate limit are denied. When rate limits are exceeded, a **429 Too Many Requests** error is returned.
 
@@ -25250,7 +25250,7 @@ As your users continue using your app, refresh tokens are being constantly excha
 The general rule is that a refresh token can only be used once. However, strictly enforcing this can cause certain issues to arise. There are two exceptions to this design to prevent the early and unexpected termination of user's sessions:
 
 - A refresh token can be used more than once within a defined reuse interval. By default this is 10 seconds and we do not recommend changing this value. This exception is granted for legitimate situations such as:
-  - Using server-side rendering where the same refresh token needs to be reused on the server and soon after on the client
+  - Using [server-side rendering](https://supabase.com/docs/guides/auth/server-side) where the same refresh token needs to be reused on the server and soon after on the client
   - To allow some leeway for bugs or issues with serializing access to the refresh token request
 - If the parent of the currently active refresh token for the user's session is being used, the active token will be returned. This exception solves an important and often common situation:
   - All clients such as browsers, mobile or desktop apps, and even some servers are inherently unreliable due to network issues. A request does not indicate that they received a response or even processed the response they received.
@@ -30547,7 +30547,7 @@ supabase.auth.signInWithOAuth({
 })
 ```
 
-For an implicit flow, that's all you need to do. The user will be taken to Google's consent screen, and finally redirected to your app with an access and refresh token pair representing their session.
+For an [implicit flow](https://supabase.com/docs/guides/auth/sessions/implicit-flow), that's all you need to do. The user will be taken to Google's consent screen, and finally redirected to your app with an access and refresh token pair representing their session.
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
@@ -36382,7 +36382,7 @@ Caution: **Follow this section carefully to prevent unauthorized access to your 
 
 When using the Supabase hosted platform, following this step is optional.
 
-Firebase Auth uses a single set of JWT signing keys for all projects. This means that JWTs issued from an unrelated Firebase project to yours could access data in your Supabase project.
+Firebase Auth uses a single set of [JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys) for all projects. This means that JWTs issued from an unrelated Firebase project to yours could access data in your Supabase project.
 
 When using the Supabase hosted platform, JWTs coming from Firebase project IDs you have not registered will be rejected before they reach your database. When self-hosting implementing this mechanism is your responsibility. An easy way to guard against this is to create and maintain the following RLS policies for **all of your tables in the `public` schema**. You should also attach this policy to [Storage](https://supabase.com/docs/guides/storage/security/access-control) buckets or [Realtime](https://supabase.com/docs/guides/realtime/authorization) channels.
 
@@ -36599,7 +36599,7 @@ This is made possible if the providers are using JWTs signed with asymmetric key
 There are some limitations you should be aware of when using third-party authentication providers with Supabase.
 
 1. The third-party provider must use asymmetrically signed JWTs (exposed as an OIDC Issuer Discovery URL by the third-party authentication provider). The signed JWTs must have a `kid` header parameter to identify which key must be used. Using symmetrically signed JWTs is not possible at this time.
-2. The JWT signing keys from the third-party provider are stored in the configuration of your project, and are checked for changes periodically. If you are rotating your keys (when supported) allow up to 30 minutes for the change to be picked up.
+2. The [JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys) from the third-party provider are stored in the configuration of your project, and are checked for changes periodically. If you are rotating your keys (when supported) allow up to 30 minutes for the change to be picked up.
 3. It is not possible to disable Supabase Auth at this time.
 
 ## Pricing
@@ -65997,7 +65997,7 @@ You might use database replication for:
 
 For realtime features and syncing data to browsers and mobile apps, see [Realtime](https://supabase.com/docs/guides/realtime).
 
-Realtime also uses Postgres changes, but it is intended for broadcasting database updates to clients rather than maintaining a copy of your database in another system.
+Realtime also uses [Postgres changes](https://supabase.com/docs/guides/realtime/postgres-changes), but it is intended for broadcasting database updates to clients rather than maintaining a copy of your database in another system.
 
 ## Concepts and terms
 
@@ -69008,7 +69008,7 @@ Database migrations in your `supabase/` directory, plus Edge Functions and Stora
 
 ### Can you use your own CI/CD pipeline?
 
-Yes. You can use the [Supabase CLI](https://supabase.com/docs/guides/local-development) or the [Terraform provider](https://supabase.com/docs/guides/deployment/terraform) in any CI/CD system (GitHub Actions, GitLab CI, CircleCI, etc.).
+Yes. You can use the [Supabase CLI](https://supabase.com/docs/guides/local-development) or the [Terraform provider](https://supabase.com/docs/guides/deployment/terraform) in any CI/CD system ([GitHub Actions](https://supabase.com/docs/guides/functions/examples/github-actions), GitLab CI, CircleCI, etc.).
 
 ### How does collaboration with other developers work?
 
@@ -70075,7 +70075,7 @@ Commit the new migration file and push it to your Git repository. The migration 
 
 ### Using ORM or custom seed scripts
 
-If you want to use your own ORM for managing migrations and seed scripts, you will need to run them in GitHub Actions after the preview branch is ready. The branch credentials can be fetched using the following example GHA workflow.
+If you want to use your own ORM for managing migrations and seed scripts, you will need to run them in [GitHub Actions](https://supabase.com/docs/guides/deployment/managing-environments#configure-github-actions) after the preview branch is ready. The branch credentials can be fetched using the following example GHA workflow.
 
 ```yaml name=.github/workflows/custom-orm.yaml
 name: Custom ORM
@@ -71368,7 +71368,7 @@ resource "supabase_settings" "production" {
 
 Resources and data sources available through the Terraform Provider
 
-The Terraform Provider provides access to [resources](https://developer.hashicorp.com/terraform/language/resources) and [data sources](https://developer.hashicorp.com/terraform/language/data-sources). Resources are infrastructure objects, such as a Supabase project, that you can declaratively configure. Data sources are sources of information about your Supabase instances.
+The [Terraform Provider](https://supabase.com/docs/guides/deployment/terraform) provides access to [resources](https://developer.hashicorp.com/terraform/language/resources) and [data sources](https://developer.hashicorp.com/terraform/language/data-sources). Resources are infrastructure objects, such as a Supabase project, that you can declaratively configure. Data sources are sources of information about your Supabase instances.
 
 ## Provider settings
 
@@ -71764,7 +71764,7 @@ Run AI models in Edge Functions using the built-in Supabase AI API.
 
 How to run AI models in Edge Functions.
 
-Edge Functions have a built-in API for running AI models. You can use this API to generate embeddings, build conversational workflows, and do other AI related tasks in your Edge Functions.
+Edge Functions have a built-in API for running AI models. You can use this API to [generate embeddings](https://supabase.com/docs/guides/ai/quickstarts/generate-text-embeddings), build conversational workflows, and do other AI related tasks in your Edge Functions.
 
 This allows you to:
 
@@ -77299,7 +77299,7 @@ Limits applied Edge Functions in Supabase's hosted platform.
 
 - Maximum Memory: 256MB
 - Maximum Duration (Wall clock limit):
-  This is the duration an Edge Function worker will stay active. During this period, a worker can serve multiple requests or process background tasks.
+  This is the duration an Edge Function worker will stay active. During this period, a worker can serve multiple requests or process [background tasks](https://supabase.com/docs/guides/functions/background-tasks).
   - Free plan: 150s
   - Paid plans: 400s
 - Maximum CPU Time: 2s (Amount of actual time spent on the CPU per request - does not include async I/O.)
@@ -77493,7 +77493,7 @@ Learn how to create, test, and deploy your first Edge Function using the Supabas
 
 Get started with Supabase Edge Functions.
 
-Supabase allows you to create Supabase Edge Functions directly from the Supabase Dashboard, making it easy to deploy functions without needing to set up a local development environment. The Edge Functions editor in the Dashboard has built-in syntax highlighting and type-checking for Deno and Supabase-specific APIs.
+Supabase allows you to create Supabase Edge Functions directly from the Supabase Dashboard, making it easy to deploy functions without needing to set up a [local development environment](https://supabase.com/docs/guides/functions/development-environment). The Edge Functions editor in the Dashboard has built-in syntax highlighting and type-checking for Deno and Supabase-specific APIs.
 
 This guide will walk you through creating, testing, and deploying your first Edge Function using the Supabase Dashboard. You'll have a working function running globally in under 10 minutes.
 
@@ -80076,7 +80076,7 @@ Publishable and secret keys aren't JWTs, which creates a few compatibility diffe
 
 - Send publishable and secret keys on the `apikey` header, not on `Authorization: Bearer`. Because the keys aren't JWTs, anything that tries to verify one as a JWT fails. For migration compatibility the `verify_jwt` platform check accepts them on either header, but passing that check doesn't authenticate the caller. See [Authorization headers](https://supabase.com/docs/guides/functions/auth-headers).
 - Edge Functions need to authorize API keys in code. The `verify_jwt` check alone doesn't authenticate a caller that sends only an API key. Use the `@supabase/server` SDK, as shown in [Securing Edge Functions](https://supabase.com/docs/guides/functions/auth), rather than relying on the platform check.
-- Public Realtime connections last a maximum of 24 hours, unless the connection is upgraded to user-level authentication through Supabase Auth or a supported third-party auth provider.
+- Public Realtime connections last a maximum of 24 hours, unless the connection is upgraded to user-level authentication through Supabase Auth or a supported [third-party auth provider](https://supabase.com/docs/guides/auth/third-party/overview).
 
 
 ---
@@ -80131,7 +80131,7 @@ A JWT-based API for managing users and issuing access tokens. This integrates wi
 ### PostgREST (API)
 
 A standalone web server that turns your Postgres database directly into a RESTful API.
-We use this with our [`pg_graphql`](https://github.com/supabase/pg_graphql) extension to provide a GraphQL API.
+We use this with our [`pg_graphql`](https://github.com/supabase/pg_graphql) extension to provide a [GraphQL API](https://supabase.com/docs/guides/graphql/api).
 
 - Official Docs: [postgrest.org](https://postgrest.org/)
 - Source code: [github.com/PostgREST/postgrest](https://github.com/PostgREST/postgrest)
@@ -80708,7 +80708,7 @@ A few behaviors differ from the legacy JWT-based keys. Plan for them during the 
 
 - Send publishable and secret keys on the `apikey` header. For migration compatibility the `verify_jwt` check also accepts them on `Authorization: Bearer ...`, but passing that check doesn't authenticate the caller, and the keys aren't JWTs, so nothing downstream can verify them as one.
 - Edge Functions need to authorize API keys in code. The `verify_jwt` platform check alone doesn't authenticate a caller that sends only an API key, so authorize the key in your handler, as shown in [Step 4](#step-4-update-edge-functions).
-- Public Realtime connections are limited to 24 hours unless the connection is upgraded with user-level authentication through Supabase Auth or a supported third-party auth provider.
+- Public Realtime connections are limited to 24 hours unless the connection is upgraded with user-level authentication through Supabase Auth or a supported [third-party auth provider](https://supabase.com/docs/guides/auth/third-party/overview).
 
 ## Next steps
 
@@ -80803,7 +80803,7 @@ The Supabase MCP server connects AI assistants to Supabase, so they can inspect 
 
 ## 5. Install Supabase client library and Node adapter
 
-Install the `supabase-js` client library and the `@astrojs/node` adapter to enable server-side rendering.
+Install the `supabase-js` client library and the `@astrojs/node` adapter to enable [server-side rendering](https://supabase.com/docs/guides/auth/server-side).
 
 ```bash
 npm install @supabase/supabase-js @astrojs/node
@@ -84504,7 +84504,7 @@ The Supabase MCP server connects AI assistants to Supabase, so they can inspect 
 
 ## 5. Install the Supabase client libraries
 
-Navigate to the TanStack Start app and install `supabase-js` and `@supabase/ssr`, the helper package that manages cookie-based sessions for server-side rendering.
+Navigate to the TanStack Start app and install `supabase-js` and `@supabase/ssr`, the helper package that manages cookie-based sessions for [server-side rendering](https://supabase.com/docs/guides/auth/server-side).
 
 ```bash
 cd my-app && npm install @supabase/supabase-js @supabase/ssr
@@ -88625,7 +88625,7 @@ You can find the full contents of this file [in the example repository](https://
 
 Next.js is a versatile framework offering pre-rendering at build time (SSG), server-side rendering at request time (SSR), API routes, and proxy edge-functions.
 
-To better integrate with the framework, we've created the `@supabase/ssr` package for Server-Side Auth. It has all the functionalities to configure your Supabase project to use cookies for storing user sessions. Read the [Next.js Server-Side Auth guide](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs) for more information.
+To better integrate with the framework, we've created the `@supabase/ssr` package for Server-Side Auth. It has all the functionalities to configure your Supabase project to use cookies for storing [user sessions](https://supabase.com/docs/guides/auth/sessions). Read the [Next.js Server-Side Auth guide](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs) for more information.
 
 Install the package for Next.js.
 
@@ -91170,7 +91170,7 @@ Note: You can also customize emails sent out to new users, including the email's
 
 #### Confirmation endpoint
 
-As this is a server-side rendering (SSR) environment, you need to create a server endpoint responsible for exchanging the `token_hash` for a session.
+As this is a [server-side rendering](https://supabase.com/docs/guides/auth/server-side) (SSR) environment, you need to create a server endpoint responsible for exchanging the `token_hash` for a session.
 
 The following code snippet performs the following steps:
 
@@ -98475,7 +98475,7 @@ With the default ports, `supabase start` runs one local project per machine. To 
 The Supabase CLI is a tool that enables developers to run Supabase services locally and manage hosted projects directly from the terminal. It provides a suite of commands for various tasks, including:
 
 - Setting up and managing local development environments
-- Generating TypeScript types for your database schema
+- [Generating TypeScript types](https://supabase.com/docs/guides/api/rest/generating-types) for your database schema
 - Handling [database migrations](https://supabase.com/docs/guides/local-development/database-migrations) and [declarative database schemas](https://supabase.com/docs/guides/local-development/declarative-database-schemas)
 - Managing environment variables and secrets
 - Deploying your project to the Supabase platform
@@ -100237,7 +100237,7 @@ With `pg_cron` enabled, declare each job in a SQL file under `supabase/schemas/`
 
 Two checks gate `sync` on a schema tree the CLI didn't generate:
 
-- If your migrations call `pg_net` (for example, database webhooks), add `[experimental.webhooks]` with `enabled = true` to `config.toml` first. The section isn't part of the default `init` template.
+- If your migrations call `pg_net` (for example, [database webhooks](https://supabase.com/docs/guides/database/webhooks)), add `[experimental.webhooks]` with `enabled = true` to `config.toml` first. The section isn't part of the default `init` template.
 - Declare the extensions your schema files depend on. The check trips for `pg_net` and for extensions your own migrations create. When it does, interactive `sync` offers to add the missing declaration and re-plan, or to stage a fresh export into a sibling `-next` directory and print the commands to adopt it. A non-interactive run only prints those commands. Extensions the local stack already ships, such as `pgcrypto` and `uuid-ossp`, don't trip the check even when undeclared, so declare them yourself.
 
 ## Declarative schemas on the legacy `migra` engine \[#declarative-schemas-on-the-legacy-migra-engine]
@@ -102141,7 +102141,7 @@ Use project data to understand what is happening, investigate issues, and give a
 
 ## Read project data \[#metrics-api]
 
-Query logs for events, inspect database statistics, or review advisor findings. Use Reports to visualize signals and the Metrics API to export them.
+Query logs for events, inspect database statistics, or review advisor findings. Use Reports to visualize signals and the [Metrics API](https://supabase.com/docs/guides/observability/metrics) to export them.
 
 - **[Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering):** Query ClickHouse events through MCP, the API, or Explorer.
 - **[Logs in Studio](https://supabase.com/docs/guides/observability/logs):** Filter, inspect, and export events in the unified Logs view.
@@ -106582,7 +106582,7 @@ Pick the workflow that best matches your tooling. Cards link to Supabase-authore
 
 Use Grafana Cloud’s managed Prometheus to visualize Supabase metrics
 
-Grafana Cloud gives you a fully managed Prometheus endpoint plus hosted Grafana dashboards, which makes it the fastest way to explore the Supabase Metrics API without operating your own infrastructure.
+Grafana Cloud gives you a fully managed Prometheus endpoint plus hosted Grafana dashboards, which makes it the fastest way to explore the Supabase [Metrics API](https://supabase.com/docs/guides/observability/metrics) without operating your own infrastructure.
 
 ## Installation
 
@@ -106655,7 +106655,7 @@ The [`docs/example-alerts.md`](https://github.com/supabase/supabase-grafana/blob
 
 Deploy Prometheus and Grafana yourself to monitor Supabase metrics
 
-Self-hosting [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/) and Grafana gives you full control over retention, alert routing, and dashboards. The Supabase Metrics API slots into any standard Prometheus scrape job, so you can run everything locally, on a VM, or inside Kubernetes.
+Self-hosting [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/) and Grafana gives you full control over retention, alert routing, and dashboards. The Supabase [Metrics API](https://supabase.com/docs/guides/observability/metrics) slots into any standard Prometheus scrape job, so you can run everything locally, on a VM, or inside Kubernetes.
 
 Caution: Use this guide only if you need full manual control (custom scrape topology, self-hosted Prometheus or non-standard auth).
 
@@ -106813,7 +106813,7 @@ No matter which collector you use, you need to hit the Metrics API once per minu
 
 - Start with the [example alert rules](https://github.com/supabase/supabase-grafana/blob/main/docs/example-alerts.md) and adapt thresholds for your workload sizes.
 - Pipe alerts into PagerDuty, Slack, Opsgenie, or any other compatible target.
-- Combine Metrics API data with log drains, Query Performance, and Advisors to build right-sizing playbooks.
+- Combine Metrics API data with [log drains](https://supabase.com/docs/guides/observability/log-drains), Query Performance, and Advisors to build right-sizing playbooks.
 
 ## 5. Multi-project setups
 
@@ -108416,7 +108416,7 @@ Note: You can clone your Supabase project by restoring your data from an existin
 - Auth settings & API keys
 - Realtime settings
 - Database extensions and settings
-- Read replicas
+- [Read replicas](https://supabase.com/docs/guides/platform/read-replicas)
 
 Whether you're using physical backups or Point-in-Time recovery (PITR), this feature allows you to duplicate project data with ease, perform testing safely, or recover data for analysis. Access to this feature is exclusive to users on paid plans and requires that physical backups are enabled for the source project.
 
@@ -109730,7 +109730,7 @@ Refer to individual [usage items](https://supabase.com/docs/guides/platform/mana
 
 ### Usage on your invoice
 
-Compute incurred by Preview branches is shown as "Branching Compute Hours" on your invoice. Other usage items are not shown separately for branches and are rolled up into the project.
+Compute incurred by Preview branches is shown as "Branching Compute Hours" on your invoice. Other usage items are recorded against the branch itself and count toward your organization total, but are not listed separately per branch on your invoice. To see them, select the parent project on the [usage page](https://supabase.com/dashboard/org/_/usage), then select the branch from the branch list.
 
 ## Pricing
 
@@ -110016,7 +110016,7 @@ Refer to our [disk guide](https://supabase.com/docs/guides/platform/compute-and-
 
 Note: Disk IOPS Hours are **not** covered by the [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap).
 
-Note: Launching a Read Replica creates an additional database with its own dedicated disk. Read Replicas inherit the primary database's disk IOPS settings. You are charged for the provisioned IOPS of the Read Replica. Refer to [Manage Read Replica usage](https://supabase.com/docs/guides/platform/manage-your-usage/read-replicas) for details on billing.
+Note: Launching a [Read Replica](https://supabase.com/docs/guides/platform/read-replicas) creates an additional database with its own dedicated disk. Read Replicas inherit the primary database's disk IOPS settings. You are charged for the provisioned IOPS of the Read Replica. Refer to [Manage Read Replica usage](https://supabase.com/docs/guides/platform/manage-your-usage/read-replicas) for details on billing.
 
 ## How charges are calculated
 
@@ -110216,7 +110216,7 @@ Refer to our [disk guide](https://supabase.com/docs/guides/platform/compute-and-
 
 Note: Disk Throughput is **not** covered by the [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap).
 
-Note: Launching a Read Replica creates an additional database with its own dedicated disk. Read Replicas inherit the primary database's disk throughput settings. You are charged for the provisioned throughput of the Read Replica.
+Note: Launching a [Read Replica](https://supabase.com/docs/guides/platform/read-replicas) creates an additional database with its own dedicated disk. Read Replicas inherit the primary database's disk throughput settings. You are charged for the provisioned throughput of the Read Replica.
 
 ## How charges are calculated
 
@@ -110381,7 +110381,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 ## What you are charged for
 
-You are charged for the network data transmitted out of the system to a connected client. Egress is incurred by all services - Database, Auth, Storage, Edge Functions, Realtime and Log Drains.
+You are charged for the network data transmitted out of the system to a connected client. Egress is incurred by all services - Database, Auth, Storage, Edge Functions, Realtime and [Log Drains](https://supabase.com/docs/guides/observability/log-drains).
 
 ### Database Egress
 
@@ -110489,6 +110489,8 @@ The organization's Egress usage exceeds the uncached egress quota by 50 GB and t
 
 You can view Egress usage on the [organization's usage page](https://supabase.com/dashboard/org/_/usage). The page shows the usage of all projects by default. To view the usage for a specific project, select it from the dropdown. You can also select a different time period.
 
+Each [Preview branch](https://supabase.com/docs/guides/deployment/branching) records its own Egress, which counts toward the organization total but is not included in the parent project's usage. To see a branch's Egress, select the parent project, then select the branch from the branch list.
+
 ![Usage page navigation bar](https://supabase.com/docs/img/guides/platform/usage-navbar--dark.png)
 
 In the Total Egress section, you can see the usage for the selected time period. Hover over a specific date to view a breakdown by service. Note that this includes the cached egress.
@@ -110547,7 +110549,7 @@ You can assign a dedicated [IPv4 address](https://supabase.com/docs/guides/platf
 
 Note: IPv4 Hours are **not** covered by the [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap).
 
-Note: If the primary database has a dedicated IPv4 address configured, its Read Replicas are also assigned one, with charges for each.
+Note: If the primary database has a dedicated IPv4 address configured, its [Read Replicas](https://supabase.com/docs/guides/platform/read-replicas) are also assigned one, with charges for each.
 
 ## How charges are calculated
 
@@ -111059,7 +111061,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 ## What you are charged for
 
-You are charged for the number of distinct users who sign in or refresh their token during the billing cycle using a third-party authentication provider (Clerk, Firebase Auth, Auth0, AWS Cognito). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "Third-Party MAUs".
+You are charged for the number of distinct users who sign in or refresh their token during the billing cycle using a third-party authentication provider ([Clerk](https://supabase.com/docs/guides/auth/third-party/clerk), [Firebase Auth](https://supabase.com/docs/guides/auth/third-party/firebase-auth), [Auth0](https://supabase.com/docs/guides/auth/third-party/auth0), [AWS Cognito](https://supabase.com/docs/guides/auth/third-party/aws-cognito)). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "Third-Party MAUs".
 
 ### Example
 
@@ -111152,7 +111154,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 ## What you are charged for
 
-You are charged for the number of distinct users who sign in or refresh their token during the billing cycle (including social login with e.g. Google, Facebook, GitHub). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "MAUs".
+You are charged for the number of distinct users who sign in or refresh their token during the billing cycle (including [social login](https://supabase.com/docs/guides/auth/social-login) with e.g. Google, Facebook, GitHub). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "MAUs".
 
 ### Example
 
@@ -114857,7 +114859,7 @@ Currently, Supabase supports adding a unique time-based one-time password (TOTP)
 
 ## Enable MFA
 
-You can enable MFA for your user account under your [Supabase account settings](https://supabase.com/dashboard/account/security). Enabling MFA will result in all other user sessions to be automatically logged out and forced to sign in again with MFA.
+You can enable MFA for your user account under your [Supabase account settings](https://supabase.com/dashboard/account/security). Enabling MFA will result in all other [user sessions](https://supabase.com/docs/guides/auth/sessions) to be automatically logged out and forced to sign in again with MFA.
 
 Note: Supabase does not return recovery codes. Instead, we recommend that you register a backup TOTP factor to use in an event that you lose access to your primary TOTP factor. Make sure you use a different device and app, or store the secret in a secure location different than your primary one.
 
@@ -115411,7 +115413,7 @@ By default, Supabase sets `log_connections` to off for new projects and you must
 Existing projects may retain different settings depending on plan and compliance configuration:
 
 - **Team, Enterprise, and HIPAA organizations** — Connection logging is typically enabled to support audit requirements.
-- **HIPAA projects** — Supabase enables connection logging when a project is marked as high compliance. The [Security Advisor](https://supabase.com/dashboard/project/_/advisors/security) warns if connection logging is later disabled.
+- **[HIPAA projects](https://supabase.com/docs/guides/platform/hipaa-projects)** — Supabase enables connection logging when a project is marked as high compliance. The [Security Advisor](https://supabase.com/dashboard/project/_/advisors/security) warns if connection logging is later disabled.
 
 ## Compliance considerations
 
@@ -116003,7 +116005,7 @@ For most projects, we recommend choosing a general region. Supabase will deploy 
 - Europe, `Central EU (Frankfurt)`
 - APAC, `Southeast Asia (Singapore)`
 
-Note: General regions aren’t yet supported for read replicas or management via the API.
+Note: General regions aren’t yet supported for [read replicas](https://supabase.com/docs/guides/platform/read-replicas) or management via the API.
 
 ## Specific regions
 
@@ -118758,7 +118760,7 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/jit-access" \
 
 ## Configure user access
 
-Once temporary access has been enabled, project users must be authorized and mapped to Postgres roles they are allowed to access. Each user can be authorized to "assume" one or more Postgres roles using temporary access.
+Once temporary access has been enabled, project users must be authorized and mapped to [Postgres roles](https://supabase.com/docs/guides/database/postgres/roles) they are allowed to access. Each user can be authorized to "assume" one or more Postgres roles using temporary access.
 
 When a user is authorized to assume a Postgres role, the user's Personal Access Token (PAT) will be used as the password for the Postgres role.
 
@@ -120019,7 +120021,7 @@ Durable Message Queues with Guaranteed Delivery in Postgres
 
 Supabase Queues is a Postgres-native durable Message Queue system with guaranteed delivery built on the [pgmq database extension](https://github.com/tembo-io/pgmq). It offers developers a seamless way to persist and process Messages in the background while improving the resiliency and scalability of their applications and services.
 
-Queues couples the reliability of Postgres with the simplicity Supabase's platform and developer experience, enabling developers to manage Background Tasks with zero configuration.
+Queues couples the reliability of Postgres with the simplicity Supabase's platform and developer experience, enabling developers to manage [Background Tasks](https://supabase.com/docs/guides/functions/background-tasks) with zero configuration.
 
 ## Features
 
@@ -121656,7 +121658,7 @@ Make sure to keep the JWT expiration window short.
 
 Scalability Benchmarks for Supabase Realtime.
 
-This guide explores the scalability of Realtime's features: Broadcast, Presence, and Postgres Changes.
+This guide explores the scalability of Realtime's features: Broadcast, Presence, and [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes).
 
 ## Methodology
 
@@ -122962,7 +122964,7 @@ The connections include:
 - **Migrations**: Two temporary connections to run database migrations when needed
 - **Authorization**: Configurable connection pool to check authorization policies on join that are always started.
 - **Broadcast from database**: One connection to receive data from replication slot used to broadcast the changes to the clients that is always started.
-- **Postgres Changes**: Multiple connection pools required. These pools are only started if you use Postgres Changes.
+- **[Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes)**: Multiple connection pools required. These pools are only started if you use Postgres Changes.
   - **Subscription management**: To manage the subscribers to Postgres Changes
   - **Subscription cleanup**: To cleanup the subscribers to Postgres Changes
   - **WAL pull**: To pull the changes from the database
@@ -128194,7 +128196,7 @@ There is no reply on success. On failure, the server emits a `system` error and 
 
 Listening to real-time changes on the database with Flutter
 
-The Postgres Changes extension listens for database changes and sends them to clients which enables you to receive database changes in real-time.
+The [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes) extension listens for database changes and sends them to clients which enables you to receive database changes in real-time.
 
 
 
@@ -128216,7 +128218,7 @@ Displaying the list of currently online users is a common feature for real-time 
 
 Client & Server Components in Next.js with Realtime Updates
 
-In this guide, we explore the best ways to receive real-time Postgres changes with your Next.js application.
+In this guide, we explore the best ways to receive real-time [Postgres changes](https://supabase.com/docs/guides/realtime/postgres-changes) with your Next.js application.
 We'll show both client and server side updates, and explore which option is best.
 
 
@@ -128817,7 +128819,7 @@ Authorization (often abbreviated `authz.`) is the process of verifying if a cert
 
 ## Identity provider
 
-An identity provider is software or service that allows third-party applications to identify users without the exchange of passwords. Social login and enterprise single-sign on won't be possible without identity providers.
+An identity provider is software or service that allows third-party applications to identify users without the exchange of passwords. [Social login](https://supabase.com/docs/guides/auth/social-login) and enterprise single-sign on won't be possible without identity providers.
 
 Social login platforms typically use the OAuth protocol, while enterprise single-sign on is based on the OIDC or SAML protocols.
 
@@ -129707,7 +129709,7 @@ These projects are maintained by the Supabase community, not by Supabase. To get
 
 Self-hosted Supabase runs as a single project, which means that Studio doesn't support multiple organizations or projects. Most settings are configured through [environment variables](https://github.com/supabase/supabase/blob/master/docker/.env.example).
 
-Some features of the managed platform aren't available when self-hosting: branching, advanced metrics beyond logs, managed backups and PITR, analytics and vector buckets, ETL, and the Management API. To collect logs and metrics yourself, see the community-maintained [observability project](https://github.com/supabase-community/supabase-observability).
+Some features of the managed platform aren't available when self-hosting: branching, advanced metrics beyond logs, managed backups and PITR, analytics and [vector buckets](https://supabase.com/docs/guides/storage/vector/introduction), ETL, and the Management API. To collect logs and metrics yourself, see the community-maintained [observability project](https://github.com/supabase-community/supabase-observability).
 
 ### Not the same as local development
 
@@ -132208,7 +132210,7 @@ After rotating, restart services and update your client applications with the ne
 sh run.sh recreate
 ```
 
-Note: Rotating new API keys does not invalidate existing user sessions. User session JWTs issued by Auth are unaffected because they are verified using the asymmetric key pair, which remains unchanged.
+Note: Rotating new API keys does not invalidate existing [user sessions](https://supabase.com/docs/guides/auth/sessions). User session JWTs issued by Auth are unaffected because they are verified using the asymmetric key pair, which remains unchanged.
 
 ## Regenerating asymmetric key pair
 
@@ -133122,7 +133124,7 @@ ssh user@<your-domain> 'cd /path/to/self-hosted && sh run.sh restart functions'
 If you have existing functions on Supabase platform, you can download them and run them on your self-hosted instance. There are two ways to get the function source code:
 
 - **Dashboard** - open the function details in Dashboard and click **Download**.
-- **Local development & CLI** - run `supabase functions download <function-name> --project-ref <ref>` to download the source.
+- **[Local development & CLI](https://supabase.com/docs/guides/local-development)** - run `supabase functions download <function-name> --project-ref <ref>` to download the source.
 
 Use `scp` to copy the function into `volumes/functions/<function-name>/` on your self-hosted instance, then restart the functions service.
 
@@ -134283,7 +134285,7 @@ storage:
 
 You can authenticate to Supabase's S3-compatible storage using a user’s JWT to enforce Row-Level Security (RLS) across S3 operations. This is useful when initializing the S3 client on the server for a specific user session, or when using the client directly from the frontend.
 
-All operations performed with a session token are scoped to the authenticated user, and any RLS policies defined in the storage schema will be applied.
+All operations performed with a session token are scoped to the authenticated user, and any RLS policies defined in the [storage schema](https://supabase.com/docs/guides/storage/schema/design) will be applied.
 
 To authenticate with S3 using a session token, provide the following credentials:
 
@@ -135078,7 +135080,7 @@ Supabase Storage is a robust, scalable solution for managing files of any size w
 
 ## Key features
 
-- **Multi Protocol** - S3 compatible Storage, RESTful API, TUS resumable uploads
+- **Multi Protocol** - S3 compatible Storage, RESTful API, TUS [resumable uploads](https://supabase.com/docs/guides/storage/uploads/resumable-uploads)
 - **Global CDN** - Serve your assets with lightning-fast performance from over 285 cities worldwide
 - **Image Optimization** - Resize, compress, and transform media files on the fly with built-in image processing
 - **Fine-grained Access Control** - Manage file permissions with row-level security and custom policies
@@ -135113,7 +135115,7 @@ Source code and REST API reference for the Storage service:
 
 Caution: Expect rapid changes, limited features, and possible breaking updates. [Share feedback](https://github.com/orgs/supabase/discussions/40116) as we refine the experience and expand access.
 
-Analytics buckets require authentication with two distinct services:
+[Analytics buckets](https://supabase.com/docs/guides/storage/analytics/introduction) require authentication with two distinct services:
 
 ## Architecture overview
 
@@ -136824,7 +136826,7 @@ You can download individual files directly from the [**Storage > Files**](https:
 
 ## Using the Supabase CLI
 
-You can use the `supabase storage` commands to list and copy objects from your linked project.
+You can use the `supabase storage` commands to list and [copy objects](https://supabase.com/docs/guides/storage/management/copy-move-objects) from your linked project.
 
 See the [CLI reference](https://supabase.com/docs/reference/cli/supabase-storage) for available commands.
 
@@ -137263,7 +137265,7 @@ Note: On [local development](https://supabase.com/docs/guides/local-development)
 
 You can authenticate to Supabase S3 with a user JWT token to provide limited access via RLS to all S3 operations. This is useful when you want initialize the S3 client on the server scoped to a specific user, or use the S3 client directly from the client side.
 
-All S3 operations performed with the Session Token are scoped to the authenticated user. RLS policies on the Storage Schema are respected.
+All S3 operations performed with the Session Token are scoped to the authenticated user. RLS policies on the [Storage Schema](https://supabase.com/docs/guides/storage/schema/design) are respected.
 
 To authenticate with S3 using a Session Token, use the following credentials:
 
@@ -137714,7 +137716,7 @@ We store the `owner` in the `owner_id` column.
 
 Note: When using the `service_key` to create a resource, the owner will not be set and the resource will be owned by anyone. This is also the case when you are creating Storage resources via the Dashboard.
 
-Note: The Storage schema has 2 fields to represent ownership: `owner` and `owner_id`. `owner` is deprecated and will be removed. Use `owner_id` instead.
+Note: The [Storage schema](https://supabase.com/docs/guides/storage/schema/design) has 2 fields to represent ownership: `owner` and `owner_id`. `owner` is deprecated and will be removed. Use `owner_id` instead.
 
 ## Access control
 
@@ -139422,7 +139424,7 @@ Store, index, and query vector embeddings at scale with similarity search.
 
 Caution: Expect rapid changes, limited features, and possible breaking updates. [Share feedback](https://github.com/orgs/supabase/discussions/40116) as we refine the experience and expand access.
 
-Vector buckets enable efficient storage and similarity search of vector embeddings. Built on S3-compatible storage, they provide high-performance semantic search capabilities for AI and machine learning applications.
+Vector buckets enable efficient storage and similarity search of vector embeddings. Built on S3-compatible storage, they provide high-performance [semantic search](https://supabase.com/docs/guides/ai/semantic-search) capabilities for AI and machine learning applications.
 
 ## What are Vector buckets?
 
@@ -141587,7 +141589,7 @@ Updating this field triggers a configuration reload, which allows the Auth servi
 
 # Auth Hooks: 'Invalid payload' when anonymous users attempt phone changes
 
-An 'Invalid payload sent to hook' error (500) occurs in Auth hooks when the payload includes `new_phone` for an anonymous user.
+An 'Invalid payload sent to hook' error (500) occurs in [Auth hooks](https://supabase.com/docs/guides/auth/auth-hooks) when the payload includes `new_phone` for an anonymous user.
 
 ## Why does this happen?
 
@@ -141940,7 +141942,7 @@ Each Supabase project is provisioned on hardware in the chosen region, so it is 
 
 Therefore, the process to change the region of a Supabase Project is to create a new project in the desired region and migrate your existing project using the [migrations guide](https://supabase.com/docs/guides/platform/migrating-within-supabase).
 
-If you are using third-party auth(Facebook, Google, etc.), you need to manually copy over your client id/secret pairs in the dashboard. Also, you'd need to change your API URL/Anon or Service Keys, which is usually done via ENV vars on your web host.
+If you are using [third-party auth](https://supabase.com/docs/guides/auth/social-login)(Facebook, Google, etc.), you need to manually copy over your client id/secret pairs in the dashboard. Also, you'd need to change your API URL/Anon or Service Keys, which is usually done via ENV vars on your web host.
 
 
 ---
@@ -142388,7 +142390,7 @@ They tend to be caused by one of the following factors.
 
 ## Attempted to access a forbidden schema
 
-API roles cannot access certain schemas, most notably `auth` and `vault`. This restriction extends to Foreign Data Wrappers relying on `vault`. While you can bypass it using a [security definer function](https://supabase.com/docs/guides/database/functions?queryGroups=language\&language=sql\&queryGroups=example-view\&example-view=sql#security-definer-vs-invoker), these schemas are intentionally restricted for security reasons.
+API roles cannot access certain schemas, most notably `auth` and `vault`. This restriction extends to [Foreign Data Wrappers](https://supabase.com/docs/guides/database/extensions/wrappers/overview) relying on `vault`. While you can bypass it using a [security definer function](https://supabase.com/docs/guides/database/functions?queryGroups=language\&language=sql\&queryGroups=example-view\&example-view=sql#security-definer-vs-invoker), these schemas are intentionally restricted for security reasons.
 
 ## Attempted to access a custom schema
 
@@ -142486,7 +142488,7 @@ error finding user: sql: Scan error on column index 8, name "confirmation_token"
 
 **Cause:**
 
-The `auth` schema is managed by Supabase and expects specific column formats. This error typically happens when users are inserted directly via SQL or using an AI tool that uses a direct SQL `INSERT`, rather than through the [Auth API](https://supabase.com/docs/reference/javascript/auth-api). A direct insert can leave required columns as `NULL` when the Auth service expects an empty string.
+The `auth` schema is managed by Supabase and expects specific column formats. This error typically happens when users are inserted directly via SQL or using an AI tool that uses a direct SQL `INSERT`, rather than through the [Auth API](https://supabase.com/docs/reference/javascript/auth-admin-createuser). A direct insert can leave required columns as `NULL` when the Auth service expects an empty string.
 
 **Fix:**
 
@@ -144680,7 +144682,7 @@ These events are surfaced through logs and observability tools, allowing you to 
 - If you're seeing `EarlyDrop` but expected more work to happen, check for:
   - Promises that weren't properly awaited
   - Event listeners or timers that weren't cleaned up
-  - Background tasks that should have completed but didn't
+  - [Background tasks](https://supabase.com/docs/guides/functions/background-tasks) that should have completed but didn't
 - If you intentionally have background work that should continue after the response, make sure those promises are awaited before the function returns
 
 ### TerminationRequested
@@ -145092,7 +145094,7 @@ Large dependency trees or expensive top-level initialization can exceed startup 
 
 # Email/Password Login Disabled for Supabase Accounts Created via Vercel Marketplace
 
-If your Supabase account was initiated via the Vercel Marketplace, you will not be able to log in directly using email/password or reset your password. This is because such accounts are tightly coupled to Vercel's authentication system, restricting login to Vercel's integrated methods.
+If your Supabase account was initiated via the [Vercel Marketplace](https://supabase.com/docs/guides/integrations/vercel-marketplace), you will not be able to log in directly using email/password or reset your password. This is because such accounts are tightly coupled to Vercel's authentication system, restricting login to Vercel's integrated methods.
 
 To access your Supabase account independently of the Vercel Marketplace, you can use GitHub OAuth as an alternative:
 
@@ -145265,7 +145267,7 @@ This setting, when `off`, can cause issues with how certain character sequences 
 
 To resolve this issue:
 
-1. Connect to your database instance using the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) in the Dashboard or a client like `psql`.
+1. [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres) instance using the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) in the Dashboard or a client like `psql`.
 2. Execute the following SQL command:
    ```sql
    ALTER DATABASE postgres SET standard_conforming_strings = on;
@@ -145323,7 +145325,7 @@ The Supabase dashboard performs background queries to retrieve migration data fr
 If you encounter the error "Target organization is not managed by Vercel Marketplace (currently unsupported)" when attempting a project transfer, it indicates an attempt to move a project from a Supabase-managed organization to a Vercel Marketplace-managed organization. This transfer direction is currently not supported due to existing Vercel Marketplace API limitations.
 
 **Supported Transfer Direction:**
-Project transfers from a Vercel-managed organization to a Supabase-managed organization are supported. To perform this transfer:
+[Project transfers](https://supabase.com/docs/guides/platform/project-transfer) from a Vercel-managed organization to a Supabase-managed organization are supported. To perform this transfer:
 
 1. Create a new Supabase-managed organization via your [dashboard](https://supabase.com/dashboard).
 2. From your project settings, initiate a transfer to the newly created Supabase-managed organization.
@@ -145602,7 +145604,7 @@ If you're connecting through the shared pooler and this started right after rese
 
 ## Using a custom role
 
-Custom Postgres roles with `LOGIN` are supported. They work on direct connections, the dedicated pooler, and the shared Supavisor pooler. You do not register a role with the pooler as a separate step. The pooler reads the role's credentials from Postgres on demand, so creating the role in the database is all that is needed.
+[Custom Postgres roles](https://supabase.com/docs/guides/database/postgres/roles) with `LOGIN` are supported. They work on direct connections, the dedicated pooler, and the shared Supavisor pooler. You do not register a role with the pooler as a separate step. The pooler reads the role's credentials from Postgres on demand, so creating the role in the database is all that is needed.
 
 If you reset the password of a custom role while using the shared pooler (Supavisor), a pooled connection can still fail with `FATAL: password authentication failed` (SQLSTATE `28P01`) even when the new password is correct. The pooler may still use cached credentials briefly. Confirm the new password with a direct connection, then retry through Supavisor with bounded retries. Direct connections and the dedicated pooler are not affected by this cache behavior.
 
@@ -146473,7 +146475,7 @@ See the [**AWS docs**](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/AP
 
 There are a few options to work around the cooldown, depending on the state of your database:
 
-1. **Restore to a new project**: This spins up a new instance with a new disk, bypassing the cooldown entirely. It’s a great option if you're okay with a new project and project refactoring. [**Docs: restoring to a new project**](https://supabase.com/docs/guides/platform/backups#restore-to-a-new-project).
+1. **[Restore to a new project](https://supabase.com/docs/guides/platform/clone-project)**: This spins up a new instance with a new disk, bypassing the cooldown entirely. It’s a great option if you're okay with a new project and project refactoring. [**Docs: restoring to a new project**](https://supabase.com/docs/guides/platform/backups#restore-to-a-new-project).
 2. **pg\_upgrade**: Our [**pg\_upgrade**](https://supabase.com/docs/guides/platform/upgrading) implementation migrates your data to a new disk, which skips the cooldown. The main requirement here is that the database must be operational - pg\_upgrade can't run if your database is in a degraded or inaccessible state.
 3. **Pause and Restore**: This also migrates to a new disk but is only available for projects on the Free plan. If you're not on the Free plan, you'd need to [**transfer your project to an organization on the Free plan**](https://supabase.com/docs/guides/platform/project-transfer) first.
 
@@ -148664,7 +148666,7 @@ There are likely other causes that are not known right now as well.
 
 # Not receiving Auth emails from the Supabase project
 
-**We strongly recommend configuring your own custom SMTP provider** in your projects to avoid running into issues with sending emails from your project. The built-in email provider is for demonstration purposes only and offers a very low rate limit. You can read more details about the rate limits [here](https://supabase.com/docs/guides/deployment/going-into-prod#auth-rate-limits).
+**We strongly recommend configuring your own [custom SMTP provider](https://supabase.com/docs/guides/auth/auth-smtp)** in your projects to avoid running into issues with sending emails from your project. The built-in email provider is for demonstration purposes only and offers a very low rate limit. You can read more details about the rate limits [here](https://supabase.com/docs/guides/deployment/going-into-prod#auth-rate-limits).
 
 If you're testing your Supabase projects, consider configuring an email testing tool like [Mailtrap](https://mailtrap.io/) to test your emails. It's an email sandbox tool that helps debug emails without sending an email to an end user.
 
@@ -149301,7 +149303,7 @@ You may encounter a `PGRST106` error, stating `{"code":"PGRST106","message":"The
 This error occurs because the `authenticator` role's `pgrst.db_schemas` setting does not include the desired schema. This creates a conflict, as PostgREST relies on this setting to know which schemas it should expose.
 
 **How to Resolve This:**
-To fix this, you need to update the `pgrst.db_schemas` setting for the `authenticator` role. Connect to your database and execute one of the following SQL commands:
+To fix this, you need to update the `pgrst.db_schemas` setting for the `authenticator` role. [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres) and execute one of the following SQL commands:
 
 - **To explicitly add your schema:**
   If you want to add your specific schema (e.g., `your_schema_name`) alongside existing schemas (like `public`), use the following command. Remember to replace `your_schema_name` with your actual schema name and include all other necessary schemas already defined.
@@ -149763,7 +149765,7 @@ If a client sends Presence updates too frequently, you may see this error code i
 ClientPresenceRateLimitReached
 ```
 
-On the client side, the channel receives a `system` error message and is then closed. Any Presence, Broadcast, or Postgres Changes subscriptions on that channel stop until the client reconnects.
+On the client side, the channel receives a `system` error message and is then closed. Any Presence, Broadcast, or [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes) subscriptions on that channel stop until the client reconnects.
 
 This error almost always means Presence is being used for high-frequency updates that it isn't designed for. This guide explains the limit, why it exists, and how to fix it.
 
@@ -150465,7 +150467,7 @@ channel.subscribe((status, err) => {
 
 1. Check your project isn't paused and Realtime is enabled for it. That toggle ("Enable Realtime service") lives under **Realtime → Settings**. See [Realtime Settings](https://supabase.com/docs/guides/realtime/settings).
 2. On a private channel, you need an RLS policy that allows the join for your role. Check **Realtime → Policies** on `realtime.messages`. See [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization) for how the policies work. A slow policy can also cause the join to time out instead of failing outright, so check the policy's own performance too, not merely whether it grants access.
-3. Bad JWTs are a common cause. Not expired, has `role` and `exp` claims, and if you're on a third-party auth provider, its JWKS endpoint needs to be reachable. Decode the token (jwt.io, or `atob(token.split('.')[1])`) to check the claims directly. Logging the second argument in `.subscribe((status, err) => ...)` will show you the actual rejection reason instead of leaving you guessing. More detail: [Channel-level system errors](https://supabase.com/docs/guides/realtime/protocol#channel-level-system-errors).
+3. Bad JWTs are a common cause. Not expired, has `role` and `exp` claims, and if you're on a [third-party auth provider](https://supabase.com/docs/guides/auth/third-party/overview), its JWKS endpoint needs to be reachable. Decode the token (jwt.io, or `atob(token.split('.')[1])`) to check the claims directly. Logging the second argument in `.subscribe((status, err) => ...)` will show you the actual rejection reason instead of leaving you guessing. More detail: [Channel-level system errors](https://supabase.com/docs/guides/realtime/protocol#channel-level-system-errors).
 4. Reverse proxy or custom SSL termination in front of your app? Make sure it forwards the `Upgrade` and `Connection` headers, or the WebSocket handshake never completes in the first place.
 5. Clients need to heartbeat at least every 25 seconds or the connection times out ([Reconnection](https://supabase.com/docs/guides/realtime/protocol#reconnection)). So reconnect on unexpected `CLOSED`/`TIMED_OUT` instead of treating either as a hard error: log the status callback so you can tell an expected disconnect apart from a real failure. One caveat: if you're seeing `TIMED_OUT` specifically, that's more often a Node.js version mismatch with your `realtime-js` version than an idle timeout. See [Realtime connections giving `TIMED_OUT` errors](./realtime-connections-timed_out-status).
 6. You might be hitting a connection or join-rate limit for your plan (`too_many_connections`, `too_many_joins`). Check the project's usage page in the dashboard, or look for the error code directly in `err`. Plan numbers: [Realtime Limits](https://supabase.com/docs/guides/realtime/limits#limits-by-plan). Related: [Realtime: "Concurrent Peak Connections" Quota](./realtime-concurrent-peak-connections-quota-jdDqcp).
@@ -150844,7 +150846,7 @@ In most cases, quota overages are accidental rather than intentional:
 
 1. **Open a support ticket**: [Contact support](https://supabase.com/dashboard/support/new) and include:
    - Your project reference ID
-   - A description of your Realtime use case (what features use Broadcast, Presence, or Postgres Changes)
+   - A description of your Realtime use case (what features use Broadcast, Presence, or [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes))
    - An estimate of your expected concurrent connections and message throughput
    - Any recent changes to your application that may have caused the spike
 
@@ -151182,7 +151184,7 @@ Work through these checks before treating the warning as a partition problem:
 
 1. Look for connection errors in your project's Realtime logs, such as failures to validate a JWT signature.
 2. Join a channel with the [Realtime Inspector](https://supabase.com/dashboard/project/_/realtime/inspector), which connects using your project's own keys. If the Inspector connects and your app does not, your app is sending a different key or a stale user session.
-3. If you rotated your JWT secret or migrated to asymmetric JWT signing keys, sessions issued before the change no longer validate. Existing clients need to sign out and re-authenticate to get a token signed with the current key.
+3. If you rotated your JWT secret or migrated to asymmetric [JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys), sessions issued before the change no longer validate. Existing clients need to sign out and re-authenticate to get a token signed with the current key.
 
 Once a client connects, the partitions are created and maintained again.
 
@@ -151230,7 +151232,7 @@ You can resolve this by updating the role configuration via the [SQL Editor](htt
 
 **Best Practices:**
 
-- To maintain compatibility with default schema permissions, avoid creating custom Postgres roles for application users.
+- To maintain compatibility with default schema permissions, avoid creating [custom Postgres roles](https://supabase.com/docs/guides/database/postgres/roles) for application users.
 - Instead, use custom claims within `auth.users.raw_app_meta_data` to manage user-specific logic or permissions.
 
 
@@ -152491,7 +152493,7 @@ We want to clarify and provide reassurance on this topic.
 
 ## Security overview:
 
-Enabling anonymous sign-ins on your project does not reduce its security. Here's why:
+Enabling [anonymous sign-ins](https://supabase.com/docs/guides/auth/auth-anonymous) on your project does not reduce its security. Here's why:
 
 - Same as Regular Users: Anonymous users function like regular users within your project. They have unique user IDs and their own records in the authentication tables.
 - Security Policies: All role-based security policies (RLS) applicable to regular users also apply to anonymous users.
@@ -153231,7 +153233,7 @@ postgres://postgres.obfwhevidiamwdwki:[YPASSWORD]@aws-0-ca-central-1.pooler.supa
 
 Postgres connections use the Postgres Wire Protocol (PWP) rather than HTTP. PWP acts like a WebSocket: once a connection is made, it stays open and active until the client disconnects.
 
-If too many connections are held by idle or greedy clients, other application servers won’t be able to connect to your database. Transaction mode helps avoid this problem by allowing clients to access the database connections only when they are running a query. This reduces the chances of hitting the maximum direct connection limit.
+If too many connections are held by idle or greedy clients, other application servers won’t be able to [connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres). Transaction mode helps avoid this problem by allowing clients to access the database connections only when they are running a query. This reduces the chances of hitting the maximum direct connection limit.
 
 ## Session mode:
 
@@ -176037,10 +176039,6 @@ response = supabase.storage.vectors().from_("vectors-bucket").index("my-index").
 ## Introduction
 
 This reference documents every object and method available in Supabase's C# library, [supabase](https://www.nuget.org/packages/supabase). You can use `Supabase` to interact with your Postgres database, listen to database changes, invoke Deno Edge Functions, build login and user management functionality, and manage large files.
-
-The C# client library is created and maintained by the Supabase community, and is not an official library. Please be tolerant of areas where the library is still being developed, and — as with all the libraries — feel free to contribute wherever you find issues.
-
-Huge thanks to official maintainer, [Joseph Schultz](https://github.com/acupofjose). As well as [Will Iverson](https://github.com/wiverson), [Ben Randall](https://github.com/veleek), and [Rhuan Barros](https://github.com/rhuanbarros) for their help.
 
 ## Installing & Initialization
 

@@ -2455,6 +2455,132 @@ for MoE expert tracing during rollouts.
 
 
 
+# Decisions API (OpenAI-compatible)
+Source: https://docs.fireworks.ai/api-reference/post-decisions
+
+Answer many typed questions about one input in a single call with POST /inference/v1/decisions
+
+The Decisions API is the System One decisions API in the shape of OpenAI's Decisions API, so code written against OpenAI's SDK works against Fireworks without a translation layer. For the native request shape, see [`POST /inference/v1/systemone`](/api-reference/post-systemone).
+
+## Endpoint
+
+```
+POST https://api.fireworks.ai/inference/v1/decisions
+```
+
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/decisions \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "accounts/<your-account>/models/<your-model>",
+  "input": "Customer wrote: the package arrived late and damaged, I want my money back.",
+  "questions": [
+    {
+      "type": "predicate",
+      "name": "refund",
+      "instructions": "Does the customer ask for a refund?"
+    },
+    {
+      "type": "choice",
+      "name": "tone",
+      "instructions": "What is the customer'\''s tone?",
+      "choices": [
+        { "value": "angry", "description": "Angry or hostile" },
+        { "value": "neutral", "description": "Neutral" },
+        { "value": "positive", "description": "Positive" }
+      ]
+    },
+    {
+      "type": "score",
+      "name": "urgency",
+      "instructions": "How urgent is this ticket?",
+      "levels": [
+        { "label": "not urgent" },
+        { "label": "somewhat urgent" },
+        { "label": "urgent" },
+        { "label": "critical" }
+      ]
+    }
+  ]
+}'
+```
+
+## Request
+
+| Field | Type | Description |
+| - | - | - |
+| `model` | string | **Required.** The System One model path, for example `accounts/<your-account>/models/<your-model>`. |
+| `input` | string or array | **Required.** The situation to decide about. A string, or an array of `{"role": "user", "content": ...}` messages whose text is joined with newlines. Content can be a string or an array of `{"type": "input_text", "text": "..."}` parts. |
+| `questions` | array | **Required.** Ordered list of questions. Answers come back in the same order. |
+| `safety_identifier` | string | Optional. Accepted and ignored. |
+
+Each question:
+
+| Field | Type | Description |
+| - | - | - |
+| `type` | string | **Required.** `predicate`, `choice`, or `score`. |
+| `name` | string | Optional label for the question, echoed back in its answer. |
+| `instructions` | string | **Required.** The question itself, in plain language. |
+| `choices` | array | **Required for `choice`.** Two or more options, each `{"value": ..., "description": "..."}`. Values are strings or booleans. Up to 208 options. |
+| `levels` | array | **Required for `score`.** Two or more levels in order, lowest first, each `{"label": "...", "description": "..."}`. |
+
+`predicate`, `choice`, and `score` map to the `noul`, `choice`, and `score` question types of the [System One decisions API](/api-reference/post-systemone#question-types).
+
+## Response
+
+```json theme={null}
+{
+  "model": "accounts/<your-account>/models/<your-model>",
+  "answers": [
+    { "type": "predicate", "name": "refund", "probability": 0.98, "confidence": 0.96 },
+    {
+      "type": "choice",
+      "name": "tone",
+      "choice": "angry",
+      "probabilities": [
+        { "value": "angry", "probability": 0.91 },
+        { "value": "neutral", "probability": 0.08 },
+        { "value": "positive", "probability": 0.01 }
+      ],
+      "confidence": 0.87
+    },
+    {
+      "type": "score",
+      "name": "urgency",
+      "score": 1.7,
+      "probabilities": [
+        { "value": 0, "label": "not urgent", "probability": 0.05 },
+        { "value": 1, "label": "somewhat urgent", "probability": 0.3 },
+        { "value": 2, "label": "urgent", "probability": 0.55 },
+        { "value": 3, "label": "critical", "probability": 0.1 }
+      ],
+      "confidence": 0.4
+    }
+  ],
+  "usage": {
+    "input_tokens": 212,
+    "input_tokens_details": { "cached_tokens": 0, "cache_write_tokens": 0 },
+    "output_tokens": 0,
+    "output_tokens_details": { "reasoning_tokens": 0 },
+    "total_tokens": 212
+  }
+}
+```
+
+Values above are illustrative. `name` is `null` for questions that didn't set one. For `score` answers, each probability's `value` is the level index and `label` is the level's label.
+
+## Differences from OpenAI's Decisions API
+
+* **Text only.** `input_image` parts return a `400`.
+* **208 options per `choice` question**, where OpenAI allows 255.
+* `safety_identifier` is accepted but ignored.
+
+Everything else — model, limits, caching, and errors — is identical to [`/inference/v1/systemone`](/api-reference/post-systemone).
+
+
 # Create Response
 Source: https://docs.fireworks.ai/api-reference/post-responses
 
@@ -2469,6 +2595,194 @@ Explore our cookbooks for detailed examples:
 - [Basic Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
 - [Controlling Response Storage](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
 
+
+
+# System One decisions API
+Source: https://docs.fireworks.ai/api-reference/post-systemone
+
+Answer many typed questions about one state in a single call with POST /inference/v1/systemone
+
+The System One decisions API takes a **state** (any text or JSON describing the current situation) and a set of typed **questions**, and returns a calibrated probability distribution for every question. The model reads the state once and answers every question from that single pass, so adding questions to a request is much cheaper than making separate calls.
+
+The same API is also available in an OpenAI-compatible shape at [`POST /inference/v1/decisions`](/api-reference/post-decisions).
+
+## Endpoint
+
+```
+POST https://api.fireworks.ai/inference/v1/systemone
+```
+
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+
+## Quickstart
+
+<CodeGroup>
+  ```bash cURL theme={null}
+  curl https://api.fireworks.ai/inference/v1/systemone \
+    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+    "model": "accounts/<your-account>/models/<your-model>",
+    "state": {
+      "user_request": "Add retry with exponential backoff to the payments webhook handler, and don'\''t retry on 4xx.",
+      "last_command": "npm test -- webhooks",
+      "test_output": "PASS handler.test.ts (4 tests)\nFAIL retry.test.ts\n  x does not retry on 4xx responses\n    Expected forwardEvent to be called 1 time, received 5"
+    },
+    "questions": {
+      "task_complete": {
+        "type": "noul",
+        "instructions": "Is the user'\''s request fully done?"
+      },
+      "next_action": {
+        "type": "choice",
+        "instructions": "What should the agent do next?",
+        "criteria": {
+          "edit_code": "Change the code to fix the failing behavior",
+          "rerun_tests": "Run the tests again without changing anything",
+          "ask_user": "Stop and ask the user a clarifying question",
+          "finish": "Report the task as done"
+        }
+      },
+      "risk": {
+        "type": "score",
+        "instructions": "How risky would it be to ship the current change as is?",
+        "criteria": ["safe", "minor risk", "moderate risk", "high risk", "would cause an incident"]
+      }
+    }
+  }'
+  ```
+
+  ```python Python theme={null}
+  import os
+  import requests
+
+  response = requests.post(
+      "https://api.fireworks.ai/inference/v1/systemone",
+      headers={"Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}"},
+      json={
+          "model": "accounts/<your-account>/models/<your-model>",
+          "state": "Customer wrote: the package arrived late and damaged, I want my money back.",
+          "questions": {
+              "refund": {
+                  "type": "noul",
+                  "instructions": "Does the customer ask for a refund?",
+                  "criteria": {"true": "A refund is requested", "false": "No refund is requested"},
+              },
+              "tone": {
+                  "type": "choice",
+                  "instructions": "What is the customer's tone?",
+                  "criteria": {"angry": "Angry or hostile", "neutral": "Neutral", "positive": "Positive"},
+              },
+              "urgency": {
+                  "type": "score",
+                  "instructions": "How urgent is this ticket?",
+                  "criteria": ["not urgent", "somewhat urgent", "urgent", "critical"],
+              },
+          },
+      },
+  )
+  response.raise_for_status()
+  print(response.json()["answers"])
+  ```
+</CodeGroup>
+
+## Request
+
+| Field | Type | Description |
+| - | - | - |
+| `model` | string | **Required.** The System One model path, for example `accounts/<your-account>/models/<your-model>`. |
+| `state` | string or object | **Required.** The situation to decide about. Strings are used as-is; objects are serialized as JSON. |
+| `questions` | object | **Required.** Map of your question ID to a question. Up to 256 questions per request. |
+
+### Question types
+
+| `type` | `criteria` | Answer |
+| - | - | - |
+| `noul` | Optional object `{"true": "...", "false": "..."}` describing each side. Defaults to yes/no. | Probability that the statement is true. |
+| `choice` | **Required.** Object mapping each option key to a description. Up to 208 options. | The most likely option, a probability per option, and a confidence. |
+| `score` | **Required.** Ordered array of 2 to 10 level descriptions, lowest first. | The expected score (0 = first level), a probability per level, and a confidence. |
+
+Every question takes an `instructions` string: the question itself, in plain language.
+
+## Response
+
+```json theme={null}
+{
+  "model": "accounts/<your-account>/models/<your-model>",
+  "answers": {
+    "refund": { "type": "noul", "noul": 0.98 },
+    "tone": {
+      "type": "choice",
+      "choice": "angry",
+      "probabilities": { "angry": 0.91, "neutral": 0.08, "positive": 0.01 },
+      "confidence": 0.87
+    },
+    "urgency": {
+      "type": "score",
+      "score": 1.7,
+      "legend": { "0": "not urgent", "1": "somewhat urgent", "2": "urgent", "3": "critical" },
+      "probabilities": { "0": 0.05, "1": 0.3, "2": 0.55, "3": 0.1 },
+      "confidence": 0.4
+    }
+  },
+  "usage": { "input_tokens": 212, "cached_input_tokens": 0, "output_tokens": 0 }
+}
+```
+
+Values above are illustrative.
+
+| Field | Description |
+| - | - |
+| `noul` | Probability, from 0 to 1, that the statement is true. |
+| `choice` | The key of the most likely option. |
+| `score` | Expected level, from 0 to the number of levels minus 1, weighted by probability. |
+| `probabilities` | Probability of each option key (`choice`) or level index (`score`). Sums to 1. |
+| `confidence` | How concentrated the distribution is: 0 when every option is equally likely, 1 when one option has all the probability. |
+| `legend` | For `score`, maps each level index back to its description. |
+| `usage` | Token usage for the request. `cached_input_tokens` counts state tokens served from the prompt cache. |
+
+## Pricing and capacity
+
+Billing, capacity, and rate limits depend on how the model is deployed. On a [dedicated deployment](/guides/ondemand-deployments), usage is billed at the deployment's standard on-demand GPU rate and capacity scales with the deployment's size and [autoscaling settings](/deployments/autoscaling).
+
+## Latency and caching
+
+* **Batch your questions.** All questions in a request share one read of the state, so asking ten questions in one request is much faster and cheaper than ten requests.
+* **Reuse the state.** The state is cached across requests and the questions are not. Calls that send the same large state (for example a long transcript) with different questions benefit most from caching.
+* **Measure server time.** The `fireworks-server-processing-time` response header reports time spent on Fireworks servers. Anything above that is network.
+
+## Limits
+
+| Limit | Value |
+| - | - |
+| Questions per request | 256 |
+| Options per `choice` question | 208 |
+| Levels per `score` question | 2 to 10 |
+| Context window | 256K tokens |
+| Question text | 16K tokens |
+| State size | 4 MiB |
+| Request body | 8 MiB |
+| Request duration | 5 minutes |
+
+Current support:
+
+* **Text only.** Requests with `images` return a `400`.
+* **No reasoning.** `reasoning_effort` other than `"none"` returns a `400`.
+* **Decisions only.** The model serves `/inference/v1/systemone` and `/inference/v1/decisions` only. Chat completions and completions against it return a `400`.
+
+## Errors
+
+Errors use the standard Fireworks error body.
+
+| Status | Meaning |
+| - | - |
+| `400` | Over a limit, an unsupported field, or a model that doesn't support this API. |
+| `413` | Request body over 8 MiB. |
+| `422` | Malformed JSON, a missing required field, or an invalid question (unknown `type` or malformed `criteria`). |
+| `429` | Rate limited. Retry after the `Retry-After` header. |
+| `503` | Temporarily at capacity. Retry after the `Retry-After` header. |
+| `504` | The request took longer than 5 minutes. |
+| `502` | Upstream failure. Safe to retry. |
 
 
 # Prepare Model for different precisions
@@ -12161,7 +12475,23 @@ For the full SDK-level checkpoint reference (base/delta sampler types, weight sy
 
 ## Pricing
 
-Serverless training is billed per token, across three meters: prefill, sample, and train. Available models, meter definitions, and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and current rates on the [pricing page](https://fireworks.ai/pricing) before launch.
+Serverless training is billed per token, across three meters: prefill, sample, and train. Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.
+
+| Base model | Context | Prefill | Cached prefill | Sample | Train |
+| - | - | - | - | - | - |
+| Muse Spark Open | 256K | \$6.19 | \$1.239 | \$15.48 | \$18.58 |
+| DeepSeek V4.1 Flash | 256K | \$0.60 | \$0.12 | \$3.60 | \$4.98 |
+| DeepSeek V4.1 Flash 1017 | 256K | \$0.60 | \$0.12 | \$3.60 | \$4.98 |
+| NVIDIA Nemotron 3.5 Super VL 120B | 256K | \$0.57 | \$0.114 | \$1.44 | \$2.32 |
+| GLM 5.3 Flash | 200K | \$2.96 | \$0.593 | \$7.41 | \$8.89 |
+| GLM 5.3 | 262K | \$4.86 | \$0.972 | \$12.15 | \$14.58 |
+| Qwen 3.6 35B A3B | 256K | \$0.45 | \$0.09 | \$1.335 | \$2.14 |
+| Qwen 3.8 27B | 128K | \$1.86 | \$0.372 | \$5.595 | \$4.103 |
+| Kimi K3 | 192K | \$10.87 | \$2.17 | \$27.11 | \$32.55 |
+| DeepSeek V4 Flash 0731 | 262K | \$1.74 | \$0.35 | \$4.33 | \$5.20 |
+| Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |
+
+Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount. DeepSeek V4.1 Flash 1017 uses the same rates as DeepSeek V4.1 Flash.
 
 ### What the meters mean
 

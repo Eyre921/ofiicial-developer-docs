@@ -1,6 +1,6 @@
 # dev-platforms/langfuse 文档索引
 
-> 共 22 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 27 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -17,6 +17,11 @@
 - `compare/datadog` — [Datadog Agent Observability](pages/compare/datadog.md) · [原文](https://langfuse.com/compare/datadog.md)
 - `compare/galileo` — [Galileo](pages/compare/galileo.md) · [原文](https://langfuse.com/compare/galileo.md)
 - `compare/langsmith` — [LangSmith](pages/compare/langsmith.md) · [原文](https://langfuse.com/compare/langsmith.md)
+- `compare/litellm-lens` — [LiteLLM Lens](pages/compare/litellm-lens.md) · [原文](https://langfuse.com/compare/litellm-lens.md)
+- `compare/logfire` — [Logfire](pages/compare/logfire.md) · [原文](https://langfuse.com/compare/logfire.md)
+- `compare/mlflow` — [MLflow](pages/compare/mlflow.md) · [原文](https://langfuse.com/compare/mlflow.md)
+- `compare/raindrop` — [Raindrop](pages/compare/raindrop.md) · [原文](https://langfuse.com/compare/raindrop.md)
+- `compare/sentry` — [Sentry](pages/compare/sentry.md) · [原文](https://langfuse.com/compare/sentry.md)
 
 ## docs
 

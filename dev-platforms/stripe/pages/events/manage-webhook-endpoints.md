@@ -261,7 +261,7 @@ When an event displays a status code of `200`, it indicates successful delivery 
 
 ## Handle event-generation failures  (Public preview)
 
-In rare cases, Stripe can fail to generate an `Event` object. When this happens, the event is irrecoverable—Stripe can’t deliver it to your destinations or surface it in the Dashboard or the [List Events API](https://docs.stripe.com/api/v2/core/events/list.md). Instead, Stripe creates a [`v2.core.health.event_generation_failure.resolved`](https://docs.stripe.com/api/v2/core/events/event-types.md#v2_event_types-v2.core.health.event_generation_failure.resolved) event to notify you of the failure.
+In rare cases, Stripe can fail to generate an `Event` object. When this happens, the event is irrecoverable—Stripe can’t deliver it to your destinations or surface it in the Dashboard or the [List Events API](https://docs.stripe.com/api/v2/core/events/list.md). Instead, Stripe creates a [v2.core.health.event_generation_failure.resolved](https://docs.stripe.com/api/v2/core/events/event-types.md#v2_event_types-v2.core.health.event_generation_failure.resolved) event to notify you of the failure.
 
 ### Where these events appear
 

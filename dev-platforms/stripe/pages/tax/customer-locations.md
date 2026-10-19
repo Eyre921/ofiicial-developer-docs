@@ -12,7 +12,7 @@ Stripe Tax requires your customer’s location to automatically calculate tax. T
 
 ## Which customer address we use 
 
-Stripe Tax uses a single address as your customer’s location when calculating tax. How we choose an address doesn’t depend on the type of product you sell.
+Stripe Tax uses a single address as your customer’s location when calculating tax. The address hierarchy used to identify your customer’s location doesn’t depend on the type of product you sell. However, this address isn’t always the final place of taxation. For eligible in-person goods and services, a per-line-item performance location can override the default sourcing rule. Learn how to [tax in-person sales at a specific location](https://docs.stripe.com/tax/optional-tax-location/integration-guide.md).
 
 You can see which location an automatic tax calculated payment used in the **Tax calculation** section of the Transactions details page in your Dashboard.
 
