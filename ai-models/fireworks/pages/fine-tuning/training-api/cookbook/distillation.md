@@ -17,10 +17,13 @@ Use it when you want recipe-managed trainer provisioning, student sampling, teac
 | Recipe | Teacher signal |
 | - | - |
 | `distillation_loop` | Sampled-token OPD: teacher logprob minus sampling logprob on the student's own completions. |
-| `sdft_loop` | Top-K self-distillation on serverless, with privileged answer context. |
+| [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless, with privileged answer context. |
 
-SDFT is a separate recipe and requires `pip install -e '.[sdft]'`; it is not a
-`distill_mode` flag on `distillation_loop`. See the [distillation skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-distillation.md)
+SDFT is not part of this cookbook. It is maintained in the
+[Fireworks Tinker-Cookbook repository](https://github.com/fw-ai-external/tinker-cookbook);
+follow the [SDFT guide](https://github.com/fw-ai/cookbook/blob/main/training/docs/sdft.md) and use a
+separate Python environment. It is a different objective from `distillation_loop`, not a flag on it.
+See the [distillation skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-distillation.md)
 for teacher setup and algorithm details.
 
 ## Minimal example

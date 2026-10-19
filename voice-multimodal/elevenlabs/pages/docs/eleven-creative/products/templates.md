@@ -29,23 +29,23 @@ Templates are built on [ElevenCreative Flows](https://elevenlabs.io/app/flows), 
 
 ### Browse the gallery
 
-Navigate to the **Explore** tab to view available templates. Each template shows what inputs it requires and what outputs it produces.
+Open [Templates](https://elevenlabs.io/app/templates). The **Explore** tab lists community and featured templates; search by name or filter by **Category**. Templates you created, or that were shared with your workspace, are under **My Templates**.
 
 ### Select a template
 
-Choose a template that matches your goal. Click on it to view the full details.
+Choose a template that matches your goal. Its page shows the inputs it needs, with guidance from the template author, and examples of what it produces.
 
 ### Upload inputs
 
 Provide the required inputs based on what the template needs. Templates can accept images, video files, audio files, and text fields.
 
-### Run the template
+### Generate
 
-Click run and the template processes your inputs through its workflow. The template automatically handles all model selection and configuration.
+Select **Generate** and the template processes your inputs through its workflow. Once you have added your inputs, the button shows the estimated cost. The template automatically handles all model selection and configuration.
 
 ### Review outputs
 
-After the template completes, review your generated assets. Templates can return multiple outputs depending on their design.
+After the template completes, review your generated assets. Templates can return multiple outputs depending on their design. Previous runs are listed in the template's **History** tab.
 
 > **Note**
 >
@@ -66,33 +66,45 @@ Templates support:
 * Multiple output assets per template
 * One-click execution without manual configuration
 * Access via web and mobile app
+* Programmatic runs through the [Templates API](#run-templates-with-the-api)
 
 ## Featured templates
 
-The template gallery spans product photography, mockups, video editing, style transfers, and more. [Browse the full gallery](https://elevenlabs.io/app/templates) to discover templates for your use case.
+The template gallery is organized into categories. [Browse the full gallery](https://elevenlabs.io/app/templates) to discover templates for your use case.
 
-#### Product Photography
+#### Product Shots
 
-Transform product images with professional lighting, backgrounds, and composition.
+Turn product images into studio shots and e-commerce catalog photos and videos.
 
 #### Mockups
 
 Place designs onto device screens, packaging, or physical products.
 
-#### Video Editing
+#### Video Effects
 
-Apply effects, transitions, and enhancements to video content.
+Apply effects to video content, or recast the main character while keeping the motion and
+camera.
 
-#### Style Transfers
+#### Image Tools
 
-Apply artistic styles from reference images to your content.
+Edit, restyle, and extend images, or build a full brand deck in one run.
+
+#### Character and Portrait
+
+Create and restyle characters and portraits from reference images.
+
+#### Songs & Audio
+
+Generate songs, soundtracks, and other audio from your inputs.
 
 ## Create your own template
 
 You can create your own templates in two ways:
 
 * **From an existing flow**: Open any flow in [ElevenCreative Flows](https://elevenlabs.io/app/flows) and click the **Create Template** button to convert it into a template
-* **From scratch**: Click the **+ New Template** button to start building a new template from scratch
+* **From scratch**: Click the **+ New Template** button on the Templates page to start building a new template from scratch
+
+Either way, you pick the template's inputs and outputs, then publish it. See [Creating a template](/docs/eleven-creative/products/flows#creating-a-template) for the steps.
 
 When creating a template, you can choose from various sharing options:
 
@@ -102,6 +114,15 @@ When saving your template, choose who can access it:
 * **Workspace**: the template can be used by anyone in your workspace.
 * **Link only**: the template can be used by anyone with the link.
 * **Explore**: the template will be submitted for review. Once approved, it will be visible to everyone in the [Templates](https://elevenlabs.io/app/templates) **Explore** tab.
+
+## Run templates with the API
+
+Templates can also be run from your own code, for example to connect a CMS or a product catalog to a template for automated content production. A template's **API** tab in the app shows ready-to-use code with one placeholder per input. The [Templates quickstart](/docs/eleven-api/guides/cookbooks/templates) runs your first template end to end, and [Run your team's template](/docs/eleven-api/guides/how-to/templates/run-a-template) covers passing each kind of input, pinning a version and reading the outputs.
+
+> **Warning**
+>
+> Running templates through the API requires a Pro plan or above. Templates that use a model which
+> is not available through the API cannot be run this way.
 
 ## Key features
 
@@ -208,6 +229,15 @@ Credit usage is calculated based on:
 
       Yes. Templates are available on web and the ElevenLabs mobile app with the same gallery
       and run experience.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I run templates through the API?
+
+      Yes, on a Pro plan or above. See the [Templates quickstart](/docs/eleven-api/guides/cookbooks/templates) to run your first template from
+      code.
     </td>
   </tr>
 

@@ -205,7 +205,7 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
 ```
 
 <Note>
-  Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail. Use the target-token `tinker.Datum` example in [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) for built-in losses, or use `forward_backward_custom` with the weight-based format in [Building datums](/fine-tuning/training-api/dedicated#loss-functions) and the custom-loss pattern in [Example: simple cross-entropy](/fine-tuning/training-api/dedicated#loss-functions).
+  Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 </Note>
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`

@@ -12,7 +12,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Quickstart for GitHub Actions](/en/actions/get-started/quickstart)
 
-  <p>Try out the core features of GitHub Actions in minutes.</p>
+  Try out the core features of GitHub Actions in minutes.
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 

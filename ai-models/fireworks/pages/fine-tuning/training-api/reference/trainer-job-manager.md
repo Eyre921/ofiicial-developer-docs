@@ -166,7 +166,7 @@ See [`FireworksClient.promote_checkpoint`](/fine-tuning/training-api/reference/f
 *Inherited from [`FireworksClient`](/fine-tuning/training-api/reference/fireworks-client).* Resolve a training shape ID into a full configuration profile.
 
 ```python theme={null}
-shape_id = "accounts/fireworks/trainingShapes/ts-qwen3-8b-policy"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 profile = rlor_mgr.resolve_training_profile(shape_id)
 ```
 

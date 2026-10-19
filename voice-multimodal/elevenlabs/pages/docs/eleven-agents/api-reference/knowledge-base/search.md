@@ -243,6 +243,12 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
@@ -250,7 +256,7 @@ Metadata for a KB folder that mirrors an external source folder.
   "results": [
     {
       "document": {
-        "type": "file",
+        "type": "url",
         "access_info": {
           "is_creator": true,
           "creator_name": "John Doe",
@@ -258,36 +264,61 @@ Metadata for a KB folder that mirrors an external source folder.
           "role": "admin",
           "access_source": "creator"
         },
-        "id": "id",
+        "id": "kb_doc_3f8a2c1e9b4d7e6f",
         "metadata": {
-          "created_at_unix_secs": 1,
-          "last_updated_at_unix_secs": 1,
-          "size_bytes": 1
+          "created_at_unix_secs": 1710000000,
+          "last_updated_at_unix_secs": 1712500000,
+          "size_bytes": 204800
         },
-        "name": "name",
+        "name": "ElevenLabs API Voice Cloning Guide",
         "supported_usages": [
-          "prompt"
+          "auto"
         ],
+        "url": "https://elevenlabs.io/docs/api-reference/voice-cloning",
         "dependent_agents": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1,
-            "id": "id",
-            "name": "name"
+            "created_at_unix_secs": 1709500000,
+            "id": "agent_7c9e2f4a1b8d3e5f",
+            "name": "Customer Support Agent",
+            "referenced_resource_ids": [
+              "kb_doc_3f8a2c1e9b4d7e6f"
+            ]
+          }
+        ],
+        "auto_sync_info": {
+          "minimum_frequency_days": 7,
+          "auto_remove": false,
+          "consec_failures": 0,
+          "next_refresh_by": 1713100000,
+          "auto_discover": false
+        },
+        "folder_parent_id": "folder_a1b2c3d4e5f6",
+        "folder_path": [
+          {
+            "id": "folder_a1b2c3d4e5f6"
           }
         ]
       },
-      "score": 1.1,
+      "score": 0.92,
       "search_snippet": [
         {
-          "value": "value",
+          "value": "To clone a voice using the ElevenLabs API, you must first upload at least one audio sample. ",
+          "is_hit": false
+        },
+        {
+          "value": "voice cloning",
           "is_hit": true
+        },
+        {
+          "value": " requires a minimum of 1 minute of clear audio for best results.",
+          "is_hit": false
         }
       ]
     }
   ],
-  "next_cursor": "next_cursor"
+  "next_cursor": "eyJwYWdlIjoyLCJsaW1pdCI6MzB9"
 }
 ```
 
@@ -300,14 +331,17 @@ url = "https://api.elevenlabs.io/v1/convai/knowledge-base/search"
 
 querystring = {"cursor":"cursor","page_size":"1","query":"query","types":"[\"file\"]"}
 
-response = requests.get(url, params=querystring)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.get(url, json=payload, headers=headers, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D';
-const options = {method: 'GET'};
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -323,6 +357,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -331,7 +366,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -354,6 +393,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -364,6 +405,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -373,7 +416,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -383,16 +431,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

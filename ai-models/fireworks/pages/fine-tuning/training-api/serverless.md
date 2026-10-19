@@ -25,14 +25,14 @@ See the [Models catalog](/fine-tuning/models) and set **Availability** to **Serv
   **What you need**
 
   * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install "fireworks-ai[training]"`
-  * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training`
+  * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training math-verify`
   * **Point at the serverless endpoint:** `base_url="https://api.fireworks.ai/training/v1/serverless"`
   * **Pick a supported base model.** See the [Models catalog](/fine-tuning/models), set **Availability** to **Serverless**, and verify current availability before launch.
   * Set your API key and run the [Quickstart](#quickstart) below.
 </Info>
 
 <Tip>
-  Start with the out-of-the-box [`serverless_rl` loops](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl). When you need rollout functions, rollout/training overlap, or agentic trajectories, use the experimental [`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py). It adapts the dedicated `async_rl_loop` to the pooled serverless lifecycle and is expected to fold into the main recipe once both paths share one weight-publication contract.
+  Start with the [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py), which runs on the experimental [`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py). Write your own task code against the same adapter when you need custom rollout functions, rollout/training overlap, or agentic trajectories. The adapter fits the dedicated `async_rl_loop` to the pooled serverless lifecycle and is expected to fold into the main recipe once both paths share one weight-publication contract.
 </Tip>
 
 ## What is serverless training?
@@ -138,23 +138,28 @@ Create an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings
 ```bash theme={null}
 git clone https://github.com/fw-ai/cookbook
 pip install -e ./cookbook/training
+pip install math-verify
 export FIREWORKS_API_KEY="fw_..."   # the key you just created
 ```
 
+The quickstart's DeepMath reward needs `math-verify` to grade answers that match only symbolically, such as `\frac{1}{2}` and `0.5`.
+
 ### Step 2: Run the complete serverless RL example
 
-The cookbook includes its dataset, reward, loop, metrics, and cleanup behavior:
+The cookbook's DeepMath example includes its dataset, reward, loop, metrics, and cleanup behavior. It runs GRPO on the bundled DeepMath dataset through the experimental [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe. These flags keep the first run small:
 
 ```bash theme={null}
 cd cookbook/training
-python -m examples.serverless_rl.countdown_rl
+python -m examples.rl.deepmath.train_deepmath_serverless \
+  --base-model accounts/fireworks/models/muse-glimmer-30b \
+  --tokenizer-model meta-models/Muse-Glimmer-30B --renderer-name muse_glimmer \
+  --max-rows 32 --prompt-groups-per-step 8 --completions-per-prompt 4 \
+  --max-completion-tokens 4096 --max-seq-len 8192 --lora-rank 8
 ```
 
-The default is a real paid run. For a cheaper smoke test, fork
-`examples/serverless_rl/countdown_rl.py` and reduce `steps`, `group_size`,
-`prompt_groups_per_step`, and `max_sample_tokens` before execution.
+This is a real paid run. Pass `--base-model` and `--tokenizer-model` to use another model in the serverless pool. Without the size flags (`--max-rows`, `--prompt-groups-per-step`, `--completions-per-prompt`, `--max-completion-tokens`), the example runs its full default on Kimi K3, which costs much more. Metrics and checkpoint paths are written to `--run-dir`.
 
-The remaining snippets explain the core calls used by that runnable example.
+The remaining snippets show the underlying SDK operation order. The recipe performs equivalent steps for you.
 
 ### Step 3: Connect to the serverless session
 
@@ -212,7 +217,7 @@ sampler.close()
 
 The end-to-end serverless RL pattern is the standard GRPO / importance-sampling loop: each step saves the current adapter, rolls out a batch of prompts through a sampler bound to that snapshot, scores completions with your reward function, turns group-relative advantages into training datums, and takes one optimizer step.
 
-Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) for a compact synchronous loop, or [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) for experimental async scheduling and custom rollout functions. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
+Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the cookbook [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) for a runnable task, or the [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe it runs on for experimental async scheduling and custom rollout functions. For a supervised loop, use cross-entropy loss. For a preference loop, use the DPO loss over chosen/rejected pairs — see [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo) for the dataset format and loss details. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
 ## Evaluating serverless checkpoints
 
@@ -413,16 +418,16 @@ This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route 
   <iframe title="Train a prompt router with Fireworks Serverless Training" />
 </Frame>
 
-<Card title="Open the current prompt-router SDK notebook" icon="github" href="https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_sft_sdk.ipynb">
-  Follow the current dedicated SDK example for dataset preparation, LoRA SFT, deployment, sampling, and evaluation.
+<Card title="Open the current prompt-router serverless notebook" icon="github" href="https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb">
+  Follow the current Serverless Training example for dataset preparation, LoRA SFT, in-session sampling, and evaluation.
 </Card>
 
 ## Next steps
 
-* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): runnable serverless loop
+* [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py): runnable serverless RL loop
 * [Async serverless RL recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py): experimental rollout-function loop with rollout/training overlap
 * [Choose infrastructure](/fine-tuning/training-api/introduction#infrastructure): compare serverless and dedicated
 * [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling): dedicated lifecycle internals
 * [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions): built-in and custom losses
-* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl)
+* [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including the [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py)

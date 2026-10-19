@@ -26,7 +26,9 @@ With ElevenCreative Flows, you can chain together over 50 [image and video model
 * **50+ generative models**: Access image, video, speech, music, and sound effects models in one interface
 * **Non-destructive iteration**: Modify individual nodes without regenerating downstream content
 * **Modular composition**: Layer and combine outputs from different models
-* **Template library**: Start from pre-configured pipelines for common use cases
+* **Flows Agent**: Describe what you want and the agent builds the flow on the canvas
+* **Templates**: Publish a flow as a template that anyone you share it with can run with their own inputs
+* **API access**: Run published templates from your own code. See the [Templates quickstart](/docs/eleven-api/guides/cookbooks/templates)
 * **Real-time collaboration**: Work simultaneously with team members on the same flow
 * **ElevenCreative Studio integration**: Export finished flows directly to ElevenCreative Studio for timeline editing
 
@@ -54,7 +56,7 @@ Select **+ New Flow** from the dashboard to open a blank canvas.
 
 ### Add nodes
 
-Right-click anywhere on the canvas or use the toolbar at the bottom to add a node. Nodes represent specific models or utility tools.
+Right-click anywhere on the canvas or select **+** in the toolbar at the bottom to add a node. Nodes represent specific models or utility tools.
 
 ![Add nodes](/docs/_fern-img/3db741756fcf67e9969c2503dbae5bf00fc05103e1c22a2fe3334d962e0654b9.webp)
 
@@ -86,16 +88,23 @@ ElevenCreative Flows is designed for both exploratory creation and structured pr
 
 Begin with a blank canvas. This is ideal for building custom pipelines from the ground up or experimenting with complex multi-step generation chains.
 
-#### Use a template
+#### Describe it to Flows Agent
 
-#### Use a template
+#### Describe it to Flows Agent
 
-Select from preset shortcuts at the center of the canvas to load pre-configured node structures:
+A new flow opens with a prompt box in the center of the canvas. Describe what you want to make, such as a product ad with voiceover, and [Flows Agent](#flows-agent) builds the flow for you.
 
-* **Perfume Ad**: A template optimized for luxury product visuals and voiceovers
-* **E-commerce Store**: Designed for creating rapid product demos and variations
-* **Yacht Promo Shoot**: A multi-modal setup for high-end travel and lifestyle content
-* **And more**: Additional templates are continuously being added
+#### Start from inspiration
+
+#### Start from inspiration
+
+The **Inspiration** section at the top of the [Flows home page](https://elevenlabs.io/app/flows) contains example flows, such as a product showcase video, an explainer video and a voice comparison. Open one to see how it is built, then adapt it to your own content.
+
+#### Run a template
+
+#### Run a template
+
+If you only need the output and not the canvas, browse [Templates](https://elevenlabs.io/app/templates). A template runs a published flow end to end with your inputs. See the [Templates documentation](/docs/eleven-creative/products/templates).
 
 ## Flows Agent
 
@@ -133,33 +142,50 @@ To upgrade your plan, visit your [Subscription page](https://elevenlabs.io/app/s
 
 ## The node system
 
-Nodes are the building blocks of a flow. Each node serves a specific purpose, from inputting text to generating high-fidelity video.
+Nodes are the building blocks of a flow. Each node serves a specific purpose, from inputting text to generating high-fidelity video. The **Add node** menu groups them by the kind of media they produce, with the most used nodes at the top.
 
-#### Generation nodes
+#### Image nodes
 
-#### Generation nodes
+#### Image nodes
 
-These nodes house the generative models that create your assets:
+* **Image generation**: Choose from 50+ industry-leading models to create visuals
+* **Edit image**: Change an existing image with a prompt
+* **Image upscale**: Increase the resolution and quality of an image
+* **Remove background**: Cut the subject out of an image
+
+#### Video nodes
+
+#### Video nodes
+
+* **Video generation**: Animate images or generate video clips directly from text
+* **Edit video**: Change an existing video with a prompt
+* **Video upscale**: Increase the resolution and quality of a video
+* **Lip syncing**: Chain a speech node with a video or image node to create synced talking heads
+* **Dubbing**: Translate the speech in a video or audio file into another language
+* **Composition**: A centralized preview node where you can layer audio and video to view the final output
+
+#### Audio nodes
+
+#### Audio nodes
 
 * **Text to Speech**: Generate narration using our latest models, including [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4)
-* **Image Generation**: Choose from 50+ industry-leading models to create visuals
-* **Video Generation**: Animate images or generate video clips directly from text
-* **Music**: Add atmospheric soundtracks to your project
 * **Sound Effects**: Add targeted sound effects to your project
+* **Music generation**: Add atmospheric soundtracks to your project
+* **Voice Changer**: Re-voice a recording with a different voice
+* **Voice Isolator**: Remove background noise from speech
+* **Audio Effects**: Apply one or more effects to an audio or video source: **Filter**, **Noise**, **Space** (room reverb) and **Distance** (how near or far the speaker sounds)
 
-See our [capabilities overview](/docs/overview/intro#capabilities) for detailed information on each model type.
+#### Text and other nodes
 
-#### Processing & utility nodes
-
-#### Processing & utility nodes
-
-Use these nodes to refine and combine your content:
+#### Text and other nodes
 
 * **Text**: Add text input to your flow for prompts and instructions
-* **Upload Media**: Import your own images, videos, or audio files into the flow
-* **Composition**: A centralized preview node where you can layer audio and video to view the final output
-* **Lipsync Generation**: Chain a speech node with either a video or image node to create perfectly synced talking heads
-* **Upscale**: Increase the resolution and quality of your generated visual assets
+* **LLM**: Generate or transform text with a language model, for example to write a script or expand a prompt
+* **Upload media**: Import your own images, videos, or audio files into the flow
+* **Avatar**: Generate a talking avatar video
+* **Speech to Text**: Transcribe the speech in an audio or video file
+
+See our [capabilities overview](/docs/overview/intro#capabilities) for detailed information on each model type.
 
 #### Contextual navigation
 
@@ -181,16 +207,13 @@ Unlike linear editors, ElevenCreative Flows allows for non-destructive iteration
 
 ## Export and final production
 
-Once you are satisfied with the output of your flow, you have two primary options:
+Once you are satisfied with the output of your flow, you have these options:
 
 **Download assets:** Export individual files or the final composition from the result nodes.
 
 **Export to ElevenCreative Studio:** Send your assets directly to [ElevenCreative Studio](/docs/eleven-creative/products/studio) if your project requires precise timeline-based adjustments, captions, or manual track layering.
 
-> **Info**
->
-> To run a flow from code, publish it as a template and run the template through the API. See the
-> [Templates quickstart](/docs/eleven-api/guides/cookbooks/templates).
+**Run it through the API:** For automated or high-volume production, [publish the flow as a template](#creating-a-template) and run it through the API with your own input values. See the [Templates quickstart](/docs/eleven-api/guides/cookbooks/templates).
 
 ## Creating a template
 
@@ -200,17 +223,21 @@ You can create a template from an existing flow, allowing you to reuse the same 
 
 ### To create a template
 
-### Select your input nodes
+Select **Create Template** at the top of the flow. A panel opens with the following steps.
 
-These are the values someone provides when they run the template. You can have multiple inputs of different types.
+### Input
 
-### Select your output nodes
+Select the nodes or ports that someone provides when they run the template, and give each one a name. You can have multiple inputs of different types.
 
-You must select at least one. If you select more than one, all outputs will be bundled into a zip file for download.
+### Output
 
-### Run the template at least once
+Select the nodes that produce the template's results, and give each one a name. You must select at least one. If you select more than one, all outputs will be bundled into a zip file for download.
 
-This is required before the template can be saved or shared.
+### Publish
+
+Add a name, an optional description and tags, a thumbnail and a category, then choose who can access the template. You also select at least one example run, so you need to run the flow at least once before you can publish. The panel shows the estimated cost of one run for the person running the template.
+
+After publishing, the button changes to **Update Template**. Publishing again creates a new version; earlier versions stay available, so API callers can pin a specific one.
 
 ### Sharing options
 

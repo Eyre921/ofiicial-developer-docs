@@ -39,11 +39,11 @@ export FIREWORKS_API_KEY="your-api-key"
 | **HUD RL training** | `hud-python/cookbooks/fireworks-rl-training` | Train a Serverless Training LoRA from one-turn HUD environment rewards. See [Fireworks x HUD RL Training](/fine-tuning/training-api/cookbook/hud-rl-training). |
 | **RL** *(simpler, synchronous)* | `training.recipes.rl_loop` | Synchronous on-policy GRPO scaffold — reach for it when you don't need rollout/train overlap |
 | **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa). |
-| **DPO** | `training.recipes.dpo_loop` | Direct preference optimization from chosen/rejected pairs |
-| **SFT** | `training.recipes.sft_loop` | Supervised fine-tuning with cross-entropy loss |
+| **DPO** | `training.recipes.dpo_loop` | Direct preference optimization from chosen/rejected pairs. `serverless=True` uses the shared pool. |
+| **SFT** | `training.recipes.sft_loop` | Supervised fine-tuning with cross-entropy loss. `serverless=True` uses the shared pool. |
 | **Distillation** | `training.recipes.distillation_loop` | On-policy distillation from a frozen teacher’s sampled-token scores |
-| **SDFT** | `training.recipes.sdft_loop` | Top-K self-distillation on serverless |
-| **ORPO** | `training.recipes.orpo_loop` | Odds ratio preference optimization |
+| **SDFT** | [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless. Maintained outside this cookbook; see the [SDFT guide](https://github.com/fw-ai/cookbook/blob/main/training/docs/sdft.md). |
+| **ORPO** | `training.recipes.orpo_loop` | Odds ratio preference optimization. The recipe runs on dedicated trainers only. |
 
 Each recipe follows the same pattern: import `Config` and `main`, set your config, and call `main(cfg)`. Dedicated recipes attach or create trainer and deployment resources from `TrainerConfig` / `DeployConfig`. Serverless recipes attach to the shared pool and publish session-scoped sampler snapshots instead of provisioning a deployment.
 
@@ -134,6 +134,6 @@ The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/reci
 * [Cookbook RL (GRPO)](/fine-tuning/training-api/cookbook/rl) — full GRPO walkthrough with reward functions
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — multi-turn trajectory, token ancestry, and session design
 * [Fireworks x HUD RL Training](/fine-tuning/training-api/cookbook/hud-rl-training) — train a LoRA adapter from HUD environment rewards
-* [Cookbook Distillation](/fine-tuning/training-api/cookbook/distillation) — OPD, routed MOPD, and top-K SDFT
+* [Cookbook Distillation](/fine-tuning/training-api/cookbook/distillation) — on-policy distillation (OPD) and where to find top-K SDFT
 * [Vision Inputs](/fine-tuning/models) — train VLMs with image and text data
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes and parameters

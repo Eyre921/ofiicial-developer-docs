@@ -9,6 +9,40 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 <ChangelogSearch />
 
 <Update label="2026-10-18">
+  <Badge>Training</Badge>
+
+  # Upcoming Serverless Training deprecation: DeepSeek V4 Flash (0731)
+
+  On **November 2, 2026**, **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** will be removed from the shared Serverless Training pool. This change applies only to Serverless Training.
+
+  If you train DeepSeek V4 Flash (0731) on Serverless Training, migrate to **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** before November 2, 2026.
+</Update>
+
+<Update label="2026-10-18">
+  <Badge>Training</Badge>
+
+  # New Serverless Training model: DeepSeek V4.1 Flash 1017
+
+  **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. It's available on Serverless Training only: Managed Training and the Dedicated Training API don't support it yet.
+
+  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
+</Update>
+
+<Update label="2026-10-18">
+  <Badge>Training</Badge>
+
+  # New training model: NVIDIA Nemotron 3.5 Super VL
+
+  **[NVIDIA Nemotron 3.5 Super VL 120B A12B](https://app.fireworks.ai/models/fireworks/nvidia-nemotron-3p5-super-vl-120b-a12b-bf16)** is now available for training on all three surfaces, with up to 262K context:
+
+  * **[Managed Training](/fine-tuning/managed-finetuning-intro):** LoRA SFT and DPO
+  * **[Dedicated Training API](/fine-tuning/training-api/dedicated):** LoRA and full-parameter training, including RL
+  * **[Serverless Training](/fine-tuning/training-api/serverless):** LoRA on the shared pool, billed per token
+
+  See the [training model catalog](/fine-tuning/models) for current availability and training shapes.
+</Update>
+
+<Update label="2026-10-18">
   <Badge>Inference</Badge>
 
   # Expanded Small serverless rate-limit tier
@@ -16,6 +50,16 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
   The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
 
   This moves models such as [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) into the Small tier. The ceiling values for each tier are unchanged. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for the current thresholds and ceilings.
+</Update>
+
+<Update label="2026-10-15">
+  <Badge>Training</Badge>
+
+  # New Serverless Training model: Muse Spark Open
+
+  **[Muse Spark Open](https://app.fireworks.ai/models/fireworks/muse-spark-open-nvfp4)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. Use `accounts/fireworks/models/muse-spark-open-nvfp4` as the base model.
+
+  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 </Update>
 
 <Update label="2026-10-07">

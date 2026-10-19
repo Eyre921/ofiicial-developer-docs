@@ -3,7 +3,7 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (7) for https://docs.mistral.ai/llms-full.txt: curl: (7) Failed to connect to docs.mistral.ai port 443 after 14 ms: Could not connect to server\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -30,8 +30,7 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90029 milliseconds with 2465824 bytes received\ncurl: (28) Operation timed out after 90755 milliseconds with 0 bytes received\ncurl: (28) Operation timed out after 9"
   },
   "agent-frameworks/mcp": {
     "pages": 157,
@@ -89,7 +88,8 @@
     "status": "ok"
   },
   "dev-platforms/cloudflare": {
-    "status": "error: curl failed (28) for https://developers.cloudflare.com/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/drizzle": {
     "pages": 0,
@@ -103,8 +103,7 @@
     "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (56) for https://docs.convex.dev/llms-full.txt: curl: (56) OpenSSL SSL_read: OpenSSL/3.5.7: error:0A000126:SSL routines::unexpected eof while reading, errno 0\n"
   },
   "dev-platforms/neon": {
     "pages": 0,
@@ -123,7 +122,8 @@
     "status": "ok"
   },
   "dev-platforms/expo": {
-    "status": "error: curl failed (28) for https://docs.expo.dev/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/langfuse": {
     "pages": 22,
@@ -184,7 +184,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 93,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,5 +203,5 @@
     "pages": 1381,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-18T23:30:35Z"
+  "_last_crawl": "2026-10-19T11:31:10Z"
 }

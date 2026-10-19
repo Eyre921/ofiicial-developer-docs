@@ -92,7 +92,7 @@ Each row has `name`, `createTime` / `updateTime` (RFC3339), `checkpointType` (op
 Resolve a training shape ID into a full configuration profile:
 
 ```python theme={null}
-shape_id = "accounts/fireworks/trainingShapes/ts-qwen3-8b-policy"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 profile = client.resolve_training_profile(shape_id)
 print(profile.accelerator_type)      # e.g. "NVIDIA_B200_180GB"
 print(profile.trainer_image_tag)      # e.g. "0.0.0-dev-..."

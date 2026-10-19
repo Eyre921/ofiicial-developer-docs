@@ -36,7 +36,7 @@ There is no serverless chat endpoint for your adapter. Open a **sampling client*
 
 Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are for on-demand deployment and cannot be passed to `create_sampling_client`.
 
-The following save-and-sample sequence comes from the [serverless quickstart](/fine-tuning/training-api/serverless#step-4-train-checkpoint-and-sample) and the cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/blob/main/training/examples/serverless_rl/countdown_rl.py). Set up `prompt`, `tokenizer`, and `params` as shown in that example.
+The following save-and-sample sequence follows the [serverless quickstart](/fine-tuning/training-api/serverless#step-4-train-checkpoint-and-sample). Set up `prompt`, `tokenizer`, and `params` as you do for training rollouts.
 
 ```python theme={null}
 snapshot = training_client.save_weights_for_sampler("eval").result().path
@@ -55,7 +55,7 @@ finally:
     sampler.close()
 ```
 
-`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, then close the sampler. The Countdown example scores with `composite_reward`; replace that with your evaluation metric.
+`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, score each completion with your evaluation metric, then close the sampler. The cookbook's [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) shows held-out accuracy evaluation with a math reward.
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 

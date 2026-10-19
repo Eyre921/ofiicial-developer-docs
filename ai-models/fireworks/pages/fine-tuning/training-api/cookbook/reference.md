@@ -30,7 +30,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `region` | `str \| None` | `None` | Region override (drives trainer + deployment colocation). |
 | `timeout_s` | `float` | `3600` | Timeout for trainer provisioning / readiness waits. |
 | `replica_count` | `int \| None` | `None` | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it. |
-| `use_reservation` | `bool` | `True` | Try reservation capacity first. Set to `False` for shared capacity only. |
+| `use_reservation` | `bool` | `True` | Use the account's matching reservation when one exists; the trainer then runs only on that reservation. Accounts without a matching reservation use shared capacity. Set to `False` to always use shared capacity. |
 
 To request replicated HSDP for a run:
 
@@ -149,6 +149,7 @@ Blocking convenience wrapper around `FiretitanTrainingClient`. Most recipe calls
 </Note>
 
 ```python theme={null}
+from fireworks.training.sdk import AdamParams
 from training.utils import ReconnectableClient
 
 client = ReconnectableClient.from_training_client(
@@ -160,7 +161,7 @@ client = ReconnectableClient.from_training_client(
 )
 
 result = client.forward_backward_custom(datums, loss_fn)
-client.optim_step(tinker.AdamParams(...))
+client.optim_step(AdamParams(...))
 ```
 
 | Parameter | Type | Default | Description |

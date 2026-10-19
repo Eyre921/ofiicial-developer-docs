@@ -238,8 +238,8 @@ A single gradient update during training.
 **Checkpoint**\
 A saved snapshot of model state (and optionally optimizer state) at a point during training.
 
-**`ppo_kl` vs `ref_kld`**\
-Two KL divergence metrics logged during GRPO/RFT training. `ppo_kl` measures divergence between current and previous policy — stays near zero with one minibatch per rollout, which is expected. `ref_kld` measures divergence from the reference/base model — this is the metric to monitor for policy drift.
+**`ppo_kl` vs `ref_kl`**\
+Two KL divergence metrics logged during GRPO/RFT training. `ppo_kl` measures divergence between current and previous policy — stays near zero with one minibatch per rollout, which is expected. `ref_kl` (logged as `train/ref_kl` by cookbook recipes when a reference model is configured) measures divergence from the reference/base model — this is the metric to monitor for policy drift.
 
 ***
 

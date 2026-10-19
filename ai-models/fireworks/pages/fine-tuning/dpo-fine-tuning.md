@@ -198,6 +198,8 @@ Use either method for:
     Reservation placement is off unless you request it: add `--use-reservation` with firectl, set `useReservation: true` in the REST body, or pass `use_reservation=True` to `dpo_jobs.create(...)` in the Python SDK. With a matching active reservation, the job runs only on that reservation, not on shared capacity; without one, the setting is ignored. For full-parameter DPO, policy and dedicated reference trainers try independently.
 
     Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
+
+    To run DPO or ORPO from your own Python training loop instead of a managed job, start from the [cookbook DPO recipe](/fine-tuning/training-api/cookbook/dpo).
   </Step>
 
   <Step title="Monitor the preference job">
