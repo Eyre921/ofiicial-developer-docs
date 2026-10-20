@@ -77,7 +77,7 @@ Invalid Request
   "invites": [
     {
       "email": "jane.doe@example.com",
-      "scope": "read:transcripts"
+      "scope": "member"
     }
   ]
 }

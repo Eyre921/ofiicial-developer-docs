@@ -69,7 +69,7 @@ Invalid Request
 
 ```json
 {
-  "message": "Successfully removed the authenticated account from project 123456-7890-1234-5678-901234."
+  "message": "Successfully left project."
 }
 ```
 

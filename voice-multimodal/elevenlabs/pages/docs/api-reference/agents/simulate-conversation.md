@@ -202,7 +202,7 @@ Represents a message from a multi-voice agent.
 - `params_as_json` (string, required)
 - `tool_has_been_called` (boolean, required)
 - `type` (enum, optional, nullable)
-  - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+  - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `smb`
 - `tool_id` (string, optional, nullable) — ID of the called tool. Not set for tools without an ID, such as system tools.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails, optional, nullable)
 
@@ -333,7 +333,7 @@ Represents a message from a multi-voice agent.
 - `params_as_json` (string, required)
 - `tool_has_been_called` (boolean, required)
 - `type` (enum, optional, nullable)
-  - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `api_integration_mcp`, `smb`
+  - Allowed values: `system`, `webhook`, `client`, `mcp`, `workflow`, `api_integration_webhook`, `smb`
 - `tool_id` (string, optional, nullable) — ID of the called tool. Not set for tools without an ID, such as system tools.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelInputToolDetails, optional, nullable)
 
@@ -769,6 +769,8 @@ Tracks a dynamic variable update that occurred during tool execution.
 - `result_type`: `testing_tool_result` (TestToolResultModel)
   - `reason` (string, optional, default: Skipping tool call in test mode)
   - `status` ("success", optional, default: success)
+  - `to_agent` (string, optional, nullable)
+  - `to_node` (string, optional, nullable)
 - `result_type`: `transfer_to_agent_error` (TransferToAgentToolResultErrorModel)
   - `error` (string, required)
   - `from_agent` (string, required)
@@ -1012,6 +1014,8 @@ Configuration for extracting values from tool responses and assigning them to dy
 - `result_type`: `testing_tool_result` (TestToolResultModel)
   - `reason` (string, optional, default: Skipping tool call in test mode)
   - `status` ("success", optional, default: success)
+  - `to_agent` (string, optional, nullable)
+  - `to_node` (string, optional, nullable)
 - `result_type`: `transfer_to_agent_error` (TransferToAgentToolResultErrorModel)
   - `error` (string, required)
   - `from_agent` (string, required)

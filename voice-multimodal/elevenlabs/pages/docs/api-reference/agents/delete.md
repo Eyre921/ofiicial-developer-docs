@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/delete
 
 - `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
 
+### Query parameters
+
+- `force` (boolean, optional, default: false) — If set to true, the agent is deleted even if other agents use it as a subagent, and it is removed from those agents and their branches.
+
 ## Response
 
 ### 200

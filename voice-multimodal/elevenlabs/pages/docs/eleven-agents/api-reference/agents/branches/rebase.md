@@ -10,7 +10,7 @@ path: docs/eleven-agents/api-reference/agents/branches/rebase
 
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/rebase
 
-Rebase a branch onto the latest main branch, incorporating main's changes while preserving the branch's own changes.
+Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/rebase
 
@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 
 - `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
 - `branch_id` (string, required) — Unique identifier for the source branch to merge from.
+
+### Query parameters
+
+- `source_branch_id` (string, optional) — The ID of the branch to pull changes from. Defaults to the agent's main branch.
 
 ## Response
 
@@ -72,13 +76,15 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase"
 
-response = requests.post(url)
+querystring = {"source_branch_id":"source_branch_id"}
+
+response = requests.post(url, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase';
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id';
 const options = {method: 'POST'};
 
 try {
@@ -101,7 +107,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id"
 
 	req, _ := http.NewRequest("POST", url, nil)
 
@@ -120,7 +126,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -135,7 +141,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id")
   .asString();
 ```
 
@@ -145,7 +151,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase');
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id');
 
 echo $response->getBody();
 ```
@@ -153,7 +159,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id");
 var request = new RestRequest(Method.POST);
 IRestResponse response = client.Execute(request);
 ```
@@ -161,7 +167,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

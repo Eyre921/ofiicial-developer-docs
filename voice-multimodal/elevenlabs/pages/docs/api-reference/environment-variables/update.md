@@ -11,7 +11,7 @@ path: docs/api-reference/environment-variables/update
 PATCH https://api.elevenlabs.io/v1/convai/environment-variables/{env_var_id}
 Content-Type: application/json
 
-Replace an environment variable's values. Use null to remove an environment (except production).
+Replace an environment variable's values. Use null to remove its value for an environment (except production); delete an environment with DELETE /v1/convai/environments/\{environment}.
 
 Reference: https://elevenlabs.io/docs/api-reference/environment-variables/update
 
@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/environment-variables/update
 
 This endpoint expects an UpdateEnvironmentVariableRequest.
 
-- `values` (map from string to UpdateEnvironmentVariableRequestValues, required) — Values to replace. Set to null to remove an environment (except 'production').
+- `values` (map from string to UpdateEnvironmentVariableRequestValues, required) — Values to replace. Set to null to remove the value for an environment (except 'production').
 
 ## Response
 
@@ -109,10 +109,10 @@ Validation Error
   "created_at_unix_secs": 1710510600,
   "updated_at_unix_secs": 1710597000,
   "type": "secret",
-  "id": "env_var_7fHjKmNpQxTvWsYd",
-  "workspace_id": "ws_4bCdEfGhIjKlMnOp",
+  "id": "env_var_4hJkM5nPqR8sT1uV",
+  "workspace_id": "ws_9aB2cD3eF4gH5iJ6",
   "values": {},
-  "created_by_user_id": "user_3kR9mNpQxTvWsYdL"
+  "created_by_user_id": "user_3kQp9mNxR7vL2wYtZ8dF"
 }
 ```
 

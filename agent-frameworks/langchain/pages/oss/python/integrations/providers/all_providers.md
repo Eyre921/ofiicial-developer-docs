@@ -645,7 +645,7 @@ Browse the complete collection of integrations available for Python. LangChain P
     Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
   </Card>
 
-  <Card title="FlashDataToolkit" href="https://github.com/flashdata-dev/langchain-flashdata#readme" icon="link">
+  <Card title="FlashDataToolkit" href="https://github.com/rocosen/langchain-flashdata#readme" icon="link">
     Google Search and YouTube search, video metadata, and transcript tools backed by the FlashData API.
   </Card>
 
@@ -929,8 +929,8 @@ Browse the complete collection of integrations available for Python. LangChain P
     LangChain tools for Kapa, a knowledge base that stays in sync and finds the right context for your agents.
   </Card>
 
-  <Card title="Kavel" href="https://github.com/hanshs474/langchain-kavel#readme" icon="link">
-    AI image generation and editing. The `KavelImageGenerator` tool returns a URL to the finished image and runs on Kavel's free tier with no API key, or on a kavel.ai account with one.
+  <Card title="Kavel" href="https://kavel.readthedocs.io/en/latest/integrations/langchain/" icon="link">
+    Text-to-image and image-editing tool for the Kavel image API; text-to-image runs on a free tier without an API key.
   </Card>
 
   <Card title="Keenable" href="https://docs.keenable.ai" icon="link">
@@ -1027,6 +1027,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Live Tennis API" href="https://docs.livetennisapi.com" icon="link">
     Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
+  </Card>
+
+  <Card title="LLMSlimCompressor" href="https://github.com/Thanatos9404/llmslim/blob/main/docs/integrations/LANGCHAIN.md" icon="link">
+    MIT-licensed local document compressor for ContextualCompressionRetriever that keeps query-relevant content within a token budget.
   </Card>
 
   <Card title="Lizard" href="https://github.com/lizard-build/langchain-lizard#readme" icon="link">
@@ -1411,6 +1415,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Pinecone" href="/oss/python/integrations/providers/pinecone" icon="link">
     Managed vector database for ML applications.
+  </Card>
+
+  <Card title="PinkToolkit" href="https://pinkwallet.com/agentic/connect/langchain/" icon="link">
+    PinkToolkit provides LangChain tools for Pink Agentic AI Payments so agents can request and track sandbox payments within spending rules.
   </Card>
 
   <Card title="Pipeshift" href="/oss/python/integrations/providers/pipeshift" icon="link">
@@ -1961,6 +1969,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Governed OpenAI-compatible endpoint for model access, policy checks, and usage accounting.
   </Card>
 
+  <Card title="TurnWindowMiddleware" href="https://github.com/bharatkhanna-dev/langchain-turn-window#readme" icon="link">
+    LangChain agent middleware that keeps recent human-anchored conversation turns together with matching tool-call and tool-result messages.
+  </Card>
+
   <Card title="TwittrAPI" href="https://github.com/twittrapi/langchain-twittrapi#readme" icon="link">
     TwittrAPI provides REST APIs and LangChain tools for read-only access to public X (Twitter) tweets, profiles, timelines, lists, communities, and trends.
   </Card>
@@ -2099,6 +2111,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Whoosh" href="https://github.com/priya-sundaram-dev/whoosh/tree/main/integrations/langchain-whoosh#readme" icon="link">
     Retriever backed by Whoosh, a pure-Python full-text search library with BM25F ranking and on-disk indexes.
+  </Card>
+
+  <Card title="Wity" href="https://github.com/info-alphanimble/langchain-wity#readme" icon="link">
+    Wity answers fixed-option questions about text in one pass, with a probability per option, for model routing, tool-risk checks and classification.
   </Card>
 
   <Card title="Work Ledger" href="https://github.com/metawake/work-ledger/blob/main/docs/integrations.md" icon="link">

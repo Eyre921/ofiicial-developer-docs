@@ -81,9 +81,9 @@ A template variable for agent configurations
 {
   "variables": [
     {
-      "variable_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "key": "API_KEY",
-      "value": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
+      "variable_id": "a3f1c2d4-8b7e-4f9a-b6d2-1e5c3a7f9b0d",
+      "key": "GREETING_MESSAGE",
+      "value": "Hello! How can I assist you today?",
       "created_at": "2024-01-15T09:30:00Z",
       "updated_at": "2024-01-15T09:30:00Z"
     }

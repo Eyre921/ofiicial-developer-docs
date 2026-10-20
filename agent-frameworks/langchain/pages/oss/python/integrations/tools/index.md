@@ -314,6 +314,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | <span><a href="https://pypi.org/project/langchain-lyrenth/">  <img alt="Downloads per month" /></a></span> |
   | [`MagicHourToolkit`](https://docs.magichour.ai) | <span><a href="https://pypi.org/project/langchain-magic-hour/">  <img alt="Downloads per month" /></a></span> |
   | [`FootballChartsToolkit`](https://www.football-charts.com/developers) | <span><a href="https://pypi.org/project/langchain-footballcharts/">  <img alt="Downloads per month" /></a></span> |
+  | [`PinkToolkit`](https://pinkwallet.com/agentic/connect/langchain/) | <span><a href="https://pypi.org/project/langchain-pink/">  <img alt="Downloads per month" /></a></span> |
   | [`ContextToolkit`](https://docs.context.dev) | <span><a href="https://pypi.org/project/langchain-context/">  <img alt="Downloads per month" /></a></span> |
   | [`Simplepages`](https://simplepages.ai/mcp) | <span><a href="https://pypi.org/project/langchain-simplepages/">  <img alt="Downloads per month" /></a></span> |
   | [`Hyperbrowser browser agent`](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span> |
@@ -427,6 +428,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`ModexiaToolkit`](https://modexia.software/docs) | <span><a href="https://pypi.org/project/langchain-modexia/">  <img alt="Downloads per month" /></a></span> |
   | [`OctenSearchResults`](https://docs.octen.ai) | <span><a href="https://pypi.org/project/langchain-octen/">  <img alt="Downloads per month" /></a></span> |
   | [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | <span><a href="https://pypi.org/project/langchain-nano-banana-acedatacloud/">  <img alt="Downloads per month" /></a></span> |
+  | [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | <span><a href="https://pypi.org/project/langchain-kavel/">  <img alt="Downloads per month" /></a></span> |
   | [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | <span><a href="https://pypi.org/project/langchain-gpt-image-acedatacloud/">  <img alt="Downloads per month" /></a></span> |
   | [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | <span><a href="https://pypi.org/project/langchain-flowspeech/">  <img alt="Downloads per month" /></a></span> |
   | [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-sidclaw/">  <img alt="Downloads per month" /></a></span> |
@@ -492,9 +494,8 @@ The following table shows tools that generate video, image, or audio assets:
   | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
-  | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | <span>N/A</span> |
+  | [`FlashDataToolkit`](https://github.com/rocosen/langchain-flashdata#readme) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
-  | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
   | [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |
 </div>

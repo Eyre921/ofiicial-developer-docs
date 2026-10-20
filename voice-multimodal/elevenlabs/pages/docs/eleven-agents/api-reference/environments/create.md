@@ -1,19 +1,19 @@
 ---
-title: "Create folder"
-source: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder.md
-path: docs/api-reference/knowledge-base/create-folder
+title: "Create environment"
+source: https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create.md
+path: docs/eleven-agents/api-reference/environments/create
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Create folder
+# Create environment
 
-POST https://api.elevenlabs.io/v1/convai/knowledge-base/folder
+POST https://api.elevenlabs.io/v1/convai/environments
 Content-Type: application/json
 
-Create a folder used for grouping documents together.
+Create a workspace environment. Variables without a value for it fall back to their production value.
 
-Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder
+Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create
 
 ## Servers
 
@@ -27,13 +27,9 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder
 
 ### Body (application/json)
 
-This endpoint expects a Body_Create_folder_v1_convai_knowledge_base_folder_post.
+This endpoint expects an object.
 
-- `name` (string, required) — A custom, human-readable name for the document.
-- `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
-- `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.
-- `auto_remove` (boolean, optional, default: false) — Whether to automatically remove the document if the URL becomes unavailable. Only applicable when auto-sync is enabled.
-- `minimum_frequency_days` (integer, optional, nullable) — Minimum frequency (in days) at which the underlying eligible documents are refreshed. The actual interval may be shorter, never longer. Defaults to 7, tightened to the parent folder's frequency if that is stricter. Only applicable when auto-sync is enabled.
+- `name` (string, required) — Unique name of the environment, e.g. 'staging'.
 
 ## Response
 
@@ -41,13 +37,25 @@ This endpoint expects a Body_Create_folder_v1_convai_knowledge_base_folder_post.
 
 Successful Response
 
-- `id` (string, required)
-- `name` (string, required)
-- `folder_path` (list of KnowledgeBaseFolderPathSegmentSummaryResponseModel, optional) — The folder path segments leading to this entity, from root to parent folder.
+- `name` (string, required) — Name of the environment, e.g. 'staging'.
+- `updated_at_unix_secs` (integer, optional) — When the environment was created or one of its values last changed. Unset when neither is known.
+- `created_by_user_id` (string, optional) — Unset for 'production' and when the creator is not known.
 
 ## Errors
 
-### 422 Unprocessable Entity Error
+### 400 Environments Create Request Bad Request Error
+
+Invalid environment name
+
+- `any`
+
+### 409 Environments Create Request Conflict Error
+
+Environment with this name already exists
+
+- `any`
+
+### 422 Environments Create Request Unprocessable Entity Error
 
 Validation Error
 
@@ -55,17 +63,13 @@ Validation Error
 
 ## Types
 
-### KnowledgeBaseFolderPathSegmentSummaryResponseModel
-
-- `id` (string, required)
-
 ### ValidationError
 
-- `loc` (list of ValidationErrorLocItems, required)
+- `loc` (list of ValidationErrorLocItem, required)
 - `msg` (string, required)
 - `type` (string, required)
 
-### ValidationErrorLocItems
+### ValidationErrorLocItem
 
 ## Examples
 
@@ -73,7 +77,7 @@ Validation Error
 
 ```json
 {
-  "name": "Product Documentation"
+  "name": "name"
 }
 ```
 
@@ -81,13 +85,9 @@ Validation Error
 
 ```json
 {
-  "id": "kb_folder_3f8a2c1d9e4b7a6f",
-  "name": "Product Documentation",
-  "folder_path": [
-    {
-      "id": "kb_folder_1a2b3c4d5e6f7890"
-    }
-  ]
+  "name": "staging",
+  "updated_at_unix_secs": 1714003600,
+  "created_by_user_id": "user_7k2m9x"
 }
 ```
 
@@ -96,9 +96,9 @@ Validation Error
 ```python
 import requests
 
-url = "https://api.elevenlabs.io/v1/convai/knowledge-base/folder"
+url = "https://api.elevenlabs.io/v1/convai/environments"
 
-payload = { "name": "Product Documentation" }
+payload = { "name": "name" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -107,11 +107,11 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/folder';
+const url = 'https://api.elevenlabs.io/v1/convai/environments';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"name":"Product Documentation"}'
+  body: '{"name":"name"}'
 };
 
 try {
@@ -135,9 +135,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/folder"
+	url := "https://api.elevenlabs.io/v1/convai/environments"
 
-	payload := strings.NewReader("{\n  \"name\": \"Product Documentation\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"name\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -158,14 +158,14 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/knowledge-base/folder")
+url = URI("https://api.elevenlabs.io/v1/convai/environments")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Product Documentation\"\n}"
+request.body = "{\n  \"name\": \"name\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -175,9 +175,9 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/folder")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/environments")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Product Documentation\"\n}")
+  .body("{\n  \"name\": \"name\"\n}")
   .asString();
 ```
 
@@ -187,9 +187,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/folder', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/environments', [
   'body' => '{
-  "name": "Product Documentation"
+  "name": "name"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -202,10 +202,10 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/folder");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/environments");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Product Documentation\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"name\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -213,11 +213,11 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Product Documentation"] as [String : Any]
+let parameters = ["name": "name"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/folder")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/environments")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

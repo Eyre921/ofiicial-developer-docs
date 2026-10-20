@@ -23,6 +23,15 @@ You can either:
 
 Stripe Tax uses the preset product tax code for products that don’t have a PTC set directly.
 
+## Limitations of tax codes that require a performance location 
+
+You can’t set product tax codes that require a `performance_location` for the following properties:
+
+- [tax_code](https://docs.stripe.com/api/products/object.md#product_object-tax_code) on the Product object
+- [defaults.tax_code](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-defaults-tax_code) on the Tax Settings object
+
+You can filter for those tax codes in the tax codes table below by setting the filter to `Events`.
+
 ## All tax codes
 
 The following table describes the available product tax codes. If a product doesn’t fit any of the specific codes, use one of the codes with “General” in its name.

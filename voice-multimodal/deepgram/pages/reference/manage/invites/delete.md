@@ -70,7 +70,7 @@ Invalid Request
 
 ```json
 {
-  "message": "Invite for user john.doe@example.com successfully deleted from project 123456-7890-1234-5678-901234."
+  "message": "Invite deleted successfully."
 }
 ```
 

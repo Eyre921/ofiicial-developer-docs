@@ -12,31 +12,31 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  <p>Get started with your GitHub account.</p>
+  Get started with your GitHub account.
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
-  <p>Get started with your GitHub profile.</p>
+  Get started with your GitHub profile.
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
-  <p>Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.</p>
+  Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
+  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
-  <p>Demonstrate your skills to hiring managers with your GitHub profile.</p>
+  Demonstrate your skills to hiring managers with your GitHub profile.
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
-  <p>You can set the email address that is used to author commits on GitHub and on your computer.</p>
+  You can set the email address that is used to author commits on GitHub and on your computer.
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
@@ -44,7 +44,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 
-  <p>You can see a history of your contributions on your profile.</p>
+  You can see a history of your contributions on your profile.
 
 ## Links
 
@@ -120,10 +120,6 @@ Make GitHub work best for you by customizing your personal account settings and 
 
   You can transfer repositories and projects from your personal account to a new or existing organization through your account settings.
 
-* [Converting a user into an organization](/en/converting-a-user-into-an-organization)
-
-  You can convert your personal account into an organization. This allows more granular permissions for repositories that belong to the organization.
-
 * [Unlinking your email address from a locked account](/en/account-and-profile/how-tos/account-management/unlinking-your-email-address-from-a-locked-account)
 
   If you have lost your two-factor authentication (2FA) credentials and are unable to recover access, you can remove the connection between your email address and a 2FA locked account.
@@ -151,10 +147,6 @@ Make GitHub work best for you by customizing your personal account settings and 
 * [Prepare for job change](/en/account-and-profile/how-tos/account-settings/prepare-for-job-change)
 
   If you use your GitHub account for both personal and work purposes, there are steps to follow when you leave your company or organization.
-
-* [Integrating Jira with your personal projects](/en/integrating-jira-with-your-personal-projects)
-
-  You can integrate Jira Cloud with your personal account to scan commits and pull requests, creating relevant metadata and hyperlinks in any mentioned Jira issues.
 
 * [Set your hiring status](/en/account-and-profile/how-tos/account-settings/set-your-hiring-status)
 

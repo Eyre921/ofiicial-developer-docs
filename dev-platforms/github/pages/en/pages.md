@@ -54,10 +54,6 @@ GitHub Pages turns any GitHub repository into a live website—no separate hosti
 
   You can unpublish your GitHub Pages site so that your current deployment is removed and the site is no longer available. This is different from deleting the site.
 
-* [Changing the visibility of your GitHub Pages site](/en/changing-the-visibility-of-your-github-pages-site)
-
-  You can manage access control for your project site by publishing the site publicly or privately.
-
 * [Creating a custom 404 page for your GitHub Pages site](/en/pages/getting-started-with-github-pages/creating-a-custom-404-page-for-your-github-pages-site)
 
   You can display a custom 404 error page when people try to access nonexistent pages on your site.

@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/environment-variables/update
 PATCH https://api.elevenlabs.io/v1/convai/environment-variables/{env_var_id}
 Content-Type: application/json
 
-Replace an environment variable's values. Use null to remove an environment (except production).
+Replace an environment variable's values. Use null to remove its value for an environment (except production); delete an environment with DELETE /v1/convai/environments/\{environment}.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update
 
@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-va
 
 This endpoint expects an object.
 
-- `values` (map from string to UpdateEnvironmentVariableRequestValuesValue, required) — Values to replace. Set to null to remove an environment (except 'production').
+- `values` (map from string to UpdateEnvironmentVariableRequestValuesValue, required) — Values to replace. Set to null to remove the value for an environment (except 'production').
 
 ## Response
 

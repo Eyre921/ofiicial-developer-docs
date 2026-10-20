@@ -80787,6 +80787,14 @@ In your own deployment, you configure the models yourself. You assign your own m
 
 You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
 
+On the **Deployment** tab of the console's **Settings** page, the **Default models** card sets the chat model for each work area:
+
+* **Query** answers queries, and also runs Optimize.
+* **Curation** builds artifacts from your sources.
+* **System** runs background workflows, such as Explore.
+
+A default must be a model that's enabled for its work area, which the **Models** list shows for each model. Usage reports spend by stage, and calls on the System model appear under the `system` stage.
+
 
 # Pinecone Nexus
 Source: https://docs.pinecone.io/guides/nexus/overview

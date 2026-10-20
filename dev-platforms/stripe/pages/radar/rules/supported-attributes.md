@@ -252,7 +252,7 @@ Rules that evaluate attributes that are specific to a given [supported payment m
 | --- | --- | --- | --- |
 | `is_3d_secure` | *Boolean* | true | Identifies if the payment uses a 3D Secure source. |
 | `is_3d_secure_authenticated` | *Boolean* | true | Identifies if the payment was authenticated after a successfully completed 3D Secure verification (either risk-based or challenge-based). |
-| `has_liability_shift` | *Boolean* | true | A rough approximation whether the payment might have liability shift, in which case the [liability shift rule](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) might apply for this payment. True if a non-wallet card payment had liability shift prior to authorization, but the gateway might downgrade liability shift due to network rules, making `has_liability_shift` inaccurate. Conversely, `has_liability_shift` might be false for certain digital wallets that actually have liability shift. |
+| `has_liability_shift` | *Boolean* | true | An approximation of whether the payment has liability shift, in which case the [liability shift rule](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) might apply. This is `true` if a card payment had liability shift before authorization, but network rules can downgrade liability shift later, so the value might be inaccurate. It can also be `false` for some Google Pay payments that do have liability shift. |
 
 #### Amount 
 

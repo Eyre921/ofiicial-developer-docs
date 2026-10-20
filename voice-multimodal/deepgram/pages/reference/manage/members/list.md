@@ -79,10 +79,9 @@ Invalid Request
 {
   "members": [
     {
-      "member_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890",
+      "member_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
       "scopes": [
-        "read:transcripts",
-        "write:projects"
+        "member"
       ],
       "email": "jane.doe@example.com",
       "first_name": "Jane",

@@ -68,6 +68,7 @@ Validation Error
 - `voice_id` (string, required) — Voice ID assigned to this agent
 - `tags` (list of string, required) — Agent tags used to categorize the agent
 - `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+- `updated_at_unix_secs` (integer, required) — The last time the agent's main branch or agent-level settings were updated, in unix seconds
 - `access_info` (ResourceAccessInfo, required) — The access information of the agent
 - `last_call_time_unix_secs` (integer, optional, nullable) — The time of the most recent call in unix seconds, null if no calls have been made
 - `archived` (boolean, optional, default: false) — Whether the agent is archived

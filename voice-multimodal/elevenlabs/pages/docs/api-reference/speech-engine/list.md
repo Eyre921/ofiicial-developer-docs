@@ -31,7 +31,7 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-engine/list
 - `sort_direction` (enum, optional) — The direction to sort the results
   - Allowed values: `asc`, `desc`
 - `sort_by` (enum, optional, nullable) — The field to sort the results by
-  - Allowed values: `name`, `created_at`, `call_count_7d`
+  - Allowed values: `name`, `created_at`, `updated_at`, `call_count_7d`
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -60,6 +60,7 @@ Validation Error
 - `name` (string, required) — Human-readable name for the speech engine
 - `voice_id` (string, required) — Voice ID assigned to this speech engine
 - `created_at_unix_secs` (integer, required) — Creation time in Unix seconds
+- `updated_at_unix_secs` (integer, required) — Last update time in Unix seconds
 - `tags` (list of string, required) — Arbitrary tags for categorization and filtering
 - `access_info` (ResourceAccessInfo, required) — The access information of the speech engine for the user
 
@@ -95,6 +96,7 @@ Validation Error
       "name": "My Speech Engine",
       "voice_id": "UCaNsl8F6Xh4GALkVMLS",
       "created_at_unix_secs": 1714000000,
+      "updated_at_unix_secs": 1714086400,
       "tags": [
         "production",
         "v1"

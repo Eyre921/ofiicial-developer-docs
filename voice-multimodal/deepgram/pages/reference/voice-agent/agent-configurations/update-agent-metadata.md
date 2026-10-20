@@ -89,7 +89,7 @@ The agent configuration object
   "config": {},
   "metadata": {},
   "created_at": "2024-01-15T09:30:00Z",
-  "updated_at": "2024-01-15T09:30:00Z"
+  "updated_at": "2024-03-22T14:45:00Z"
 }
 ```
 

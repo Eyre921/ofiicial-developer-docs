@@ -10,7 +10,7 @@ path: docs/eleven-agents/api-reference/agents/branches/preview-rebase
 
 GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview
 
-Returns the result of rebasing the branch onto main without performing the rebase. Useful for showing an accurate diff before confirming.
+Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-rebase
 
@@ -28,6 +28,11 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 
 - `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
 - `branch_id` (string, required) — Unique identifier for the source branch to merge from.
+
+### Query parameters
+
+- `source_branch_id` (string, optional) — The ID of the branch to pull changes from. Defaults to the agent's main branch.
+- `include_procedure_generated_workflow_elements` (boolean, optional, default: true) — Whether to include the workflow nodes and edges generated from structured procedures. When false, the workflow contains only authored elements.
 
 ## Response
 
@@ -187,7 +192,7 @@ Validation Error
 
 ### FieldConflict
 
-- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation_config/platform_settings, or a procedure id.
+- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation\_config/platform\_settings (e.g. `tts.voice_id`), a procedure id, or a workflow path: `nodes.<id>`, `edges.<id>`, or the name of a top-level workflow setting.
 - `section` (enum, required) — Which config section this path belongs to.
   - Allowed values: `conversation_config`, `platform_settings`, `procedures`, `workflow`
 - `base_value` (any, optional) — Value at the common ancestor (merge base).
@@ -3555,13 +3560,15 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview"
 
-response = requests.get(url)
+querystring = {"include_procedure_generated_workflow_elements":"true","source_branch_id":"source_branch_id"}
+
+response = requests.get(url, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview';
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id';
 const options = {method: 'GET'};
 
 try {
@@ -3584,7 +3591,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -3603,7 +3610,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -3618,7 +3625,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id")
   .asString();
 ```
 
@@ -3628,7 +3635,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id');
 
 echo $response->getBody();
 ```
@@ -3636,7 +3643,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -3644,7 +3651,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase-preview?include_procedure_generated_workflow_elements=true&source_branch_id=source_branch_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

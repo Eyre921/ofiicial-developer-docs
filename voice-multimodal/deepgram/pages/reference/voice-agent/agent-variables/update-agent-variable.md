@@ -74,7 +74,7 @@ Invalid Request
 **Request**
 
 ```json
-"Welcome to the Deepgram transcription service!"
+"production-api-key-abc123xyz"
 ```
 
 **Response**
@@ -82,10 +82,10 @@ Invalid Request
 ```json
 {
   "variable_id": "v1a2b3c4-d5e6-7890-abcd-ef1234567890",
-  "key": "welcome_message",
-  "value": "Welcome to the Deepgram transcription service!",
+  "key": "API_KEY",
+  "value": "production-api-key-abc123xyz",
   "created_at": "2024-01-15T09:30:00Z",
-  "updated_at": "2024-01-15T09:30:00Z"
+  "updated_at": "2024-03-20T14:45:00Z"
 }
 ```
 
@@ -96,7 +96,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890"
 
-payload = "Welcome to the Deepgram transcription service!"
+payload = "production-api-key-abc123xyz"
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -112,7 +112,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'PATCH',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '"Welcome to the Deepgram transcription service!"'
+  body: '"production-api-key-abc123xyz"'
 };
 
 try {
@@ -138,7 +138,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890"
 
-	payload := strings.NewReader("\"Welcome to the Deepgram transcription service!\"")
+	payload := strings.NewReader("\"production-api-key-abc123xyz\"")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -168,7 +168,7 @@ http.use_ssl = true
 request = Net::HTTP::Patch.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "\"Welcome to the Deepgram transcription service!\""
+request.body = "\"production-api-key-abc123xyz\""
 
 response = http.request(request)
 puts response.read_body
@@ -181,7 +181,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.patch("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("\"Welcome to the Deepgram transcription service!\"")
+  .body("\"production-api-key-abc123xyz\"")
   .asString();
 ```
 
@@ -192,7 +192,7 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890', [
-  'body' => '"Welcome to the Deepgram transcription service!"',
+  'body' => '"production-api-key-abc123xyz"',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
     'Content-Type' => 'application/json',
@@ -209,7 +209,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "\"Welcome to the Deepgram transcription service!\"", ParameterType.RequestBody);
+request.AddParameter("application/json", "\"production-api-key-abc123xyz\"", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -220,7 +220,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = "Welcome to the Deepgram transcription service!" as [String : Any]
+let parameters = "production-api-key-abc123xyz" as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

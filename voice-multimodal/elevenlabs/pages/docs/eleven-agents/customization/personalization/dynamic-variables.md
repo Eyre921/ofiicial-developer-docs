@@ -26,41 +26,71 @@ Here are a few examples where dynamic variables are useful:
 * **Customizing behavior** based on subscription tiers
 * **Accessing system information** like conversation ID or call duration
 
-> **Info**
->
-> Dynamic variables are ideal for injecting user-specific data that shouldn't be hardcoded into your
-> agent's configuration.
+Dynamic variables support three value types:
+
+#### String
+
+Text values
+
+#### Number
+
+Numeric values
+
+#### Boolean
+
+True/false values
 
 ## System dynamic variables
 
-Your agent has access to these automatically available system variables:
+Your agent has access to built-in `system__*` variables in every conversation without runtime configuration. These variables are prefixed with the reserved `system__` namespace and update automatically as the conversation progresses. Custom dynamic variables cannot use the `system__` prefix or override system variables.
 
-* `system__agent_id` - Unique identifier of the agent that initiated the conversation (stays stable throughout the conversation)
-* `system__current_agent_id` - Unique identifier of the currently active agent (changes after agent transfers)
-* `system__caller_id` - Caller's phone number (voice calls only)
-* `system__called_number` - Destination phone number (voice calls only)
-* `system__call_duration_secs` - Call duration in seconds
-* `system__time_utc` - Current UTC time (ISO format)
-* `system__time` - Current time in the specified timezone (human-readable format, e.g., "Friday, 12:33 12 December 2025")
-* `system__timezone` - User-provided timezone (must be valid for tzinfo)
-* `system__conversation_id` - ElevenLabs' unique conversation identifier
-* `system__call_sid` - Call SID (twilio calls only)
-* `system__call_id` - Unique identifier for the SIP trunk call (SIP trunk calls only)
-* `system__agent_turns` - The total number of conversation turns the agent has taken during this conversation.
-* `system__current_agent_turns` - The number of conversation turns the current agent has taken. Resets whenever the conversation transfers to a different agent.
-* `system__current_subagent_turns` - The number of conversation turns the current subagent has taken. Resets whenever the workflow transitions to a different node.
-* `system__is_text_only` - True if the conversation operates in text-only mode, false otherwise.
-* `system__conversation_history` - JSON-serialized representation of the current conversation history. Lazily evaluated at the moment it is referenced. See [format details](#conversation-history-format) below.
+Variables marked with † change between turns. Placing them in prompt text can prevent prompt caching; see [Best practices](#best-practices) for alternatives.
 
-System variables:
+### Agent and conversation identity
 
-* Are available without runtime configuration
-* Are prefixed with `system__` (reserved prefix)
-* Are updated automatically throughout the conversation
+| Variable                   | Type             | Description                                                                                                                               | Example                                |
+| -------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `system__agent_id`         | `string`         | Unique identifier of the agent that started the conversation. Never changes during a conversation.                                        | `"agent_8401kp8bt0jdf14rzzcv5veq94yg"` |
+| `system__current_agent_id` | `string`         | Unique identifier of the currently active agent. Updates when the conversation transfers to another agent.                                | `"agent_8401kp8bt0jdf14rzzcv5veq94yg"` |
+| `system__conversation_id`  | `string`         | ElevenLabs unique conversation identifier.                                                                                                | `"conv_1801kp8qtb2begztn7zyf446v4jk"`  |
+| `system__user_id`          | `string \| null` | Client-provided user ID for tracking and analytics. Must not be trusted for authentication.                                               | `"G6yhJW8MktQdhUquvXD1iKpPHql2"`       |
+| `system__initiator_id`     | `string \| null` | Identifier corresponding to the authentication method used to initiate the conversation.                                                  | `"user_1801kp8qtb2begztn7zyf446v4jk"`  |
+| `system__channel`          | `string`         | Channel source through which the conversation was initiated.                                                                              | `"slack_integration"`                  |
+| `system__is_text_only`     | `boolean`        | `true` when the conversation is running in text-only (chat) mode; `false` for voice calls.                                                | `true`                                 |
+| `system__environment`      | `string`         | Environment the conversation is running in, used to resolve [environment variables](/docs/eleven-agents/integrate/environment-variables). | `"production"`                         |
 
-> **Warning**
->
-> Custom dynamic variables cannot use the reserved `system__` prefix.
+### Time and timezone
+
+| Variable                | Type             | Description                                                                                                                     | Example                              |
+| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `system__timezone`      | `string \| null` | Configured timezone (`conversation_config.agent.prompt.timezone`) or caller-provided IANA timezone. Defaults to UTC when unset. | `"America/New_York"`                 |
+| `system__time` †        | `string`         | Current date and time in the configured timezone (`%A, %H:%M %d %B %Y`). Re-evaluated on every turn (changes once per minute).  | `"Friday, 12:33 12 December 2025"`   |
+| `system__time_utc` †    | `string`         | Current UTC timestamp in ISO 8601 format. Re-evaluated on every turn.                                                           | `"2025-12-12T12:33:45.123456+00:00"` |
+| `system__time_date`     | `string`         | Current date in the configured timezone (or UTC if none is set) (`%A, %d %B %Y`). Changes once per day.                         | `"Friday, 12 December 2025"`         |
+| `system__time_hour`     | `integer`        | Current hour (`0`–`23`) in the configured timezone (or UTC if none is set). Changes at most once per hour.                      | `12`                                 |
+| `system__time_minute` † | `integer`        | Current minute (`0`–`59`) in the configured timezone (or UTC if none is set). Changes once per minute.                          | `33`                                 |
+| `system__time_second` † | `integer`        | Current second (`0`–`59`) in the configured timezone (or UTC if none is set). Changes on every turn.                            | `45`                                 |
+
+### Telephony and messaging
+
+These variables are populated when applicable for telephony and messaging channels:
+
+| Variable                | Type             | Description                                                | Example                                  |
+| ----------------------- | ---------------- | ---------------------------------------------------------- | ---------------------------------------- |
+| `system__caller_id`     | `string \| null` | Caller's phone number (voice/SMS/WhatsApp/Amazon Connect). | `"+14155552671"`                         |
+| `system__called_number` | `string \| null` | Destination phone number called.                           | `"+18005551234"`                         |
+| `system__call_sid`      | `string \| null` | Twilio Call SID (Twilio calls only).                       | `"CA3498076234a8bbf65c8f09fb8ad7ac1b"`   |
+| `system__call_id`       | `string \| null` | SIP Call-ID (SIP trunk calls only).                        | `"757f72cf-e80f-44f7-87d6-a961ffbf5b3d"` |
+
+### Per-turn conversation state
+
+| Variable                           | Type      | Description                                                                                                                                                                            | Example                |
+| ---------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `system__call_duration_secs` †     | `integer` | Elapsed conversation time in seconds. Re-evaluated on every turn.                                                                                                                      | `142`                  |
+| `system__agent_turns` †            | `integer` | Total number of agent turns in the conversation so far. Increments on every turn.                                                                                                      | `5`                    |
+| `system__current_agent_turns` †    | `integer` | Number of agent turns for the current agent; resets to `0` after an agent transfer.                                                                                                    | `3`                    |
+| `system__current_subagent_turns` † | `integer` | Number of agent turns in the current workflow node; resets to `0` on node transition.                                                                                                  | `2`                    |
+| `system__conversation_history` †   | `string`  | JSON-serialized conversation transcript up to the current turn (`{"entries": [{"role": "user", "message": "..."}]}`). See [Conversation history format](#conversation-history-format). | `'{"entries": [...]}'` |
 
 ### Conversation history format
 
@@ -86,20 +116,19 @@ The `system__conversation_history` variable contains a JSON object with the foll
 
 Each entry includes a `role` (`"user"`, `"agent"`, or `"tool"`) and one of:
 
-* `message` — the text content of the turn
-* `tool_requests` — an array of tool calls made by the agent, with resolved parameter values
-* `tool_results` — an array of tool responses
+* `message`: The text content of the turn
+* `tool_requests`: An array of tool calls made by the agent, with resolved parameter values
+* `tool_results`: An array of tool responses
 
-If a tool result or parameter contains a nested conversation history, it is redacted to a placeholder (e.g. `[conversation_history (5 turns)]`) to avoid unbounded recursive expansion.
+If a tool result or parameter contains a nested conversation history, it is redacted to a placeholder (such as `[conversation_history (5 turns)]`) to avoid unbounded recursive expansion.
 
-This variable is useful for passing conversation context to tools (e.g. webhooks, custom LLMs) or for including conversation history in sub-agent prompts during handoffs.
+This variable is useful for passing conversation context to tools (such as webhooks or custom LLMs) or for including conversation history in sub-agent prompts during handoffs.
 
 ## Secret dynamic variables
 
-Secret dynamic variables are populated in the same way as normal dynamic variables but indicate to our ElevenAgents that these should
-only be used in dynamic variable headers and never sent to an LLM provider as part of an agent's system prompt or first message.
+Secret dynamic variables are populated in the same way as normal dynamic variables, but indicate to ElevenAgents that they should only be used in dynamic variable headers and never sent to an LLM provider as part of an agent's system prompt or first message.
 
-We recommend using these for auth tokens or private IDs that should not be sent to an LLM. To create a secret dynamic variable, simply prefix the dynamic variable with `secret__`.
+Use secret dynamic variables for auth tokens or private IDs that should not be sent to an LLM. To create a secret dynamic variable, prefix the dynamic variable with `secret__`.
 
 > **Warning**
 >
@@ -110,7 +139,7 @@ We recommend using these for auth tokens or private IDs that should not be sent 
 
 ## Updating dynamic variables from tools
 
-[Tool calls](https://elevenlabs.io/docs/eleven-agents/customization/tools) can create or update dynamic variables if they return a valid JSON object. To specify what should be extracted, set the object path(s) using dot notation. If the field or path doesn't exist, nothing is updated.
+[Tool calls](/docs/eleven-agents/customization/tools) can create or update dynamic variables if they return a valid JSON object. To specify what should be extracted, set the object paths using dot notation. If the field or path doesn't exist, nothing is updated.
 
 Example of a response object and dot notation:
 
@@ -138,14 +167,14 @@ To update a dynamic variable to be the first user's email, set the assignment li
 
 ![Query parameters](/docs/_fern-img/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110.webp)
 
-Assignments are a field of each webhook tool, documented [here](/docs/eleven-agents/api-reference/tools/create#response.body.tool_config.SystemToolConfig.assignments).
+Assignments are configured on each webhook tool; see [tool assignments](/docs/eleven-agents/api-reference/tools/create#response.body.tool_config.SystemToolConfig.assignments) in the API reference.
 
 ## Guide
 
-### Prerequisites
+Prerequisites:
 
 * An [ElevenLabs account](https://elevenlabs.io)
-* A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
+* A configured ElevenAgents agent (follow the [quickstart](/docs/eleven-agents/quickstart) to create one)
 
 #### Define dynamic variables in prompts
 
@@ -289,7 +318,7 @@ conversation = Conversation(
     requires_auth=bool(api_key),
     # Use the default audio interface.
     audio_interface=DefaultAudioInterface(),
-    # Simple callbacks that print the conversation to the console.
+    # Callbacks that print the conversation to the console.
     callback_agent_response=lambda response: print(f"Agent: {response}"),
     callback_agent_response_correction=lambda original, corrected: print(f"Agent: {original} -> {corrected}"),
     callback_user_transcript=lambda transcript: print(f"User: {transcript}"),
@@ -316,7 +345,7 @@ class VoiceAgent {
         await navigator.mediaDevices.getUserMedia({ audio: true });
 
         this.conversation = await Conversation.startSession({
-            agentId: 'agent_id_goes_here', // Replace with your actual agent ID
+            agentId: 'agent_7101k5zvyjhmfg983brhmhkd98n6',
 
             dynamicVariables: {
                 user_name: 'Angelo'
@@ -363,15 +392,15 @@ let conversation = try await Conversation.startSession(
 ></elevenlabs-convai>
 ```
 
-## Public Talk-to Page Integration
+## Public talk-to page integration
 
 The public talk-to page supports dynamic variables through URL parameters, enabling you to personalize conversations when sharing agent links. This is particularly useful for embedding personalized agents in websites, emails, or marketing campaigns.
 
-### URL Parameter Methods
+### URL parameter methods
 
 There are two methods to pass dynamic variables to the public talk-to page:
 
-#### Method 1: Base64-Encoded JSON
+#### Method 1: Base64-encoded JSON
 
 Pass variables as a base64-encoded JSON object using the `vars` parameter:
 
@@ -385,7 +414,7 @@ The `vars` parameter contains base64-encoded JSON:
 { "user_name": "John", "account_type": "premium" }
 ```
 
-#### Method 2: Individual Query Parameters
+#### Method 2: Individual query parameters
 
 Pass variables using `var_` prefixed query parameters:
 
@@ -393,7 +422,7 @@ Pass variables using `var_` prefixed query parameters:
 https://elevenlabs.io/app/talk-to?agent_id=agent_7101k5zvyjhmfg983brhmhkd98n6&var_user_name=John&var_account_type=premium
 ```
 
-### Parameter Precedence
+### Parameter precedence
 
 When both methods are used simultaneously, individual `var_` parameters take precedence over the base64-encoded variables to prevent conflicts:
 
@@ -401,11 +430,11 @@ When both methods are used simultaneously, individual `var_` parameters take pre
 https://elevenlabs.io/app/talk-to?agent_id=agent_7101k5zvyjhmfg983brhmhkd98n6&vars=eyJ1c2VyX25hbWUiOiJKYW5lIn0=&var_user_name=John
 ```
 
-In this example, `user_name` will be "John" (from `var_user_name`) instead of "Jane" (from the base64-encoded `vars`).
+In this example, `user_name` will be `"John"` (from `var_user_name`) instead of `"Jane"` (from the base64-encoded `vars`).
 
-### Implementation Examples
+### Implementation examples
 
-#### JavaScript URL Generation
+#### JavaScript URL generation
 
 ```javascript
 // Method 1: Base64-encoded JSON
@@ -438,7 +467,7 @@ const urlMethod1 = generateTalkToURL("agent_7101k5zvyjhmfg983brhmhkd98n6", varia
 const urlMethod2 = generateTalkToURLWithParams("agent_7101k5zvyjhmfg983brhmhkd98n6", variables);
 ```
 
-#### Python URL Generation
+#### Python URL generation
 
 ```python
 import base64
@@ -472,7 +501,7 @@ url_method1 = generate_talk_to_url("agent_7101k5zvyjhmfg983brhmhkd98n6", variabl
 url_method2 = generate_talk_to_url_with_params("agent_7101k5zvyjhmfg983brhmhkd98n6", variables)
 ```
 
-#### Manual URL Construction
+#### Manual URL construction
 
 ```
 # Base64-encoded method
@@ -486,21 +515,39 @@ url_method2 = generate_talk_to_url_with_params("agent_7101k5zvyjhmfg983brhmhkd98
 3. Final URL: https://elevenlabs.io/app/talk-to?agent_id=agent_7101k5zvyjhmfg983brhmhkd98n6&var_user_name=John&var_account_type=premium
 ```
 
-## Supported Types
+## Best practices
 
-Dynamic variables support these value types:
+#### Set a timezone instead of placing the current time in prompts
 
-#### String
+Variables in the system prompt, [workflow](/docs/eleven-agents/customization/agent-workflows) nodes, and [procedures](/docs/eleven-agents/customization/procedures) are resolved on every turn. If a value changes between turns, the prompt can't be cached, which increases cost and latency. `{{system__time_utc}}` and `{{system__time_second}}` change every turn; `{{system__time}}` and `{{system__time_minute}}` change every minute.
 
-Text values
+To give the agent the current date and time, set a timezone with the timezone button in the System Prompt editor (`conversation_config.agent.prompt.timezone`) instead of placing `{{system__time}}` or `{{system__time_utc}}` in prompt text. When a timezone is set, the platform adds the current date and time outside the cached prompt prefix, so your system prompt stays cached across turns. Without a timezone, the agent doesn't receive the current date and time.
 
-#### Number
+If your prompt needs the date or hour inline, combine `{{system__time_date}}`, `{{system__time_hour}}`, and `{{system__timezone}}` (for example, `Today is {{system__time_date}}, hour {{system__time_hour}} ({{system__timezone}})`). These change at most once per hour.
 
-Numeric values
+#### Bind live state variables to tool parameters and headers
 
-#### Boolean
+If a tool needs a value marked †, bind it to the tool parameter or header instead of placing it in the prompt. Tool parameters resolve only when the tool is called, so they don't affect prompt caching. The LLM already sees the conversation, so `{{system__conversation_history}}` is rarely needed in prompts.
 
-True/false values
+#### Consider alternatives to turn counters in prompts
+
+If your prompt checks turn counters such as `{{system__agent_turns}}`, consider these alternatives. Use `first_message` for static opening greetings or disclosures.
+
+For first-reply behavior, you can phrase the instruction around the conversation history (for example, *"On your first reply, when you have not yet greeted the caller..."*). This relies on the LLM following the instruction, so test it with your model and keep the turn counter if results are less reliable.
+
+If the counter only decides when to branch or escalate, a [workflow edge expression condition](/docs/eleven-agents/customization/agent-workflows#edges-and-flow-control) or a structured procedure [If step expression](/docs/eleven-agents/customization/procedures/structured-procedures#if-else-if-and-else) (such as `system__agent_turns >= 5`) can handle it outside the prompt. This doesn't cover cases where the LLM needs the value itself.
+
+#### Use secret\_\_ only for values that stay in tool headers
+
+Prefix auth tokens and API keys with `secret__` so they can only be bound to tool headers and are never sent to the LLM. Because `secret__` values are redacted as `<REDACTED>` in post-call webhooks and the conversations API, pass values you need to read back after the conversation as regular dynamic variables, or pass a non-sensitive identifier and look up the sensitive value on your own system.
+
+#### Do not rely on system\_\_user_id for authentication
+
+`system__user_id` is provided by the client for tracking and analytics and is not verified by ElevenAgents. Verify caller identity through a [conversation initiation webhook](/docs/eleven-agents/customization/personalization#conversation-initiation-webhooks), a signed token in a `secret__` header variable, or a verification tool call before exposing account data.
+
+#### Configure placeholders for testing and previews
+
+Set default values in `dynamic_variable_placeholders` for every custom variable used in your prompts, first messages, and tools. Preview conversations in the dashboard and [simulation tests](/docs/eleven-agents/customization/agent-testing) do not run conversation initiation webhooks, so unset variables remain as literal `{{variable_name}}` placeholders during testing.
 
 ## Troubleshooting
 
@@ -509,8 +556,8 @@ True/false values
 Verify that:
 
 * Variable names match exactly (case-sensitive)
-* Variables use double curly braces: `{{ variable_name }}`
-* Variables are included in your dynamic_variables object
+* Variables use double curly braces: `{{variable_name}}`
+* Variables are included in your `dynamic_variables` object
 
 #### Type errors
 

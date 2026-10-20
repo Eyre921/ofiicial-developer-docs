@@ -33,6 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/preview-merg
 
 - `target_branch_id` (string, required) — The ID of the target branch to merge into.
 - `force` (boolean, optional, default: false) — When true, source branch changes always win conflicts regardless of timestamps
+- `include_procedure_generated_workflow_elements` (boolean, optional, default: true) — Whether to include the workflow nodes and edges generated from structured procedures. When false, the workflow contains only authored elements.
 
 ## Response
 
@@ -192,7 +193,7 @@ Validation Error
 
 ### FieldConflict
 
-- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation_config/platform_settings, or a procedure id.
+- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation\_config/platform\_settings (e.g. `tts.voice_id`), a procedure id, or a workflow path: `nodes.<id>`, `edges.<id>`, or the name of a top-level workflow setting.
 - `section` (enum, required) — Which config section this path belongs to.
   - Allowed values: `conversation_config`, `platform_settings`, `procedures`, `workflow`
 - `base_value` (any, optional) — Value at the common ancestor (merge base).

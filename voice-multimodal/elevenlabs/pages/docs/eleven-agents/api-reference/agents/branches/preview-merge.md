@@ -33,6 +33,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 
 - `target_branch_id` (string, required) — The ID of the target branch to merge into.
 - `force` (boolean, optional, default: false) — When true, source branch changes always win conflicts regardless of timestamps
+- `include_procedure_generated_workflow_elements` (boolean, optional, default: true) — Whether to include the workflow nodes and edges generated from structured procedures. When false, the workflow contains only authored elements.
 
 ## Response
 
@@ -192,7 +193,7 @@ Validation Error
 
 ### FieldConflict
 
-- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation_config/platform_settings, or a procedure id.
+- `path` (string, required) — Identifier of the conflicting field relative to its section: a dot-path within conversation\_config/platform\_settings (e.g. `tts.voice_id`), a procedure id, or a workflow path: `nodes.<id>`, `edges.<id>`, or the name of a top-level workflow setting.
 - `section` (enum, required) — Which config section this path belongs to.
   - Allowed values: `conversation_config`, `platform_settings`, `procedures`, `workflow`
 - `base_value` (any, optional) — Value at the common ancestor (merge base).
@@ -3560,7 +3561,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview"
 
-querystring = {"force":"true","target_branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj"}
+querystring = {"force":"true","include_procedure_generated_workflow_elements":"true","target_branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj"}
 
 response = requests.get(url, params=querystring)
 
@@ -3568,7 +3569,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj';
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj';
 const options = {method: 'GET'};
 
 try {
@@ -3591,7 +3592,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -3610,7 +3611,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -3625,7 +3626,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")
   .asString();
 ```
 
@@ -3635,7 +3636,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj');
 
 echo $response->getBody();
 ```
@@ -3643,7 +3644,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -3651,7 +3652,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?force=true&include_procedure_generated_workflow_elements=true&target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

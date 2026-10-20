@@ -70,7 +70,7 @@ Invalid Request
 
 ```json
 {
-  "message": "Member with ID 123456789012345678901234 has been successfully removed from project 123456-7890-1234-5678-901234."
+  "message": "Member successfully removed from project."
 }
 ```
 

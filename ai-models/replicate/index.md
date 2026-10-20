@@ -1,6 +1,6 @@
 # ai-models/replicate 文档索引
 
-> 共 67 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 66 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -56,7 +56,6 @@
 - `docs/topics/models/run-a-model` — [Run a model](pages/docs/topics/models/run-a-model.md) · [原文](https://replicate.com/docs/topics/models/run-a-model.md)
 - `docs/topics/models/secrets` — [Secrets](pages/docs/topics/models/secrets.md) · [原文](https://replicate.com/docs/topics/models/secrets.md)
 - `docs/topics/models/versions` — [Model versions](pages/docs/topics/models/versions.md) · [原文](https://replicate.com/docs/topics/models/versions.md)
-- `docs/topics/predictions/create-a-prediction` — [Create a prediction](pages/docs/topics/predictions/create-a-prediction.md) · [原文](https://replicate.com/docs/topics/predictions/create-a-prediction.md)
 - `docs/topics/predictions/data-retention` — [Data retention](pages/docs/topics/predictions/data-retention.md) · [原文](https://replicate.com/docs/topics/predictions/data-retention.md)
 - `docs/topics/predictions/input-files` — [Input files](pages/docs/topics/predictions/input-files.md) · [原文](https://replicate.com/docs/topics/predictions/input-files.md)
 - `docs/topics/predictions/lifecycle` — [Prediction lifecycle](pages/docs/topics/predictions/lifecycle.md) · [原文](https://replicate.com/docs/topics/predictions/lifecycle.md)

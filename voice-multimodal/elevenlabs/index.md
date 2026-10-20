@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -75,6 +75,7 @@
 - `docs/api-reference/conversations/analysis/run-analysis` — [Run conversation analysis](pages/docs/api-reference/conversations/analysis/run-analysis.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis/run-analysis.md)
 - `docs/api-reference/conversations/analysis/run-evaluation` — [Run conversation evaluation](pages/docs/api-reference/conversations/analysis/run-evaluation.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis/run-evaluation.md)
 - `docs/api-reference/conversations/create` — [Send conversation feedback](pages/docs/api-reference/conversations/create.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/create.md)
+- `docs/api-reference/conversations/create-client-secret` — [Create realtime client secret](pages/docs/api-reference/conversations/create-client-secret.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/create-client-secret.md)
 - `docs/api-reference/conversations/delete` — [Delete conversation](pages/docs/api-reference/conversations/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/delete.md)
 - `docs/api-reference/conversations/delete-file` — [Delete conversation file](pages/docs/api-reference/conversations/delete-file.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/delete-file.md)
 - `docs/api-reference/conversations/get` — [Get conversation details](pages/docs/api-reference/conversations/get.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/get.md)
@@ -117,6 +118,9 @@
 - `docs/api-reference/environment-variables/get` — [Get environment variable](pages/docs/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/get.md)
 - `docs/api-reference/environment-variables/list` — [List environment variables](pages/docs/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/list.md)
 - `docs/api-reference/environment-variables/update` — [Update environment variable](pages/docs/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/update.md)
+- `docs/api-reference/environments/create` — [Create environment](pages/docs/api-reference/environments/create.md) · [原文](https://elevenlabs.io/docs/api-reference/environments/create.md)
+- `docs/api-reference/environments/delete` — [Delete environment](pages/docs/api-reference/environments/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/environments/delete.md)
+- `docs/api-reference/environments/list` — [List environments](pages/docs/api-reference/environments/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environments/list.md)
 - `docs/api-reference/flows/image/create` — [Create Image Generation](pages/docs/api-reference/flows/image/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/create.md)
 - `docs/api-reference/flows/image/get` — [Get Image Generation](pages/docs/api-reference/flows/image/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/get.md)
 - `docs/api-reference/flows/image/list` — [List Image Generations](pages/docs/api-reference/flows/image/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/list.md)
@@ -153,7 +157,6 @@
 - `docs/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index.md)
 - `docs/api-reference/knowledge-base/compute-rag-index-batch` — [Compute RAG index in batch](pages/docs/api-reference/knowledge-base/compute-rag-index-batch.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index-batch.md)
 - `docs/api-reference/knowledge-base/create-crawl-job` — [Create crawl job](pages/docs/api-reference/knowledge-base/create-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-job.md)
-- `docs/api-reference/knowledge-base/create-folder` — [Create folder](pages/docs/api-reference/knowledge-base/create-folder.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder.md)
 - `docs/api-reference/knowledge-base/create-from-file` — [Create knowledge base document from file](pages/docs/api-reference/knowledge-base/create-from-file.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-file.md)
 - `docs/api-reference/knowledge-base/create-from-text` — [Create knowledge base document from text](pages/docs/api-reference/knowledge-base/create-from-text.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-text.md)
 - `docs/api-reference/knowledge-base/create-from-url` — [Create knowledge base document from URL](pages/docs/api-reference/knowledge-base/create-from-url.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-url.md)
@@ -237,6 +240,7 @@
 - `docs/api-reference/realtime-translation/v-1-translation-realtime` — [WebSocket](pages/docs/api-reference/realtime-translation/v-1-translation-realtime.md) · [原文](https://elevenlabs.io/docs/api-reference/realtime-translation/v-1-translation-realtime.md)
 - `docs/api-reference/service-accounts/api-keys/create` — [Create API key](pages/docs/api-reference/service-accounts/api-keys/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/create.md)
 - `docs/api-reference/service-accounts/api-keys/delete` — [Delete API key](pages/docs/api-reference/service-accounts/api-keys/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/delete.md)
+- `docs/api-reference/service-accounts/api-keys/disable` — [Disable Service Account Api Key](pages/docs/api-reference/service-accounts/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/disable.md)
 - `docs/api-reference/service-accounts/api-keys/list` — [Get API keys](pages/docs/api-reference/service-accounts/api-keys/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/list.md)
 - `docs/api-reference/service-accounts/api-keys/update` — [Update API key](pages/docs/api-reference/service-accounts/api-keys/update.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/update.md)
 - `docs/api-reference/service-accounts/create` — [Create Service Account](pages/docs/api-reference/service-accounts/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/create.md)
@@ -459,6 +463,7 @@
 - `docs/eleven-agents/api-reference/conversations/analysis/run-analysis` — [Run conversation analysis](pages/docs/eleven-agents/api-reference/conversations/analysis/run-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-analysis.md)
 - `docs/eleven-agents/api-reference/conversations/analysis/run-evaluation` — [Run conversation evaluation](pages/docs/eleven-agents/api-reference/conversations/analysis/run-evaluation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-evaluation.md)
 - `docs/eleven-agents/api-reference/conversations/create` — [Send conversation feedback](pages/docs/eleven-agents/api-reference/conversations/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md)
+- `docs/eleven-agents/api-reference/conversations/create-client-secret` — [Create realtime client secret](pages/docs/eleven-agents/api-reference/conversations/create-client-secret.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md)
 - `docs/eleven-agents/api-reference/conversations/delete` — [Delete conversation](pages/docs/eleven-agents/api-reference/conversations/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete.md)
 - `docs/eleven-agents/api-reference/conversations/delete-file` — [Delete conversation file](pages/docs/eleven-agents/api-reference/conversations/delete-file.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md)
 - `docs/eleven-agents/api-reference/conversations/get` — [Get conversation details](pages/docs/eleven-agents/api-reference/conversations/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get.md)
@@ -485,6 +490,9 @@
 - `docs/eleven-agents/api-reference/environment-variables/get` — [Get environment variable](pages/docs/eleven-agents/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get.md)
 - `docs/eleven-agents/api-reference/environment-variables/list` — [List environment variables](pages/docs/eleven-agents/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
 - `docs/eleven-agents/api-reference/environment-variables/update` — [Update environment variable](pages/docs/eleven-agents/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
+- `docs/eleven-agents/api-reference/environments/create` — [Create environment](pages/docs/eleven-agents/api-reference/environments/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create.md)
+- `docs/eleven-agents/api-reference/environments/delete` — [Delete environment](pages/docs/eleven-agents/api-reference/environments/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/delete.md)
+- `docs/eleven-agents/api-reference/environments/list` — [List environments](pages/docs/eleven-agents/api-reference/environments/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/list.md)
 - `docs/eleven-agents/api-reference/integrations/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/eleven-agents/api-reference/integrations/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/exotel/outbound-call.md)
 - `docs/eleven-agents/api-reference/integrations/twilio/outbound-call` — [Outbound call via twilio](pages/docs/eleven-agents/api-reference/integrations/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/outbound-call.md)
 - `docs/eleven-agents/api-reference/integrations/twilio/register-call` — [Register call](pages/docs/eleven-agents/api-reference/integrations/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/register-call.md)

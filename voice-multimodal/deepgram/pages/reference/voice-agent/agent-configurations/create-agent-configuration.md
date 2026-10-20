@@ -78,7 +78,7 @@ The parsed agent configuration object
 
 ```json
 {
-  "config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"
+  "config": "{\"agent\":{\"listen\":{\"model\":\"nova-2\"},\"think\":{\"provider\":{\"type\":\"open_ai\"},\"model\":\"gpt-4o\",\"instructions\":\"You are a helpful assistant.\"},\"speak\":{\"model\":\"aura-asteria-en\"}}}"
 }
 ```
 
@@ -86,7 +86,7 @@ The parsed agent configuration object
 
 ```json
 {
-  "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
+  "agent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "config": {},
   "metadata": {}
 }
@@ -99,7 +99,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents"
 
-payload = { "config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}" }
+payload = { "config": "{\"agent\":{\"listen\":{\"model\":\"nova-2\"},\"think\":{\"provider\":{\"type\":\"open_ai\"},\"model\":\"gpt-4o\",\"instructions\":\"You are a helpful assistant.\"},\"speak\":{\"model\":\"aura-asteria-en\"}}}" }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -115,7 +115,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"config":"{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"}'
+  body: '{"config":"{\"agent\":{\"listen\":{\"model\":\"nova-2\"},\"think\":{\"provider\":{\"type\":\"open_ai\"},\"model\":\"gpt-4o\",\"instructions\":\"You are a helpful assistant.\"},\"speak\":{\"model\":\"aura-asteria-en\"}}}"}'
 };
 
 try {
@@ -141,7 +141,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents"
 
-	payload := strings.NewReader("{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}")
+	payload := strings.NewReader("{\n  \"config\": \"{\\\"agent\\\":{\\\"listen\\\":{\\\"model\\\":\\\"nova-2\\\"},\\\"think\\\":{\\\"provider\\\":{\\\"type\\\":\\\"open_ai\\\"},\\\"model\\\":\\\"gpt-4o\\\",\\\"instructions\\\":\\\"You are a helpful assistant.\\\"},\\\"speak\\\":{\\\"model\\\":\\\"aura-asteria-en\\\"}}}\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -171,7 +171,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}"
+request.body = "{\n  \"config\": \"{\\\"agent\\\":{\\\"listen\\\":{\\\"model\\\":\\\"nova-2\\\"},\\\"think\\\":{\\\"provider\\\":{\\\"type\\\":\\\"open_ai\\\"},\\\"model\\\":\\\"gpt-4o\\\",\\\"instructions\\\":\\\"You are a helpful assistant.\\\"},\\\"speak\\\":{\\\"model\\\":\\\"aura-asteria-en\\\"}}}\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -184,7 +184,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}")
+  .body("{\n  \"config\": \"{\\\"agent\\\":{\\\"listen\\\":{\\\"model\\\":\\\"nova-2\\\"},\\\"think\\\":{\\\"provider\\\":{\\\"type\\\":\\\"open_ai\\\"},\\\"model\\\":\\\"gpt-4o\\\",\\\"instructions\\\":\\\"You are a helpful assistant.\\\"},\\\"speak\\\":{\\\"model\\\":\\\"aura-asteria-en\\\"}}}\"\n}")
   .asString();
 ```
 
@@ -196,7 +196,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agents', [
   'body' => '{
-  "config": "{\\"language\\":\\"en-US\\",\\"model\\":\\"general\\",\\"punctuate\\":true,\\"profanity_filter\\":false}"
+  "config": "{\\"agent\\":{\\"listen\\":{\\"model\\":\\"nova-2\\"},\\"think\\":{\\"provider\\":{\\"type\\":\\"open_ai\\"},\\"model\\":\\"gpt-4o\\",\\"instructions\\":\\"You are a helpful assistant.\\"},\\"speak\\":{\\"model\\":\\"aura-asteria-en\\"}}}"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -214,7 +214,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"config\": \"{\\\"language\\\":\\\"en-US\\\",\\\"model\\\":\\\"general\\\",\\\"punctuate\\\":true,\\\"profanity_filter\\\":false}\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"config\": \"{\\\"agent\\\":{\\\"listen\\\":{\\\"model\\\":\\\"nova-2\\\"},\\\"think\\\":{\\\"provider\\\":{\\\"type\\\":\\\"open_ai\\\"},\\\"model\\\":\\\"gpt-4o\\\",\\\"instructions\\\":\\\"You are a helpful assistant.\\\"},\\\"speak\\\":{\\\"model\\\":\\\"aura-asteria-en\\\"}}}\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -225,7 +225,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = ["config": "{\"language\":\"en-US\",\"model\":\"general\",\"punctuate\":true,\"profanity_filter\":false}"] as [String : Any]
+let parameters = ["config": "{\"agent\":{\"listen\":{\"model\":\"nova-2\"},\"think\":{\"provider\":{\"type\":\"open_ai\"},\"model\":\"gpt-4o\",\"instructions\":\"You are a helpful assistant.\"},\"speak\":{\"model\":\"aura-asteria-en\"}}}"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

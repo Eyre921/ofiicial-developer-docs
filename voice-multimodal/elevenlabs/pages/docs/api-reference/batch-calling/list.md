@@ -102,6 +102,16 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
   - Allowed values: `enable`, `detect_message_end`
+- `actions` (list of TwilioMachineDetectionRule, optional) — Actions to take on the call per AMD verdict. Each action can appear in at most one rule, so list all of its verdicts together. Verdicts without a rule leave the call running.
+
+### TwilioMachineDetectionRule
+
+Action to take on a live call for the given AMD verdicts.
+
+- `action` (enum, required)
+  - Allowed values: `hang_up`
+- `answered_by` (list of enum, required) — Verdicts that trigger the action.
+  - Allowed values: `human`, `fax`, `unknown`, `machine_start`, `machine_end_beep`, `machine_end_silence`, `machine_end_other`
 
 ## Examples
 
@@ -117,17 +127,17 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 {
   "batch_calls": [
     {
-      "id": "batch_7f3a2c1d9e4b5f8a",
+      "id": "batch_7f3a2c1d9e4b5f6a",
       "phone_number_id": "pn_4d8e2f1a3c7b9d5e",
       "phone_provider": "twilio",
       "whatsapp_params": {
         "whatsapp_call_permission_request_template_name": "call_permission_request_v1",
         "whatsapp_call_permission_request_template_language_code": "en_US",
-        "whatsapp_phone_number_id": "wa_9b3c5e7f1a2d4e6f"
+        "whatsapp_phone_number_id": "wa_1234567890abcdef"
       },
       "name": "Q4 Customer Outreach Campaign",
-      "agent_id": "agent_3e5f7a9b1c2d4e6f",
-      "branch_id": "branch_2a4c6e8f0b1d3e5f",
+      "agent_id": "agent_9b3f2e1d4c7a8b5f",
+      "branch_id": "branch_2c4e6f8a1b3d5e7f",
       "environment": "production",
       "created_at_unix": 1711900800,
       "scheduled_time_unix": 1711987200,
@@ -140,17 +150,27 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
       "retry_count": 2,
       "telephony_call_config": {
         "ringing_timeout_secs": 30,
-        "twilio_call_recording_enabled": true,
+        "twilio_call_recording_enabled": false,
         "twilio_machine_detection": {
-          "mode": "detect_message_end"
+          "mode": "detect_message_end",
+          "actions": [
+            {
+              "action": "hang_up",
+              "answered_by": [
+                "machine_start",
+                "machine_end_beep",
+                "machine_end_silence"
+              ]
+            }
+          ]
         }
       },
       "target_concurrency_limit": 25,
-      "agent_name": "Sales Outreach Agent",
+      "agent_name": "Customer Support Agent",
       "branch_name": "North America Sales"
     }
   ],
-  "next_doc": "batch_1a2b3c4d5e6f7a8b",
+  "next_doc": "batch_3a1b2c4d5e6f7a8b",
   "has_more": true
 }
 ```

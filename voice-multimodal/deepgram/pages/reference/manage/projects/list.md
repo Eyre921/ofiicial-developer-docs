@@ -70,8 +70,8 @@ Invalid Request
 {
   "projects": [
     {
-      "project_id": "proj_9f8b7c6d5e4a3b2c1d0e",
-      "name": "Customer Support Transcriptions"
+      "project_id": "a5e7b3c1-9f42-4d8e-b621-3c8f7a2d5e90",
+      "name": "Production Transcription Service"
     }
   ]
 }

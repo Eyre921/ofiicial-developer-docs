@@ -92,8 +92,17 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
   - Allowed values: `enable`, `detect_message_end`
+- `actions` (list of TwilioMachineDetectionRule, optional) — Actions to take on the call per AMD verdict. Each action can appear in at most one rule, so list all of its verdicts together. Verdicts without a rule leave the call running.
 
 ### ValidationErrorLocItem
+
+### TwilioMachineDetectionRule
+
+Action to take on a live call for the given AMD verdicts.
+
+- `action` ("hang_up", required)
+- `answered_by` (list of enum, required) — Verdicts that trigger the action.
+  - Allowed values: `human`, `fax`, `unknown`, `machine_start`, `machine_end_beep`, `machine_end_silence`, `machine_end_other`
 
 ## Examples
 
@@ -108,25 +117,35 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 ```json
 {
   "id": "batch_3f8a2c1d9e4b7a6f",
-  "name": "Q4 Customer Outreach Campaign - Retry",
-  "agent_id": "agent_7c3d2e1f4b8a9d6c",
-  "created_at_unix": 1718035200,
-  "scheduled_time_unix": 1718121600,
-  "total_calls_dispatched": 48,
-  "total_calls_scheduled": 60,
-  "total_calls_finished": 42,
-  "last_updated_at_unix": 1718125800,
+  "name": "Q4 Customer Outreach Campaign",
+  "agent_id": "agent_7c3d2e1f4b5a6c8d",
+  "created_at_unix": 1718000000,
+  "scheduled_time_unix": 1718003600,
+  "total_calls_dispatched": 320,
+  "total_calls_scheduled": 500,
+  "total_calls_finished": 285,
+  "last_updated_at_unix": 1718007200,
   "status": "in_progress",
   "retry_count": 1,
   "telephony_call_config": {
     "ringing_timeout_secs": 30,
-    "twilio_call_recording_enabled": true,
+    "twilio_call_recording_enabled": false,
     "twilio_machine_detection": {
-      "mode": "detect_message_end"
+      "mode": "detect_message_end",
+      "actions": [
+        {
+          "action": "hang_up",
+          "answered_by": [
+            "machine_start",
+            "machine_end_beep",
+            "machine_end_silence"
+          ]
+        }
+      ]
     }
   },
   "agent_name": "Customer Support Agent",
-  "phone_number_id": "PN4e2a1b8c7d3f9e5a",
+  "phone_number_id": "PN4e2a1b3c5d6f7e8a",
   "phone_provider": "twilio",
   "whatsapp_params": {
     "whatsapp_call_permission_request_template_name": "call_permission_request_v1",

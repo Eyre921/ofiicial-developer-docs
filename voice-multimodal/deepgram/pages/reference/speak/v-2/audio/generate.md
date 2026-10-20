@@ -103,7 +103,7 @@ Invalid Request. Inline control violations return a structured error whose `err_
 
 ```json
 {
-  "request_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+  "request_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 }
 ```
 

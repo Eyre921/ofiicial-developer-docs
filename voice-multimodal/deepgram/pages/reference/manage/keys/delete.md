@@ -70,7 +70,7 @@ Invalid Request
 
 ```json
 {
-  "message": "API key successfully deleted for project 123456-7890-1234-5678-901234"
+  "message": "API key deleted successfully."
 }
 ```
 

@@ -85,25 +85,11 @@ The agent configuration object
 {
   "agents": [
     {
-      "agent_id": "agent-9f8b7c6d-1234-4e56-8a9b-0c1d2e3f4a5b",
-      "config": {
-        "diarization": {
-          "enabled": true,
-          "max_speakers": 4,
-          "min_speakers": 2
-        },
-        "language": "en-US",
-        "model": "general",
-        "profanity_filter": true,
-        "punctuation": false
-      },
-      "metadata": {
-        "description": "Customer support transcription agent",
-        "environment": "production",
-        "owner": "team-voice-ops"
-      },
+      "agent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "config": {},
+      "metadata": {},
       "created_at": "2024-01-15T09:30:00Z",
-      "updated_at": "2024-01-15T09:30:00Z"
+      "updated_at": "2024-03-22T14:45:00Z"
     }
   ]
 }

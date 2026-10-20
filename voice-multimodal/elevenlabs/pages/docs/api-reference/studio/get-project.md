@@ -548,7 +548,7 @@ Validation Error
 - `description` (string, optional, nullable) — The description of the voice.
 - `labels` (map from string to string, optional) — The labels of the voice.
 - `review_status` (enum, optional) — The review status of the voice.
-  - Allowed values: `not_requested`, `pending`, `declined`, `allowed`, `allowed_with_changes`
+  - Allowed values: `not_requested`, `pending`, `declined`, `declined_resubmittable`, `allowed`, `allowed_with_changes`
 - `review_message` (string, optional, nullable) — The review message of the voice.
 - `enabled_in_library` (boolean, optional) — Whether the voice is enabled in the library.
 - `instagram_username` (string, optional, nullable) — The Instagram username of the voice.

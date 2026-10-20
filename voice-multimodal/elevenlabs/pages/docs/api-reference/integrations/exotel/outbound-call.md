@@ -102,6 +102,7 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
   - Allowed values: `enable`, `detect_message_end`
+- `actions` (list of TwilioMachineDetectionRule, optional) — Actions to take on the call per AMD verdict. Each action can appear in at most one rule, so list all of its verdicts together. Verdicts without a rule leave the call running.
 
 ### ValidationErrorLocItems
 
@@ -135,6 +136,15 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 - `language` (string, optional, nullable) — Language of the agent - used for ASR and TTS
 - `max_conversation_duration_message` (string, optional, nullable) — If non-empty, the message the agent will send when max conversation duration is reached.
 - `prompt` (PromptAgentAPIModelOverride-Input, optional, nullable) — The prompt for the agent
+
+### TwilioMachineDetectionRule
+
+Action to take on a live call for the given AMD verdicts.
+
+- `action` (enum, required)
+  - Allowed values: `hang_up`
+- `answered_by` (list of enum, required) — Verdicts that trigger the action.
+  - Allowed values: `human`, `fax`, `unknown`, `machine_start`, `machine_end_beep`, `machine_end_silence`, `machine_end_other`
 
 ### SoftTimeoutConfigOverride
 
@@ -187,9 +197,9 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 ```json
 {
-  "agent_id": "agent_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "agent_phone_number_id": "phone_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 }
 ```
 
@@ -198,9 +208,9 @@ A locator for other documents to be able to reference a specific dictionary and 
 ```json
 {
   "success": true,
-  "message": "Outbound call initiated successfully",
-  "conversation_id": "conv_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "callSid": "CA1234567890abcdef1234567890abcdef"
+  "message": "string",
+  "conversation_id": "string",
+  "callSid": "string"
 }
 ```
 
@@ -212,9 +222,9 @@ import requests
 url = "https://api.elevenlabs.io/v1/convai/exotel/outbound-call"
 
 payload = {
-    "agent_id": "agent_01jk3x8pqr5tz9mwvn2yb4cd6f",
-    "agent_phone_number_id": "phone_01jk3x8pqr5tz9mwvn2yb4cd6f",
-    "to_number": "+14155552671"
+    "agent_id": "string",
+    "agent_phone_number_id": "string",
+    "to_number": "string"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -228,7 +238,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/exotel/outbound-call';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"agent_id":"agent_01jk3x8pqr5tz9mwvn2yb4cd6f","agent_phone_number_id":"phone_01jk3x8pqr5tz9mwvn2yb4cd6f","to_number":"+14155552671"}'
+  body: '{"agent_id":"string","agent_phone_number_id":"string","to_number":"string"}'
 };
 
 try {
@@ -254,7 +264,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/exotel/outbound-call"
 
-	payload := strings.NewReader("{\n  \"agent_id\": \"agent_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"agent_phone_number_id\": \"phone_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"to_number\": \"+14155552671\"\n}")
+	payload := strings.NewReader("{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -282,7 +292,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"agent_id\": \"agent_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"agent_phone_number_id\": \"phone_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"to_number\": \"+14155552671\"\n}"
+request.body = "{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -294,7 +304,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/exotel/outbound-call")
   .header("Content-Type", "application/json")
-  .body("{\n  \"agent_id\": \"agent_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"agent_phone_number_id\": \"phone_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"to_number\": \"+14155552671\"\n}")
+  .body("{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}")
   .asString();
 ```
 
@@ -306,9 +316,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/exotel/outbound-call', [
   'body' => '{
-  "agent_id": "agent_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "agent_phone_number_id": "phone_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -324,7 +334,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/exotel/outbound-call");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"agent_id\": \"agent_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"agent_phone_number_id\": \"phone_01jk3x8pqr5tz9mwvn2yb4cd6f\",\n  \"to_number\": \"+14155552671\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"agent_id\": \"string\",\n  \"agent_phone_number_id\": \"string\",\n  \"to_number\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -333,9 +343,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "agent_id": "agent_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "agent_phone_number_id": "phone_01jk3x8pqr5tz9mwvn2yb4cd6f",
-  "to_number": "+14155552671"
+  "agent_id": "string",
+  "agent_phone_number_id": "string",
+  "to_number": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

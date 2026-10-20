@@ -71,9 +71,10 @@ Invalid Request
 ```json
 {
   "scopes": [
-    "transcription:read",
-    "projects:write",
-    "billing:read"
+    "member",
+    "usage:read",
+    "keys:read",
+    "keys:write"
   ]
 }
 ```

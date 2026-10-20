@@ -79,20 +79,10 @@ The agent configuration object
 ```json
 {
   "agent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "config": {
-    "language": "en-US",
-    "model": "general",
-    "profanity_filter": false,
-    "punctuation": true,
-    "sensitivity": 0.75
-  },
-  "metadata": {
-    "description": "Agent configuration for US English transcription with moderate sensitivity",
-    "owner": "jane.doe@example.com",
-    "project": "123456-7890-1234-5678-901234"
-  },
+  "config": {},
+  "metadata": {},
   "created_at": "2024-01-15T09:30:00Z",
-  "updated_at": "2024-01-15T09:30:00Z"
+  "updated_at": "2024-03-22T14:45:00Z"
 }
 ```
 

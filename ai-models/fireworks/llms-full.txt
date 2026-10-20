@@ -6661,143 +6661,32 @@ For the full list of base models supported by managed training (SFT, DPO, and OR
   </Step>
 
   <Step title="Prepare a dataset">
-    Fireworks uses the **OpenAI-compatible chat completion format** for SFT training data. If you already have datasets formatted for OpenAI training, they work on Fireworks with no changes needed.
+    A dataset is JSONL: one JSON object per line, from 3 to 3 million lines. Each object has a `messages` array and may have a `tools` array of OpenAI function definitions. There is no weight on the example itself.
 
-    Datasets must be in JSONL format, where each line represents a complete JSON-formatted training example. Make sure your data conforms to the following restrictions:
+    Each message is an object:
 
-    * **Minimum examples:** 3
-    * **Maximum examples:** 3 million per dataset
-    * **File format:** `.jsonl`
-    * **Message schema:** Each training sample must include a messages array, where each message is an object with two fields:
-      * `role`: one of `system`, `user`, or `assistant`. A message with the `system` role is optional, but if specified, it must be the first message of the conversation
-      * `content`: the message content. This can be either a plain string **or** a list of content parts in the OpenAI chat completions style, e.g. `[{"type": "text", "text": "..."}]`. Both forms are accepted, and you can mix them freely across messages and even within the same dataset
-      * `weight`: optional key with value to be configured in either 0 or 1. message will be skipped if value is set to 0
-    * **Sample weight:** Optional key `weight` at the root of the JSON object. It can be any floating point number (positive, negative, or 0) and is used as a loss multiplier for tokens in that sample. If used, this field must be present in all samples in the dataset.
+    * `role`: `system`, `user`, `assistant`, or `tool`
+    * `content`: a string, or a list of parts. A text part is `{"type": "text", "text": "..."}`. A thinking part is `{"type": "thinking", "thinking": "..."}`. One text part is the same as a string. Several parts stay separate through the chat template. Image parts are under [Vision training](#vision-training).
+    * `tool_calls`: optional on an assistant message, and enough on its own when `content` is omitted. Use `{"type": "function", "function": {"name": "...", "arguments": ...}}`, where `arguments` is a JSON object or a JSON string. `{"name": "...", "args": {...}}` is also accepted.
+    * `weight`: optional number on a message. `0` excludes that message from the loss. Any other number trains it. `trainable` is a boolean for the same switch and wins when both are set.
 
-    Here is an example conversation dataset:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the capital of France?"},
-        {"role": "assistant", "content": "Paris."}
-      ]
-    }
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "weight": 0},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4"}
-      ]
-    }
-    ```
-
-    #### OpenAI-style structured content
-
-    In addition to plain strings, `content` may also be a list of content parts following the OpenAI chat completions format. For text training, use `{"type": "text", "text": "..."}` parts. This is convenient if you already produce data in the OpenAI chat completions shape, or if you generate datasets with the OpenAI SDK. The string form and the list form are equivalent for text models, and you can mix them within the same file (and even within the same conversation):
-
-    ```json theme={null}
-    {"messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": [{"type": "text", "text": "What is the capital of France?"}]}, {"role": "assistant", "content": [{"type": "text", "text": "Paris."}]}]}
-    {"messages": [{"role": "user", "content": [{"type": "text", "text": "What is 1+1?"}]}, {"role": "assistant", "content": [{"type": "text", "text": "2"}], "weight": 0}, {"role": "user", "content": "Now what is 2+2?"}, {"role": "assistant", "content": "4"}]}
-    {"messages": [{"role": "user", "content": [{"type": "text", "text": "Say hello "}, {"type": "text", "text": "in French."}]}, {"role": "assistant", "content": "Bonjour."}]}
-    ```
-
-    <Note>
-      All keys you can use with the string form — including the per-message `weight` and `reasoning_content` — work the same way with the list form. When a single message contains multiple text parts (as in the third example above), the parts are concatenated when the chat template is applied. For text-only training, only `{"type": "text", ...}` parts are used; image parts are reserved for [vision training](/fine-tuning/fine-tuning-models#vision-training).
-    </Note>
-
-    Here is an example conversation dataset with sample weights:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the capital of France?"},
-        {"role": "assistant", "content": "Paris."}
-      ],
-      "weight": 0.5
-    }
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "weight": 0},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4"}
-      ],
-      "weight": 1.0
-    }
-    ```
-
-    We also support function calling dataset with a list of tools. An example would look like:
-
-    ```json theme={null}
-    {
-      "tools": [
-        {
-          "type": "function",
-          "function": {
-            "name": "get_car_specs",
-            "description": "Fetches detailed specifications for a car based on the given trim ID.",
-            "parameters": {
-              "trimid": {
-                "description": "The trim ID of the car for which to retrieve specifications.",
-                "type": "int",
-                "default": ""
-              }
-            }
-          }
-        },
-    ],
-      "messages": [
-        {
-          "role": "user",
-          "content": "What is the specs of the car with trim 121?"
-        },
-        {
-          "role": "assistant",
-          "tool_calls": [
-            {
-              "type": "function",
-              "function": {
-                "name": "get_car_specs",
-                "arguments": "{\"trimid\": 121}"
-              }
-            }
-          ]
-        }
-      ]
-    }
-    ```
-
-    #### Thinking traces
-
-    For managed supervised fine-tuning (SFT), you can include thinking traces for assistant turns in `reasoning_content`. Thinking traces are optional, but ideally each assistant turn includes one. For example:
-
-    ```json theme={null}
-    {
-      "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the capital of France?"},
-        {"role": "assistant", "content": "Paris.", "reasoning_content": "The user is asking about the capital city of France, it should be Paris."}
-      ]
-    }
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "weight": 0, "reasoning_content": "The user is asking about the result of 1+1, the answer is 2."},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "The user is asking about the result of 2+2, the answer should be 4."}
-      ]
-    }
-    ```
-
-    How earlier thinking appears in later training contexts depends on the base model and its thinking-history mode. This is separate from enabling or disabling thinking generation. Some models offer both Interleaved and Preserved history, some have one fixed mode, and DeepSeek V4 derives its behavior from whether each dataset row declares tools.
+    A `tool` message returns a tool result and should set `tool_call_id`. Assistant thinking can also be a string field, `thinking`, `reasoning`, or `reasoning_content`. When more than one is set, `thinking` is used, then a non-empty `reasoning`, then a non-empty `reasoning_content`. Whether earlier thinking remains in later turns depends on the base model.
 
     <Card title="Thinking history in training" icon="brain" href="/fine-tuning/thinking-history">
       Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
     </Card>
+
+    ```json theme={null}
+    {"tools": [{"type": "function", "function": {"name": "get_car_specs", "parameters": {"type": "object", "properties": {"trimid": {"type": "integer"}}}}}],
+     "messages": [
+       {"role": "user", "content": "Specs for trim 121?"},
+       {"role": "assistant", "reasoning_content": "Look up the trim.", "tool_calls": [
+         {"id": "call_1", "type": "function", "function": {"name": "get_car_specs", "arguments": "{\"trimid\": 121}"}}
+       ]},
+       {"role": "tool", "tool_call_id": "call_1", "content": "{\"horsepower\": 300}"},
+       {"role": "assistant", "content": "300 hp.", "weight": 1}
+     ]}
+    ```
   </Step>
 
   <Step title="Upload a dataset">
@@ -7154,40 +7043,15 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 
 ## Vision training
 
-Vision-language SFT uses the same managed job flow as text SFT with multimodal content in `messages`. Confirm VLM support and training shapes in the live [Models](/fine-tuning/models) matrix because modality, method, and shape eligibility are model-specific.
+Vision SFT uses the same `messages` JSONL. Put image parts on `user` messages. Some vision renderers also allow them on `tool` messages. `system` and `assistant` messages cannot contain images. Encode each image as a `data:image/<type>;base64,...` URI before upload, and keep the MIME type accurate (`image/jpeg`, `image/png`).
 
-Each message `content` is an array of text and `image_url` objects. Images must be base64 data URIs with a MIME type; raw HTTP image URLs are not supported in training datasets.
+These parts are the same image:
 
-```json theme={null}
-{
-  "messages": [
-    {
-      "role": "user",
-      "content": [
-        {"type": "text", "text": "What is shown?"},
-        {
-          "type": "image_url",
-          "image_url": {
-            "url": "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
-          }
-        }
-      ]
-    },
-    {
-      "role": "assistant",
-      "content": [{"type": "text", "text": "A red bicycle."}]
-    }
-  ]
-}
-```
+* `{"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,..."}}`
+* `{"type": "image_url", "image_url": "data:image/jpeg;base64,..."}`
+* `{"type": "image", "image": "data:image/jpeg;base64,..."}`
 
-Multiple images and multi-turn conversations use the same content-array shape. Keep the assistant response you want to train as the final message, upload the JSONL dataset, then create the managed SFT job with a VLM-capable base model.
-
-<Warning>
-  Download remote images and encode them before upload. Keep each MIME prefix accurate (`image/jpeg`, `image/png`, and so on), and validate the rendered sample before starting a paid job.
-</Warning>
-
-For Training API VLM loops, use a VLM-compatible training shape and the model's processor rather than a text-only tokenizer. The same Training API primitives support multimodal SFT, DPO, and RL datums. Start from the relevant cookbook recipe and verify processor output and loss masks before launch. Shape details: [Training Shapes](/fine-tuning/models#vision-and-multimodal-support).
+Confirm the base model in [Models](/fine-tuning/models). Training API VLM loops use these same parts: [Training Shapes](/fine-tuning/models#vision-and-multimodal-support).
 
 ## Debug SFT tokenization
 
@@ -7207,7 +7071,7 @@ Common fix: ensure assistant messages you intend to train have non-zero loss wei
 
 | What you see | Likely cause | What to do |
 | - | - | - |
-| Assistant answer tokens have `token_weights` of `0` | The assistant message has `weight: 0`, the sample has zero weight, or the job is configured to train on different content. | Check the original JSONL row and remove unintended weights. |
+| Assistant answer tokens have `token_weights` of `0` | That assistant message has `weight: 0` or `trainable: false`, or the job trains a different span. | Remove the unintended flag from the JSONL row. |
 | User or system tokens have positive `token_weights` | The row schema or training configuration is not representing roles as intended. | Verify every message has the correct `role`, and avoid putting assistant text in a `user` message. |
 | Expected text is missing from `decoded_tokens` | The source row may have been split, truncated, or rendered differently by the model chat template. | Check `split_index`, source line number, and the job's max context length. |
 | Extra special tokens appear around messages | The selected model renderer is adding chat template markers. | This is often expected. If the markers are wrong for your use case, check that the base model and dataset format match. |

@@ -78,10 +78,10 @@ Invalid Request
 {
   "balances": [
     {
-      "balance_id": "b7f3c9d2-4a1e-4f8b-9c3d-2e5a7f8b9c1d",
-      "amount": 1250.75,
-      "units": "USD",
-      "purchase_order_id": "PO-2024-04567"
+      "balance_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": 250.75,
+      "units": "usd",
+      "purchase_order_id": "PO-2024-00123"
     }
   ]
 }

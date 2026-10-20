@@ -217,7 +217,7 @@ Output whenever `sentiment=true` is used
 
 ```json
 {
-  "url": "https://example.com/audio/interview-episode1.mp3"
+  "url": "https://dpgr.am/spacewalk.txt"
 }
 ```
 
@@ -231,24 +231,24 @@ Output whenever `sentiment=true` is used
       "created": "2024-11-18T23:47:44.674Z",
       "language": "en",
       "summary_info": {
-        "model_uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "input_tokens": 350,
-        "output_tokens": 75
+        "model_uuid": "67875a7f-c7a1-4e6e-a1e4-9a8e3d5f2b1c",
+        "input_tokens": 512,
+        "output_tokens": 64
       },
       "sentiment_info": {
-        "model_uuid": "f1e2d3c4-b5a6-7890-cdef-1234567890ab",
-        "input_tokens": 350,
-        "output_tokens": 10
+        "model_uuid": "a3c2e1d4-b5f6-4e7a-8c9d-0e1f2a3b4c5d",
+        "input_tokens": 512,
+        "output_tokens": 32
       },
       "topics_info": {
-        "model_uuid": "123e4567-e89b-12d3-a456-426614174000",
-        "input_tokens": 350,
-        "output_tokens": 20
+        "model_uuid": "f1e2d3c4-b5a6-4789-abcd-ef0123456789",
+        "input_tokens": 512,
+        "output_tokens": 48
       },
       "intents_info": {
-        "model_uuid": "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
-        "input_tokens": 350,
-        "output_tokens": 15
+        "model_uuid": "9b8a7c6d-5e4f-3a2b-1c0d-ef9876543210",
+        "input_tokens": 512,
+        "output_tokens": 40
       }
     }
   },
@@ -256,52 +256,44 @@ Output whenever `sentiment=true` is used
     "summary": {
       "results": {
         "summary": {
-          "text": "This transcript highlights the significance of the first all-female spacewalk and honors the women pioneers who paved the way."
+          "text": "The summary of the text submitted."
         }
       }
     },
     "topics": {
-      "results": {
-        "topics": {
-          "segments": [
+      "segments": [
+        {
+          "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
+          "start_word": 32,
+          "end_word": 69,
+          "topics": [
             {
-              "end_word": 69,
-              "start_word": 32,
-              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
-              "topics": [
-                {
-                  "confidence_score": 0.91581345,
-                  "topic": "Spacewalk"
-                }
-              ]
+              "topic": "Spacewalk",
+              "confidence_score": 0.91581345
             }
           ]
         }
-      }
+      ]
     },
     "intents": {
-      "results": {
-        "intents": {
-          "segments": [
+      "segments": [
+        {
+          "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.",
+          "start_word": 354,
+          "end_word": 414,
+          "intents": [
             {
-              "end_word": 414,
-              "intents": [
-                {
-                  "confidence_score": 0.0038975573,
-                  "intent": "Encourage podcasting"
-                }
-              ],
-              "start_word": 354,
-              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app."
+              "intent": "Encourage podcasting",
+              "confidence_score": 0.0038975573
             }
           ]
         }
-      }
+      ]
     },
     "sentiments": {
       "segments": [
         {
-          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it_signf",
+          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
           "start_word": 0,
           "end_word": 69,
           "sentiment": "positive",
@@ -324,7 +316,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/read"
 
-payload = { "url": "https://example.com/audio/interview-episode1.mp3" }
+payload = { "url": "https://dpgr.am/spacewalk.txt" }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -340,7 +332,7 @@ const url = 'https://api.deepgram.com/v1/read';
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"url":"https://example.com/audio/interview-episode1.mp3"}'
+  body: '{"url":"https://dpgr.am/spacewalk.txt"}'
 };
 
 try {
@@ -366,7 +358,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/read"
 
-	payload := strings.NewReader("{\n  \"url\": \"https://example.com/audio/interview-episode1.mp3\"\n}")
+	payload := strings.NewReader("{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -396,7 +388,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"url\": \"https://example.com/audio/interview-episode1.mp3\"\n}"
+request.body = "{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -409,7 +401,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/read")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"url\": \"https://example.com/audio/interview-episode1.mp3\"\n}")
+  .body("{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}")
   .asString();
 ```
 
@@ -421,7 +413,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/read', [
   'body' => '{
-  "url": "https://example.com/audio/interview-episode1.mp3"
+  "url": "https://dpgr.am/spacewalk.txt"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -439,7 +431,7 @@ var client = new RestClient("https://api.deepgram.com/v1/read");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"url\": \"https://example.com/audio/interview-episode1.mp3\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -450,7 +442,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = ["url": "https://example.com/audio/interview-episode1.mp3"] as [String : Any]
+let parameters = ["url": "https://dpgr.am/spacewalk.txt"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -73,10 +73,10 @@ Invalid Request
 
 ```json
 {
-  "balance_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "amount": 1250.75,
-  "units": "USD",
-  "purchase_order_id": "PO-20240615-98765"
+  "balance_id": "123456-7890-1234-5678-901234",
+  "amount": 250,
+  "units": "usd",
+  "purchase_order_id": "PO-2024-789012"
 }
 ```
 

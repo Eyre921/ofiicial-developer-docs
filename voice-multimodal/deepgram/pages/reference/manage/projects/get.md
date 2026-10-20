@@ -78,7 +78,7 @@ Invalid Request
 {
   "project_id": "123456-7890-1234-5678-901234",
   "mip_opt_out": false,
-  "name": "Acme Corp Voice Analytics"
+  "name": "My Transcription Project"
 }
 ```
 

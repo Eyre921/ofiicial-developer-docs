@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/agents/branches/update
 PATCH https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}
 Content-Type: application/json
 
-Update agent branch properties such as archiving status, protection level, and auto-rebase onto main
+Update agent branch properties such as name, description, archiving status, protection level, and auto-rebase onto main
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update
 
@@ -35,6 +35,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branche
 This endpoint expects an object.
 
 - `name` (string, optional) — New name for the branch. Must be unique within the agent.
+- `description` (string, optional) — New description for the branch. Pass an empty string to clear it.
 - `is_archived` (boolean, optional) — Whether the branch should be archived
 - `protection_status` (enum, optional, default: writer_perms_required) — The protection level for the branch
   - Allowed values: `writer_perms_required`, `admin_perms_required`

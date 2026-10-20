@@ -75,10 +75,10 @@ Invalid Request
 ```json
 {
   "variable_id": "v1a2b3c4-d5e6-7890-abcd-ef1234567890",
-  "key": "welcome_message",
-  "value": "Welcome to Deepgram! How can I assist you today?",
+  "key": "GREETING_MESSAGE",
+  "value": "Hello! How can I assist you today?",
   "created_at": "2024-01-15T09:30:00Z",
-  "updated_at": "2024-01-15T09:30:00Z"
+  "updated_at": "2024-03-22T14:45:00Z"
 }
 ```
 

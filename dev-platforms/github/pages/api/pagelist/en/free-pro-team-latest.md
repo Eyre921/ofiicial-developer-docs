@@ -887,6 +887,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-dependabot-alerts
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-malware-alerts
+/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/protecting-endpoints-with-package-firewall
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-security-updates
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-version-updates
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/manage-innersource-advisories

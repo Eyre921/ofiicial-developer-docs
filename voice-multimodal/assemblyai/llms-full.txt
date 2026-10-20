@@ -9536,6 +9536,8 @@ After you've submitted a file for transcription, your transcript has one of the 
 | `completed`  | The transcription has completed successfully.      |
 | `error`      | An error occurred while processing the audio file. |
 
+Requests to `GET /v2/transcript/{transcript_id}` are limited to 60 per minute for each API key and transcript combination. If you exceed this limit, the API returns a `429` response with a `Retry-After` header. To get notified when a transcript is ready without polling, use [webhooks](/pre-recorded-audio/webhooks). See [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit) for details.
+
 ## Handling errors
 
 If the transcription fails, the status of the transcript is `error`, and the transcript includes an `error` property explaining what went wrong.
@@ -12001,6 +12003,19 @@ If your account balance goes below zero, your rate limit will be reduced to 1.
 ## HTTP rate limits
 
 In addition to the parallel-job rate limit, there is an HTTP rate limit for the API that restricts accounts to a maximum of 20,000 requests per five minutes. This limit counts all requests across endpoints — submissions (POST) and polling (GET) combined — and exceeding it returns an HTTP `403`. To stay under it, use [webhooks](/pre-recorded-audio/webhooks) instead of frequent polling, or widen and jitter your polling interval. See [Polling without exceeding the rate limit](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale#polling-without-exceeding-the-rate-limit) for a worked example.
+
+## Transcript polling limit
+
+`GET /v2/transcript/{transcript_id}` requests are limited to 60 requests per minute for each combination of API key and transcript ID. This limit applies on top of the HTTP rate limit, and it only counts repeated requests for the same transcript. Requests for different transcripts don't count toward each other's limit.
+
+If you exceed the limit, the API returns an HTTP `429` response. The response includes a `Retry-After` header with the number of seconds to wait before you poll that transcript again.
+
+To avoid hitting this limit:
+
+- Use [webhooks](/pre-recorded-audio/webhooks) to get notified when a transcript is ready instead of polling.
+- If you poll, wait at least a few seconds between requests for the same transcript.
+- Make one request at a time for a given transcript. Don't send concurrent requests for the same transcript ID.
+- When you receive a `429`, wait for the duration in the `Retry-After` header before retrying.
 
 ## Check your limit
 
@@ -19888,7 +19903,7 @@ Below is a summary of the HTTP response codes you may encounter:
 | 401           | Unauthorized      | Missing or invalid API key.                       |
 | 403           | Forbidden         | You don't have access to the requested resource.  |
 | 404           | Not found         | The requested resource doesn't exist.             |
-| 429           | Too many requests | Too many requests were sent to the API.           |
+| 429           | Too many requests | Too many requests were sent to the API. For example, more than 60 requests per minute to `GET /v2/transcript/{transcript_id}` for the same transcript. Wait for the number of seconds in the `Retry-After` header before retrying. |
 | 500, 503, 504 | Server error      | Something went wrong on AssemblyAI's end.         |
 
 ```json title="Response with error"
@@ -46939,6 +46954,7 @@ config = aai.DictationConfig(
     stt_prompt="A doctor dictating a patient visit note.",
     keyterms_prompt=["amoxicillin", "lisinopril"],
     llm_instruction="Rewrite as a concise clinical chart note.",
+    rewrite_mode="fast",
 )
 
 result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
@@ -46950,7 +46966,7 @@ in [Using the HTTP API directly](#using-the-http-api-directly).
 
 ### Config parameters
 
-Every field except `llm_instruction` controls transcription. `llm_instruction` customizes the transcript rewrite, which is applied by default — see [Rewriting the transcript](#rewriting-the-transcript).
+Every field except `llm_instruction` and `rewrite_mode` controls transcription. Those two customize the transcript rewrite, which is applied by default — see [Rewriting the transcript](#rewriting-the-transcript).
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -46960,6 +46976,7 @@ Every field except `llm_instruction` controls transcription. `llm_instruction` c
 | `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
 | `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
 | `llm_instruction` | string | Plain-English description of the rewrite you want. Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
+| `rewrite_mode` | string | Model tier that runs the rewrite: `fast` (the default) or `smart`, which follows detailed formatting instructions more reliably but has higher latency. See [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode). |
 
 Unknown fields are rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
 
@@ -47680,6 +47697,29 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
+## Choosing a rewrite mode
+
+`rewrite_mode` picks the model tier that runs the rewrite:
+
+| `rewrite_mode` | Use it for |
+|---|---|
+| `fast` (default) | The default cleanup task and short, simple instructions, at the lowest latency |
+| `smart` | Detailed formatting instructions that `fast` doesn't follow reliably, such as [spoken punctuation](#example-spoken-punctuation). The rewrite has higher latency. |
+
+```json
+{ "rewrite_mode": "smart", "llm_instruction": "Turn this into a bulleted list of action items." }
+```
+
+Any other value is rejected with `400`. Over HTTP it goes in the `config` part
+of the request:
+
+```bash
+curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -F 'config={"rewrite_mode": "smart", "llm_instruction": "Turn this into a bulleted list of action items."};type=application/json' \
+  -F 'audio=@clip.wav;type=audio/wav'
+```
+
 ## Writing a good instruction
 
 Describe only the transformation. Rules about output format, refusing to answer
@@ -47698,6 +47738,36 @@ Some instructions that work well:
 - `"Rewrite as a short, friendly booking confirmation addressed to the client."`
 - `"Turn this into a bulleted list of action items."`
 - `"Rewrite as a concise clinical chart note."`
+
+### Example: spoken punctuation
+
+Some users dictate punctuation and formatting aloud: "Do you want to get
+lunch together question mark it's been too long exclamation point". This instruction
+turns those spoken commands into the punctuation they name. Pair it with
+`"rewrite_mode": "smart"`, which follows a list of rules like this more
+reliably than `fast`.
+
+```text
+You will be given a raw dictation transcript in which punctuation, capitalization, and formatting are stated aloud as literal spoken commands instead of being applied automatically. Rewrite it into final formatted text by replacing each spoken command as follows, leaving every other word exactly as given:
+
+- 'comma' -> ','
+- 'period' -> '.'
+- 'question mark' -> '?'
+- 'exclamation point' -> '!'
+- 'colon' -> ':'
+- 'semicolon' -> ';'
+- 'all caps <word>' -> uppercase that one word; 'all caps <word> ... end caps' -> uppercase the whole span between them
+- 'cap <word>' -> capitalize just the first letter of that word
+- 'new paragraph' -> start a new paragraph
+- 'new line' -> start a new line
+- 'open quote' ... 'close quote' -> wrap the enclosed text in double quotes
+- 'open parenthesis' ... 'close parenthesis' -> wrap the enclosed text in parentheses
+- 'hyphen' -> join the surrounding words with a hyphen
+- 'apostrophe s' -> attach a possessive 's directly to the previous word
+- Spoken numbers stay spelled out as words -- never convert them to digits.
+
+Every spoken command word above (comma, period, question mark, exclamation point, colon, semicolon, all caps, cap, new paragraph, new line, open/close quote, open/close parenthesis, hyphen, apostrophe s) is an INSTRUCTION, never content -- it must never appear literally in your output. Do not add, remove, reorder, or rephrase any other word.
+```
 
 ## The transcript is always preserved
 
@@ -81081,6 +81151,8 @@ paths:
       description: |
         <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
         Get the transcript resource. The transcript is ready when the "status" is "completed".
+
+        Requests to this endpoint are limited to 60 per minute for each API key and transcript combination. If you exceed this limit, the API returns a `429` response with a `Retry-After` header that indicates how many seconds to wait before retrying. To avoid polling, use [webhooks](/pre-recorded-audio/webhooks).
       parameters:
         - name: transcript_id
           x-label: Transcript ID

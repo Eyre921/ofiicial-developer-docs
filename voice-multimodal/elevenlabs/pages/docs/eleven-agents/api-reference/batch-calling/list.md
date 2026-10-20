@@ -102,6 +102,15 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 - `mode` (enum, optional, default: enable) — How thorough the detection should be. `enable` returns a verdict as soon as Twilio can tell a human from a machine. `detect_message_end` also waits for the voicemail greeting to finish, which is what produces the `machine_end_*` verdicts, but returns a result later.
   - Allowed values: `enable`, `detect_message_end`
+- `actions` (list of TwilioMachineDetectionRule, optional) — Actions to take on the call per AMD verdict. Each action can appear in at most one rule, so list all of its verdicts together. Verdicts without a rule leave the call running.
+
+### TwilioMachineDetectionRule
+
+Action to take on a live call for the given AMD verdicts.
+
+- `action` ("hang_up", required)
+- `answered_by` (list of enum, required) — Verdicts that trigger the action.
+  - Allowed values: `human`, `fax`, `unknown`, `machine_start`, `machine_end_beep`, `machine_end_silence`, `machine_end_other`
 
 ## Examples
 

@@ -69,7 +69,7 @@ Invalid Request
 
 ```json
 {
-  "message": "Project 123456-7890-1234-5678-901234 has been successfully deleted."
+  "message": "Project deleted successfully."
 }
 ```
 

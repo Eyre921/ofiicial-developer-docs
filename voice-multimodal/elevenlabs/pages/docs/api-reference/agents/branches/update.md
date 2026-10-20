@@ -11,7 +11,7 @@ path: docs/api-reference/agents/branches/update
 PATCH https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}
 Content-Type: application/json
 
-Update agent branch properties such as archiving status, protection level, and auto-rebase onto main
+Update agent branch properties such as name, description, archiving status, protection level, and auto-rebase onto main
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/branches/update
 
@@ -35,6 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/branches/update
 This endpoint expects a Body_Update_agent_branch_v1_convai_agents__agent_id__branches__branch_id__patch.
 
 - `name` (string, optional, nullable) — New name for the branch. Must be unique within the agent.
+- `description` (string, optional, nullable) — New description for the branch. Pass an empty string to clear it.
 - `is_archived` (boolean, optional, nullable) — Whether the branch should be archived
 - `protection_status` (enum, optional, nullable, default: writer_perms_required) — The protection level for the branch
   - Allowed values: `writer_perms_required`, `admin_perms_required`
@@ -133,8 +134,8 @@ Validation Error
   "name": "feature/improved-greeting-flow",
   "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
   "description": "Branch for testing improved greeting and onboarding conversation flow",
-  "created_at": 1710505800,
-  "last_committed_at": 1710592200,
+  "created_at": 1718000000,
+  "last_committed_at": 1718086400,
   "is_archived": false,
   "protection_status": "writer_perms_required",
   "auto_rebase": true,
@@ -145,7 +146,7 @@ Validation Error
     "role": "admin",
     "access_source": "creator"
   },
-  "current_live_percentage": 25,
+  "current_live_percentage": 15.5,
   "parent_branch": {
     "id": "agtbranch_main01k4aafjxxfxt93gd841r7tv5t",
     "name": "main"
@@ -155,9 +156,9 @@ Validation Error
       "id": "agtver_1201k4aafjxxfxt93gd841r7tv5t",
       "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
       "branch_id": "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-      "version_description": "Updated greeting prompt to be more conversational and friendly",
+      "version_description": "Updated greeting prompt and added fallback responses for unrecognized intents",
       "seq_no_in_branch": 3,
-      "time_committed_secs": 1710592200,
+      "time_committed_secs": 1718086400,
       "parents": {
         "in_branch_parent_id": "agtver_1101k4aafjxxfxt93gd841r7tv5t",
         "out_of_branch_parent_id": "agtver_main01k4aafjxxfxt93gd841r7tv5t",
