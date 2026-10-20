@@ -6,23 +6,17 @@ path: seps/2484-conformance-tests-required-for-final-seps
 
 Require Conformance Tests for Standards Track SEPs to Reach Final Status
 
-<div>
-  <Badge>
-    Final
-  </Badge>
+Final
 
-  <Badge>
-    Process
-  </Badge>
-</div>
+Process
 
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
 
 | Field | Value |
 | - | - |

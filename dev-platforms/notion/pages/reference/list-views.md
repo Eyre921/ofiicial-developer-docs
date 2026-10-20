@@ -9,11 +9,11 @@ List all views in a database.
 
 Returns a paginated list of [View](/reference/view) references for the specified database.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

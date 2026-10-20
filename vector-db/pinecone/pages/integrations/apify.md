@@ -12,4 +12,4 @@ For example, the [Website Content Crawler](https://apify.com/apify/website-conte
 
 The Apify integration for Pinecone transfers results from Actors to a Pinecone index, so you can use data extracted from the web for retrieval-augmented generation (RAG) or semantic search.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.apify.com/platform/integrations/pinecone)

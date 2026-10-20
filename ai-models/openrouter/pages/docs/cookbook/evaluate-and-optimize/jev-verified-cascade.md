@@ -22,16 +22,16 @@ You'll write three functions. `draftAnswer` asks a model for an answer from the 
 
 On the 50-question benchmark in the worked example below, the cascade shipped the same zero wrong answers as running Astra on every question, at about 7% of the cost.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript app runs on Node.js or Bun.
-  * Your code makes OpenRouter chat completions using retrieved context.
-  * You've configured `OPENROUTER_API_KEY`.
-  * You have `@openrouter/sdk` installed.
-  * You've typed `process.env` through your runtime's type definitions.
-  * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) open for the verification endpoint.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript app runs on Node.js or Bun.
+> * Your code makes OpenRouter chat completions using retrieved context.
+> * You've configured `OPENROUTER_API_KEY`.
+> * You have `@openrouter/sdk` installed.
+> * You've typed `process.env` through your runtime's type definitions.
+> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) open for the verification endpoint.
 
 ## 1. Draft with the cheap model
 
@@ -74,9 +74,9 @@ async function draftAnswer(model: string, question: string, excerpts: string[]):
 }
 ```
 
-<Warning>
-  Every tier is paid. The cost per question is your cheap draft plus one Jev check. An escalated question adds a frontier call plus a second Jev check.
-</Warning>
+> [!WARNING]
+>
+> Every tier is paid. The cost per question is your cheap draft plus one Jev check. An escalated question adds a frontier call plus a second Jev check.
 
 ## 2. Verify the draft with one Decisions request
 
@@ -123,9 +123,9 @@ async function verifyAnswer(question: string, excerpts: string[], answer: string
 }
 ```
 
-<Info>
-  **Confidence.** Confidence is Jev's probability that the chosen label is correct. It ranges from 0 to 1 and appears only with `choice` and `score` answers. `probabilities` has one value per label. The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) marks both optional, so the code above defaults a missing confidence to `0`, which fails acceptance in step 3, and a missing probabilities object to `{}`.
-</Info>
+> [!NOTE]
+>
+> **Confidence.** Confidence is Jev's probability that the chosen label is correct. It ranges from 0 to 1 and appears only with `choice` and `score` answers. `probabilities` has one value per label. The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) marks both optional, so the code above defaults a missing confidence to `0`, which fails acceptance in step 3, and a missing probabilities object to `{}`.
 
 ## 3. Route on the verdict
 

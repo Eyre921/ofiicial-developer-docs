@@ -16,19 +16,17 @@ Use this guide when you want users to hold a button, ask your app a question out
 
 ## What you're building
 
-<Frame caption="The finished button in Chrome. Hold it, ask, release, and the answer plays back in about ten seconds; the wait while it thinks is shortened in this clip. The follow-up says only “it”, and the agent knows it means the sky.">
-  <video controls playsInline preload="none" poster="/assets/cookbook/audio/push-to-talk-button/push-to-talk-button-poster.jpg" className="w-full aspect-video rounded-xl" src="https://mintcdn.com/openrouter-d02e98a0/ROzvynXE-rUIH9Ae/assets/cookbook/audio/push-to-talk-button/push-to-talk-button.mp4?fit=max&auto=format&n=ROzvynXE-rUIH9Ae&q=85&s=0e9e4c9976de8a684adc452651aec172" data-path="assets/cookbook/audio/push-to-talk-button/push-to-talk-button.mp4" />
-</Frame>
+<video controls playsInline preload="none" poster="/assets/cookbook/audio/push-to-talk-button/push-to-talk-button-poster.jpg" src="https://mintcdn.com/openrouter-d02e98a0/ROzvynXE-rUIH9Ae/assets/cookbook/audio/push-to-talk-button/push-to-talk-button.mp4?fit=max&auto=format&n=ROzvynXE-rUIH9Ae&q=85&s=0e9e4c9976de8a684adc452651aec172" />
 
-<Accordion title="Transcript">
-  **You:** Why is the sky blue?
-
-  **Agent:** The sky looks blue because sunlight is made of many colors, and when it passes through the atmosphere, air molecules scatter the short blue wavelengths much more than the longer red ones. That scattered blue light reaches our eyes from every direction, so the whole sky glows blue. This effect is called Rayleigh scattering.
-
-  **You:** Why does it turn orange at sunset?
-
-  **Agent:** At sunset, sunlight has to travel through much more atmosphere before reaching your eyes, because the sun sits low on the horizon. Along that long path, most of the blue light gets scattered away, leaving the reds and oranges to dominate what you see.
-</Accordion>
+> **Transcript**
+>
+> **You:** Why is the sky blue?
+>
+> **Agent:** The sky looks blue because sunlight is made of many colors, and when it passes through the atmosphere, air molecules scatter the short blue wavelengths much more than the longer red ones. That scattered blue light reaches our eyes from every direction, so the whole sky glows blue. This effect is called Rayleigh scattering.
+>
+> **You:** Why does it turn orange at sunset?
+>
+> **Agent:** At sunset, sunlight has to travel through much more atmosphere before reaching your eyes, because the sun sits low on the horizon. Along that long path, most of the blue light gets scattered away, leaving the reds and oranges to dominate what you see.
 
 The button records the microphone while it is held down. When it is released, the browser posts the recording to one route on your server, which makes three OpenRouter calls in a row: `elevenlabs/scribe-v2` turns the speech into text, a chat model writes a short spoken answer, and `elevenlabs/eleven-v4-turbo` reads it out. The route returns the transcript, the answer, and the MP3, and the browser plays it. The API key stays on the server, and the browser keeps the conversation so follow-up questions work.
 
@@ -38,9 +36,9 @@ By the end, you will have:
 2. A hold-to-talk button that records, sends, and plays the reply.
 3. A conversation that remembers earlier turns.
 
-<Tip>
-  Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to add this push-to-talk button to your app.
-</Tip>
+> [!TIP]
+>
+> Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to add this push-to-talk button to your app.
 
 ## Before you start
 

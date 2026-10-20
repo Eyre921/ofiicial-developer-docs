@@ -12,4 +12,4 @@ The Pinecone connector for Estuary moves data from these systems to Pinecone and
 
 You can use Estuary's Pinecone connector for use cases like LLM-based search across your organization's data and recommendation systems. You can set it up in 5 minutes without engineering effort.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.estuary.dev/reference/Connectors/materialization-connectors/pinecone/)

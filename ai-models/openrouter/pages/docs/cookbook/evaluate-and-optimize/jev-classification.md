@@ -22,14 +22,14 @@ The following steps will help you build the question set up front, run the whole
 
 **Outcome:** Your app labels items with a category and a set of tags at a threshold you chose from data, stays inside the provider's rate limits, and logs cost per 1,000 items from `usage.cost`.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript app runs on Node.js or Bun as an ES module (step 3 uses top-level `await`), has `@types/node` or `@types/bun` for `process` and `fetch`, and keeps the items to classify in an array of strings named `posts`.
-  * You've configured `OPENROUTER_API_KEY` and have `zod` 4 installed, since this page imports it directly.
-  * You've followed the [Jev tutorial](/docs/guides/community/jev-tutorial) or read the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) once, so the `state` and `questions` request shape is familiar.
-  * Keep the [rate limits page](/docs/api_reference/limits) open for the status codes that step 3 retries.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript app runs on Node.js or Bun as an ES module (step 3 uses top-level `await`), has `@types/node` or `@types/bun` for `process` and `fetch`, and keeps the items to classify in an array of strings named `posts`.
+> * You've configured `OPENROUTER_API_KEY` and have `zod` 4 installed, since this page imports it directly.
+> * You've followed the [Jev tutorial](/docs/guides/community/jev-tutorial) or read the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) once, so the `state` and `questions` request shape is familiar.
+> * Keep the [rate limits page](/docs/api_reference/limits) open for the status codes that step 3 retries.
 
 ## 1. Build the label set as Jev questions
 
@@ -72,9 +72,9 @@ const questions = {
 };
 ```
 
-<Info>
-  Write each `noul` instruction as a yes-or-no question about the item and put the category definitions in the `choice` question's `criteria` rather than in its instruction text. Jev reads the item from `state`, so the question refers to `the post` and never repeats the text. If your categories might not cover every item, add an `other` entry to both `CATEGORIES` and `criteria`, since a `choice` always picks one of the options you list and the step 2 schema accepts only values from `CATEGORIES`. The six TweetTopic categories above cover every item in that dataset, so the captured run omits it.
-</Info>
+> [!NOTE]
+>
+> Write each `noul` instruction as a yes-or-no question about the item and put the category definitions in the `choice` question's `criteria` rather than in its instruction text. Jev reads the item from `state`, so the question refers to `the post` and never repeats the text. If your categories might not cover every item, add an `other` entry to both `CATEGORIES` and `criteria`, since a `choice` always picks one of the options you list and the step 2 schema accepts only values from `CATEGORIES`. The six TweetTopic categories above cover every item in that dataset, so the captured run omits it.
 
 ## 2. Classify one item with one Decisions request
 
@@ -161,9 +161,9 @@ async function classifyPost(post: string): Promise<Classified> {
 }
 ```
 
-<Warning>
-  Every call to `classifyPost` is a paid request. At the time of writing, Jev on OpenRouter costs \$0.042 per million input tokens with no output-token charge, and the current price is on the [model page](https://openrouter.ai/typesafe/jev-1.13). One kind of `402` is transient: when your running requests fill the [in-flight spending budget](/docs/api_reference/limits#in-flight-spending-budget), the body includes `limit_source: "openrouter_in_flight_budget"` and the code retries after `Retry-After`. Any other `402` means your credits or key limit ran out, so the item fails and `runBatch` stops the batch.
-</Warning>
+> [!WARNING]
+>
+> Every call to `classifyPost` is a paid request. At the time of writing, Jev on OpenRouter costs \$0.042 per million input tokens with no output-token charge, and the current price is on the [model page](https://openrouter.ai/typesafe/jev-1.13). One kind of `402` is transient: when your running requests fill the [in-flight spending budget](/docs/api_reference/limits#in-flight-spending-budget), the body includes `limit_source: "openrouter_in_flight_budget"` and the code retries after `Retry-After`. Any other `402` means your credits or key limit ran out, so the item fails and `runBatch` stops the batch.
 
 ## 3. Run the Jev batch concurrently within rate limits
 
@@ -293,9 +293,9 @@ function categoryAccuracyByBand(sample: Labeled[], results: Classified[]) {
 const bands = categoryAccuracyByBand(sample, sampleResults);
 ```
 
-<Info>
-  When a tag's precision stays low at every threshold, fix the question rather than the threshold. In the captured run, `celebrity` never passed 0.41 precision because its instruction, `Is the post about a celebrity or pop culture?`, overlaps with `music` and `film_tv`. Tighten the instruction or the criteria and re-run the sample before shipping that tag.
-</Info>
+> [!NOTE]
+>
+> When a tag's precision stays low at every threshold, fix the question rather than the threshold. In the captured run, `celebrity` never passed 0.41 precision because its instruction, `Is the post about a celebrity or pop culture?`, overlaps with `music` and `film_tv`. Tighten the instruction or the criteria and re-run the sample before shipping that tag.
 
 ## 5. Compute Jev cost per 1,000 items from returned usage
 

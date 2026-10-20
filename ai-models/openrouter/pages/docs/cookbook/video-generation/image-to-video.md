@@ -16,9 +16,9 @@ Use this guide when you need to add image-to-video generation where an image bec
 
 By the end, your implementation should submit an image-to-video job with `frame_images` and download the finished clip.
 
-<Tip>
-  For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
-</Tip>
+> [!TIP]
+>
+> For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 
 ## Before you start
 
@@ -29,9 +29,9 @@ You need:
 * A public HTTPS image URL available as `FIRST_FRAME_URL`
 * A model that supports `frame_images`, confirmed with `GET /api/v1/videos/models`
 
-<Tip>
-  If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
-</Tip>
+> [!TIP]
+>
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
@@ -39,9 +39,9 @@ Use the API reference pages as the source of truth for exact fields:
 * [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models)
 * [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README)
 
-<Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
-</Warning>
+> [!WARNING]
+>
+> Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 
 `frame_images` is for exact frame control. If you provide both `frame_images` and `input_references`, OpenRouter treats the request as image-to-video.
 

@@ -1347,14 +1347,14 @@ app.post("/connection_token", async (req, res) => {
   res.json({secret: connectionToken.secret});
 });
 app.post("/create_payment_intent", async (req, res) => {
-  // For Terminal payments, the 'payment_method_types' parameter must include
+  // For Terminal payments, the 'allowed_payment_method_types' parameter must include
   // 'card_present'.
   // To automatically capture funds when a charge is authorized,
   // set `capture_method` to `automatic`.
   const intent = await stripe.paymentIntents.create({
     amount: req.body.amount,
     currency: '{{TERMINAL_CURRENCY}}',
-    payment_method_types: [
+    allowed_payment_method_types: [
       '{{TERMINAL_PAYMENT_METHODS}}'
     ],
     capture_method: 'automatic',
@@ -1614,14 +1614,14 @@ post '/create_payment_intent' do
   content_type 'application/json'
   data = JSON.parse(request.body.read)
 
-  \# For Terminal payments, the 'payment_method_types' parameter must include
+  \# For Terminal payments, the 'allowed_payment_method_types' parameter must include
   # 'card_present'.
   # To automatically capture funds when a charge is authorized,
   # set `capture_method` to `automatic`.
   intent = $client.v1.payment_intents.create(
     amount: data['amount'],
     currency: '{{TERMINAL_CURRENCY}}',
-    payment_method_types: [
+    allowed_payment_method_types: [
       '{{TERMINAL_PAYMENT_METHODS}}'
     ],
     capture_method: 'automatic',
@@ -1815,14 +1815,14 @@ def register_reader():
 def secret():
   data = json.loads(flask.request.data)
 
-  \# For Terminal payments, the 'payment_method_types' parameter must include
+  \# For Terminal payments, the 'allowed_payment_method_types' parameter must include
   # 'card_present'.
   # To automatically capture funds when a charge is authorized,
   # set `capture_method` to `automatic`.
   intent = client.v1.payment_intents.create(params={
     'amount': data['amount'],
     'currency': '{{TERMINAL_CURRENCY}}',
-    'payment_method_types': [
+    'allowed_payment_method_types': [
       '{{TERMINAL_PAYMENT_METHODS}}'
     ],
     'capture_method': 'automatic',
@@ -1987,10 +1987,10 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   $intent = $stripe->paymentIntents->create([
     'amount' => $json_obj->amount,
     'currency' => '{{TERMINAL_CURRENCY}}',
-    'payment_method_types' => [
+    'allowed_payment_method_types' => [
       '{{TERMINAL_PAYMENT_METHODS}}'
     ],
-    'capture_method' => 'automic',
+    'capture_method' => 'automatic',
     'payment_method_options' => [
       'card_present' => [
         'capture_method' => 'manual_preferred'
@@ -2294,7 +2294,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
     [HttpPost]
     public ActionResult Post(PaymentIntentCreateRequest request)
     {
-      // For Terminal payments, the 'payment_method_types' parameter must include
+      // For Terminal payments, the 'allowed_payment_method_types' parameter must include
       // 'card_present'.
       // To automatically capture funds when a charge is authorized,
       // set `capture_method` to `automatic`.
@@ -2302,7 +2302,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
       {
           Amount = long.Parse(request.Amount),
           Currency = "{{TERMINAL_CURRENCY}}",
-          PaymentMethodTypes = new List<string>
+          AllowedPaymentMethodTypes = new List<string>
           {
             "{{TERMINAL_PAYMENT_METHODS}}"
           },
@@ -2666,14 +2666,14 @@ func handleCreate(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
 
   amount, _ := strconv.ParseInt(req.PaymentIntentAmount, 10, 64)
 
-  // For Terminal payments, the 'payment_method_types' parameter must include
+  // For Terminal payments, the 'allowed_payment_method_types' parameter must include
   // 'card_present'.
   // To automatically capture funds when a charge is authorized,
   // set `capture_method` to `automatic`.
   params := &stripe.PaymentIntentCreateParams{
     Amount: stripe.Int64(amount),
     Currency: stripe.String(string(stripe.Currency{{TERMINAL_CURRENCY}})),
-    PaymentMethodTypes: stripe.StringSlice([]string{
+    AllowedPaymentMethodTypes: stripe.StringSlice([]string{
       "{{TERMINAL_PAYMENT_METHODS}}",
     }),
     CaptureMethod: stripe.String("automatic"),
@@ -2955,7 +2955,7 @@ post("/create_location", (request, response) -> {
 
       PaymentIntentParams postBody = gson.fromJson(request.body(), PaymentIntentParams.class);
 
-      // For Terminal payments, the 'payment_method_types' parameter must include
+      // For Terminal payments, the 'allowed_payment_method_types' parameter must include
       // 'card_present'.
       // To automatically capture funds when a charge is authorized,
       // set `capture_method` to `automatic`.

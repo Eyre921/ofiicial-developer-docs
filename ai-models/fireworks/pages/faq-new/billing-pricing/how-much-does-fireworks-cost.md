@@ -6,9 +6,9 @@ path: faq-new/billing-pricing/how-much-does-fireworks-cost
 
 How Fireworks AI charges per token for serverless inference, per GPU time for on-demand deployments, and per training token for fine-tuning workloads.
 
-<Note>
-  Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
-</Note>
+> [!NOTE]
+>
+> Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 
 Fireworks AI uses a **usage-based pre-paid** billing system. You purchase credits, then usage is deducted based on:
 

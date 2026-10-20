@@ -87,7 +87,7 @@ npx trigger.dev@latest runs cancel run_abc123
 </ParamField>
 
 <ParamField type="--branch | -b">
-  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
+  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`. With `--env dev`, it defaults to the same [dev branch](/docs/deployment/dev-branches) as the dev command.
 </ParamField>
 
 ### Common options

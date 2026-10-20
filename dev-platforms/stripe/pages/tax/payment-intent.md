@@ -67,6 +67,7 @@ The address information that’s required to calculate tax [varies by customer c
 
 - **United States**: We require your customer’s postal code at a minimum. We recommend providing a full address for the most accurate tax calculation result.
 - **Canada**: We require your customer’s postal code or province.
+- **India**: We require your customer’s postal code or state.
 - **Other countries**: We only require your customer’s country code.
 
 ## Calculate tax [Server-side]

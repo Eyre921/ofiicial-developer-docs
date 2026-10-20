@@ -11,22 +11,20 @@ If a vector value is included, it will overwrite the previous value. If `set_met
 
 For guidance and examples, see [Update data](https://docs.pinecone.io/guides/manage-data/update-data).
 
-<RequestExample>
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/vectors/update" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "id": "id-3",
-          "values": [4.0, 2.0],
-          "setMetadata": {"type": "comedy"},
-          "namespace": "example-namespace"
-        }'
-  ```
-</RequestExample>
+curl "https://$INDEX_HOST/vectors/update" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "id": "id-3",
+        "values": [4.0, 2.0],
+        "setMetadata": {"type": "comedy"},
+        "namespace": "example-namespace"
+      }'
+```

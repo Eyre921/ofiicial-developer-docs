@@ -18,9 +18,9 @@ Source types allow you to directly attach a file upload, or create a meeting not
 
 For a file upload source, upload the media and wait until the [file upload](/reference/file-upload) has a status of `uploaded` before calling this endpoint. See [Uploading small files](/guides/data-apis/uploading-small-files) for the complete upload flow.
 
-<Note>
-  For a `.m4a` audio file, use the `audio/mp4` content type. WebM audio is not supported.
-</Note>
+> [!NOTE]
+>
+> For a `.m4a` audio file, use the `audio/mp4` content type. WebM audio is not supported.
 
 ### Processing status
 
@@ -30,9 +30,9 @@ By default, Notion starts summary generation after transcription. Set `options.k
 
 If you provide a `title` and enable summary generation, treat the title as provisional. Notion may replace it when processing completes.
 
-<Warning>
-  This endpoint is not idempotent. Retrying a request may create duplicate meeting notes blocks.
-</Warning>
+> [!WARNING]
+>
+> This endpoint is not idempotent. Retrying a request may create duplicate meeting notes blocks.
 
 ### Requirements
 

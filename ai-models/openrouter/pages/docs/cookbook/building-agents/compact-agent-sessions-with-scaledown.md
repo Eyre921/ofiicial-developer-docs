@@ -20,12 +20,12 @@ Summarize does one job: it reads one block of text and returns a summary. One ca
 
 **Outcome:** The history stays under budget however many times it's compacted. Facts from the summarized turns can still be recalled afterwards. The kept turns never start with an orphaned tool result, so the next model call isn't rejected, and a failed summarize call leaves the history as it was.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript agent loop runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and keeps its message history in an array you can rewrite between steps.
-  * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript agent loop runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and keeps its message history in an array you can rewrite between steps.
+> * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
 
 ## 1. Call Summarize
 
@@ -72,9 +72,9 @@ async function summarize(text: string): Promise<{ summary: string; usage: Usage 
 }
 ```
 
-<Warning>
-  Each `summarize` call is one paid request billed to your OpenRouter account at the [scaledown/summarize](https://openrouter.ai/scaledown/summarize) rate. In our run, compacting an 82k-character history took six calls and cost \$0.00087.
-</Warning>
+> [!WARNING]
+>
+> Each `summarize` call is one paid request billed to your OpenRouter account at the [scaledown/summarize](https://openrouter.ai/scaledown/summarize) rate. In our run, compacting an 82k-character history took six calls and cost \$0.00087.
 
 ## 2. Turn old messages into text
 

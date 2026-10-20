@@ -10,4 +10,4 @@ Fleak is a low-code platform for building, deploying, and managing data workflow
 
 By integrating Pinecone into Fleak, you can use your vector data to enrich your workflows without additional engineering overhead, for use cases like data-driven decision-making, analytics, and AI-driven insights.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.fleak.ai/workflowbuilder/nodes/pinecone_retrieval)

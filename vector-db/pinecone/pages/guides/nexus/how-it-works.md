@@ -10,9 +10,7 @@ Most RAG systems chop documents into chunks and hope the right ones surface at q
 
 At a high level, your data flows through connectors into contexts, tasks curate each context into knowledge, and agents query it through a single KnowQL interface:
 
-<img alt="Pinecone Nexus architecture: your data enters through connectors into a workspace of contexts and tasks, is curated into knowledge in a sandbox, then queried through KnowQL to serve your AI application." />
-
-<img alt="Pinecone Nexus architecture: your data enters through connectors into a workspace of contexts and tasks, is curated into knowledge in a sandbox, then queried through KnowQL to serve your AI application." />
+![Pinecone Nexus architecture: your data enters through connectors into a workspace of contexts and tasks, is curated into knowledge in a sandbox, then queried through KnowQL to serve your AI application.](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=da34c6e0db4cd6740f8575a0cf64dead)
 
 The rest of this page zooms into the two ideas that make that work: curated artifacts for retrieval, and answering with code.
 
@@ -20,9 +18,7 @@ The rest of this page zooms into the two ideas that make that work: curated arti
 
 Raw chunks are noisy. The same fact is scattered across pages, counts require reading everything, and relationships are implicit. Curation reorganizes the corpus into artifacts, which are condensed, typed units of knowledge, so retrieval gets a head start.
 
-<img alt="Raw chunks reorganized into curated artifacts" />
-
-<img alt="Raw chunks reorganized into curated artifacts" />
+![Raw chunks reorganized into curated artifacts](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/how-it-works-1-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=52b9ccf254dcd8a04c9498c26755a22e)
 
 * **Pre-computed, typed knowledge.** Curation produces artifacts by kind: summaries, topics, entities, events, per-doc and per-page units. Each is small, focused, and describes itself, so the right one is easy to retrieve.
 * **Structure for exact answers.** Structured artifact types become queryable tables, so "how many" and "list every…" questions get exact answers instead of a guess from prose.
@@ -32,9 +28,7 @@ Raw chunks are noisy. The same fact is scattered across pages, counts require re
 
 Curated artifacts are only half the story. At query time the model doesn't just stuff chunks into a prompt. It writes Python against a retrieval SDK to gather exactly the evidence it needs, then answers from that.
 
-<img alt="Question to generated retrieval code over artifacts to evidence to answer" />
-
-<img alt="Question to generated retrieval code over artifacts to evidence to answer" />
+![Question to generated retrieval code over artifacts to evidence to answer](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/queries-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=b562c8d591dbb06085e6a36831b6b393)
 
 * **The model orchestrates retrieval.** One turn can read artifacts off disk, run semantic and keyword search, walk the relationship graph, and query structured tables, composing several operations instead of a single top-k lookup.
 * **Only evidence enters the prompt.** Raw tool output stays in the code sandbox. Just the distilled evidence the agent selected reaches the model. That keeps context small and answers grounded, and every claim traces to a source.

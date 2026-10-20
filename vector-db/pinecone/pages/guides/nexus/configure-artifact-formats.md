@@ -70,75 +70,73 @@ Because the table is queryable, a `sqlite` type answers questions prose can't, l
 
 Put your artifact types in a context's manifest under `curate.artifacts.artifact_types`, then curate. The walkthrough below seeds the `Concept` and `Meeting Log` types, and you add more the same way. These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication).
 
-<Note>
-  Add at least one source to the context before you curate. See the [quickstart](/guides/nexus/quickstart) for creating a context and adding sources.
-</Note>
+> [!NOTE]
+>
+> Add at least one source to the context before you curate. See the [quickstart](/guides/nexus/quickstart) for creating a context and adding sources.
 
-<Steps>
-  <Step title="Write the manifest to the context">
-    Send the manifest when you create the context, or update an existing one with `PUT /contexts/{slug}`. This example seeds both a markdown type and a SQLite table at creation:
+**1. Write the manifest to the context**
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{
-        "slug": "board-minutes",
-        "name": "Board minutes",
-        "manifest": {
-          "curate": {
-            "artifacts": {
-              "enabled": true,
-              "artifact_types": [
-                { "name": "Concept", "kind": "topic", "scope": "corpus",
-                  "description": "A recurring concept or theme across the minutes." },
-                { "name": "Meeting Log", "kind": "entity", "scope": "corpus", "format": "sqlite",
-                  "description": "One row per meeting: body, date, and chair.",
-                  "columns": [
-                    { "name": "body", "type": "TEXT", "description": "The body that met." },
-                    { "name": "meeting_date", "type": "TEXT", "description": "ISO date, YYYY-MM-DD." },
-                    { "name": "chair", "type": "TEXT", "description": "Who chaired the meeting." }
-                  ],
-                  "natural_key": ["body", "meeting_date"] }
-              ]
-            }
-          }
+Send the manifest when you create the context, or update an existing one with `PUT /contexts/{slug}`. This example seeds both a markdown type and a SQLite table at creation:
+
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{
+    "slug": "board-minutes",
+    "name": "Board minutes",
+    "manifest": {
+      "curate": {
+        "artifacts": {
+          "enabled": true,
+          "artifact_types": [
+            { "name": "Concept", "kind": "topic", "scope": "corpus",
+              "description": "A recurring concept or theme across the minutes." },
+            { "name": "Meeting Log", "kind": "entity", "scope": "corpus", "format": "sqlite",
+              "description": "One row per meeting: body, date, and chair.",
+              "columns": [
+                { "name": "body", "type": "TEXT", "description": "The body that met." },
+                { "name": "meeting_date", "type": "TEXT", "description": "ISO date, YYYY-MM-DD." },
+                { "name": "chair", "type": "TEXT", "description": "Who chaired the meeting." }
+              ],
+              "natural_key": ["body", "meeting_date"] }
+          ]
         }
-      }'
-    ```
-  </Step>
+      }
+    }
+  }'
+```
 
-  <Step title="Curate the context">
-    Curation reads the sources and builds the artifacts your manifest defines. An empty body runs the first curate:
+**2. Curate the context**
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/contexts/board-minutes/curate" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{}'
-    ```
+Curation reads the sources and builds the artifacts your manifest defines. An empty body runs the first curate:
 
-    After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
-  </Step>
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts/board-minutes/curate" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{}'
+```
 
-  <Step title="Query across both formats">
-    A query reads both formats: the prose `Concept` artifacts semantically, and the `Meeting Log` table with SQL for exact answers.
+After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{"scope": ["board-minutes"], "ask": "How many meetings did each chair run this year?"}' \
-    | jq -r '.output[].content[].text'
-    ```
+**3. Query across both formats**
 
-    ```console Output theme={null}
-    Jordan Lee chaired 8 meetings, Priya Shah chaired 5, and Marcus Cole chaired 3.
-    ```
+A query reads both formats: the prose `Concept` artifacts semantically, and the `Meeting Log` table with SQL for exact answers.
 
-    The counts come from the `Meeting Log` table, so they're exact rather than estimated from prose.
-  </Step>
-</Steps>
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{"scope": ["board-minutes"], "ask": "How many meetings did each chair run this year?"}' \
+| jq -r '.output[].content[].text'
+```
+
+```console Output theme={null}
+Jordan Lee chaired 8 meetings, Priya Shah chaired 5, and Marcus Cole chaired 3.
+```
+
+The counts come from the `Meeting Log` table, so they're exact rather than estimated from prose.

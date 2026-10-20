@@ -27,9 +27,9 @@ We combine divergence testing with a suite of standard benchmarks.
 
 Divergence testing is supplemented with a suite of evolving benchmarks, checked against each model provider's own published or reproduced numbers, including side-by-side runs against the official API. These include AIME, GPQA, SWE-bench, Terminal-Bench, and DeepSWE, plus MMMU Pro and OCRBench for multimodal models.
 
-<Note>
-  Where our numbers diverge from a model card, we publish why. Deviations can occur when a benchmark harness assumes a decoding mode that differs from how the model is normally served.
-</Note>
+> [!NOTE]
+>
+> Where our numbers diverge from a model card, we publish why. Deviations can occur when a benchmark harness assumes a decoding mode that differs from how the model is normally served.
 
 ## What we test
 
@@ -83,9 +83,9 @@ for entry in response.choices[0].logprobs.content:
     print(entry.token, entry.logprob, entry.top_logprobs)
 ```
 
-<Tip>
-  `top_logprobs` is capped by the deployment's `--max-logprobs` limit, which is 5 by default. See [Querying text models](/guides/querying-text-models) for the full response format.
-</Tip>
+> [!TIP]
+>
+> `top_logprobs` is capped by the deployment's `--max-logprobs` limit, which is 5 by default. See [Querying text models](/guides/querying-text-models) for the full response format.
 
 ## Custom and dedicated precision
 
@@ -93,24 +93,22 @@ On a [dedicated deployment](/guides/ondemand-deployments), a precision profile c
 
 ## Related reading
 
-<CardGroup>
-  <Card title="Evaluating quantization" icon="chart-line" href="https://fireworks.ai/blog/fireworks-quantization">
-    How Fireworks evaluates quantization precisely and interpretably.
-  </Card>
+> **[Evaluating quantization](https://fireworks.ai/blog/fireworks-quantization)**
+>
+> How Fireworks evaluates quantization precisely and interpretably.
 
-  <Card title="GLM 5.3 Flash" icon="bolt" href="https://x.com/dzhulgakov/status/2093739346423947644">
-    Benchmark scores are not the only indicator of performance.
-  </Card>
+> **[GLM 5.3 Flash](https://x.com/dzhulgakov/status/2093739346423947644)**
+>
+> Benchmark scores are not the only indicator of performance.
 
-  <Card title="DeepSeek V4 Pro" icon="microscope" href="https://fireworks.ai/blog/deepseek-v4-pro-validating-frontier-models-for-production">
-    Validating frontier models for production.
-  </Card>
+> **[DeepSeek V4 Pro](https://fireworks.ai/blog/deepseek-v4-pro-validating-frontier-models-for-production)**
+>
+> Validating frontier models for production.
 
-  <Card title="Kimi K2.5" icon="ruler" href="https://fireworks.ai/blog/quality-first-with-kimi-k2p5">
-    The benchmark gap: what it takes to ship Kimi K2.5.
-  </Card>
+> **[Kimi K2.5](https://fireworks.ai/blog/quality-first-with-kimi-k2p5)**
+>
+> The benchmark gap: what it takes to ship Kimi K2.5.
 
-  <Card title="gpt-oss" icon="shield-check" href="https://fireworks.ai/blog/gpt-oss-on-fireworks-ai">
-    Quality first: how Fireworks is the go-to place for gpt-oss.
-  </Card>
-</CardGroup>
+> **[gpt-oss](https://fireworks.ai/blog/gpt-oss-on-fireworks-ai)**
+>
+> Quality first: how Fireworks is the go-to place for gpt-oss.

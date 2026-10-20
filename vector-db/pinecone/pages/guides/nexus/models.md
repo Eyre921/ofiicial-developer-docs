@@ -26,13 +26,13 @@ Nexus groups generation models into three tiers. Start with the default and adju
 
 The tiers are suggested defaults, not the whole catalog. In a context's **Query** tab, the model selector marks one suggested model per tier. Choose a tier to use its suggestion, or select any other model in the catalog instead. The query [trace](/guides/nexus/query-tracing) reports the tokens, latency, and cost behind each answer, so you can compare models on your own questions and settle on the one that fits.
 
-<Note>
-  In the invite-only Nexus trial, Pinecone fills the tiers from its managed catalog:
-
-  * **Standard**: Claude Sonnet 5
-  * **Light**: Gemini 3.5 Flash Lite
-  * **Pro**: Claude Opus 5
-</Note>
+> [!NOTE]
+>
+> In the invite-only Nexus trial, Pinecone fills the tiers from its managed catalog:
+>
+> * **Standard**: Claude Sonnet 5
+> * **Light**: Gemini 3.5 Flash Lite
+> * **Pro**: Claude Opus 5
 
 ## Curation models
 

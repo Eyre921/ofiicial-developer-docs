@@ -12,11 +12,9 @@ Use the [Assistant API](/guides/assistant/quickstart/sdk-quickstart) to upload d
 
 The following Pinecone SDKs support the Assistant API:
 
-<CardGroup>
-  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
+> **[Python SDK](/reference/sdks/python/overview)**
 
-  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
-</CardGroup>
+> **[Node.js SDK](/reference/sdks/node/overview)**
 
 ## Versioning
 

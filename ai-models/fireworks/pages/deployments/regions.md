@@ -12,15 +12,13 @@ Fireworks runs a global fleet so you can deploy models close to users, meet data
 
 By default, deployments are multi-region: Fireworks can move and spread them across regions as needed. Multi-regions (**GLOBAL**, **US**, **CANADA**, **EUROPE**, **APAC**) are high-level groupings of single regions. Your deployment may run in any single region(s) within that multi-region.
 
-<CardGroup>
-  <Card title="Flexible, elastic scaling" icon="gauge">
-    Utilizing multiple clouds and locations maximizes the odds that there's capacity to scale.
-  </Card>
+> **Flexible, elastic scaling**
+>
+> Utilizing multiple clouds and locations maximizes the odds that there's capacity to scale.
 
-  <Card title="Higher reliability" icon="shield-check">
-    Multi-region deployments enable resilience to localized outages, maintaining application availability as workloads scale across regions.
-  </Card>
-</CardGroup>
+> **Higher reliability**
+>
+> Multi-region deployments enable resilience to localized outages, maintaining application availability as workloads scale across regions.
 
 ### Supported multi-regions
 

@@ -10,13 +10,13 @@ Data residency restricts inference on your account to a single region. Once a re
 
 It does not change how your requests are routed. Turning it on will not move existing traffic into the region. This setting *enforces* all requests to be in the set region, and rejects the ones that are not.
 
-<Info>
-  **Enterprise feature.** Data residency is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
-</Info>
+> [!NOTE]
+>
+> **Enterprise feature.** Data residency is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
 
-<Info>
-  Only account **Admins** can change data residency. Other roles can view the current setting but cannot change it.
-</Info>
+> [!NOTE]
+>
+> Only account **Admins** can change data residency. Other roles can view the current setting but cannot change it.
 
 Residency applies **account-wide**: every API key on the account is restricted to the selected region.
 
@@ -24,8 +24,8 @@ Residency applies **account-wide**: every API key on the account is restricted t
 
 | Regional restrictions | API endpoint | Serverless | Dedicated deployments |
 | :- | :- | :- | :- |
-| None | <span><code>api.fireworks.ai</code></span> | Any model | Any region |
-| US | <span><code>us.api.fireworks.ai</code></span> | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
+| None | `api.fireworks.ai` | Any model | Any region |
+| US | `us.api.fireworks.ai` | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
 
 **None** is the default. For a region that is not listed, contact [sales](https://fireworks.ai/company/contact-us).
 
@@ -37,9 +37,9 @@ A residency change takes effect as soon as you save it, and anything that does n
 
 Point your clients at the region's API endpoint and change every request to use a model from that region. See [US-only Serverless](/serverless/us-only-serverless) for the US endpoint and model IDs.
 
-<Warning>
-  **`inference_geo` is deprecated** in favor of data residency. As you switch over, remove the `inference_geo` field from your request bodies and the `Fireworks-Inference-Geo` header from your requests.
-</Warning>
+> [!WARNING]
+>
+> **`inference_geo` is deprecated** in favor of data residency. As you switch over, remove the `inference_geo` field from your request bodies and the `Fireworks-Inference-Geo` header from your requests.
 
 ### Dedicated deployments
 

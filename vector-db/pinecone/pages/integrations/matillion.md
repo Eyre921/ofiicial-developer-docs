@@ -12,7 +12,7 @@ Matillion supports 150+ pre-built data source connectors, and you can build cust
 
 Matillion's graphical AI Prompt Components integrate with large language models (LLMs) running in OpenAI, Amazon Bedrock, Azure OpenAI, and Snowpark Container Services. They provide no-code lookup of external knowledge stored in Pinecone, so data engineers can enrich generative AI answers with contextual, proprietary data.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.matillion.com/data-productivity-cloud/designer/docs/pinecone-vector-upsert/)
 
 ## Resources
 

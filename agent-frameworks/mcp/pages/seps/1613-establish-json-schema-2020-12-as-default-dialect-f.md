@@ -6,23 +6,17 @@ path: seps/1613-establish-json-schema-2020-12-as-default-dialect-f
 
 Establish JSON Schema 2020-12 as Default Dialect for MCP
 
-<div>
-  <Badge>
-    Final
-  </Badge>
+Final
 
-  <Badge>
-    Standards Track
-  </Badge>
-</div>
+Standards Track
 
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
 
 | Field | Value |
 | - | - |

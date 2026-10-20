@@ -42,19 +42,17 @@ if (response.request_status?.type === "incomplete") {
 
 Because the limit is per query, you can change the query to get a fresh budget. Split the data source into windows by `created_time`: sort ascending, and each time a window hits the limit, start a new query from the last row's timestamp.
 
-<Steps>
-  <Step title="Sort by created_time ascending">
-    This gives every window a stable order to walk through.
-  </Step>
+**1. Sort by created\_time ascending**
 
-  <Step title="Page through the window">
-    Follow `next_cursor` until `has_more` is `false`. The limit also ends the window, because it sets `has_more` to `false`.
-  </Step>
+This gives every window a stable order to walk through.
 
-  <Step title="If the window was incomplete, start the next one">
-    Filter to `created_time` on or after the last row you saw, and repeat. Rows that share the boundary timestamp appear in both windows, so de-duplicate by row ID.
-  </Step>
-</Steps>
+**2. Page through the window**
+
+Follow `next_cursor` until `has_more` is `false`. The limit also ends the window, because it sets `has_more` to `false`.
+
+**3. If the window was incomplete, start the next one**
+
+Filter to `created_time` on or after the last row you saw, and repeat. Rows that share the boundary timestamp appear in both windows, so de-duplicate by row ID.
 
 Use `created_time`, not `last_edited_time`. `created_time` never changes, so windows stay stable. `last_edited_time` shifts as rows are edited, which moves rows between windows and causes gaps or duplicates.
 
@@ -140,9 +138,9 @@ function buildWindowFilter(
 }
 ```
 
-<Note>
-  The [SDK for JavaScript and TypeScript](https://github.com/makenotion/notion-sdk-js) includes `iterateAllDataSourceRows` and `collectAllDataSourceRows` helpers (v5.23.0 and later) that wrap this pattern, so you can stream or collect a full data source without writing the windowing loop yourself.
-</Note>
+> [!NOTE]
+>
+> The [SDK for JavaScript and TypeScript](https://github.com/makenotion/notion-sdk-js) includes `iterateAllDataSourceRows` and `collectAllDataSourceRows` helpers (v5.23.0 and later) that wrap this pattern, so you can stream or collect a full data source without writing the windowing loop yourself.
 
 ## When a window can't be split
 
@@ -178,9 +176,9 @@ const rows = await queryAllRows({
 // collection. Don't pass view.sorts to queryAllRows; it must control API sorts.
 ```
 
-<Note>
-  `buildWindowFilter` combines the view filter with the `created_time` lower bound using `and`. If a view has a top-level `or` filter, the sample throws. Run one windowed query per `or` branch and merge rows by ID, or rewrite the view filter as an `and` group, so the window bound does not exceed the API's filter nesting limit.
-</Note>
+> [!NOTE]
+>
+> `buildWindowFilter` combines the view filter with the `created_time` lower bound using `and`. If a view has a top-level `or` filter, the sample throws. Run one windowed query per `or` branch and merge rows by ID, or rewrite the view filter as an `and` group, so the window bound does not exceed the API's filter nesting limit.
 
 ## Related
 

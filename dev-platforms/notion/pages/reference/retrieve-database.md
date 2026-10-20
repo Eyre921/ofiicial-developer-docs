@@ -16,9 +16,7 @@ The most important fields in the database object response to highlight:
 
 To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
-<Frame>
-  <img alt="Notion database ID" />
-</Frame>
+![Notion database ID](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-2.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=3b244159a0dd487845b013fdfab22954)
 
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 

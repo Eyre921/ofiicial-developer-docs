@@ -8,12 +8,12 @@ Run the experimental async GRPO cookbook recipe with a custom rollout function w
 
 The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
-<Warning>
-  `async_rl_loop` is experimental. Its configuration and rollout protocol may
-  change without backward-compatibility shims. This page describes the current
-  Cookbook and its declared SDK dependencies; pin the Cookbook commit and SDK
-  version for reproducible workloads.
-</Warning>
+> [!WARNING]
+>
+> `async_rl_loop` is experimental. Its configuration and rollout protocol may
+> change without backward-compatibility shims. This page describes the current
+> Cookbook and its declared SDK dependencies; pin the Cookbook commit and SDK
+> version for reproducible workloads.
 
 For the shared serverless pool, use the experimental
 [`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).

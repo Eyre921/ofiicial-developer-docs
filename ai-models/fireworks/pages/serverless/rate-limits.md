@@ -37,15 +37,18 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
     <tr>
       <th>Tier</th>
       <th>Total parameters</th>
-      <th>Total<br />Prompt TPM</th>
-      <th>Uncached<br />Prompt TPM</th>
-      <th>Generated<br />TPM</th>
+      <th>Total\
+      Prompt TPM</th>
+      <th>Uncached\
+      Prompt TPM</th>
+      <th>Generated\
+      TPM</th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
-      <td><strong>Small</strong></td>
+      <td>**Small**</td>
       <td>\< 800B</td>
       <td>216M</td>
       <td>54M</td>
@@ -53,7 +56,7 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
     </tr>
 
     <tr>
-      <td><strong>Medium</strong></td>
+      <td>**Medium**</td>
       <td>800B – \< 1.6T</td>
       <td>43.2M</td>
       <td>10.8M</td>
@@ -61,7 +64,7 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
     </tr>
 
     <tr>
-      <td><strong>Large</strong></td>
+      <td>**Large**</td>
       <td>≥ 1.6T</td>
       <td>21.6M</td>
       <td>5.4M</td>
@@ -84,7 +87,7 @@ Models not listed here are tiered by total parameter count using the thresholds 
 
 Based on your usage, your adaptive limits will grow and shrink within these ceilings. If your traffic ramps up too quickly, you will get 429s.
 
-<img alt="kimi-k2p6 usage and rate limits" />
+![kimi-k2p6 usage and rate limits](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/serverless/ratelimit-example.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=c50f8e058fb94ba05c8d77e283a917c0)
 
 Your current limits for each model are in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless). See [Checking your current limit](#checking-your-current-limit).
 
@@ -155,27 +158,25 @@ The same limits are also returned in the [response headers](/serverless/overview
 
 ## FAQ
 
-<AccordionGroup>
-  <Accordion title="Am I guaranteed successful responses up to my rate limit?">
-    **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serverless-modes), which is prioritized during high load.
-  </Accordion>
+> **Am I guaranteed successful responses up to my rate limit?**
+>
+> **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serverless-modes), which is prioritized during high load.
 
-  <Accordion title="How are rate limits scoped?">
-    Rate limits are scoped **per account** and **per model**. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
-  </Accordion>
+> **How are rate limits scoped?**
+>
+> Rate limits are scoped **per account** and **per model**. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
 
-  <Accordion title="How is my model's ceiling tier determined?">
-    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 800B), **Medium** (800B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values and [Models by tier](#models-by-tier) for where each Serverless model falls.
-  </Accordion>
+> **How is my model's ceiling tier determined?**
+>
+> Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 800B), **Medium** (800B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values and [Models by tier](#models-by-tier) for where each Serverless model falls.
 
-  <Accordion title="What should I do first when I see 429s?">
-    First, try **exponential backoff** when retrying.
-  </Accordion>
+> **What should I do first when I see 429s?**
+>
+> First, try **exponential backoff** when retrying.
 
-  <Accordion title="How do I get higher limits sooner?">
-    Reach out to [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for a custom solution if either of these applies:
-
-    * **You need higher than the defaults from day one.** Your launch traffic exceeds the starting limit and you can't wait for the adaptive ramp.
-    * **You're ramping past the highest upper bound.** You are already at the highest account Spending Tier and the adaptive rate limits are not growing.
-  </Accordion>
-</AccordionGroup>
+> **How do I get higher limits sooner?**
+>
+> Reach out to [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for a custom solution if either of these applies:
+>
+> * **You need higher than the defaults from day one.** Your launch traffic exceeds the starting limit and you can't wait for the adaptive ramp.
+> * **You're ramping past the highest upper bound.** You are already at the highest account Spending Tier and the adaptive rate limits are not growing.

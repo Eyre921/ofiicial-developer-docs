@@ -21,75 +21,73 @@ The completions API provides raw text generation without automatic message forma
 
 ## Basic usage
 
-<Tabs>
-  <Tab title="Python (Fireworks SDK)">
-    ```python theme={null}
-    from fireworks import Fireworks
+**Python (Fireworks SDK)**
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.completions.create(
-      model="accounts/fireworks/models/glm-5p3-flash",
-      prompt="Once upon a time"
-    )
+client = Fireworks()
 
-    print(response.choices[0].text)
-    ```
-  </Tab>
+response = client.completions.create(
+  model="accounts/fireworks/models/glm-5p3-flash",
+  prompt="Once upon a time"
+)
 
-  <Tab title="Python (OpenAI SDK)">
-    ```python theme={null}
-    import os
-    from openai import OpenAI
+print(response.choices[0].text)
+```
 
-    client = OpenAI(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference/v1"
-    )
+**Python (OpenAI SDK)**
 
-    response = client.completions.create(
-        model="accounts/fireworks/models/glm-5p3-flash",
-        prompt="Once upon a time"
-    )
+```python theme={null}
+import os
+from openai import OpenAI
 
-    print(response.choices[0].text)
-    ```
-  </Tab>
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1"
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
+response = client.completions.create(
+    model="accounts/fireworks/models/glm-5p3-flash",
+    prompt="Once upon a time"
+)
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
+print(response.choices[0].text)
+```
 
-    const response = await client.completions.create({
-      model: "accounts/fireworks/models/glm-5p3-flash",
-      prompt: "Once upon a time",
-    });
+**JavaScript**
 
-    console.log(response.choices[0].text);
-    ```
-  </Tab>
+```javascript theme={null}
+import OpenAI from "openai";
 
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/fireworks/models/glm-5p3-flash",
-        "prompt": "Once upon a time"
-      }'
-    ```
-  </Tab>
-</Tabs>
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
 
-<Note>
-  Most models automatically prepend the beginning-of-sequence (BOS) token (e.g., `<s>`) to your prompt. Verify this with the `raw_output` parameter if needed.
-</Note>
+const response = await client.completions.create({
+  model: "accounts/fireworks/models/glm-5p3-flash",
+  prompt: "Once upon a time",
+});
+
+console.log(response.choices[0].text);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/models/glm-5p3-flash",
+    "prompt": "Once upon a time"
+  }'
+```
+
+> [!NOTE]
+>
+> Most models automatically prepend the beginning-of-sequence (BOS) token (e.g., `<s>`) to your prompt. Verify this with the `raw_output` parameter if needed.
 
 ## Custom prompt templates
 
@@ -143,16 +141,14 @@ response = client.completions.create(
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Chat Completions" href="/guides/querying-text-models" icon="messages">
-    Use chat completions for most use cases
-  </Card>
+> **[Chat Completions](/guides/querying-text-models)**
+>
+> Use chat completions for most use cases
 
-  <Card title="Streaming" href="/guides/querying-text-models#streaming-responses" icon="bolt">
-    Stream responses for real-time UX
-  </Card>
+> **[Streaming](/guides/querying-text-models#streaming-responses)**
+>
+> Stream responses for real-time UX
 
-  <Card title="API Reference" href="/api-reference/post-completions" icon="code">
-    Complete API documentation
-  </Card>
-</CardGroup>
+> **[API Reference](/api-reference/post-completions)**
+>
+> Complete API documentation

@@ -17,7 +17,7 @@ For **private repositories**, each GitHub account receives a quota of free minut
 * **Minutes:** Your free minutes reset to the full amount at the start of each billing cycle. Minutes usage is charged to the repository owner, not the person who triggered the workflow runs.
 * **Storage:** Storage charges accumulate throughout the month based on hourly usage. Your accrued storage charges reset to zero at the start of each billing cycle.
 
-> \[!TIP]
+> [!TIP]
 > Anyone with write access to a repository can run actions. Any costs of running the actions are billed to the repository owner.
 
 ### Copilot code review and GitHub Actions minutes
@@ -123,7 +123,7 @@ The use of standard GitHub-hosted runners is free:
 * For GitHub Pages
 * For Dependabot
 
-> \[!NOTE]
+> [!NOTE]
 >
 > * Larger runners are always charged for, even when used by public repositories or when you have quota available from your plan.
 > * The artifact storage amounts shown are **shared** with GitHub Packages. This means your total storage across Actions artifacts and GitHub Packages storage cannot exceed the included amount for your plan. Cache storage and custom image storage are separate allowances.
@@ -142,7 +142,7 @@ For GitHub-hosted runners, storage is billed based on hourly usage of artifacts 
 * To estimate costs for paid usage, use the GitHub [pricing calculator](https://github.com/pricing/calculator?feature=actions).
 * To view your current costs, see [Viewing your usage of metered products and licenses](/en/billing/how-tos/products/view-productlicense-use).
 
-> \[!NOTE]
+> [!NOTE]
 > The billing dashboard may show your Actions usage as a dollar amount ("spend") rather than raw minutes. This amount already reflects any applicable minute costs.
 
 ### Baseline minute costs
@@ -191,7 +191,7 @@ If you use 3 GB of artifact storage for 10 days of March and 12 GB for 21 days o
 
 At the end of the month, GitHub rounds your artifact storage to the nearest MB. Therefore, your artifact storage usage for March would be 9.097 GB.
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub updates your artifact storage usage within 6 to 12 hours. Deleting artifacts frees up space for current storage, but does not reduce your accrued storage usage, which is used to calculate your storage billing for the current billing cycle.
 
 ### Example cache storage cost calculation

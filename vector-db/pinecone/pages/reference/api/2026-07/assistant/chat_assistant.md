@@ -11,43 +11,41 @@ This is the recommended way to chat with an assistant, as it offers more functio
 
 For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io/guides/assistant/chat-with-assistant).
 
-<RequestExample>
-  ```bash curl | Default theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl | Default theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the inciting incident of Pride and Prejudice?"
-      }
-    ],
-    "stream": false,
-    "model": "gpt-4o"
-  }'
-  ```
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the inciting incident of Pride and Prejudice?"
+    }
+  ],
+  "stream": false,
+  "model": "gpt-4o"
+}'
+```
 
-  ```bash curl | Streaming theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl | Streaming theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the inciting incident of Pride and Prejudice?"
-      }
-    ],
-    "stream": true,
-    "model": "gpt-4o"
-  }'
-  ```
-</RequestExample>
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the inciting incident of Pride and Prejudice?"
+    }
+  ],
+  "stream": true,
+  "model": "gpt-4o"
+}'
+```

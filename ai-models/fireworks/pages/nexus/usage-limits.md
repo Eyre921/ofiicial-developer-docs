@@ -12,9 +12,9 @@ Set per-user spend caps for [supported serverless models](#supported-models). Fi
 
 Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under **Settings**.
 
-<Note>
-  Per-user usage limits are available on request — contact Fireworks to enable them. Only admins can change limits, and group limits additionally require [SCIM group sync](/accounts/sso#group-provisioning).
-</Note>
+> [!NOTE]
+>
+> Per-user usage limits are available on request — contact Fireworks to enable them. Only admins can change limits, and group limits additionally require [SCIM group sync](/accounts/sso#group-provisioning).
 
 ## Set defaults, group limits, and exceptions
 
@@ -26,9 +26,7 @@ Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under 
 
 A user override takes precedence. If there is no override, the highest limit among the user's assigned groups applies. If there are no group limits, the account default applies.
 
-<Frame>
-  <img alt="Setting a custom usage limit for one user" />
-</Frame>
+![Setting a custom usage limit for one user](https://mintcdn.com/fireworksai/3Wytiu2ff7ypB2uB/images/usage-limits/override-user-limit.gif?s=2a632a07599097895d6746764c74f198)
 
 ### Limit precedence
 
@@ -44,9 +42,9 @@ A user with no override, no group limit, and no account default has no cap. Use 
 
 A group limit is a reusable per-user cap. It does not create a shared group budget. The User Limits page calls these **limit options**.
 
-<Note>
-  On a $500 group limit, each member can spend up to $500. The members do not share \$500.
-</Note>
+> [!NOTE]
+>
+> On a $500 group limit, each member can spend up to $500. The members do not share \$500.
 
 `firectl` and the REST API call this resource a *group usage limit tier*.
 
@@ -154,16 +152,16 @@ firectl usage-limits group set platform-team --group-usage-limit-tier=contractor
 firectl usage-limits group unset platform-team
 ```
 
-<Note>
-  Every command accepts either a bare ID or a full resource name. For example:
-
-  ```bash wrap theme={null}
-  firectl usage-limits group set accounts/my-account/groups/platform-team \
-    --group-usage-limit-tier=accounts/my-account/groupUsageLimitTiers/contractors
-  ```
-
-  This is equivalent to the short form above.
-</Note>
+> [!NOTE]
+>
+> Every command accepts either a bare ID or a full resource name. For example:
+>
+> ```bash wrap theme={null}
+> firectl usage-limits group set accounts/my-account/groups/platform-team \
+>   --group-usage-limit-tier=accounts/my-account/groupUsageLimitTiers/contractors
+> ```
+>
+> This is equivalent to the short form above.
 
 ### Per-user
 

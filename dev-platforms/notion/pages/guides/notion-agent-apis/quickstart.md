@@ -6,9 +6,9 @@ path: guides/notion-agent-apis/quickstart
 
 Pick a Custom Agent, start a chat, and read its reply through the API.
 
-<Note>
-  This API is in public beta
-</Note>
+> [!NOTE]
+>
+> This API is in public beta
 
 ## Prerequisites
 
@@ -22,57 +22,51 @@ To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/
 
 Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection API token, described below.
 
-<Steps>
-  <Step>
-    Open <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal.
-  </Step>
+**Step 1**
 
-  <Step>
-    Select **New token**.
-  </Step>
+Open [Personal access tokens](https://www.notion.so/developers/tokens) in the Developer portal.
 
-  <Step>
-    Enter a name, select the **Notion API** capability, and then select **Create token**. That capability covers the Agents API — there is nothing else to enable.
-  </Step>
+**Step 2**
 
-  <Step>
-    Copy the token and save it somewhere secure. You won't be able to see it again.
-  </Step>
-</Steps>
+Select **New token**.
+
+**Step 3**
+
+Enter a name, select the **Notion API** capability, and then select **Create token**. That capability covers the Agents API — there is nothing else to enable.
+
+**Step 4**
+
+Copy the token and save it somewhere secure. You won't be able to see it again.
 
 **An internal connection API token to authenticate requests**
 
 You can instead use an internal connection API token. The connection can access only Custom Agents that are explicitly shared with it.
 
-<Steps>
-  <Step>
-    Open your connection in the <a href={developerConnectionsUrl}>Developer portal</a>.
-  </Step>
+**Step 1**
 
-  <Step>
-    In the **Configuration** tab, enable the **View sessions and interact with agents** capability.
-  </Step>
+Open your connection in the [Developer portal](https://app.notion.com/developers/connections).
 
-  <Step>
-    Open the **Agent access** tab and select the Custom Agent you want the connection to use.
-  </Step>
+**Step 2**
 
-  <Step>
-    Return to the **Configuration** tab, copy the **API token**, and save it somewhere secure.
-  </Step>
-</Steps>
+In the **Configuration** tab, enable the **View sessions and interact with agents** capability.
+
+**Step 3**
+
+Open the **Agent access** tab and select the Custom Agent you want the connection to use.
+
+**Step 4**
+
+Return to the **Configuration** tab, copy the **API token**, and save it somewhere secure.
 
 Set the token you chose as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
 
-<CodeGroup>
-  ```bash macOS / Linux theme={null}
-  export NOTION_API_KEY=ntn_***
-  ```
+```bash macOS / Linux theme={null}
+export NOTION_API_KEY=ntn_***
+```
 
-  ```powershell Windows (PowerShell) theme={null}
-  $env:NOTION_API_KEY = "ntn_***"
-  ```
-</CodeGroup>
+```powershell Windows (PowerShell) theme={null}
+$env:NOTION_API_KEY = "ntn_***"
+```
 
 ## Step 1: Pick a Custom Agent
 
@@ -133,15 +127,13 @@ You get back a list of accessible Custom Agents, most recently created first:
 
 Copy the `id` of the Custom Agent you chose — that's what you'll chat with. Save it as an environment variable too:
 
-<CodeGroup>
-  ```bash macOS / Linux theme={null}
-  export AGENT_ID=1f0c7c06-781b-4987-9986-5c8dd3028013
-  ```
+```bash macOS / Linux theme={null}
+export AGENT_ID=1f0c7c06-781b-4987-9986-5c8dd3028013
+```
 
-  ```powershell Windows (PowerShell) theme={null}
-  $env:AGENT_ID = "1f0c7c06-781b-4987-9986-5c8dd3028013"
-  ```
-</CodeGroup>
+```powershell Windows (PowerShell) theme={null}
+$env:AGENT_ID = "1f0c7c06-781b-4987-9986-5c8dd3028013"
+```
 
 ## Step 2: Start a new Agent chat
 
@@ -174,15 +166,13 @@ The response is the new session:
 
 Save the session ID so the follow-up requests can use it:
 
-<CodeGroup>
-  ```bash macOS / Linux theme={null}
-  export SESSION_ID=2a1c7c06-781b-4987-9986-5c8dd3028014
-  ```
+```bash macOS / Linux theme={null}
+export SESSION_ID=2a1c7c06-781b-4987-9986-5c8dd3028014
+```
 
-  ```powershell Windows (PowerShell) theme={null}
-  $env:SESSION_ID = "2a1c7c06-781b-4987-9986-5c8dd3028014"
-  ```
-</CodeGroup>
+```powershell Windows (PowerShell) theme={null}
+$env:SESSION_ID = "2a1c7c06-781b-4987-9986-5c8dd3028014"
+```
 
 ## Step 3: Read the Agent reply
 
@@ -242,25 +232,23 @@ That's a full round trip: you sent a message to a Custom Agent and read its resp
 
 ## Common questions
 
-<AccordionGroup>
-  <Accordion title="I don't see Agents in the sidebar">
-    Custom Agents are available on Business and Enterprise plans. Ask a workspace owner whether your workspace is on an eligible plan.
-  </Accordion>
+> **I don't see Agents in the sidebar**
+>
+> Custom Agents are available on Business and Enterprise plans. Ask a workspace owner whether your workspace is on an eligible plan.
 
-  <Accordion title="I don't see the option to create a token">
-    On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
+> **I don't see the option to create a token**
+>
+> On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
+>
+> See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
 
-    See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
-  </Accordion>
+> **How do I use the examples in PowerShell?**
+>
+> The `curl` examples are written for a Unix shell. In PowerShell, refer to the variables as `$env:NOTION_API_KEY`, `$env:AGENT_ID`, and `$env:SESSION_ID`.
 
-  <Accordion title="How do I use the examples in PowerShell?">
-    The `curl` examples are written for a Unix shell. In PowerShell, refer to the variables as `$env:NOTION_API_KEY`, `$env:AGENT_ID`, and `$env:SESSION_ID`.
-  </Accordion>
-
-  <Accordion title="How else can I find a Custom Agent?">
-    [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type`, `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
-  </Accordion>
-</AccordionGroup>
+> **How else can I find a Custom Agent?**
+>
+> [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type`, `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
 
 ## Next steps
 

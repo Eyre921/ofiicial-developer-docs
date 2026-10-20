@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/
 path: specification/2026-07-28/basic/patterns/index
 ---
 
-<div />
-
 This page defines the message patterns of the core protocol: the ways a
 client and server compose JSON-RPC
 [requests, responses, and notifications](/specification/2026-07-28/basic/index#messages)

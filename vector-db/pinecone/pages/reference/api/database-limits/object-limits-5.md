@@ -19,23 +19,24 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 
-<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup><br />
+<sup>1 On the Starter plan, all serverless indexes must be in the `us-east-1` region of AWS. Builder, Standard, and Enterprise plans can create indexes in any [supported region](/guides/index-data/index-configuration#cloud-regions).</sup>\
+
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
-<Accordion title="Example error">
-  ```
-  Request failed. You've reached the max projects allowed in organization <org name>.
-  To add more projects, upgrade your plan.
-  ```
-</Accordion>
+> **Example error**
+>
+> ```
+> Request failed. You've reached the max projects allowed in organization <org name>.
+> To add more projects, upgrade your plan.
+> ```
 
 For the serverless storage limit, you can also [delete records](/guides/manage-data/delete-data) to get back under it.
 
-<Tip>
-  To stay under the serverless index limit, use [namespaces](/guides/index-data/create-an-index#namespaces) to partition data within a single index instead of creating multiple indexes. This can also improve query performance and lower costs by limiting searches to relevant data subsets.
-</Tip>
+> [!TIP]
+>
+> To stay under the serverless index limit, use [namespaces](/guides/index-data/create-an-index#namespaces) to partition data within a single index instead of creating multiple indexes. This can also improve query performance and lower costs by limiting searches to relevant data subsets.
 
-<Note>
-  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-</Note>
+> [!NOTE]
+>
+> [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).

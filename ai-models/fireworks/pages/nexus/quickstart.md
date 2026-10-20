@@ -10,230 +10,220 @@ Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) 
 
 Pick how you work. Each path takes a few minutes and uses the same Fireworks models, routers, and account controls.
 
-<Columns>
-  <Card title="Coding harness" icon="terminal" href="#connect-a-coding-harness">
-    Claude Code, Codex, OpenCode, Cursor IDE, and more
-  </Card>
+> **[Coding harness](#connect-a-coding-harness)**
+>
+> Claude Code, Codex, OpenCode, Cursor IDE, and more
 
-  <Card title="API or SDK" icon="code" href="#call-the-api">
-    OpenAI, Anthropic, or Fireworks SDK
-  </Card>
+> **[API or SDK](#call-the-api)**
+>
+> OpenAI, Anthropic, or Fireworks SDK
 
-  <Card title="LLM gateway" icon="shuffle" href="#use-an-llm-gateway">
-    LiteLLM, Portkey, and other gateways
-  </Card>
-</Columns>
+> **[LLM gateway](#use-an-llm-gateway)**
+>
+> LiteLLM, Portkey, and other gateways
 
 You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) for the API and gateway paths. FireConnect can create one for you when you sign in.
 
 ## Connect a coding harness
 
-<Steps>
-  <Step title="Install FireConnect" icon="download">
-    ```bash wrap theme={null}
-    curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
-    ```
+**1. Install FireConnect**
 
-    Requires Node.js 18 or later. On Windows, run it from Git Bash.
-  </Step>
+```bash wrap theme={null}
+curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
+```
 
-  <Step title="Sign in" icon="key">
-    ```bash wrap theme={null}
-    fireconnect login
-    ```
+Requires Node.js 18 or later. On Windows, run it from Git Bash.
 
-    Sign in with your browser, or paste an existing Fireworks key.
-  </Step>
+**2. Sign in**
 
-  <Step title="Connect your harness" icon="plug">
-    <CodeGroup>
-      ```bash Claude Code theme={null}
-      fireconnect claude
-      ```
+```bash wrap theme={null}
+fireconnect login
+```
 
-      ```bash Codex CLI theme={null}
-      fireconnect codex
-      ```
+Sign in with your browser, or paste an existing Fireworks key.
 
-      ```bash ChatGPT desktop app theme={null}
-      # Quit the ChatGPT desktop app first
-      fireconnect chatgpt
-      ```
+**3. Connect your harness**
 
-      ```bash OpenCode theme={null}
-      fireconnect opencode
-      ```
+```bash Claude Code theme={null}
+fireconnect claude
+```
 
-      ```bash Cursor IDE theme={null}
-      fireconnect cursor
-      ```
+```bash Codex CLI theme={null}
+fireconnect codex
+```
 
-      ```bash VS Code theme={null}
-      fireconnect vscode
-      ```
+```bash ChatGPT desktop app theme={null}
+# Quit the ChatGPT desktop app first
+fireconnect chatgpt
+```
 
-      ```bash Pi theme={null}
-      fireconnect pi
-      ```
-    </CodeGroup>
+```bash OpenCode theme={null}
+fireconnect opencode
+```
 
-    The Codex CLI and the ChatGPT desktop app share one config, so `fireconnect codex` and `fireconnect chatgpt` connect both. For desktop apps, including Cursor IDE and VS Code, quit the app first. See [Coding Harnesses](/nexus/harnesses) for every harness.
-  </Step>
+```bash Cursor IDE theme={null}
+fireconnect cursor
+```
 
-  <Step title="Restart and pick a model" icon="sparkles">
-    Restart the harness and open its model picker. You will see `auto`, FireRouter, and Fireworks open models.
+```bash VS Code theme={null}
+fireconnect vscode
+```
 
-    <Frame>
-      <img alt="Claude Code model picker with FireRouter selected and Auto, DeepSeek, GLM, Kimi, and MiniMax options" />
-    </Frame>
+```bash Pi theme={null}
+fireconnect pi
+```
 
-    <Check>`fireconnect claude status` shows Fireworks as the provider and the configured model.</Check>
-  </Step>
-</Steps>
+The Codex CLI and the ChatGPT desktop app share one config, so `fireconnect codex` and `fireconnect chatgpt` connect both. For desktop apps, including Cursor IDE and VS Code, quit the app first. See [Coding Harnesses](/nexus/harnesses) for every harness.
 
-<Tip>
-  **Prefer not to install anything?** Every harness has a **Manual setup** tab
-  in [Coding Harnesses](/nexus/harnesses) with the exact settings to add
-  yourself.
-</Tip>
+**4. Restart and pick a model**
+
+Restart the harness and open its model picker. You will see `auto`, FireRouter, and Fireworks open models.
+
+![Claude Code model picker with FireRouter selected and Auto, DeepSeek, GLM, Kimi, and MiniMax options](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireconnect/claude-model-picker.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=cab8623549ed73df655ebfb39dd11fb0)
+
+> [!TIP]
+>
+> `fireconnect claude status` shows Fireworks as the provider and the configured model.
+
+> [!TIP]
+>
+> **Prefer not to install anything?** Every harness has a **Manual setup** tab
+> in [Coding Harnesses](/nexus/harnesses) with the exact settings to add
+> yourself.
 
 ## Call the API
 
-<Steps>
-  <Step title="Export your key" icon="key">
-    ```bash wrap theme={null}
-    export FIREWORKS_API_KEY="fw_..."
-    ```
-  </Step>
+**1. Export your key**
 
-  <Step title="Send a request" icon="paper-plane">
-    Point the SDK you already use at Fireworks:
+```bash wrap theme={null}
+export FIREWORKS_API_KEY="fw_..."
+```
 
-    <CodeGroup>
-      ```bash cURL theme={null}
-      curl https://api.fireworks.ai/inference/v1/chat/completions \
-        -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{
-          "model": "glm-latest",
-          "messages": [{"role": "user", "content": "Say pong in one word."}]
-        }'
-      ```
+**2. Send a request**
 
-      ```python OpenAI SDK theme={null}
-      import os
+Point the SDK you already use at Fireworks:
 
-      from openai import OpenAI
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-latest",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
 
-      client = OpenAI(
-          api_key=os.environ["FIREWORKS_API_KEY"],
-          base_url="https://api.fireworks.ai/inference/v1",
-      )
+```python OpenAI SDK theme={null}
+import os
 
-      response = client.chat.completions.create(
-          model="glm-latest",
-          messages=[{"role": "user", "content": "Say pong in one word."}],
-      )
+from openai import OpenAI
 
-      print(response.choices[0].message.content)
-      ```
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+)
 
-      ```python Anthropic SDK theme={null}
-      import os
+response = client.chat.completions.create(
+    model="glm-latest",
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-      import anthropic
+print(response.choices[0].message.content)
+```
 
-      client = anthropic.Anthropic(
-          api_key=os.environ["FIREWORKS_API_KEY"],
-          base_url="https://api.fireworks.ai/inference",
-      )
+```python Anthropic SDK theme={null}
+import os
 
-      message = client.messages.create(
-          model="glm-latest",
-          max_tokens=1024,
-          messages=[{"role": "user", "content": "Say pong in one word."}],
-      )
+import anthropic
 
-      print(next(block.text for block in message.content if block.type == "text"))
-      ```
+client = anthropic.Anthropic(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference",
+)
 
-      ```python Fireworks SDK theme={null}
-      from fireworks import Fireworks
+message = client.messages.create(
+    model="glm-latest",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-      client = Fireworks()
+print(next(block.text for block in message.content if block.type == "text"))
+```
 
-      response = client.chat.completions.create(
-          model="glm-latest",
-          messages=[{"role": "user", "content": "Say pong in one word."}],
-      )
+```python Fireworks SDK theme={null}
+from fireworks import Fireworks
 
-      print(response.choices[0].message.content)
-      ```
-    </CodeGroup>
+client = Fireworks()
 
-    <Check>The reply says `pong`.</Check>
-  </Step>
+response = client.chat.completions.create(
+    model="glm-latest",
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-  <Step title="Try a router" icon="shuffle">
-    Change `model` to `firerouter`. FireRouter picks a model for each turn, and the response `model` field shows which one served it. Claude and GPT turns need a [provider credential](/nexus/firerouter#provide-anthropic-and-openai-credentials).
+print(response.choices[0].message.content)
+```
 
-    More examples, including the Responses API: [FireRouter Setup](/nexus/firerouter/setup#api-and-sdk).
-  </Step>
-</Steps>
+> [!TIP]
+>
+> The reply says `pong`.
+
+**3. Try a router**
+
+Change `model` to `firerouter`. FireRouter picks a model for each turn, and the response `model` field shows which one served it. Claude and GPT turns need a [provider credential](/nexus/firerouter#provide-anthropic-and-openai-credentials).
+
+More examples, including the Responses API: [FireRouter Setup](/nexus/firerouter/setup#api-and-sdk).
 
 ## Use an LLM gateway
 
-<Steps>
-  <Step title="Add a Fireworks model to LiteLLM" icon="file-pen">
-    ```yaml config.yaml theme={null}
-    model_list:
-      - model_name: glm-latest
-        litellm_params:
-          model: fireworks_ai/accounts/fireworks/routers/glm-latest
-          api_key: os.environ/FIREWORKS_API_KEY
-          api_base: https://api.fireworks.ai/inference/v1
-    ```
-  </Step>
+**1. Add a Fireworks model to LiteLLM**
 
-  <Step title="Start the proxy" icon="play">
-    ```bash wrap theme={null}
-    pip install "litellm[proxy]"
-    litellm --config config.yaml
-    ```
-  </Step>
+```yaml config.yaml theme={null}
+model_list:
+  - model_name: glm-latest
+    litellm_params:
+      model: fireworks_ai/accounts/fireworks/routers/glm-latest
+      api_key: os.environ/FIREWORKS_API_KEY
+      api_base: https://api.fireworks.ai/inference/v1
+```
 
-  <Step title="Send a request" icon="paper-plane">
-    ```bash wrap theme={null}
-    curl http://localhost:4000/chat/completions \
-      -H "Content-Type: application/json" \
-      -d '{
-        "model": "glm-latest",
-        "messages": [{"role": "user", "content": "Say pong in one word."}]
-      }'
-    ```
+**2. Start the proxy**
 
-    <Check>The reply says `pong`.</Check>
-  </Step>
-</Steps>
+```bash wrap theme={null}
+pip install "litellm[proxy]"
+litellm --config config.yaml
+```
+
+**3. Send a request**
+
+```bash wrap theme={null}
+curl http://localhost:4000/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-latest",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
+
+> [!TIP]
+>
+> The reply says `pong`.
 
 Using Portkey, or adding FireRouter to your gateway? See [FireRouter Setup](/nexus/firerouter/setup#llm-gateway) and [LLM Gateways](/nexus/llm-gateways).
 
 ## Next steps
 
-<Columns>
-  <Card title="Open Models" icon="sparkles" href="/nexus/open-models">
-    Use `auto`, follow a model family, choose a fast tier, or pin a version.
-  </Card>
+> **[Open Models](/nexus/open-models)**
+>
+> Use `auto`, follow a model family, choose a fast tier, or pin a version.
 
-  <Card title="FireRouter" icon="shuffle" href="/nexus/firerouter">
-    Let one model ID choose a model for each new user turn.
-  </Card>
+> **[FireRouter](/nexus/firerouter)**
+>
+> Let one model ID choose a model for each new user turn.
 
-  <Card title="Usage and Cost" icon="chart-line" href="/nexus/metrics">
-    See session estimates and Fireworks model usage by model, user, or API key.
-  </Card>
+> **[Usage and Cost](/nexus/metrics)**
+>
+> See session estimates and Fireworks model usage by model, user, or API key.
 
-  <Card title="Spend Limits" icon="gauge" href="/nexus/usage-limits">
-    Set per-user caps for supported Fireworks serverless models.
-  </Card>
-</Columns>
+> **[Spend Limits](/nexus/usage-limits)**
+>
+> Set per-user caps for supported Fireworks serverless models.

@@ -46,9 +46,9 @@ Stemming reduces words to their root form so that morphological variants match e
 
 Stemming is **opt-in** and disabled by default. To enable it, set `stemming: true` on a text-searchable field when creating the index. The stemming algorithm is determined by the field's [`language`](#language) setting. Stemming applies to both `type: "text"` and `type: "query_string"` queries on the field.
 
-<Note>
-  Stemming is set at index creation and can't be changed afterward.
-</Note>
+> [!NOTE]
+>
+> Stemming is set at index creation and can't be changed afterward.
 
 ### Enable stemming with French
 
@@ -74,9 +74,9 @@ The `language` parameter controls tokenization and stemming behavior for a text-
 
 The default language is `"en"` (English). You can specify a language using either its short code or full name (e.g., `"fr"` or `"french"`).
 
-<Note>
-  Language is set at index creation and can't be changed afterward.
-</Note>
+> [!NOTE]
+>
+> Language is set at index creation and can't be changed afterward.
 
 ### Supported languages
 
@@ -155,10 +155,10 @@ response = index.documents.search(
 )
 ```
 
-<Note>
-  N-gram tokenization can't be combined with [`stemming`](#stemming) or `stop_words` on the same field — an index-creation request that sets `ngram` alongside either is rejected with a `400` error. Tokens are always lowercased. Because every position emits a token for each gram length, an n-gram field is larger on disk than a plain text field; keep `min_gram`/`max_gram` as narrow as your matching needs allow.
-</Note>
+> [!NOTE]
+>
+> N-gram tokenization can't be combined with [`stemming`](#stemming) or `stop_words` on the same field — an index-creation request that sets `ngram` alongside either is rejected with a `400` error. Tokens are always lowercased. Because every position emits a token for each gram length, an n-gram field is larger on disk than a plain text field; keep `min_gram`/`max_gram` as narrow as your matching needs allow.
 
-<Note>
-  N-gram configuration is set at index creation and can't be changed afterward.
-</Note>
+> [!NOTE]
+>
+> N-gram configuration is set at index creation and can't be changed afterward.

@@ -52,9 +52,9 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 
 **API-Based Integration:** Customers leverage Fireworks' training APIs while maintaining full control over sensitive components, ensuring no cross-component data leakage.
 
-<Tip>
-  For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
-</Tip>
+> [!TIP]
+>
+> For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
 
 ## Technical Safeguards
 
@@ -106,6 +106,6 @@ These certifications are maintained through continuous monitoring and annual aud
 * **HIPAA Support**: Fireworks is HIPAA compliant and supports healthcare and life sciences organizations in leveraging our rapid inference capabilities with confidence.
 * **Regulatory Alignment**: Controls are mapped to GDPR, CCPA, and other international data protection frameworks
 
-<Note>
-  Documentation and audit reports are available in our [Trust Center](https://trust.fireworks.ai/).
-</Note>
+> [!NOTE]
+>
+> Documentation and audit reports are available in our [Trust Center](https://trust.fireworks.ai/).

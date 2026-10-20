@@ -8,9 +8,9 @@ Use your own cloud KMS key on Fireworks to control encryption of managed fine-tu
 
 With Customer-Managed Encryption Keys (CMEK), you bring an encryption key from your own cloud KMS — AWS KMS, Google Cloud KMS, or Azure Key Vault — and Fireworks uses it to encrypt the data your managed training jobs read and write. Your key controls access to your data at rest: revoke it and Fireworks can no longer decrypt your datasets or checkpoints. Calls Fireworks makes to your key are recorded in your own cloud's audit log.
 
-<Info>
-  Fireworks never stores your root key. Each fine-tuning resource gets a unique data key that is encrypted ("wrapped") by your KMS key and stored only in wrapped form. The unwrapped key exists only briefly in memory during a job and is then discarded.
-</Info>
+> [!NOTE]
+>
+> Fireworks never stores your root key. Each fine-tuning resource gets a unique data key that is encrypted ("wrapped") by your KMS key and stored only in wrapped form. The unwrapped key exists only briefly in memory during a job and is then discarded.
 
 ## How it works
 
@@ -23,9 +23,9 @@ CMEK uses envelope encryption:
 
 Because access to your data depends on your KMS answering an unwrap request, you stay in control: disable or revoke the key and the data becomes unreadable.
 
-<Note>
-  During an active fine-tuning job, training compute processes your data in plaintext in memory — that is inherent to training a model on it. CMEK controls access to your data **at rest** (datasets, checkpoints, and logs), not the in-memory computation during the job itself.
-</Note>
+> [!NOTE]
+>
+> During an active fine-tuning job, training compute processes your data in plaintext in memory — that is inherent to training a model on it. CMEK controls access to your data **at rest** (datasets, checkpoints, and logs), not the in-memory computation during the job itself.
 
 ## What CMEK protects
 
@@ -39,9 +39,9 @@ The following are governed by separate operational and contractual controls rath
 * Job metadata (job names, hyperparameters, status) stored in the Fireworks control plane
 * Transient scratch data that exists only for the duration of a job and is destroyed when the job ends
 
-<Note>
-  CMEK supports **LoRA** Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Reinforcement Fine-Tuning (RFT). Full-parameter training is not supported. Today, CMEK covers the datasets and intermediate checkpoints your jobs read and write. Encrypting **final model weights** with your key, and deploying a model whose weights were encrypted with your key, is coming soon. Encrypting inference requests and responses with your key is not part of CMEK today.
-</Note>
+> [!NOTE]
+>
+> CMEK supports **LoRA** Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Reinforcement Fine-Tuning (RFT). Full-parameter training is not supported. Today, CMEK covers the datasets and intermediate checkpoints your jobs read and write. Encrypting **final model weights** with your key, and deploying a model whose weights were encrypted with your key, is coming soon. Encrypting inference requests and responses with your key is not part of CMEK today.
 
 ## Supported KMS providers
 
@@ -67,134 +67,130 @@ Pin trust on these values:
 
 The subject is stable per environment and is provided during CMEK onboarding; the audience is your own Fireworks account ID. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
 
-<Note>
-  CMEK and [BYOB](/guides/security_compliance/secure_training/byob) authenticate as **different** Fireworks service accounts, so their subject identifiers differ. Use the CMEK subject here, not the one from your BYOB setup.
-</Note>
+> [!NOTE]
+>
+> CMEK and [BYOB](/guides/security_compliance/secure_training/byob) authenticate as **different** Fireworks service accounts, so their subject identifiers differ. Use the CMEK subject here, not the one from your BYOB setup.
 
-<Warning>
-  Grant only `Encrypt` and `Decrypt` on the specific key. CMEK never needs to export key material, and never needs administrative permissions on your key.
-</Warning>
+> [!WARNING]
+>
+> Grant only `Encrypt` and `Decrypt` on the specific key. CMEK never needs to export key material, and never needs administrative permissions on your key.
 
 ## Setup
 
-<Steps>
-  <Step title="Create or choose a key in your KMS">
-    Create a symmetric encryption key in your cloud KMS (or pick an existing one). One key per Fireworks account is sufficient — Fireworks derives a unique data key per resource underneath it.
+**1. Create or choose a key in your KMS**
 
-    * **AWS KMS** — a symmetric KMS key in your account and region.
-    * **Google Cloud KMS** — a symmetric key in a key ring.
-    * **Azure Key Vault** — a key in a Standard vault or Managed HSM.
-  </Step>
+Create a symmetric encryption key in your cloud KMS (or pick an existing one). One key per Fireworks account is sufficient — Fireworks derives a unique data key per resource underneath it.
 
-  <Step title="Grant Fireworks Encrypt/Decrypt on the key">
-    Authorize the Fireworks identity to call `Encrypt` and `Decrypt` on your key. You grant access to the federated identity — you never share a secret.
+* **AWS KMS** — a symmetric KMS key in your account and region.
+* **Google Cloud KMS** — a symmetric key in a key ring.
+* **Azure Key Vault** — a key in a Standard vault or Managed HSM.
 
-    <Tabs>
-      <Tab title="AWS KMS">
-        Create an IAM role the Fireworks identity can assume via web-identity federation, and allow that role `Encrypt`/`Decrypt` on your key. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
+**2. Grant Fireworks Encrypt/Decrypt on the key**
 
-        Trust policy on the role, locked to the Fireworks identity:
+Authorize the Fireworks identity to call `Encrypt` and `Decrypt` on your key. You grant access to the federated identity — you never share a secret.
 
-        ```json theme={null}
-        {
-          "Effect": "Allow",
-          "Principal": { "Federated": "accounts.google.com" },
-          "Action": "sts:AssumeRoleWithWebIdentity",
-          "Condition": {
-            "StringEquals": {
-              "accounts.google.com:sub": "<FIREWORKS_CMEK_OIDC_SUBJECT>",
-              "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
-            }
-          }
-        }
-        ```
+**AWS KMS**
 
-        The `sub` condition locks assumption to the Fireworks identity; the `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other account is rejected.
+Create an IAM role the Fireworks identity can assume via web-identity federation, and allow that role `Encrypt`/`Decrypt` on your key. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
 
-        AWS KMS authorizes against both IAM and the key policy, so grant `kms:Encrypt` and `kms:Decrypt` on the specific key in **both** the role's permissions policy **and** the key policy.
+Trust policy on the role, locked to the Fireworks identity:
 
-        You'll register the account ID, region, key ARN, and role ARN with Fireworks in the next step.
-      </Tab>
+```json theme={null}
+{
+  "Effect": "Allow",
+  "Principal": { "Federated": "accounts.google.com" },
+  "Action": "sts:AssumeRoleWithWebIdentity",
+  "Condition": {
+    "StringEquals": {
+      "accounts.google.com:sub": "<FIREWORKS_CMEK_OIDC_SUBJECT>",
+      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
+    }
+  }
+}
+```
 
-      <Tab title="Google Cloud KMS">
-        Create a workload identity pool with an OIDC provider that trusts the Fireworks identity, then grant the federated principal `Encrypt`/`Decrypt` on your key. The principal lives in your own project, so this works even under org policies that forbid granting roles to service accounts outside your organization.
+The `sub` condition locks assumption to the Fireworks identity; the `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other account is rejected.
 
-        ```bash theme={null}
-        # 1. Create a workload identity pool
-        gcloud iam workload-identity-pools create fireworks-cmek \
-          --location="global" --display-name="Fireworks CMEK"
+AWS KMS authorizes against both IAM and the key policy, so grant `kms:Encrypt` and `kms:Decrypt` on the specific key in **both** the role's permissions policy **and** the key policy.
 
-        # 2. Add an OIDC provider that trusts the Fireworks identity,
-        #    scoped to your Fireworks account ID as the allowed audience
-        gcloud iam workload-identity-pools providers create-oidc fireworks-cmek \
-          --location="global" \
-          --workload-identity-pool="fireworks-cmek" \
-          --issuer-uri="https://accounts.google.com" \
-          --allowed-audiences="<YOUR_FIREWORKS_ACCOUNT_ID>" \
-          --attribute-mapping="google.subject=assertion.sub" \
-          --attribute-condition="assertion.sub == '<FIREWORKS_CMEK_OIDC_SUBJECT>'"
+You'll register the account ID, region, key ARN, and role ARN with Fireworks in the next step.
 
-        # 3. Grant Encrypt/Decrypt on the key to the federated principal
-        gcloud kms keys add-iam-policy-binding <YOUR_KEY> \
-          --keyring="<YOUR_KEYRING>" --location="<LOCATION>" \
-          --member="principal://iam.googleapis.com/projects/<YOUR_PROJECT_NUMBER>/locations/global/workloadIdentityPools/fireworks-cmek/subject/<FIREWORKS_CMEK_OIDC_SUBJECT>" \
-          --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
-        ```
+**Google Cloud KMS**
 
-        The predefined `cryptoKeyEncrypterDecrypter` role is exactly `useToEncrypt` + `useToDecrypt`. If you prefer to pin the permission set yourself, create a custom role with just those two permissions and bind that instead.
+Create a workload identity pool with an OIDC provider that trusts the Fireworks identity, then grant the federated principal `Encrypt`/`Decrypt` on your key. The principal lives in your own project, so this works even under org policies that forbid granting roles to service accounts outside your organization.
 
-        You'll register your project number, workload identity pool and provider IDs, and the key resource name with Fireworks in the next step.
-      </Tab>
+```bash theme={null}
+# 1. Create a workload identity pool
+gcloud iam workload-identity-pools create fireworks-cmek \
+  --location="global" --display-name="Fireworks CMEK"
 
-      <Tab title="Azure Key Vault">
-        Add a federated credential to an Entra app registration (or a user-assigned managed identity) that trusts the Fireworks identity, then grant that identity crypto permissions on your key. Works with both Standard vaults and Managed HSM.
+# 2. Add an OIDC provider that trusts the Fireworks identity,
+#    scoped to your Fireworks account ID as the allowed audience
+gcloud iam workload-identity-pools providers create-oidc fireworks-cmek \
+  --location="global" \
+  --workload-identity-pool="fireworks-cmek" \
+  --issuer-uri="https://accounts.google.com" \
+  --allowed-audiences="<YOUR_FIREWORKS_ACCOUNT_ID>" \
+  --attribute-mapping="google.subject=assertion.sub" \
+  --attribute-condition="assertion.sub == '<FIREWORKS_CMEK_OIDC_SUBJECT>'"
 
-        ```bash theme={null}
-        # 1. Trust the Fireworks identity on your app registration
-        az identity federated-credential create \
-          --name fireworks-cmek \
-          --identity-name <YOUR_MANAGED_IDENTITY> \
-          --resource-group <YOUR_RESOURCE_GROUP> \
-          --issuer "https://accounts.google.com" \
-          --subject "<FIREWORKS_CMEK_OIDC_SUBJECT>" \
-          --audiences "<YOUR_FIREWORKS_ACCOUNT_ID>"
+# 3. Grant Encrypt/Decrypt on the key to the federated principal
+gcloud kms keys add-iam-policy-binding <YOUR_KEY> \
+  --keyring="<YOUR_KEYRING>" --location="<LOCATION>" \
+  --member="principal://iam.googleapis.com/projects/<YOUR_PROJECT_NUMBER>/locations/global/workloadIdentityPools/fireworks-cmek/subject/<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+  --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
+```
 
-        # 2. Grant Encrypt/Decrypt on the key
-        az role assignment create \
-          --assignee <YOUR_CLIENT_ID> \
-          --role "Key Vault Crypto User" \
-          --scope <YOUR_KEY_VAULT_KEY_ID>
-        ```
+The predefined `cryptoKeyEncrypterDecrypter` role is exactly `useToEncrypt` + `useToDecrypt`. If you prefer to pin the permission set yourself, create a custom role with just those two permissions and bind that instead.
 
-        Fireworks authenticates as one app registration per Fireworks account. You'll register the tenant ID, client ID, and the fully versioned Key Vault key identifier (including the version segment) with Fireworks in the next step.
-      </Tab>
-    </Tabs>
-  </Step>
+You'll register your project number, workload identity pool and provider IDs, and the key resource name with Fireworks in the next step.
 
-  <Step title="Register the key with your Fireworks account">
-    Send the identity references you gathered above to your Fireworks account team, who register the key on your account and enable CMEK enforcement for it.
+**Azure Key Vault**
 
-    Depending on your cloud, that is:
+Add a federated credential to an Entra app registration (or a user-assigned managed identity) that trusts the Fireworks identity, then grant that identity crypto permissions on your key. Works with both Standard vaults and Managed HSM.
 
-    | Cloud | What to send |
-    | - | - |
-    | AWS | Key ARN and the ARN of the IAM role Fireworks assumes |
-    | Google Cloud | Cloud KMS key resource name and the workload identity pool provider resource name |
-    | Azure | Fully versioned Key Vault key identifier, Entra tenant ID, and app registration client ID |
+```bash theme={null}
+# 1. Trust the Fireworks identity on your app registration
+az identity federated-credential create \
+  --name fireworks-cmek \
+  --identity-name <YOUR_MANAGED_IDENTITY> \
+  --resource-group <YOUR_RESOURCE_GROUP> \
+  --issuer "https://accounts.google.com" \
+  --subject "<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+  --audiences "<YOUR_FIREWORKS_ACCOUNT_ID>"
 
-    <Note>
-      Key registration and CMEK enablement are performed by Fireworks, not self-serve — the underlying commands are restricted to Fireworks operators. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team to start onboarding.
-    </Note>
+# 2. Grant Encrypt/Decrypt on the key
+az role assignment create \
+  --assignee <YOUR_CLIENT_ID> \
+  --role "Key Vault Crypto User" \
+  --scope <YOUR_KEY_VAULT_KEY_ID>
+```
 
-    Once a key is registered and CMEK is enabled, encryption is automatic — your data is encrypted at rest with your key, and uploads through `firectl` and the SDKs are encrypted client-side, so plaintext never leaves your environment. Keep your `firectl` / SDK up to date.
-  </Step>
+Fireworks authenticates as one app registration per Fireworks account. You'll register the tenant ID, client ID, and the fully versioned Key Vault key identifier (including the version segment) with Fireworks in the next step.
 
-  <Step title="Verify">
-    <Check>
-      Run a small fine-tune (below) and confirm `Encrypt` / `Decrypt` calls appear in your cloud's KMS audit log.
-    </Check>
-  </Step>
-</Steps>
+**3. Register the key with your Fireworks account**
+
+Send the identity references you gathered above to your Fireworks account team, who register the key on your account and enable CMEK enforcement for it.
+
+Depending on your cloud, that is:
+
+| Cloud | What to send |
+| - | - |
+| AWS | Key ARN and the ARN of the IAM role Fireworks assumes |
+| Google Cloud | Cloud KMS key resource name and the workload identity pool provider resource name |
+| Azure | Fully versioned Key Vault key identifier, Entra tenant ID, and app registration client ID |
+
+> [!NOTE]
+>
+> Key registration and CMEK enablement are performed by Fireworks, not self-serve — the underlying commands are restricted to Fireworks operators. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team to start onboarding.
+
+Once a key is registered and CMEK is enabled, encryption is automatic — your data is encrypted at rest with your key, and uploads through `firectl` and the SDKs are encrypted client-side, so plaintext never leaves your environment. Keep your `firectl` / SDK up to date.
+
+**4. Verify**
+
+> [!TIP]
+>
+> Run a small fine-tune (below) and confirm `Encrypt` / `Decrypt` calls appear in your cloud's KMS audit log.
 
 ## Running a CMEK fine-tune
 
@@ -211,9 +207,9 @@ firectl sftj create \
   --output-model {TRAINED_MODEL_NAME}
 ```
 
-<Note>
-  Encrypting the resulting model's **final weights** with your key — so downloads decrypt transparently and you can deploy the model on Fireworks with your key — is coming soon.
-</Note>
+> [!NOTE]
+>
+> Encrypting the resulting model's **final weights** with your key — so downloads decrypt transparently and you can deploy the model on Fireworks with your key — is coming soon.
 
 ## Rotating and revoking your key
 
@@ -224,9 +220,9 @@ CMEK respects the lifecycle controls your KMS already gives you.
 * **Revocation** — Revoke the grant, disable the key, or schedule it for destruction in your KMS. In-flight jobs holding a cached key continue until the cache expires (about 5 minutes), then fail closed. New jobs fail immediately.
 * **Re-grant** — Restore the grant or re-enable the key and access resumes; new jobs work right away.
 
-<Warning>
-  Disabling or destroying your key makes the data encrypted under it **permanently unrecoverable** by Fireworks — by design. Likewise, if your KMS is unreachable for longer than the key cache window, in-flight jobs will fail.
-</Warning>
+> [!WARNING]
+>
+> Disabling or destroying your key makes the data encrypted under it **permanently unrecoverable** by Fireworks — by design. Likewise, if your KMS is unreachable for longer than the key cache window, in-flight jobs will fail.
 
 ## Auditing
 
@@ -244,12 +240,10 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 
 ## Related Resources
 
-<CardGroup>
-  <Card title="Bring Your Own Bucket (BYOB)" href="/guides/security_compliance/secure_training/byob" icon="lock">
-    Keep training datasets in your own cloud storage
-  </Card>
+> **[Bring Your Own Bucket (BYOB)](/guides/security_compliance/secure_training/byob)**
+>
+> Keep training datasets in your own cloud storage
 
-  <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
-    Learn about our comprehensive security measures
-  </Card>
-</CardGroup>
+> **[Data Security Overview](/guides/security_compliance/data_security)**
+>
+> Learn about our comprehensive security measures

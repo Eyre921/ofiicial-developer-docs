@@ -106,10 +106,10 @@ ntn api "v1/pages/$PAGE_ID" -X PATCH \
   properties[Build version][rich_text][0][text][content]="2026.05.11"
 ```
 
-<Note>
-  Inline request syntax is inspired by [HTTPie](https://github.com/httpie/cli)
-  and implemented in [httpcliparser](https://github.com/jclem/httpcliparser).
-</Note>
+> [!NOTE]
+>
+> Inline request syntax is inspired by [HTTPie](https://github.com/httpie/cli)
+> and implemented in [httpcliparser](https://github.com/jclem/httpcliparser).
 
 ## Send JSON from a file or stdin
 
@@ -160,10 +160,10 @@ ntn api v1/users \
 
 Repeated query parameters and headers are preserved in the order you pass them.
 
-<Note>
-  `ntn api` already sets `Authorization` and `Notion-Version`. You usually do
-  not need to pass those headers manually.
-</Note>
+> [!NOTE]
+>
+> `ntn api` already sets `Authorization` and `Notion-Version`. You usually do
+> not need to pass those headers manually.
 
 ## Override the API version
 
@@ -226,12 +226,12 @@ ntn --verbose api v1/pages/$PAGE_ID
 
 Verbose output includes the final method, URL, request headers, JSON request body, response status, response headers, and response body. The `Authorization` request header is redacted by default.
 
-<Warning>
-  `--unsafe-verbose` is a hidden debugging flag that disables `Authorization`
-  header redaction in verbose logs. It is dangerous because it can display
-  your bearer token in command output. Only use it in a controlled local
-  environment, and never paste its output into shared logs, tickets, or chat.
-</Warning>
+> [!WARNING]
+>
+> `--unsafe-verbose` is a hidden debugging flag that disables `Authorization`
+> header redaction in verbose logs. It is dangerous because it can display
+> your bearer token in command output. Only use it in a controlled local
+> environment, and never paste its output into shared logs, tickets, or chat.
 
 ## Troubleshooting
 
@@ -246,12 +246,10 @@ Verbose output includes the final method, URL, request headers, JSON request bod
 
 ## Next steps
 
-<CardGroup>
-  <Card title="File uploads" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowTrayUp.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=3b991e18c85512f06c2d7214acf94f12" href="/cli/guides/file-uploads">
-    Upload local files or import external files into Notion.
-  </Card>
+> **[File uploads](/cli/guides/file-uploads)**
+>
+> Upload local files or import external files into Notion.
 
-  <Card title="API reference" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/curlyBraces.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=46f7a8b4a34544f9b03002e4ecc35ad5" href="/reference/intro">
-    Browse Notion API endpoints and schemas.
-  </Card>
-</CardGroup>
+> **[API reference](/reference/intro)**
+>
+> Browse Notion API endpoints and schemas.

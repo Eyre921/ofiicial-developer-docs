@@ -13,15 +13,13 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
 
 **Note:** This operation is not supported for pod-based indexes.
 
-<RequestExample>
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/namespaces" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+curl "https://$INDEX_HOST/namespaces" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```

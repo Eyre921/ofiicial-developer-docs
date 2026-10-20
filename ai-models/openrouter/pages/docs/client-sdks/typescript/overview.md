@@ -34,10 +34,10 @@ bun add @openrouter/sdk
 yarn add @openrouter/sdk
 ```
 
-<Note>
-  This package is published as an ES Module (ESM) only. For applications using
-  CommonJS, use `await import("@openrouter/sdk")` to import and use this package.
-</Note>
+> [!NOTE]
+>
+> This package is published as an ES Module (ESM) only. For applications using
+> CommonJS, use `await import("@openrouter/sdk")` to import and use this package.
 
 ## Quickstart
 

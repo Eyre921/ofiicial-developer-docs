@@ -8,15 +8,15 @@ Learn how to upgrade your connections to 2026-03-11.
 
 Notion API version `2026-03-11` introduces three breaking changes that affect block operations, trash/archive semantics, and the [`transcription` block type](/reference/block#transcription). Most connections will need only minor find-and-replace updates.
 
-<Warning>
-  **Breaking changes**
-
-  If your connection uses any of the following, it will break when you upgrade to `2026-03-11`:
-
-  * The `after` parameter in [Append block children](/reference/patch-block-children)
-  * The `archived` field in any request or response
-  * The [`transcription` block type](/reference/block#transcription)
-</Warning>
+> [!WARNING]
+>
+> **Breaking changes**
+>
+> If your connection uses any of the following, it will break when you upgrade to `2026-03-11`:
+>
+> * The `after` parameter in [Append block children](/reference/patch-block-children)
+> * The `archived` field in any request or response
+> * The [`transcription` block type](/reference/block#transcription)
 
 ## What's changing
 
@@ -28,23 +28,21 @@ Notion API version `2026-03-11` introduces three breaking changes that affect bl
 
 ## Upgrade checklist
 
-<Steps>
-  <Step>
-    Replace the `after` parameter with `position` in any calls to Append Block Children.
-  </Step>
+**Step 1**
 
-  <Step>
-    Replace all uses of the `archived` field with `in_trash` in request bodies and response handling.
-  </Step>
+Replace the `after` parameter with `position` in any calls to Append Block Children.
 
-  <Step>
-    Replace references to the [`transcription`](/reference/block#transcription) block type with `meeting_notes`.
-  </Step>
+**Step 2**
 
-  <Step>
-    Upgrade the JS/TS SDK to `v5.12.0` or later and set `notionVersion: "2026-03-11"` (if applicable).
-  </Step>
-</Steps>
+Replace all uses of the `archived` field with `in_trash` in request bodies and response handling.
+
+**Step 3**
+
+Replace references to the [`transcription`](/reference/block#transcription) block type with `meeting_notes`.
+
+**Step 4**
+
+Upgrade the JS/TS SDK to `v5.12.0` or later and set `notionVersion: "2026-03-11"` (if applicable).
 
 ## Step-by-step guide
 
@@ -58,64 +56,62 @@ The `position` object supports three placement types:
 * `start` — insert at the beginning of the parent
 * `end` — insert at the end of the parent (the default when `position` is omitted)
 
-<CodeGroup>
-  ```json 2026-03-11 (after) theme={null}
-  // PATCH /v1/blocks/{block_id}/children
-  // Notion-Version: 2026-03-11
-  {
-    "position": {
-      "type": "after_block",
-      "after_block": { "id": "b5d8fd79-..." }
-    },
-    "children": [
-      {
-        "paragraph": {
-          "rich_text": [{ "text": { "content": "New paragraph" } }]
-        }
+```json 2026-03-11 (after) theme={null}
+// PATCH /v1/blocks/{block_id}/children
+// Notion-Version: 2026-03-11
+{
+  "position": {
+    "type": "after_block",
+    "after_block": { "id": "b5d8fd79-..." }
+  },
+  "children": [
+    {
+      "paragraph": {
+        "rich_text": [{ "text": { "content": "New paragraph" } }]
       }
-    ]
-  }
-  ```
+    }
+  ]
+}
+```
 
-  ```typescript JS/TS SDK (v5.12.0+) theme={null}
-  import { Client } from "@notionhq/client"
+```typescript JS/TS SDK (v5.12.0+) theme={null}
+import { Client } from "@notionhq/client"
 
-  const notion = new Client({
-    auth: process.env.NOTION_ACCESS_TOKEN,
-    notionVersion: "2026-03-11",
-  })
+const notion = new Client({
+  auth: process.env.NOTION_ACCESS_TOKEN,
+  notionVersion: "2026-03-11",
+})
 
-  await notion.blocks.children.append({
-    block_id: "parent-block-id",
-    position: {
-      type: "after_block",
-      after_block: { id: "b5d8fd79-..." },
-    },
-    children: [
-      {
-        paragraph: {
-          rich_text: [{ text: { content: "New paragraph" } }],
-        },
+await notion.blocks.children.append({
+  block_id: "parent-block-id",
+  position: {
+    type: "after_block",
+    after_block: { id: "b5d8fd79-..." },
+  },
+  children: [
+    {
+      paragraph: {
+        rich_text: [{ text: { content: "New paragraph" } }],
       },
-    ],
-  })
-  ```
+    },
+  ],
+})
+```
 
-  ```json 2025-09-03 (before) theme={null}
-  // PATCH /v1/blocks/{block_id}/children
-  // Notion-Version: 2025-09-03
-  {
-    "after": "b5d8fd79-...",
-    "children": [
-      {
-        "paragraph": {
-          "rich_text": [{ "text": { "content": "New paragraph" } }]
-        }
+```json 2025-09-03 (before) theme={null}
+// PATCH /v1/blocks/{block_id}/children
+// Notion-Version: 2025-09-03
+{
+  "after": "b5d8fd79-...",
+  "children": [
+    {
+      "paragraph": {
+        "rich_text": [{ "text": { "content": "New paragraph" } }]
       }
-    ]
-  }
-  ```
-</CodeGroup>
+    }
+  ]
+}
+```
 
 ### Step 2: Replace `archived` with `in_trash`
 
@@ -125,71 +121,67 @@ The `archived` field was [deprecated in April 2024](/page/changelog#changes-for-
 
 #### Response bodies
 
-<CodeGroup>
-  ```json 2026-03-11 (after) theme={null}
-  {
-    "object": "page",
-    "id": "59b8df07-...",
-    "in_trash": false,
-    "created_time": "2025-08-07T10:11:07.504Z",
-    "last_edited_time": "2025-08-10T15:53:11.386Z",
-    "parent": {
-      "type": "page_id",
-      "page_id": "255104cd-..."
-    },
-    "properties": {}
-  }
-  ```
+```json 2026-03-11 (after) theme={null}
+{
+  "object": "page",
+  "id": "59b8df07-...",
+  "in_trash": false,
+  "created_time": "2025-08-07T10:11:07.504Z",
+  "last_edited_time": "2025-08-10T15:53:11.386Z",
+  "parent": {
+    "type": "page_id",
+    "page_id": "255104cd-..."
+  },
+  "properties": {}
+}
+```
 
-  ```json 2025-09-03 (before) theme={null}
-  {
-    "object": "page",
-    "id": "59b8df07-...",
-    "archived": false,
-    "created_time": "2025-08-07T10:11:07.504Z",
-    "last_edited_time": "2025-08-10T15:53:11.386Z",
-    "parent": {
-      "type": "page_id",
-      "page_id": "255104cd-..."
-    },
-    "properties": {}
-  }
-  ```
-</CodeGroup>
+```json 2025-09-03 (before) theme={null}
+{
+  "object": "page",
+  "id": "59b8df07-...",
+  "archived": false,
+  "created_time": "2025-08-07T10:11:07.504Z",
+  "last_edited_time": "2025-08-10T15:53:11.386Z",
+  "parent": {
+    "type": "page_id",
+    "page_id": "255104cd-..."
+  },
+  "properties": {}
+}
+```
 
 #### Request parameters
 
 For example, when trashing a page:
 
-<CodeGroup>
-  ```json 2026-03-11 (after) theme={null}
-  // PATCH /v1/pages/{page_id}
-  // Notion-Version: 2026-03-11
-  {
-    "in_trash": true
-  }
-  ```
+```json 2026-03-11 (after) theme={null}
+// PATCH /v1/pages/{page_id}
+// Notion-Version: 2026-03-11
+{
+  "in_trash": true
+}
+```
 
-  ```typescript JS/TS SDK (v5.12.0+) theme={null}
-  const notion = new Client({
-    auth: process.env.NOTION_ACCESS_TOKEN,
-    notionVersion: "2026-03-11",
-  })
+```typescript JS/TS SDK (v5.12.0+) theme={null}
+const notion = new Client({
+  auth: process.env.NOTION_ACCESS_TOKEN,
+  notionVersion: "2026-03-11",
+})
 
-  await notion.pages.update({
-    page_id: "59b8df07-...",
-    in_trash: true,
-  })
-  ```
+await notion.pages.update({
+  page_id: "59b8df07-...",
+  in_trash: true,
+})
+```
 
-  ```json 2025-09-03 (before) theme={null}
-  // PATCH /v1/pages/{page_id}
-  // Notion-Version: 2025-09-03
-  {
-    "archived": true
-  }
-  ```
-</CodeGroup>
+```json 2025-09-03 (before) theme={null}
+// PATCH /v1/pages/{page_id}
+// Notion-Version: 2025-09-03
+{
+  "archived": true
+}
+```
 
 Update both your request bodies and any code that reads `archived` from responses to use `in_trash` instead.
 
@@ -197,49 +189,47 @@ Update both your request bodies and any code that reads `archived` from response
 
 The [`transcription`](/reference/block#transcription) block type has been renamed to `meeting_notes`. Update any code that creates, reads, or filters by this block type.
 
-<CodeGroup>
-  ```json 2026-03-11 (after) theme={null}
-  {
-    "object": "block",
-    "id": "a1c2d3e4-...",
-    "type": "meeting_notes",
-    "meeting_notes": {
-      "rich_text": [
-        { "text": { "content": "Meeting transcript content..." } }
-      ]
-    },
-    "created_time": "2025-10-01T12:00:00.000Z",
-    "last_edited_time": "2025-10-01T12:30:00.000Z",
-    "in_trash": false
-  }
-  ```
+```json 2026-03-11 (after) theme={null}
+{
+  "object": "block",
+  "id": "a1c2d3e4-...",
+  "type": "meeting_notes",
+  "meeting_notes": {
+    "rich_text": [
+      { "text": { "content": "Meeting transcript content..." } }
+    ]
+  },
+  "created_time": "2025-10-01T12:00:00.000Z",
+  "last_edited_time": "2025-10-01T12:30:00.000Z",
+  "in_trash": false
+}
+```
 
-  ```json 2025-09-03 (before) theme={null}
-  {
-    "object": "block",
-    "id": "a1c2d3e4-...",
-    "type": "transcription",
-    "transcription": {
-      "rich_text": [
-        { "text": { "content": "Meeting transcript content..." } }
-      ]
-    },
-    "created_time": "2025-10-01T12:00:00.000Z",
-    "last_edited_time": "2025-10-01T12:30:00.000Z",
-    "in_trash": false
-  }
-  ```
-</CodeGroup>
+```json 2025-09-03 (before) theme={null}
+{
+  "object": "block",
+  "id": "a1c2d3e4-...",
+  "type": "transcription",
+  "transcription": {
+    "rich_text": [
+      { "text": { "content": "Meeting transcript content..." } }
+    ]
+  },
+  "created_time": "2025-10-01T12:00:00.000Z",
+  "last_edited_time": "2025-10-01T12:30:00.000Z",
+  "in_trash": false
+}
+```
 
 If your connection filters blocks by type, update any `type === "transcription"` checks to use `"meeting_notes"`.
 
 ### Step 4: Upgrade the JS/TS SDK (if applicable)
 
-<Info>
-  **`@notionhq/client` v5.12.0**
-
-  [`v5.12.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.12.0) of the SDK adds backwards-compatible support for API version `2026-03-11`. All old fields and types are preserved with `@deprecated` annotations — no breaking changes.
-</Info>
+> [!NOTE]
+>
+> **`@notionhq/client` v5.12.0**
+>
+> [`v5.12.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.12.0) of the SDK adds backwards-compatible support for API version `2026-03-11`. All old fields and types are preserved with `@deprecated` annotations — no breaking changes.
 
 To opt in to the new version:
 
@@ -266,28 +256,26 @@ API version `2026-03-11` is now available as an [connection webhook](/reference/
 
 To upgrade your webhook subscription version:
 
-<Steps>
-  <Step>
-    Go to the <a href={developerConnectionsUrl}>Developer portal</a> and select your connection.
-  </Step>
+**Step 1**
 
-  <Step>
-    Navigate to the **Webhooks** tab.
-  </Step>
+Go to the [Developer portal](https://app.notion.com/developers/connections) and select your connection.
 
-  <Step>
-    Click the **Edit subscription** button on your webhook subscription.
-  </Step>
+**Step 2**
 
-  <Step>
-    In the **API version** dropdown, select `2026-03-11`.
-  </Step>
+Navigate to the **Webhooks** tab.
 
-  <Step>
-    Click **Update subscription** to save.
-  </Step>
-</Steps>
+**Step 3**
 
-<Info>
-  This is a no-op upgrade — webhook event payloads are identical between `2025-09-03` and `2026-03-11`. The new version is provided for consistency with the REST API version.
-</Info>
+Click the **Edit subscription** button on your webhook subscription.
+
+**Step 4**
+
+In the **API version** dropdown, select `2026-03-11`.
+
+**Step 5**
+
+Click **Update subscription** to save.
+
+> [!NOTE]
+>
+> This is a no-op upgrade — webhook event payloads are identical between `2025-09-03` and `2026-03-11`. The new version is provided for consistency with the REST API version.

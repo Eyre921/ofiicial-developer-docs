@@ -25,9 +25,9 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" 
   }'
 ```
 
-<Note>
-  When using a deployment shape, you do not need to specify `activeModelVersion` or `targetModelVersion` — the shape provides the necessary configuration.
-</Note>
+> [!NOTE]
+>
+> When using a deployment shape, you do not need to specify `activeModelVersion` or `targetModelVersion` — the shape provides the necessary configuration.
 
 ## Always pass `deploymentShape`
 

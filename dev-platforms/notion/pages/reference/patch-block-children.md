@@ -25,37 +25,35 @@ By default, blocks are appended to the end of the parent block's children. Use t
 | `{ "type": "start" }` | Insert at the beginning of the parent's children |
 | `{ "type": "after_block", "after_block": { "id": "<block_id>" } }` | Insert after the specified block |
 
-<CodeGroup>
-  ```json Insert at start theme={null}
-  {
-    "children": [/* blocks */],
-    "position": { "type": "start" }
+```json Insert at start theme={null}
+{
+  "children": [/* blocks */],
+  "position": { "type": "start" }
+}
+```
+
+```json Insert after specific block theme={null}
+{
+  "children": [/* blocks */],
+  "position": {
+    "type": "after_block",
+    "after_block": { "id": "12345678-1234-1234-1234-123456789abc" }
   }
-  ```
+}
+```
 
-  ```json Insert after specific block theme={null}
-  {
-    "children": [/* blocks */],
-    "position": {
-      "type": "after_block",
-      "after_block": { "id": "12345678-1234-1234-1234-123456789abc" }
-    }
-  }
-  ```
-</CodeGroup>
-
-<Warning>
-  **Deprecated parameter**
-
-  The `after` parameter is deprecated. Use the `position` parameter instead, which provides more flexibility including inserting at the start of the children list.
-
-  If you're currently using `after`, migrate to `position` with type `after_block`:
-
-  * **Before:** `{ "children": [...], "after": "<block_id>" }`
-  * **After:** `{ "children": [...], "position": { "type": "after_block", "after_block": { "id": "<block_id>" } } }`
-
-  You cannot specify both `after` and `position` in the same request.
-</Warning>
+> [!WARNING]
+>
+> **Deprecated parameter**
+>
+> The `after` parameter is deprecated. Use the `position` parameter instead, which provides more flexibility including inserting at the start of the children list.
+>
+> If you're currently using `after`, migrate to `position` with type `after_block`:
+>
+> * **Before:** `{ "children": [...], "after": "<block_id>" }`
+> * **After:** `{ "children": [...], "position": { "type": "after_block", "after_block": { "id": "<block_id>" } } }`
+>
+> You cannot specify both `after` and `position` in the same request.
 
 ### Control notifications from page writes
 
@@ -74,11 +72,11 @@ Some effects of the change happen in either mode:
 * [Connection webhooks](/reference/webhooks) still receive events for the change.
 * Page history, page activity, and workspace audit logs still record the change.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have insert content capabilities. Attempting to call this API without insert content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have insert content capabilities. Attempting to call this API without insert content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

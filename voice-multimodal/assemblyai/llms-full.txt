@@ -285,7 +285,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Will AssemblyAI sign a Business Associate Addendum (BAA) as described in the HIPAA rules and regulations?](#will-assemblyai-sign-a-business-associate-addendum-baa-as-described-in-the-hipaa-rules-and-regulations-docs-faq-can-you-sign-a-baa-mdx)
 - [Do you have a formal risk assessment policy or process?](#do-you-have-a-formal-risk-assessment-policy-or-process-docs-faq-do-you-have-a-formal-risk-assessment-policy-or-process-mdx)
 - [Do you have documented information security policies? If so, how frequently are they updated?](#do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-docs-faq-do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-mdx)
-- [Do you offer EU Data Residency?](#do-you-offer-eu-data-residency-docs-faq-do-you-offer-eu-data-residency-mdx)
 - [Do you offer self-hosted solutions?](#do-you-offer-self-hosted-solutions-docs-faq-do-you-offer-self-hosted-solutions-mdx)
 - [Do you offer servers in the EU?](#do-you-offer-servers-in-the-eu-docs-faq-do-you-offer-servers-in-the-eu-mdx)
 - [Do you support SAML in your product?](#do-you-support-saml-in-your-product-docs-faq-do-you-support-saml-in-your-product-mdx)
@@ -304,6 +303,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What logs are available to customers?](#what-logs-are-available-to-customers-docs-faq-what-logs-are-available-to-customers-mdx)
 - [What standards do your internal password policies follow?](#what-standards-do-your-internal-password-policies-follow-docs-faq-what-standards-do-your-internal-password-policies-follow-mdx)
 - [Where are your servers located?](#where-are-your-servers-located-docs-faq-where-are-your-servers-located-mdx)
+- [Where is my audio, transcript, and prompt data processed?](#where-is-my-audio-transcript-and-prompt-data-processed-docs-faq-where-is-my-audio-transcript-and-prompt-data-processed-mdx)
 - [Am I charged for transcribing silent audio?](#am-i-charged-for-transcribing-silent-audio-docs-faq-am-i-charged-for-transcribing-silent-audio-mdx)
 - [Are Custom Models More Accurate than General Models?](#are-custom-models-more-accurate-than-general-models-docs-faq-are-custom-models-more-accurate-than-general-models-mdx)
 - [Do I Get Charged for Failed API Calls?](#do-i-get-charged-for-failed-api-calls-docs-faq-are-customers-charged-for-api-calls-that-result-in-errors-mdx)
@@ -11639,7 +11639,29 @@ Source: docs/pre-recorded-audio/select-the-region.mdx
 Navigation: Pre-recorded STT > Advanced
 Description: Cloud Endpoints and Data Residency documentation.
 
-Choose the endpoint that best fits your application's requirements—whether that's using the default US region or ensuring your audio data stays within the European Union.
+Choose the endpoint that best fits your application's requirements—whether that's using the default US region or our EU endpoint.
+
+## Data processing locations
+
+Pre-recorded audio and transcription data is processed in AWS regions located in the United States and the European Union:
+
+**US**
+
+| AWS region  | Location    |
+| ----------- | ----------- |
+| `us-east-1` | N. Virginia |
+| `us-east-2` | Ohio        |
+| `us-west-2` | Oregon      |
+
+**EU**
+
+| AWS region     | Location  |
+| -------------- | --------- |
+| `eu-central-1` | Frankfurt |
+| `eu-north-1`   | Stockholm |
+| `eu-west-1`    | Ireland   |
+
+Which of these locations processes your data depends on the endpoint you use, as described below.
 
 ## Default Endpoint
 
@@ -11647,19 +11669,21 @@ The default endpoint (`api.assemblyai.com`) processes your pre-recorded audio tr
 
 ## EU Data Residency
 
-The EU endpoint (`api.eu.assemblyai.com`) guarantees your data never leaves the European Union. This is designed for organizations with strict data residency and governance requirements—your audio and transcription data will remain entirely within the EU.
+The EU endpoint (`api.eu.assemblyai.com`) processes your audio and transcript data in the European Union.\* This is designed for organizations with strict data residency and governance requirements. Note: File names may be processed by our subprocessors CrowdStrike and Datadog, which are located in the US. Do not include PII or PHI in file names if you require that information to remain in the EU.
+
+\*AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework. Audio and transcript data will be stored in the endpoint region you select. Incident response and customer support may be conducted from locations where staff are employed, which may be in the US, EU, or elsewhere. If your audio or transcript needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a US-based subprocessor to support the troubleshooting or customer support request.
 
 ## Endpoints
 
-| Endpoint     | Base URL                | Description          |
-| ------------ | ----------------------- | -------------------- |
-| US (default) | `api.assemblyai.com`    | Data stays in the US |
-| EU           | `api.eu.assemblyai.com` | Data stays in the EU |
+| Endpoint     | Base URL                | Description                                 |
+| ------------ | ----------------------- | ------------------------------------------- |
+| US (default) | `api.assemblyai.com`    | Audio + transcript data processed in the US |
+| EU           | `api.eu.assemblyai.com` | Audio + transcript data processed in the EU |
 
 ## Which endpoint should I use?
 
 - **No data residency requirements?** Use the **default endpoint**. No configuration change is needed.
-- **Need EU data residency?** Use the **EU endpoint** to ensure your audio and transcription data stays within the European Union.
+- **Need EU data residency?** Use the **EU endpoint**.
 
 ## How to use it
 
@@ -11811,8 +11835,6 @@ while (true) {
   }
 }
 ```
-
-Use the EU endpoint to keep your audio and transcription data within the European Union.
 
 ```python title="Python SDK" highlight={7} 
 from assemblyai import Client, Settings
@@ -27194,7 +27216,7 @@ Source: docs/streaming/endpoints-and-data-zones.mdx
 Navigation: Real-time STT > Advanced
 Description: Streaming Endpoints and Data Zones documentation.
 
-Choose the endpoint that best fits your application's requirements, whether that's achieving the lowest possible latency or ensuring your audio data stays within a specific geographic region.
+Choose the endpoint that best fits your application's requirements, whether that's achieving the lowest possible latency or processing your data within a specific geographic region.
 
 ## Data processing locations
 
@@ -27232,7 +27254,9 @@ The default endpoint automatically routes requests to the nearest available regi
 
 ## Data Zone Routing
 
-Data Zone endpoints guarantee your data never leaves the specified region. This is designed for organizations with strict data residency and governance requirements. Your audio and transcription data is processed exclusively in that zone's locations listed above and remains entirely within the US or EU, respectively.
+Data Zone endpoints will process your audio and transcript data in the specified region.\* This is designed for organizations with strict data residency and governance requirements. Your audio and transcription data is processed in that zone's locations listed above. Note: File names may be processed by our subprocessors CrowdStrike and Datadog, which are located in the US. Do not include PII or PHI in file names if you require that information to remain in your selected Data Zone.
+
+\*AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework. Audio, transcript, and prompt data will be stored in the endpoint region you select. Incident response and customer support may be conducted from locations where staff are employed, which may be in the US, EU, or elsewhere. If your audio, transcript, or prompt needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a US-based subprocessor to support the troubleshooting or customer support request.
 
 | Endpoint          | WebSocket URL                             |
 | ----------------- | ----------------------------------------- |
@@ -27242,7 +27266,7 @@ Data Zone endpoints guarantee your data never leaves the specified region. This 
 ## Which endpoint should I use?
 
 - **Optimizing for latency?** Use **Edge Routing** (default). No configuration change is needed, as it automatically routes to the nearest region for the fastest response.
-- **Need data residency?** Use a **Data Zone** endpoint. Choose US or EU to ensure your audio and transcription data stays within that region.
+- **Need data residency?** Use a **Data Zone** endpoint. Choose US or EU.
 
 ## How to use it
 
@@ -45758,7 +45782,11 @@ Source: docs/sync-stt/endpoints-and-data-zones.mdx
 Navigation: Sync STT > Advanced
 Description: AssemblyAI Sync STT endpoints for global routing and US/EU data residency.
 
-Choose the endpoint that best fits your application's requirements — whether that's using the default endpoint to route to the nearest data center, or ensuring your audio data stays within a given data residency zone such as EU or US.
+Choose the endpoint that best fits your application's requirements — whether that's using the default endpoint to route to the nearest data center, or processing your data within a specific geographic region.\*
+
+Note: File names may be processed by our subprocessors CrowdStrike and Datadog, which are located in the US. Do not include PII or PHI in file names if you require that information to remain in your selected data residency zone.
+
+\*AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework. Audio, transcript, and prompt data will be stored in the endpoint region you select. Incident response and customer support may be conducted from locations where staff are employed, which may be in the US, EU, or elsewhere. If your audio, transcript, or prompt needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a US-based subprocessor to support the troubleshooting or customer support request.
 
 ## Data processing locations
 
@@ -45799,8 +45827,8 @@ Which of these locations processes your data depends on the endpoint you call, a
 ## Which endpoint should I use?
 
 - **Default?** Use the **Global endpoint** (`sync.assemblyai.com`). It will route your request to the region with the fastest response time for you.
-- **Need US data residency?** Use the **US endpoint** (`sync.us.assemblyai.com`). Your audio and transcription data will remain within the US.
-- **Need EU data residency?** Use the **EU endpoint** (`sync.eu.assemblyai.com`). Your audio and transcription data will remain within the EU.
+- **Need US data residency?** Use the **US endpoint** (`sync.us.assemblyai.com`).
+- **Need EU data residency?** Use the **EU endpoint** (`sync.eu.assemblyai.com`).
 
 ## How to use it
 
@@ -48293,8 +48321,12 @@ Navigation: Dictation API > Advanced
 Description: AssemblyAI Dictation endpoints for global routing and US/EU data residency.
 
 Choose the endpoint that best fits your application's requirements, whether
-that's routing to the nearest data center for the lowest latency or ensuring
-your audio data stays within a given data residency zone.
+that's routing to the nearest data center for the lowest latency or processing
+your data within a specific geographic region.\*
+
+Note: File names may be processed by our subprocessors CrowdStrike and Datadog, which are located in the US. Do not include PII or PHI in file names if you require that information to remain in your selected data residency zone.
+
+\*AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework. Audio, transcript, and prompt data will be stored in the endpoint region you select. Incident response and customer support may be conducted from locations where staff are employed, which may be in the US, EU, or elsewhere. If your audio, transcript, or prompt needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a US-based subprocessor to support the troubleshooting or customer support request.
 
 ## Data processing locations
 
@@ -48347,11 +48379,9 @@ the host changes. Each host serves both `/v1/transcribe/live` and
   (`dictation.assemblyai.com`). It routes your request to the region with the
   fastest response time for you, and needs no configuration change.
 - **Need US data residency?** Use the **US endpoint**
-  (`dictation.us.assemblyai.com`). Your audio and transcription data remains
-  within the US.
+  (`dictation.us.assemblyai.com`).
 - **Need EU data residency?** Use the **EU endpoint**
-  (`dictation.eu.assemblyai.com`). Your audio and transcription data remains
-  within the EU.
+  (`dictation.eu.assemblyai.com`).
 
 ## How to use it
 
@@ -62258,7 +62288,7 @@ Here are some bonus features LLM Gateway provides over other routing options
 | EU           | `https://llm-gateway.eu.assemblyai.com/v1/chat/completions`|
 
   The LLM Gateway is available in both US and EU regions. Use the EU endpoint to
-  ensure your data stays within the European Union. Currently, Anthropic Claude
+  process your data in the European Union. Currently, Anthropic Claude
   and most Google Gemini models are supported in the EU (except where otherwise noted). OpenAI models are only
   available in the US region. See [Cloud Endpoints and Data
   Residency](/llm-gateway/cloud-endpoints-and-data-residency) for more details.
@@ -64004,7 +64034,7 @@ Source: docs/llm-gateway/cloud-endpoints-and-data-residency.mdx
 Navigation: LLM Gateway > Features
 Description: Choose LLM Gateway endpoints for data residency requirements.
 
-Choose the endpoint that best fits your application's requirements—whether that's using the default US region or ensuring your data stays within the European Union.
+Choose the endpoint that best fits your application's requirements—whether that's using the default US region or our EU endpoint.
 
 ## Default Endpoint
 
@@ -64012,14 +64042,16 @@ The default endpoint (`llm-gateway.assemblyai.com`) processes your LLM Gateway r
 
 ## EU Data Residency
 
-The EU endpoint (`llm-gateway.eu.assemblyai.com`) guarantees your data never leaves the European Union. This is designed for organizations with strict data residency and governance requirements—your request and response data will remain entirely within the EU.
+The EU endpoint (`llm-gateway.eu.assemblyai.com`) processes your audio, transcript, and prompt data in the European Union.\* This is designed for organizations with strict data residency and governance requirements. Note: File names may be processed by our subprocessors CrowdStrike and Datadog, which are located in the US. Do not include PII or PHI in file names if you require that information to remain in the EU.
+
+\*AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework. Audio, transcript, and prompt data will be stored in the endpoint region you select. Incident response and customer support may be conducted from locations where staff are employed, which may be in the US, EU, or elsewhere. If your audio, transcript, or prompt needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a US-based subprocessor to support the troubleshooting or customer support request.
 
 ## Endpoints
 
-| Endpoint     | Base URL                                                    | Description          |
-| ------------ | ----------------------------------------------------------- | -------------------- |
-| US (default) | `https://llm-gateway.assemblyai.com/v1/chat/completions`    | Data stays in the US |
-| EU           | `https://llm-gateway.eu.assemblyai.com/v1/chat/completions` | Data stays in the EU |
+| Endpoint     | Base URL                                                    | Description                                            |
+| ------------ | ----------------------------------------------------------- | ------------------------------------------------------ |
+| US (default) | `https://llm-gateway.assemblyai.com/v1/chat/completions`    | Audio, transcript, and prompt data processed in the US |
+| EU           | `https://llm-gateway.eu.assemblyai.com/v1/chat/completions` | Audio, transcript, and prompt data processed in the EU |
 
   Effective July 1, 2026, in-region LLM Gateway requests will increase by 10% as a direct pass-through of provider price increases, with no AssemblyAI upcharge. Opt into [global routing](#global-routing) to keep current pricing.
 
@@ -64043,7 +64075,7 @@ For a full list of available models, see the [LLM Gateway Models](/llm-gateway/a
 ## Which endpoint should I use?
 
 - **No data residency requirements?** Use the **default endpoint**. No configuration change is needed.
-- **Need EU data residency?** Use the **EU endpoint** to ensure your data stays within the European Union. Note that only Claude and Gemini models are available in the EU region.
+- **Need EU data residency?** Use the **EU endpoint**. Note that only Claude and Gemini models are available in the EU region.
 - **No data residency, compliance, or latency needs, and want cheaper calls?** Opt into [**global routing**](#global-routing) on top of the default endpoint to route requests to the provider's global endpoints at lower cost.
 
 ## How to use it
@@ -64114,8 +64146,6 @@ curl -X POST \
     "max_tokens": 1000
   }'
 ```
-
-Use the EU endpoint to keep your data within the European Union.
 
 ```python title="Python" highlight={9} 
 import requests
@@ -75893,27 +75923,6 @@ AssemblyAI is SOC 2 Type II certified and HIPAA compliant. You can access our se
 
 ---
 
-<a id="do-you-offer-eu-data-residency-docs-faq-do-you-offer-eu-data-residency-mdx"></a>
-
-# Do you offer EU Data Residency?
-
-URL: https://www.assemblyai.com/docs/faq/do-you-offer-eu-data-residency
-Source: docs/faq/do-you-offer-eu-data-residency.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Do you offer EU Data Residency? documentation.
-
-For users who need to process data within European Union data centers, we offer access to European servers via our EU endpoint, which runs on AWS servers located in the EU West 1 (Dublin) region.
-
-Here are some benefits of EU Data Residency:
-
-- Instant EU processing via API parameters and dedicated endpoint
-- Continued data sovereignty for EU operations
-- Regional usage tracking and cost management in your dashboard
-
-See [our documentation](/pre-recorded-audio/select-the-region) to learn more about using our EU endpoint.
-
----
-
 <a id="do-you-offer-self-hosted-solutions-docs-faq-do-you-offer-self-hosted-solutions-mdx"></a>
 
 # Do you offer self-hosted solutions?
@@ -76228,6 +76237,23 @@ Navigation: FAQ > Overview > Privacy & Security
 Description: Where are your servers located? documentation.
 
 Our production server resides in AWS US West 2, AWS EU West 1. These are AWS Oregon and Dublin regions respectively.
+
+---
+
+<a id="where-is-my-audio-transcript-and-prompt-data-processed-docs-faq-where-is-my-audio-transcript-and-prompt-data-processed-mdx"></a>
+
+# Where is my audio, transcript, and prompt data processed?
+
+URL: https://www.assemblyai.com/docs/faq/where-is-my-audio-transcript-and-prompt-data-processed
+Source: docs/faq/where-is-my-audio-transcript-and-prompt-data-processed.mdx
+Navigation: FAQ > Overview > Privacy & Security
+Description: Learn where AssemblyAI stores and processes your audio, transcript, and prompt data, including subprocessors and support access.
+
+Audio, transcript, and prompt data will be stored in the endpoint region you select. File names may be processed by subprocessors CrowdStrike and Datadog, which are located in the U.S. - do not include PII or PHI in file names if you require that information to remain in the EU. Otherwise, subprocessors of audio, transcript, or prompt data will follow the endpoint region you select.
+
+Incident response and customer support may be conducted from locations that staff are employed, which may be in the US, EU, or otherwise - if your audio, transcript, or prompt needs to be accessed for debugging, a member of our team located outside of your endpoint region may access that data and may use a U.S.-based subprocessor to support the troubleshooting or customer support request.
+
+AssemblyAI will store Account Data and Usage Data in the United States, per our [Privacy Policy](https://www.assemblyai.com/legal/privacy-policy) and the Data Privacy Framework.
 
 ---
 
@@ -89807,11 +89833,11 @@ servers:
   usDataResidency:
     host: streaming.us.assemblyai.com
     protocol: wss
-    description: Dedicated US endpoint for data residency requirements. Audio and transcription data stays in the US.
+    description: Dedicated US endpoint for data residency requirements. Audio and transcription data is processed in the US.
   euDataResidency:
     host: streaming.eu.assemblyai.com
     protocol: wss
-    description: Dedicated EU endpoint for data residency requirements. Audio and transcription data stays in the EU.
+    description: Dedicated EU endpoint for data residency requirements. Audio and transcription data is processed in the EU.
 
 channels:
   streaming:
@@ -89824,8 +89850,8 @@ channels:
       | WebSocket URL | Description |
       | --- | --- |
       | `wss://streaming.assemblyai.com/v3/ws` | **Global (default).** Latency-optimized — automatically routes each connection to the nearest region. |
-      | `wss://streaming.us.assemblyai.com/v3/ws` | **US data residency.** Audio and transcription data never leaves the US. |
-      | `wss://streaming.eu.assemblyai.com/v3/ws` | **EU data residency.** Audio and transcription data never leaves the EU. |
+      | `wss://streaming.us.assemblyai.com/v3/ws` | **US data residency.** Audio and transcription data is processed in the US. |
+      | `wss://streaming.eu.assemblyai.com/v3/ws` | **EU data residency.** Audio and transcription data is processed in the EU. |
 
       Use a data residency endpoint for compliance requirements; see [Cloud endpoints & data residency](https://www.assemblyai.com/docs/streaming/endpoints-and-data-zones).
 

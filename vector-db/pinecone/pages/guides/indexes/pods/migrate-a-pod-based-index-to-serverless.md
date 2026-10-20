@@ -8,11 +8,11 @@ Migrate a Pinecone pod-based index to serverless for automatic scaling, better p
 
 This page shows you how to migrate a pod-based index to [serverless](/guides/core-concepts/architecture). The migration process is free; the standard costs of upserting records to a new serverless index aren't applied.
 
-<Warning>
-  In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
-
-  Before migrating, [contact Pinecone Support](/admin/support/contact-support) for help estimating and managing cost implications.
-</Warning>
+> [!WARNING]
+>
+> In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+>
+> Before migrating, [contact Pinecone Support](/admin/support/contact-support) for help estimating and managing cost implications.
 
 ## Limitations
 
@@ -31,11 +31,9 @@ If you were using either feature with your pod-based index, you'll need to adapt
 
 Migrating a pod-based index to serverless is a 2-step process:
 
-<Steps>
-  <Step title="Save the pod-based index as a collection" />
+**1. Save the pod-based index as a collection**
 
-  <Step title="Create a new serverless index from the collection" />
-</Steps>
+**2. Create a new serverless index from the collection**
 
 After migration, you will have both a new serverless index and the original pod-based index. Once you've switched your workload to the serverless index, you can delete the pod-based index to avoid paying for unused resources.
 
@@ -55,187 +53,181 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
 
 ## 3. Start migration
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. In the [Pinecone console](https://app.pinecone.io/), go to your pod-based index and click the **ellipsis (...) menu > Migrate to serverless**.
+**Pinecone console**
 
-       <img />
+1. In the [Pinecone console](https://app.pinecone.io/), go to your pod-based index and click the **ellipsis (...) menu > Migrate to serverless**.
 
-       <Note>
-         The dropdown won't display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
-       </Note>
+   ![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/migrate-to-serverless.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=24217a2e791ffce162686b8fdef47948)
 
-    2. To save the legacy index and create a new serverless index now, follow the prompts.
+   > [!NOTE]
+   >
+   > The dropdown won't display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
 
-       Depending on the size of the index, migration can take anywhere from a few minutes to several hours. While migration is in progress, you'll see the yellow **Initializing** status:
+2. To save the legacy index and create a new serverless index now, follow the prompts.
 
-       <img alt="create index from collection - initializing status" />
+   Depending on the size of the index, migration can take anywhere from a few minutes to several hours. While migration is in progress, you'll see the yellow **Initializing** status:
 
-       When the new serverless index is ready, the status will change to green:
+   ![create index from collection - initializing status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-initializing.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=acffe738f1cbe2e08e4bc2fad7e957dd)
 
-       <img alt="create index from collection - ready status" />
-  </Tab>
+   When the new serverless index is ready, the status will change to green:
 
-  <Tab title="API/SDK">
-    1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
+   ![create index from collection - ready status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-ready.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=e04b6b0d892301435be282e5c4fa394b)
 
-       <CodeGroup>
-         ```javascript JavaScript theme={null}
-         // Requires Node.js SDK v6.1.2 or later
-         import { Pinecone } from '@pinecone-database/pinecone'
+**API/SDK**
 
-         const pc = new Pinecone({
-           apiKey: 'YOUR_API_KEY'
-         });
+1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
 
-         await pc.createCollection({
-           name: "pod-collection",
-           source: "pod-index"
-         });
-         ```
+   ```javascript JavaScript theme={null}
+   // Requires Node.js SDK v6.1.2 or later
+   import { Pinecone } from '@pinecone-database/pinecone'
 
-         ```go Go theme={null}
-         // Requires Go SDK v4.1.2 or later
-         package main
+   const pc = new Pinecone({
+     apiKey: 'YOUR_API_KEY'
+   });
 
-         import (
-             "context"
-             "fmt"
-             "log"
+   await pc.createCollection({
+     name: "pod-collection",
+     source: "pod-index"
+   });
+   ```
 
-             "github.com/pinecone-io/go-pinecone/v4/pinecone"
-         )
+   ```go Go theme={null}
+   // Requires Go SDK v4.1.2 or later
+   package main
 
-         func main() {
-             ctx := context.Background()
+   import (
+       "context"
+       "fmt"
+       "log"
 
-             pc, err := pinecone.NewClient(pinecone.NewClientParams{
-                 ApiKey: "YOUR_API_KEY",
-             })
-             if err != nil {
-                 log.Fatalf("Failed to create Client: %v", err)
-             }
+       "github.com/pinecone-io/go-pinecone/v4/pinecone"
+   )
 
-             collection, err := pc.CreateCollection(ctx, &pinecone.CreateCollectionRequest{
-                 Name: "pod-collection", 
-                 Source: "pod-index",
-             })
-             if err != nil {
-                 log.Fatalf("Failed to create collection: %v", err)
-             } else {
-                 fmt.Printf("Successfully created collection: %v", collection.Name)
-             }
-         }
-         ```
+   func main() {
+       ctx := context.Background()
 
-         ```shell curl theme={null}
-         PINECONE_API_KEY="YOUR_API_KEY"
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
 
-         curl -s POST "https://api.pinecone.io/collections" \
-         -H "Accept: application/json" \
-         -H "Content-Type: application/json" \
-         -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2025-10" \
-         -d '{
-                 "name": "pod-collection",
-                 "source": "pod-index"
-         }'
-         ```
-       </CodeGroup>
+       collection, err := pc.CreateCollection(ctx, &pinecone.CreateCollectionRequest{
+           Name: "pod-collection", 
+           Source: "pod-index",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create collection: %v", err)
+       } else {
+           fmt.Printf("Successfully created collection: %v", collection.Name)
+       }
+   }
+   ```
 
-    2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
+   ```shell curl theme={null}
+   PINECONE_API_KEY="YOUR_API_KEY"
 
-       * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
-       * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
-       * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
-       * Set `source_collection` to the name of the collection you created in step 1.
+   curl -s POST "https://api.pinecone.io/collections" \
+   -H "Accept: application/json" \
+   -H "Content-Type: application/json" \
+   -H "Api-Key: $PINECONE_API_KEY" \
+   -H "X-Pinecone-Api-Version: 2025-10" \
+   -d '{
+           "name": "pod-collection",
+           "source": "pod-index"
+   }'
+   ```
 
-       <CodeGroup>
-         ```javascript JavaScript theme={null}
-         import { Pinecone } from '@pinecone-database/pinecone'
+2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
 
-         const pc = new Pinecone({
-           apiKey: 'YOUR_API_KEY'
-         });
+   * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
+   * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
+   * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
+   * Set `source_collection` to the name of the collection you created in step 1.
 
-         await pc.createIndex({
-           name: 'serverless-index',
-           vectorType: 'dense',
-           dimension: 1536,
-           metric: 'cosine',
-           spec: {
-             serverless: {
-               cloud: 'aws',
-               region: 'us-east-1',
-               sourceCollection: 'pod-collection'
-             }
+   ```javascript JavaScript theme={null}
+   import { Pinecone } from '@pinecone-database/pinecone'
+
+   const pc = new Pinecone({
+     apiKey: 'YOUR_API_KEY'
+   });
+
+   await pc.createIndex({
+     name: 'serverless-index',
+     vectorType: 'dense',
+     dimension: 1536,
+     metric: 'cosine',
+     spec: {
+       serverless: {
+         cloud: 'aws',
+         region: 'us-east-1',
+         sourceCollection: 'pod-collection'
+       }
+     }
+   });
+   ```
+
+   ```go Go theme={null}
+   package main
+
+   import (
+       "context"
+       "fmt"
+       "log"
+
+       "github.com/pinecone-io/go-pinecone/v4/pinecone"
+   )
+
+   func main() {
+       ctx := context.Background()
+
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
+
+       idx, err := pc.CreateServerlessIndex(ctx, &pinecone.CreateServerlessIndexRequest{
+           Name:      "serverless-index",
+           VectorType: "dense",
+           Dimension: 1536,
+           Metric:    pinecone.Cosine,
+           Cloud:     pinecone.Aws,
+           Region:    "us-east-1",
+           SourceCollection: "pod-collection",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create serverless index: %v", err)
+       } else {
+           fmt.Printf("Successfully created serverless index: %v", idx.Name)
+       }
+   }
+   ```
+
+   ```shell curl theme={null}
+   PINECONE_API_KEY="YOUR_API_KEY"
+
+   curl -s "https://api.pinecone.io/indexes" \
+   -H "Accept: application/json" \
+   -H "Content-Type: application/json" \
+   -H "Api-Key: $PINECONE_API_KEY" \
+   -H "X-Pinecone-Api-Version: 2025-10" \
+   -d '{
+           "name": "serverless-index",
+           "vector_type": "dense",
+           "dimension": 1536,
+           "metric": "cosine",
+           "spec": {
+               "serverless": {
+                   "cloud": "aws",
+                   "region": "us-east-1",
+                   "source_collection": "pod-collection"
+               }
            }
-         });
-         ```
-
-         ```go Go theme={null}
-         package main
-
-         import (
-             "context"
-             "fmt"
-             "log"
-
-             "github.com/pinecone-io/go-pinecone/v4/pinecone"
-         )
-
-         func main() {
-             ctx := context.Background()
-
-             pc, err := pinecone.NewClient(pinecone.NewClientParams{
-                 ApiKey: "YOUR_API_KEY",
-             })
-             if err != nil {
-                 log.Fatalf("Failed to create Client: %v", err)
-             }
-
-             idx, err := pc.CreateServerlessIndex(ctx, &pinecone.CreateServerlessIndexRequest{
-                 Name:      "serverless-index",
-                 VectorType: "dense",
-                 Dimension: 1536,
-                 Metric:    pinecone.Cosine,
-                 Cloud:     pinecone.Aws,
-                 Region:    "us-east-1",
-                 SourceCollection: "pod-collection",
-             })
-             if err != nil {
-                 log.Fatalf("Failed to create serverless index: %v", err)
-             } else {
-                 fmt.Printf("Successfully created serverless index: %v", idx.Name)
-             }
-         }
-         ```
-
-         ```shell curl theme={null}
-         PINECONE_API_KEY="YOUR_API_KEY"
-
-         curl -s "https://api.pinecone.io/indexes" \
-         -H "Accept: application/json" \
-         -H "Content-Type: application/json" \
-         -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2025-10" \
-         -d '{
-                 "name": "serverless-index",
-                 "vector_type": "dense",
-                 "dimension": 1536,
-                 "metric": "cosine",
-                 "spec": {
-                     "serverless": {
-                         "cloud": "aws",
-                         "region": "us-east-1",
-                         "source_collection": "pod-collection"
-                     }
-                 }
-             }'
-         ```
-       </CodeGroup>
-  </Tab>
-</Tabs>
+       }'
+   ```
 
 ## 4. Update SDKs
 
@@ -243,539 +235,527 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
 
 1. Check your SDK version:
 
-   <CodeGroup>
-     ```shell Python theme={null}
-     pip show pinecone  
-     ```
+   ```shell Python theme={null}
+   pip show pinecone  
+   ```
 
-     ```shell JavaScript theme={null}
-     npm list | grep @pinecone-database/pinecone  
-     ```
+   ```shell JavaScript theme={null}
+   npm list | grep @pinecone-database/pinecone  
+   ```
 
-     ```shell Java  theme={null}
-     # Check your dependency file or classpath
-     ```
+   ```shell Java  theme={null}
+   # Check your dependency file or classpath
+   ```
 
-     ```shell Go theme={null}
-     go list -u -m all | grep go-pinecone
-     ```
-   </CodeGroup>
+   ```shell Go theme={null}
+   go list -u -m all | grep go-pinecone
+   ```
 
 2. If your SDK version is less than 3.0.0 for [Python](https://github.com/pinecone-io/pinecone-python-client), 2.0.0 for [Node.js](https://sdk.pinecone.io/typescript/), 1.0.0 for [Java](https://github.com/pinecone-io/pinecone-java-client), or 1.0.0 for [Go](https://github.com/pinecone-io/go-pinecone), upgrade the SDK as follows:
 
-   <CodeGroup>
-     ```Python Python theme={null}
-     pip install pinecone --upgrade
-     ```
+   ```Python Python theme={null}
+   pip install pinecone --upgrade
+   ```
 
-     ```JavaScript JavaScript theme={null}
-     npm install @pinecone-database/pinecone@latest  
-     ```
+   ```JavaScript JavaScript theme={null}
+   npm install @pinecone-database/pinecone@latest  
+   ```
 
-     ```shell Java theme={null}
-     # Maven
-     <dependency>
-       <groupId>io.pinecone</groupId>
-       <artifactId>pinecone-client</artifactId>
-       <version>5.0.0</version>
-     </dependency>
+   ```shell Java theme={null}
+   # Maven
+   <dependency>
+     <groupId>io.pinecone</groupId>
+     <artifactId>pinecone-client</artifactId>
+     <version>5.0.0</version>
+   </dependency>
 
-     # Gradle
-     implementation "io.pinecone:pinecone-client:5.0.0"
-     ```
+   # Gradle
+   implementation "io.pinecone:pinecone-client:5.0.0"
+   ```
 
-     ```go Go theme={null}
-     go get -u github.com/pinecone-io/go-pinecone/v4/pinecone@latest
-     ```
-   </CodeGroup>
+   ```go Go theme={null}
+   go get -u github.com/pinecone-io/go-pinecone/v4/pinecone@latest
+   ```
 
 ## 5. Adapt existing code
 
 You must make some minor code changes to work with serverless indexes.
 
-<Warning>
-  Serverless indexes do not support some features, as outlined in [Limitations](#limitations). If you were relying on these features for your pod-based index, you’ll need to adapt your code.
-</Warning>
+> [!WARNING]
+>
+> Serverless indexes do not support some features, as outlined in [Limitations](#limitations). If you were relying on these features for your pod-based index, you’ll need to adapt your code.
 
 1. Change how you import the Pinecone library and authenticate and initialize the client:
 
-   <CodeGroup>
-     ```Python Python theme={null}
-     from pinecone.grpc import PineconeGRPC as Pinecone
-     from pinecone import ServerlessSpec, PodSpec  
-     # ServerlessSpec and PodSpec are required only when  
-     # creating serverless and pod-based indexes.  
-     pc = Pinecone(api_key="YOUR_API_KEY")  
-     ```
+   ```Python Python theme={null}
+   from pinecone.grpc import PineconeGRPC as Pinecone
+   from pinecone import ServerlessSpec, PodSpec  
+   # ServerlessSpec and PodSpec are required only when  
+   # creating serverless and pod-based indexes.  
+   pc = Pinecone(api_key="YOUR_API_KEY")  
+   ```
 
-     ```JavaScript JavaScript theme={null}
-     import { Pinecone } from '@pinecone-database/pinecone';  
+   ```JavaScript JavaScript theme={null}
+   import { Pinecone } from '@pinecone-database/pinecone';  
 
-     const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-     ```
+   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+   ```
 
-     ```java Java theme={null}
-     import io.pinecone.clients.Pinecone;
-     import org.openapitools.db_control.client.model.*;
+   ```java Java theme={null}
+   import io.pinecone.clients.Pinecone;
+   import org.openapitools.db_control.client.model.*;
 
-     public class InitializeClientExample {
-         public static void main(String[] args) {
-             Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-         }
-     }
-     ```
+   public class InitializeClientExample {
+       public static void main(String[] args) {
+           Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+       }
+   }
+   ```
 
-     ```go Go theme={null}
-     package main
+   ```go Go theme={null}
+   package main
 
-     import (
-         "context"
-         "log"
+   import (
+       "context"
+       "log"
 
-         "github.com/pinecone-io/go-pinecone/v4/pinecone"
-     )
+       "github.com/pinecone-io/go-pinecone/v4/pinecone"
+   )
 
-     func main() {
-         ctx := context.Background()
+   func main() {
+       ctx := context.Background()
 
-         pc, err := pinecone.NewClient(pinecone.NewClientParams{
-             ApiKey: "YOUR_API_KEY",
-         })
-         if err != nil {
-             log.Fatalf("Failed to create Client: %v", err)
-         }
-     }
-     ```
-   </CodeGroup>
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
+   }
+   ```
 
 2. [Listing indexes](/guides/manage-data/manage-indexes) now fetches a complete description of each index. If you were relying on the output of this operation, you'll need to adapt your code.
 
-   <CodeGroup>
-     ```Python Python theme={null}
-     from pinecone.grpc import PineconeGRPC as Pinecone
+   ```Python Python theme={null}
+   from pinecone.grpc import PineconeGRPC as Pinecone
 
-     pc = Pinecone(api_key="YOUR_API_KEY")
+   pc = Pinecone(api_key="YOUR_API_KEY")
 
-     index_list = pc.list_indexes()
+   index_list = pc.list_indexes()
 
-     print(index_list)
-     ```
+   print(index_list)
+   ```
 
-     ```javascript JavaScript theme={null}
-     import { Pinecone } from '@pinecone-database/pinecone'
+   ```javascript JavaScript theme={null}
+   import { Pinecone } from '@pinecone-database/pinecone'
 
-     const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
+   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-     const indexList = await pc.listIndexes();
+   const indexList = await pc.listIndexes();
 
-     console.log(indexList);
-     ```
+   console.log(indexList);
+   ```
 
-     ```java Java theme={null}
-     import io.pinecone.clients.Pinecone;
-     import org.openapitools.db_control.client.model.*;
+   ```java Java theme={null}
+   import io.pinecone.clients.Pinecone;
+   import org.openapitools.db_control.client.model.*;
 
-     public class ListIndexesExample {
-         public static void main(String[] args) {
-             Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-             IndexList indexList = pc.listIndexes();
-             System.out.println(indexList);
-         }
-     }
-     ```
+   public class ListIndexesExample {
+       public static void main(String[] args) {
+           Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+           IndexList indexList = pc.listIndexes();
+           System.out.println(indexList);
+       }
+   }
+   ```
 
-     ```go Go theme={null}
-     package main
+   ```go Go theme={null}
+   package main
 
-     import (
-         "context"
-         "encoding/json"
-         "fmt"
-         "log"
+   import (
+       "context"
+       "encoding/json"
+       "fmt"
+       "log"
 
-         "github.com/pinecone-io/go-pinecone/v4/pinecone"
-     )
+       "github.com/pinecone-io/go-pinecone/v7/pinecone"
+   )
 
-     func prettifyStruct(obj interface{}) string {
-         bytes, _ := json.MarshalIndent(obj, "", "  ")
-         return string(bytes)
-     }
+   func prettifyStruct(obj interface{}) string {
+       bytes, _ := json.MarshalIndent(obj, "", "  ")
+       return string(bytes)
+   }
 
-     func main() {
-         ctx := context.Background()
+   func main() {
+       ctx := context.Background()
 
-         pc, err := pinecone.NewClient(pinecone.NewClientParams{
-             ApiKey: "YOUR_API_KEY",
-         })
-         if err != nil {
-             log.Fatalf("Failed to create Client: %v", err)
-         }
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
 
-         idxs, err := pc.ListIndexes(ctx)
-         if err != nil {
-             log.Fatalf("Failed to list indexes: %v", err)
-         } else {
-             for _, index := range idxs {
-                 fmt.Printf("index: %v\n", prettifyStruct(index))
-             }
-         }
-     }
-     ```
+       idxs, err := pc.ListIndexes(ctx)
+       if err != nil {
+           log.Fatalf("Failed to list indexes: %v", err)
+       } else {
+           for _, index := range idxs {
+               fmt.Printf("index: %v\n", prettifyStruct(index))
+           }
+       }
+   }
+   ```
 
-     ```shell curl theme={null}
-     PINECONE_API_KEY="YOUR_API_KEY"
+   ```shell curl theme={null}
+   PINECONE_API_KEY="YOUR_API_KEY"
 
-     curl -i -X GET "https://api.pinecone.io/indexes" \
-     -H "Api-Key: $PINECONE_API_KEY" \
-     -H "X-Pinecone-Api-Version: 2026-07"
-     ```
-   </CodeGroup>
+   curl -i -X GET "https://api.pinecone.io/indexes" \
+   -H "Api-Key: $PINECONE_API_KEY" \
+   -H "X-Pinecone-Api-Version: 2026-07"
+   ```
 
-   <Note>
-     On API version `2026-07`, the `curl` response returns `deployment`, `read_capacity`, and `schema` objects in place of the top-level `dimension`, `metric`, `vector_type`, and `spec`. The SDKs return both the new fields and the older top-level ones for backward compatibility. See [Adopt the Documents API](/guides/index-data/adopt-the-documents-api) for details.
-   </Note>
+   > [!NOTE]
+   >
+   > On API version `2026-07`, the `curl` response returns `deployment`, `read_capacity`, and `schema` objects in place of the top-level `dimension`, `metric`, `vector_type`, and `spec`. The SDKs return both the new fields and the older top-level ones for backward compatibility. See [Adopt the Documents API](/guides/index-data/adopt-the-documents-api) for details.
 
    The `list_indexes` operation now returns a response like the following:
 
-   <CodeGroup>
-     ```python Python theme={null}
-     [{
-         "name": "docs-example-sparse",
-         "metric": "dotproduct",
-         "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
-         "spec": {
-             "serverless": {
-                 "cloud": "aws",
-                 "region": "us-east-1"
-             }
-         },
-         "status": {
-             "ready": true,
-             "state": "Ready"
-         },
-         "vector_type": "sparse",
-         "dimension": null,
-         "deletion_protection": "disabled",
-         "tags": {
-             "environment": "development"
-         }
-     }, {
-         "name": "docs-example-dense",
-         "metric": "cosine",
-         "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
-         "spec": {
-             "serverless": {
-                 "cloud": "aws",
-                 "region": "us-east-1"
-             }
-         },
-         "status": {
-             "ready": true,
-             "state": "Ready"
-         },
-         "vector_type": "dense",
-         "dimension": 1536,
-         "deletion_protection": "disabled",
-         "tags": {
-             "environment": "development"
-         }
-     }]
-     ```
-
-     ```javascript JavaScript theme={null}
-     {
-       indexes: [
-         {
-           name: 'docs-example-sparse',
-           dimension: undefined,
-           metric: 'dotproduct',
-           host: 'docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io',
-           deletionProtection: 'disabled',
-           tags: { environment: 'development', example: 'tag' },
-           embed: undefined,
-           spec: { pod: undefined, serverless: { cloud: 'aws', region: 'us-east-1' } },
-           status: { ready: true, state: 'Ready' },
-           vectorType: 'sparse'
-         },
-         {
-           name: 'docs-example-dense',
-           dimension: 1536,
-           metric: 'cosine',
-           host: 'docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io',
-           deletionProtection: 'disabled',
-           tags: { environment: 'development', example: 'tag' },
-           embed: undefined,
-           spec: { pod: undefined, serverless: { cloud: 'aws', region: 'us-east-1' } },
-           status: { ready: true, state: 'Ready' },
-           vectorType: 'dense'
-         }
-       ]
-     }
-     ```
-
-     ```java Java theme={null}
-     class IndexList {
-         indexes: [class IndexModel {
-             name: docs-example-sparse
-             dimension: null
-             metric: dotproduct
-             host: docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io
-             deletionProtection: disabled
-             tags: {environment=development}
-             embed: null
-             spec: class IndexModelSpec {
-                 pod: null
-                 serverless: class ServerlessSpec {
-                     cloud: aws
-                     region: us-east-1
-                     additionalProperties: null
-                 }
-                 additionalProperties: null
-             }
-             status: class IndexModelStatus {
-                 ready: true
-                 state: Ready
-                 additionalProperties: null
-             }
-             vectorType: sparse
-             additionalProperties: null
-         }, class IndexModel {
-             name: docs-example-dense
-             dimension: 1536
-             metric: cosine
-             host: docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io
-             deletionProtection: disabled
-             tags: {environment=development}
-             embed: null
-             spec: class IndexModelSpec {
-                 pod: null
-                 serverless: class ServerlessSpec {
-                     cloud: aws
-                     region: us-east-1
-                     additionalProperties: null
-                 }
-                 additionalProperties: null
-             }
-             status: class IndexModelStatus {
-                 ready: true
-                 state: Ready
-                 additionalProperties: null
-             }
-             vectorType: dense
-             additionalProperties: null
-         }]
-         additionalProperties: null
-     }
-     ```
-
-     ```go Go theme={null}
-     index: {
+   ```python Python theme={null}
+   [{
        "name": "docs-example-sparse",
-       "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
        "metric": "dotproduct",
+       "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
+       "spec": {
+           "serverless": {
+               "cloud": "aws",
+               "region": "us-east-1"
+           }
+       },
+       "status": {
+           "ready": true,
+           "state": "Ready"
+       },
        "vector_type": "sparse",
-       "deletion_protection": "disabled",
        "dimension": null,
-       "spec": {
-         "serverless": {
-           "cloud": "aws",
-           "region": "us-east-1"
-         }
-       },
-       "status": {
-         "ready": true,
-         "state": "Ready"
-       },
-       "tags": {
-         "environment": "development"
-       }
-     }
-     index: {
-       "name": "docs-example-dense",
-       "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
-       "metric": "cosine",
-       "vector_type": "dense",
        "deletion_protection": "disabled",
-       "dimension": 1536,
+       "tags": {
+           "environment": "development"
+       }
+   }, {
+       "name": "docs-example-dense",
+       "metric": "cosine",
+       "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
        "spec": {
-         "serverless": {
-           "cloud": "aws",
-           "region": "us-east-1"
-         }
+           "serverless": {
+               "cloud": "aws",
+               "region": "us-east-1"
+           }
        },
        "status": {
-         "ready": true,
-         "state": "Ready"
+           "ready": true,
+           "state": "Ready"
        },
+       "vector_type": "dense",
+       "dimension": 1536,
+       "deletion_protection": "disabled",
        "tags": {
-         "environment": "development"
+           "environment": "development"
        }
-     }
-     ```
+   }]
+   ```
 
-     ```json curl theme={null}
-     {
-       "indexes": [
-         {
-           "name": "docs-example-sparse",
-           "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
-           "status": {
-             "ready": true,
-             "state": "Ready"
-           },
-           "deployment": {
-             "deployment_type": "managed",
-             "region": "us-east-1",
-             "cloud": "aws",
-             "environment": "aped-4627-b74a"
-           },
-           "read_capacity": {
-             "mode": "OnDemand",
-             "status": {
-               "state": "Ready",
-               "current_shards": null,
-               "current_replicas": null
-             }
-           },
-           "schema": {
-             "fields": {
-               "sparse_embedding": {
-                 "type": "sparse_vector",
-                 "description": null
+   ```javascript JavaScript theme={null}
+   {
+     indexes: [
+       {
+         name: 'docs-example-sparse',
+         dimension: undefined,
+         metric: 'dotproduct',
+         host: 'docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io',
+         deletionProtection: 'disabled',
+         tags: { environment: 'development', example: 'tag' },
+         embed: undefined,
+         spec: { pod: undefined, serverless: { cloud: 'aws', region: 'us-east-1' } },
+         status: { ready: true, state: 'Ready' },
+         vectorType: 'sparse'
+       },
+       {
+         name: 'docs-example-dense',
+         dimension: 1536,
+         metric: 'cosine',
+         host: 'docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io',
+         deletionProtection: 'disabled',
+         tags: { environment: 'development', example: 'tag' },
+         embed: undefined,
+         spec: { pod: undefined, serverless: { cloud: 'aws', region: 'us-east-1' } },
+         status: { ready: true, state: 'Ready' },
+         vectorType: 'dense'
+       }
+     ]
+   }
+   ```
+
+   ```java Java theme={null}
+   class IndexList {
+       indexes: [class IndexModel {
+           name: docs-example-sparse
+           dimension: null
+           metric: dotproduct
+           host: docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io
+           deletionProtection: disabled
+           tags: {environment=development}
+           embed: null
+           spec: class IndexModelSpec {
+               pod: null
+               serverless: class ServerlessSpec {
+                   cloud: aws
+                   region: us-east-1
+                   additionalProperties: null
                }
-             }
-           },
-           "tags": {
-             "environment": "development"
-           },
-           "deletion_protection": "disabled"
-         },
-         {
-           "name": "docs-example-dense",
-           "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
-           "status": {
-             "ready": true,
-             "state": "Ready"
-           },
-           "deployment": {
-             "deployment_type": "managed",
-             "region": "us-east-1",
-             "cloud": "aws",
-             "environment": "aped-4627-b74a"
-           },
-           "read_capacity": {
-             "mode": "OnDemand",
-             "status": {
-               "state": "Ready",
-               "current_shards": null,
-               "current_replicas": null
-             }
-           },
-           "schema": {
-             "fields": {
-               "chunk_text": {
-                 "type": "string",
-                 "description": null,
-                 "full_text_search": {
-                   "language": "en",
-                   "stemming": false,
-                   "stop_words": false
-                 }
-               },
-               "embedding": {
-                 "type": "dense_vector",
-                 "description": null,
-                 "dimension": 1536,
-                 "metric": "cosine"
+               additionalProperties: null
+           }
+           status: class IndexModelStatus {
+               ready: true
+               state: Ready
+               additionalProperties: null
+           }
+           vectorType: sparse
+           additionalProperties: null
+       }, class IndexModel {
+           name: docs-example-dense
+           dimension: 1536
+           metric: cosine
+           host: docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io
+           deletionProtection: disabled
+           tags: {environment=development}
+           embed: null
+           spec: class IndexModelSpec {
+               pod: null
+               serverless: class ServerlessSpec {
+                   cloud: aws
+                   region: us-east-1
+                   additionalProperties: null
                }
-             }
-           },
-           "tags": {
-             "environment": "development"
-           },
-           "deletion_protection": "disabled"
-         }
-       ]
+               additionalProperties: null
+           }
+           status: class IndexModelStatus {
+               ready: true
+               state: Ready
+               additionalProperties: null
+           }
+           vectorType: dense
+           additionalProperties: null
+       }]
+       additionalProperties: null
+   }
+   ```
+
+   ```go Go theme={null}
+   index: {
+     "name": "docs-example-sparse",
+     "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
+     "metric": "dotproduct",
+     "vector_type": "sparse",
+     "deletion_protection": "disabled",
+     "dimension": null,
+     "spec": {
+       "serverless": {
+         "cloud": "aws",
+         "region": "us-east-1"
+       }
+     },
+     "status": {
+       "ready": true,
+       "state": "Ready"
+     },
+     "tags": {
+       "environment": "development"
      }
-     ```
-   </CodeGroup>
+   }
+   index: {
+     "name": "docs-example-dense",
+     "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
+     "metric": "cosine",
+     "vector_type": "dense",
+     "deletion_protection": "disabled",
+     "dimension": 1536,
+     "spec": {
+       "serverless": {
+         "cloud": "aws",
+         "region": "us-east-1"
+       }
+     },
+     "status": {
+       "ready": true,
+       "state": "Ready"
+     },
+     "tags": {
+       "environment": "development"
+     }
+   }
+   ```
+
+   ```json curl theme={null}
+   {
+     "indexes": [
+       {
+         "name": "docs-example-sparse",
+         "host": "docs-example-sparse-govk0nt.svc.aped-4627-b74a.pinecone.io",
+         "status": {
+           "ready": true,
+           "state": "Ready"
+         },
+         "deployment": {
+           "deployment_type": "managed",
+           "region": "us-east-1",
+           "cloud": "aws",
+           "environment": "aped-4627-b74a"
+         },
+         "read_capacity": {
+           "mode": "OnDemand",
+           "status": {
+             "state": "Ready",
+             "current_shards": null,
+             "current_replicas": null
+           }
+         },
+         "schema": {
+           "fields": {
+             "sparse_embedding": {
+               "type": "sparse_vector",
+               "description": null
+             }
+           }
+         },
+         "tags": {
+           "environment": "development"
+         },
+         "deletion_protection": "disabled"
+       },
+       {
+         "name": "docs-example-dense",
+         "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
+         "status": {
+           "ready": true,
+           "state": "Ready"
+         },
+         "deployment": {
+           "deployment_type": "managed",
+           "region": "us-east-1",
+           "cloud": "aws",
+           "environment": "aped-4627-b74a"
+         },
+         "read_capacity": {
+           "mode": "OnDemand",
+           "status": {
+             "state": "Ready",
+             "current_shards": null,
+             "current_replicas": null
+           }
+         },
+         "schema": {
+           "fields": {
+             "chunk_text": {
+               "type": "string",
+               "description": null,
+               "full_text_search": {
+                 "language": "en",
+                 "stemming": false,
+                 "stop_words": false
+               }
+             },
+             "embedding": {
+               "type": "dense_vector",
+               "description": null,
+               "dimension": 1536,
+               "metric": "cosine"
+             }
+           }
+         },
+         "tags": {
+           "environment": "development"
+         },
+         "deletion_protection": "disabled"
+       }
+     ]
+   }
+   ```
 
 3. [Describing an index](/guides/manage-data/manage-indexes) now returns a description of an index in a different format. It also returns the index host needed to run data plane operations against the index. If you were relying on the output of this operation, you'll need to adapt your code.
 
-   <CodeGroup>
-     ```Python Python theme={null}
-     from pinecone.grpc import PineconeGRPC as Pinecone
+   ```Python Python theme={null}
+   from pinecone.grpc import PineconeGRPC as Pinecone
 
-     pc = Pinecone(api_key="YOUR_API_KEY")
+   pc = Pinecone(api_key="YOUR_API_KEY")
 
-     pc.describe_index(name="docs-example")
-     ```
+   pc.describe_index(name="docs-example")
+   ```
 
-     ```JavaScript JavaScript theme={null}
-     import { Pinecone } from '@pinecone-database/pinecone';
+   ```JavaScript JavaScript theme={null}
+   import { Pinecone } from '@pinecone-database/pinecone';
 
-     const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-     await pc.describeIndex('docs-example');
-     ```
+   await pc.describeIndex('docs-example');
+   ```
 
-     ```java Java theme={null}
-     import io.pinecone.clients.Pinecone;
-     import org.openapitools.db_control.client.model.*;
+   ```java Java theme={null}
+   import io.pinecone.clients.Pinecone;
+   import org.openapitools.db_control.client.model.*;
 
-     public class DescribeIndexExample {
-         public static void main(String[] args) {
-             Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
-             IndexModel indexModel = pc.describeIndex("docs-example");
-             System.out.println(indexModel);
-         }
-     }
-     ```
+   public class DescribeIndexExample {
+       public static void main(String[] args) {
+           Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
+           IndexModel indexModel = pc.describeIndex("docs-example");
+           System.out.println(indexModel);
+       }
+   }
+   ```
 
-     ```go Go theme={null}
-     package main
+   ```go Go theme={null}
+   package main
 
-     import (
-         "context"
-         "encoding/json"
-         "fmt"
-         "log"
+   import (
+       "context"
+       "encoding/json"
+       "fmt"
+       "log"
 
-         "github.com/pinecone-io/go-pinecone/v4/pinecone"
-     )
+       "github.com/pinecone-io/go-pinecone/v7/pinecone"
+   )
 
-     func prettifyStruct(obj interface{}) string {
-         bytes, _ := json.MarshalIndent(obj, "", "  ")
-         return string(bytes)
-     }
+   func prettifyStruct(obj interface{}) string {
+       bytes, _ := json.MarshalIndent(obj, "", "  ")
+       return string(bytes)
+   }
 
-     func main() {
-         ctx := context.Background()
+   func main() {
+       ctx := context.Background()
 
-         pc, err := pinecone.NewClient(pinecone.NewClientParams{
-             ApiKey: "YOUR_API_KEY",
-         })
-         if err != nil {
-             log.Fatalf("Failed to create Client: %v", err)
-         }
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
 
-         idx, err := pc.DescribeIndex(ctx, "docs-example")
-         if err != nil {
-             log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-         } else {
-             fmt.Printf("index: %v\n", prettifyStruct(idx))
-         }
-     }
-     ```
+       idx, err := pc.DescribeIndex(ctx, "docs-example")
+       if err != nil {
+           log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+       } else {
+           fmt.Printf("index: %v\n", prettifyStruct(idx))
+       }
+   }
+   ```
 
-     ```bash curl theme={null}
-     PINECONE_API_KEY="YOUR_API_KEY"
+   ```bash curl theme={null}
+   PINECONE_API_KEY="YOUR_API_KEY"
 
-     curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
-         -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2026-07"
-     ```
-   </CodeGroup>
+   curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
+       -H "Api-Key: $PINECONE_API_KEY" \
+       -H "X-Pinecone-Api-Version: 2026-07"
+   ```
 
 ## 6. Use your new index
 
@@ -783,69 +763,67 @@ When you're ready to cutover to your new serverless index:
 
 1. Your new serverless index has a different name and unique endpoint than your pod-based index. Update your code to target the new serverless index:
 
-   <CodeGroup>
-     ```Python Python theme={null}
-     index = pc.Index("YOUR_SERVERLESS_INDEX_NAME")  
-     ```
+   ```Python Python theme={null}
+   index = pc.Index("YOUR_SERVERLESS_INDEX_NAME")  
+   ```
 
-     ```JavaScript JavaScript theme={null}
-     const index = pc.index("YOUR_SERVERLESS_INDEX_NAME");
-     ```
+   ```JavaScript JavaScript theme={null}
+   const index = pc.index("YOUR_SERVERLESS_INDEX_NAME");
+   ```
 
-     ```java Java theme={null}
-     import io.pinecone.clients.Index;
-     import io.pinecone.clients.Pinecone;
+   ```java Java theme={null}
+   import io.pinecone.clients.Index;
+   import io.pinecone.clients.Pinecone;
 
-     public class TargetIndexExample {
-         public static void main(String[] args) {
-             Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-             Index index = pc.getIndexConnection("YOUR_SERVERLESS_INDEX_NAME");
-     ```
+   public class TargetIndexExample {
+       public static void main(String[] args) {
+           Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+           Index index = pc.getIndexConnection("YOUR_SERVERLESS_INDEX_NAME");
+   ```
 
-     ```go Go theme={null}
-     package main
+   ```go Go theme={null}
+   package main
 
-     import (
-         "context"
-         "log"
+   import (
+       "context"
+       "log"
 
-         "github.com/pinecone-io/go-pinecone/v4/pinecone"
-     )
+       "github.com/pinecone-io/go-pinecone/v4/pinecone"
+   )
 
-     func main() {
+   func main() {
 
-         ctx := context.Background()
+       ctx := context.Background()
 
-         pc, err := pinecone.NewClient(pinecone.NewClientParams{
-             ApiKey: "YOUR_API_KEY",
-         })
-         if err != nil {
-             log.Fatalf("Failed to create Client: %v", err)
-         }
+       pc, err := pinecone.NewClient(pinecone.NewClientParams{
+           ApiKey: "YOUR_API_KEY",
+       })
+       if err != nil {
+           log.Fatalf("Failed to create Client: %v", err)
+       }
 
-         idx, err := pc.DescribeIndex(ctx, "YOUR_SERVERLESS_INDEX_NAME")
-         if err != nil {
-             log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-         }
+       idx, err := pc.DescribeIndex(ctx, "YOUR_SERVERLESS_INDEX_NAME")
+       if err != nil {
+           log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+       }
 
-         idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: idx.Host, Namespace: "example-namespace"})
-         if err != nil {
-             log.Fatalf("Failed to create IndexConnection for Host %v: %v", idx.Host, err)
-         }
-     }
-     ```
+       idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: idx.Host, Namespace: "example-namespace"})
+       if err != nil {
+           log.Fatalf("Failed to create IndexConnection for Host %v: %v", idx.Host, err)
+       }
+   }
+   ```
 
-     ```bash curl theme={null}
-     # When using the API directly, you need the unique endpoint for your new serverless index. 
-     # See https://docs.pinecone.io/guides/manage-data/target-an-index for details.
-     PINECONE_API_KEY="YOUR_API_KEY"
-     INDEX_HOST="INDEX_HOST"
+   ```bash curl theme={null}
+   # When using the API directly, you need the unique endpoint for your new serverless index. 
+   # See https://docs.pinecone.io/guides/manage-data/target-an-index for details.
+   PINECONE_API_KEY="YOUR_API_KEY"
+   INDEX_HOST="INDEX_HOST"
 
-     curl -X POST "https://$INDEX_HOST/describe_index_stats" \  
-         -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2025-10" 
-     ```
-   </CodeGroup>
+   curl -X POST "https://$INDEX_HOST/describe_index_stats" \  
+       -H "Api-Key: $PINECONE_API_KEY" \
+       -H "X-Pinecone-Api-Version: 2025-10" 
+   ```
 
 2. Reinitialize your clients.
 
@@ -853,9 +831,9 @@ When you're ready to cutover to your new serverless index:
 
 4. [Delete the pod-based index](/guides/manage-data/manage-indexes#delete-an-index) to avoid paying for unused resources.
 
-   <Warning>
-     It is not possible to save a serverless index as a collection, so if you want to retain the option to recreate your pod-based index, be sure to keep the collection you created earlier.
-   </Warning>
+   > [!WARNING]
+   >
+   > It is not possible to save a serverless index as a collection, so if you want to retain the option to recreate your pod-based index, be sure to keep the collection you created earlier.
 
 ## See also
 

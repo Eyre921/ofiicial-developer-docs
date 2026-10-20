@@ -6,13 +6,15 @@ path: development/roadmap
 
 The Model Context Protocol roadmap, covering the priority areas Core Maintainers and Working Groups are driving for the next specification release and how they shape SEP review.
 
-<Info>Last updated: **2026-08-22**</Info>
+> [!NOTE]
+>
+> Last updated: **2026-08-22**
 
 This page outlines the Core Maintainers' vision for the protocol over the coming six to twelve months, highlighting objectives targeted for the next specification update and beyond. It describes our primary strategic goals and the expected deliverables from [Working and Interest Groups](/community/working-interest-groups).
 
-<Note>
-  This roadmap reflects current thinking rather than firm commitments. Priorities may shift, some items may be delivered differently than described or deferred, and work not listed here may still be included in the release.
-</Note>
+> [!NOTE]
+>
+> This roadmap reflects current thinking rather than firm commitments. Priorities may shift, some items may be delivered differently than described or deferred, and work not listed here may still be included in the release.
 
 ## SEP Prioritization
 
@@ -32,8 +34,8 @@ Agentic workloads need [messaging patterns](/specification/2026-07-28/basic/patt
 
 **This roadmap period:**
 
-* **Server-initiated events**: [Triggers & Events WG](/community/working-groups/triggers-events). Channels and subscriptions for push delivery, including webhooks. As we take on asynchronous workloads through Tasks and other events, we need extensions that let servers tell clients when work has finished, without relying purely on expensive client-side polling.
-* **A composition review**: [Agents](/community/working-groups/agents), Transports, and [Triggers & Events](/community/working-groups/triggers-events) WGs. Primitives in the making, such as Tasks and Triggers, need to compose cleanly with each other and fit concrete use cases.
+* **Server-initiated events**: [Tasks & Events WG](/community/working-groups/tasks-events). Channels and subscriptions for push delivery, including webhooks. As we take on asynchronous workloads through Tasks and other events, we need extensions that let servers tell clients when work has finished, without relying purely on expensive client-side polling.
+* **A composition review**: [Tasks & Events](/community/working-groups/tasks-events) and Transports WGs, with the [Agents](/community/interest-groups/agents) IG. Primitives in the making, such as Tasks and Triggers, need to compose cleanly with each other and fit concrete use cases.
 
 Beyond these, we expect continued work on Tasks ([SEP-2663](/seps/2663-tasks-extension)) toward eventual inclusion of the extension in the core protocol.
 

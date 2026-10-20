@@ -8,7 +8,7 @@ Install the official Pinecone plugin for Claude Code to manage indexes, run vect
 
 The official Pinecone plugin for [Claude Code](https://claude.ai/code) adds Pinecone skills, the Pinecone MCP server, and slash commands to Claude Code in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
-<PrimarySecondaryCTA />
+[View on GitHub](https://github.com/pinecone-io/pinecone-claude-code-plugin)
 
 ## Features
 
@@ -27,33 +27,31 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) adds Pine
 
 ## Installation
 
-<Steps>
-  <Step title="Set your API key">
-    ```shell theme={null}
-    export PINECONE_API_KEY="YOUR_API_KEY"
-    ```
+**1. Set your API key**
 
-    Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
-  </Step>
+```shell theme={null}
+export PINECONE_API_KEY="YOUR_API_KEY"
+```
 
-  <Step title="Install the plugin">
-    From your terminal:
+Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
 
-    ```shell theme={null}
-    claude plugin install pinecone
-    ```
+**2. Install the plugin**
 
-    Or from within Claude Code:
+From your terminal:
 
-    ```text theme={null}
-    /plugin install pinecone
-    ```
-  </Step>
+```shell theme={null}
+claude plugin install pinecone
+```
 
-  <Step title="Restart Claude Code">
-    Restart Claude Code to activate the plugin. Then run `/pinecone:help` to verify the installation.
-  </Step>
-</Steps>
+Or from within Claude Code:
+
+```text theme={null}
+/plugin install pinecone
+```
+
+**3. Restart Claude Code**
+
+Restart Claude Code to activate the plugin. Then run `/pinecone:help` to verify the installation.
 
 ## Available skills
 

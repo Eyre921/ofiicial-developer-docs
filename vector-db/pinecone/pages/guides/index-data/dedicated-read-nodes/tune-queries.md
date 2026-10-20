@@ -85,69 +85,67 @@ Start with the defaults and adjust based on your workload requirements:
 
 Both parameters are optional fields on the `POST /query` request.
 
-<CodeGroup>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="YOUR_INDEX_HOST"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="YOUR_INDEX_HOST"
 
-  curl "https://$INDEX_HOST/query" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "namespace": "example-namespace",
-      "topK": 10,
-      "vector": [0.1, 0.2, 0.3],
-      "scanFactor": 1.0,
-      "maxCandidates": 1000
-    }'
-  ```
+curl "https://$INDEX_HOST/query" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "namespace": "example-namespace",
+    "topK": 10,
+    "vector": [0.1, 0.2, 0.3],
+    "scanFactor": 1.0,
+    "maxCandidates": 1000
+  }'
+```
 
-  ```python Python theme={null}
-  # Both parameters — balanced recall and latency
-  index.query(
-      namespace="example-namespace",
-      vector=[0.1, 0.2, 0.3],
-      top_k=10,
-      scan_factor=1.0,
-      max_candidates=1000
-  )
+```python Python theme={null}
+# Both parameters — balanced recall and latency
+index.query(
+    namespace="example-namespace",
+    vector=[0.1, 0.2, 0.3],
+    top_k=10,
+    scan_factor=1.0,
+    max_candidates=1000
+)
 
-  # scan_factor only — faster queries, lower recall
-  index.query(
-      namespace="example-namespace",
-      vector=[0.1, 0.2, 0.3],
-      top_k=10,
-      scan_factor=0.5
-  )
+# scan_factor only — faster queries, lower recall
+index.query(
+    namespace="example-namespace",
+    vector=[0.1, 0.2, 0.3],
+    top_k=10,
+    scan_factor=0.5
+)
 
-  # Omit both for maximum recall (default behavior)
-  index.query(
-      namespace="example-namespace",
-      vector=[0.1, 0.2, 0.3],
-      top_k=10
-  )
-  ```
+# Omit both for maximum recall (default behavior)
+index.query(
+    namespace="example-namespace",
+    vector=[0.1, 0.2, 0.3],
+    top_k=10
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Both parameters — balanced recall and latency
-  await index.query({
-    namespace: "example-namespace",
-    vector: [0.1, 0.2, 0.3],
-    topK: 10,
-    scanFactor: 1.0,
-    maxCandidates: 1000
-  });
+```typescript TypeScript theme={null}
+// Both parameters — balanced recall and latency
+await index.query({
+  namespace: "example-namespace",
+  vector: [0.1, 0.2, 0.3],
+  topK: 10,
+  scanFactor: 1.0,
+  maxCandidates: 1000
+});
 
-  // scan_factor only — faster queries, lower recall
-  await index.query({
-    namespace: "example-namespace",
-    vector: [0.1, 0.2, 0.3],
-    topK: 10,
-    scanFactor: 0.5
-  });
-  ```
-</CodeGroup>
+// scan_factor only — faster queries, lower recall
+await index.query({
+  namespace: "example-namespace",
+  vector: [0.1, 0.2, 0.3],
+  topK: 10,
+  scanFactor: 0.5
+});
+```
 
 ### Validation errors
 
@@ -158,6 +156,6 @@ Both parameters are optional fields on the `POST /query` request.
 | `max_candidates` below your query's `top_k` or above 100,000 | `max_candidates must be between &lcub;top_k&rcub; (top_k) and &lcub;max&rcub;, got &lcub;value&rcub;` |
 | Used on an index that stores only sparse vectors (API error text says "sparse indexes") | `scan_factor and max_candidates parameters are not supported for sparse indexes` |
 
-<Note>
-  `scan_factor` and `max_candidates` don't affect billing. Read costs for dedicated read nodes are based on provisioned capacity (node type, shards, and replicas), not per-query effort. By tuning these parameters to achieve higher throughput, you may be able to serve the same query rate with fewer provisioned replicas, reducing your overall cost.
-</Note>
+> [!NOTE]
+>
+> `scan_factor` and `max_candidates` don't affect billing. Read costs for dedicated read nodes are based on provisioned capacity (node type, shards, and replicas), not per-query effort. By tuning these parameters to achieve higher throughput, you may be able to serve the same query rate with fewer provisioned replicas, reducing your overall cost.

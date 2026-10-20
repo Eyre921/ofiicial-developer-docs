@@ -17,7 +17,7 @@ Before you start, you'll need:
 
 Prefer a video walkthrough?
 
-<YouTube />
+[YouTube video player](https://www.youtube.com/embed/-xlz8xVN3Rc)
 
 ## Set up the Resend provider in Auth0
 
@@ -25,14 +25,14 @@ In the Auth0 Dashboard, go to **Branding > Email Provider**, toggle on **Use my 
 
 Enter your API key and set the **From** address to match your verified domain. Click **Save** to apply the changes.
 
-<img alt="Auth0 Resend Integration" />
+![Auth0 Resend Integration](https://mintcdn.com/resend/3aaPXnVunyH4ynzk/images/auth0-setup.png?fit=max\&auto=format\&n=3aaPXnVunyH4ynzk\&q=85\&s=1e7ff74e83ff205e0b499c5aacdb7d3f)
 
 To test that it's working, click **Send Test Email**. The email will appear in your Resend dashboard and email inbox.
 
-<Info>
-  For the full setup guide, see the [Auth0
-  documentation](https://auth0.com/docs/customize/email/smtp-email-providers/resend).
-</Info>
+> [!NOTE]
+>
+> For the full setup guide, see the [Auth0
+> documentation](https://auth0.com/docs/customize/email/smtp-email-providers/resend).
 
 ## Send emails with Auth0 Actions (optional)
 
@@ -40,14 +40,16 @@ For more control over delivery, like per-organization sender addresses, conditio
 
 In the Auth0 Dashboard, go to **Actions > Library**, create a new Custom action.
 
-<img alt="Auth0 Custom Action" />
+![Auth0 Custom Action](https://mintcdn.com/resend/3aaPXnVunyH4ynzk/images/auth0-action.png?fit=max\&auto=format\&n=3aaPXnVunyH4ynzk\&q=85\&s=6eec4f5953cfa2a5e7848b8dfbe184a0)
 
 To enable Resend in the Action:
 
 1. Add `resend` as a dependency.
-   <img alt="Auth0 Custom Action" />
+
+   ![Auth0 Custom Action](https://mintcdn.com/resend/3aaPXnVunyH4ynzk/images/auth0-dependency.png?fit=max\&auto=format\&n=3aaPXnVunyH4ynzk\&q=85\&s=7789456d3dd2c52559961357226cea0a)
 2. Store your API key as a secret named `RESEND_API_KEY`.
-   <img alt="Auth0 Custom Action" />
+
+   ![Auth0 Custom Action](https://mintcdn.com/resend/3aaPXnVunyH4ynzk/images/auth0-secret.png?fit=max\&auto=format\&n=3aaPXnVunyH4ynzk\&q=85\&s=6326f23f2690292e87545282c1fee855)
 
 Here's a working example that sends a security alert on first login:
 

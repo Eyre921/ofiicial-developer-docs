@@ -10,4 +10,4 @@ Access Pinecone through its Microsoft Marketplace listing. Microsoft Marketplace
 
 You can set up pay-as-you-go billing for a Pinecone organization through Microsoft Marketplace.
 
-<PrimarySecondaryCTA />
+[Get started](https://marketplace.microsoft.com/product/saas/pineconesystemsinc1688761585469.pineconesaas)

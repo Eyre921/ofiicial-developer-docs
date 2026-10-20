@@ -25,9 +25,7 @@ For example, with a **\$10-per-minute reservation**:
 * If your usage exceeds \$10 in a minute, the amount above is billed at standard Serverless rates. If you use \$12 in a minute, \$10 is covered and \$2 is billed as overage.
 * Reserved throughput is use-it-or-lose-it per minute and does not accumulate.
 
-<img alt="Bar chart showing eligible usage covered by a $10-per-minute reservation and usage above $10 billed as overage" />
-
-<img alt="Bar chart showing eligible usage covered by a $10-per-minute reservation and usage above $10 billed as overage" />
+![Bar chart showing eligible usage covered by a \$10-per-minute reservation and usage above \$10 billed as overage](https://mintcdn.com/fireworksai/IUsru_NxiMk5sdgI/images/serverless/reservation-consumption-light.svg?fit=max\&auto=format\&n=IUsru_NxiMk5sdgI\&q=85\&s=2a9ab71890773c60ff8a5defc0c3a782)
 
 ## Example: GLM 5.3
 
@@ -76,48 +74,42 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 ## Pricing and SLAs
 
-<AccordionGroup>
-  <Accordion title="How is Reserved Throughput priced?">
-    Reserved throughput is priced per token
-  </Accordion>
+> **How is Reserved Throughput priced?**
+>
+> Reserved throughput is priced per token
 
-  <Accordion title="How should I size my reservation?">
-    Size your reservation against per-minute TPM levels, such as your peak or p95 usage.
-  </Accordion>
+> **How should I size my reservation?**
+>
+> Size your reservation against per-minute TPM levels, such as your peak or p95 usage.
 
-  <Accordion title="What happens once I hit my reserved amount?">
-    Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your standard adaptive rate limits.
-  </Accordion>
+> **What happens once I hit my reserved amount?**
+>
+> Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your standard adaptive rate limits.
 
-  <Accordion title="Is my reserved traffic subject to an SLA?">
-    Yes. Traffic within your reservation is covered by a throughput SLA.
-  </Accordion>
+> **Is my reserved traffic subject to an SLA?**
+>
+> Yes. Traffic within your reservation is covered by a throughput SLA.
 
-  <Accordion title="Does unused reserved throughput roll over?">
-    No. Reserved throughput is use-it-or-lose-it on a per-minute basis.
-  </Accordion>
-</AccordionGroup>
+> **Does unused reserved throughput roll over?**
+>
+> No. Reserved throughput is use-it-or-lose-it on a per-minute basis.
 
 ## Rate limits and usage
 
-<img alt="Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits" />
+![Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits](https://mintcdn.com/fireworksai/IUsru_NxiMk5sdgI/images/serverless/reserved-throughput-additive-light.svg?fit=max\&auto=format\&n=IUsru_NxiMk5sdgI\&q=85\&s=0db742891f2656441f08f46a07a452db)
 
-<img alt="Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits" />
+> **How do I enable calls to use Reserved Throughput?**
+>
+> This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
 
-<AccordionGroup>
-  <Accordion title="How do I enable calls to use Reserved Throughput?">
-    This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
-  </Accordion>
+> **How does this affect my rate limits?**
+>
+> Reserved Throughput is added to your Serverless adaptive rate limits. Usage within your reservation does not count against adaptive rate limits.
 
-  <Accordion title="How does this affect my rate limits?">
-    Reserved Throughput is added to your Serverless adaptive rate limits. Usage within your reservation does not count against adaptive rate limits.
-  </Accordion>
+> **How does my cache hit rate affect what I get?**
+>
+> Cached input is priced well below uncached input, so a higher cache hit rate means more throughput per dollar reserved. See [prompt caching](/guides/prompt-caching).
 
-  <Accordion title="How does my cache hit rate affect what I get?">
-    Cached input is priced well below uncached input, so a higher cache hit rate means more throughput per dollar reserved. See [prompt caching](/guides/prompt-caching).
-  </Accordion>
-
-  <Accordion title="Can I reserve throughput for custom or fine-tuned models?">
-    Yes. [Contact us](https://fireworks.ai/contact) to discuss your requirements.
-  </Accordion>
-</AccordionGroup>
+> **Can I reserve throughput for custom or fine-tuned models?**
+>
+> Yes. [Contact us](https://fireworks.ai/contact) to discuss your requirements.

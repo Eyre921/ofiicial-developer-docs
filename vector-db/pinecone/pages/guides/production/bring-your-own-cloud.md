@@ -14,9 +14,7 @@ Pinecone never has direct access to your cloud account. Your vectors, metadata, 
 
 ## Architecture
 
-<img alt="BYOC architecture in which the Pinecone data plane, Kubernetes cluster, FoundationDB, object storage, and DNS run in a VPC in your AWS, GCP, or Azure account. The cluster pulls operations from the Pinecone-managed control plane, and only metrics and traces leave the cluster." />
-
-<img alt="BYOC architecture in which the Pinecone data plane, Kubernetes cluster, FoundationDB, object storage, and DNS run in a VPC in your AWS, GCP, or Azure account. The cluster pulls operations from the Pinecone-managed control plane, and only metrics and traces leave the cluster." />
+![BYOC architecture in which the Pinecone data plane, Kubernetes cluster, FoundationDB, object storage, and DNS run in a VPC in your AWS, GCP, or Azure account. The cluster pulls operations from the Pinecone-managed control plane, and only metrics and traces leave the cluster.](https://mintcdn.com/pinecone/ZVOnQqdJdQzJQn6W/images/byoc-architecture-light.svg?fit=max\&auto=format\&n=ZVOnQqdJdQzJQn6W\&q=85\&s=d94db2a849aca635dfb739d339edb48d)
 
 BYOC uses a split architecture:
 
@@ -66,9 +64,9 @@ The on-demand pool starts with two `od1` nodes and is billed whether or not you 
 
 Unlike [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#cost) in the standard service, BYOC has no separate Pinecone charges for storage or writes. That data lives in your own cloud account, so you pay your cloud provider for it instead of Pinecone.
 
-<Tip>
-  For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).
-</Tip>
+> [!TIP]
+>
+> For current rates and help sizing your BYOC environment, [contact us](https://www.pinecone.io/contact/).
 
 ### Example
 
@@ -82,73 +80,71 @@ The Pinecone BYOC agent running in your cluster measures node usage, periodicall
 * Short heartbeat interruptions (under 60 minutes) are treated as a grace period.
 * If heartbeats are missing for more than 60 minutes, billing stops and the deployment is marked disconnected.
 
-<Note>
-  Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster, including the on-demand pool, whether they're idle, actively processing queries, or experiencing errors.
-</Note>
+> [!NOTE]
+>
+> Pinecone bills for provisioned nodes, not query volume. You're billed for nodes running in your cluster, including the on-demand pool, whether they're idle, actively processing queries, or experiencing errors.
 
 ## FAQs
 
 Answers to common questions about BYOC:
 
-<AccordionGroup>
-  <Accordion title="Does Pinecone have access to my cloud account?">
-    No. BYOC uses a zero-access model, so Pinecone never needs direct access to your infrastructure. Specifically:
+> **Does Pinecone have access to my cloud account?**
+>
+> No. BYOC uses a zero-access model, so Pinecone never needs direct access to your infrastructure. Specifically:
+>
+> * Pinecone does not need SSH, VPN, inbound access, or a standing cross-account role in your cloud account.
+> * You control cloud account boundaries, networking, and Kubernetes access.
+> * Operational changes run through explicit, software-mediated workflows.
+> * You don't open inbound firewall ports for Pinecone operations.
+>
+> Operations are executed via a pull-based model where your cluster retrieves and runs operations locally. All communication is outbound from your cluster. Pinecone monitors cluster health through operational metrics such as CPU and latency, without seeing your data. You choose what logs to share with [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-    * Pinecone does not need SSH, VPN, inbound access, or a standing cross-account role in your cloud account.
-    * You control cloud account boundaries, networking, and Kubernetes access.
-    * Operational changes run through explicit, software-mediated workflows.
-    * You don't open inbound firewall ports for Pinecone operations.
+> **What is the difference between on-demand and dedicated read nodes in BYOC?**
+>
+> On-demand indexes share one pool of nodes that starts with two `od1` nodes, and Pinecone adds nodes when you need more capacity. Each dedicated read nodes index gets its own nodes. For how the two modes differ, see [On-demand vs. dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#on-demand-vs-dedicated-read-nodes).
 
-    Operations are executed via a pull-based model where your cluster retrieves and runs operations locally. All communication is outbound from your cluster. Pinecone monitors cluster health through operational metrics such as CPU and latency, without seeing your data. You choose what logs to share with [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-  </Accordion>
+> **Can I use on-demand indexes in an existing BYOC environment?**
+>
+> Yes. On-demand is available in new and existing BYOC environments on AWS, GCP, and Azure. If on-demand isn't available in your environment, contact your Pinecone account team to enable it.
 
-  <Accordion title="What is the difference between on-demand and dedicated read nodes in BYOC?">
-    On-demand indexes share one pool of nodes that starts with two `od1` nodes, and Pinecone adds nodes when you need more capacity. Each dedicated read nodes index gets its own nodes. For how the two modes differ, see [On-demand vs. dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#on-demand-vs-dedicated-read-nodes).
-  </Accordion>
+> **What data leaves my cluster?**
+>
+> **Does not leave your cloud account:**
+>
+> * Vectors, metadata, and index contents
+> * Query and upsert payloads
+> * Customer data
+>
+> **Can leave your cloud account:**
+>
+> * Operational metrics and traces (for example, CPU, memory, latency)
+> * Cluster health and operation status
+>
+> Customer data is filtered out before transmission and never leaves your cloud account.
 
-  <Accordion title="Can I use on-demand indexes in an existing BYOC environment?">
-    Yes. On-demand is available in new and existing BYOC environments on AWS, GCP, and Azure. If on-demand isn't available in your environment, contact your Pinecone account team to enable it.
-  </Accordion>
+> **What is the difference between BYOC and Pinecone's standard service?**
+>
+> In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts. For a cost breakdown, see [Pricing](#pricing).
 
-  <Accordion title="What data leaves my cluster?">
-    **Does not leave your cloud account:**
+> **How does authentication work?**
+>
+> You use API keys from the Pinecone console, just like with the standard Pinecone service. Authentication is handled by Pinecone's global control plane, and your data plane caches API keys locally. This means you manage users and API keys through the console as usual.
 
-    * Vectors, metadata, and index contents
-    * Query and upsert payloads
-    * Customer data
+> **How is data secured in BYOC?**
+>
+> Data is stored and processed exclusively within your cloud account, with encryption at rest and in transit. You control at-rest encryption for the underlying resources (including KMS keys in your account) the same way you do for other infrastructure. Communication between the data plane and control plane is encrypted using TLS. Private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link) can be used for additional network isolation. For how this relates to hosted [CMEK](/guides/production/configure-cmek), see [Encryption and customer-managed keys](#encryption-and-customer-managed-keys).
 
-    **Can leave your cloud account:**
+> **Which cloud providers does BYOC support?**
+>
+> BYOC is available on AWS, GCP, and Azure.
 
-    * Operational metrics and traces (for example, CPU, memory, latency)
-    * Cluster health and operation status
+> **What happens if I destroy the cluster before deleting indexes?**
+>
+> Indexes cannot be properly terminated if the cluster is destroyed first. Always delete indexes via the Pinecone API or console before running `pulumi destroy`.
 
-    Customer data is filtered out before transmission and never leaves your cloud account.
-  </Accordion>
-
-  <Accordion title="What is the difference between BYOC and Pinecone's standard service?">
-    In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts. For a cost breakdown, see [Pricing](#pricing).
-  </Accordion>
-
-  <Accordion title="How does authentication work?">
-    You use API keys from the Pinecone console, just like with the standard Pinecone service. Authentication is handled by Pinecone's global control plane, and your data plane caches API keys locally. This means you manage users and API keys through the console as usual.
-  </Accordion>
-
-  <Accordion title="How is data secured in BYOC?">
-    Data is stored and processed exclusively within your cloud account, with encryption at rest and in transit. You control at-rest encryption for the underlying resources (including KMS keys in your account) the same way you do for other infrastructure. Communication between the data plane and control plane is encrypted using TLS. Private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link) can be used for additional network isolation. For how this relates to hosted [CMEK](/guides/production/configure-cmek), see [Encryption and customer-managed keys](#encryption-and-customer-managed-keys).
-  </Accordion>
-
-  <Accordion title="Which cloud providers does BYOC support?">
-    BYOC is available on AWS, GCP, and Azure.
-  </Accordion>
-
-  <Accordion title="What happens if I destroy the cluster before deleting indexes?">
-    Indexes cannot be properly terminated if the cluster is destroyed first. Always delete indexes via the Pinecone API or console before running `pulumi destroy`.
-  </Accordion>
-
-  <Accordion title="What is the __SLI__ project in my organization?">
-    Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. This is used by Pinecone to enforce SLAs for your BYOC environment. Do not modify or delete this project.
-  </Accordion>
-</AccordionGroup>
+> **What is the **SLI** project in my organization?**
+>
+> Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. This is used by Pinecone to enforce SLAs for your BYOC environment. Do not modify or delete this project.
 
 ## Next steps
 

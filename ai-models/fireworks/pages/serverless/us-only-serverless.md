@@ -8,8 +8,6 @@ Run Fireworks Serverless inference exclusively on US infrastructure using US-sco
 
 US-only Serverless serves inference exclusively from the US, making it a good fit for compliance needs.
 
-<span />
-
 ## Available models
 
 | Model | `model` ID |
@@ -51,7 +49,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium. Muse Spark Open is US-only, and that premium is waived. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

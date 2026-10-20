@@ -111,7 +111,7 @@
 - `prompt-library` — [Prompt library](pages/prompt-library.md) · [原文](https://code.claude.com/docs/en/prompt-library)
 - `quickstart` — [Quickstart](pages/quickstart.md) · [原文](https://code.claude.com/docs/en/quickstart)
 - `remote-control` — [Continue local sessions from any device with Remote Control](pages/remote-control.md) · [原文](https://code.claude.com/docs/en/remote-control)
-- `routines` — [Automate work with routines](pages/routines.md) · [原文](https://code.claude.com/docs/en/routines)
+- `routines` — [Automate work with scheduled tasks](pages/routines.md) · [原文](https://code.claude.com/docs/en/routines)
 - `sandbox-environments` — [Choose a sandbox environment](pages/sandbox-environments.md) · [原文](https://code.claude.com/docs/en/sandbox-environments)
 - `sandboxing` — [Configure the sandboxed Bash tool](pages/sandboxing.md) · [原文](https://code.claude.com/docs/en/sandboxing)
 - `scheduled-tasks` — [Run prompts on a schedule](pages/scheduled-tasks.md) · [原文](https://code.claude.com/docs/en/scheduled-tasks)

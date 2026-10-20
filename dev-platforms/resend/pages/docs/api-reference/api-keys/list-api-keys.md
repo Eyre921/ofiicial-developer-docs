@@ -7,107 +7,132 @@ path: docs/api-reference/api-keys/list-api-keys
 GET /api-keys
 Retrieve a list of API keys for the authenticated user.
 
-<QueryParams type="API keys" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all API keys will be returned
+in a single response.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**limit** `number`
 
-  const { data, error } = await resend.apiKeys.list();
-  ```
+Number of API keys to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**after** `string`
 
-  $resend->apiKeys->list();
-  ```
+The ID *after* which we'll retrieve more API keys (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+The ID *before* which we'll retrieve more API keys (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  resend.api_key = "re_xxxxxxxxx"
-  resend.ApiKeys.list()
-  ```
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  Resend.api_key = "re_xxxxxxxxx"
+const resend = new Resend('re_xxxxxxxxx');
 
-  Resend::ApiKeys.list
-  ```
+const { data, error } = await resend.apiKeys.list();
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  import "github.com/resend/resend-go/v4"
+$resend->apiKeys->list();
+```
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
-  	client.ApiKeys.List()
-  }
-  ```
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result, list_opts::ListOptions};
+resend.api_key = "re_xxxxxxxxx"
+resend.ApiKeys.list()
+```
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-    let _api_keys = resend.api_keys.list(ListOptions::default()).await?;
+Resend.api_key = "re_xxxxxxxxx"
 
-    Ok(())
-  }
-  ```
+Resend::ApiKeys.list
+```
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+import "github.com/resend/resend-go/v4"
 
-          resend.apiKeys().list();
-      }
-  }
-  ```
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+	client.ApiKeys.List()
+}
+```
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  var resp = await resend.ApiKeyListAsync();
-  Console.WriteLine( "Nr keys={0}", resp.Content.Count );
-  ```
+  let _api_keys = resend.api_keys.list(ListOptions::default()).await?;
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/api-keys' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+  Ok(())
+}
+```
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend api-keys list
-  ```
-</RequestExample>
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "91f3200a-df72-4654-b0cd-f202395f5354",
-        "name": "Production",
-        "created_at": "2026-04-08 00:11:13.110779+00",
-        "last_used_at": "2026-11-01 17:09:51.813959+00"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        resend.apiKeys().list();
+    }
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.ApiKeyListAsync();
+Console.WriteLine( "Nr keys={0}", resp.Content.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/api-keys' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend api-keys list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "91f3200a-df72-4654-b0cd-f202395f5354",
+      "name": "Production",
+      "created_at": "2026-04-08 00:11:13.110779+00",
+      "last_used_at": "2026-11-01 17:09:51.813959+00"
+    }
+  ]
+}
+```

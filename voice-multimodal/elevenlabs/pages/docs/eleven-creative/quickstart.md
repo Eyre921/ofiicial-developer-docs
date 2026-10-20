@@ -15,7 +15,7 @@ Welcome to the ElevenCreative platform. This guide will help you get started wit
 Create your free [ElevenLabs account](https://elevenlabs.io/app/sign-up) to get started. Free tier includes:
 
 * 10,000 characters per month
-* Access to 3,000+ voices in our Voice Library
+* Access to 10,000+ voices in our Voice Library
 * Text to Speech, Voice Changer, Sound Effects, [and many more](/docs/overview/capabilities/text-to-speech)
 * Access to the Playground for experimentation
 

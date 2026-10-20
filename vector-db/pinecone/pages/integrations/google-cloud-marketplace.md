@@ -10,4 +10,4 @@ Access Pinecone through its Google Cloud Marketplace listing. Google Cloud Marke
 
 You can set up pay-as-you-go billing for a Pinecone organization through Google Cloud Marketplace.
 
-<PrimarySecondaryCTA />
+[Get started](https://console.cloud.google.com/marketplace/product/pinecone-public/pinecone)

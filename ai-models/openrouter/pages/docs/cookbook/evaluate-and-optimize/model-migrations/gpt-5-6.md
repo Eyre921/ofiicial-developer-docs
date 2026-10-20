@@ -34,9 +34,9 @@ There are no breaking changes. Existing requests keep working as-is — you can 
 
 These additions are supported by OpenAI GPT-5.6 and newer, and work on both the Chat Completions and Responses APIs.
 
-<Note>
-  You don't need to filter these fields per model. OpenRouter strips `reasoning.mode`, `prompt_cache_breakpoint`, and `prompt_cache_options` before forwarding requests to providers that don't support them, so requests that fall back to other models keep working.
-</Note>
+> [!NOTE]
+>
+> You don't need to filter these fields per model. OpenRouter strips `reasoning.mode`, `prompt_cache_breakpoint`, and `prompt_cache_options` before forwarding requests to providers that don't support them, so requests that fall back to other models keep working.
 
 ## Pro Mode with `reasoning.mode`
 
@@ -180,9 +180,9 @@ Chat Completions API:
 }
 ```
 
-<Note>
-  The block-level markers are interchangeable with the Anthropic-style `cache_control` blocks Chat Completions also accepts: `cache_control` becomes a `prompt_cache_breakpoint` on GPT-5.6+ models, and `prompt_cache_breakpoint` becomes a default 5-minute `cache_control` on Anthropic and Google. The request-level `prompt_cache_options` stays OpenAI-only.
-</Note>
+> [!NOTE]
+>
+> The block-level markers are interchangeable with the Anthropic-style `cache_control` blocks Chat Completions also accepts: `cache_control` becomes a `prompt_cache_breakpoint` on GPT-5.6+ models, and `prompt_cache_breakpoint` becomes a default 5-minute `cache_control` on Anthropic and Google. The request-level `prompt_cache_options` stays OpenAI-only.
 
 See [Prompt Caching](/docs/guides/best-practices/prompt-caching#openai) for details.
 

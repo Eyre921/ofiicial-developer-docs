@@ -14,9 +14,7 @@ This page describes the architecture for [Pinecone Assistant](/guides/assistant/
 
 Pinecone Assistant simplifies complex tasks like data chunking, vector search, embedding, and querying while ensuring privacy and security.
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/assistant-architecture_light.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=fac1ffcff3fc58b8c48abb41070f76bd)
 
 ## Data ingestion
 

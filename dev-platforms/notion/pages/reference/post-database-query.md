@@ -6,28 +6,26 @@ path: reference/post-database-query
 
 post /v1/databases/{database_id}/query
 
-<Danger>
-  **Deprecated as of version 2025-09-03**
-
-  This page describes the API for versions up to and including `2022-06-28`. In the new `2025-09-03` version, the concepts of databases and data sources were split up, as described in [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03).
-
-  Refer to the new APIs instead:
-
-  * [Query a data source](/reference/query-a-data-source)
-</Danger>
+> [!CAUTION]
+>
+> **Deprecated as of version 2025-09-03**
+>
+> This page describes the API for versions up to and including `2022-06-28`. In the new `2025-09-03` version, the concepts of databases and data sources were split up, as described in [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03).
+>
+> Refer to the new APIs instead:
+>
+> * [Query a data source](/reference/query-a-data-source)
 
 Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
 
-<Info>
-  [Wiki](https://www.notion.com/help/wikis-and-verified-pages) databases can contain both pages and databases as children.
-</Info>
+> [!NOTE]
+>
+> [Wiki](https://www.notion.com/help/wikis-and-verified-pages) databases can contain both pages and databases as children.
 
 [**Filters**](/reference/post-database-query-filter) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
 Filters operate on database properties and can be combined. If no filter is provided, non-archived pages in the database will be returned with pagination.
 
-<Frame>
-  <img alt="1340" />
-</Frame>
+![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
 
 ```json Filter Object theme={null}
 {
@@ -90,33 +88,33 @@ notion.databases.query({
 })
 ```
 
-<Info>
-  **Permissions**
+> [!NOTE]
+>
+> **Permissions**
+>
+> Before a connection can query a database, the database must be shared with the connection. Attempting to query a database that has not been shared will return an HTTP response with a 404 status code.
+>
+> To share a database with a connection, click the ••• menu at the top right of a database page, scroll to `Add connections`, and use the search bar to find and select the connection from the dropdown list.
 
-  Before a connection can query a database, the database must be shared with the connection. Attempting to query a database that has not been shared will return an HTTP response with a 404 status code.
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
-  To share a database with a connection, click the ••• menu at the top right of a database page, scroll to `Add connections`, and use the search bar to find and select the connection from the dropdown list.
-</Info>
+> [!NOTE]
+>
+> **To display the page titles of related pages rather than just the ID:**
+>
+> 1. Add a rollup property to the database which uses a formula to get the related page's title. This works well if you have access to updating the database's schema.
+> 2. Otherwise, [retrieve the individual related pages](/reference/retrieve-a-page) using each page ID.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
-
-<Info>
-  **To display the page titles of related pages rather than just the ID:**
-
-  1. Add a rollup property to the database which uses a formula to get the related page's title. This works well if you have access to updating the database's schema.
-  2. Otherwise, [retrieve the individual related pages](/reference/retrieve-a-page) using each page ID.
-</Info>
-
-<Warning>
-  **Formula and Rollup Limitation**
-
-  * If a formula depends on a page property that is a relation, and that relation has more than 25 references, only 25 will be evaluated as part of the formula.
-  * Rollups and formulas that depend on multiple layers of relations may not return correct results.
-</Warning>
+> [!WARNING]
+>
+> **Formula and Rollup Limitation**
+>
+> * If a formula depends on a page property that is a relation, and that relation has more than 25 references, only 25 will be evaluated as part of the formula.
+> * Rollups and formulas that depend on multiple layers of relations may not return correct results.
 
 ### Errors
 

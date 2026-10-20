@@ -11,11 +11,11 @@ Returns a page of results from a previously [created view query](/reference/crea
 
 Cached results expire after 15 minutes from the time the query was created. If the cache has expired, this endpoint returns a 404.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Truncated queries
 

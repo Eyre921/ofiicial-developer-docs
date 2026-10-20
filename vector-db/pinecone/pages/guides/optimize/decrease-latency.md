@@ -22,72 +22,70 @@ You can get index hosts in the [Pinecone console](https://app.pinecone.io/organi
 
 The following example shows how to target an index by host directly:
 
-<Note>
-  When using Private Endpoints for private connectivity between your application and Pinecone, you must target the index using the [Private Endpoint URL](/guides/production/configure-private-endpoints#read-and-write-data) for the host.
-</Note>
+> [!NOTE]
+>
+> When using Private Endpoints for private connectivity between your application and Pinecone, you must target the index using the [Private Endpoint URL](/guides/production/configure-private-endpoints#read-and-write-data) for the host.
 
-<CodeGroup>
-  ```Python Python {5} theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python {5} theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  index = pc.Index(host="INDEX_HOST")
-  ```
+index = pc.Index(host="INDEX_HOST")
+```
 
-  ```javascript JavaScript {6} theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript {6} theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  // For the Node.js SDK, you must specify both the index host and name.
-  const index = pc.index("INDEX_NAME", "INDEX_HOST");
-  ```
+// For the Node.js SDK, you must specify both the index host and name.
+const index = pc.index("INDEX_NAME", "INDEX_HOST");
+```
 
-  ```java Java {11} theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
+```java Java {11} theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
 
-  public class TargetIndexByHostExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          // For the Java SDK, you must specify both the index host and name.
-          Index index = new Index(connection, "INDEX_NAME");
-      }
-  }
-  ```
+public class TargetIndexByHostExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        // For the Java SDK, you must specify both the index host and name.
+        Index index = new Index(connection, "INDEX_NAME");
+    }
+}
+```
 
-  ```go Go {21} theme={null}
-  package main
+```go Go {21} theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
+import (
+    "context"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host %v: %v", idx.Host, err)
-      }
-  }
-  ```
-</CodeGroup>
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host %v: %v", idx.Host, err)
+    }
+}
+```
 
 ## Reuse connections
 
@@ -105,17 +103,17 @@ If you're batching queries, try reducing the number of queries per call to a sin
 
 Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` in [Search with a vector](/reference/api/latest/data-plane/query) requests. The [Fetch records](/reference/api/latest/data-plane/fetch) operation always returns values, so use `query` when you're searching and only need IDs or metadata.
 
-<Note>
-  On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.
-</Note>
+> [!NOTE]
+>
+> On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.
 
 ## Work with database limits
 
 Pinecone has [rate limits](/reference/api/database-limits/rate-limits) to protect your applications and maintain infrastructure health. Rate limits vary based on pricing plan and apply to serverless indexes only.
 
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
-</Note>
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 
 To handle rate limits effectively:
 

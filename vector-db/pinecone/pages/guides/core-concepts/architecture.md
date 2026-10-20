@@ -12,17 +12,13 @@ Pinecone's architecture has two layers: the resource hierarchy that organizes yo
 
 Your data in Pinecone is organized as a hierarchy of resources. An [organization](/guides/core-concepts/key-terms#organization) contains [projects](/guides/core-concepts/key-terms#project), a project contains [indexes](/guides/core-concepts/key-terms#index), and an index is divided into [namespaces](/guides/core-concepts/key-terms#namespace) that hold your [records](/guides/core-concepts/key-terms#record) or [documents](/guides/core-concepts/key-terms#document). For a definition of each object, see [Key terms](/guides/core-concepts/key-terms).
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/objects.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=6aaa656d58401fc1cdd75974ab1d1c73)
 
 ## Serverless infrastructure
 
 Pinecone runs as a managed service on AWS, GCP, and Azure cloud platforms. When you send a request to Pinecone, it goes through an [API gateway](#api-gateway) that routes it to either a global [control plane](#control-plane) or a regional [data plane](#data-plane). All your vector data is stored in highly efficient, distributed [object storage](#object-storage).
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/HsZKO51bNmpAasdT/images/serverless-overview.svg?fit=max\&auto=format\&n=HsZKO51bNmpAasdT\&q=85\&s=a61fd08e854c5d3d660891ba33bee38a)
 
 ### API gateway
 
@@ -44,9 +40,7 @@ For each namespace in a serverless index, Pinecone organizes records into immuta
 
 ## Write path
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/HsZKO51bNmpAasdT/images/serverless-write-path.svg?fit=max\&auto=format\&n=HsZKO51bNmpAasdT\&q=85\&s=0f9d9fde37626e8b06a537dd62cf2a3b)
 
 ### Request log
 
@@ -60,15 +54,13 @@ The index builder stores your write data in an in-memory structure called a memt
 
 Periodically, the index builder moves data from the memtable to permanent storage. In [object storage](#object-storage), your data is organized into immutable files called slabs. These slabs are optimized for query performance. Smaller slabs use fast indexing techniques that provide good performance with minimal resource requirements. As slabs grow, the system merges them into larger slabs that use more sophisticated methods that provide better performance at scale. This adaptive process both optimizes query performance for each slab and amortizes the cost of more expensive indexing through the lifetime of the namespace.
 
-<Note>
-  All read operations check the memtable first, so you can immediately search data that you've just written, even before it's moved to permanent storage. For more details, see [Query executors](#query-executors).
-</Note>
+> [!NOTE]
+>
+> All read operations check the memtable first, so you can immediately search data that you've just written, even before it's moved to permanent storage. For more details, see [Query executors](#query-executors).
 
 ## Read path
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/HsZKO51bNmpAasdT/images/serverless-read-path.svg?fit=max\&auto=format\&n=HsZKO51bNmpAasdT\&q=85\&s=144df73e8dc7ad64eb60c0e03ce86c65)
 
 ### Query routers
 

@@ -10,4 +10,6 @@ Jina Embeddings models generate text embeddings and can process inputs up to 8,0
 
 By integrating Pinecone with Jina, you can add knowledge to LLMs with retrieval-augmented generation (RAG) for autonomous agents, chatbots, question-answering, and multi-agent systems.
 
-<PrimarySecondaryCTA />
+[Get started](https://jina.ai/embeddings/#apiform)
+
+[Try the model](https://www.pinecone.io/models/jina-embeddings-v2-base-en/)

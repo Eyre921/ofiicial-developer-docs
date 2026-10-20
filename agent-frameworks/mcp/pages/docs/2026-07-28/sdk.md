@@ -12,16 +12,16 @@ Build MCP servers and clients using our official SDKs. SDKs are classified into 
 
 | SDK | Repository | Tier |
 | :- | :- | -: |
-| <Icon icon="square-js" />   [TypeScript](https://ts.sdk.modelcontextprotocol.io) | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="python" />   [Python](https://py.sdk.modelcontextprotocol.io) | [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="square-c" />   [C#](https://csharp.sdk.modelcontextprotocol.io) | [modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="golang" />   [Go](https://go.sdk.modelcontextprotocol.io) | [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="rust" />   [Rust](https://rust.sdk.modelcontextprotocol.io) | [modelcontextprotocol/rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="gem" />   [Ruby](https://ruby.sdk.modelcontextprotocol.io) | [modelcontextprotocol/ruby-sdk](https://github.com/modelcontextprotocol/ruby-sdk) | <Badge>Tier 1</Badge> |
-| <Icon icon="java" />   [Java](https://java.sdk.modelcontextprotocol.io) | [modelcontextprotocol/java-sdk](https://github.com/modelcontextprotocol/java-sdk) | <Badge>Tier 2</Badge> |
-| <Icon icon="swift" />   Swift | [modelcontextprotocol/swift-sdk](https://github.com/modelcontextprotocol/swift-sdk) | <Badge>Tier 3</Badge> |
-| <Icon icon="php" />   [PHP](https://php.sdk.modelcontextprotocol.io) | [modelcontextprotocol/php-sdk](https://github.com/modelcontextprotocol/php-sdk) | <Badge>Tier 3</Badge> |
-| <Icon icon="square-k" />   [Kotlin](https://kotlin.sdk.modelcontextprotocol.io) | [modelcontextprotocol/kotlin-sdk](https://github.com/modelcontextprotocol/kotlin-sdk) | <Badge>Tier 3</Badge> |
+|    [TypeScript](https://ts.sdk.modelcontextprotocol.io) | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) | Tier 1 |
+|    [Python](https://py.sdk.modelcontextprotocol.io) | [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) | Tier 1 |
+|    [C#](https://csharp.sdk.modelcontextprotocol.io) | [modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) | Tier 1 |
+|    [Go](https://go.sdk.modelcontextprotocol.io) | [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk) | Tier 1 |
+|    [Rust](https://rust.sdk.modelcontextprotocol.io) | [modelcontextprotocol/rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) | Tier 1 |
+|    [Ruby](https://ruby.sdk.modelcontextprotocol.io) | [modelcontextprotocol/ruby-sdk](https://github.com/modelcontextprotocol/ruby-sdk) | Tier 1 |
+|    [Java](https://java.sdk.modelcontextprotocol.io) | [modelcontextprotocol/java-sdk](https://github.com/modelcontextprotocol/java-sdk) | Tier 2 |
+|    Swift | [modelcontextprotocol/swift-sdk](https://github.com/modelcontextprotocol/swift-sdk) | Tier 3 |
+|    [PHP](https://php.sdk.modelcontextprotocol.io) | [modelcontextprotocol/php-sdk](https://github.com/modelcontextprotocol/php-sdk) | Tier 3 |
+|    [Kotlin](https://kotlin.sdk.modelcontextprotocol.io) | [modelcontextprotocol/kotlin-sdk](https://github.com/modelcontextprotocol/kotlin-sdk) | Tier 3 |
 
 See [SDK Tiering System](/community/sdk-tiers) for details on what each tier means.
 
@@ -40,12 +40,10 @@ Visit the SDK page for your chosen language to find installation instructions, d
 
 Ready to start building with MCP? Choose your path:
 
-<CardGroup>
-  <Card title="Build a Server" icon="server" href="/docs/2026-07-28/develop/build-server">
-    Learn how to create your first MCP server
-  </Card>
+> **[Build a Server](/docs/2026-07-28/develop/build-server)**
+>
+> Learn how to create your first MCP server
 
-  <Card title="Build a Client" icon="computer" href="/docs/2026-07-28/develop/build-client">
-    Create applications that connect to MCP servers
-  </Card>
-</CardGroup>
+> **[Build a Client](/docs/2026-07-28/develop/build-client)**
+>
+> Create applications that connect to MCP servers

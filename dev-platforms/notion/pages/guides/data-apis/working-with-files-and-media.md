@@ -34,9 +34,9 @@ Uploaded files can be attached to:
 * Page properties: `files` properties in databases
 * Page-level visuals: page `icon` and `cover`
 
-<Tip>
-  **Need support for another block or content type**? Let us know [here](https://notiondevs.notion.site/1f8a4445d271805da593dd86bd86872b?pvs=105).
-</Tip>
+> [!TIP]
+>
+> **Need support for another block or content type**? Let us know [here](https://notiondevs.notion.site/1f8a4445d271805da593dd86bd86872b?pvs=105).
 
 ## Supported file types
 
@@ -54,15 +54,15 @@ CAD and 3D model files attach as `file` blocks, the same as documents.
 
 Some HTTP clients label a file `application/octet-stream` when their MIME database has no entry for its extension. For any upload, the API treats that generic type as unspecified and resolves the real type from the filename extension or the `content_type` recorded when the file upload was created. If neither gives a supported type, the request fails.
 
-<Warning>
-  **Ensure your file type matches the context**
-
-  For example:
-
-  * You can’t use a video in an image block
-  * Page icons can’t be PDFs
-  * Text files can’t be embedded in video blocks
-</Warning>
+> [!WARNING]
+>
+> **Ensure your file type matches the context**
+>
+> For example:
+>
+> * You can’t use a video in an image block
+> * Page icons can’t be PDFs
+> * Text files can’t be embedded in video blocks
 
 ### File size limits
 
@@ -74,46 +74,42 @@ These are the same [size limits that apply](https://www.notion.com/pricing) to u
 
 Use the [Retrieve a user](/reference/get-user) or [List all users](/reference/get-users) API to get the file size limit for a [bot user](/reference/user#bots). Public connections that can be added to both free or paid workspaces can retrieve or cache each bot's file size limit. This can help avoid HTTP 400 validation errors for attempting to [send](/reference/upload-file) files above the size limit.
 
-<CodeGroup>
-  ```typescript Bot user API response shape theme={null}
-  type APIUserObject = {
-    object: "user",
-    type: "bot",
+```typescript Bot user API response shape theme={null}
+type APIUserObject = {
+  object: "user",
+  type: "bot",
+  // ... other fields omitted
+
+  bot: {
     // ... other fields omitted
 
-    bot: {
-      // ... other fields omitted
-
-      // Limits and restrictions that apply to the bot's workspace.
-      workspace_limits: {
-        // The maximum allowable size of a file upload, in bytes.
-        max_file_upload_size_in_bytes: number,
-      },
-    }
+    // Limits and restrictions that apply to the bot's workspace.
+    workspace_limits: {
+      // The maximum allowable size of a file upload, in bytes.
+      max_file_upload_size_in_bytes: number,
+    },
   }
-  ```
-</CodeGroup>
+}
+```
 
 For example, in a free workspace where bots are limited to FileUploads of 5 MiB, the response looks like:
 
-<CodeGroup>
-  ```json Example user API object response theme={null}
-  {
-    "object": "user",
-    "id": "be51669b-1932-4a11-8d35-38fbc2e1e4fd",
-    "type": "bot",
-    "bot": {
-      "owner": {
-        "type": "workspace"
-      },
-      "workspace_name": "Cat's Notion",
-      "workspace_limits": {
-        "max_file_upload_size_in_bytes": 5242880
-      }
+```json Example user API object response theme={null}
+{
+  "object": "user",
+  "id": "be51669b-1932-4a11-8d35-38fbc2e1e4fd",
+  "type": "bot",
+  "bot": {
+    "owner": {
+      "type": "workspace"
+    },
+    "workspace_name": "Cat's Notion",
+    "workspace_limits": {
+      "max_file_upload_size_in_bytes": 5242880
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Other limitations
 

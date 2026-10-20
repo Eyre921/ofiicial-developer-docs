@@ -69,9 +69,7 @@ A namespace is a partition within an index. It divides [records](#record) into s
 
 All [upserts](/guides/index-data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace:
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/quickstart-upsert.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=c852ca55745a70ed51e5892330751830)
 
 For more information, see [Use namespaces](/guides/index-data/indexing-overview#namespaces).
 

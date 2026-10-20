@@ -16,10 +16,10 @@ curl https://api.notion.com/admin/v1/legal_holds \
 -H "Notion-Version: 2026-06-01"
 ```
 
-<Warning>
-  **Required Header**
-
-  The `Notion-Version` header must be included in all REST API requests. This ensures the Notion API response is consistent with what your code expects.
-
-  The most recent `Notion-Version` is .
-</Warning>
+> [!WARNING]
+>
+> **Required Header**
+>
+> The `Notion-Version` header must be included in all REST API requests. This ensures the Notion API response is consistent with what your code expects.
+>
+> The most recent `Notion-Version` is .

@@ -34,17 +34,17 @@ From design to deployment to optimization, ElevenLabs provides everything you ne
 
 ### Design and configure
 
-| Goal                          | Guide                                                                    | Description                                                            |
-| ----------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Create conversation workflows | [Workflows](/docs/eleven-agents/customization/agent-workflows)           | Build multi-step workflows with visual workflow builder                |
-| Write system prompts          | [System prompt](/docs/eleven-agents/best-practices/prompting-guide)      | Learn best practices for crafting effective agent prompts              |
-| Select language model         | [Models](/docs/eleven-agents/customization/llm)                          | Choose from supported LLMs or bring your own custom model              |
-| Control conversation flow     | [Conversation flow](/docs/eleven-agents/customization/conversation-flow) | Configure turn-taking, interruptions, and timeout settings             |
-| Configure voice & language    | [Voice & language](/docs/eleven-agents/customization/voice)              | Select from 5k+ voices across 31 languages with customization options  |
-| Add knowledge to agent        | [Knowledge base](/docs/eleven-agents/customization/knowledge-base)       | Upload documents and enable RAG for grounded responses                 |
-| Connect tools                 | [Tools](/docs/eleven-agents/customization/tools)                         | Enable agents to call clients & APIs to perform actions                |
-| Personalize each conversation | [Personalization](/docs/eleven-agents/customization/personalization)     | Use dynamic variables and overrides for per-conversation customization |
-| Secure agent access           | [Authentication](/docs/eleven-agents/customization/authentication)       | Implement custom authentication for protected agent access             |
+| Goal                          | Guide                                                                    | Description                                                               |
+| ----------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Create conversation workflows | [Workflows](/docs/eleven-agents/customization/agent-workflows)           | Build multi-step workflows with visual workflow builder                   |
+| Write system prompts          | [System prompt](/docs/eleven-agents/best-practices/prompting-guide)      | Learn best practices for crafting effective agent prompts                 |
+| Select language model         | [Models](/docs/eleven-agents/customization/llm)                          | Choose from supported LLMs or bring your own custom model                 |
+| Control conversation flow     | [Conversation flow](/docs/eleven-agents/customization/conversation-flow) | Configure turn-taking, interruptions, and timeout settings                |
+| Configure voice & language    | [Voice & language](/docs/eleven-agents/customization/voice)              | Select from 10,000+ voices across 31 languages with customization options |
+| Add knowledge to agent        | [Knowledge base](/docs/eleven-agents/customization/knowledge-base)       | Upload documents and enable RAG for grounded responses                    |
+| Connect tools                 | [Tools](/docs/eleven-agents/customization/tools)                         | Enable agents to call clients & APIs to perform actions                   |
+| Personalize each conversation | [Personalization](/docs/eleven-agents/customization/personalization)     | Use dynamic variables and overrides for per-conversation customization    |
+| Secure agent access           | [Authentication](/docs/eleven-agents/customization/authentication)       | Implement custom authentication for protected agent access                |
 
 ### Connect and deploy
 
@@ -83,8 +83,22 @@ ElevenAgents coordinates 4 core components:
 
 1. A fine-tuned Speech to Text (ASR) model for speech recognition
 2. Your choice of language model or [custom](/docs/eleven-agents/customization/llm/custom-llm) LLM
-3. A low-latency Text to Speech (TTS) model across 5k+ voices and 70+ languages
+3. A low-latency Text to Speech (TTS) model across 10,000+ voices and 70+ languages
 4. A proprietary turn-taking model that handles conversation timing
+
+Voice agents can also use a [Realtime model](/docs/eleven-agents/customization/realtime-models), an ElevenLabs model built for low-latency voice conversation.
+
+## How Eleven Realtime relates to ElevenAgents and Speech Engine
+
+ElevenLabs offers three ways to add voice to a product, each suited to a different level of control and integration effort.
+
+| Product             | What it is                                                                                                                                                                                     | Primary audience                                                                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ElevenAgents**    | A full omnichannel agents platform. Runs on Realtime models, or on a fully cascaded, configurable pipeline with custom TTS, LLM, STT, workflows, evals, and monitoring.                        | Developers and enterprises building production agents at scale.                                                                                           |
+| **Realtime models** | A standalone API exposing a series of speech-to-speech models, each optimized for a different use case. Available directly through the Realtime API, or as a model option inside ElevenAgents. | Developers and enterprises who want to add voice with minimal complexity, including teams already using another realtime voice API and looking to switch. |
+| **Speech Engine**   | The speech orchestration layer on its own, for teams that have already built a text-based chat agent and want to add voice.                                                                    | Developers and enterprises who have already built a text agent and want to add voice.                                                                     |
+
+See the [OpenAI Realtime API compatibility guide](/docs/eleven-agents/guides/openai-realtime-compatibility) for connecting to Realtime models using OpenAI's Realtime SDK and wire protocol, and the [Speech Engine overview](/docs/overview/capabilities/speech-engine) for adding voice to an existing text agent.
 
 #### [Quickstart](/docs/eleven-agents/quickstart)
 

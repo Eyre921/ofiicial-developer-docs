@@ -9,18 +9,16 @@ Retrieve context snippets from an assistant to use as part of RAG or any agentic
 
 For guidance and examples, see [Retrieve context snippets](https://docs.pinecone.io/guides/assistant/retrieve-context-snippets).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "query": "Who is the CFO of Netflix?"
-  }'
-  ```
-</RequestExample>
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "query": "Who is the CFO of Netflix?"
+}'
+```

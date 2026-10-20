@@ -20,9 +20,9 @@ The CLI's **target context** determines which organization and project your comm
 | `--clear` | — | `false` | Clear the stored target context. |
 | `--json` | `-j` | `false` | Output as JSON. In non-TTY environments (CI/CD, pipes), JSON output is automatic. |
 
-<Note>
-  `--org` and `--organization-id` are mutually exclusive — use one or the other. The same applies to `--project` and `--project-id`.
-</Note>
+> [!NOTE]
+>
+> `--org` and `--organization-id` are mutually exclusive — use one or the other. The same applies to `--project` and `--project-id`.
 
 ## How operations use target context
 
@@ -65,9 +65,9 @@ pc target
 
 ### API key
 
-<Warning>
-  When using an API key, control plane and data plane operations use the **key's org/project scope**, not the CLI's stored target context. The `pc target --show` output does not reflect what these operations actually use.
-</Warning>
+> [!WARNING]
+>
+> When using an API key, control plane and data plane operations use the **key's org/project scope**, not the CLI's stored target context. The `pc target --show` output does not reflect what these operations actually use.
 
 API keys are scoped to a specific org and project and can't access resources outside that scope.
 

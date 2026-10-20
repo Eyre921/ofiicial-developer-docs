@@ -8,213 +8,209 @@ Create, describe, list, and delete namespaces in Pinecone serverless indexes, in
 
 ## Create a namespace
 
-<Note>
-  This feature requires the `2025-10` version of the API or later.
-</Note>
+> [!NOTE]
+>
+> This feature requires the `2025-10` version of the API or later.
 
 Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [Create a namespace](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  namespace = index.create_namespace(
-      name="example-namespace",
-      schema={
-          "fields": {
-              "document_id": {"filterable": True},
-              "document_title": {"filterable": True},
-              "chunk_number": {"filterable": True},
-              "document_url": {"filterable": True},
-              "created_at": {"filterable": True}
-          }
-      }
-  )
-
-  print(namespace)
-  ```
-
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
-
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index('INDEX_NAME', 'INDEX_HOST');
-
-  const namespace = await index.createNamespace({
-    name: 'example-namespace',
-    schema: {
-      fields: {
-        document_id: { filterable: true },
-        document_title: { filterable: true },
-        chunk_number: { filterable: true },
-        document_url: { filterable: true },
-        created_at: { filterable: true }
-      }
+namespace = index.create_namespace(
+    name="example-namespace",
+    schema={
+        "fields": {
+            "document_id": {"filterable": True},
+            "document_title": {"filterable": True},
+            "chunk_number": {"filterable": True},
+            "document_url": {"filterable": True},
+            "created_at": {"filterable": True}
+        }
     }
-  });
+)
 
-  console.log(namespace);
-  ```
+print(namespace)
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.NamespaceDescription;
-  import io.pinecone.proto.MetadataSchema;
-  import io.pinecone.proto.MetadataSchemaField;
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  public class CreateNamespaceExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-          Index index = new Index(config, connection, "INDEX_NAME");
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index('INDEX_NAME', 'INDEX_HOST');
 
-          MetadataSchemaField filterable = MetadataSchemaField.newBuilder()
-              .setFilterable(true)
-              .build();
-
-          MetadataSchema schema = MetadataSchema.newBuilder()
-              .putFields("document_id", filterable)
-              .putFields("document_title", filterable)
-              .putFields("chunk_number", filterable)
-              .putFields("document_url", filterable)
-              .putFields("created_at", filterable)
-              .build();
-
-          NamespaceDescription namespace = index.createNamespace("example-namespace", schema);
-
-          System.out.println(namespace);
-      }
+const namespace = await index.createNamespace({
+  name: 'example-namespace',
+  schema: {
+    fields: {
+      document_id: { filterable: true },
+      document_title: { filterable: true },
+      chunk_number: { filterable: true },
+      document_url: { filterable: true },
+      created_at: { filterable: true }
+    }
   }
-  ```
+});
 
-  ```go Go theme={null}
-  package main
+console.log(namespace);
+```
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.NamespaceDescription;
+import io.pinecone.proto.MetadataSchema;
+import io.pinecone.proto.MetadataSchemaField;
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+public class CreateNamespaceExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
 
-  func prettifyStruct(obj interface{}) string {
-    	bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
+        Index index = new Index(config, connection, "INDEX_NAME");
 
-  func main() {
-      ctx := context.Background()
+        MetadataSchemaField filterable = MetadataSchemaField.newBuilder()
+            .setFilterable(true)
+            .build();
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+        MetadataSchema schema = MetadataSchema.newBuilder()
+            .putFields("document_id", filterable)
+            .putFields("document_title", filterable)
+            .putFields("chunk_number", filterable)
+            .putFields("document_url", filterable)
+            .putFields("created_at", filterable)
+            .build();
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      } 
+        NamespaceDescription namespace = index.createNamespace("example-namespace", schema);
 
-      namespace, err := idxConnection.CreateNamespace(ctx, &pinecone.CreateNamespaceParams{
-          Name: "example-namespace",
-          Schema: &pinecone.MetadataSchema{
-              Fields: map[string]pinecone.MetadataSchemaField{
-                  "document_id":    {Filterable: true},
-                  "document_title": {Filterable: true},
-                  "chunk_number":   {Filterable: true},
-                  "document_url":   {Filterable: true},
-                  "created_at":     {Filterable: true},
-              },
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to create namespace: %v", err)
-      }
-      fmt.Printf(prettifyStruct(namespace))
-  }
-  ```
+        System.out.println(namespace);
+    }
+}
+```
 
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```go Go theme={null}
+package main
 
-  curl "https://$INDEX_HOST/namespaces" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "name": "example-namespace",
-          "schema": {
-            "fields": { 
-              "document_id": {"filterable": true},
-              "document_title": {"filterable": true},
-              "chunk_number": {"filterable": true},
-              "document_url": {"filterable": true},
-              "created_at": {"filterable": true}
-            }
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+  	bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    } 
+
+    namespace, err := idxConnection.CreateNamespace(ctx, &pinecone.CreateNamespaceParams{
+        Name: "example-namespace",
+        Schema: &pinecone.MetadataSchema{
+            Fields: map[string]pinecone.MetadataSchemaField{
+                "document_id":    {Filterable: true},
+                "document_title": {Filterable: true},
+                "chunk_number":   {Filterable: true},
+                "document_url":   {Filterable: true},
+                "created_at":     {Filterable: true},
+            },
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to create namespace: %v", err)
+    }
+    fmt.Printf(prettifyStruct(namespace))
+}
+```
+
+```shell curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/namespaces" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "name": "example-namespace",
+        "schema": {
+          "fields": { 
+            "document_id": {"filterable": true},
+            "document_title": {"filterable": true},
+            "chunk_number": {"filterable": true},
+            "document_url": {"filterable": true},
+            "created_at": {"filterable": true}
           }
-        }'
-  ```
-</CodeGroup>
+        }
+      }'
+```
 
 The response will look like the following:
 
-<CodeGroup>
-  ```json curl theme={null}
-  {
-      "name": "example-namespace",
-      "record_count": "0",
-      "size_bytes": "0",
-      "schema": {
-          "fields": {
-              "document_title": {
-                  "filterable": true
-              },
-              "document_url": {
-                  "filterable": true
-              },
-              "chunk_number": {
-                  "filterable": true
-              },
-              "document_id": {
-                  "filterable": true
-              },
-              "created_at": {
-                  "filterable": true
-              }
-          }
-      }
-  }
-  ```
-</CodeGroup>
+```json curl theme={null}
+{
+    "name": "example-namespace",
+    "record_count": "0",
+    "size_bytes": "0",
+    "schema": {
+        "fields": {
+            "document_title": {
+                "filterable": true
+            },
+            "document_url": {
+                "filterable": true
+            },
+            "chunk_number": {
+                "filterable": true
+            },
+            "document_id": {
+                "filterable": true
+            },
+            "created_at": {
+                "filterable": true
+            }
+        }
+    }
+}
+```
 
-<Note>
-  `size_bytes` is approximate, so a value of `0` doesn't always mean the namespace is empty. Data written before size tracking reads as `0`, and recently deleted data can still be counted until compaction rewrites the underlying files.
-</Note>
+> [!NOTE]
+>
+> `size_bytes` is approximate, so a value of `0` doesn't always mean the namespace is empty. Data written before size tracking reads as `0`, and recently deleted data can still be counted until compaction rewrites the underlying files.
 
 ## List all namespaces in an index
 
@@ -222,461 +218,451 @@ Use the [List namespaces](/reference/api/latest/data-plane/listnamespaces) opera
 
 Up to 100 namespaces are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of namespaces are returned instead. Whenever there are additional namespaces to return, the response also includes a `pagination_token` that you can use to get the next batch of namespaces. When the response doesn't include a `pagination_token`, there are no more namespaces to return.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  index = pc.Index(host="INDEX_HOST")
+index = pc.Index(host="INDEX_HOST")
 
-  # Implicit pagination using a generator function that yields one page at a time
-  for page in index.list_namespaces():
-      for namespace in page.namespaces:
-          print(namespace.name, ":", namespace.record_count)
+# Implicit pagination using a generator function that yields one page at a time
+for page in index.list_namespaces():
+    for namespace in page.namespaces:
+        print(namespace.name, ":", namespace.record_count)
 
-  # Manual pagination
-  namespaces = index.list_namespaces_paginated(
-      limit=2,
-      pagination_token="eyJza2lwX3Bhc3QiOiIxMDEwMy0="
-  )
+# Manual pagination
+namespaces = index.list_namespaces_paginated(
+    limit=2,
+    pagination_token="eyJza2lwX3Bhc3QiOiIxMDEwMy0="
+)
 
-  print(namespaces)
-  ```
+print(namespaces)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+var index = pinecone.Index(host: "INDEX_HOST");
 
-  const namespaceList = await index.listNamespaces();
+const namespaceList = await index.listNamespaces();
 
-  console.log(namespaceList);
-  ```
+console.log(namespaceList);
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.AsyncIndex;
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.ListNamespacesResponse;
-  import org.openapitools.db_data.client.ApiException;
+```java Java theme={null}
+import io.pinecone.clients.AsyncIndex;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.ListNamespacesResponse;
+import org.openapitools.db_data.client.ApiException;
 
-  public class Namespaces {
-      public static void main(String[] args) throws ApiException {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
+public class Namespaces {
+    public static void main(String[] args) throws ApiException {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
 
-          Index index = new Index(config, connection, "docs-example");
+        Index index = new Index(config, connection, "docs-example");
 
-          // List all namespaces with default pagination limit (100)
-          ListNamespacesResponse listNamespacesResponse = index.listNamespaces(null, null);
+        // List all namespaces with default pagination limit (100)
+        ListNamespacesResponse listNamespacesResponse = index.listNamespaces(null, null);
 
-          // List all namespaces with pagination limit of 2
-          ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(2);
+        // List all namespaces with pagination limit of 2
+        ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(2);
 
-          // List all namespaces with pagination limit and token
-          ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces(5, "eyJza2lwX3Bhc3QiOiIxMDEwMy0=");
+        // List all namespaces with pagination limit and token
+        ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces(5, "eyJza2lwX3Bhc3QiOiIxMDEwMy0=");
 
-          System.out.println(listNamespacesResponseWithLimit);
-      }
-  }
-  ```
+        System.out.println(listNamespacesResponseWithLimit);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func prettifyStruct(obj interface{}) string {
-    	bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
+func prettifyStruct(obj interface{}) string {
+  	bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      } 
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    } 
 
-      limit := uint32(10)
-      namespaces, err := idxConnection.ListNamespaces(ctx, &pinecone.ListNamespacesParams{
-          Limit: &limit,
-      })
-      if err != nil {
-          log.Fatalf("Failed to list namespaces: %v", err)
-      }
-      fmt.Printf(prettifyStruct(namespaces))
-  }
-  ```
+    limit := uint32(10)
+    namespaces, err := idxConnection.ListNamespaces(ctx, &pinecone.ListNamespacesParams{
+        Limit: &limit,
+    })
+    if err != nil {
+        log.Fatalf("Failed to list namespaces: %v", err)
+    }
+    fmt.Printf(prettifyStruct(namespaces))
+}
+```
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -X GET "https://$INDEX_HOST/namespaces" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+curl -X GET "https://$INDEX_HOST/namespaces" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 The response will look like the following:
 
-<CodeGroup>
-  ```plaintext Python theme={null}
-  # Implicit pagination (print output from the loop above)
-  example-namespace : 20000
-  example-namespace2 : 10500
-  example-namespace3 : 10000
-  ...
+```plaintext Python theme={null}
+# Implicit pagination (print output from the loop above)
+example-namespace : 20000
+example-namespace2 : 10500
+example-namespace3 : 10000
+...
 
-  # Manual pagination (response from list_namespaces_paginated())
-  ListNamespacesResponse(namespaces=[NamespaceDescription(name='example-namespace', record_count=20000, schema=None, indexed_fields=None, size_bytes=0), NamespaceDescription(name='example-namespace2', record_count=10500, schema=None, indexed_fields=None, size_bytes=0)], pagination=Pagination(next='Tm90aGluZyB0byBzZWUgaGVyZQo='), total_count=3)
-  ```
+# Manual pagination (response from list_namespaces_paginated())
+ListNamespacesResponse(namespaces=[NamespaceDescription(name='example-namespace', record_count=20000, schema=None, indexed_fields=None, size_bytes=0), NamespaceDescription(name='example-namespace2', record_count=10500, schema=None, indexed_fields=None, size_bytes=0)], pagination=Pagination(next='Tm90aGluZyB0byBzZWUgaGVyZQo='), total_count=3)
+```
 
-  ```javascript JavaScript theme={null}
-  {
-    namespaces: [
-      { name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' },
-      { name: 'example-namespace2', recordCount: '10500', sizeBytes: '550502' },
-      ...
-    ],
-    pagination: "Tm90aGluZyB0byBzZWUgaGVyZQo="
-  }
-  ```
+```javascript JavaScript theme={null}
+{
+  namespaces: [
+    { name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' },
+    { name: 'example-namespace2', recordCount: '10500', sizeBytes: '550502' },
+    ...
+  ],
+  pagination: "Tm90aGluZyB0byBzZWUgaGVyZQo="
+}
+```
 
-  ```java Java theme={null}
-  namespaces {
-    name: "example-namespace"
-    record_count: 20000
-  }
-  namespaces {
-    name: "example-namespace2"
-    record_count: 10500
-  }
-  pagination {
-    next: "eyJza2lwX3Bhc3QiOiJlZDVhYzFiNi1kMDFiLTQ2NTgtYWVhZS1hYjJkMGI2YzBiZjQiLCJwcmVmaXgiOm51bGx9"
-  }
-  ```
+```java Java theme={null}
+namespaces {
+  name: "example-namespace"
+  record_count: 20000
+}
+namespaces {
+  name: "example-namespace2"
+  record_count: 10500
+}
+pagination {
+  next: "eyJza2lwX3Bhc3QiOiJlZDVhYzFiNi1kMDFiLTQ2NTgtYWVhZS1hYjJkMGI2YzBiZjQiLCJwcmVmaXgiOm51bGx9"
+}
+```
 
-  ```go Go theme={null}
-  {
-    "Namespaces": [
-      {
-        "name": "example-namespace",
-        "record_count": 20000
-      },
-      {
-        "name": "example-namespace2",
-        "record_count": 10500
-      },
-      ...
-    ],
-    "Pagination": {
-      "next": "eyJza2lwX3Bhc3QiOiIyNzQ5YTU1YS0zZTQ2LTQ4MDItOGFlNi1hZTJjZGNkMTE5N2IiLCJwcmVmaXgiOm51bGx9"
-    }
+```go Go theme={null}
+{
+  "Namespaces": [
+    {
+      "name": "example-namespace",
+      "record_count": 20000
+    },
+    {
+      "name": "example-namespace2",
+      "record_count": 10500
+    },
+    ...
+  ],
+  "Pagination": {
+    "next": "eyJza2lwX3Bhc3QiOiIyNzQ5YTU1YS0zZTQ2LTQ4MDItOGFlNi1hZTJjZGNkMTE5N2IiLCJwcmVmaXgiOm51bGx9"
   }
-  ```
+}
+```
 
-  ```json curl theme={null}
-  {
-    "namespaces": [
-      {
-        "name": "example-namespace",
-        "record_count": "20000",
-        "size_bytes": "1048576"
-      },
-      {
-        "name": "example-namespace2",
-        "record_count": "10500",
-        "size_bytes": "550502"
-      },
-      ...
-    ],
-    "pagination": {
-      "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
-    }
+```json curl theme={null}
+{
+  "namespaces": [
+    {
+      "name": "example-namespace",
+      "record_count": "20000",
+      "size_bytes": "1048576"
+    },
+    {
+      "name": "example-namespace2",
+      "record_count": "10500",
+      "size_bytes": "550502"
+    },
+    ...
+  ],
+  "pagination": {
+    "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Describe a namespace
 
 Use the [Describe a namespace](/reference/api/latest/data-plane/describenamespace) operation to get details about a namespace in a serverless index, including the total number of vectors in the namespace.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  index = pc.Index(host="INDEX_HOST")
+index = pc.Index(host="INDEX_HOST")
 
-  namespace = index.describe_namespace(namespace="example-namespace")
+namespace = index.describe_namespace(namespace="example-namespace")
 
-  print(namespace)
-  ```
+print(namespace)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-  const index = pc.index('docs-example');
+const index = pc.index('docs-example');
 
-  const namespace = await index.describeNamespace('example-namespace');
+const namespace = await index.describeNamespace('example-namespace');
 
-  console.log(namespace);
-  ```
+console.log(namespace);
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.NamespaceDescription;
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.NamespaceDescription;
 
-  import org.openapitools.db_data.client.ApiException;
+import org.openapitools.db_data.client.ApiException;
 
-  public class Namespaces {
-      public static void main(String[] args) throws ApiException {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
+public class Namespaces {
+    public static void main(String[] args) throws ApiException {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
 
-          Index index = new Index(config, connection, "docs-example");
+        Index index = new Index(config, connection, "docs-example");
 
-          NamespaceDescription namespaceDescription = index.describeNamespace("example-namespace");
+        NamespaceDescription namespaceDescription = index.describeNamespace("example-namespace");
 
-          System.out.println(namespaceDescription);
-      }
-  }
-  ```
+        System.out.println(namespaceDescription);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func prettifyStruct(obj interface{}) string {
-    	bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
+func prettifyStruct(obj interface{}) string {
+  	bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      } 
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    } 
 
-      namespace, err := idxConnection.DescribeNamespace(ctx, "example-namespace")
-      if err != nil {
-          log.Fatalf("Failed to describe namespace: %v", err)
-      }
-      fmt.Printf(prettifyStruct(namespace))
-  }
-  ```
+    namespace, err := idxConnection.DescribeNamespace(ctx, "example-namespace")
+    if err != nil {
+        log.Fatalf("Failed to describe namespace: %v", err)
+    }
+    fmt.Printf(prettifyStruct(namespace))
+}
+```
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
-  NAMESPACE="NAMESPACE_NAME"  # To target the default namespace, use "__default__".
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+NAMESPACE="NAMESPACE_NAME"  # To target the default namespace, use "__default__".
 
-  curl -X GET "https://$INDEX_HOST/namespaces/$NAMESPACE" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+curl -X GET "https://$INDEX_HOST/namespaces/$NAMESPACE" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 The response will look like the following:
 
-<CodeGroup>
-  ```python Python theme={null}
-  {
-      "name": "example-namespace",
-      "record_count": "20000"
-  }
-  ```
-
-  ```javascript JavaScript theme={null}
-  { name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' }
-  ```
-
-  ```java Java theme={null}
-  name: "example-namespace"
-  record_count: 20000
-  ```
-
-  ```go Go theme={null}
-  {
+```python Python theme={null}
+{
     "name": "example-namespace",
-    "record_count": 20000
-  }
-  ```
+    "record_count": "20000"
+}
+```
 
-  ```json curl theme={null}
-  {
-    "name": "example-namespace",
-    "record_count": "20000",
-    "size_bytes": "1048576"
-  }
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+{ name: 'example-namespace', recordCount: '20000', sizeBytes: '1048576' }
+```
 
-<Note>
-  The Python, Java, and Go SDKs don't return `size_bytes` yet, so it appears in the curl and JavaScript responses only.
-</Note>
+```java Java theme={null}
+name: "example-namespace"
+record_count: 20000
+```
+
+```go Go theme={null}
+{
+  "name": "example-namespace",
+  "record_count": 20000
+}
+```
+
+```json curl theme={null}
+{
+  "name": "example-namespace",
+  "record_count": "20000",
+  "size_bytes": "1048576"
+}
+```
+
+> [!NOTE]
+>
+> The Python, Java, and Go SDKs don't return `size_bytes` yet, so it appears in the curl and JavaScript responses only.
 
 ## Delete a namespace
 
 Use the [Delete a namespace](/reference/api/latest/data-plane/deletenamespace) operation to delete a namespace in a serverless index.
 
-<Warning>
-  Deleting a namespace is irreversible. All data in the namespace is permanently deleted.
-</Warning>
+> [!WARNING]
+>
+> Deleting a namespace is irreversible. All data in the namespace is permanently deleted.
 
 If a [namespace alias](/guides/manage-data/namespace-aliases/overview) targets the namespace, the delete is rejected. Repoint or delete the alias first.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  index = pc.Index(host="INDEX_HOST")
+index = pc.Index(host="INDEX_HOST")
 
-  index.delete_namespace(namespace="example-namespace")
-  ```
+index.delete_namespace(namespace="example-namespace")
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-  const index = pc.index('INDEX_NAME', 'INDEX_HOST');
+const index = pc.index('INDEX_NAME', 'INDEX_HOST');
 
-  const namespace = await index.deleteNamespace('example-namespace');
+const namespace = await index.deleteNamespace('example-namespace');
 
-  console.log(namespace);
-  ```
+console.log(namespace);
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
 
-  import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutionException;
 
-  public class DeleteNamespace {
-      public static void main(String[] args) throws ExecutionException, InterruptedException {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-        // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-
-          Index index = new Index(config, connection, "docs-example");
-
-          index.deleteNamespace("example-namespace");
-      }
-  }
-  ```
-
-  ```go Go theme={null}
-  package main
-
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
-
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
-
-  func prettifyStruct(obj interface{}) string {
-    	bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
-
-  func main() {
-      ctx := context.Background()
-
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
-
+public class DeleteNamespace {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
       // To get the unique host for an index, 
       // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      } 
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
 
-      err := idxConnection.DeleteNamespace(ctx, "example-namespace")
-      if err != nil {
-          log.Fatalf("Failed to delete namespace: %v", err)
-      }
-  }
-  ```
+        Index index = new Index(config, connection, "docs-example");
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
-  NAMESPACE="NAMESPACE_NAME" # To target the default namespace, use "__default__".
+        index.deleteNamespace("example-namespace");
+    }
+}
+```
 
-  curl -X DELETE "https://$INDEX_HOST/namespaces/$NAMESPACE" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+  	bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    } 
+
+    err := idxConnection.DeleteNamespace(ctx, "example-namespace")
+    if err != nil {
+        log.Fatalf("Failed to delete namespace: %v", err)
+    }
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+NAMESPACE="NAMESPACE_NAME" # To target the default namespace, use "__default__".
+
+curl -X DELETE "https://$INDEX_HOST/namespaces/$NAMESPACE" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 ## Rename a namespace
 

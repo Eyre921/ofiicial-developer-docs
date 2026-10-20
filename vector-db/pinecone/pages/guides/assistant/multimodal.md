@@ -6,9 +6,9 @@ path: guides/assistant/multimodal
 
 Enable multimodal PDF context in Pinecone Assistant to analyze charts, images, and diagrams using OCR and visual understanding for RAG.
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability).
 
 Pinecone assistants support multimodal context, allowing them to understand and respond to questions about images embedded in PDF documents.
 
@@ -30,141 +30,133 @@ When you enable multimodal context for a PDF:
 2. During chat or context queries, the assistant searches for relevant text and image context it captured when analyzing the PDF. Image context can include the original image data (base64-encoded).
 3. The assistant passes this context to the LLM, which uses it to generate responses.
 
-<Note>
-  For an overview of how Pinecone Assistant works, see [Pinecone Assistant architecture](/reference/architecture/assistant-architecture).
-</Note>
+> [!NOTE]
+>
+> For an overview of how Pinecone Assistant works, see [Pinecone Assistant architecture](/reference/architecture/assistant-architecture).
 
 ## Try it out
 
 The following steps demonstrate how to create an assistant, provide it with a PDF that contains images, and then query that assistant using chat and context APIs.
 
-<Note>
-  All versions of Pinecone's Assistant API allow you to upload multimodal PDFs.
-</Note>
+> [!NOTE]
+>
+> All versions of Pinecone's Assistant API allow you to upload multimodal PDFs.
 
 ### 1. Create an assistant
 
 First, if you don't have one, [create an assistant](/reference/api/2025-10/assistant/create_assistant):
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistants.create(
-      name="example-assistant-multimodal",
-      instructions="You are a helpful assistant that can understand both text and images in documents.",
-      region="us",
-  )
+assistant = pc.assistants.create(
+    name="example-assistant-multimodal",
+    instructions="You are a helpful assistant that can understand both text and images in documents.",
+    region="us",
+)
 
-  print(assistant)
-  ```
+print(assistant)
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl "https://api.pinecone.io/assistant/assistants" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-          "name": "example-assistant-multimodal",
-          "instructions": "You are a helpful assistant that can understand both text and images in documents.",
-          "region": "us"
-        }'
-  ```
-</CodeGroup>
+curl "https://api.pinecone.io/assistant/assistants" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "example-assistant-multimodal",
+        "instructions": "You are a helpful assistant that can understand both text and images in documents.",
+        "region": "us"
+      }'
+```
 
 Response:
 
-<CodeGroup>
-  ```shell Python theme={null}
-  AssistantModel(name='example-assistant-multimodal', status='Ready', region='us', host='https://prod-1-data.ke.pinecone.io', instructions='You are a helpful assistant that can und...')
-  ```
+```shell Python theme={null}
+AssistantModel(name='example-assistant-multimodal', status='Ready', region='us', host='https://prod-1-data.ke.pinecone.io', instructions='You are a helpful assistant that can und...')
+```
 
-  ```json curl theme={null}
-  {
-    "name": "example-assistant-multimodal",
-    "instructions": "You are a helpful assistant that can understand both text and images in documents.",
-    "metadata": null,
-    "status": "Initializing",
-    "host": "https://prod-1-data.ke.pinecone.io",
-    "created_at": "2025-08-18T23:18:52.858197495Z",
-    "updated_at": "2025-08-18T23:18:52.858198077Z"
-  }
-  ```
-</CodeGroup>
+```json curl theme={null}
+{
+  "name": "example-assistant-multimodal",
+  "instructions": "You are a helpful assistant that can understand both text and images in documents.",
+  "metadata": null,
+  "status": "Initializing",
+  "host": "https://prod-1-data.ke.pinecone.io",
+  "created_at": "2025-08-18T23:18:52.858197495Z",
+  "updated_at": "2025-08-18T23:18:52.858198077Z"
+}
+```
 
-<Note>
-  You don't need to create a new assistant to use multimodal context. Existing assistants can enable multimodal context for newly uploaded PDFs, as described in [the next section](#2-upload-a-multimodal-pdf).
-</Note>
+> [!NOTE]
+>
+> You don't need to create a new assistant to use multimodal context. Existing assistants can enable multimodal context for newly uploaded PDFs, as described in [the next section](#2-upload-a-multimodal-pdf).
 
 ### 2. Upload a multimodal PDF
 
 To enable multimodal context for a PDF, when [uploading the file](/reference/api/2025-10/assistant/upload_file), set the `multimodal` URL parameter to true (defaults to false).
 
-<Tip>
-  To improve retrieval accuracy for images found in uploaded PDFs, include relevant contextual text on the same page as each image. For example:
+> [!TIP]
+>
+> To improve retrieval accuracy for images found in uploaded PDFs, include relevant contextual text on the same page as each image. For example:
+>
+> * **Graphs and charts**: Include nearby text explaining the experiment, methodology, or data being visualized.
+> * **Diagrams**: Add descriptive labels or explanations adjacent to technical diagrams.
+> * **Tables**: Provide context about what the data represents and any relevant methodology.
+>
+> The assistant uses surrounding text when generating captions that are later passed to the LLM, so placing relevant context near images improves caption quality and retrieval accuracy.
 
-  * **Graphs and charts**: Include nearby text explaining the experiment, methodology, or data being visualized.
-  * **Diagrams**: Add descriptive labels or explanations adjacent to technical diagrams.
-  * **Tables**: Provide context about what the data represents and any relevant methodology.
+```python Python theme={null}
+from pinecone import Pinecone
 
-  The assistant uses surrounding text when generating captions that are later passed to the LLM, so placing relevant context near images improves caption quality and retrieval accuracy.
-</Tip>
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+# The SDK waits for file processing to finish before it returns.
+file = pc.assistants.upload_file(
+    assistant_name="example-assistant-multimodal",
+    file_path="./document.pdf",
+    multimodal=True,
+)
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+print(file)
+```
 
-  # The SDK waits for file processing to finish before it returns.
-  file = pc.assistants.upload_file(
-      assistant_name="example-assistant-multimodal",
-      file_path="./document.pdf",
-      multimodal=True,
-  )
+```bash curl theme={null}
+ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
+ASSISTANT_NAME="example-assistant-multimodal"
+PINECONE_API_KEY="YOUR_API_KEY"
+LOCAL_FILE_PATH="/path/to/your/document.pdf"
 
-  print(file)
-  ```
-
-  ```bash curl theme={null}
-  ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
-  ASSISTANT_NAME="example-assistant-multimodal"
-  PINECONE_API_KEY="YOUR_API_KEY"
-  LOCAL_FILE_PATH="/path/to/your/document.pdf"
-
-  curl -X POST "https://$ASSISTANT_HOST/assistant/files/$ASSISTANT_NAME?multimodal=true" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -F "file=@$LOCAL_FILE_PATH"
-  ```
-</CodeGroup>
+curl -X POST "https://$ASSISTANT_HOST/assistant/files/$ASSISTANT_NAME?multimodal=true" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -F "file=@$LOCAL_FILE_PATH"
+```
 
 Response:
 
-<CodeGroup>
-  ```shell Python theme={null}
-  AssistantFileModel(name='document.pdf', id='9c322597-58d6-4ebc-84b5-a398b620da01', status='Available', size=1236044)
-  ```
+```shell Python theme={null}
+AssistantFileModel(name='document.pdf', id='9c322597-58d6-4ebc-84b5-a398b620da01', status='Available', size=1236044)
+```
 
-  ```json curl theme={null}
-  {
-    "id": "op-1234-abcd-5678",
-    "operation_type": "upload_file",
-    "file_id": "9c322597-58d6-4ebc-84b5-a398b620da01",
-    "status": "Processing",
-    "created_on": "2025-08-28T23:41:41.982805815Z",
-    "percent_complete": 0
-  }
-  ```
-</CodeGroup>
+```json curl theme={null}
+{
+  "id": "op-1234-abcd-5678",
+  "operation_type": "upload_file",
+  "file_id": "9c322597-58d6-4ebc-84b5-a398b620da01",
+  "status": "Processing",
+  "created_on": "2025-08-28T23:41:41.982805815Z",
+  "percent_complete": 0
+}
+```
 
-<Note>
-  * The `multimodal` parameter is only available for PDF files.
-  * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/latest/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
-  * If upload processing fails, you'll need to re-upload the file.
-</Note>
+> [!NOTE]
+>
+> * The `multimodal` parameter is only available for PDF files.
+> * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/latest/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
+> * If upload processing fails, you'll need to re-upload the file.
 
 ### 3. Chat with the assistant
 
@@ -173,185 +165,83 @@ Now, [chat with your assistant](/reference/api/2025-10/assistant/chat_assistant)
 * Set the `multimodal` request parameter to true (default) in the `context_options` object. Setting `multimodal` to false means the LLM only receives text snippets.
 * When `multimodal` is true, use `include_binary_content` to specify what image context the LLM should receive: base64 image data and captions (true) or captions only (false).
 
-<Note>
-  Sending image-related context to the LLM (whether captions, base64 data, or both) increases token usage. Learn about [monitoring spend and usage](/guides/assistant/admin/monitor-spend-and-usage).
-</Note>
+> [!NOTE]
+>
+> Sending image-related context to the LLM (whether captions, base64 data, or both) increases token usage. Learn about [monitoring spend and usage](/guides/assistant/admin/monitor-spend-and-usage).
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  chat_response = pc.assistants.chat(
-      assistant_name="example-assistant-multimodal",
-      messages=[
-          {
-              "role": "user",
-              "content": "Describe the symbol on the paper tray that indicates the maximum fill level.",
-          }
-      ],
-      context_options={
-          "multimodal": True,
-          "include_binary_content": True,
-          "top_k": 10,
-          "snippet_size": 2048,
-      },
-  )
-
-  print(chat_response)
-  ```
-
-  ```bash curl theme={null}
-  ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
-  ASSISTANT_NAME="example-assistant-multimodal"
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  curl "https://$ASSISTANT_HOST/assistant/chat/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-          "messages": [
-            {
-              "role": "user",
-              "content": "Describe the symbol on the paper tray that indicates the maximum fill level."
-            }
-          ],
-          "context_options": {
-            "multimodal": true,
-            "include_binary_content": true,
-            "top_k": 10,
-            "snippet_size": 2048
-          }
-        }'
-  ```
-</CodeGroup>
-
-Response:
-
-<CodeGroup>
-  ```shell Python theme={null}
-  ChatResponse(id='00000000000000000fe49626f3ee5164', model='gpt-4o-2024-11-20', finish_reason='stop', citations=1, context_snippet_count=10, usage=ChatUsage(prompt=8703, completion=41, total=8744))
-  ```
-
-  ```json curl theme={null}
-  {
-    "finish_reason": "stop",
-    "message": {
-      "role": "assistant",
-      "content": "The symbol on the paper tray that indicates..."
+chat_response = pc.assistants.chat(
+    assistant_name="example-assistant-multimodal",
+    messages=[
+        {
+            "role": "user",
+            "content": "Describe the symbol on the paper tray that indicates the maximum fill level.",
+        }
+    ],
+    context_options={
+        "multimodal": True,
+        "include_binary_content": True,
+        "top_k": 10,
+        "snippet_size": 2048,
     },
-    "id": "0000000000000000d904dfd3dd4f4597"
-    "model": "gpt-4o-2024-11-20",
-    "usage": {
-      "prompt_tokens": 8414,
-      "completion_tokens": 42,
-      "total_tokens": 8456
-    },
-    "citations": [
-      {
-        "position": 213,
-        "references": [
+)
+
+print(chat_response)
+```
+
+```bash curl theme={null}
+ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
+ASSISTANT_NAME="example-assistant-multimodal"
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://$ASSISTANT_HOST/assistant/chat/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "messages": [
           {
-            "file": {
-              "status": "Available",
-              "id": "a89f678c-9ceb-40ec-8fc7-23913e560b37",
-              "name": "document.pdf",
-              "size": 1236044,
-              "metadata": null,
-              "multimodal": true,
-              "updated_on": "2025-08-18T23:21:59.697988967Z",
-              "created_on": "2025-08-18T23:21:36.498381046Z",
-              "signed_url": "https://storage.googleapis.com/..."
-            },
-            "pages": [ 3, 4, 5, 6, 7, 8, 9, 10, 11 ],
-            "highlight": null
+            "role": "user",
+            "content": "Describe the symbol on the paper tray that indicates the maximum fill level."
           }
-        ]
-      }
-    ]
-  }
-  ```
-</CodeGroup>
-
-<Warning>
-  If your assistant uses multimodal context snippets to generate a response, no [highlights](/guides/assistant/chat-with-assistant#include-citation-highlights-in-the-response) are returned—even when `include_highlights` is true.
-</Warning>
-
-### 4. Query for context
-
-To query context for a custom RAG workflow, you can [retrieve context snippets](/reference/api/2025-10/assistant/context_assistant) directly. Then, you can pass these snippets to an LLM as context.
-
-To fetch image-related context snippets (as well as text snippets), set the `multimodal` request parameter to true (default). When `multimodal` is true, use `include_binary_content` to specify what image context you'd like to receive: base64 image data and captions (true) or captions only (false).
-
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
-
-  pc = Pinecone(api_key="YOUR_API_KEY")
-
-  context_response = pc.assistants.context(
-      assistant_name="example-assistant-multimodal",
-      query="Describe the symbol on the paper tray that indicates the maximum fill level.",
-      multimodal=True,
-      include_binary_content=True,
-  )
-
-  print(context_response)
-  ```
-
-  ```bash curl theme={null}
-  ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
-  ASSISTANT_NAME="example-assistant-multimodal"
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  curl "https://$ASSISTANT_HOST/assistant/chat/$ASSISTANT_NAME/context" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "query": "Describe the symbol on the paper tray that indicates the maximum fill level.",
-      "multimodal": true,
-      "include_binary_content": true
-    }'
-  ```
-</CodeGroup>
-
-<Note>
-  If you set `multimodal` to true and `include_binary_content` to false, image objects aren't returned in the snippets. If you set `multimodal` to false, only text snippets are returned.
-</Note>
-
-Response:
-
-<CodeGroup>
-  ```shell Python theme={null}
-  ContextResponse(id='00000000000000001e3ef84bd493e612', snippets=15, usage=ChatUsage(prompt=7061, completion=0, total=7061))
-  ```
-
-  ```json curl theme={null}
-  {
-    "snippets": [
-      {
-        "type": "multimodal",
-        "content": [
-          {
-            "type": "text",
-            "text": "# The Online User's Guide..."
-          },
-          {
-            "type": "image",
-            "caption": "An image of a control panel...",
-            "image": {
-              "type": "base64",
-              "mime_type": "image/jpeg",
-              "data": "..."
-            }
-          },
-          // ...
         ],
-        "score": 0.16775002,
-        "reference": {
-          "type": "pdf",
+        "context_options": {
+          "multimodal": true,
+          "include_binary_content": true,
+          "top_k": 10,
+          "snippet_size": 2048
+        }
+      }'
+```
+
+Response:
+
+```shell Python theme={null}
+ChatResponse(id='00000000000000000fe49626f3ee5164', model='gpt-4o-2024-11-20', finish_reason='stop', citations=1, context_snippet_count=10, usage=ChatUsage(prompt=8703, completion=41, total=8744))
+```
+
+```json curl theme={null}
+{
+  "finish_reason": "stop",
+  "message": {
+    "role": "assistant",
+    "content": "The symbol on the paper tray that indicates..."
+  },
+  "id": "0000000000000000d904dfd3dd4f4597"
+  "model": "gpt-4o-2024-11-20",
+  "usage": {
+    "prompt_tokens": 8414,
+    "completion_tokens": 42,
+    "total_tokens": 8456
+  },
+  "citations": [
+    {
+      "position": 213,
+      "references": [
+        {
           "file": {
             "status": "Available",
             "id": "a89f678c-9ceb-40ec-8fc7-23913e560b37",
@@ -363,24 +253,118 @@ Response:
             "created_on": "2025-08-18T23:21:36.498381046Z",
             "signed_url": "https://storage.googleapis.com/..."
           },
-          "pages": [ 3, 4, 5, 6, 7, 8, 9, 10, 11 ]
+          "pages": [ 3, 4, 5, 6, 7, 8, 9, 10, 11 ],
+          "highlight": null
         }
-      },
-      // ...
-    ],
-    "usage": {
-      "prompt_tokens": 6778,
-      "completion_tokens": 0,
-      "total_tokens": 6778
-    },
-    "id": "000000000000000005b9cd91b1c5446d"
-  } 
-  ```
-</CodeGroup>
+      ]
+    }
+  ]
+}
+```
 
-<Note>
-  Snippets are returned based on their semantic relevance to the provided query. When you set `multimodal` to true, you'll receive the most relevant snippets, regardless of the types of content they contain. You can receive text snippets, multimodal snippets, or both.
-</Note>
+> [!WARNING]
+>
+> If your assistant uses multimodal context snippets to generate a response, no [highlights](/guides/assistant/chat-with-assistant#include-citation-highlights-in-the-response) are returned—even when `include_highlights` is true.
+
+### 4. Query for context
+
+To query context for a custom RAG workflow, you can [retrieve context snippets](/reference/api/2025-10/assistant/context_assistant) directly. Then, you can pass these snippets to an LLM as context.
+
+To fetch image-related context snippets (as well as text snippets), set the `multimodal` request parameter to true (default). When `multimodal` is true, use `include_binary_content` to specify what image context you'd like to receive: base64 image data and captions (true) or captions only (false).
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+context_response = pc.assistants.context(
+    assistant_name="example-assistant-multimodal",
+    query="Describe the symbol on the paper tray that indicates the maximum fill level.",
+    multimodal=True,
+    include_binary_content=True,
+)
+
+print(context_response)
+```
+
+```bash curl theme={null}
+ASSISTANT_HOST="YOUR_ASSISTANT_HOST"
+ASSISTANT_NAME="example-assistant-multimodal"
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://$ASSISTANT_HOST/assistant/chat/$ASSISTANT_NAME/context" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "Describe the symbol on the paper tray that indicates the maximum fill level.",
+    "multimodal": true,
+    "include_binary_content": true
+  }'
+```
+
+> [!NOTE]
+>
+> If you set `multimodal` to true and `include_binary_content` to false, image objects aren't returned in the snippets. If you set `multimodal` to false, only text snippets are returned.
+
+Response:
+
+```shell Python theme={null}
+ContextResponse(id='00000000000000001e3ef84bd493e612', snippets=15, usage=ChatUsage(prompt=7061, completion=0, total=7061))
+```
+
+```json curl theme={null}
+{
+  "snippets": [
+    {
+      "type": "multimodal",
+      "content": [
+        {
+          "type": "text",
+          "text": "# The Online User's Guide..."
+        },
+        {
+          "type": "image",
+          "caption": "An image of a control panel...",
+          "image": {
+            "type": "base64",
+            "mime_type": "image/jpeg",
+            "data": "..."
+          }
+        },
+        // ...
+      ],
+      "score": 0.16775002,
+      "reference": {
+        "type": "pdf",
+        "file": {
+          "status": "Available",
+          "id": "a89f678c-9ceb-40ec-8fc7-23913e560b37",
+          "name": "document.pdf",
+          "size": 1236044,
+          "metadata": null,
+          "multimodal": true,
+          "updated_on": "2025-08-18T23:21:59.697988967Z",
+          "created_on": "2025-08-18T23:21:36.498381046Z",
+          "signed_url": "https://storage.googleapis.com/..."
+        },
+        "pages": [ 3, 4, 5, 6, 7, 8, 9, 10, 11 ]
+      }
+    },
+    // ...
+  ],
+  "usage": {
+    "prompt_tokens": 6778,
+    "completion_tokens": 0,
+    "total_tokens": 6778
+  },
+  "id": "000000000000000005b9cd91b1c5446d"
+} 
+```
+
+> [!NOTE]
+>
+> Snippets are returned based on their semantic relevance to the provided query. When you set `multimodal` to true, you'll receive the most relevant snippets, regardless of the types of content they contain. You can receive text snippets, multimodal snippets, or both.
 
 ## Limits
 

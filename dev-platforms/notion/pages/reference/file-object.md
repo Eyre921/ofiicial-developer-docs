@@ -27,34 +27,32 @@ Each file object has a required type field that determines the structure of its 
 
 Here’s what each type looks like:
 
-<CodeGroup>
-  ```Text javascript theme={null}
-  // Notion-hosted file (uploaded via UI)
-  {
-    "type": "file",
-    "file": {
-      "url": "<https://s3.us-west-2.amazonaws.com/...">,
-      "expiry_time": "2025-04-24T22:49:22.765Z"
-    }
+```Text javascript theme={null}
+// Notion-hosted file (uploaded via UI)
+{
+  "type": "file",
+  "file": {
+    "url": "<https://s3.us-west-2.amazonaws.com/...">,
+    "expiry_time": "2025-04-24T22:49:22.765Z"
   }
+}
 
-  // File uploaded via the Notion API
-  {
-    "type": "file_upload",
-    "file_upload": {
-      "id": "43833259-72ae-404e-8441-b6577f3159b4"
-    }
+// File uploaded via the Notion API
+{
+  "type": "file_upload",
+  "file_upload": {
+    "id": "43833259-72ae-404e-8441-b6577f3159b4"
   }
+}
 
-  // External file
-  {
-    "type": "external",
-    "external": {
-      "url": "<https://example.com/image.png">
-    }
+// External file
+{
+  "type": "external",
+  "external": {
+    "url": "<https://example.com/image.png">
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Notion-hosted files (type: `file`)
 
@@ -65,33 +63,31 @@ These are files that users upload manually through the Notion app — such as dr
 * You're working with existing content in a Notion workspace
 * You’re accessing files that users manually added via drag-and-drop or upload
 
-<Tip>
-  **Tips**
-
-  * Each time you fetch a Notion-hosted file, it includes a temporary public url valid for 1 hour.
-  * Don’t cache or statically reference these URLs. To refresh access, re-fetch the file object.
-</Tip>
+> [!TIP]
+>
+> **Tips**
+>
+> * Each time you fetch a Notion-hosted file, it includes a temporary public url valid for 1 hour.
+> * Don’t cache or statically reference these URLs. To refresh access, re-fetch the file object.
 
 **These corresponding file objects contain the following fields:**
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `url` | `string` | An authenticated HTTP GET URL to the file.<br /><br />The URL is valid for one hour. If the link expires, send an API request to get an updated URL. | `"https://s3.us-west-2.amazonaws.com/secure.notion-static.com/9bc6c6e0-32b8-4d55-8c12-3ae931f43a01/brocolli.jpeg?..."` |
+| `url` | `string` | An authenticated HTTP GET URL to the file. The URL is valid for one hour. If the link expires, send an API request to get an updated URL. | `"https://s3.us-west-2.amazonaws.com/secure.notion-static.com/9bc6c6e0-32b8-4d55-8c12-3ae931f43a01/brocolli.jpeg?..."` |
 | `expiry_time` | `string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date time) | The date and time when the link expires. | `"2020-03-17T19:10:04.968Z"` |
 
 **Example snippet**:
 
-<CodeGroup>
-  ```Text JSON theme={null}
-  {
-    "type": "file",
-    "file": {
-      "url": "<https://s3.us-west-2.amazonaws.com/...">,
-      "expiry_time": "2025-04-24T22:49:22.765Z"
-    }
+```Text JSON theme={null}
+{
+  "type": "file",
+  "file": {
+    "url": "<https://s3.us-west-2.amazonaws.com/...">,
+    "expiry_time": "2025-04-24T22:49:22.765Z"
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Files uploaded in the API (type: `file_upload`)
 
@@ -102,12 +98,12 @@ These are files uploaded using the File Upload API. You first create a [File Upl
 1. You want to programmatically upload files to Notion
 2. You’re building automations or file-rich connections
 
-<Tip>
-  **Tips**
-
-  * Once uploaded, you can reuse the File Upload ID to attach the same file to multiple pages or blocks
-  * To learn more about file uploads, view the [Working with files and media](/guides/data-apis/working-with-files-and-media) guide
-</Tip>
+> [!TIP]
+>
+> **Tips**
+>
+> * Once uploaded, you can reuse the File Upload ID to attach the same file to multiple pages or blocks
+> * To learn more about file uploads, view the [Working with files and media](/guides/data-apis/working-with-files-and-media) guide
 
 **These corresponding file objects contain the following fields:**
 
@@ -117,16 +113,14 @@ These are files uploaded using the File Upload API. You first create a [File Upl
 
 **Example snippet**:
 
-<CodeGroup>
-  ```Text JSON theme={null}
-  {
-    "type": "file_upload",
-    "file_upload": {
-      "id": "43833259-72ae-404e-8441-b6577f3159b4"
-    }
+```Text JSON theme={null}
+{
+  "type": "file_upload",
+  "file_upload": {
+    "id": "43833259-72ae-404e-8441-b6577f3159b4"
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## External files (type: `external`)
 
@@ -152,16 +146,14 @@ Use this approach if you have already hosted your files elsewhere (e.g., S3, Dro
 
 **Example snippet**:
 
-<CodeGroup>
-  ```Text JSON theme={null}
-  {
-    "type": "external",
-    "external": {
-      "url": "<https://example.com/photo.png">
-    }
+```Text JSON theme={null}
+{
+  "type": "external",
+  "external": {
+    "url": "<https://example.com/photo.png">
   }
-  ```
-</CodeGroup>
+}
+```
 
 **What’s Next**
 

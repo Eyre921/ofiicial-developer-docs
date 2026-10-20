@@ -20,6 +20,6 @@ Your account may be suspended due to several factors:
    * Contracted customers on post-paid billing may have different suspension rules under their agreement.
    * Enterprise monthly spend alerts are informational and do not pause service.
 
-<Note>
-  If you're experiencing account suspension issues or need assistance with your spend limit or billing settings, please contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai).
-</Note>
+> [!NOTE]
+>
+> If you're experiencing account suspension issues or need assistance with your spend limit or billing settings, please contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai).

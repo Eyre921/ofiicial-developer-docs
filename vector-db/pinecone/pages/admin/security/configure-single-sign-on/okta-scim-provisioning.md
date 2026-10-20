@@ -8,7 +8,9 @@ Automatically provision members and roles from Okta to Pinecone over SCIM.
 
 Instead of managing members and roles manually in Pinecone, you can have your identity provider (IdP) provision them automatically over SCIM. This page continues [Configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and shows how to set up SCIM provisioning with Okta. You can adapt these instructions for any provider with SCIM 2.0 support.
 
-<Note>SCIM provisioning is available on the Enterprise plan and builds on SAML SSO. Before you begin, [configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and enforce SSO for your organization.</Note>
+> [!NOTE]
+>
+> SCIM provisioning is available on the Enterprise plan and builds on SAML SSO. Before you begin, [configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and enforce SSO for your organization.
 
 ## How it works
 
@@ -21,17 +23,17 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 * Deactivating or removing a member in Okta removes them from the organization, and clearing a member's roles revokes their access.
 * Because membership and roles come entirely from your IdP, while SCIM is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API.
 
-<Note>
-  Provisioning changes in Okta are typically reflected in Pinecone within a few minutes, but can take up to 30 minutes to fully propagate.
-</Note>
+> [!NOTE]
+>
+> Provisioning changes in Okta are typically reflected in Pinecone within a few minutes, but can take up to 30 minutes to fully propagate.
 
-<Note>
-  SCIM provisioning assigns roles from user attributes only. SCIM group push isn't supported. This is similar to [SAML role management](/admin/security/configure-single-sign-on/okta-role-management), except roles are provisioned continuously rather than at each login, and member deprovisioning is handled automatically.
-</Note>
+> [!NOTE]
+>
+> SCIM provisioning assigns roles from user attributes only. SCIM group push isn't supported. This is similar to [SAML role management](/admin/security/configure-single-sign-on/okta-role-management), except roles are provisioned continuously rather than at each login, and member deprovisioning is handled automatically.
 
-<Warning>
-  Before you enable SCIM, provision at least one current [organization owner](/admin/organizations/understanding-organizations#organization-roles) with the `pinecone:OrgOwner` role. Pinecone blocks enabling SCIM until a current owner has been provisioned as an owner, so that handing role management to your IdP cannot lock you out.
-</Warning>
+> [!WARNING]
+>
+> Before you enable SCIM, provision at least one current [organization owner](/admin/organizations/understanding-organizations#organization-roles) with the `pinecone:OrgOwner` role. Pinecone blocks enabling SCIM until a current owner has been provisioned as an owner, so that handing role management to your IdP cannot lock you out.
 
 ## Supported attributes
 
@@ -95,7 +97,9 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 ## 1. Start SCIM setup in Pinecone
 
-<Note>You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.</Note>
+> [!NOTE]
+>
+> You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
 2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.
@@ -108,9 +112,9 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 2. Click **Generate token**.
 3. Copy the **bearer token**. The **SCIM endpoint** is shown on the next screen of the dialog. You'll add both to Okta in [Step 3](#3-connect-okta-to-the-scim-endpoint).
 
-<Warning>
-  The bearer token is shown only once. Copy it before closing the dialog. You can have at most two active tokens per organization. You can rotate or revoke them later from the **Manage** dialog.
-</Warning>
+> [!WARNING]
+>
+> The bearer token is shown only once. Copy it before closing the dialog. You can have at most two active tokens per organization. You can rotate or revoke them later from the **Manage** dialog.
 
 ## 3. Connect Okta to the SCIM endpoint
 
@@ -133,15 +137,15 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 7. Still under **Provisioning > To App**, scroll to **Pinecone Attribute Mappings** and check the source for `userName`. If it's set to `user.login` or an Active Directory attribute, change it to `user.email` and click **Save**.
 
-<Warning>
-  The SCIM `userName` must be the same email address your members sign in with through SAML SSO. If your members are sourced from Active Directory or LDAP, `user.login` is often a local domain login such as `user@example.local` rather than an email address. When the two values differ, Pinecone treats the provisioned member and the member who signs in as two different people. The result is duplicate accounts, and sign-in fails with a `jit_disabled` error. Fix the mapping before you enable SCIM in [Step 6](#6-enable-scim-in-pinecone).
-</Warning>
+> [!WARNING]
+>
+> The SCIM `userName` must be the same email address your members sign in with through SAML SSO. If your members are sourced from Active Directory or LDAP, `user.login` is often a local domain login such as `user@example.local` rather than an email address. When the two values differ, Pinecone treats the provisioned member and the member who signs in as two different people. The result is duplicate accounts, and sign-in fails with a `jit_disabled` error. Fix the mapping before you enable SCIM in [Step 6](#6-enable-scim-in-pinecone).
 
-<Note>
-  If the **Provisioning** tab or **Configure API Integration** button doesn't appear, SCIM provisioning isn't enabled on the app.
-
-  If **Test API Credentials** fails, re-copy the SCIM endpoint and bearer token from Pinecone, and confirm the token hasn't expired or been revoked.
-</Note>
+> [!NOTE]
+>
+> If the **Provisioning** tab or **Configure API Integration** button doesn't appear, SCIM provisioning isn't enabled on the app.
+>
+> If **Test API Credentials** fails, re-copy the SCIM endpoint and bearer token from Pinecone, and confirm the token hasn't expired or been revoked.
 
 ## 4. Send role values to Pinecone
 
@@ -164,11 +168,11 @@ Okta doesn't send a member's Pinecone roles by default. You define one app attri
 
 For example, an organization manager who is also a project owner on one project needs two attributes: one mapped to `pinecone:OrgManager` and one mapped to `pinecone:project:<projectID>:ProjectOwner`. Project values include the project's [unique ID](/admin/projects/understanding-projects#project-ids), not its name.
 
-<Note>
-  Send roles in the user's `roles` attribute. SCIM group push isn't supported.
-
-  We recommend removing Okta mappings for any attribute that isn't listed in [Supported attributes](#supported-attributes). Pinecone ignores those attributes, but Okta still sends them, so removing the mappings keeps personal data Pinecone doesn't use, such as phone numbers and home addresses, out of provisioning requests.
-</Note>
+> [!NOTE]
+>
+> Send roles in the user's `roles` attribute. SCIM group push isn't supported.
+>
+> We recommend removing Okta mappings for any attribute that isn't listed in [Supported attributes](#supported-attributes). Pinecone ignores those attributes, but Okta still sends them, so removing the mappings keeps personal data Pinecone doesn't use, such as phone numbers and home addresses, out of provisioning requests.
 
 ## 5. Provision members and verify
 

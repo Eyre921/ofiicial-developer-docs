@@ -8,7 +8,7 @@ Install the official Pinecone plugin for Codex to manage indexes, run vector sea
 
 The official Pinecone plugin for [Codex](https://developers.openai.com/codex) adds Pinecone skills and the Pinecone MCP server to your Codex sessions. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
-<PrimarySecondaryCTA />
+[View on GitHub](https://github.com/pinecone-io/pinecone-codex-plugin)
 
 ## Features
 
@@ -29,125 +29,119 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 
 Install the plugin from the plugin directory or the command line, then set your API key and launch Codex.
 
-<Steps>
-  <Step title="Add the plugin to Codex">
-    <Tabs>
-      <Tab title="Plugin directory">
-        Open the [Pinecone plugin](https://chatgpt.com/codex/open-app?target=plugin\&plugin_id=plugins_6ab1957381a88191b41034b7a47dc51f) in the ChatGPT desktop app, then click **Install plugin**.
+**1. Add the plugin to Codex**
 
-        To find it yourself instead:
+**Plugin directory**
 
-        1. In the ChatGPT desktop app, click your profile in the bottom left, then click **Settings**.
+Open the [Pinecone plugin](https://chatgpt.com/codex/open-app?target=plugin\&plugin_id=plugins_6ab1957381a88191b41034b7a47dc51f) in the ChatGPT desktop app, then click **Install plugin**.
 
-        2. In the left navigation, click **Plugins**.
+To find it yourself instead:
 
-           You'll see a list of the plugins you already have.
+1. In the ChatGPT desktop app, click your profile in the bottom left, then click **Settings**.
 
-        3. Click **Browse directory**.
+2. In the left navigation, click **Plugins**.
 
-        4. Search for Pinecone, then select **Pinecone**.
+   You'll see a list of the plugins you already have.
 
-        5. Click **Install plugin**.
+3. Click **Browse directory**.
 
-        For more about installing plugins, see [Plugins in ChatGPT](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt) in the OpenAI Help Center.
-      </Tab>
+4. Search for Pinecone, then select **Pinecone**.
 
-      <Tab title="Command line">
-        1. Add the Pinecone marketplace:
+5. Click **Install plugin**.
 
-           ```shell theme={null}
-           codex plugin marketplace add pinecone-io/pinecone-codex-plugin
-           ```
+For more about installing plugins, see [Plugins in ChatGPT](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt) in the OpenAI Help Center.
 
-        2. Install the plugin:
+**Command line**
 
-           ```shell theme={null}
-           codex plugin add pinecone --marketplace pinecone-codex-plugins
-           ```
+1. Add the Pinecone marketplace:
 
-        3. Confirm the plugin is installed:
+   ```shell theme={null}
+   codex plugin marketplace add pinecone-io/pinecone-codex-plugin
+   ```
 
-           ```shell theme={null}
-           codex plugin list | grep pinecone
-           ```
-      </Tab>
-    </Tabs>
-  </Step>
+2. Install the plugin:
 
-  <Step title="Set your API key and launch Codex">
-    Installing the plugin doesn't set your API key. Codex reads it from the environment it launches in.
+   ```shell theme={null}
+   codex plugin add pinecone --marketplace pinecone-codex-plugins
+   ```
 
-    <Tabs>
-      <Tab title="CLI (macOS, Linux)">
-        1. Set the key in the same shell where you run Codex:
+3. Confirm the plugin is installed:
 
-           ```shell theme={null}
-           export PINECONE_API_KEY="YOUR_API_KEY"
-           ```
+   ```shell theme={null}
+   codex plugin list | grep pinecone
+   ```
 
-           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). To keep it across terminal sessions, add the line to your shell profile, such as `~/.zshrc`.
+**2. Set your API key and launch Codex**
 
-        2. Start Codex:
+Installing the plugin doesn't set your API key. Codex reads it from the environment it launches in.
 
-           ```shell theme={null}
-           codex
-           ```
-      </Tab>
+**CLI (macOS, Linux)**
 
-      <Tab title="CLI (Windows)">
-        If you run Codex in WSL, use the **CLI (macOS, Linux)** tab instead.
+1. Set the key in the same shell where you run Codex:
 
-        1. Set the key in the same PowerShell session where you run Codex:
+   ```shell theme={null}
+   export PINECONE_API_KEY="YOUR_API_KEY"
+   ```
 
-           ```powershell theme={null}
-           $env:PINECONE_API_KEY="YOUR_API_KEY"
-           ```
+   Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). To keep it across terminal sessions, add the line to your shell profile, such as `~/.zshrc`.
 
-           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This lasts for the current session only. To keep it across sessions, run `setx PINECONE_API_KEY "YOUR_API_KEY"` and open a new terminal.
+2. Start Codex:
 
-        2. Start Codex:
+   ```shell theme={null}
+   codex
+   ```
 
-           ```powershell theme={null}
-           codex
-           ```
-      </Tab>
+**CLI (Windows)**
 
-      <Tab title="Desktop app (macOS)">
-        1. Set the key for all macOS apps:
+If you run Codex in WSL, use the **CLI (macOS, Linux)** tab instead.
 
-           ```shell theme={null}
-           launchctl setenv PINECONE_API_KEY "YOUR_API_KEY"
-           ```
+1. Set the key in the same PowerShell session where you run Codex:
 
-           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This setting doesn't persist after you restart your Mac, so run it again after each restart.
+   ```powershell theme={null}
+   $env:PINECONE_API_KEY="YOUR_API_KEY"
+   ```
 
-        2. Quit the ChatGPT desktop app completely, then reopen it.
-      </Tab>
+   Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This lasts for the current session only. To keep it across sessions, run `setx PINECONE_API_KEY "YOUR_API_KEY"` and open a new terminal.
 
-      <Tab title="Desktop app (Windows)">
-        1. Set the key for your Windows user account:
+2. Start Codex:
 
-           ```powershell theme={null}
-           setx PINECONE_API_KEY "YOUR_API_KEY"
-           ```
+   ```powershell theme={null}
+   codex
+   ```
 
-           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). `setx` persists across restarts.
+**Desktop app (macOS)**
 
-        2. Quit the ChatGPT desktop app completely, then reopen it.
-      </Tab>
-    </Tabs>
-  </Step>
+1. Set the key for all macOS apps:
 
-  <Step title="Run the quickstart">
-    In a new Codex session, ask:
+   ```shell theme={null}
+   launchctl setenv PINECONE_API_KEY "YOUR_API_KEY"
+   ```
 
-    ```text theme={null}
-    Use Pinecone's quickstart to create an index, add sample data, and run my first search.
-    ```
+   Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This setting doesn't persist after you restart your Mac, so run it again after each restart.
 
-    Codex invokes the `pinecone:quickstart` skill, checks the connection to the Pinecone MCP server, creates an integrated index, upserts sample records, and runs a search.
-  </Step>
-</Steps>
+2. Quit the ChatGPT desktop app completely, then reopen it.
+
+**Desktop app (Windows)**
+
+1. Set the key for your Windows user account:
+
+   ```powershell theme={null}
+   setx PINECONE_API_KEY "YOUR_API_KEY"
+   ```
+
+   Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). `setx` persists across restarts.
+
+2. Quit the ChatGPT desktop app completely, then reopen it.
+
+**3. Run the quickstart**
+
+In a new Codex session, ask:
+
+```text theme={null}
+Use Pinecone's quickstart to create an index, add sample data, and run my first search.
+```
+
+Codex invokes the `pinecone:quickstart` skill, checks the connection to the Pinecone MCP server, creates an integrated index, upserts sample records, and runs a search.
 
 ## Available skills
 
@@ -183,28 +177,26 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion title="API key not found or 401 errors">
-    Check whether your API key is set in the environment Codex runs in:
+> **API key not found or 401 errors**
+>
+> Check whether your API key is set in the environment Codex runs in:
+>
+> * For the CLI on macOS or Linux, in the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, set the key again.
+> * For the CLI on Windows, in the same PowerShell session where you run `codex`, run `if ($env:PINECONE_API_KEY) { "set" } else { "not set" }`. If it prints `not set`, set the key again.
+> * For the desktop app on macOS, run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again, then quit and reopen the app.
+> * For the desktop app on Windows, run `[Environment]::GetEnvironmentVariable("PINECONE_API_KEY", "User")` in PowerShell. If it returns nothing, set the key again, then quit and reopen the app.
 
-    * For the CLI on macOS or Linux, in the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, set the key again.
-    * For the CLI on Windows, in the same PowerShell session where you run `codex`, run `if ($env:PINECONE_API_KEY) { "set" } else { "not set" }`. If it prints `not set`, set the key again.
-    * For the desktop app on macOS, run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again, then quit and reopen the app.
-    * For the desktop app on Windows, run `[Environment]::GetEnvironmentVariable("PINECONE_API_KEY", "User")` in PowerShell. If it returns nothing, set the key again, then quit and reopen the app.
-  </Accordion>
+> **MCP server not responding**
+>
+> Make sure Node.js is on your `PATH` and your API key is valid, then restart Codex.
 
-  <Accordion title="MCP server not responding">
-    Make sure Node.js is on your `PATH` and your API key is valid, then restart Codex.
-  </Accordion>
+> **The query skill returns no results**
+>
+> The `pinecone:query` skill works only with integrated indexes, which use a Pinecone-hosted embedding model. For indexes that use external embeddings, use the `pinecone:cli` skill or the MCP tools directly.
 
-  <Accordion title="The query skill returns no results">
-    The `pinecone:query` skill works only with integrated indexes, which use a Pinecone-hosted embedding model. For indexes that use external embeddings, use the `pinecone:cli` skill or the MCP tools directly.
-  </Accordion>
-
-  <Accordion title="Skill script errors">
-    Run `uv --version` to confirm `uv` is installed. If it's missing, install it and restart your terminal.
-  </Accordion>
-</AccordionGroup>
+> **Skill script errors**
+>
+> Run `uv --version` to confirm `uv` is installed. If it's missing, install it and restart your terminal.
 
 ## Resources
 

@@ -26,19 +26,17 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
 
 ## Methods
 
-<CardGroup>
-  <Card title="Supervised Fine-Tuning" href="/fine-tuning/fine-tuning-models" icon="message">
-    Train text and vision models with labeled examples of desired outputs
-  </Card>
+> **[Supervised Fine-Tuning](/fine-tuning/fine-tuning-models)**
+>
+> Train text and vision models with labeled examples of desired outputs
 
-  <Card title="Preference Optimization (DPO / ORPO)" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
-    Train on preferred and non-preferred response pairs using DPO or ORPO
-  </Card>
+> **[Preference Optimization (DPO / ORPO)](/fine-tuning/dpo-fine-tuning)**
+>
+> Train on preferred and non-preferred response pairs using DPO or ORPO
 
-  <Card title="Reinforcement Learning" href="/fine-tuning/training-api/cookbook/rl" icon="brain">
-    Train against a reward function on the Training API. Managed RFT is paused.
-  </Card>
-</CardGroup>
+> **[Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)**
+>
+> Train against a reward function on the Training API. Managed RFT is paused.
 
 ## Supported base models
 
@@ -56,6 +54,6 @@ Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.
 
 LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment. For full-parameter tuning, use the [Training API](/fine-tuning/training-api/introduction).
 
-<Warning>
-  **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Please migrate to the `model` field with the `<model_name>#<deployment_name>` format described in [Routing requests to LoRA addons](/fine-tuning/deploying-loras#multi-lora-deployment).
-</Warning>
+> [!WARNING]
+>
+> **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Please migrate to the `model` field with the `<model_name>#<deployment_name>` format described in [Routing requests to LoRA addons](/fine-tuning/deploying-loras#multi-lora-deployment).

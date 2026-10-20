@@ -24,9 +24,9 @@ After you initiate a deletion request, Pinecone marks the data for deletion. The
 
 Before the end of the 90-day retention window, Pinecone permanently deletes the data from its system. Once the data is permanently deleted, it's no longer recoverable.
 
-<Note>
-  Pinecone creates an [audit log](/admin/security/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they're permanently deleted.
-</Note>
+> [!NOTE]
+>
+> Pinecone creates an [audit log](/admin/security/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they're permanently deleted.
 
 ## See also
 

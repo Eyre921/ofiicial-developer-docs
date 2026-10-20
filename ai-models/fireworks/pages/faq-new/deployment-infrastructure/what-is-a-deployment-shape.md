@@ -23,58 +23,56 @@ Deployments created without a shape fail far more often than deployments created
 
 The shape list is also the authoritative way to discover which GPU types, GPU counts, and precisions a model supports — a hardware combination with no shape is not a validated configuration.
 
-<Tabs>
-  <Tab title="firectl">
-    Match the shapes available for your model:
+**firectl**
 
-    ```bash theme={null}
-    firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
-    ```
+Match the shapes available for your model:
 
-    Then pass the shape's name to `--deployment-shape` when creating the deployment — or `--deployment-shape default` to have Fireworks pick one:
+```bash theme={null}
+firectl deployment-shape-version match --model accounts/fireworks/models/gpt-oss-120b
+```
 
-    ```bash theme={null}
-    firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-      --deployment-shape default
-    ```
-  </Tab>
+Then pass the shape's name to `--deployment-shape` when creating the deployment — or `--deployment-shape default` to have Fireworks pick one:
 
-  <Tab title="REST API">
-    Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model — the same match the `firectl deployment-shape-version match` command runs. It returns the validated shape versions compatible with that model, applying the server-side compatibility rules for you — for LoRA addons and live-merge models, shapes are matched against the model's base model. To get shapes filtered for LoRA addon serving (`enableAddons`), include it in the request. The CLI command does not take addons into account:
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/gpt-oss-120b \
+  --deployment-shape default
+```
 
-    ```bash theme={null}
-    # YOUR_ACCOUNT_ID is the account that will own the deployment, not the
-    # model's publisher. The model in the body can live anywhere you can
-    # deploy it, e.g. accounts/fireworks.
-    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "createDeploymentRequest": {
-          "deployment": {
-            "baseModel": "accounts/fireworks/models/gpt-oss-120b"
-          }
-        }
-      }'
-    ```
+**REST API**
 
-    Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body. To have Fireworks pick a validated shape for you, pass `deploymentShape: "default"` instead — the server picks a compatible shape and applies it, and fails rather than override fields you set explicitly:
+Call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with a deployment create request for your model — the same match the `firectl deployment-shape-version match` command runs. It returns the validated shape versions compatible with that model, applying the server-side compatibility rules for you — for LoRA addons and live-merge models, shapes are matched against the model's base model. To get shapes filtered for LoRA addon serving (`enableAddons`), include it in the request. The CLI command does not take addons into account:
 
-    ```bash theme={null}
-    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "baseModel": "accounts/fireworks/models/gpt-oss-120b",
-        "deploymentShape": "default"
-      }'
-    ```
-  </Tab>
+```bash theme={null}
+# YOUR_ACCOUNT_ID is the account that will own the deployment, not the
+# model's publisher. The model in the body can live anywhere you can
+# deploy it, e.g. accounts/fireworks.
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "createDeploymentRequest": {
+      "deployment": {
+        "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+      }
+    }
+  }'
+```
 
-  <Tab title="Web UI">
-    On the model page, choose **Deploy** and pick a shape.
-  </Tab>
-</Tabs>
+Then pass one of the returned shape versions as `deploymentShape` in the [Create Deployment](/api-reference/create-deployment) request body. To have Fireworks pick a validated shape for you, pass `deploymentShape: "default"` instead — the server picks a compatible shape and applies it, and fails rather than override fields you set explicitly:
+
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "baseModel": "accounts/fireworks/models/gpt-oss-120b",
+    "deploymentShape": "default"
+  }'
+```
+
+**Web UI**
+
+On the model page, choose **Deploy** and pick a shape.
 
 ## If no shape fits
 

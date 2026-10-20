@@ -6,9 +6,9 @@ path: guides/indexes/pods/choose-a-pod-type-and-size
 
 Choose a Pinecone pod type and size (s1, p1, p2). Pod indexes are legacy and unavailable to new customers, and serverless needs no capacity planning.
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 When planning your Pinecone deployment, it's important to understand the approximate storage requirements of your vectors to choose the appropriate pod type and number. This page will give guidance on sizing to help you plan accordingly.
 
@@ -16,9 +16,9 @@ As with all guidelines, these considerations are general and may not apply to yo
 
 [Collections](/guides/indexes/pods/understanding-collections) allow you to create new versions of your index with different pod types and sizes. This also allows you to test different configurations. This guide is merely an overview of sizing considerations; test your index configuration before moving to production.
 
-<Tip>
-  Users on Standard and Enterprise plans can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for further help with sizing and testing.
-</Tip>
+> [!TIP]
+>
+> Users on Standard and Enterprise plans can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for further help with sizing and testing.
 
 ## Overview
 

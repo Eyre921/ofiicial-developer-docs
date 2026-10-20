@@ -6,11 +6,11 @@ path: reference/view
 
 Learn about the Notion view object and its properties.
 
-<Note>
-  **Getting started**
-
-  View [Working with views](/guides/data-apis/working-with-views) for a comprehensive guide to creating and managing views.
-</Note>
+> [!NOTE]
+>
+> **Getting started**
+>
+> View [Working with views](/guides/data-apis/working-with-views) for a comprehensive guide to creating and managing views.
 
 **Views** define how pages in a [data source](/reference/data-source) are filtered, sorted, and displayed within a [database](/reference/database). Each view has its own type (table, board, calendar, etc.), filter, sort order, and layout configuration.
 
@@ -29,9 +29,9 @@ Learn about the Notion view object and its properties.
 | `map` | Map view with location pins. |
 | `dashboard` | Multi-widget dashboard containing other views. |
 
-<Info>
-  View-specific `configuration` is available for all view types except `dashboard`. Dashboard views use `rows` to define their layout instead. See [Working with views](/guides/data-apis/working-with-views#view-configuration) for configuration details per view type.
-</Info>
+> [!NOTE]
+>
+> View-specific `configuration` is available for all view types except `dashboard`. Dashboard views use `rows` to define their layout instead. See [Working with views](/guides/data-apis/working-with-views#view-configuration) for configuration details per view type.
 
 ## Object fields
 

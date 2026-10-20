@@ -20,23 +20,21 @@ Fireworks is [OpenAI-compatible](/tools-sdks/openai-compatibility), so you can u
 
 Requires Python 3.9+ and an API key. See [Getting your API key](/api-reference/introduction#getting-your-api-key) for instructions.
 
-<Note>
-  The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-</Note>
+> [!NOTE]
+>
+> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
 
-<CodeGroup>
-  ```bash pip theme={null}
-  pip install --pre fireworks-ai
-  ```
+```bash pip theme={null}
+pip install --pre fireworks-ai
+```
 
-  ```bash poetry theme={null}
-  poetry add --pre fireworks-ai
-  ```
+```bash poetry theme={null}
+poetry add --pre fireworks-ai
+```
 
-  ```bash uv theme={null}
-  uv add --pre fireworks-ai
-  ```
-</CodeGroup>
+```bash uv theme={null}
+uv add --pre fireworks-ai
+```
 
 For detailed usage instructions, see the
 [README.md](https://github.com/fw-ai-external/python-sdk#readme). To quickly get

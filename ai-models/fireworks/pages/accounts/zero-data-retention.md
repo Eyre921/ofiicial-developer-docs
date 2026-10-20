@@ -8,13 +8,13 @@ Ensure no user actions on your account can persist or log customer content
 
 [Most of Fireworks](/guides/security_compliance/data_handling) never stores prompts or generations. A few features do store customer content, such as stored responses, batch jobs, and training. The Zero Data Retention policy blocks those features for everyone on the account by rejecting every request and job that would persist or log customer content.
 
-<Info>
-  **Enterprise feature.** The Zero Data Retention policy is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
-</Info>
+> [!NOTE]
+>
+> **Enterprise feature.** The Zero Data Retention policy is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
 
-<Info>
-  Only account **Admins** can change the Zero Data Retention policy. Other roles can view the current setting but cannot change it.
-</Info>
+> [!NOTE]
+>
+> Only account **Admins** can change the Zero Data Retention policy. Other roles can view the current setting but cannot change it.
 
 The policy applies **account-wide**: every user and API key on the account follows it.
 

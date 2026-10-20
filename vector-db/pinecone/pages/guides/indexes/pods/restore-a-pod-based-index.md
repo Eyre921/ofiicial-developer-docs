@@ -6,13 +6,13 @@ path: guides/indexes/pods/restore-a-pod-based-index
 
 Legacy guide for restoring Pinecone pod-based indexes from collections. Pod indexes are no longer available to new customers as of August 2025.
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
-<Note>
-  SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless).
-</Note>
+> [!NOTE]
+>
+> SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless).
 
 You can restore a pod-based index by creating a new index from a [collection](/guides/indexes/pods/understanding-collections).
 
@@ -20,123 +20,121 @@ You can restore a pod-based index by creating a new index from a [collection](/g
 
 To create a pod-based index from a [collection](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections), use the [Create an index](/reference/api/latest/control-plane/create_index) endpoint and provide a [`source_collection`](/reference/api/latest/control-plane/create_index#!path=source%5Fcollection\&t=request) parameter containing the name of the collection from which you wish to create an index. The new index can differ from the original source index: the new index can have a different name, number of pods, or pod type. The new index is queryable and writable.
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.create_index(
-    name="docs-example",
-    dimension=128,
-    metric="cosine",
-    spec=PodSpec(
-      environment="us-west-1-gcp",
-      pod_type="p1.x1",
-      pods=1,
-      source_collection="example-collection"
-    )
+pc.create_index(
+  name="docs-example",
+  dimension=128,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west-1-gcp",
+    pod_type="p1.x1",
+    pods=1,
+    source_collection="example-collection"
   )
-  ```
+)
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({
-    apiKey: 'YOUR_API_KEY'
-  });
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
 
-  await pc.createIndex({
-    name: 'docs-example',
-    dimension: 128,
-    metric: 'cosine',
-    spec: {
-      pod: {
-        environment: 'us-west-1-gcp',
-        podType: 'p1.x1',
-        pods: 1,
-        sourceCollection: 'example-collection'
-      }
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 128,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west-1-gcp',
+      podType: 'p1.x1',
+      pods: 1,
+      sourceCollection: 'example-collection'
     }
-  });
-  ```
-
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.IndexModel;
-  import org.openapitools.db_control.client.model.DeletionProtection;
-
-  public class CreateIndexFromCollectionExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                  "p1.x1", "cosine", "example-collection", DeletionProtection.DISABLED);
-      }
   }
-  ```
+});
+```
 
-  ```go Go theme={null}
-  package main
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
 
-  import (
-      "context"
-      "fmt"
-      "log"
+public class CreateIndexFromCollectionExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, null, "example-collection", "disabled", null);
+    }
+}
+```
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+```go Go theme={null}
+package main
 
-  func main() {
-      ctx := context.Background()
+import (
+    "context"
+    "fmt"
+    "log"
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
 
-      indexName := "docs-example"
-      metric := pinecone.Dotproduct
-      deletionProtection := pinecone.DeletionProtectionDisabled
+func main() {
+    ctx := context.Background()
 
-      idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-          Name:               indexName,
-          Metric:             &metric,
-          Dimension:          1536,
-          Environment:        "us-east1-gcp",
-          PodType:            "p1.x1",
-          SourceCollection:   "example-collection",
-          DeletionProtection: &deletionProtection,
-      })
-      if err != nil {
-          log.Fatalf("Failed to create pod-based index: %v", idx.Name)
-      } else {
-          fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-      }
-  }
-  ```
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+    indexName := "docs-example"
+    metric := pinecone.Dotproduct
+    deletionProtection := pinecone.DeletionProtectionDisabled
+    sourceCollection := "example-collection"
 
-  curl -s "https://api.pinecone.io/indexes" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-    -d '{
-           "name": "docs-example",
-           "dimension": 128,
-           "metric": "cosine",
-           "spec": {
-              "pod": {
-                 "environment": "us-west-1-gcp",
-                 "pod_type": "p1.x1",
-                 "pods": 1,
-                 "source_collection": "example-collection"
-              }
-           }
-        }'
-  ```
-</CodeGroup>
+    idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        SourceCollection:   &sourceCollection,
+        DeletionProtection: &deletionProtection,
+    })
+    if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s "https://api.pinecone.io/indexes" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 128,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west-1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1,
+               "source_collection": "example-collection"
+            }
+         }
+      }'
+```

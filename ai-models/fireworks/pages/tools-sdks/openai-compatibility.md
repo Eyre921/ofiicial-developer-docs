@@ -157,20 +157,18 @@ data: {..., "choices":[{"text":"world()\n","index":0,"finish_reason":"stop","log
 data: [DONE]
 ```
 
-<Note>
-  Note, that if you're using OpenAI SDK, they `usage` field won't be listed in the SDK's structure definition. But it can be accessed directly. For example:
-
-  <CodeGroup>
-    ```python Python theme={null}
-    for chunk in client.chat.completions.create(stream=True, ...):
-        if chunk.usage:  # Available in final chunk
-            print(f"Tokens: {chunk.usage.total_tokens}")
-    ```
-
-    ```typescript TypeScript theme={null}
-    for await (const chunk of await openai.chat.completions.create(...)) {
-        console.log((chunk as any).usage);
-    }
-    ```
-  </CodeGroup>
-</Note>
+> [!NOTE]
+>
+> Note, that if you're using OpenAI SDK, they `usage` field won't be listed in the SDK's structure definition. But it can be accessed directly. For example:
+>
+> ```python Python theme={null}
+> for chunk in client.chat.completions.create(stream=True, ...):
+>     if chunk.usage:  # Available in final chunk
+>         print(f"Tokens: {chunk.usage.total_tokens}")
+> ```
+>
+> ```typescript TypeScript theme={null}
+> for await (const chunk of await openai.chat.completions.create(...)) {
+>     console.log((chunk as any).usage);
+> }
+> ```

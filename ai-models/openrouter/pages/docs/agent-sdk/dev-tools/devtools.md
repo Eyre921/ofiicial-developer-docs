@@ -12,9 +12,9 @@ path: docs/agent-sdk/dev-tools/devtools
 
 > SDK Development Tools for telemetry capture and visualization
 
-<Warning>
-  The DevTools telemetry hooks and viewer are currently pre-release. There is no complete supported public client integration yet: `@openrouter/sdk` cannot attach the DevTools hooks through its typed public options, and `@openrouter/agent` `callModel` uses streaming Responses API output that DevTools cannot currently complete or normalize. See [Client Compatibility](#client-compatibility) below. DevTools is designed for development use only and should never be deployed in production environments.
-</Warning>
+> [!WARNING]
+>
+> The DevTools telemetry hooks and viewer are currently pre-release. There is no complete supported public client integration yet: `@openrouter/sdk` cannot attach the DevTools hooks through its typed public options, and `@openrouter/agent` `callModel` uses streaming Responses API output that DevTools cannot currently complete or normalize. See [Client Compatibility](#client-compatibility) below. DevTools is designed for development use only and should never be deployed in production environments.
 
 The OpenRouter DevTools include pre-release telemetry hooks and a viewer for compatible telemetry files.
 
@@ -39,9 +39,7 @@ Launch a web-based interface to visualize your SDK telemetry:
 * **Error debugging** - Easily identify and debug failed requests with full error details
 * **Dark/Light mode** - Full theme support with automatic system preference detection
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/sdk-devtools-dark.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=31e8a7d3861f46564eed7f30b6c8579b" alt="DevTools Interface" width="2872" height="2198" data-path="assets/sdk-devtools-dark.png" />
-</Frame>
+![DevTools Interface](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/sdk-devtools-dark.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=31e8a7d3861f46564eed7f30b6c8579b)
 
 ### SDK Telemetry Hooks
 
@@ -57,27 +55,25 @@ For compatible operations that complete successfully, the hooks record:
 
 Install the DevTools package as a development dependency:
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install --save-dev @openrouter/devtools
-  ```
+```bash title="npm" lines theme={null}
+npm install --save-dev @openrouter/devtools
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add -D @openrouter/devtools
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add -D @openrouter/devtools
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add -D @openrouter/devtools
-  ```
+```bash title="yarn" lines theme={null}
+yarn add -D @openrouter/devtools
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add -d @openrouter/devtools
-  ```
+```bash title="bun" lines theme={null}
+bun add -d @openrouter/devtools
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add --dev npm:@openrouter/devtools
-  ```
-</CodeGroup>
+```bash title="deno" lines theme={null}
+deno add --dev npm:@openrouter/devtools
+```
 
 Install the CLI that provides the `openrouter devtools` command:
 
@@ -89,9 +85,9 @@ npm install --global @openrouter/cli
 
 ## Client Compatibility
 
-<Warning>
-  Do not attach DevTools to Agent SDK `callModel` and expect complete telemetry. Although `@openrouter/agent` accepts the hooks, `callModel` always uses a streaming Responses API request. DevTools currently attempts to parse the response as JSON, does not parse the SSE stream, and does not normalize the Responses API request or response schema.
-</Warning>
+> [!WARNING]
+>
+> Do not attach DevTools to Agent SDK `callModel` and expect complete telemetry. Although `@openrouter/agent` accepts the hooks, `callModel` always uses a streaming Responses API request. DevTools currently attempts to parse the response as JSON, does not parse the SSE stream, and does not normalize the Responses API request or response schema.
 
 The generated `@openrouter/sdk` client is not an alternative setup: its typed public constructor options do not provide a way to attach the plain DevTools hook object. Neither published client currently provides a complete supported public integration.
 
@@ -265,27 +261,25 @@ Cannot find module '@openrouter/devtools'
 
 **Solution:** Install the package:
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install --save-dev @openrouter/devtools
-  ```
+```bash title="npm" lines theme={null}
+npm install --save-dev @openrouter/devtools
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add -D @openrouter/devtools
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add -D @openrouter/devtools
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add -D @openrouter/devtools
-  ```
+```bash title="yarn" lines theme={null}
+yarn add -D @openrouter/devtools
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add -d @openrouter/devtools
-  ```
+```bash title="bun" lines theme={null}
+bun add -d @openrouter/devtools
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add --dev npm:@openrouter/devtools
-  ```
-</CodeGroup>
+```bash title="deno" lines theme={null}
+deno add --dev npm:@openrouter/devtools
+```
 
 ***
 

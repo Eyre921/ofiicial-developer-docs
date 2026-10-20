@@ -110,7 +110,7 @@ Then add scripts to your `package.json`:
 {
   "scripts": {
     "dev:trigger": "trigger dev",
-    "deploy:trigger": "trigger deploy"
+    "deploy:trigger": "trigger deploy --env prod"
   }
 }
 ```

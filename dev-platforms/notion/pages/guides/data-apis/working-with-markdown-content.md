@@ -18,9 +18,9 @@ Three API surfaces are available:
 | Read | `GET /v1/pages/:page_id/markdown` | Retrieve a page's full content as markdown |
 | Update | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown |
 
-<Tip>
-  All three endpoints use the same **enhanced markdown** format by default. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
-</Tip>
+> [!TIP]
+>
+> All three endpoints use the same **enhanced markdown** format by default. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
 
 ## Markdown versions
 
@@ -132,40 +132,38 @@ The following block types are not yet rendered in the markdown output. When enco
 
 Block types that are not recognized by the block API (returned as `"unsupported"`) will also appear as `<unknown>` in the markdown output.
 
-<Tip>
-  You can use the [block-based API](/reference/block) to retrieve structured data for any unsupported block types you encounter in the markdown output.
-</Tip>
+> [!TIP]
+>
+> You can use the [block-based API](/reference/block) to retrieve structured data for any unsupported block types you encounter in the markdown output.
 
 ## Creating a page with markdown
 
 Use `POST /v1/pages` with the `markdown` parameter instead of `children` to create a page from a markdown string.
 
-<Tip>
-  The `markdown` field expects actual newline characters. In JSON, use `\n` to encode them — for example, `"# Heading\nParagraph"`. To create a line break inside a single paragraph block, use `<br>`. When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser.
-</Tip>
+> [!TIP]
+>
+> The `markdown` field expects actual newline characters. In JSON, use `\n` to encode them — for example, `"# Heading\nParagraph"`. To create a line break inside a single paragraph block, use `<br>`. When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X POST https://api.notion.com/v1/pages \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "parent": { "page_id": "YOUR_PAGE_ID" },
-      "markdown": "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up"
-    }'
-  ```
+```bash cURL theme={null}
+curl -X POST https://api.notion.com/v1/pages \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "parent": { "page_id": "YOUR_PAGE_ID" },
+    "markdown": "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up"
+  }'
+```
 
-  ```javascript JavaScript theme={null}
-  const { Client } = require("@notionhq/client");
-  const notion = new Client({ auth: process.env.NOTION_API_KEY });
+```javascript JavaScript theme={null}
+const { Client } = require("@notionhq/client");
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-  const response = await notion.pages.create({
-    parent: { page_id: "YOUR_PAGE_ID" },
-    markdown: "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
-  });
-  ```
-</CodeGroup>
+const response = await notion.pages.create({
+  parent: { page_id: "YOUR_PAGE_ID" },
+  markdown: "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
+});
+```
 
 **Key behaviors:**
 
@@ -181,21 +179,19 @@ The response is a standard [page object](/reference/page).
 
 Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses enhanced markdown unless you set `markdown_version=v2`.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.pages.retrieveMarkdown({
-    page_id: "YOUR_PAGE_ID",
-  });
+```javascript JavaScript theme={null}
+const response = await notion.pages.retrieveMarkdown({
+  page_id: "YOUR_PAGE_ID",
+});
 
-  console.log(response.markdown);
-  ```
-</CodeGroup>
+console.log(response.markdown);
+```
 
 **Response:**
 
@@ -217,20 +213,18 @@ Retrieved markdown uses a single newline (`\n`) between adjacent top-level block
 | - | - | - |
 | `include_transcript` | boolean | Include meeting note transcripts (default: `false`). |
 
-<CodeGroup>
-  ```bash cURL (with transcript) theme={null}
-  curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?include_transcript=true' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL (with transcript) theme={null}
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?include_transcript=true' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.pages.retrieveMarkdown({
-    page_id: "YOUR_PAGE_ID",
-    include_transcript: true,
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+const response = await notion.pages.retrieveMarkdown({
+  page_id: "YOUR_PAGE_ID",
+  include_transcript: true,
+});
+```
 
 **Key behaviors:**
 
@@ -263,71 +257,67 @@ In both cases:
 
 You can attempt to fetch the content of unknown blocks by passing their IDs back to the same endpoint:
 
-<CodeGroup>
-  ```bash cURL (fetching an unknown block) theme={null}
-  curl 'https://api.notion.com/v1/pages/UNKNOWN_BLOCK_ID/markdown' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL (fetching an unknown block) theme={null}
+curl 'https://api.notion.com/v1/pages/UNKNOWN_BLOCK_ID/markdown' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const blockResp = await notion.pages.retrieveMarkdown({
-    page_id: "UNKNOWN_BLOCK_ID",
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+const blockResp = await notion.pages.retrieveMarkdown({
+  page_id: "UNKNOWN_BLOCK_ID",
+});
+```
 
 For blocks that were unknown due to truncation, this returns the subtree rooted at that block. For blocks that are unknown due to permissions, the request returns an `object_not_found` error — the connection does not have access to that content.
 
-<Note>
-  The `unknown_block_ids` array does not distinguish between truncated and inaccessible blocks. When re-fetching unknown block IDs, handle `object_not_found` errors gracefully as they indicate blocks the connection cannot access.
-</Note>
+> [!NOTE]
+>
+> The `unknown_block_ids` array does not distinguish between truncated and inaccessible blocks. When re-fetching unknown block IDs, handle `object_not_found` errors gracefully as they indicate blocks the connection cannot access.
 
-<Tip>
-  For the best experience, keep pages under a few thousand blocks. Very large pages may require multiple requests to fully retrieve.
-</Tip>
+> [!TIP]
+>
+> For the best experience, keep pages under a few thousand blocks. Very large pages may require multiple requests to fully retrieve.
 
 **Example: iteratively fetching a large page**
 
-<CodeGroup>
-  ```python Python theme={null}
-  import requests
+```python Python theme={null}
+import requests
 
-  headers = {
-      "Authorization": f"Bearer {NOTION_API_KEY}",
-      "Notion-Version": "2026-03-11",
-  }
+headers = {
+    "Authorization": f"Bearer {NOTION_API_KEY}",
+    "Notion-Version": "2026-03-11",
+}
 
-  resp = requests.get(
-      f"https://api.notion.com/v1/pages/{page_id}/markdown",
-      headers=headers,
-  ).json()
+resp = requests.get(
+    f"https://api.notion.com/v1/pages/{page_id}/markdown",
+    headers=headers,
+).json()
 
-  all_markdown = resp["markdown"]
+all_markdown = resp["markdown"]
 
-  for block_id in resp.get("unknown_block_ids", []):
-      block_resp = requests.get(
-          f"https://api.notion.com/v1/pages/{block_id}/markdown",
-          headers=headers,
-      ).json()
-      all_markdown += "\n" + block_resp["markdown"]
-  ```
+for block_id in resp.get("unknown_block_ids", []):
+    block_resp = requests.get(
+        f"https://api.notion.com/v1/pages/{block_id}/markdown",
+        headers=headers,
+    ).json()
+    all_markdown += "\n" + block_resp["markdown"]
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.pages.retrieveMarkdown({
-    page_id: "YOUR_PAGE_ID",
+```javascript JavaScript theme={null}
+const response = await notion.pages.retrieveMarkdown({
+  page_id: "YOUR_PAGE_ID",
+});
+
+let allMarkdown = response.markdown;
+
+for (const blockId of response.unknown_block_ids) {
+  const blockResp = await notion.pages.retrieveMarkdown({
+    page_id: blockId,
   });
-
-  let allMarkdown = response.markdown;
-
-  for (const blockId of response.unknown_block_ids) {
-    const blockResp = await notion.pages.retrieveMarkdown({
-      page_id: blockId,
-    });
-    allMarkdown += "\n" + blockResp.markdown;
-  }
-  ```
-</CodeGroup>
+  allMarkdown += "\n" + blockResp.markdown;
+}
+```
 
 ## Updating a page with markdown
 
@@ -335,52 +325,50 @@ Use `PATCH /v1/pages/:page_id/markdown` to insert or replace content in an exist
 
 The request body uses a **discriminated union** with four command variants. We recommend `update_content` and `replace_content` for new connections — they offer more precise control and better performance than the older `insert_content` and `replace_content_range` commands.
 
-<Tip>
-  The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
-
-  When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
-</Tip>
+> [!TIP]
+>
+> The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
+>
+> When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 
 ### Updating content with search-and-replace
 
 Use `update_content` to make targeted edits with an array of search-and-replace operations. Each operation specifies `old_str` (content to find) and `new_str` (replacement content).
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "type": "update_content",
-      "update_content": {
-        "content_updates": [
-          {
-            "old_str": "Draft proposal",
-            "new_str": "Draft proposal (due Friday)"
-          },
-          {
-            "old_str": "Schedule follow-up",
-            "new_str": "Schedule follow-up with design team"
-          }
-        ]
-      }
-    }'
-  ```
+```bash cURL theme={null}
+curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "type": "update_content",
+    "update_content": {
+      "content_updates": [
+        {
+          "old_str": "Draft proposal",
+          "new_str": "Draft proposal (due Friday)"
+        },
+        {
+          "old_str": "Schedule follow-up",
+          "new_str": "Schedule follow-up with design team"
+        }
+      ]
+    }
+  }'
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.pages.updateMarkdown({
-    page_id: "YOUR_PAGE_ID",
-    type: "update_content",
-    update_content: {
-      content_updates: [
-        { old_str: "Draft proposal", new_str: "Draft proposal (due Friday)" },
-        { old_str: "Schedule follow-up", new_str: "Schedule follow-up with design team" },
-      ],
-    },
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+const response = await notion.pages.updateMarkdown({
+  page_id: "YOUR_PAGE_ID",
+  type: "update_content",
+  update_content: {
+    content_updates: [
+      { old_str: "Draft proposal", new_str: "Draft proposal (due Friday)" },
+      { old_str: "Schedule follow-up", new_str: "Schedule follow-up with design team" },
+    ],
+  },
+});
+```
 
 Each `old_str` must be a non-empty string that matches exactly one location in the page. If it matches multiple locations, a `validation_error` is returned — set `replace_all_matches: true` on that operation to replace all occurrences.
 
@@ -388,158 +376,148 @@ Each `old_str` must be a non-empty string that matches exactly one location in t
 
 Use `replace_content` to replace the entire page content with new markdown.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "type": "replace_content",
-      "replace_content": {
-        "new_str": "# Fresh Start\nThis replaces all previous content."
-      }
-    }'
-  ```
+```bash cURL theme={null}
+curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "type": "replace_content",
+    "replace_content": {
+      "new_str": "# Fresh Start\nThis replaces all previous content."
+    }
+  }'
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.pages.updateMarkdown({
-    page_id: "YOUR_PAGE_ID",
-    type: "replace_content",
-    replace_content: {
-      new_str: "# Fresh Start\nThis replaces all previous content.",
-    },
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+const response = await notion.pages.updateMarkdown({
+  page_id: "YOUR_PAGE_ID",
+  type: "replace_content",
+  replace_content: {
+    new_str: "# Fresh Start\nThis replaces all previous content.",
+  },
+});
+```
 
 ### Legacy commands
 
-<Info>
-  The `insert_content` and `replace_content_range` commands are still supported but are no longer recommended. They use an ellipsis-based selection format that is less precise than the search-and-replace approach of `update_content`. New connections should use `update_content` or `replace_content` instead.
-</Info>
+> [!NOTE]
+>
+> The `insert_content` and `replace_content_range` commands are still supported but are no longer recommended. They use an ellipsis-based selection format that is less precise than the search-and-replace approach of `update_content`. New connections should use `update_content` or `replace_content` instead.
 
-<Accordion title="insert_content (legacy)">
-  Insert new markdown content at the start of a page, after a specific point in the page, or at the end.
+> **insert\_content (legacy)**
+>
+> Insert new markdown content at the start of a page, after a specific point in the page, or at the end.
+>
+> ```bash cURL (prepend to start) theme={null}
+> curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+>   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+>   -H "Content-Type: application/json" \
+>   -H "Notion-Version: 2026-03-11" \
+>   --data '{
+>     "type": "insert_content",
+>     "insert_content": {
+>       "content": "## Latest update\nAdded at the top of the page.",
+>       "position": { "type": "start" }
+>     }
+>   }'
+> ```
+>
+> ```javascript JavaScript theme={null}
+> const response = await notion.pages.updateMarkdown({
+>   page_id: "YOUR_PAGE_ID",
+>   type: "insert_content",
+>   insert_content: {
+>     content: "## Latest update\nAdded at the top of the page.",
+>     position: { type: "start" },
+>   },
+> });
+> ```
+>
+> ```bash cURL (insert after selection) theme={null}
+> curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+>   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+>   -H "Content-Type: application/json" \
+>   -H "Notion-Version: 2026-03-11" \
+>   --data '{
+>     "type": "insert_content",
+>     "insert_content": {
+>       "content": "## New Section\nInserted content here.",
+>       "after": "# Meeting Notes...Action items"
+>     }
+>   }'
+> ```
+>
+> ```javascript JavaScript theme={null}
+> const response = await notion.pages.updateMarkdown({
+>   page_id: "YOUR_PAGE_ID",
+>   type: "insert_content",
+>   insert_content: {
+>     content: "## New Section\nInserted content here.",
+>     after: "# Meeting Notes...Action items",
+>   },
+> });
+> ```
+>
+> ```bash cURL (append to end) theme={null}
+> curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+>   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+>   -H "Content-Type: application/json" \
+>   -H "Notion-Version: 2026-03-11" \
+>   --data '{
+>     "type": "insert_content",
+>     "insert_content": {
+>       "content": "## Appendix\nAdded at the end of the page.",
+>       "position": { "type": "end" }
+>     }
+>   }'
+> ```
+>
+> ```javascript JavaScript theme={null}
+> const response = await notion.pages.updateMarkdown({
+>   page_id: "YOUR_PAGE_ID",
+>   type: "insert_content",
+>   insert_content: {
+>     content: "## Appendix\nAdded at the end of the page.",
+>     position: { type: "end" },
+>   },
+> });
+> ```
+>
+> The `position` parameter supports `{ "type": "start" }` and `{ "type": "end" }`. When both `position` and `after` are omitted, content is appended to the end of the page, preserving the existing behavior.
+>
+> The `after` parameter uses an **ellipsis-based selection** format: `"start text...end text"`. This matches a range from the first occurrence of the start text to the end text. Do not provide `after` and `position` in the same request.
 
-  <CodeGroup>
-    ```bash cURL (prepend to start) theme={null}
-    curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-      -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-      -H "Content-Type: application/json" \
-      -H "Notion-Version: 2026-03-11" \
-      --data '{
-        "type": "insert_content",
-        "insert_content": {
-          "content": "## Latest update\nAdded at the top of the page.",
-          "position": { "type": "start" }
-        }
-      }'
-    ```
-
-    ```javascript JavaScript theme={null}
-    const response = await notion.pages.updateMarkdown({
-      page_id: "YOUR_PAGE_ID",
-      type: "insert_content",
-      insert_content: {
-        content: "## Latest update\nAdded at the top of the page.",
-        position: { type: "start" },
-      },
-    });
-    ```
-  </CodeGroup>
-
-  <CodeGroup>
-    ```bash cURL (insert after selection) theme={null}
-    curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-      -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-      -H "Content-Type: application/json" \
-      -H "Notion-Version: 2026-03-11" \
-      --data '{
-        "type": "insert_content",
-        "insert_content": {
-          "content": "## New Section\nInserted content here.",
-          "after": "# Meeting Notes...Action items"
-        }
-      }'
-    ```
-
-    ```javascript JavaScript theme={null}
-    const response = await notion.pages.updateMarkdown({
-      page_id: "YOUR_PAGE_ID",
-      type: "insert_content",
-      insert_content: {
-        content: "## New Section\nInserted content here.",
-        after: "# Meeting Notes...Action items",
-      },
-    });
-    ```
-  </CodeGroup>
-
-  <CodeGroup>
-    ```bash cURL (append to end) theme={null}
-    curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-      -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-      -H "Content-Type: application/json" \
-      -H "Notion-Version: 2026-03-11" \
-      --data '{
-        "type": "insert_content",
-        "insert_content": {
-          "content": "## Appendix\nAdded at the end of the page.",
-          "position": { "type": "end" }
-        }
-      }'
-    ```
-
-    ```javascript JavaScript theme={null}
-    const response = await notion.pages.updateMarkdown({
-      page_id: "YOUR_PAGE_ID",
-      type: "insert_content",
-      insert_content: {
-        content: "## Appendix\nAdded at the end of the page.",
-        position: { type: "end" },
-      },
-    });
-    ```
-  </CodeGroup>
-
-  The `position` parameter supports `{ "type": "start" }` and `{ "type": "end" }`. When both `position` and `after` are omitted, content is appended to the end of the page, preserving the existing behavior.
-
-  The `after` parameter uses an **ellipsis-based selection** format: `"start text...end text"`. This matches a range from the first occurrence of the start text to the end text. Do not provide `after` and `position` in the same request.
-</Accordion>
-
-<Accordion title="replace_content_range (legacy)">
-  Replace a matched range of existing content with new markdown.
-
-  <CodeGroup>
-    ```bash cURL theme={null}
-    curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
-      -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-      -H "Content-Type: application/json" \
-      -H "Notion-Version: 2026-03-11" \
-      --data '{
-        "type": "replace_content_range",
-        "replace_content_range": {
-          "content": "## Updated Section\nNew content replaces the old.",
-          "content_range": "## Old Section...end of old content"
-        }
-      }'
-    ```
-
-    ```javascript JavaScript theme={null}
-    const response = await notion.pages.updateMarkdown({
-      page_id: "YOUR_PAGE_ID",
-      type: "replace_content_range",
-      replace_content_range: {
-        content: "## Updated Section\nNew content replaces the old.",
-        content_range: "## Old Section...end of old content",
-      },
-    });
-    ```
-  </CodeGroup>
-
-  The `content_range` parameter uses the same ellipsis-based selection as `after`.
-</Accordion>
+> **replace\_content\_range (legacy)**
+>
+> Replace a matched range of existing content with new markdown.
+>
+> ```bash cURL theme={null}
+> curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+>   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+>   -H "Content-Type: application/json" \
+>   -H "Notion-Version: 2026-03-11" \
+>   --data '{
+>     "type": "replace_content_range",
+>     "replace_content_range": {
+>       "content": "## Updated Section\nNew content replaces the old.",
+>       "content_range": "## Old Section...end of old content"
+>     }
+>   }'
+> ```
+>
+> ```javascript JavaScript theme={null}
+> const response = await notion.pages.updateMarkdown({
+>   page_id: "YOUR_PAGE_ID",
+>   type: "replace_content_range",
+>   replace_content_range: {
+>     content: "## Updated Section\nNew content replaces the old.",
+>     content_range: "## Old Section...end of old content",
+>   },
+> });
+> ```
+>
+> The `content_range` parameter uses the same ellipsis-based selection as `after`.
 
 ### Safety: protecting child pages and databases
 
@@ -612,9 +590,9 @@ Async support is available for:
 
 Requests that omit `allow_async`, or set it to `false`, keep the existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or the operation being performed. Notion does not automatically convert a synchronous request into an async response.
 
-<Note>
-  Async task completion is polling-first in this version. Use `poll_after_seconds` from the task response as the minimum delay before polling again. Webhook notifications and ETA estimates are not part of the async task contract.
-</Note>
+> [!NOTE]
+>
+> Async task completion is polling-first in this version. Use `poll_after_seconds` from the task response as the minimum delay before polling again. Webhook notifications and ETA estimates are not part of the async task contract.
 
 ### REST: Create a page asynchronously
 

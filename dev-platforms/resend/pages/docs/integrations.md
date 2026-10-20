@@ -8,315 +8,303 @@ Integrate Resend with the tools you already use.
 
 ## Coding agents
 
-<CardGroup>
-  <Card title="Cursor" href="https://www.resend.com/cursor" icon={<CursorIcon />}>
-    Send emails from Cursor with the Resend MCP server
-  </Card>
+> **[Cursor](https://www.resend.com/cursor)**
+>
+> Send emails from Cursor with the Resend MCP server
 
-  <Card title="Claude" href="https://www.resend.com/claude" icon={<ClaudeIcon />}>
-    Connect Claude to Resend with the official connector
-  </Card>
+> **[Claude](https://www.resend.com/claude)**
+>
+> Connect Claude to Resend with the official connector
 
-  <Card title="Claude Code" href="https://www.resend.com/claude-code" icon={<ClaudeIcon />}>
-    Send emails from Claude Code with the official plugin
-  </Card>
+> **[Claude Code](https://www.resend.com/claude-code)**
+>
+> Send emails from Claude Code with the official plugin
 
-  <Card title="Codex" href="https://www.resend.com/codex" icon={<CodexIcon />}>
-    Send emails from Codex with the official Resend plugin
-  </Card>
+> **[Codex](https://www.resend.com/codex)**
+>
+> Send emails from Codex with the official Resend plugin
 
-  <Card title="Antigravity" href="https://www.resend.com/antigravity" icon={<AntigravityIcon />}>
-    Send emails from Antigravity with the Resend MCP server
-  </Card>
+> **[Antigravity](https://www.resend.com/antigravity)**
+>
+> Send emails from Antigravity with the Resend MCP server
 
-  <Card title="Devin" href="https://www.resend.com/devin" icon={<DevinIcon />}>
-    Send emails from Devin with the Resend MCP server
-  </Card>
+> **[Devin](https://www.resend.com/devin)**
+>
+> Send emails from Devin with the Resend MCP server
 
-  <Card title="Gemini" href="https://www.resend.com/gemini" icon={<GeminiIcon />}>
-    Build email automations with Gemini and Resend
-  </Card>
+> **[Gemini](https://www.resend.com/gemini)**
+>
+> Build email automations with Gemini and Resend
 
-  <Card title="GitHub Copilot" href="https://www.resend.com/github-copilot" icon={<GitHubCopilotIcon />}>
-    Send emails from GitHub Copilot with the Resend MCP server
-  </Card>
+> **[GitHub Copilot](https://www.resend.com/github-copilot)**
+>
+> Send emails from GitHub Copilot with the Resend MCP server
 
-  <Card title="OpenCode" href="https://www.resend.com/opencode" icon={<OpenCodeIcon />}>
-    Send emails from OpenCode with the Resend MCP server
-  </Card>
+> **[OpenCode](https://www.resend.com/opencode)**
+>
+> Send emails from OpenCode with the Resend MCP server
 
-  <Card title="Zed" href="https://www.resend.com/zed" icon={<ZedIcon />}>
-    Send emails from Zed with the Resend MCP server
-  </Card>
+> **[Zed](https://www.resend.com/zed)**
+>
+> Send emails from Zed with the Resend MCP server
 
-  <Card title="Warp" href="https://www.resend.com/warp" icon={<WarpIcon />}>
-    Send emails from Warp with the Resend MCP server
-  </Card>
+> **[Warp](https://www.resend.com/warp)**
+>
+> Send emails from Warp with the Resend MCP server
 
-  <Card title="Hermes" href="https://www.resend.com/hermes" icon={<HermesIcon />}>
-    Install the Resend plugin in Hermes, MCP server and skills included
-  </Card>
+> **[Hermes](https://www.resend.com/hermes)**
+>
+> Install the Resend plugin in Hermes, MCP server and skills included
 
-  <Card title="OpenClaw" href="https://www.resend.com/openclaw" icon={<OpenClawIcon />}>
-    Send emails from OpenClaw with the Resend MCP server
-  </Card>
+> **[OpenClaw](https://www.resend.com/openclaw)**
+>
+> Send emails from OpenClaw with the Resend MCP server
 
-  <Card title="Grok Bot" href="https://www.resend.com/grokbot" icon={<GrokBotIcon />}>
-    Install the Resend plugin in Grok Bot
-  </Card>
-</CardGroup>
+> **[Grok Bot](https://www.resend.com/grokbot)**
+>
+> Install the Resend plugin in Grok Bot
 
 ## AI
 
-<CardGroup>
-  <Card title="v0" href="https://vercel.com/marketplace/resend" icon={<V0Icon />}>
-    Add email to your v0 apps with the Vercel Marketplace
-  </Card>
+> **[v0](https://vercel.com/marketplace/resend)**
+>
+> Add email to your v0 apps with the Vercel Marketplace
 
-  <Card title="Lovable" href="https://docs.lovable.dev/integrations/resend" icon={<LovableIcon />}>
-    Tell the Lovable AI to send emails
-  </Card>
+> **[Lovable](https://docs.lovable.dev/integrations/resend)**
+>
+> Tell the Lovable AI to send emails
 
-  <Card title="Anything" href="https://www.createanything.com/docs/integrations/resend" icon={<AnythingIcon />}>
-    Add email to your Anything projects
-  </Card>
+> **[Anything](https://www.createanything.com/docs/integrations/resend)**
+>
+> Add email to your Anything projects
 
-  <Card title="Wildcard" href="https://github.com/wild-card-ai/agents-json/blob/master/examples/resend.ipynb" icon={<WildcardIcon />}>
-    Send natural language emails using Wildcard
-  </Card>
+> **[Wildcard](https://github.com/wild-card-ai/agents-json/blob/master/examples/resend.ipynb)**
+>
+> Send natural language emails using Wildcard
 
-  <Card title="mcp.run" href="https://www.mcp.run/nilslice/resend" icon={<McpRunIcon />}>
-    Build email AI agents using mcp.run
-  </Card>
+> **[mcp.run](https://www.mcp.run/nilslice/resend)**
+>
+> Build email AI agents using mcp.run
 
-  <Card title="Rocket" href="https://docs.rocket.new/integrations/resend" icon={<RocketIcon />}>
-    Send emails from apps built with Rocket
-  </Card>
+> **[Rocket](https://docs.rocket.new/integrations/resend)**
+>
+> Send emails from apps built with Rocket
 
-  <Card title="Base44" href="https://docs.base44.com/Integrations/Resend-integration" icon={<Base44Icon />}>
-    Add email to your Base44 apps
-  </Card>
+> **[Base44](https://docs.base44.com/Integrations/Resend-integration)**
+>
+> Add email to your Base44 apps
 
-  <Card title="Leap.new" href="https://docs.leap.new/integrations/resend" icon={<LeapNewIcon />}>
-    Add email to your Leap apps
-  </Card>
+> **[Leap.new](https://docs.leap.new/integrations/resend)**
+>
+> Add email to your Leap apps
 
-  <Card title="Parsley" href="https://www.parsley.id/integrations/resend" icon={<ParsleyIcon />}>
-    Buyer intent into Resend Segments
-  </Card>
+> **[Parsley](https://www.parsley.id/integrations/resend)**
+>
+> Buyer intent into Resend Segments
 
-  <Card title="Pica" href="https://www.picaos.com/integrations/resend" icon={<PicaIcon />}>
-    Integrate Pica with Resend
-  </Card>
+> **[Pica](https://www.picaos.com/integrations/resend)**
+>
+> Integrate Pica with Resend
 
-  <Card title="camelAI" href="https://camelai.com/docs/getting-started/partners/resend" icon={<CamelAi />}>
-    Add email to your camelAI apps
-  </Card>
-</CardGroup>
+> **[camelAI](https://camelai.com/docs/getting-started/partners/resend)**
+>
+> Add email to your camelAI apps
 
 ## No-code
 
-<CardGroup>
-  <Card title="n8n" href="https://n8n.io/integrations/resend" icon={<N8nIcon />}>
-    Build email workflows using n8n
-  </Card>
+> **[n8n](https://n8n.io/integrations/resend)**
+>
+> Build email workflows using n8n
 
-  <Card title="Zapier" href="https://zapier.com/apps/resend/integrations" icon={<ZapierIcon />}>
-    Automate emails using Zapier
-  </Card>
+> **[Zapier](https://zapier.com/apps/resend/integrations)**
+>
+> Automate emails using Zapier
 
-  <Card title="Email Element" href="https://docs.emailelement.com/en/SendIntegrations/Resend" icon={<EmailElementIcon />}>
-    Send emails using Email Element
-  </Card>
+> **[Email Element](https://docs.emailelement.com/en/SendIntegrations/Resend)**
+>
+> Send emails using Email Element
 
-  <Card title="Pipedream" href="https://pipedream.com/apps/resend" icon={<PipedreamIcon />}>
-    Build workflows using Pipedream
-  </Card>
+> **[Pipedream](https://pipedream.com/apps/resend)**
+>
+> Build workflows using Pipedream
 
-  <Card title="Activepieces" href="https://www.activepieces.com/pieces/resend" icon={<ActivepiecesIcon />}>
-    Build workflows using Activepieces
-  </Card>
+> **[Activepieces](https://www.activepieces.com/pieces/resend)**
+>
+> Build workflows using Activepieces
 
-  <Card href="https://docs.bunny.com/guide/advanced-guides/integrations/resend" icon={<BunnyIcon />}>
-    Quote and bill customers from Bunny
-  </Card>
+> Quote and bill customers from Bunny
+>
+> [Open](https://docs.bunny.com/guide/advanced-guides/integrations/resend)
 
-  <Card title="Monkedo" href="https://monkedo.com/integrations/app/resend" icon={<MonkedoIcon />}>
-    Automate emails using Monkedo
-  </Card>
+> **[Monkedo](https://monkedo.com/integrations/app/resend)**
+>
+> Automate emails using Monkedo
 
-  <Card title="Make.com" href="https://www.make.com/en/integrations/resend" icon={<MakeComIcon />}>
-    Build workflows using Make.com
-  </Card>
+> **[Make.com](https://www.make.com/en/integrations/resend)**
+>
+> Build workflows using Make.com
 
-  <Card title="Lindy" href="https://www.lindy.ai/integrations/resend" icon={<LindyIcon />}>
-    Build workflows using Lindy
-  </Card>
+> **[Lindy](https://www.lindy.ai/integrations/resend)**
+>
+> Build workflows using Lindy
 
-  <Card title="BuildShip" href="https://buildship.com/integrations/resend" icon={<BuildShipIcon />}>
-    Build workflows using BuildShip
-  </Card>
+> **[BuildShip](https://buildship.com/integrations/resend)**
+>
+> Build workflows using BuildShip
 
-  <Card title="viaSocket" href="https://viasocket.com/integrations/resend?utm_source=resend&utm_medium=marketplace&utm_campaign=resend_listing" icon={<ViaSocketIcon />}>
-    Build automations using viaSocket
-  </Card>
+> **[viaSocket](https://viasocket.com/integrations/resend?utm_source=resend\&utm_medium=marketplace\&utm_campaign=resend_listing)**
+>
+> Build automations using viaSocket
 
-  <Card title="Stacksync" href="https://www.stacksync.com/connectors/resend" icon={<StacksyncIcon />}>
-    Build automations using Stacksync
-  </Card>
+> **[Stacksync](https://www.stacksync.com/connectors/resend)**
+>
+> Build automations using Stacksync
 
-  <Card href="https://apix-drive.com/en/integrations/resend" icon={<ApixDriveIcon />}>
-    Use Resend as a data destination in ApiX-Drive
-  </Card>
+> Use Resend as a data destination in ApiX-Drive
+>
+> [Open](https://apix-drive.com/en/integrations/resend)
 
-  <Card title="Post SMTP" href="https://postmansmtp.com/docs/mailers/how-to-setup-resend-with-post-smtp/" icon={<PostSmtpIcon />}>
-    Send emails from WordPress with Post SMTP
-  </Card>
+> **[Post SMTP](https://postmansmtp.com/docs/mailers/how-to-setup-resend-with-post-smtp/)**
+>
+> Send emails from WordPress with Post SMTP
 
-  <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
-    Send emails from Softr apps and workflows
-  </Card>
+> **[Softr](https://docs.softr.io/workflows/integrations/resend)**
+>
+> Send emails from Softr apps and workflows
 
-  <Card title="Attio" href="/docs/guides/attio-integration" icon={<AttioIcon />}>
-    Send emails and add contacts to segments from Attio
-  </Card>
+> **[Attio](/docs/guides/attio-integration)**
+>
+> Send emails and add contacts to segments from Attio
 
-  <Card title="Gravity Forms" href="https://docs.gravitysmtp.com/category/integrations/resend/" icon={<GravityFormsIcon />}>
-    Send emails from WordPress with Gravity Forms
-  </Card>
-</CardGroup>
+> **[Gravity Forms](https://docs.gravitysmtp.com/category/integrations/resend/)**
+>
+> Send emails from WordPress with Gravity Forms
 
 ## Notifications
 
-<CardGroup>
-  <Card title="Courier" href="https://www.courier.com/docs/guides/providers/email/resend/" icon={<CourierIcon />}>
-    Trigger messages using Courier
-  </Card>
+> **[Courier](https://www.courier.com/docs/guides/providers/email/resend/)**
+>
+> Trigger messages using Courier
 
-  <Card title="Novu" href="https://docs.novu.co/platform/integrations/email/resend" icon={<NovuIcon />}>
-    Send notifications using Novu
-  </Card>
+> **[Novu](https://docs.novu.co/platform/integrations/email/resend)**
+>
+> Send notifications using Novu
 
-  <Card title="Knock" href="https://docs.knock.app/integrations/email/resend" icon={<KnockIcon />}>
-    Send notifications using Knock
-  </Card>
+> **[Knock](https://docs.knock.app/integrations/email/resend)**
+>
+> Send notifications using Knock
 
-  <Card title="Engagespot" href="https://docs.engagespot.co/docs/features/channels/email/resend/" icon={<EngagespotIcon />}>
-    Send notifications using Engagespot
-  </Card>
+> **[Engagespot](https://docs.engagespot.co/docs/features/channels/email/resend/)**
+>
+> Send notifications using Engagespot
 
-  <Card title="Dittofeed" href="https://docs.dittofeed.com/integrations/channels/resend" icon={<DittofeedIcon />}>
-    Send automated emails using Dittofeed
-  </Card>
+> **[Dittofeed](https://docs.dittofeed.com/integrations/channels/resend)**
+>
+> Send automated emails using Dittofeed
 
-  <Card title="Suprsend" href="https://docs.suprsend.com/docs/resend" icon={<SuprsendIcon />}>
-    Send notifications using Suprsend
-  </Card>
-</CardGroup>
+> **[Suprsend](https://docs.suprsend.com/docs/resend)**
+>
+> Send notifications using Suprsend
 
 ## Content Management Systems
 
-<CardGroup>
-  <Card title="Payload CMS" href="https://payloadcms.com/docs/email/overview#resend-configuration" icon={<PayloadCmsIcon />}>
-    Send emails using Payload CMS
-  </Card>
+> **[Payload CMS](https://payloadcms.com/docs/email/overview#resend-configuration)**
+>
+> Send emails using Payload CMS
 
-  <Card title="Strapi CMS" href="https://strapi.io/integrations/resend" icon={<StrapiCmsIcon />}>
-    Send emails using Strapi CMS
-  </Card>
-</CardGroup>
+> **[Strapi CMS](https://strapi.io/integrations/resend)**
+>
+> Send emails using Strapi CMS
 
 ## Developer tools
 
-<CardGroup>
-  <Card title="Laravel Cloud" href="/docs/guides/laravel-cloud-integration" icon={<LaravelIcon />}>
-    Connect Resend to a Laravel Cloud environment
-  </Card>
+> **[Laravel Cloud](/docs/guides/laravel-cloud-integration)**
+>
+> Connect Resend to a Laravel Cloud environment
 
-  <Card title="Raycast" href="https://www.raycast.com/resend/resend" icon={<RaycastIcon />}>
-    Manage emails, domains, and more
-  </Card>
+> **[Raycast](https://www.raycast.com/resend/resend)**
+>
+> Manage emails, domains, and more
 
-  <Card title="Convex" href="https://www.convex.dev/components/resend" icon={<ConvexIcon />}>
-    Send emails with Convex's Resend Component
-  </Card>
+> **[Convex](https://www.convex.dev/components/resend)**
+>
+> Send emails with Convex's Resend Component
 
-  <Card title="Inngest" href="https://www.inngest.com/docs/guides/resend-webhook-events" icon={<InngestIcon />}>
-    Send drip campaigns using Inngest
-  </Card>
+> **[Inngest](https://www.inngest.com/docs/guides/resend-webhook-events)**
+>
+> Send drip campaigns using Inngest
 
-  <Card title="Upstash" href="https://upstash.com/docs/qstash/integrations/resend" icon={<UpstashIcon />}>
-    Send emails using Upstash
-  </Card>
+> **[Upstash](https://upstash.com/docs/qstash/integrations/resend)**
+>
+> Send emails using Upstash
 
-  <Card title="Encore" href="https://encore.cloud/integrations/resend" icon={<EncoreIcon />}>
-    Send emails backed by Encore's observability and infrastructure
-  </Card>
+> **[Encore](https://encore.cloud/integrations/resend)**
+>
+> Send emails backed by Encore's observability and infrastructure
 
-  <Card title="Trigger.dev" href="https://trigger.dev/docs/guides/examples/resend-email-sequence" icon={<TriggerDevIcon />}>
-    Send drip campaigns using Trigger.dev
-  </Card>
+> **[Trigger.dev](https://trigger.dev/docs/guides/examples/resend-email-sequence)**
+>
+> Send drip campaigns using Trigger.dev
 
-  <Card title="Infisical" href="https://infisical.com/docs/self-hosting/configuration/envars#resend" icon={<InfisicalIcon />}>
-    Send email when self-hosting Infisical
-  </Card>
+> **[Infisical](https://infisical.com/docs/self-hosting/configuration/envars#resend)**
+>
+> Send email when self-hosting Infisical
 
-  <Card title="Fastgen" href="https://docs.fastgen.com/actions/integrations/resend" icon={<FastgenIcon />}>
-    Build workflows using Fastgen
-  </Card>
+> **[Fastgen](https://docs.fastgen.com/actions/integrations/resend)**
+>
+> Build workflows using Fastgen
 
-  <Card title="Medusa" href="https://docs.medusajs.com/resources/integrations/guides/resend" icon={<MedusaIcon />}>
-    Send e-commerce emails using Medusa
-  </Card>
+> **[Medusa](https://docs.medusajs.com/resources/integrations/guides/resend)**
+>
+> Send e-commerce emails using Medusa
 
-  <Card title="OpenMeter" href="https://openmeter.io/docs/reporting/email" icon={<OpenMeterIcon />}>
-    Send usage emails using OpenMeter
-  </Card>
+> **[OpenMeter](https://openmeter.io/docs/reporting/email)**
+>
+> Send usage emails using OpenMeter
 
-  <Card title="Invopop" href="https://docs.invopop.com/guides/features/email" icon={<InvopopIcon />}>
-    Send invoice emails using Invopop
-  </Card>
+> **[Invopop](https://docs.invopop.com/guides/features/email)**
+>
+> Send invoice emails using Invopop
 
-  <Card title="Tinybird" href="https://www.tinybird.co/docs/get-data-in/guides/ingest-from-resend" icon={<TinybirdIcon />}>
-    Analyze your email data in real time
-  </Card>
+> **[Tinybird](https://www.tinybird.co/docs/get-data-in/guides/ingest-from-resend)**
+>
+> Analyze your email data in real time
 
-  <Card title="PostHog" href="https://posthog.com/docs/cdp/sources/resend" icon={<PostHogIcon />}>
-    Sync Resend data to the PostHog data warehouse
-  </Card>
+> **[PostHog](https://posthog.com/docs/cdp/sources/resend)**
+>
+> Sync Resend data to the PostHog data warehouse
 
-  <Card title="Coolify" href="https://coolify.io/docs/knowledge-base/notifications#resend-configuration" icon={<CoolifyIcon />}>
-    Send email notifications using Coolify
-  </Card>
+> **[Coolify](https://coolify.io/docs/knowledge-base/notifications#resend-configuration)**
+>
+> Send email notifications using Coolify
 
-  <Card title="Courrier" href="https://railsdesigner.com/courrier/" icon={<CourrierIcon />}>
-    API-powered email delivery for Ruby apps
-  </Card>
+> **[Courrier](https://railsdesigner.com/courrier/)**
+>
+> API-powered email delivery for Ruby apps
 
-  <Card title="Auth0" href="https://auth0.com/docs/customize/email/smtp-email-providers/resend" icon={<Auth0Icon />}>
-    Send Auth0 transactional emails using Resend
-  </Card>
+> **[Auth0](https://auth0.com/docs/customize/email/smtp-email-providers/resend)**
+>
+> Send Auth0 transactional emails using Resend
 
-  <Card title="Kinde" href="https://docs.kinde.com/integrate/third-party-tools/kinde-resend-custom-smtp/" icon={<KindeIcon />}>
-    Send auth and billing emails using Kinde
-  </Card>
+> **[Kinde](https://docs.kinde.com/integrate/third-party-tools/kinde-resend-custom-smtp/)**
+>
+> Send auth and billing emails using Kinde
 
-  <Card title="Pulsetic" href="https://help.pulsetic.com/article/492-setting-up-custom-email-for-status-page" icon={<PulseticIcon />}>
-    Send status page notifications using Pulsetic
-  </Card>
+> **[Pulsetic](https://help.pulsetic.com/article/492-setting-up-custom-email-for-status-page)**
+>
+> Send status page notifications using Pulsetic
 
-  <Card title="brin" href="https://brin.sh/docs/integrations/resend" icon={<BrinIcon />}>
-    Scan inbound emails for phishing before your app processes them
-  </Card>
+> **[brin](https://brin.sh/docs/integrations/resend)**
+>
+> Scan inbound emails for phishing before your app processes them
 
-  <Card title="Playrunner" href="https://playrunner.dev/docs/integration-packages/resend/" icon={<PlayrunnerIcon />}>
-    Send and receive email in Playrunner workflows
-  </Card>
+> **[Playrunner](https://playrunner.dev/docs/integration-packages/resend/)**
+>
+> Send and receive email in Playrunner workflows
 
-  <Card title="Appwrite" href="https://appwrite.io/docs/products/messaging/resend" icon={<AppwriteIcon />}>
-    Send emails using Appwrite Messaging
-  </Card>
-</CardGroup>
+> **[Appwrite](https://appwrite.io/docs/products/messaging/resend)**
+>
+> Send emails using Appwrite Messaging
 
 ## Build your own integration
 

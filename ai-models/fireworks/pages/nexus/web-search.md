@@ -16,21 +16,17 @@ Web search is built into Fireworks. When Claude Code calls its native `WebSearch
 | Codex CLI and ChatGPT desktop app | Native web search remains available | Responses |
 | OpenCode, Pi, Cursor IDE, VS Code, Copilot, and DeepSeek Harness | FireConnect does not add web search | Not applicable |
 
-<Info>
-  Web search pricing will be published soon.
-</Info>
+> [!NOTE]
+>
+> Web search pricing will be published soon.
 
 ## See native search in action
 
 Native web search works with any Fireworks model and a standard `fw_...` key. Fire Pass keys can't use it. Both examples use FireRouter, but native web search works without a model router.
 
-<Frame>
-  <img alt="Claude Code using native Web Search twice and returning a sourced list of pancake restaurants in San Francisco" />
-</Frame>
+![Claude Code using native Web Search twice and returning a sourced list of pancake restaurants in San Francisco](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireconnect/claude-web-search.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=52c69f46be8ecc6fa25fe4e9c21148c4)
 
-<Frame>
-  <img alt="Codex CLI searching the web and returning a list of pancake restaurants in San Francisco" />
-</Frame>
+![Codex CLI searching the web and returning a list of pancake restaurants in San Francisco](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireconnect/codex-web-search.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=ed717d4f9732c88b782e72f8c03fe044)
 
 ## Upgrade from the retired MCP
 

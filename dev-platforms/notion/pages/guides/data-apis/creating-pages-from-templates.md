@@ -14,81 +14,73 @@ For example, a bug tracking database can have templates for various types of bug
 
 The Notion app can be used to create and manage templates, and designate one as the "default" template:
 
-<Frame>
-  <img alt="" />
-</Frame>
+![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/4e4dc1ca48f4d22267992e055b3567692746d67d8383ae96b5a6c74e3154770c-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=0c0b17961daf421c0d1816be33cfe158)
 
 To take advantage of templates when creating pages in the API, the three main steps are:
 
-<Steps>
-  <Step title="Identify the template to use">
-    Use the [List data source templates](/reference/list-data-source-templates) endpoint, or manually navigate to the template in the Notion app and get its ID. Skip this step if you want to apply the data source's "default" template.
-  </Step>
+**1. Identify the template to use**
 
-  <Step title="Create page with the chosen template">
-    Provide a `template[type]` of `default`, or of `template_id` alongside a `template[template_id]`, to the [Create a page](/reference/post-page) API to kick off the process of "duplicating" a template into a new page.
+Use the [List data source templates](/reference/list-data-source-templates) endpoint, or manually navigate to the template in the Notion app and get its ID. Skip this step if you want to apply the data source's "default" template.
 
-    1. Remember to use a `parent[type]` of `data_source_id` and provide a `parent[data_source_id]` when creating a page under a data source.
-    2. Store the ID of the newly created page in your app's backend storage systems. This will be necessary in the next step, since the returned page is momentarily blank until the template finishes applying.
-  </Step>
+**2. Create page with the chosen template**
 
-  <Step title="Wait for template processing to complete">
-    If your connection needs to perform additional steps once a template has finished applying to a page and it's ready for use, wait for Notion's systems to populate the page content before proceeding.
+Provide a `template[type]` of `default`, or of `template_id` alongside a `template[template_id]`, to the [Create a page](/reference/post-page) API to kick off the process of "duplicating" a template into a new page.
 
-    1. Register an handler for [connection webhooks](/reference/webhooks) that listens to `page.created` and `page.content_updated` events and uses the [Retrieve block children](/reference/get-block-children) API to confirm the page contents are populated.
-  </Step>
-</Steps>
+1. Remember to use a `parent[type]` of `data_source_id` and provide a `parent[data_source_id]` when creating a page under a data source.
+2. Store the ID of the newly created page in your app's backend storage systems. This will be necessary in the next step, since the returned page is momentarily blank until the template finishes applying.
+
+**3. Wait for template processing to complete**
+
+If your connection needs to perform additional steps once a template has finished applying to a page and it's ready for use, wait for Notion's systems to populate the page content before proceeding.
+
+1. Register an handler for [connection webhooks](/reference/webhooks) that listens to `page.created` and `page.content_updated` events and uses the [Retrieve block children](/reference/get-block-children) API to confirm the page contents are populated.
 
 ## Step 1: Identify the template to use
 
 For connections using the Notion API, use the [List data source templates](/reference/list-data-source-templates) endpoint to retrieve a list of template IDs and titles:
 
-<CodeGroup>
-  ```bash cURL example theme={null}
-  curl --request GET \
-       --url 'https://api.notion.com/v1/data_sources/b55c9c91-384d-452b-81db-d1ef79372b75/templates' \
-       -H 'Notion-Version: 2026-03-11' \
-       -H 'Authorization: Bearer '"$NOTION_API_KEY"''
-  ```
-</CodeGroup>
+```bash cURL example theme={null}
+curl --request GET \
+     --url 'https://api.notion.com/v1/data_sources/b55c9c91-384d-452b-81db-d1ef79372b75/templates' \
+     -H 'Notion-Version: 2026-03-11' \
+     -H 'Authorization: Bearer '"$NOTION_API_KEY"''
+```
 
 The API response includes a similar set of information as the Notion app displays in the screenshot above, listing up to 100 templates at a time:
 
-<CodeGroup>
-  ```json JSON response example expandable theme={null}
-  {
-    "templates": [
-      {
-        "id": "a5da15f6-b853-455d-8827-f906fb52db2b",
-        "name": "New Generic Task",
-        "is_default": true
-      },
-      {
-        "id": "9cc74169-8dd7-4104-8b36-ed952ac44bd0",
-        "name": "New UI Task",
-        "is_default": false
-      },
-      {
-        "id": "f2d298e3-efeb-4401-bf4f-67e7b194694f",
-        "name": "New Support Task",
-        "is_default": false
-      }
-    ],
-    "has_more": false,
-    "next_cursor": null
-  }
-  ```
-</CodeGroup>
+```json JSON response example expandable theme={null}
+{
+  "templates": [
+    {
+      "id": "a5da15f6-b853-455d-8827-f906fb52db2b",
+      "name": "New Generic Task",
+      "is_default": true
+    },
+    {
+      "id": "9cc74169-8dd7-4104-8b36-ed952ac44bd0",
+      "name": "New UI Task",
+      "is_default": false
+    },
+    {
+      "id": "f2d298e3-efeb-4401-bf4f-67e7b194694f",
+      "name": "New Support Task",
+      "is_default": false
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}
+```
 
-<Check>
-  **Filtering templates by name**
-
-  Use the `name` query parameter to filter the results down to only templates that match the provided substring (case-insensitive).
-
-  This can be helpful for narrowing down which template you want, especially when working with a data source that has a large number of templates.
-
-  The other available query parameters are: `page_size` (1-100) and `start_cursor` (nullable string); these are used for pagination.
-</Check>
+> [!TIP]
+>
+> **Filtering templates by name**
+>
+> Use the `name` query parameter to filter the results down to only templates that match the provided substring (case-insensitive).
+>
+> This can be helpful for narrowing down which template you want, especially when working with a data source that has a large number of templates.
+>
+> The other available query parameters are: `page_size` (1-100) and `start_cursor` (nullable string); these are used for pagination.
 
 Aside from this API endpoint, templates are regular [pages](/reference/page) in Notion, so you can also get the template ID by opening the template, copying the URL, and extracting the ID from it.
 
@@ -114,16 +106,16 @@ Afterwards, Notion's systems quickly begin applying the chosen template in the b
 
 **Timezone control**: Template variables like `@now` and `@today` resolve using a timezone. By default, public connections and [personal access tokens](/guides/get-started/personal-access-tokens) use the associated user's timezone, and internal connections use UTC. To override this, pass an [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string in `template[timezone]` (e.g. `America/New_York`, `Europe/London`, `Asia/Tokyo`).
 
-<Info>
-  **Check page and database permissions**
-
-  The Notion API returns an HTTP 400 `validation_error` response in the following scenarios:
-
-  * **The provided template ID is invalid**. Template IDs are UUIDs (v4) and look like page IDs in Notion.
-  * **The connection doesn't have access to the template**. Generally, if a bot is connected to the data source's parent database, those permissions apply to all templates for the data source by default, since templates are represented as (special) pages under the data source.
-    * However, to confirm, check the "Connections" list under the 3-dot overflow menu for a template to ensure your bot appears in the list.
-  * **Attempting to apply the default template when there isn't one**. When using `template[type]=default`, ensure the `parent` in the Create Page request is pointing to the correct `data_source_id`, and that the data source has a template that's marked as "default".
-</Info>
+> [!NOTE]
+>
+> **Check page and database permissions**
+>
+> The Notion API returns an HTTP 400 `validation_error` response in the following scenarios:
+>
+> * **The provided template ID is invalid**. Template IDs are UUIDs (v4) and look like page IDs in Notion.
+> * **The connection doesn't have access to the template**. Generally, if a bot is connected to the data source's parent database, those permissions apply to all templates for the data source by default, since templates are represented as (special) pages under the data source.
+>   * However, to confirm, check the "Connections" list under the 3-dot overflow menu for a template to ensure your bot appears in the list.
+> * **Attempting to apply the default template when there isn't one**. When using `template[type]=default`, ensure the `parent` in the Create Page request is pointing to the correct `data_source_id`, and that the data source has a template that's marked as "default".
 
 ## Step 3: Confirm page contents are ready
 
@@ -154,48 +146,46 @@ Putting the above flow together, your webhook handler can implement logic as fol
     * If the page contents have been populated, you know the template has finished applying, and can proceed to any further steps your connection needs to take ✅,
     * Otherwise, stop processing and wait for a `page.content_updated` event signaling the completion of applying the template ⏳.
 
-<Info>
-  **Give the wait a timeout**
-
-  For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
-
-  There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
-</Info>
+> [!NOTE]
+>
+> **Give the wait a timeout**
+>
+> For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
+>
+> There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
 
 ## Frequently asked questions
 
-<AccordionGroup>
-  <Accordion title="Can I use any page as a template?">
-    In Step 2, the `template_id` parameter can be set to any page, not necessarily a page officially designated as a "template" in the same data source.
+> **Can I use any page as a template?**
+>
+> In Step 2, the `template_id` parameter can be set to any page, not necessarily a page officially designated as a "template" in the same data source.
+>
+> However, in all cases, the API bot must have access to the page being used as a template, and it must be in the same workspace. Using the ID of a page in a different data source is currently not recommended, because the schema may not match, causing some properties to fail to be merged into the destination page.
+>
+> When using a `type` of `default` instead of `template_id`, the conditions are more strict: the page you're creating must be under a data source that has a template marked as "default". Use the [List data source templates](/reference/list-data-source-templates) API
 
-    However, in all cases, the API bot must have access to the page being used as a template, and it must be in the same workspace. Using the ID of a page in a different data source is currently not recommended, because the schema may not match, causing some properties to fail to be merged into the destination page.
+> **If I already created a page, can I still apply a template using the API?**
+>
+> Yes! The [Update page](/reference/patch-page) API also supports a `template` body parameter, with a `type` of either `default` or `template_id`. You can also pass `template[timezone]` to control the timezone for template variable resolution.
+>
+> When applying a template to an existing page, the template's content is appended to any existing page content. There's another optional body parameter, `erase_content`, that can be set to `true` if you instead want the template's content to fully replace any existing page content. Use caution with this flag, as this is a destructive operation that cannot be reversed in the API!
 
-    When using a `type` of `default` instead of `template_id`, the conditions are more strict: the page you're creating must be under a data source that has a template marked as "default". Use the [List data source templates](/reference/list-data-source-templates) API
-  </Accordion>
+> **Why am I not seeing these new APIs in the JavaScript SDK?**
+>
+> If you're using the Notion TypeScript SDK, upgrade to [version 5.3.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.3.0) or newer to get access to the APIs described in this guide.
+>
+> If you're using an API version older than `2025-09-03`, we recommend first following the [Upgrading to Version 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03) guide to upgrade, since v5+ of the SDK goes hand-in-hand with a minimum `Notion-Version` of `2025-09-03`.
+>
+> Until you upgrade to the latest version of the SDK, the only way to use these APIs is to craft [custom requests](https://github.com/makenotion/notion-sdk-js?tab=readme-ov-file#custom-requests) using `notion.request(...)`, which may result in degraded static type safety.
 
-  <Accordion title="If I already created a page, can I still apply a template using the API?">
-    Yes! The [Update page](/reference/patch-page) API also supports a `template` body parameter, with a `type` of either `default` or `template_id`. You can also pass `template[timezone]` to control the timezone for template variable resolution.
+> **Can I see an example of how to use this?**
+>
+> Yes! Refer to example `intermediate:6` in the [`intro-to-notion-api` example project](https://github.com/makenotion/notion-sdk-js/tree/9ed31fd7b47b8e799d1a66ee2ae19e89841b8194/examples/intro-to-notion-api).
 
-    When applying a template to an existing page, the template's content is appended to any existing page content. There's another optional body parameter, `erase_content`, that can be set to `true` if you instead want the template's content to fully replace any existing page content. Use caution with this flag, as this is a destructive operation that cannot be reversed in the API!
-  </Accordion>
-
-  <Accordion title="Why am I not seeing these new APIs in the JavaScript SDK?">
-    If you're using the Notion TypeScript SDK, upgrade to [version 5.3.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.3.0) or newer to get access to the APIs described in this guide.
-
-    If you're using an API version older than `2025-09-03`, we recommend first following the [Upgrading to Version 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03) guide to upgrade, since v5+ of the SDK goes hand-in-hand with a minimum `Notion-Version` of `2025-09-03`.
-
-    Until you upgrade to the latest version of the SDK, the only way to use these APIs is to craft [custom requests](https://github.com/makenotion/notion-sdk-js?tab=readme-ov-file#custom-requests) using `notion.request(...)`, which may result in degraded static type safety.
-  </Accordion>
-
-  <Accordion title="Can I see an example of how to use this?">
-    Yes! Refer to example `intermediate:6` in the [`intro-to-notion-api` example project](https://github.com/makenotion/notion-sdk-js/tree/9ed31fd7b47b8e799d1a66ee2ae19e89841b8194/examples/intro-to-notion-api).
-  </Accordion>
-
-  <Accordion title="Can I use templates with the Notion MCP?">
-    Yes! The [Notion MCP](/guides/mcp/overview) supports templates in the `notion-create-pages` and `notion-update-page` tools.
-
-    * Use the `notion-fetch` tool on a database to see available templates listed in `<templates>` tags for each data source.
-    * Pass a `template_id` when creating a page to pre-populate it from the template.
-    * Use the `apply_template` command in `notion-update-page` to apply a template to an existing page.
-  </Accordion>
-</AccordionGroup>
+> **Can I use templates with the Notion MCP?**
+>
+> Yes! The [Notion MCP](/guides/mcp/overview) supports templates in the `notion-create-pages` and `notion-update-page` tools.
+>
+> * Use the `notion-fetch` tool on a database to see available templates listed in `<templates>` tags for each data source.
+> * Pass a `template_id` when creating a page to pre-populate it from the template.
+> * Use the `apply_template` command in `notion-update-page` to apply a template to an existing page.

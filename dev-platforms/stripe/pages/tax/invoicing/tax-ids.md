@@ -204,6 +204,7 @@ Stripe supports displaying the tax ID types below on invoices. You can’t use S
 | BR | br_cnpj | Brazilian CNPJ number | 01.234.456/5432-10 | No |
 | BR | br_cpf | Brazilian CPF number | 123.456.789-87 | No |
 | BS | bs_tin | Bahamas Tax Identification Number | 123.456.789 | No |
+| BW | bw_vat | Botswana Value Added Tax number | BW12345678901004567 | No |
 | BY | by_tin | Belarus TIN Number | 123456789 | Yes |
 | CA | ca_bn | Canadian BN | 123456789 | No |
 | CA | ca_gst_hst | Canadian GST/HST number | 123456789RT0002 | Yes |
@@ -214,6 +215,7 @@ Stripe supports displaying the tax ID types below on invoices. You can’t use S
 | CD | cd_nif | Congo (DR) Tax Identification Number (Número de Identificação Fiscal) | A0123456M | No |
 | CH | ch_uid | Switzerland UID number | CHE-123.456.789 HR | No |
 | CH | ch_vat | Switzerland VAT number | CHE-123.456.789 MWST | Yes |
+| CI | ci_vat | Ivory Coast Value Added Tax number | 2100000 L | No |
 | CL | cl_tin | Chilean TIN | 12.345.678-K | Yes |
 | CM | cm_niu | Cameroon Tax Identification Number (Numéro d'Identifiant fiscal Unique) | M123456789000L | No |
 | CN | cn_tin | Chinese tax ID | 123456789012345678 | No |
@@ -243,6 +245,7 @@ Stripe supports displaying the tax ID types below on invoices. You can’t use S
 | GB | eu_vat | Northern Ireland VAT number | XI123456789 | Yes |
 | GB | gb_vat | United Kingdom VAT number | GB123456789 | Yes |
 | GE | ge_vat | Georgian VAT | 123456789 | Yes |
+| GH | gh_tin | Ghanaian Tax Identification Number | C0001234567 | No |
 | GI | gi_tin | Gibraltar Tax Identification number | 12345 | No |
 | GN | gn_nif | Guinea Tax Identification Number (Número de Identificação Fiscal) | 123456789 | Yes |
 | GR | eu_vat | European VAT number | EL123456789 | Yes |

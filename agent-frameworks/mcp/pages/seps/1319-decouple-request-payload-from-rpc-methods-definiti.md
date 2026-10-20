@@ -6,23 +6,17 @@ path: seps/1319-decouple-request-payload-from-rpc-methods-definiti
 
 Decouple Request Payload from RPC Methods Definition
 
-<div>
-  <Badge>
-    Final
-  </Badge>
+Final
 
-  <Badge>
-    Standards Track
-  </Badge>
-</div>
+Standards Track
 
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
 
 | Field | Value |
 | - | - |

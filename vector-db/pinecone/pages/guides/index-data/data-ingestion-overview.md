@@ -6,17 +6,17 @@ path: guides/index-data/data-ingestion-overview
 
 Compare data ingestion options in Pinecone: bulk import from object storage, upsert operations, and hosted embedding via the Inference API.
 
-<Tip>
-  To control costs when ingesting large datasets (10,000,000+ records), use [import](/guides/index-data/import-data) instead of upsert.
-</Tip>
+> [!TIP]
+>
+> To control costs when ingesting large datasets (10,000,000+ records), use [import](/guides/index-data/import-data) instead of upsert.
 
 ## Import from object storage
 
 [Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records or documents into an index. You store your data in object storage (Parquet for vector indexes, [JSON Lines (JSONL)](https://jsonlines.org/) for document indexes), integrate your object storage with Pinecone, and then start an asynchronous, long-running operation that imports and indexes your data.
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 ## Upsert
 

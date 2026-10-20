@@ -233,13 +233,13 @@ The CLI loads `.env` by default for local execution. To load another file, pass 
 ntn workers exec lookupCustomer --local --dotenv .env.local -d '{"email":"ada@example.com"}'
 ```
 
-<Note>
-  The Workers runtime injects a preauthenticated Notion SDK client when your
-  tool runs in Notion, but that client is not available during local execution.
-  When testing locally, we recommend setting `NOTION_API_TOKEN` to a
-  [personal access token](/guides/get-started/personal-access-tokens) in your
-  `.env` file, which the SDK uses to create the client.
-</Note>
+> [!NOTE]
+>
+> The Workers runtime injects a preauthenticated Notion SDK client when your
+> tool runs in Notion, but that client is not available during local execution.
+> When testing locally, we recommend setting `NOTION_API_TOKEN` to a
+> [personal access token](/guides/get-started/personal-access-tokens) in your
+> `.env` file, which the SDK uses to create the client.
 
 If you do not want to load a `.env` file, pass `--no-dotenv`:
 
@@ -269,20 +269,18 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers ex
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Schema and builders" icon="code" href="/workers/reference/schema">
-    Full reference for the j schema builder and all input types.
-  </Card>
+> **[Schema and builders](/workers/reference/schema)**
+>
+> Full reference for the j schema builder and all input types.
 
-  <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk#worker-tool">
-    Detailed API docs for worker.tool(), hints, and output schemas.
-  </Card>
+> **[SDK reference](/workers/reference/sdk#worker-tool)**
+>
+> Detailed API docs for worker.tool(), hints, and output schemas.
 
-  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
-    Store API keys and credentials for your tools.
-  </Card>
+> **[Secrets](/workers/guides/secrets)**
+>
+> Store API keys and credentials for your tools.
 
-  <Card title="Notion API" icon="database" href="/workers/guides/api-client">
-    Read and write Notion data from inside a tool.
-  </Card>
-</CardGroup>
+> **[Notion API](/workers/guides/api-client)**
+>
+> Read and write Notion data from inside a tool.

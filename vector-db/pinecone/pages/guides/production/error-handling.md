@@ -195,7 +195,7 @@ package main
 import (
 	"os"
 
-	"github.com/pinecone-io/go-pinecone/v6/pinecone"
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
 )
 
 func main() {
@@ -226,9 +226,9 @@ When you receive a 429 error, you're being rate-limited. See [Rate limits](/refe
 
 Rate limits help protect your applications and maintain the health of the serverless infrastructure. **Most limits can be adjusted upon request**—if you need higher limits to scale, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
-</Note>
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 
 **Best practices**:
 
@@ -241,7 +241,7 @@ Rate limits help protect your applications and maintain the health of the server
 
 If you've implemented error handling and retry logic but continue to experience issues:
 
-1. Review [How to work with Support](/admin/support/how-to-work-with-support) for best practices.
+1. Review [Get help](/admin/support/contact-support) for how to file a ticket that gets a fast resolution.
 2. Gather the following information:
    * Index name and project name
    * Error messages and stack traces

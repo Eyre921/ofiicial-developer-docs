@@ -185,7 +185,7 @@ Nodes are the building blocks of a flow. Each node serves a specific purpose, fr
 * **Avatar**: Generate a talking avatar video
 * **Speech to Text**: Transcribe the speech in an audio or video file
 
-See our [capabilities overview](/docs/overview/intro#capabilities) for detailed information on each model type.
+See our [capabilities overview](/docs/overview/intro#browse-by-capability) for detailed information on each model type.
 
 #### Contextual navigation
 

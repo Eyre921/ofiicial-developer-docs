@@ -7,96 +7,74 @@ path: docs/api-reference/inboxes/update-inbox
 PATCH /inboxes/:inbox_id
 Update the internal inbox name or the name recipients see when sending.
 
-<Warning>
-  Inboxes are currently in private beta and only available to a limited
-  number of users. The response shape might change before GA.
-
-  <span />
-
-  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the new methods:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.33.0
-    ```
-
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.25.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
-<ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`.
-</ResendParamField>
+The Inbox ID or the inbox email address, such as `support@example.com`.
 
 ## Body Parameters
 
 At least one of `name` or `from_name` is required. Omitted fields keep their
 current value.
 
-<ParamField type="string">
-  New internal name for the inbox. Recipients do not see it. Between 1 and 64
-  characters after trimming.
-</ParamField>
+**name** `string`
 
-<ResendParamField type="string">
-  The name recipients see when mail is sent from this inbox. Use a plain name,
-  without `:`, `<`, `>`, or line breaks. Max 78 characters. An email address in
-  the name must be on one of your verified domains. Send an empty string to
-  remove it.
-</ResendParamField>
+New internal name for the inbox. Recipients do not see it. Between 1 and 64
+characters after trimming.
+
+The name recipients see when mail is sent from this inbox. Use a plain name,
+without `:`, `<`, `>`, or line breaks. Max 78 characters. An email address in
+the name must be on one of your verified domains. Send an empty string to
+remove it.
 
 ## Response Fields
 
-<ParamField type="string">
-  Always `inbox`.
-</ParamField>
+**object** `string`
 
-<ParamField type="string">
-  The ID of the inbox.
-</ParamField>
+Always `inbox`.
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+**id** `string`
 
-  const resend = new Resend('re_xxxxxxxxx');
+The ID of the inbox.
 
-  const { data, error } = await resend.inboxes.update(
-    'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
-    { name: 'Customer Support', fromName: 'Ada from Support' },
-  );
-  ```
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X PATCH 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1' \
-       -H 'Authorization: Bearer re_xxxxxxxxx' \
-       -H 'Content-Type: application/json' \
-       -d $'{
-    "name": "Customer Support",
-    "from_name": "Ada from Support"
-  }'
-  ```
+const resend = new Resend('re_xxxxxxxxx');
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
-    --name "Customer Support" \
-    --from-name "Ada from Support"
-  ```
-</RequestExample>
+const { data, error } = await resend.inboxes.update(
+  'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+  { name: 'Customer Support', fromName: 'Ada from Support' },
+);
+```
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "inbox",
-    "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1"
-  }
-  ```
-</ResponseExample>
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
+
+$resend->inboxes->update('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1', [
+  'name' => 'Customer Support',
+  'from_name' => 'Ada from Support',
+]);
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X PATCH 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1' \
+     -H 'Authorization: Bearer re_xxxxxxxxx' \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "name": "Customer Support",
+  "from_name": "Ada from Support"
+}'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend inboxes update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
+  --name "Customer Support" \
+  --from-name "Ada from Support"
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "inbox",
+  "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1"
+}
+```

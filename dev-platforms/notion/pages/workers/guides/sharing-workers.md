@@ -8,26 +8,24 @@ Share and collaborate with other workspace members on a Notion Worker.
 
 Sharing a Worker involves two separate access decisions:
 
-* **Access to the deployed Worker in Notion:** Manage access from the <a href={developerWorkersUrl}>Developer portal</a>. This controls who can connect to, manage, edit, and deploy the Worker. Store environment variable values and [secrets](/workers/guides/secrets) with the deployed Worker.
+* **Access to the deployed Worker in Notion:** Manage access from the [Developer portal](https://www.notion.so/developers/workers). This controls who can connect to, manage, edit, and deploy the Worker. Store environment variable values and [secrets](/workers/guides/secrets) with the deployed Worker.
 * **Access to the Worker's source code:** Store the source code in a team-owned Git repository, such as GitHub. Use `workers.json` to identify the Worker to be deployed. Configure continuous integration for auto-deploys on code changes.
 
 ## Share access to a Worker
 
 Share a Worker to give workspace members access to its deployed capabilities. Sharing does not give them access to the Worker source code.
 
-<Steps>
-  <Step title="Open the Developer portal">
-    Open the <a href={developerWorkersUrl}>Workers page</a> in the Developer portal.
-  </Step>
+**1. Open the Developer portal**
 
-  <Step title="Choose a Worker">
-    Select the Worker you want to share, then select **Share**.
-  </Step>
+Open the [Workers page](https://www.notion.so/developers/workers) in the Developer portal.
 
-  <Step title="Choose members and access">
-    Search for workspace members, choose an access level, and select **Share**.
-  </Step>
-</Steps>
+**2. Choose a Worker**
+
+Select the Worker you want to share, then select **Share**.
+
+**3. Choose members and access**
+
+Search for workspace members, choose an access level, and select **Share**.
 
 ### Access levels
 

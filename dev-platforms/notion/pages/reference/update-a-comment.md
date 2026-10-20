@@ -26,12 +26,12 @@ With `markdown`, set `markdown_version: "v2"` to write [Notion-flavored Markdown
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Info>
-  **Reminder: Turn on connection comment capabilities**
-
-  Connection capabilities for reading and inserting comments are off by default.
-
-  This endpoint requires a connection to have insert comment capabilities. Attempting to call this endpoint without insert comment capabilities will return an HTTP response with a 403 status code.
-
-  For more information on connection capabilities, see the [capabilities guide](/reference/capabilities). To update your connection settings, visit the <a href={developerConnectionsUrl}>Developer portal</a>.
-</Info>
+> [!NOTE]
+>
+> **Reminder: Turn on connection comment capabilities**
+>
+> Connection capabilities for reading and inserting comments are off by default.
+>
+> This endpoint requires a connection to have insert comment capabilities. Attempting to call this endpoint without insert comment capabilities will return an HTTP response with a 403 status code.
+>
+> For more information on connection capabilities, see the [capabilities guide](/reference/capabilities). To update your connection settings, visit the [Developer portal](https://app.notion.com/developers/connections).

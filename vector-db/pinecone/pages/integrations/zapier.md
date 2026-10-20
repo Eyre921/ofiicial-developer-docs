@@ -12,4 +12,6 @@ With this integration, Pinecone can trigger workflows when your index status cha
 
 For example, you might use this integration to automatically add spreadsheet entries to your Pinecone index, or build a bot that searches for answers and posts them directly to your team chat. The integration brings Pinecone search and data operations into your existing workflows.
 
-<PrimarySecondaryCTA />
+[Get started](https://zapier.com/apps/pinecone/integrations)
+
+[View setup guide](https://help.zapier.com/hc/articles/38950923151117)

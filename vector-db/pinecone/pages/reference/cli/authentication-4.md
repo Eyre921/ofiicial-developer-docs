@@ -51,9 +51,9 @@ pc auth configure --api-key "YOUR_API_KEY"
 export PINECONE_API_KEY="your-api-key"
 ```
 
-<Warning>
-  API keys are scoped to a specific project. When set, control/data plane operations use the **key's project**, ignoring any [target context](/reference/cli/target-context) you've set.
-</Warning>
+> [!WARNING]
+>
+> API keys are scoped to a specific project. When set, control/data plane operations use the **key's project**, ignoring any [target context](/reference/cli/target-context) you've set.
 
 ## Auth priority
 
@@ -70,9 +70,9 @@ When multiple credentials exist, the CLI chooses based on operation type. Within
 1. User login token
 2. Service account
 
-<Note>
-  User login and service account are mutually exclusive when configured via CLI commands—each clears the other. However, service account env vars don't clear a stored user login token.
-</Note>
+> [!NOTE]
+>
+> User login and service account are mutually exclusive when configured via CLI commands—each clears the other. However, service account env vars don't clear a stored user login token.
 
 **Example scenarios:**
 
@@ -104,9 +104,9 @@ pc auth local-keys prune --origin user
 pc api-key delete --id "KEY_ID"
 ```
 
-<Note>
-  When you run `pc api-key create --store` for a project that already has a CLI-created managed key, the CLI automatically deletes the old remote key before storing the new one.
-</Note>
+> [!NOTE]
+>
+> When you run `pc api-key create --store` for a project that already has a CLI-created managed key, the CLI automatically deletes the old remote key before storing the new one.
 
 ## Logging out
 
@@ -116,9 +116,9 @@ pc auth logout
 
 Clears all local auth data: tokens, credentials, API keys, managed keys, and [target context](/reference/cli/target-context).
 
-<Note>
-  `pc auth logout` doesn't delete managed keys from Pinecone's servers. Run `pc auth local-keys prune` first for full cleanup.
-</Note>
+> [!NOTE]
+>
+> `pc auth logout` doesn't delete managed keys from Pinecone's servers. Run `pc auth local-keys prune` first for full cleanup.
 
 ## Local storage
 

@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 356 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 367 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -32,6 +32,7 @@
 - `docs/ai-chat/patterns/oom-resilience` — [OOM resilience](pages/docs/ai-chat/patterns/oom-resilience.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/oom-resilience)
 - `docs/ai-chat/patterns/persistence-and-replay` — [Persistence and replay](pages/docs/ai-chat/patterns/persistence-and-replay.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/persistence-and-replay)
 - `docs/ai-chat/patterns/recovery-boot` — [Recovery boot](pages/docs/ai-chat/patterns/recovery-boot.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/recovery-boot)
+- `docs/ai-chat/patterns/redacting-telemetry` — [Redact chat content from traces](pages/docs/ai-chat/patterns/redacting-telemetry.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/redacting-telemetry)
 - `docs/ai-chat/patterns/skills` — [Agent Skills](pages/docs/ai-chat/patterns/skills.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/skills)
 - `docs/ai-chat/patterns/sub-agents` — [Sub-Agents](pages/docs/ai-chat/patterns/sub-agents.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/sub-agents)
 - `docs/ai-chat/patterns/tool-result-auditing` — [Tool result auditing](pages/docs/ai-chat/patterns/tool-result-auditing.md) · [原文](https://trigger.dev/docs/ai-chat/patterns/tool-result-auditing)
@@ -69,6 +70,7 @@
 - `docs/cli-promote-commands` — [CLI promote command](pages/docs/cli-promote-commands.md) · [原文](https://trigger.dev/docs/cli-promote-commands)
 - `docs/cli-runs-commands` — [CLI runs commands](pages/docs/cli-runs-commands.md) · [原文](https://trigger.dev/docs/cli-runs-commands)
 - `docs/cli-switch` — [CLI switch command](pages/docs/cli-switch.md) · [原文](https://trigger.dev/docs/cli-switch)
+- `docs/cli-tasks-commands` — [CLI tasks commands](pages/docs/cli-tasks-commands.md) · [原文](https://trigger.dev/docs/cli-tasks-commands)
 - `docs/cli-update-commands` — [CLI update command](pages/docs/cli-update-commands.md) · [原文](https://trigger.dev/docs/cli-update-commands)
 - `docs/cli-whoami-commands` — [CLI whoami command](pages/docs/cli-whoami-commands.md) · [原文](https://trigger.dev/docs/cli-whoami-commands)
 - `docs/community` — [Discord Community](pages/docs/community.md) · [原文](https://trigger.dev/docs/community)
@@ -121,6 +123,7 @@
 - `docs/guides/example-projects/clickhouse-chat-agent` — [ClickHouse chat agent](pages/docs/guides/example-projects/clickhouse-chat-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent)
 - `docs/guides/example-projects/cursor-background-agent` — [Background Cursor agent using the Cursor CLI](pages/docs/guides/example-projects/cursor-background-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/cursor-background-agent)
 - `docs/guides/example-projects/elevenlabs-voice-agent` — [ElevenLabs Voice agent](pages/docs/guides/example-projects/elevenlabs-voice-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/elevenlabs-voice-agent)
+- `docs/guides/example-projects/grok-ai-teammates` — [Grok AI Teammates: chat agents with their own cloud computer](pages/docs/guides/example-projects/grok-ai-teammates.md) · [原文](https://trigger.dev/docs/guides/example-projects/grok-ai-teammates)
 - `docs/guides/example-projects/human-in-the-loop-workflow` — [Human-in-the-loop workflow with ReactFlow and Trigger.dev waitpoint tokens](pages/docs/guides/example-projects/human-in-the-loop-workflow.md) · [原文](https://trigger.dev/docs/guides/example-projects/human-in-the-loop-workflow)
 - `docs/guides/example-projects/mastra-agents-with-memory` — [Mastra agents with memory sharing + Trigger.dev task orchestration](pages/docs/guides/example-projects/mastra-agents-with-memory.md) · [原文](https://trigger.dev/docs/guides/example-projects/mastra-agents-with-memory)
 - `docs/guides/example-projects/meme-generator-human-in-the-loop` — [Meme generator with human-in-the-loop approval](pages/docs/guides/example-projects/meme-generator-human-in-the-loop.md) · [原文](https://trigger.dev/docs/guides/example-projects/meme-generator-human-in-the-loop)
@@ -228,9 +231,17 @@
 - `docs/management/errors/unresolve` — [Unresolve an error](pages/docs/management/errors/unresolve.md) · [原文](https://trigger.dev/docs/management/errors/unresolve)
 - `docs/management/multiple-clients` — [Multiple SDK clients](pages/docs/management/multiple-clients.md) · [原文](https://trigger.dev/docs/management/multiple-clients)
 - `docs/management/overview` — [Management API overview](pages/docs/management/overview.md) · [原文](https://trigger.dev/docs/management/overview)
+- `docs/management/query/add-dashboard-widget` — [Add dashboard widget](pages/docs/management/query/add-dashboard-widget.md) · [原文](https://trigger.dev/docs/management/query/add-dashboard-widget)
+- `docs/management/query/create-dashboard` — [Create dashboard](pages/docs/management/query/create-dashboard.md) · [原文](https://trigger.dev/docs/management/query/create-dashboard)
 - `docs/management/query/dashboards` — [List dashboards](pages/docs/management/query/dashboards.md) · [原文](https://trigger.dev/docs/management/query/dashboards)
+- `docs/management/query/delete-dashboard` — [Delete dashboard](pages/docs/management/query/delete-dashboard.md) · [原文](https://trigger.dev/docs/management/query/delete-dashboard)
+- `docs/management/query/delete-dashboard-widget` — [Delete dashboard widget](pages/docs/management/query/delete-dashboard-widget.md) · [原文](https://trigger.dev/docs/management/query/delete-dashboard-widget)
 - `docs/management/query/execute` — [Execute a query](pages/docs/management/query/execute.md) · [原文](https://trigger.dev/docs/management/query/execute)
+- `docs/management/query/replace-dashboard` — [Replace dashboard widgets](pages/docs/management/query/replace-dashboard.md) · [原文](https://trigger.dev/docs/management/query/replace-dashboard)
+- `docs/management/query/retrieve-dashboard` — [Retrieve dashboard](pages/docs/management/query/retrieve-dashboard.md) · [原文](https://trigger.dev/docs/management/query/retrieve-dashboard)
 - `docs/management/query/schema` — [Get query schema](pages/docs/management/query/schema.md) · [原文](https://trigger.dev/docs/management/query/schema)
+- `docs/management/query/update-dashboard` — [Update dashboard](pages/docs/management/query/update-dashboard.md) · [原文](https://trigger.dev/docs/management/query/update-dashboard)
+- `docs/management/query/update-dashboard-widget` — [Update dashboard widget](pages/docs/management/query/update-dashboard-widget.md) · [原文](https://trigger.dev/docs/management/query/update-dashboard-widget)
 - `docs/management/queues/concurrency-override` — [Override Concurrency Limit](pages/docs/management/queues/concurrency-override.md) · [原文](https://trigger.dev/docs/management/queues/concurrency-override)
 - `docs/management/queues/concurrency-reset` — [Reset Concurrency Limit](pages/docs/management/queues/concurrency-reset.md) · [原文](https://trigger.dev/docs/management/queues/concurrency-reset)
 - `docs/management/queues/list` — [List Queues](pages/docs/management/queues/list.md) · [原文](https://trigger.dev/docs/management/queues/list)

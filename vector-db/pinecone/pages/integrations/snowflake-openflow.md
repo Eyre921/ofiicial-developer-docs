@@ -14,4 +14,4 @@ Openflow includes processors that work with a Pinecone index:
 * `QueryPinecone` queries Pinecone for vectors that are similar to an input vector, or retrieves a vector by ID.
 * `DeletePinecone` deletes vectors from a Pinecone index.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.snowflake.com/en/user-guide/data-integration/openflow/processors/upsertpinecone)

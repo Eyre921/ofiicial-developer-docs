@@ -8,55 +8,53 @@ Retrieve context snippets and citations from a Pinecone Assistant to power your 
 
 This page shows you how to [retrieve context snippets](/guides/assistant/context-snippets-overview).
 
-<Tip>
-  To try this in your browser, use the [Pinecone Assistant - Context colab notebook](https://colab.research.google.com/drive/1AD4QWsXBG1FQRwq-ModlaggR7Cx7NJCz).
-</Tip>
+> [!TIP]
+>
+> To try this in your browser, use the [Pinecone Assistant - Context colab notebook](https://colab.research.google.com/drive/1AD4QWsXBG1FQRwq-ModlaggR7Cx7NJCz).
 
 ## Retrieve context snippets from an assistant
 
 You can [retrieve context snippets](/reference/api/latest/assistant/context_assistant) from an assistant, as in the following example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  response = pc.assistants.context(
-      assistant_name="example-assistant",
-      query="Who is the CFO of Netflix?",
-  )
+response = pc.assistants.context(
+    assistant_name="example-assistant",
+    query="Who is the CFO of Netflix?",
+)
 
-  for snippet in response.snippets:
-      print(snippet)
-  ```
+for snippet in response.snippets:
+    print(snippet)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = pc.assistant({ name: 'example-assistant' });
-  const response = await assistant.context({
-    query: 'Who is the CFO of Netflix?',
-  });
-  console.log(response);
-  ```
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.context({
+  query: 'Who is the CFO of Netflix?',
+});
+console.log(response);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "query": "Who is the CFO of Netflix?"
-  }'
-  ```
-</CodeGroup>
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "query": "Who is the CFO of Netflix?"
+}'
+```
 
 The example above returns a JSON object like the following:
 
@@ -91,15 +89,15 @@ The example above returns a JSON object like the following:
 ...
 ```
 
-<Warning>
-  [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
-</Warning>
+> [!WARNING]
+>
+> [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
 
 ## Control the snippets retrieved
 
-<Note>
-  This is available in API versions `2025-04` and later.
-</Note>
+> [!NOTE]
+>
+> This is available in API versions `2025-04` and later.
 
 You can limit [token usage](/guides/assistant/pricing-and-limits#token-usage) by tuning `top_k * snippet_size`:
 
@@ -108,36 +106,34 @@ You can limit [token usage](/guides/assistant/pricing-and-limits#token-usage) by
 
 While additional tokens will be used for other parameters, adjusting the `top_k` and `snippet_size` can help manage token consumption.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  response = pc.assistants.context(
-      assistant_name="example-assistant",
-      query="Who is the CFO of Netflix?",
-      top_k=10,
-      snippet_size=2500,
-  )
+response = pc.assistants.context(
+    assistant_name="example-assistant",
+    query="Who is the CFO of Netflix?",
+    top_k=10,
+    snippet_size=2500,
+)
 
-  for snippet in response.snippets:
-      print(snippet)
-  ```
+for snippet in response.snippets:
+    print(snippet)
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "query": "Who is the CFO of Netflix?",
-      "top_k": 10,
-      "snippet_size": 2500
-  }'
-  ```
-</CodeGroup>
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "query": "Who is the CFO of Netflix?",
+    "top_k": 10,
+    "snippet_size": 2500
+}'
+```

@@ -8,9 +8,9 @@ Pinecone API reference overview for Database, Inference, and Admin endpoints wit
 
 Pinecone's APIs let you interact programmatically with your Pinecone account.
 
-<Note>
-  [SDK versions](/reference/pinecone-sdks#sdk-versions) are pinned to specific API versions.
-</Note>
+> [!NOTE]
+>
+> [SDK versions](/reference/pinecone-sdks#sdk-versions) are pinned to specific API versions.
 
 ## Database
 
@@ -18,17 +18,15 @@ Use the Database API to store and query records in [Pinecone Database](/guides/g
 
 The following Pinecone SDKs support the Database API:
 
-<CardGroup>
-  <Card title="CLI" icon="terminal" href="/reference/cli/overview" />
+> **[CLI](/reference/cli/overview)**
 
-  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
+> **[Python SDK](/reference/sdks/python/overview)**
 
-  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
+> **[Node.js SDK](/reference/sdks/node/overview)**
 
-  <Card title="Java SDK" icon="java" href="/reference/sdks/java/overview" />
+> **[Java SDK](/reference/sdks/java/overview)**
 
-  <Card title="Go SDK" icon="golang" href="/reference/sdks/go/overview" />
-</CardGroup>
+> **[Go SDK](/reference/sdks/go/overview)**
 
 ## Inference
 
@@ -41,12 +39,10 @@ There are two ways to use the Inference API:
 
 The following Pinecone SDKs support using the Inference API:
 
-<CardGroup>
-  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
+> **[Python SDK](/reference/sdks/python/overview)**
 
-  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
+> **[Node.js SDK](/reference/sdks/node/overview)**
 
-  <Card title="Java SDK" icon="java" href="/reference/sdks/java/overview" />
+> **[Java SDK](/reference/sdks/java/overview)**
 
-  <Card title="Go SDK" icon="golang" href="/reference/sdks/go/overview" />
-</CardGroup>
+> **[Go SDK](/reference/sdks/go/overview)**

@@ -49,9 +49,9 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 Set `model` to a Fireworks model resource name (for example `accounts/fireworks/models/kimi-k3`). Streaming works the same way — translation happens before the response starts.
 
-<Tip>
-  When you control the request body yourself, prefer native Fireworks fields (`reasoning_effort`, `prompt_truncate_len`, `response_format`). Use NIM field names when you're migrating an existing NIM or vLLM client and want drop-in behavior.
-</Tip>
+> [!TIP]
+>
+> When you control the request body yourself, prefer native Fireworks fields (`reasoning_effort`, `prompt_truncate_len`, `response_format`). Use NIM field names when you're migrating an existing NIM or vLLM client and want drop-in behavior.
 
 ## Thinking and reasoning
 
@@ -69,9 +69,9 @@ Other keys inside `chat_template_kwargs` (for example `parallel_reasoning_mode`)
 
 When thinking is on, responses may include `message.reasoning_content`. When thinking is off (`reasoning_effort: "none"`), `reasoning_content` is typically null. Details: [Reasoning](/guides/reasoning).
 
-<Note>
-  If both `reasoning_effort: "auto"` and a thinking kwargs mapping are present, Fireworks drops `"auto"` first, then applies the kwargs mapping (so `enable_thinking: false` still becomes `"none"`).
-</Note>
+> [!NOTE]
+>
+> If both `reasoning_effort: "auto"` and a thinking kwargs mapping are present, Fireworks drops `"auto"` first, then applies the kwargs mapping (so `enable_thinking: false` still becomes `"none"`).
 
 ### Example: tools with thinking off
 
@@ -127,9 +127,9 @@ These NIM/vLLM extras have no Fireworks Chat Completions equivalent. Fireworks r
 
 `guided_regex`, `guided_decoding_backend`, `stop_token_ids`, `include_stop_str_in_output`, `skip_special_tokens`, `spaces_between_special_tokens`, `best_of`, `use_beam_search`, `add_generation_prompt`, `continue_final_message`, `add_special_tokens`, `detokenize`, `allowed_token_ids`, `bad_words`, `include_reasoning`, `nvext`
 
-<Note>
-  `min_tokens` is **kept**. Fireworks supports it natively — it is not stripped.
-</Note>
+> [!NOTE]
+>
+> `min_tokens` is **kept**. Fireworks supports it natively — it is not stripped.
 
 Anything else Fireworks already supports (`top_k`, `min_p`, `repetition_penalty`, and other native fields) passes through unchanged.
 
@@ -157,16 +157,14 @@ client.chat.completions.create(
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Reasoning" href="/guides/reasoning" icon="brain">
-    Native reasoning\_effort, streaming, and tool use
-  </Card>
+> **[Reasoning](/guides/reasoning)**
+>
+> Native reasoning\_effort, streaming, and tool use
 
-  <Card title="Structured responses" href="/structured-responses/structured-response-formatting" icon="brackets-curly">
-    json\_schema and grammar response\_format
-  </Card>
+> **[Structured responses](/structured-responses/structured-response-formatting)**
+>
+> json\_schema and grammar response\_format
 
-  <Card title="OpenAI compatibility" href="/tools-sdks/openai-compatibility" icon="code">
-    Use the OpenAI SDK with Fireworks
-  </Card>
-</CardGroup>
+> **[OpenAI compatibility](/tools-sdks/openai-compatibility)**
+>
+> Use the OpenAI SDK with Fireworks

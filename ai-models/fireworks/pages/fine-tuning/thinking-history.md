@@ -17,9 +17,9 @@ This setting does **not** enable or disable thinking generation. It only control
 
 These names align with the serving API's `reasoning_history="interleaved"` and `reasoning_history="preserved"` behaviors. Choose the mode that matches how you will replay reasoning history when serving the trained model.
 
-<Warning>
-  Do not interpret Interleaved as "keep only the final assistant's thinking." The boundary is the last real user query. If one user turn contains an assistant tool call, a tool result, and another assistant response, thinking from both assistant messages stays in that turn's trajectory.
-</Warning>
+> [!WARNING]
+>
+> Do not interpret Interleaved as "keep only the final assistant's thinking." The boundary is the last real user query. If one user turn contains an assistant tool call, a tool result, and another assistant response, thinking from both assistant messages stays in that turn's trajectory.
 
 ## Model capabilities
 
@@ -147,6 +147,6 @@ Renderer tests pin upstream Hugging Face template revisions and verify token-for
 
 The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM-5.1/blob/main/chat_template.jinja), [GLM 5.2](https://huggingface.co/zai-org/GLM-5.2/blob/main/chat_template.jinja), [Qwen 3.5](https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/tokenizer_config.json), [Qwen 3.6](https://huggingface.co/Qwen/Qwen3.6-27B/blob/main/tokenizer_config.json), [Kimi K2.5](https://huggingface.co/moonshotai/Kimi-K2.5/blob/main/chat_template.jinja), [Kimi K2.6](https://huggingface.co/moonshotai/Kimi-K2.6/blob/main/chat_template.jinja), and [Kimi K2.7 Code](https://huggingface.co/moonshotai/Kimi-K2.7-Code/blob/main/chat_template.jinja).
 
-<Card title="Prepare an SFT dataset" icon="database" href="/fine-tuning/fine-tuning-models">
-  Add `reasoning_content` to assistant messages in your JSONL dataset.
-</Card>
+> **[Prepare an SFT dataset](/fine-tuning/fine-tuning-models)**
+>
+> Add `reasoning_content` to assistant messages in your JSONL dataset.

@@ -10,11 +10,11 @@ Sets a [Block object](/reference/block), including page blocks, to `in_trash: tr
 
 To restore the block with the API, use the [Update a block](/reference/update-a-block) or [Update page](/reference/patch-page) respectively.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have update content capabilities. Attempting to call this API without update content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have update content capabilities. Attempting to call this API without update content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

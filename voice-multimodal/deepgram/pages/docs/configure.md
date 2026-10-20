@@ -12,11 +12,7 @@ path: docs/configure
 
 Streaming:Nova
 
-Use the `Configure` message to change settings on an open `/v1/listen` WebSocket stream. A supported, in-limit update keeps the stream running, so you don't drop audio or rebuild state to change what Deepgram listens for.
-
-> **Info**
->
-> Updating Nova-3 `keyterms` with `Configure` on `/v1/listen` is available on the global endpoint (`api.deepgram.com`). It isn't available yet on the EU (`api.eu.deepgram.com`), Australia (`api.au.deepgram.com`), or India (`api.in.deepgram.com`) [regional endpoints](/reference/regional-endpoints).
+Use the `Configure` message to change settings on an open `/v1/listen` WebSocket stream. The stream keeps running whether the update succeeds or fails, so you don't drop audio or rebuild state to change what Deepgram listens for.
 
 ## Purpose
 
@@ -87,36 +83,61 @@ Deepgram processes `Configure` in order with your audio. The new settings apply 
 
 Keyterms set with `Configure` behave exactly like keyterms set with the `keyterm` query parameter when you open the stream. This holds on every Nova-3 streaming model, monolingual or multilingual. How much keyterms improve recognition depends on the language and the terms, and that's the same whichever way you set them.
 
-### No Acknowledgement on Success
-
-A successful `Configure` on `/v1/listen` produces no response message; the next transcripts reflect the new settings. This differs from [Flux STT](/docs/flux/configure), which replies with `ConfigureSuccess`.
-
 ### Keyterm Syntax and Limits
 
 Each array entry is a plain term or phrase. Pass a multi-word phrase as a single entry, for example `["customer service"]`. Like the `keyterm` query parameter, entries don't support the weight syntax from the legacy [Keywords](/docs/keywords) feature, so don't append a weight such as `"term:0.15"`.
 
-The 500-token [keyterm limit](/docs/keyterm#key-term-limits) that applies to the `keyterm` query parameter also applies to each `Configure` message. Keep each list to the terms that matter for the current step of the conversation instead of sending everything you might need. An over-limit update currently stops transcription without an `Error`; see [Errors](#errors) for the stream-close behavior.
+The 500-token [keyterm limit](/docs/keyterm#key-term-limits) that applies to the `keyterm` query parameter also applies to each `Configure` message. Keep each list to the terms that matter for the current step of the conversation instead of sending everything you might need. An over-limit update returns a `ConfigureFailure` with code `CONFIGURE_KEYTERM_LIMIT_EXCEEDED`.
 
-## Errors
+## Responses
 
-Most rejected `Configure` messages return an `Error` message. The stream stays open with its previous settings.
+Deepgram answers every `Configure` with exactly one `ConfigureSuccess` or `ConfigureFailure` message. Both include the stream's `request_id`.
 
-Sending `keyterms` on a model other than Nova-3, such as Nova-2:
+### ConfigureSuccess
+
+`ConfigureSuccess` confirms that the update took effect. When the message replaced the keyterms, `keyterms` lists the keyterms now in effect. Fields the message didn't change are omitted.
 
 **`JSON`**
 
 ```json JSON
 {
-  "type": "Error",
-  "variant": "InvalidConfigureMessage",
-  "description": "`keyterms` are only supported for Nova-3 and Flux.",
-  "code": "KeytermsNotSupported"
+  "type": "ConfigureSuccess",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "keyterms": ["Deepgram", "Nova-3", "customer service"]
 }
 ```
 
-Sending keyterms over the 500-token [keyterm limit](/docs/keyterm#key-term-limits) currently does not return an `Error` message. Transcription stops, then the server closes the stream with `1011` (`NET-0000`) after about 30 seconds. Check the list size before sending the update.
+### ConfigureFailure
 
-Sending a field the message doesn't support, for example `keyterm` instead of `keyterms`:
+`ConfigureFailure` means Deepgram rejected the whole message and applied none of it, including any `features` sent alongside `keyterms`. The stream stays open with its previous settings.
+
+**`JSON`**
+
+```json JSON
+{
+  "type": "ConfigureFailure",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "code": "CONFIGURE_KEYTERMS_NOT_SUPPORTED",
+  "description": "`keyterms` are not supported by this model."
+}
+```
+
+| Code                               | Cause                                                                             |
+| ---------------------------------- | --------------------------------------------------------------------------------- |
+| `CONFIGURE_KEYTERMS_NOT_SUPPORTED` | The stream's model isn't Nova-3, such as Nova-2.                                  |
+| `CONFIGURE_KEYTERM_LIMIT_EXCEEDED` | The keyterms exceed the 500-token [keyterm limit](/docs/keyterm#key-term-limits). |
+| `CONFIGURE_ALREADY_PENDING`        | You sent a `Configure` before the previous one received its response.             |
+| `CONFIGURE_INTERNAL_ERROR`         | Deepgram failed to apply the update.                                              |
+
+### One Update at a Time
+
+Deepgram processes one `Configure` at a time. Wait for `ConfigureSuccess` or `ConfigureFailure` before sending the next one; a `Configure` sent while another is pending returns `CONFIGURE_ALREADY_PENDING`.
+
+`/v1/listen` responses carry no `sequence_id`, unlike [Flux STT](/docs/flux/configure) responses.
+
+## Errors
+
+Sending a field the message doesn't support, for example `keyterm` instead of `keyterms`, returns an `Error` message. The stream stays open with its previous settings.
 
 **`JSON`**
 
@@ -124,14 +145,14 @@ Sending a field the message doesn't support, for example `keyterm` instead of `k
 {
   "type": "Error",
   "variant": "SchemaError",
-  "description": "Could not deserialize last text message: unknown field `keyterm`, expected one of `features`, `processors`, `keyterms`, `language_hints`",
+  "description": "Could not deserialize last text message: unknown field `keyterm`, expected one of `features`, `keyterms`",
   "message": "{\"type\": \"Configure\", \"keyterm\": [\"Deepgram\"]}"
 }
 ```
 
 ## Language-Specific Implementations
 
-These examples open a Nova-3 stream and update its keyterms partway through.
+These examples open a Nova-3 stream, update its keyterms partway through, and handle the response.
 
 **`Python`**
 
@@ -142,24 +163,43 @@ import os
 
 import websockets
 
+# Configure keyterms work on Nova-3 models only.
 URL = "wss://api.deepgram.com/v1/listen?model=nova-3&encoding=linear16&sample_rate=16000"
 HEADERS = {"Authorization": f"Token {os.environ['DEEPGRAM_API_KEY']}"}
 
+async def receive(ws):
+    # ConfigureSuccess and ConfigureFailure arrive interleaved with Results.
+    async for raw in ws:
+        message = json.loads(raw)
+        # ConfigureSuccess echoes keyterms only when the Configure replaced them.
+        if message["type"] == "ConfigureSuccess":
+            print("Keyterms now in effect:", message.get("keyterms"))
+        # ConfigureFailure applied nothing; the stream keeps its previous settings.
+        elif message["type"] == "ConfigureFailure":
+            print("Configure rejected:", message["code"], message["description"])
+        elif message["type"] == "Results":
+            print(message["channel"]["alternatives"][0]["transcript"])
 
 async def main():
     async with websockets.connect(URL, additional_headers=HEADERS) as ws:
+        # Read server messages on a background task so sending audio isn't blocked.
+        receiver = asyncio.create_task(receive(ws))
+
         # Stream audio with ws.send(audio_bytes) ...
 
         # The caller is about to give their account manager's name.
+        # Wait for this Configure's response before sending another, or
+        # Deepgram returns CONFIGURE_ALREADY_PENDING.
         await ws.send(json.dumps({
             "type": "Configure",
             "keyterms": ["Zyphorra Quillbeck", "Xylofex Dynamics"],
         }))
 
         # Keep streaming; later transcripts use the new keyterms.
-
+        await receiver
 
 asyncio.run(main())
+
 ```
 
 **`JavaScript`**
@@ -167,6 +207,7 @@ asyncio.run(main())
 ```javascript JavaScript
 const WebSocket = require("ws");
 
+// Configure keyterms work on Nova-3 models only.
 const ws = new WebSocket(
   "wss://api.deepgram.com/v1/listen?model=nova-3&encoding=linear16&sample_rate=16000",
   { headers: { Authorization: `Token ${process.env.DEEPGRAM_API_KEY}` } }
@@ -176,12 +217,28 @@ ws.on("open", () => {
   // Stream audio with ws.send(audioChunk) ...
 
   // The caller is about to give their account manager's name.
+  // Wait for this Configure's response before sending another, or
+  // Deepgram returns CONFIGURE_ALREADY_PENDING.
   ws.send(
     JSON.stringify({
       type: "Configure",
       keyterms: ["Zyphorra Quillbeck", "Xylofex Dynamics"],
     })
   );
+});
+
+// ConfigureSuccess and ConfigureFailure arrive interleaved with Results.
+ws.on("message", (data) => {
+  const message = JSON.parse(data);
+  // ConfigureSuccess echoes keyterms only when the Configure replaced them.
+  if (message.type === "ConfigureSuccess") {
+    console.log("Keyterms now in effect:", message.keyterms);
+  // ConfigureFailure applied nothing; the stream keeps its previous settings.
+  } else if (message.type === "ConfigureFailure") {
+    console.log("Configure rejected:", message.code, message.description);
+  } else if (message.type === "Results") {
+    console.log(message.channel.alternatives[0].transcript);
+  }
 });
 ```
 

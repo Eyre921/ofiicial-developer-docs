@@ -18,9 +18,9 @@ To change your primary email address on LinkedIn:
 2. From there, you can add new email addresses or change your primary email
 3. Click **Add email address** to add a new email or select an existing one to make primary
 
-<Info>
-  You can also follow the [LinkedIn documentation](https://www.linkedin.com/help/linkedin/answer/a519904) for detailed instructions on managing email preferences.
-</Info>
+> [!NOTE]
+>
+> You can also follow the [LinkedIn documentation](https://www.linkedin.com/help/linkedin/answer/a519904) for detailed instructions on managing email preferences.
 
 ## Switching between accounts
 

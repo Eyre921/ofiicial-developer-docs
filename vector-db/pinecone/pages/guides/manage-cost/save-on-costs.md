@@ -35,13 +35,13 @@ If you need to isolate each customer's or user's data, [partition tenants with n
 * Where your workload allows, use [metadata filters](/guides/search/filter-by-metadata) so queries scan fewer records.
 * To retrieve known records without a query, use a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), [list record IDs](/guides/manage-data/list-record-ids) by prefix, and then [fetch](/guides/manage-data/fetch-data) the records you need. A [query's read units](/guides/manage-cost/understanding-cost#query) grow with namespace size, while fetch [uses 1 read unit per 10 records](/guides/manage-cost/understanding-cost#fetch).
 
-<Note>
-  Omitting values lowers egress but not [read units](/guides/manage-cost/understanding-cost#read-units). Query read unit cost depends on the size of the namespace scanned, not the size of the response.
-</Note>
+> [!NOTE]
+>
+> Omitting values lowers egress but not [read units](/guides/manage-cost/understanding-cost#read-units). Query read unit cost depends on the size of the namespace scanned, not the size of the response.
 
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
-</Note>
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 
 ## Choose the right index capacity mode
 

@@ -16,7 +16,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | :- | :- |
 | Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
 | Max batch size for records with text | 96 records |
-| Max documents per upsert request | 1,000 |
+| Max documents per upsert request | 1,000, or 96 when the schema declares `embed` or `sparse_embed` |
 | Max document upsert request size | 2 MB |
 | Max document size | 2 MB |
 | Max `full_text_search` string fields per schema | 100 |
@@ -37,14 +37,14 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 | Metric | Limit |
 | :- | :- |
-| Max documents per by-ID document update request | 1,000 |
+| Max documents per by-ID document update request | 1,000, or 96 when the schema declares `embed` or `sparse_embed` |
 | Max records per update-by-metadata request | 100,000 |
 
 ## Import limits
 
-<Note>
-  If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/index-data/import-data#troubleshooting) for details.
-</Note>
+> [!NOTE]
+>
+> If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/index-data/import-data#troubleshooting) for details.
 
 | Metric | Limit |
 | :- | :- |
@@ -67,9 +67,9 @@ Bulk import supports indexes without a schema definition (Parquet files) and ind
 
 The query result size is affected by the dimension of the dense vectors and whether or not dense vector values and metadata are included in the result.
 
-<Tip>
-  If a query fails due to exceeding the 4MB result size limit, choose a lower `top_k` value, or use `include_metadata=False` or `include_values=False` to exclude metadata or values from the result. For better performance, especially with higher `top_k` values, avoid including vector values unless you need them.
-</Tip>
+> [!TIP]
+>
+> If a query fails due to exceeding the 4MB result size limit, choose a lower `top_k` value, or use `include_metadata=False` or `include_values=False` to exclude metadata or values from the result. For better performance, especially with higher `top_k` values, avoid including vector values unless you need them.
 
 ## Fetch limits
 
@@ -118,6 +118,6 @@ If you need to filter by more than 10,000 values, consider these alternatives:
 * **Post-filter client-side**: Retrieve a larger top K without filtering (for example, top 1000), then filter results client-side.
 * **Run multiple queries**: Split your filter into multiple queries with smaller `$in` operators and combine the results client-side.
 
-<Tip>
-  To avoid hitting this limit in production, validate the size of your `$in` and `$nin` arrays in your application code before making the request to Pinecone.
-</Tip>
+> [!TIP]
+>
+> To avoid hitting this limit in production, validate the size of your `$in` and `$nin` arrays in your application code before making the request to Pinecone.

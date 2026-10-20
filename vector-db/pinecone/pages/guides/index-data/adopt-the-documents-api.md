@@ -35,14 +35,14 @@ In the SDK, your existing `pc.create_index(dimension=..., metric=..., vector_typ
 
 An index's data plane is fixed when the index is created, not by the API version or SDK you call it with.
 
-* An index created before `2026-07` uses the Vectors API for its entire life, even after you upgrade your SDK. Indexes that use integrated embedding use the Records API instead.
+* An index created before `2026-07` uses the Vectors API for its entire life, even after you upgrade your SDK. Legacy integrated-embedding indexes (created with `create_index_for_model`) use the Records API instead.
 * An index created on `2026-07` or later with a schema uses the Documents API.
 
 So your existing code keeps working, whether or not you upgrade the SDK. Upgrading doesn't move an index you created before `2026-07` onto the Documents API, or change how you query and upsert to it, and `create_index` in the `2026-07` SDK still accepts the old parameters.
 
-<Note>
-  If you call the REST API directly on `2026-07`, `POST /indexes` is schema-based. To create a classic vector index, use a schema with only the reserved `_values` (dense) and/or `_sparse_values` (sparse) fields, which replace the old top-level `dimension`, `metric`, and `vector_type`. To keep sending the original request body instead, pin an earlier API version (`2026-04`).
-</Note>
+> [!NOTE]
+>
+> If you call the REST API directly on `2026-07`, `POST /indexes` is schema-based. To create a classic vector index, use a schema with only the reserved `_values` (dense) and/or `_sparse_values` (sparse) fields, which replace the old top-level `dimension`, `metric`, and `vector_type`. To keep sending the original request body instead, pin an earlier API version (`2026-04`).
 
 Upgrading the SDK does change the control plane. Beyond `create_index`, index-management calls like `describe_index` and `list_indexes` return the new model shape: the top-level `dimension`, `metric`, and `vector_type` are replaced by a `schema` object, so `dimension` now appears inside the schema's dense-vector field. Update any code that reads those top-level fields when you upgrade.
 
@@ -58,20 +58,18 @@ You can't convert an existing index to a schema-based one. To use a schema (and 
 
 ## FAQ
 
-<AccordionGroup>
-  <Accordion title="I use hybrid search (dense + sparse, Vectors API). What happens?">
-    Your existing hybrid indexes keep working through the Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
-  </Accordion>
+> **I use hybrid search (dense + sparse, Vectors API). What happens?**
+>
+> Your existing hybrid indexes keep working through the Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
-  <Accordion title="I use integrated embedding (the Records API). Does anything change?">
-    No. The Records API and `create_index_for_model` are unaffected, so your integrated-embedding indexes keep working exactly as they do today. Integrated embedding isn't available on schema-based (document) indexes; keep creating integrated-inference indexes the way you do now.
-  </Accordion>
+> **I use integrated embedding (the Records API). Does anything change?**
+>
+> Your existing indexes are unaffected. The legacy Records API and `create_index_for_model` keep working exactly as they do today. What's changed is that document indexes now support integrated embedding too. Declare a `string` field with `embed` or `sparse_embed` and Pinecone embeds its text for you. For new work, prefer that path. See [Integrated embedding](/guides/search/integrated-embedding).
 
-  <Accordion title="Can I keep creating indexes on the old Vectors API?">
-    Yes. In the `2026-07` SDK, your existing `create_index(dimension=..., metric=..., vector_type=..., spec=...)` code works unchanged and still creates a vector index, so you don't have to downgrade. If you call the REST API directly on `2026-07`, use a schema with the reserved `_values`/`_sparse_values` fields, or pin an earlier API version (`X-Pinecone-Api-Version: 2026-04`) to send the original request body. Indexes you create either way stay on the `/vectors/*` data plane.
-  </Accordion>
+> **Can I keep creating indexes on the old Vectors API?**
+>
+> Yes. In the `2026-07` SDK, your existing `create_index(dimension=..., metric=..., vector_type=..., spec=...)` code works unchanged and still creates a vector index, so you don't have to downgrade. If you call the REST API directly on `2026-07`, use a schema with the reserved `_values`/`_sparse_values` fields, or pin an earlier API version (`X-Pinecone-Api-Version: 2026-04`) to send the original request body. Indexes you create either way stay on the `/vectors/*` data plane.
 
-  <Accordion title="I'm on 2026-01.alpha. What changed for me?">
-    `2026-01.alpha` is now a mirror of `2026-07`. If you were already using a schema and the Documents API, nothing changes.
-  </Accordion>
-</AccordionGroup>
+> **I'm on 2026-01.alpha. What changed for me?**
+>
+> `2026-01.alpha` is now a mirror of `2026-07`. If you were already using a schema and the Documents API, nothing changes.

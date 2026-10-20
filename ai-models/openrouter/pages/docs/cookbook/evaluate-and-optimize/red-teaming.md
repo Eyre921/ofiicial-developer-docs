@@ -43,7 +43,7 @@ To request red teaming approval, email [safety@openrouter.ai](mailto:safety@open
 * The types of adversarial techniques you plan to use
 * Your expected timeline
 
-<Note>
-  Approval generally takes **5 business days**. Approval is not guaranteed and is granted at OpenRouter's discretion based on the details of your use case.
-</Note>
+> [!NOTE]
+>
+> Approval generally takes **5 business days**. Approval is not guaranteed and is granted at OpenRouter's discretion based on the details of your use case.
 

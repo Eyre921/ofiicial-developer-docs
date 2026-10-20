@@ -135,7 +135,7 @@ func main() {
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
+| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{ "max\_tokens": 150, "messages": \[ \{ "content": "You are a helpful assistant.", "role": "system" }, \{ "content": "What is the capital of France?", "role": "user" } ], "model": "openai/gpt-4", "temperature": 0.7 } |
 | `xOpenRouterMetadata` | [\*components.MetadataLevel](../../models/components/metadatalevel.mdx) | ➖ | Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility. | enabled |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 

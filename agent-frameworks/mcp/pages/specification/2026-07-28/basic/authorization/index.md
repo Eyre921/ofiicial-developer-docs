@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authoriza
 path: specification/2026-07-28/basic/authorization/index
 ---
 
-<div />
-
 ## Introduction
 
 ### Purpose and Scope

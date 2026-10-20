@@ -17,9 +17,9 @@ Uploading a model via the REST API is a four-step pipeline:
 3. **Upload the files** – Upload each file directly to its signed URL.
 4. **Validate the upload** – Finalize the upload and move the model to `READY`.
 
-<Warning>
-  Step 4 is required. Until you call `validateUpload`, your model stays in the `UPLOADING` state and **cannot be deployed** — even after every file has finished uploading.
-</Warning>
+> [!WARNING]
+>
+> Step 4 is required. Until you call `validateUpload`, your model stays in the `UPLOADING` state and **cannot be deployed** — even after every file has finished uploading.
 
 ## Why validation is a separate step
 
@@ -108,13 +108,13 @@ while True:
     resp.raise_for_status()  # any other error is fatal
 ```
 
-<Note>
-  Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed training. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
-</Note>
+> [!NOTE]
+>
+> Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed training. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
 
-<Tip>
-  Every step is safe to retry. `create` and `getUploadEndpoint` no-op if the model already exists (returning `ALREADY_EXISTS`), so an automated uploader that gets interrupted can simply re-run from the top and keep polling `validateUpload` until it succeeds.
-</Tip>
+> [!TIP]
+>
+> Every step is safe to retry. `create` and `getUploadEndpoint` no-op if the model already exists (returning `ALREADY_EXISTS`), so an automated uploader that gets interrupted can simply re-run from the top and keep polling `validateUpload` until it succeeds.
 
 ## Troubleshooting: model stuck in `UPLOADING`
 

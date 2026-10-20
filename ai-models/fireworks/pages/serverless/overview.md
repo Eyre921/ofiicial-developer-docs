@@ -57,9 +57,9 @@ Fireworks sets the following on Serverless inference responses:
 | `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Uncached Prompt TPM limit. |
 | `X-Ratelimit-Limit-Tokens-Generated` | Your current Generated TPM limit. |
 
-<Tip>
-  Streaming responses don't carry per-request perf headers. To get the same metrics in the streaming response body, set the `perf_metrics_in_response` parameter on the request. See [Querying text models](/guides/querying-text-models#usage--performance-tracking).
-</Tip>
+> [!TIP]
+>
+> Streaming responses don't carry per-request perf headers. To get the same metrics in the streaming response body, set the `perf_metrics_in_response` parameter on the request. See [Querying text models](/guides/querying-text-models#usage--performance-tracking).
 
 ## Prompt caching
 
@@ -85,36 +85,34 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Serverless quickstart" icon="rocket" href="/getting-started/quickstart">
-    Make your first Serverless API call.
-  </Card>
+> **[Serverless quickstart](/getting-started/quickstart)**
+>
+> Make your first Serverless API call.
 
-  <Card title="Serverless Modes" icon="bolt" href="/serverless/serverless-modes">
-    Higher-reliability and higher-speed modes.
-  </Card>
+> **[Serverless Modes](/serverless/serverless-modes)**
+>
+> Higher-reliability and higher-speed modes.
 
-  <Card title="US-only Serverless" icon="flag-usa" href="/serverless/us-only-serverless">
-    Dedicated US routers for inference residency.
-  </Card>
+> **[US-only Serverless](/serverless/us-only-serverless)**
+>
+> Dedicated US routers for inference residency.
 
-  <Card title="Pricing" icon="circle-dollar" href="/serverless/pricing">
-    Per-token rates for text, vision, embeddings, and Priority.
-  </Card>
+> **[Pricing](/serverless/pricing)**
+>
+> Per-token rates for text, vision, embeddings, and Priority.
 
-  <Card title="Reserved Throughput" icon="gauge-high" href="/serverless/reserved-throughput">
-    SLA-backed throughput that adds to your adaptive rate limits.
-  </Card>
+> **[Reserved Throughput](/serverless/reserved-throughput)**
+>
+> SLA-backed throughput that adds to your adaptive rate limits.
 
-  <Card title="Rate limits" icon="gauge" href="/serverless/rate-limits">
-    Adaptive TPM bounds and how the limit ramps with usage.
-  </Card>
+> **[Rate limits](/serverless/rate-limits)**
+>
+> Adaptive TPM bounds and how the limit ramps with usage.
 
-  <Card title="Prompt caching" icon="database" href="/guides/prompt-caching">
-    How caching works and how to maximize hit rate.
-  </Card>
+> **[Prompt caching](/guides/prompt-caching)**
+>
+> How caching works and how to maximize hit rate.
 
-  <Card title="On-demand deployments" icon="server" href="/guides/ondemand-deployments">
-    Dedicated GPUs for predictable throughput and custom models.
-  </Card>
-</CardGroup>
+> **[On-demand deployments](/guides/ondemand-deployments)**
+>
+> Dedicated GPUs for predictable throughput and custom models.

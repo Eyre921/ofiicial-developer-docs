@@ -10,4 +10,4 @@ Pulumi is an infrastructure-as-code platform that lets you use familiar programm
 
 The Pulumi Pinecone Provider lets you manage your Pinecone collections and indexes in any language that Pulumi supports.
 
-<PrimarySecondaryCTA />
+[Get started](https://www.pulumi.com/registry/packages/pinecone/)

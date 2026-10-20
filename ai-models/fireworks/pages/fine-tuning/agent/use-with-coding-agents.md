@@ -115,24 +115,22 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 ## See also
 
-<CardGroup>
-  <Card title="Case studies" icon="book-open" href="https://github.com/fw-ai/cookbook/tree/main/training/case-studies">
-    Runnable notebooks research routes to.
-  </Card>
+> **[Case studies](https://github.com/fw-ai/cookbook/tree/main/training/case-studies)**
+>
+> Runnable notebooks research routes to.
 
-  <Card title="Training Overview" icon="compass" href="/fine-tuning/finetuning-intro#choose-a-surface">
-    Compare managed training and the Training API.
-  </Card>
+> **[Training Overview](/fine-tuning/finetuning-intro#choose-a-surface)**
+>
+> Compare managed training and the Training API.
 
-  <Card title="Managed Training" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
-    Drive the same training infra directly when you know your config.
-  </Card>
+> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+>
+> Drive the same training infra directly when you know your config.
 
-  <Card title="Training API" icon="code" href="/fine-tuning/training-api/introduction">
-    Write your own Python training loop on Fireworks GPUs.
-  </Card>
+> **[Training API](/fine-tuning/training-api/introduction)**
+>
+> Write your own Python training loop on Fireworks GPUs.
 
-  <Card title="CLI reference" icon="terminal" href="/tools-sdks/firectl/firectl">
-    Inspect managed training yourself with `firectl`.
-  </Card>
-</CardGroup>
+> **[CLI reference](/tools-sdks/firectl/firectl)**
+>
+> Inspect managed training yourself with `firectl`.

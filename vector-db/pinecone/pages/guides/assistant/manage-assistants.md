@@ -10,32 +10,30 @@ List, describe, update, and delete Pinecone assistants and check assistant statu
 
 You can [get the name, status, and metadata for each assistant](/reference/api/latest/assistant/list_assistants) in your project as in the following example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  for assistant in pc.assistants.list():
-      print(assistant.name, assistant.status)
-  ```
+for assistant in pc.assistants.list():
+    print(assistant.name, assistant.status)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const { assistants } = await pc.assistants.list();
-  console.log(assistants);
-  ```
+const { assistants } = await pc.assistants.list();
+console.log(assistants);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -X GET "https://api.pinecone.io/assistant/assistants" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X GET "https://api.pinecone.io/assistant/assistants" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
 This operation returns a response like the following:
 
@@ -56,41 +54,39 @@ This operation returns a response like the following:
 
 You can use the `name` value to [check the status of an assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).
 
-<Tip>
-  You can list assistants using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
-</Tip>
+> [!TIP]
+>
+> You can list assistants using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
 
 ## Get the status of an assistant
 
 You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_assistant) as in the following example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistants.describe(name="example-assistant")
-  print(assistant.status)
-  ```
+assistant = pc.assistants.describe(name="example-assistant")
+print(assistant.status)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = await pc.assistants.describe('example-assistant');
-  console.log(assistant.status);
-  ```
+const assistant = await pc.assistants.describe('example-assistant');
+console.log(assistant.status);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl -X GET "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X GET "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
 This operation returns a response like the following:
 
@@ -112,9 +108,9 @@ The `status` field has the following possible values:
 * Ready
 * Terminating
 
-<Tip>
-  You can check the status of an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).
-</Tip>
+> [!TIP]
+>
+> You can check the status of an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).
 
 ## Change an assistant's chat model
 
@@ -128,49 +124,47 @@ The chat model is the underlying large language model (LLM) that powers the assi
 
 You can [add or update the instructions](/reference/api/latest/assistant/update_assistant) for an existing assistant. Instructions are a short description or directive for the assistant to apply to all of its responses. For example, you can update the instructions to reflect the assistant's role or purpose.
 
-<Note>
-  Instructions (maximum size 16 KB) are included in every chat API call. Longer instructions increase input token costs for each request and consume more of the LLM's context window, reducing available space for retrieved context and conversation history.
-</Note>
+> [!NOTE]
+>
+> Instructions (maximum size 16 KB) are included in every chat API call. Longer instructions increase input token costs for each request and consume more of the LLM's context window, reducing available space for retrieved context and conversation history.
 
 For example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistants.update(
-      name="example-assistant",
-      instructions="Use American English for spelling and grammar.",
-      metadata={"team": "customer-support", "version": "1.1"},
-  )
-  ```
+assistant = pc.assistants.update(
+    name="example-assistant",
+    instructions="Use American English for spelling and grammar.",
+    metadata={"team": "customer-support", "version": "1.1"},
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await pc.assistants.update({
-    name: 'example-assistant',
-    instructions: 'Use American English for spelling and grammar.',
-    metadata: { team: 'customer-support', version: '1.1' },
-  });
-  ```
+await pc.assistants.update({
+  name: 'example-assistant',
+  instructions: 'Use American English for spelling and grammar.',
+  metadata: { team: 'customer-support', version: '1.1' },
+});
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -X PATCH "https://api.pinecone.io/assistant/assistants/example-assistant" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-    "instructions": "Use American English for spelling and grammar.",
-    "metadata": {"team": "customer-support", "version": "1.1"}
-  }'
-  ```
-</CodeGroup>
+curl -X PATCH "https://api.pinecone.io/assistant/assistants/example-assistant" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "instructions": "Use American English for spelling and grammar.",
+  "metadata": {"team": "customer-support", "version": "1.1"}
+}'
+```
 
 The example above returns a result like the following:
 
@@ -185,44 +179,42 @@ The example above returns a result like the following:
 }
 ```
 
-<Tip>
-  You can add or update instructions for an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).
-</Tip>
+> [!TIP]
+>
+> You can add or update instructions for an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).
 
 ## Delete an assistant
 
 You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) as in the following example:
 
-<Warning>
-  Deleting an assistant also deletes all files uploaded to the assistant.
-</Warning>
+> [!WARNING]
+>
+> Deleting an assistant also deletes all files uploaded to the assistant.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.assistants.delete(name="example-assistant")
-  ```
+pc.assistants.delete(name="example-assistant")
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await pc.assistants.delete('example-assistant');
-  ```
+await pc.assistants.delete('example-assistant');
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl -X DELETE "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X DELETE "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
-<Tip>
-  You can delete an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).
-</Tip>
+> [!TIP]
+>
+> You can delete an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant).

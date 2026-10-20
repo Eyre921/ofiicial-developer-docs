@@ -10,9 +10,9 @@ When you create an organization bot token, you assign scopes that control which 
 
 Each scope combines a resource and a capability, such as `legal-hold:read`.
 
-<Info>
-  The `user` and `permission-group` scopes are available only to eligible Enterprise organizations. If these scopes don't appear in the organization console, contact your Notion representative.
-</Info>
+> [!NOTE]
+>
+> The `user` and `permission-group` scopes are available only to eligible Enterprise organizations. If these scopes don't appear in the organization console, contact your Notion representative.
 
 ## Scope resources
 
@@ -27,9 +27,9 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 | `workflows` | Custom-agent inventory and governance |
 | `workspace` | Workspace data and settings |
 
-<Warning>
-  This table may not include every scope. Each endpoint's reference lists the exact scope it requires.
-</Warning>
+> [!WARNING]
+>
+> This table may not include every scope. Each endpoint's reference lists the exact scope it requires.
 
 ## Scope capabilities
 
@@ -40,6 +40,6 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 | `write-high-impact` | Make sensitive changes, such as revoking credentials or access |
 | `export` | Export a resource |
 
-<Note>
-  Scope capabilities are independent. For example, `permission-group:write` does not grant `permission-group:read`. Assign both scopes when a connection must inspect groups or memberships before changing them.
-</Note>
+> [!NOTE]
+>
+> Scope capabilities are independent. For example, `permission-group:write` does not grant `permission-group:read`. Assign both scopes when a connection must inspect groups or memberships before changing them.

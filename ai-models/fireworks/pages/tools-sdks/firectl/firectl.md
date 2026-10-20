@@ -8,39 +8,37 @@ Learn to create, deploy, and manage resources using Firectl
 
 Firectl can be installed several ways based on your choice and platform.
 
-<CodeGroup>
-  ```bash homebrew theme={null}
-  brew tap fw-ai/firectl
-  brew install firectl
+```bash homebrew theme={null}
+brew tap fw-ai/firectl
+brew install firectl
 
-  # If you encounter a failed SHA256 check, try first running
-  brew update
-  ```
+# If you encounter a failed SHA256 check, try first running
+brew update
+```
 
-  ```bash macOS (Apple Silicon) theme={null}
-  curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
-  gzip -d firectl.gz && chmod a+x firectl
-  sudo mv firectl /usr/local/bin/firectl
-  sudo chown root: /usr/local/bin/firectl
-  ```
+```bash macOS (Apple Silicon) theme={null}
+curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
+gzip -d firectl.gz && chmod a+x firectl
+sudo mv firectl /usr/local/bin/firectl
+sudo chown root: /usr/local/bin/firectl
+```
 
-  ```bash macOS (x86_64) theme={null}
-  curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
-  gzip -d firectl.gz && chmod a+x firectl
-  sudo mv firectl /usr/local/bin/firectl
-  sudo chown root: /usr/local/bin/firectl
-  ```
+```bash macOS (x86_64) theme={null}
+curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
+gzip -d firectl.gz && chmod a+x firectl
+sudo mv firectl /usr/local/bin/firectl
+sudo chown root: /usr/local/bin/firectl
+```
 
-  ```bash Linux  (x86_64) theme={null}
-  wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
-  gunzip firectl.gz
-  sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
-  ```
+```bash Linux  (x86_64) theme={null}
+wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
+gunzip firectl.gz
+sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
+```
 
-  ```Text Windows (64 bit) theme={null}
-  wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
-  ```
-</CodeGroup>
+```Text Windows (64 bit) theme={null}
+wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
+```
 
 ### Sign into Fireworks account
 

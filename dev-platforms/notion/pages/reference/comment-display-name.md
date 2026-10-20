@@ -21,28 +21,26 @@ The Comment Display Name object represents the author name that shows up for a c
 
 Example of a Create Comment request with custom display name:
 
-<CodeGroup>
-  ```json API request theme={null}
-  {
-    "parent": {
-      "page_id": "d0a1ffaf-a4d8-4acf-a1ed-abae6e110418"
-    },
-    "rich_text": [
-      {
-        "text": {
-          "content": "Thanks for checking us out!"
-        }
-      }
-    ],
-    "display_name": {
-      "type": "custom",
-      "custom": {
-        "name": "Notion Bot"
+```json API request theme={null}
+{
+  "parent": {
+    "page_id": "d0a1ffaf-a4d8-4acf-a1ed-abae6e110418"
+  },
+  "rich_text": [
+    {
+      "text": {
+        "content": "Thanks for checking us out!"
       }
     }
+  ],
+  "display_name": {
+    "type": "custom",
+    "custom": {
+      "name": "Notion Bot"
+    }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Response format (output)
 
@@ -55,14 +53,12 @@ The response of Comment APIs like [Create comment](/reference/create-a-comment) 
 | `type` | `string` (enum) | Possible type values are:`"connection"`, `"user"`, or `"custom"` | `"custom"` |
 | `resolved_name` | `string` | The custom display name shown in a comment | `"Notion Bot"` |
 
-<CodeGroup>
-  ```json API Response theme={null}
-  {
-    ...existing parameters omitted,
-    "display_name": {
-      "type": "custom",
-      "resolved_name": "Notion Bot"
-    }
+```json API Response theme={null}
+{
+  ...existing parameters omitted,
+  "display_name": {
+    "type": "custom",
+    "resolved_name": "Notion Bot"
   }
-  ```
-</CodeGroup>
+}
+```

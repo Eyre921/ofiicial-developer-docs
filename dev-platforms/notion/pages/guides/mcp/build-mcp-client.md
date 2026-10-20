@@ -35,64 +35,60 @@ Your client must support:
 
 ## Prerequisites
 
-<Note>
-  This guide uses TypeScript/JavaScript examples, but the concepts apply to any
-  programming language. The OAuth 2.0 flow, PKCE implementation, and MCP
-  protocol are language-agnostic.
-</Note>
+> [!NOTE]
+>
+> This guide uses TypeScript/JavaScript examples, but the concepts apply to any
+> programming language. The OAuth 2.0 flow, PKCE implementation, and MCP
+> protocol are language-agnostic.
 
 **Required libraries (TypeScript/JavaScript):**
 
-<CodeGroup>
-  ```bash npm theme={null}
-  npm install @modelcontextprotocol/sdk
-  npm install oauth  # or openid-client
-  ```
+```bash npm theme={null}
+npm install @modelcontextprotocol/sdk
+npm install oauth  # or openid-client
+```
 
-  ```bash TypeScript types theme={null}
-  npm install --save-dev @types/node
-  ```
-</CodeGroup>
+```bash TypeScript types theme={null}
+npm install --save-dev @types/node
+```
 
 ### Alternative libraries for other languages
 
-<AccordionGroup>
-  <Accordion title="Python">
-    * **MCP SDK**: [python-sdk](https://github.com/modelcontextprotocol/python-sdk) (official)
-    * **OAuth 2.0**: [`authlib`](https://docs.authlib.org) (recommended) or [`requests-oauthlib`](https://requests-oauthlib.readthedocs.io)
-    * **PKCE**: Built into both `authlib` and `requests-oauthlib`
-  </Accordion>
+> **Python**
+>
+> * **MCP SDK**: [python-sdk](https://github.com/modelcontextprotocol/python-sdk) (official)
+> * **OAuth 2.0**: [`authlib`](https://docs.authlib.org) (recommended) or [`requests-oauthlib`](https://requests-oauthlib.readthedocs.io)
+> * **PKCE**: Built into both `authlib` and `requests-oauthlib`
 
-  <Accordion title="Go">
-    * **MCP SDK**: [go-sdk](https://github.com/modelcontextprotocol/go-sdk) (official)
-    * **OAuth 2.0**: [`golang.org/x/oauth2`](https://pkg.go.dev/golang.org/x/oauth2) (official extended package)
-    * **PKCE**: Supported via `oauth2.SetAuthURLParam("code_challenge", ...)` and `oauth2.SetAuthURLParam("code_challenge_method", "S256")`
-  </Accordion>
+> **Go**
+>
+> * **MCP SDK**: [go-sdk](https://github.com/modelcontextprotocol/go-sdk) (official)
+> * **OAuth 2.0**: [`golang.org/x/oauth2`](https://pkg.go.dev/golang.org/x/oauth2) (official extended package)
+> * **PKCE**: Supported via `oauth2.SetAuthURLParam("code_challenge", ...)` and `oauth2.SetAuthURLParam("code_challenge_method", "S256")`
 
-  <Accordion title="Rust">
-    * **MCP SDK**: [rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) (official)
-    * **OAuth 2.0**: [`oauth2`](https://docs.rs/oauth2) crate
-    * **PKCE**: Built into `oauth2` crate via `PkceCodeChallenge` and `PkceCodeVerifier`
-  </Accordion>
+> **Rust**
+>
+> * **MCP SDK**: [rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) (official)
+> * **OAuth 2.0**: [`oauth2`](https://docs.rs/oauth2) crate
+> * **PKCE**: Built into `oauth2` crate via `PkceCodeChallenge` and `PkceCodeVerifier`
 
-  <Accordion title="Java">
-    * **MCP SDK**: Use HTTP client libraries (Apache HttpClient, OkHttp, or Java 11+ `HttpClient`)
-    * **OAuth 2.0**: [`Spring Security OAuth2`](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html) (recommended) or [`ScribeJava`](https://github.com/scribejava/scribejava)
-    * **PKCE**: Built into Spring Security OAuth2 Client; supported in ScribeJava via `PKCE` configuration
-  </Accordion>
+> **Java**
+>
+> * **MCP SDK**: Use HTTP client libraries (Apache HttpClient, OkHttp, or Java 11+ `HttpClient`)
+> * **OAuth 2.0**: [`Spring Security OAuth2`](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html) (recommended) or [`ScribeJava`](https://github.com/scribejava/scribejava)
+> * **PKCE**: Built into Spring Security OAuth2 Client; supported in ScribeJava via `PKCE` configuration
 
-  <Accordion title="C# / .NET">
-    * **MCP SDK**: Use `HttpClient` with [`System.Net.Http.Json`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.json)
-    * **OAuth 2.0**: [`IdentityModel.OidcClient`](https://github.com/IdentityModel/IdentityModel.OidcClient) or [`Microsoft.Identity.Web`](https://learn.microsoft.com/en-us/azure/active-directory/develop/microsoft-identity-web)
-    * **PKCE**: Built into both libraries
-  </Accordion>
+> **C# / .NET**
+>
+> * **MCP SDK**: Use `HttpClient` with [`System.Net.Http.Json`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.json)
+> * **OAuth 2.0**: [`IdentityModel.OidcClient`](https://github.com/IdentityModel/IdentityModel.OidcClient) or [`Microsoft.Identity.Web`](https://learn.microsoft.com/en-us/azure/active-directory/develop/microsoft-identity-web)
+> * **PKCE**: Built into both libraries
 
-  <Accordion title="Ruby">
-    * **MCP SDK**: Use `Net::HTTP` (standard library) or [`Faraday`](https://lostisland.github.io/faraday/)
-    * **OAuth 2.0**: [`oauth2`](https://github.com/oauth-xx/oauth2) gem
-    * **PKCE**: Supported via `oauth2` gem with appropriate configuration
-  </Accordion>
-</AccordionGroup>
+> **Ruby**
+>
+> * **MCP SDK**: Use `Net::HTTP` (standard library) or [`Faraday`](https://lostisland.github.io/faraday/)
+> * **OAuth 2.0**: [`oauth2`](https://github.com/oauth-xx/oauth2) gem
+> * **PKCE**: Supported via `oauth2` gem with appropriate configuration
 
 ### Key references
 
@@ -126,88 +122,86 @@ use.
 Here's a function that implements the complete RFC 9470 → RFC 8414 discovery
 flow:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  type OAuthMetadata = {
-    issuer: string
-    authorization_endpoint: string
-    token_endpoint: string
-    registration_endpoint?: string
-    introspection_endpoint?: string
-    code_challenge_methods_supported?: string[]
-    grant_types_supported?: string[]
-    response_types_supported?: string[]
-    scopes_supported?: string[]
+```typescript TypeScript theme={null}
+type OAuthMetadata = {
+  issuer: string
+  authorization_endpoint: string
+  token_endpoint: string
+  registration_endpoint?: string
+  introspection_endpoint?: string
+  code_challenge_methods_supported?: string[]
+  grant_types_supported?: string[]
+  response_types_supported?: string[]
+  scopes_supported?: string[]
+}
+
+/**
+ * Discovers OAuth configuration for an MCP server using RFC 9470 + RFC 8414.
+ */
+async function discoverOAuthMetadata(
+  mcpServerUrl: string
+): Promise<OAuthMetadata> {
+  const url = new URL(mcpServerUrl)
+  const protectedResourceUrl = new URL(
+    "/.well-known/oauth-protected-resource",
+    url
+  )
+
+  // Step 1: RFC 9470 - Get Protected Resource Metadata
+  const protectedResourceResponse = await fetch(
+    protectedResourceUrl.toString()
+  )
+  if (!protectedResourceResponse.ok) {
+    throw new Error(
+      `Failed to fetch protected resource metadata: ` +
+      `${protectedResourceResponse.status}`
+    )
   }
 
-  /**
-   * Discovers OAuth configuration for an MCP server using RFC 9470 + RFC 8414.
-   */
-  async function discoverOAuthMetadata(
-    mcpServerUrl: string
-  ): Promise<OAuthMetadata> {
-    const url = new URL(mcpServerUrl)
-    const protectedResourceUrl = new URL(
-      "/.well-known/oauth-protected-resource",
-      url
+  const protectedResource = await protectedResourceResponse.json()
+  const authServers = protectedResource.authorization_servers
+
+  if (!Array.isArray(authServers) || authServers.length === 0) {
+    throw new Error(
+      "No authorization servers found in protected resource metadata"
     )
-
-    // Step 1: RFC 9470 - Get Protected Resource Metadata
-    const protectedResourceResponse = await fetch(
-      protectedResourceUrl.toString()
-    )
-    if (!protectedResourceResponse.ok) {
-      throw new Error(
-        `Failed to fetch protected resource metadata: ` +
-        `${protectedResourceResponse.status}`
-      )
-    }
-
-    const protectedResource = await protectedResourceResponse.json()
-    const authServers = protectedResource.authorization_servers
-
-    if (!Array.isArray(authServers) || authServers.length === 0) {
-      throw new Error(
-        "No authorization servers found in protected resource metadata"
-      )
-    }
-
-    // Use the first authorization server
-    const authServerUrl = authServers[0]
-
-    // Step 2: RFC 8414 - Get Authorization Server Metadata
-    const metadataUrl = new URL(
-      "/.well-known/oauth-authorization-server",
-      authServerUrl
-    )
-    const metadataResponse = await fetch(metadataUrl.toString())
-
-    if (!metadataResponse.ok) {
-      throw new Error(
-        `Failed to fetch authorization server metadata: ` +
-        `${metadataResponse.status}`
-      )
-    }
-
-    const metadata = (await metadataResponse.json()) as OAuthMetadata
-
-    // Validate required fields
-    if (!metadata.authorization_endpoint || !metadata.token_endpoint) {
-      throw new Error("Missing required OAuth endpoints in metadata")
-    }
-
-    // Warn if PKCE support isn't advertised
-    if (!metadata.code_challenge_methods_supported?.includes("S256")) {
-      console.warn(
-        "Server does not advertise S256 PKCE support, " +
-        "but we will use it anyway"
-      )
-    }
-
-    return metadata
   }
-  ```
-</CodeGroup>
+
+  // Use the first authorization server
+  const authServerUrl = authServers[0]
+
+  // Step 2: RFC 8414 - Get Authorization Server Metadata
+  const metadataUrl = new URL(
+    "/.well-known/oauth-authorization-server",
+    authServerUrl
+  )
+  const metadataResponse = await fetch(metadataUrl.toString())
+
+  if (!metadataResponse.ok) {
+    throw new Error(
+      `Failed to fetch authorization server metadata: ` +
+      `${metadataResponse.status}`
+    )
+  }
+
+  const metadata = (await metadataResponse.json()) as OAuthMetadata
+
+  // Validate required fields
+  if (!metadata.authorization_endpoint || !metadata.token_endpoint) {
+    throw new Error("Missing required OAuth endpoints in metadata")
+  }
+
+  // Warn if PKCE support isn't advertised
+  if (!metadata.code_challenge_methods_supported?.includes("S256")) {
+    console.warn(
+      "Server does not advertise S256 PKCE support, " +
+      "but we will use it anyway"
+    )
+  }
+
+  return metadata
+}
+```
 
 **What this does:**
 
@@ -222,296 +216,286 @@ flow:
 4. Validates that all required fields are present and warns if PKCE support
    isn't advertised
 
-<Note>
-  This approach is universal and works for any MCP server that follows RFC 9470
-  and RFC 8414 standards, not just Notion's MCP server.
-</Note>
+> [!NOTE]
+>
+> This approach is universal and works for any MCP server that follows RFC 9470
+> and RFC 8414 standards, not just Notion's MCP server.
 
 ## Step 2: Generate PKCE parameters
 
 PKCE (Proof Key for Code Exchange) is mandatory for secure OAuth flows.
 Generate a code verifier and challenge:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  import { randomBytes, createHash } from "crypto"
+```typescript TypeScript theme={null}
+import { randomBytes, createHash } from "crypto"
 
-  function base64URLEncode(str: Buffer): string {
-    return str
-      .toString("base64")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=/g, "")
-  }
+function base64URLEncode(str: Buffer): string {
+  return str
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "")
+}
 
-  function generateCodeVerifier(): string {
-    // Generate 32 random bytes = 256 bits
-    // Base64 encoding produces ~43 characters
-    const bytes = randomBytes(32)
-    return base64URLEncode(bytes)
-  }
+function generateCodeVerifier(): string {
+  // Generate 32 random bytes = 256 bits
+  // Base64 encoding produces ~43 characters
+  const bytes = randomBytes(32)
+  return base64URLEncode(bytes)
+}
 
-  function generateCodeChallenge(verifier: string): string {
-    const hash = createHash("sha256").update(verifier).digest()
-    return base64URLEncode(hash)
-  }
+function generateCodeChallenge(verifier: string): string {
+  const hash = createHash("sha256").update(verifier).digest()
+  return base64URLEncode(hash)
+}
 
-  // Usage
-  const codeVerifier = generateCodeVerifier()
-  const codeChallenge = generateCodeChallenge(codeVerifier)
+// Usage
+const codeVerifier = generateCodeVerifier()
+const codeChallenge = generateCodeChallenge(codeVerifier)
 
-  // Store codeVerifier securely - you'll need it for token exchange
-  ```
-</CodeGroup>
+// Store codeVerifier securely - you'll need it for token exchange
+```
 
-<Warning>
-  The `codeVerifier` must be kept secret and never sent to the authorization
-  server until the token exchange step. Store it securely (encrypted session,
-  secure cookie, or in-memory with short expiry).
-</Warning>
+> [!WARNING]
+>
+> The `codeVerifier` must be kept secret and never sent to the authorization
+> server until the token exchange step. Store it securely (encrypted session,
+> secure cookie, or in-memory with short expiry).
 
 ## Step 3: Dynamic client registration
 
 Notion MCP server supports dynamic client registration (RFC 7591). Check if
 `registration_endpoint` exists in the metadata:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  type ClientRegistration = {
-    client_name: string
-    client_uri?: string
-    redirect_uris: string[]
-    grant_types: string[]
-    response_types: string[]
-    token_endpoint_auth_method: string
-    scope?: string
+```typescript TypeScript theme={null}
+type ClientRegistration = {
+  client_name: string
+  client_uri?: string
+  redirect_uris: string[]
+  grant_types: string[]
+  response_types: string[]
+  token_endpoint_auth_method: string
+  scope?: string
+}
+
+type ClientCredentials = {
+  client_id: string
+  client_secret?: string
+  client_id_issued_at?: number
+  client_secret_expires_at?: number
+}
+
+async function registerClient(
+  metadata: OAuthMetadata,
+  redirectUri: string
+): Promise<ClientCredentials> {
+  if (!metadata.registration_endpoint) {
+    throw new Error("Server does not support dynamic client registration")
   }
 
-  type ClientCredentials = {
-    client_id: string
-    client_secret?: string
-    client_id_issued_at?: number
-    client_secret_expires_at?: number
+  const registrationRequest: ClientRegistration = {
+    client_name: "Your MCP Client",
+    client_uri: "https://example.com",
+    redirect_uris: [redirectUri],
+    grant_types: ["authorization_code", "refresh_token"],
+    response_types: ["code"],
+    token_endpoint_auth_method: "none",
   }
 
-  async function registerClient(
-    metadata: OAuthMetadata,
-    redirectUri: string
-  ): Promise<ClientCredentials> {
-    if (!metadata.registration_endpoint) {
-      throw new Error("Server does not support dynamic client registration")
-    }
+  const response = await fetch(metadata.registration_endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(registrationRequest),
+  })
 
-    const registrationRequest: ClientRegistration = {
-      client_name: "Your MCP Client",
-      client_uri: "https://example.com",
-      redirect_uris: [redirectUri],
-      grant_types: ["authorization_code", "refresh_token"],
-      response_types: ["code"],
-      token_endpoint_auth_method: "none",
-    }
-
-    const response = await fetch(metadata.registration_endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(registrationRequest),
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.text()
-      throw new Error(
-        `Client registration failed: ${response.status} - ${errorBody}`
-      )
-    }
-
-    const credentials = (await response.json()) as ClientCredentials
-
-    // Store credentials securely
-    return credentials
+  if (!response.ok) {
+    const errorBody = await response.text()
+    throw new Error(
+      `Client registration failed: ${response.status} - ${errorBody}`
+    )
   }
-  ```
-</CodeGroup>
+
+  const credentials = (await response.json()) as ClientCredentials
+
+  // Store credentials securely
+  return credentials
+}
+```
 
 ## Step 4: Initiate authorization flow
 
 Redirect the user to the authorization endpoint with PKCE parameters:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  function buildAuthorizationUrl(
-    metadata: OAuthMetadata,
-    clientId: string,
-    redirectUri: string,
-    codeChallenge: string,
-    state: string,
-    scopes: string[] = []
-  ): string {
-    const params = new URLSearchParams({
-      response_type: "code",
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      scope: scopes.join(" "),
-      state: state,
-      code_challenge: codeChallenge,
-      code_challenge_method: "S256",
-      prompt: "consent",
-    })
+```typescript TypeScript theme={null}
+function buildAuthorizationUrl(
+  metadata: OAuthMetadata,
+  clientId: string,
+  redirectUri: string,
+  codeChallenge: string,
+  state: string,
+  scopes: string[] = []
+): string {
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    scope: scopes.join(" "),
+    state: state,
+    code_challenge: codeChallenge,
+    code_challenge_method: "S256",
+    prompt: "consent",
+  })
 
-    return `${metadata.authorization_endpoint}?${params.toString()}`
-  }
+  return `${metadata.authorization_endpoint}?${params.toString()}`
+}
 
-  function generateState(): string {
-    return randomBytes(32).toString("hex")
-  }
+function generateState(): string {
+  return randomBytes(32).toString("hex")
+}
 
-  // Usage
-  const state = generateState()
-  const authorizationUrl = buildAuthorizationUrl(
-    metadata,
-    clientId,
-    redirectUri,
-    codeChallenge,
-    state
-  )
+// Usage
+const state = generateState()
+const authorizationUrl = buildAuthorizationUrl(
+  metadata,
+  clientId,
+  redirectUri,
+  codeChallenge,
+  state
+)
 
-  // Store state and codeVerifier in secure session storage
-  // Redirect user to authorizationUrl
-  window.location.href = authorizationUrl // Browser redirect
-  ```
-</CodeGroup>
+// Store state and codeVerifier in secure session storage
+// Redirect user to authorizationUrl
+window.location.href = authorizationUrl // Browser redirect
+```
 
-<Warning>
-  **Security best practices:**
-
-  * Always use HTTPS for redirect URIs in production
-  * Store `state` and `codeVerifier` securely (encrypted session storage)
-  * Set a short expiry (10 minutes) for stored values
-  * Validate `state` on callback to prevent CSRF attacks
-</Warning>
+> [!WARNING]
+>
+> **Security best practices:**
+>
+> * Always use HTTPS for redirect URIs in production
+> * Store `state` and `codeVerifier` securely (encrypted session storage)
+> * Set a short expiry (10 minutes) for stored values
+> * Validate `state` on callback to prevent CSRF attacks
 
 ## Step 5: Handle OAuth callback
 
 After user authorizes, they'll be redirected back to your `redirectUri` with an
 authorization code:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  interface CallbackParams {
-    code?: string
-    state?: string
-    error?: string
-    error_description?: string
+```typescript TypeScript theme={null}
+interface CallbackParams {
+  code?: string
+  state?: string
+  error?: string
+  error_description?: string
+}
+
+function parseCallback(url: string): CallbackParams {
+  const urlParams = new URLSearchParams(new URL(url).search)
+
+  return {
+    code: urlParams.get("code") || undefined,
+    state: urlParams.get("state") || undefined,
+    error: urlParams.get("error") || undefined,
+    error_description: urlParams.get("error_description") || undefined,
+  }
+}
+
+async function handleCallback(
+  callbackUrl: string,
+  storedState: string,
+  codeVerifier: string
+): Promise<string> {
+  const params = parseCallback(callbackUrl)
+
+  if (params.error) {
+    throw new Error(
+      `OAuth error: ${params.error} - ` +
+      `${params.error_description || "Unknown error"}`
+    )
   }
 
-  function parseCallback(url: string): CallbackParams {
-    const urlParams = new URLSearchParams(new URL(url).search)
-
-    return {
-      code: urlParams.get("code") || undefined,
-      state: urlParams.get("state") || undefined,
-      error: urlParams.get("error") || undefined,
-      error_description: urlParams.get("error_description") || undefined,
-    }
+  if (params.state !== storedState) {
+    throw new Error("Invalid state parameter - possible CSRF attack")
   }
 
-  async function handleCallback(
-    callbackUrl: string,
-    storedState: string,
-    codeVerifier: string
-  ): Promise<string> {
-    const params = parseCallback(callbackUrl)
-
-    if (params.error) {
-      throw new Error(
-        `OAuth error: ${params.error} - ` +
-        `${params.error_description || "Unknown error"}`
-      )
-    }
-
-    if (params.state !== storedState) {
-      throw new Error("Invalid state parameter - possible CSRF attack")
-    }
-
-    if (!params.code) {
-      throw new Error("Missing authorization code")
-    }
-
-    return params.code
+  if (!params.code) {
+    throw new Error("Missing authorization code")
   }
-  ```
-</CodeGroup>
+
+  return params.code
+}
+```
 
 ## Step 6: Exchange authorization code for tokens
 
 Exchange the authorization code for access and refresh tokens:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  type TokenResponse = {
-    access_token: string
-    token_type: string
-    expires_in?: number
-    refresh_token?: string
-    scope?: string
-    // Identity fields, sent only on authorization-code exchanges
-    user_id?: string
-    workspace_id?: string
-    email_domain?: string
-    bot_id?: string
-    workspace_name?: string | null
-    workspace_icon?: string | null
+```typescript TypeScript theme={null}
+type TokenResponse = {
+  access_token: string
+  token_type: string
+  expires_in?: number
+  refresh_token?: string
+  scope?: string
+  // Identity fields, sent only on authorization-code exchanges
+  user_id?: string
+  workspace_id?: string
+  email_domain?: string
+  bot_id?: string
+  workspace_name?: string | null
+  workspace_icon?: string | null
+}
+
+async function exchangeCodeForTokens(
+  code: string,
+  codeVerifier: string,
+  metadata: OAuthMetadata,
+  clientId: string,
+  clientSecret: string | undefined,
+  redirectUri: string
+): Promise<TokenResponse> {
+  const params = new URLSearchParams({
+    grant_type: "authorization_code",
+    code: code,
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    code_verifier: codeVerifier,
+  })
+
+  if (clientSecret) {
+    params.append("client_secret", clientSecret)
   }
 
-  async function exchangeCodeForTokens(
-    code: string,
-    codeVerifier: string,
-    metadata: OAuthMetadata,
-    clientId: string,
-    clientSecret: string | undefined,
-    redirectUri: string
-  ): Promise<TokenResponse> {
-    const params = new URLSearchParams({
-      grant_type: "authorization_code",
-      code: code,
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      code_verifier: codeVerifier,
-    })
+  const response = await fetch(metadata.token_endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
+      "User-Agent": "YourApp-MCP-Client/1.0",
+    },
+    body: params.toString(),
+  })
 
-    if (clientSecret) {
-      params.append("client_secret", clientSecret)
-    }
-
-    const response = await fetch(metadata.token_endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Accept: "application/json",
-        "User-Agent": "YourApp-MCP-Client/1.0",
-      },
-      body: params.toString(),
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.text()
-      throw new Error(
-        `Token exchange failed: ${response.status} - ${errorBody}`
-      )
-    }
-
-    const tokens = await response.json()
-
-    if (!tokens.access_token) {
-      throw new Error("Missing access_token in response")
-    }
-
-    return tokens
+  if (!response.ok) {
+    const errorBody = await response.text()
+    throw new Error(
+      `Token exchange failed: ${response.status} - ${errorBody}`
+    )
   }
-  ```
-</CodeGroup>
+
+  const tokens = await response.json()
+
+  if (!tokens.access_token) {
+    throw new Error("Missing access_token in response")
+  }
+
+  return tokens
+}
+```
 
 A successful authorization-code exchange also says who connected. Refresh
 responses don't include these fields, so store them from the first exchange.
@@ -532,98 +516,96 @@ when Notion doesn't have the connection's details, and the two workspace fields
 can be `null`. To get the user's name or email address, or to look up identity
 later, see [Identify the connected workspace](#identify-the-connected-workspace).
 
-<Note>
-  Notion may add fields to the token response over time. Parse it leniently
-  and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
-</Note>
+> [!NOTE]
+>
+> Notion may add fields to the token response over time. Parse it leniently
+> and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
 
-<Warning>
-  **Token storage security:**
-
-  * **Web applications:** Store tokens server-side only, never in localStorage
-    or cookies
-  * **Desktop applications:** Use secure credential storage (Keychain on macOS,
-    Credential Manager on Windows)
-  * **Mobile applications:** Use secure keychain/keystore APIs
-  * Always encrypt tokens at rest
-</Warning>
+> [!WARNING]
+>
+> **Token storage security:**
+>
+> * **Web applications:** Store tokens server-side only, never in localStorage
+>   or cookies
+> * **Desktop applications:** Use secure credential storage (Keychain on macOS,
+>   Credential Manager on Windows)
+> * **Mobile applications:** Use secure keychain/keystore APIs
+> * Always encrypt tokens at rest
 
 ## Step 7: Connect to MCP server with authentication
 
 Notion's MCP server supports two transport protocols. Your client should try
 Streamable HTTP first and automatically fall back to SSE if needed.
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-  import {
-    StreamableHTTPClientTransport
-  } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-  import {
-    SSEClientTransport
-  } from "@modelcontextprotocol/sdk/client/sse.js"
+```typescript TypeScript theme={null}
+import { Client } from "@modelcontextprotocol/sdk/client/index.js"
+import {
+  StreamableHTTPClientTransport
+} from "@modelcontextprotocol/sdk/client/streamableHttp.js"
+import {
+  SSEClientTransport
+} from "@modelcontextprotocol/sdk/client/sse.js"
 
-  async function createMcpClient(
-    serverUrl: string,
-    accessToken: string,
-    useSSE: boolean = false
-  ): Promise<Client> {
-    const client = new Client(
-      {
-        name: "your-mcp-client",
-        version: "1.0.0",
+async function createMcpClient(
+  serverUrl: string,
+  accessToken: string,
+  useSSE: boolean = false
+): Promise<Client> {
+  const client = new Client(
+    {
+      name: "your-mcp-client",
+      version: "1.0.0",
+    },
+    {
+      capabilities: {
+        roots: {},
+        sampling: {},
       },
-      {
-        capabilities: {
-          roots: {},
-          sampling: {},
+    }
+  )
+
+  let transport
+
+  if (useSSE) {
+    transport = new SSEClientTransport(new URL(`${serverUrl}/sse`), {
+      requestInit: {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "User-Agent": "YourApp-MCP-Client/1.0",
         },
-      }
-    )
-
-    let transport
-
-    if (useSSE) {
-      transport = new SSEClientTransport(new URL(`${serverUrl}/sse`), {
+      },
+    })
+  } else {
+    transport = new StreamableHTTPClientTransport(
+      new URL(`${serverUrl}/mcp`),
+      {
         requestInit: {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "User-Agent": "YourApp-MCP-Client/1.0",
           },
         },
-      })
-    } else {
-      transport = new StreamableHTTPClientTransport(
-        new URL(`${serverUrl}/mcp`),
-        {
-          requestInit: {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "User-Agent": "YourApp-MCP-Client/1.0",
-            },
-          },
-        }
-      )
-    }
-
-    await client.connect(transport)
-
-    return client
+      }
+    )
   }
 
-  // Usage with automatic fallback
-  async function connectToNotionMcp(accessToken: string): Promise<Client> {
-    const serverUrl = "https://mcp.notion.com"
+  await client.connect(transport)
 
-    try {
-      return await createMcpClient(serverUrl, accessToken, false)
-    } catch (error) {
-      console.warn("Streamable HTTP failed, falling back to SSE:", error)
-      return await createMcpClient(serverUrl, accessToken, true)
-    }
+  return client
+}
+
+// Usage with automatic fallback
+async function connectToNotionMcp(accessToken: string): Promise<Client> {
+  const serverUrl = "https://mcp.notion.com"
+
+  try {
+    return await createMcpClient(serverUrl, accessToken, false)
+  } catch (error) {
+    console.warn("Streamable HTTP failed, falling back to SSE:", error)
+    return await createMcpClient(serverUrl, accessToken, true)
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Session ids on the Streamable HTTP endpoint
 
@@ -653,23 +635,21 @@ If `user.type` is `bot`, the connection acts as a workspace bot and no person
 email is available; use `user_id` from the authorization-code token response to
 identify the person who authorized the connection.
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  const result = await client.callTool({
-    name: "notion-get-self",
-    arguments: {},
-  })
+```typescript TypeScript theme={null}
+const result = await client.callTool({
+  name: "notion-get-self",
+  arguments: {},
+})
 
-  const [block] = result.content
-  if (result.isError || block?.type !== "text") {
-    throw new Error("Could not read identity from notion-get-self")
-  }
+const [block] = result.content
+if (result.isError || block?.type !== "text") {
+  throw new Error("Could not read identity from notion-get-self")
+}
 
-  const { workspace, user } = JSON.parse(block.text)
-  console.log(workspace.id, workspace.name)
-  console.log(user.type, user.id, user.name, user.email)
-  ```
-</CodeGroup>
+const { workspace, user } = JSON.parse(block.text)
+console.log(workspace.id, workspace.name)
+console.log(user.type, user.id, user.name, user.email)
+```
 
 The text block contains a JSON object with stable `workspace` and `user`
 fields. See [Supported tools](/guides/mcp/mcp-supported-tools) for their shapes.
@@ -697,116 +677,114 @@ a form-encoded `token` parameter, and authenticate with the same method you
 use at the token endpoint. Public clients send only `client_id`. A client can
 only introspect its own tokens.
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  type TokenIntrospectionResponse = {
-    active: boolean
-    client_id?: string
-    scope?: string
-    token_type?: "bearer"
-    exp?: number
-    iat?: number
-    sub?: string
-    aud?: string | string[]
-    iss?: string
-    user_id?: string
-    workspace_id?: string
+```typescript TypeScript theme={null}
+type TokenIntrospectionResponse = {
+  active: boolean
+  client_id?: string
+  scope?: string
+  token_type?: "bearer"
+  exp?: number
+  iat?: number
+  sub?: string
+  aud?: string | string[]
+  iss?: string
+  user_id?: string
+  workspace_id?: string
+}
+
+type TokenEndpointAuthMethod =
+  | "client_secret_basic"
+  | "client_secret_post"
+  | "none"
+
+async function introspectToken(
+  token: string,
+  metadata: OAuthMetadata,
+  clientId: string,
+  tokenEndpointAuthMethod: TokenEndpointAuthMethod,
+  clientSecret: string | undefined
+): Promise<TokenIntrospectionResponse> {
+  const endpoint = metadata.introspection_endpoint
+  if (!endpoint) {
+    throw new Error("Authorization server does not support token introspection")
   }
 
-  type TokenEndpointAuthMethod =
-    | "client_secret_basic"
-    | "client_secret_post"
-    | "none"
+  const body = new URLSearchParams({ token })
+  const headers = new Headers({
+    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: "application/json",
+  })
 
-  async function introspectToken(
-    token: string,
-    metadata: OAuthMetadata,
-    clientId: string,
-    tokenEndpointAuthMethod: TokenEndpointAuthMethod,
-    clientSecret: string | undefined
-  ): Promise<TokenIntrospectionResponse> {
-    const endpoint = metadata.introspection_endpoint
-    if (!endpoint) {
-      throw new Error("Authorization server does not support token introspection")
+  if (tokenEndpointAuthMethod === "client_secret_basic") {
+    if (!clientSecret) {
+      throw new Error("Client secret is required for client_secret_basic")
     }
-
-    const body = new URLSearchParams({ token })
-    const headers = new Headers({
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    })
-
-    if (tokenEndpointAuthMethod === "client_secret_basic") {
-      if (!clientSecret) {
-        throw new Error("Client secret is required for client_secret_basic")
-      }
-      const credentials = `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`
-      headers.set("Authorization", `Basic ${btoa(credentials)}`)
-    } else if (tokenEndpointAuthMethod === "client_secret_post") {
-      if (!clientSecret) {
-        throw new Error("Client secret is required for client_secret_post")
-      }
-      body.set("client_id", clientId)
-      body.set("client_secret", clientSecret)
-    } else {
-      body.set("client_id", clientId)
+    const credentials = `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`
+    headers.set("Authorization", `Basic ${btoa(credentials)}`)
+  } else if (tokenEndpointAuthMethod === "client_secret_post") {
+    if (!clientSecret) {
+      throw new Error("Client secret is required for client_secret_post")
     }
-
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers,
-      body,
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.text()
-      throw new Error(
-        `Token introspection failed: ${response.status} - ${errorBody}`
-      )
-    }
-
-    const tokenInfo: unknown = await response.json()
-    if (!isTokenIntrospectionResponse(tokenInfo)) {
-      throw new Error("Invalid token introspection response")
-    }
-
-    return tokenInfo
+    body.set("client_id", clientId)
+    body.set("client_secret", clientSecret)
+  } else {
+    body.set("client_id", clientId)
   }
 
-  function isTokenIntrospectionResponse(
-    value: unknown
-  ): value is TokenIntrospectionResponse {
-    if (
-      typeof value !== "object" ||
-      value === null ||
-      !("active" in value) ||
-      typeof value.active !== "boolean"
-    ) {
-      return false
-    }
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers,
+    body,
+  })
 
-    return (
-      (!("client_id" in value) || typeof value.client_id === "string") &&
-      (!("scope" in value) || typeof value.scope === "string") &&
-      (!("token_type" in value) || value.token_type === "bearer") &&
-      (!("exp" in value) || typeof value.exp === "number") &&
-      (!("iat" in value) || typeof value.iat === "number") &&
-      (!("sub" in value) || typeof value.sub === "string") &&
-      (!("aud" in value) || isStringOrStringArray(value.aud)) &&
-      (!("iss" in value) || typeof value.iss === "string") &&
-      (!("user_id" in value) || typeof value.user_id === "string") &&
-      (!("workspace_id" in value) || typeof value.workspace_id === "string")
+  if (!response.ok) {
+    const errorBody = await response.text()
+    throw new Error(
+      `Token introspection failed: ${response.status} - ${errorBody}`
     )
   }
 
-  function isStringOrStringArray(value: unknown): value is string | string[] {
-    return (
-      typeof value === "string" ||
-      (Array.isArray(value) && value.every(item => typeof item === "string"))
-    )
+  const tokenInfo: unknown = await response.json()
+  if (!isTokenIntrospectionResponse(tokenInfo)) {
+    throw new Error("Invalid token introspection response")
   }
-  ```
-</CodeGroup>
+
+  return tokenInfo
+}
+
+function isTokenIntrospectionResponse(
+  value: unknown
+): value is TokenIntrospectionResponse {
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("active" in value) ||
+    typeof value.active !== "boolean"
+  ) {
+    return false
+  }
+
+  return (
+    (!("client_id" in value) || typeof value.client_id === "string") &&
+    (!("scope" in value) || typeof value.scope === "string") &&
+    (!("token_type" in value) || value.token_type === "bearer") &&
+    (!("exp" in value) || typeof value.exp === "number") &&
+    (!("iat" in value) || typeof value.iat === "number") &&
+    (!("sub" in value) || typeof value.sub === "string") &&
+    (!("aud" in value) || isStringOrStringArray(value.aud)) &&
+    (!("iss" in value) || typeof value.iss === "string") &&
+    (!("user_id" in value) || typeof value.user_id === "string") &&
+    (!("workspace_id" in value) || typeof value.workspace_id === "string")
+  )
+}
+
+function isStringOrStringArray(value: unknown): value is string | string[] {
+  return (
+    typeof value === "string" ||
+    (Array.isArray(value) && value.every(item => typeof item === "string"))
+  )
+}
+```
 
 An active token returns `active: true` with `client_id`, `scope`, `iat`, `sub`,
 and `iss`, plus `user_id`, `exp`, and `aud` when Notion has them. Access tokens
@@ -825,23 +803,21 @@ connection lists, which can be `notion-ai-search`. See
 If your client wants plan or parameter details up front, call
 `notion-get-tool-access` with `{}` once and reuse the map for this connection.
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  const result = await client.callTool({
-    name: "notion-get-tool-access",
-    arguments: {},
-  })
+```typescript TypeScript theme={null}
+const result = await client.callTool({
+  name: "notion-get-tool-access",
+  arguments: {},
+})
 
-  const [block] = result.content
-  if (result.isError || block?.type !== "text") {
-    throw new Error("Could not read tool access from notion-get-tool-access")
-  }
+const [block] = result.content
+if (result.isError || block?.type !== "text") {
+  throw new Error("Could not read tool access from notion-get-tool-access")
+}
 
-  const { current_tool_access } = JSON.parse(block.text)
-  console.log(current_tool_access)
-  // { [toolName]: { status, restricted_parameters?, upgrade_url?, ... } }
-  ```
-</CodeGroup>
+const { current_tool_access } = JSON.parse(block.text)
+console.log(current_tool_access)
+// { [toolName]: { status, restricted_parameters?, upgrade_url?, ... } }
+```
 
 The map includes only tools the server exposes to this connection. In sessions
 that list one search tool, it still reports AI search access under `ai_search`.
@@ -864,210 +840,206 @@ recovery links, and search behavior.
 
 Access tokens expire. Implement automatic refresh with proper error handling:
 
-<CodeGroup>
-  ```typescript TypeScript expandable theme={null}
-  async function refreshAccessToken(
-    refreshToken: string,
-    metadata: OAuthMetadata,
-    clientId: string,
-    clientSecret: string | undefined
-  ): Promise<TokenResponse> {
-    const params = new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: clientId,
-    })
+```typescript TypeScript expandable theme={null}
+async function refreshAccessToken(
+  refreshToken: string,
+  metadata: OAuthMetadata,
+  clientId: string,
+  clientSecret: string | undefined
+): Promise<TokenResponse> {
+  const params = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+    client_id: clientId,
+  })
 
-    if (clientSecret) {
-      params.append("client_secret", clientSecret)
-    }
-
-    const response = await fetch(metadata.token_endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Accept: "application/json",
-      },
-      body: params.toString(),
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.text()
-
-      try {
-        const error = JSON.parse(errorBody)
-        if (error.error === "invalid_grant") {
-          throw new Error("REAUTH_REQUIRED")
-        }
-        if (error.error === "invalid_client") {
-          throw new Error("INVALID_CLIENT")
-        }
-      } catch (parseError) {
-        // Not JSON error response
-      }
-
-      throw new Error(
-        `Token refresh failed: ${response.status} - ${errorBody}`
-      )
-    }
-
-    const tokens = await response.json()
-
-    return tokens
+  if (clientSecret) {
+    params.append("client_secret", clientSecret)
   }
-  ```
-</CodeGroup>
 
-<Note>
-  Many servers rotate refresh tokens for security (RFC 6749 Section 10.4).
-  Always store the new `refresh_token` if provided in the response.
-</Note>
+  const response = await fetch(metadata.token_endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
+    },
+    body: params.toString(),
+  })
+
+  if (!response.ok) {
+    const errorBody = await response.text()
+
+    try {
+      const error = JSON.parse(errorBody)
+      if (error.error === "invalid_grant") {
+        throw new Error("REAUTH_REQUIRED")
+      }
+      if (error.error === "invalid_client") {
+        throw new Error("INVALID_CLIENT")
+      }
+    } catch (parseError) {
+      // Not JSON error response
+    }
+
+    throw new Error(
+      `Token refresh failed: ${response.status} - ${errorBody}`
+    )
+  }
+
+  const tokens = await response.json()
+
+  return tokens
+}
+```
+
+> [!NOTE]
+>
+> Many servers rotate refresh tokens for security (RFC 6749 Section 10.4).
+> Always store the new `refresh_token` if provided in the response.
 
 ## Complete example
 
 Here's a complete class that ties all the steps together:
 
-<CodeGroup>
-  ```typescript TypeScript expandable theme={null}
-  import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-  import {
-    StreamableHTTPClientTransport
-  } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-  import {
-    SSEClientTransport
-  } from "@modelcontextprotocol/sdk/client/sse.js"
-  import { randomBytes, createHash } from "crypto"
+```typescript TypeScript expandable theme={null}
+import { Client } from "@modelcontextprotocol/sdk/client/index.js"
+import {
+  StreamableHTTPClientTransport
+} from "@modelcontextprotocol/sdk/client/streamableHttp.js"
+import {
+  SSEClientTransport
+} from "@modelcontextprotocol/sdk/client/sse.js"
+import { randomBytes, createHash } from "crypto"
 
-  class NotionMcpClient {
-    private serverUrl = "https://mcp.notion.com"
-    private metadata!: OAuthMetadata
-    private clientId!: string
-    private clientSecret?: string
-    private accessToken?: string
-    private refreshToken?: string
-    private client?: Client
+class NotionMcpClient {
+  private serverUrl = "https://mcp.notion.com"
+  private metadata!: OAuthMetadata
+  private clientId!: string
+  private clientSecret?: string
+  private accessToken?: string
+  private refreshToken?: string
+  private client?: Client
 
-    async initialize(redirectUri: string): Promise<void> {
-      this.metadata = await discoverOAuthMetadata(this.serverUrl)
-      const credentials = await registerClient(this.metadata, redirectUri)
-      this.clientId = credentials.client_id
-      this.clientSecret = credentials.client_secret
+  async initialize(redirectUri: string): Promise<void> {
+    this.metadata = await discoverOAuthMetadata(this.serverUrl)
+    const credentials = await registerClient(this.metadata, redirectUri)
+    this.clientId = credentials.client_id
+    this.clientSecret = credentials.client_secret
+  }
+
+  async startAuthFlow(redirectUri: string): Promise<string> {
+    const codeVerifier = generateCodeVerifier()
+    const codeChallenge = generateCodeChallenge(codeVerifier)
+    const state = generateState()
+
+    // Store these securely
+    this.storeSecurely("codeVerifier", codeVerifier)
+    this.storeSecurely("state", state)
+
+    return buildAuthorizationUrl(
+      this.metadata,
+      this.clientId,
+      redirectUri,
+      codeChallenge,
+      state
+    )
+  }
+
+  async handleCallback(
+    callbackUrl: string,
+    redirectUri: string
+  ): Promise<void> {
+    const storedState = this.retrieveSecurely("state")
+    const codeVerifier = this.retrieveSecurely("codeVerifier")
+
+    const code = await handleCallback(
+      callbackUrl,
+      storedState,
+      codeVerifier
+    )
+
+    const tokens = await exchangeCodeForTokens(
+      code,
+      codeVerifier,
+      this.metadata,
+      this.clientId,
+      this.clientSecret,
+      redirectUri
+    )
+
+    this.accessToken = tokens.access_token
+    this.refreshToken = tokens.refresh_token
+
+    // Clean up stored values
+    this.deleteSecurely("state")
+    this.deleteSecurely("codeVerifier")
+  }
+
+  async connect(): Promise<Client> {
+    if (!this.accessToken) {
+      throw new Error("Not authenticated")
     }
 
-    async startAuthFlow(redirectUri: string): Promise<string> {
-      const codeVerifier = generateCodeVerifier()
-      const codeChallenge = generateCodeChallenge(codeVerifier)
-      const state = generateState()
-
-      // Store these securely
-      this.storeSecurely("codeVerifier", codeVerifier)
-      this.storeSecurely("state", state)
-
-      return buildAuthorizationUrl(
-        this.metadata,
-        this.clientId,
-        redirectUri,
-        codeChallenge,
-        state
+    try {
+      this.client = await createMcpClient(
+        this.serverUrl,
+        this.accessToken,
+        false
+      )
+    } catch (error) {
+      console.warn("Streamable HTTP failed, falling back to SSE")
+      this.client = await createMcpClient(
+        this.serverUrl,
+        this.accessToken,
+        true
       )
     }
 
-    async handleCallback(
-      callbackUrl: string,
-      redirectUri: string
-    ): Promise<void> {
-      const storedState = this.retrieveSecurely("state")
-      const codeVerifier = this.retrieveSecurely("codeVerifier")
+    return this.client
+  }
 
-      const code = await handleCallback(
-        callbackUrl,
-        storedState,
-        codeVerifier
-      )
+  async ensureValidToken(): Promise<void> {
+    if (!this.refreshToken) {
+      throw new Error("No refresh token available")
+    }
 
-      const tokens = await exchangeCodeForTokens(
-        code,
-        codeVerifier,
+    try {
+      const tokens = await refreshAccessToken(
+        this.refreshToken,
         this.metadata,
         this.clientId,
-        this.clientSecret,
-        redirectUri
+        this.clientSecret
       )
 
       this.accessToken = tokens.access_token
-      this.refreshToken = tokens.refresh_token
-
-      // Clean up stored values
-      this.deleteSecurely("state")
-      this.deleteSecurely("codeVerifier")
-    }
-
-    async connect(): Promise<Client> {
-      if (!this.accessToken) {
-        throw new Error("Not authenticated")
+      if (tokens.refresh_token) {
+        this.refreshToken = tokens.refresh_token
       }
-
-      try {
-        this.client = await createMcpClient(
-          this.serverUrl,
-          this.accessToken,
-          false
-        )
-      } catch (error) {
-        console.warn("Streamable HTTP failed, falling back to SSE")
-        this.client = await createMcpClient(
-          this.serverUrl,
-          this.accessToken,
-          true
-        )
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message === "REAUTH_REQUIRED"
+      ) {
+        throw new Error("Re-authentication required")
       }
-
-      return this.client
-    }
-
-    async ensureValidToken(): Promise<void> {
-      if (!this.refreshToken) {
-        throw new Error("No refresh token available")
-      }
-
-      try {
-        const tokens = await refreshAccessToken(
-          this.refreshToken,
-          this.metadata,
-          this.clientId,
-          this.clientSecret
-        )
-
-        this.accessToken = tokens.access_token
-        if (tokens.refresh_token) {
-          this.refreshToken = tokens.refresh_token
-        }
-      } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message === "REAUTH_REQUIRED"
-        ) {
-          throw new Error("Re-authentication required")
-        }
-        throw error
-      }
-    }
-
-    private storeSecurely(key: string, value: string): void {
-      // Implement secure storage
-    }
-
-    private retrieveSecurely(key: string): string {
-      // Implement secure retrieval
-      return ""
-    }
-
-    private deleteSecurely(key: string): void {
-      // Implement secure deletion
+      throw error
     }
   }
-  ```
-</CodeGroup>
+
+  private storeSecurely(key: string, value: string): void {
+    // Implement secure storage
+  }
+
+  private retrieveSecurely(key: string): string {
+    // Implement secure retrieval
+    return ""
+  }
+
+  private deleteSecurely(key: string): void {
+    // Implement secure deletion
+  }
+}
+```
 
 ## Security best practices
 
@@ -1090,64 +1062,62 @@ Here's a complete class that ties all the steps together:
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion title="Invalid state parameter">
-    * Store the state securely and validate on callback
-    * Expire after \~10 minutes
-  </Accordion>
+> **Invalid state parameter**
+>
+> * Store the state securely and validate on callback
+> * Expire after \~10 minutes
 
-  <Accordion title="Invalid code_verifier">
-    * Use the exact verifier that produced the code\_challenge
-    * Ensure base64url encoding (no +, /, =)
-  </Accordion>
+> **Invalid code\_verifier**
+>
+> * Use the exact verifier that produced the code\_challenge
+> * Ensure base64url encoding (no +, /, =)
 
-  <Accordion title="Discovery fails">
-    * Use RFC 9470 (protected resource) then RFC 8414 (authorization server)
-    * Confirm server supports OAuth and your URL is correct
-  </Accordion>
+> **Discovery fails**
+>
+> * Use RFC 9470 (protected resource) then RFC 8414 (authorization server)
+> * Confirm server supports OAuth and your URL is correct
 
-  <Accordion title="Connection timeout">
-    * Prefer Streamable HTTP; fall back to SSE
-    * Check proxy or firewall rules
-  </Accordion>
+> **Connection timeout**
+>
+> * Prefer Streamable HTTP; fall back to SSE
+> * Check proxy or firewall rules
 
-  <Accordion title="CORS errors in browser">
-    * Do token exchange server-side; browser should only handle redirects
-  </Accordion>
+> **CORS errors in browser**
+>
+> * Do token exchange server-side; browser should only handle redirects
 
-  <Accordion title="Token refresh fails with invalid_grant">
-    When refresh returns `{ "error": "invalid_grant" }`, the refresh token is
-    invalid, expired, revoked, or superseded by rotation. Do not retry refresh;
-    prompt re-authentication.
-
-    **Common causes:**
-
-    1. **Rotation on use** — Providers rotate refresh tokens and revoke the old
-       one. **Fix:** Persist the new `refresh_token` atomically with the access
-       token.
-    2. **Expired refresh token** — Often 30–90 days. **Fix:** Re-authenticate;
-       monitor early expirations.
-    3. **Client credential mismatch** — `client_id` or `client_secret` differs
-       from initial auth. **Fix:** Keep credentials consistent for the token's
-       lifetime.
-    4. **Explicit revocation or policy event** — User revoked access, password
-       change, or security policy. **Fix:** Show clear reconnect UI.
-    5. **Concurrent refreshes** — Parallel refreshes cause losers to see
-       `invalid_grant`. **Fix:** Use a mutex or distributed lock around refresh.
-
-    **Operational guidance:**
-
-    * `invalid_grant` → re-authenticate
-    * `temporarily_unavailable` or network errors → retry with backoff
-    * Refresh 5–10 minutes before expiry to avoid races
-    * Cache access tokens with accurate expiry
-
-    If your client exchanges an ID-JAG from an identity provider instead of a
-    refresh token, `invalid_grant` means Notion rejected the assertion. See
-    [Enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization)
-    for the claims Notion checks and the common causes.
-  </Accordion>
-</AccordionGroup>
+> **Token refresh fails with invalid\_grant**
+>
+> When refresh returns `{ "error": "invalid_grant" }`, the refresh token is
+> invalid, expired, revoked, or superseded by rotation. Do not retry refresh;
+> prompt re-authentication.
+>
+> **Common causes:**
+>
+> 1. **Rotation on use** — Providers rotate refresh tokens and revoke the old
+>    one. **Fix:** Persist the new `refresh_token` atomically with the access
+>    token.
+> 2. **Expired refresh token** — Often 30–90 days. **Fix:** Re-authenticate;
+>    monitor early expirations.
+> 3. **Client credential mismatch** — `client_id` or `client_secret` differs
+>    from initial auth. **Fix:** Keep credentials consistent for the token's
+>    lifetime.
+> 4. **Explicit revocation or policy event** — User revoked access, password
+>    change, or security policy. **Fix:** Show clear reconnect UI.
+> 5. **Concurrent refreshes** — Parallel refreshes cause losers to see
+>    `invalid_grant`. **Fix:** Use a mutex or distributed lock around refresh.
+>
+> **Operational guidance:**
+>
+> * `invalid_grant` → re-authenticate
+> * `temporarily_unavailable` or network errors → retry with backoff
+> * Refresh 5–10 minutes before expiry to avoid races
+> * Cache access tokens with accurate expiry
+>
+> If your client exchanges an ID-JAG from an identity provider instead of a
+> refresh token, `invalid_grant` means Notion rejected the assertion. See
+> [Enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization)
+> for the claims Notion checks and the common causes.
 
 ### Notion MCP OAuth specifics
 
@@ -1194,23 +1164,23 @@ Every refresh rotates the refresh token: the token response returns a new
   prevents you from storing a rotated token, you may retry once with the
   previously stored token.
 
-<Warning>
-  **Reusing a refresh token that has already been rotated away can revoke the
-  entire connection.** As a theft-containment measure, replaying a refresh token
-  that was rotated out more than a brief grace period earlier is treated as a
-  stolen-token signal: the server revokes the whole grant. Every access and
-  refresh token for that connection stops working, and the user must
-  re-authorize from scratch. To stay clear of it:
-
-  * Serialize refreshes per connection with a mutex or distributed lock. Never
-    refresh the same connection from two workers or replicas concurrently —
-    distributed setups that share a connection without a consistent, atomic
-    token store are the most common cause of accidental reuse.
-  * Treat `invalid_grant` as terminal for the connection: drop the stored tokens
-    and surface re-authentication. Do **not** retry a refresh that returned
-    `invalid_grant`. A revoked or expired grant cannot recover, and retry loops
-    against it only generate load and never succeed.
-</Warning>
+> [!WARNING]
+>
+> **Reusing a refresh token that has already been rotated away can revoke the
+> entire connection.** As a theft-containment measure, replaying a refresh token
+> that was rotated out more than a brief grace period earlier is treated as a
+> stolen-token signal: the server revokes the whole grant. Every access and
+> refresh token for that connection stops working, and the user must
+> re-authorize from scratch. To stay clear of it:
+>
+> * Serialize refreshes per connection with a mutex or distributed lock. Never
+>   refresh the same connection from two workers or replicas concurrently —
+>   distributed setups that share a connection without a consistent, atomic
+>   token store are the most common cause of accidental reuse.
+> * Treat `invalid_grant` as terminal for the connection: drop the stored tokens
+>   and surface re-authentication. Do **not** retry a refresh that returned
+>   `invalid_grant`. A revoked or expired grant cannot recover, and retry loops
+>   against it only generate load and never succeed.
 
 #### Handling `invalid_grant`
 
@@ -1222,11 +1192,11 @@ connection, clear its tokens, and prompt re-authorization. See
 
 ## Optional: MCP server discovery via `mcp.json`
 
-<Note>
-  The `mcp.json` convention described here is not part of the MCP specification.
-  It is an unofficial convention, championed by Notion and Cursor, that MCP
-  clients can optionally support to improve the user experience.
-</Note>
+> [!NOTE]
+>
+> The `mcp.json` convention described here is not part of the MCP specification.
+> It is an unofficial convention, championed by Notion and Cursor, that MCP
+> clients can optionally support to improve the user experience.
 
 MCP clients can discover available MCP servers by checking for a
 `/.well-known/mcp.json` file on a website's domain. When a user pastes a link,

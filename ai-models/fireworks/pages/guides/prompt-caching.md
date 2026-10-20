@@ -49,85 +49,83 @@ the same prefix.
 You may place this identifier either in the `user` field of the request body or
 in the `x-session-affinity` header.
 
-<Tip>
-  If you're collecting RL rollouts and want per-trajectory metrics plus
-  stickiness across multi-turn agent interactions, also set
-  `x-multi-turn-session-id`. See [Inference for RL
-  rollouts](/guides/rollout-inference#session-affinity).
-</Tip>
+> [!TIP]
+>
+> If you're collecting RL rollouts and want per-trajectory metrics plus
+> stickiness across multi-turn agent interactions, also set
+> `x-multi-turn-session-id`. See [Inference for RL
+> rollouts](/guides/rollout-inference#session-affinity).
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={null}
-    import os
-    from openai import OpenAI
+**Python**
 
-    client = OpenAI(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference/v1",
-    )
+```python theme={null}
+import os
+from openai import OpenAI
 
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/<MODEL_ID>",
-        messages=[{
-            "role": "user",
-            "content": "Explain quantum computing in simple terms"
-        }],
-        # A single client can make requests with different sessions.
-        extra_headers={
-            "x-session-affinity": "session-id-123"
-        }
-    )
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1",
+)
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/<MODEL_ID>",
+    messages=[{
+        "role": "user",
+        "content": "Explain quantum computing in simple terms"
+    }],
+    # A single client can make requests with different sessions.
+    extra_headers={
+        "x-session-affinity": "session-id-123"
+    }
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
+print(response.choices[0].message.content)
+```
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
+**JavaScript**
 
-    const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/<MODEL_ID>",
-      messages: [
-        {
-          role: "user",
-          content: "Explain quantum computing in simple terms",
-        },
-      ],
-      // A single client can make requests with different sessions.
-      extra_headers: {
-        x-session-affinity: "session-id-123"
+```javascript theme={null}
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "accounts/fireworks/models/<MODEL_ID>",
+  messages: [
+    {
+      role: "user",
+      content: "Explain quantum computing in simple terms",
+    },
+  ],
+  // A single client can make requests with different sessions.
+  extra_headers: {
+    x-session-affinity: "session-id-123"
+  }
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "x-session-affinity: session-id-123" \
+  -d '{
+    "model": "accounts/fireworks/models/",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain quantum computing in simple terms"
       }
-    });
-
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
-
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -H "x-session-affinity: session-id-123" \
-      -d '{
-        "model": "accounts/fireworks/models/",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Explain quantum computing in simple terms"
-          }
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+    ]
+  }'
+```
 
 ### Resetting or isolating cache state
 
@@ -145,19 +143,19 @@ Due to the autoregressive nature of LLMs, even a single-token difference can inv
 
 The most critical rule for effective prompt caching is maintaining a stable prefix. Any change to the beginning of your prompt will invalidate the entire cache chain that follows.
 
-<Warning>
-  **Common mistake:** Including timestamps or other dynamic content at the beginning of your system prompt.
-
-  ```python theme={null}
-  # ❌ DON'T: This kills cache hit rates
-  system_prompt = f"""
-  Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-  You are a helpful AI assistant...
-  """
-  ```
-
-  Even a one-second difference in the timestamp will invalidate the entire cache, making it completely ineffective.
-</Warning>
+> [!WARNING]
+>
+> **Common mistake:** Including timestamps or other dynamic content at the beginning of your system prompt.
+>
+> ```python theme={null}
+> # ❌ DON'T: This kills cache hit rates
+> system_prompt = f"""
+> Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+> You are a helpful AI assistant...
+> """
+> ```
+>
+> Even a one-second difference in the timestamp will invalidate the entire cache, making it completely ineffective.
 
 ### Structure prompts for caching success
 
@@ -322,14 +320,14 @@ else:
     send_elsewhere()  # Route to old deployment or serverless
 ```
 
-<Warning>
-  Avoid random sampling for traffic routing as it can negatively impact cache hit rates:
-
-  ```python theme={null}
-  # Don't do this:
-  if random() < fireworks_traffic_fraction:  # ❌ Reduces cache effectiveness
-    send_to_new_deployment(user=hashed_user_id)
-  ```
-
-  Using consistent user-based routing ensures complete user sessions are maintained on the same deployment, optimizing prompt cache performance regardless of the traffic fraction.
-</Warning>
+> [!WARNING]
+>
+> Avoid random sampling for traffic routing as it can negatively impact cache hit rates:
+>
+> ```python theme={null}
+> # Don't do this:
+> if random() < fireworks_traffic_fraction:  # ❌ Reduces cache effectiveness
+>   send_to_new_deployment(user=hashed_user_id)
+> ```
+>
+> Using consistent user-based routing ensures complete user sessions are maintained on the same deployment, optimizing prompt cache performance regardless of the traffic fraction.

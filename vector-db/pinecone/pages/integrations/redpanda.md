@@ -12,4 +12,4 @@ Redpanda Connect implements transaction-based resiliency with back pressure, so 
 
 Redpanda Connect comes with a wide range of connectors and is data agnostic, so you can add it to your existing infrastructure. Its functionality overlaps with integration frameworks, log aggregators, and ETL workflow engines, so you can use it to complement these tools or as a simpler alternative.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.redpanda.com/redpanda-connect/components/outputs/pinecone/)

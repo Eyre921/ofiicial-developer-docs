@@ -12,23 +12,21 @@ Individual data sources don't have permissions settings, so the set of Notion us
 
 ## Object fields
 
-<Note>
-  **Changed as of 2025-09-03**
-
-  In September 2025, the [Data source](/reference/data-source) object was introduced, and includes the `properties` that used to exist here at the database level.
-
-  <Frame>
-    <img />
-  </Frame>
-
-  After [upgrading your API](/guides/get-started/upgrade-guide-2025-09-03) connection to `2025-09-03`, the new database object shape is displayed, including an array of child `data_sources` but **not** the data source `properties`.
-</Note>
+> [!NOTE]
+>
+> **Changed as of 2025-09-03**
+>
+> In September 2025, the [Data source](/reference/data-source) object was introduced, and includes the `properties` that used to exist here at the database level.
+>
+> ![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
+>
+> After [upgrading your API](/guides/get-started/upgrade-guide-2025-09-03) connection to `2025-09-03`, the new database object shape is displayed, including an array of child `data_sources` but **not** the data source `properties`.
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `object` | `string` | Always `"database"`. | `"database"` |
 | `id` | `string` (UUID) | Unique identifier for the database. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. <br /><br /> Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
+| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
 | `created_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the database. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T21:49:37.913Z"` |
@@ -43,14 +41,13 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | `in_trash` | `boolean` | Whether the database has been trashed. | `false` |
 | `is_inline` | `boolean` | Has the value `true` if the database appears in the page as an inline block. Otherwise has the value `false` if the database appears as a child page. | `false` |
 | `database_type` | `string` or `null` | The type of typed database, such as `tasks`, `projects`, or `skills`. `null` for a regular database. | `"skills"` |
+| `show_data_source_title` | `boolean` | Whether the data source title is shown above the database's views. This is the **Show data source title** setting in the Notion app. Full-page databases with one data source never show this title. Set it with [Create a database](/reference/create-database), [Update a database](/reference/update-database), or `create_database` on [Create a view](/reference/create-view). | `true` |
 | `public_url` | `string` | The public page URL if the page has been published to the web. Otherwise, `null`. | `"https://jm-testing.notion.site/p1-6df2c07bfc6b4c46815ad205d132e22d"1` |
 
 **What’s Next**
 
-<CardGroup>
-  <Card title="Data source" href="/reference/data-source" icon="angles-right" />
+> **[Data source](/reference/data-source)**
 
-  <Card title="Data source properties" href="/reference/property-object" icon="angles-right" />
+> **[Data source properties](/reference/property-object)**
 
-  <Card title="Page" href="/reference/page" icon="angles-right" />
-</CardGroup>
+> **[Page](/reference/page)**

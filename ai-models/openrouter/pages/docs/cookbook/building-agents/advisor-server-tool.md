@@ -12,59 +12,17 @@ path: docs/cookbook/building-agents/advisor-server-tool
 
 > Use a cheap executor model for routine work and call Advisor only for compact uncertainty checks
 
-export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleClick = () => {
-    navigator.clipboard.writeText(prompt).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  };
-  return <div className="mt-3">
-      <button type="button" onClick={handleClick} className="border-border inline-flex items-center gap-2 rounded-lg border px-3 py-2 font-semibold cursor-pointer border-green-200 dark:border-green-900">
-        {isCopied ? "Copied" : buttonLabel}
-      </button>
-    </div>;
-};
-
 **Goal:** Build a review agent that drafts routine answers with a cheap model and asks a stronger Advisor model only after the executor compresses uncertainty into a short packet.
 
 **Outcome:** Your app sends normal review tasks to a low-cost executor, adds one compact `plan-reviewer` Advisor entry when a second model is worth the spend, and logs whether Advisor was offered without storing prompts or advice.
 
-<Tip>
-  Want your coding agent to add this workflow to your app? Copy this prompt.
+> [!TIP]
+>
+> Want your coding agent to add this workflow to your app? Copy this prompt.
 
-  <CopyPromptButton
-    prompt={`Add a token-efficient review pattern with OpenRouter Advisor.
-
-Start by inspecting the repository. Find the existing OpenRouter request path, agent loop, model config, review or planning workflow, logging surface, and tests. If this is a new TypeScript agent loop, prefer the OpenRouter Agent SDK callModel path. Otherwise, adapt the existing Chat Completions or Responses request path. Infer which user actions can stay on the cheap executor and which ones create enough uncertainty to justify offering a second-model check. Ask follow-up questions only when the missing detail changes the budget gate or output format.
-
-Use this Cookbook recipe as the implementation workflow:
-https://openrouter.ai/docs/cookbook/building-agents/advisor-server-tool
-
-Use these source-of-truth docs for current fields and response shapes:
-- Advisor server tool: https://openrouter.ai/docs/guides/features/server-tools/advisor
-- Agent SDK callModel overview: https://openrouter.ai/docs/agent-sdk/call-model/overview
-- Chat Completions request API: https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion
-- Responses request API, if this app uses Responses: https://openrouter.ai/docs/api/api-reference/responses/create-a-response
-- TypeScript SDK Chat reference, if this app uses @openrouter/sdk: https://openrouter.ai/docs/client-sdks/typescript/sdks/chat/README
-- TypeScript SDK Responses reference, if this app uses @openrouter/sdk beta responses: https://openrouter.ai/docs/client-sdks/typescript/sdks/responses/README
-
-Add this token-saving pattern to the app's existing review or planning path:
-- Keep the existing cheap or default executor model for routine work.
-- Offer one openrouter:advisor tool entry named plan-reviewer only behind a budget gate, such as low executor confidence, a large diff summary, unfamiliar code ownership, missing tests, or a decision that would be expensive to revisit. Do not use a nested advisor roster.
-- Keep forward_transcript false unless the advisor genuinely needs the whole conversation.
-- Make the advisor prompt compact. Send a short task summary, changed files, uncertainty signals, and the exact decision you want reviewed.
-- Cap advisor output tokens. Log whether Advisor was offered, the selected models, finish reason, and cost or usage fields when returned. Do not log prompts, raw diffs, full advice, cookies, or API keys.
-- Verify through the app's existing workflow or tests.
-
-Return the changed files, the budget gate, the request body shape, the representative workflow you used to verify it, and any remaining cost or product tradeoffs.`}
-  />
-</Tip>
-
-<Warning>
-  Advisor is a beta server tool. It runs an inner model call, so it can add cost and latency. This recipe keeps that call behind a budget gate and sends a compact review prompt instead of forwarding the full transcript. Use returned `usage.cost` when present, or estimate spend from the selected advisor model's current pricing before widening the gate.
-</Warning>
+> [!WARNING]
+>
+> Advisor is a beta server tool. It runs an inner model call, so it can add cost and latency. This recipe keeps that call behind a budget gate and sends a compact review prompt instead of forwarding the full transcript. Use returned `usage.cost` when present, or estimate spend from the selected advisor model's current pricing before widening the gate.
 
 ## Before you start
 

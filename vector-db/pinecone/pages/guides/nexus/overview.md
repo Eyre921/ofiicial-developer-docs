@@ -10,31 +10,29 @@ You point Nexus at your sources and curate them into a context. Agents then quer
 
 Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, and re-search. Nexus does that work once, upstream, so agents spend their budget on reasoning instead of re-orienting.
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/guides/nexus/quickstart">
-    Prepare your first context, then query it
-  </Card>
+> **[Quickstart](/guides/nexus/quickstart)**
+>
+> Prepare your first context, then query it
 
-  <Card title="Key concepts" icon="book" href="/guides/nexus/concepts">
-    Contexts, manifests, artifacts, sessions, and the Query API
-  </Card>
+> **[Key concepts](/guides/nexus/concepts)**
+>
+> Contexts, manifests, artifacts, sessions, and the Query API
 
-  <Card title="How Nexus works" icon="lightbulb" href="/guides/nexus/how-it-works">
-    Curated artifacts for retrieval, then answers composed over a retrieval SDK
-  </Card>
+> **[How Nexus works](/guides/nexus/how-it-works)**
+>
+> Curated artifacts for retrieval, then answers composed over a retrieval SDK
 
-  <Card title="Context design" icon="sitemap" href="/guides/nexus/context-design">
-    How a context's manifest turns your sources into queryable knowledge
-  </Card>
+> **[Context design](/guides/nexus/context-design)**
+>
+> How a context's manifest turns your sources into queryable knowledge
 
-  <Card title="Bring Your Own Cloud" icon="cloud" href="/guides/nexus/byoc/overview">
-    Deploy Nexus in your own cloud account
-  </Card>
+> **[Bring Your Own Cloud](/guides/nexus/byoc/overview)**
+>
+> Deploy Nexus in your own cloud account
 
-  <Card title="MCP server" icon="server" href="/guides/nexus/mcp-server">
-    Query your contexts from any MCP client
-  </Card>
-</CardGroup>
+> **[MCP server](/guides/nexus/mcp-server)**
+>
+> Query your contexts from any MCP client
 
 ## What you can do
 
@@ -63,24 +61,20 @@ Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
 
 ## Resources
 
-<CardGroup>
-  <Card title="API reference" icon="code-simple" href="/reference/api/nexus/introduction">
-    Details about the Nexus control plane and data plane APIs
-  </Card>
+> **[API reference](/reference/api/nexus/introduction)**
+>
+> Details about the Nexus control plane and data plane APIs
 
-  <Card title="Changelog" icon="party-horn" href="/release-notes">
-    What's new in Pinecone
-  </Card>
-</CardGroup>
+> **[Changelog](/release-notes)**
+>
+> What's new in Pinecone
 
 ## Other Pinecone products
 
-<CardGroup>
-  <Card title="Pinecone Database" icon="database" href="/guides/get-started/overview">
-    The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
-  </Card>
+> **[Pinecone Database](/guides/get-started/overview)**
+>
+> The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
 
-  <Card title="Pinecone Assistant" icon="comments" href="/guides/assistant/overview">
-    A managed service for RAG chat and agent applications grounded in your data
-  </Card>
-</CardGroup>
+> **[Pinecone Assistant](/guides/assistant/overview)**
+>
+> A managed service for RAG chat and agent applications grounded in your data

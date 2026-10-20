@@ -8,9 +8,9 @@ Evaluate the Pinecone Standard plan with $300 in credits over 21 days, including
 
 The Standard trial lets you evaluate Pinecone without any up-front payment. You get \$300 in credits over 21 days with access to Standard plan [features](https://www.pinecone.io/pricing/) and [limits](/reference/api/database-limits/object-limits) that are suitable for testing Pinecone at scale.
 
-<Note>
-  If you're building a small or personal project, consider the free [Starter plan](https://www.pinecone.io/pricing/) or the flat-rate [Builder plan](https://www.pinecone.io/pricing/) instead.
-</Note>
+> [!NOTE]
+>
+> If you're building a small or personal project, consider the free [Starter plan](https://www.pinecone.io/pricing/) or the flat-rate [Builder plan](https://www.pinecone.io/pricing/) instead.
 
 ## Key features
 
@@ -33,9 +33,9 @@ When your Standard trial ends, or when you use all of your credits, your quotas 
 
 If you started the trial from the Builder plan, you aren't charged the \$20/month Builder fee during the trial.
 
-<Note>
-  Learn more about [pricing](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> Learn more about [pricing](https://www.pinecone.io/pricing/).
 
 ## Downgrade to the Starter plan
 
@@ -53,13 +53,13 @@ The downgrade doesn't reduce your data or change your configuration, so do this 
 * **Reassign or remove members** whose [organization role](/admin/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
 * **Get under the Starter storage limits.** Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. Do this last, after the migrations above, because they can briefly leave a second copy of an index. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
-<Note>
-  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
-</Note>
+> [!NOTE]
+>
+> You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 
-<Note>
-  If you're switching from Standard to Builder instead of Starter, your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits). You must also delete all backups and remove or stop any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO.
-</Note>
+> [!NOTE]
+>
+> If you're switching from Standard to Builder instead of Starter, your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits). You must also delete all backups and remove or stop any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO.
 
 ## Limits
 

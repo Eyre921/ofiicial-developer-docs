@@ -98,9 +98,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. |
 
 ### Response
@@ -154,9 +154,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `metrics` | List\[*str*] | ✅ | N/A | |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `classifier_dimensions` | [Optional\[operations.ClassifierDimensions\]](../../operations/classifierdimensions.mdx) | ➖ | Group results by custom classifier tags, breaking down metrics by the specified dimension values. Requires an active classifier on the workspace. | |
 | `classifier_filters` | [Optional\[operations.ClassifierFilters\]](../../operations/classifierfilters.mdx) | ➖ | Filter results to generations with specific classifier tag values. Can be combined with classifier\_dimensions (must use the same classifier\_id) or used independently with standard dimensions. | |
 | `dimensions` | List\[*str*] | ➖ | N/A | |

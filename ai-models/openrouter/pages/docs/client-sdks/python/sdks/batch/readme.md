@@ -54,12 +54,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of batches to return, from 1 through 100. | 20 |
 | `after` | *Optional\[str]* | ➖ | Batch id from the previous page's `last_id`. | batch\_7a4b02 |
-| `status` | List\[[components.BatchListStatus](../../components/batchliststatus.mdx)] | ➖ | Repeat this parameter to include more than one status. | \[<br />"completed",<br />"failed"<br />] |
+| `status` | List\[[components.BatchListStatus](../../components/batchliststatus.mdx)] | ➖ | Repeat this parameter to include more than one status. | \[ "completed", "failed" ] |
 | `created_after` | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | ➖ | Only include batches created strictly after this timestamp. | 2026-08-20T00:00:00Z |
 | `created_before` | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | ➖ | Only include batches created strictly before this timestamp. | 2026-08-20T00:00:00Z |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -229,12 +229,12 @@ with OpenRouter(
 | `endpoint` | [components.Endpoint](../../components/endpoint.mdx) | ✅ | N/A | |
 | `model` | *str* | ✅ | N/A | |
 | `requests` | List\[[components.Request](../../components/request.mdx)] | ✅ | N/A | |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `callback_url` | *Optional\[str]* | ➖ | HTTPS URL that receives a `batch.completed`, `batch.failed`, `batch.cancelled` or `batch.expired` webhook event when the batch reaches a terminal status. Must appear before `requests` in the request body. | |
 | `completion_window` | [Optional\[components.BatchSubmitBodyCompletionWindow\]](../../components/batchsubmitbodycompletionwindow.mdx) | ➖ | N/A | |
-| `provider` | [OptionalNullable\[components.BatchProviderPreferences\]](../../components/batchproviderpreferences.mdx) | ➖ | Batch provider routing preferences. Only `provider.only` and `provider.allow_fallbacks` are supported. | \{<br />"only": \[<br />"google-vertex"<br />]<br />} |
+| `provider` | [OptionalNullable\[components.BatchProviderPreferences\]](../../components/batchproviderpreferences.mdx) | ➖ | Batch provider routing preferences. Only `provider.only` and `provider.allow_fallbacks` are supported. | \{ "only": \[ "google-vertex" ] } |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -279,9 +279,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | The batch job id returned from submit. | batch\_abc123 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -326,9 +326,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | The batch job id returned from submit. | batch\_abc123 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response

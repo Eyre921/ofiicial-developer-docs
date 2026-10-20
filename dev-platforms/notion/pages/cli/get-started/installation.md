@@ -36,9 +36,9 @@ To update:
 npm update --global ntn
 ```
 
-<Note>
-  Requires Node.js 22+ and npm 10+.
-</Note>
+> [!NOTE]
+>
+> Requires Node.js 22+ and npm 10+.
 
 ## Install via Winget (Windows)
 
@@ -62,9 +62,9 @@ To update:
 winget upgrade Notion.ntn
 ```
 
-<Note>
-  We currently only support Windows x64 (x86-64/AMD64)
-</Note>
+> [!NOTE]
+>
+> We currently only support Windows x64 (x86-64/AMD64)
 
 ## Verify installation
 
@@ -82,12 +82,10 @@ ntn completions bash  # or fish, zsh, powershell, elvish
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Authentication" icon="lock" href="/cli/get-started/authentication">
-    Log in to your Notion workspace.
-  </Card>
+> **[Authentication](/cli/get-started/authentication)**
+>
+> Log in to your Notion workspace.
 
-  <Card title="Workers quickstart" icon="rocket" href="/workers/get-started/quickstart">
-    Create and deploy your first Notion Worker.
-  </Card>
-</CardGroup>
+> **[Workers quickstart](/workers/get-started/quickstart)**
+>
+> Create and deploy your first Notion Worker.

@@ -8,9 +8,9 @@ Learn how Pinecone organizations group projects, share billing, and use organiza
 
 A Pinecone organization is a set of [projects](/admin/projects/understanding-projects) that use the same billing. Organizations allow one or more users to control billing and project permissions for all of the projects belonging to the organization. Each project belongs to an organization.
 
-<Note>
-  An email address can be associated with multiple organizations, but each user can own at most 10 organizations. For information about managing organization members, see [Manage organization members](/admin/organizations/manage-organization-members).
-</Note>
+> [!NOTE]
+>
+> An email address can be associated with multiple organizations, but each user can own at most 10 organizations. For information about managing organization members, see [Manage organization members](/admin/organizations/manage-organization-members).
 
 ## Projects in an organization
 
@@ -52,17 +52,21 @@ Organization owners can manage access to their organizations and projects by ass
 
 SSO allows organizations to manage their teams' access to Pinecone through their identity management solution. Once your integration is configured, you can specify a default role for teammates when they sign up.
 
-<Note>For organizations that use SSO for authentication, console sessions are re-authenticated at least every 24 hours.</Note>
+> [!NOTE]
+>
+> For organizations that use SSO for authentication, console sessions are re-authenticated at least every 24 hours.
 
 For more information, see [Configure single sign-on](/admin/security/configure-single-sign-on/okta).
 
-<Note>SSO is available on Standard and Enterprise plans.</Note>
+> [!NOTE]
+>
+> SSO is available on Standard and Enterprise plans.
 
 ## Service accounts
 
-<Note>
-  This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
 
 [Service accounts](/admin/organizations/manage-service-accounts) enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
 

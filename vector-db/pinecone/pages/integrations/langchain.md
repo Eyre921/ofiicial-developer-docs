@@ -13,19 +13,19 @@ LangChain provides modules for managing and optimizing the use of large language
 
 By integrating Pinecone with LangChain, you can add knowledge to LLMs with retrieval-augmented generation (RAG), which improves what LLMs can do in autonomous agents, chatbots, question-answering, and multi-agent systems.
 
-<PrimarySecondaryCTA />
+[Get started](https://github.com/langchain-ai/pinecone-serverless)
 
 ## Setup guide
 
 This guide shows you how to integrate Pinecone Database with [LangChain](https://www.langchain.com/).
 
-<Note>
-  This guide shows one of many ways to use LangChain and Pinecone together. For more examples, see the following:
-
-  * [LangChain AI Handbook](https://www.pinecone.io/learn/series/langchain/)
-  * [Retrieval Augmentation for LLMs](https://github.com/pinecone-io/examples/blob/main/learn/generation/langchain/handbook/05-langchain-retrieval-augmentation.ipynb)
-  * [Retrieval Augmented Conversational Agent](https://github.com/pinecone-io/examples/blob/main/learn/generation/langchain/handbook/08-langchain-retrieval-agent.ipynb)
-</Note>
+> [!NOTE]
+>
+> This guide shows one of many ways to use LangChain and Pinecone together. For more examples, see the following:
+>
+> * [LangChain AI Handbook](https://www.pinecone.io/learn/series/langchain/)
+> * [Retrieval Augmentation for LLMs](https://github.com/pinecone-io/examples/blob/main/learn/generation/langchain/handbook/05-langchain-retrieval-augmentation.ipynb)
+> * [Retrieval Augmented Conversational Agent](https://github.com/pinecone-io/examples/blob/main/learn/generation/langchain/handbook/08-langchain-retrieval-agent.ipynb)
 
 ## Key concepts
 
@@ -95,9 +95,9 @@ vectorstore_from_texts = PineconeVectorStore.from_texts(
 )
 ```
 
-<Note>
-  If you get `Pinecone has no attribute 'from_texts'` or `Pinecone has no attribute 'from_documents'`, your code is calling these methods on the Pinecone SDK's `Pinecone` class instead of LangChain's vector store class. Import `PineconeVectorStore` from `langchain_pinecone`, as shown above.
-</Note>
+> [!NOTE]
+>
+> If you get `Pinecone has no attribute 'from_texts'` or `Pinecone has no attribute 'from_documents'`, your code is calling these methods on the Pinecone SDK's `Pinecone` class instead of LangChain's vector store class. Import `PineconeVectorStore` from `langchain_pinecone`, as shown above.
 
 ### Add more records
 
@@ -193,245 +193,243 @@ vectorstore.similarity_search(query, namespace="example-namespace")
 
 ## Tutorial
 
-<Steps>
-  <Step title="Set up the environment">
-    Install the libraries:
+### 1. Set up the environment
 
-    ```shell Shell theme={null}
-    pip install -qU \
-      "pinecone[grpc]==7.3.0" \
-      pinecone-datasets==1.0.2 \
-      langchain-pinecone==0.2.13 \
-      langchain-openai==1.6.7 \
-      langchain==1.4.3
-    ```
+Install the libraries:
 
-    Set your Pinecone and OpenAI API keys as environment variables:
+```shell Shell theme={null}
+pip install -qU \
+  "pinecone[grpc]==7.3.0" \
+  pinecone-datasets==1.0.2 \
+  langchain-pinecone==0.2.13 \
+  langchain-openai==1.6.7 \
+  langchain==1.4.3
+```
 
-    ```shell Shell theme={null}
-    export PINECONE_API_KEY="{{YOUR_API_KEY}}"  # Get from app.pinecone.io
-    export OPENAI_API_KEY="your-openai-api-key"  # Get from platform.openai.com/api-keys
-    ```
+Set your Pinecone and OpenAI API keys as environment variables:
 
-    Then read the keys in Python:
+```shell Shell theme={null}
+export PINECONE_API_KEY="{{YOUR_API_KEY}}"  # Get from app.pinecone.io
+export OPENAI_API_KEY="your-openai-api-key"  # Get from platform.openai.com/api-keys
+```
 
-    ```Python Python theme={null}
-    import os
-    pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-    openai_api_key = os.environ.get('OPENAI_API_KEY')
-    ```
-  </Step>
+Then read the keys in Python:
 
-  <Step title="Build the knowledge base">
-    Load a sample dataset and prepare it for Pinecone:
+```Python Python theme={null}
+import os
+pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+openai_api_key = os.environ.get('OPENAI_API_KEY')
+```
 
-    1. Load a [sample Pinecone dataset](https://github.com/pinecone-io/pinecone-datasets) into memory:
+### 2. Build the knowledge base
 
-       ```Python Python theme={null}
-       import pinecone_datasets  
-       dataset = pinecone_datasets.load_dataset('wikipedia-simple-text-embedding-ada-002-100K')  
-       len(dataset)  
-       ```
+Load a sample dataset and prepare it for Pinecone:
 
-       ```text Response theme={null}
-       100000
-       ```
+1. Load a [sample Pinecone dataset](https://github.com/pinecone-io/pinecone-datasets) into memory:
 
-    2. Reduce the dataset and format it for upserting into Pinecone:
+   ```Python Python theme={null}
+   import pinecone_datasets  
+   dataset = pinecone_datasets.load_dataset('wikipedia-simple-text-embedding-ada-002-100K')  
+   len(dataset)  
+   ```
 
-       ```Python Python theme={null}
-       # we will use rows of the dataset up to index 30_000
-       dataset.documents.drop(dataset.documents.index[30_000:], inplace=True)
-       # replace the metadata column with blob, which includes the text field
-       dataset.documents.drop(['metadata'], axis=1, inplace=True)  
-       dataset.documents.rename(columns={'blob': 'metadata'}, inplace=True)  
-       ```
-  </Step>
+   ```text Response theme={null}
+   100000
+   ```
 
-  <Step title="Index the data in Pinecone">
-    Create an index and upsert the prepared data:
+2. Reduce the dataset and format it for upserting into Pinecone:
 
-    1. Initialize your client connection to Pinecone and create an index. This step uses the Pinecone API key you set as an environment variable [earlier](#set-up-the-environment).
+   ```Python Python theme={null}
+   # we will use rows of the dataset up to index 30_000
+   dataset.documents.drop(dataset.documents.index[30_000:], inplace=True)
+   # replace the metadata column with blob, which includes the text field
+   dataset.documents.drop(['metadata'], axis=1, inplace=True)  
+   dataset.documents.rename(columns={'blob': 'metadata'}, inplace=True)  
+   ```
 
-       ```Python Python theme={null}
-       from pinecone.grpc import PineconeGRPC as Pinecone
-       from pinecone import ServerlessSpec  
-       import time  
-       # configure client  
-       pc = Pinecone(api_key=pinecone_api_key)  
-       spec = ServerlessSpec(cloud='aws', region='us-east-1')  
-       # check for and delete index if already exists  
-       index_name = 'langchain-retrieval-augmentation-fast'  
-       if pc.has_index(index_name):  
-           pc.delete_index(name=index_name)  
-       # create a new index  
-       pc.create_index(  
-           index_name,  
-           dimension=1536,  # dimensionality of text-embedding-ada-002  
-           metric='dotproduct',  
-           spec=spec  
-       )  
-       ```
+### 3. Index the data in Pinecone
 
-    2. Target the index and check its current stats:
+Create an index and upsert the prepared data:
 
-       ```Python Python theme={null}
-       index = pc.Index(index_name)  
-       index.describe_index_stats()  
-       ```
+1. Initialize your client connection to Pinecone and create an index. This step uses the Pinecone API key you set as an environment variable [earlier](#set-up-the-environment).
 
-       ```text Response theme={null}
-       {'dimension': 1536,  
-       'namespaces': {},  
-       'total_vector_count': 0}  
-       ```
+   ```Python Python theme={null}
+   from pinecone.grpc import PineconeGRPC as Pinecone
+   from pinecone import ServerlessSpec  
+   import time  
+   # configure client  
+   pc = Pinecone(api_key=pinecone_api_key)  
+   spec = ServerlessSpec(cloud='aws', region='us-east-1')  
+   # check for and delete index if already exists  
+   index_name = 'langchain-retrieval-augmentation-fast'  
+   if pc.has_index(index_name):  
+       pc.delete_index(name=index_name)  
+   # create a new index  
+   pc.create_index(  
+       index_name,  
+       dimension=1536,  # dimensionality of text-embedding-ada-002  
+       metric='dotproduct',  
+       spec=spec  
+   )  
+   ```
 
-       The index has a `total_vector_count` of `0` because you haven't added any vectors yet.
+2. Target the index and check its current stats:
 
-    3. Upsert the data to Pinecone:
+   ```Python Python theme={null}
+   index = pc.Index(index_name)  
+   index.describe_index_stats()  
+   ```
 
-       ```Python Python theme={null}
-       for batch in dataset.iter_documents(batch_size=100):  
-           index.upsert(batch)  
-       ```
+   ```text Response theme={null}
+   {'dimension': 1536,  
+   'namespaces': {},  
+   'total_vector_count': 0}  
+   ```
 
-    4. After the data is indexed, check the index stats again:
+   The index has a `total_vector_count` of `0` because you haven't added any vectors yet.
 
-       ```Python Python theme={null}
-       index.describe_index_stats()  
-       ```
+3. Upsert the data to Pinecone:
 
-       ```text Response theme={null}
-       {'dimension': 1536,  
-       'namespaces': {'': {'vector_count': 30000}},  
-       'total_vector_count': 30000} 
-       ```
-  </Step>
+   ```Python Python theme={null}
+   for batch in dataset.iter_documents(batch_size=100):  
+       index.upsert(batch)  
+   ```
 
-  <Step title="Initialize a LangChain vector store">
-    Now that you've built your Pinecone index, initialize a LangChain vector store that uses it. This step uses the OpenAI API key you set as an environment variable [earlier](#set-up-the-environment). OpenAI is a paid service, so running the rest of this tutorial may incur a small cost.
+4. After the data is indexed, check the index stats again:
 
-    1. Initialize a LangChain embedding object:
+   ```Python Python theme={null}
+   index.describe_index_stats()  
+   ```
 
-       ```Python Python theme={null}
-       from langchain_openai import OpenAIEmbeddings  
-       # get openai api key from platform.openai.com  
-       model_name = 'text-embedding-ada-002'  
-       embeddings = OpenAIEmbeddings(  
-           model=model_name,  
-           openai_api_key=openai_api_key  
-       )  
-       ```
+   ```text Response theme={null}
+   {'dimension': 1536,  
+   'namespaces': {'': {'vector_count': 30000}},  
+   'total_vector_count': 30000} 
+   ```
 
-    2. Initialize the LangChain vector store:
+### 4. Initialize a LangChain vector store
 
-       The `text_field` parameter sets the name of the metadata field that stores the raw text when you upsert records using a LangChain operation such as `vectorstore.from_documents` or `vectorstore.add_texts`.
-       This metadata field is used as the `page_content` in the `Document` objects retrieved from query-like LangChain operations such as `vectorstore.similarity_search`.
-       If you don't specify a value for `text_field`, it defaults to `"text"`.
+Now that you've built your Pinecone index, initialize a LangChain vector store that uses it. This step uses the OpenAI API key you set as an environment variable [earlier](#set-up-the-environment). OpenAI is a paid service, so running the rest of this tutorial may incur a small cost.
 
-       ```Python Python theme={null}
-       from langchain_pinecone import PineconeVectorStore  
-       text_field = "text"  
-       vectorstore = PineconeVectorStore(  
-           index, embeddings, text_field  
-       )  
-       ```
+1. Initialize a LangChain embedding object:
 
-    3. Query the vector store directly using `vectorstore.similarity_search`:
+   ```Python Python theme={null}
+   from langchain_openai import OpenAIEmbeddings  
+   # get openai api key from platform.openai.com  
+   model_name = 'text-embedding-ada-002'  
+   embeddings = OpenAIEmbeddings(  
+       model=model_name,  
+       openai_api_key=openai_api_key  
+   )  
+   ```
 
-       ```Python Python theme={null}
-       query = "who was Benito Mussolini?"  
-       vectorstore.similarity_search(  
-           query,  # our search query  
-           k=3  # return 3 most relevant docs  
-       )  
-       ```
+2. Initialize the LangChain vector store:
 
-       ```text Response theme={null}
-       [Document(page_content='Benito Amilcare Andrea Mussolini KSMOM GCTE (29 July 1883 – 28 April 1945) was an Italian politician and journalist...', metadata={'chunk': 0.0, 'source': 'https://simple.wikipedia.org/wiki/Benito%20Mussolini', 'title': 'Benito Mussolini', 'wiki-id': '6754'}),  
-       Document(page_content='Fascism as practiced by Mussolini\nMussolini\'s form of Fascism, "Italian Fascism"- unlike Nazism, the racist ideology...', metadata={'chunk': 1.0, 'source': 'https://simple.wikipedia.org/wiki/Benito%20Mussolini', 'title': 'Benito Mussolini', 'wiki-id': '6754'}),  
-       Document(page_content='Veneto was made part of Italy in 1866 after a war with Austria. Italian soldiers won Latium in 1870. That was when...', metadata={'chunk': 5.0, 'source': 'https://simple.wikipedia.org/wiki/Italy', 'title': 'Italy', 'wiki-id': '363'})]
-       ```
+   The `text_field` parameter sets the name of the metadata field that stores the raw text when you upsert records using a LangChain operation such as `vectorstore.from_documents` or `vectorstore.add_texts`.
+   This metadata field is used as the `page_content` in the `Document` objects retrieved from query-like LangChain operations such as `vectorstore.similarity_search`.
+   If you don't specify a value for `text_field`, it defaults to `"text"`.
 
-    All of these sample results are relevant. You can also use the vector store for other tasks. One that LangChain supports well is generative question answering (GQA).
-  </Step>
+   ```Python Python theme={null}
+   from langchain_pinecone import PineconeVectorStore  
+   text_field = "text"  
+   vectorstore = PineconeVectorStore(  
+       index, embeddings, text_field  
+   )  
+   ```
 
-  <Step title="Use Pinecone and LangChain for RAG">
-    In RAG, you pass the query to an LLM as a question, and the LLM must answer it based on the information it gets from the vector store. Follow these steps:
+3. Query the vector store directly using `vectorstore.similarity_search`:
 
-    1. Build a RAG chain that retrieves context from the vector store and passes it to the LLM with the question:
+   ```Python Python theme={null}
+   query = "who was Benito Mussolini?"  
+   vectorstore.similarity_search(  
+       query,  # our search query  
+       k=3  # return 3 most relevant docs  
+   )  
+   ```
 
-       ```Python Python theme={null}
-       from langchain_openai import ChatOpenAI  
-       from langchain_core.prompts import ChatPromptTemplate  
-       from langchain_core.output_parsers import StrOutputParser  
-       from langchain_core.runnables import RunnablePassthrough  
-       # completion llm  
-       llm = ChatOpenAI(  
-           openai_api_key=openai_api_key,  
-           model_name='gpt-4o-mini',  
-           temperature=0.0  
-       )  
-       retriever = vectorstore.as_retriever()  
-       prompt = ChatPromptTemplate.from_template(  
-           "Answer the question based only on the following context:\n\n"  
-           "{context}\n\n"  
-           "Question: {question}"  
-       )  
+   ```text Response theme={null}
+   [Document(page_content='Benito Amilcare Andrea Mussolini KSMOM GCTE (29 July 1883 – 28 April 1945) was an Italian politician and journalist...', metadata={'chunk': 0.0, 'source': 'https://simple.wikipedia.org/wiki/Benito%20Mussolini', 'title': 'Benito Mussolini', 'wiki-id': '6754'}),  
+   Document(page_content='Fascism as practiced by Mussolini\nMussolini\'s form of Fascism, "Italian Fascism"- unlike Nazism, the racist ideology...', metadata={'chunk': 1.0, 'source': 'https://simple.wikipedia.org/wiki/Benito%20Mussolini', 'title': 'Benito Mussolini', 'wiki-id': '6754'}),  
+   Document(page_content='Veneto was made part of Italy in 1866 after a war with Austria. Italian soldiers won Latium in 1870. That was when...', metadata={'chunk': 5.0, 'source': 'https://simple.wikipedia.org/wiki/Italy', 'title': 'Italy', 'wiki-id': '363'})]
+   ```
 
-       def format_docs(docs):  
-           return "\n\n".join(doc.page_content for doc in docs)  
+All of these sample results are relevant. You can also use the vector store for other tasks. One that LangChain supports well is generative question answering (GQA).
 
-       rag_chain = (  
-           {"context": retriever | format_docs, "question": RunnablePassthrough()}  
+### 5. Use Pinecone and LangChain for RAG
+
+In RAG, you pass the query to an LLM as a question, and the LLM must answer it based on the information it gets from the vector store. Follow these steps:
+
+1. Build a RAG chain that retrieves context from the vector store and passes it to the LLM with the question:
+
+   ```Python Python theme={null}
+   from langchain_openai import ChatOpenAI  
+   from langchain_core.prompts import ChatPromptTemplate  
+   from langchain_core.output_parsers import StrOutputParser  
+   from langchain_core.runnables import RunnablePassthrough  
+   # completion llm  
+   llm = ChatOpenAI(  
+       openai_api_key=openai_api_key,  
+       model_name='gpt-4o-mini',  
+       temperature=0.0  
+   )  
+   retriever = vectorstore.as_retriever()  
+   prompt = ChatPromptTemplate.from_template(  
+       "Answer the question based only on the following context:\n\n"  
+       "{context}\n\n"  
+       "Question: {question}"  
+   )  
+
+   def format_docs(docs):  
+       return "\n\n".join(doc.page_content for doc in docs)  
+
+   rag_chain = (  
+       {"context": retriever | format_docs, "question": RunnablePassthrough()}  
+       | prompt  
+       | llm  
+       | StrOutputParser()  
+   )  
+   rag_chain.invoke(query)  
+   ```
+
+   ```text Response theme={null}
+   Benito Mussolini was an Italian politician and journalist who served as the Prime Minister of Italy from 1922 until 1943. He was the leader of the National Fascist Party and is known for creating the ideology of Fascism...
+   ```
+
+2. To include the sources the LLM uses to answer your question, return the retrieved documents alongside the answer:
+
+   ```Python Python theme={null}
+   from langchain_core.runnables import RunnableParallel  
+   rag_chain_with_sources = RunnableParallel(  
+       {"docs": retriever, "question": RunnablePassthrough()}  
+   ).assign(  
+       answer=(  
+           {"context": lambda x: format_docs(x["docs"]), "question": lambda x: x["question"]}  
            | prompt  
            | llm  
            | StrOutputParser()  
        )  
-       rag_chain.invoke(query)  
-       ```
+   )  
+   result = rag_chain_with_sources.invoke(query)  
+   {  
+       "question": result["question"],  
+       "answer": result["answer"],  
+       "sources": sorted({doc.metadata["source"] for doc in result["docs"]}),  
+   }  
+   ```
 
-       ```text Response theme={null}
-       Benito Mussolini was an Italian politician and journalist who served as the Prime Minister of Italy from 1922 until 1943. He was the leader of the National Fascist Party and is known for creating the ideology of Fascism...
-       ```
+   ```text Response theme={null}
+   {'question': 'who was Benito Mussolini?',  
+   'answer': "Benito Mussolini was an Italian politician and journalist who served as the Prime Minister of Italy from 1922 until 1943. He was the leader of the National Fascist Party and is known for creating the ideology of Fascism...",  
+   'sources': ['https://simple.wikipedia.org/wiki/Benito%20Mussolini', ...]}  
+   ```
 
-    2. To include the sources the LLM uses to answer your question, return the retrieved documents alongside the answer:
+### 6. Clean up
 
-       ```Python Python theme={null}
-       from langchain_core.runnables import RunnableParallel  
-       rag_chain_with_sources = RunnableParallel(  
-           {"docs": retriever, "question": RunnablePassthrough()}  
-       ).assign(  
-           answer=(  
-               {"context": lambda x: format_docs(x["docs"]), "question": lambda x: x["question"]}  
-               | prompt  
-               | llm  
-               | StrOutputParser()  
-           )  
-       )  
-       result = rag_chain_with_sources.invoke(query)  
-       {  
-           "question": result["question"],  
-           "answer": result["answer"],  
-           "sources": sorted({doc.metadata["source"] for doc in result["docs"]}),  
-       }  
-       ```
+When you no longer need the index, use the `delete_index` operation to delete it:
 
-       ```text Response theme={null}
-       {'question': 'who was Benito Mussolini?',  
-       'answer': "Benito Mussolini was an Italian politician and journalist who served as the Prime Minister of Italy from 1922 until 1943. He was the leader of the National Fascist Party and is known for creating the ideology of Fascism...",  
-       'sources': ['https://simple.wikipedia.org/wiki/Benito%20Mussolini', ...]}  
-       ```
-  </Step>
-
-  <Step title="Clean up">
-    When you no longer need the index, use the `delete_index` operation to delete it:
-
-    ```Python Python theme={null}
-    pc.delete_index(name=index_name)
-    ```
-  </Step>
-</Steps>
+```Python Python theme={null}
+pc.delete_index(name=index_name)
+```
 
 ## Resources
 

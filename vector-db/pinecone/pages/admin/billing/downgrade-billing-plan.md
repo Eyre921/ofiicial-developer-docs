@@ -1,18 +1,18 @@
 ---
-title: "Downgrade your plan"
+title: "Downgrade your billing plan"
 source: https://docs.pinecone.io/admin/billing/downgrade-billing-plan
 path: admin/billing/downgrade-billing-plan
 ---
 
 Downgrade your Pinecone organization from a paid plan to the free Starter plan, including plan requirements, index limits, and billing impact.
 
-<Note>
-  To change your billing plan, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles).
-</Note>
+> [!NOTE]
+>
+> To change your billing plan, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles).
 
-<Tip>
-  If you're on the Standard plan with credit/debit card billing and want to reduce spend without returning to the free Starter plan, consider [switching to the Builder plan](#switch-from-standard-to-builder) for a flat \$20/month.
-</Tip>
+> [!TIP]
+>
+> If you're on the Standard plan with credit/debit card billing and want to reduce spend without returning to the free Starter plan, consider [switching to the Builder plan](#switch-from-standard-to-builder) for a flat \$20/month.
 
 ## Before you downgrade
 
@@ -28,66 +28,64 @@ The downgrade doesn't reduce your data or change your configuration, so do this 
 * **Reassign or remove members** whose [organization role](/admin/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
 * **Get under the Starter storage limits.** Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. Do this last, after the migrations above, because they can briefly leave a second copy of an index. [Delete records](/guides/manage-data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
-<Note>
-  You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
-</Note>
+> [!NOTE]
+>
+> You don't need to bring [Assistant usage](/guides/assistant/pricing-and-limits) (ingestion units, chat tokens, and context tokens) under Starter caps before downgrading. If you exceed Starter limits after downgrading, new requests may be blocked until usage is within limits.
 
-<Note>
-  If you're switching from Standard to Builder instead of Starter, your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits). You must also delete all backups and remove or stop any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO.
-</Note>
+> [!NOTE]
+>
+> If you're switching from Standard to Builder instead of Starter, your organization must be under the [Builder plan quotas](/reference/api/database-limits/object-limits). You must also delete all backups and remove or stop any features not available on Builder, such as bulk import, pod-based indexes, storage integrations, RBAC, and SSO.
 
 ## Downgrade to the Starter plan
 
 The downgrade process is different depending on how you're paying for Pinecone.
 
-<Warning>
-  Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-</Warning>
+> [!WARNING]
+>
+> Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-<Tabs>
-  <Tab title="Credit card">
-    1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-    2. Click **Downgrade** in the **Starter** plan section.
+**Credit card**
 
-    Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-  </Tab>
+1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+2. Click **Downgrade** in the **Starter** plan section.
 
-  <Tab title="Google Cloud Marketplace">
-    1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-    2. In the **Starter** section, click **Downgrade**.
-    3. Click **Confirm downgrade**.
-    4. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
-    5. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your Pinecone subscription.
+Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
-       <Tip>
-         If you don't see the order, check that the correct billing account is selected.
-       </Tip>
+**Google Cloud Marketplace**
 
-    Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-  </Tab>
+1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+2. In the **Starter** section, click **Downgrade**.
+3. Click **Confirm downgrade**.
+4. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
+5. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your Pinecone subscription.
 
-  <Tab title="AWS Marketplace">
-    1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-    2. In the **Starter** section, click **Downgrade**.
-    3. Click **Confirm downgrade**.
-    4. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
-    5. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+   > [!TIP]
+   >
+   > If you don't see the order, check that the correct billing account is selected.
 
-    Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-  </Tab>
+Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
-  <Tab title="Microsoft Marketplace">
-    1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-    2. In the **Starter** section, click **Downgrade**.
-    3. Click **Confirm downgrade**.
-    4. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
-    5. On the **SaaS** page, click your subscription to Pinecone.
-    6. Click **Cancel subscription**.
-    7. Confirm the cancellation.
+**AWS Marketplace**
 
-    Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-  </Tab>
-</Tabs>
+1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+2. In the **Starter** section, click **Downgrade**.
+3. Click **Confirm downgrade**.
+4. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
+5. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+
+Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
+
+**Microsoft Marketplace**
+
+1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+2. In the **Starter** section, click **Downgrade**.
+3. Click **Confirm downgrade**.
+4. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
+5. On the **SaaS** page, click your subscription to Pinecone.
+6. Click **Cancel subscription**.
+7. Confirm the cancellation.
+
+Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
 ## Switch from Standard to Builder
 
@@ -100,8 +98,8 @@ If you're on the Standard plan and pay by credit/debit card, you can switch to t
 
 After switching, overages are no longer billed. Instead, requests that exceed Builder quotas are blocked. If you need more capacity, [upgrade back to Standard or Enterprise](/admin/billing/upgrade-billing-plan) at any time.
 
-<Note>
-  The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and isn't supported through cloud marketplaces.
-</Note>
+> [!NOTE]
+>
+> The [Builder plan](https://www.pinecone.io/pricing/) is available with credit/debit card billing only and isn't supported through cloud marketplaces.
 
 If you pay through a cloud marketplace, you can't switch to the Builder plan at this time. [Contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to be notified when this migration becomes available.

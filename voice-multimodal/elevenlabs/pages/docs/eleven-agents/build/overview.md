@@ -19,17 +19,17 @@ The Build section covers everything you need to create sophisticated conversatio
 
 ### Design and configure
 
-| Goal                          | Guide                                                                    | Description                                                            |
-| ----------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Create conversation workflows | [Workflows](/docs/eleven-agents/customization/agent-workflows)           | Build multi-step workflows with visual workflow builder                |
-| Write system prompts          | [System prompt](/docs/eleven-agents/best-practices/prompting-guide)      | Learn best practices for crafting effective agent prompts              |
-| Select language model         | [Models](/docs/eleven-agents/customization/llm)                          | Choose from supported LLMs or bring your own custom model              |
-| Control conversation flow     | [Conversation flow](/docs/eleven-agents/customization/conversation-flow) | Configure turn-taking, interruptions, and timeout settings             |
-| Configure voice & language    | [Voice & language](/docs/eleven-agents/customization/voice)              | Select from 5k+ voices across 31 languages with customization options  |
-| Add knowledge to agent        | [Knowledge base](/docs/eleven-agents/customization/knowledge-base)       | Upload documents and enable RAG for grounded responses                 |
-| Connect tools                 | [Tools](/docs/eleven-agents/customization/tools)                         | Enable agents to call clients & APIs to perform actions                |
-| Personalize each conversation | [Personalization](/docs/eleven-agents/customization/personalization)     | Use dynamic variables and overrides for per-conversation customization |
-| Secure agent access           | [Authentication](/docs/eleven-agents/customization/authentication)       | Implement custom authentication for protected agent access             |
+| Goal                          | Guide                                                                    | Description                                                               |
+| ----------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Create conversation workflows | [Workflows](/docs/eleven-agents/customization/agent-workflows)           | Build multi-step workflows with visual workflow builder                   |
+| Write system prompts          | [System prompt](/docs/eleven-agents/best-practices/prompting-guide)      | Learn best practices for crafting effective agent prompts                 |
+| Select language model         | [Models](/docs/eleven-agents/customization/llm)                          | Choose from supported LLMs or bring your own custom model                 |
+| Control conversation flow     | [Conversation flow](/docs/eleven-agents/customization/conversation-flow) | Configure turn-taking, interruptions, and timeout settings                |
+| Configure voice & language    | [Voice & language](/docs/eleven-agents/customization/voice)              | Select from 10,000+ voices across 31 languages with customization options |
+| Add knowledge to agent        | [Knowledge base](/docs/eleven-agents/customization/knowledge-base)       | Upload documents and enable RAG for grounded responses                    |
+| Connect tools                 | [Tools](/docs/eleven-agents/customization/tools)                         | Enable agents to call clients & APIs to perform actions                   |
+| Personalize each conversation | [Personalization](/docs/eleven-agents/customization/personalization)     | Use dynamic variables and overrides for per-conversation customization    |
+| Secure agent access           | [Authentication](/docs/eleven-agents/customization/authentication)       | Implement custom authentication for protected agent access                |
 
 ## Core components
 
@@ -46,7 +46,7 @@ Control how your agent thinks and responds:
 
 Customize the agent's voice and language capabilities:
 
-* **Voice Selection**: Choose from 5k+ professional voices
+* **Voice Selection**: Choose from 10,000+ voices
 * **Multi-voice Support**: Use different voices within conversations
 * **Language Support**: Deploy in 31+ languages
 * **Voice Design**: Create custom voices from text descriptions

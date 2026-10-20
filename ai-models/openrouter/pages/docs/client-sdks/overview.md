@@ -22,35 +22,33 @@ The Client SDKs give you a thin, type-safe layer over the OpenRouter REST API. I
 | Python | [`openrouter`](https://pypi.org/project/openrouter/) |
 | Go | [`go-sdk`](https://pkg.go.dev/github.com/OpenRouterTeam/go-sdk) |
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install @openrouter/sdk
-  ```
+```bash title="npm" lines theme={null}
+npm install @openrouter/sdk
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add @openrouter/sdk
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add @openrouter/sdk
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add @openrouter/sdk
-  ```
+```bash title="yarn" lines theme={null}
+yarn add @openrouter/sdk
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add @openrouter/sdk
-  ```
+```bash title="bun" lines theme={null}
+bun add @openrouter/sdk
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add npm:@openrouter/sdk
-  ```
+```bash title="deno" lines theme={null}
+deno add npm:@openrouter/sdk
+```
 
-  ```bash title="pip" lines theme={null}
-  pip install openrouter
-  ```
+```bash title="pip" lines theme={null}
+pip install openrouter
+```
 
-  ```bash title="go" lines theme={null}
-  go get github.com/OpenRouterTeam/go-sdk
-  ```
-</CodeGroup>
+```bash title="go" lines theme={null}
+go get github.com/OpenRouterTeam/go-sdk
+```
 
 All three SDKs are auto-generated from the OpenRouter OpenAPI spec, so new models, parameters, and endpoints appear immediately after each API release.
 
@@ -66,51 +64,49 @@ Choose the Client SDKs when you need **direct, efficient access to model inferen
 
 The Client SDKs are intentionally lean. It mirrors the OpenRouter API surface 1:1 with full type safety, so there is no abstraction to fight when you need fine-grained control.
 
-<Tip>
-  If you want higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions, and conversation state management), see the [Agent SDK](/docs/agent-sdk/overview) instead.
-</Tip>
+> [!TIP]
+>
+> If you want higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions, and conversation state management), see the [Agent SDK](/docs/agent-sdk/overview) instead.
 
 ## Quick example
 
-<CodeGroup>
-  ```typescript title="TypeScript" lines theme={null}
-  import { OpenRouter } from '@openrouter/sdk';
+```typescript title="TypeScript" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
 
-  const client = new OpenRouter({
-    apiKey: process.env.OPENROUTER_API_KEY,
-  });
+const client = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
-  const response = await client.chat.send({
-    chatRequest: {
-      model: 'openai/gpt-5.2',
-      messages: [
-        { role: 'user', content: 'Explain quantum computing in one sentence.' },
-      ],
-    },
-  });
+const response = await client.chat.send({
+  chatRequest: {
+    model: 'openai/gpt-5.2',
+    messages: [
+      { role: 'user', content: 'Explain quantum computing in one sentence.' },
+    ],
+  },
+});
 
-  if (response instanceof ReadableStream) {
-    throw new Error('Expected a non-streaming response');
-  }
+if (response instanceof ReadableStream) {
+  throw new Error('Expected a non-streaming response');
+}
 
-  console.log(response.choices[0].message.content);
-  ```
+console.log(response.choices[0].message.content);
+```
 
-  ```python title="Python" lines theme={null}
-  from openrouter import OpenRouter
-  import os
+```python title="Python" lines theme={null}
+from openrouter import OpenRouter
+import os
 
-  with OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY")) as client:
-      response = client.chat.send(
-          model="openai/gpt-5.2",
-          messages=[
-              {"role": "user", "content": "Explain quantum computing in one sentence."}
-          ],
-      )
+with OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY")) as client:
+    response = client.chat.send(
+        model="openai/gpt-5.2",
+        messages=[
+            {"role": "user", "content": "Explain quantum computing in one sentence."}
+        ],
+    )
 
-      print(response.choices[0].message.content)
-  ```
-</CodeGroup>
+    print(response.choices[0].message.content)
+```
 
 ## Client SDKs vs Agent SDK
 

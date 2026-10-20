@@ -109,9 +109,9 @@ curl http://localhost:4000/chat/completions \
 
 The gateway sends the `firerouter` model ID and your Fireworks API key to Fireworks. You do not need FireConnect. For supported models, see [FireRouter](/nexus/firerouter#supported-models).
 
-<Card title="Set up FireRouter in LiteLLM or Portkey" icon="shuffle" href="/nexus/firerouter/setup#llm-gateway">
-  Router entries for LiteLLM, the Portkey model format, and a test request.
-</Card>
+> **[Set up FireRouter in LiteLLM or Portkey](/nexus/firerouter/setup#llm-gateway)**
+>
+> Router entries for LiteLLM, the Portkey model format, and a test request.
 
 ### Provide closed-model credentials
 
@@ -132,90 +132,88 @@ You do not need to pass provider keys from each client or harness. Store them in
 | **Keys in the gateway config** | The gateway's config or secret store | Only their gateway key |
 | **Keys from each client** | Each client or harness | Their gateway key and a provider-key header |
 
-<Tabs>
-  <Tab title="Provider Keys">
-    An account admin connects the required [Provider Keys](/nexus/provider-keys)
-    once from [Settings](https://app.fireworks.ai/settings/provider-keys). The
-    gateway stores only the Fireworks key. No provider credential passes
-    through the gateway.
+**Provider Keys**
 
-    Provider Keys is not yet available on every account. See
-    [Provider Keys](/nexus/provider-keys) to request it.
+An account admin connects the required [Provider Keys](/nexus/provider-keys)
+once from [Settings](https://app.fireworks.ai/settings/provider-keys). The
+gateway stores only the Fireworks key. No provider credential passes
+through the gateway.
 
-    ```bash wrap theme={null}
-    curl http://localhost:4000/chat/completions \
-      -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "model": "firerouter",
-        "messages": [{"role": "user", "content": "Say pong in one word."}]
-      }'
-    ```
-  </Tab>
+Provider Keys is not yet available on every account. See
+[Provider Keys](/nexus/provider-keys) to request it.
 
-  <Tab title="Keys in the gateway config">
-    Use this option when Provider Keys is not enabled for your account. The
-    gateway adds the provider-key headers to every request for a router, so
-    clients and harnesses send only their gateway key.
+```bash wrap theme={null}
+curl http://localhost:4000/chat/completions \
+  -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "firerouter",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
 
-    In LiteLLM, add `extra_headers` to the `firerouter` entry. `os.environ/` reads
-    the key from the proxy's environment:
+**Keys in the gateway config**
 
-    ```yaml config.yaml theme={null}
-    model_list:
-      - model_name: firerouter
-        litellm_params:
-          model: fireworks_ai/accounts/fireworks/routers/firerouter
-          api_key: os.environ/FIREWORKS_API_KEY
-          api_base: https://api.fireworks.ai/inference/v1
-          extra_headers:
-            x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
-    ```
+Use this option when Provider Keys is not enabled for your account. The
+gateway adds the provider-key headers to every request for a router, so
+clients and harnesses send only their gateway key.
 
-    To give FireRouter an OpenAI key too, add
-    `x-openai-api-key: os.environ/OPENAI_API_KEY` under `extra_headers`.
+In LiteLLM, add `extra_headers` to the `firerouter` entry. `os.environ/` reads
+the key from the proxy's environment:
 
-    Clients call `firerouter` with only their LiteLLM virtual key. For
-    Portkey and other gateways, set the same headers as custom headers on the
-    Fireworks provider or integration.
-  </Tab>
+```yaml config.yaml theme={null}
+model_list:
+  - model_name: firerouter
+    litellm_params:
+      model: fireworks_ai/accounts/fireworks/routers/firerouter
+      api_key: os.environ/FIREWORKS_API_KEY
+      api_base: https://api.fireworks.ai/inference/v1
+      extra_headers:
+        x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
+```
 
-  <Tab title="Keys from each client">
-    Use this option when each team or user should call closed models with
-    their own provider key. The client sends `x-anthropic-api-key`,
-    `x-openai-api-key`, or both to the gateway.
+To give FireRouter an OpenAI key too, add
+`x-openai-api-key: os.environ/OPENAI_API_KEY` under `extra_headers`.
 
-    LiteLLM does not forward client headers by default. Enable forwarding in
-    `config.yaml`:
+Clients call `firerouter` with only their LiteLLM virtual key. For
+Portkey and other gateways, set the same headers as custom headers on the
+Fireworks provider or integration.
 
-    ```yaml theme={null}
-    general_settings:
-      forward_client_headers_to_llm_api: true
-    ```
+**Keys from each client**
 
-    ```bash wrap theme={null}
-    curl http://localhost:4000/chat/completions \
-      -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
-      -H "Content-Type: application/json" \
-      -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
-      -d '{
-        "model": "firerouter",
-        "messages": [{"role": "user", "content": "Say pong in one word."}]
-      }'
-    ```
+Use this option when each team or user should call closed models with
+their own provider key. The client sends `x-anthropic-api-key`,
+`x-openai-api-key`, or both to the gateway.
 
-    See [Forward client headers](https://docs.litellm.ai/docs/proxy/forward_client_headers)
-    in the LiteLLM docs.
-  </Tab>
-</Tabs>
+LiteLLM does not forward client headers by default. Enable forwarding in
+`config.yaml`:
+
+```yaml theme={null}
+general_settings:
+  forward_client_headers_to_llm_api: true
+```
+
+```bash wrap theme={null}
+curl http://localhost:4000/chat/completions \
+  -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
+  -H "Content-Type: application/json" \
+  -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
+  -d '{
+    "model": "firerouter",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
+
+See [Forward client headers](https://docs.litellm.ai/docs/proxy/forward_client_headers)
+in the LiteLLM docs.
 
 A provider-key header sent with a request takes precedence over a Provider Key connected to the account.
 
-<Warning>
-  Gateways often log request headers. If provider keys travel as headers,
-  whether added by the gateway or sent by clients, check that the gateway
-  redacts them in its logs. Provider Keys keeps provider credentials out of
-  the gateway entirely.
-</Warning>
+> [!WARNING]
+>
+> Gateways often log request headers. If provider keys travel as headers,
+> whether added by the gateway or sent by clients, check that the gateway
+> redacts them in its logs. Provider Keys keeps provider credentials out of
+> the gateway entirely.
 
 LiteLLM returns your `model_name` in the response `model` field, not the model that served the turn. To confirm that closed models are reachable, send a request directly to Fireworks as shown in [Verify routing](/nexus/firerouter#verify-routing). For direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).

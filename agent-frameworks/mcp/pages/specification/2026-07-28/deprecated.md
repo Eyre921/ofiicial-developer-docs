@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/deprecated
 path: specification/2026-07-28/deprecated
 ---
 
-<div />
-
 This page is the registry of specification features that are currently in the
 **Deprecated** state under the
 [feature lifecycle and deprecation policy](/community/feature-lifecycle)

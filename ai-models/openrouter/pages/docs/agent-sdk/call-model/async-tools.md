@@ -59,9 +59,9 @@ If `run` is a generator, each `yield` becomes a log entry. Logs feed check-ins, 
 
 If `run` is a plain async function, log with `ctx.log()` instead.
 
-<Note>
-  `lifecycle: 'background'` and `'deferred'` require an `outputSchema`. The result arrives later, so the SDK must be able to validate it without the original call.
-</Note>
+> [!NOTE]
+>
+> `lifecycle: 'background'` and `'deferred'` require an `outputSchema`. The result arrives later, so the SDK must be able to validate it without the original call.
 
 ## Background Tools
 
@@ -155,9 +155,9 @@ await legalReview.resolve(client, {
 
 The lower-level `resumeToolResults(client, { state, results, ... })` covers batches and tools you don't have a reference to.
 
-<Warning>
-  `.resolve()` injects a value the model treats as a tool result. Authenticate the webhook before calling it; the SDK can't do that for you. Outputs are validated against `outputSchema` at runtime as well as compile time.
-</Warning>
+> [!WARNING]
+>
+> `.resolve()` injects a value the model treats as a tool result. Authenticate the webhook before calling it; the SDK can't do that for you. Outputs are validated against `outputSchema` at runtime as well as compile time.
 
 ## Checking On Running Tasks
 
@@ -204,9 +204,9 @@ const renderVideo = tool({
 
 Without a custom `check`, the SDK answers the three views itself (`status` / `logs` / `transcript`, truncated to `asyncTools.maxTranscriptChars`, default 20,000 characters).
 
-<Note>
-  The SDK treats task-tool calls as internal: they're exempt from doom-loop detection, skip per-tool concurrency and timeout limits, and never fire `PreToolUse`/`PostToolUse` hooks.
-</Note>
+> [!NOTE]
+>
+> The SDK treats task-tool calls as internal: they're exempt from doom-loop detection, skip per-tool concurrency and timeout limits, and never fire `PreToolUse`/`PostToolUse` hooks.
 
 Disable check-ins entirely with `asyncTools: { checkins: false }`. Placeholders then tell the model not to call the tool again, and results still arrive automatically.
 
@@ -265,9 +265,9 @@ Everything above works the same way for agent tools:
 
 By default, the full child transcript stays out of the parent's context. The parent receives the mapped result, and the model pulls transcript detail on demand via the `task` tool.
 
-<Note>
-  Children run in-memory (no `StateAccessor`) and don't inherit the parent's hooks; pass child hooks explicitly in the `agent` spec if needed. A child that pauses (HITL, approval, or deferred tools inside it) fails the task with a clear error.
-</Note>
+> [!NOTE]
+>
+> Children run in-memory (no `StateAccessor`) and don't inherit the parent's hooks; pass child hooks explicitly in the `agent` spec if needed. A child that pauses (HITL, approval, or deferred tools inside it) fails the task with a clear error.
 
 ## Observing Async Tasks
 

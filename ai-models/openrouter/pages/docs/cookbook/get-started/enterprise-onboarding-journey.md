@@ -26,9 +26,9 @@ Progress through these milestones depends on a small number of inputs from your 
 
 Each account has two customer-facing roles assigned to it. The **Forward Deployed Engineer (FDE)** owns Activation and Onboarding through go-live. The **Customer Success Manager (CSM)** joins from Onboarding and owns the relationship after go-live.
 
-<Note>
-  OpenRouter provisions your account, credits, and invoicing from its side, but cannot access or configure anything inside your organization: workspaces, API keys, guardrails, members, or settings. Your team retains access and performs all configuration. During working sessions, your FDE works side by side with your team to get everything set up.
-</Note>
+> [!NOTE]
+>
+> OpenRouter provisions your account, credits, and invoicing from its side, but cannot access or configure anything inside your organization: workspaces, API keys, guardrails, members, or settings. Your team retains access and performs all configuration. During working sessions, your FDE works side by side with your team to get everything set up.
 
 If you want to set up your organization self-serve, follow the [Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart).
 
@@ -187,15 +187,13 @@ The shared channel remains open between quarterly reviews.
 
 Two documents cover the configuration decisions that are cheapest to get right early and most expensive to correct once your developers are active:
 
-<CardGroup cols={2}>
-  <Card title="Enterprise Quickstart" icon="rocket" href="/docs/cookbook/get-started/enterprise-quickstart">
-    Organization, workspaces, key management, security controls, presets, and observability, step by step.
-  </Card>
+> **[Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart)**
+>
+> Organization, workspaces, key management, security controls, presets, and observability, step by step.
 
-  <Card title="Organization Management" icon="building-user" href="/docs/cookbook/administration/organization-management">
-    Roles, shared credits, member management, and centralized usage tracking.
-  </Card>
-</CardGroup>
+> **[Organization Management](/docs/cookbook/administration/organization-management)**
+>
+> Roles, shared credits, member management, and centralized usage tracking.
 
 For application teams expanding beyond the first workload, see the [Quickstart](/docs/cookbook/get-started/quickstart), [Structured Outputs](/docs/guides/features/structured-outputs), [Tool Calling](/docs/guides/features/tool-calling), and [Latency and Performance](/docs/guides/best-practices/latency-and-performance).
 

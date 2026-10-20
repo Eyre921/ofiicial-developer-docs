@@ -8,86 +8,82 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
 
 
-<RequestExample>
-  ```javascript JavaScript theme={null}
-  // Requires Node.js SDK v8.2.0 or later
-  import { AdminClient } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+// Requires Node.js SDK v8.2.0 or later
+import { AdminClient } from '@pinecone-database/pinecone';
 
-  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
-  const admin = new AdminClient();
+// Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+const admin = new AdminClient();
 
-  const project = await admin.projects.update('YOUR_PROJECT_ID', {
-    name: 'updated-example-project',
-  });
-  console.log(project);
-  ```
+const project = await admin.projects.update('YOUR_PROJECT_ID', {
+  name: 'updated-example-project',
+});
+console.log(project);
+```
 
-  ```go Go theme={null}
-  // Requires Go SDK v6.0.0 or later
-  package main
+```go Go theme={null}
+// Requires Go SDK v6.0.0 or later
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
 
-      "github.com/pinecone-io/go-pinecone/v6/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
-          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
-          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create AdminClient: %v", err)
-      }
+    adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+        ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+        ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create AdminClient: %v", err)
+    }
 
-      name := "updated-example-project"
-      project, err := adminClient.Project.Update(ctx, "YOUR_PROJECT_ID", &pinecone.UpdateProjectParams{
-          Name: &name,
-      })
-      if err != nil {
-          log.Fatalf("Failed to update project: %v", err)
-      }
-      fmt.Printf("Successfully updated project: %v\n", project.Name)
-  }
-  ```
+    name := "updated-example-project"
+    project, err := adminClient.Project.Update(ctx, "YOUR_PROJECT_ID", &pinecone.UpdateProjectParams{
+        Name: &name,
+    })
+    if err != nil {
+        log.Fatalf("Failed to update project: %v", err)
+    }
+    fmt.Printf("Successfully updated project: %v\n", project.Name)
+}
+```
 
-  ```hcl Terraform theme={null}
-  # Requires Terraform provider v4.0.0 or later
-  # Change the name on an existing resource, then run `terraform apply`
-  resource "pinecone_project" "example" {
-    name = "updated-example-project"
-  }
-  ```
+```hcl Terraform theme={null}
+# Requires Terraform provider v4.0.0 or later
+# Change the name on an existing resource, then run `terraform apply`
+resource "pinecone_project" "example" {
+  name = "updated-example-project"
+}
+```
 
-  ```bash curl theme={null}
-  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-  PROJECT_ID="YOUR_PROJECT_ID"
+```bash curl theme={null}
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+PROJECT_ID="YOUR_PROJECT_ID"
 
-  curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-    -H "accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
-    -d '{
-      "name": "updated-example-project"
-      }'
-  ```
-</RequestExample>
+curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-04" \
+  -d '{
+    "name": "updated-example-project"
+    }'
+```
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "updated-example-project",
-    "max_pods": 0,
-    "force_encryption_with_cmek": false,
-    "organization_id": "string",
-    "created_at": "2025-03-17T00:42:31.912Z"
-  }
-  ```
-</ResponseExample>
+```json curl theme={null}
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "name": "updated-example-project",
+  "max_pods": 0,
+  "force_encryption_with_cmek": false,
+  "organization_id": "string",
+  "created_at": "2025-03-17T00:42:31.912Z"
+}
+```

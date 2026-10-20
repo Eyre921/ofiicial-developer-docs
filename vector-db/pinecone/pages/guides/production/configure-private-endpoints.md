@@ -19,17 +19,15 @@ Make sure you have the following:
 * The owner role in the Pinecone project you want to connect to
 * A [serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in one of the regions listed in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider)
 
-<Tabs>
-  <Tab title="AWS">
-    - Access to the [AWS console](https://console.aws.amazon.com/console/home)
-    - An [Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same region as your index
-  </Tab>
+**AWS**
 
-  <Tab title="Azure">
-    * Access to the [Azure portal](https://portal.azure.com)
-    * An [Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same region as your index, with a subnet whose **Private endpoint network policies** setting is **Disabled**
-  </Tab>
-</Tabs>
+* Access to the [AWS console](https://console.aws.amazon.com/console/home)
+* An [Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same region as your index
+
+**Azure**
+
+* Access to the [Azure portal](https://portal.azure.com)
+* An [Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same region as your index, with a subnet whose **Private endpoint network policies** setting is **Disabled**
 
 ## Set up a private endpoint
 
@@ -37,53 +35,51 @@ Make sure you have the following:
 
 Create an endpoint in your VPC or VNet that connects to Pinecone's service in your index's region:
 
-<Tabs>
-  <Tab title="AWS">
-    1. In the [Amazon VPC console](https://console.aws.amazon.com/vpc/), go to **Endpoints** and click **Create endpoint**.
+**AWS**
 
-    2. For **Type**, select **Endpoint services that use NLBs and GWLBs**.
+1. In the [Amazon VPC console](https://console.aws.amazon.com/vpc/), go to **Endpoints** and click **Create endpoint**.
 
-    3. For **Service name**, enter the service name for your index's region, and then click **Verify service**:
+2. For **Type**, select **Endpoint services that use NLBs and GWLBs**.
 
-       | Index region | Service name |
-       | - | - |
-       | `us-east-1` (N. Virginia) | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54` |
-       | `us-west-2` (Oregon) | `com.amazonaws.vpce.us-west-2.vpce-svc-04ecb9a0e0d5aab01` |
-       | `eu-west-1` (Ireland) | `com.amazonaws.vpce.eu-west-1.vpce-svc-03c6b7e17ff02a70f` |
-       | `eu-central-1` (Frankfurt) | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34` |
-       | `ap-southeast-1` (Singapore) | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-0c12f00812e786068` |
+3. For **Service name**, enter the service name for your index's region, and then click **Verify service**:
 
-    4. For **VPC**, select the VPC your clients connect from.
+   | Index region | Service name |
+   | - | - |
+   | `us-east-1` (N. Virginia) | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54` |
+   | `us-west-2` (Oregon) | `com.amazonaws.vpce.us-west-2.vpce-svc-04ecb9a0e0d5aab01` |
+   | `eu-west-1` (Ireland) | `com.amazonaws.vpce.eu-west-1.vpce-svc-03c6b7e17ff02a70f` |
+   | `eu-central-1` (Frankfurt) | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34` |
+   | `ap-southeast-1` (Singapore) | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-0c12f00812e786068` |
 
-    5. (Optional) In **Additional settings**, select **Enable DNS name**. This lets clients in the VPC resolve Pinecone's private DNS names without extra setup. It requires [DNS hostnames and DNS resolution](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-updating) to be enabled on the VPC. If you leave it off, or clients outside the VPC need to connect, you'll set up DNS yourself in [step 3](#3-configure-dns).
+4. For **VPC**, select the VPC your clients connect from.
 
-    6. Select the **Subnets** for the endpoint, and select **Security groups** that allow inbound HTTPS (port 443) from your clients.
+5. (Optional) In **Additional settings**, select **Enable DNS name**. This lets clients in the VPC resolve Pinecone's private DNS names without extra setup. It requires [DNS hostnames and DNS resolution](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-updating) to be enabled on the VPC. If you leave it off, or clients outside the VPC need to connect, you'll set up DNS yourself in [step 3](#3-configure-dns).
 
-    7. Click **Create endpoint**.
+6. Select the **Subnets** for the endpoint, and select **Security groups** that allow inbound HTTPS (port 443) from your clients.
 
-    8. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`). You'll enter it in Pinecone in the next step.
-  </Tab>
+7. Click **Create endpoint**.
 
-  <Tab title="Azure">
-    1. In the [Azure portal](https://portal.azure.com), search for **Private Link** and select **Private Link Center**. Then go to **Private endpoints** and click **Create**.
+8. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`). You'll enter it in Pinecone in the next step.
 
-    2. Select your **Subscription** and **Resource group**, enter a **Name** for the private endpoint, and select the **Region** that matches your index. Then click **Next: Resource**.
+**Azure**
 
-    3. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**, and enter the **Resource ID or alias** for your index's region:
+1. In the [Azure portal](https://portal.azure.com), search for **Private Link** and select **Private Link Center**. Then go to **Private endpoints** and click **Create**.
 
-       | Index region | Private Link Service alias |
-       | - | - |
-       | `eastus2` (Virginia) | `pinecone.bdbc7759-0243-46c1-af51-794c4602745b.eastus2.azure.privatelinkservice` |
+2. Select your **Subscription** and **Resource group**, enter a **Name** for the private endpoint, and select the **Region** that matches your index. Then click **Next: Resource**.
 
-    4. Click **Next: Virtual Network**, and select the **Virtual network** and **Subnet** for the private endpoint.
+3. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**, and enter the **Resource ID or alias** for your index's region:
 
-    5. Click **Next: DNS**, and skip this tab. You'll set up DNS in [step 3](#3-configure-dns).
+   | Index region | Private Link Service alias |
+   | - | - |
+   | `eastus2` (Virginia) | `pinecone.bdbc7759-0243-46c1-af51-794c4602745b.eastus2.azure.privatelinkservice` |
 
-    6. Click **Next: Tags**, then **Review + create**, and then **Create**.
+4. Click **Next: Virtual Network**, and select the **Virtual network** and **Subnet** for the private endpoint.
 
-    7. After Azure creates the private endpoint, open it, go to **Properties**, and copy the **Resource ID** (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`). You'll enter it in Pinecone in the next step.
-  </Tab>
-</Tabs>
+5. Click **Next: DNS**, and skip this tab. You'll set up DNS in [step 3](#3-configure-dns).
+
+6. Click **Next: Tags**, then **Review + create**, and then **Create**.
+
+7. After Azure creates the private endpoint, open it, go to **Properties**, and copy the **Resource ID** (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`). You'll enter it in Pinecone in the next step.
 
 ### 2. Add a private endpoint in Pinecone
 
@@ -115,51 +111,49 @@ Each region has one private DNS zone. A single wildcard record (`*`) in that zon
 
 Clients also need a network route to the private endpoint's IP address on port 443. For clients outside the VPC or VNet, such as on-premises servers, that usually means a VPN, AWS Direct Connect, Azure ExpressRoute, or network peering.
 
-<Tabs>
-  <Tab title="AWS">
-    If you selected **Enable DNS name** when you created the VPC endpoint, clients in that VPC already resolve Pinecone's private DNS names. Set up DNS yourself if you turned that option off, or if clients outside the VPC need to connect:
+**AWS**
 
-    * **Route 53 private hosted zone**: Create a [private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-creating.html) named after your region's private DNS zone and associate it with your VPCs. Then add a wildcard record (`*`) that [routes traffic to the VPC endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html).
-    * **Your own DNS server**: On your organization's DNS server, create a zone named after your region's private DNS zone. Add a wildcard CNAME record (`*`) that points to the VPC endpoint's regional DNS name, which has the form `vpce-XXXXXXX.vpce-svc-XXXXXXX.REGION.vpce.amazonaws.com`. AWS publishes that name in public DNS, and it resolves to the endpoint's private IP addresses. To get it, run `aws ec2 describe-vpc-endpoints --vpc-endpoint-ids VPC_ENDPOINT_ID --query 'VpcEndpoints[*].DnsEntries'`. The first entry is the regional DNS name.
-    * **Forward to Route 53**: If you selected **Enable DNS name**, you can keep AWS as the source of these records instead. Create a [Route 53 Resolver inbound endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-inbound-queries.html) in the VPC, and then add a conditional forwarder on your DNS server that sends queries for the private DNS zone to the inbound endpoint's IP addresses.
-  </Tab>
+If you selected **Enable DNS name** when you created the VPC endpoint, clients in that VPC already resolve Pinecone's private DNS names. Set up DNS yourself if you turned that option off, or if clients outside the VPC need to connect:
 
-  <Tab title="Azure">
-    Azure doesn't resolve Pinecone's private DNS names automatically, so you must set up DNS. First, find your private endpoint's IP address. In the Azure portal, open your private endpoint, and on its **Overview** page, select its network interface. The network interface's **Overview** page shows the **Private IP address** (e.g., `172.30.0.6`).
+* **Route 53 private hosted zone**: Create a [private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-creating.html) named after your region's private DNS zone and associate it with your VPCs. Then add a wildcard record (`*`) that [routes traffic to the VPC endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html).
+* **Your own DNS server**: On your organization's DNS server, create a zone named after your region's private DNS zone. Add a wildcard CNAME record (`*`) that points to the VPC endpoint's regional DNS name, which has the form `vpce-XXXXXXX.vpce-svc-XXXXXXX.REGION.vpce.amazonaws.com`. AWS publishes that name in public DNS, and it resolves to the endpoint's private IP addresses. To get it, run `aws ec2 describe-vpc-endpoints --vpc-endpoint-ids VPC_ENDPOINT_ID --query 'VpcEndpoints[*].DnsEntries'`. The first entry is the regional DNS name.
+* **Forward to Route 53**: If you selected **Enable DNS name**, you can keep AWS as the source of these records instead. Create a [Route 53 Resolver inbound endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-inbound-queries.html) in the VPC, and then add a conditional forwarder on your DNS server that sends queries for the private DNS zone to the inbound endpoint's IP addresses.
 
-    Then set up DNS in one of the following ways.
+**Azure**
 
-    #### Use an Azure Private DNS zone
+Azure doesn't resolve Pinecone's private DNS names automatically, so you must set up DNS. First, find your private endpoint's IP address. In the Azure portal, open your private endpoint, and on its **Overview** page, select its network interface. The network interface's **Overview** page shows the **Private IP address** (e.g., `172.30.0.6`).
 
-    Use this option if your clients use Azure-provided DNS.
+Then set up DNS in one of the following ways.
 
-    1. Create an [Azure Private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.eastus2-5e25.prod-azure.pinecone.io`.
-    2. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where you created the private endpoint, and to any other VNets whose clients connect to Pinecone.
-    3. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+#### Use an Azure Private DNS zone
 
-    #### Use your own DNS server
+Use this option if your clients use Azure-provided DNS.
 
-    Use this option if your organization runs its own DNS server.
+1. Create an [Azure Private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.eastus2-5e25.prod-azure.pinecone.io`.
+2. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where you created the private endpoint, and to any other VNets whose clients connect to Pinecone.
+3. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
 
-    1. On your DNS server, create a zone named `private.eastus2-5e25.prod-azure.pinecone.io`.
-    2. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
-    3. Make sure the clients that connect to Pinecone use this DNS server.
+#### Use your own DNS server
 
-    #### Forward to an Azure Private DNS zone
+Use this option if your organization runs its own DNS server.
 
-    Use this option if your organization runs its own DNS but manages private endpoint records in Azure.
+1. On your DNS server, create a zone named `private.eastus2-5e25.prod-azure.pinecone.io`.
+2. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+3. Make sure the clients that connect to Pinecone use this DNS server.
 
-    1. Set up an [Azure Private DNS zone](#use-an-azure-private-dns-zone) as described above.
-    2. Create an [Azure DNS Private Resolver](https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-overview) with an inbound endpoint in a VNet that's linked to the zone.
-    3. On your DNS server, add a conditional forwarder that sends queries for `private.eastus2-5e25.prod-azure.pinecone.io` to the inbound endpoint's IP address.
+#### Forward to an Azure Private DNS zone
 
-    For more on these patterns, see [Azure Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration).
+Use this option if your organization runs its own DNS but manages private endpoint records in Azure.
 
-    <Note>
-      A private endpoint keeps its IP address for as long as it exists. If you point an A record at that address and later delete and re-create the endpoint, update the record with the new address.
-    </Note>
-  </Tab>
-</Tabs>
+1. Set up an [Azure Private DNS zone](#use-an-azure-private-dns-zone) as described above.
+2. Create an [Azure DNS Private Resolver](https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-overview) with an inbound endpoint in a VNet that's linked to the zone.
+3. On your DNS server, add a conditional forwarder that sends queries for `private.eastus2-5e25.prod-azure.pinecone.io` to the inbound endpoint's IP address.
+
+For more on these patterns, see [Azure Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration).
+
+> [!NOTE]
+>
+> A private endpoint keeps its IP address for as long as it exists. If you point an A record at that address and later delete and re-create the endpoint, update the record with the new address.
 
 To check your setup, look up your index's private endpoint URL from a client machine. Replace the example host with your index's **Private host** value from [step 4](#4-connect-to-your-index):
 
@@ -175,174 +169,168 @@ To send data operations through your private endpoint, target the index by its p
 
 You can get the private endpoint URL for an index from the Pinecone console or API.
 
-<Tabs>
-  <Tab title="Console">
-    To get the private endpoint URL for an index from the Pinecone console:
+**Console**
 
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-    2. Select the project containing the index.
-    3. Select the index.
-    4. Copy the **Private host** value.
-  </Tab>
+To get the private endpoint URL for an index from the Pinecone console:
 
-  <Tab title="API">
-    To get the private endpoint URL for an index from the API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+2. Select the project containing the index.
+3. Select the index.
+4. Copy the **Private host** value.
 
-    <CodeGroup>
-      ```JavaScript JavaScript theme={null}
-      import { Pinecone } from '@pinecone-database/pinecone';
+**API**
 
-      const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+To get the private endpoint URL for an index from the API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
 
-      await pc.describeIndex('docs-example');
-      ```
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-      ```go Go theme={null}
-      package main
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-      import (
-          "context"
-          "encoding/json"
-          "fmt"
-          "log"
+await pc.describeIndex('docs-example');
+```
 
-          "github.com/pinecone-io/go-pinecone/v4/pinecone"
-      )
+```go Go theme={null}
+package main
 
-      func prettifyStruct(obj interface{}) string {
-          bytes, _ := json.MarshalIndent(obj, "", "  ")
-          return string(bytes)
-      }
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      func main() {
-          ctx := context.Background()
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-          pc, err := pinecone.NewClient(pinecone.NewClientParams{
-              ApiKey: "YOUR_API_KEY",
-          })
-          if err != nil {
-              log.Fatalf("Failed to create Client: %v", err)
-          }
+func prettifyStruct(obj interface{}) string {
+    bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
 
-          idx, err := pc.DescribeIndex(ctx, "docs-example")
-          if err != nil {
-              log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-          } else {
-              fmt.Printf("index: %v\n", prettifyStruct(idx))
-          }
-      }
-      ```
+func main() {
+    ctx := context.Background()
 
-      ```bash curl theme={null}
-      PINECONE_API_KEY="YOUR_API_KEY"
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
-          -H "Api-Key: $PINECONE_API_KEY" \
-          -H "X-Pinecone-Api-Version: 2026-07"
-      ```
-    </CodeGroup>
+    idx, err := pc.DescribeIndex(ctx, "docs-example")
+    if err != nil {
+        log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("index: %v\n", prettifyStruct(idx))
+    }
+}
+```
 
-    The response includes the private endpoint URL as the `private_host` value:
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-    <CodeGroup>
-      ```json JavaScript {6} theme={null}
-      {
-        name: 'docs-example',
-        dimension: 1536,
-        metric: 'cosine',
-        host: 'docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io',
-        privateHost: 'docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io',
-        deletionProtection: 'disabled',
-        tags: { environment: 'production' },
-        embed: undefined,
-        spec: {
-          byoc: undefined,
-          pod: undefined,
-          serverless: { cloud: 'aws', region: 'us-east-1' }
-        },
-        status: { ready: true, state: 'Ready' },
-        vectorType: 'dense'
-      }
-      ```
+curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```
 
-      ```go Go {5} theme={null}
-      index: {
-        "name": "docs-example",
+The response includes the private endpoint URL as the `private_host` value:
+
+```json JavaScript {6} theme={null}
+{
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  host: 'docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io',
+  privateHost: 'docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io',
+  deletionProtection: 'disabled',
+  tags: { environment: 'production' },
+  embed: undefined,
+  spec: {
+    byoc: undefined,
+    pod: undefined,
+    serverless: { cloud: 'aws', region: 'us-east-1' }
+  },
+  status: { ready: true, state: 'Ready' },
+  vectorType: 'dense'
+}
+```
+
+```go Go {5} theme={null}
+index: {
+  "name": "docs-example",
+  "dimension": 1536,
+  "host": "docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io",
+  "private_host": "docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io",
+  "metric": "cosine",
+  "deletion_protection": "disabled",
+  "spec": {
+    "serverless": {
+      "cloud": "aws",
+      "region": "us-east-1"
+    }
+  },
+  "status": {
+    "ready": true,
+    "state": "Ready"
+  },
+  "tags": {
+    "environment": "production"
+  }
+}
+```
+
+```json curl {4} theme={null}
+{
+  "name": "docs-example",
+  "host": "docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io",
+  "private_host": "docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io",
+  "status": {
+    "ready": true,
+    "state": "Ready"
+  },
+  "deployment": {
+    "deployment_type": "managed",
+    "region": "us-east-1",
+    "cloud": "aws",
+    "environment": "aped-4627-b74a"
+  },
+  "read_capacity": {
+    "mode": "OnDemand",
+    "status": {
+      "state": "Ready",
+      "current_shards": null,
+      "current_replicas": null
+    }
+  },
+  "schema": {
+    "fields": {
+      "embedding": {
+        "type": "dense_vector",
+        "description": null,
         "dimension": 1536,
-        "host": "docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io",
-        "private_host": "docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io",
-        "metric": "cosine",
-        "deletion_protection": "disabled",
-        "spec": {
-          "serverless": {
-            "cloud": "aws",
-            "region": "us-east-1"
-          }
-        },
-        "status": {
-          "ready": true,
-          "state": "Ready"
-        },
-        "tags": {
-          "environment": "production"
-        }
+        "metric": "cosine"
       }
-      ```
+    }
+  },
+  "tags": {
+    "environment": "production"
+  },
+  "deletion_protection": "disabled"
+}
+```
 
-      ```json curl {4} theme={null}
-      {
-        "name": "docs-example",
-        "host": "docs-example-jl7boae.svc.aped-4627-b74a.pinecone.io",
-        "private_host": "docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io",
-        "status": {
-          "ready": true,
-          "state": "Ready"
-        },
-        "deployment": {
-          "deployment_type": "managed",
-          "region": "us-east-1",
-          "cloud": "aws",
-          "environment": "aped-4627-b74a"
-        },
-        "read_capacity": {
-          "mode": "OnDemand",
-          "status": {
-            "state": "Ready",
-            "current_shards": null,
-            "current_replicas": null
-          }
-        },
-        "schema": {
-          "fields": {
-            "embedding": {
-              "type": "dense_vector",
-              "description": null,
-              "dimension": 1536,
-              "metric": "cosine"
-            }
-          }
-        },
-        "tags": {
-          "environment": "production"
-        },
-        "deletion_protection": "disabled"
-      }
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
-
-<Note>
-  If you [restrict access to private endpoints](/guides/production/configure-private-endpoints#restrict-access-to-private-endpoints), requests that don't come through a private endpoint get an `Unauthorized` response. Requests through a private endpoint that isn't registered to the index's project also get `Unauthorized`.
-</Note>
+> [!NOTE]
+>
+> If you [restrict access to private endpoints](/guides/production/configure-private-endpoints#restrict-access-to-private-endpoints), requests that don't come through a private endpoint get an `Unauthorized` response. Requests through a private endpoint that isn't registered to the index's project also get `Unauthorized`.
 
 ## Restrict access to private endpoints
 
 After your private endpoint works, you can turn off internet access to the project. Then only requests that come through a private endpoint can read or write the project's indexes.
 
-<Warning>
-  This setting applies to the whole project. Any application that reaches an index in the project over the internet stops working.
-</Warning>
+> [!WARNING]
+>
+> This setting applies to the whole project. Any application that reaches an index in the project over the internet stops working.
 
 1. In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select your project and go to **Settings > Network**.
 2. On the **ACCESS** tab, turn on **Restrict access to only private endpoints**.

@@ -14,7 +14,7 @@ In addition to the configuration for the GitHub Copilot plugin in your supported
 
 ## Enabling or disabling suggestions matching public code
 
-> \[!NOTE] If you are a member of an organization on GitHub Enterprise Cloud who has been assigned a GitHub Copilot seat through your organization, you will not be able to configure suggestions matching public code in your personal account settings. Your setting for suggestions matching public code will be inherited from your organization or enterprise.
+> [!NOTE] If you are a member of an organization on GitHub Enterprise Cloud who has been assigned a GitHub Copilot seat through your organization, you will not be able to configure suggestions matching public code in your personal account settings. Your setting for suggestions matching public code will be inherited from your organization or enterprise.
 
 Your personal settings for GitHub Copilot include an option to either allow or block code suggestions that match publicly available code.
 
@@ -29,7 +29,7 @@ If you choose to allow suggestions matching public code or use a product that do
 
 Copilot cloud agent allows you to assign Copilot to GitHub issues, or prompt Copilot to undertake a task autonomously, such as deep research of a repository, planning, or code changes, with the option to create a pull request when you're ready.
 
-> \[!NOTE]
+> [!NOTE]
 >
 > * Copilot cloud agent is available for all paid Copilot plans.
 >
@@ -48,7 +48,7 @@ If the organization is owned by an enterprise, enablement may be controlled at t
 
 ## Enabling or disabling third-party coding agents in your repositories
 
-> \[!NOTE]
+> [!NOTE]
 > Available for all paid [Copilot plans](/en/copilot/get-started/plans).
 
 You can choose whether to allow the following coding agents to be enabled in your personal account:
@@ -74,7 +74,7 @@ You can enable web search for GitHub Copilot Chat. This setting is disabled by d
 
 ## Model training and improvements
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub does not use Copilot Business or Copilot Enterprise customer data to train AI models. Copilot Business and Copilot Enterprise customers' data is protected under GitHub's Data Protection Agreement, which prohibits such use without customer authorization.
 
 Starting on April 24, 2026, if you have a **Copilot Free**, **Copilot Pro**, **Copilot Pro+**, or **Copilot Max** plan, GitHub may use your interactions with GitHub features and services—including inputs, outputs, code snippets, and associated context—to train and improve AI models. This change allows us to build more intelligent, context-aware coding assistance based on real-world development patterns. You can opt-out from allowing your data to be used for training in your personal settings for GitHub Copilot. For information about how we use and share data, see our [Privacy Statement](/en/site-policy/privacy-policies/github-general-privacy-statement).

@@ -41,7 +41,9 @@ Rate limits help protect your applications from misuse and maintain the health o
 
 Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` status.
 
-<Tip>To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).</Tip>
+> [!TIP]
+>
+> To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
 | Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |

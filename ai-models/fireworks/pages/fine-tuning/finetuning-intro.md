@@ -15,9 +15,9 @@ Training is worth it when you want:
 * **Consistent behavior** - bake in formats, style, and tool-use so you stop paying for long prompts and few-shot examples on every request.
 * **Ownership and no infra** - you keep the resulting weights, and Fireworks handles the GPUs, scheduling, and checkpointing.
 
-<Info>
-  **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
-</Info>
+> [!NOTE]
+>
+> **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
 
 ## Choose a method
 
@@ -31,9 +31,9 @@ Pick a method based on the data or signal you have. SFT and DPO run as standard 
 | **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment |
 | **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Cookbook](/fine-tuning/training-api/cookbook/rl) · [Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) |
 
-<Tip>
-  **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
-</Tip>
+> [!TIP]
+>
+> **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
 
 The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Training](/fine-tuning/managed-finetuning-intro) for model support and pricing.
 
@@ -42,8 +42,6 @@ The Training API also supports custom methods (GRPO, distillation, and others) v
 Pick a **surface** (managed or Training API, serverless or dedicated). The surface decides how much of the model you update and which **interfaces** are available to you.
 
 Answer the question below and the flow takes you to your surface, which links to its guide. Click any answered question to change it, or show every path at once.
-
-<TrainingDecisionFlow />
 
 Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/training-api/introduction#infrastructure), and check per-model support on [Models](/fine-tuning/models).
 
@@ -59,15 +57,13 @@ Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loo
 
 Managed RFT is paused and does not accept new jobs. Run RL on the [Training API](/fine-tuning/training-api/cookbook/rl).
 
-<CardGroup>
-  <Card title="Managed Training" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
-    Standard jobs with a platform-managed loop.
-  </Card>
+> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+>
+> Standard jobs with a platform-managed loop.
 
-  <Card title="Training API" icon="code" href="/fine-tuning/training-api/introduction">
-    Programmable loops built from cookbook recipes or the SDK.
-  </Card>
-</CardGroup>
+> **[Training API](/fine-tuning/training-api/introduction)**
+>
+> Programmable loops built from cookbook recipes or the SDK.
 
 ### Serverless vs Dedicated infrastructure
 
@@ -80,15 +76,13 @@ Infrastructure applies to the **Training API** only. Managed Training uses platf
 | Per-token billing fits a small or bursty experiment | A sustained, highly utilized time-based run fits the workload |
 | In-session sampling is sufficient | You need provisioned rollout or evaluation deployments |
 
-<CardGroup>
-  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
-    Shared pooled trainer, no provisioning, per-token billing.
-  </Card>
+> **[Serverless Training](/fine-tuning/training-api/serverless)**
+>
+> Shared pooled trainer, no provisioning, per-token billing.
 
-  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
-    Provisioned trainer and deployment resources with explicit lifecycle control.
-  </Card>
-</CardGroup>
+> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+>
+> Provisioned trainer and deployment resources with explicit lifecycle control.
 
 See the detailed [serverless versus dedicated comparison](/fine-tuning/training-api/introduction#infrastructure).
 
@@ -98,9 +92,9 @@ See the detailed [serverless versus dedicated comparison](/fine-tuning/training-
 * **Fireworks UI, `firectl`, or the REST API** — managed jobs only. Guided creation and monitoring in the UI, reproducible job and resource automation from the CLI or API.
 * **Python SDK** — Training API loops only, on serverless or dedicated. Start from a [cookbook recipe](/fine-tuning/training-api/cookbook/overview).
 
-<Note>
-  **CLI or API vs Python SDK:** `firectl` and the REST API manage **managed** jobs and platform resources. The **Python SDK** runs **Training API** loops you author yourself (loss, rollouts, optimizer steps).
-</Note>
+> [!NOTE]
+>
+> **CLI or API vs Python SDK:** `firectl` and the REST API manage **managed** jobs and platform resources. The **Python SDK** runs **Training API** loops you author yourself (loss, rollouts, optimizer steps).
 
 ### GPU quota prerequisite
 
@@ -112,17 +106,17 @@ Before you launch, estimate the job with the [training cost estimator](/fine-tun
 
 Check quota with `firectl quota list`. HTTP 403 `quota_exceeded` or `tier_required` means you need a payment method or more training GPU quota, not a dataset or config fix.
 
-<Note>
-  Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
-</Note>
+> [!NOTE]
+>
+> Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
 
 ## Models
 
 Model availability is decided per model and per surface — managed jobs by method (SFT, DPO, ORPO), Training API jobs by parameter mode (LoRA or full-parameter). Managed RFT is paused. Check the live catalog before you launch.
 
-<Card title="Models" icon="microchip" href="/fine-tuning/models">
-  Browse the base model catalog with per-model surface, method, and training-shape support.
-</Card>
+> **[Models](/fine-tuning/models)**
+>
+> Browse the base model catalog with per-model surface, method, and training-shape support.
 
 ## Training security
 

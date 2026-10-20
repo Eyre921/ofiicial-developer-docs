@@ -8,46 +8,44 @@ Use the Fireworks Responses API for stateful model calls with reasoning, tool ca
 
 The Responses API is an OpenAI-compatible endpoint for stateful, tool-using applications. Unlike chat completions, it can store conversation state server-side, execute MCP tools on your behalf, and run long jobs in the background.
 
-<Warning title="Data Retention Policy">
-  The Responses API has a different data retention policy than the chat completions endpoint. See [Data Privacy & security](/guides/security_compliance/data_handling#response-api-data-retention).
-</Warning>
+> [!WARNING]
+>
+> The Responses API has a different data retention policy than the chat completions endpoint. See [Data Privacy & security](/guides/security_compliance/data_handling#response-api-data-retention).
 
 ## Endpoint and authentication
 
 The Responses API is served at `https://api.fireworks.ai/inference/v1/responses`. Authenticate with your Fireworks API key as a bearer token, and set `model` to a Fireworks model resource name.
 
-<CodeGroup>
-  ```python OpenAI SDK theme={null}
-  import os
-  from openai import OpenAI
+```python OpenAI SDK theme={null}
+import os
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://api.fireworks.ai/inference/v1",
-      api_key=os.environ["FIREWORKS_API_KEY"],
-  )
+client = OpenAI(
+    base_url="https://api.fireworks.ai/inference/v1",
+    api_key=os.environ["FIREWORKS_API_KEY"],
+)
 
-  response = client.responses.create(
-      model="accounts/fireworks/models/qwen3-235b-a22b",
-      input="What is the capital of France?",
-  )
+response = client.responses.create(
+    model="accounts/fireworks/models/qwen3-235b-a22b",
+    input="What is the capital of France?",
+)
 
-  print(response.output_text)
-  ```
+print(response.output_text)
+```
 
-  ```bash cURL theme={null}
-  curl -X POST https://api.fireworks.ai/inference/v1/responses \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "accounts/fireworks/models/qwen3-235b-a22b",
-      "input": "What is the capital of France?"
-    }'
-  ```
-</CodeGroup>
+```bash cURL theme={null}
+curl -X POST https://api.fireworks.ai/inference/v1/responses \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "accounts/fireworks/models/qwen3-235b-a22b",
+    "input": "What is the capital of France?"
+  }'
+```
 
-<Note>
-  The OpenAI SDK base URL includes `/v1`; the SDK appends `/responses`. Only `model` and `input` are required.
-</Note>
+> [!NOTE]
+>
+> The OpenAI SDK base URL includes `/v1`; the SDK appends `/responses`. Only `model` and `input` are required.
 
 ## Streaming
 
@@ -103,9 +101,9 @@ curl -X DELETE "https://api.fireworks.ai/inference/v1/responses/$RESPONSE_ID" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY"
 ```
 
-<Warning>
-  Deletion is permanent. Once a response is deleted it cannot be recovered.
-</Warning>
+> [!WARNING]
+>
+> Deletion is permanent. Once a response is deleted it cannot be recovered.
 
 ## Tools
 
@@ -188,9 +186,9 @@ Two constraints apply:
 
 The reserved Codex namespaces `multi_tool_use`, `functions`, `web`, and `python` are passed through without expansion.
 
-<Note>
-  `defer_loading` has no effect on the Responses API — there is no tool-search protocol here, so deferred tools are exposed to the model eagerly. Deferred tool loading *is* supported on the [Anthropic-compatible Messages API](/tools-sdks/anthropic-compatibility#tool-search-and-deferred-tool-loading).
-</Note>
+> [!NOTE]
+>
+> `defer_loading` has no effect on the Responses API — there is no tool-search protocol here, so deferred tools are exposed to the model eagerly. Deferred tool loading *is* supported on the [Anthropic-compatible Messages API](/tools-sdks/anthropic-compatibility#tool-search-and-deferred-tool-loading).
 
 ## Reasoning
 
@@ -329,20 +327,18 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 
 ## Cookbook examples
 
-<CardGroup>
-  <Card title="MCP examples" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb" icon="plug">
-    Calling MCP servers from the Responses API
-  </Card>
+> **[MCP examples](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)**
+>
+> Calling MCP servers from the Responses API
 
-  <Card title="Continuing conversations" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb" icon="comments">
-    Using `previous_response_id`
-  </Card>
+> **[Continuing conversations](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)**
+>
+> Using `previous_response_id`
 
-  <Card title="Streaming" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb" icon="bolt">
-    Streaming responses end to end
-  </Card>
+> **[Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)**
+>
+> Streaming responses end to end
 
-  <Card title="Stateless requests" href="https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb" icon="database">
-    Using `store=false`
-  </Card>
-</CardGroup>
+> **[Stateless requests](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)**
+>
+> Using `store=false`

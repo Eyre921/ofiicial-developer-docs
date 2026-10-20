@@ -6,9 +6,9 @@ path: guides/assistant/manage-files
 
 List files in your Pinecone assistant, check individual file ingestion status by ID, view metadata, and delete files using the API, SDKs, or console.
 
-<Note>
-  File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).
-</Note>
+> [!NOTE]
+>
+> File upload limitations depend on the plan you are using. For more information, see [Pricing and limitations](/guides/assistant/pricing-and-limits#limits).
 
 ## List files in an assistant
 
@@ -16,35 +16,33 @@ List files in your Pinecone assistant, check individual file ingestion status by
 
 You can [get the status, ID, and metadata for each file in your assistant](/reference/api/latest/assistant/list_files), as in the following example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  files = pc.assistants.list_files(assistant_name="example-assistant")
-  for file in files:
-      print(file.id, file.name, file.status)
-  ```
+files = pc.assistants.list_files(assistant_name="example-assistant")
+for file in files:
+    print(file.id, file.name, file.status)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = pc.assistant({ name: 'example-assistant' });
-  const { files } = await assistant.listFiles();
-  console.log(files);
-  ```
+const assistant = pc.assistant({ name: 'example-assistant' });
+const { files } = await assistant.listFiles();
+console.log(files);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
 This operation returns a response like the following:
 
@@ -68,9 +66,9 @@ This operation returns a response like the following:
 
 You can use the `id` value to [check the status of an individual file](#get-the-status-of-a-file).
 
-<Tip>
-  You can list file in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
-</Tip>
+> [!TIP]
+>
+> You can list file in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
 
 ### View a filtered list of files
 
@@ -80,91 +78,87 @@ For more information about filtering with metadata, see [Understanding files](/g
 
 The following example lists files that are a manuscript:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  files = pc.assistants.list_files(
-      assistant_name="example-assistant",
-      filter={"document_type": "manuscript"},
-  )
-  for file in files:
-      print(file.id, file.name, file.metadata)
-  ```
+files = pc.assistants.list_files(
+    assistant_name="example-assistant",
+    filter={"document_type": "manuscript"},
+)
+for file in files:
+    print(file.id, file.name, file.metadata)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = pc.assistant({ name: 'example-assistant' });
-  const { files } = await assistant.listFiles({
-    filter: { document_type: 'manuscript' },
-  });
-  console.log(files);
+const assistant = pc.assistant({ name: 'example-assistant' });
+const { files } = await assistant.listFiles({
+  filter: { document_type: 'manuscript' },
+});
+console.log(files);
 
-  // You can also use filter operators:
-  // const files = await assistant.listFiles({
-  //   filter: { document_type: { '$ne': 'manuscript' } },
-  // });
-  ```
+// You can also use filter operators:
+// const files = await assistant.listFiles({
+//   filter: { document_type: { '$ne': 'manuscript' } },
+// });
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  ENCODED_METADATA="%7B%22document_type%22%3A%20%22manuscript%22%7D" # URL encoded metadata - See w3schools.com/tags/ref_urlencode.ASP
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+ENCODED_METADATA="%7B%22document_type%22%3A%20%22manuscript%22%7D" # URL encoded metadata - See w3schools.com/tags/ref_urlencode.ASP
 
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME?filter=$ENCODED_METADATA" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME?filter=$ENCODED_METADATA" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
 ## Get the status of a file
 
 You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_file), as in the following example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get a signed URL in the response, set `include_url` to `True`.
-  file = pc.assistants.describe_file(
-      assistant_name="example-assistant",
-      file_id="3c90c3cc-0d44-4b50-8888-8dd25736052a",
-      include_url=True,
-  )
-  print(file.status)
-  ```
+# To get a signed URL in the response, set `include_url` to `True`.
+file = pc.assistants.describe_file(
+    assistant_name="example-assistant",
+    file_id="3c90c3cc-0d44-4b50-8888-8dd25736052a",
+    include_url=True,
+)
+print(file.status)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = pc.assistant({ name: 'example-assistant' });
-  const fileId = '3c90c3cc-0d44-4b50-8888-8dd25736052a';
+const assistant = pc.assistant({ name: 'example-assistant' });
+const fileId = '3c90c3cc-0d44-4b50-8888-8dd25736052a';
 
-  // Returns a signed URL by default. To exclude it, pass `false` as the second argument.
-  const file = await assistant.describeFile(fileId);
-  console.log(file.status);
-  ```
+// Returns a signed URL by default. To exclude it, pass `false` as the second argument.
+const file = await assistant.describeFile(fileId);
+console.log(file.status);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  FILE_ID="3c90c3cc-0d44-4b50-8888-8dd25736052a"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+FILE_ID="3c90c3cc-0d44-4b50-8888-8dd25736052a"
 
-  # Describe a file. 
-  # To get a signed URL in the response, set `include_url` to `true`.
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID?include_url=true" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+# Describe a file. 
+# To get a signed URL in the response, set `include_url` to `true`.
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID?include_url=true" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 This operation returns a response like the following:
 
@@ -182,50 +176,48 @@ This operation returns a response like the following:
 }
 ```
 
-<Warning>
-  [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
-</Warning>
+> [!WARNING]
+>
+> [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
 
-<Tip>
-  You can check the status a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
-</Tip>
+> [!TIP]
+>
+> You can check the status a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
 
 ## Delete a file
 
 You can [delete a file](/reference/api/latest/assistant/delete_file) from an assistant.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.assistants.delete_file(
-      assistant_name="example-assistant",
-      file_id="3c90c3cc-0d44-4b50-8888-8dd25736052a",
-  )
-  ```
+pc.assistants.delete_file(
+    assistant_name="example-assistant",
+    file_id="3c90c3cc-0d44-4b50-8888-8dd25736052a",
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = pc.assistant({ name: 'example-assistant' });
+const assistant = pc.assistant({ name: 'example-assistant' });
 
-  const operation = await assistant.deleteFile('3c90c3cc-0d44-4b50-8888-8dd25736052a');
-  console.log(operation.id);
-  ```
+const operation = await assistant.deleteFile('3c90c3cc-0d44-4b50-8888-8dd25736052a');
+console.log(operation.id);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  FILE_ID="3c90c3cc-0d44-4b50-8888-8dd25736052a"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+FILE_ID="3c90c3cc-0d44-4b50-8888-8dd25736052a"
 
-  curl -X DELETE "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
-    -H "Api-Key: $PINECONE_API_KEY"
-  ```
-</CodeGroup>
+curl -X DELETE "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
+  -H "Api-Key: $PINECONE_API_KEY"
+```
 
 * Once a file is deleted, you can't recover it.
 * With [API version](/reference/api/versioning) `2026-04` or later, delete is asynchronous and returns an operation ID. You can [track file operations](#track-file-operations) to monitor progress. The Python SDK waits until the deletion finishes before it returns.
@@ -234,9 +226,9 @@ You can [delete a file](/reference/api/latest/assistant/delete_file) from an ass
 
 ## Track file operations
 
-<Note>
-  This feature requires [API version](/reference/api/versioning) `2026-04` or later.
-</Note>
+> [!NOTE]
+>
+> This feature requires [API version](/reference/api/versioning) `2026-04` or later.
 
 File uploads, upserts, and deletes are asynchronous operations. Each of these actions returns an operation object that you can poll for status and progress.
 
@@ -244,16 +236,14 @@ File uploads, upserts, and deletes are asynchronous operations. Each of these ac
 
 You can [list all operations](/reference/api/latest/assistant/list_operations) for an assistant:
 
-<CodeGroup>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 This returns a list of operations:
 
@@ -285,17 +275,15 @@ This returns a list of operations:
 
 You can [get the status of a specific operation](/reference/api/latest/assistant/describe_operation):
 
-<CodeGroup>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  OPERATION_ID="op-1234-abcd-5678"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+OPERATION_ID="op-1234-abcd-5678"
 
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME/$OPERATION_ID" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME/$OPERATION_ID" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 ```JSON theme={null}
 {
@@ -319,6 +307,6 @@ Operations can have the following status values:
 
 When a file-ingestion operation completes, the operation may include `ingestion_units`, the [ingestion usage](/guides/assistant/pricing-and-limits#ingestion) for that file.
 
-<Note>
-  The `percent_complete` field on operations replaces the `percent_done` field that was previously on the file model. Similarly, `error_message` appears on failed operations, not on the file model.
-</Note>
+> [!NOTE]
+>
+> The `percent_complete` field on operations replaces the `percent_done` field that was previously on the file model. Similarly, `error_message` appears on failed operations, not on the file model.

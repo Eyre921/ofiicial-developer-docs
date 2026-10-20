@@ -11,136 +11,161 @@ Retrieve a list of segments that a contact is part of.
 
 Either `id` or `email` must be provided.
 
-<ParamField type="string">
-  The Contact ID.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  The Contact Email.
-</ParamField>
+The Contact ID.
 
-<QueryParams type="segments" />
+**email** `string`
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+The Contact Email.
 
-  const resend = new Resend('re_xxxxxxxxx');
+## Query Parameters
 
-  const { data, error } = await resend.contacts.segments.list({
-    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
-  });
-  ```
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all segments will be returned
+in a single response.
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**limit** `number`
 
-  $resend->contacts->segments->list(
-    contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  );
-  ```
+Number of segments to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+**after** `string`
 
-  resend.api_key = 're_xxxxxxxxx'
+The ID *after* which we'll retrieve more segments (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  params: resend.Contacts.Segments.ListParams = {
-      "contact_id": 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+The ID *before* which we'll retrieve more segments (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
+
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
+
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.contacts.segments.list({
+  contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+});
+```
+
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
+
+$resend->contacts->segments->list(
+  contactId: 'e169aa45-1ecf-4183-9955-b1499d5701d3'
+);
+```
+
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = 're_xxxxxxxxx'
+
+params: resend.Contacts.Segments.ListParams = {
+    "contact_id": 'e169aa45-1ecf-4183-9955-b1499d5701d3',
+}
+
+segments = resend.Contacts.Segments.list(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require 'resend'
+
+Resend.api_key = 're_xxxxxxxxx'
+
+segments = Resend::Contacts::Segments.list(
+  contact_id: 'e169aa45-1ecf-4183-9955-b1499d5701d3'
+)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	listParams := &resend.ListContactSegmentsRequest{
+		ContactId: "479e3145-dd38-476b-932c-529ceb705947",
+	}
+
+	client.Contacts.Segments.List(listParams)
+}
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _contacts = resend
+    .contacts
+    .list_contact_segment(
+      "e169aa45-1ecf-4183-9955-b1499d5701d3",
+      ListOptions::default()
+    )
+    .await?;
+
+  Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+
+public class Main {
+  public static void main(String[] args) throws ResendException {
+    Resend resend = new Resend("re_xxxxxxxxx");
+
+    resend.contacts().segments().list("e169aa45-1ecf-4183-9955-b1499d5701d3");
   }
+}
+```
 
-  segments = resend.Contacts.Segments.list(params)
-  ```
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require 'resend'
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
 
-  Resend.api_key = 're_xxxxxxxxx'
+var resp = await resend.ContactListSegmentsAsync( new Guid( "e169aa45-1ecf-4183-9955-b1499d5701d3" ));
+Console.WriteLine( "Nr Segments={0}", resp.Content.Data.Count );
+```
 
-  segments = Resend::Contacts::Segments.list(
-    contact_id: 'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  )
-  ```
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/contacts/e169aa45-1ecf-4183-9955-b1499d5701d3/segments' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend contacts segments e169aa45-1ecf-4183-9955-b1499d5701d3
+```
 
-  import "github.com/resend/resend-go/v4"
-
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
-
-  	listParams := &resend.ListContactSegmentsRequest{
-  		ContactId: "479e3145-dd38-476b-932c-529ceb705947",
-  	}
-
-  	client.Contacts.Segments.List(listParams)
-  }
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result, list_opts::ListOptions};
-
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
-
-    let _contacts = resend
-      .contacts
-      .list_contact_segment(
-        "e169aa45-1ecf-4183-9955-b1499d5701d3",
-        ListOptions::default()
-      )
-      .await?;
-
-    Ok(())
-  }
-  ```
-
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
-
-  public class Main {
-    public static void main(String[] args) throws ResendException {
-      Resend resend = new Resend("re_xxxxxxxxx");
-
-      resend.contacts().segments().list("e169aa45-1ecf-4183-9955-b1499d5701d3");
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+      "name": "Registered Users",
+      "created_at": "2026-10-06 22:59:55.977+00"
     }
-  }
-  ```
-
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
-
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
-
-  var resp = await resend.ContactListSegmentsAsync( new Guid( "e169aa45-1ecf-4183-9955-b1499d5701d3" ));
-  Console.WriteLine( "Nr Segments={0}", resp.Content.Data.Count );
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/contacts/e169aa45-1ecf-4183-9955-b1499d5701d3/segments' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
-
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend contacts segments e169aa45-1ecf-4183-9955-b1499d5701d3
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "data": [
-      {
-        "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "name": "Registered Users",
-        "created_at": "2026-10-06 22:59:55.977+00"
-      }
-    ],
-    "has_more": false
-  }
-  ```
-</ResponseExample>
+  ],
+  "has_more": false
+}
+```

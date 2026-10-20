@@ -7,124 +7,149 @@ path: docs/api-reference/broadcasts/list-broadcasts
 GET /broadcasts
 Retrieve a list of broadcast.
 
-<Info>
-  See all available `status` types in [the Broadcasts
-  overview](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses).
-</Info>
+> [!NOTE]
+>
+> See all available `status` types in [the Broadcasts
+> overview](/docs/dashboard/broadcasts/manage-broadcasts#understand-broadcast-statuses).
 
-<QueryParams type="broadcasts" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all broadcasts will be returned
+in a single response.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**limit** `number`
 
-  const { data, error } = await resend.broadcasts.list();
-  ```
+Number of broadcasts to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**after** `string`
 
-  $resend->broadcasts->list();
-  ```
+The ID *after* which we'll retrieve more broadcasts (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+The ID *before* which we'll retrieve more broadcasts (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  resend.api_key = "re_xxxxxxxxx"
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  resend.Broadcasts.list()
-  ```
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+const resend = new Resend('re_xxxxxxxxx');
 
-  Resend.api_key = "re_xxxxxxxxx"
+const { data, error } = await resend.broadcasts.list();
+```
 
-  Resend::Broadcasts.list()
-  ```
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+$resend->broadcasts->list();
+```
 
-  import "github.com/resend/resend-go/v4"
+```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
+resend.api_key = "re_xxxxxxxxx"
 
-  	client.Broadcasts.List()
-  }
-  ```
+resend.Broadcasts.list()
+```
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result, list_opts::ListOptions};
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+Resend.api_key = "re_xxxxxxxxx"
 
-    let _broadcasts = resend.broadcasts.list(ListOptions::default()).await?;
+Resend::Broadcasts.list()
+```
 
-    Ok(())
-  }
-  ```
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.services.broadcasts.model.ListBroadcastsResponseSuccess;
+import "github.com/resend/resend-go/v4"
 
-  Resend resend = new Resend("re_xxxxxxxxx");
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
 
-  ListBroadcastsResponseSuccess data = resend.broadcasts().list();
-  ```
+	client.Broadcasts.List()
+}
+```
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  var resp = await resend.BroadcastListAsync();
-  Console.WriteLine( "Nr Broadcasts={0}", resp.Content.Count );
-  ```
+  let _broadcasts = resend.broadcasts.list(ListOptions::default()).await?;
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/broadcasts' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+  Ok(())
+}
+```
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend broadcasts list
-  ```
-</RequestExample>
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.services.broadcasts.model.ListBroadcastsResponseSuccess;
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
-        "name": "Announcements",
-        "audience_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf", // now called segment_id
-        "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "status": "draft",
-        "created_at": "2026-11-01 15:13:31.723+00",
-        "scheduled_at": null,
-        "sent_at": null
-      },
-      {
-        "id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
-        "name": "Black Friday",
-        "audience_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf", // now called segment_id
-        "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "status": "sent",
-        "created_at": "2026-12-01 19:32:22.980+00",
-        "scheduled_at": "2026-12-02 19:32:22.980+00",
-        "sent_at": "2026-12-02 19:32:22.980+00"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+Resend resend = new Resend("re_xxxxxxxxx");
+
+ListBroadcastsResponseSuccess data = resend.broadcasts().list();
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.BroadcastListAsync();
+Console.WriteLine( "Nr Broadcasts={0}", resp.Content.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/broadcasts' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend broadcasts list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "49a3999c-0ce1-4ea6-ab68-afcd6dc2e794",
+      "name": "Announcements",
+      "audience_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf", // now called segment_id
+      "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+      "status": "draft",
+      "created_at": "2026-11-01 15:13:31.723+00",
+      "scheduled_at": null,
+      "sent_at": null
+    },
+    {
+      "id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+      "name": "Black Friday",
+      "audience_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf", // now called segment_id
+      "segment_id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+      "status": "sent",
+      "created_at": "2026-12-01 19:32:22.980+00",
+      "scheduled_at": "2026-12-02 19:32:22.980+00",
+      "sent_at": "2026-12-02 19:32:22.980+00"
+    }
+  ]
+}
+```

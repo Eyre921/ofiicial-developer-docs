@@ -62,11 +62,11 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of interns to return, from 1 through 500. | 50 |
-| `status` | List\[[operations.Status](../../operations/status.mdx)] | ➖ | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[<br />"queued",<br />"running"<br />] |
+| `status` | List\[[operations.Status](../../operations/status.mdx)] | ➖ | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[ "queued", "running" ] |
 | `starting_after` | *Optional\[str]* | ➖ | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400. | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
 | `workspace_id` | *Optional\[str]* | ➖ | Only return interns in this workspace. It must match the API key workspace. | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -113,9 +113,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `name` | *str* | ✅ | Intern name, unique per creator within the workspace. | |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `idempotency_key` | *Optional\[str]* | ➖ | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16 |
 | `description` | *OptionalNullable\[str]* | ➖ | Free-form description, or null. | |
 | `instructions` | *OptionalNullable\[str]* | ➖ | Standing instructions the intern boots with, or null. | |
@@ -166,9 +166,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `acknowledge_workspace_loss` | *Optional\[bool]* | ➖ | Delete even though the workspace backup was not confirmed. Defaults to false, which refuses the teardown when a workspace archive is missing. | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -214,9 +214,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -261,9 +261,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `description` | *OptionalNullable\[str]* | ➖ | New free-form description. Null clears it. | |
 | `instructions` | *OptionalNullable\[str]* | ➖ | New standing instructions. Null clears them. | |
 | `model` | *OptionalNullable\[str]* | ➖ | New OpenRouter model slug in `author/slug` form (an optional `:variant` suffix is accepted). Other shapes are refused with 400. Null restores the workspace default. Takes effect on the next provision: until then `GET` shows this configured model while chat chunks show the model the running intern reports. | |
@@ -312,9 +312,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -361,9 +361,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -411,9 +411,9 @@ with OpenRouter(
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
 | `body_sha256` | *str* | ✅ | Lower-case hex SHA-256 of the exact bytes the CLI will send as the daemon request body. | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `route` | [Optional\[components.Route\]](../../components/route.mdx) | ➖ | The daemon request the proof is for. When present the response also carries the single-use, route-bound proof (`x-ori-invoke-signature-v2`, `x-ori-invoke-nonce`). | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -461,9 +461,9 @@ with OpenRouter(
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
 | `body_sha256` | *str* | ✅ | Lower-case hex SHA-256 of the exact bytes the CLI will send as the daemon request body. | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `route` | [Optional\[components.Route\]](../../components/route.mdx) | ➖ | The daemon request the proof is for. When present the response also carries the single-use, route-bound proof (`x-ori-invoke-signature-v2`, `x-ori-invoke-nonce`). | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -510,9 +510,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `v` | *Optional\[str]* | ➖ | The `icon_sha256` the caller expects. | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -558,9 +558,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -605,9 +605,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -672,9 +672,9 @@ with OpenRouter(
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | The intern to talk to. | a11e0000-0000-4000-8000-000000000005 |
 | `messages` | List\[[components.InternChatMessage](../../components/internchatmessage.mdx)] | ✅ | The conversation. Only the last message is read. A last `user` message starts a run. A last `tool` message answers the interaction named by its `tool_call_id` and requires `session_id`. | |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `approval_mode` | [Optional\[components.InternApprovalMode\]](../../components/internapprovalmode.mdx) | ➖ | How the run started by this prompt handles tool approvals. `self-drive` (the default when omitted) consents on your behalf and runs the shell unsandboxed. `manual` asks you before an approval-bearing tool runs, as an `openrouter.provide_input` permission request, and keeps the shell sandboxed until an escalation is allowed. The mode applies to the run this prompt starts and is not remembered by the session. Repeat it on each new prompt that should use it. A `tool` reply continues the run under the mode it started with. | manual |
 | `model` | *Optional\[str]* | ➖ | Accepted for OpenAI compatibility and never used. The intern runs the model configured on it (`PATCH` the intern to change it). Streamed chunks report the runtime's identifier for that model as the intern reports it, or `openrouter/intern` on chunks whose event carries no model (before the intern reports one, and on the chunks the API emits itself: the timeout, run-ended and severed-stream error chunks, the stop chunk of a replay that ends without a terminal daemon event, and the final usage chunk after any of them). A usage chunk that follows a daemon completion event carries the model the intern reported. | openrouter/intern |
 | `session_id` | *Optional\[str]* | ➖ | The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. An id the intern has not seen before is not an error: it starts a new session under that id, so a mistyped id forks the conversation. Sessions are scoped to the intern's own daemon. Required when the last message has role `tool`. | ses\_7f3c9a |
@@ -731,9 +731,9 @@ with OpenRouter(
 | - | - | - | - | - |
 | `intern_id` | *str* | ✅ | The intern to run. | a11e0000-0000-4000-8000-000000000005 |
 | `input` | *str* | ✅ | The prompt for the run, at most 32000 characters. | New support ticket 48213. Case token: ct\_9f2c. Investigate and reply. |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `session_id` | *Optional\[str]* | ➖ | The session to run in. Send the `session_id` from an earlier `202` to continue that conversation, for example to hand the intern a decision on a case it is working. Omit it to start a new session. Only a `session_id` this endpoint issued to the same caller on the same intern is accepted; any other is refused with `404`. | b51a0e21-368b-4780-a220-14655bf28c55 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 

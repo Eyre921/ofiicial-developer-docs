@@ -6,9 +6,9 @@ path: guides/search/reciprocal-rank-fusion
 
 Combine results from separate Pinecone searches into a single ranking with reciprocal rank fusion (RRF), a client-side method that fuses rankings, not scores.
 
-<Note>
-  The examples below use the [Documents API](/guides/search/full-text-search). Reciprocal rank fusion itself is a client-side method and works with the results of any Pinecone search.
-</Note>
+> [!NOTE]
+>
+> The examples below use the [Documents API](/guides/search/full-text-search). Reciprocal rank fusion itself is a client-side method and works with the results of any Pinecone search.
 
 When you rank the same set of documents two different ways, for example, a [full-text (BM25) search](/guides/search/full-text-search) and a [semantic (dense-vector) search](/guides/search/semantic-search), the scores live on different, incomparable scales. Adding or averaging the raw scores isn't meaningful, and one signal usually dominates. **Reciprocal rank fusion (RRF)** combines them by fusing the *rankings* instead of the scores, so no normalization or per-signal weighting is required.
 

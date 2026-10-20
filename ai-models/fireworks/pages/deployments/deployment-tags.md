@@ -52,9 +52,9 @@ firectl deployment tag unset <DEPLOYMENT_ID> \
 
 `set` overwrites existing values for the specified keys. `unset` ignores keys that do not exist. Each command changes all supplied keys in one request or makes no changes.
 
-<Note>
-  firectl uses logical tag keys and manages the API's `custom/` prefix for you. Do not add that prefix to firectl keys. For example, `--key environment` writes the API key `custom/environment`; `--key custom/environment` writes `custom/custom/environment`.
-</Note>
+> [!NOTE]
+>
+> firectl uses logical tag keys and manages the API's `custom/` prefix for you. Do not add that prefix to firectl keys. For example, `--key environment` writes the API key `custom/environment`; `--key custom/environment` writes `custom/custom/environment`.
 
 ## Manage tags with the REST API
 
@@ -105,9 +105,9 @@ Direct API clients can include canonical keys in the deployment's `annotations` 
 }
 ```
 
-<Warning>
-  Bare annotation keys such as `environment`, `team`, or `project` are not customer-writable. Deployment creation requests containing them return `403 PERMISSION_DENIED`. Prefix customer-managed keys with `custom/`, or create the deployment and use `firectl deployment tag set`.
-</Warning>
+> [!WARNING]
+>
+> Bare annotation keys such as `environment`, `team`, or `project` are not customer-writable. Deployment creation requests containing them return `403 PERMISSION_DENIED`. Prefix customer-managed keys with `custom/`, or create the deployment and use `firectl deployment tag set`.
 
 To change tags after creation, use `:setTags` and `:deleteTags`. Regular account callers cannot replace the complete `annotations` map through `UpdateDeployment`.
 
@@ -126,9 +126,9 @@ For regular account users, `GetDeployment` and `ListDeployments` return only cus
 
 firectl's `deployment tag list` command shows deployment tags and removes one leading `custom/` prefix from each displayed key.
 
-<Warning>
-  Regular account responses no longer include legacy bare annotation keys. A client that previously read `annotations["environment"]`, for example, now receives no value and no error for that key. Set the canonical `custom/environment` tag and read `annotations["custom/environment"]` instead.
-</Warning>
+> [!WARNING]
+>
+> Regular account responses no longer include legacy bare annotation keys. A client that previously read `annotations["environment"]`, for example, now receives no value and no error for that key. Set the canonical `custom/environment` tag and read `annotations["custom/environment"]` instead.
 
 ## Validation
 

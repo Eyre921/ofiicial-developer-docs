@@ -13,13 +13,13 @@ Provide exactly one of the following to specify where the view is created:
 
 * `database_id` — create a view directly on an existing database.
 * `view_id` — add a widget view inside an existing dashboard view.
-* `create_database` — create a new linked database block on a page and add the view to it.
+* `create_database` — create a new linked database block on a page and add the view to it. Set `create_database.show_data_source_title` to `false` to hide the data source title above the new block.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have insert content and update content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have insert content and update content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

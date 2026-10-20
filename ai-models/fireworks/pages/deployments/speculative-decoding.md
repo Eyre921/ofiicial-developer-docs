@@ -14,27 +14,27 @@ The benefit depends on both the cost of producing draft tokens and how often the
 target model accepts them. A poorly matched drafter can make generation slower,
 so benchmark with representative traffic before overriding Fireworks defaults.
 
-<Note>
-  The deployment flags on this page apply to [dedicated
-  deployments](/guides/ondemand-deployments). Fireworks manages the serving
-  configuration for Serverless models.
-</Note>
+> [!NOTE]
+>
+> The deployment flags on this page apply to [dedicated
+> deployments](/guides/ondemand-deployments). Fireworks manages the serving
+> configuration for Serverless models.
 
 ## Start with the default
 
-<Tip>
-  **For most supported models, a default drafter and draft-token count are already
-  configured.** A new deployment inherits those settings, so you usually do not
-  need to pass any speculative-decoding flags.
-
-  Create the deployment normally, then benchmark it before changing the drafter:
-
-  ```bash theme={null}
-  firectl deployment create accounts/fireworks/models/<MODEL_ID> \
-    --deployment-shape default \
-    --wait
-  ```
-</Tip>
+> [!TIP]
+>
+> **For most supported models, a default drafter and draft-token count are already
+> configured.** A new deployment inherits those settings, so you usually do not
+> need to pass any speculative-decoding flags.
+>
+> Create the deployment normally, then benchmark it before changing the drafter:
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/<MODEL_ID> \
+>   --deployment-shape default \
+>   --wait
+> ```
 
 If the base model does not define a default drafter, the deployment runs without
 model-based speculative decoding. To explicitly disable an inherited default
@@ -68,10 +68,10 @@ speculative decoding.
 | `--ngram-speculation-length` | Length of the previous input sequence used for N-gram matching. This does not require a separate draft model. |
 | `--disable-speculative-decoding` | Disables inherited speculative-decoding settings when creating a deployment. |
 
-<Note>
-  `--draft-model` and `--ngram-speculation-length` are alternative deployment
-  strategies and cannot be used together.
-</Note>
+> [!NOTE]
+>
+> `--draft-model` and `--ngram-speculation-length` are alternative deployment
+> strategies and cannot be used together.
 
 ## Custom draft models
 
@@ -100,29 +100,27 @@ checkpoint or discuss a drafter adapted to your traffic.
 
 ## Examples
 
-<Tabs>
-  <Tab title="Draft model">
-    Create a deployment with an explicit small base-model drafter:
+**Draft model**
 
-    ```bash theme={null}
-    firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
-      --deployment-shape default \
-      --draft-model="accounts/fireworks/models/llama-v3p2-1b-instruct" \
-      --draft-token-count=4
-    ```
-  </Tab>
+Create a deployment with an explicit small base-model drafter:
 
-  <Tab title="N-gram speculation">
-    Use N-gram speculation without a separate draft model:
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+  --deployment-shape default \
+  --draft-model="accounts/fireworks/models/llama-v3p2-1b-instruct" \
+  --draft-token-count=4
+```
 
-    ```bash theme={null}
-    firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
-      --deployment-shape default \
-      --ngram-speculation-length=3 \
-      --draft-token-count=4
-    ```
-  </Tab>
-</Tabs>
+**N-gram speculation**
+
+Use N-gram speculation without a separate draft model:
+
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+  --deployment-shape default \
+  --ngram-speculation-length=3 \
+  --draft-token-count=4
+```
 
 You can change the explicit drafter and draft-token count on an existing
 deployment:

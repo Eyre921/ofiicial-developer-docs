@@ -14,57 +14,53 @@ Before you begin, create an API key in the [Fireworks dashboard](https://app.fir
 
 Once you have your API key, export it as an environment variable in your terminal:
 
-<Tabs>
-  <Tab title="macOS / Linux">
-    ```bash theme={null}
-    export FIREWORKS_API_KEY="your_api_key_here"
-    ```
-  </Tab>
+**macOS / Linux**
 
-  <Tab title="Windows">
-    ```powershell theme={null}
-    setx FIREWORKS_API_KEY "your_api_key_here"
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+export FIREWORKS_API_KEY="your_api_key_here"
+```
+
+**Windows**
+
+```powershell theme={null}
+setx FIREWORKS_API_KEY "your_api_key_here"
+```
 
 ## Step 2: Install the CLI
 
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
-<CodeGroup>
-  ```bash homebrew theme={null}
-  brew tap fw-ai/firectl
-  brew install firectl
+```bash homebrew theme={null}
+brew tap fw-ai/firectl
+brew install firectl
 
-  # If you encounter a failed SHA256 check, try first running
-  brew update
-  ```
+# If you encounter a failed SHA256 check, try first running
+brew update
+```
 
-  ```bash macOS (Apple Silicon) theme={null}
-  curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
-  gzip -d firectl.gz && chmod a+x firectl
-  sudo mv firectl /usr/local/bin/firectl
-  sudo chown root: /usr/local/bin/firectl
-  ```
+```bash macOS (Apple Silicon) theme={null}
+curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-arm64.gz -o firectl.gz
+gzip -d firectl.gz && chmod a+x firectl
+sudo mv firectl /usr/local/bin/firectl
+sudo chown root: /usr/local/bin/firectl
+```
 
-  ```bash macOS (x86_64) theme={null}
-  curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
-  gzip -d firectl.gz && chmod a+x firectl
-  sudo mv firectl /usr/local/bin/firectl
-  sudo chown root: /usr/local/bin/firectl
-  ```
+```bash macOS (x86_64) theme={null}
+curl https://storage.googleapis.com/fireworks-public/firectl/stable/darwin-amd64.gz -o firectl.gz
+gzip -d firectl.gz && chmod a+x firectl
+sudo mv firectl /usr/local/bin/firectl
+sudo chown root: /usr/local/bin/firectl
+```
 
-  ```bash Linux  (x86_64) theme={null}
-  wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
-  gunzip firectl.gz
-  sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
-  ```
+```bash Linux  (x86_64) theme={null}
+wget -O firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
+gunzip firectl.gz
+sudo install -o root -g root -m 0755 firectl /usr/local/bin/firectl
+```
 
-  ```Text Windows (64 bit) theme={null}
-  wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
-  ```
-</CodeGroup>
+```Text Windows (64 bit) theme={null}
+wget -L https://storage.googleapis.com/fireworks-public/firectl/stable/firectl.exe
+```
 
 Then, sign in:
 
@@ -89,13 +85,13 @@ firectl deployment create accounts/fireworks/models/gpt-oss-120b \
         --wait
 ```
 
-<Tip>
-  A [deployment shape](/guides/ondemand-deployments#deployment-shapes) is a pre-configured deployment template created by the Fireworks team that sets sensible defaults for most deployment options (such as hardware type).
-
-  `--deployment-shape default` tells Fireworks to pick a validated shape for the model. To optimize for lower cost-per-token at scale or the lowest cost at small scale, run `firectl deployment-shape-version match --model <model-id>` and pass a shape with preset type `THROUGHPUT` or `MINIMAL` instead — pass the shape's full resource name to `--deployment-shape`; preset types are not shape identifier aliases.
-
-  Do not omit `--deployment-shape`: deployments created without a shape do not start from a validated configuration and are much more likely to fail at creation. If no shape fits your workload, [contact us](https://fireworks.ai/contact); if you deliberately need a shapeless deployment, pass `--accept-shapeless-risk` (advanced users only). See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) and [Explicitly creating a deployment without a shape](/guides/ondemand-deployments#explicitly-creating-a-deployment-without-a-shape-advanced-users-only) in the deployment guide.
-</Tip>
+> [!TIP]
+>
+> A [deployment shape](/guides/ondemand-deployments#deployment-shapes) is a pre-configured deployment template created by the Fireworks team that sets sensible defaults for most deployment options (such as hardware type).
+>
+> `--deployment-shape default` tells Fireworks to pick a validated shape for the model. To optimize for lower cost-per-token at scale or the lowest cost at small scale, run `firectl deployment-shape-version match --model <model-id>` and pass a shape with preset type `THROUGHPUT` or `MINIMAL` instead — pass the shape's full resource name to `--deployment-shape`; preset types are not shape identifier aliases.
+>
+> Do not omit `--deployment-shape`: deployments created without a shape do not start from a validated configuration and are much more likely to fail at creation. If no shape fits your workload, [contact us](https://fireworks.ai/contact); if you deliberately need a shapeless deployment, pass `--accept-shapeless-risk` (advanced users only). See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) and [Explicitly creating a deployment without a shape](/guides/ondemand-deployments#explicitly-creating-a-deployment-without-a-shape-advanced-users-only) in the deployment guide.
 
 The response will look like this:
 
@@ -128,109 +124,105 @@ Take note of the `Name:` field in the response, as it will be used in the next s
 
 Now you can query your on-demand deployment using the same API as serverless models, but using your dedicated deployment. Replace `<DEPLOYMENT_NAME>` in the below snippets with the value from the `Name:` field in the previous step:
 
-<Tabs>
-  <Tab title="Python (Fireworks SDK)">
-    Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
+**Python (Fireworks SDK)**
 
-    <Note>
-      The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-    </Note>
+Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 
-    <CodeGroup>
-      ```bash pip theme={null}
-      pip install --pre fireworks-ai
-      ```
+> [!NOTE]
+>
+> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
 
-      ```bash poetry theme={null}
-      poetry add --pre fireworks-ai
-      ```
+```bash pip theme={null}
+pip install --pre fireworks-ai
+```
 
-      ```bash uv theme={null}
-      uv add --pre fireworks-ai
-      ```
-    </CodeGroup>
+```bash poetry theme={null}
+poetry add --pre fireworks-ai
+```
 
-    Then make your first on-demand API call:
+```bash uv theme={null}
+uv add --pre fireworks-ai
+```
 
-    ```python theme={null}
-    from fireworks import Fireworks
+Then make your first on-demand API call:
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
-        messages=[{
-            "role": "user",
-            "content": "Explain quantum computing in simple terms",
-        }],
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
+    messages=[{
+        "role": "user",
+        "content": "Explain quantum computing in simple terms",
+    }],
+)
 
-  <Tab title="Python (OpenAI SDK)">
-    ```python theme={null}
-    import os
-    from openai import OpenAI
+print(response.choices[0].message.content)
+```
 
-    client = OpenAI(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference/v1"
-    )
+**Python (OpenAI SDK)**
 
-    response = client.chat.completions.create(
-        model="<DEPLOYMENT_NAME>",
-        messages=[{
-            "role": "user",
-            "content": "Explain quantum computing in simple terms",
-        }],
-    )
+```python theme={null}
+import os
+from openai import OpenAI
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1"
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
+response = client.chat.completions.create(
+    model="<DEPLOYMENT_NAME>",
+    messages=[{
+        "role": "user",
+        "content": "Explain quantum computing in simple terms",
+    }],
+)
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
+print(response.choices[0].message.content)
+```
 
-    const response = await client.chat.completions.create({
-      model: "<DEPLOYMENT_NAME>",
-      messages: [
-        {
-          role: "user",
-          content: "Explain quantum computing in simple terms",
-        },
-      ],
-    });
+**JavaScript**
 
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
+```javascript theme={null}
+import OpenAI from "openai";
 
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "<DEPLOYMENT_NAME>",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Explain quantum computing in simple terms"
-          }
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "<DEPLOYMENT_NAME>",
+  messages: [
+    {
+      role: "user",
+      content: "Explain quantum computing in simple terms",
+    },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "<DEPLOYMENT_NAME>",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain quantum computing in simple terms"
+      }
+    ]
+  }'
+```
 
 The examples from the Serverless quickstart will work with this deployment as well, just replace the model string with the deployment-specific model string from above.
 
@@ -270,28 +262,26 @@ firectl deployment create accounts/fireworks/models/gpt-oss-120b \
 
 Ready to scale to production, explore other modalities, or customize your models?
 
-<CardGroup>
-  <Card title="Upload a custom model" href="/models/uploading-custom-models" icon="server">
-    Bring your own model and deploy it on Fireworks
-  </Card>
+> **[Upload a custom model](/models/uploading-custom-models)**
+>
+> Bring your own model and deploy it on Fireworks
 
-  <Card title="Train Models" href="/fine-tuning/finetuning-intro" icon="sliders">
-    Improve model quality with supervised and reinforcement learning
-  </Card>
+> **[Train Models](/fine-tuning/finetuning-intro)**
+>
+> Improve model quality with supervised and reinforcement learning
 
-  <Card title="Embeddings & Reranking" href="/guides/querying-embeddings-models" icon="brackets-curly">
-    Use embeddings & reranking in search & context retrieval
-  </Card>
+> **[Embeddings & Reranking](/guides/querying-embeddings-models)**
+>
+> Use embeddings & reranking in search & context retrieval
 
-  <Card title="Batch Inference" href="/guides/batch-inference" icon="list-check">
-    Run async inference jobs at scale, faster and cheaper
-  </Card>
+> **[Batch Inference](/guides/batch-inference)**
+>
+> Run async inference jobs at scale, faster and cheaper
 
-  <Card title="Browse 100+ Models" href="https://fireworks.ai/models" icon="books">
-    Explore all available models across modalities
-  </Card>
+> **[Browse 100+ Models](https://fireworks.ai/models)**
+>
+> Explore all available models across modalities
 
-  <Card title="API Reference" href="/api-reference/introduction" icon="code">
-    Complete API documentation
-  </Card>
-</CardGroup>
+> **[API Reference](/api-reference/introduction)**
+>
+> Complete API documentation

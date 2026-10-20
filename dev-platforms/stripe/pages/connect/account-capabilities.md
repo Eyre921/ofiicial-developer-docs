@@ -106,7 +106,7 @@ In the following table, the **All business types supported** column indicates th
 `alipay_payments` | No, see [prohibited businesses](https://support.stripe.com/questions/alipay-prohibited-businesses). | The payment method must be activated on the Dashboard settings page. Also, request [an invite](https://docs.stripe.com/payments/alipay.md) to create charges on behalf of other accounts. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/alipay.md?pm-info=business-locations). | No |
 | [Alma](https://docs.stripe.com/payments/alma.md)
 
-`alma_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/alma.md#prohibited-business-categories). | The capability must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/alma.md?pm-info=business-locations). | Yes |
+`alma_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/alma.md#unsupported-businesses). | The capability must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/alma.md?pm-info=business-locations). | Yes |
 | [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md)
 
 `amazon_pay_payments` | Yes | The capability must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/amazon-pay.md?pm-info=business-locations). | Yes |

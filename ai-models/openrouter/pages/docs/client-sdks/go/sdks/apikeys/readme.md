@@ -357,7 +357,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
 | `hash` | `string` | :heavy\_check\_mark: | The hash identifier of the API key to update | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
-| `requestBody` | [operations.UpdateKeysRequestBody](../../models/operations/updatekeysrequestbody.mdx) | :heavy\_check\_mark: | N/A | \{<br />"disabled": false,<br />"include\_byok\_in\_limit": true,<br />"limit": 75,<br />"limit\_reset": "daily",<br />"name": "Updated API Key Name"<br />} |
+| `requestBody` | [operations.UpdateKeysRequestBody](../../models/operations/updatekeysrequestbody.mdx) | :heavy\_check\_mark: | N/A | \{ "disabled": false, "include\_byok\_in\_limit": true, "limit": 75, "limit\_reset": "daily", "name": "Updated API Key Name" } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response

@@ -18,14 +18,14 @@ Brand monitoring, like user research, shares the same problem: thousands of comm
 
 Jev is cheap enough you can run it on every comment: \$0.00057 for the captured run below, 27 comments, about \$0.021 per 1,000. Plus 2 ScrapeCreators credits for the two fetch requests.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript app runs on Node.js or Bun as an ES module, so top-level `await` works.
-  * You have `@openrouter/sdk` and `zod` installed, plus `@types/node` or `@types/bun` so `process.env` and `fetch` typecheck.
-  * You've configured `OPENROUTER_API_KEY` and `SCRAPECREATORS_API_KEY`. ScrapeCreators accounts start with 100 free credits, so you can sign up at [scrapecreators.com](https://scrapecreators.com).
-  * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) and the [ScrapeCreators API docs](https://docs.scrapecreators.com) open. If this is your first Decisions request, the [Jev tutorial](/docs/guides/community/jev-tutorial) walks through the request shape and how to read the probabilities.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript app runs on Node.js or Bun as an ES module, so top-level `await` works.
+> * You have `@openrouter/sdk` and `zod` installed, plus `@types/node` or `@types/bun` so `process.env` and `fetch` typecheck.
+> * You've configured `OPENROUTER_API_KEY` and `SCRAPECREATORS_API_KEY`. ScrapeCreators accounts start with 100 free credits, so you can sign up at [scrapecreators.com](https://scrapecreators.com).
+> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) and the [ScrapeCreators API docs](https://docs.scrapecreators.com) open. If this is your first Decisions request, the [Jev tutorial](/docs/guides/community/jev-tutorial) walks through the request shape and how to read the probabilities.
 
 **Goal:** Define an async `triage` function that takes comments from ScrapeCreators and returns one decision per comment with `action: 'record' | 'review' | 'ignore'`, the reason, and Jev's raw judgment.
 
@@ -123,9 +123,9 @@ async function fetchYouTubeComments(videoUrl: string): Promise<Fetched> {
 }
 ```
 
-<Info>
-  Both responses are paginated. Reddit search returns an `after` cursor passed back as the `after` query parameter. YouTube comments returns a `continuationToken` passed back as `continuationToken`. Each page is one request, and the captured run was charged one credit per page. The snippet fetches the first page of each so the captured run stays small.
-</Info>
+> [!NOTE]
+>
+> Both responses are paginated. Reddit search returns an `after` cursor passed back as the `after` query parameter. YouTube comments returns a `continuationToken` passed back as `continuationToken`. Each page is one request, and the captured run was charged one credit per page. The snippet fetches the first page of each so the captured run stays small.
 
 ## 2. Classify relevance and run sentiment analysis with Jev
 
@@ -188,9 +188,9 @@ async function judgeComment(comment: Comment): Promise<Judgment> {
 }
 ```
 
-<Warning>
-  Each `decisions.create` call is one paid request billed to your OpenRouter account at the [typesafe/jev-1.13](https://openrouter.ai/typesafe/jev-1.13) rate, and each ScrapeCreators request spends credits. The comment text you send to Jev is user-generated text from public platforms, so apply the same retention rules to it that you apply to any third-party text you log.
-</Warning>
+> [!WARNING]
+>
+> Each `decisions.create` call is one paid request billed to your OpenRouter account at the [typesafe/jev-1.13](https://openrouter.ai/typesafe/jev-1.13) rate, and each ScrapeCreators request spends credits. The comment text you send to Jev is user-generated text from public platforms, so apply the same retention rules to it that you apply to any third-party text you log.
 
 ## 3. Set the human-review threshold and route each comment
 

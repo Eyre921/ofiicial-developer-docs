@@ -12,9 +12,9 @@ The [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training) i
 
 The cookbook is **optional** — everything it does can be done with the API directly. Use the cookbook when you want a working training loop quickly; use the API when you need full control.
 
-<Tip>
-  New to training on Fireworks? [Cookbook: Muse Glimmer First Fine-Tune](/fine-tuning/training-api/cookbook/muse-glimmer) runs a free LoRA SFT job on preloaded example data and compares base versus tuned.
-</Tip>
+> [!TIP]
+>
+> New to training on Fireworks? [Cookbook: Muse Glimmer First Fine-Tune](/fine-tuning/training-api/cookbook/muse-glimmer) runs a free LoRA SFT job on preloaded example data and compares base versus tuned.
 
 ## Installation
 
@@ -51,9 +51,9 @@ All launch examples below use `trainer=TrainerConfig(training_shape_id=...)` for
 
 If you want field-level details about what a training shape controls and what stays configurable, see [Training shapes](/fine-tuning/training-api/training-shapes) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
-<Note>
-  `InfraConfig` and the standalone `setup_infra` / `ResourceCleanup` helpers are **deprecated and removed from the recipe surface**. Recipes now take `trainer=TrainerConfig(...)` (and `deployment=DeployConfig(...)` for RL). See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
-</Note>
+> [!NOTE]
+>
+> `InfraConfig` and the standalone `setup_infra` / `ResourceCleanup` helpers are **deprecated and removed from the recipe surface**. Recipes now take `trainer=TrainerConfig(...)` (and `deployment=DeployConfig(...)` for RL). See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
 
 ## Quick example: SFT
 

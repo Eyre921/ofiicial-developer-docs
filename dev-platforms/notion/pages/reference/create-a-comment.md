@@ -38,9 +38,9 @@ To add a new comment to a page or block, provide a `parent` object with a `page_
 
 To add a new comment to an existing discussion thread, provide a `discussion_id` string in the body params.
 
-<Note>
-  The public API can create comments attached to whole blocks with `parent.block_id`. It does not support creating a new discussion anchored to a selected range of text inside a block. To reply to an existing selected-text discussion, use `discussion_id`.
-</Note>
+> [!NOTE]
+>
+> The public API can create comments attached to whole blocks with `parent.block_id`. It does not support creating a new discussion anchored to a selected range of text inside a block. To reply to an existing selected-text discussion, use `discussion_id`.
 
 **Exactly one of `parent.page_id`, `parent.block_id`, or `discussion_id` must be provided.**
 
@@ -61,12 +61,12 @@ To see additional examples of creating a [page](/guides/data-apis/working-with-c
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Info>
-  **Reminder: Turn on connection comment capabilities**
-
-  Connection capabilities for reading and inserting comments are off by default.
-
-  This endpoint requires a connection to have insert comment capabilities. Attempting to call this endpoint without insert comment capabilities will return an HTTP response with a 403 status code.
-
-  For more information on connection capabilities, see the [capabilities guide](/reference/capabilities). To update your connection settings, visit the <a href={developerConnectionsUrl}>Developer portal</a>.
-</Info>
+> [!NOTE]
+>
+> **Reminder: Turn on connection comment capabilities**
+>
+> Connection capabilities for reading and inserting comments are off by default.
+>
+> This endpoint requires a connection to have insert comment capabilities. Attempting to call this endpoint without insert comment capabilities will return an HTTP response with a 403 status code.
+>
+> For more information on connection capabilities, see the [capabilities guide](/reference/capabilities). To update your connection settings, visit the [Developer portal](https://app.notion.com/developers/connections).

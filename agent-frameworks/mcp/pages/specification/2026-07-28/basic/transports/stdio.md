@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/transport
 path: specification/2026-07-28/basic/transports/stdio
 ---
 
-<div />
-
 In the **stdio** transport, the client launches the MCP server as a subprocess.
 The two ends communicate over the subprocess's standard streams:
 

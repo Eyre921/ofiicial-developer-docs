@@ -29,9 +29,9 @@ Use these references for exact schemas:
 * [Image generation server tool](/docs/guides/features/server-tools/image-generation)
 * [Available image models](https://openrouter.ai/models?output_modalities=image)
 
-<Warning>
-  Each request through this preset makes two model calls: one to the text model (for prompt refinement) and one to the image model (for generation). The text model call is cheap; the image generation cost depends on the image model you configure. Check pricing on the [image model's page](https://openrouter.ai/models?output_modalities=image) before routing production traffic.
-</Warning>
+> [!WARNING]
+>
+> Each request through this preset makes two model calls: one to the text model (for prompt refinement) and one to the image model (for generation). The text model call is cheap; the image generation cost depends on the image model you configure. Check pricing on the [image model's page](https://openrouter.ai/models?output_modalities=image) before routing production traffic.
 
 ## How the pattern works
 
@@ -41,7 +41,7 @@ The difference is visible. Here's the same concept, with and without prompt enha
 
 | Bare prompt: "make a watermelon hippo" | Preset-enhanced prompt |
 | - | - |
-| <img src="https://mintcdn.com/openrouter-d02e98a0/vKv_Fe97IEm3a1mW/assets/cookbook/image-generation/bare-prompt-watermelon-hippo.png?fit=max&auto=format&n=vKv_Fe97IEm3a1mW&q=85&s=40d1ce6026a3f566258a0c03215cd9f0" alt="Bare prompt result: generic watermelon-textured hippo on white background" width="1024" height="1024" data-path="assets/cookbook/image-generation/bare-prompt-watermelon-hippo.png" /> | <img src="https://mintcdn.com/openrouter-d02e98a0/vKv_Fe97IEm3a1mW/assets/cookbook/image-generation/enhanced-prompt-watermelon-hippo.png?fit=max&auto=format&n=vKv_Fe97IEm3a1mW&q=85&s=d20f2157369a4820a9b64d7a1cb67589" alt="Enhanced prompt result: photorealistic watermelon hippo sculpture standing in a river at golden hour" width="1024" height="1024" data-path="assets/cookbook/image-generation/enhanced-prompt-watermelon-hippo.png" /> |
+| ![Bare prompt result: generic watermelon-textured hippo on white background](https://mintcdn.com/openrouter-d02e98a0/vKv_Fe97IEm3a1mW/assets/cookbook/image-generation/bare-prompt-watermelon-hippo.png?fit=max\&auto=format\&n=vKv_Fe97IEm3a1mW\&q=85\&s=40d1ce6026a3f566258a0c03215cd9f0) | ![Enhanced prompt result: photorealistic watermelon hippo sculpture standing in a river at golden hour](https://mintcdn.com/openrouter-d02e98a0/vKv_Fe97IEm3a1mW/assets/cookbook/image-generation/enhanced-prompt-watermelon-hippo.png?fit=max\&auto=format\&n=vKv_Fe97IEm3a1mW\&q=85\&s=d20f2157369a4820a9b64d7a1cb67589) |
 
 The bare prompt produces a literal interpretation. The preset's orchestrator expands it into a detailed scene with materials, lighting, and environment before the image model touches it.
 
@@ -116,9 +116,9 @@ The response confirms your preset was created:
 }
 ```
 
-<Info>
-  The response shown above is abbreviated. The full response includes additional fields like `workspace_id`, `description`, and timestamps. See the [Presets API reference](/docs/client-sdks/typescript/sdks/presets/README) for the complete schema.
-</Info>
+> [!NOTE]
+>
+> The response shown above is abbreviated. The full response includes additional fields like `workspace_id`, `description`, and timestamps. See the [Presets API reference](/docs/client-sdks/typescript/sdks/presets/README) for the complete schema.
 
 You can also create or edit presets from the [Presets dashboard](https://openrouter.ai/settings/presets), which has a visual server tools editor.
 

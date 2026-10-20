@@ -18,15 +18,13 @@ On a quarterly basis, Pinecone releases a new **stable** API version as well as 
 
 Below is an example of Pinecone's release schedule:
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/api-versioning.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=be4366853edee83e003c3863e31fa1ce)
 
 ## Specify an API version
 
-<Warning>
-  When using the API directly, it is important to specify an API version in your requests. If you don't, requests default to the oldest supported stable version. Once support for that version ends, your requests will default to the next oldest stable version, which could include breaking changes that require you to update your integration.
-</Warning>
+> [!WARNING]
+>
+> When using the API directly, it is important to specify an API version in your requests. If you don't, requests default to the oldest supported stable version. Once support for that version ends, your requests will default to the next oldest stable version, which could include breaking changes that require you to update your integration.
 
 To specify an API version, set the `X-Pinecone-Api-Version` header to the version name.
 

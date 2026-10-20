@@ -211,7 +211,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
+| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{ "max\_tokens": 150, "messages": \[ \{ "content": "You are a helpful assistant.", "role": "system" }, \{ "content": "What is the capital of France?", "role": "user" } ], "model": "openai/gpt-4", "temperature": 0.7 } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -284,7 +284,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | ✅ | N/A | \{<br />"max\_tokens": 1024,<br />"messages": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7<br />} |
+| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | ✅ | N/A | \{ "max\_tokens": 1024, "messages": \[ \{ "content": "Hello, how are you?", "role": "user" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7 } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -350,7 +350,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✅ | N/A | \{<br />"input": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user",<br />"type": "message"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7,<br />"tools": \[<br />\{<br />"description": "Get the current weather in a given location",<br />"name": "get\_current\_weather",<br />"parameters": \{<br />"properties": \{<br />"location": \{<br />"type": "string"<br />}<br />},<br />"type": "object"<br />},<br />"type": "function"<br />}<br />],<br />"top\_p": 0.9<br />} |
+| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✅ | N/A | \{ "input": \[ \{ "content": "Hello, how are you?", "role": "user", "type": "message" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7, "tools": \[ \{ "description": "Get the current weather in a given location", "name": "get\_current\_weather", "parameters": \{ "properties": \{ "location": \{ "type": "string" } }, "type": "object" }, "type": "function" } ], "top\_p": 0.9 } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

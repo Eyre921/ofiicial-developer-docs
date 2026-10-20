@@ -10,15 +10,15 @@ Pinecone's official [Agent Skills](https://github.com/pinecone-io/skills) librar
 
 Agent Skills work with [GitHub Copilot](https://github.com/features/copilot) and other agentic IDEs.
 
-<PrimarySecondaryCTA />
+[View on GitHub](https://github.com/pinecone-io/skills)
 
-<Tip>
-  These tools have a dedicated Pinecone plugin with additional features. Install it instead of Agent Skills:
-
-  * [Claude Code](/integrations/claude-code)
-  * [Codex](/integrations/codex)
-  * [Cursor](/integrations/cursor)
-</Tip>
+> [!TIP]
+>
+> These tools have a dedicated Pinecone plugin with additional features. Install it instead of Agent Skills:
+>
+> * [Claude Code](/integrations/claude-code)
+> * [Codex](/integrations/codex)
+> * [Cursor](/integrations/cursor)
 
 ## Features
 
@@ -38,27 +38,25 @@ Agent Skills work with [GitHub Copilot](https://github.com/features/copilot) and
 
 Set your API key, add the skills to your project, and optionally connect the MCP server.
 
-<Steps>
-  <Step title="Set your API key">
-    ```shell theme={null}
-    export PINECONE_API_KEY="YOUR_API_KEY"
-    ```
+**1. Set your API key**
 
-    Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
-  </Step>
+```shell theme={null}
+export PINECONE_API_KEY="YOUR_API_KEY"
+```
 
-  <Step title="Install the skills">
-    ```shell theme={null}
-    npx skills add pinecone-io/skills
-    ```
+Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
 
-    This downloads Pinecone's skills into your project, making them available to your IDE's AI agent.
-  </Step>
+**2. Install the skills**
 
-  <Step title="Configure the MCP server (optional)">
-    For full functionality, configure the [Pinecone MCP server](/guides/operations/mcp-server) in your IDE. This enables the `pinecone-query` skill and direct index operations.
-  </Step>
-</Steps>
+```shell theme={null}
+npx skills add pinecone-io/skills
+```
+
+This downloads Pinecone's skills into your project, making them available to your IDE's AI agent.
+
+**3. Configure the MCP server (optional)**
+
+For full functionality, configure the [Pinecone MCP server](/guides/operations/mcp-server) in your IDE. This enables the `pinecone-query` skill and direct index operations.
 
 ## Available skills
 

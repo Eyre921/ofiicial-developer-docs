@@ -96,9 +96,9 @@ You can still configure normal training-loop fields such as:
 * Trainer replica count (`TrainerConfig.replica_count` or `trainer_replica_count`)
 * Deployment replica count (`DeployConfig.replica_count` or `replica_count`)
 
-<Note>
-  Shape-owned infra is locked on the shape path. Do not set `accelerator_type`, `accelerator_count`, `node_count`, or `custom_image_tag`; the shape supplies all four. The linked deployment shape can be overridden through `deployment_shape`, but only for deployments you manage outside the normal flow.
-</Note>
+> [!NOTE]
+>
+> Shape-owned infra is locked on the shape path. Do not set `accelerator_type`, `accelerator_count`, `node_count`, or `custom_image_tag`; the shape supplies all four. The linked deployment shape can be overridden through `deployment_shape`, but only for deployments you manage outside the normal flow.
 
 Gradient accumulation is not a trainer-launch setting. To accumulate gradients, call `forward_backward...` multiple times from your client loop before a single `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
 

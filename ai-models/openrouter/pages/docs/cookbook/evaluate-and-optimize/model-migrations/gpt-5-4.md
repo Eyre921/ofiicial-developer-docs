@@ -18,9 +18,9 @@ GPT-5.3 Codex, GPT-5.4, GPT-5.4 Pro, GPT-5.5, and GPT-5.5 Pro all use the `phase
 
 OpenRouter supports `phase` in the [Responses API](/docs/api/api-reference/responses/create-a-response).
 
-<Note>
-  `phase` is **not available** in the Chat Completions API. The Chat Completions format cannot represent multiple output items with distinct phases in a single response. Use the Responses API for full `phase` support.
-</Note>
+> [!NOTE]
+>
+> `phase` is **not available** in the Chat Completions API. The Chat Completions format cannot represent multiple output items with distinct phases in a single response. Use the Responses API for full `phase` support.
 
 ## The `phase` Field
 
@@ -32,9 +32,9 @@ OpenRouter supports `phase` in the [Responses API](/docs/api/api-reference/respo
 | `"commentary"` | Intermediate assistant message |
 | `"final_answer"` | The final closeout message |
 
-<Note>
-  `phase` is only valid on **assistant** messages. Do not add `phase` to user or system messages.
-</Note>
+> [!NOTE]
+>
+> `phase` is only valid on **assistant** messages. Do not add `phase` to user or system messages.
 
 ## Why It Matters
 
@@ -176,9 +176,9 @@ When building an integration with the Responses API, persist your output items v
 | Other OpenAI models | Silently ignored (safe to pass) |
 | Non-OpenAI models | Not applicable |
 
-<Note>
-  Passing `phase` to OpenAI models that don't support it (like `gpt-4o`) is safe — OpenAI silently ignores the field. You do not need to filter `phase` based on the model.
-</Note>
+> [!NOTE]
+>
+> Passing `phase` to OpenAI models that don't support it (like `gpt-4o`) is safe — OpenAI silently ignores the field. You do not need to filter `phase` based on the model.
 
 ## Breaking Changes
 

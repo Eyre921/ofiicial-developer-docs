@@ -30,13 +30,11 @@ Use an environment variable for local development. Add `.env` files to `.gitigno
 NOTION_API_KEY=ntn_abc123def456ghi789jkl012mno345pqr
 ```
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  const notion = new Client({
-    auth: process.env.NOTION_API_KEY,
-  });
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+});
+```
 
 Use a secret manager for deployed applications. Limit who can read production secrets and keep an inventory of each token's owner and purpose.
 
@@ -64,29 +62,25 @@ Revoke or replace a token immediately if it may have been exposed.
 
 ### 1. Disable the token
 
-<Steps>
-  <Step>
-    Log in to Notion.
-  </Step>
+**Step 1**
 
-  <Step>
-    Go to **Settings** → **Connections** → **Develop or manage connections**.
-  </Step>
+Log in to Notion.
 
-  <Step>
-    Find the connection or personal access token that uses the exposed token.
-  </Step>
+**Step 2**
 
-  <Step>
-    Select **Refresh** for an internal connection, or revoke the personal access token.
-  </Step>
-</Steps>
+Go to **Settings** → **Connections** → **Develop or manage connections**.
 
-For a PAT, you can also revoke the token from <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal. Create a new token if the application still needs access.
+**Step 3**
 
-<Frame>
-  <img alt="The Refresh button for an internal connection in the Developer portal." />
-</Frame>
+Find the connection or personal access token that uses the exposed token.
+
+**Step 4**
+
+Select **Refresh** for an internal connection, or revoke the personal access token.
+
+For a PAT, you can also revoke the token from [Personal access tokens](https://www.notion.so/developers/tokens) in the Developer portal. Create a new token if the application still needs access.
+
+![The Refresh button for an internal connection in the Developer portal.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/92575d6725618577cb984d3f6f44c969009f0343b38ad3152b0a73966eef4d30-rotating-api-key.gif?s=ec5229713f03a96eb399fbd937f66337)
 
 ### 2. Update applications
 

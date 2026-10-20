@@ -10,38 +10,36 @@ Notion includes rich text objects in [block objects](/reference/block) to indica
 
 When blocks are retrieved from a page using the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints, an array of rich text objects will be included in the block object (when available). Developers can use this array to retrieve the plain text (`plain_text`) for the block or get all the rich text styling and formatting options applied to the block.
 
-<CodeGroup>
-  ```json An example rich text object theme={null}
-  {
-    "type": "text",
-    "text": {
-      "content": "Some words ",
-      "link": null
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "Some words ",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json An example rich text object theme={null}
+{
+  "type": "text",
+  "text": {
+    "content": "Some words ",
+    "link": null
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "Some words ",
+  "href": null
+}
+```
 
-<Note>
-  Many [block types](/reference/block#block-type-objects) support rich text. In cases where it is supported, a `rich_text` object will be included in the block `type` object. All `rich_text` objects will include a `plain_text` property, which provides a convenient way for developers to access unformatted text from the Notion block.
-</Note>
+> [!NOTE]
+>
+> Many [block types](/reference/block#block-type-objects) support rich text. In cases where it is supported, a `rich_text` object will be included in the block `type` object. All `rich_text` objects will include a `plain_text` property, which provides a convenient way for developers to access unformatted text from the Notion block.
 
 Each rich text object contains the following fields.
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `type` | `string` (enum) | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`. | `"text"` |
-| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
+| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.   Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
 | `annotations` | `object` | The information used to style the rich text object. Refer to the annotation object section below for details. | Refer to the annotation object section below for examples. |
 | `plain_text` | `string` | The plain text without annotations. | `"Some words "` |
 | `href` | `string` (optional) | The URL of any link or Notion mention in this text, if any. | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
@@ -57,7 +55,7 @@ All rich text objects contain an `annotations` object that sets the styling for 
 | `strikethrough` | `boolean` | Whether the text is struck through. | `false` |
 | `underline` | `boolean` | Whether the text is underlined. | `false` |
 | `code` | `boolean` | Whether the text is `code style`. | `true` |
-| `color` | `string` (enum) | Color of the text. Possible values include: <br /><br />- `"blue"` <br />- `"blue_background"` <br />- `"brown"` <br />- `"brown_background"` <br />- `"default"` <br />- `"gray"` <br />- `"gray_background"` <br />- `"green"` <br />- `"green_background"` <br />- `"orange"` <br />-`"orange_background"` <br />- `"pink"` <br />- `"pink_background"` <br />- `"purple"` <br />- `"purple_background"` <br />- `"red"` <br />- `"red_background”` <br />- `"yellow"` <br />- `"yellow_background"` | `"green"` |
+| `color` | `string` (enum) | Color of the text. Possible values include:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` -`"orange_background"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background”` - `"yellow"` - `"yellow_background"` | `"green"` |
 
 ## Rich text type objects
 
@@ -71,26 +69,24 @@ Notion supports inline LaTeX equations as rich text object’s with a type value
 
 #### Example rich text `equation` object
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "equation",
-    "equation": {
-      "expression": "E = mc^2"
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "E = mc^2",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "equation",
+  "equation": {
+    "expression": "E = mc^2"
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "E = mc^2",
+  "href": null
+}
+```
 
 ### Mention
 
@@ -100,7 +96,7 @@ If a rich text object’s `type` value is `"mention"`, then the corresponding `m
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `type` | `string` (enum) | The type of the inline mention. Possible values include: <br /><br />- `"database"` <br />- `"date"` <br />- `"link_preview"` <br />- `"page"` <br />- `"template_mention"` <br />- `"user"` | `"user"` |
+| `type` | `string` (enum) | The type of the inline mention. Possible values include:  - `"database"` - `"date"` - `"link_preview"` - `"page"` - `"template_mention"` - `"user"` | `"user"` |
 | `database` \| `date` \| `link_preview` \| `page` \| `template_mention` \| `user` | `object` | An object containing type-specific configuration. Refer to the mention type object sections below for details. | Refer to the mention type object sections below for example values. |
 
 #### Database mention type object
@@ -111,29 +107,27 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
 
 *Example rich text `mention` object for a `database` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "database",
-      "database": {
-        "id": "a1d8501e-1ac1-43e9-a6bd-ea9fe6c8822b"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "Database with test things",
-    "href": "https://app.notion.com/p/a1d8501e1ac143e9a6bdea9fe6c8822b"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "database",
+    "database": {
+      "id": "a1d8501e-1ac1-43e9-a6bd-ea9fe6c8822b"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "Database with test things",
+  "href": "https://app.notion.com/p/a1d8501e1ac143e9a6bdea9fe6c8822b"
+}
+```
 
 #### Date mention type object
 
@@ -141,30 +135,28 @@ Date mentions contain a [date property value object](/reference/page-property-va
 
 *Example rich text `mention` object for a `date` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "date",
-      "date": {
-        "start": "2022-12-16",
-        "end": null
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "2022-12-16",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "date",
+    "date": {
+      "start": "2022-12-16",
+      "end": null
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "2022-12-16",
+  "href": null
+}
+```
 
 #### Link Preview mention type object
 
@@ -172,29 +164,27 @@ If a user opts to share a [Link Preview](/guides/link-previews/introduction) as 
 
 *Example rich text `mention` object for a `link_preview` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "link_preview",
-      "link_preview": {
-        "url": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD",
-    "href": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "link_preview",
+    "link_preview": {
+      "url": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD",
+  "href": "https://workspace.slack.com/archives/C04PF0F9QSD/z1671139297838409?thread_ts=1671139274.065079&cid=C03PF0F9QSD"
+}
+```
 
 #### Page mention type object
 
@@ -204,29 +194,27 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
 
 *Example rich text `mention` object for a `page` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "page",
-      "page": {
-        "id": "3c612f56-fdd0-4a30-a4d6-bda7d7426309"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "This is a test page",
-    "href": "https://app.notion.com/p/3c612f56fdd04a30a4d6bda7d7426309"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "page",
+    "page": {
+      "id": "3c612f56-fdd0-4a30-a4d6-bda7d7426309"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "This is a test page",
+  "href": "https://app.notion.com/p/3c612f56fdd04a30a4d6bda7d7426309"
+}
+```
 
 #### Template mention type object
 
@@ -242,30 +230,28 @@ If the `type` key is `"template_mention_date"`, then the rich text object contai
 
 *Example rich text `mention` object for a `template_mention_date` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "template_mention",
-      "template_mention": {
-        "type": "template_mention_date",
-        "template_mention_date": "today"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "@Today",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "template_mention",
+    "template_mention": {
+      "type": "template_mention_date",
+      "template_mention_date": "today"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "@Today",
+  "href": null
+}
+```
 
 If the type key is `"template_mention_user"`, then the rich text object contains the following `template_mention_user` field:
 
@@ -275,65 +261,61 @@ If the type key is `"template_mention_user"`, then the rich text object contains
 
 *Example rich text `mention` object for a `template_mention_user` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "template_mention",
-      "template_mention": {
-        "type": "template_mention_user",
-        "template_mention_user": "me"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "@Me",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "template_mention",
+    "template_mention": {
+      "type": "template_mention_user",
+      "template_mention_user": "me"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "@Me",
+  "href": null
+}
+```
 
 #### User mention type object
 
 If a rich text object’s `type` value is `"user"`, then the corresponding user field contains a [user object](/reference/user).
 
-<Note>
-  If your connection doesn’t yet have access to the mentioned user, then the `plain_text` that would include a user’s name reads as `"@Anonymous"`. To update the connection to get access to the user, update the connection capabilities on the connection settings page.
-</Note>
+> [!NOTE]
+>
+> If your connection doesn’t yet have access to the mentioned user, then the `plain_text` that would include a user’s name reads as `"@Anonymous"`. To update the connection to get access to the user, update the connection capabilities on the connection settings page.
 
 *Example rich text `mention` object for a `user` mention*
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "user",
-      "user": {
-        "object": "user",
-        "id": "b2e19928-b427-4aad-9a9d-fde65479b1d9"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "@Anonymous",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "user",
+    "user": {
+      "object": "user",
+      "id": "b2e19928-b427-4aad-9a9d-fde65479b1d9"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "@Anonymous",
+  "href": null
+}
+```
 
 ### Text
 
@@ -342,60 +324,56 @@ If a rich text object’s `type` value is `"text"`, then the corresponding `text
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `content` | `string` | The actual text content of the text. | `"Some words "` |
-| `link` | `object` (optional) | An object with information about any inline link in this text, if included. <br /><br />If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address. <br /><br />If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
+| `link` | `object` (optional) | An object with information about any inline link in this text, if included.  If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address.  If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
 
 #### Example rich text `text` object without link
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "text",
-    "text": {
-      "content": "This is an ",
-      "link": null
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "This is an ",
-    "href": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "text",
+  "text": {
+    "content": "This is an ",
+    "link": null
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "This is an ",
+  "href": null
+}
+```
 
 #### Example rich `text` text object with link
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "text",
-    "text": {
-      "content": "inline link",
-      "link": {
-        "url": "https://developers.notion.com/"
-      }
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "inline link",
-    "href": "https://developers.notion.com/"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "type": "text",
+  "text": {
+    "content": "inline link",
+    "link": {
+      "url": "https://developers.notion.com/"
+    }
+  },
+  "annotations": {
+    "bold": false,
+    "italic": false,
+    "strikethrough": false,
+    "underline": false,
+    "code": false,
+    "color": "default"
+  },
+  "plain_text": "inline link",
+  "href": "https://developers.notion.com/"
+}
+```
 
-<Note>
-  **Rich text object limits**
-
-  Refer to the request limits documentation page for information about [limits on the size of rich text objects](/reference/request-limits#limits-for-property-values).
-</Note>
+> [!NOTE]
+>
+> **Rich text object limits**
+>
+> Refer to the request limits documentation page for information about [limits on the size of rich text objects](/reference/request-limits#limits-for-property-values).

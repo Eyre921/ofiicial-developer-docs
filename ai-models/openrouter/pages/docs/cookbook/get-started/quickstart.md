@@ -12,131 +12,13 @@ path: docs/cookbook/get-started/quickstart
 
 > Send your first message and stream a response with the OpenRouter SDK
 
-export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleClick = () => {
-    navigator.clipboard.writeText(prompt).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  };
-  return <div className="mt-3">
-      <button type="button" onClick={handleClick} className="border-border inline-flex items-center gap-2 rounded-lg border px-3 py-2 font-semibold cursor-pointer border-green-200 dark:border-green-900">
-        {isCopied ? "Copied" : buttonLabel}
-      </button>
-    </div>;
-};
-
 **Goal:** Learn the fundamentals of OpenRouter by building a TypeScript chat app that sends messages and streams responses through OpenRouter.
 
 **Outcome:** A working multi-turn conversation loop that can talk to any of the 600+ models available on the platform by changing a single string.
 
-<Tip>
-  Want to get started faster? Copy this prompt into your coding agent.
-
-  <CopyPromptButton
-    prompt={`Build a TypeScript command-line chat app that uses OpenRouter.
-
-Goal:
-Create a small Node.js app that sends a message to OpenRouter, streams the
-assistant response, keeps multi-turn conversation context, and can switch
-models by changing one string.
-
-Build it as a way to teach me the basics of OpenRouter. Add short comments
-where they help, then walk me through what you built and how it works.
-
-Use this stack:
-
-- Node.js 18 or newer
-- TypeScript
-- @openrouter/sdk
-- tsx for running TypeScript locally
-- OPENROUTER_API_KEY from the environment. Never hard-code the key.
-
-Set up the project:
-
-1. Create a project directory, for example openrouter-chat.
-2. Run npm init -y.
-3. Run npm pkg set type=module because @openrouter/sdk is ESM-only.
-4. Install @openrouter/sdk.
-5. Install tsx as a dev dependency.
-6. Create chat.ts.
-7. Run the app with OPENROUTER_API_KEY set, for example:
-OPENROUTER_API_KEY=sk-or-v1-... npx tsx chat.ts
-
-If OPENROUTER_API_KEY is missing, tell me to create a key at:
-<https://openrouter.ai/settings/keys>
-
-Then help me add it to my local environment before running the app.
-
-Use the current OpenRouter SDK request shape:
-
-- Import the named client with:
-import { OpenRouter } from '@openrouter/sdk';
-- Do not use a default OpenRouter import.
-- Create the client with:
-const client = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
-- Pass chat completion params inside client.chat.send({ chatRequest: ... }).
-
-First implement a one-message smoke test:
-
-- Call client.chat.send with a chatRequest containing
-model: 'google/gemini-3.1-flash-lite'.
-- Send one user message: "Say hello in one sentence."
-- Print completion.choices[0]?.message.content.
-- Print completion.usage and confirm it includes the camelCase fields
-promptTokens and completionTokens.
-
-Then implement a streaming example:
-
-- Call client.chat.send with chatRequest.stream set to true.
-- Use this user message:
-"Explain how routers work in three sentences."
-- Iterate over the returned async iterable.
-- For each chunk, read chunk.choices[0]?.delta?.content.
-- Write each non-empty delta to process.stdout as it arrives.
-
-Then replace the streaming example with a multi-turn chat loop:
-
-- Import readline from node:readline.
-- Keep an in-memory messages array containing user and assistant messages.
-- Prompt the user with "You: ".
-- If the user types exit, close the readline interface.
-- Push each user input into messages.
-- Call client.chat.send with:
-
-- chatRequest.model: 'google/gemini-3.1-flash-lite'
-- chatRequest.messages: messages
-- chatRequest.stream: true
-
-- Print "Assistant: " and iterate over the returned async iterable.
-- For each chunk, read chunk.choices[0]?.delta?.content.
-- Write each non-empty delta to process.stdout as it arrives.
-- Accumulate the full assistant response in a string.
-- After the stream ends, push the assistant response into messages.
-- Ask for the next user message.
-
-Make the code easy to change:
-
-- Put the selected model in a single constant so it can be swapped without
-changing the rest of the app.
-- Include these verified example model strings in comments near the constant:
-
-- openai/gpt-chat-latest
-- ~anthropic/claude-sonnet-latest
-- baidu/cobuddy:free
-
-Check your work:
-
-- npx tsx chat.ts prints a streamed assistant response.
-- A follow-up question can refer to a previous answer because the full
-messages array is sent with each request.
-- Typing exit quits cleanly.
-- Changing only the model string switches providers.
-- The final explanation mentions the SDK's named OpenRouter import,
-chatRequest wrapper, streaming delta chunks, and camelCase usage fields.`}
-  />
-</Tip>
+> [!TIP]
+>
+> Want to get started faster? Copy this prompt into your coding agent.
 
 ## Prerequisites
 

@@ -6,9 +6,9 @@ path: reference/sdks/python/overview
 
 Install and use the Pinecone SDK for Pinecone Python SDK: auth, typed clients, and API operations. For installation instructions, usage examples, and.
 
-<Tip>
-  For installation instructions, usage examples, and reference information, see the [Pinecone Python SDK documentation](https://sdk.pinecone.io/python/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-python-client/issues).
-</Tip>
+> [!TIP]
+>
+> For installation instructions, usage examples, and reference information, see the [Pinecone Python SDK documentation](https://sdk.pinecone.io/python/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-python-client/issues).
 
 The Pinecone Python SDK is distributed on PyPI using the package name `pinecone`. The base install includes the sync and [async](#async-requests) clients and the [gRPC](https://grpc.io/) data-plane client, so there are no extras to install.
 
@@ -59,9 +59,9 @@ To check your SDK version, run the following command:
 pip show pinecone
 ```
 
-<Note>
-  To use the [Inference API](/reference/api/introduction#inference), you must be on version 5.0.0 or later.
-</Note>
+> [!NOTE]
+>
+> To use the [Inference API](/reference/api/introduction#inference), you must be on version 5.0.0 or later.
 
 ### Install the Pinecone Assistant Python plugin
 
@@ -73,11 +73,11 @@ pip install --upgrade pinecone pinecone-plugin-assistant
 
 ## Upgrade
 
-<Warning>
-  Before upgrading to `v6.0.0`, update all relevant code to account for the breaking changes explained [here](https://github.com/pinecone-io/pinecone-python-client/blob/main/docs/upgrading.md).
-
-  Also, make sure to upgrade using the `pinecone` package name instead of `pinecone-client`; upgrading with the latter will not work as of `v6.0.0`.
-</Warning>
+> [!WARNING]
+>
+> Before upgrading to `v6.0.0`, update all relevant code to account for the breaking changes explained [here](https://github.com/pinecone-io/pinecone-python-client/blob/main/docs/upgrading.md).
+>
+> Also, make sure to upgrade using the `pinecone` package name instead of `pinecone-client`; upgrading with the latter will not work as of `v6.0.0`.
 
 If you already have the Python SDK, upgrade to the latest version as follows:
 
@@ -90,58 +90,54 @@ pip install pinecone --upgrade
 
 Once installed, you can import the library and then use an [API key](/admin/projects/manage-api-keys) to initialize a client instance:
 
-<CodeGroup>
-  ```Python HTTP theme={null}
-  from pinecone import Pinecone
+```Python HTTP theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
-  ```
+pc = Pinecone(api_key="YOUR_API_KEY")
+```
 
-  ```python gRPC theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```python gRPC theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
-  ```
-</CodeGroup>
+pc = Pinecone(api_key="YOUR_API_KEY")
+```
 
 When [creating an index](/guides/index-data/create-an-index), import the `ServerlessSpec` or `PodSpec` class as well:
 
-<CodeGroup>
-  ```Python Serverless index theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
-  from pinecone import ServerlessSpec
+```Python Serverless index theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import ServerlessSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.create_index(
-    name="docs-example",
-    dimension=1536,
-    metric="cosine",
-    spec=ServerlessSpec(
-      cloud="aws",
-      region="us-east-1"
-    )
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=ServerlessSpec(
+    cloud="aws",
+    region="us-east-1"
   )
-  ```
+)
+```
 
-  ```Python Pod-based index theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
-  from pinecone import PodSpec
+```Python Pod-based index theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import PodSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.create_index(
-    name="docs-example",
-    dimension=1536,
-    metric="cosine",
-    spec=PodSpec(
-      environment="us-west-1-gcp",
-      pod_type="p1.x1",
-      pods=1
-    )
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west-1-gcp",
+    pod_type="p1.x1",
+    pods=1
   )
-  ```
-</CodeGroup>
+)
+```
 
 ## Proxy configuration
 
@@ -152,49 +148,47 @@ If your network setup requires you to interact with Pinecone through a proxy, yo
 * `ssl_ca_certs`: By default, the client will perform SSL certificate verification using the CA bundle maintained by Mozilla in the [`certifi`](https://pypi.org/project/certifi/) package. If your proxy is using self-signed certicates, use this parameter to specify the path to the certificate (PEM format).
 * `ssl_verify`: SSL verification is enabled by default, but it's disabled when set to `False`. It's not recommened to go into production with SSL verification disabled.
 
-<CodeGroup>
-  ```python HTTP theme={null}
-  from pinecone import Pinecone
-  import urllib3
-  from urllib3.util import make_headers
+```python HTTP theme={null}
+from pinecone import Pinecone
+import urllib3
+from urllib3.util import make_headers
 
-  pc = Pinecone(
-      api_key="YOUR_API_KEY",
-      proxy_url='https://your-proxy.com',
-      proxy_headers=make_headers(proxy_basic_auth='username:password'),
-      ssl_ca_certs='path/to/cert-bundle.pem'
-  )
-  ```
+pc = Pinecone(
+    api_key="YOUR_API_KEY",
+    proxy_url='https://your-proxy.com',
+    proxy_headers=make_headers(proxy_basic_auth='username:password'),
+    ssl_ca_certs='path/to/cert-bundle.pem'
+)
+```
 
-  ```python gRPC theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
-  import urllib3
-  from urllib3.util import make_headers
+```python gRPC theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+import urllib3
+from urllib3.util import make_headers
 
-  pc = Pinecone(
-      api_key="YOUR_API_KEY",
-      proxy_url='https://your-proxy.com',
-      proxy_headers=make_headers(proxy_basic_auth='username:password'),
-      ssl_ca_certs='path/to/cert-bundle.pem'
-  )
-  ```
+pc = Pinecone(
+    api_key="YOUR_API_KEY",
+    proxy_url='https://your-proxy.com',
+    proxy_headers=make_headers(proxy_basic_auth='username:password'),
+    ssl_ca_certs='path/to/cert-bundle.pem'
+)
+```
 
-  ```python asyncio theme={null}
-  import asyncio
-  from pinecone import PineconeAsyncio
-  	
-  async def main():
-      async with PineconeAsyncio(
-          api_key="YOUR_API_KEY",
-          proxy_url='https://your-proxy.com',
-          ssl_ca_certs='path/to/cert-bundle.pem'
-      ) as pc:
-          # Do async things
-          await pc.list_indexes()
+```python asyncio theme={null}
+import asyncio
+from pinecone import PineconeAsyncio
+	
+async def main():
+    async with PineconeAsyncio(
+        api_key="YOUR_API_KEY",
+        proxy_url='https://your-proxy.com',
+        ssl_ca_certs='path/to/cert-bundle.pem'
+    ) as pc:
+        # Do async things
+        await pc.list_indexes()
 
-  asyncio.run(main())
-  ```
-</CodeGroup>
+asyncio.run(main())
+```
 
 ## Async requests
 
@@ -202,70 +196,68 @@ Pinecone Python SDK versions 6.0.0 and later provide `async` methods for use wit
 
 Use the [`PineconeAsyncio`](https://sdk.pinecone.io/python/asyncio.html) class to create and manage indexes and the [`IndexAsyncio`](https://sdk.pinecone.io/python/asyncio.html#pinecone.db_data.IndexAsyncio) class to read and write index data. To ensure that sessions are properly closed, use the `async with` syntax when creating `PineconeAsyncio` and `IndexAsyncio` objects.
 
-<CodeGroup>
-  ```python Manage indexes theme={null}
-  # pip install pinecone
-  import asyncio
-  from pinecone import PineconeAsyncio, ServerlessSpec
+```python Manage indexes theme={null}
+# pip install pinecone
+import asyncio
+from pinecone import PineconeAsyncio, ServerlessSpec
 
-  async def main():
-      async with PineconeAsyncio(api_key="YOUR_API_KEY") as pc:
-          if not await pc.has_index(index_name):
-              desc = await pc.create_index(
-                  name="docs-example",
-                  dimension=1536,
-                  metric="cosine",
-                  spec=ServerlessSpec(
-                      cloud="aws",
-                      region="us-east-1"
-                  ),
-                  deletion_protection="disabled",
-                  tags={
-                      "environment": "development"
-                  }
-              )
+async def main():
+    async with PineconeAsyncio(api_key="YOUR_API_KEY") as pc:
+        if not await pc.has_index(index_name):
+            desc = await pc.create_index(
+                name="docs-example",
+                dimension=1536,
+                metric="cosine",
+                spec=ServerlessSpec(
+                    cloud="aws",
+                    region="us-east-1"
+                ),
+                deletion_protection="disabled",
+                tags={
+                    "environment": "development"
+                }
+            )
 
-  asyncio.run(main())
-  ```
+asyncio.run(main())
+```
 
-  ```python Read and write index data theme={null}
-  # pip install pinecone
-  import asyncio
-  from pinecone import Pinecone
+```python Read and write index data theme={null}
+# pip install pinecone
+import asyncio
+from pinecone import Pinecone
 
-  async def main():
-      pc = Pinecone(api_key="YOUR_API_KEY")
-      async with pc.IndexAsyncio(host="INDEX_HOST") as idx:
-          await idx.upsert_records(
-              namespace="example-namespace",
-              records=[
-                  {
-                      "id": "1",
-                      "title": "The Great Gatsby",
-                      "author": "F. Scott Fitzgerald",
-                      "description": "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan.",
-                      "year": 1925,
-                  },
-                  {
-                      "id": "2",
-                      "title": "To Kill a Mockingbird",
-                      "author": "Harper Lee",
-                      "description": "A young girl comes of age in the segregated American South and witnesses her father's courageous defense of an innocent black man.",
-                      "year": 1960,
-                  },
-                  {
-                      "id": "3",
-                      "title": "1984",
-                      "author": "George Orwell",
-                      "description": "In a dystopian future, a totalitarian regime exercises absolute control through pervasive surveillance and propaganda.",
-                      "year": 1949,
-                  },
-              ]
-          )
+async def main():
+    pc = Pinecone(api_key="YOUR_API_KEY")
+    async with pc.IndexAsyncio(host="INDEX_HOST") as idx:
+        await idx.upsert_records(
+            namespace="example-namespace",
+            records=[
+                {
+                    "id": "1",
+                    "title": "The Great Gatsby",
+                    "author": "F. Scott Fitzgerald",
+                    "description": "The story of the mysteriously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan.",
+                    "year": 1925,
+                },
+                {
+                    "id": "2",
+                    "title": "To Kill a Mockingbird",
+                    "author": "Harper Lee",
+                    "description": "A young girl comes of age in the segregated American South and witnesses her father's courageous defense of an innocent black man.",
+                    "year": 1960,
+                },
+                {
+                    "id": "3",
+                    "title": "1984",
+                    "author": "George Orwell",
+                    "description": "In a dystopian future, a totalitarian regime exercises absolute control through pervasive surveillance and propaganda.",
+                    "year": 1949,
+                },
+            ]
+        )
 
-  asyncio.run(main())
-  ```
-</CodeGroup>
+asyncio.run(main())
+```
 
 ## Query across namespaces
 
@@ -273,70 +265,68 @@ Each query is limited to a single [namespace](/guides/index-data/indexing-overvi
 
 The `query_namespaces` method accepts most of the same arguments as `query` with the addition of a required `namespaces` parameter.
 
-<Tabs>
-  <Tab title="Python SDK without gRPC">
-    When using the Python SDK without gRPC, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
+**Python SDK without gRPC**
 
-    The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
+When using the Python SDK without gRPC, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
 
-    ```python Python theme={null}
-    from pinecone import Pinecone
+The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
 
-    pc = Pinecone(api_key="YOUR_API_KEY")
-    index = pc.Index(
-        name="docs-example",
-        pool_threads=50,             # <-- make sure to set these
-        connection_pool_maxsize=50,  # <-- make sure to set these
-    )
+```python Python theme={null}
+from pinecone import Pinecone
 
-    query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
-    combined_results = index.query_namespaces(
-        vector=query_vec,
-        namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
-        metric="cosine",
-        top_k=10,
-        include_values=False,
-        include_metadata=True,
-        filter={"genre": { "$eq": "comedy" }},
-        show_progress=False,
-    )
+pc = Pinecone(api_key="YOUR_API_KEY")
+index = pc.Index(
+    name="docs-example",
+    pool_threads=50,             # <-- make sure to set these
+    connection_pool_maxsize=50,  # <-- make sure to set these
+)
 
-    for scored_vec in combined_results.matches:
-        print(scored_vec)
-    print(combined_results.usage)
-    ```
-  </Tab>
+query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
+combined_results = index.query_namespaces(
+    vector=query_vec,
+    namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
+    metric="cosine",
+    top_k=10,
+    include_values=False,
+    include_metadata=True,
+    filter={"genre": { "$eq": "comedy" }},
+    show_progress=False,
+)
 
-  <Tab title="Python SDK with gRPC">
-    When using the Python SDK with gRPC, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
+for scored_vec in combined_results.matches:
+    print(scored_vec)
+print(combined_results.usage)
+```
 
-    ```python Python theme={null}
-    from pinecone.grpc import PineconeGRPC
+**Python SDK with gRPC**
 
-    pc = PineconeGRPC(api_key="YOUR_API_KEY")
-    index = pc.Index(
-        name="docs-example",
-        pool_threads=50, # <-- make sure to set this
-    )
+When using the Python SDK with gRPC, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
 
-    query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
-    combined_results = index.query_namespaces(
-        vector=query_vec,
-        namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
-        metric="cosine",
-        top_k=10,
-        include_values=False,
-        include_metadata=True,
-        filter={"genre": { "$eq": "comedy" }},
-        show_progress=False,
-    )
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC
 
-    for scored_vec in combined_results.matches:
-        print(scored_vec)
-    print(combined_results.usage)
-    ```
-  </Tab>
-</Tabs>
+pc = PineconeGRPC(api_key="YOUR_API_KEY")
+index = pc.Index(
+    name="docs-example",
+    pool_threads=50, # <-- make sure to set this
+)
+
+query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
+combined_results = index.query_namespaces(
+    vector=query_vec,
+    namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
+    metric="cosine",
+    top_k=10,
+    include_values=False,
+    include_metadata=True,
+    filter={"genre": { "$eq": "comedy" }},
+    show_progress=False,
+)
+
+for scored_vec in combined_results.matches:
+    print(scored_vec)
+print(combined_results.usage)
+```
 
 ## Upsert from a dataframe
 

@@ -6,23 +6,17 @@ path: seps/2127-mcp-server-cards
 
 MCP Server Cards - HTTP Server Discovery
 
-<div>
-  <Badge>
-    Final
-  </Badge>
+Final
 
-  <Badge>
-    Extensions Track
-  </Badge>
-</div>
+Extensions Track
 
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
 
 | Field | Value |
 | - | - |

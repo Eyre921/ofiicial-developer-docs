@@ -12,15 +12,15 @@ For more information about data sources, see [our FAQs.](/guides/get-started/upg
 
 **However, this change is not backwards-compatible.** Most existing database connections must be updated to prevent disruptions.
 
-<Warning>
-  **Code changes required**
-
-  If your connection is still using a previous API version and a user adds another data source to a database, **the following API actions will fail:**
-
-  * Create page when using the database as the parent
-  * Database read, write, or query
-  * Writing relation properties that point to that database
-</Warning>
+> [!WARNING]
+>
+> **Code changes required**
+>
+> If your connection is still using a previous API version and a user adds another data source to a database, **the following API actions will fail:**
+>
+> * Create page when using the database as the parent
+> * Database read, write, or query
+> * Writing relation properties that point to that database
 
 ## What’s changing
 
@@ -38,37 +38,35 @@ Use this checklist to see exactly what must change before you bump Notion-Versio
 
 ### Required steps across all of your connections
 
-<Steps>
-  <Step>
-    Add a discovery step to fetch and store the `data_source_id` to use in subsequent API calls.
-  </Step>
+**Step 1**
 
-  <Step>
-    Start sending `data_source_id` when creating pages or defining relations
-  </Step>
+Add a discovery step to fetch and store the `data_source_id` to use in subsequent API calls.
 
-  <Step>
-    Migrate database endpoints to data sources.
-  </Step>
+**Step 2**
 
-  <Step>
-    If you use the Search API, update result handling to process data source objects and possible multiple results per database
-  </Step>
+Start sending `data_source_id` when creating pages or defining relations
 
-  <Step>
-    If using the TypeScript SDK, upgrade to the correct version and set the new version in your client
-  </Step>
+**Step 3**
 
-  <Step>
-    If using webhooks, handle the new shape and bump your subscription version
-  </Step>
-</Steps>
+Migrate database endpoints to data sources.
 
-<Info>
-  **Developer action required**
+**Step 4**
 
-  These steps primarily require code changes in your repositories or low-code platform. They cannot be fully completed through the Notion connection management UI.
-</Info>
+If you use the Search API, update result handling to process data source objects and possible multiple results per database
+
+**Step 5**
+
+If using the TypeScript SDK, upgrade to the correct version and set the new version in your client
+
+**Step 6**
+
+If using webhooks, handle the new shape and bump your subscription version
+
+> [!NOTE]
+>
+> **Developer action required**
+>
+> These steps primarily require code changes in your repositories or low-code platform. They cannot be fully completed through the Notion connection management UI.
 
 ## Step-by-step guide
 
@@ -82,77 +80,73 @@ First, identify the parts of your system that process database IDs. These may in
 
 For each entry point that uses database IDs, start your migration process by introducing an API call to the new **Get Database API** (`GET /v1/databases/:database_id`) endpoint to retrieve a list of child `data_sources`. For this new call, make sure to use the `2025-09-03` version in the `Notion-Version` header, even if the rest of your API calls haven't been updated yet.
 
-<CodeGroup>
-  ```json Get Database (JSON) expandable theme={null}
-  // GET /v1/databases/{database_id}
-  // Notion-Version: "2025-09-03"
-  // --- RETURNS -->
-  {
-    "object": "database",
-    "id": "{database_id}",
-    "title": [/* ... */],
-    "parent": {
-      "type": "page_id",
-      "page_id": "255104cd-477e-808c-b279-d39ab803a7d2"
-    },
-    "is_inline": false,
-    "in_trash": false,
-    "created_time": "2025-08-07T10:11:07.504-07:00",
-    "last_edited_time": "2025-08-10T15:53:11.386-07:00",
-    "data_sources": [
-      {
-        "id": "{data_source_id}",
-        "name": "My Task Tracker"
-      }
-    ],
-    "icon": null,
-    "cover": null,
-    // ...
-  }
-  ```
-
-  ```typescript Get Database (JS SDK) expandable theme={null}
-  let notion = new Client({
-    auth: "{ACCESS_TOKEN}",
-    notionVersion: "2025-09-03",
-  })
-
-  const DATABASE_ID = "/* ... */"
-   
-  try {
-    const response = await notion.request({
-      method: "get",
-      path: `databases/${DATABASE_ID}`,
-    })
-    const dataSources = response.data_sources
-
-    // [{ id: "...", name: "..." }, ...]
-    console.log(dataSources)
-
-    // In the existing, single-source database case, there will only
-    // be one data source.
-    const dataSource = dataSources[0]
-  } catch (error) {
-    // Handle `APIResponseError`
-    console.error(error)
-  }
-
-  // ... Remaining code, not migrated yet.
-
-  notion = new Client({
-    auth: "{ACCESS_TOKEN}",
-    notionVersion: "2022-06-28",
-  })
-
+```json Get Database (JSON) expandable theme={null}
+// GET /v1/databases/{database_id}
+// Notion-Version: "2025-09-03"
+// --- RETURNS -->
+{
+  "object": "database",
+  "id": "{database_id}",
+  "title": [/* ... */],
+  "parent": {
+    "type": "page_id",
+    "page_id": "255104cd-477e-808c-b279-d39ab803a7d2"
+  },
+  "is_inline": false,
+  "in_trash": false,
+  "created_time": "2025-08-07T10:11:07.504-07:00",
+  "last_edited_time": "2025-08-10T15:53:11.386-07:00",
+  "data_sources": [
+    {
+      "id": "{data_source_id}",
+      "name": "My Task Tracker"
+    }
+  ],
+  "icon": null,
+  "cover": null,
   // ...
-  ```
-</CodeGroup>
+}
+```
+
+```typescript Get Database (JS SDK) expandable theme={null}
+let notion = new Client({
+  auth: "{ACCESS_TOKEN}",
+  notionVersion: "2025-09-03",
+})
+
+const DATABASE_ID = "/* ... */"
+ 
+try {
+  const response = await notion.request({
+    method: "get",
+    path: `databases/${DATABASE_ID}`,
+  })
+  const dataSources = response.data_sources
+
+  // [{ id: "...", name: "..." }, ...]
+  console.log(dataSources)
+
+  // In the existing, single-source database case, there will only
+  // be one data source.
+  const dataSource = dataSources[0]
+} catch (error) {
+  // Handle `APIResponseError`
+  console.error(error)
+}
+
+// ... Remaining code, not migrated yet.
+
+notion = new Client({
+  auth: "{ACCESS_TOKEN}",
+  notionVersion: "2022-06-28",
+})
+
+// ...
+```
 
 To get a data source ID in the Notion app, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
-<Frame>
-  <img alt="" />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/f2d0303a35d08c014d2ed7a171994fe410a8bd5a5b47706fe4b340a161d38c20-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=e2eea5d743e68898fd37f15118baad1f)
 
 Having access to the data source ID (or rather, *IDs*, once Notion users start adding 2nd sources for their existing databases) for a database lets you continue onto the next few steps.
 
@@ -167,55 +161,51 @@ Some APIs that accept `database_id` in the body parameters now support providing
 
 In the [Create a page](/reference/post-page) API, look for calls that look like this:
 
-<CodeGroup>
-  ```json Create Page (JSON) theme={null}
-  // POST /v1/pages
-  {
-    "parent": {
-      "type": "database_id",
-      "database_id": "..."
-    }
+```json Create Page (JSON) theme={null}
+// POST /v1/pages
+{
+  "parent": {
+    "type": "database_id",
+    "database_id": "..."
   }
-  ```
+}
+```
 
-  ```typescript Create Page (TS SDK) theme={null}
-  const response = await notion.pages.create({
-    parent: {
-      type: "database_id",
-      database_id: DATABASE_ID,
-    }
-  })
-  ```
-</CodeGroup>
+```typescript Create Page (TS SDK) theme={null}
+const response = await notion.pages.create({
+  parent: {
+    type: "database_id",
+    database_id: DATABASE_ID,
+  }
+})
+```
 
 Change these to use `data_source_id` parents instead, using the code from Step 1 to get the ID of a database's data source:
 
-<CodeGroup>
-  ```json Create Page (JSON) theme={null}
-  // POST /v1/pages
-  {
-    "parent": {
-      "type": "data_source_id",
-      "data_source_id": "..."
-    }
+```json Create Page (JSON) theme={null}
+// POST /v1/pages
+{
+  "parent": {
+    "type": "data_source_id",
+    "data_source_id": "..."
   }
-  ```
+}
+```
 
-  ```typescript Create Page (TS SDK) theme={null}
-  // Get dataSource from Step 1
+```typescript Create Page (TS SDK) theme={null}
+// Get dataSource from Step 1
 
-  const response = await notion.request({
-    method: "post",
-    path: "pages",
-    body: {
-      parent: {
-        type: "data_source_id",
-        data_source_id: dataSource.id,
-      },
-    }
-  })
-  ```
-</CodeGroup>
+const response = await notion.request({
+  method: "post",
+  path: "pages",
+  body: {
+    parent: {
+      type: "data_source_id",
+      data_source_id: dataSource.id,
+    },
+  }
+})
+```
 
 #### Create or update database
 
@@ -223,23 +213,21 @@ For [database relation properties](/reference/property-object#relation), the API
 
 In the write path, switch your connection to only provide the `data_source_id` in request objects.
 
-<CodeGroup>
-  ```json Relation property response example theme={null}
-  "Projects": {
-    "id": "~pex",
-    "name": "Projects",
-    "type": "relation",
-    "relation": {
-      "database_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
-      "data_source_id": "a42a62ed-9b51-4b98-9dea-ea6d091bc508",
-      "dual_property": {
-        "synced_property_name": "Tasks",
-        "synced_property_id": "JU]K"
-      }
+```json Relation property response example theme={null}
+"Projects": {
+  "id": "~pex",
+  "name": "Projects",
+  "type": "relation",
+  "relation": {
+    "database_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+    "data_source_id": "a42a62ed-9b51-4b98-9dea-ea6d091bc508",
+    "dual_property": {
+      "synced_property_name": "Tasks",
+      "synced_property_id": "JU]K"
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 Note that [database mentions](/reference/rich-text#database-mention-type-object) in rich text will continue to reference the database, not the data source.
 
@@ -254,15 +242,13 @@ The next step is to migrate each existing use of database APIs to their new data
 
 The following APIs are affected. Each of them is covered by a sub-section below, with more specific Before vs. After explanations and code snippets:
 
-<CardGroup>
-  <Card title="Retrieve a database" icon="angles-right" href="/reference/retrieve-a-database" />
+> **[Retrieve a database](/reference/retrieve-a-database)**
 
-  <Card title="Create a database" icon="angles-right" href="/reference/create-a-database" />
+> **[Create a database](/reference/create-a-database)**
 
-  <Card title="Update a database" icon="angles-right" href="/reference/update-a-database" />
+> **[Update a database](/reference/update-a-database)**
 
-  <Card title="Search" icon="angles-right" href="/reference/post-search" />
-</CardGroup>
+> **[Search](/reference/post-search)**
 
 #### Retrieve database
 
@@ -271,21 +257,19 @@ The following APIs are affected. Each of them is covered by a sub-section below,
 * Retrieving a database with multiple data sources fails with a `validation_error` message.
 * **For relation properties**: across *all* API versions, *both* the `database_id` and `data_source_id` are now included in the response object.
 
-<CodeGroup>
-  ```json Retrieve Database (JSON) theme={null}
-  // GET /v1/databases/:database_id
-  {
-    // ...
-  }
-  ```
+```json Retrieve Database (JSON) theme={null}
+// GET /v1/databases/:database_id
+{
+  // ...
+}
+```
 
-  ```typescript Query Database (TS SDK) theme={null}
-  const response = await notion.databases.retrieve({
-    database_id: "...",
-    // ...
-  })
-  ```
-</CodeGroup>
+```typescript Query Database (TS SDK) theme={null}
+const response = await notion.databases.retrieve({
+  database_id: "...",
+  // ...
+})
+```
 
 **After (2025-09-03):**
 
@@ -298,106 +282,100 @@ The following APIs are affected. Each of them is covered by a sub-section below,
   * The database's parent (i.e. the data source's grandparent) is included as a separate field, `database_parent`, on the data source response.
   * You can't use a database ID with the retrieve data source API, or vice-versa. The two types of IDs are not interchangeable.
 
-<CodeGroup>
-  ```json Retrieve Data Source (JSON) expandable theme={null}
-  // Get `data_source_id` from Step 1
-  //
-  // GET /v1/data_sources/:data_source_id
-  {
-    "object": "data_source",
-    "id": "bc1211ca-e3f1-4939-ae34-5260b16f627c",
-    "created_time": "2021-07-08T23:50:00.000Z",
-    "last_edited_time": "2021-07-08T23:50:00.000Z",
-    "properties": {
-      "In stock": {
-        "id": "fk%5EY",
-        "name": "In stock",
-        "type": "checkbox",
-        "checkbox": {}
-      },
-      "Name": {
-        "id": "title",
-        "name": "Name",
-        "type": "title",
-        "title": {}
-      }
+```json Retrieve Data Source (JSON) expandable theme={null}
+// Get `data_source_id` from Step 1
+//
+// GET /v1/data_sources/:data_source_id
+{
+  "object": "data_source",
+  "id": "bc1211ca-e3f1-4939-ae34-5260b16f627c",
+  "created_time": "2021-07-08T23:50:00.000Z",
+  "last_edited_time": "2021-07-08T23:50:00.000Z",
+  "properties": {
+    "In stock": {
+      "id": "fk%5EY",
+      "name": "In stock",
+      "type": "checkbox",
+      "checkbox": {}
     },
-    "parent": {
-      "type": "database_id",
-      "database_id": "6ee911d9-189c-4844-93e8-260c1438b6e4"
-    },
-    "database_parent": {
-      "type": "page_id",
-      "page_id": "98ad959b-2b6a-4774-80ee-00246fb0ea9b"
-    },
-    // ... (other properties omitted)
-  }
-  ```
+    "Name": {
+      "id": "title",
+      "name": "Name",
+      "type": "title",
+      "title": {}
+    }
+  },
+  "parent": {
+    "type": "database_id",
+    "database_id": "6ee911d9-189c-4844-93e8-260c1438b6e4"
+  },
+  "database_parent": {
+    "type": "page_id",
+    "page_id": "98ad959b-2b6a-4774-80ee-00246fb0ea9b"
+  },
+  // ... (other properties omitted)
+}
+```
 
-  ```typescript Retrieve Data Source (TS SDK) expandable theme={null}
-  // Get dataSource from Step 1
+```typescript Retrieve Data Source (TS SDK) expandable theme={null}
+// Get dataSource from Step 1
 
-  const response = await notion.request({
-    method: "get",
-    path: `data_sources/${dataSource.id}`,
-    // ...
-  })
+const response = await notion.request({
+  method: "get",
+  path: `data_sources/${dataSource.id}`,
+  // ...
+})
 
-  // After upgrading TS SDK:
-  const response = await notion.dataSources.retrieve({
-    data_source_id: dataSource.id,
-  })
-  ```
-</CodeGroup>
+// After upgrading TS SDK:
+const response = await notion.dataSources.retrieve({
+  data_source_id: dataSource.id,
+})
+```
 
 #### Query databases
 
 **Before (2022-06-28):**
 
-<CodeGroup>
-  ```json Query Database (JSON) theme={null}
-  // PATCH /v1/databases/:database_id/query
-  {
-    // ...
-  }
-  ```
+```json Query Database (JSON) theme={null}
+// PATCH /v1/databases/:database_id/query
+{
+  // ...
+}
+```
 
-  ```typescript Query Database (TS SDK) theme={null}
-  const response = await notion.databases.query({
-    database_id: "...",
-    // ...
-  })
-  ```
-</CodeGroup>
+```typescript Query Database (TS SDK) theme={null}
+const response = await notion.databases.query({
+  database_id: "...",
+  // ...
+})
+```
 
 **After (2025-09-03):**
 
 When you update the API version, the path of this API changes, and now accepts a data source ID. With the TS SDK, you'll have to switch this to temporarily use a custom `notion.request(...)`, until you upgrade to the next major version as part of Step 4.
 
-<CodeGroup>
-  ```json Query Data Source (JSON) theme={null}
-  // PATCH /v1/data_sources/:data_source_id/query
-  {
-    // ...
-  }
-  ```
+```json Query Data Source (JSON) theme={null}
+// PATCH /v1/data_sources/:data_source_id/query
+{
+  // ...
+}
+```
 
-  ```typescript Query Data Source (TS SDK) theme={null}
-  // Get dataSource from Step 1
+```typescript Query Data Source (TS SDK) theme={null}
+// Get dataSource from Step 1
 
-  const response = await notion.request({
-    method: "post",
-    path: `data_sources/${dataSource.id}/query`,
-    // ...
-  })
+const response = await notion.request({
+  method: "post",
+  path: `data_sources/${dataSource.id}/query`,
+  // ...
+})
 
-  // After upgrading TS SDK:
-  const response = await notion.dataSources.query({
-    data_source_id: dataSource.id,
-    // ...
-  })
-  ```
-</CodeGroup>
+// After upgrading TS SDK:
+const response = await notion.dataSources.query({
+  data_source_id: dataSource.id,
+  // ...
+})
+```
 
 #### Create database
 
@@ -410,24 +388,22 @@ When you update the API version, the path of this API changes, and now accepts a
   * When providing relation properties in a request, you can either use `database_id`, `data_source_id`, or both, prior to making the API version upgrade.
   * We recommend starting by switching your connection over to passing only a `data_source_id` for relation objects even in `2022-06-28` to precisely identify the data source to use for the relation and be ready for the `2025-09-03` behavior.
 
-<CodeGroup>
-  ```json Create Database (JSON) theme={null}
-  // POST /v1/databases
-  {
-    "parent": {"type": "page_id", "page_id": "..."},
-    "properties": {...},
-    // ...
-  }
-  ```
+```json Create Database (JSON) theme={null}
+// POST /v1/databases
+{
+  "parent": {"type": "page_id", "page_id": "..."},
+  "properties": {...},
+  // ...
+}
+```
 
-  ```typescript Create Database (TS SDK) theme={null}
-  const response = await notion.databases.create({
-    parent: {type: "page_id", page_id: "..."},
-    properties: {...},
-    // ...
-  })
-  ```
-</CodeGroup>
+```typescript Create Database (TS SDK) theme={null}
+const response = await notion.databases.create({
+  parent: {type: "page_id", page_id: "..."},
+  properties: {...},
+  // ...
+})
+```
 
 **After (2025-09-03):**
 
@@ -440,45 +416,43 @@ When you update the API version, the path of this API changes, and now accepts a
 
 * **For relation properties**: You can no longer provide a `database_id`. Notion continues to include both the `database_id` and `data_source_id` in the *response* for convenience, but the *request* object must **only contain `data_source_id`**.
 
-<CodeGroup>
-  ```typescript Create Database with initial data source (JSON) theme={null}
-  // POST /v1/databases
-  {
-    "initial_data_source": {
-      "properties": {
+```typescript Create Database with initial data source (JSON) theme={null}
+// POST /v1/databases
+{
+  "initial_data_source": {
+    "properties": {
+      // ... (Data source properties behave the same as database properties previously)
+    }
+  },
+  "parent": {"type": "workspace", "workspace": true} | {"type": "page_id", "page_id": "..."},
+  "title": [...],
+  "icon": {"type": "emoji", "emoji": "🚀"} | ...
+}
+```
+
+```typescript Create Database with initial data source (TS SDK) theme={null}
+const response = await notion.request({
+  method: "post",
+  path: "databases",
+  body: {
+    initial_data_source: {
+      properties: {
         // ... (Data source properties behave the same as database properties previously)
       }
     },
-    "parent": {"type": "workspace", "workspace": true} | {"type": "page_id", "page_id": "..."},
-    "title": [...],
-    "icon": {"type": "emoji", "emoji": "🚀"} | ...
-  }
-  ```
+  },
+  parent: {type: "workspace", workspace: true} | {type: "page_id", page_id: "..."},
+  title: [...],
+  icon: {type: "emoji", emoji: "🚀"} | ...
+}
+  
+})
 
-  ```typescript Create Database with initial data source (TS SDK) theme={null}
-  const response = await notion.request({
-    method: "post",
-    path: "databases",
-    body: {
-      initial_data_source: {
-        properties: {
-          // ... (Data source properties behave the same as database properties previously)
-        }
-      },
-    },
-    parent: {type: "workspace", workspace: true} | {type: "page_id", page_id: "..."},
-    title: [...],
-    icon: {type: "emoji", emoji: "🚀"} | ...
-  }
-    
-  })
-
-  // After upgrading TS SDK:
-  const response = await notion.databases.create({
-    data_source_id: dataSource.id,
-  })
-  ```
-</CodeGroup>
+// After upgrading TS SDK:
+const response = await notion.databases.create({
+  data_source_id: dataSource.id,
+})
+```
 
 #### Update database
 
@@ -491,39 +465,37 @@ When you update the API version, the path of this API changes, and now accepts a
   * When providing relation properties in a request, you can either use `database_id`, `data_source_id`, or both, prior to making the API version upgrade.
   * We recommend starting by switching your connection over to passing only a `data_source_id` for relation objects even in `2022-06-28` to precisely identify the data source to use for the relation and be ready for the `2025-09-03` behavior.
 
-<CodeGroup>
-  ```json Update Database (JSON) theme={null}
-  // PATCH /v1/databases/:database_id
-  {
-    "icon": {
-      "file_upload": {"id": "..."}
+```json Update Database (JSON) theme={null}
+// PATCH /v1/databases/:database_id
+{
+  "icon": {
+    "file_upload": {"id": "..."}
+  },
+  "properties": {
+    "Restocked (new)": {
+      "type": "checkbox",
+      "checkbox": {}
     },
-    "properties": {
-      "Restocked (new)": {
-        "type": "checkbox",
-        "checkbox": {}
-      },
-      "In stock": null
-    },
-    "title": [{"text": {"content": "New Title"}}]
-  }
-  ```
+    "In stock": null
+  },
+  "title": [{"text": {"content": "New Title"}}]
+}
+```
 
-  ```typescript Update Database (TS SDK) theme={null}
-  const response = await notion.databases.update({
-    database_id: "...",
-    icon: {file_upload: "..."},
-    properties: {
-      "Restocked (new)": {
-        type: "checkbox",
-        checkbox: {},
-      },
-      "In stock": null,
+```typescript Update Database (TS SDK) theme={null}
+const response = await notion.databases.update({
+  database_id: "...",
+  icon: {file_upload: "..."},
+  properties: {
+    "Restocked (new)": {
+      type: "checkbox",
+      checkbox: {},
     },
-    title: [{text: {content: "New Title"}}],
-  })
-  ```
-</CodeGroup>
+    "In stock": null,
+  },
+  title: [{text: {content: "New Title"}}],
+})
+```
 
 **After (2025-09-03):**
 
@@ -539,84 +511,80 @@ When you update the API version, the path of this API changes, and now accepts a
 
 Example for updating a data source's title and properties (adding one new property and removing another):
 
-<CodeGroup>
-  ```json Update Data Source (JSON) theme={null}
-  // PATCH /v1/data_sources/:data_source_id
-  {
-    "properties": {
-      "Restocked (new)": {
-        "type": "checkbox",
-        "checkbox": {}
-      },
-      "In stock": null
+```json Update Data Source (JSON) theme={null}
+// PATCH /v1/data_sources/:data_source_id
+{
+  "properties": {
+    "Restocked (new)": {
+      "type": "checkbox",
+      "checkbox": {}
     },
-    "title": [{"text": {"content": "New Title"}}]
-  }
-  ```
+    "In stock": null
+  },
+  "title": [{"text": {"content": "New Title"}}]
+}
+```
 
-  ```typescript Update Data Source (TS SDK) theme={null}
-  // Update data source properties and title using SDK version
-  // prior to v5 and setting `notionVersion` in the `Client` to
-  // "2025-09-03":
+```typescript Update Data Source (TS SDK) theme={null}
+// Update data source properties and title using SDK version
+// prior to v5 and setting `notionVersion` in the `Client` to
+// "2025-09-03":
 
-  const response = await notion.request({
-    method: "patch",
-    path: `data_sources/${dataSource.id}`,
-    data: {
-      properties: {
-        "Restocked (new)": {
-          type: "checkbox",
-          checkbox: {},
-        },
-        "In stock": null
-      },
-    },
-    title: [{text: {content: "New Title"}}],
-  })
-
-  // After upgrading TS SDK to v5:
-
-  const response = await notion.dataSources.update({
+const response = await notion.request({
+  method: "patch",
+  path: `data_sources/${dataSource.id}`,
+  data: {
     properties: {
       "Restocked (new)": {
         type: "checkbox",
         checkbox: {},
       },
-      "In stock": null,
+      "In stock": null
     },
-    title: [{text: {content: "New Title"}}],
-  })
-  ```
-</CodeGroup>
+  },
+  title: [{text: {content: "New Title"}}],
+})
+
+// After upgrading TS SDK to v5:
+
+const response = await notion.dataSources.update({
+  properties: {
+    "Restocked (new)": {
+      type: "checkbox",
+      checkbox: {},
+    },
+    "In stock": null,
+  },
+  title: [{text: {content: "New Title"}}],
+})
+```
 
 Example for updating a database's parent (to move it), and switch it to be inline under the parent page:
 
-<CodeGroup>
-  ```json Update Data Source (JSON) theme={null}
-  // PATCH /v1/databases/:database_id
-  {
-    "parent": {"type": "page_id", "page_id": "NEW-PAGE-ID"},
-    "is_inline": true
-  }
-  ```
+```json Update Data Source (JSON) theme={null}
+// PATCH /v1/databases/:database_id
+{
+  "parent": {"type": "page_id", "page_id": "NEW-PAGE-ID"},
+  "is_inline": true
+}
+```
 
-  ```typescript Update Data Source (TS SDK) theme={null}
-  const response = await notion.request({
-    method: "patch",
-    path: `databases/${DATABASE_ID}`,
-    body: {
-      parent: {type: "page_id", page_id: "NEW-PAGE-ID"},
-      is_inline: true,
-    }
-  })
-
-  // After upgrading TS SDK:
-  const response = await notion.dataSources.update({
+```typescript Update Data Source (TS SDK) theme={null}
+const response = await notion.request({
+  method: "patch",
+  path: `databases/${DATABASE_ID}`,
+  body: {
     parent: {type: "page_id", page_id: "NEW-PAGE-ID"},
     is_inline: true,
-  })
-  ```
-</CodeGroup>
+  }
+})
+
+// After upgrading TS SDK:
+const response = await notion.dataSources.update({
+  parent: {type: "page_id", page_id: "NEW-PAGE-ID"},
+  is_inline: true,
+})
+```
 
 ### Step 4: Handle search results with data sources
 
@@ -637,16 +605,16 @@ Example for updating a database's parent (to move it), and switch it to be inlin
 
 ### Step 5: Upgrade SDK (if applicable)
 
-<Info>
-  **Introducing `@notionhq/client` v5.0.0**
-
-  v5 of the SDK is now available:
-
-  * [NPM link](https://www.npmjs.com/package/@notionhq/client/v/5.0.0)
-  * [GitHub release link](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.0.0)
-
-  If you see an even newer version (e.g. `v5.0.2`) at the time you're following these steps, we recommend upgrading directly to the latest version to unlock more enhancements and bugfixes, making the upgrade smoother.
-</Info>
+> [!NOTE]
+>
+> **Introducing `@notionhq/client` v5.0.0**
+>
+> v5 of the SDK is now available:
+>
+> * [NPM link](https://www.npmjs.com/package/@notionhq/client/v/5.0.0)
+> * [GitHub release link](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.0.0)
+>
+> If you see an even newer version (e.g. `v5.0.2`) at the time you're following these steps, we recommend upgrading directly to the latest version to unlock more enhancements and bugfixes, making the upgrade smoother.
 
 If you're using [Notion's TypeScript SDK](https://github.com/makenotion/notion-sdk-js), and have completed all of the steps above to rework your usage of Notion's endpoints to fit the `2025-09-03` suite of endpoints manually, we recommend completing the migration by upgrading to the next [major version release](https://github.com/makenotion/notion-sdk-js/releases), v5.0.0, via your `package.json` file (or other version management toolchain.)
 
@@ -660,9 +628,7 @@ Note that the [List databases (deprecated)](/reference/get-databases) endpoint, 
 
 When creating, editing, or viewing an [connection webhook subscription](/reference/webhooks) in Notion's connection settings, there's a new option to set the **API version** that applies to events delivered to your webhook URL:
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
 
 For new webhook endpoints, we recommend starting with the most recent version. For existing webhook subscriptions, you'll need to carefully introduce support for the added and changed webhook types. Ensure your webhook handler can accept *both* old & new event payloads before using the "**Edit subscription**" form to upgrade to the `2025-09-03` API version.
 
@@ -699,47 +665,45 @@ This applies to:
 
 For example, when a Notion user creates a page within a data source using the Notion app, the resulting `page.created` event has the following example shape (note the new `data.parent.data_source_id` field):
 
-<CodeGroup>
-  ```json json expandable theme={null}
-  {
-    "id": "367cba44-b6f3-4c92-81e7-6a2e9659efd4",
-    "timestamp": "2024-12-05T23:55:34.285Z",
-    "workspace_id": "13950b26-c203-4f3b-b97d-93ec06319565",
-    "workspace_name": "Quantify Labs",
-    "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
-    "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
-    "type": "page.created",
-    "authors": [
-      {
-        "id": "c7c11cca-1d73-471d-9b6e-bdef51470190",
-        "type": "person"
-      }
-    ],
-    "accessible_by": [
-      {
-        "id": "556a1abf-4f08-40c6-878a-75890d2a88ba",
-        "type": "person"
-      },
-      {
-        "id": "1edc05f6-2702-81b5-8408-00279347f034",
-        "type": "bot"
-      }
-    ],
-    "attempt_number": 1,
-    "entity": {
-      "id": "153104cd-477e-809d-8dc4-ff2d96ae3090",
-      "type": "page"
+```json json expandable theme={null}
+{
+  "id": "367cba44-b6f3-4c92-81e7-6a2e9659efd4",
+  "timestamp": "2024-12-05T23:55:34.285Z",
+  "workspace_id": "13950b26-c203-4f3b-b97d-93ec06319565",
+  "workspace_name": "Quantify Labs",
+  "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
+  "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "type": "page.created",
+  "authors": [
+    {
+      "id": "c7c11cca-1d73-471d-9b6e-bdef51470190",
+      "type": "person"
+    }
+  ],
+  "accessible_by": [
+    {
+      "id": "556a1abf-4f08-40c6-878a-75890d2a88ba",
+      "type": "person"
     },
-    "data": {
-      "parent": {
-        "id": "36cc9195-760f-4fff-a67e-3a46c559b176",
-        "type": "database",
-        "data_source_id": "98024f3c-b1d3-4aec-a301-f01e0dacf023"
-      }
+    {
+      "id": "1edc05f6-2702-81b5-8408-00279347f034",
+      "type": "bot"
+    }
+  ],
+  "attempt_number": 1,
+  "entity": {
+    "id": "153104cd-477e-809d-8dc4-ff2d96ae3090",
+    "type": "page"
+  },
+  "data": {
+    "parent": {
+      "id": "36cc9195-760f-4fff-a67e-3a46c559b176",
+      "type": "database",
+      "data_source_id": "98024f3c-b1d3-4aec-a301-f01e0dacf023"
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 For compatibility with multi-source databases, use the provided `parent.data_source_id` to distinguish which data source the page lives in.
 

@@ -12,24 +12,25 @@ path: docs/eleven-agents/customization/voice/expressive-mode
 
 Expressive mode enables agents to deliver speech that reflects intent, emotion, and emphasis, adapting in real time to how users sound and what they say. It is built on two system-level improvements to the conversational stack:
 
-1. **Eleven v3 Conversational** — the most emotionally intelligent, context-aware Text to Speech model available in ElevenAgents.
+1. **Eleven v4 Turbo** — the most emotionally intelligent, context-aware Text to Speech model available in ElevenAgents.
 2. **A new turn-taking system** — more accurately timed responses with fewer interruptions.
 
-Expressive mode is enabled by default when you select Eleven v3 Conversational as your agent's TTS model.
+Expressive mode is enabled automatically when you select Eleven v4 Turbo as your agent's TTS model.
 
-## Eleven v3 Conversational
+## Eleven v4 Turbo
 
-Eleven v3 Conversational is an ultra-low-latency version of Eleven v3, optimized for live, back-and-forth dialogue. It maintains conversational context across turns and adapts delivery to match the tone and intent of each exchange.
+[Eleven v4 Turbo](/docs/overview/capabilities/text-to-speech/eleven-v4) is the real-time variant of Eleven v4, with median inference latency of \~100ms, optimized for live, back-and-forth dialogue. It maintains conversational context across turns and adapts delivery to match the tone and intent of each exchange.
 
 * **Context-aware delivery**: Agents adapt tone based on conversational context — responding more calmly when a user sounds worried, or more directly when clarity matters.
 * **Explicit emotional control**: Guide delivery through system prompt rules, from precise triggers to broader scenarios, to align with brand voice and compliance requirements.
-* **70+ language support**: Expanded from \~32 languages in Flash models, with improved expressiveness in languages where nuance previously lagged, including Japanese.
+* **90+ language support**: Expanded from \~32 languages in Flash models.
 * **Expressive tags**: The LLM can output tags like `[laughs]`, `[whispers]`, or `[sighs]` to control specific moments of delivery.
 
 > **Note**
 >
-> Eleven v3 Conversational is priced the same as other ElevenLabs TTS models in Agents, starting at
-> \$0.08 per minute.
+> ElevenAgents pricing lists one per-minute call rate for every plan, with no separate rate by TTS
+> model. Additional call minutes cost \$0.08 per minute, and LLM usage is billed separately. See
+> [ElevenAgents pricing](https://elevenlabs.io/pricing/agents).
 
 ## Turn-taking system
 
@@ -45,13 +46,15 @@ Turn-taking behavior can be further tuned with the [turn eagerness](/docs/eleven
 
 ### Select the TTS model
 
-Set your agent's TTS model to **V3 Conversational**. Expressive mode is enabled by default with this model.
+Set your agent's TTS model to **Eleven v4 Turbo** (`eleven_v4_turbo`). Expressive mode is enabled automatically with this model. To turn it off, set `expressive_mode` to `false`.
 
 #### Update via the dashboard
 
-Open your agent in the dashboard, navigate to the **Agent Voice** tab, and select **V3 Conversational** as your Text to Speech model. Save your changes.
+1. Open your agent in the dashboard and select your voice under **Voices** to open the **Agent voice** panel.
+2. Under **TTS model family**, select **V4 Turbo**. The **Expressive mode** toggle turns on, and **Suggested audio tags** below it list tags your agent can use.
+3. Click **Publish** to save your changes.
 
-![Enabling expressive mode](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif)
+![Enabling expressive mode](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/fb016c2fdfe877f6ad46e41131db5ea0ce131752bd22dde92971d1a0eb1ee9b4/assets/images/conversational-ai/expressivemode-v4-turbo.gif)
 
 #### Update via the CLI
 
@@ -184,7 +187,7 @@ Use conversation analytics to track how users respond to expressive delivery. Re
 
 > **Warning**
 >
-> * Eleven v3 Conversational does not preserve the characteristics of Professional Voice Clones (PVCs) — the output may not sound like the original PVC voice.
+> * Professional Voice Clone support for Eleven v4 is still rolling out. See [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) for current status.
 > * Expressive tag effects last approximately 4-5 words before returning to normal delivery.
 > * Expressiveness may vary across voices and languages.
 
@@ -192,11 +195,11 @@ Use conversation analytics to track how users respond to expressive delivery. Re
 
 #### Does expressive mode cost more?
 
-No. Eleven v3 Conversational is priced the same as other ElevenLabs TTS models in Agents, starting at \$0.08 per minute.
+No. ElevenAgents pricing lists one per-minute call rate for every plan, with no separate rate for expressive mode or the TTS model: additional call minutes cost \$0.08 per minute, with LLM usage billed separately. See [ElevenAgents pricing](https://elevenlabs.io/pricing/agents).
 
 #### How do I enable expressive mode?
 
-Select **V3 Conversational** as your agent's TTS model. Expressive mode is enabled by default with this model.
+In the **Agent voice** panel, select **V4 Turbo** under **TTS model family**. Expressive mode is enabled automatically with this model. To turn it off, switch off the **Expressive mode** toggle, or set `conversation_config.tts.expressive_mode` to `false` through the API or CLI.
 
 #### How does the turn-taking system work?
 
@@ -204,15 +207,15 @@ The system uses real-time signals from Scribe v2 Realtime, including emotional c
 
 #### Can I use expressive mode with my Professional Voice Clone?
 
-Eleven v3 Conversational does not currently preserve PVC characteristics well. If maintaining your PVC voice identity is critical, consider using Flash v2 instead.
+Professional Voice Clones are supported in Eleven v4, and support is rolling out to all accounts. To check whether a PVC is available on Eleven v4, open [My Voices](https://elevenlabs.io/app/voice-lab) and hover over the voice to see its available models.
 
-#### How many languages does Eleven v3 Conversational support?
+#### How many languages does Eleven v4 Turbo support?
 
-Eleven v3 Conversational supports 70+ languages, expanded from \~32 in Flash models. This includes improved expressiveness in languages like Japanese where nuance previously lagged.
+Eleven v4 Turbo supports 90+ languages, expanded from \~32 in Flash models.
 
 #### How does this compare to other TTS models in ElevenAgents?
 
-Eleven v3 Conversational offers a higher emotional range than Flash, and Multilingual v2, with the ability to adapt delivery based on conversational context. It supports 70+ languages compared to \~32 for Flash. It is priced the same as other models.
+Eleven v4 Turbo offers a higher emotional range than Flash and Multilingual v2, with the ability to adapt delivery based on conversational context. It supports 90+ languages compared to \~32 for Flash.
 
 ## Related features
 

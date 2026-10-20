@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/
 path: specification/2026-07-28/basic/patterns/cancellation
 ---
 
-<div />
-
 The Model Context Protocol (MCP) supports optional cancellation of in-progress requests
 through notification messages. A client **SHOULD** send a cancellation notification
 to indicate that a request it previously issued should be terminated.

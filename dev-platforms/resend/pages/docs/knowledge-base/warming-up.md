@@ -16,11 +16,11 @@ As your volume increases, you'll need to monitor your bounce rate to ensure it r
 
 Following these rules and metrics will establish a good domain reputation.
 
-<Info>
-  Each sender has different constraints and needs, so these numbers are meant as
-  a baseline. Our [Support team](https://resend.com/help) can work with you on
-  devising a plan adapted to your needs.
-</Info>
+> [!NOTE]
+>
+> Each sender has different constraints and needs, so these numbers are meant as
+> a baseline. Our [Support team](https://resend.com/help) can work with you on
+> devising a plan adapted to your needs.
 
 ## Existing domain
 
@@ -56,7 +56,54 @@ Use the calculator below to generate a personalized warm-up schedule based on yo
 
 The guide is meant as a general plan, but always pay careful attention to your deliverability and adjust accordingly. If you have specific questions, [please reach out to us](https://resend.com/help).
 
-<WarmupCalculator />
+Domain Type
+
+<input type="radio" name="domainType" />
+
+New Domain
+
+<input type="radio" name="domainType" />
+
+Existing Domain
+
+Target Daily Volume
+
+<input type="number" placeholder="e.g., 5000" />
+
+Start Date
+
+<input type="date" />
+
+Target Date (optional)
+
+<input type="date" />
+
+Warm-up Duration
+
+days
+
+Start Date
+
+Full Capacity Date
+
+Target Volume
+
+/day
+
+**Day**
+
+**Date**
+
+**Messages per day**
+
+**Messages per hour**
+
+Tip
+
+As you warm up, keep your **bounce rate below 4%** and
+your **spam rate below 0.08%**. If these rates increase,
+slow down your warm-up and investigate the root cause before
+continuing.
 
 # Warming up your Dedicated IP with Resend
 

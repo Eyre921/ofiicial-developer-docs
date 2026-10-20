@@ -10,31 +10,29 @@ Pinecone provides official plugins and agent skills for AI coding tools. Use the
 
 ## Choose your tool
 
-<CardGroup>
-  <Card title="Claude Code plugin" icon="plug" href="/integrations/claude-code">
-    Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.
-  </Card>
+> **[Claude Code plugin](/integrations/claude-code)**
+>
+> Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.
 
-  <Card title="Codex plugin" icon="plug" href="/integrations/codex">
-    Official Pinecone plugin for Codex with skills and MCP tools.
-  </Card>
+> **[Codex plugin](/integrations/codex)**
+>
+> Official Pinecone plugin for Codex with skills and MCP tools.
 
-  <Card title="Cursor plugin" icon="plug" href="/integrations/cursor">
-    Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.
-  </Card>
+> **[Cursor plugin](/integrations/cursor)**
+>
+> Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.
 
-  <Card title="Agent Skills" icon="layer-group" href="/integrations/agent-skills">
-    Universal skills library for GitHub Copilot and other agentic IDEs.
-  </Card>
+> **[Agent Skills](/integrations/agent-skills)**
+>
+> Universal skills library for GitHub Copilot and other agentic IDEs.
 
-  <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
-    Connect any MCP-compatible client to Pinecone for index management and search.
-  </Card>
+> **[MCP server](/guides/operations/mcp-server)**
+>
+> Connect any MCP-compatible client to Pinecone for index management and search.
 
-  <Card title="Pinecone CLI" icon="rectangle-terminal" href="/reference/cli/quickstart">
-    Direct terminal access to Pinecone. Manage indexes, namespaces, and records with `pc` commands.
-  </Card>
-</CardGroup>
+> **[Pinecone CLI](/reference/cli/quickstart)**
+>
+> Direct terminal access to Pinecone. Manage indexes, namespaces, and records with `pc` commands.
 
 ## Tool recommendations
 

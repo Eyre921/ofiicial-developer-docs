@@ -11,40 +11,38 @@ It is useful if you need inline citations or OpenAI-compatible responses, but ha
 
 For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io/guides/assistant/chat-with-assistant).
 
-<RequestExample>
-  ```bash curl | Default theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl | Default theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the maximum height of a red pine?"
-      }
-    ]
-  }'
-  ```
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ]
+}'
+```
 
-  ```bash curl | Streaming theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl | Streaming theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
-    -H "Api-Key: $PINECONE_API_KEY "\
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the maximum height of a red pine?"
-      }
-    ],
-    "stream": true
-  }'
-  ```
-</RequestExample>
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY "\
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ],
+  "stream": true
+}'
+```

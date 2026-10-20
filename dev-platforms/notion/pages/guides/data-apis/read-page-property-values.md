@@ -20,77 +20,75 @@ Use the [JavaScript SDK](https://github.com/makenotion/notion-sdk-js) in a serve
 
 The cURL example reads one response. The JavaScript example reads every response and prints the items. Save it as `read-property.mjs` and run `node read-property.mjs`.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl --fail-with-body \
-    "https://api.notion.com/v1/pages/$NOTION_PAGE_ID/properties/$NOTION_PROPERTY_ID?page_size=100" \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl --fail-with-body \
+  "https://api.notion.com/v1/pages/$NOTION_PAGE_ID/properties/$NOTION_PROPERTY_ID?page_size=100" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  import { Client } from "@notionhq/client";
+```javascript JavaScript theme={null}
+import { Client } from "@notionhq/client";
 
-  async function main() {
-    const token = process.env.NOTION_API_KEY;
-    const pageId = process.env.NOTION_PAGE_ID;
-    const propertyId = process.env.NOTION_PROPERTY_ID;
-    if (!token || !pageId || !propertyId) {
-      throw new Error("Set NOTION_API_KEY, NOTION_PAGE_ID, and NOTION_PROPERTY_ID.");
+async function main() {
+  const token = process.env.NOTION_API_KEY;
+  const pageId = process.env.NOTION_PAGE_ID;
+  const propertyId = process.env.NOTION_PROPERTY_ID;
+  if (!token || !pageId || !propertyId) {
+    throw new Error("Set NOTION_API_KEY, NOTION_PAGE_ID, and NOTION_PROPERTY_ID.");
+  }
+
+  const notion = new Client({ auth: token });
+  let response = await notion.pages.properties.retrieve({
+    page_id: pageId,
+    property_id: propertyId,
+    page_size: 100,
+  });
+
+  if (response.object === "property_item") {
+    if (response.type === "formula" && response.formula.type === "unsupported") {
+      throw new Error("This formula cannot be calculated by the API.");
+    }
+    console.log(JSON.stringify(response, null, 2));
+    return;
+  }
+
+  while (true) {
+    for (const item of response.results) {
+      console.log(JSON.stringify(item, null, 2));
     }
 
-    const notion = new Client({ auth: token });
-    let response = await notion.pages.properties.retrieve({
-      page_id: pageId,
-      property_id: propertyId,
-      page_size: 100,
-    });
-
-    if (response.object === "property_item") {
-      if (response.type === "formula" && response.formula.type === "unsupported") {
-        throw new Error("This formula cannot be calculated by the API.");
+    if (!response.has_more) {
+      if (response.property_item.type === "rollup") {
+        const rollup = response.property_item.rollup;
+        if (rollup.type === "unsupported" || rollup.type === "incomplete") {
+          throw new Error("This rollup has no completed calculation. See the rollup limits.");
+        }
+        console.log("Final rollup:", JSON.stringify(rollup, null, 2));
       }
-      console.log(JSON.stringify(response, null, 2));
       return;
     }
 
-    while (true) {
-      for (const item of response.results) {
-        console.log(JSON.stringify(item, null, 2));
-      }
-
-      if (!response.has_more) {
-        if (response.property_item.type === "rollup") {
-          const rollup = response.property_item.rollup;
-          if (rollup.type === "unsupported" || rollup.type === "incomplete") {
-            throw new Error("This rollup has no completed calculation. See the rollup limits.");
-          }
-          console.log("Final rollup:", JSON.stringify(rollup, null, 2));
-        }
-        return;
-      }
-
-      if (!response.next_cursor) {
-        throw new Error("The response has more items but no next cursor.");
-      }
-      response = await notion.pages.properties.retrieve({
-        page_id: pageId,
-        property_id: propertyId,
-        page_size: 100,
-        start_cursor: response.next_cursor,
-      });
-      if (response.object !== "list") {
-        throw new Error("The property response changed while reading it. Start again.");
-      }
+    if (!response.next_cursor) {
+      throw new Error("The response has more items but no next cursor.");
+    }
+    response = await notion.pages.properties.retrieve({
+      page_id: pageId,
+      property_id: propertyId,
+      page_size: 100,
+      start_cursor: response.next_cursor,
+    });
+    if (response.object !== "list") {
+      throw new Error("The property response changed while reading it. Start again.");
     }
   }
+}
 
-  main().catch((error) => {
-    console.error(error instanceof Error ? error.message : "Could not read the property.");
-    process.exitCode = 1;
-  });
-  ```
-</CodeGroup>
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : "Could not read the property.");
+  process.exitCode = 1;
+});
+```
 
 ## Use the result
 

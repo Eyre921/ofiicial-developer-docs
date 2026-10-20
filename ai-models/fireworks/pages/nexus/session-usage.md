@@ -51,6 +51,6 @@ Each call is split into disjoint token buckets, priced at that model's rate:
 
 ## Understand the estimate
 
-<Note>
-  The meter estimates cost from token counts and published model rates. Tool use, service tier, and region can make the invoice differ. See [Usage and Cost](/nexus/metrics) for account usage and billing sources.
-</Note>
+> [!NOTE]
+>
+> The meter estimates cost from token counts and published model rates. Tool use, service tier, and region can make the invoice differ. See [Usage and Cost](/nexus/metrics) for account usage and billing sources.

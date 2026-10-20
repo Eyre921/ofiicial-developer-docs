@@ -47,9 +47,9 @@ This automatically configures OpenClaw to use OpenRouter with the recommended mo
 
 ## Manual Configuration
 
-<Warning>
-  **Advanced users only:** The following manual configuration is for users who need to edit their config file directly. For most users, we recommend using the setup wizard above.
-</Warning>
+> [!WARNING]
+>
+> **Advanced users only:** The following manual configuration is for users who need to edit their config file directly. For most users, we recommend using the setup wizard above.
 
 If you need to manually edit your OpenClaw configuration file, follow these steps:
 
@@ -88,9 +88,9 @@ Or set it as an environment variable in your shell profile:
 export OPENROUTER_API_KEY="sk-or-..."
 ```
 
-<Note>
-  That's it! OpenClaw has built-in support for OpenRouter. You don't need to configure `models.providers` - just set your API key and reference models with the `openrouter/<author>/<slug>` format.
-</Note>
+> [!NOTE]
+>
+> That's it! OpenClaw has built-in support for OpenRouter. You don't need to configure `models.providers` - just set your API key and reference models with the `openrouter/<author>/<slug>` format.
 
 ### Step 3: Choose Your Model
 

@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 985 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 986 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -56,6 +56,7 @@
 - `docs/box/guides/herdr-setup` — [Run Herdr Coding Agents in Isolated Cloud Sandboxes](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
 - `docs/box/guides/hermes-setup` — [Self-Host Hermes Agent in a Cloud Sandbox](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
 - `docs/box/guides/langchain-deep-agents` — [Sandbox Backend for LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
+- `docs/box/guides/neon-ai-gateway` — [Run Box Agents on Neon AI Gateway Models](pages/docs/box/guides/neon-ai-gateway.md) · [原文](https://upstash.com/docs/box/guides/neon-ai-gateway)
 - `docs/box/guides/nextjs-setup` — [Run a Next.js App in a Cloud Sandbox with a Public URL](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)
 - `docs/box/guides/openai-agents-api` — [Self-Hosted Sandboxes for the OpenAI Agents API](pages/docs/box/guides/openai-agents-api.md) · [原文](https://upstash.com/docs/box/guides/openai-agents-api)
 - `docs/box/guides/openclaw-setup` — [Self-Host an Always-On OpenClaw Agent in the Cloud](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)

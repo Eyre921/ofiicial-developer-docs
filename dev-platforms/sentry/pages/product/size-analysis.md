@@ -75,7 +75,7 @@ The X-Ray diff shows a visual representation of the file changes between the two
 
 Integrate into CI Size Analysis results on pull requests. You can track size on every commit to ensure there are no unnecessary size increases. You can configure rules to automatically fail checks when thresholds are exceeded.
 
-Learn how to set it up in the [CI integration guide](https://docs.sentry.io/product/size-analysis/integrating-into-ci.md).
+Learn how to set it up in the [CI integration guide](https://docs.sentry.io/product/size-analysis/integrating-into-ci.md). You can access a project's status check rules via the [API](https://docs.sentry.io/api/mobile-builds/retrieve-size-analysis-status-check-rules-for-a-project.md).
 
 ### [Monitoring and Alerting](https://docs.sentry.io/product/size-analysis.md#monitoring-and-alerting)
 

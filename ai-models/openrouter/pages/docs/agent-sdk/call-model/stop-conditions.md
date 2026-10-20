@@ -159,9 +159,9 @@ const result = openrouter.callModel({
 });
 ```
 
-<Note>
-  Without the directive, models that emit tool-call syntax as text can leak an unparsed tool call (e.g. `<tool_call>…`) into the final content when the loop stops mid-tool-call. The default directive exists to prevent exactly that.
-</Note>
+> [!NOTE]
+>
+> Without the directive, models that emit tool-call syntax as text can leak an unparsed tool call (e.g. `<tool_call>…`) into the final content when the loop stops mid-tool-call. The default directive exists to prevent exactly that.
 
 The final turn only happens when a stop condition halted the loop while the last response contained executable tool calls. It never fires on natural completion, HITL/approval pauses, or interruption.
 

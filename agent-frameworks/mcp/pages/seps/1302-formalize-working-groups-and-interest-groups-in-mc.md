@@ -6,23 +6,17 @@ path: seps/1302-formalize-working-groups-and-interest-groups-in-mc
 
 Formalize Working Groups and Interest Groups in MCP Governance
 
-<div>
-  <Badge>
-    Final
-  </Badge>
+Final
 
-  <Badge>
-    Standards Track
-  </Badge>
-</div>
+Standards Track
 
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
 
 | Field | Value |
 | - | - |

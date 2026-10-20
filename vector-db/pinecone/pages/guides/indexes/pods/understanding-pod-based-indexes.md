@@ -6,9 +6,9 @@ path: guides/indexes/pods/understanding-pod-based-indexes
 
 Understand Pinecone pod-based indexes, including pod types and sizing. Pod indexes are legacy and unavailable to new customers, and serverless is recommended.
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 With pod-based indexes, you choose one or more pre-configured units of hardware (pods). Depending on the pod type, pod size, and number of pods used, you get different amounts of storage and higher or lower latency and throughput. Be sure to [choose an appropriate pod type and size](/guides/indexes/pods/choose-a-pod-type-and-size) for your dataset and workload.
 
@@ -16,9 +16,9 @@ With pod-based indexes, you choose one or more pre-configured units of hardware 
 
 Different pod types are priced differently. See [Understand Pinecone cost](/guides/manage-cost/understanding-cost) for more details.
 
-<Note>
-  Once a pod-based index is created, you can't change its pod type. However, you can create a collection from an index and then [create a new index with a different pod type](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection) from the collection.
-</Note>
+> [!NOTE]
+>
+> Once a pod-based index is created, you can't change its pod type. However, you can create a collection from an index and then [create a new index with a different pod type](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection) from the collection.
 
 ### s1 pods
 
@@ -94,47 +94,47 @@ The following equation calculates the total costs accrued over time:
 
 To see a calculation of your current usage and costs, go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.
 
-<Accordion title="Example">
-  While our pricing page lists rates on an hourly basis for ease of comparison, this example lists prices per minute, as this is how Pinecone calculates billing.
-
-  An example application has the following requirements:
-
-  * 1,000,000 vectors with 1536 dimensions
-  * 150 queries per second with `top_k` = 10
-  * Deployment in an EU region
-  * Ability to store 1GB of inactive vectors
-
-  [Based on these requirements](/guides/indexes/pods/choose-a-pod-type-and-size), the organization chooses to configure the project to use the Standard billing plan to host one `p1.x2` pod with three replicas and a collection containing 1 GB of data. This project runs continuously for the month of January on the Standard plan. The components of the total cost for this example are given in Table 1 below:
-
-  **Table 1: Example billing components**
-
-  | Billing component | Value |
-  | - | - |
-  | Number of pods | 1 |
-  | Number of replicas | 3 |
-  | Pod size | x2 |
-  | Total pod count | 6 |
-  | Minutes in January | 44,640 |
-  | Pod-minutes (pods \* minutes) | 267,840 |
-  | Pod price per minute | \$0.0012 |
-  | Collection storage | 1 GB |
-  | Collection storage minutes | 44,640 |
-  | Price per storage minute | \$0.00000056 |
-
-  The invoice for this example is given in Table 2 below:
-
-  **Table 2: Example invoice**
-
-  | Product | Quantity | Price per unit | Charge |
-  | - | - | - | - |
-  | Collections | 44,640 | \$0.00000056 | \$0.025 |
-  | P2 Pods (AWS) | 0 | | \$0.00 |
-  | P2 Pods (GCP) | 0 | | \$0.00 |
-  | S1 Pods | 0 | | \$0.00 |
-  | P1 Pods | 267,840 | \$0.0012 | \$514.29 |
-
-  Amount due \$514.54
-</Accordion>
+> **Example**
+>
+> While our pricing page lists rates on an hourly basis for ease of comparison, this example lists prices per minute, as this is how Pinecone calculates billing.
+>
+> An example application has the following requirements:
+>
+> * 1,000,000 vectors with 1536 dimensions
+> * 150 queries per second with `top_k` = 10
+> * Deployment in an EU region
+> * Ability to store 1GB of inactive vectors
+>
+> [Based on these requirements](/guides/indexes/pods/choose-a-pod-type-and-size), the organization chooses to configure the project to use the Standard billing plan to host one `p1.x2` pod with three replicas and a collection containing 1 GB of data. This project runs continuously for the month of January on the Standard plan. The components of the total cost for this example are given in Table 1 below:
+>
+> **Table 1: Example billing components**
+>
+> | Billing component | Value |
+> | - | - |
+> | Number of pods | 1 |
+> | Number of replicas | 3 |
+> | Pod size | x2 |
+> | Total pod count | 6 |
+> | Minutes in January | 44,640 |
+> | Pod-minutes (pods \* minutes) | 267,840 |
+> | Pod price per minute | \$0.0012 |
+> | Collection storage | 1 GB |
+> | Collection storage minutes | 44,640 |
+> | Price per storage minute | \$0.00000056 |
+>
+> The invoice for this example is given in Table 2 below:
+>
+> **Table 2: Example invoice**
+>
+> | Product | Quantity | Price per unit | Charge |
+> | - | - | - | - |
+> | Collections | 44,640 | \$0.00000056 | \$0.025 |
+> | P2 Pods (AWS) | 0 | | \$0.00 |
+> | P2 Pods (GCP) | 0 | | \$0.00 |
+> | S1 Pods | 0 | | \$0.00 |
+> | P1 Pods | 267,840 | \$0.0012 | \$514.29 |
+>
+> Amount due \$514.54
 
 ## Known limitations
 

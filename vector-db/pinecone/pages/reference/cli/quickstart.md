@@ -10,24 +10,22 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 
 ## Install
 
-<Tabs>
-  <Tab title="macOS (Homebrew)">
-    ```bash theme={null}
-    brew tap pinecone-io/tap
-    brew install pinecone-io/tap/pinecone
-    ```
-  </Tab>
+**macOS (Homebrew)**
 
-  <Tab title="Other platforms">
-    Pre-built binaries for macOS, Linux, and Windows are available on the [GitHub Releases page](https://github.com/pinecone-io/cli/releases).
+```bash theme={null}
+brew tap pinecone-io/tap
+brew install pinecone-io/tap/pinecone
+```
 
-    | Platform | Architectures |
-    | :- | :- |
-    | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-    | Linux | x86\_64, ARM64, i386 |
-    | Windows | x86\_64, i386 |
-  </Tab>
-</Tabs>
+**Other platforms**
+
+Pre-built binaries for macOS, Linux, and Windows are available on the [GitHub Releases page](https://github.com/pinecone-io/cli/releases).
+
+| Platform | Architectures |
+| :- | :- |
+| macOS | Intel (x86\_64), Apple Silicon (ARM64) |
+| Linux | x86\_64, ARM64, i386 |
+| Windows | x86\_64, i386 |
 
 ## Authenticate
 
@@ -43,9 +41,9 @@ To target a different org/project:
 pc target -o "my-org" -p "my-project"
 ```
 
-<Tip>
-  For CI/CD or automation, you can also authenticate with a [service account](/reference/cli/authentication#service-account) or [API key](/reference/cli/authentication#api-key).
-</Tip>
+> [!TIP]
+>
+> For CI/CD or automation, you can also authenticate with a [service account](/reference/cli/authentication#service-account) or [API key](/reference/cli/authentication#api-key).
 
 ## Manage indexes
 

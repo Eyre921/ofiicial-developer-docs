@@ -45,6 +45,8 @@ When you configure a [Custom LLM](/docs/eleven-agents/customization/llm/custom-l
 
 If your Custom LLM fails, the system will retry the request with the *same* Custom LLM multiple times (matching the standard minimum retry count) before considering the request failed. It will not fall back to ElevenLabs-hosted models, ensuring your specific configuration is respected.
 
+On an agent using a [Realtime model](/docs/eleven-agents/customization/realtime-models), the agent falls back to a backup LLM if the Realtime model doesn't respond in time. The Realtime model sets how long the agent waits.
+
 ## Benefits
 
 * **Increased Reliability:** Reduces the impact of temporary issues with a specific LLM provider.

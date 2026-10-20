@@ -9,12 +9,10 @@ List of all assistants in a project.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#list-assistants-for-a-project).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -X GET "https://api.pinecone.io/assistant/assistants" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+curl -X GET "https://api.pinecone.io/assistant/assistants" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```

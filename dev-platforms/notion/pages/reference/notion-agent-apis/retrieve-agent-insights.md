@@ -16,8 +16,8 @@ Pass `notion_ai` as the `agent_id` to read insights for the personal agent (Noti
 * `status` is always `active` and `pause_reason` is always `null`, because the personal agent has no per-agent status controls.
 * `credit_limit` reports the workspace's default per-member credit limit, or `null` when the workspace has not set one.
 
-<Info>
-  **Access**
-
-  Only a [personal access token](/guides/get-started/personal-access-tokens) can read personal agent insights, and the totals always cover the user that token acts as — never another member's usage. Any other token receives a `404` `object_not_found`.
-</Info>
+> [!NOTE]
+>
+> **Access**
+>
+> Only a [personal access token](/guides/get-started/personal-access-tokens) can read personal agent insights, and the totals always cover the user that token acts as — never another member's usage. Any other token receives a `404` `object_not_found`.

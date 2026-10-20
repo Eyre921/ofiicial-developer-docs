@@ -7,119 +7,144 @@ path: docs/api-reference/segments/list-segments
 GET /segments
 Retrieve a list of segments.
 
-<QueryParams type="segments" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all segments will be returned
+in a single response.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**limit** `number`
 
-  const { data, error } = await resend.segments.list();
-  ```
+Number of segments to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**after** `string`
 
-  $resend->segments->list();
-  ```
+The ID *after* which we'll retrieve more segments (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+The ID *before* which we'll retrieve more segments (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  resend.api_key = 're_xxxxxxxxx'
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  segments = resend.Segments.list()
-  ```
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+const resend = new Resend('re_xxxxxxxxx');
 
-  Resend.api_key = "re_xxxxxxxxx"
+const { data, error } = await resend.segments.list();
+```
 
-  segments = Resend::Segments.list
-  ```
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+$resend->segments->list();
+```
 
-  import (
-  	"context"
-  	"fmt"
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  	"github.com/resend/resend-go/v4"
-  )
+resend.api_key = 're_xxxxxxxxx'
 
-  func main() {
-  	ctx := context.TODO()
-  	client := resend.NewClient("re_xxxxxxxxx")
+segments = resend.Segments.list()
+```
 
-  	segments, err := client.Segments.ListWithContext(ctx)
-  	if err != nil {
-  		panic(err)
-  	}
-  	fmt.Println(segments)
-  }
-  ```
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{list_opts::ListOptions, Resend, Result};
+Resend.api_key = "re_xxxxxxxxx"
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+segments = Resend::Segments.list
+```
 
-    let _segments = resend.segments.list(ListOptions::default()).await?;
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-    Ok(())
-  }
-  ```
+import (
+	"context"
+	"fmt"
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
-  import com.resend.services.segments.model.ListSegmentsResponseSuccess;
+	"github.com/resend/resend-go/v4"
+)
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+func main() {
+	ctx := context.TODO()
+	client := resend.NewClient("re_xxxxxxxxx")
 
-          ListSegmentsResponseSuccess response = resend.segments().list();
-      }
-  }
-  ```
+	segments, err := client.Segments.ListWithContext(ctx)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(segments)
+}
+```
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{list_opts::ListOptions, Resend, Result};
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  var resp = await resend.SegmentListAsync();
-  Console.WriteLine( "Nr Segments={0}", resp.Content.Data.Count );
-  ```
+  let _segments = resend.segments.list(ListOptions::default()).await?;
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/segments' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+  Ok(())
+}
+```
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend segments list
-  ```
-</RequestExample>
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.segments.model.ListSegmentsResponseSuccess;
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
-        "name": "Registered Users",
-        "created_at": "2026-10-06 22:59:55.977+00"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListSegmentsResponseSuccess response = resend.segments().list();
+    }
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.SegmentListAsync();
+Console.WriteLine( "Nr Segments={0}", resp.Content.Data.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/segments' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend segments list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "78261eea-8f8b-4381-83c6-79fa7120f1cf",
+      "name": "Registered Users",
+      "created_at": "2026-10-06 22:59:55.977+00"
+    }
+  ]
+}
+```

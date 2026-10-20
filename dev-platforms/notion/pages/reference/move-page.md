@@ -47,13 +47,13 @@ Move the page under another page:
 * **`type`**: Always `"page_id"`
 * **`page_id`**: UUID of the parent page (with or without dashes)
 
-<Warning>
-  **Page parent must be a regular Notion page**
-
-  The `parent[page_id]` parameter must be a page and cannot be any other type of [block](/reference/block).
-
-  One limited exception: for databases that only have a single [data source](/reference/data-source) , the `database_id` *can* be provided under `page_id`, but this is not recommended, since your connection will start encountering HTTP 400 errors if a second data source is added to the database.
-</Warning>
+> [!WARNING]
+>
+> **Page parent must be a regular Notion page**
+>
+> The `parent[page_id]` parameter must be a page and cannot be any other type of [block](/reference/block).
+>
+> One limited exception: for databases that only have a single [data source](/reference/data-source) , the `database_id` *can* be provided under `page_id`, but this is not recommended, since your connection will start encountering HTTP 400 errors if a second data source is added to the database.
 
 ### Database parent
 

@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/
 path: specification/2026-07-28/basic/patterns/progress
 ---
 
-<div />
-
 The Model Context Protocol (MCP) supports optional progress tracking for long-running
 operations through notification messages. The server **MAY** send progress notifications
 to report the status of requests the client has issued.

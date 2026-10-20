@@ -50,41 +50,39 @@ supports_websockets = false
 
 `model` accepts any OpenRouter model ID, including tilde aliases such as `~openai/gpt-sol-latest`. Browse the catalog at [openrouter.ai/models](https://openrouter.ai/models).
 
-<Note>
-  `model_provider` and `model_providers` are only honored in the user-level `~/.codex/config.toml`. Codex ignores them in a project-scoped `.codex/config.toml`.
-</Note>
+> [!NOTE]
+>
+> `model_provider` and `model_providers` are only honored in the user-level `~/.codex/config.toml`. Codex ignores them in a project-scoped `.codex/config.toml`.
 
 ### Step 4: Make Your API Key Visible to the App
 
 Codex reads the key from the `OPENROUTER_API_KEY` environment variable named by `env_key`. An `export` in `~/.zshrc` or `~/.bashrc` only reaches terminal processes, so set the variable at the session level instead, then fully quit and reopen the app.
 
-<Tabs>
-  <Tab title="macOS">
-    Set the variable in the user launchd session so GUI apps inherit it:
+**macOS**
 
-    ```bash lines theme={null}
-    launchctl setenv OPENROUTER_API_KEY "sk-or-..."
-    ```
+Set the variable in the user launchd session so GUI apps inherit it:
 
-    This does not survive a reboot or logout. To make it permanent, add the same command to a login item or a launchd agent that runs at login.
-  </Tab>
+```bash lines theme={null}
+launchctl setenv OPENROUTER_API_KEY "sk-or-..."
+```
 
-  <Tab title="Windows">
-    Set a user-level environment variable. Processes started after this inherit it, so restart the app afterwards:
+This does not survive a reboot or logout. To make it permanent, add the same command to a login item or a launchd agent that runs at login.
 
-    ```powershell lines theme={null}
-    setx OPENROUTER_API_KEY "sk-or-..."
-    ```
-  </Tab>
-</Tabs>
+**Windows**
+
+Set a user-level environment variable. Processes started after this inherit it, so restart the app afterwards:
+
+```powershell lines theme={null}
+setx OPENROUTER_API_KEY "sk-or-..."
+```
 
 ### Step 5: Restart and Start a Task
 
 Quit the app completely (not just the window), reopen it, choose **Codex**, and start a new chat. Requests now go through OpenRouter and appear in your [Activity Dashboard](https://openrouter.ai/activity).
 
-<Warning>
-  The ChatGPT and Codex apps can leave background processes running after you quit. These processes keep the old environment, so the app keeps using the previous configuration and API key even after you reopen it. If your changes don't take effect, see [Background processes keep the old configuration](#background-processes-keep-the-old-configuration).
-</Warning>
+> [!WARNING]
+>
+> The ChatGPT and Codex apps can leave background processes running after you quit. These processes keep the old environment, so the app keeps using the previous configuration and API key even after you reopen it. If your changes don't take effect, see [Background processes keep the old configuration](#background-processes-keep-the-old-configuration).
 
 ## Configuration Reference
 
@@ -98,9 +96,9 @@ Quit the app completely (not just the window), reopen it, choose **Codex**, and 
 | `model_providers.openrouter.wire_api` | Protocol Codex speaks to the provider. `responses` is the only supported value | `"responses"` |
 | `model_providers.openrouter.supports_websockets` | Whether the provider supports the Responses API WebSocket transport. Leave `false` for OpenRouter | `false` |
 
-<Note>
-  With `env_key` authentication Codex does not fetch the OpenRouter model catalog, so non-OpenAI models may show an "Unknown model" fallback-metadata warning. The command-based `auth` block on the [Codex CLI page](/docs/cookbook/coding-agents/codex-cli#step-3-configure-codex-for-openrouter) triggers the catalog refresh and works in the desktop app as long as `OPENROUTER_API_KEY` is visible to it as described above.
-</Note>
+> [!NOTE]
+>
+> With `env_key` authentication Codex does not fetch the OpenRouter model catalog, so non-OpenAI models may show an "Unknown model" fallback-metadata warning. The command-based `auth` block on the [Codex CLI page](/docs/cookbook/coding-agents/codex-cli#step-3-configure-codex-for-openrouter) triggers the catalog refresh and works in the desktop app as long as `OPENROUTER_API_KEY` is visible to it as described above.
 
 ## Why Use OpenRouter with the Codex Desktop App?
 

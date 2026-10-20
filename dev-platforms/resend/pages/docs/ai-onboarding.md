@@ -22,9 +22,9 @@ If you're developing with AI, Resend offers several resources to improve your ex
 
 A human must create the Resend account. Once you have an account, you'll need to [create an API key](/docs/create-an-api-key). With an API key, your agent can perform many other tasks.
 
-<Info>
-  To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
-</Info>
+> [!NOTE]
+>
+> To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
 
 ## Resend MCP Server
 
@@ -43,10 +43,10 @@ The [Resend plugin](https://github.com/resend/resend-skills) follows the [Agent 
 * [Resend connector for Claude](https://claude.ai/directory/connectors/resend)
 * [Resend plugin for Codex](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex)
 
-<Card title="MCP Server" icon="microchip-ai" href="/docs/mcp-server">
-  View setup instructions for Claude, Cursor, Codex, Copilot, Hermes, OpenClaw,
-  and more.
-</Card>
+> **[MCP Server](/docs/mcp-server)**
+>
+> View setup instructions for Claude, Cursor, Codex, Copilot, Hermes, OpenClaw,
+> and more.
 
 ## Resend CLI
 
@@ -66,9 +66,9 @@ resend emails send \
 
 The CLI also includes a full local webhook setup for developing with inbound email events without deploying anything.
 
-<Card title="Resend CLI" icon="terminal" href="/docs/cli">
-  Install the CLI and set up a local webhook development environment.
-</Card>
+> **[Resend CLI](/docs/cli)**
+>
+> Install the CLI and set up a local webhook development environment.
 
 ## Resend Docs for Agents
 
@@ -120,190 +120,188 @@ Or install individually:
 
 The documentation includes quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
 
-<Prompt description="Example agent quick start guide for sending emails." icon="envelope">
-  Resend provides two endpoints for sending emails:
+Resend provides two endpoints for sending emails:
 
-  | Approach | Endpoint | Use Case |
-  | - | - | - |
-  | **Single** | `POST /emails` | Individual transactional emails, emails with attachments, scheduled sends |
-  | **Batch** | `POST /emails/batch` | Multiple distinct emails in one request (max 100), bulk notifications |
+| Approach | Endpoint | Use Case |
+| - | - | - |
+| **Single** | `POST /emails` | Individual transactional emails, emails with attachments, scheduled sends |
+| **Batch** | `POST /emails/batch` | Multiple distinct emails in one request (max 100), bulk notifications |
 
-  **Choose batch when:**
+**Choose batch when:**
 
-  * Sending 2+ distinct emails at once
-  * Reducing API calls is important (by default, rate limit is 10 requests per second)
-  * No attachments or scheduling needed
+* Sending 2+ distinct emails at once
+* Reducing API calls is important (by default, rate limit is 10 requests per second)
+* No attachments or scheduling needed
 
-  **Choose single when:**
+**Choose single when:**
 
-  * Sending one email
-  * Email needs attachments
-  * Email needs to be scheduled
-  * Different recipients need different timing
+* Sending one email
+* Email needs attachments
+* Email needs to be scheduled
+* Different recipients need different timing
 
-  ## Quick Start
+## Quick Start
 
-  1. **Detect project language** from config files (package.json, requirements.txt, go.mod, etc.)
-  2. **Install SDK** (preferred) or use cURL
-  3. **Choose single or batch** based on the decision matrix above
-  4. **Implement best practices** - Idempotency keys, error handling, retries
+1. **Detect project language** from config files (package.json, requirements.txt, go.mod, etc.)
+2. **Install SDK** (preferred) or use cURL
+3. **Choose single or batch** based on the decision matrix above
+4. **Implement best practices** - Idempotency keys, error handling, retries
 
-  ## Best Practices (Critical for Production)
+## Best Practices (Critical for Production)
 
-  Always implement these for production email sending.
+Always implement these for production email sending.
 
-  ### Idempotency Keys
+### Idempotency Keys
 
-  Prevent duplicate emails when retrying failed requests.
+Prevent duplicate emails when retrying failed requests.
 
-  | Key Facts | |
-  | - | - |
-  | **Format (single)** | `<event-type>/<entity-id>` (e.g., `welcome-email/user-123`) |
-  | **Format (batch)** | `batch-<event-type>/<batch-id>` (e.g., `batch-orders/batch-456`) |
-  | **Expiration** | 24 hours |
-  | **Max length** | 256 characters |
-  | **Duplicate payload** | Returns original response without resending |
-  | **Different payload** | Returns 409 error |
+| Key Facts | |
+| - | - |
+| **Format (single)** | `<event-type>/<entity-id>` (e.g., `welcome-email/user-123`) |
+| **Format (batch)** | `batch-<event-type>/<batch-id>` (e.g., `batch-orders/batch-456`) |
+| **Expiration** | 24 hours |
+| **Max length** | 256 characters |
+| **Duplicate payload** | Returns original response without resending |
+| **Different payload** | Returns 409 error |
 
-  ### Error Handling
+### Error Handling
 
-  | Code | Action |
-  | - | - |
-  | 400, 422 | Fix request parameters, don't retry |
-  | 401, 403 | Check API key / verify domain, don't retry |
-  | 409 | Idempotency conflict - use new key or fix payload |
-  | 429 | Rate limited - retry with exponential backoff (by default, rate limit is 10 requests/second) |
-  | 500 | Server error - retry with exponential backoff |
+| Code | Action |
+| - | - |
+| 400, 422 | Fix request parameters, don't retry |
+| 401, 403 | Check API key / verify domain, don't retry |
+| 409 | Idempotency conflict - use new key or fix payload |
+| 429 | Rate limited - retry with exponential backoff (by default, rate limit is 10 requests/second) |
+| 500 | Server error - retry with exponential backoff |
 
-  ### Retry Strategy
+### Retry Strategy
 
-  * **Backoff:** Exponential (1s, 2s, 4s...)
-  * **Max retries:** 3-5 for most use cases
-  * **Only retry:** 429 (rate limit) and 500 (server error)
-  * **Always use:** Idempotency keys when retrying
+* **Backoff:** Exponential (1s, 2s, 4s...)
+* **Max retries:** 3-5 for most use cases
+* **Only retry:** 429 (rate limit) and 500 (server error)
+* **Always use:** Idempotency keys when retrying
 
-  ## Single Email
+## Single Email
 
-  **Endpoint:** `POST /emails` (prefer SDK over cURL)
+**Endpoint:** `POST /emails` (prefer SDK over cURL)
 
-  ### Required Parameters
+### Required Parameters
 
-  | Parameter | Type | Description |
-  | - | - | - |
-  | `from` | string | Sender address. Format: `"Name <email@domain.com>"` |
-  | `to` | string\[] | Recipient addresses (max 50) |
-  | `subject` | string | Email subject line |
-  | `html` or `text` | string | Email body content |
+| Parameter | Type | Description |
+| - | - | - |
+| `from` | string | Sender address. Format: `"Name <email@domain.com>"` |
+| `to` | string\[] | Recipient addresses (max 50) |
+| `subject` | string | Email subject line |
+| `html` or `text` | string | Email body content |
 
-  ### Optional Parameters
+### Optional Parameters
 
-  | Parameter | Type | Description |
-  | - | - | - |
-  | `cc` | string\[] | CC recipients |
-  | `bcc` | string\[] | BCC recipients |
-  | `reply_to`\* | string\[] | Reply-to addresses |
-  | `scheduled_at`\* | string | Schedule send time (ISO 8601) |
-  | `attachments` | array | File attachments (max 40MB total) |
-  | `tags` | array | Key/value pairs for tracking |
-  | `headers` | object | Custom headers |
+| Parameter | Type | Description |
+| - | - | - |
+| `cc` | string\[] | CC recipients |
+| `bcc` | string\[] | BCC recipients |
+| `reply_to`\* | string\[] | Reply-to addresses |
+| `scheduled_at`\* | string | Schedule send time (ISO 8601) |
+| `attachments` | array | File attachments (max 40MB total) |
+| `tags` | array | Key/value pairs for tracking |
+| `headers` | object | Custom headers |
 
-  \*Parameter naming varies by SDK (e.g., `replyTo` in Node.js, `reply_to` in Python).
+\*Parameter naming varies by SDK (e.g., `replyTo` in Node.js, `reply_to` in Python).
 
-  ### Minimal Example (Node.js)
+### Minimal Example (Node.js)
 
-  ```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  const resend = new Resend('YOUR_RESEND_API_KEY');
+const resend = new Resend('YOUR_RESEND_API_KEY');
 
-  const { data, error } = await resend.emails.send(
+const { data, error } = await resend.emails.send(
+  {
+    from: 'Acme <onboarding@resend.dev>',
+    to: ['delivered@resend.dev'],
+    subject: 'Hello World',
+    html: '<p>Email body here</p>',
+  },
+  { idempotencyKey: `welcome-email/${userId}` },
+);
+
+if (error) {
+  console.error('Failed:', error.message);
+  return;
+}
+console.log('Sent:', data.id);
+```
+
+## Batch Email
+
+**Endpoint:** `POST /emails/batch` (but prefer SDK over cURL)
+
+### Limitations
+
+* **No attachments** - Use single sends for emails with attachments
+* **No scheduling** - Use single sends for scheduled emails
+* **Atomic** - If one email fails validation, the entire batch fails
+* **Max 100 emails** per request
+* **Max 50 recipients** per individual email in the batch
+
+### Pre-validation
+
+Since the entire batch fails on any validation error, validate all emails before sending:
+
+* Check required fields (from, to, subject, html/text)
+* Validate email formats
+* Ensure batch size is less than or equal to 100
+
+### Minimal Example (Node.js)
+
+```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('YOUR_RESEND_API_KEY');
+
+const { data, error } = await resend.batch.send(
+  [
     {
-      from: 'Acme <onboarding@resend.dev>',
+      from: 'Acme <hello@example.com>',
       to: ['delivered@resend.dev'],
-      subject: 'Hello World',
-      html: '<p>Email body here</p>',
+      subject: 'Order Shipped',
+      html: '<p>Your order has shipped!</p>',
     },
-    { idempotencyKey: `welcome-email/${userId}` },
-  );
+    {
+      from: 'Acme <hello@example.com>',
+      to: ['delivered@resend.dev'],
+      subject: 'Order Confirmed',
+      html: '<p>Your order is confirmed!</p>',
+    },
+  ],
+  { idempotencyKey: `batch-orders/${batchId}` },
+);
 
-  if (error) {
-    console.error('Failed:', error.message);
-    return;
-  }
-  console.log('Sent:', data.id);
-  ```
-
-  ## Batch Email
-
-  **Endpoint:** `POST /emails/batch` (but prefer SDK over cURL)
-
-  ### Limitations
-
-  * **No attachments** - Use single sends for emails with attachments
-  * **No scheduling** - Use single sends for scheduled emails
-  * **Atomic** - If one email fails validation, the entire batch fails
-  * **Max 100 emails** per request
-  * **Max 50 recipients** per individual email in the batch
-
-  ### Pre-validation
-
-  Since the entire batch fails on any validation error, validate all emails before sending:
-
-  * Check required fields (from, to, subject, html/text)
-  * Validate email formats
-  * Ensure batch size is less than or equal to 100
-
-  ### Minimal Example (Node.js)
-
-  ```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-
-  const resend = new Resend('YOUR_RESEND_API_KEY');
-
-  const { data, error } = await resend.batch.send(
-    [
-      {
-        from: 'Acme <hello@example.com>',
-        to: ['delivered@resend.dev'],
-        subject: 'Order Shipped',
-        html: '<p>Your order has shipped!</p>',
-      },
-      {
-        from: 'Acme <hello@example.com>',
-        to: ['delivered@resend.dev'],
-        subject: 'Order Confirmed',
-        html: '<p>Your order is confirmed!</p>',
-      },
-    ],
-    { idempotencyKey: `batch-orders/${batchId}` },
-  );
-
-  if (error) {
-    console.error('Batch failed:', error.message);
-    return;
-  }
-  console.log(
-    'Sent:',
-    data.map((e) => e.id),
-  );
-  ```
-</Prompt>
+if (error) {
+  console.error('Batch failed:', error.message);
+  return;
+}
+console.log(
+  'Sent:',
+  data.map((e) => e.id),
+);
+```
 
 ## OpenClaw Guide
 
 Equipping your agent with its own email inbox can be a powerful tool to unlock new workflows. Alternatively, give it access to your Resend account to support agentic flows for sending and receiving emails.
 
-<Card title="Email Automation for OpenClaw using Resend" icon="lobster" href="/docs/openclaw-guide">
-  View the OpenClaw guide.
-</Card>
+> **[Email Automation for OpenClaw using Resend](/docs/openclaw-guide)**
+>
+> View the OpenClaw guide.
 
 ## Chat SDK
 
 The `@resend/chat-sdk-adapter` package is a Vercel Chat SDK adapter that turns email into a two-way communication channel. Receive inbound emails through webhooks, reply through the Resend API, and let the adapter handle threading automatically. It also supports card emails, attachments, and proactive outreach.
 
-<Card title="Chat SDK" icon="comments" href="/docs/chat-sdk">
-  Build conversational email experiences with the Chat SDK adapter.
-</Card>
+> **[Chat SDK](/docs/chat-sdk)**
+>
+> Build conversational email experiences with the Chat SDK adapter.
 
 ## AI Builder Guides
 
@@ -321,40 +319,38 @@ Get started using Resend with popular AI builders:
 
 Several AI tools have created integrations for working with Resend. Visit their documentation for information on integrating Resend with their tools.
 
-<CardGroup>
-  <Card title="Lovable" href="https://docs.lovable.dev/integrations/resend" icon={<LovableIcon />}>
-    Tell the Lovable AI to send emails
-  </Card>
+> **[Lovable](https://docs.lovable.dev/integrations/resend)**
+>
+> Tell the Lovable AI to send emails
 
-  <Card title="Anything" href="https://www.createanything.com/docs/integrations/resend" icon={<AnythingIcon />}>
-    Add email to your Anything projects
-  </Card>
+> **[Anything](https://www.createanything.com/docs/integrations/resend)**
+>
+> Add email to your Anything projects
 
-  <Card title="Wildcard" href="https://github.com/wild-card-ai/agents-json/blob/master/examples/resend.ipynb" icon={<WildcardIcon />}>
-    Send natural language emails using Wildcard
-  </Card>
+> **[Wildcard](https://github.com/wild-card-ai/agents-json/blob/master/examples/resend.ipynb)**
+>
+> Send natural language emails using Wildcard
 
-  <Card title="mcp.run" href="https://www.mcp.run/nilslice/resend" icon={<McpRunIcon />}>
-    Build email AI agents using mcp.run
-  </Card>
+> **[mcp.run](https://www.mcp.run/nilslice/resend)**
+>
+> Build email AI agents using mcp.run
 
-  <Card title="Rocket" href="https://docs.rocket.new/integrations/resend" icon={<RocketIcon />}>
-    Send emails from apps built with Rocket
-  </Card>
+> **[Rocket](https://docs.rocket.new/integrations/resend)**
+>
+> Send emails from apps built with Rocket
 
-  <Card title="Base44" href="https://docs.base44.com/Integrations/Resend-integration" icon={<Base44Icon />}>
-    Add email to your Base44 apps
-  </Card>
+> **[Base44](https://docs.base44.com/Integrations/Resend-integration)**
+>
+> Add email to your Base44 apps
 
-  <Card title="Leap.new" href="https://docs.leap.new/integrations/resend" icon={<LeapNewIcon />}>
-    Add email to your Leap apps
-  </Card>
+> **[Leap.new](https://docs.leap.new/integrations/resend)**
+>
+> Add email to your Leap apps
 
-  <Card title="Parsley" href="https://www.parsley.id/integrations/resend" icon={<ParsleyIcon />}>
-    Send alerts and follow-ups with Parsley
-  </Card>
+> **[Parsley](https://www.parsley.id/integrations/resend)**
+>
+> Send alerts and follow-ups with Parsley
 
-  <Card title="Pica" href="https://www.picaos.com/integrations/resend" icon={<PicaIcon />}>
-    Integrate Pica with Resend
-  </Card>
-</CardGroup>
+> **[Pica](https://www.picaos.com/integrations/resend)**
+>
+> Integrate Pica with Resend

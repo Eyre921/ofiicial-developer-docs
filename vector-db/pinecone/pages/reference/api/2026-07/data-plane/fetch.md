@@ -11,15 +11,13 @@ For on-demand indexes, since vector values are retrieved from object storage, fe
 
 For guidance and examples, see [Fetch data](https://docs.pinecone.io/guides/manage-data/fetch-data).
 
-<RequestExample>
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -X GET "https://$INDEX_HOST/vectors/fetch?ids=id-1&ids=id-2&namespace=example-namespace" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+curl -X GET "https://$INDEX_HOST/vectors/fetch?ids=id-1&ids=id-2&namespace=example-namespace" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```

@@ -6,19 +6,15 @@ path: guides/search/full-text-search
 
 Upsert and search typed JSON documents in Pinecone with BM25 scoring, Lucene query syntax, dense and sparse vector ranking, and metadata filters.
 
-<Tip>
-  You can also use the Pinecone console to create indexes with document schemas, upsert documents, search documents, and fetch or delete documents by ID.
-</Tip>
-
-Full-text search ranks documents by keyword and phrase relevance using **BM25** scoring, with optional **Lucene** query syntax. Because an index with a document schema can also declare dense and sparse vector fields, the same index can rank by semantic or sparse-vector similarity, so one index can cover keyword and semantic search.
+Full-text search ranks documents by keyword and phrase relevance using **BM25** scoring, with optional **Lucene** query syntax. Because a document index can also declare dense and sparse vector fields, the same index can rank by semantic or sparse-vector similarity, so one index can cover keyword and semantic search.
 
 ## When to use it
 
 Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
-<Note>
-  Full-text search requires [API version](/reference/api/versioning) `2026-07`. Send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later).
-</Note>
+> [!NOTE]
+>
+> Full-text search requires [API version](/reference/api/versioning) `2026-07`. Send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later).
 
 ## Capabilities
 
@@ -36,13 +32,23 @@ What full-text search does and doesn't match:
 
 Pinecone's Documents API stores typed fields you declare in a schema. End to end, the flow is short: create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script.
 
-1. You upsert data as JSON **documents**.
-2. You declare how each field should be indexed via a **schema**, as a `string` field with `full_text_search` enabled (BM25 scoring), a `dense_vector` field, or a `sparse_vector` field. The schema is for ranking fields only; metadata fields aren't declared.
-3. Pinecone indexes each field's content according to the type of the field declared in the schema. Any other fields on the upserted documents are automatically stored and indexed for filtering, no schema declaration required.
+### Interfaces
 
-For the field types you can declare, see [Schema field types](#schema-field-types). Filterable metadata isn't part of the schema. Any field you upsert that's not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering, see [Metadata fields](#metadata-fields).
+You can do each step (creating the index, upserting documents, and searching) with the REST API, a Pinecone SDK (Python, Node.js, or Go), or the Pinecone console. This page uses the API and SDK; the console covers the same operations with a UI.
+
+### Documents and schemas
+
+Creating and populating an index takes three steps:
+
+1. Create an index with a schema that declares your ranking fields and how each is indexed. You declare only ranking fields, not metadata fields. For the field types you can declare, see [Schema field types](#schema-field-types).
+2. Upsert your data as JSON documents, each with a required `_id`.
+3. Pinecone indexes each declared field by its type. Any other field on an upserted document is automatically stored and indexed for filtering, with no schema declaration.
+
+Filterable metadata isn't part of the schema. Any field you upsert that's not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering. See [Metadata fields](#metadata-fields).
 
 Newly upserted documents are indexed asynchronously, so they may not be searchable immediately. To confirm that an index holds the documents you expect, see [Check data freshness](/guides/index-data/check-data-freshness).
+
+### Scoring
 
 Every search ranks by one scoring type. The `score_by` clause selects the scoring method for the request:
 
@@ -50,8 +56,10 @@ Every search ranks by one scoring type. The `score_by` clause selects the scorin
 * `query_string`, Lucene query syntax across one or more FTS-enabled `string` fields, including cross-field boolean queries.
 * `dense_vector`, vector similarity against a `dense_vector` field.
 * `sparse_vector`, sparse-vector similarity against a `sparse_vector` field.
+* `embed`, dense similarity against a `string` field with `embed`, where Pinecone embeds your query text with the field's model.
+* `sparse_embed`, learned-sparse similarity against a `string` field with `sparse_embed`, where Pinecone embeds your query text with the field's model.
 
-The same index can support all four when the schema declares the corresponding fields, but a given request commits to one scoring type. To narrow the candidates a vector ranking sees, combine the `score_by` with a metadata filter, including the text-match operators `$match_phrase`, `$match_all`, and `$match_any` on FTS-enabled `string` fields, plus the standard logical and comparison operators (`$and`, `$or`, `$not`, `$exists`, etc.). The filter narrows what's eligible, and the `score_by` ranks what remains. This is the most common hybrid pattern. The alternative is to run separate searches and merge the results client-side, for example with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
+The same index can support all of these when the schema declares the corresponding fields, but a given request commits to one scoring type. To narrow the candidates a vector ranking sees, combine the `score_by` with a metadata filter, including the text-match operators `$match_phrase`, `$match_all`, and `$match_any` on FTS-enabled `string` fields, plus the standard logical and comparison operators (`$and`, `$or`, `$not`, `$exists`, etc.). The filter narrows what's eligible, and the `score_by` ranks what remains. This is the most common hybrid pattern. The alternative is to run separate searches and merge the results client-side, for example with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
 For example, on an index whose schema declares both a `dense_vector` field (`review_embedding`) and an FTS-enabled `string` field (`review_text`), this single request runs semantic search across the corpus but only over documents whose `review_text` contains the exact phrase "beautifully written":
 
@@ -78,9 +86,9 @@ BM25 can also rank on several fields at once. Name multiple fields in one `text`
 
 A complete run from index creation through search. Copy this into a single file, set `PINECONE_API_KEY`, and run.
 
-<Tip>
-  For a runnable version, see this [Google Colab notebook](https://colab.research.google.com/drive/1lsPeNLCJ2ucbYthHYs9WpybW4nAfB8tG), which upserts and searches a sample Wikipedia dataset.
-</Tip>
+> [!TIP]
+>
+> For a runnable version, see this [Google Colab notebook](https://colab.research.google.com/drive/1lsPeNLCJ2ucbYthHYs9WpybW4nAfB8tG), which upserts and searches a sample Wikipedia dataset.
 
 ```python Python theme={null}
 import os
@@ -160,7 +168,7 @@ for match in response.matches:
 
 What each piece does:
 
-* **`SchemaBuilder().add_string_field(..., full_text_search={"language": "en"})`** declares a BM25-indexed text field. Without `full_text_search`, the `string` field would be rejected at index creation — schemas only declare ranking fields.
+* **`SchemaBuilder().add_string_field(..., full_text_search={"language": "en"})`** declares a BM25-indexed text field. A `string` field that declares none of `full_text_search`, `embed`, or `sparse_embed` is rejected at index creation, since schemas only declare ranking fields.
 * **`index.documents.upsert(...)`** writes plain JSON documents. Schema fields are validated; non-schema fields (`category`, `year` here) are stored and auto-indexed for filtering. For large datasets, use [Import](/guides/index-data/import-data) instead.
 * **`score_by=[{"type": "text", ...}]`** picks BM25 as the scoring type. One scoring type per request; combine scoring with text matching via `filter` rather than mixing scoring methods.
 * **`filter`** narrows candidates *before* ranking. Standard operators (`$eq`, `$gte`, etc.) apply to any metadata field; the text-match operators (`$match_phrase`, `$match_all`, `$match_any`) only apply to FTS-enabled `string` fields.
@@ -176,7 +184,7 @@ When you're combining text matching with vector ranking, start with the hard yes
 
 The schema is required at [index creation](/guides/index-data/create-an-index) and declares the fields that drive ranking or vector search. Filterable metadata isn't declared in the schema: any field you upsert that isn't in the schema is automatically stored and indexed for filtering.
 
-A schema can declare up to 100 `string` fields with `full_text_search` enabled, but at most one `dense_vector` field and at most one `sparse_vector` field per index.
+A schema can declare up to 100 `string` fields with `full_text_search` enabled. An index has one dense slot and one sparse slot: at most one dense field (a `dense_vector` field, or a `string` field with `embed`) and at most one sparse field (a `sparse_vector` field, or a `string` field with `sparse_embed`).
 
 ### Schema field types
 
@@ -184,21 +192,21 @@ A schema can declare up to 100 `string` fields with `full_text_search` enabled, 
 | - | - | - |
 | `dense_vector` | ANN similarity search | `dimension` (required), `metric` (`cosine`, `dotproduct`, `euclidean`) |
 | `sparse_vector` | Sparse-vector similarity search with values from a custom sparse encoder | None |
-| `string` (text) | Full-text search. Set `full_text_search` to enable BM25, for example, `{ "language": "en" }`, or `{}` for defaults. | `language`, `stemming`, `stop_words`, `ngram` (all optional, under `full_text_search`) |
+| `string` (text) | Full-text search and/or server-side embedding. Set `full_text_search` for BM25, `embed` for dense embedding, `sparse_embed` for learned-sparse embedding; combine them on one field. See [Integrated embedding](/guides/search/integrated-embedding). | `full_text_search` (`language`, `stemming`, `stop_words`, `ngram`), `embed` (`model`, `dimension`, `metric`, `write_parameters`, `read_parameters`), `sparse_embed` (`model`, `write_parameters`, `read_parameters`), and `store_text`, all optional |
 
-<Note>
-  Schemas can only declare ranking fields. Declaring a metadata-only field (a `string` field without `full_text_search`, or a `string_list`, `float`, or `boolean` field) is rejected at index creation with a 400 error. Metadata fields are auto-indexed at upsert time. See [Metadata fields](#metadata-fields).
-</Note>
+> [!NOTE]
+>
+> Schemas can only declare ranking fields, so declaring a metadata-only field is rejected at index creation with a `400` error. A field is metadata-only when it's a `string_list`, `float`, or `boolean` field, or a `string` field that sets none of `full_text_search`, `embed`, or `sparse_embed`. Metadata fields are auto-indexed at upsert time. See [Metadata fields](#metadata-fields).
 
 Field names must be unique, non-empty strings, and must not start with `_` or `$`. The `_` prefix is reserved for system-managed fields (for example, `_id`, `_score`); `$` is reserved for filter operators. Field names are also limited to 64 bytes. Every document has a required `_id` field, which carries its unique identifier. A user metadata field named `score` is allowed, and match scores are returned as `_score` to avoid collisions.
 
-<Note>
-  Indexes with document schemas don't support integrated inference fields such as `semantic_text`. To use dense or sparse vector ranking in an index with a document schema, declare a `dense_vector` or `sparse_vector` field and provide vector values at upsert time.
-</Note>
+> [!NOTE]
+>
+> To rank by vector similarity, either supply your own vectors through a `dense_vector` or `sparse_vector` field, or have Pinecone embed a `string` field's text for you with `embed` or `sparse_embed`. Both compose with `full_text_search` on the same index. See [Integrated embedding](/guides/search/integrated-embedding). The `semantic_text` type isn't declared directly; it appears only when you describe an index created with the legacy [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) operation.
 
-<Note>
-  A `string` field with `full_text_search` isn't metadata and doesn't count toward the 40 KB metadata limit for documents. Use these FTS-enabled `string` fields for searchable chunk text. Indexes with document schemas don't support combining integrated inference fields, such as `semantic_text` fields, with full-text-search fields. To combine semantic ranking with full-text search, declare a `dense_vector` field alongside one or more FTS-enabled `string` fields and provide dense vector values when you upsert documents.
-</Note>
+> [!NOTE]
+>
+> A `string` field with `full_text_search` isn't metadata and doesn't count toward the 40 KB metadata limit for documents. Use these FTS-enabled `string` fields for searchable chunk text.
 
 ### Example schemas
 
@@ -232,9 +240,9 @@ A text-only schema. The minimal `{}` config enables FTS with all defaults; sub-f
 }
 ```
 
-<Note>
-  Including `full_text_search`, even an empty object `{}`, is what turns full-text search on for a `string` field. Without it, the field is rejected at index creation, because schemas only declare ranking fields.
-</Note>
+> [!NOTE]
+>
+> Including `full_text_search`, even an empty object `{}`, turns full-text search on for a `string` field. A `string` field must declare `full_text_search`, `embed`, or `sparse_embed`; one with none of these is rejected at index creation, because schemas only declare ranking fields.
 
 A multi-field schema with text, dense, and sparse vectors:
 
@@ -279,9 +287,9 @@ Metadata field types are inferred from the values you upsert: strings, numbers (
 
 Because metadata isn't declared anywhere, track the field names and types you use in your application.
 
-<Warning>
-  Schema migration is not yet supported. Once an index is created, you cannot add, remove, or modify fields. Plan your schema carefully.
-</Warning>
+> [!WARNING]
+>
+> Schema migration isn't yet supported. Once an index is created, you can't add, remove, or modify fields. Plan your schema carefully.
 
 ## Schema validation
 
@@ -409,77 +417,75 @@ For the full request and response schema, see [Search documents](/reference/api/
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion title="Document not appearing in search results">
-    * Check indexing latency: new documents may take up to 1 minute to become searchable; schemas with multiple indexed fields may take slightly longer.
-    * Verify the upsert response shows the expected `upserted_count`.
-    * Confirm you're searching the same namespace where you upserted.
-    * With `type: "text"`, multi-word queries use **token OR** matching — documents need not contain the full phrase. Try a single-term query first to confirm the document is searchable.
-    * If using filters, ensure the document's field values match your filter conditions. Metadata fields are auto-indexed at upsert time, so any field present on a document can be filtered on; filtering on a field that no document contains returns no results.
-  </Accordion>
+> **Document not appearing in search results**
+>
+> * Check indexing latency: new documents may take up to 1 minute to become searchable; schemas with multiple indexed fields may take slightly longer.
+> * Verify the upsert response shows the expected `upserted_count`.
+> * Confirm you're searching the same namespace where you upserted.
+> * With `type: "text"`, multi-word queries use **token OR** matching — documents need not contain the full phrase. Try a single-term query first to confirm the document is searchable.
+> * If using filters, ensure the document's field values match your filter conditions. Metadata fields are auto-indexed at upsert time, so any field present on a document can be filtered on; filtering on a field that no document contains returns no results.
 
-  <Accordion title="Unexpected search results">
-    * **`type: "text"` uses OR across terms.** `machine learning` matches documents that contain "machine", "learning", or both (BM25 ranking). For an **exact phrase**, use `type: "query_string"` with `body:("machine learning")` or a `$match_phrase` filter.
-    * **`type: "query_string"` defaults to OR for unquoted terms.** `body:(machine learning)` matches documents containing either term. Use `AND` or `+` for required terms.
-    * Operators like `AND`, `OR`, `NOT`, `*`, `~`, and `^` only work with `type: "query_string"`. With `type: "text"`, they're treated as literal words.
-  </Accordion>
+> **Unexpected search results**
+>
+> * **`type: "text"` uses OR across terms.** `machine learning` matches documents that contain "machine", "learning", or both (BM25 ranking). For an **exact phrase**, use `type: "query_string"` with `body:("machine learning")` or a `$match_phrase` filter.
+> * **`type: "query_string"` defaults to OR for unquoted terms.** `body:(machine learning)` matches documents containing either term. Use `AND` or `+` for required terms.
+> * Operators like `AND`, `OR`, `NOT`, `*`, `~`, and `^` only work with `type: "query_string"`. With `type: "text"`, they're treated as literal words.
 
-  <Accordion title="Query syntax errors">
-    Query syntax errors only apply to `type: "query_string"`. With `type: "text"`, any input is valid as a literal string to be tokenized.
+> **Query syntax errors**
+>
+> Query syntax errors only apply to `type: "query_string"`. With `type: "text"`, any input is valid as a literal string to be tokenized.
+>
+> * Unmatched quotes (`"machine learning`): Close all quotes.
+> * Empty query: Provide at least one search term.
+> * Invalid boolean syntax (`AND machine`): Operators need terms on both sides.
+> * Unbalanced parentheses: Match all opening and closing parens.
+> * Unknown field name: Field names in the query must match text-searchable fields in the schema.
 
-    * Unmatched quotes (`"machine learning`): Close all quotes.
-    * Empty query: Provide at least one search term.
-    * Invalid boolean syntax (`AND machine`): Operators need terms on both sides.
-    * Unbalanced parentheses: Match all opening and closing parens.
-    * Unknown field name: Field names in the query must match text-searchable fields in the schema.
-  </Accordion>
+> **API errors**
+>
+> * `401 Unauthorized`: Check the `Api-Key` header.
+> * `400 Bad Request`: Check JSON syntax and required fields. Examples: `fields` array with more than one element for `dense_vector`/`sparse_vector`; missing mutually-exclusive field for Fetch/Delete.
+> * `404 Not Found`: Verify the index name and host URL.
+> * Missing API version: Add `X-Pinecone-Api-Version: 2026-07`.
 
-  <Accordion title="API errors">
-    * `401 Unauthorized`: Check the `Api-Key` header.
-    * `400 Bad Request`: Check JSON syntax and required fields. Examples: `fields` array with more than one element for `dense_vector`/`sparse_vector`; missing mutually-exclusive field for Fetch/Delete.
-    * `404 Not Found`: Verify the index name and host URL.
-    * Missing API version: Add `X-Pinecone-Api-Version: 2026-07`.
-  </Accordion>
+> **Upsert errors**
+>
+> * Type mismatch: Ensure values match declared schema types.
+> * Invalid `_id`: Every document must have a non-empty `_id` string.
+> * Reserved names: Field names can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and must be at most 64 bytes.
 
-  <Accordion title="Upsert errors">
-    * Type mismatch: Ensure values match declared schema types.
-    * Invalid `_id`: Every document must have a non-empty `_id` string.
-    * Reserved names: Field names can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and must be at most 64 bytes.
-  </Accordion>
+> **Slow search performance**
+>
+> * Reduce query complexity: Boolean operators and large phrase slop are more expensive than simple term queries.
+> * Simplify filters: Filters are applied before scoring, so broad filters increase the search space.
+> * For cost-sensitive workloads, use `read_capacity.mode: "Dedicated"` to get predictable latency.
 
-  <Accordion title="Slow search performance">
-    * Reduce query complexity: Boolean operators and large phrase slop are more expensive than simple term queries.
-    * Simplify filters: Filters are applied before scoring, so broad filters increase the search space.
-    * For cost-sensitive workloads, use `read_capacity.mode: "Dedicated"` to get predictable latency.
-  </Accordion>
-
-  <Accordion title="Common request-shape pitfalls">
-    When a request is rejected with a 4xx that doesn't seem to match your intent, the cause is usually one of these:
-
-    * **Sparse-vector `score_by` clauses use `sparse_values`, not `values`.** The `values` key is for `dense_vector`. A sparse clause needs the full object: `"sparse_values": { "indices": [...], "values": [...] }`.
-
-    * **Every `score_by` clause must include `type`.** It's the discriminator that selects the scoring method (`text`, `query_string`, `dense_vector`, `sparse_vector`). Omitting it returns a 400.
-
-    * **Every document must have a non-empty `_id` string.** There is no default; the upsert request fails if any document in the batch is missing `_id` or has an empty value.
-
-    * **Wait for `status.ready: true` before searching.** A newly created index can briefly return empty results. For `Dedicated` read capacity, also wait for `read_capacity.status.state: "Ready"`.
-
-    * **The match-score response field is `_score`, not `score`.** A user metadata field named `score` is allowed and is returned alongside the system-owned `_score`.
-
-    * **Namespace is part of the URL path.** Use `__default__` (the literal string) if you don't need partitioning. An empty path segment is rejected.
-
-    * **`dense_vector` queries use `values`, not `query`.** Only `text` and `query_string` clauses use `query` (a string). `dense_vector` and `sparse_vector` use `values` (a float array) and `sparse_values` (an `{indices, values}` object) respectively.
-  </Accordion>
-</AccordionGroup>
+> **Common request-shape pitfalls**
+>
+> When a request is rejected with a 4xx that doesn't seem to match your intent, the cause is usually one of these:
+>
+> * **Sparse-vector `score_by` clauses use `sparse_values`, not `values`.** The `values` key is for `dense_vector`. A sparse clause needs the full object: `"sparse_values": { "indices": [...], "values": [...] }`.
+>
+> * **Every `score_by` clause must include `type`.** It's the discriminator that selects the scoring method (`text`, `query_string`, `dense_vector`, `sparse_vector`). Omitting it returns a 400.
+>
+> * **Every document must have a non-empty `_id` string.** There is no default; the upsert request fails if any document in the batch is missing `_id` or has an empty value.
+>
+> * **Wait for `status.ready: true` before searching.** A newly created index can briefly return empty results. For `Dedicated` read capacity, also wait for `read_capacity.status.state: "Ready"`.
+>
+> * **The match-score response field is `_score`, not `score`.** A user metadata field named `score` is allowed and is returned alongside the system-owned `_score`.
+>
+> * **Namespace is part of the URL path.** Use `__default__` (the literal string) if you don't need partitioning. An empty path segment is rejected.
+>
+> * **`dense_vector` queries use `values`, not `query`.** Only `text` and `query_string` clauses use `query` (a string). `dense_vector` and `sparse_vector` use `values` (a float array) and `sparse_values` (an `{indices, values}` object) respectively.
 
 ## Requirements and limitations
 
-Everything in this section applies to indexes with document schemas. For dense, sparse, and integrated-inference indexes, see [Search overview](/guides/search/search-overview).
+These requirements and limitations apply to document indexes. For dense and sparse vector indexes, and for legacy integrated indexes (created with create-index-for-model on the legacy Records API), see [Search overview](/guides/search/search-overview).
 
 ### Requirements
 
 * **Entry points**: Use the REST API, a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDKs send it for you.
-* **Endpoint compatibility**: Indexes with document schemas use the `/namespaces/{namespace}/documents/*` endpoints. Dense, sparse, and integrated-inference indexes continue to use `/vectors/*`, and `/records/*` for integrated inference. The two endpoint families are index-type-specific and don't cross over.
+* **Endpoint compatibility**: Document indexes use the `/namespaces/{namespace}/documents/*` endpoints, including when a `string` field embeds its text with `embed` or `sparse_embed`. Dense and sparse vector indexes use `/vectors/*`, and legacy integrated indexes (create-index-for-model) use `/records/*`. The endpoint families are index-type-specific and don't cross over.
 * **Deployment**: Supported on managed (serverless) and [BYOC](/guides/production/bring-your-own-cloud) deployments, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
 
 ### Limits
@@ -491,9 +497,9 @@ Everything in this section applies to indexes with document schemas. For dense, 
 ### Supported operations
 
 * **Partial updates**: Upsert replaces the whole document for a given `_id`. `POST /namespaces/{namespace}/documents/update` patches individual fields, by ID or by metadata filter. See [Update documents](/guides/manage-data/update-data#update-documents).
-* **Bulk import** from object storage, via JSONL files. See [Prepare document-schema files (JSONL)](/guides/index-data/import-data#prepare-document-schema-files-jsonl).
-* **Namespace operations**: You can [create, list, describe, and delete namespaces](/guides/manage-data/manage-namespaces) on an index with a document schema, and [describing a namespace](/guides/manage-data/manage-namespaces#describe-a-namespace) returns its `record_count` and `size_bytes`.
-* **`describe_index_stats`**: In the REST response, `totalVectorCount` and each namespace's `vectorCount` count documents, and both are accurate for every schema. `dimension` and `metric` describe the schema's `dense_vector` field, and `vectorType` is `dense`. When a schema declares no `dense_vector` field, `metric` falls back to `dotproduct`, and `dimension` is `0` on a text-only schema (`vectorType` is `text`) or is omitted when the schema declares a `sparse_vector` field (`vectorType` is `sparse`). For the full response schema, see [Get index stats](/reference/api/latest/data-plane/describeindexstats).
+* **Bulk import** from object storage, via JSONL files, except into an index with an `embed` or `sparse_embed` field. See [Prepare document-schema files (JSONL)](/guides/index-data/import-data#prepare-document-schema-files-jsonl).
+* **Namespace operations**: You can [create, list, describe, and delete namespaces](/guides/manage-data/manage-namespaces) on a document index, and [describing a namespace](/guides/manage-data/manage-namespaces#describe-a-namespace) returns its `record_count` and `size_bytes`.
+* **`describe_index_stats`**: In the REST response, `totalVectorCount` and each namespace's `vectorCount` count documents, and both are accurate for every schema. `dimension` and `metric` describe the schema's dense field (a `dense_vector` field, or a `string` field with `embed`), and `vectorType` is `dense`. When a schema declares no dense field, `metric` falls back to `dotproduct`, and `dimension` is `0` on a text-only schema (`vectorType` is `text`) or is omitted when the schema declares a sparse field (a `sparse_vector` field, or a `string` field with `sparse_embed`) and `vectorType` is `sparse`. For the full response schema, see [Get index stats](/reference/api/latest/data-plane/describeindexstats).
 
 ### Not supported
 
@@ -503,4 +509,6 @@ Everything in this section applies to indexes with document schemas. For dense, 
 
 ## Pricing
 
-Reads and writes on indexes with document schemas are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as vector indexes.
+Reads and writes on document indexes are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as vector indexes.
+
+A schema that declares `embed` or `sparse_embed` also bills for [embedding](/guides/manage-cost/understanding-cost#embedding) by the token, on top of RUs and WUs. Writes re-embed on every request, so a retried or duplicate write is embedded and metered again.

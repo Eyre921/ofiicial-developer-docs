@@ -15,9 +15,9 @@ Fireworks has Zero Data Retention by default. Specifically, this means
 * Fireworks logs metadata (e.g. number of tokens in a request) as required to deliver the service.
 * Users can explicitly opt-in to log prompt and generation data for certain advanced features (e.g. FireOptimizer).
 
-<Info>
-  Enterprise account admins can additionally turn on the [Zero Data Retention policy](/accounts/zero-data-retention) to reject requests and jobs that would persist or log customer content.
-</Info>
+> [!NOTE]
+>
+> Enterprise account admins can additionally turn on the [Zero Data Retention policy](/accounts/zero-data-retention) to reject requests and jobs that would persist or log customer content.
 
 ## Response API data retention
 
@@ -33,6 +33,6 @@ For the Response API specifically, Fireworks retains conversation data with the 
 
 This retention policy is designed to be consistent with the OpenAI API while providing users control over their data storage preferences.
 
-<Note>
-  The Response API retention policy only applies to conversation data when using the Response API endpoints. All other Fireworks services follow the zero data retention policy described above.
-</Note>
+> [!NOTE]
+>
+> The Response API retention policy only applies to conversation data when using the Response API endpoints. All other Fireworks services follow the zero data retention policy described above.

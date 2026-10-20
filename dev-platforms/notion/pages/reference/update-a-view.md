@@ -11,11 +11,11 @@ For a successful request, the response is the updated [View](/reference/view) ob
 
 All body parameters are optional. Only the provided fields are updated; omitted fields are left unchanged. To clear a field, pass `null`.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have update content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have update content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

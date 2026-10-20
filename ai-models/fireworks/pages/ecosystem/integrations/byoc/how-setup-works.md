@@ -8,9 +8,9 @@ How Bring Your Own Cluster onboarding works, from account and cluster prerequisi
 
 This page describes the high-level setup flow for Enterprise customers onboarding to Bring Your Own Cluster (BYOC).
 
-<Note>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm the onboarding path for your environment.
-</Note>
+> [!NOTE]
+>
+> Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm the onboarding path for your environment.
 
 ## Prerequisites
 
@@ -25,33 +25,31 @@ At a high level, you need:
 
 Fireworks supports BYOC on major cloud providers and their managed Kubernetes offerings, select GPU cloud providers, and on-premises environments that provide a reachable Kubernetes endpoint, supported NVIDIA GPU nodes, and the required network setup. Fireworks confirms provider, environment, GPU capacity, and networking support during preview onboarding.
 
-<Warning>
-  Training is not supported in BYOC during Private Preview.
-</Warning>
+> [!WARNING]
+>
+> Training is not supported in BYOC during Private Preview.
 
 ## Setup flow
 
-<Steps>
-  <Step title="Provision the cluster">
-    Your team provisions the Kubernetes cluster with NVIDIA GPU nodes, or provisions it jointly with Fireworks during onboarding. You retain ownership of the cloud account or data center environment, cluster, GPU nodes, and networking.
-  </Step>
+**1. Provision the cluster**
 
-  <Step title="Grant setup access">
-    You grant Fireworks an administrative credential to the cluster for setup. Fireworks recommends a dedicated, clearly named, revocable credential so your team can audit and manage access through your normal governance process.
-  </Step>
+Your team provisions the Kubernetes cluster with NVIDIA GPU nodes, or provisions it jointly with Fireworks during onboarding. You retain ownership of the cloud account or data center environment, cluster, GPU nodes, and networking.
 
-  <Step title="Install the serving stack">
-    Fireworks installs the serving stack using managed deployment tooling such as Helm or GitOps. During installation, Fireworks creates scoped-down Kubernetes identities and roles for the components that run in the cluster.
-  </Step>
+**2. Grant setup access**
 
-  <Step title="Configure networking and DNS">
-    Fireworks works with your team to configure networking and DNS so your customer endpoint is reachable through the Fireworks API experience while inference request and response handling runs in your environment.
-  </Step>
+You grant Fireworks an administrative credential to the cluster for setup. Fireworks recommends a dedicated, clearly named, revocable credential so your team can audit and manage access through your normal governance process.
 
-  <Step title="Validate and deploy models">
-    Fireworks validates the cluster, then deploys inference workloads into the environment. After validation, your applications use the same Fireworks APIs and SDKs used across the rest of the platform.
-  </Step>
-</Steps>
+**3. Install the serving stack**
+
+Fireworks installs the serving stack using managed deployment tooling such as Helm or GitOps. During installation, Fireworks creates scoped-down Kubernetes identities and roles for the components that run in the cluster.
+
+**4. Configure networking and DNS**
+
+Fireworks works with your team to configure networking and DNS so your customer endpoint is reachable through the Fireworks API experience while inference request and response handling runs in your environment.
+
+**5. Validate and deploy models**
+
+Fireworks validates the cluster, then deploys inference workloads into the environment. After validation, your applications use the same Fireworks APIs and SDKs used across the rest of the platform.
 
 ## Access model during setup
 

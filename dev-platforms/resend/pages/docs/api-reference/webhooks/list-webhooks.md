@@ -7,118 +7,143 @@ path: docs/api-reference/webhooks/list-webhooks
 GET /webhooks
 Retrieve a list of webhooks for the authenticated user.
 
-<QueryParams type="webhooks" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all webhooks will be returned
+in a single response.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**limit** `number`
 
-  const { data, error } = await resend.webhooks.list();
-  ```
+Number of webhooks to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**after** `string`
 
-  $resend->webhooks->list();
-  ```
+The ID *after* which we'll retrieve more webhooks (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+The ID *before* which we'll retrieve more webhooks (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  resend.api_key = 're_xxxxxxxxx'
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  webhooks = resend.Webhooks.list()
-  ```
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require 'resend'
+const resend = new Resend('re_xxxxxxxxx');
 
-  Resend.api_key = 're_xxxxxxxxx'
+const { data, error } = await resend.webhooks.list();
+```
 
-  webhooks = Resend::Webhooks.list
-  ```
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+$resend->webhooks->list();
+```
 
-  import "github.com/resend/resend-go/v4"
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
+resend.api_key = 're_xxxxxxxxx'
 
-  	client.Webhooks.List()
-  }
-  ```
+webhooks = resend.Webhooks.list()
+```
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{list_opts::ListOptions, Resend, Result};
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require 'resend'
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+Resend.api_key = 're_xxxxxxxxx'
 
-    let _webhooks = resend.webhooks.list(ListOptions::default()).await?;
+webhooks = Resend::Webhooks.list
+```
 
-    Ok(())
-  }
-  ```
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
-  import com.resend.services.webhooks.model.ListWebhooksResponseSuccess;
+import "github.com/resend/resend-go/v4"
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
 
-          ListWebhooksResponseSuccess response = resend.webhooks().list();
-      }
-  }
-  ```
+	client.Webhooks.List()
+}
+```
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{list_opts::ListOptions, Resend, Result};
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  var resp = await resend.WebhookListAsync();
-  Console.WriteLine( "Nr Webhooks={0}", resp.Content.Data.Count );
-  ```
+  let _webhooks = resend.webhooks.list(ListOptions::default()).await?;
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/webhooks' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+  Ok(())
+}
+```
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend webhooks list
-  ```
-</RequestExample>
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.webhooks.model.ListWebhooksResponseSuccess;
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "7ab123cd-ef45-6789-abcd-ef0123456789",
-        "created_at": "2026-09-10 10:15:30.000+00",
-        "status": "disabled",
-        "endpoint": "https://first-webhook.example.com/handler",
-        "events": ["email.sent"]
-      },
-      {
-        "id": "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
-        "created_at": "2026-08-22 15:28:00.000+00",
-        "status": "enabled",
-        "endpoint": "https://second-webhook.example.com/receive",
-        "events": ["email.received"]
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListWebhooksResponseSuccess response = resend.webhooks().list();
+    }
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.WebhookListAsync();
+Console.WriteLine( "Nr Webhooks={0}", resp.Content.Data.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/webhooks' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend webhooks list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "7ab123cd-ef45-6789-abcd-ef0123456789",
+      "created_at": "2026-09-10 10:15:30.000+00",
+      "status": "disabled",
+      "endpoint": "https://first-webhook.example.com/handler",
+      "events": ["email.sent"]
+    },
+    {
+      "id": "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
+      "created_at": "2026-08-22 15:28:00.000+00",
+      "status": "enabled",
+      "endpoint": "https://second-webhook.example.com/receive",
+      "events": ["email.received"]
+    }
+  ]
+}
+```

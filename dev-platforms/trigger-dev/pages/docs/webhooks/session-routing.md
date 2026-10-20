@@ -91,7 +91,14 @@ When the same session is also a [channel](/docs/webhooks/channels) conversation 
 ```ts theme={"theme":"css-variables"}
 export const orderAgent = chat.agent({
   id: "order-agent",
-  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "support-slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   events: [orderEvents],
   onAction: async ({ action }) => {
     if (action.type === "order.event") {

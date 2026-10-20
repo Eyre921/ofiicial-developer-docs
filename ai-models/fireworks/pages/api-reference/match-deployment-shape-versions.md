@@ -11,9 +11,9 @@ Use this endpoint to discover the deployment shape versions compatible with a mo
 
 Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
 
-<Note>
-  The account in the URL must be **your own account** — the account that will own the deployment (you must be a member of it, so `accounts/fireworks` fails with a permission error). The model in the request body, however, can live in any account you can deploy from, including publisher accounts like `accounts/fireworks`; public shapes from the publisher's account flow into the results.
-</Note>
+> [!NOTE]
+>
+> The account in the URL must be **your own account** — the account that will own the deployment (you must be a member of it, so `accounts/fireworks` fails with a permission error). The model in the request body, however, can live in any account you can deploy from, including publisher accounts like `accounts/fireworks`; public shapes from the publisher's account flow into the results.
 
 ## Example: Match shapes for a model
 

@@ -24,21 +24,21 @@ There are two node types: `b1` and `t1`. Both are suitable for large-scale and d
 
 Consider using `t1` nodes if your performance requirements aren't met by `b1` nodes, or if `t1` nodes are more cost-effective than `b1` nodes for your workload.
 
-<Note>
-  When choosing a node type, remember that:
-
-  * Both types of nodes provide 250 GB of storage per shard. The difference is in compute and memory, which affects query performance.
-  * Because `t1` nodes cache more data in memory than `b1` nodes, an index may require more shards on `t1` than on `b1` (for the same data).
-  * You can [change node types](/guides/index-data/dedicated-read-nodes/manage#change-node-types) after creating your index.
-</Note>
+> [!NOTE]
+>
+> When choosing a node type, remember that:
+>
+> * Both types of nodes provide 250 GB of storage per shard. The difference is in compute and memory, which affects query performance.
+> * Because `t1` nodes cache more data in memory than `b1` nodes, an index may require more shards on `t1` than on `b1` (for the same data).
+> * You can [change node types](/guides/index-data/dedicated-read-nodes/manage#change-node-types) after creating your index.
 
 ## Shards
 
 Shards determine the storage capacity of an index. Each shard provides 250 GB of storage, and data is split across all the shards in an index. To respond to a query, the index gathers data from all shards as needed. To determine how many shards you need, [calculate your index size](/guides/index-data/dedicated-read-nodes/size-and-test#calculate-the-size-of-your-index) and then [calculate the number of shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards).
 
-<Warning>
-  It's your responsibility to allocate enough shards for your index size. If you run out of shard capacity, writes are blocked (reads continue). Track how close you are with [index fullness](#index-fullness).
-</Warning>
+> [!WARNING]
+>
+> It's your responsibility to allocate enough shards for your index size. If you run out of shard capacity, writes are blocked (reads continue). Track how close you are with [index fullness](#index-fullness).
 
 ## Replicas
 
@@ -50,9 +50,9 @@ Replicas multiply the compute resources and data of an index, allowing for highe
 
 To determine how many replicas you need, [test your workload](/guides/index-data/dedicated-read-nodes/size-and-test#test-your-workload) and then [calculate the number of replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas).
 
-<Note>
-  Actual performance varies based on workload characteristics (query complexity, vector dimensions, metadata characteristics), [metadata filter](/guides/search/filter-by-metadata) selectivity, and [node type](#node-types) (`b1` vs `t1`). Always test with your specific workload.
-</Note>
+> [!NOTE]
+>
+> Actual performance varies based on workload characteristics (query complexity, vector dimensions, metadata characteristics), [metadata filter](/guides/search/filter-by-metadata) selectivity, and [node type](#node-types) (`b1` vs `t1`). Always test with your specific workload.
 
 ## Index fullness
 

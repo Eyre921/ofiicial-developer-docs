@@ -1938,7 +1938,7 @@ This defines every service you're setting up: n8n itself, the sandbox stack that
 
 This bundles n8n's own sandbox (`n8n-sandbox`), which is a good fit for local development and testing. For a production instance, n8n currently recommends Daytona as the sandbox provider instead. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for how to configure a Daytona sandbox.
 
-There's no database service defined here. n8n falls back to its built-in SQLite database, stored inside the container unless you mount a volume for it. For a production instance, swap in Postgres. See [Use PostgreSQL instead of SQLite](#optional-use-postgresql-instead-of-sqlite) below.
+There's no database service defined here. n8n falls back to its built-in SQLite database. The `n8n-data` volume in `get-n8n-compose.yml` stores the database and n8n's encryption key, so your data survives restarts and container recreation. For a production instance, swap in Postgres. See [Use PostgreSQL instead of SQLite](#optional-use-postgresql-instead-of-sqlite) below.
 
 ## Step 5: Start everything
 
@@ -2286,7 +2286,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2541,7 +2541,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2913,7 +2913,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3015,7 +3015,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3379,7 +3379,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3594,7 +3594,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3810,7 +3810,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4093,7 +4093,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -5387,7 +5387,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.43.8 Current `beta`: 2.44.4
+Current `stable`: 2.44.4 Current `beta`: 2.45.0
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -6535,11 +6535,11 @@ The durable scheduler is available from n8n 2.36.0. Earlier versions back to n8n
 
 ## Enable the scheduler <a href="#enable-vars" id="enable-vars"></a>
 
-| Variable                              | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ------------------------------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_SCHEDULER_ENABLED`               | Boolean | `true`  | Whether to use the durable scheduler. Defaults to `true` from n8n 2.45.0 (`false` in earlier versions). Set to `false` to use the in-memory scheduler. Requires `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`, also on by default, to take over Schedule Trigger nodes. Deprecated from n8n 2.45.0: a future version will remove this variable and the in-memory scheduler.                                                                                                    |
-| `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED` | Boolean | `false` | Whether the durable scheduler also takes over polling triggers (trigger nodes with a Poll Times parameter). Requires `N8N_SCHEDULER_ENABLED` and `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`. Available from n8n 2.33.0.                                                                                                                                                                                                                                                     |
-| `N8N_SCHEDULER_SYSTEM_TASKS_ENABLED`  | Boolean | `false` | Whether the durable scheduler runs n8n's internal maintenance jobs instead of the leader main's in-process timers. n8n moves these jobs to the durable scheduler one release at a time, and in n8n 2.40.0 no job uses it yet. Requires `N8N_SCHEDULER_ENABLED`. Set the same value on every main, and give every main the same `N8N_SCHEDULER_ENABLED`. A main with either flag off removes the durable schedules for these jobs at startup. Available from n8n 2.40.0. |
+| Variable                              | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_ENABLED`               | Boolean | `true`  | Whether to use the durable scheduler. Defaults to `true` from n8n 2.45.0 (`false` in earlier versions). Set to `false` to use the in-memory scheduler. Requires `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`, also on by default, to take over Schedule Trigger nodes. Deprecated from n8n 2.45.0: a future version will remove this variable and the in-memory scheduler.                                                                                                                                                                                |
+| `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED` | Boolean | `false` | Whether the durable scheduler also takes over polling triggers (trigger nodes with a Poll Times parameter). Requires `N8N_SCHEDULER_ENABLED` and `N8N_USE_WORKFLOW_PUBLICATION_SERVICE`. Available from n8n 2.33.0.                                                                                                                                                                                                                                                                                                                                 |
+| `N8N_SCHEDULER_SYSTEM_TASKS_ENABLED`  | Boolean | `false` | Whether the durable scheduler runs n8n's internal maintenance jobs instead of the leader main's in-process timers. Requires `N8N_SCHEDULER_ENABLED`. Give every main the same value for both variables, and run the same n8n version on every main. A main with either flag off removes the durable schedules for these jobs at startup. Use it from n8n 2.45.0, the first version that runs every system task on the durable scheduler. See [System tasks](/deploy/host-n8n/configure-n8n/system-tasks#run-system-tasks-on-the-durable-scheduler). |
 
 n8n 2.45.0 removes `N8N_ENV_FEAT_SKIP_DURABLE_SCHEDULER` and the **Skip Durable Scheduler** node setting. To use the in-memory scheduler for all Schedule Trigger nodes, set `N8N_SCHEDULER_ENABLED=false` and restart n8n. See [Use the in-memory scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler#use-the-in-memory-scheduler).
 
@@ -10014,7 +10014,7 @@ n8n 2.45.0 also removes the **Skip Durable Scheduler** node setting and `N8N_ENV
 
 Poll triggers (trigger nodes with a **Poll Times** parameter, such as Google Sheets Trigger or Airtable Trigger) stay on the in-memory scheduler unless you also opt them in with [`N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler#enable-vars), available from n8n 2.33.0. Poll trigger support isn't 100% stable yet, so keep it off in production unless you're prepared to keep a close watch on your polling workflows. For how polls behave under the durable scheduler, and for the [durable poll cursors](#durable-poll-cursors) that n8n recommends turning on together with `N8N_SCHEDULER_POLL_TRIGGERS_ENABLED`, see [Poll triggers](#poll-triggers).
 
-n8n's internal maintenance jobs also stay on in-process timers unless you opt them in with [`N8N_SCHEDULER_SYSTEM_TASKS_ENABLED`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler#enable-vars), available from n8n 2.40.0. n8n moves these jobs to the durable scheduler one release at a time, and in n8n 2.40.0 no job uses it yet.
+n8n's internal maintenance jobs also stay on in-process timers unless you opt them in with [`N8N_SCHEDULER_SYSTEM_TASKS_ENABLED`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler#enable-vars), from n8n 2.45.0. See [Run system tasks on the durable scheduler](/deploy/host-n8n/configure-n8n/system-tasks#run-system-tasks-on-the-durable-scheduler).
 
 ## How the durable scheduler works <a href="#how-it-works" id="how-it-works"></a>
 
@@ -10193,12 +10193,28 @@ This page explains how system tasks run and which Prometheus metrics they expose
 
 ## How system tasks run
 
-Each system task declares its own cadence, either a fixed interval or a cron schedule, and runs in one of two modes. The `mode` label on the run and schedule series below tells you which one a task uses:
+Each system task has its own cadence, either a fixed interval or a cron schedule, and runs in one of three modes. The `mode` label on the metrics below tells you which one:
 
-* **In-memory mode**, `in_memory`: the task runs from a timer in the leader main instance's process. This is the default mode. Only the leader runs these timers: they stop when an instance steps down and start again on the instance that takes over. A run whose time passes while the instance is down doesn't happen. If the process runs but sleeps, a suspended container for example, the timer fires once for all the occurrences it slept through instead of replaying them one by one.
-* **Durable mode**, `durable`: the task runs from the [durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler)'s database-backed queue, so any main instance can pick up the run and a restart doesn't drop it. Set `N8N_SCHEDULER_SYSTEM_TASKS_ENABLED` to `true` to use this mode. It also requires `N8N_SCHEDULER_ENABLED`, which is on by default from n8n 2.45.0. Give every instance in your setup the same values for both variables. Only tasks that support durable mode move over. The rest stay on their in-memory timers. As of n8n 2.41.0, no system task supports durable mode, so every task runs from an in-memory timer.
+* **Leader timer**, `leader_timer`. A timer in the leader main instance runs the task. The timers stop when the leader steps down and start on the new leader. A run that falls due while the instance is down doesn't happen.
+* **Instance timer**, `instance_timer`. Every process the task targets runs its own copy, because the task acts on state of that process. Available from n8n 2.42.0.
+* **Durable**, `durable`. The [durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler) runs the task from its database-backed queue. Any main instance can claim a due run, and a restart doesn't drop it. Available from n8n 2.41.0.
 
-A durable system task is also a scheduler task, so the [durable scheduler metrics](/deploy/host-n8n/configure-n8n/durable-scheduler#observability) cover it under a `task_type` label of `system:<task-name>`, for example `system:insights-compaction`. The system task metrics on this page cover both modes with the same names, which the scheduler metrics can't do: they never see an in-memory run.
+### Run system tasks on the durable scheduler
+
+To move system tasks to the durable scheduler, set these environment variables on every main instance and restart n8n:
+
+```bash
+export N8N_SCHEDULER_ENABLED=true
+export N8N_SCHEDULER_SYSTEM_TASKS_ENABLED=true
+```
+
+Give every main instance the same values for both variables. Only tasks that support durable mode move over. The rest keep their timer mode.
+
+{% hint style="warning" %}
+Run the same n8n version on every main instance. During a rolling deploy, an older main instance can run a task from its leader timer while newer ones run it on the durable scheduler, so the task can run twice.
+{% endhint %}
+
+A durable system task is also a scheduler task. The [durable scheduler metrics](/deploy/host-n8n/configure-n8n/durable-scheduler#observability) report it with the `task_type` label `system:<task-name>`, for example `system:insights-compaction`. The metrics on this page cover all three modes under the same names.
 
 ## Observability
 
@@ -10215,7 +10231,7 @@ export N8N_METRICS=true
 export N8N_METRICS_INCLUDE_SYSTEM_TASK_METRICS=true
 ```
 
-Only main instances emit them, in both modes. To set up the endpoint itself, see [Enable Prometheus metrics](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics). To chart the metrics, see [Visualize metrics with Grafana](/deploy/host-n8n/keep-n8n-running/visualize-metrics-with-grafana). n8n publishes a [ready-made system tasks dashboard](https://github.com/n8n-io/n8n-observability/tree/main/dashboards/grafana/n8n-system-tasks) with a suggested action for each panel.
+Workers and webhook processors also emit them for their own instance timer tasks. To set up the endpoint itself, see [Enable Prometheus metrics](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics). To chart the metrics, see [Visualize metrics with Grafana](/deploy/host-n8n/keep-n8n-running/visualize-metrics-with-grafana). n8n publishes a [ready-made system tasks dashboard](https://github.com/n8n-io/n8n-observability/tree/main/dashboards/grafana/n8n-system-tasks) with a suggested action for each panel.
 
 All names below assume the default `n8n_` metrics prefix. If you set `N8N_METRICS_PREFIX`, substitute your own.
 
@@ -10223,18 +10239,18 @@ All names below assume the default `n8n_` metrics prefix. If you set `N8N_METRIC
 
 Every series carries a small, fixed set of labels:
 
-| Label    | Values                                                                                              | What it means                                                                                                                                                                               |
-| -------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `task`   | The task name, such as `execution-pruning-soft-delete`, `insights-compaction`, or `license-renewal` | Which system task the series describes. Which tasks exist depends on your version, your license, and your settings, so read the list off `n8n_system_task_info` rather than hard-coding it. |
-| `mode`   | `in_memory`, `durable`                                                                              | Where the task runs. See [How system tasks run](#how-system-tasks-run).                                                                                                                     |
-| `result` | `success`, `failure`, `aborted`                                                                     | How a run ended. `aborted` means the run was still going when the instance stepped down or shut down, so it stopped without finishing its work.                                             |
-| `reason` | `overlap`, `provisioned_elsewhere`, `aborted`, `coalesced`                                          | Why an occurrence didn't run. See [In-memory scheduling](#in-memory-scheduling).                                                                                                            |
+| Label    | Values                                                                                              | What it means                                                                                                                                                                                                                                           |
+| -------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `task`   | The task name, such as `execution-pruning-soft-delete`, `insights-compaction`, or `license-renewal` | Which system task the series describes. Which tasks exist depends on your version, your license, and your settings, so read the list off `n8n_system_task_info` rather than hard-coding it.                                                             |
+| `mode`   | `leader_timer`, `instance_timer`, `durable`                                                         | Where the task runs. See [How system tasks run](#how-system-tasks-run). Before n8n 2.42.0, `leader_timer` was `in_memory`.                                                                                                                              |
+| `result` | `success`, `failure`, `aborted`, `lease_lost`, `timed_out`                                          | How a run ended. `aborted` means the run was still going when the instance stepped down or shut down, so it stopped without finishing its work. `lease_lost` and `timed_out`, from n8n 2.44.0, mean a durable run lost its claim or passed its timeout. |
+| `reason` | `overlap`, `provisioned_elsewhere`, `aborted`, `coalesced`                                          | Why an occurrence didn't run. See [In-memory scheduling](#in-memory-scheduling).                                                                                                                                                                        |
 
 There's no instance label. Prometheus adds `instance` and `job` per scrape target, so aggregate with `max by (task)` for the gauges that describe a task, and `sum by (task)` for counters, histograms, and the in-flight gauge.
 
 ### Run health
 
-These three series cover the runs themselves, in both modes.
+These three series cover the runs themselves, in all three modes.
 
 | Metric                                           | Type      | What it tells you                                                                                                                                                                                                                                                                    |
 | ------------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -10246,25 +10262,25 @@ These three series cover the runs themselves, in both modes.
 
 These series describe the schedule rather than a run, so they exist before the first run happens.
 
-| Metric                                           | Type    | What it tells you                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `n8n_system_task_info`                           | Gauge   | Always `1`, one series per task this instance can run, with its `mode`. Your inventory of system tasks: join against it to find a task that reports no runs.                                                                                                                                                                                                        |
-| `n8n_system_task_interval_seconds`               | Gauge   | The task's declared cadence, for tasks on a fixed interval. This turns "late" into a query instead of a list of thresholds you maintain by hand. Tasks on a cron schedule don't report it.                                                                                                                                                                          |
-| `n8n_system_task_next_run_timestamp_seconds`     | Gauge   | The Unix timestamp of the next occurrence the task is armed for. In-memory tasks only, but unlike the cadence it covers tasks on a cron schedule too. It moves forward each time the timer arms the following occurrence, so a timestamp that sits in the past means the timer stopped planning.                                                                    |
-| `n8n_system_task_scheduled`                      | Gauge   | `1` while n8n has the task scheduled, `0` once the task lost its schedule for good, because n8n couldn't plan its in-memory cadence or couldn't provision its durable job. A `0` here means the task stopped for good rather than running late: it takes an instance restart, or a leadership change for an in-memory task, to get it scheduled again. Alert on it. |
-| `n8n_system_task_provision_check_failures_total` | Counter | How many times n8n couldn't check whether a task's durable job exists and ran the task in memory instead. A rising count means database trouble, and a small risk of the same task running twice while both paths are live.                                                                                                                                         |
+| Metric                                           | Type    | What it tells you                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `n8n_system_task_info`                           | Gauge   | Always `1`, one series per task this instance can run, with its `mode`. Your inventory of system tasks: join against it to find a task that reports no runs.                                                                                                                                                                                                                                              |
+| `n8n_system_task_interval_seconds`               | Gauge   | The task's declared cadence, for tasks on a fixed interval. This turns "late" into a query instead of a list of thresholds you maintain by hand. Tasks on a cron schedule don't report it.                                                                                                                                                                                                                |
+| `n8n_system_task_next_run_timestamp_seconds`     | Gauge   | The Unix timestamp of the next occurrence, for interval and cron schedules. For a timer task, it's the occurrence the timer on this instance is armed for. A timestamp in the past means the timer stopped planning. For a durable task, it's the first occurrence the scheduler didn't plan yet, so a planned run can start earlier. Every main instance reports the same value, read from the database. |
+| `n8n_system_task_scheduled`                      | Gauge   | `1` while n8n has the task scheduled, `0` once the task lost its schedule, because n8n couldn't plan its timer cadence or no runnable durable job exists for it. A `0` here means the task stopped rather than running late: it takes an instance restart, or a leadership change for a leader timer task, to get it scheduled again. Alert on it.                                                        |
+| `n8n_system_task_provision_check_failures_total` | Counter | How many times n8n couldn't check whether a task's durable job exists and ran the task from the leader timer instead. A rising count means database trouble, and a small risk of the same task running twice while both paths are live.                                                                                                                                                                   |
 
-The series for a durable task appear as soon as n8n routes the task at startup, so a restart shows up as a reset rather than a gap. The `info`, `scheduled`, `runs_in_flight`, `last_success`, and `next_run_timestamp_seconds` series of an in-memory task exist only while this instance leads, and n8n removes them when the instance steps down: a former leader doesn't keep exporting frozen values for runs it no longer makes. Only `interval_seconds` stays, because the cadence doesn't depend on who leads.
+The series for a durable or instance timer task appear as soon as n8n routes the task at startup, so a restart shows up as a reset rather than a gap. The `info`, `scheduled`, `runs_in_flight`, `last_success`, and `next_run_timestamp_seconds` series of a leader timer task exist only while this instance leads, and n8n removes them when the instance steps down: a former leader doesn't keep exporting frozen values for runs it no longer makes. Only `interval_seconds` stays, because the cadence doesn't depend on who leads.
 
 ### In-memory scheduling
 
-These series only cover in-memory runs. The durable path has its own equivalents in the [durable scheduler metrics](/deploy/host-n8n/configure-n8n/durable-scheduler#observability): `n8n_scheduler_task_retries_total` for retries and `n8n_scheduler_dispatch_lag_seconds` for lag.
+These series only cover timer runs. The durable path has its own equivalents in the [durable scheduler metrics](/deploy/host-n8n/configure-n8n/durable-scheduler#observability): `n8n_scheduler_task_retries_total` for retries and `n8n_scheduler_dispatch_lag_seconds` for lag.
 
-| Metric                               | Type      | What it tells you                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ------------------------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `n8n_system_task_runs_skipped_total` | Counter   | How many occurrences didn't run, split by `reason`. `overlap` means the previous run was still going. `provisioned_elsewhere` means the task has a durable job, so the in-memory timer stood down. `aborted` means the occurrence fired after the instance had already started stepping down. `coalesced` means the process slept through occurrences and the timer fired a single time for the whole batch, so the counter grows by the number of occurrences that fire stood in for. |
-| `n8n_system_task_retries_total`      | Counter   | How many retries n8n scheduled after a failed run. Only tasks that declare a retry delay retry at all, so a failing task with a flat count here isn't a bug.                                                                                                                                                                                                                                                                                                                           |
-| `n8n_system_task_fire_lag_seconds`   | Histogram | How late each timer fires, in seconds. Small values mean a busy event loop. Large ones mean the process paused or slept, and its buckets reach a day because a coalesced fire is late by at least one full cadence.                                                                                                                                                                                                                                                                    |
+| Metric                               | Type      | What it tells you                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `n8n_system_task_runs_skipped_total` | Counter   | How many occurrences didn't run, split by `reason`. `overlap` means the previous run was still going. `provisioned_elsewhere` means the task has a durable job, so the leader timer stood down. `aborted` means the occurrence fired after the instance had already started stepping down. `coalesced` means the process slept through occurrences and the timer fired a single time for the whole batch, so the counter grows by the number of occurrences that fire stood in for. |
+| `n8n_system_task_retries_total`      | Counter   | How many retries n8n scheduled after a failed run. Only tasks that declare a retry delay retry at all, so a failing task with a flat count here isn't a bug.                                                                                                                                                                                                                                                                                                                        |
+| `n8n_system_task_fire_lag_seconds`   | Histogram | How late each timer fires, in seconds. Small values mean a busy event loop. Large ones mean the process paused or slept, and its buckets reach a day because a coalesced fire is late by at least one full cadence.                                                                                                                                                                                                                                                                 |
 
 ## Related resources
 

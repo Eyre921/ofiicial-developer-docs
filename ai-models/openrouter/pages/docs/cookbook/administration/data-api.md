@@ -134,48 +134,46 @@ Notes on the response:
 
 ### Examples
 
-<CodeGroup>
-  ```bash title="cURL" lines theme={null}
-  curl -G https://openrouter.ai/api/v1/datasets/rankings-daily \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "start_date=2026-04-01" \
-    --data-urlencode "end_date=2026-04-30"
-  ```
+```bash title="cURL" lines theme={null}
+curl -G https://openrouter.ai/api/v1/datasets/rankings-daily \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "start_date=2026-04-01" \
+  --data-urlencode "end_date=2026-04-30"
+```
 
-  ```python title="Python" lines theme={null}
-  import os
-  import requests
+```python title="Python" lines theme={null}
+import os
+import requests
 
-  resp = requests.get(
-      "https://openrouter.ai/api/v1/datasets/rankings-daily",
-      headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
-      params={"start_date": "2026-04-01", "end_date": "2026-04-30"},
-      timeout=30,
-  )
-  resp.raise_for_status()
-  payload = resp.json()
-  print(payload["meta"]["as_of"], len(payload["data"]), "rows")
-  ```
+resp = requests.get(
+    "https://openrouter.ai/api/v1/datasets/rankings-daily",
+    headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+    params={"start_date": "2026-04-01", "end_date": "2026-04-30"},
+    timeout=30,
+)
+resp.raise_for_status()
+payload = resp.json()
+print(payload["meta"]["as_of"], len(payload["data"]), "rows")
+```
 
-  ```typescript title="TypeScript" lines theme={null}
-  const res = await fetch(
-    "https://openrouter.ai/api/v1/datasets/rankings-daily?start_date=2026-04-01&end_date=2026-04-30",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
+```typescript title="TypeScript" lines theme={null}
+const res = await fetch(
+  "https://openrouter.ai/api/v1/datasets/rankings-daily?start_date=2026-04-01&end_date=2026-04-30",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
     },
-  );
-  if (!res.ok) {
-    throw new Error(`Data API request failed: ${res.status}`);
-  }
-  const payload = (await res.json()) as {
-    data: Array<{ date: string; model_permaslug: string; total_tokens: string }>;
-    meta: { as_of: string; version: string; start_date: string; end_date: string };
-  };
-  console.log(payload.meta.as_of, payload.data.length, "rows");
-  ```
-</CodeGroup>
+  },
+);
+if (!res.ok) {
+  throw new Error(`Data API request failed: ${res.status}`);
+}
+const payload = (await res.json()) as {
+  data: Array<{ date: string; model_permaslug: string; total_tokens: string }>;
+  meta: { as_of: string; version: string; start_date: string; end_date: string };
+};
+console.log(payload.meta.as_of, payload.data.length, "rows");
+```
 
 ### Acceptable use and attribution
 
@@ -258,56 +256,54 @@ Notes:
 
 ### Examples
 
-<CodeGroup>
-  ```bash title="cURL" lines theme={null}
-  # Most popular coding apps
-  curl -G https://openrouter.ai/api/v1/datasets/app-rankings \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "sort=popular" \
-    --data-urlencode "category=coding" \
-    --data-urlencode "limit=10"
+```bash title="cURL" lines theme={null}
+# Most popular coding apps
+curl -G https://openrouter.ai/api/v1/datasets/app-rankings \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "sort=popular" \
+  --data-urlencode "category=coding" \
+  --data-urlencode "limit=10"
 
-  # Trending apps overall
-  curl -G https://openrouter.ai/api/v1/datasets/app-rankings \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "sort=trending"
-  ```
+# Trending apps overall
+curl -G https://openrouter.ai/api/v1/datasets/app-rankings \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "sort=trending"
+```
 
-  ```python title="Python" lines theme={null}
-  import os
-  import requests
+```python title="Python" lines theme={null}
+import os
+import requests
 
-  resp = requests.get(
-      "https://openrouter.ai/api/v1/datasets/app-rankings",
-      headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
-      params={"sort": "popular", "category": "coding", "limit": 10},
-      timeout=30,
-  )
-  resp.raise_for_status()
-  for app in resp.json()["data"]:
-      print(f"#{app['rank']} {app['app_name']} — {app['total_tokens']} tokens")
-  ```
+resp = requests.get(
+    "https://openrouter.ai/api/v1/datasets/app-rankings",
+    headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+    params={"sort": "popular", "category": "coding", "limit": 10},
+    timeout=30,
+)
+resp.raise_for_status()
+for app in resp.json()["data"]:
+    print(f"#{app['rank']} {app['app_name']} — {app['total_tokens']} tokens")
+```
 
-  ```typescript title="TypeScript" lines theme={null}
-  const res = await fetch(
-    "https://openrouter.ai/api/v1/datasets/app-rankings?sort=popular&category=coding&limit=10",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
+```typescript title="TypeScript" lines theme={null}
+const res = await fetch(
+  "https://openrouter.ai/api/v1/datasets/app-rankings?sort=popular&category=coding&limit=10",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
     },
-  );
-  if (!res.ok) throw new Error(`App rankings request failed: ${res.status}`);
+  },
+);
+if (!res.ok) throw new Error(`App rankings request failed: ${res.status}`);
 
-  const payload = (await res.json()) as {
-    data: Array<{ rank: number; app_id: number; app_name: string; total_tokens: string; total_requests: number }>;
-    meta: { as_of: string; version: string; start_date: string; end_date: string };
-  };
-  for (const app of payload.data) {
-    console.log(`#${app.rank} ${app.app_name} — ${app.total_tokens} tokens`);
-  }
-  ```
-</CodeGroup>
+const payload = (await res.json()) as {
+  data: Array<{ rank: number; app_id: number; app_name: string; total_tokens: string; total_requests: number }>;
+  meta: { as_of: string; version: string; start_date: string; end_date: string };
+};
+for (const app of payload.data) {
+  console.log(`#${app.rank} ${app.app_name} — ${app.total_tokens} tokens`);
+}
+```
 
 ## Benchmarks
 
@@ -457,67 +453,65 @@ OpenRouter's own web-search benchmarks (`search_browsecomp`, `search_hle`, `sear
 
 ### Examples
 
-<CodeGroup>
-  ```bash title="cURL" lines theme={null}
-  # Artificial Analysis — all models
-  curl -G https://openrouter.ai/api/v1/benchmarks \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "source=artificial-analysis" \
-    --data-urlencode "max_results=20"
+```bash title="cURL" lines theme={null}
+# Artificial Analysis — all models
+curl -G https://openrouter.ai/api/v1/benchmarks \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "source=artificial-analysis" \
+  --data-urlencode "max_results=20"
 
-  # Best coding models across Artificial Analysis
-  curl -G https://openrouter.ai/api/v1/benchmarks \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "source=artificial-analysis" \
-    --data-urlencode "task_type=coding"
+# Best coding models across Artificial Analysis
+curl -G https://openrouter.ai/api/v1/benchmarks \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "source=artificial-analysis" \
+  --data-urlencode "task_type=coding"
 
-  # Design Arena — models arena, all categories
-  curl -G https://openrouter.ai/api/v1/benchmarks \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "source=design-arena" \
-    --data-urlencode "arena=models"
+# Design Arena — models arena, all categories
+curl -G https://openrouter.ai/api/v1/benchmarks \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "source=design-arena" \
+  --data-urlencode "arena=models"
 
-  # OpenRouter search benchmarks — WideSearch, server-tool surface only
-  curl -G https://openrouter.ai/api/v1/benchmarks \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "benchmark_type=search_widesearch" \
-    --data-urlencode "search_surface=server-tool" \
-    --data-urlencode "include_run_config=true"
-  ```
+# OpenRouter search benchmarks — WideSearch, server-tool surface only
+curl -G https://openrouter.ai/api/v1/benchmarks \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "benchmark_type=search_widesearch" \
+  --data-urlencode "search_surface=server-tool" \
+  --data-urlencode "include_run_config=true"
+```
 
-  ```python title="Python" lines theme={null}
-  import os
-  import requests
+```python title="Python" lines theme={null}
+import os
+import requests
 
-  # Get top coding models from Artificial Analysis
-  resp = requests.get(
-      "https://openrouter.ai/api/v1/benchmarks",
-      headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
-      params={"source": "artificial-analysis", "task_type": "coding", "max_results": 10},
-      timeout=30,
-  )
-  resp.raise_for_status()
-  for model in resp.json()["data"]:
-      print(f"{model['display_name']}: coding={model['coding_index']}")
-  ```
+# Get top coding models from Artificial Analysis
+resp = requests.get(
+    "https://openrouter.ai/api/v1/benchmarks",
+    headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+    params={"source": "artificial-analysis", "task_type": "coding", "max_results": 10},
+    timeout=30,
+)
+resp.raise_for_status()
+for model in resp.json()["data"]:
+    print(f"{model['display_name']}: coding={model['coding_index']}")
+```
 
-  ```typescript title="TypeScript" lines theme={null}
-  const res = await fetch(
-    "https://openrouter.ai/api/v1/benchmarks?source=artificial-analysis&task_type=coding&max_results=10",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
+```typescript title="TypeScript" lines theme={null}
+const res = await fetch(
+  "https://openrouter.ai/api/v1/benchmarks?source=artificial-analysis&task_type=coding&max_results=10",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
     },
-  );
-  if (!res.ok) throw new Error(`Benchmarks request failed: ${res.status}`);
+  },
+);
+if (!res.ok) throw new Error(`Benchmarks request failed: ${res.status}`);
 
-  const payload = await res.json();
-  for (const model of payload.data) {
-    console.log(`${model.display_name}: coding=${model.coding_index}`);
-  }
-  ```
-</CodeGroup>
+const payload = await res.json();
+for (const model of payload.data) {
+  console.log(`${model.display_name}: coding=${model.coding_index}`);
+}
+```
 
 ## Task Classifications
 
@@ -629,79 +623,77 @@ Notes:
 
 ### Examples
 
-<CodeGroup>
-  ```bash title="cURL" lines theme={null}
-  curl -G https://openrouter.ai/api/v1/classifications/task \
-    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
-    --data-urlencode "window=7d"
-  ```
+```bash title="cURL" lines theme={null}
+curl -G https://openrouter.ai/api/v1/classifications/task \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  --data-urlencode "window=7d"
+```
 
-  ```python title="Python" lines theme={null}
-  import os
-  import requests
+```python title="Python" lines theme={null}
+import os
+import requests
 
-  resp = requests.get(
-      "https://openrouter.ai/api/v1/classifications/task",
-      headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
-      params={"window": "7d"},
-      timeout=30,
-  )
-  resp.raise_for_status()
-  data = resp.json()["data"]
+resp = requests.get(
+    "https://openrouter.ai/api/v1/classifications/task",
+    headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+    params={"window": "7d"},
+    timeout=30,
+)
+resp.raise_for_status()
+data = resp.json()["data"]
 
-  for cls in data["classifications"][:5]:
-      top_model = cls["models"][0]["id"] if cls["models"] else "n/a"
-      print(f"{cls['display_name']}: {cls['usage_share']:.1%} of requests (top model: {top_model})")
+for cls in data["classifications"][:5]:
+    top_model = cls["models"][0]["id"] if cls["models"] else "n/a"
+    print(f"{cls['display_name']}: {cls['usage_share']:.1%} of requests (top model: {top_model})")
 
-  print()
-  for cat in data["macro_categories"]:
-      print(f"{cat['label']}: {cat['usage_share']:.1%} usage, {cat['token_share']:.1%} tokens")
-  ```
+print()
+for cat in data["macro_categories"]:
+    print(f"{cat['label']}: {cat['usage_share']:.1%} usage, {cat['token_share']:.1%} tokens")
+```
 
-  ```typescript title="TypeScript" expandable lines theme={null}
-  const res = await fetch(
-    "https://openrouter.ai/api/v1/classifications/task?window=7d",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
+```typescript title="TypeScript" expandable lines theme={null}
+const res = await fetch(
+  "https://openrouter.ai/api/v1/classifications/task?window=7d",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
     },
-  );
-  if (!res.ok) throw new Error(`Classifications request failed: ${res.status}`);
+  },
+);
+if (!res.ok) throw new Error(`Classifications request failed: ${res.status}`);
 
-  const { data } = (await res.json()) as {
-    data: {
-      window_days: number;
-      as_of: string;
-      classifications: Array<{
-        tag: string;
-        display_name: string;
-        macro_category: string;
-        usage_share: number;
-        token_share: number;
-        category_usage_share: number;
-        category_token_share: number;
-        models: Array<{
-          id: string;
-          tag_usage_share: number;
-          tag_token_share: number;
-        }>;
+const { data } = (await res.json()) as {
+  data: {
+    window_days: number;
+    as_of: string;
+    classifications: Array<{
+      tag: string;
+      display_name: string;
+      macro_category: string;
+      usage_share: number;
+      token_share: number;
+      category_usage_share: number;
+      category_token_share: number;
+      models: Array<{
+        id: string;
+        tag_usage_share: number;
+        tag_token_share: number;
       }>;
-      macro_categories: Array<{
-        key: string;
-        label: string;
-        usage_share: number;
-        token_share: number;
-      }>;
-    };
+    }>;
+    macro_categories: Array<{
+      key: string;
+      label: string;
+      usage_share: number;
+      token_share: number;
+    }>;
   };
+};
 
-  for (const cls of data.classifications.slice(0, 5)) {
-    const topModel = cls.models[0]?.id ?? "n/a";
-    console.log(`${cls.display_name}: ${(cls.usage_share * 100).toFixed(1)}% requests (top model: ${topModel})`);
-  }
-  ```
-</CodeGroup>
+for (const cls of data.classifications.slice(0, 5)) {
+  const topModel = cls.models[0]?.id ?? "n/a";
+  console.log(`${cls.display_name}: ${(cls.usage_share * 100).toFixed(1)}% requests (top model: ${topModel})`);
+}
+```
 
 ### Acceptable use and attribution
 

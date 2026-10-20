@@ -57,9 +57,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -107,9 +107,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -165,50 +165,50 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messages` | List\[[components.ChatMessages](../../components/chatmessages.mdx)] | ✅ | List of messages for the conversation | \[<br />\{<br />"content": "Hello!",<br />"role": "user"<br />}<br />] |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{<br />"type": "ephemeral"<br />} |
-| `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{<br />"echo\_upstream\_body": true<br />} |
-| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{<br />"profile": "portable",<br />"protocol": "v1",<br />"search": \{<br />"max\_results": 5,<br />"type": "bm25"<br />},<br />"validation": "runtime"<br />} |
+| `messages` | List\[[components.ChatMessages](../../components/chatmessages.mdx)] | ✅ | List of messages for the conversation | \[ \{ "content": "Hello!", "role": "user" } ] |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
+| `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{ "echo\_upstream\_body": true } |
+| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
 | `frequency_penalty` | *OptionalNullable\[float]* | ➖ | Frequency penalty (-2.0 to 2.0) | 0 |
-| `image_config` | Dict\[str, [components.ImageConfig](../../components/imageconfig.mdx)] | ➖ | Provider-specific image configuration options. Keys and values vary by model/provider. See [https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation) for more details. | \{<br />"aspect\_ratio": "16:9",<br />"quality": "high"<br />} |
-| `logit_bias` | Dict\[str, *float*] | ➖ | Token logit bias adjustments | \{<br />"50256": -100<br />} |
+| `image_config` | Dict\[str, [components.ImageConfig](../../components/imageconfig.mdx)] | ➖ | Provider-specific image configuration options. Keys and values vary by model/provider. See [https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation) for more details. | \{ "aspect\_ratio": "16:9", "quality": "high" } |
+| `logit_bias` | Dict\[str, *float*] | ➖ | Token logit bias adjustments | \{ "50256": -100 } |
 | `logprobs` | *OptionalNullable\[bool]* | ➖ | Return log probabilities | false |
 | `max_completion_tokens` | *OptionalNullable\[int]* | ➖ | Maximum tokens in completion | 100 |
 | `max_tokens` | *OptionalNullable\[int]* | ➖ | Maximum tokens (deprecated, use max\_completion\_tokens). Note: some providers enforce a minimum of 16. | 100 |
-| `metadata` | Dict\[str, *str*] | ➖ | Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values) | \{<br />"session\_id": "session-456",<br />"user\_id": "user-123"<br />} |
+| `metadata` | Dict\[str, *str*] | ➖ | Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values) | \{ "session\_id": "session-456", "user\_id": "user-123" } |
 | `min_p` | *OptionalNullable\[float]* | ➖ | Minimum probability threshold relative to the most likely token. Tokens with probability below min\_p \* (probability of top token) are filtered out. Not all providers support this parameter. | 0.1 |
-| `modalities` | List\[[components.Modality](../../components/modality.mdx)] | ➖ | Output modalities for the response. Supported values are "text", "image", and "audio". | \[<br />"text",<br />"image"<br />] |
+| `modalities` | List\[[components.Modality](../../components/modality.mdx)] | ➖ | Output modalities for the response. Supported values are "text", "image", and "audio". | \[ "text", "image" ] |
 | `model` | *Optional\[str]* | ➖ | Model to use for completion | openai/gpt-4 |
-| `models` | List\[*str*] | ➖ | Models to use for completion | \[<br />"openai/gpt-4",<br />"openai/gpt-4o"<br />] |
+| `models` | List\[*str*] | ➖ | Models to use for completion | \[ "openai/gpt-4", "openai/gpt-4o" ] |
 | `parallel_tool_calls` | *OptionalNullable\[bool]* | ➖ | Whether to enable parallel function calling during tool use. When true, the model may generate multiple tool calls in a single response. | true |
 | `plugins` | List\[[components.ChatRequestPlugin](../../components/chatrequestplugin.mdx)] | ➖ | Plugins you want to enable for this request, including their settings. | |
-| `prediction` | [OptionalNullable\[components.Prediction\]](../../components/prediction.mdx) | ➖ | Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance. | \{<br />"content": "Expected response",<br />"type": "content"<br />} |
+| `prediction` | [OptionalNullable\[components.Prediction\]](../../components/prediction.mdx) | ➖ | Static predicted output content. Supported models can use this to reduce latency when much of the response is known in advance. | \{ "content": "Expected response", "type": "content" } |
 | `presence_penalty` | *OptionalNullable\[float]* | ➖ | Presence penalty (-2.0 to 2.0) | 0 |
 | `prompt_cache_key` | *OptionalNullable\[str]* | ➖ | N/A | |
-| `prompt_cache_options` | [OptionalNullable\[components.PromptCacheOptions\]](../../components/promptcacheoptions.mdx) | ➖ | Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer. | \{<br />"mode": "explicit",<br />"ttl": "30m"<br />} |
-| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{<br />"allow\_fallbacks": true<br />} |
-| `reasoning` | [Optional\[components.ChatRequestReasoning\]](../../components/chatrequestreasoning.mdx) | ➖ | Configuration options for reasoning models | \{<br />"effort": "medium",<br />"summary": "concise"<br />} |
+| `prompt_cache_options` | [OptionalNullable\[components.PromptCacheOptions\]](../../components/promptcacheoptions.mdx) | ➖ | Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer. | \{ "mode": "explicit", "ttl": "30m" } |
+| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{ "allow\_fallbacks": true } |
+| `reasoning` | [Optional\[components.ChatRequestReasoning\]](../../components/chatrequestreasoning.mdx) | ➖ | Configuration options for reasoning models | \{ "effort": "medium", "summary": "concise" } |
 | `reasoning_effort` | [OptionalNullable\[components.ChatRequestReasoningEffort\]](../../components/chatrequestreasoningeffort.mdx) | ➖ | Shorthand for setting reasoning effort. Equivalent to setting reasoning.effort. Cannot be used simultaneously with reasoning.effort if they differ. | medium |
 | `repetition_penalty` | *OptionalNullable\[float]* | ➖ | Penalizes tokens based on how much they have already appeared in the text. A value of 1.0 means no penalty. Values above 1.0 penalize repeated tokens more strongly. Not all providers support this parameter. | 1 |
-| `response_format` | [Optional\[components.ResponseFormat\]](../../components/responseformat.mdx) | ➖ | Response format configuration | \{<br />"type": "json\_object"<br />} |
+| `response_format` | [Optional\[components.ResponseFormat\]](../../components/responseformat.mdx) | ➖ | Response format configuration | \{ "type": "json\_object" } |
 | `seed` | *OptionalNullable\[int]* | ➖ | Random seed for deterministic outputs | 42 |
 | `service_tier` | [OptionalNullable\[components.ChatRequestServiceTier\]](../../components/chatrequestservicetier.mdx) | ➖ | The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints. | auto |
 | `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | |
-| `stop` | [OptionalNullable\[components.ChatRequestStop\]](../../components/chatrequeststop.mdx) | ➖ | Stop sequences (up to 4) | \[<br />"\n"<br />] |
-| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[<br />\{<br />"step\_count": 5,<br />"type": "step\_count\_is"<br />},<br />\{<br />"max\_cost\_in\_dollars": 0.5,<br />"type": "max\_cost"<br />}<br />] |
+| `stop` | [OptionalNullable\[components.ChatRequestStop\]](../../components/chatrequeststop.mdx) | ➖ | Stop sequences (up to 4) | \[ "\n" ] |
+| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[ \{ "step\_count": 5, "type": "step\_count\_is" }, \{ "max\_cost\_in\_dollars": 0.5, "type": "max\_cost" } ] |
 | `stream` | *Optional\[bool]* | ➖ | Enable streaming response | false |
-| `stream_options` | [OptionalNullable\[components.ChatStreamOptions\]](../../components/chatstreamoptions.mdx) | ➖ | Streaming configuration options | \{<br />"include\_usage": true<br />} |
+| `stream_options` | [OptionalNullable\[components.ChatStreamOptions\]](../../components/chatstreamoptions.mdx) | ➖ | Streaming configuration options | \{ "include\_usage": true } |
 | `temperature` | *OptionalNullable\[float]* | ➖ | Sampling temperature (0-2) | 0.7 |
 | `tool_choice` | [Optional\[components.ChatToolChoice\]](../../components/chattoolchoice.mdx) | ➖ | Tool choice configuration | auto |
-| `tools` | List\[[components.ChatFunctionTool](../../components/chatfunctiontool.mdx)] | ➖ | Available tools for function calling | \[<br />\{<br />"function": \{<br />"description": "Get weather",<br />"name": "get\_weather"<br />},<br />"type": "function"<br />}<br />] |
+| `tools` | List\[[components.ChatFunctionTool](../../components/chatfunctiontool.mdx)] | ➖ | Available tools for function calling | \[ \{ "function": \{ "description": "Get weather", "name": "get\_weather" }, "type": "function" } ] |
 | `top_a` | *OptionalNullable\[float]* | ➖ | Consider only tokens with "sufficiently high" probabilities based on the probability of the most likely token. Not all providers support this parameter. | 0 |
 | `top_k` | *OptionalNullable\[int]* | ➖ | Limits the model to choose from the top K most likely tokens at each step. A value of 1 means the model will always pick the most likely next token. Not all providers support this parameter. | 40 |
 | `top_logprobs` | *OptionalNullable\[int]* | ➖ | Number of top log probabilities to return (0-20) | 5 |
 | `top_p` | *OptionalNullable\[float]* | ➖ | Nucleus sampling parameter (0-1) | 1 |
-| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
+| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |
 | `user` | *Optional\[str]* | ➖ | Per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account. | user-123 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -265,25 +265,25 @@ with OpenRouter(
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
 | `messages` | List\[[components.MessagesMessageParam](../../components/messagesmessageparam.mdx)] | ✅ | N/A | |
 | `model` | *str* | ✅ | N/A | |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{<br />"type": "ephemeral"<br />} |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
 | `context_management` | [OptionalNullable\[components.ContextManagement\]](../../components/contextmanagement.mdx) | ➖ | N/A | |
-| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{<br />"profile": "portable",<br />"protocol": "v1",<br />"search": \{<br />"max\_results": 5,<br />"type": "bm25"<br />},<br />"validation": "runtime"<br />} |
-| `fallbacks` | List\[[components.MessagesFallbackParam](../../components/messagesfallbackparam.mdx)] | ➖ | Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries. | \[<br />\{<br />"model": "claude-opus-4-8"<br />}<br />] |
+| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
+| `fallbacks` | List\[[components.MessagesFallbackParam](../../components/messagesfallbackparam.mdx)] | ➖ | Fallback models to try if the primary model fails or refuses, in order. Handled by OpenRouter multi-model routing rather than Anthropic server-side fallbacks; cannot be combined with `models`. Each entry accepts only `model`. Maximum of 3 entries. | \[ \{ "model": "claude-opus-4-8" } ] |
 | `max_tokens` | *Optional\[int]* | ➖ | N/A | |
 | `metadata` | [Optional\[components.MessagesRequestMetadata\]](../../components/messagesrequestmetadata.mdx) | ➖ | N/A | |
 | `models` | List\[*str*] | ➖ | N/A | |
-| `output_config` | [Optional\[components.MessagesOutputConfig\]](../../components/messagesoutputconfig.mdx) | ➖ | Configuration for controlling output behavior. Supports the effort parameter and structured output format. | \{<br />"effort": "medium"<br />} |
+| `output_config` | [Optional\[components.MessagesOutputConfig\]](../../components/messagesoutputconfig.mdx) | ➖ | Configuration for controlling output behavior. Supports the effort parameter and structured output format. | \{ "effort": "medium" } |
 | `plugins` | List\[[components.MessagesRequestPlugin](../../components/messagesrequestplugin.mdx)] | ➖ | Plugins you want to enable for this request, including their settings. | |
-| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{<br />"allow\_fallbacks": true<br />} |
+| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{ "allow\_fallbacks": true } |
 | `safeguards` | List\[[components.AnthropicSafeguard](../../components/anthropicsafeguard.mdx)] | ➖ | N/A | |
 | `service_tier` | *Optional\[str]* | ➖ | N/A | |
 | `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | |
 | `speed` | [OptionalNullable\[components.Speed\]](../../components/speed.mdx) | ➖ | N/A | fast |
 | `stop_sequences` | List\[*str*] | ➖ | N/A | |
-| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[<br />\{<br />"step\_count": 5,<br />"type": "step\_count\_is"<br />},<br />\{<br />"max\_cost\_in\_dollars": 0.5,<br />"type": "max\_cost"<br />}<br />] |
+| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[ \{ "step\_count": 5, "type": "step\_count\_is" }, \{ "max\_cost\_in\_dollars": 0.5, "type": "max\_cost" } ] |
 | `stream` | *Optional\[bool]* | ➖ | N/A | |
 | `system` | [Optional\[components.System\]](../../components/system.mdx) | ➖ | N/A | |
 | `temperature` | *Optional\[float]* | ➖ | N/A | |
@@ -292,7 +292,7 @@ with OpenRouter(
 | `tools` | List\[[components.MessagesRequestToolUnion](../../components/messagesrequesttoolunion.mdx)] | ➖ | N/A | |
 | `top_k` | *Optional\[int]* | ➖ | N/A | |
 | `top_p` | *Optional\[float]* | ➖ | N/A | |
-| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
+| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |
 | `user` | *Optional\[str]* | ➖ | A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters. | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
@@ -342,47 +342,47 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `background` | *OptionalNullable\[bool]* | ➖ | N/A | |
-| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{<br />"type": "ephemeral"<br />} |
-| `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{<br />"echo\_upstream\_body": true<br />} |
-| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{<br />"profile": "portable",<br />"protocol": "v1",<br />"search": \{<br />"max\_results": 5,<br />"type": "bm25"<br />},<br />"validation": "runtime"<br />} |
+| `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
+| `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{ "echo\_upstream\_body": true } |
+| `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
 | `frequency_penalty` | *OptionalNullable\[float]* | ➖ | N/A | |
-| `image_config` | Dict\[str, [components.ImageConfig](../../components/imageconfig.mdx)] | ➖ | Provider-specific image configuration options. Keys and values vary by model/provider. See [https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation) for more details. | \{<br />"aspect\_ratio": "16:9",<br />"quality": "high"<br />} |
+| `image_config` | Dict\[str, [components.ImageConfig](../../components/imageconfig.mdx)] | ➖ | Provider-specific image configuration options. Keys and values vary by model/provider. See [https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation) for more details. | \{ "aspect\_ratio": "16:9", "quality": "high" } |
 | `include` | List\[[components.ResponseIncludesEnum](../../components/responseincludesenum.mdx)] | ➖ | N/A | |
-| `input` | [Optional\[components.InputsUnion\]](../../components/inputsunion.mdx) | ➖ | Input for a response request - can be a string or array of items | \[<br />\{<br />"content": "What is the weather today?",<br />"role": "user"<br />}<br />] |
+| `input` | [Optional\[components.InputsUnion\]](../../components/inputsunion.mdx) | ➖ | Input for a response request - can be a string or array of items | \[ \{ "content": "What is the weather today?", "role": "user" } ] |
 | `instructions` | *OptionalNullable\[str]* | ➖ | N/A | |
 | `max_output_tokens` | *OptionalNullable\[int]* | ➖ | N/A | |
 | `max_tool_calls` | *OptionalNullable\[int]* | ➖ | Maximum number of server-tool (e.g. `openrouter:web_search`) agent steps the model may take during a request. Defaults to 30, which is also the maximum. Ignored when `stop_server_tools_when` is set. | 30 |
-| `metadata` | Dict\[str, *str*] | ➖ | Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed. | \{<br />"session\_id": "abc-def-ghi",<br />"user\_id": "123"<br />} |
-| `modalities` | List\[[components.OutputModalityEnum](../../components/outputmodalityenum.mdx)] | ➖ | Output modalities for the response. Supported values are "text" and "image". | \[<br />"text",<br />"image"<br />] |
+| `metadata` | Dict\[str, *str*] | ➖ | Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed. | \{ "session\_id": "abc-def-ghi", "user\_id": "123" } |
+| `modalities` | List\[[components.OutputModalityEnum](../../components/outputmodalityenum.mdx)] | ➖ | Output modalities for the response. Supported values are "text" and "image". | \[ "text", "image" ] |
 | `model` | *Optional\[str]* | ➖ | N/A | |
 | `models` | List\[*str*] | ➖ | N/A | |
 | `parallel_tool_calls` | *OptionalNullable\[bool]* | ➖ | N/A | |
 | `plugins` | List\[[components.ResponsesRequestPlugin](../../components/responsesrequestplugin.mdx)] | ➖ | Plugins you want to enable for this request, including their settings. | |
 | `presence_penalty` | *OptionalNullable\[float]* | ➖ | N/A | |
 | `previous_response_id` | *Optional\[Any]* | ➖ | Not supported on this proxy. Each response request is independent: no responses are stored, so a previous response cannot be referenced. Requests with a non-null value are rejected with a 400 error. Send the full conversation history in `input` instead. | |
-| `prompt` | [OptionalNullable\[components.StoredPromptTemplate\]](../../components/storedprompttemplate.mdx) | ➖ | N/A | \{<br />"id": "prompt-abc123",<br />"variables": \{<br />"name": "John"<br />}<br />} |
+| `prompt` | [OptionalNullable\[components.StoredPromptTemplate\]](../../components/storedprompttemplate.mdx) | ➖ | N/A | \{ "id": "prompt-abc123", "variables": \{ "name": "John" } } |
 | `prompt_cache_key` | *OptionalNullable\[str]* | ➖ | N/A | |
-| `prompt_cache_options` | [OptionalNullable\[components.PromptCacheOptions\]](../../components/promptcacheoptions.mdx) | ➖ | Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer. | \{<br />"mode": "explicit",<br />"ttl": "30m"<br />} |
-| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{<br />"allow\_fallbacks": true<br />} |
-| `reasoning` | [OptionalNullable\[components.ReasoningConfig\]](../../components/reasoningconfig.mdx) | ➖ | Configuration for reasoning mode in the response | \{<br />"enabled": true,<br />"summary": "auto"<br />} |
+| `prompt_cache_options` | [OptionalNullable\[components.PromptCacheOptions\]](../../components/promptcacheoptions.mdx) | ➖ | Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer. | \{ "mode": "explicit", "ttl": "30m" } |
+| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | When multiple model providers are available, optionally indicate your routing preference. | \{ "allow\_fallbacks": true } |
+| `reasoning` | [OptionalNullable\[components.ReasoningConfig\]](../../components/reasoningconfig.mdx) | ➖ | Configuration for reasoning mode in the response | \{ "enabled": true, "summary": "auto" } |
 | `safety_identifier` | *OptionalNullable\[str]* | ➖ | Recommended per-end-user identifier for abuse isolation. Use a stable ID, hash, or pseudonym. When a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards it raw. If omitted, requests use an account-level identity, so provider policy blocks can affect the whole account. | user-123 |
 | `service_tier` | [OptionalNullable\[components.ResponsesRequestServiceTier\]](../../components/responsesrequestservicetier.mdx) | ➖ | The service tier to use for processing this request. `fast` is accepted as an alias for `priority`. `ultrafast` prefers ultrafast endpoints and falls back to `priority`, then default endpoints. | |
 | `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). When provided, OpenRouter uses it as the sticky routing key, routing all requests in the session to the same provider to maximize prompt cache hits. Also used for observability grouping. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | |
-| `stop` | [OptionalNullable\[components.ResponsesRequestStop\]](../../components/responsesrequeststop.mdx) | ➖ | Stop sequences (up to 4) | \[<br />"\n"<br />] |
-| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[<br />\{<br />"step\_count": 5,<br />"type": "step\_count\_is"<br />},<br />\{<br />"max\_cost\_in\_dollars": 0.5,<br />"type": "max\_cost"<br />}<br />] |
+| `stop` | [OptionalNullable\[components.ResponsesRequestStop\]](../../components/responsesrequeststop.mdx) | ➖ | Stop sequences (up to 4) | \[ "\n" ] |
+| `stop_server_tools_when` | List\[[components.StopServerToolsWhenCondition](../../components/stopservertoolswhencondition.mdx)] | ➖ | Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call. | \[ \{ "step\_count": 5, "type": "step\_count\_is" }, \{ "max\_cost\_in\_dollars": 0.5, "type": "max\_cost" } ] |
 | `stream` | *Optional\[bool]* | ➖ | N/A | |
 | `temperature` | *OptionalNullable\[float]* | ➖ | N/A | |
-| `text` | [Optional\[components.TextExtendedConfig\]](../../components/textextendedconfig.mdx) | ➖ | Text output configuration including format and verbosity | \{<br />"format": \{<br />"type": "text"<br />}<br />} |
+| `text` | [Optional\[components.TextExtendedConfig\]](../../components/textextendedconfig.mdx) | ➖ | Text output configuration including format and verbosity | \{ "format": \{ "type": "text" } } |
 | `tool_choice` | [Optional\[components.OpenAIResponsesToolChoiceUnion\]](../../components/openairesponsestoolchoiceunion.mdx) | ➖ | N/A | auto |
 | `tools` | List\[[components.ResponsesRequestToolUnion](../../components/responsesrequesttoolunion.mdx)] | ➖ | N/A | |
 | `top_k` | *Optional\[int]* | ➖ | N/A | |
 | `top_logprobs` | *OptionalNullable\[int]* | ➖ | N/A | |
 | `top_p` | *OptionalNullable\[float]* | ➖ | N/A | |
-| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
+| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |
 | `truncation` | [OptionalNullable\[components.OpenAIResponsesTruncation\]](../../components/openairesponsestruncation.mdx) | ➖ | N/A | auto |
 | `user` | *Optional\[str]* | ➖ | A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters. | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -435,9 +435,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -487,9 +487,9 @@ with OpenRouter(
 | - | - | - | - | - |
 | `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
 | `version` | *str* | ✅ | Version number of the preset. | 1 |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response

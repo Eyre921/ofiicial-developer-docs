@@ -11,104 +11,98 @@ You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `sc
 
 ## Path Parameters
 
-<ResendParamField type="string">
-  The broadcast ID.
-</ResendParamField>
+The broadcast ID.
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  const resend = new Resend('re_xxxxxxxxx');
+const resend = new Resend('re_xxxxxxxxx');
 
-  const { data, error } = await resend.broadcasts.remove(
-    '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
-  );
-  ```
+const { data, error } = await resend.broadcasts.remove(
+  '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+);
+```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  $resend->broadcasts->remove('559ac32e-9ef5-46fb-82a1-b76b840c0f7b');
-  ```
+$resend->broadcasts->remove('559ac32e-9ef5-46fb-82a1-b76b840c0f7b');
+```
 
-  ```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+```py Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  resend.api_key = "re_xxxxxxxxx"
+resend.api_key = "re_xxxxxxxxx"
 
-  resend.Broadcasts.remove(id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
-  ```
+resend.Broadcasts.remove(id="559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+```
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  Resend.api_key = "re_xxxxxxxxx"
+Resend.api_key = "re_xxxxxxxxx"
 
-  Resend::Broadcasts.remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
-  ```
+Resend::Broadcasts.remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  import "github.com/resend/resend-go/v4"
+import "github.com/resend/resend-go/v4"
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
 
-  	client.Broadcasts.Remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
-  }
-  ```
+	client.Broadcasts.Remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+}
+```
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result};
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result};
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-    let _deleted = resend
-      .broadcasts
-      .delete("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
-      .await?;
+  let _deleted = resend
+    .broadcasts
+    .delete("559ac32e-9ef5-46fb-82a1-b76b840c0f7b")
+    .await?;
 
-    Ok(())
-  }
-  ```
+  Ok(())
+}
+```
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.services.broadcasts.model.RemoveBroadcastResponseSuccess;
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.services.broadcasts.model.RemoveBroadcastResponseSuccess;
 
-  Resend resend = new Resend("re_xxxxxxxxx");
+Resend resend = new Resend("re_xxxxxxxxx");
 
-  RemoveBroadcastResponseSuccess data = resend.broadcasts().remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b");
-  ```
+RemoveBroadcastResponseSuccess data = resend.broadcasts().remove("559ac32e-9ef5-46fb-82a1-b76b840c0f7b");
+```
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
 
-  await resend.BroadcastDeleteAsync( new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ) );
-  ```
+await resend.BroadcastDeleteAsync( new Guid( "559ac32e-9ef5-46fb-82a1-b76b840c0f7b" ) );
+```
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X DELETE 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X DELETE 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend broadcasts delete 559ac32e-9ef5-46fb-82a1-b76b840c0f7b
-  ```
-</RequestExample>
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend broadcasts delete 559ac32e-9ef5-46fb-82a1-b76b840c0f7b
+```
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "broadcast",
-    "id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
-    "deleted": true
-  }
-  ```
-</ResponseExample>
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "broadcast",
+  "id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+  "deleted": true
+}
+```

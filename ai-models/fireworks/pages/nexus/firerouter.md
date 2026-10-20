@@ -89,11 +89,11 @@ Anthropic serves Claude Fable only to organizations with data retention enabled.
 
 Open models use your Fireworks API key. No other credential is needed.
 
-<Note>
-  Aliases such as `glm-latest` and `kimi-fast-latest` are Fireworks serverless
-  model IDs that you call directly, without FireRouter. See
-  [Open Models](/nexus/open-models) for `-latest` aliases.
-</Note>
+> [!NOTE]
+>
+> Aliases such as `glm-latest` and `kimi-fast-latest` are Fireworks serverless
+> model IDs that you call directly, without FireRouter. See
+> [Open Models](/nexus/open-models) for `-latest` aliases.
 
 ## Use FireRouter from your tools
 
@@ -123,12 +123,12 @@ If a request carries a provider header, that header takes precedence over the st
 
 In the Codex CLI, your Codex sign-in can also pay for GPT turns, through your ChatGPT plan or the OpenAI key you signed in with. For GPT turns, FireRouter uses an `x-openai-api-key` header first, then your Codex sign-in, then an OpenAI Provider Key. Your ChatGPT plan doesn't cover `gpt-5.5`, `gpt-5.6-terra`, or `gpt-5.6-luna`. Those turns need an OpenAI Provider Key. See [Codex](/nexus/harnesses#codex).
 
-<Note>
-  Provider Keys is not yet available on every account. If **Provider Keys**
-  does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-  [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
-  Self-serve setup is coming soon.
-</Note>
+> [!NOTE]
+>
+> Provider Keys is not yet available on every account. If **Provider Keys**
+> does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+> [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
+> Self-serve setup is coming soon.
 
 Setup steps: [Provider Keys](/nexus/provider-keys), [request headers for APIs and SDKs](/nexus/apis-and-sdks#credentials), and [gateway credentials](/nexus/llm-gateways#provide-closed-model-credentials).
 
@@ -170,9 +170,7 @@ fireconnect claude live
 
 Claude Code opens on the left. A live meter on the right adds one row per user turn with the model or models selected, token buckets, cache share, estimated cost, and a prompt preview.
 
-<Frame>
-  <img alt="Split terminal with Claude Code on the left and a live meter on the right showing GLM 5.3 Flash and Opus 5 model choices, token buckets, cache share, and estimated cost per turn" />
-</Frame>
+![Split terminal with Claude Code on the left and a live meter on the right showing GLM 5.3 Flash and Opus 5 model choices, token buckets, cache share, and estimated cost per turn](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireconnect/claude-live-meter.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=2262c6d75323ee10ed9a5d0443712f22)
 
 To follow a specific session, run `fireconnect claude live --session <id>`. Meter columns and pricing: [Session Cost](/nexus/session-usage).
 

@@ -7,48 +7,46 @@ path: reference/api/2026-07/control-plane/update_backup_schedule
 PATCH https://api.pinecone.io/backup-schedules/{schedule_id}
 Update a Pinecone backup schedule using the API, including pausing with enabled, changing frequency, and adjusting the retention expire_after_days.
 
-<Note>
-  This endpoint requires `X-Pinecone-Api-Version: 2026-07`.
-</Note>
+> [!NOTE]
+>
+> This endpoint requires `X-Pinecone-Api-Version: 2026-07`.
 
 Update a backup schedule. Send only the fields you want to change. All body fields are optional.
 
 ### Path parameters
 
-<ParamField type="string">
-  The ID of the backup schedule to update.
-</ParamField>
+**schedule\_id** `string` *required*
+
+The ID of the backup schedule to update.
 
 ### Body parameters
 
-<ParamField type="boolean">
-  Whether the schedule is enabled. Set to `false` to pause the schedule without deleting it.
-</ParamField>
+**enabled** `boolean`
 
-<ParamField type="string">
-  How often backups are created. One of `daily`, `weekly`, or `monthly`.
-</ParamField>
+Whether the schedule is enabled. Set to `false` to pause the schedule without deleting it.
 
-<ParamField type="object">
-  The retention policy for backups created by this schedule.
+**frequency** `string`
 
-  <Expandable title="retention properties">
-    <ParamField type="integer">
-      The number of days after which backups created by this schedule are automatically deleted.
-    </ParamField>
-  </Expandable>
-</ParamField>
+How often backups are created. One of `daily`, `weekly`, or `monthly`.
 
-<RequestExample>
-  ```bash curl theme={null}
-  curl -sS -X PATCH "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}" \
-    -H "api-key: ${PINECONE_API_KEY}" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "enabled": false,
-      "frequency": "weekly",
-      "retention": { "expire_after_days": 14 }
-    }'
-  ```
-</RequestExample>
+**retention** `object`
+
+The retention policy for backups created by this schedule.
+
+**retention properties**
+
+**expire\_after\_days** `integer`
+
+The number of days after which backups created by this schedule are automatically deleted.
+
+```bash curl theme={null}
+curl -sS -X PATCH "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}" \
+  -H "api-key: ${PINECONE_API_KEY}" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "enabled": false,
+    "frequency": "weekly",
+    "retention": { "expire_after_days": 14 }
+  }'
+```

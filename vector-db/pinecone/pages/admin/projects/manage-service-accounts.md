@@ -6,9 +6,9 @@ path: admin/projects/manage-service-accounts
 
 Add service accounts to a Pinecone project and assign project roles to enable programmatic API access for automated workflows and CI pipelines.
 
-<Note>
-  This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
 
 This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) and [project owners](/admin/projects/understanding-projects#project-roles) can add and manage service accounts at the project level. Service accounts enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
 

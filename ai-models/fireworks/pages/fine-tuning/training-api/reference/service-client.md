@@ -103,9 +103,9 @@ training_client = service.create_training_client(
 | `lora_rank` | `int` | `0` | Must match trainer creation config (`0` for full-parameter) |
 | `user_metadata` | `dict[str, str] \| None` | `None` | Optional run metadata |
 
-<Warning>
-  A `ValueError` is raised if you attempt to create a second training client with the same `(base_model, lora_rank)` on the same `FiretitanServiceClient` instance. Create a new `FiretitanServiceClient` for a separate trainer.
-</Warning>
+> [!WARNING]
+>
+> A `ValueError` is raised if you attempt to create a second training client with the same `(base_model, lora_rank)` on the same `FiretitanServiceClient` instance. Create a new `FiretitanServiceClient` for a separate trainer.
 
 ### Connecting to an existing trainer
 
@@ -191,9 +191,9 @@ Separate API calls define separate logical batches. Do not split one intended ba
 
 ### Large-result timeouts
 
-<Note>
-  If retrieving a large future result times out, manually enable metadata-only future retrieval for the trainer and client. This mode is currently opt-in while backend support is being rolled out.
-</Note>
+> [!NOTE]
+>
+> If retrieving a large future result times out, manually enable metadata-only future retrieval for the trainer and client. This mode is currently opt-in while backend support is being rolled out.
 
 ### `forward(datums, loss_type)`
 
@@ -204,9 +204,9 @@ result = training_client.forward(datums, "cross_entropy").result()
 logprobs = result.loss_fn_outputs[0]["logprobs"].data
 ```
 
-<Note>
-  Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
-</Note>
+> [!NOTE]
+>
+> Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`
 
@@ -294,9 +294,9 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 | `name` | `str` | — | Checkpoint name (auto-suffixed with session ID) |
 | `checkpoint_type` | `str \| None` | `None` | `"base"` for full weights, `"delta"` for incremental |
 
-<Note>
-  On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
-</Note>
+> [!NOTE]
+>
+> On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
 
 `save_weights_for_sampler_ext` saves the snapshot only; it does not mutate a deployment. To serve the snapshot, pass `result.snapshot_name` to the managed service weight-sync path, or use `create_sampling_client(model_path=...)` / `create_deployment_sampler(model_path=...)`, which sync and return a sampler.
 

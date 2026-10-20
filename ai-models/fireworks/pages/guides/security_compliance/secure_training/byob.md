@@ -14,17 +14,17 @@ BYOB works with all three major cloud providers — bring a bucket from whicheve
 * [AWS S3](#aws-s3-bucket-integration)
 * [Azure Blob Storage](#azure-blob-storage-integration)
 
-<Tip>
-  Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
-</Tip>
+> [!TIP]
+>
+> Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
 
 ## GCS Bucket Integration
 
 Use external Google Cloud Storage (GCS) buckets for fine-tuning while keeping your data private. Fireworks creates proxy datasets that reference your external buckets—data is only accessed during fine-tuning within a secure, isolated cluster.
 
-<Info>
-  Your data never leaves your GCS bucket except during fine-tuning, ensuring maximum privacy and security.
-</Info>
+> [!NOTE]
+>
+> Your data never leaves your GCS bucket except during fine-tuning, ensuring maximum privacy and security.
 
 ### Required Permissions
 
@@ -63,17 +63,17 @@ gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
   --role=roles/storage.objectViewer
 ```
 
-<Warning>
-  Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
-</Warning>
+> [!WARNING]
+>
+> Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
 
-<Tip>
-  After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
-</Tip>
+> [!TIP]
+>
+> After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
 
-<Note>
-  GCS access is granted directly to the Fireworks service account emails above rather than through token federation, so there is no token audience to scope to your account the way the [S3](#aws-s3-bucket-integration) trust policy does. Fireworks instead verifies at dataset creation that the bucket grants access to your own Fireworks account, which is what keeps another customer from referencing your bucket.
-</Note>
+> [!NOTE]
+>
+> GCS access is granted directly to the Fireworks service account emails above rather than through token federation, so there is no token audience to scope to your account the way the [S3](#aws-s3-bucket-integration) trust policy does. Fireworks instead verifies at dataset creation that the bucket grants access to your own Fireworks account, which is what keeps another customer from referencing your bucket.
 
 ### Usage
 
@@ -92,9 +92,9 @@ firectl sftj create \
 
 Use external AWS S3 buckets for fine-tuning while keeping your data private. Fireworks accesses your S3 data using GCP-to-AWS OIDC federation—no long-lived credentials are stored.
 
-<Note>
-  S3 bucket integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-</Note>
+> [!NOTE]
+>
+> S3 bucket integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
 
 ### IAM Role Setup
 
@@ -136,9 +136,9 @@ firectl sftj create \
   --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
 ```
 
-<Check>
-  For RFT jobs, use `firectl rftj create` with the same `--aws-iam-role` flag.
-</Check>
+> [!TIP]
+>
+> For RFT jobs, use `firectl rftj create` with the same `--aws-iam-role` flag.
 
 ### Alternative: Credentials Secret
 
@@ -158,17 +158,17 @@ firectl sftj create \
   --aws-credentials-secret "accounts/{ACCOUNT}/secrets/aws-creds"
 ```
 
-<Warning>
-  IAM role federation is recommended for production. If using credentials, rotate them regularly.
-</Warning>
+> [!WARNING]
+>
+> IAM role federation is recommended for production. If using credentials, rotate them regularly.
 
 ## Azure Blob Storage Integration
 
 Use external Azure Blob Storage containers for fine-tuning while keeping your data private. Fireworks accesses your Azure data using GCP-to-Azure Workload Identity Federation—no long-lived credentials are stored.
 
-<Note>
-  Azure Blob Storage integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-</Note>
+> [!NOTE]
+>
+> Azure Blob Storage integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
 
 ### Federated Identity Setup
 
@@ -200,9 +200,9 @@ firectl sftj create \
   --azure-tenant-id "{AZURE_TENANT_ID}"
 ```
 
-<Check>
-  For RFT jobs, use `firectl rftj create` with the same `--azure-managed-identity-client-id` and `--azure-tenant-id` flags.
-</Check>
+> [!TIP]
+>
+> For RFT jobs, use `firectl rftj create` with the same `--azure-managed-identity-client-id` and `--azure-tenant-id` flags.
 
 ### Alternative: Credentials Secret
 
@@ -221,6 +221,6 @@ firectl sftj create \
   --azure-credentials-secret "accounts/{ACCOUNT}/secrets/azure-creds"
 ```
 
-<Warning>
-  Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.
-</Warning>
+> [!WARNING]
+>
+> Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.

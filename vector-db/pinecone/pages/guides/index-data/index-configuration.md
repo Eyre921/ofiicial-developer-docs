@@ -29,33 +29,33 @@ When creating an index, you must choose the cloud and region where you want the 
 
 The cloud and region can't be changed after a serverless index is created.
 
-<Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
+> [!NOTE]
+>
+> On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
 ## Similarity metrics
 
 When creating an index that stores dense vectors, you can choose from the following similarity metrics. For the most accurate results, choose the similarity metric used to train the embedding model for your vectors. For more information, see [Vector Similarity Explained](https://www.pinecone.io/learn/vector-similarity/).
 
-<Note>Indexes that store [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) must use the `dotproduct` metric.</Note>
+> [!NOTE]
+>
+> Indexes that store [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) must use the `dotproduct` metric.
 
-<AccordionGroup>
-  <Accordion title="Euclidean">
-    Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
+> **Euclidean**
+>
+> Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
+>
+> This metric calculates the square of the distance between two data points in a plane. It's one of the most commonly used distance metrics. For an example, see the [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
+>
+> When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
 
-    This metric calculates the square of the distance between two data points in a plane. It's one of the most commonly used distance metrics. For an example, see the [IT threat detection example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/it-threat-detection.ipynb).
+> **Cosine**
+>
+> This is often used to find similarities between different documents. The advantage is that the scores are normalized to \[-1,1] range. For an example, see the [generative question answering example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb).
 
-    When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
-  </Accordion>
-
-  <Accordion title="Cosine">
-    This is often used to find similarities between different documents. The advantage is that the scores are normalized to \[-1,1] range. For an example, see the [generative question answering example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb).
-  </Accordion>
-
-  <Accordion title="Dotproduct">
-    This multiplies two vectors to measure how similar they are. The more positive the result, the closer the two vectors are in direction. For an example, see the [semantic search example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb).
-  </Accordion>
-</AccordionGroup>
+> **Dotproduct**
+>
+> This multiplies two vectors to measure how similar they are. The more positive the result, the closer the two vectors are in direction. For an example, see the [semantic search example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb).
 
 ## Embedding models
 
@@ -65,9 +65,9 @@ To transform data into vector format, you use an embedding model. Pinecone hosts
 
 The following embedding models are hosted by Pinecone.
 
-<Note>
-  To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
-</Note>
+> [!NOTE]
+>
+> To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
 
 ### multilingual-e5-large
 
@@ -91,7 +91,7 @@ The `multilingual-e5-large` model supports the following parameters:
 | Parameter | Type | Required/Optional | Description | Default |
 | :- | :- | :- | :- | :- |
 | `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
 
 ### llama-text-embed-v2
 
@@ -115,7 +115,7 @@ The `llama-text-embed-v2` model supports the following parameters:
 | Parameter | Type | Required/Optional | Description | Default |
 | :- | :- | :- | :- | :- |
 | `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END`, `NONE`, or `START`.<br /><br />`END` truncates the input sequence at the input token limit, keeping the start. `START` truncates from the start, keeping the end. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END`, `NONE`, or `START`. `END` truncates the input sequence at the input token limit, keeping the start. `START` truncates from the start, keeping the end. `NONE` returns an error when the input exceeds the input token limit. | `END` |
 | `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
 
 ### pinecone-sparse-english-v0
@@ -140,5 +140,5 @@ The `pinecone-sparse-english-v0` model supports the following parameters:
 | :- | :- | :- | :- | :- |
 | `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
 | `max_tokens_per_sequence` | integer | Optional | Maximum number of tokens to embed. Accepted values: `512` or `2048`. | `512` |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
 | `return_tokens` | boolean | Optional | Whether to return the string tokens. | `false` |

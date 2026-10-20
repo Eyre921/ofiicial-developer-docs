@@ -9,19 +9,17 @@ Create an assistant. This is where you specify the underlying training model, wh
 
 For guidance and examples, see [Create an assistant](https://docs.pinecone.io/guides/assistant/create-assistant)
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl "https://api.pinecone.io/assistant/assistants" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-    "name": "example-assistant",
-    "instructions": "Use American English for spelling and grammar.",
-    "metadata": {"team": "customer-support", "version": "1.0"},
-    "region":"us"
-  }'
-  ```
-</RequestExample>
+curl "https://api.pinecone.io/assistant/assistants" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "name": "example-assistant",
+  "instructions": "Use American English for spelling and grammar.",
+  "metadata": {"team": "customer-support", "version": "1.0"},
+  "region":"us"
+}'
+```

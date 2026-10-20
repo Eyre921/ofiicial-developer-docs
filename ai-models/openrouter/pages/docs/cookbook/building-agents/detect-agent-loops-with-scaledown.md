@@ -20,13 +20,13 @@ Classify answers questions. It doesn't write text. For each question you get bac
 
 **Outcome:** A looping run stops at the first check that catches it. A blocked run gets a message telling it to change course. A healthy run carries on untouched, even when a check itself fails. Every check logs its probabilities and cost, so you can see why it acted.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript agent loop runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and can turn its message history into a string.
-  * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
-  * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) open for the request format.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript agent loop runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and can turn its message history into a string.
+> * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
+> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) open for the request format.
 
 ## 1. Define the questions
 
@@ -135,9 +135,9 @@ export async function judgeRun(transcript: string): Promise<Judgement> {
 
 Probabilities are rounded to four places. `score` is the weighted average of the positions, here `0.0929` on a scale of `0` to `2`, so the agent is nowhere near done. Each question reads the whole transcript, so `usage.input_tokens` counts it once per question: asking only `is_repeating` used `5161` input tokens.
 
-<Warning>
-  Each `judgeRun` call is one paid request billed to your OpenRouter account at the [scaledown/classify-1](https://openrouter.ai/scaledown/classify-1) rate. For long runs, raise `CHECK_EVERY`, and drop `completion` if you don't act on it.
-</Warning>
+> [!WARNING]
+>
+> Each `judgeRun` call is one paid request billed to your OpenRouter account at the [scaledown/classify-1](https://openrouter.ai/scaledown/classify-1) rate. For long runs, raise `CHECK_EVERY`, and drop `completion` if you don't act on it.
 
 ## 3. Turn the answers into an action
 

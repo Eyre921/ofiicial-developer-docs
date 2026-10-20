@@ -303,7 +303,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `user` | `string` | ✅ | Immutable case-sensitive tracking string supplied as user on inference requests or as external.user on API keys: 1 to 512 characters, well-formed Unicode, no NUL, no surrounding whitespace. URL-encode it in resource paths; an ID of `.` or `..` cannot be addressed by path, so look it up with the list filter. | employee\_123 |
-| `updateEndUserRequest` | [components.UpdateEndUserRequest](../../models/components/updateenduserrequest.mdx) | ✅ | N/A | \{<br />"is\_active": true<br />} |
+| `updateEndUserRequest` | [components.UpdateEndUserRequest](../../models/components/updateenduserrequest.mdx) | ✅ | N/A | \{ "is\_active": true } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

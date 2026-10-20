@@ -8,7 +8,9 @@ Permanently delete your Pinecone account by removing your user from every organi
 
 To delete your Pinecone account, you need to remove your user from all organizations and delete any organizations where you're the sole member.
 
-<Warning>These actions cannot be undone.</Warning>
+> [!WARNING]
+>
+> These actions cannot be undone.
 
 * [Remove yourself from an organization](/admin/organizations/manage-organization-members#remove-a-member)
 * [Delete an organization](/admin/organizations/delete-your-organization)

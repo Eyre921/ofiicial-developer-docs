@@ -10,4 +10,4 @@ Vercel is a developer platform with the tools, workflows, and infrastructure you
 
 Pinecone provides long-term memory for your Vercel AI projects. The integration lets you set up and authenticate a connection to your Pinecone data and indexes, then scale to billions of data points. It's self-serve. You can keep the default settings or configure optional advanced settings.
 
-<PrimarySecondaryCTA />
+[Get started](https://vercel.com/integrations/pinecone)

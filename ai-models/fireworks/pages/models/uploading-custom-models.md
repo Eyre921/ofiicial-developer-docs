@@ -26,60 +26,60 @@ Fireworks supports most popular model architectures, including:
 * [Gemma](https://huggingface.co/docs/transformers/en/model_doc/gemma)
 * [GPT-OSS 120B and 20B](https://huggingface.co/openai/gpt-oss-120b)
 
-<Accordion title="View all supported architectures">
-  - [DBRX](https://huggingface.co/docs/transformers/en/model_doc/dbrx)
-  - [DeepSeek V1, V2 & V3](https://huggingface.co/deepseek-ai)
-  - [Falcon](https://huggingface.co/docs/transformers/en/model_doc/falcon)
-  - [Gemma](https://huggingface.co/docs/transformers/en/model_doc/gemma)
-  - [GPT NeoX](https://huggingface.co/docs/transformers/en/model_doc/gpt_neox)
-  - [Idefics3](https://huggingface.co/docs/transformers/en/model_doc/idefics3)
-  - [Llama 1, 2, 3, 3.1, 4](https://huggingface.co/docs/transformers/en/model_doc/llama2)
-  - [LLaVA](https://huggingface.co/docs/transformers/main/en/model_doc/llava)
-  - [Mistral](https://huggingface.co/docs/transformers/en/model_doc/mistral) & [Mixtral](https://huggingface.co/docs/transformers/en/model_doc/mixtral)
-  - [Phi, Phi-3, Phi-3V, Phi-4](https://huggingface.co/docs/transformers/en/model_doc/phi)
-  - [Pythia](https://huggingface.co/docs/transformers/en/model_doc/gpt_neox)
-  - [Qwen](https://huggingface.co/docs/transformers/en/model_doc/qwen), [Qwen2](https://huggingface.co/docs/transformers/en/model_doc/qwen2), [Qwen2.5](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen25-vl-6795ffac22b334a837c0f9a5), [Qwen3](https://huggingface.co/Qwen)
-  - [Solar](https://huggingface.co/upstage/SOLAR-10.7B-v1.0)
-  - [StableLM](https://huggingface.co/docs/transformers/main/en/model_doc/stablelm)
-  - [Starcoder (GPTBigCode)](https://huggingface.co/docs/transformers/en/model_doc/gpt_bigcode) & [Starcoder2](https://huggingface.co/docs/transformers/main/en/model_doc/starcoder2)
-  - [Vision Llama](https://huggingface.co/docs/transformers/en/model_doc/llama2)
-</Accordion>
+> **View all supported architectures**
+>
+> * [DBRX](https://huggingface.co/docs/transformers/en/model_doc/dbrx)
+> * [DeepSeek V1, V2 & V3](https://huggingface.co/deepseek-ai)
+> * [Falcon](https://huggingface.co/docs/transformers/en/model_doc/falcon)
+> * [Gemma](https://huggingface.co/docs/transformers/en/model_doc/gemma)
+> * [GPT NeoX](https://huggingface.co/docs/transformers/en/model_doc/gpt_neox)
+> * [Idefics3](https://huggingface.co/docs/transformers/en/model_doc/idefics3)
+> * [Llama 1, 2, 3, 3.1, 4](https://huggingface.co/docs/transformers/en/model_doc/llama2)
+> * [LLaVA](https://huggingface.co/docs/transformers/main/en/model_doc/llava)
+> * [Mistral](https://huggingface.co/docs/transformers/en/model_doc/mistral) & [Mixtral](https://huggingface.co/docs/transformers/en/model_doc/mixtral)
+> * [Phi, Phi-3, Phi-3V, Phi-4](https://huggingface.co/docs/transformers/en/model_doc/phi)
+> * [Pythia](https://huggingface.co/docs/transformers/en/model_doc/gpt_neox)
+> * [Qwen](https://huggingface.co/docs/transformers/en/model_doc/qwen), [Qwen2](https://huggingface.co/docs/transformers/en/model_doc/qwen2), [Qwen2.5](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen25-vl-6795ffac22b334a837c0f9a5), [Qwen3](https://huggingface.co/Qwen)
+> * [Solar](https://huggingface.co/upstage/SOLAR-10.7B-v1.0)
+> * [StableLM](https://huggingface.co/docs/transformers/main/en/model_doc/stablelm)
+> * [Starcoder (GPTBigCode)](https://huggingface.co/docs/transformers/en/model_doc/gpt_bigcode) & [Starcoder2](https://huggingface.co/docs/transformers/main/en/model_doc/starcoder2)
+> * [Vision Llama](https://huggingface.co/docs/transformers/en/model_doc/llama2)
 
 ### Required files
 
 You'll need standard Hugging Face model files: `config.json`, model weights (`.safetensors` or `.bin`), and tokenizer files.
 
-<Accordion title="View detailed file requirements">
-  The model files you will need to provide depend on the model architecture. In general, you will need:
+> **View detailed file requirements**
+>
+> The model files you will need to provide depend on the model architecture. In general, you will need:
+>
+> * **Model configuration**: `config.json`
+>
+>   > [!NOTE]
+>   >
+>   > Fireworks does not support the `quantization_config` option in `config.json`.
+> * **Model weights** in one of the following formats:
+>   * `*.safetensors`
+>   * `*.bin`
+> * **Weights index**: `*.index.json`
+> * **Tokenizer file(s)**, e.g.:
+>   * `tokenizer.model`
+>   * `tokenizer.json`
+>   * `tokenizer_config.json`
+> * **Vision / multimodal models** additionally require the image (and, where applicable, video) preprocessor configuration files that their architecture's processor loads, for example:
+>
+>   * `preprocessor_config.json` (image preprocessor)
+>   * `video_preprocessor_config.json` (video preprocessor, for architectures that support video)
+>
+>   The exact set is architecture-specific. Provide the **complete and consistent** set that ships with a known-working checkpoint of the **same architecture**, and don't add extra processor config files the architecture doesn't use. For example, Qwen3-VL–family models load an image processor and a video processor and expect both `preprocessor_config.json` **and** `video_preprocessor_config.json`; a missing or mismatched set can cause deployment to fail during startup validation.
+>
+> If the requisite files are not present, model deployment may fail.
 
-  * **Model configuration**: `config.json`
-
-    <Note>
-      Fireworks does not support the `quantization_config` option in `config.json`.
-    </Note>
-  * **Model weights** in one of the following formats:
-    * `*.safetensors`
-    * `*.bin`
-  * **Weights index**: `*.index.json`
-  * **Tokenizer file(s)**, e.g.:
-    * `tokenizer.model`
-    * `tokenizer.json`
-    * `tokenizer_config.json`
-  * **Vision / multimodal models** additionally require the image (and, where applicable, video) preprocessor configuration files that their architecture's processor loads, for example:
-
-    * `preprocessor_config.json` (image preprocessor)
-    * `video_preprocessor_config.json` (video preprocessor, for architectures that support video)
-
-    The exact set is architecture-specific. Provide the **complete and consistent** set that ships with a known-working checkpoint of the **same architecture**, and don't add extra processor config files the architecture doesn't use. For example, Qwen3-VL–family models load an image processor and a video processor and expect both `preprocessor_config.json` **and** `video_preprocessor_config.json`; a missing or mismatched set can cause deployment to fail during startup validation.
-
-  If the requisite files are not present, model deployment may fail.
-</Accordion>
-
-<Note>
-  **Vision (multimodal) models run an image warmup at startup.** When you deploy a model that Fireworks detects as multimodal (from `config.json` — e.g. it has a `vision_config` and image token ids), startup validation automatically runs a sample image through the model. If the model's image/video preprocessor configuration files are missing or inconsistent with each other, this warmup fails and the deployment enters a `FAILED` state **even though the weights loaded and text generation works**.
-
-  If a multimodal upload fails to become `READY` (or serves text but fails on image inputs), verify that its preprocessor config files match those of a known-working checkpoint of the **same architecture** — the simplest fix is to re-export your checkpoint with the same non-weight files as a reference checkpoint and swap in only your weights.
-</Note>
+> [!NOTE]
+>
+> **Vision (multimodal) models run an image warmup at startup.** When you deploy a model that Fireworks detects as multimodal (from `config.json` — e.g. it has a `vision_config` and image token ids), startup validation automatically runs a sample image through the model. If the model's image/video preprocessor configuration files are missing or inconsistent with each other, this warmup fails and the deployment enters a `FAILED` state **even though the weights loaded and text generation works**.
+>
+> If a multimodal upload fails to become `READY` (or serves text but fails on image inputs), verify that its preprocessor config files match those of a known-working checkpoint of the **same architecture** — the simplest fix is to re-export your checkpoint with the same non-weight files as a reference checkpoint and swap in only your weights.
 
 ### Customizing base model configuration
 
@@ -90,107 +90,103 @@ For base models (not LoRA adapters), you can customize the chat template and gen
 
 You can also use a `fireworks.json` file with base models. If present, `fireworks.json` takes priority over `generation_config.json`. See [Customizing generation defaults with fireworks.json](#customizing-generation-defaults-with-fireworksjson) for the full `fireworks.json` schema.
 
-<Warning>
-  For LoRA adapters, you must use `fireworks.json` to customize generation defaults. Modifying `generation_config.json` in the adapter folder won't work because adapters inherit these settings from their base model.
-</Warning>
+> [!WARNING]
+>
+> For LoRA adapters, you must use `fireworks.json` to customize generation defaults. Modifying `generation_config.json` in the adapter folder won't work because adapters inherit these settings from their base model.
 
 ## Uploading your model
 
 For larger models, you can upload directly from cloud storage (S3 or Azure Blob Storage) for faster transfer instead of uploading from your local machine.
 
-<Tabs>
-  <Tab title="Local files (CLI)">
-    Upload from your local machine:
+**Local files (CLI)**
 
-    ```bash theme={null}
-    firectl model create <MODEL_ID> /path/to/files/
-    ```
-  </Tab>
+Upload from your local machine:
 
-  <Tab title="S3 bucket (CLI)">
-    Upload directly from an Amazon S3 bucket:
+```bash theme={null}
+firectl model create <MODEL_ID> /path/to/files/
+```
 
-    ```bash theme={null}
-    firectl model create <MODEL_ID> s3://<BUCKET_NAME>/<PATH_TO_MODEL>/ \
-      --aws-access-key-id <ACCESS_KEY_ID> \
-      --aws-secret-access-key <SECRET_ACCESS_KEY>
-    ```
+**S3 bucket (CLI)**
 
-    See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html) for how to generate an access key ID and secret access key pair.
+Upload directly from an Amazon S3 bucket:
 
-    <Note>
-      Ensure the IAM user has read access to the S3 bucket containing the model.
-    </Note>
-  </Tab>
+```bash theme={null}
+firectl model create <MODEL_ID> s3://<BUCKET_NAME>/<PATH_TO_MODEL>/ \
+  --aws-access-key-id <ACCESS_KEY_ID> \
+  --aws-secret-access-key <SECRET_ACCESS_KEY>
+```
 
-  <Tab title="Azure Blob Storage (CLI)">
-    Upload directly from Azure Blob Storage using either SAS token or federated identity authentication.
+See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html) for how to generate an access key ID and secret access key pair.
 
-    <Tabs>
-      <Tab title="SAS token">
-        First, create a Fireworks secret containing your Azure SAS token:
+> [!NOTE]
+>
+> Ensure the IAM user has read access to the S3 bucket containing the model.
 
-        ```bash theme={null}
-        firectl secret create --name <SECRET_NAME> --value <SAS_TOKEN>
-        ```
+**Azure Blob Storage (CLI)**
 
-        Then, upload the model using the secret:
+Upload directly from Azure Blob Storage using either SAS token or federated identity authentication.
 
-        ```bash theme={null}
-        firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
-          --azure-sas-token-secret accounts/<ACCOUNT_ID>/secrets/<SECRET_NAME>
-        ```
+**SAS token**
 
-        See the [Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview) for how to generate a SAS token.
+First, create a Fireworks secret containing your Azure SAS token:
 
-        <Note>
-          Ensure the SAS token has read access to the Azure Blob Storage container containing the model.
-        </Note>
-      </Tab>
+```bash theme={null}
+firectl secret create --name <SECRET_NAME> --value <SAS_TOKEN>
+```
 
-      <Tab title="Federated identity">
-        Use Azure AD federated identity for passwordless authentication.
+Then, upload the model using the secret:
 
-        **Setup:** Register an Azure AD application and add a federated credential with values provided by Fireworks during onboarding:
+```bash theme={null}
+firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
+  --azure-sas-token-secret accounts/<ACCOUNT_ID>/secrets/<SECRET_NAME>
+```
 
-        * **Issuer:** `https://accounts.google.com`
-        * **Subject:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
-        * **Audience:** `api://AzureADTokenExchange`
+See the [Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview) for how to generate a SAS token.
 
-        Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
+> [!NOTE]
+>
+> Ensure the SAS token has read access to the Azure Blob Storage container containing the model.
 
-        Then grant **Storage Blob Data Reader** role to the application on your storage account.
+**Federated identity**
 
-        ```bash theme={null}
-        firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
-          --azure-client-id <CLIENT_ID> \
-          --azure-tenant-id <TENANT_ID>
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+Use Azure AD federated identity for passwordless authentication.
 
-  <Tab title="REST API">
-    For programmatic uploads (automation, CI/CD pipelines, notebooks), use the Fireworks REST API.
+**Setup:** Register an Azure AD application and add a federated credential with values provided by Fireworks during onboarding:
 
-    See [Upload via REST API](/models/uploading-custom-models-api) for the full pipeline and a ready-to-use Python example.
-  </Tab>
-</Tabs>
+* **Issuer:** `https://accounts.google.com`
+* **Subject:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
+* **Audience:** `api://AzureADTokenExchange`
 
-<Note>
-  If you're uploading an embedding model, add the `--embedding` flag.
-</Note>
+Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
 
-<Note>
-  To use Fireworks managed training with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
+Then grant **Storage Blob Data Reader** role to the application on your storage account.
 
-  ```bash theme={null}
-  firectl model create <MODEL_ID> /path/to/files/ \
-    --hugging-face-url https://huggingface.co/<ORG>/<MODEL>
-  ```
+```bash theme={null}
+firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
+  --azure-client-id <CLIENT_ID> \
+  --azure-tenant-id <TENANT_ID>
+```
 
-  Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed training until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
-</Note>
+**REST API**
+
+For programmatic uploads (automation, CI/CD pipelines, notebooks), use the Fireworks REST API.
+
+See [Upload via REST API](/models/uploading-custom-models-api) for the full pipeline and a ready-to-use Python example.
+
+> [!NOTE]
+>
+> If you're uploading an embedding model, add the `--embedding` flag.
+
+> [!NOTE]
+>
+> To use Fireworks managed training with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
+>
+> ```bash theme={null}
+> firectl model create <MODEL_ID> /path/to/files/ \
+>   --hugging-face-url https://huggingface.co/<ORG>/<MODEL>
+> ```
+>
+> Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed training until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
 
 ## Verifying your upload
 
@@ -202,15 +198,15 @@ firectl model get accounts/<ACCOUNT_ID>/models/<MODEL_NAME>
 
 Look for `State: READY` in the output. Once ready, you can create a deployment.
 
-<Note>
-  **Model states:**
-
-  * `UPLOADING` – Files are being uploaded or awaiting validation (for REST API uploads)
-  * `READY` – Model is validated and ready to deploy
-  * `FAILED` – Upload or validation failed (check error details)
-
-  If using the REST API and your model remains in `UPLOADING` state, you most likely haven't called the validation endpoint yet — REST uploads don't become deployable until they're validated. See [Why validation is a separate step](/models/uploading-custom-models-api#why-validation-is-a-separate-step) for details.
-</Note>
+> [!NOTE]
+>
+> **Model states:**
+>
+> * `UPLOADING` – Files are being uploaded or awaiting validation (for REST API uploads)
+> * `READY` – Model is validated and ready to deploy
+> * `FAILED` – Upload or validation failed (check error details)
+>
+> If using the REST API and your model remains in `UPLOADING` state, you most likely haven't called the validation endpoint yet — REST uploads don't become deployable until they're validated. See [Why validation is a separate step](/models/uploading-custom-models-api#why-validation-is-a-separate-step) for details.
 
 ## Deploying your model
 
@@ -251,9 +247,9 @@ firectl model update <MODEL_ID> --public=false
 
 In addition to models you train on the Fireworks platform, you can also upload your own custom trained models as LoRA adapters.
 
-<Note>
-  Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
-</Note>
+> [!NOTE]
+>
+> Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
 
 ### Requirements
 
@@ -307,45 +303,43 @@ Add a `fireworks.json` file to the directory containing your adapter files:
 }
 ```
 
-<AccordionGroup>
-  <Accordion title="defaults options">
-    These defaults are applied when the user doesn't specify values in their API request:
+> **defaults options**
+>
+> These defaults are applied when the user doesn't specify values in their API request:
+>
+> | Field | Type | Example | Description |
+> | - | - | - | - |
+> | `stop` | array | `["<\|im_end\|>", "</s>"]` | Default stop sequences |
+> | `max_tokens` | integer | `1024` | Default maximum tokens to generate |
+> | `temperature` | float | `0.7` | Default sampling temperature |
+> | `top_k` | integer | `50` | Default top-k sampling |
+> | `top_p` | float | `0.9` | Default nucleus sampling probability |
+> | `min_p` | float | `0.0` | Default minimum probability threshold |
+> | `typical_p` | float | `1.0` | Default typical sampling probability |
+> | `frequency_penalty` | float | `0.0` | Default frequency penalty |
+> | `presence_penalty` | float | `0.0` | Default presence penalty |
+> | `repetition_penalty` | float | `1.0` | Default repetition penalty |
 
-    | Field | Type | Example | Description |
-    | - | - | - | - |
-    | `stop` | array | `["<\|im_end\|>", "</s>"]` | Default stop sequences |
-    | `max_tokens` | integer | `1024` | Default maximum tokens to generate |
-    | `temperature` | float | `0.7` | Default sampling temperature |
-    | `top_k` | integer | `50` | Default top-k sampling |
-    | `top_p` | float | `0.9` | Default nucleus sampling probability |
-    | `min_p` | float | `0.0` | Default minimum probability threshold |
-    | `typical_p` | float | `1.0` | Default typical sampling probability |
-    | `frequency_penalty` | float | `0.0` | Default frequency penalty |
-    | `presence_penalty` | float | `0.0` | Default presence penalty |
-    | `repetition_penalty` | float | `1.0` | Default repetition penalty |
-  </Accordion>
+> **Additional options**
+>
+> | Field | Default | Description |
+> | - | - | - |
+> | `model_arch` | null | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
+> | `model_config_name` | null | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model |
+> | `has_lora` | true | Set to `true` for LoRA adapters |
+> | `has_teft` | false | Set to `true` if using TEFT (Token-Efficient Training) |
 
-  <Accordion title="Additional options">
-    | Field | Default | Description |
-    | - | - | - |
-    | `model_arch` | null | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
-    | `model_config_name` | null | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model |
-    | `has_lora` | true | Set to `true` for LoRA adapters |
-    | `has_teft` | false | Set to `true` if using TEFT (Token-Efficient Training) |
-  </Accordion>
-</AccordionGroup>
-
-<Note>
-  All fields in `fireworks.json` are optional. Include only the fields you need to override.
-</Note>
+> [!NOTE]
+>
+> All fields in `fireworks.json` are optional. Include only the fields you need to override.
 
 ### Uploading the LoRA adapter
 
 To upload a LoRA addon, run the following command. The MODEL\_ID is an arbitrary [resource ID](/getting-started/concepts#resource-names-and-ids) to refer to the model within Fireworks.
 
-<Note>
-  Only some base models support LoRA addons.
-</Note>
+> [!NOTE]
+>
+> Only some base models support LoRA addons.
 
 ```bash theme={null}
 firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks/models/<BASE_MODEL_ID>"
@@ -353,16 +347,14 @@ firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Deploy your model" icon="rocket" href="/guides/ondemand-deployments">
-    Configure GPU types, autoscaling, and optimization
-  </Card>
+> **[Deploy your model](/guides/ondemand-deployments)**
+>
+> Configure GPU types, autoscaling, and optimization
 
-  <Card title="Quantization" icon="compress" href="/models/quantization">
-    Reduce serving costs with model quantization
-  </Card>
+> **[Quantization](/models/quantization)**
+>
+> Reduce serving costs with model quantization
 
-  <Card title="Training" icon="wand-magic-sparkles" href="/fine-tuning/finetuning-intro">
-    Train models before deploying them
-  </Card>
-</CardGroup>
+> **[Training](/fine-tuning/finetuning-intro)**
+>
+> Train models before deploying them

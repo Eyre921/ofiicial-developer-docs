@@ -8,37 +8,35 @@ Administrative capabilities available to Fireworks Enterprise accounts, includin
 
 Fireworks Enterprise accounts can use additional governance and administration features beyond the standard platform. This section documents those capabilities and how account admins configure them.
 
-<Info>
-  These features require an **Enterprise** account. If you are on another plan and need access, contact your Fireworks representative.
-</Info>
+> [!NOTE]
+>
+> These features require an **Enterprise** account. If you are on another plan and need access, contact your Fireworks representative.
 
-<Info>
-  Only account **Admins** can configure Enterprise features. Other roles can view some settings (for example, the active model access policy) but cannot change them.
-</Info>
+> [!NOTE]
+>
+> Only account **Admins** can configure Enterprise features. Other roles can view some settings (for example, the active model access policy) but cannot change them.
 
 ## Available features
 
-<CardGroup>
-  <Card title="Model access policy" icon="shield-check" href="/accounts/model-access-policy">
-    Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and training.
-  </Card>
+> **[Model access policy](/accounts/model-access-policy)**
+>
+> Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and training.
 
-  <Card title="Data residency" icon="flag-usa" href="/accounts/data-residency">
-    Restrict inference and training data processing to a selected region for the account.
-  </Card>
+> **[Data residency](/accounts/data-residency)**
+>
+> Restrict inference and training data processing to a selected region for the account.
 
-  <Card title="Zero Data Retention policy" icon="shield" href="/accounts/zero-data-retention">
-    Reject requests and jobs that would persist or log customer content.
-  </Card>
+> **[Zero Data Retention policy](/accounts/zero-data-retention)**
+>
+> Reject requests and jobs that would persist or log customer content.
 
-  <Card title="Custom SSO" icon="key" href="/accounts/sso">
-    Bring your own OpenID Connect or SAML identity provider for enterprise authentication.
-  </Card>
+> **[Custom SSO](/accounts/sso)**
+>
+> Bring your own OpenID Connect or SAML identity provider for enterprise authentication.
 
-  <Card title="Audit & access logs" icon="list-check" href="/guides/security_compliance/audit_logs">
-    Monitor API and data-access activity across your account for security review and compliance.
-  </Card>
-</CardGroup>
+> **[Audit & access logs](/guides/security_compliance/audit_logs)**
+>
+> Monitor API and data-access activity across your account for security review and compliance.
 
 ## Who can manage Enterprise features
 

@@ -8,17 +8,15 @@ Learn about the capabilities that control what a connection can do and see in a 
 
 All connections and [personal access tokens](/guides/get-started/personal-access-tokens) have associated capabilities which enforce what they can do and see in a Notion workspace.
 These capabilities when put together enforce which API endpoints a connection or token can call, and what content and user related information they are able to see.
-To set your connection's capabilities see the [Authorization](/guides/get-started/authorization) guide or navigate to the <a href={developerConnectionsUrl}>Developer portal</a>. For PATs, choose capabilities when you create the token.
+To set your connection's capabilities see the [Authorization](/guides/get-started/authorization) guide or navigate to the [Developer portal](https://app.notion.com/developers/connections). For PATs, choose capabilities when you create the token.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
-<Note>
-  **If a connection is added to a page, then the connection can access the page’s children**
-
-  When a connection receives access to a Notion page or database, it can read and write to both that resource and its children.
-</Note>
+> [!NOTE]
+>
+> **If a connection is added to a page, then the connection can access the page’s children**
+>
+> When a connection receives access to a Notion page or database, it can read and write to both that resource and its children.
 
 ## Content capabilities
 

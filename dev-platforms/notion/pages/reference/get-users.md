@@ -14,20 +14,20 @@ See [Pagination](/reference/intro#pagination) for details about how to use a cur
 
 The API does not guarantee a particular sort order for returned users.
 
-<Note>
-  [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT's bot user. Its `bot.owner.user` is the PAT creator. To retrieve the creator, use [Retrieve a user](/reference/get-user) with that user's ID.
-</Note>
+> [!NOTE]
+>
+> [Personal access tokens](/guides/get-started/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT's bot user. Its `bot.owner.user` is the PAT creator. To retrieve the creator, use [Retrieve a user](/reference/get-user) with that user's ID.
 
 ### Errors
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Info>
-  The API does not currently support filtering users by their email and/or name.
-</Info>
+> [!NOTE]
+>
+> The API does not currently support filtering users by their email and/or name.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have user information capabilities. Attempting to call this API without user information capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have user information capabilities. Attempting to call this API without user information capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).

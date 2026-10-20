@@ -18,9 +18,9 @@ Ensure you have the following:
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys) for managing indexes and collections
 * A [Pinecone service account](https://app.pinecone.io/organizations/-/settings/access/service-accounts) for managing projects, API keys, service accounts, role bindings, invites, and users
 
-<Note>
-  [Go](https://go.dev/doc/install) >= v1.24 is required only if you build the provider from source. You don't need Go to install the provider from the Terraform Registry.
-</Note>
+> [!NOTE]
+>
+> [Go](https://go.dev/doc/install) >= v1.24 is required only if you build the provider from source. You don't need Go to install the provider from the Terraform Registry.
 
 ## Install the provider
 
@@ -39,9 +39,9 @@ Ensure you have the following:
 
 2. Run `terraform init` to install the provider from the [Terraform Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest). Alternatively, you can download the latest binary for your target platform from the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/releases).
 
-<Note>
-  Upgrading from v2 doesn't require configuration changes. No arguments were removed or renamed in v3 or v4, so existing configuration keeps working. Both releases only add resources, data sources, and index options. For the full list, see the [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) and [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) release notes.
-</Note>
+> [!NOTE]
+>
+> Upgrading from v2 doesn't require configuration changes. No arguments were removed or renamed in v3 or v4, so existing configuration keeps working. Both releases only add resources, data sources, and index options. For the full list, see the [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) and [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) release notes.
 
 ## Authenticate
 
@@ -71,9 +71,9 @@ Follow these steps to authenticate:
    provider "pinecone" {}
    ```
 
-<Note>
-  You can also set the API key and service account credentials as [input variables](https://developer.hashicorp.com/terraform/language/values/variables).
-</Note>
+> [!NOTE]
+>
+> You can also set the API key and service account credentials as [input variables](https://developer.hashicorp.com/terraform/language/values/variables).
 
 ## Manage resources
 
@@ -139,9 +139,9 @@ resource "pinecone_index" "example_index_integrated" {
 
 For an index with integrated embedding, `dimension` defaults to the model's dimension. The `model` can't be changed once set, but you can update `field_map`, `read_parameters`, and `write_parameters`. The read-only `embed.effective_read_parameters` and `embed.effective_write_parameters` attributes report the parameters the API applied, including server-side defaults you didn't set.
 
-<Note>
-  You can [update](/guides/manage-data/manage-indexes) only the deletion protection, tags, integrated inference embedding settings, and [read capacity](#read-capacity) of an index. Changing any other attribute — including `name`, `dimension`, `metric`, the cloud and region, or the [metadata schema](#metadata-schema) — replaces the index.
-</Note>
+> [!NOTE]
+>
+> You can [update](/guides/manage-data/manage-indexes) only the deletion protection, tags, integrated inference embedding settings, and [read capacity](#read-capacity) of an index. Changing any other attribute — including `name`, `dimension`, `metric`, the cloud and region, or the [metadata schema](#metadata-schema) — replaces the index.
 
 #### BYOC indexes
 
@@ -161,9 +161,9 @@ resource "pinecone_index" "example_index_byoc" {
 
 #### Pod-based indexes
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 To create a [pod-based index](/guides/indexes/pods/understanding-pod-based-indexes), set `spec.pod`:
 
@@ -185,9 +185,9 @@ resource "pinecone_index" "example_index_pod" {
 }
 ```
 
-<Warning>
-  Changing `replicas`, `shards`, or `pod_type` replaces the index, which deletes the records it holds. To scale a pod-based index in place, use the [console or API](/guides/indexes/pods/manage-pod-based-indexes) instead.
-</Warning>
+> [!WARNING]
+>
+> Changing `replicas`, `shards`, or `pod_type` replaces the index, which deletes the records it holds. To scale a pod-based index in place, use the [console or API](/guides/indexes/pods/manage-pod-based-indexes) instead.
 
 #### Read capacity
 
@@ -254,9 +254,9 @@ resource "pinecone_index" "example_index_schema" {
 }
 ```
 
-<Warning>
-  You can set `schema` only when you create an index. Changing it replaces the index, which deletes the records it holds.
-</Warning>
+> [!WARNING]
+>
+> You can set `schema` only when you create an index. Changing it replaces the index, which deletes the records it holds.
 
 #### Timeouts
 
@@ -309,9 +309,9 @@ Collections also accept a `timeouts` block, with the same 5-minute defaults as i
 
 The `pinecone_project` resource lets you create, update, and delete [projects](/admin/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 Customers on those plans also can't set `max_pods` for a project.
 
@@ -343,9 +343,9 @@ output "project_organization_id" {
 
 The `pinecone_api_key` resource lets you create, update, and delete [API keys](/admin/projects/manage-api-keys). Valid `roles` values are `ProjectEditor`, `ProjectViewer`, `ControlPlaneEditor`, `ControlPlaneViewer`, `DataPlaneEditor`, and `DataPlaneViewer`. `roles` defaults to `["ProjectEditor"]`.
 
-<Note>
-  You can update only the name and roles of an API key. `project_id` is required when you create a key.
-</Note>
+> [!NOTE]
+>
+> You can update only the name and roles of an API key. `project_id` is required when you create a key.
 
 ```terraform theme={null}
 # API key with default roles (ProjectEditor)
@@ -367,9 +367,9 @@ output "api_key_roles" {
 }
 ```
 
-<Warning>
-  The generated secret is available as the read-only `key` attribute, which the API returns only once, at creation. Terraform stores it in plaintext in state. Marking it sensitive keeps it out of CLI output and logs, but does not encrypt it in state. Secure your state backend and never commit state to version control.
-</Warning>
+> [!WARNING]
+>
+> The generated secret is available as the read-only `key` attribute, which the API returns only once, at creation. Terraform stores it in plaintext in state. Marking it sensitive keeps it out of CLI output and logs, but does not encrypt it in state. Secure your state backend and never commit state to version control.
 
 ### Service accounts
 
@@ -401,9 +401,9 @@ output "example_service_account_client_secret" {
 
 To rotate a client secret, change `rotate_trigger` from one non-empty value to another. Setting it for the first time, or clearing it, establishes a baseline without rotating, so an existing credential is never invalidated unintentionally.
 
-<Warning>
-  The `client_secret` attribute is returned only once, at creation or rotation, and Terraform stores it in plaintext in state. Marking it sensitive keeps it out of CLI output and logs, but does not encrypt it in state. Secure your state backend and never commit state to version control.
-</Warning>
+> [!WARNING]
+>
+> The `client_secret` attribute is returned only once, at creation or rotation, and Terraform stores it in plaintext in state. Marking it sensitive keeps it out of CLI output and logs, but does not encrypt it in state. Secure your state backend and never commit state to version control.
 
 ### Role bindings
 
@@ -432,9 +432,9 @@ resource "pinecone_role_binding" "example_project_editor" {
 }
 ```
 
-<Note>
-  Role bindings are immutable. Changing any attribute revokes the existing binding and creates a new one.
-</Note>
+> [!NOTE]
+>
+> Role bindings are immutable. Changing any attribute revokes the existing binding and creates a new one.
 
 The `pinecone_role_binding` resource doesn't accept `principal_type = "invite"`. Pinecone moves an invite's bindings to the user principal when the invite is accepted, so Terraform can't manage them across that transition. To grant roles to someone who hasn't joined your organization yet, use [`pinecone_invite`](#invites), then manage their roles here with `principal_type = "user"` once they accept. The `pinecone_role_bindings` data source does accept `invite`, so you can still read what a pending invite granted.
 
@@ -475,21 +475,21 @@ resource "pinecone_invite" "example_project_editor" {
 
 The read-only `status` attribute reports `pending`, `expired`, or `processed`. Invites expire 7 days after creation, and the provider doesn't expose a way to change that. Once an invite is accepted, its status is `processed` and Terraform stops acting on it. Destroying an accepted invite is a no-op.
 
-<Warning>
-  Invites are immutable, so changing `email` or `role_bindings` sends a new invite. Don't change either one after the invite is accepted. The replacement re-invites an address that already belongs to a member, and the operation fails. Manage an existing member's roles with [`pinecone_role_binding`](#role-bindings) instead.
-</Warning>
+> [!WARNING]
+>
+> Invites are immutable, so changing `email` or `role_bindings` sends a new invite. Don't change either one after the invite is accepted. The replacement re-invites an address that already belongs to a member, and the operation fails. Manage an existing member's roles with [`pinecone_role_binding`](#role-bindings) instead.
 
-<Note>
-  Pinecone doesn't return the roles an invite granted, so `role_bindings` is applied only at creation. Terraform can't detect drift on it or recover it on import. To read the bindings, use the `pinecone_role_bindings` data source with `principal_type = "invite"`.
-</Note>
+> [!NOTE]
+>
+> Pinecone doesn't return the roles an invite granted, so `role_bindings` is applied only at creation. Terraform can't detect drift on it or recover it on import. To read the bindings, use the `pinecone_role_bindings` data source with `principal_type = "invite"`.
 
 ### Users
 
 The `pinecone_user` resource manages an existing [organization member](/admin/organizations/manage-organization-members). You can't create or update users through Terraform. They join your organization by accepting an [invite](#invites). Bring an existing user under management with [`terraform import`](#import-existing-resources). To change a user's roles, use a [role binding](#role-bindings).
 
-<Warning>
-  Destroying a `pinecone_user` resource removes that person from your organization. A `terraform destroy`, or removing the resource from your configuration, revokes a colleague's access to every project in the organization.
-</Warning>
+> [!WARNING]
+>
+> Destroying a `pinecone_user` resource removes that person from your organization. A `terraform destroy`, or removing the resource from your configuration, revokes a colleague's access to every project in the organization.
 
 ```terraform theme={null}
 resource "pinecone_user" "example_user" {

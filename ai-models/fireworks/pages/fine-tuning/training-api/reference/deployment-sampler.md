@@ -32,10 +32,10 @@ sampler = DeploymentSampler(
 )
 ```
 
-<Note>
-  The adaptive-by-default controller behavior and `TITOSidecar` API described
-  on this page require `fireworks-ai[training]>=1.2.11`.
-</Note>
+> [!NOTE]
+>
+> The adaptive-by-default controller behavior and `TITOSidecar` API described
+> on this page require `fireworks-ai[training]>=1.2.11`.
 
 | Parameter | Type | Description |
 | - | - | - |
@@ -175,7 +175,7 @@ Keep `sampling_client` alive until all calls through `sampler` have finished, th
 
 ### RL rollout sampling
 
-Use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical reference for session affinity, session-ID lifecycle, and KV-cache behavior. The example below only shows how to pass a rollout session value through `DeploymentSampler` and fan out independent samples.
+Use [Inference for RL rollouts](/guides/rollout-inference) as the canonical reference for session affinity, session-ID lifecycle, and KV-cache behavior. The example below only shows how to pass a rollout session value through `DeploymentSampler` and fan out independent samples.
 
 The following example launches two independent trajectories for every pre-tokenized prompt:
 
@@ -217,7 +217,7 @@ finally:
     sampling_client.close()
 ```
 
-Here, `n=1` is intentional because `sample_with_prompt_tokens(n=2, user=...)` gives both child requests the same `user` value. With 32 entries in `batch_prompt_token_ids`, the example creates 64 individual sampling requests. Follow [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) to decide when those requests should use distinct or shared session values.
+Here, `n=1` is intentional because `sample_with_prompt_tokens(n=2, user=...)` gives both child requests the same `user` value. With 32 entries in `batch_prompt_token_ids`, the example creates 64 individual sampling requests. Follow [Inference for RL rollouts](/guides/rollout-inference) to decide when those requests should use distinct or shared session values.
 
 ## TITO sidecars for agent harnesses
 
@@ -282,4 +282,4 @@ Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 * [Cookbook RL recipe](/fine-tuning/training-api/cookbook/rl) — GRPO with sampling pipeline
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — TITO sidecars, harnesses, and multi-turn trajectories
-* [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) — session affinity, KV-cache behavior, and rollout request fields
+* [Inference for RL rollouts](/guides/rollout-inference) — session affinity, KV-cache behavior, and rollout request fields

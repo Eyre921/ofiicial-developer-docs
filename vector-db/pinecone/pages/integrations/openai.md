@@ -41,207 +41,205 @@ The basic workflow looks like this:
   * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
   * Get back semantically similar documents, even if they don't share any keywords with the query.
 
-<img alt="Basic workflow of OpenAI and Pinecone" />
+![Basic workflow of OpenAI and Pinecone](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/6a3ea5a-pinecone-openai-overview.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=7bb594ae2f7a2c13846b2993cd1b3899)
 
-<Steps>
-  <Step title="Set up the environment">
-    Start by installing the OpenAI and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide.
+### 1. Set up the environment
 
-    ```shell Shell theme={null}
-    pip install -qU \
-        pinecone==10.0.0 \
-        openai==3.26.0 \
-        datasets==5.1.0
-    ```
-  </Step>
+Start by installing the OpenAI and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide.
 
-  <Step title="Create embeddings">
-    To create embeddings, first initialize your connection to OpenAI. Sign up for an API key at [OpenAI](https://platform.openai.com/signup).
+```shell Shell theme={null}
+pip install -qU \
+    pinecone==10.0.0 \
+    openai==3.26.0 \
+    datasets==5.1.0
+```
 
-    ```Python Python theme={null}
-    from openai import OpenAI
+### 2. Create embeddings
 
-    client = OpenAI(
-        api_key="OPENAI_API_KEY"
-    )  # get API key from platform.openai.com
-    ```
+To create embeddings, first initialize your connection to OpenAI. Sign up for an API key at [OpenAI](https://platform.openai.com/signup).
 
-    You can now create embeddings with the OpenAI v3 small embedding model.
+```Python Python theme={null}
+from openai import OpenAI
 
-    ```Python Python theme={null}
-    MODEL = "text-embedding-3-small"
+client = OpenAI(
+    api_key="OPENAI_API_KEY"
+)  # get API key from platform.openai.com
+```
 
-    res = client.embeddings.create(
-        input=[
-            "Sample document text goes here",
-            "there will be several phrases in each batch"
-        ], model=MODEL
+You can now create embeddings with the OpenAI v3 small embedding model.
+
+```Python Python theme={null}
+MODEL = "text-embedding-3-small"
+
+res = client.embeddings.create(
+    input=[
+        "Sample document text goes here",
+        "there will be several phrases in each batch"
+    ], model=MODEL
+)
+```
+
+In `res`, you should find a JSON-like object containing two 1536-dimensional embeddings. These are the vector representations of the two inputs. To access the embeddings directly, extract them to a list.
+
+```Python Python theme={null}
+# we can extract embeddings to a list
+embeds = [record.embedding for record in res.data]
+len(embeds)
+```
+
+You'll use this logic later when you create embeddings for the Text REtrieval Conference (TREC) question classification dataset.
+
+### 3. Create an index
+
+Next, initialize an index to store the vector embeddings. For this, you need a Pinecone API key. [Sign up for one](https://app.pinecone.io).
+
+```Python Python theme={null}
+import time
+from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import ServerlessSpec
+
+pc = Pinecone(api_key="...")
+
+spec = ServerlessSpec(cloud="aws", region="us-east-1")
+
+index_name = 'semantic-search-openai'
+
+# check if index already exists (it shouldn't if this is your first run)
+if not pc.has_index(index_name):
+    # if does not exist, create index
+    pc.create_index(
+        index_name,
+        dimension=len(embeds[0]),  # dimensionality of text-embedding-3-small
+        metric='dotproduct',
+        spec=spec
     )
-    ```
 
-    In `res`, you should find a JSON-like object containing two 1536-dimensional embeddings. These are the vector representations of the two inputs. To access the embeddings directly, extract them to a list.
+# connect to index
+index = pc.Index(index_name)
+time.sleep(1)
+# view index stats
+index.describe_index_stats()
+```
 
-    ```Python Python theme={null}
-    # we can extract embeddings to a list
+### 4. Store the embeddings
+
+With both OpenAI and Pinecone connections initialized, you can populate the index. For this, you need the TREC dataset.
+
+```Python Python theme={null}
+from datasets import load_dataset
+
+# load the first 1K rows of the TREC dataset
+trec = load_dataset('CogComp/trec', revision='refs/convert/parquet', split='train[:1000]')
+```
+
+Then create a vector embedding for each question using OpenAI (as demonstrated earlier), and `upsert` the ID, vector embedding, and original text for each phrase to Pinecone.
+
+```Python Python theme={null}
+from tqdm.auto import tqdm
+
+batch_size = 32  # process everything in batches of 32
+for i in tqdm(range(0, len(trec['text']), batch_size)):
+    # set end position of batch
+    i_end = min(i+batch_size, len(trec['text']))
+    # get batch of lines and IDs
+    lines_batch = trec['text'][i: i+batch_size]
+    ids_batch = [str(n) for n in range(i, i_end)]
+    # create embeddings
+    res = client.embeddings.create(input=lines_batch, model=MODEL)
     embeds = [record.embedding for record in res.data]
-    len(embeds)
-    ```
+    # prep metadata and upsert batch
+    meta = [{'text': line} for line in lines_batch]
+    to_upsert = zip(ids_batch, embeds, meta)
+    # upsert to Pinecone
+    index.upsert(vectors=list(to_upsert))
+```
 
-    You'll use this logic later when you create embeddings for the Text REtrieval Conference (TREC) question classification dataset.
-  </Step>
+### 5. Run a semantic search
 
-  <Step title="Create an index">
-    Next, initialize an index to store the vector embeddings. For this, you need a Pinecone API key. [Sign up for one](https://app.pinecone.io).
+With your data indexed, you're ready to perform searches. This follows a similar process to indexing. Start with a text `query` that you want to use to find similar sentences. As before, encode it with `text-embedding-3-small` to create a query vector, `xq`. Then use `xq` to query the Pinecone index.
 
-    ```Python Python theme={null}
-    import time
-    from pinecone.grpc import PineconeGRPC as Pinecone
-    from pinecone import ServerlessSpec
+```Python Python theme={null}
+query = "What caused the 1929 Great Depression?"
 
-    pc = Pinecone(api_key="...")
+xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
+```
 
-    spec = ServerlessSpec(cloud="aws", region="us-east-1")
+Now query the index.
 
-    index_name = 'semantic-search-openai'
+```Python Python theme={null}
+res = index.query(vector=xq, top_k=5, include_metadata=True)
+```
 
-    # check if index already exists (it shouldn't if this is your first run)
-    if not pc.has_index(index_name):
-        # if does not exist, create index
-        pc.create_index(
-            index_name,
-            dimension=len(embeds[0]),  # dimensionality of text-embedding-3-small
-            metric='dotproduct',
-            spec=spec
-        )
+The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
 
-    # connect to index
-    index = pc.Index(index_name)
-    time.sleep(1)
-    # view index stats
-    index.describe_index_stats()
-    ```
-  </Step>
+```Python Python theme={null}
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
 
-  <Step title="Store the embeddings">
-    With both OpenAI and Pinecone connections initialized, you can populate the index. For this, you need the TREC dataset.
+```text Response theme={null}
+0.75: Why did the world enter a global depression in 1929 ?
+0.60: When was `` the Great Depression '' ?
+0.37: What crop failure caused the Irish Famine ?
+0.32: What were popular songs and types of songs in the 1920s ?
+0.32: When did World War I start ?
+```
 
-    ```Python Python theme={null}
-    from datasets import load_dataset
+The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
 
-    # load the first 1K rows of the TREC dataset
-    trec = load_dataset('CogComp/trec', revision='refs/convert/parquet', split='train[:1000]')
-    ```
+```Python Python theme={null}
+query = "What was the cause of the major recession in the early 20th century?"
 
-    Then create a vector embedding for each question using OpenAI (as demonstrated earlier), and `upsert` the ID, vector embedding, and original text for each phrase to Pinecone.
+# create the query embedding
+xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
 
-    ```Python Python theme={null}
-    from tqdm.auto import tqdm
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
 
-    batch_size = 32  # process everything in batches of 32
-    for i in tqdm(range(0, len(trec['text']), batch_size)):
-        # set end position of batch
-        i_end = min(i+batch_size, len(trec['text']))
-        # get batch of lines and IDs
-        lines_batch = trec['text'][i: i+batch_size]
-        ids_batch = [str(n) for n in range(i, i_end)]
-        # create embeddings
-        res = client.embeddings.create(input=lines_batch, model=MODEL)
-        embeds = [record.embedding for record in res.data]
-        # prep metadata and upsert batch
-        meta = [{'text': line} for line in lines_batch]
-        to_upsert = zip(ids_batch, embeds, meta)
-        # upsert to Pinecone
-        index.upsert(vectors=list(to_upsert))
-    ```
-  </Step>
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
 
-  <Step title="Run a semantic search">
-    With your data indexed, you're ready to perform searches. This follows a similar process to indexing. Start with a text `query` that you want to use to find similar sentences. As before, encode it with `text-embedding-3-small` to create a query vector, `xq`. Then use `xq` to query the Pinecone index.
+```text Response theme={null}
+0.63: Why did the world enter a global depression in 1929 ?
+0.55: When was `` the Great Depression '' ?
+0.34: What were popular songs and types of songs in the 1920s ?
+0.33: What crop failure caused the Irish Famine ?
+0.29: What is considered the costliest disaster the insurance industry has ever faced ?
+```
 
-    ```Python Python theme={null}
-    query = "What caused the 1929 Great Depression?"
+Finally, search using the definition of depression rather than the word or related words.
 
-    xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
-    ```
+```Python Python theme={null}
+query = "Why was there a long-term economic downturn in the early 20th century?"
 
-    Now query the index.
+# create the query embedding
+xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
 
-    ```Python Python theme={null}
-    res = index.query(vector=xq, top_k=5, include_metadata=True)
-    ```
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
 
-    The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
 
-    ```Python Python theme={null}
-    for match in res['matches']:
-        print(f"{match['score']:.2f}: {match['metadata']['text']}")
-    ```
+```text Response theme={null}
+0.62: Why did the world enter a global depression in 1929 ?
+0.54: When was `` the Great Depression '' ?
+0.34: What were popular songs and types of songs in the 1920s ?
+0.33: What crop failure caused the Irish Famine ?
+0.32: What do economists do ?
+```
 
-    ```text Response theme={null}
-    0.75: Why did the world enter a global depression in 1929 ?
-    0.60: When was `` the Great Depression '' ?
-    0.37: What crop failure caused the Irish Famine ?
-    0.32: What were popular songs and types of songs in the 1920s ?
-    0.32: When did World War I start ?
-    ```
+This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
 
-    The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
+### 6. Clean up
 
-    ```Python Python theme={null}
-    query = "What was the cause of the major recession in the early 20th century?"
+When you're finished with the index, delete it to save resources.
 
-    # create the query embedding
-    xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
-
-    # query, returning the top 5 most similar results
-    res = index.query(vector=xq, top_k=5, include_metadata=True)
-
-    for match in res['matches']:
-        print(f"{match['score']:.2f}: {match['metadata']['text']}")
-    ```
-
-    ```text Response theme={null}
-    0.63: Why did the world enter a global depression in 1929 ?
-    0.55: When was `` the Great Depression '' ?
-    0.34: What were popular songs and types of songs in the 1920s ?
-    0.33: What crop failure caused the Irish Famine ?
-    0.29: What is considered the costliest disaster the insurance industry has ever faced ?
-    ```
-
-    Finally, search using the definition of depression rather than the word or related words.
-
-    ```Python Python theme={null}
-    query = "Why was there a long-term economic downturn in the early 20th century?"
-
-    # create the query embedding
-    xq = client.embeddings.create(input=query, model=MODEL).data[0].embedding
-
-    # query, returning the top 5 most similar results
-    res = index.query(vector=xq, top_k=5, include_metadata=True)
-
-    for match in res['matches']:
-        print(f"{match['score']:.2f}: {match['metadata']['text']}")
-    ```
-
-    ```text Response theme={null}
-    0.62: Why did the world enter a global depression in 1929 ?
-    0.54: When was `` the Great Depression '' ?
-    0.34: What were popular songs and types of songs in the 1920s ?
-    0.33: What crop failure caused the Irish Famine ?
-    0.32: What do economists do ?
-    ```
-
-    This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
-  </Step>
-
-  <Step title="Clean up">
-    When you're finished with the index, delete it to save resources.
-
-    ```Python Python theme={null}
-    pc.delete_index(name=index_name)
-    ```
-  </Step>
-</Steps>
+```Python Python theme={null}
+pc.delete_index(name=index_name)
+```
 
 ## Resources
 

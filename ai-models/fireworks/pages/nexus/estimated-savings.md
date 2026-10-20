@@ -12,15 +12,13 @@ The Savings view estimates how much your account saved by using Fireworks models
 
 Savings includes eligible direct Fireworks serverless usage as well as usage routed through FireRouter. It is not limited to requests where FireRouter selected an open model.
 
-To view your savings, go to Analytics → <a href="https://app.fireworks.ai/account/usage?type=savings">Savings</a>.
+To view your savings, go to Analytics → [Savings](https://app.fireworks.ai/account/usage?type=savings).
 
-<Frame>
-  <img alt="Analytics Savings tab showing total saved this month, cache hit rate, and a Spend vs Opus 5.5 chart with per-day stacked bars and a baseline line" />
-</Frame>
+![Analytics Savings tab showing total saved this month, cache hit rate, and a Spend vs Opus 5.5 chart with per-day stacked bars and a baseline line](https://mintcdn.com/fireworksai/NqCTPiMRl6q7tf99/images/fireworks-nexus/savings/savings-view.png?fit=max\&auto=format\&n=NqCTPiMRl6q7tf99\&q=85\&s=3ced1c7cca9c2bf0d5d6dd6490a4332b)
 
-<Note>
-  Only account admins on Nexus-enabled accounts can view Estimated Savings.
-</Note>
+> [!NOTE]
+>
+> Only account admins on Nexus-enabled accounts can view Estimated Savings.
 
 ## How savings are calculated
 
@@ -82,9 +80,9 @@ Groups with no comparable priced usage are omitted.
 
 ## Savings are estimates
 
-<Warning>
-  Savings figures are for comparison and are not invoice amounts. Actual cost uses public list prices rather than your account's contracted pricing. Costs from closed-model providers are also estimates and may differ from the provider's invoice. For Fireworks billing totals, use the Costs view or your billing statement. Recent usage may take time to appear in Savings.
-</Warning>
+> [!WARNING]
+>
+> Savings figures are for comparison and are not invoice amounts. Actual cost uses public list prices rather than your account's contracted pricing. Costs from closed-model providers are also estimates and may differ from the provider's invoice. For Fireworks billing totals, use the Costs view or your billing statement. Recent usage may take time to appear in Savings.
 
 ## Related
 

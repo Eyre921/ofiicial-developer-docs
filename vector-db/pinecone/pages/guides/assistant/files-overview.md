@@ -18,9 +18,9 @@ Pinecone Assistant supports the following file types:
 * PDF (.pdf)
 * Text (.txt)
 
-<Note>
-  For PDF files, assistants support [multimodal context](/guides/assistant/multimodal), allowing them to analyze and gather context from images. This feature is in [public preview](/release-notes/feature-availability).
-</Note>
+> [!NOTE]
+>
+> For PDF files, assistants support [multimodal context](/guides/assistant/multimodal), allowing them to analyze and gather context from images. This feature is in [public preview](/release-notes/feature-availability).
 
 For information about file size and storage limits, see [Pricing and limits](/guides/assistant/pricing-and-limits).
 
@@ -41,9 +41,9 @@ Each file in an assistant has a unique identifier. File IDs can be:
 
 You can [upload a file with metadata](/guides/assistant/upload-files#upload-a-file-with-metadata), which allows you to store additional information about the file as key-value pairs.
 
-<Warning>
-  File metadata can be set only when the file is uploaded. You cannot update metadata after the file is uploaded.
-</Warning>
+> [!WARNING]
+>
+> File metadata can be set only when the file is uploaded. You cannot update metadata after the file is uploaded.
 
 File metadata can be used for the following purposes:
 
@@ -66,33 +66,31 @@ Pinecone Assistant supports 16 KB of metadata per file.
 
 **Examples**
 
-<CodeGroup>
-  ```json Valid metadata theme={null}
-  {
+```json Valid metadata theme={null}
+{
+  "document_id": "document1",
+  "document_title": "Introduction to Vector Databases",
+  "chunk_number": 1,
+  "chunk_text": "First chunk of the document content...",
+  "is_public": true,
+  "tags": ["beginner", "database", "vector-db"],
+  "scores": ["85", "92"]
+}
+```
+
+```json Invalid metadata theme={null}
+{
+  "document": {       // Nested JSON objects are not supported
     "document_id": "document1",
     "document_title": "Introduction to Vector Databases",
-    "chunk_number": 1,
-    "chunk_text": "First chunk of the document content...",
-    "is_public": true,
-    "tags": ["beginner", "database", "vector-db"],
-    "scores": ["85", "92"]
-  }
-  ```
-
-  ```json Invalid metadata theme={null}
-  {
-    "document": {       // Nested JSON objects are not supported
-      "document_id": "document1",
-      "document_title": "Introduction to Vector Databases",
-    },
-    "$chunk_number": 1, // Keys must not start with a `$`
-    "chunk_text": null, // Null values are not supported
-    "is_public": true,
-    "tags": ["beginner", "database", "vector-db"],
-    "scores": [85, 92]  // Lists of non-strings are not supported
-  }
-  ```
-</CodeGroup>
+  },
+  "$chunk_number": 1, // Keys must not start with a `$`
+  "chunk_text": null, // Null values are not supported
+  "is_public": true,
+  "tags": ["beginner", "database", "vector-db"],
+  "scores": [85, 92]  // Lists of non-strings are not supported
+}
+```
 
 #### Metadata query language
 
@@ -100,26 +98,26 @@ Pinecone's filtering language supports the following operators:
 
 | Operator | Function | Supported types |
 | :- | :- | :- |
-| `$eq` | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
-| `$ne` | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
-| `$gt` | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
-| `$gte` | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
-| `$lt` | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
-| `$lte` | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
-| `$in` | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
-| `$nin` | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
+| `$eq` | Matches files with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
+| `$ne` | Matches files with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
+| `$gt` | Matches files with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
+| `$gte` | Matches files with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
+| `$lt` | Matches files with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
+| `$lte` | Matches files with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
+| `$in` | Matches files with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
+| `$nin` | Matches files with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
+| `$exists` | Matches files with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
 | `$and` | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
 | `$or` | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
-| `$not` | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
+| `$not` | Matches files that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
 
-<Note>
-  At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
-</Note>
+> [!NOTE]
+>
+> At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
 
-<Note>
-  Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
-</Note>
+> [!NOTE]
+>
+> Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 
 For example, the following has a `"genre"` metadata field with a list of strings:
 

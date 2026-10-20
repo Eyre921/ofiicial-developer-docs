@@ -160,7 +160,7 @@ To keep your app and tasks in sync without coordinating promotion at all, see [a
 
 ## Staging deploys
 
-By default, the `deploy` command will deploy to the `prod` environment. If you want to deploy to a different environment, you can use the `--env` flag:
+Use the `--env` flag to choose the environment you deploy to. If you don't pass it, the `deploy` command deploys to the `prod` environment, unless `TRIGGER_ACCESS_TOKEN` holds an API key for another environment. To deploy to staging:
 
 ```bash theme={"theme":"css-variables"}
 npx trigger.dev deploy --env staging

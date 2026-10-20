@@ -46,9 +46,9 @@ worker.sync("issuesSync", {
 
 `primaryKeyProperty` tells Notion which property uniquely identifies each row. This is typically the entity's ID in the external API (e.g., a Salesforce Contact ID or GitHub issue ID). When your sync emits a record with the same `key`, Notion updates the existing row instead of creating a duplicate.
 
-<Tip>
-  `type: "managed"` is shown here — Notion creates and owns the database. To sync into a database you already have instead, declare `type: "attached"` and bind it with the CLI. See [Attach an existing database](#attach-an-existing-database) below.
-</Tip>
+> [!TIP]
+>
+> `type: "managed"` is shown here — Notion creates and owns the database. To sync into a database you already have instead, declare `type: "attached"` and bind it with the CLI. See [Attach an existing database](#attach-an-existing-database) below.
 
 ### Schema and properties
 
@@ -95,70 +95,68 @@ Once a database is under sync control, the sync is the only writer to the data i
 
 Workers support two sync modes. Pick the one that fits your needs:
 
-<Tabs>
-  <Tab title="Replace (default)">
-    Each sync cycle returns the **full dataset**. After the final `hasMore: false`, any rows not seen during that cycle are automatically deleted.
+**Replace (default)**
 
-    Best for smaller datasets (under 10k records) or APIs that don't support change tracking. Also used as the [backfill half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
+Each sync cycle returns the **full dataset**. After the final `hasMore: false`, any rows not seen during that cycle are automatically deleted.
 
-    ```typescript theme={null}
-    worker.sync("teamsSync", {
-      database: teams,
-      mode: "replace",
-      execute: async (state) => {
-        const page = state?.page ?? 1;
-        const { items, hasMore } = await fetchPage(page, 100);
-        return {
-          changes: items.map((item) => ({
-            type: "upsert" as const,
-            key: item.id,
-            properties: {
-              Name: Builder.title(item.name),
-              ID: Builder.richText(item.id),
-            },
-          })),
-          hasMore,
-          nextState: hasMore ? { page: page + 1 } : undefined,
-        };
-      },
-    });
-    ```
-  </Tab>
+Best for smaller datasets (under 10k records) or APIs that don't support change tracking. Also used as the [backfill half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
 
-  <Tab title="Incremental">
-    Each sync cycle returns only **changes since the last run**. Rows not mentioned are left as-is. Deletions must be explicit.
+```typescript theme={null}
+worker.sync("teamsSync", {
+  database: teams,
+  mode: "replace",
+  execute: async (state) => {
+    const page = state?.page ?? 1;
+    const { items, hasMore } = await fetchPage(page, 100);
+    return {
+      changes: items.map((item) => ({
+        type: "upsert" as const,
+        key: item.id,
+        properties: {
+          Name: Builder.title(item.name),
+          ID: Builder.richText(item.id),
+        },
+      })),
+      hasMore,
+      nextState: hasMore ? { page: page + 1 } : undefined,
+    };
+  },
+});
+```
 
-    Best for large datasets (10k+ records) or APIs that provide a changes endpoint or cursor. Typically used as the [delta half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
+**Incremental**
 
-    ```typescript theme={null}
-    worker.sync("eventsSync", {
-      database: events,
-      mode: "incremental",
-      execute: async (state) => {
-        const { upserts, deletes, nextCursor } = await fetchChanges(state?.cursor);
-        return {
-          changes: [
-            ...upserts.map((item) => ({
-              type: "upsert" as const,
-              key: item.id,
-              properties: {
-                Name: Builder.title(item.name),
-                ID: Builder.richText(item.id),
-              },
-            })),
-            ...deletes.map((id) => ({
-              type: "delete" as const,
-              key: id,
-            })),
-          ],
-          hasMore: Boolean(nextCursor),
-          nextState: nextCursor ? { cursor: nextCursor } : undefined,
-        };
-      },
-    });
-    ```
-  </Tab>
-</Tabs>
+Each sync cycle returns only **changes since the last run**. Rows not mentioned are left as-is. Deletions must be explicit.
+
+Best for large datasets (10k+ records) or APIs that provide a changes endpoint or cursor. Typically used as the [delta half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
+
+```typescript theme={null}
+worker.sync("eventsSync", {
+  database: events,
+  mode: "incremental",
+  execute: async (state) => {
+    const { upserts, deletes, nextCursor } = await fetchChanges(state?.cursor);
+    return {
+      changes: [
+        ...upserts.map((item) => ({
+          type: "upsert" as const,
+          key: item.id,
+          properties: {
+            Name: Builder.title(item.name),
+            ID: Builder.richText(item.id),
+          },
+        })),
+        ...deletes.map((id) => ({
+          type: "delete" as const,
+          key: id,
+        })),
+      ],
+      hasMore: Boolean(nextCursor),
+      nextState: nextCursor ? { cursor: nextCursor } : undefined,
+    };
+  },
+});
+```
 
 ## Paginate large datasets
 
@@ -208,9 +206,9 @@ worker.sync("frequentSync", {
 | `"5m"`, `"15m"`, `"1h"`, `"1d"` | Run at the given interval |
 | `"manual"` | Only run when triggered via the CLI |
 
-<Info>
-  Minimum schedule is `"5m"`, maximum is `"7d"`.
-</Info>
+> [!NOTE]
+>
+> Minimum schedule is `"5m"`, maximum is `"7d"`.
 
 ## Combine backfill and delta syncs
 
@@ -287,9 +285,9 @@ ntn workers sync trigger ticketsBackfill
 
 This pattern gives you operational flexibility: run a backfill after a schema change to populate a new property, or after a bug fix to correct drifted data. This pattern also handles deletes cleanly even when the API doesn't surface them, as the backfill's replace-mode mark-and-sweep catches anything the delta missed.
 
-<Tip>
-  If both syncs hit the same API, give them the same [pacer](#rate-limit-outbound-requests). The runtime automatically splits the rate limit budget between them.
-</Tip>
+> [!TIP]
+>
+> If both syncs hit the same API, give them the same [pacer](#rate-limit-outbound-requests). The runtime automatically splits the rate limit budget between them.
 
 ## Relate two databases
 
@@ -357,9 +355,9 @@ Databases declared with `worker.database()` must choose a `type` of either `mana
 
 Use `attached` when a database already exists and you want a sync to take it over in place instead of creating a duplicate.
 
-<Warning>
-  Attaching a database hands your worker control of the real database, including its rows. The sync may overwrite or delete existing rows, resulting in data loss.
-</Warning>
+> [!WARNING]
+>
+> Attaching a database hands your worker control of the real database, including its rows. The sync may overwrite or delete existing rows, resulting in data loss.
 
 To define an attached database, use `worker.database()` with `type: "attached"`:
 
@@ -385,9 +383,9 @@ ntn workers databases attach contacts https://www.notion.so/myworkspace/Contacts
 
 When you attach a database, the worker takes control of the columns defined in `properties`. All other columns of the database are ignored. The worker will also leave existing rows in place; however, a running sync may overwrite existing rows.
 
-<Tip>
-  Before attaching anything, run `ntn workers sync trigger contactsSync --preview` to see exactly what your sync would write. Previewing works against an unattached declaration, so you can validate your data-fetching code before pointing it at a database with real data in it.
-</Tip>
+> [!TIP]
+>
+> Before attaching anything, run `ntn workers sync trigger contactsSync --preview` to see exactly what your sync would write. Previewing works against an unattached declaration, so you can validate your data-fetching code before pointing it at a database with real data in it.
 
 A sync targeting an attached database **will not run** until the database declaration has a successful attachment.
 
@@ -409,9 +407,9 @@ Detach clears the ownership marker and removes the read-only lock from every pro
 
 A worker can only detach a database it currently owns. You cannot detach databases synced from a different worker or from a native Notion database sync.
 
-<Warning>
-  Removing an attached database's declaration from your worker's code and redeploying, or deleting the worker entirely, does **not** release the database it was bound to. The database is left locked and in an orphaned state.
-</Warning>
+> [!WARNING]
+>
+> Removing an attached database's declaration from your worker's code and redeploying, or deleting the worker entirely, does **not** release the database it was bound to. The database is left locked and in an orphaned state.
 
 ## Authenticate with external APIs
 
@@ -441,9 +439,9 @@ worker.sync("customersSync", {
 
 `await api.wait()` blocks until a request slot is available. In this example, at most 10 requests per second.
 
-<Note>
-  A pacer only paces calls to *your* third-party API. Notion separately limits how often the platform runs your sync — see [Limits](/workers/reference/limits) for the workspace-wide sync run and database write limits.
-</Note>
+> [!NOTE]
+>
+> A pacer only paces calls to *your* third-party API. Notion separately limits how often the platform runs your sync — see [Limits](/workers/reference/limits) for the workspace-wide sync run and database write limits.
 
 ## Manage syncs from the CLI
 
@@ -467,9 +465,9 @@ ntn workers capabilities disable <syncKey>
 ntn workers capabilities enable <syncKey>
 ```
 
-<Note>
-  Deploying does **not** reset sync state. Syncs resume from their last cursor position. See [Resetting and migrating state](#reset-and-migrate-state) below.
-</Note>
+> [!NOTE]
+>
+> Deploying does **not** reset sync state. Syncs resume from their last cursor position. See [Resetting and migrating state](#reset-and-migrate-state) below.
 
 ## Reset and migrate state
 
@@ -525,24 +523,22 @@ See the [CLI command reference](/cli/reference/commands) for the full list of `n
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Schema and builders" icon="code" href="/workers/reference/schema">
-    Full reference for database property types and value builders.
-  </Card>
+> **[Schema and builders](/workers/reference/schema)**
+>
+> Full reference for database property types and value builders.
 
-  <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk">
-    Detailed API docs for worker.sync(), worker.database(), and worker.pacer().
-  </Card>
+> **[SDK reference](/workers/reference/sdk)**
+>
+> Detailed API docs for worker.sync(), worker.database(), and worker.pacer().
 
-  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
-    Store API keys and credentials for your sync.
-  </Card>
+> **[Secrets](/workers/guides/secrets)**
+>
+> Store API keys and credentials for your sync.
 
-  <Card title="OAuth" icon="key" href="/workers/guides/oauth">
-    Connect to APIs that require user authorization.
-  </Card>
+> **[OAuth](/workers/guides/oauth)**
+>
+> Connect to APIs that require user authorization.
 
-  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
-    Sync run and database write rate limits.
-  </Card>
-</CardGroup>
+> **[Limits](/workers/reference/limits)**
+>
+> Sync run and database write rate limits.

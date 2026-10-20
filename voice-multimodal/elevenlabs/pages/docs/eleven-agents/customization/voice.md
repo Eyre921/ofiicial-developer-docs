@@ -12,6 +12,8 @@ path: docs/eleven-agents/customization/voice
 
 You can customize various aspects of your AI agent's voice to create a more natural and engaging conversation experience. This includes controlling pronunciation, speaking speed, and language-specific voice settings.
 
+On an agent using a [Realtime model](/docs/eleven-agents/customization/realtime-models), the voice still applies, but the agent's Text to Speech model and expressive mode settings don't.
+
 > **Manage agents from your AI assistant**
 >
 > You can also make these changes conversationally. The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,

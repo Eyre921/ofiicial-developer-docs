@@ -20,21 +20,21 @@ Fleet uses [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-s
   * `TWITTER_API_KEY` and `TWITTER_API_KEY_SECRET`: Required for Twitter/X read operations (app-only bearer). Posting/media upload is not enabled.
 * **MCP server configuration**: Fleet can pull tools from one or more remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers. Configure MCP servers and headers in your [workspace](/langsmith/administration-overview#workspaces) settings. Fleet automatically discovers tools and applies the configured headers when calling them. For more information, refer to the [Remote MCP servers](/langsmith/fleet/remote-mcp-servers) page.
 
-<Note icon="wand">
-  Custom models are available for enterprise deployments. See [Custom models](/langsmith/fleet/essentials#custom-models) for more information.
-</Note>
+> [!NOTE]
+>
+> Custom models are available for enterprise deployments. See [Custom models](/langsmith/fleet/essentials#custom-models) for more information.
 
 ### Add a secret
 
 To add a secret:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-workspace-admin), navigate to <Icon icon="settings" /> **Settings** and then move to the **Secrets** tab.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-workspace-admin), navigate to  **Settings** and then move to the **Secrets** tab.
 
 2. Select **Add secret** and enter the secret **name** (for example, `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) and your key as the **value**.
 
-   <Note>
-     Ensure that the secret keys match the environment variable names expected by your model provider.
-   </Note>
+   > [!NOTE]
+   >
+   > Ensure that the secret keys match the environment variable names expected by your model provider.
 
 3. Select **Save secret**.
 
@@ -76,12 +76,6 @@ You can override the default spend limit for individual agents or users to set a
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/workspace-admin.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/workspace-admin.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -14,138 +14,134 @@ To determine how many [shards](/guides/index-data/dedicated-read-nodes/concepts#
 
 A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
-<div>
-  <Tabs>
-    <Tab title="Document index">
-      A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+**Document index**
 
-      ```text Calculate size theme={null}
-      Index size = Number of documents × (
-                     ID size +
-                     Metadata size +
-                     Total full-text-search field size +
-                     Dense vector dimensions × 4 bytes +
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
 
-      Where:
+```text Calculate size theme={null}
+Index size = Number of documents × (
+               ID size +
+               Metadata size +
+               Total full-text-search field size +
+               Dense vector dimensions × 4 bytes +
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
-      * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) but no `full_text_search` doesn't store its text, so only its generated vector counts. If a field has both, count its text here and its generated vector below.
-      * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
-      * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
+Where:
 
-      These examples assume 8-byte IDs:
+* `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
+* `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
+* Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
+* `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
 
-      | Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- | :- | :- |
-      | 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
-      | 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
-      | 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
+These examples assume 8-byte IDs:
 
-      <Note>
-        Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
-      </Note>
-    </Tab>
+| Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- | :- | :- |
+| 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
+| 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
+| 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
 
-    <Tab title="Index of dense vectors">
-      An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
+> [!NOTE]
+>
+> Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
 
-      <Note>
-        Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
-      </Note>
+**Index of dense vectors**
 
-      ```text Calculate size (assuming no sparse vectors) theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Dense vector dimensions × 4 bytes
-                   )
-      ```
+An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 
-      Where:
+> [!NOTE]
+>
+> Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * Each `Dense vector dimension` uses 4 bytes.
+```text Calculate size (assuming no sparse vectors) theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Dense vector dimensions × 4 bytes
+             )
+```
 
-      These examples assume 8-byte IDs:
+Where:
 
-      | Records | Dense vector dimensions | Avg metadata size | Index size |
-      | :- | :- | :- | :- |
-      | 500,000 | 768 | 500 bytes | 1.79 GB |
-      | 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
-      | 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
-      | 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* Each `Dense vector dimension` uses 4 bytes.
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
-      </Note>
-    </Tab>
+These examples assume 8-byte IDs:
 
-    <Tab title="Index of sparse vectors">
-      An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
+| Records | Dense vector dimensions | Avg metadata size | Index size |
+| :- | :- | :- | :- |
+| 500,000 | 768 | 500 bytes | 1.79 GB |
+| 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
+| 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
+| 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
 
-      ```text Calculate size theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
 
-      Where:
+**Index of sparse vectors**
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 
-      These examples assume 8-byte IDs:
+```text Calculate size theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      | Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- |
-      | 500,000 | 10 | 500 bytes | 0.29 GB |
-      | 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
-      | 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
-      | 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
+Where:
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
-      </Note>
-    </Tab>
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
 
-    <Tab title="Index with both dense and sparse vectors">
-      An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
+These examples assume 8-byte IDs:
 
-      ```text Calculate size theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Dense vector dimensions × 4 bytes + 
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+| Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- |
+| 500,000 | 10 | 500 bytes | 0.29 GB |
+| 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
+| 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
+| 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
 
-      Where:
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * Each `Dense vector dimension` uses 4 bytes.
-      * `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+**Index with both dense and sparse vectors**
 
-      These examples assume 8-byte IDs:
+An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
 
-      | Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- | :- |
-      | 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
-      | 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
-      | 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
-      | 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
+```text Calculate size theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Dense vector dimensions × 4 bytes + 
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
-      </Note>
-    </Tab>
-  </Tabs>
-</div>
+Where:
+
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* Each `Dense vector dimension` uses 4 bytes.
+* `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+
+These examples assume 8-byte IDs:
+
+| Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- | :- |
+| 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
+| 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
+| 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
+| 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
+
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
 
 ### Number of shards
 
@@ -170,9 +166,9 @@ To maintain optimal performance, provision additional shards to keep your index 
 * Every index must have at least one shard. However, you can [pause an index](/guides/index-data/dedicated-read-nodes/manage#pause-an-index) by reducing its replicas to 0.
 * After you've created your index, [monitor its fullness](/guides/index-data/dedicated-read-nodes/manage#monitor-index-fullness).
 
-<Note>
-  [Add shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) when [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
-</Note>
+> [!NOTE]
+>
+> [Add shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) when [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
 
 ### Number of replicas
 
@@ -190,42 +186,40 @@ For how throughput scales with replicas and how to size for high availability, s
 
 To choose between on-demand and dedicated read nodes, or to optimize your dedicated read nodes configuration, test with your actual workload. Performance varies based on factors such as the size of your index, vector dimensionality, metadata characteristics, and query patterns.
 
-<Steps>
-  <Step title="Calculate the size of your index">
-    Determine how many shards your index requires. See [Calculate the size of your index](#calculate-the-size-of-your-index).
-  </Step>
+**1. Calculate the size of your index**
 
-  <Step title="Create and populate a test index">
-    Populate a [dedicated read nodes index](/guides/index-data/dedicated-read-nodes/create) with data representative of your workload.
+Determine how many shards your index requires. See [Calculate the size of your index](#calculate-the-size-of-your-index).
 
-    <Tip>
-      If you don't restore your test index from a backup, you can [upsert](/guides/index-data/upsert-data) or [import](/guides/index-data/import-data) your data.
-    </Tip>
-  </Step>
+**2. Create and populate a test index**
 
-  <Step title="Migrate your test index to dedicated read nodes (if necessary)">
-    If your test index is on-demand, [migrate it](/guides/index-data/dedicated-read-nodes/migrate) with a single `b1` replica to start.
+Populate a [dedicated read nodes index](/guides/index-data/dedicated-read-nodes/create) with data representative of your workload.
 
-    <Warning>
-      Don't migrate your production index yet. At this point, you're just testing your workload.
-    </Warning>
-  </Step>
+> [!TIP]
+>
+> If you don't restore your test index from a backup, you can [upsert](/guides/index-data/upsert-data) or [import](/guides/index-data/import-data) your data.
 
-  <Step title="Run a load test">
-    Send realistic query patterns against your test index, gradually increasing QPS. For example, start at 10 QPS for about 30 minutes, then step up in 10-QPS increments while monitoring latency. Note the QPS where latency crosses your target threshold.
-  </Step>
+**3. Migrate your test index to dedicated read nodes (if necessary)**
 
-  <Step title="Calculate replicas">
-    From the QPS a single replica sustained, [determine how many replicas](#number-of-replicas) you need for your target throughput.
-  </Step>
+If your test index is on-demand, [migrate it](/guides/index-data/dedicated-read-nodes/migrate) with a single `b1` replica to start.
 
-  <Step title="Adjust and re-test">
-    If you haven't hit your performance and cost goals, change the configuration and test again:
+> [!WARNING]
+>
+> Don't migrate your production index yet. At this point, you're just testing your workload.
 
-    * [Add or remove shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) for storage capacity
-    * [Add or remove replicas](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-replicas) for throughput
-    * [Change node types](/guides/index-data/dedicated-read-nodes/manage#change-node-types) for different performance characteristics
+**4. Run a load test**
 
-    Continue iterating until you meet your requirements with room for growth.
-  </Step>
-</Steps>
+Send realistic query patterns against your test index, gradually increasing QPS. For example, start at 10 QPS for about 30 minutes, then step up in 10-QPS increments while monitoring latency. Note the QPS where latency crosses your target threshold.
+
+**5. Calculate replicas**
+
+From the QPS a single replica sustained, [determine how many replicas](#number-of-replicas) you need for your target throughput.
+
+**6. Adjust and re-test**
+
+If you haven't hit your performance and cost goals, change the configuration and test again:
+
+* [Add or remove shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) for storage capacity
+* [Add or remove replicas](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-replicas) for throughput
+* [Change node types](/guides/index-data/dedicated-read-nodes/manage#change-node-types) for different performance characteristics
+
+Continue iterating until you meet your requirements with room for growth.

@@ -156,7 +156,7 @@ For more information, see [Generating an installation access token for a GitHub 
 
 If your server needs to access multiple repositories, you can create a new account on GitHub.com and attach an SSH key that will be used exclusively for automation. Since this account on GitHub.com won't be used by a human, it's called a *machine user*. You can add the machine user as a [collaborator](/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository) on a personal repository (granting read and write access), as an [outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization) on an organization repository (granting read, write, or admin access), or to a [team](/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team) with access to the repositories it needs to automate (granting the permissions of the team).
 
-> \[!TIP]
+> [!TIP]
 > Our [terms of service](/en/site-policy/github-terms/github-terms-of-service) state:
 >
 > > *Accounts registered by "bots" or other automated methods are not permitted.*

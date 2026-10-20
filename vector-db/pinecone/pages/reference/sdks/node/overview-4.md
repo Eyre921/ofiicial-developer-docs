@@ -6,9 +6,9 @@ path: reference/sdks/node/overview
 
 Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upsert vectors, run semantic search, and call the Admin and Inference APIs.
 
-<Tip>
-  For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
-</Tip>
+> [!TIP]
+>
+> For installation instructions, usage examples, and reference information, see the [Pinecone Node.js SDK documentation](https://sdk.pinecone.io/typescript/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-ts-client/issues).
 
 ## Requirements
 
@@ -53,17 +53,17 @@ npm list | grep @pinecone-database/pinecone
 
 `v9.0.0` targets API version `2026-07`. To stay on API version `2026-04`, keep using `v8`. The flat control methods, such as `pc.createIndex` and `pc.configureIndex`, still work in `v9` but are deprecated in favor of resource clients such as `pc.indexes`.
 
-<Warning>
-  Before upgrading to `v9.0.0`, update all relevant code to account for the following breaking changes. See the [v9 migration guide](https://github.com/pinecone-io/pinecone-ts-client/blob/main/guides/upgrading/v9-migration.md) for before-and-after examples.
-
-  * Node.js 22 or later is required.
-  * `pc.preview` and the `Preview*` exports are removed. Document operations move to `index.documents`, where `index` comes from `pc.index({ name, namespace })` or `pc.index(name).namespace(namespace)`. Control operations move to resource clients such as `pc.indexes`.
-  * Pod-based index creation, legacy metadata-indexing schemas, and the `sourceCollection` and `sourceBackupId` creation options are rejected. Existing pod-based indexes keep working. To restore from a backup, use `pc.backups.createIndex(backupId, options)`.
-  * A top-level `embed` option when configuring an index is rejected. Update the semantic field through a `schema.fields` patch instead.
-  * Legacy index response properties such as `dimension`, `metric`, and `spec` are compatibility getters derived from `schema` and `deployment`. They are omitted when a response is spread or serialized, and can throw `Errors.PineconeIndexPropertyError` when there is no legacy equivalent.
-  * `NamespaceDescription.recordCount` and `sizeBytes` are now decimal strings, and `BackupModel.createdAt` is now a `Date`.
-  * Some generated type names are renamed or removed. For example, `BackupPaginationResponse` is now `BackupListPagination`.
-</Warning>
+> [!WARNING]
+>
+> Before upgrading to `v9.0.0`, update all relevant code to account for the following breaking changes. See the [v9 migration guide](https://github.com/pinecone-io/pinecone-ts-client/blob/main/guides/upgrading/v9-migration.md) for before-and-after examples.
+>
+> * Node.js 22 or later is required.
+> * `pc.preview` and the `Preview*` exports are removed. Document operations move to `index.documents`, where `index` comes from `pc.index({ name, namespace })` or `pc.index(name).namespace(namespace)`. Control operations move to resource clients such as `pc.indexes`.
+> * Pod-based index creation, legacy metadata-indexing schemas, and the `sourceCollection` and `sourceBackupId` creation options are rejected. Existing pod-based indexes keep working. To restore from a backup, use `pc.backups.createIndex(backupId, options)`.
+> * A top-level `embed` option when configuring an index is rejected. Update the semantic field through a `schema.fields` patch instead.
+> * Legacy index response properties such as `dimension`, `metric`, and `spec` are compatibility getters derived from `schema` and `deployment`. They are omitted when a response is spread or serialized, and can throw `Errors.PineconeIndexPropertyError` when there is no legacy equivalent.
+> * `NamespaceDescription.recordCount` and `sizeBytes` are now decimal strings, and `BackupModel.createdAt` is now a `Date`.
+> * Some generated type names are renamed or removed. For example, `BackupPaginationResponse` is now `BackupListPagination`.
 
 If you already have the Node.js SDK, upgrade to the latest version as follows:
 
@@ -98,9 +98,9 @@ You can also pass `clientId` and `clientSecret` directly to the constructor inst
 
 If your network setup requires you to interact with Pinecone through a proxy, you can pass a custom `ProxyAgent` from the [`undici` library](https://undici.nodejs.org/#/). Below is an example of how to construct an `undici` `ProxyAgent` that routes network traffic through a [`mitm` proxy server](https://mitmproxy.org/) while hitting Pinecone's `/indexes` endpoint.
 
-<Note>
-  The following strategy relies on Node's native [`fetch`](https://nodejs.org/docs/latest/api/globals.html#fetch) implementation, released in Node v16 and stabilized in Node v21. If you are running Node versions 18-21, you may experience issues stemming from the instability of the feature. There are currently no known issues related to proxying in Node v18+.
-</Note>
+> [!NOTE]
+>
+> The following strategy relies on Node's native [`fetch`](https://nodejs.org/docs/latest/api/globals.html#fetch) implementation, released in Node v16 and stabilized in Node v21. If you are running Node versions 18-21, you may experience issues stemming from the instability of the feature. There are currently no known issues related to proxying in Node v18+.
 
 ```JavaScript JavaScript theme={null}
 import {

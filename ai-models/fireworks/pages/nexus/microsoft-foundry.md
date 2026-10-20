@@ -42,45 +42,43 @@ fireconnect codex
 
 The first command makes Fireworks the default provider for every harness, not only Codex.
 
-<Warning>
-  FireRouter is not available on Foundry, including through a gateway. To use
-  `--model firerouter`, switch back to direct Fireworks first with
-  `fireconnect configure --provider fireworks`. See [FireRouter](/nexus/firerouter).
-</Warning>
+> [!WARNING]
+>
+> FireRouter is not available on Foundry, including through a gateway. To use
+> `--model firerouter`, switch back to direct Fireworks first with
+> `fireconnect configure --provider fireworks`. See [FireRouter](/nexus/firerouter).
 
 ## Connect with FireConnect
 
 FireConnect writes the Foundry endpoint, key, and deployment into supported harnesses and restores the original settings with `off`.
 
-<Steps>
-  <Step title="Set Foundry as the default provider">
-    ```bash wrap theme={null}
-    export AZURE_API_KEY="YOUR_AZURE_API_KEY"
+**1. Set Foundry as the default provider**
 
-    fireconnect configure \
-      --provider azure \
-      --base-url "https://YOUR_RESOURCE.services.ai.azure.com"
-    ```
+```bash wrap theme={null}
+export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
-    If no Azure key is stored, FireConnect saves an `{env:AZURE_API_KEY}` reference. To store the current value, add `--api-key "$AZURE_API_KEY"`.
-  </Step>
+fireconnect configure \
+  --provider azure \
+  --base-url "https://YOUR_RESOURCE.services.ai.azure.com"
+```
 
-  <Step title="Connect a harness with your deployment name">
-    ```bash wrap theme={null}
-    fireconnect opencode --model FW-GLM-5.2
-    ```
+If no Azure key is stored, FireConnect saves an `{env:AZURE_API_KEY}` reference. To store the current value, add `--api-key "$AZURE_API_KEY"`.
 
-    With Foundry, `--model` is your Azure deployment name, not a Fireworks serverless ID such as `glm-latest`. If you omit `--model`, FireConnect uses `FW-GLM-5.2`.
-  </Step>
+**2. Connect a harness with your deployment name**
 
-  <Step title="Verify">
-    ```bash wrap theme={null}
-    fireconnect opencode status
-    ```
+```bash wrap theme={null}
+fireconnect opencode --model FW-GLM-5.2
+```
 
-    Confirm that the provider is `azure` and that the endpoint and deployment name are correct. Harness configs show the label **Fireworks on Microsoft Foundry**.
-  </Step>
-</Steps>
+With Foundry, `--model` is your Azure deployment name, not a Fireworks serverless ID such as `glm-latest`. If you omit `--model`, FireConnect uses `FW-GLM-5.2`.
+
+**3. Verify**
+
+```bash wrap theme={null}
+fireconnect opencode status
+```
+
+Confirm that the provider is `azure` and that the endpoint and deployment name are correct. Harness configs show the label **Fireworks on Microsoft Foundry**.
 
 To route one harness through Foundry without changing the default provider, add `--azure`:
 
@@ -150,76 +148,74 @@ Put a gateway between the harness and Foundry when the harness needs a different
 
 Claude Code sends Anthropic Messages requests, and Foundry serves Fireworks models over OpenAI Chat Completions. A gateway translates between the two, including streaming, tool calls, and reasoning blocks. Your Claude Code install stays unchanged. FireConnect does not configure this path.
 
-<Tabs>
-  <Tab title="Envoy AI Gateway">
-    These steps follow the reference implementation in [Claude Code on Foundry with Fireworks models](https://github.com/ganac-tech/Claude-code-on-foundry-FW-Open-Source-Models), which includes the gateway config, a smoke test, demos, and cache measurement scripts. The gateway runs locally, with no Docker or Kubernetes.
+**Envoy AI Gateway**
 
-    <Steps>
-      <Step title="Get your Foundry details" icon="cloud">
-        From **Project settings** in the [Foundry portal](https://ai.azure.com/), copy the endpoint and the Azure API key. You also need the deployment name, which often has a suffix such as `FW-GLM-5.2-standard`. To list your deployments:
+These steps follow the reference implementation in [Claude Code on Foundry with Fireworks models](https://github.com/ganac-tech/Claude-code-on-foundry-FW-Open-Source-Models), which includes the gateway config, a smoke test, demos, and cache measurement scripts. The gateway runs locally, with no Docker or Kubernetes.
 
-        ```bash wrap theme={null}
-        curl -s "https://YOUR_RESOURCE.services.ai.azure.com/openai/deployments?api-version=2023-03-15-preview" \
-          -H "api-key: $AZURE_API_KEY"
-        ```
-      </Step>
+**1. Get your Foundry details**
 
-      <Step title="Get the gateway and its config" icon="download">
-        ```bash wrap theme={null}
-        git clone https://github.com/ganac-tech/Claude-code-on-foundry-FW-Open-Source-Models
-        cd Claude-code-on-foundry-FW-Open-Source-Models
-        mkdir -p bin
-        curl -fL -o bin/aigw \
-          https://github.com/envoyproxy/ai-gateway/releases/download/v1.0.0/aigw-darwin-arm64
-        chmod +x bin/aigw
-        ```
+From **Project settings** in the [Foundry portal](https://ai.azure.com/), copy the endpoint and the Azure API key. You also need the deployment name, which often has a suffix such as `FW-GLM-5.2-standard`. To list your deployments:
 
-        Replace `darwin-arm64` with `linux-amd64` or `linux-arm64` for your machine.
-      </Step>
+```bash wrap theme={null}
+curl -s "https://YOUR_RESOURCE.services.ai.azure.com/openai/deployments?api-version=2023-03-15-preview" \
+  -H "api-key: $AZURE_API_KEY"
+```
 
-      <Step title="Configure" icon="file-pen">
-        Copy `.env.example` to `.env` and fill in three values:
+**2. Get the gateway and its config**
 
-        ```bash .env theme={null}
-        FOUNDRY_HOST=YOUR_RESOURCE.services.ai.azure.com
-        AZURE_API_KEY=YOUR_AZURE_API_KEY
-        FOUNDRY_MODEL=FW-GLM-5.2
-        ```
+```bash wrap theme={null}
+git clone https://github.com/ganac-tech/Claude-code-on-foundry-FW-Open-Source-Models
+cd Claude-code-on-foundry-FW-Open-Source-Models
+mkdir -p bin
+curl -fL -o bin/aigw \
+  https://github.com/envoyproxy/ai-gateway/releases/download/v1.0.0/aigw-darwin-arm64
+chmod +x bin/aigw
+```
 
-        `FOUNDRY_MODEL` is your deployment name, and it must match `bodyMutation` in `aigw-foundry.yaml`.
-      </Step>
+Replace `darwin-arm64` with `linux-amd64` or `linux-arm64` for your machine.
 
-      <Step title="Start and test the gateway" icon="play">
-        ```bash wrap theme={null}
-        ./start-gateway.sh
-        ```
+**3. Configure**
 
-        Leave it running. In a second terminal, run `./smoke-test.sh` to check plain, streaming, and tool-call responses before you involve Claude Code.
+Copy `.env.example` to `.env` and fill in three values:
 
-        <Check>The smoke test reports `11 passed, 0 failed`.</Check>
-      </Step>
+```bash .env theme={null}
+FOUNDRY_HOST=YOUR_RESOURCE.services.ai.azure.com
+AZURE_API_KEY=YOUR_AZURE_API_KEY
+FOUNDRY_MODEL=FW-GLM-5.2
+```
 
-      <Step title="Point Claude Code at the gateway" icon="terminal">
-        Run `./claude-foundry.sh`, or set these values yourself:
+`FOUNDRY_MODEL` is your deployment name, and it must match `bodyMutation` in `aigw-foundry.yaml`.
 
-        ```bash wrap theme={null}
-        export ANTHROPIC_BASE_URL="http://localhost:1975/anthropic"
-        export ANTHROPIC_AUTH_TOKEN="gateway-injected"
-        export ANTHROPIC_MODEL="FW-GLM-5.2"
-        claude
-        ```
+**4. Start and test the gateway**
 
-        The gateway adds the Azure key and the deployment name, so `ANTHROPIC_AUTH_TOKEN` is only a placeholder.
-      </Step>
-    </Steps>
+```bash wrap theme={null}
+./start-gateway.sh
+```
 
-    The gateway also sends one shared prompt cache key for every request. Keep one key for your whole team, because Claude Code's long system prompt is the same for every user.
-  </Tab>
+Leave it running. In a second terminal, run `./smoke-test.sh` to check plain, streaming, and tool-call responses before you involve Claude Code.
 
-  <Tab title="LiteLLM">
-    Point Claude Code at LiteLLM and configure Foundry as an OpenAI-compatible upstream, using the base URL, Azure key, and deployment name from [manual setup](#configure-a-harness-manually). LiteLLM accepts Claude Code's Messages requests and forwards them as Chat Completions. See [LLM Gateways](/nexus/llm-gateways#litellm-proxy) for LiteLLM setup.
-  </Tab>
-</Tabs>
+> [!TIP]
+>
+> The smoke test reports `11 passed, 0 failed`.
+
+**5. Point Claude Code at the gateway**
+
+Run `./claude-foundry.sh`, or set these values yourself:
+
+```bash wrap theme={null}
+export ANTHROPIC_BASE_URL="http://localhost:1975/anthropic"
+export ANTHROPIC_AUTH_TOKEN="gateway-injected"
+export ANTHROPIC_MODEL="FW-GLM-5.2"
+claude
+```
+
+The gateway adds the Azure key and the deployment name, so `ANTHROPIC_AUTH_TOKEN` is only a placeholder.
+
+The gateway also sends one shared prompt cache key for every request. Keep one key for your whole team, because Claude Code's long system prompt is the same for every user.
+
+**LiteLLM**
+
+Point Claude Code at LiteLLM and configure Foundry as an OpenAI-compatible upstream, using the base URL, Azure key, and deployment name from [manual setup](#configure-a-harness-manually). LiteLLM accepts Claude Code's Messages requests and forwards them as Chat Completions. See [LLM Gateways](/nexus/llm-gateways#litellm-proxy) for LiteLLM setup.
 
 ### Other harnesses
 

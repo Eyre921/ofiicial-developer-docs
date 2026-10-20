@@ -10,19 +10,17 @@ Pinecone Database powers retrieval for AI agents and applications, including sea
 
 ## Get started
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/guides/get-started/quickstart">
-    Pick a search path and run your first search in minutes
-  </Card>
+> **[Quickstart](/guides/get-started/quickstart)**
+>
+> Pick a search path and run your first search in minutes
 
-  <Card title="AI coding tools" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
-    Use Pinecone with Claude Code, Codex, Cursor, and other agentic tools
-  </Card>
+> **[AI coding tools](/integrations/ai-coding-tools)**
+>
+> Use Pinecone with Claude Code, Codex, Cursor, and other agentic tools
 
-  <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
-    Connect any MCP-compatible agent to Pinecone for search and index management
-  </Card>
-</CardGroup>
+> **[MCP server](/guides/operations/mcp-server)**
+>
+> Connect any MCP-compatible agent to Pinecone for search and index management
 
 ## What you can do
 
@@ -37,56 +35,50 @@ With Pinecone Database, you can:
 
 ## Learn
 
-<CardGroup>
-  <Card title="Key terms" icon="book" href="/guides/core-concepts/key-terms">
-    Organizations, projects, indexes, namespaces, documents, and records
-  </Card>
+> **[Key terms](/guides/core-concepts/key-terms)**
+>
+> Organizations, projects, indexes, namespaces, documents, and records
 
-  <Card title="Data modeling" icon="table" href="/guides/index-data/data-modeling">
-    Design the fields your index needs for the searches you'll run
-  </Card>
+> **[Data modeling](/guides/index-data/data-modeling)**
+>
+> Design the fields your index needs for the searches you'll run
 
-  <Card title="Search overview" icon="magnifying-glass" href="/guides/search/search-overview">
-    Compare search types and choose the right approach for each query
-  </Card>
-</CardGroup>
+> **[Search overview](/guides/search/search-overview)**
+>
+> Compare search types and choose the right approach for each query
 
 ## Resources
 
-<CardGroup>
-  <Card title="API reference" icon="code-simple" href="/reference">
-    Details about the Pinecone APIs, SDKs, and architecture
-  </Card>
+> **[API reference](/reference)**
+>
+> Details about the Pinecone APIs, SDKs, and architecture
 
-  <Card title="Examples" icon="grid-round" href="/examples">
-    Notebooks and sample apps with common AI patterns
-  </Card>
+> **[Examples](/examples)**
+>
+> Notebooks and sample apps with common AI patterns
 
-  <Card title="Models" icon="cube" href="/models/overview">
-    Embedding and reranking models hosted by Pinecone
-  </Card>
+> **[Models](/models/overview)**
+>
+> Embedding and reranking models hosted by Pinecone
 
-  <Card title="Integrations" icon="link-simple" href="/integrations/overview">
-    Third-party integrations for LangChain, LlamaIndex, and more
-  </Card>
+> **[Integrations](/integrations/overview)**
+>
+> Third-party integrations for LangChain, LlamaIndex, and more
 
-  <Card title="Troubleshooting" icon="screwdriver-wrench" href="/admin/support/contact-support">
-    Common errors, account help, and how to contact support
-  </Card>
+> **[Troubleshooting](/admin/support/contact-support)**
+>
+> Common errors, account help, and how to contact support
 
-  <Card title="Changelog" icon="party-horn" href="/release-notes">
-    What's new in Pinecone
-  </Card>
-</CardGroup>
+> **[Changelog](/release-notes)**
+>
+> What's new in Pinecone
 
 ## Other Pinecone products
 
-<CardGroup>
-  <Card title="Pinecone Assistant" icon="comments" href="/guides/assistant/overview">
-    A managed service for RAG chat and agent applications grounded in your data
-  </Card>
+> **[Pinecone Assistant](/guides/assistant/overview)**
+>
+> A managed service for RAG chat and agent applications grounded in your data
 
-  <Card title="Pinecone Nexus" icon="brain-circuit" href="/guides/nexus/overview">
-    The knowledge engine for agents, serving grounded, cited answers in one call
-  </Card>
-</CardGroup>
+> **[Pinecone Nexus](/guides/nexus/overview)**
+>
+> The knowledge engine for agents, serving grounded, cited answers in one call

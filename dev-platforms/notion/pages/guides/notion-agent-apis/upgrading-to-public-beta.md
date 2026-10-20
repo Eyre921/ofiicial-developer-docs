@@ -10,11 +10,11 @@ This guide is only for customers who had early access to the private alpha of th
 
 The public beta renames the alpha's threads-and-messages routes to sessions and events, and adds routes for agent insights and controls.
 
-<Warning>
-  **Move off alpha routes by September 30, 2026**
-
-  If you use the alpha routes for listing agents, threads, messages, or chat, migrate to their public-beta replacements by that date. The new routes use JSON request bodies instead of query parameters and return sessions and events instead of threads and messages.
-</Warning>
+> [!WARNING]
+>
+> **Move off alpha routes by September 30, 2026**
+>
+> If you use the alpha routes for listing agents, threads, messages, or chat, migrate to their public-beta replacements by that date. The new routes use JSON request bodies instead of query parameters and return sessions and events instead of threads and messages.
 
 ## What's changing
 
@@ -30,31 +30,29 @@ You only need to migrate the routes listed above. The public beta also adds opti
 
 ## Upgrade checklist
 
-<Steps>
-  <Step>
-    Replace `GET /v1/agents` with `POST /v1/agents/query`, moving your query parameters into a `filter` object.
-  </Step>
+**Step 1**
 
-  <Step>
-    Replace `GET /v1/agents/:agent_id/threads` with `POST /v1/sessions/query`, filtering on `agent_id`.
-  </Step>
+Replace `GET /v1/agents` with `POST /v1/agents/query`, moving your query parameters into a `filter` object.
 
-  <Step>
-    Replace `GET /v1/threads/:thread_id/messages` with `POST /v1/sessions/:session_id/events/query`, and read agent replies from `agent.message` events.
-  </Step>
+**Step 2**
 
-  <Step>
-    Replace `POST /v1/agents/:agent_id/chat` with `POST /v1/sessions`, moving `agent_id` into the request body.
-  </Step>
+Replace `GET /v1/agents/:agent_id/threads` with `POST /v1/sessions/query`, filtering on `agent_id`.
 
-  <Step>
-    Replace `POST /v1/agents/:agent_id/chatStream` with `POST /v1/sessions` and `Accept: text/event-stream`, and parse server-sent events instead of NDJSON lines.
-  </Step>
+**Step 3**
 
-  <Step>
-    Rename `thread_id` to `session_id` throughout your code. Handle `queued`, `in_progress`, and `terminated` in addition to the alpha statuses.
-  </Step>
-</Steps>
+Replace `GET /v1/threads/:thread_id/messages` with `POST /v1/sessions/:session_id/events/query`, and read agent replies from `agent.message` events.
+
+**Step 4**
+
+Replace `POST /v1/agents/:agent_id/chat` with `POST /v1/sessions`, moving `agent_id` into the request body.
+
+**Step 5**
+
+Replace `POST /v1/agents/:agent_id/chatStream` with `POST /v1/sessions` and `Accept: text/event-stream`, and parse server-sent events instead of NDJSON lines.
+
+**Step 6**
+
+Rename `thread_id` to `session_id` throughout your code. Handle `queued`, `in_progress`, and `terminated` in addition to the alpha statuses.
 
 ## Step-by-step guide
 
@@ -62,25 +60,23 @@ You only need to migrate the routes listed above. The public beta also adds opti
 
 [Query agents](/reference/notion-agent-apis/query-agents) is a `POST` that takes a JSON body. The alpha's query parameters become filters, each naming a `property` and pairing it with a condition object, and `name` becomes the free-text `query` field. Combine several filters with `and` or `or`.
 
-<CodeGroup>
-  ```bash Public beta theme={null}
-  curl -X POST https://api.notion.com/v1/agents/query \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "query": "research",
-      "filter": { "property": "agent_type", "string": { "equals": "custom_agent" } },
-      "page_size": 25
-    }'
-  ```
+```bash Public beta theme={null}
+curl -X POST https://api.notion.com/v1/agents/query \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "research",
+    "filter": { "property": "agent_type", "string": { "equals": "custom_agent" } },
+    "page_size": 25
+  }'
+```
 
-  ```bash Alpha (deprecated) theme={null}
-  curl "https://api.notion.com/v1/agents?name=research&agent_type=custom_agent&page_size=25" \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11"
-  ```
-</CodeGroup>
+```bash Alpha (deprecated) theme={null}
+curl "https://api.notion.com/v1/agents?name=research&agent_type=custom_agent&page_size=25" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11"
+```
 
 The response envelope is unchanged — `results`, `has_more`, and `next_cursor` — so your pagination loop keeps working.
 
@@ -92,29 +88,27 @@ See [Query agents](/reference/notion-agent-apis/query-agents) for the full filte
 
 A thread is now a session. [Query sessions](/reference/notion-agent-apis/query-sessions) is workspace-wide rather than nested under an agent, so the agent moves from the path into a filter.
 
-<CodeGroup>
-  ```bash Public beta theme={null}
-  curl -X POST https://api.notion.com/v1/sessions/query \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11" \
-    -H "Content-Type: application/json" \
-    -d "{
-      \"filter\": {
-        \"and\": [
-          { \"property\": \"agent_id\", \"string\": { \"equals\": \"$AGENT_ID\" } },
-          { \"property\": \"status\", \"status\": { \"equals\": \"completed\" } }
-        ]
-      },
-      \"sorts\": [{ \"property\": \"updated_at\", \"direction\": \"descending\" }]
-    }"
-  ```
+```bash Public beta theme={null}
+curl -X POST https://api.notion.com/v1/sessions/query \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"filter\": {
+      \"and\": [
+        { \"property\": \"agent_id\", \"string\": { \"equals\": \"$AGENT_ID\" } },
+        { \"property\": \"status\", \"status\": { \"equals\": \"completed\" } }
+      ]
+    },
+    \"sorts\": [{ \"property\": \"updated_at\", \"direction\": \"descending\" }]
+  }"
+```
 
-  ```bash Alpha (deprecated) theme={null}
-  curl "https://api.notion.com/v1/agents/$AGENT_ID/threads?status=completed&sort_by=last_edited_time&sort_direction=descending" \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11"
-  ```
-</CodeGroup>
+```bash Alpha (deprecated) theme={null}
+curl "https://api.notion.com/v1/agents/$AGENT_ID/threads?status=completed&sort_by=last_edited_time&sort_direction=descending" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11"
+```
 
 The objects changed shape along with the name:
 
@@ -132,24 +126,22 @@ Handle `queued` and `in_progress` as separate session statuses in place of the a
 
 Message history is now an event stream. [Query session events](/reference/notion-agent-apis/query-session-events) returns one entry per thing that happened in the session — user input, agent output, thinking, tool calls, tool results, and status transitions — each with a monotonically increasing `sequence`.
 
-<CodeGroup>
-  ```bash Public beta theme={null}
-  curl -X POST https://api.notion.com/v1/sessions/$SESSION_ID/events/query \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "filter": { "property": "type", "event_type": { "equals": "agent.message" } },
-      "sorts": [{ "property": "sequence", "direction": "ascending" }]
-    }'
-  ```
+```bash Public beta theme={null}
+curl -X POST https://api.notion.com/v1/sessions/$SESSION_ID/events/query \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "filter": { "property": "type", "event_type": { "equals": "agent.message" } },
+    "sorts": [{ "property": "sequence", "direction": "ascending" }]
+  }'
+```
 
-  ```bash Alpha (deprecated) theme={null}
-  curl "https://api.notion.com/v1/threads/$THREAD_ID/messages?role=agent" \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11"
-  ```
-</CodeGroup>
+```bash Alpha (deprecated) theme={null}
+curl "https://api.notion.com/v1/threads/$THREAD_ID/messages?role=agent" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11"
+```
 
 | Thread message (alpha) | Session event (Public beta) |
 | :- | :- |
@@ -170,26 +162,24 @@ Two consequences worth handling explicitly:
 
 [Create or update a session](/reference/notion-agent-apis/update-session) replaces the chat route. `agent_id` moves from the path into the body, and one route now covers all three things you do to a session: start it, add a message, and answer a required action.
 
-<CodeGroup>
-  ```bash Public beta theme={null}
-  curl -X POST https://api.notion.com/v1/sessions \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11" \
-    -H "Content-Type: application/json" \
-    -d "{
-      \"agent_id\": \"$AGENT_ID\",
-      \"message\": \"Summarize this week's work.\"
-    }"
-  ```
+```bash Public beta theme={null}
+curl -X POST https://api.notion.com/v1/sessions \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"agent_id\": \"$AGENT_ID\",
+    \"message\": \"Summarize this week's work.\"
+  }"
+```
 
-  ```bash Alpha (deprecated) theme={null}
-  curl -X POST https://api.notion.com/v1/agents/$AGENT_ID/chat \
-    -H "Authorization: Bearer $NOTION_API_KEY" \
-    -H "Notion-Version: 2026-03-11" \
-    -H "Content-Type: application/json" \
-    -d '{ "message": "Summarize this week'\''s work." }'
-  ```
-</CodeGroup>
+```bash Alpha (deprecated) theme={null}
+curl -X POST https://api.notion.com/v1/agents/$AGENT_ID/chat \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  -d '{ "message": "Summarize this week'\''s work." }'
+```
 
 Send `session_id` to continue an existing session, and send `session_id` with `actions` to approve or reject something the agent is waiting on.
 

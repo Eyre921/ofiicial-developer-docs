@@ -10,4 +10,6 @@ Nexla is a data and AI integration platform for building no-code and low-code da
 
 The Pinecone integration with Nexla lets you ingest data into Pinecone from systems like SharePoint, OneDrive, cloud storage, and data warehouses, plus 500+ other connectors that Nexla supports natively.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.nexla.com/tutorials/write-to-vector-db/)
+
+[Sign up for Nexla](https://nexla.com/free-trial/)

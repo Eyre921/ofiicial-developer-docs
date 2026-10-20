@@ -10,4 +10,4 @@ Flowise is a low-code platform for developing LLM apps. It supports integrations
 
 The Pinecone integration with Flowise lets you build RAG apps that upsert and query documents.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.flowiseai.com/integrations/langchain/vector-stores/pinecone)

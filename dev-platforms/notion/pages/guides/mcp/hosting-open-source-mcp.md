@@ -6,9 +6,9 @@ path: guides/mcp/hosting-open-source-mcp
 
 Learn how and when to use the open-source Notion MCP server.
 
-<Warning>
-  The open-source `notion-mcp-server` package is no longer actively maintained. We recommend the remote [Notion MCP](/guides/mcp/get-started-with-mcp) server for most clients. Issues and pull requests on the open-source repository are not actively monitored.
-</Warning>
+> [!WARNING]
+>
+> The open-source `notion-mcp-server` package is no longer actively maintained. We recommend the remote [Notion MCP](/guides/mcp/get-started-with-mcp) server for most clients. Issues and pull requests on the open-source repository are not actively monitored.
 
 If you need to run your own MCP server, the [`notion-mcp-server` package](https://github.com/makenotion/notion-mcp-server) is available as an open-source implementation. This option may be suitable if you:
 
@@ -19,9 +19,9 @@ If you need to run your own MCP server, the [`notion-mcp-server` package](https:
 
 Compared to Notion's remote MCP, running the open-source server requires more technical setup, including provisioning your own Notion connection, managing its API token, and handling deployment.
 
-<Note>
-  The remote Notion MCP server at `https://mcp.notion.com/mcp` requires no self-hosted infrastructure and receives current tools and updates.
-</Note>
+> [!NOTE]
+>
+> The remote Notion MCP server at `https://mcp.notion.com/mcp` requires no self-hosted infrastructure and receives current tools and updates.
 
 ## Next steps
 

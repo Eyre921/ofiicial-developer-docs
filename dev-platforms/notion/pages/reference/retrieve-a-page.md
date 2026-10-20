@@ -8,8 +8,6 @@ get /v1/pages/{page_id}
 
 Retrieves a [page object](/reference/page) by ID. The response includes [page property values](/reference/page-property-values). To read the page’s content, use [Retrieve block children](/reference/get-block-children).
 
-<span />
-
 ## Parent and properties
 
 For a page in a data source, the property values follow that [data source’s schema](/reference/property-object). For a page whose parent is another page, the only property is `title`.

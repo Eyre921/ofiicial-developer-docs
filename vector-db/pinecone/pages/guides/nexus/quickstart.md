@@ -16,9 +16,9 @@ Nexus organizes knowledge in a hierarchy:
 
 See [key concepts](/guides/nexus/concepts) for the full model.
 
-<Note>
-  The examples in this quickstart use a company knowledge base of internal policies for illustration. You bring your own documents, and any set works.
-</Note>
+> [!NOTE]
+>
+> The examples in this quickstart use a company knowledge base of internal policies for illustration. You bring your own documents, and any set works.
 
 ## Prerequisites
 
@@ -31,15 +31,13 @@ See [key concepts](/guides/nexus/concepts) for the full model.
 
 Nexus runs in your own cloud, so deploying it comes first.
 
-<Steps>
-  <Step title="Install Nexus">
-    Follow [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install Nexus in your own cloud account with the Pulumi installer.
-  </Step>
+**1. Install Nexus**
 
-  <Step title="Get your console URL and API host">
-    When the install finishes, it prints your workspace console URL and API host. Open the console to work in the UI, or use the host as your data-plane base URL for the API. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and get a token.
-  </Step>
-</Steps>
+Follow [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install Nexus in your own cloud account with the Pulumi installer.
+
+**2. Get your console URL and API host**
+
+When the install finishes, it prints your workspace console URL and API host. Open the console to work in the UI, or use the host as your data-plane base URL for the API. See [Authentication](/reference/api/nexus/authentication) to set `NEXUS_BASE_URL` and get a token.
 
 ## 2. Add a context
 
@@ -51,150 +49,140 @@ Build a context from your own documents. A company knowledge base might include 
 
 The queries later in this quickstart draw on these files. You can build the context through the API or the console.
 
-<Tabs>
-  <Tab title="API">
-    <Steps>
-      <Step title="Set your base URL and token">
-        Point at your workspace host and exchange your Pinecone API key for a session token. See [Authentication](/reference/api/nexus/authentication) for details.
+**API**
 
-        ```bash theme={null}
-        export NEXUS_BASE_URL="https://YOUR_WORKSPACE_HOST/api"
-        export NEXUS_TOKEN="$(
-          curl -fsS "$NEXUS_BASE_URL/auth/login" \
-            -H 'Content-Type: application/json' \
-            -H 'X-Pinecone-Api-Version: 2026-07' \
-            -d "{\"api_key\":\"$PINECONE_API_KEY\"}" | jq -r '.token'
-        )"
-        ```
-      </Step>
+**1. Set your base URL and token**
 
-      <Step title="Create the context">
-        Create the context with a slug and a name:
+Point at your workspace host and exchange your Pinecone API key for a session token. See [Authentication](/reference/api/nexus/authentication) for details.
 
-        ```bash curl theme={null}
-        curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
-          -H "Authorization: Bearer $NEXUS_TOKEN" \
-          -H 'Content-Type: application/json' \
-          -H 'X-Pinecone-Api-Version: 2026-07' \
-          -d '{"slug": "company-knowledge-base", "name": "Company knowledge base"}'
-        ```
+```bash theme={null}
+export NEXUS_BASE_URL="https://YOUR_WORKSPACE_HOST/api"
+export NEXUS_TOKEN="$(
+  curl -fsS "$NEXUS_BASE_URL/auth/login" \
+    -H 'Content-Type: application/json' \
+    -H 'X-Pinecone-Api-Version: 2026-07' \
+    -d "{\"api_key\":\"$PINECONE_API_KEY\"}" | jq -r '.token'
+)"
+```
 
-        A new context curates under the default manifest. To define your own artifact and edge types, see [Design your own manifest](/guides/nexus/design-your-own-manifest).
-      </Step>
+**2. Create the context**
 
-      <Step title="Add sources">
-        Upload each of your files, one request per file (archives are expanded automatically), or import from a connector with `POST /contexts/{slug}/import`:
+Create the context with a slug and a name:
 
-        ```bash curl theme={null}
-        for f in policies/refunds.md policies/expenses.pdf policies/vendors.pdf; do
-          curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/import/upload" \
-            -H "Authorization: Bearer $NEXUS_TOKEN" \
-            -H 'X-Pinecone-Api-Version: 2026-07' \
-            -F "file=@$f"
-        done
-        ```
-      </Step>
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{"slug": "company-knowledge-base", "name": "Company knowledge base"}'
+```
 
-      <Step title="Curate">
-        Curate the context to build its knowledge from the sources:
+A new context curates under the default manifest. To define your own artifact and edge types, see [Design your own manifest](/guides/nexus/design-your-own-manifest).
 
-        ```bash curl theme={null}
-        curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/curate" \
-          -H "Authorization: Bearer $NEXUS_TOKEN" \
-          -H 'Content-Type: application/json' \
-          -H 'X-Pinecone-Api-Version: 2026-07' \
-          -d '{}'
-        ```
+**3. Add sources**
 
-        Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
-      </Step>
-    </Steps>
-  </Tab>
+Upload each of your files, one request per file (archives are expanded automatically), or import from a connector with `POST /contexts/{slug}/import`:
 
-  <Tab title="Console">
-    <Steps>
-      <Step title="Create the context">
-        In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
+```bash curl theme={null}
+for f in policies/refunds.md policies/expenses.pdf policies/vendors.pdf; do
+  curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/import/upload" \
+    -H "Authorization: Bearer $NEXUS_TOKEN" \
+    -H 'X-Pinecone-Api-Version: 2026-07' \
+    -F "file=@$f"
+done
+```
 
-        Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
+**4. Curate**
 
-        Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
-      </Step>
+Curate the context to build its knowledge from the sources:
 
-      <Step title="Add sources">
-        On the **Add sources** step, bring in your documents in one of these ways:
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge-base/curate" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{}'
+```
 
-        * **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
-        * Pull from a public **Hugging Face** or **GitHub** repository URL.
-        * Connect a **Box** or **Google Drive** account.
+Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
 
-        After you add at least one source, click **Design your context**.
-      </Step>
+**Console**
 
-      <Step title="Design your context">
-        On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+**1. Create the context**
 
-        Pick a template that fits, such as **General knowledge base**. If none fit, pick the closest one and adjust its artifact and edge types later on the context's **Manifest** tab, or [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+In the console sidebar, next to **Contexts**, click **+ New**. The **New context** dialog opens on the **New context** tab.
 
-        Click **Review**.
-      </Step>
+Enter a **Name** (for example, `Company knowledge base`) and a **Description**, then click **Create context**. The URL slug is generated from the name.
 
-      <Step title="Curate">
-        On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+Creating the context opens a guided setup with three steps: **Add sources**, **Design your context**, and **Review and curate**.
 
-        Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+**2. Add sources**
 
-        Curation runs in the background, so you can leave the task and return to the context while it works.
-      </Step>
-    </Steps>
+On the **Add sources** step, bring in your documents in one of these ways:
 
-    <Tip>
-      Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
-    </Tip>
-  </Tab>
-</Tabs>
+* **Upload** files from your computer, individually or as an archive (`.zip`, `.tar`, `.tar.gz`, or `.tgz`).
+* Pull from a public **Hugging Face** or **GitHub** repository URL.
+* Connect a **Box** or **Google Drive** account.
+
+After you add at least one source, click **Design your context**.
+
+**3. Design your context**
+
+On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
+
+Pick a template that fits, such as **General knowledge base**. If none fit, pick the closest one and adjust its artifact and edge types later on the context's **Manifest** tab, or [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+
+Click **Review**.
+
+**4. Curate**
+
+On the **Review and curate** step, check the artifact types, edge types, model, and estimated cost, then click **Save and curate**. The curation task opens.
+
+Nexus [curates](/guides/nexus/how-curation-works) your sources. It chunks them, distills them into the typed artifacts the manifest defines, then indexes everything.
+
+Curation runs in the background, so you can leave the task and return to the context while it works.
+
+> [!TIP]
+>
+> Have a `.context.zip` pack? In the **New context** dialog, open the **Restore** tab, drop the pack (or click **choose a file**), then click **Restore context**. Packs come from a context's **Packs** tab.
 
 ## 3. Query your context
 
 Once curation finishes, ask your context a question and get back a grounded answer with citations.
 
-<Tabs>
-  <Tab title="API">
-    Send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`:
+**API**
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -H 'Content-Type: application/json' \
-      -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
-    | jq -r '.output[].content[].text'
-    ```
+Send a [KnowQL](/guides/nexus/concepts#knowql) query over HTTP, passing the context slug as `scope`:
 
-    ```console Output theme={null}
-    Refund requests must be submitted within 30 days of purchase. After that
-    window, customers can still get store credit, but not a direct refund.
-    ```
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -H 'Content-Type: application/json' \
+  -d '{"scope": ["company-knowledge-base"], "ask": "What is the refund policy?"}' \
+| jq -r '.output[].content[].text'
+```
 
-    The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
-  </Tab>
+```console Output theme={null}
+Refund requests must be submitted within 30 days of purchase. After that
+window, customers can still get store credit, but not a direct refund.
+```
 
-  <Tab title="Console">
-    <Steps>
-      <Step title="Open the context">
-        Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
-      </Step>
+The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
 
-      <Step title="Ask a question">
-        In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+**Console**
 
-<Tip>
-  To query several contexts at once, pass multiple slugs in the query's `scope` array. In the console, start a session from **Sessions** with **+ New session** and select each context to query across.
-</Tip>
+**1. Open the context**
+
+Use **Query this context** on the curation task, or open the context anytime from the console sidebar. The context opens on the **Query** tab.
+
+**2. Ask a question**
+
+In the **Query this context** box on the **Query** tab, type your question and run it. You can also pick the answering **model**.
+
+> [!TIP]
+>
+> To query several contexts at once, pass multiple slugs in the query's `scope` array. In the console, start a session from **Sessions** with **+ New session** and select each context to query across.
 
 ### A grounded, cited answer
 

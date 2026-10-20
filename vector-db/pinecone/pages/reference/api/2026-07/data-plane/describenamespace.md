@@ -11,14 +11,12 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
 
 **Note:** This operation is not supported for pod-based indexes.
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="YOUR_INDEX_HOST"
-  NAMESPACE="YOUR_NAMESPACE"  # To target the default namespace, use "__default__".
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="YOUR_INDEX_HOST"
+NAMESPACE="YOUR_NAMESPACE"  # To target the default namespace, use "__default__".
 
-  curl "https://$INDEX_HOST/namespaces/$NAMESPACE" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+curl "https://$INDEX_HOST/namespaces/$NAMESPACE" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07"
+```

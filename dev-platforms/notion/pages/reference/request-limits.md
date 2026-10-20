@@ -57,153 +57,151 @@ Do not retry every error. Retry 429 and 529 responses, except a 429 with `public
 
 The JavaScript SDK retries 429 `rate_limited` and 529 `service_overload` responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It never retries 502 or 504. It waits for `Retry-After`, capped at 60 seconds by default, uses exponential backoff with jitter when the header is missing, and limits retries. If you call the REST API directly, use the same safeguards. These examples show the same policy in several common HTTP clients:
 
-<CodeGroup>
-  ```js JavaScript theme={null}
-  async function notionRequest(url, options = {}, attempt = 0) {
-    const response = await fetch(url, options)
-    const method = (options.method ?? "GET").toUpperCase()
-    const isIdempotent = method === "GET" || method === "DELETE"
-    const retryable =
-      response.status === 429 ||
-      response.status === 529 ||
-      (isIdempotent && [500, 502, 503, 504].includes(response.status))
+```js JavaScript theme={null}
+async function notionRequest(url, options = {}, attempt = 0) {
+  const response = await fetch(url, options)
+  const method = (options.method ?? "GET").toUpperCase()
+  const isIdempotent = method === "GET" || method === "DELETE"
+  const retryable =
+    response.status === 429 ||
+    response.status === 529 ||
+    (isIdempotent && [500, 502, 503, 504].includes(response.status))
 
-    if (!retryable || attempt >= 5) {
-      return response
+  if (!retryable || attempt >= 5) {
+    return response
+  }
+
+  const retryAfter = response.headers.get("retry-after")
+  const retryAfterSeconds = Number(retryAfter)
+  const exponentialDelaySeconds = Math.min(2 ** attempt, 30)
+  const baseDelaySeconds = retryAfter !== null && Number.isFinite(retryAfterSeconds)
+    ? retryAfterSeconds
+    : exponentialDelaySeconds
+  const jitterMs = Math.random() * 250
+
+  await new Promise(resolve =>
+    setTimeout(resolve, baseDelaySeconds * 1000 + jitterMs),
+  )
+
+  return notionRequest(url, options, attempt + 1)
+}
+```
+
+```python Python theme={null}
+import random
+import time
+
+import requests
+
+
+def notion_request(method, url, *, max_attempts=6, **kwargs):
+    method = method.upper()
+    is_idempotent = method in {"GET", "DELETE"}
+
+    for attempt in range(max_attempts):
+        response = requests.request(method, url, **kwargs)
+        retryable = (
+            response.status_code in {429, 529}
+            or (
+                is_idempotent
+                and response.status_code in {500, 502, 503, 504}
+            )
+        )
+
+        if not retryable or attempt == max_attempts - 1:
+            return response
+
+        retry_after = response.headers.get("Retry-After")
+        delay = float(retry_after) if retry_after else min(2 ** attempt, 30)
+        time.sleep(delay + random.uniform(0, 0.25))
+```
+
+```go Go theme={null}
+func notionRequest(client *http.Client, request *http.Request) (*http.Response, error) {
+	const maxAttempts = 6
+	isIdempotent := request.Method == http.MethodGet || request.Method == http.MethodDelete
+
+	for attempt := 0; attempt < maxAttempts; attempt++ {
+		attemptRequest := request.Clone(request.Context())
+		if attempt > 0 && request.Body != nil {
+			if request.GetBody == nil {
+				return nil, errors.New("request body cannot be replayed")
+			}
+			body, err := request.GetBody()
+			if err != nil {
+				return nil, err
+			}
+			attemptRequest.Body = body
+		}
+
+		response, err := client.Do(attemptRequest)
+		if err != nil {
+			return nil, err
+		}
+
+		retryableServerError := response.StatusCode == 500 ||
+			response.StatusCode == 502 || response.StatusCode == 503 ||
+			response.StatusCode == 504
+		retryable := response.StatusCode == 429 || response.StatusCode == 529 ||
+			(isIdempotent && retryableServerError)
+		if !retryable || attempt == maxAttempts-1 {
+			return response, nil
+		}
+
+		response.Body.Close()
+		delay := time.Duration(1<<attempt) * time.Second
+		if delay > 30*time.Second {
+			delay = 30 * time.Second
+		}
+		if seconds, err := strconv.Atoi(response.Header.Get("Retry-After")); err == nil && seconds >= 0 {
+			delay = time.Duration(seconds) * time.Second
+		}
+		time.Sleep(delay + time.Duration(rand.Intn(250))*time.Millisecond)
+	}
+
+	panic("unreachable")
+}
+```
+
+```java Java theme={null}
+HttpResponse<String> notionRequest(
+    HttpClient client,
+    HttpRequest request
+) throws IOException, InterruptedException {
+    int maxAttempts = 6;
+    boolean isIdempotent = Set.of("GET", "DELETE").contains(request.method());
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+        HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+        );
+        int status = response.statusCode();
+        boolean retryable = status == 429 || status == 529 ||
+            (isIdempotent && Set.of(500, 502, 503, 504).contains(status));
+
+        if (!retryable || attempt == maxAttempts - 1) {
+            return response;
+        }
+
+        long retryAfter = response.headers().firstValue("Retry-After")
+            .map(Long::parseLong)
+            .orElse(Math.min(1L << attempt, 30));
+        long jitterMillis = ThreadLocalRandom.current().nextLong(250);
+        Thread.sleep(retryAfter * 1000 + jitterMillis);
     }
 
-    const retryAfter = response.headers.get("retry-after")
-    const retryAfterSeconds = Number(retryAfter)
-    const exponentialDelaySeconds = Math.min(2 ** attempt, 30)
-    const baseDelaySeconds = retryAfter !== null && Number.isFinite(retryAfterSeconds)
-      ? retryAfterSeconds
-      : exponentialDelaySeconds
-    const jitterMs = Math.random() * 250
-
-    await new Promise(resolve =>
-      setTimeout(resolve, baseDelaySeconds * 1000 + jitterMs),
-    )
-
-    return notionRequest(url, options, attempt + 1)
-  }
-  ```
-
-  ```python Python theme={null}
-  import random
-  import time
-
-  import requests
-
-
-  def notion_request(method, url, *, max_attempts=6, **kwargs):
-      method = method.upper()
-      is_idempotent = method in {"GET", "DELETE"}
-
-      for attempt in range(max_attempts):
-          response = requests.request(method, url, **kwargs)
-          retryable = (
-              response.status_code in {429, 529}
-              or (
-                  is_idempotent
-                  and response.status_code in {500, 502, 503, 504}
-              )
-          )
-
-          if not retryable or attempt == max_attempts - 1:
-              return response
-
-          retry_after = response.headers.get("Retry-After")
-          delay = float(retry_after) if retry_after else min(2 ** attempt, 30)
-          time.sleep(delay + random.uniform(0, 0.25))
-  ```
-
-  ```go Go theme={null}
-  func notionRequest(client *http.Client, request *http.Request) (*http.Response, error) {
-  	const maxAttempts = 6
-  	isIdempotent := request.Method == http.MethodGet || request.Method == http.MethodDelete
-
-  	for attempt := 0; attempt < maxAttempts; attempt++ {
-  		attemptRequest := request.Clone(request.Context())
-  		if attempt > 0 && request.Body != nil {
-  			if request.GetBody == nil {
-  				return nil, errors.New("request body cannot be replayed")
-  			}
-  			body, err := request.GetBody()
-  			if err != nil {
-  				return nil, err
-  			}
-  			attemptRequest.Body = body
-  		}
-
-  		response, err := client.Do(attemptRequest)
-  		if err != nil {
-  			return nil, err
-  		}
-
-  		retryableServerError := response.StatusCode == 500 ||
-  			response.StatusCode == 502 || response.StatusCode == 503 ||
-  			response.StatusCode == 504
-  		retryable := response.StatusCode == 429 || response.StatusCode == 529 ||
-  			(isIdempotent && retryableServerError)
-  		if !retryable || attempt == maxAttempts-1 {
-  			return response, nil
-  		}
-
-  		response.Body.Close()
-  		delay := time.Duration(1<<attempt) * time.Second
-  		if delay > 30*time.Second {
-  			delay = 30 * time.Second
-  		}
-  		if seconds, err := strconv.Atoi(response.Header.Get("Retry-After")); err == nil && seconds >= 0 {
-  			delay = time.Duration(seconds) * time.Second
-  		}
-  		time.Sleep(delay + time.Duration(rand.Intn(250))*time.Millisecond)
-  	}
-
-  	panic("unreachable")
-  }
-  ```
-
-  ```java Java theme={null}
-  HttpResponse<String> notionRequest(
-      HttpClient client,
-      HttpRequest request
-  ) throws IOException, InterruptedException {
-      int maxAttempts = 6;
-      boolean isIdempotent = Set.of("GET", "DELETE").contains(request.method());
-
-      for (int attempt = 0; attempt < maxAttempts; attempt++) {
-          HttpResponse<String> response = client.send(
-              request,
-              HttpResponse.BodyHandlers.ofString()
-          );
-          int status = response.statusCode();
-          boolean retryable = status == 429 || status == 529 ||
-              (isIdempotent && Set.of(500, 502, 503, 504).contains(status));
-
-          if (!retryable || attempt == maxAttempts - 1) {
-              return response;
-          }
-
-          long retryAfter = response.headers().firstValue("Retry-After")
-              .map(Long::parseLong)
-              .orElse(Math.min(1L << attempt, 30));
-          long jitterMillis = ThreadLocalRandom.current().nextLong(250);
-          Thread.sleep(retryAfter * 1000 + jitterMillis);
-      }
-
-      throw new IllegalStateException("unreachable");
-  }
-  ```
-</CodeGroup>
+    throw new IllegalStateException("unreachable");
+}
+```
 
 The same rules apply in other languages: centralize retries in the HTTP client, respect `Retry-After`, add jitter, and cap the fallback delay and attempt count. Avoid independent retry loops in each worker; they can create a second traffic spike when the delay expires.
 
-<Warning>
-  **Rate limits may change**
-
-  In the future, Notion plans to adjust rate limits to balance for demand and reliability.
-</Warning>
+> [!WARNING]
+>
+> **Rate limits may change**
+>
+> In the future, Notion plans to adjust rate limits to balance for demand and reliability.
 
 ### Retry a write that returns 503
 
@@ -256,8 +254,8 @@ Note that in addition to the property limits below, payloads have a maximum size
 | Any relation | | 100 related pages |
 | Any people | | 100 users |
 
-<Note>
-  **Request size limits**
-
-  These cap the size of a single request, not how much a property can hold. A relation property can contain far more than 100 related pages — the limit only governs how many you add or set in one request. Responses have separate limits; use [Retrieve a page property item](/reference/retrieve-a-page-property) to paginate through large values.
-</Note>
+> [!NOTE]
+>
+> **Request size limits**
+>
+> These cap the size of a single request, not how much a property can hold. A relation property can contain far more than 100 related pages — the limit only governs how many you add or set in one request. Responses have separate limits; use [Retrieve a page property item](/reference/retrieve-a-page-property) to paginate through large values.

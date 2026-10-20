@@ -169,7 +169,7 @@ Key Terms are limited to 500 tokens per request. A pre-recorded request or a str
 Keyterm limit exceeded. The maximum number of tokens across all keyterms is 500.
 ```
 
-The same limit applies to each mid-stream keyterm update. An over-limit update sent in a [`Configure`](/docs/configure#errors) message during a Nova-3 stream currently stops transcription without an `Error`. After about 30 seconds, the server closes the stream with `1011` (`NET-0000`). Check the list size before sending the update.
+The same limit applies to each mid-stream keyterm update. An over-limit update sent in a [`Configure`](/docs/configure#configurefailure) message during a Nova-3 stream returns a `ConfigureFailure` with code `CONFIGURE_KEYTERM_LIMIT_EXCEEDED`, and the stream keeps its previous keyterms.
 
 ## Dynamic Keyterm Updates
 
@@ -190,5 +190,3 @@ You can replace a stream's keyterms mid-stream without reconnecting, so the keyt
 ```
 
 On both, each `keyterms` array replaces the whole list, and an empty array `[]` clears all keyterms. The [keyterm limits](#key-term-limits) apply to each update. On Nova-3, mid-stream updates work on every streaming model, monolingual and multilingual, and otherwise behave the same as keyterms set when you open the stream. Updating keyterms mid-stream isn't available for pre-recorded audio.
-
-Updating Nova-3 `keyterms` with `Configure` on `/v1/listen` is available on the global endpoint (`api.deepgram.com`). It isn't available yet on the EU (`api.eu.deepgram.com`), Australia (`api.au.deepgram.com`), or India (`api.in.deepgram.com`) [regional endpoints](/reference/regional-endpoints).

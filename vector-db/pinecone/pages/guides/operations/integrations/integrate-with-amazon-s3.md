@@ -6,9 +6,9 @@ path: guides/operations/integrations/integrate-with-amazon-s3
 
 Set up a Pinecone storage integration with an Amazon S3 bucket using an IAM role to bulk import data into indexes and export audit logs.
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 This page shows you how to integrate Pinecone with an Amazon S3 bucket. Once your integration is set up, you can use it to [import data](/guides/index-data/import-data) from your Amazon S3 bucket into a Pinecone index hosted on AWS, or to [export audit logs](/admin/security/configure-audit-logs) to your Amazon S3 bucket.
 
@@ -107,9 +107,9 @@ To write [audit logs](/admin/security/configure-audit-logs) to a specific subdir
 }
 ```
 
-<Note>
-  The key difference is that `ListBucket` operates on the bucket resource and uses conditions to filter by prefix, while object-level actions (`PutObject`, `GetObject`) operate directly on object resources specified in the ARN.
-</Note>
+> [!NOTE]
+>
+> The key difference is that `ListBucket` operates on the bucket resource and uses conditions to filter by prefix, while object-level actions (`PutObject`, `GetObject`) operate directly on object resources specified in the ARN.
 
 ## 2. Set up access using an IAM role
 
@@ -147,9 +147,9 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
 
 ## 3. Add a storage integration
 
-<Note>
-  This step is required for [importing data](/guides/index-data/import-data). It's not required for [storing audit logs](/admin/security/configure-audit-logs).
-</Note>
+> [!NOTE]
+>
+> This step is required for [importing data](/guides/index-data/import-data). It's not required for [storing audit logs](/admin/security/configure-audit-logs).
 
 You can add a storage integration in the Pinecone console or with the API.
 
@@ -167,9 +167,9 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 
 ### Use the API
 
-<Note>
-  This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
-</Note>
+> [!NOTE]
+>
+> This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
 
 Pass the ARN of your IAM role as the `aws_iam_role.role_arn` field:
 

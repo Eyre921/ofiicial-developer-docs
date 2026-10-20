@@ -8,7 +8,7 @@ path: en/account-and-profile/tutorials/personalize-your-profile
 
 You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
 
-> \[!NOTE]
+> [!NOTE]
 > Your profile name for your GitHub account is **required**. All other profile information described in this article is **optional**.
 
 ## Changing your profile picture
@@ -47,7 +47,7 @@ Your GitHub profile name **does not** need to correlate with your real-world ide
 
 2. Under "Public profile", in the "Bio" field, type the content that you want displayed on your profile. The bio field is limited to 160 characters.
 
-   > \[!TIP]
+   > [!TIP]
    > When you @mention an organization, only those that you're a member of will autocomplete. You can still @mention organizations that you're not a member of, like a previous employer, but the organization name won't autocomplete for you.
 
 3. Click **Update profile**.

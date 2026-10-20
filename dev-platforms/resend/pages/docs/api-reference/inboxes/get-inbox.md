@@ -7,123 +7,100 @@ path: docs/api-reference/inboxes/get-inbox
 GET /inboxes/:inbox_id
 Retrieve a single inbox by its ID or email address.
 
-<Warning>
-  Inboxes are currently in private beta and only available to a limited
-  number of users. The response shape might change before GA.
-
-  <span />
-
-  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the new methods:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.33.0
-    ```
-
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.25.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
-<ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`.
-</ResendParamField>
+The Inbox ID or the inbox email address, such as `support@example.com`.
 
 ## Response Fields
 
-<ParamField type="string">
-  Always `inbox`.
-</ParamField>
+**object** `string`
 
-<ParamField type="string">
-  The ID of the inbox.
-</ParamField>
+Always `inbox`.
 
-<ParamField type="string">
-  Internal name for the inbox. Recipients do not see it.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  The address of the inbox.
-</ParamField>
+The ID of the inbox.
 
-<ParamField type="string">
-  The ID of the domain that owns the address.
-</ParamField>
+**name** `string`
 
-<ParamField type="string | null">
-  The address to forward mail to when forwarding is enabled. `null` otherwise.
-</ParamField>
+Internal name for the inbox. Recipients do not see it.
 
-<ParamField type="string | null">
-  The name recipients see when mail is sent from this inbox. `null` when not
-  set.
-</ParamField>
+**email\_address** `string`
 
-<ParamField type="number">
-  The number of unread threads in the Inbox folder.
-</ParamField>
+The address of the inbox.
 
-<ParamField type="number">
-  The number of unsent drafts.
-</ParamField>
+**domain\_id** `string`
 
-<ParamField type="string | null">
-  ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
-  when the folder has no received email.
-</ParamField>
+The ID of the domain that owns the address.
 
-<ParamField type="string">
-  ISO 8601 timestamp when the inbox was created.
-</ParamField>
+**receiving\_address** `string | null`
 
-<ParamField type="string">
-  ISO 8601 timestamp when the inbox was updated.
-</ParamField>
+The address to forward mail to when forwarding is enabled. `null` otherwise.
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+**from\_name** `string | null`
 
-  const resend = new Resend('re_xxxxxxxxx');
+The name recipients see when mail is sent from this inbox. `null` when not
+set.
 
-  const { data, error } = await resend.inboxes.get(
-    'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
-  );
-  ```
+**unread** `number`
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+The number of unread threads in the Inbox folder.
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
-  ```
-</RequestExample>
+**drafts** `number`
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "inbox",
-    "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
-    "name": "Customer Support",
-    "email_address": "support@example.com",
-    "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
-    "receiving_address": null,
-    "from_name": "Ada from Support",
-    "unread": 3,
-    "drafts": 2,
-    "last_received": "2026-08-05T14:03:11.229Z",
-    "created_at": "2026-08-01T09:12:44.512Z",
-    "updated_at": "2026-08-03T16:20:05.004Z"
-  }
-  ```
-</ResponseExample>
+The number of unsent drafts.
+
+**last\_received** `string | null`
+
+ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
+when the folder has no received email.
+
+**created\_at** `string`
+
+ISO 8601 timestamp when the inbox was created.
+
+**updated\_at** `string`
+
+ISO 8601 timestamp when the inbox was updated.
+
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.inboxes.get(
+  'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+);
+```
+
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
+
+$resend->inboxes->get('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1');
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend inboxes get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "inbox",
+  "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  "name": "Customer Support",
+  "email_address": "support@example.com",
+  "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
+  "receiving_address": null,
+  "from_name": "Ada from Support",
+  "unread": 3,
+  "drafts": 2,
+  "last_received": "2026-08-05T14:03:11.229Z",
+  "created_at": "2026-08-01T09:12:44.512Z",
+  "updated_at": "2026-08-03T16:20:05.004Z"
+}
+```

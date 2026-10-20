@@ -28,25 +28,23 @@ Both the terminal and desktop apps read the same `opencode.json` config and the 
 
 ### Step 1: Install OpenCode
 
-<Tabs>
-  <Tab title="Install Script">
-    ```bash lines theme={null}
-    curl -fsSL https://opencode.ai/install | bash
-    ```
-  </Tab>
+**Install Script**
 
-  <Tab title="npm">
-    ```bash lines theme={null}
-    npm install -g opencode-ai
-    ```
-  </Tab>
+```bash lines theme={null}
+curl -fsSL https://opencode.ai/install | bash
+```
 
-  <Tab title="Homebrew">
-    ```bash lines theme={null}
-    brew install anomalyco/tap/opencode
-    ```
-  </Tab>
-</Tabs>
+**npm**
+
+```bash lines theme={null}
+npm install -g opencode-ai
+```
+
+**Homebrew**
+
+```bash lines theme={null}
+brew install anomalyco/tap/opencode
+```
 
 For additional installation methods (Bun, pnpm, Yarn, Arch Linux, Windows), see the [OpenCode installation docs](https://opencode.ai/docs).
 
@@ -83,23 +81,21 @@ The desktop app organizes projects and active sessions into tabs, and configures
 
 ### Step 1: Install OpenCode Desktop
 
-<Tabs>
-  <Tab title="macOS">
-    ```bash lines theme={null}
-    brew install --cask opencode-desktop
-    ```
+**macOS**
 
-    Or download the DMG for Apple Silicon or Intel from the [OpenCode download page](https://opencode.ai/download).
-  </Tab>
+```bash lines theme={null}
+brew install --cask opencode-desktop
+```
 
-  <Tab title="Windows">
-    Download the x64 installer from the [OpenCode download page](https://opencode.ai/download).
-  </Tab>
+Or download the DMG for Apple Silicon or Intel from the [OpenCode download page](https://opencode.ai/download).
 
-  <Tab title="Linux">
-    Download the `.deb` or `.rpm` package from the [OpenCode download page](https://opencode.ai/download).
-  </Tab>
-</Tabs>
+**Windows**
+
+Download the x64 installer from the [OpenCode download page](https://opencode.ai/download).
+
+**Linux**
+
+Download the `.deb` or `.rpm` package from the [OpenCode download page](https://opencode.ai/download).
 
 ### Step 2: Connect OpenRouter
 
@@ -115,13 +111,13 @@ The desktop app organizes projects and active sessions into tabs, and configures
 
 Use the model picker in the session view, or run **Choose model** from the command palette, and select an OpenRouter model.
 
-<Note>
-  If no OpenRouter models appear in the picker right after you add your API key, fully quit OpenCode Desktop and reopen it. The provider catalog is loaded at startup, so a newly connected provider may not surface until the app restarts.
-</Note>
+> [!NOTE]
+>
+> If no OpenRouter models appear in the picker right after you add your API key, fully quit OpenCode Desktop and reopen it. The provider catalog is loaded at startup, so a newly connected provider may not surface until the app restarts.
 
-<Tip>
-  If you already connected OpenRouter in the terminal, the desktop app picks up the same credentials automatically — skip straight to choosing a model.
-</Tip>
+> [!TIP]
+>
+> If you already connected OpenRouter in the terminal, the desktop app picks up the same credentials automatically — skip straight to choosing a model.
 
 ## Config File
 
@@ -141,9 +137,9 @@ Many OpenRouter models are preloaded, but you can add any others in your `openco
 }
 ```
 
-<Note>
-  The leading `~` is not a typo. Slugs like `~anthropic/claude-sonnet-latest` are OpenRouter [latest aliases](/docs/guides/routing/routers/latest-resolution) that always resolve to that lab's newest flagship model, so you keep getting the freshest version without editing your config. Pinned slugs such as `anthropic/claude-sonnet-4.5` work exactly the same way — browse them all at [openrouter.ai/models](https://openrouter.ai/models).
-</Note>
+> [!NOTE]
+>
+> The leading `~` is not a typo. Slugs like `~anthropic/claude-sonnet-latest` are OpenRouter [latest aliases](/docs/guides/routing/routers/latest-resolution) that always resolve to that lab's newest flagship model, so you keep getting the freshest version without editing your config. Pinned slugs such as `anthropic/claude-sonnet-4.5` work exactly the same way — browse them all at [openrouter.ai/models](https://openrouter.ai/models).
 
 Project config belongs in `opencode.json` at your project root; user-wide settings go in `~/.config/opencode/opencode.json`. Both formats also accept JSONC.
 

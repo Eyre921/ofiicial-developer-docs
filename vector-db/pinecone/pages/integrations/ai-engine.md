@@ -14,4 +14,4 @@ For developers, AI Engine offers internal APIs, shortcodes, and features like fu
 
 You can explore ideas in the AI Playground, use Copilot in the editor, or let an AI agent manage your content through MCP.
 
-<PrimarySecondaryCTA />
+[Get started](https://ai.thehiddendocs.com/services/pinecone/)

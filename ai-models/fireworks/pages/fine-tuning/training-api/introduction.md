@@ -6,13 +6,13 @@ path: fine-tuning/training-api/introduction
 
 The Fireworks Training API lets you write custom Python training loops with full control over objectives while Fireworks manages distributed GPU infrastructure.
 
-<Info>
-  Serverless Training is generally available. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
-</Info>
+> [!NOTE]
+>
+> Serverless Training is generally available. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
 
-<Tip>
-  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to help configure, run, and troubleshoot training jobs using current Fireworks best practices.
-</Tip>
+> [!TIP]
+>
+> **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to help configure, run, and troubleshoot training jobs using current Fireworks best practices.
 
 ## What is the Training API?
 
@@ -34,35 +34,23 @@ After choosing the Training API, decide how compute is provided:
 * [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer for LoRA SFT, DPO, ORPO, RL, distillation, and custom loops on supported models, with no provisioning and per-token billing.
 * [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and parameter-mode support, explicit checkpoint/resume/deployment control.
 
-<CardGroup>
-  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
-    Attach to a shared pooled trainer. There is no trainer or rollout deployment to provision.
-  </Card>
+> **[Serverless Training](/fine-tuning/training-api/serverless)**
+>
+> Attach to a shared pooled trainer. There is no trainer or rollout deployment to provision.
 
-  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
-    Provision trainer and deployment resources for your run, with broader model and parameter-mode support.
-  </Card>
-</CardGroup>
+> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+>
+> Provision trainer and deployment resources for your run, with broader model and parameter-mode support.
 
 ### Quick decision
 
-<div aria-label="Decision guide comparing serverless and dedicated Training API infrastructure">
-  <div>
-    <strong>Start with Serverless Training</strong>
+**Start with Serverless Training**
 
-    <div>
-      The model is supported, LoRA covers the task, and you want pooled compute with per-token billing.
-    </div>
-  </div>
+The model is supported, LoRA covers the task, and you want pooled compute with per-token billing.
 
-  <div>
-    <strong>Choose Dedicated Training</strong>
+**Choose Dedicated Training**
 
-    <div>
-      You need full-parameter training, a model outside the serverless pool, explicit resume or deployment control, or sustained provisioned compute.
-    </div>
-  </div>
-</div>
+You need full-parameter training, a model outside the serverless pool, explicit resume or deployment control, or sustained provisioned compute.
 
 ### Comparison
 
@@ -95,70 +83,60 @@ Always verify current models, limits, prices, and feature status in the [Serverl
 
 ## System architecture
 
-<div aria-label="Training API lifecycle from a local Python loop through Fireworks training and sampling infrastructure">
-  <div>
-    <div>1 · Your laptop</div>
-    <strong>Python loop</strong>
+1 · Your laptop
+**Python loop**
 
-    <div>
-      Loads data, builds batches, computes rewards, and controls the experiment.
-    </div>
-  </div>
+Loads data, builds batches, computes rewards, and controls the experiment.
 
-  <div>
-    <div>2 · Fireworks API</div>
-    <strong>Control plane</strong>
+2 · Fireworks API
+**Control plane**
 
-    <div>
-      Authenticates requests, routes operations, and manages the selected infrastructure.
-    </div>
-  </div>
+Authenticates requests, routes operations, and manages the selected infrastructure.
 
-  <div>
-    <div>3 · Remote compute</div>
-    <strong>GPU trainer</strong>
+3 · Remote compute
+**GPU trainer**
 
-    <div>
-      Runs forward passes, backward passes, and optimizer steps.
-    </div>
-  </div>
+Runs forward passes, backward passes, and optimizer steps.
 
-  <div>
-    <div>4 · Separate compute</div>
-    <strong>Sampling</strong>
+4 · Separate compute
+**Sampling**
 
-    <div>
-      Serves saved weights for rollouts and evaluation outside the trainer.
-    </div>
-  </div>
+Serves saved weights for rollouts and evaluation outside the trainer.
 
-  <div>
-    <div>5 · Persistent output</div>
-    <strong>Artifacts</strong>
+5 · Persistent output
+**Artifacts**
 
-    <div>
-      Stores sampler snapshots and resumable training state for later use.
-    </div>
-  </div>
-</div>
+Stores sampler snapshots and resumable training state for later use.
 
 Your Python process stays on your laptop throughout the run. It sends model operations to Fireworks and receives metrics or completions back. Sampling uses separate inference infrastructure rather than the trainer itself.
 
 ## How service-mode training works
 
-<Warning>
-  **Most common gotchas**
-
-  * Remote operations such as `forward`, `forward_backward`, `optim_step`, sampling, and checkpoint saves return future-like results. Call `.result()` on operations that return one.
-  * `token_weights=0` means prompt/no-loss tokens, `token_weights=1` means response/learned tokens.
-  * `forward_backward_custom` computes gradients only; you still need `optim_step` to apply updates.
-</Warning>
+> [!WARNING]
+>
+> **Most common gotchas**
+>
+> * Remote operations such as `forward`, `forward_backward`, `optim_step`, sampling, and checkpoint saves return future-like results. Call `.result()` on operations that return one.
+> * `token_weights=0` means prompt/no-loss tokens, `token_weights=1` means response/learned tokens.
+> * `forward_backward_custom` computes gradients only; you still need `optim_step` to apply updates.
 
 ### Minimal training step lifecycle
 
 The shape of the loop is the same on both infrastructures. Toggle between them to see what changes at each stage:
 
-<TrainingLifecycle />
+Training infrastructure
+
+Runs on Fireworks GPUs
+
+Train and sample repeat every training step
+
+`forward_backward()` runs a built-in trainer-side loss and is what most loops
+use. `forward_backward_custom()` is only for a custom Python loss function.
+
+A trained LoRA deploys to an on-demand deployment on either path. Serverless per-token
+serving of your own adapter is not available.
+
+Full walkthrough:
 
 ### Datums
 

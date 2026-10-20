@@ -6,9 +6,9 @@ path: guides/nexus/byoc/deploy
 
 Install and operate Pinecone Nexus in your own cloud account.
 
-<Note>
-  Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
 For architecture, see the [Nexus BYOC overview](/guides/nexus/byoc/overview). For data residency and limits, see [Data residency and limits](/guides/nexus/byoc/reference).
 
@@ -47,161 +47,155 @@ Confirm these environment inputs before you start:
 * **Where your source data lives.** Know where your corpus resides so you can stage it into a context after install.
 * **Egress paths.** Nexus makes outbound connections for the control-plane callback, metrics and traces, container image pulls, and calls to the inference models you configure. What content those model calls carry depends on how you configure your models. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
 
-<Note>
-  If you install any new tools, open a new terminal session before proceeding so that your shell picks up the updated PATH and environment.
-</Note>
+> [!NOTE]
+>
+> If you install any new tools, open a new terminal session before proceeding so that your shell picks up the updated PATH and environment.
 
 ## 1. Deploy
 
 To deploy Nexus BYOC, follow these steps.
 
-<Steps>
-  <Step title="Authenticate">
-    The setup script checks your credentials but doesn't log you in, so authenticate to your cloud and to Pulumi first.
+**1. Authenticate**
 
-    <Tabs>
-      <Tab title="AWS">
-        ```bash theme={null}
-        aws configure                  # or: aws sso login / exported AWS_* env vars
-        aws sts get-caller-identity    # verify
-        pulumi login                   # or: pulumi login --local
-        ```
-      </Tab>
+The setup script checks your credentials but doesn't log you in, so authenticate to your cloud and to Pulumi first.
 
-      <Tab title="GCP">
-        ```bash theme={null}
-        gcloud auth login
-        gcloud auth application-default login
-        pulumi login                   # or: pulumi login --local
-        ```
-      </Tab>
+**AWS**
 
-      <Tab title="Azure">
-        ```bash theme={null}
-        az login
-        az account show                # verify
-        pulumi login                   # or: pulumi login --local
-        ```
-      </Tab>
-    </Tabs>
+```bash theme={null}
+aws configure                  # or: aws sso login / exported AWS_* env vars
+aws sts get-caller-identity    # verify
+pulumi login                   # or: pulumi login --local
+```
 
-    If you use the local Pulumi backend, choose a passphrase for encrypting stack secrets and export it as `PULUMI_CONFIG_PASSPHRASE`. Every `pulumi` command needs it.
-  </Step>
+**GCP**
 
-  <Step title="Run the setup wizard">
-    Clone the deployment repository and run the bootstrap script from the clone. The generated project is created next to the clone and depends on it.
+```bash theme={null}
+gcloud auth login
+gcloud auth application-default login
+pulumi login                   # or: pulumi login --local
+```
 
-    ```bash theme={null}
-    git clone https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc.git
-    bash pulumi-pinecone-nexus-byoc/bootstrap.sh --cloud gcp
-    ```
+**Azure**
 
-    Use `--cloud aws` or `--cloud azure` for the other clouds, and `--stack-name <name>` to name the Pulumi stack (default: `prod`).
+```bash theme={null}
+az login
+az account show                # verify
+pulumi login                   # or: pulumi login --local
+```
 
-    The script selects your cloud provider, checks that required tools are installed, verifies your cloud credentials, prompts for the project directory and name, then launches an interactive wizard that collects your configuration, validates your quotas, and generates a Pulumi project in an adjacent directory (default: `pinecone-nexus-byoc`). No cloud resources are created during this step.
+If you use the local Pulumi backend, choose a passphrase for encrypting stack secrets and export it as `PULUMI_CONFIG_PASSPHRASE`. Every `pulumi` command needs it.
 
-    <Accordion title="Setup wizard prompts">
-      The wizard prompts you for the following:
+**2. Run the setup wizard**
 
-      | Prompt | Description |
-      | - | - |
-      | **Cloud provider** | AWS, GCP, or Azure (skipped if pre-selected via `--cloud`). |
-      | **Project directory and name** | Where to generate the Pulumi project. Defaults to `pinecone-nexus-byoc`. |
-      | **Pinecone API key** | Your API key from the Pinecone console (or uses `PINECONE_API_KEY`). |
-      | **Cloud credentials** | Validates credentials and displays your account/project/subscription ID. |
-      | **Region** | Region for deployment. |
-      | **Availability zones** | Three zones for high availability. |
-      | **VPC/VNet CIDR block** | Private IP range for the deployment. Choose a `/16` to `/20` that doesn't overlap existing networks. |
-      | **Generation-LLM key** | The default catalog's Gemini API key (BYOM). |
-      | **Network access** | Public access. Private-only access is not supported for Nexus. See [Limitations](/guides/nexus/byoc/reference#limitations). |
-      | **Deletion protection** | Whether to protect storage and database resources from accidental deletion. Enable to guard against teardown mistakes. Disable before `pulumi destroy`. |
-      | **Preflight checks** | Validates cloud quotas. If checks fail, request quota increases before proceeding. |
-      | **Pulumi backend** | Local (`~/.pulumi` with passphrase) or Pulumi Cloud. |
-    </Accordion>
+Clone the deployment repository and run the bootstrap script from the clone. The generated project is created next to the clone and depends on it.
 
-    After completing the wizard, a Pulumi project is generated in your project directory. To change configuration later, edit `Pulumi.<stack>.yaml` and run `pulumi up`.
-  </Step>
+```bash theme={null}
+git clone https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc.git
+bash pulumi-pinecone-nexus-byoc/bootstrap.sh --cloud gcp
+```
 
-  <Step title="Deploy the infrastructure">
-    Deploy the generated Pulumi project to create your cloud resources:
+Use `--cloud aws` or `--cloud azure` for the other clouds, and `--stack-name <name>` to name the Pulumi stack (default: `prod`).
 
-    ```bash theme={null}
-    cd pinecone-nexus-byoc
-    pulumi up
-    ```
+The script selects your cloud provider, checks that required tools are installed, verifies your cloud credentials, prompts for the project directory and name, then launches an interactive wizard that collects your configuration, validates your quotas, and generates a Pulumi project in an adjacent directory (default: `pinecone-nexus-byoc`). No cloud resources are created during this step.
 
-    Pulumi shows a preview of all resources to be created. Confirm to proceed. Provisioning time depends on the cloud:
+> **Setup wizard prompts**
+>
+> The wizard prompts you for the following:
+>
+> | Prompt | Description |
+> | - | - |
+> | **Cloud provider** | AWS, GCP, or Azure (skipped if pre-selected via `--cloud`). |
+> | **Project directory and name** | Where to generate the Pulumi project. Defaults to `pinecone-nexus-byoc`. |
+> | **Pinecone API key** | Your API key from the Pinecone console (or uses `PINECONE_API_KEY`). |
+> | **Cloud credentials** | Validates credentials and displays your account/project/subscription ID. |
+> | **Region** | Region for deployment. |
+> | **Availability zones** | Three zones for high availability. |
+> | **VPC/VNet CIDR block** | Private IP range for the deployment. Choose a `/16` to `/20` that doesn't overlap existing networks. |
+> | **Generation-LLM key** | The default catalog's Gemini API key (BYOM). |
+> | **Network access** | Public access. Private-only access is not supported for Nexus. See [Limitations](/guides/nexus/byoc/reference#limitations). |
+> | **Deletion protection** | Whether to protect storage and database resources from accidental deletion. Enable to guard against teardown mistakes. Disable before `pulumi destroy`. |
+> | **Preflight checks** | Validates cloud quotas. If checks fail, request quota increases before proceeding. |
+> | **Pulumi backend** | Local (`~/.pulumi` with passphrase) or Pulumi Cloud. |
 
-    | Cloud | Typical provisioning time |
-    | - | - |
-    | GCP | 25 to 30 minutes |
-    | AWS | 25 to 40 minutes |
-    | Azure | about 35 minutes |
+After completing the wizard, a Pulumi project is generated in your project directory. To change configuration later, edit `Pulumi.<stack>.yaml` and run `pulumi up`.
 
-    When complete, the output displays:
+**3. Deploy the infrastructure**
 
-    * The `update_kubeconfig_command` for configuring cluster access.
-    * Your BYOC **environment name**.
-    * Two workspace console links, printed once the first-run `default` workspace reaches `Ready`:
-      * `nexus_default_workspace_data_console_url`: the workspace console for the `default` workspace, served from your deployment (where you work with contexts and run queries).
-      * `nexus_default_workspace_control_console_url`: the Pinecone Console page for that workspace.
+Deploy the generated Pulumi project to create your cloud resources:
 
-    <Note>
-      The first `pulumi up` creates a `default` workspace automatically and waits for it to become ready before printing the links. Later `pulumi up` runs never recreate or modify it.
-    </Note>
+```bash theme={null}
+cd pinecone-nexus-byoc
+pulumi up
+```
 
-    <Accordion title="Infrastructure provisioned">
-      The deployment creates the following in your cloud account:
+Pulumi shows a preview of all resources to be created. Confirm to proceed. Provisioning time depends on the cloud:
 
-      | Component | AWS | GCP | Azure |
-      | - | - | - | - |
-      | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router | VNet, subnets, NAT gateway |
-      | **Kubernetes** | EKS cluster with managed node groups | GKE cluster with node pools | AKS cluster with agent pools |
-      | **Object storage** | S3 buckets (corpus, knowledge artifacts, data, WAL, backups) | GCS buckets | Blob Storage containers |
-      | **Metadata store** | FoundationDB (Nexus metadata) | FoundationDB | FoundationDB |
-      | **Load balancing** | Network Load Balancer | Internal load balancer | Internal load balancer |
-      | **DNS** | Route 53 hosted zone | Cloud DNS managed zone | Azure DNS zone |
-      | **TLS certificates** | AWS Certificate Manager | cert-manager | cert-manager |
-      | **IAM** | IAM roles and policies | Service accounts and Workload Identity | Managed identities and Workload Identity |
+| Cloud | Typical provisioning time |
+| - | - |
+| GCP | 25 to 30 minutes |
+| AWS | 25 to 40 minutes |
+| Azure | about 35 minutes |
 
-      The cluster comes up small and then autoscales across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the node pools.
-    </Accordion>
-  </Step>
+When complete, the output displays:
 
-  <Step title="Verify the deployment">
-    Configure `kubectl` using the `update_kubeconfig_command` from the deployment output:
+* The `update_kubeconfig_command` for configuring cluster access.
+* Your BYOC **environment name**.
+* Two workspace console links, printed once the first-run `default` workspace reaches `Ready`:
+  * `nexus_default_workspace_data_console_url`: the workspace console for the `default` workspace, served from your deployment (where you work with contexts and run queries).
+  * `nexus_default_workspace_control_console_url`: the Pinecone Console page for that workspace.
 
-    <Tabs>
-      <Tab title="AWS">
-        ```bash theme={null}
-        aws eks update-kubeconfig --region <region> --name <cluster-name>
-        ```
-      </Tab>
+> [!NOTE]
+>
+> The first `pulumi up` creates a `default` workspace automatically and waits for it to become ready before printing the links. Later `pulumi up` runs never recreate or modify it.
 
-      <Tab title="GCP">
-        ```bash theme={null}
-        gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
-        ```
-      </Tab>
+> **Infrastructure provisioned**
+>
+> The deployment creates the following in your cloud account:
+>
+> | Component | AWS | GCP | Azure |
+> | - | - | - | - |
+> | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router | VNet, subnets, NAT gateway |
+> | **Kubernetes** | EKS cluster with managed node groups | GKE cluster with node pools | AKS cluster with agent pools |
+> | **Object storage** | S3 buckets (corpus, knowledge artifacts, data, WAL, backups) | GCS buckets | Blob Storage containers |
+> | **Metadata store** | FoundationDB (Nexus metadata) | FoundationDB | FoundationDB |
+> | **Load balancing** | Network Load Balancer | Internal load balancer | Internal load balancer |
+> | **DNS** | Route 53 hosted zone | Cloud DNS managed zone | Azure DNS zone |
+> | **TLS certificates** | AWS Certificate Manager | cert-manager | cert-manager |
+> | **IAM** | IAM roles and policies | Service accounts and Workload Identity | Managed identities and Workload Identity |
+>
+> The cluster comes up small and then autoscales across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the node pools.
 
-      <Tab title="Azure">
-        ```bash theme={null}
-        az aks get-credentials --resource-group <resource-group> --name <cluster-name>
-        ```
-      </Tab>
-    </Tabs>
+**4. Verify the deployment**
 
-    Cluster access is for administrative tasks like viewing operations and troubleshooting. Everyday work (creating contexts, curating sources, and running queries) uses the Nexus console, CLI, or API.
+Configure `kubectl` using the `update_kubeconfig_command` from the deployment output:
 
-    Verify all components are running:
+**AWS**
 
-    ```bash theme={null}
-    kubectl get pods -A | grep -E "(pinecone|pc-|nexus)"
-    ```
+```bash theme={null}
+aws eks update-kubeconfig --region <region> --name <cluster-name>
+```
 
-    All pods should show `Running` status. If any are in `Pending` or `CrashLoopBackOff`, see [Troubleshooting](#troubleshooting).
-  </Step>
-</Steps>
+**GCP**
+
+```bash theme={null}
+gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
+```
+
+**Azure**
+
+```bash theme={null}
+az aks get-credentials --resource-group <resource-group> --name <cluster-name>
+```
+
+Cluster access is for administrative tasks like viewing operations and troubleshooting. Everyday work (creating contexts, curating sources, and running queries) uses the Nexus console, CLI, or API.
+
+Verify all components are running:
+
+```bash theme={null}
+kubectl get pods -A | grep -E "(pinecone|pc-|nexus)"
+```
+
+All pods should show `Running` status. If any are in `Pending` or `CrashLoopBackOff`, see [Troubleshooting](#troubleshooting).
 
 ## 2. Use
 
@@ -221,9 +215,9 @@ Two things are specific to BYOC:
 
 ## 3. Manage
 
-<Note>
-  Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. Pinecone uses it to enforce SLAs for your BYOC environment. Don't modify or delete it.
-</Note>
+> [!NOTE]
+>
+> Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. Pinecone uses it to enforce SLAs for your BYOC environment. Don't modify or delete it.
 
 ### Operations and upgrades
 
@@ -252,29 +246,27 @@ pulumi up
 
 You can monitor your deployment through multiple channels:
 
-<AccordionGroup>
-  <Accordion title="Pinecone console">
-    View workspace and index metrics in the Pinecone console. Control plane operations and metrics work regardless of your network access mode.
-  </Accordion>
+> **Pinecone console**
+>
+> View workspace and index metrics in the Pinecone console. Control plane operations and metrics work regardless of your network access mode.
 
-  <Accordion title="Prometheus">
-    To use Prometheus, configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port.
-  </Accordion>
+> **Prometheus**
+>
+> To use Prometheus, configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port.
 
-  <Accordion title="Audit logs">
-    Cluster operations are persisted as Kubernetes CRDs for compliance and auditing:
-
-    ```bash theme={null}
-    kubectl get cluster-operations
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Audit logs**
+>
+> Cluster operations are persisted as Kubernetes CRDs for compliance and auditing:
+>
+> ```bash theme={null}
+> kubectl get cluster-operations
+> ```
 
 ### Cleanup
 
-<Warning>
-  Delete all Nexus workspaces before destroying the cluster. Resources cannot be properly terminated if the cluster is destroyed first.
-</Warning>
+> [!WARNING]
+>
+> Delete all Nexus workspaces before destroying the cluster. Resources cannot be properly terminated if the cluster is destroyed first.
 
 To destroy your deployment:
 
@@ -288,59 +280,55 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion title="Preflight check failures">
-    The setup wizard validates cloud quotas before deployment. If checks fail:
+> **Preflight check failures**
+>
+> The setup wizard validates cloud quotas before deployment. If checks fail:
+>
+> | Check | Resolution |
+> | - | - |
+> | VPC / network quota | Request a limit increase via your cloud provider's quota console |
+> | Kubernetes cluster quota | Request an EKS, GKE, or AKS cluster limit increase |
+> | IP address quota | Release unused IPs or request a limit increase |
+> | Instance / machine type availability | Verify the required type is available in your region |
+> | vCPU quota | Request a regional vCPU increase |
+> | Required APIs / providers | Enable the cloud APIs (GCP) or register the resource providers (Azure) the installer requires |
 
-    | Check | Resolution |
-    | - | - |
-    | VPC / network quota | Request a limit increase via your cloud provider's quota console |
-    | Kubernetes cluster quota | Request an EKS, GKE, or AKS cluster limit increase |
-    | IP address quota | Release unused IPs or request a limit increase |
-    | Instance / machine type availability | Verify the required type is available in your region |
-    | vCPU quota | Request a regional vCPU increase |
-    | Required APIs / providers | Enable the cloud APIs (GCP) or register the resource providers (Azure) the installer requires |
-  </Accordion>
+> **Deployment failures**
+>
+> If `pulumi up` fails partway through:
+>
+> ```bash theme={null}
+> pulumi refresh  # Sync state with actual resources
+> pulumi up       # Retry deployment
+> ```
+>
+> On AWS, the slowest single step is VPC endpoint service private DNS verification: roughly 15 minutes of `Waiting for domain verification (pendingVerification)` polling is normal, not a hang. Let it finish.
 
-  <Accordion title="Deployment failures">
-    If `pulumi up` fails partway through:
+> **Cluster access issues**
+>
+> Ensure your cloud credentials match the account where the cluster is deployed:
+>
+> **AWS**
+>
+> ```bash theme={null}
+> aws sts get-caller-identity
+> ```
+>
+> **GCP**
+>
+> ```bash theme={null}
+> gcloud auth list
+> gcloud config get-value project
+> ```
+>
+> **Azure**
+>
+> ```bash theme={null}
+> az account show
+> ```
 
-    ```bash theme={null}
-    pulumi refresh  # Sync state with actual resources
-    pulumi up       # Retry deployment
-    ```
-
-    On AWS, the slowest single step is VPC endpoint service private DNS verification: roughly 15 minutes of `Waiting for domain verification (pendingVerification)` polling is normal, not a hang. Let it finish.
-  </Accordion>
-
-  <Accordion title="Cluster access issues">
-    Ensure your cloud credentials match the account where the cluster is deployed:
-
-    <Tabs>
-      <Tab title="AWS">
-        ```bash theme={null}
-        aws sts get-caller-identity
-        ```
-      </Tab>
-
-      <Tab title="GCP">
-        ```bash theme={null}
-        gcloud auth list
-        gcloud config get-value project
-        ```
-      </Tab>
-
-      <Tab title="Azure">
-        ```bash theme={null}
-        az account show
-        ```
-      </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Workspace stuck initializing">
-    The first-run `default` workspace is created asynchronously and becomes ready only once the Nexus services in your deployment are up. If `pulumi up` times out waiting for it, re-run `pulumi up` once the cluster pods are `Running`. If it remains stuck, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-  </Accordion>
-</AccordionGroup>
+> **Workspace stuck initializing**
+>
+> The first-run `default` workspace is created asynchronously and becomes ready only once the Nexus services in your deployment are up. If `pulumi up` times out waiting for it, re-run `pulumi up` once the cluster pods are `Running`. If it remains stuck, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
 For additional help, see the [GitHub Issues](https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc/issues) for the deployment repository.

@@ -77,6 +77,9 @@ The following Stripe decline codes can be used for local payment method (LPM) pa
 
 | Decline code | Charge outcome reason | Seller message | API error message |
 | --- | --- | --- | --- |
+| `klarna_payment_declined` | `klarna_payment_declined` | Klarna has declined the payment. | Customer was declined by Klarna. |
+| `klarna_payment_declined` | `klarna_payment_canceled` | The user canceled their Klarna checkout session. | Customer canceled checkout on Klarna. |
+| `klarna_payment_declined` | `klarna_session_expired` | Klarna checkout session has expired. | Klarna checkout wasn’t completed and has expired. |
 | `partner_generic_decline` | `partner_generic_decline` | The payment provider has declined the payment. | The payment provider has declined the payment. |
 | `customer_declined` | `generic_decline` | The customer declined the payment. | The customer declined this payment. |
 | `code_invalid` | `generic_decline` | The BLIK code is invalid or malformed. | The code passed wasn’t a valid BLIK code. |

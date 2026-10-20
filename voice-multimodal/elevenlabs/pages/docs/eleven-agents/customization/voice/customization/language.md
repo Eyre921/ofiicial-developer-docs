@@ -18,6 +18,8 @@ This guide shows you how to configure your agent to speak multiple languages. Yo
 * Optimize voice selection for natural pronunciation
 * Enable automatic language switching
 
+Language settings also apply to agents using a [Realtime model](/docs/eleven-agents/customization/realtime-models), but the agent's Text to Speech model setting doesn't apply in any language.
+
 > **Manage agents from your AI assistant**
 >
 > You can also make these changes conversationally. The [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,

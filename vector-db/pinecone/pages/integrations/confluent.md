@@ -10,4 +10,6 @@ Confluent is a cloud-native data streaming platform for connecting and processin
 
 Use the Pinecone Sink Connector, a Kafka Connect plugin for Pinecone, to take content from Confluent Cloud, convert it into vector embeddings using large language models (LLMs), and then store these embeddings in a Pinecone index.
 
-<PrimarySecondaryCTA />
+[Get started](https://www.confluent.io/hub/confluentinc/kafka-connect-pinecone-sink)
+
+[View setup guide](https://docs.confluent.io/cloud/current/connectors/cc-pinecone-sink.html)

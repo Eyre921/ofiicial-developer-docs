@@ -12,9 +12,9 @@ path: docs/cookbook/administration/crypto-api
 
 > Coinbase Commerce API deprecation
 
-<Warning>
-  Coinbase deprecated the APIs used by this flow, so `POST /api/v1/credits/coinbase` has been removed and now returns `410 Gone`.
-</Warning>
+> [!WARNING]
+>
+> Coinbase deprecated the APIs used by this flow, so `POST /api/v1/credits/coinbase` has been removed and now returns `410 Gone`.
 
 ## Status
 

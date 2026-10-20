@@ -51,9 +51,9 @@ This is a capacity signal, not quota enforcement. To resolve:
 * **Scale up the deployment** — add more replicas or GPUs to increase throughput
 * **Optimize request patterns** — use shorter prompts, reduce max output tokens, or batch requests to lower per-request resource consumption
 
-<Tip>
-  If you consistently see 429 errors on a dedicated or on-demand deployment, it's an indicator that your current GPU allocation is undersized for your traffic. [Contact us](https://fireworks.ai/company/contact-us) to discuss increasing your deployment capacity.
-</Tip>
+> [!TIP]
+>
+> If you consistently see 429 errors on a dedicated or on-demand deployment, it's an indicator that your current GPU allocation is undersized for your traffic. [Contact us](https://fireworks.ai/company/contact-us) to discuss increasing your deployment capacity.
 
 ## Troubleshooting tips
 
@@ -63,6 +63,6 @@ If you encounter an error not listed here:
 * Check the [Fireworks status page](https://status.fireworks.ai) for any ongoing service disruptions
 * Contact support at [support@fireworks.ai](mailto:support@fireworks.ai) or join our [Discord](https://discord.gg/fireworks-ai)
 
-<Tip>
-  Enable detailed error logging in your application to capture the full error response, including error messages and request IDs, which helps with debugging.
-</Tip>
+> [!TIP]
+>
+> Enable detailed error logging in your application to capture the full error response, including error messages and request IDs, which helps with debugging.

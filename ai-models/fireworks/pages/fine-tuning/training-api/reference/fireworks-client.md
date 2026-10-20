@@ -66,15 +66,15 @@ print(f"Model state: {model['state']}, kind: {model['kind']}")
 
 Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). See [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) for details, and [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for which checkpoints are promotable.
 
-<Note>
-  The trainer job can be in any state (running, failed, cancelled, or deleted) as long as the checkpoint files still exist in GCS. Promotion is a file copy -- it does not interact with the trainer process.
-</Note>
+> [!NOTE]
+>
+> The trainer job can be in any state (running, failed, cancelled, or deleted) as long as the checkpoint files still exist in GCS. Promotion is a file copy -- it does not interact with the trainer process.
 
 Validate `output_model_id` with [`validate_output_model_id`](#validate-output-model-id-output-model-id) before calling — a rejected ID (>63 chars or bad charset) orphans the staged sampler blob.
 
-<Warning>
-  The 63-character limit also applies to the **checkpoint id** in `name`, composed as `run-<32-hex>-<your-name>-<8-hex>`. Names passed to `save_weights_for_sampler` / `save_state` must be **17 characters or fewer** or the checkpoint cannot be promoted — and this is only checked at promote time, after training completes.
-</Warning>
+> [!WARNING]
+>
+> The 63-character limit also applies to the **checkpoint id** in `name`, composed as `run-<32-hex>-<your-name>-<8-hex>`. Names passed to `save_weights_for_sampler` / `save_state` must be **17 characters or fewer** or the checkpoint cannot be promoted — and this is only checked at promote time, after training completes.
 
 ### `list_checkpoints(job_id, *, page_size=200)`
 

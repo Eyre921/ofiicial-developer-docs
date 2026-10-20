@@ -155,12 +155,12 @@ response has a 2,048-token generation limit. Training checkpoints are saved
 every five steps and at the end. Steps whose groups all have identical rewards
 skip the optimizer.
 
-<Warning>
-  Calibration and training both incur Fireworks usage. Review
-  [Serverless Training pricing](/fine-tuning/training-api/serverless#pricing)
-  before running a large experiment. `--max-concurrent` controls how many
-  rollouts run simultaneously and defaults to `4`.
-</Warning>
+> [!WARNING]
+>
+> Calibration and training both incur Fireworks usage. Review
+> [Serverless Training pricing](/fine-tuning/training-api/serverless#pricing)
+> before running a large experiment. `--max-concurrent` controls how many
+> rollouts run simultaneously and defaults to `4`.
 
 ## Compare before and after training
 
@@ -191,10 +191,10 @@ budget. Of the 27 improved tasks, 20 had baseline responses that reached the
 token limit before producing an answer. Seven improvements were arithmetic
 corrections.
 
-<Note>
-  This is one run on a narrow arithmetic distribution. It does not establish
-  broader capability gains or run-to-run reproducibility.
-</Note>
+> [!NOTE]
+>
+> This is one run on a narrow arithmetic distribution. It does not establish
+> broader capability gains or run-to-run reproducibility.
 
 The output directory contains `config.json`, `eval-before.json`, and
 `eval-after.json`. Each evaluation records prompts, full responses, rewards,

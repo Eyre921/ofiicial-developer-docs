@@ -114,9 +114,9 @@ for await (const chunk of stream) {
 }
 ```
 
-<Note>
-  If you need higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions), see the [Agent SDK](/docs/agent-sdk/overview) instead.
-</Note>
+> [!NOTE]
+>
+> If you need higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions), see the [Agent SDK](/docs/agent-sdk/overview) instead.
 
 ## Repository
 

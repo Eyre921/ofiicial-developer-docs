@@ -16,9 +16,9 @@ Use this guide when you need to add webhook-based video completion handling inst
 
 By the end, your implementation should submit a video job with `callback_url` and verify the webhook signature.
 
-<Tip>
-  For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
-</Tip>
+> [!TIP]
+>
+> For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 
 ## Before you start
 
@@ -30,9 +30,9 @@ You need:
 * A webhook signing secret configured in your OpenRouter workspace settings
 * A video model slug for the job you submit with `callback_url`
 
-<Tip>
-  If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
-</Tip>
+> [!TIP]
+>
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
@@ -47,9 +47,9 @@ npm install express
 npm install --save-dev @types/express tsx
 ```
 
-<Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
-</Warning>
+> [!WARNING]
+>
+> Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 
 ## Step 1: Implement a webhook receiver
 

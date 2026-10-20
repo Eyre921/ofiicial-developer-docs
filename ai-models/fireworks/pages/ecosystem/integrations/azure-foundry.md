@@ -10,9 +10,9 @@ Fireworks AI is a first-party inference provider inside Microsoft Foundry. You c
 
 This page covers the Fireworks side of the integration. For Azure portal setup steps, see the [Microsoft Learn guide](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models).
 
-<Info>
-  **New to Fireworks?** Foundry users get the same OpenAI-compatible API and model catalog as direct Fireworks customers. Start with the [PayGo quickstart](#paygo-quickstart) below. You can be making requests in about 10 minutes.
-</Info>
+> [!NOTE]
+>
+> **New to Fireworks?** Foundry users get the same OpenAI-compatible API and model catalog as direct Fireworks customers. Start with the [PayGo quickstart](#paygo-quickstart) below. You can be making requests in about 10 minutes.
 
 ## Prerequisites
 
@@ -116,10 +116,10 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 
 Use your Foundry deployments from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses.
 
-<Card title="Foundry for Coding Harnesses" icon="terminal" href="/nexus/microsoft-foundry">
-  Connect with FireConnect, configure a harness manually, or route Claude Code
-  through an LLM gateway.
-</Card>
+> **[Foundry for Coding Harnesses](/nexus/microsoft-foundry)**
+>
+> Connect with FireConnect, configure a harness manually, or route Claude Code
+> through an LLM gateway.
 
 This page covers enabling and operating Fireworks models in Foundry itself.
 

@@ -29,27 +29,25 @@ If you only use the REST API client for non-agent features (`client.chat.send(..
 
 ## Step 1: Install the new package
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install @openrouter/agent
-  ```
+```bash title="npm" lines theme={null}
+npm install @openrouter/agent
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add @openrouter/agent
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add @openrouter/agent
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add @openrouter/agent
-  ```
+```bash title="yarn" lines theme={null}
+yarn add @openrouter/agent
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add @openrouter/agent
-  ```
+```bash title="bun" lines theme={null}
+bun add @openrouter/agent
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add npm:@openrouter/agent
-  ```
-</CodeGroup>
+```bash title="deno" lines theme={null}
+deno add npm:@openrouter/agent
+```
 
 ## Step 2: Update imports
 
@@ -203,9 +201,9 @@ find src -name '*.ts' -o -name '*.tsx' | xargs sed -i \
   -e "s|@openrouter/sdk/lib/async-params|@openrouter/agent/async-params|g"
 ```
 
-<Note>
-  The `tool-types` replacement runs before `tool` to avoid partial matches. After running the script, search your codebase for any remaining `from '@openrouter/sdk'` (without a `/` subpath) to find barrel and client imports that need manual updates.
-</Note>
+> [!NOTE]
+>
+> The `tool-types` replacement runs before `tool` to avoid partial matches. After running the script, search your codebase for any remaining `from '@openrouter/sdk'` (without a `/` subpath) to find barrel and client imports that need manual updates.
 
 ## FAQ
 

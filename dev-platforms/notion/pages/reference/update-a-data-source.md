@@ -30,8 +30,6 @@ Keep the schema within 50 KB. Schema updates that are too large return `validati
 
 Large option lists and long property descriptions contribute to schema size. Remove unused settings or shorten descriptions before retrying.
 
-<span />
-
 ### Access and errors
 
 The connection needs [update content capabilities](/reference/capabilities) and access to the data source. Relations and rollups also need access to the related database.

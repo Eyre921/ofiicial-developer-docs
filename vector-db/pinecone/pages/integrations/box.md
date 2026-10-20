@@ -10,4 +10,4 @@ Connect Box folders to Pinecone Database to embed documents with Pinecone Infere
 
 By default, the integration uses the Pinecone Inference API for embeddings and OpenAI for the LLM. You can use the integration within a larger AI agent or workflow.
 
-<PrimarySecondaryCTA />
+[Get started](https://developer.box.com/ai/vector-databases/pinecone)

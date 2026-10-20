@@ -68,10 +68,10 @@ platform creates for the worker. Managed databases are migrated on every deploy.
 Changing the schema in code and redeploying migrates the database schema in
 Notion.
 
-<Warning>
-  Schema migrations can drop data. Review schema changes before deploying,
-  especially when removing or changing existing properties.
-</Warning>
+> [!WARNING]
+>
+> Schema migrations can drop data. Review schema changes before deploying,
+> especially when removing or changing existing properties.
 
 Managed databases are currently used only by sync capabilities. They are not
 generic worker storage, and they are not used by webhooks.

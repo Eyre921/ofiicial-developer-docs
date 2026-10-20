@@ -49,7 +49,7 @@ This simple GitHub action workflow will deploy your Trigger.dev tasks when new c
           env:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
           run: |
-            npx trigger.dev@latest deploy --external-id ${{ github.sha }}
+            npx trigger.dev@latest deploy --env prod --external-id ${{ github.sha }}
   ```
 
   ```yaml .github/workflows/release-trigger-staging.yml theme={"theme":"css-variables"}
@@ -183,7 +183,7 @@ Tip: add the `trigger.dev` CLI to your `devDependencies` and the deploy command 
 ```json theme={"theme":"css-variables"}
 {
   "scripts": {
-    "deploy:trigger-prod": "trigger deploy",
+    "deploy:trigger-prod": "trigger deploy --env prod",
     "deploy:trigger": "trigger deploy --env staging"
   },
   "devDependencies": {
@@ -252,6 +252,6 @@ When self-hosting, you need to:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
             TRIGGER_API_URL: ${{ secrets.TRIGGER_API_URL }}
           run: |
-            npx trigger.dev@latest deploy
+            npx trigger.dev@latest deploy --env prod
   ```
 </CodeGroup>

@@ -10,60 +10,58 @@ In this quickstart, you import an [n8n](https://docs.n8n.io/choose-n8n/) workflo
 
 To follow along, you need a Pinecone account, an n8n account, and an OpenAI API key.
 
-<Steps>
-  <Step title="Create an assistant">
-    In the Pinecone console, [create an assistant](https://app.pinecone.io/organizations/-/projects/-/assistant) named `n8n-assistant`. The workflow template looks for an assistant with this name.
-  </Step>
+## 1. Create an assistant
 
-  <Step title="Install the Pinecone Assistant node">
-    In your n8n account, open the nodes panel, search for **Pinecone Assistant**, and install the node.
+In the Pinecone console, [create an assistant](https://app.pinecone.io/organizations/-/projects/-/assistant) named `n8n-assistant`. The workflow template looks for an assistant with this name.
 
-    <Note>
-      If the Pinecone Assistant node doesn't appear in the nodes panel, restart your n8n workspace.
-    </Note>
-  </Step>
+## 2. Install the Pinecone Assistant node
 
-  <Step title="Import the workflow">
-    Copy the workflow template URL:
+In your n8n account, open the nodes panel, search for **Pinecone Assistant**, and install the node.
 
-    ```text theme={null}
-    https://raw.githubusercontent.com/pinecone-io/n8n-templates/refs/heads/main/assistant-quickstart/assistant-quickstart.json
-    ```
+> [!NOTE]
+>
+> If the Pinecone Assistant node doesn't appear in the nodes panel, restart your n8n workspace.
 
-    In your n8n account, [create a new workflow](https://docs.n8n.io/workflows/create/) and paste the URL anywhere in the workflow editor. Then click **Import** to add the workflow.
-  </Step>
+## 3. Import the workflow
 
-  <Step title="Connect the nodes to your accounts">
-    The workflow has two Pinecone Assistant nodes, **Upload file to Assistant** and **Get context from Assistant**. In each one, do the following:
+Copy the workflow template URL:
 
-    1. Click **Connect to Pinecone** and sign in to your Pinecone account. If the button doesn't appear, as on self-hosted n8n, create a Pinecone credential with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys) instead.
-    2. For **Assistant Name**, select `n8n-assistant`.
+```text theme={null}
+https://raw.githubusercontent.com/pinecone-io/n8n-templates/refs/heads/main/assistant-quickstart/assistant-quickstart.json
+```
 
-    Then open the **OpenAI Chat Model** node, select **Credential to connect with > Create new credential**, and paste in your OpenAI API key.
-  </Step>
+In your n8n account, [create a new workflow](https://docs.n8n.io/workflows/create/) and paste the URL anywhere in the workflow editor. Then click **Import** to add the workflow.
 
-  <Step title="Upload files">
-    Click **Execute workflow**. By default, the workflow downloads Pinecone's release notes and uploads them to your assistant.
+## 4. Connect the nodes to your accounts
 
-    <Tip>
-      To upload your own files, change the URLs in the **Set file urls** node.
-    </Tip>
-  </Step>
+The workflow has two Pinecone Assistant nodes, **Upload file to Assistant** and **Get context from Assistant**. In each one, do the following:
 
-  <Step title="Chat with your files">
-    After the files finish uploading, click **Open chat** at the bottom of the workflow editor and ask a question about them:
+1. Click **Connect to Pinecone** and sign in to your Pinecone account. If the button doesn't appear, as on self-hosted n8n, create a Pinecone credential with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys) instead.
+2. For **Assistant Name**, select `n8n-assistant`.
 
-    ```text theme={null}
-    What support does Pinecone have for MCP?
-    ```
+Then open the **OpenAI Chat Model** node, select **Credential to connect with > Create new credential**, and paste in your OpenAI API key.
 
-    The AI agent retrieves relevant context from your assistant and uses it to answer.
-  </Step>
+## 5. Upload files
 
-  <Step title="Clean up">
-    When you no longer need `n8n-assistant`, delete it in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Deleting an assistant also deletes all files uploaded to it. You can also delete the imported workflow in n8n, so it doesn't run by accident later.
-  </Step>
-</Steps>
+Click **Execute workflow**. By default, the workflow downloads Pinecone's release notes and uploads them to your assistant.
+
+> [!TIP]
+>
+> To upload your own files, change the URLs in the **Set file urls** node.
+
+## 6. Chat with your files
+
+After the files finish uploading, click **Open chat** at the bottom of the workflow editor and ask a question about them:
+
+```text theme={null}
+What support does Pinecone have for MCP?
+```
+
+The AI agent retrieves relevant context from your assistant and uses it to answer.
+
+## 7. Clean up
+
+When you no longer need `n8n-assistant`, delete it in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Deleting an assistant also deletes all files uploaded to it. You can also delete the imported workflow in n8n, so it doesn't run by accident later.
 
 ## Next steps
 

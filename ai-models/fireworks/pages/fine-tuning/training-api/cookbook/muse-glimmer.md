@@ -19,14 +19,14 @@ The same script runs the job on two surfaces:
   samples the base and tuned adapters in the same session to compare them on
   rows it held out.
 
-<Info>
-  Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30.
-  No credit card required. See [Models](/fine-tuning/models). The starter applies
-  the promotion to LoRA SFT jobs started before `2026-12-01T00:00:00-08:00` and
-  refuses to launch after that unless you pass `--allow-paid`. RL, DPO,
-  full-parameter training, deployments, and inference outside the training run
-  are not covered.
-</Info>
+> [!NOTE]
+>
+> Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30.
+> No credit card required. See [Models](/fine-tuning/models). The starter applies
+> the promotion to LoRA SFT jobs started before `2026-12-01T00:00:00-08:00` and
+> refuses to launch after that unless you pass `--allow-paid`. RL, DPO,
+> full-parameter training, deployments, and inference outside the training run
+> are not covered.
 
 | Setting | Value |
 | - | - |
@@ -97,12 +97,12 @@ A typical run finishes in a few minutes once it starts. In one example run, eval
 loss fell from 0.58 to 0.03 over 17 steps. The output is a LoRA model named
 `accounts/<account>/models/muse-starter-$RUN`.
 
-<Note>
-  Managed SFT reports loss, not task accuracy. Low loss on short, templated
-  answers mostly shows the model learned the output format. To measure routing
-  accuracy, use the Serverless Training path below, or deploy the model and
-  evaluate it on held-out prompts.
-</Note>
+> [!NOTE]
+>
+> Managed SFT reports loss, not task accuracy. Low loss on short, templated
+> answers mostly shows the model learned the output format. To measure routing
+> accuracy, use the Serverless Training path below, or deploy the model and
+> evaluate it on held-out prompts.
 
 ### Vision: receipt extraction
 
@@ -167,11 +167,11 @@ It writes these files to `muse_starter_logs/$RUN/`:
 | `predictions_base.jsonl`, `predictions_tuned.jsonl` | Per-row answers and scores |
 | `summary.json` | Exact match for base and tuned (with per-key accuracy when the answers are JSON), an `unterminated` count (answers that did not stop cleanly), an exact paired McNemar test, and the evaluation sampling token counts |
 
-<Warning>
-  The promotion covers training. In-session evaluation sampling is priced
-  separately at the published per-token rates; the default run samples 80
-  answers. `launch` prints a cost line with the sampled token counts.
-</Warning>
+> [!WARNING]
+>
+> The promotion covers training. In-session evaluation sampling is priced
+> separately at the published per-token rates; the default run samples 80
+> answers. `launch` prints a cost line with the sampled token counts.
 
 ## Your own data
 

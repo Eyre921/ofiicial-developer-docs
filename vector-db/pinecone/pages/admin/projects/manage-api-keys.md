@@ -10,375 +10,345 @@ Each Pinecone [project](/admin/projects/understanding-projects) has one or more 
 
 This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
-<Warning>
-  If you use custom API key permissions, make sure you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
-</Warning>
+> [!WARNING]
+>
+> If you use custom API key permissions, make sure you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
 
 ## Create an API key
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+**Pinecone console**
 
-    2. Select your project.
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
 
-    3. Go to **API keys**.
+2. Select your project.
 
-    4. Click **+ API key**.
+3. Go to **API keys**.
 
-    5. Enter an **API key name**.
+4. Click **+ API key**.
 
-    6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/admin/projects/understanding-projects#project-roles).
+5. Enter an **API key name**.
 
-       <Note>
-         Users on the Starter and Builder plans can set the permissions to **All** only. To customize the permissions further, [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
-       </Note>
+6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/admin/projects/understanding-projects#project-roles).
 
-    7. Click **Create key**.
+   > [!NOTE]
+   >
+   > Users on the Starter and Builder plans can set the permissions to **All** only. To customize the permissions further, [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
-    8. Copy and save the generated API key in a secure place for future use.
+7. Click **Create key**.
 
-       <Warning>
-         You cannot view the API key again after you close the dialog.
-       </Warning>
+8. Copy and save the generated API key in a secure place for future use.
 
-    9. Click **Close**.
-  </Tab>
+   > [!WARNING]
+   >
+   > You cannot view the API key again after you close the dialog.
 
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
+9. Click **Close**.
 
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_PROJECT_ID="YOUR_PROJECT_ID"
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+**Code**
 
-      curl -X POST "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
-           -H "X-Pinecone-Api-Version: 2026-07" \
-           -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-           -d '{
-                 "name": "example-api-key",
-                 "roles": ["ProjectEditor"]
-               }'
-      ```
+> [!NOTE]
+>
+> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 
-      ```bash CLI theme={null}
-      # Target the project for which you want to create an API key.
-      pc target -o "example-org" -p "example-project"
-      # Create the API key
-      pc api-key create -n "example-api-key" --roles ProjectEditor
-      ```
-    </CodeGroup>
+```bash curl theme={null}
+PINECONE_PROJECT_ID="YOUR_PROJECT_ID"
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
-    The example returns a response like the following:
+curl -X POST "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+     -d '{
+           "name": "example-api-key",
+           "roles": ["ProjectEditor"]
+         }'
+```
 
-    <CodeGroup>
-      ```json curl theme={null}
-      {
-        "key": {
-          "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
-          "name": "example-api-key",
-          "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-          "roles": [
-            "ProjectEditor"
-          ],
-          "created_at": "2025-10-20T23:40:27.069075Z"
-        },
-        "value": "..."
-      }
-      ```
+```bash CLI theme={null}
+# Target the project for which you want to create an API key.
+pc target -o "example-org" -p "example-project"
+# Create the API key
+pc api-key create -n "example-api-key" --roles ProjectEditor
+```
 
-      ```text CLI theme={null}
-      ATTRIBUTE     VALUE
-      Name          example-api-key
-      ID            62b0dbfe-3489-4b79-b850-34d911527c88
-      Value         ...
-      Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
-      Roles         ProjectEditor
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+The example returns a response like the following:
+
+```json curl theme={null}
+{
+  "key": {
+    "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
+    "name": "example-api-key",
+    "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+    "roles": [
+      "ProjectEditor"
+    ],
+    "created_at": "2025-10-20T23:40:27.069075Z"
+  },
+  "value": "..."
+}
+```
+
+```text CLI theme={null}
+ATTRIBUTE     VALUE
+Name          example-api-key
+ID            62b0dbfe-3489-4b79-b850-34d911527c88
+Value         ...
+Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
+Roles         ProjectEditor
+```
 
 ## View project API keys
 
 You can [view the API keys](/reference/api/latest/admin/api-keys/list-api-keys) for your project:
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-    2. Select your project.
-    3. Go to the **API keys** tab.
+**Pinecone console**
 
-    You'll see a list of all API keys for the project, including their names, creation dates, creators, partial values, and permissions.
-  </Tab>
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+2. Select your project.
+3. Go to the **API keys** tab.
 
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
+You'll see a list of all API keys for the project, including their names, creation dates, creators, partial values, and permissions.
 
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+**Code**
 
-      curl -X GET "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
-           -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-           -H "X-Pinecone-Api-Version: 2026-07"
-      ```
+> [!NOTE]
+>
+> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 
-      ```bash CLI theme={null}
-      PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
+```bash curl theme={null}
+PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
-      pc api-key list -i $PINECONE_PROJECT_ID
-      ```
-    </CodeGroup>
+curl -X GET "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
+     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+     -H "X-Pinecone-Api-Version: 2026-07"
+```
 
-    The example returns a response like the following:
+```bash CLI theme={null}
+PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
 
-    <CodeGroup>
-      ```json curl theme={null}
-      {
-        "data": [
-          {
-            "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
-            "name": "example-api-key",
-            "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-            "roles": [
-              "ProjectEditor"
-            ],
-            "created_at": "2025-10-20T23:39:43.665754Z"
-          },
-          {
-            "id": "0d0d3678-81b4-4e0d-a4f0-70ba488acfb7",
-            "name": "example-api-key-2",
-            "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-            "roles": [
-              "ProjectEditor"
-            ],
-            "created_at": "2025-10-20T23:43:13.176422Z"
-          }
-        ]
-      }
-      ```
+pc api-key list -i $PINECONE_PROJECT_ID
+```
 
-      ```text CLI theme={null}
-      Organization: example-organization (ID: -NM7af6f234168c4e44a)
-      Project: example-project (ID: 32c8235a-5220-4a80-a9f1-69c24109e6f2)
+The example returns a response like the following:
 
-      API Keys
+```json curl theme={null}
+{
+  "data": [
+    {
+      "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
+      "name": "example-api-key",
+      "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+      "roles": [
+        "ProjectEditor"
+      ],
+      "created_at": "2025-10-20T23:39:43.665754Z"
+    },
+    {
+      "id": "0d0d3678-81b4-4e0d-a4f0-70ba488acfb7",
+      "name": "example-api-key-2",
+      "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+      "roles": [
+        "ProjectEditor"
+      ],
+      "created_at": "2025-10-20T23:43:13.176422Z"
+    }
+  ]
+}
+```
 
-      NAME                 ID                                      PROJECT ID                              ROLES
-      example-api-key      62b0dbfe-3489-4b79-b850-34d911527c88    32c8235a-5220-4a80-a9f1-69c24109e6f2    ProjectEditor
-      example-api-key-2    0d0d3678-81b4-4e0d-a4f0-70ba488acfb7    32c8235a-5220-4a80-a9f1-69c24109e6f2    ProjectEditor
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```text CLI theme={null}
+Organization: example-organization (ID: -NM7af6f234168c4e44a)
+Project: example-project (ID: 32c8235a-5220-4a80-a9f1-69c24109e6f2)
+
+API Keys
+
+NAME                 ID                                      PROJECT ID                              ROLES
+example-api-key      62b0dbfe-3489-4b79-b850-34d911527c88    32c8235a-5220-4a80-a9f1-69c24109e6f2    ProjectEditor
+example-api-key-2    0d0d3678-81b4-4e0d-a4f0-70ba488acfb7    32c8235a-5220-4a80-a9f1-69c24109e6f2    ProjectEditor
+```
 
 ## View API key details
 
 You can [view the details of an API key](/reference/api/latest/admin/api-keys/get-api-key-details):
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-    2. Select your project.
-    3. Go to the **API keys** tab.
-    4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
+**Pinecone console**
 
-    You'll see the API key's name and permissions.
-  </Tab>
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+2. Select your project.
+3. Go to the **API keys** tab.
+4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
 
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
+You'll see the API key's name and permissions.
 
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+**Code**
 
-      curl -X GET "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
-           -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-           -H "accept: application/json" \
-           -H "X-Pinecone-Api-Version: 2026-07"
-      ```
+> [!NOTE]
+>
+> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 
-      ```bash CLI theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+```bash curl theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
-      pc api-key describe -i $PINECONE_API_KEY_ID
-      ```
-    </CodeGroup>
+curl -X GET "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+     -H "accept: application/json" \
+     -H "X-Pinecone-Api-Version: 2026-07"
+```
 
-    The example returns a response like the following:
+```bash CLI theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
 
-    <CodeGroup>
-      ```json curl theme={null}
-      {
-        "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
-        "name": "example-api-key",
-        "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-        "roles": [
-          "ProjectEditor"
-        ],
-        "created_at": "2025-10-22T19:27:21.202955Z"
-      }
-      ```
+pc api-key describe -i $PINECONE_API_KEY_ID
+```
 
-      ```text CLI theme={null}
-      ATTRIBUTE     VALUE
-      Name          example-api-key
-      ID            62b0dbfe-3489-4b79-b850-34d911527c88
-      Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
-      Roles         ProjectEditor
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+The example returns a response like the following:
+
+```json curl theme={null}
+{
+  "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
+  "name": "example-api-key",
+  "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+  "roles": [
+    "ProjectEditor"
+  ],
+  "created_at": "2025-10-22T19:27:21.202955Z"
+}
+```
+
+```text CLI theme={null}
+ATTRIBUTE     VALUE
+Name          example-api-key
+ID            62b0dbfe-3489-4b79-b850-34d911527c88
+Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
+Roles         ProjectEditor
+```
 
 ## Update an API key
 
-<Note>
-  Users on the Starter and Builder plans can't change API key permissions once they're set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
+> [!NOTE]
+>
+> Users on the Starter and Builder plans can't change API key permissions once they're set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
 If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can update an API key's permissions. To rename a key, use the API.
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+**Pinecone console**
 
-    2. Select your project.
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
 
-    3. Go to the **API keys** tab.
+2. Select your project.
 
-    4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
+3. Go to the **API keys** tab.
 
-    5. Change the permissions for the API key as needed.
+4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Settings**.
 
-       For information about the different API key permissions, see [Project roles](/admin/projects/understanding-projects#project-roles).
+5. Change the permissions for the API key as needed.
 
-    6. Click **Update**.
-  </Tab>
+   For information about the different API key permissions, see [Project roles](/admin/projects/understanding-projects#project-roles).
 
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
+6. Click **Update**.
 
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+**Code**
 
-      curl -X PATCH "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
-           -H "X-Pinecone-Api-Version: 2026-07" \
-           -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-           -d '{
-                 "name": "new-api-key-name",
-                 "roles": ["ProjectEditor"]
-               }'
-      ```
+> [!NOTE]
+>
+> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 
-      ```bash CLI theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+```bash curl theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
-      # Target the organization that contains the API key.
-      pc target -o "example-org"
-      # Update the API key name.
-      pc api-key update -i $PINECONE_API_KEY_ID -n "new-api-key-name"
-      ```
-    </CodeGroup>
+curl -X PATCH "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+     -d '{
+           "name": "new-api-key-name",
+           "roles": ["ProjectEditor"]
+         }'
+```
 
-    The example returns a response like the following:
+```bash CLI theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
 
-    <CodeGroup>
-      ```json curl theme={null}
-      {
-        "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
-        "name": "new-api-key-name",
-        "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-        "roles": [
-          "ProjectEditor"
-        ],
-        "created_at": "2025-10-22T19:27:21.202955Z"
-      }
-      ```
+# Target the organization that contains the API key.
+pc target -o "example-org"
+# Update the API key name.
+pc api-key update -i $PINECONE_API_KEY_ID -n "new-api-key-name"
+```
 
-      ```text CLI theme={null}
-      ATTRIBUTE     VALUE
-      Name          new-api-key-name
-      ID            62b0dbfe-3489-4b79-b850-34d911527c88
-      Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
-      Roles         ProjectEditor
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+The example returns a response like the following:
+
+```json curl theme={null}
+{
+  "id": "62b0dbfe-3489-4b79-b850-34d911527c88",
+  "name": "new-api-key-name",
+  "project_id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+  "roles": [
+    "ProjectEditor"
+  ],
+  "created_at": "2025-10-22T19:27:21.202955Z"
+}
+```
+
+```text CLI theme={null}
+ATTRIBUTE     VALUE
+Name          new-api-key-name
+ID            62b0dbfe-3489-4b79-b850-34d911527c88
+Project ID    32c8235a-5220-4a80-a9f1-69c24109e6f2
+Roles         ProjectEditor
+```
 
 ## Delete an API key
 
 If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can delete an API key.
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-    2. Select your project.
-    3. Go to the **API keys** tab.
-    4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Delete**.
-    5. Enter the **API key name**.
-    6. Click **Delete API key**.
+**Pinecone console**
 
-       <Warning>
-         Deleting an API key is irreversible and immediately disables any applications using the API key.
-       </Warning>
-  </Tab>
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+2. Select your project.
+3. Go to the **API keys** tab.
+4. In the row of the API key you want to change, in the **Actions** column, click **ellipsis (...) menu > Delete**.
+5. Enter the **API key name**.
+6. Click **Delete API key**.
 
-  <Tab title="Code">
-    <Note>
-      To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
-    </Note>
+   > [!WARNING]
+   >
+   > Deleting an API key is irreversible and immediately disables any applications using the API key.
 
-    <CodeGroup>
-      ```bash curl theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
-      PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+**Code**
 
-      curl -X DELETE "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
-           -H "X-Pinecone-Api-Version: 2026-07" \
-           -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
-      ```
+> [!NOTE]
+>
+> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
 
-      ```bash CLI theme={null}
-      PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+```bash curl theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 
-      # Delete the API key. Use --skip-confirmation to skip
-      # the confirmation prompt.
-      pc api-key delete -i $PINECONE_API_KEY_ID
-      ```
-    </CodeGroup>
+curl -X DELETE "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
+```
 
-    The example returns a response like the following:
+```bash CLI theme={null}
+PINECONE_API_KEY_ID="62b0dbfe-3489-4b79-b850-34d911527c88"
 
-    <CodeGroup>
-      ```text curl theme={null}
-      No response payload
-      ```
+# Delete the API key. Use --skip-confirmation to skip
+# the confirmation prompt.
+pc api-key delete -i $PINECONE_API_KEY_ID
+```
 
-      ```text CLI theme={null}
-      [WARN] This operation will delete API key example-api-key from project example-project.
-      [WARN] Any integrations that authenticate with this API key will immediately stop working.
-      [WARN] This action cannot be undone.
-      Do you want to continue? (y/N): y
-      [INFO] You chose to continue delete.
-      [SUCCESS] API key example-api-key deleted
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+The example returns a response like the following:
+
+```text curl theme={null}
+No response payload
+```
+
+```text CLI theme={null}
+[WARN] This operation will delete API key example-api-key from project example-project.
+[WARN] Any integrations that authenticate with this API key will immediately stop working.
+[WARN] This action cannot be undone.
+Do you want to continue? (y/N): y
+[INFO] You chose to continue delete.
+[SUCCESS] API key example-api-key deleted
+```

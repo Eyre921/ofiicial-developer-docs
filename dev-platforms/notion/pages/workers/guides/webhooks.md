@@ -50,11 +50,11 @@ The `execute` function receives an array of `WebhookEvent` objects. The array cu
 | `headers` | `Record<string, string>` | Request headers. Header names are lowercased. |
 | `method` | `string` | HTTP method used by the sender. Webhook URLs accept `POST` requests. |
 
-<Tip>
-  Use the external provider's own event ID for idempotency when the payload includes one.
-  `deliveryId` is useful when Notion retries running your worker, but a provider may
-  redeliver the same event as a new HTTP request.
-</Tip>
+> [!TIP]
+>
+> Use the external provider's own event ID for idempotency when the payload includes one.
+> `deliveryId` is useful when Notion retries running your worker, but a provider may
+> redeliver the same event as a new HTTP request.
 
 ## Webhook URLs
 
@@ -77,10 +77,10 @@ ntn workers webhooks list --json
 ntn workers webhooks list --plain
 ```
 
-<Warning>
-  Treat webhook URLs as secrets. Anyone with the full URL can send events to the
-  webhook endpoint unless you add provider-specific signature verification inside your worker.
-</Warning>
+> [!WARNING]
+>
+> Treat webhook URLs as secrets. Anyone with the full URL can send events to the
+> webhook endpoint unless you add provider-specific signature verification inside your worker.
 
 ## Verify requests in execute
 
@@ -147,20 +147,20 @@ ntn workers env set GITHUB_WEBHOOK_SECRET=your-secret
 
 See [Secrets](/workers/guides/secrets) for more ways to manage worker environment variables.
 
-<Warning>
-  After 5 consecutive `WebhookVerificationError` failures, Notion blocks that
-  webhook before running your handler. To reset the failure counter, redeploy
-  the worker or [change the synchronous verification setting](#turn-synchronous-verification-off).
-</Warning>
+> [!WARNING]
+>
+> After 5 consecutive `WebhookVerificationError` failures, Notion blocks that
+> webhook before running your handler. To reset the failure counter, redeploy
+> the worker or [change the synchronous verification setting](#turn-synchronous-verification-off).
 
 This check runs after Notion has already answered the provider with `202 Accepted`, so the provider never sees the result. Use it when all you need is to drop unsigned events. If the provider expects verification in the HTTP response itself, add a `verify` handler instead.
 
 ## Verify requests synchronously
 
-<Note>
-  Synchronous webhook verification requires `@notionhq/workers >= 0.9.0`
-  and `ntn` CLI version `0.23.1`.
-</Note>
+> [!NOTE]
+>
+> Synchronous webhook verification requires `@notionhq/workers >= 0.9.0`
+> and `ntn` CLI version `0.23.1`.
 
 Some providers will not accept a webhook until the endpoint answers completes a synchronous challenge flow. You can add a `verify` handler for these. It runs synchronously before Notion answers the provider, and allows you to control some elements of the webhook HTTP response such as the body and status code.
 
@@ -275,13 +275,13 @@ return { status: 401, body: "Invalid signature", deliver: true };
 | Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400` | No |
 | Exceeds the time budget | `503` with `Retry-After` | No |
 
-<Warning>
-  A handler that throws or returns an invalid response counts toward the same
-  five-consecutive-failure limit as `WebhookVerificationError`, after which
-  Notion blocks the webhook until you redeploy or change the synchronous
-  verification setting. Deliberately returning a 4xx is not a failure and
-  resets the counter.
-</Warning>
+> [!WARNING]
+>
+> A handler that throws or returns an invalid response counts toward the same
+> five-consecutive-failure limit as `WebhookVerificationError`, after which
+> Notion blocks the webhook until you redeploy or change the synchronous
+> verification setting. Deliberately returning a 4xx is not a failure and
+> resets the counter.
 
 Exceeding the budget is usually a cold sandbox start. The provider can retry, and will generally land on a warm sandbox.
 
@@ -385,24 +385,22 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers` f
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
-    Store webhook signing secrets and API keys.
-  </Card>
+> **[Secrets](/workers/guides/secrets)**
+>
+> Store webhook signing secrets and API keys.
 
-  <Card title="Notion API" icon="database" href="/workers/guides/api-client">
-    Read and write Notion data from a webhook handler.
-  </Card>
+> **[Notion API](/workers/guides/api-client)**
+>
+> Read and write Notion data from a webhook handler.
 
-  <Card title="OAuth" icon="key" href="/workers/guides/oauth">
-    Authenticate with third-party APIs from your webhook.
-  </Card>
+> **[OAuth](/workers/guides/oauth)**
+>
+> Authenticate with third-party APIs from your webhook.
 
-  <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk#worker-webhook">
-    Detailed API docs for worker.webhook() and WebhookVerificationError.
-  </Card>
+> **[SDK reference](/workers/reference/sdk#worker-webhook)**
+>
+> Detailed API docs for worker.webhook() and WebhookVerificationError.
 
-  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
-    Webhook ingress and run rate limits.
-  </Card>
-</CardGroup>
+> **[Limits](/workers/reference/limits)**
+>
+> Webhook ingress and run rate limits.

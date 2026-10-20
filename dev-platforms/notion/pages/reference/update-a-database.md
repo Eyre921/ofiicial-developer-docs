@@ -6,18 +6,18 @@ path: reference/update-a-database
 
 patch /v1/databases/{database_id}
 
-<Danger>
-  **Deprecated as of version 2025-09-03**
-
-  >
-
-  This page describes the API for versions up to and including `2022-06-28`. In the new `2025-09-03` version, the concepts of databases and data sources were split up, as described in [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03).
-
-  Refer to the new APIs instead:
-
-  * [Update a database](/reference/update-database)
-  * [Update a data source](/reference/update-a-data-source)
-</Danger>
+> [!CAUTION]
+>
+> **Deprecated as of version 2025-09-03**
+>
+> >
+>
+> This page describes the API for versions up to and including `2022-06-28`. In the new `2025-09-03` version, the concepts of databases and data sources were split up, as described in [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03).
+>
+> Refer to the new APIs instead:
+>
+> * [Update a database](/reference/update-database)
+> * [Update a data source](/reference/update-a-data-source)
 
 Updates the database object — the title, description, or properties — of a specified database.
 
@@ -55,17 +55,17 @@ Returns a 404 HTTP response if the database doesn't exist or if the connection d
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Warning>
-  **The following database properties cannot be updated via the API:**
+> [!WARNING]
+>
+> **The following database properties cannot be updated via the API:**
+>
+> * `formula`
+> * `select`
+> * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
+> * A `multi_select` database property’s options values. An option can be removed, but not updated.
 
-  * `formula`
-  * `select`
-  * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
-  * A `multi_select` database property’s options values. An option can be removed, but not updated.
-</Warning>
-
-<Info>
-  **Database relations must be shared with your connection**
-
-  To update a database [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
-</Info>
+> [!NOTE]
+>
+> **Database relations must be shared with your connection**
+>
+> To update a database [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.

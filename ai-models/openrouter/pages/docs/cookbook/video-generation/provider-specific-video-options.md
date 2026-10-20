@@ -16,9 +16,9 @@ Use this guide when you need to add video model controls that aren't part of Ope
 
 By the end, your implementation should inspect a model's allowed passthrough parameters and send one through `provider.options`.
 
-<Tip>
-  For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
-</Tip>
+> [!TIP]
+>
+> For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 
 ## Before you start
 
@@ -28,9 +28,9 @@ You need:
 * An OpenRouter API key available as `OPENROUTER_API_KEY` only when you submit the video job
 * A target video model for the provider-specific options you want to send
 
-<Tip>
-  If you aren't already targeting a specific provider model, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
-</Tip>
+> [!TIP]
+>
+> If you aren't already targeting a specific provider model, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
@@ -40,9 +40,9 @@ Use the API reference pages as the source of truth for exact fields:
 
 Provider-specific options can change by model and provider. Always check `allowed_passthrough_parameters` before relying on one.
 
-<Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
-</Warning>
+> [!WARNING]
+>
+> Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 
 ## Step 1: Inspect allowed passthrough parameters
 

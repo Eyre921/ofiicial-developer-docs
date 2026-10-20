@@ -6,9 +6,9 @@ path: reference/workspace-block-limits
 
 Learn when the Free workspace block limit blocks an API write and how to handle the error.
 
-<Note>
-  The REST API now enforces the [existing Free workspace block limit](https://www.notion.com/help/understanding-block-usage) for the connections described below.
-</Note>
+> [!NOTE]
+>
+> The REST API now enforces the [existing Free workspace block limit](https://www.notion.com/help/understanding-block-usage) for the connections described below.
 
 ## Scope
 

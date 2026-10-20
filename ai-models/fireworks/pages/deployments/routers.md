@@ -10,9 +10,9 @@ A **Router** is a resource that controls how inference traffic is routed to one 
 
 Traffic is split proportionally based on the number of replicas in each deployment. For example, if a router covers two deployments — one with 3 replicas and another with 2 — the first receives 60% of traffic and the second receives 40%.
 
-<Warning>
-  Routers only work with multi-region deployments.
-</Warning>
+> [!WARNING]
+>
+> Routers only work with multi-region deployments.
 
 ## When to use a router
 
@@ -124,9 +124,9 @@ firectl router update <ROUTER_ID> \
 firectl router delete <ROUTER_ID>
 ```
 
-<Warning>
-  Deleting a router takes effect immediately. Any traffic sent to the router's alias will fail. Make sure all clients have switched to a different route before deleting.
-</Warning>
+> [!WARNING]
+>
+> Deleting a router takes effect immediately. Any traffic sent to the router's alias will fail. Make sure all clients have switched to a different route before deleting.
 
 ## Example: traffic migration
 
@@ -185,6 +185,6 @@ All traffic now flows to `new-deployment`. Clean up by removing the old deployme
 firectl router update my-router --deployments=new-deployment
 ```
 
-<Tip>
-  Monitor your new deployment's latency and error rates at each step before shifting more traffic. This lets you catch issues early and roll back by increasing replicas on the old deployment.
-</Tip>
+> [!TIP]
+>
+> Monitor your new deployment's latency and error rates at each step before shifting more traffic. This lets you catch issues early and roll back by increasing replicas on the old deployment.

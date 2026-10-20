@@ -454,9 +454,9 @@ interface ToolExecutionResult {
 }
 ```
 
-<Warning>
-  The `source` field was added in `@openrouter/agent` 0.8.0. This is an additive breaking change for consumers that exhaustively matched or constructed `ToolExecutionResult` (or `ToolResultEvent`) payloads.
-</Warning>
+> [!WARNING]
+>
+> The `source` field was added in `@openrouter/agent` 0.8.0. This is an additive breaking change for consumers that exhaustively matched or constructed `ToolExecutionResult` (or `ToolResultEvent`) payloads.
 
 ### MCP branding
 

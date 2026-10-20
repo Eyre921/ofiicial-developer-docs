@@ -12,169 +12,163 @@ For the full list of base models supported by managed training (SFT, DPO, and OR
 
 ## Fine-tuning a model using SFT
 
-<Steps>
-  <Step title="Confirm model support for training">
-    You can confirm that a base model is available to train by looking for the `Tunable` tag in the model library or by using:
+**1. Confirm model support for training**
 
-    ```bash theme={null}
-    firectl model get -a fireworks <MODEL-ID>
-    ```
+You can confirm that a base model is available to train by looking for the `Tunable` tag in the model library or by using:
 
-    And looking for `Tunable: true`.
+```bash theme={null}
+firectl model get -a fireworks <MODEL-ID>
+```
 
-    <Note>
-      Custom uploaded base models must include a corresponding Hugging Face URL before Fireworks can determine whether they are tunable. Fireworks uses the URL to infer the training renderer and find compatible training shapes. The tunability refresh runs asynchronously about every 30 minutes, so a newly uploaded or updated custom model may take up to 30 minutes to show `Tunable: true`.
-    </Note>
+And looking for `Tunable: true`.
 
-    <Note>
-      Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing trained models](/models/uploading-custom-models#importing-trained-models) for more information.
-    </Note>
-  </Step>
+> [!NOTE]
+>
+> Custom uploaded base models must include a corresponding Hugging Face URL before Fireworks can determine whether they are tunable. Fireworks uses the URL to infer the training renderer and find compatible training shapes. The tunability refresh runs asynchronously about every 30 minutes, so a newly uploaded or updated custom model may take up to 30 minutes to show `Tunable: true`.
 
-  <Step title="Prepare a dataset">
-    A dataset is JSONL: one JSON object per line, from 3 to 3 million lines. Each object has a `messages` array and may have a `tools` array of OpenAI function definitions. There is no weight on the example itself.
+> [!NOTE]
+>
+> Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing trained models](/models/uploading-custom-models#importing-trained-models) for more information.
 
-    Each message is an object:
+**2. Prepare a dataset**
 
-    * `role`: `system`, `user`, `assistant`, or `tool`
-    * `content`: a string, or a list of parts. A text part is `{"type": "text", "text": "..."}`. A thinking part is `{"type": "thinking", "thinking": "..."}`. One text part is the same as a string. Several parts stay separate through the chat template. Image parts are under [Vision training](#vision-training).
-    * `tool_calls`: optional on an assistant message, and enough on its own when `content` is omitted. Use `{"type": "function", "function": {"name": "...", "arguments": ...}}`, where `arguments` is a JSON object or a JSON string. `{"name": "...", "args": {...}}` is also accepted.
-    * `weight`: optional number on a message. `0` excludes that message from the loss. Any other number trains it. `trainable` is a boolean for the same switch and wins when both are set.
+A dataset is JSONL: one JSON object per line, from 3 to 3 million lines. Each object has a `messages` array and may have a `tools` array of OpenAI function definitions. There is no weight on the example itself.
 
-    A `tool` message returns a tool result and should set `tool_call_id`. Assistant thinking can also be a string field, `thinking`, `reasoning`, or `reasoning_content`. When more than one is set, `thinking` is used, then a non-empty `reasoning`, then a non-empty `reasoning_content`. Whether earlier thinking remains in later turns depends on the base model.
+Each message is an object:
 
-    <Card title="Thinking history in training" icon="brain" href="/fine-tuning/thinking-history">
-      Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
-    </Card>
+* `role`: `system`, `user`, `assistant`, or `tool`
+* `content`: a string, or a list of parts. A text part is `{"type": "text", "text": "..."}`. A thinking part is `{"type": "thinking", "thinking": "..."}`. One text part is the same as a string. Several parts stay separate through the chat template. Image parts are under [Vision training](#vision-training).
+* `tool_calls`: optional on an assistant message, and enough on its own when `content` is omitted. Use `{"type": "function", "function": {"name": "...", "arguments": ...}}`, where `arguments` is a JSON object or a JSON string. `{"name": "...", "args": {...}}` is also accepted.
+* `weight`: optional number on a message. `0` excludes that message from the loss. Any other number trains it. `trainable` is a boolean for the same switch and wins when both are set.
 
-    ```json theme={null}
-    {"tools": [{"type": "function", "function": {"name": "get_car_specs", "parameters": {"type": "object", "properties": {"trimid": {"type": "integer"}}}}}],
-     "messages": [
-       {"role": "user", "content": "Specs for trim 121?"},
-       {"role": "assistant", "reasoning_content": "Look up the trim.", "tool_calls": [
-         {"id": "call_1", "type": "function", "function": {"name": "get_car_specs", "arguments": "{\"trimid\": 121}"}}
-       ]},
-       {"role": "tool", "tool_call_id": "call_1", "content": "{\"horsepower\": 300}"},
-       {"role": "assistant", "content": "300 hp.", "weight": 1}
-     ]}
-    ```
-  </Step>
+A `tool` message returns a tool result and should set `tool_call_id`. Assistant thinking can also be a string field, `thinking`, `reasoning`, or `reasoning_content`. When more than one is set, `thinking` is used, then a non-empty `reasoning`, then a non-empty `reasoning_content`. Whether earlier thinking remains in later turns depends on the base model.
 
-  <Step title="Upload a dataset">
-    Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
+> **[Thinking history in training](/fine-tuning/thinking-history)**
+>
+> Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
 
-    <Tabs>
-      <Tab title="UI">
-        * You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+```json theme={null}
+{"tools": [{"type": "function", "function": {"name": "get_car_specs", "parameters": {"type": "object", "properties": {"trimid": {"type": "integer"}}}}}],
+ "messages": [
+   {"role": "user", "content": "Specs for trim 121?"},
+   {"role": "assistant", "reasoning_content": "Look up the trim.", "tool_calls": [
+     {"id": "call_1", "type": "function", "function": {"name": "get_car_specs", "arguments": "{\"trimid\": 121}"}}
+   ]},
+   {"role": "tool", "tool_call_id": "call_1", "content": "{\"horsepower\": 300}"},
+   {"role": "assistant", "content": "300 hp.", "weight": 1}
+ ]}
+```
 
-          <img alt="Dataset Pn" />
-      </Tab>
+**3. Upload a dataset**
 
-      <Tab title="firectl">
-        ```bash theme={null}
-        firectl dataset create <DATASET_ID> /path/to/jsonl/file
-        ```
-      </Tab>
+Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
-      <Tab title="Restful API">
-        You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
+**UI**
 
-        ```jsx theme={null}
-        // Create Dataset Entry
-        const createDatasetPayload = {
-          datasetId: "trader-poe-sample-data",
-          dataset: { userUploaded: {} }
-          // Additional params such as exampleCount
-        };
-        const urlCreateDataset = `${BASE_URL}/datasets`;
-        const response = await fetch(urlCreateDataset, {
-          method: "POST",
-          headers: HEADERS_WITH_CONTENT_TYPE,
-          body: JSON.stringify(createDatasetPayload)
-        });
-        ```
+* You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
 
-        ```jsx theme={null}
-        // Upload JSONL file
-        const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
-        const files = new FormData();
-        files.append("file", localFileInput.files[0]);
+  ![Dataset Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
 
-        const uploadResponse = await fetch(urlUpload, {
-          method: "POST",
-          headers: HEADERS,
-          body: files
-        });
-        ```
-      </Tab>
-    </Tabs>
+**firectl**
 
-    While all of the above approaches should work, `UI` is more suitable for smaller datasets `< 500MB` while `firectl` might work better for bigger datasets.
+```bash theme={null}
+firectl dataset create <DATASET_ID> /path/to/jsonl/file
+```
 
-    Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
-  </Step>
+**Restful API**
 
-  <Step title="Launch a training job">
-    There are also a couple ways to launch the training jobs. We highly recommend creating supervised fine-tuning jobs via `UI` .
+You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
 
-    <Tabs>
-      <Tab title="UI">
-        Simply navigate to the `Training` tab, click `New job` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
+```jsx theme={null}
+// Create Dataset Entry
+const createDatasetPayload = {
+  datasetId: "trader-poe-sample-data",
+  dataset: { userUploaded: {} }
+  // Additional params such as exampleCount
+};
+const urlCreateDataset = `${BASE_URL}/datasets`;
+const response = await fetch(urlCreateDataset, {
+  method: "POST",
+  headers: HEADERS_WITH_CONTENT_TYPE,
+  body: JSON.stringify(createDatasetPayload)
+});
+```
 
-        <img alt="Training Pn" />
+```jsx theme={null}
+// Upload JSONL file
+const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
+const files = new FormData();
+files.append("file", localFileInput.files[0]);
 
-        <img alt="Training Pn" />
+const uploadResponse = await fetch(urlUpload, {
+  method: "POST",
+  headers: HEADERS,
+  body: files
+});
+```
 
-        <img alt="Create Sftj Pn" />
-      </Tab>
+While all of the above approaches should work, `UI` is more suitable for smaller datasets `< 500MB` while `firectl` might work better for bigger datasets.
 
-      <Tab title="firectl">
-        Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
+Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
 
-        ```bash theme={null}
-        firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
-        ```
+**4. Launch a training job**
 
-        <Tip>
-          Similar to UI, instead of tuning a base model, you can also start tuning from a previous LoRA model using
+There are also a couple ways to launch the training jobs. We highly recommend creating supervised fine-tuning jobs via `UI` .
 
-          ```bash theme={null}
-          firectl sftj create --warm-start-from <FINE_TUNED_MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
-          ```
+**UI**
 
-          Notice that we use `--warm-start-from` instead of `--base-model` when creating this job.
-        </Tip>
-      </Tab>
-    </Tabs>
+Simply navigate to the `Training` tab, click `New job` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
 
-    With `UI`, once the job is created, it will show in the list of jobs. Clicking to view the job details to monitor the job progress.
+![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/training.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=bef1ff769c8e3f39269fa7943f5d330d)
 
-    <img alt="Sftj Details Pn" />
+![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/train-dialog.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=5fd7197004e661df42c147f6aa79106f)
 
-    <Tip>
-      If the trained model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
-    </Tip>
+![Create Sftj Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/create-sftj.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=a7e40e746253b43f3d641024e75406a4)
 
-    With `firectl`, you can monitor the progress of the tuning job by running
+**firectl**
 
-    ```bash theme={null}
-    firectl sftj get <JOB_ID>
-    ```
+Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
 
-    Once the job successfully completes, you will see the new LoRA model in your model list
+```bash theme={null}
+firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
+```
 
-    ```bash theme={null}
-    firectl model list
-    ```
-  </Step>
-</Steps>
+> [!TIP]
+>
+> Similar to UI, instead of tuning a base model, you can also start tuning from a previous LoRA model using
+>
+> ```bash theme={null}
+> firectl sftj create --warm-start-from <FINE_TUNED_MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
+> ```
+>
+> Notice that we use `--warm-start-from` instead of `--base-model` when creating this job.
 
-<Tip>
-  For a complete Python SDK example that demonstrates the full workflow
-  (creating datasets, uploading files, and launching a supervised fine-tuning
-  job), see the [Python SDK workflow
-  example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
-</Tip>
+With `UI`, once the job is created, it will show in the list of jobs. Clicking to view the job details to monitor the job progress.
+
+![Sftj Details Pn](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/fine-tuning/sftj-details.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=ff08af5b5df3aa578ac152adb3e33e81)
+
+> [!TIP]
+>
+> If the trained model appears to learn the wrong text or ignore the expected assistant response, use **Render Samples** on the job details page to inspect the rendered token IDs and loss masks. See [Debug SFT tokenization](/fine-tuning/fine-tuning-models#debug-sft-tokenization).
+
+With `firectl`, you can monitor the progress of the tuning job by running
+
+```bash theme={null}
+firectl sftj get <JOB_ID>
+```
+
+Once the job successfully completes, you will see the new LoRA model in your model list
+
+```bash theme={null}
+firectl model list
+```
+
+> [!TIP]
+>
+> For a complete Python SDK example that demonstrates the full workflow
+> (creating datasets, uploading files, and launching a supervised fine-tuning
+> job), see the [Python SDK workflow
+> example](https://github.com/fw-ai-external/python-sdk/blob/main/examples/sftj_workflow.py).
 
 ## Deploying a trained model
 
@@ -188,211 +182,209 @@ firectl deployment create <FINE_TUNED_MODEL_ID> --deployment-shape default
 
 This creates a dedicated deployment with performance matching the base model. To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
-<Tip>
-  For more details on deploying trained models, including multi-LoRA
-  deployments, see the [Deploying Trained Models
-  guide](/fine-tuning/deploying-loras).
-</Tip>
+> [!TIP]
+>
+> For more details on deploying trained models, including multi-LoRA
+> deployments, see the [Deploying Trained Models
+> guide](/fine-tuning/deploying-loras).
 
 ## Additional managed training job settings
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
 
-<AccordionGroup>
-  <Accordion title="Evaluation">
-    By default, the training job will run evaluation by running the trained model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
+> **Evaluation**
+>
+> By default, the training job will run evaluation by running the trained model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
+>
+> `evaluation_dataset`: The ID of a separate dataset to use for evaluation. Must be pre-uploaded via firectl
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --evaluation-dataset my-eval-set \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    `evaluation_dataset`: The ID of a separate dataset to use for evaluation. Must be pre-uploaded via firectl
+> **Max Context Length**
+>
+> Depending on the size of the model, the default context size will be different. For most models, the default context size is >= 32768. Training examples will be cut-off at 32768 tokens. Usually you do not need to set the max context length unless out of memory error is encountered with higher lora rank and large max context length.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --max-context-length 65536 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    ```shell theme={null}
-    firectl sftj create \
-      --evaluation-dataset my-eval-set \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
+> **Batch Size (Samples)**
+>
+> Managed SFT and preference tuning use sample-count batching. `batch_size_samples` is the number of SFT samples or preference pairs included in each optimizer step. It is independent of `max_context_length`, which limits the token length of each sample. The UI defaults are 32 samples for SFT and 4 preference pairs for DPO/ORPO.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --batch-size-samples 32 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-  <Accordion title="Max Context Length">
-    Depending on the size of the model, the default context size will be different. For most models, the default context size is >= 32768. Training examples will be cut-off at 32768 tokens. Usually you do not need to set the max context length unless out of memory error is encountered with higher lora rank and large max context length.
+> **Epochs**
+>
+> Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Non-integer values are supported.
+>
+> **Note: we set a max value of 3 million dataset examples × epochs**
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --epochs 2.0 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    ```shell theme={null}
-    firectl sftj create \
-      --max-context-length 65536 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
+> **Learning rate**
+>
+> Learning rate controls how fast the model updates from data. We generally do not recommend changing learning rate. The default value is automatically based on your selected model.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --learning-rate 0.0001 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-  <Accordion title="Batch Size (Samples)">
-    Managed SFT and preference tuning use sample-count batching. `batch_size_samples` is the number of SFT samples or preference pairs included in each optimizer step. It is independent of `max_context_length`, which limits the token length of each sample. The UI defaults are 32 samples for SFT and 4 preference pairs for DPO/ORPO.
+> **Learning rate warmup steps**
+>
+> Learning rate warmup steps controls the number of training steps during which the learning rate will be linearly ramped up to the set learning rate.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --learning-rate 0.0001 \
+>   --learning-rate-warmup-steps 200 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    ```shell theme={null}
-    firectl sftj create \
-      --batch-size-samples 32 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
+> **Learning rate scheduler**
+>
+> Configure how the learning rate changes over training. Supported schedulers are `constant`, `linear`, and `cosine`. When unset, the trainer uses its legacy constant schedule. The same flags apply to SFT and preference tuning jobs (DPO/ORPO).
+>
+> For `linear` and `cosine`, you can optionally set:
+>
+> * `--learning-rate-min-lr-ratio`: minimum learning rate as a fraction of `--learning-rate` (0 to 1)
+> * `--learning-rate-decay-ratio`: fraction of total training steps over which to decay; `0` decays over the full run
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model \
+>   --learning-rate 0.0001 \
+>   --learning-rate-warmup-steps 10 \
+>   --learning-rate-scheduler cosine \
+>   --learning-rate-min-lr-ratio 0.1 \
+>   --learning-rate-decay-ratio 0.8
+> ```
+>
+> Via the REST API, pass an `lrScheduler` object with one of `constant`, `linear`, or `cosine`:
+>
+> ```javascript theme={null}
+> const payload = {
+>   supervisedFineTuningJob: {
+>     baseModel: "accounts/my-account/models/MY_BASE_MODEL",
+>     dataset: "accounts/my-account/datasets/cancerset",
+>     outputModel: "accounts/my-account/models/my-tuned-model",
+>     learningRate: 0.0001,
+>     learningRateWarmupSteps: 10,
+>     lrScheduler: {
+>       cosine: {
+>         minLrRatio: 0.1,
+>         decayRatio: 0.8
+>       }
+>     }
+>   }
+> };
+> ```
 
-  <Accordion title="Epochs">
-    Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Non-integer values are supported.
+> **LoRA Rank**
+>
+> LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. The maximum rank depends on the base model's training shape, up to 128; higher values are rejected. `firectl` defaults to 8.
+>
+> With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `loraRank` in the job body, or `lora_rank` in `supervised_fine_tuning_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --lora-rank 16 \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    **Note: we set a max value of 3 million dataset examples × epochs**
+> **Training progress and monitoring**
+>
+> The training service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --wandb-entity my-org \
+>   --wandb-api-key xxx \
+>   --wandb-project "My Project" \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    ```shell theme={null}
-    firectl sftj create \
-      --epochs 2.0 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
+> **Model ID**
+>
+> By default, the training job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --output-model my-model \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset
+> ```
 
-  <Accordion title="Learning rate">
-    Learning rate controls how fast the model updates from data. We generally do not recommend changing learning rate. The default value is automatically based on your selected model.
+> **Job ID**
+>
+> By default, the training job will generate a random unique ID for the training job. You can optionally choose a custom ID.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --job-id my-fine-tuning-job \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
-    ```shell theme={null}
-    firectl sftj create \
-      --learning-rate 0.0001 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-
-  <Accordion title="Learning rate warmup steps">
-    Learning rate warmup steps controls the number of training steps during which the learning rate will be linearly ramped up to the set learning rate.
-
-    ```shell theme={null}
-    firectl sftj create \
-      --learning-rate 0.0001 \
-      --learning-rate-warmup-steps 200 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-
-  <Accordion title="Learning rate scheduler">
-    Configure how the learning rate changes over training. Supported schedulers are `constant`, `linear`, and `cosine`. When unset, the trainer uses its legacy constant schedule. The same flags apply to SFT and preference tuning jobs (DPO/ORPO).
-
-    For `linear` and `cosine`, you can optionally set:
-
-    * `--learning-rate-min-lr-ratio`: minimum learning rate as a fraction of `--learning-rate` (0 to 1)
-    * `--learning-rate-decay-ratio`: fraction of total training steps over which to decay; `0` decays over the full run
-
-    ```shell theme={null}
-    firectl sftj create \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model \
-      --learning-rate 0.0001 \
-      --learning-rate-warmup-steps 10 \
-      --learning-rate-scheduler cosine \
-      --learning-rate-min-lr-ratio 0.1 \
-      --learning-rate-decay-ratio 0.8
-    ```
-
-    Via the REST API, pass an `lrScheduler` object with one of `constant`, `linear`, or `cosine`:
-
-    ```javascript theme={null}
-    const payload = {
-      supervisedFineTuningJob: {
-        baseModel: "accounts/my-account/models/MY_BASE_MODEL",
-        dataset: "accounts/my-account/datasets/cancerset",
-        outputModel: "accounts/my-account/models/my-tuned-model",
-        learningRate: 0.0001,
-        learningRateWarmupSteps: 10,
-        lrScheduler: {
-          cosine: {
-            minLrRatio: 0.1,
-            decayRatio: 0.8
-          }
-        }
-      }
-    };
-    ```
-  </Accordion>
-
-  <Accordion title="LoRA Rank">
-    LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. The maximum rank depends on the base model's training shape, up to 128; higher values are rejected. `firectl` defaults to 8.
-
-    With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `loraRank` in the job body, or `lora_rank` in `supervised_fine_tuning_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
-
-    ```shell theme={null}
-    firectl sftj create \
-      --lora-rank 16 \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-
-  <Accordion title="Training progress and monitoring">
-    The training service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
-
-    ```shell theme={null}
-    firectl sftj create \
-      --wandb-entity my-org \
-      --wandb-api-key xxx \
-      --wandb-project "My Project" \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-
-  <Accordion title="Model ID">
-    By default, the training job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
-
-    ```shell theme={null}
-    firectl sftj create \
-      --output-model my-model \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset
-    ```
-  </Accordion>
-
-  <Accordion title="Job ID">
-    By default, the training job will generate a random unique ID for the training job. You can optionally choose a custom ID.
-
-    ```shell theme={null}
-    firectl sftj create \
-      --job-id my-fine-tuning-job \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-
-  <Accordion title="Reservation placement">
-    Reservation placement is off unless you request it. If you request it and your account has an active reservation for the job's accelerator type, the job runs only on that reservation, not on shared trainer capacity. If the account has no matching reservation, the setting is ignored and the job uses shared capacity.
-
-    * **firectl**: add `--use-reservation`.
-    * **REST**: set `useReservation: true` in the job body.
-    * **Python SDK**: pass `use_reservation=True` to `supervised_fine_tuning_jobs.create(...)`.
-
-    ```shell theme={null}
-    firectl sftj create \
-      --use-reservation \
-      --base-model MY_BASE_MODEL \
-      --dataset cancerset \
-      --output-model my-tuned-model
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Reservation placement**
+>
+> Reservation placement is off unless you request it. If you request it and your account has an active reservation for the job's accelerator type, the job runs only on that reservation, not on shared trainer capacity. If the account has no matching reservation, the setting is ignored and the job uses shared capacity.
+>
+> * **firectl**: add `--use-reservation`.
+> * **REST**: set `useReservation: true` in the job body.
+> * **Python SDK**: pass `use_reservation=True` to `supervised_fine_tuning_jobs.create(...)`.
+>
+> ```shell theme={null}
+> firectl sftj create \
+>   --use-reservation \
+>   --base-model MY_BASE_MODEL \
+>   --dataset cancerset \
+>   --output-model my-tuned-model
+> ```
 
 ### Deprecated parameters
 
-<Warning>
-  These parameters are deprecated. Do not include them in new managed
-  training requests. The wire fields remain present so existing resources can
-  still be read, but Training V2 rejects or ignores non-default values as
-  described below.
-</Warning>
+> [!WARNING]
+>
+> These parameters are deprecated. Do not include them in new managed
+> training requests. The wire fields remain present so existing resources can
+> still be read, but Training V2 rejects or ignores non-default values as
+> described below.
 
 | Proto / Python field | Former or legacy `firectl` flag | Affected jobs | Migration behavior |
 | - | - | - | - |
@@ -432,9 +424,9 @@ If the model learns the wrong text or ignores assistant turns, the training rend
 2. Compare rendered tokens against inference for the same prompt.
 3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
-<Note>
-  In the REST response, the render preview identifies each datum produced from a source row with `examples[].renderings[].renderedDatums[].datumIndex`. Downloaded **Render Samples** use the legacy `split_index` field. The fields play corresponding roles in different schemas; `split_index` has not been renamed in the downloadable artifact.
-</Note>
+> [!NOTE]
+>
+> In the REST response, the render preview identifies each datum produced from a source row with `examples[].renderings[].renderedDatums[].datumIndex`. Downloaded **Render Samples** use the legacy `split_index` field. The fields play corresponding roles in different schemas; `split_index` has not been renamed in the downloadable artifact.
 
 Common fix: ensure assistant messages you intend to train have non-zero loss weight; system/user turns should be masked out.
 

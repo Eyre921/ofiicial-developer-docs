@@ -64,20 +64,20 @@ Some effects of the change happen in either mode:
 * [Connection webhooks](/reference/webhooks) still receive events for the change.
 * Page history, page activity, and workspace audit logs still record the change.
 
-<Info>
-  **Requirements**
+> [!NOTE]
+>
+> **Requirements**
+>
+> Your connection must have [update content capabilities](/reference/capabilities#content-capabilities) on the target page in order to call this endpoint. To update your connection's capabilities, navigate to the [Developer portal](https://app.notion.com/developers/connections), select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
+>
+> Attempting a query without update content capabilities returns an HTTP response with a 403 status code.
 
-  Your connection must have [update content capabilities](/reference/capabilities#content-capabilities) on the target page in order to call this endpoint. To update your connection's capabilities, navigate to the <a href={developerConnectionsUrl}>Developer portal</a>, select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
-
-  Attempting a query without update content capabilities returns an HTTP response with a 403 status code.
-</Info>
-
-<Warning>
-  **Limitations**
-
-  * Updating [rollup property values](/reference/page-property-values#rollup) is not supported.
-  * A page’s `parent` cannot be changed.
-</Warning>
+> [!WARNING]
+>
+> **Limitations**
+>
+> * Updating [rollup property values](/reference/page-property-values#rollup) is not supported.
+> * A page’s `parent` cannot be changed.
 
 ### Errors
 

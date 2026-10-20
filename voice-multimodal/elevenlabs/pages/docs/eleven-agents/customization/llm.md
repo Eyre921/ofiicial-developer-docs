@@ -10,6 +10,8 @@ path: docs/eleven-agents/customization/llm
 
 ElevenAgents provides a unified interface to connect your agent to multiple models and providers, offering flexibility, reliability, and cost optimization.
 
+Instead of choosing a model here, voice agents can use a [Realtime model](/docs/eleven-agents/customization/realtime-models), an ElevenLabs model built for low-latency voice conversation.
+
 ## Key features
 
 * **Unified access**: Switch between providers and models with minimal code changes

@@ -9,18 +9,16 @@ Evaluate the correctness and completeness of a response from an assistant or a R
 
 For guidance and examples, see [Evaluate answers](https://docs.pinecone.io/guides/assistant/evaluate-answers).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "question": "What are the capital cities of France, England and Spain?",
-      "answer": "Paris is the capital city of France and Barcelona of Spain",
-      "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain"
-  }'
-  ```
-</RequestExample>
+curl https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "question": "What are the capital cities of France, England and Spain?",
+    "answer": "Paris is the capital city of France and Barcelona of Spain",
+    "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain"
+}'
+```

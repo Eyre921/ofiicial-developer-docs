@@ -20,23 +20,21 @@ Based on our benchmarks, we recommend the following:
 
 Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 
-<Note>
-  The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-</Note>
+> [!NOTE]
+>
+> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
 
-<CodeGroup>
-  ```bash pip theme={null}
-  pip install --pre fireworks-ai
-  ```
+```bash pip theme={null}
+pip install --pre fireworks-ai
+```
 
-  ```bash poetry theme={null}
-  poetry add --pre fireworks-ai
-  ```
+```bash poetry theme={null}
+poetry add --pre fireworks-ai
+```
 
-  ```bash uv theme={null}
-  uv add --pre fireworks-ai
-  ```
-</CodeGroup>
+```bash uv theme={null}
+uv add --pre fireworks-ai
+```
 
 Here's how to implement optimal concurrent requests using `asyncio` and the `AsyncFireworks` client:
 

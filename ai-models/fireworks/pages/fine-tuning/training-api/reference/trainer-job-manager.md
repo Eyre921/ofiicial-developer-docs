@@ -8,9 +8,9 @@ Legacy Training API SDK reference for TrainerJobManager: service-mode trainer jo
 
 ## Overview
 
-<Warning>
-  `TrainerJobManager` is a low-level compatibility API. New user code should not create trainer managers directly; use [`FiretitanServiceClient.from_firetitan_config(...)`](/fine-tuning/training-api/reference/service-client#from_firetitan_config) or cookbook recipes instead. This page remains for existing integrations, migration support, and advanced lifecycle debugging.
-</Warning>
+> [!WARNING]
+>
+> `TrainerJobManager` is a low-level compatibility API. New user code should not create trainer managers directly; use [`FiretitanServiceClient.from_firetitan_config(...)`](/fine-tuning/training-api/reference/service-client#from_firetitan_config) or cookbook recipes instead. This page remains for existing integrations, migration support, and advanced lifecycle debugging.
 
 `TrainerJobManager` manages the lifecycle of service-mode trainer jobs — GPU-backed trainer endpoints that your Python loop connects to with a training client.
 
@@ -193,13 +193,13 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 60-minute default. The maximum is 3 hours. String values must use protobuf JSON duration format, such as `"1800s"`. |
 | `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. Supported only for trainers in the `fireworks` account; requests from other accounts are rejected. GPU usage continues to accrue while the trainer is running. |
 
-<Warning>
-  `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
-</Warning>
+> [!WARNING]
+>
+> `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
 
-<Note>
-  On the recommended shape path, `accelerator_type`, `accelerator_count`, `node_count`, and `custom_image_tag` are automatically configured by the training shape and cannot be overridden. Advanced manual launches can omit `training_shape_ref` and set those fields directly.
-</Note>
+> [!NOTE]
+>
+> On the recommended shape path, `accelerator_type`, `accelerator_count`, `node_count`, and `custom_image_tag` are automatically configured by the training shape and cannot be overridden. Advanced manual launches can omit `training_shape_ref` and set those fields directly.
 
 ## CreatedTrainerJob
 

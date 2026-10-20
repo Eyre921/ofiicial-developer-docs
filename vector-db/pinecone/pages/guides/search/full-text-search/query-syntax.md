@@ -198,13 +198,13 @@ An "edit" is an inserted, deleted, or substituted character (plain Levenshtein d
 
 Fuzzy matches are scored as a constant; exact matches still contribute their full BM25 score, so an exact hit ranks above a fuzzy hit for the same term. Fuzzy composes with the rest of the query syntax, boolean operators, required/excluded terms, boosts, field qualifiers, and metadata filters.
 
-<Note>
-  The `~` operator is fuzzy only when it follows a **bare term**. After a quoted phrase, `~N` keeps its [phrase slop](#phrase-proximity-slop) meaning, for example, `body:("machine learning"~2)` is slop, while `body:(learning~2)` is fuzzy. There is no fuzzy phrase matching.
-</Note>
+> [!NOTE]
+>
+> The `~` operator is fuzzy only when it follows a **bare term**. After a quoted phrase, `~N` keeps its [phrase slop](#phrase-proximity-slop) meaning, for example, `body:("machine learning"~2)` is slop, while `body:(learning~2)` is fuzzy. There is no fuzzy phrase matching.
 
-<Note>
-  On [stemmed](/guides/search/full-text-search/text-processing#stemming) fields, fuzzy matching runs against the stemmed terms and is best-effort: a typo that changes how a word stems may not match. Fuzzy matching is most effective on fields without stemming (the default). Fuzzy is available only with `type: "query_string"`. With `type: "text"`, `~` is treated as a literal character. Fuzzy also doesn't apply in the `$match_phrase`, `$match_all`, and `$match_any` [text-match filters](/guides/search/filter-by-metadata#text-match-filters), where a `~` operator is matched literally and the filter finds nothing.
-</Note>
+> [!NOTE]
+>
+> On [stemmed](/guides/search/full-text-search/text-processing#stemming) fields, fuzzy matching runs against the stemmed terms and is best-effort: a typo that changes how a word stems may not match. Fuzzy matching is most effective on fields without stemming (the default). Fuzzy is available only with `type: "query_string"`. With `type: "text"`, `~` is treated as a literal character. Fuzzy also doesn't apply in the `$match_phrase`, `$match_all`, and `$match_any` [text-match filters](/guides/search/filter-by-metadata#text-match-filters), where a `~` operator is matched literally and the filter finds nothing.
 
 ### Cross-field queries
 

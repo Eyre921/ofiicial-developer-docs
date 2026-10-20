@@ -12,11 +12,11 @@ path: docs/cookbook/coding-agents/cursor-integration
 
 > Use Cursor with OpenRouter
 
-<Note>
-  **Beta**
-
-  The Cursor integration is currently in beta. Behavior may change as Cursor updates their client.
-</Note>
+> [!NOTE]
+>
+> **Beta**
+>
+> The Cursor integration is currently in beta. Behavior may change as Cursor updates their client.
 
 ## What is Cursor?
 
@@ -47,9 +47,9 @@ Cursor supports OpenRouter through its **Override OpenAI Base URL** feature. Thi
      https://openrouter.ai/api/v1/cursor
      ```
 
-<Warning>
-  The base URL must be `https://openrouter.ai/api/v1/cursor` (not `/api/v1`). This dedicated endpoint handles Cursor's request format correctly.
-</Warning>
+> [!WARNING]
+>
+> The base URL must be `https://openrouter.ai/api/v1/cursor` (not `/api/v1`). This dedicated endpoint handles Cursor's request format correctly.
 
 ### Step 3: Add Models
 

@@ -6,9 +6,9 @@ path: guides/operations/integrations/integrate-with-google-cloud-storage
 
 Set up a Pinecone storage integration with a Google Cloud Storage bucket using a service account key to bulk import data into your indexes.
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 This page shows you how to integrate Pinecone with a Google Cloud Storage (GCS) bucket. Once your integration is set up, you can use it to [import data](/guides/index-data/import-data) from your bucket into a Pinecone index hosted on AWS, GCP, or Azure.
 
@@ -54,9 +54,9 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 
 ### Use the API
 
-<Note>
-  This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
-</Note>
+> [!NOTE]
+>
+> This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
 
 Pass the contents of your service account key file as the `gcp_service_account.key_json` field. The following example uses [`jq`](https://jqlang.github.io/jq/) to safely JSON-encode the key file before sending it:
 

@@ -32,7 +32,7 @@ After accepting an invite from the account owner, users can switch between teams
 2. A dropdown menu will appear, listing all the teams you belong to.
 3. Select a team to switch between them.
 
-<img alt="image" />
+![image](https://mintcdn.com/resend/OWNnQaVDyqcGyhhN/images/teams-toggle.png?fit=max\&auto=format\&n=OWNnQaVDyqcGyhhN\&q=85\&s=d873d8c43f65af895d4fb025648f59d9)
 
 ## Change the team member roles
 
@@ -40,9 +40,9 @@ As an admin of your team, you can change the role of members in your team.
 
 1. Navigate to your [**Team Settings**](https://resend.com/settings/team).
 2. Find the user you want to change.
-3. Select the more options button <span><Icon icon="ellipsis" /></span> and choose **Change role**.
+3. Select the more options button  and choose **Change role**.
 
-<img alt="Change role popover visible for team member" />
+![Change role popover visible for team member](https://mintcdn.com/resend/OWNnQaVDyqcGyhhN/images/how-can-i-change-team-roles-1.png?fit=max\&auto=format\&n=OWNnQaVDyqcGyhhN\&q=85\&s=656430ad540c2b6143998583b2a71c97)
 
 Upon confirmation, your team member will be given the new role.
 
@@ -55,14 +55,14 @@ The **Enabled MFA** column on your [**Team Settings**](https://resend.com/settin
 You can leave your team by following these steps:
 
 1. Navigate to your [**Team Settings**](https://resend.com/settings/team).
-2. Under members, click on <span><Icon icon="ellipsis" /></span> next to your name for more options.
+2. Under members, click on  next to your name for more options.
 3. Select the **Leave Team** button.
 
 Upon confirmation, you will leave your team.
 
-<Note>
-  If you are the last member of the team, leaving will permanently delete the
-  team and all its data. You will be prompted to confirm this action by typing
-  **DELETE**. If the team still has other members, but you are the only admin,
-  you will be prompted to promote another member to admin before leaving.
-</Note>
+> [!NOTE]
+>
+> If you are the last member of the team, leaving will permanently delete the
+> team and all its data. You will be prompted to confirm this action by typing
+> **DELETE**. If the team still has other members, but you are the only admin,
+> you will be prompted to promote another member to admin before leaving.

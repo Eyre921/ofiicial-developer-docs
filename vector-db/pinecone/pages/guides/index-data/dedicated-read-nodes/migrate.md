@@ -16,121 +16,115 @@ If that index has multiple namespaces, consolidate to one namespace, or plan a d
 
 To migrate an existing on-demand index to dedicated read nodes (including one you created by [migrating from pods](#from-a-pod-based-index)), follow these steps:
 
-<Steps>
-  <Step title="Create a backup of your index">
-    Before migrating, [back up your index](/guides/manage-data/back-up-an-index) so you can return to on-demand later, either by [converting back](/guides/index-data/dedicated-read-nodes/manage#convert-to-on-demand) or by restoring the backup to a new on-demand index.
-  </Step>
+**1. Create a backup of your index**
 
-  <Step title="Delete extra namespaces">
-    If your index has multiple namespaces, [delete](/reference/api/latest/data-plane/deletenamespace) all of them except the one you want to keep. Dedicated read nodes support only a [single namespace](/guides/index-data/dedicated-read-nodes/overview#namespace-limits).
+Before migrating, [back up your index](/guides/manage-data/back-up-an-index) so you can return to on-demand later, either by [converting back](/guides/index-data/dedicated-read-nodes/manage#convert-to-on-demand) or by restoring the backup to a new on-demand index.
 
-    <Warning>
-      If this is a production index, be sure to make a [backup](/guides/manage-data/back-up-an-index) before deleting namespaces. Or, if you need multiple namespaces, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket) to discuss early access to multi-namespace support for dedicated read nodes.
-    </Warning>
-  </Step>
+**2. Delete extra namespaces**
 
-  <Step title="Calculate your index size">
-    Determine how many [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) you need by [sizing your index](/guides/index-data/dedicated-read-nodes/size-and-test#index-size).
-  </Step>
+If your index has multiple namespaces, [delete](/reference/api/latest/data-plane/deletenamespace) all of them except the one you want to keep. Dedicated read nodes support only a [single namespace](/guides/index-data/dedicated-read-nodes/overview#namespace-limits).
 
-  <Step title="Migrate the index">
-    Call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, in the `read_capacity` object, set the following fields:
+> [!WARNING]
+>
+> If this is a production index, be sure to make a [backup](/guides/manage-data/back-up-an-index) before deleting namespaces. Or, if you need multiple namespaces, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket) to discuss early access to multi-namespace support for dedicated read nodes.
 
-    | Field | Value | Notes |
-    | :- | :- | :- |
-    | `mode` | `Dedicated` | |
-    | `dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
-    | `dedicated.scaling` | `Manual` | The only supported value |
-    | `dedicated.manual.shards` | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed | Minimum 1 shard; each shard provides 250 GB of storage |
-    | `dedicated.manual.replicas` | Number of [replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas) needed | Minimum 0 (this [pauses](/guides/index-data/dedicated-read-nodes/manage#pause-an-index) the index) |
+**3. Calculate your index size**
 
-    This example migrates an index to dedicated read nodes using `b1` nodes, one shard, and one replica:
+Determine how many [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) you need by [sizing your index](/guides/index-data/dedicated-read-nodes/size-and-test#index-size).
 
-    <CodeGroup>
-      ```bash Request expandable theme={null}
-      PINECONE_API_KEY="YOUR_API_KEY"
-      INDEX_NAME="YOUR_INDEX_NAME"
+**4. Migrate the index**
 
-      curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-           -H "Accept: application/json" \
-           -H "Content-Type: application/json" \
-           -H "Api-Key: $PINECONE_API_KEY" \
-           -H "X-Pinecone-Api-Version: 2026-07" \
-           -d '{
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "node_type": "b1",
-                     "scaling": "Manual",
-                     "manual": {
-                       "shards": 1,
-                       "replicas": 1
-                     }
-                   }
-                 }
-               }'
-      ```
-    </CodeGroup>
+Call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, in the `read_capacity` object, set the following fields:
 
-    <CodeGroup>
-      ```jsonc Response expandable theme={null}
-      {
-        "name": "example-index-to-migrate",
-        "status": {
-          "ready": true,
-          "state": "Ready"
-        },
-        "host": "example-index-to-migrate-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-        "deployment": {
-          "deployment_type": "managed",
-          "region": "us-east-1",
-          "cloud": "aws",
-          "environment": "aped-4627-b74a"
-        },
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1, // <---- desired state
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Migrating",
-            "current_shards": null, // <---- current state
-            "current_replicas": null
-          }
-        },
-        "schema": {
-          "fields": {
-            "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
-          }
-        },
-        "deletion_protection": "disabled",
-        "tags": null
+| Field | Value | Notes |
+| :- | :- | :- |
+| `mode` | `Dedicated` | |
+| `dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
+| `dedicated.scaling` | `Manual` | The only supported value |
+| `dedicated.manual.shards` | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed | Minimum 1 shard; each shard provides 250 GB of storage |
+| `dedicated.manual.replicas` | Number of [replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas) needed | Minimum 0 (this [pauses](/guides/index-data/dedicated-read-nodes/manage#pause-an-index) the index) |
+
+This example migrates an index to dedicated read nodes using `b1` nodes, one shard, and one replica:
+
+```bash Request expandable theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_NAME="YOUR_INDEX_NAME"
+
+curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "Api-Key: $PINECONE_API_KEY" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -d '{
+           "read_capacity": {
+             "mode": "Dedicated",
+             "dedicated": {
+               "node_type": "b1",
+               "scaling": "Manual",
+               "manual": {
+                 "shards": 1,
+                 "replicas": 1
+               }
+             }
+           }
+         }'
+```
+
+```jsonc Response expandable theme={null}
+{
+  "name": "example-index-to-migrate",
+  "status": {
+    "ready": true,
+    "state": "Ready"
+  },
+  "host": "example-index-to-migrate-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
+  "deployment": {
+    "deployment_type": "managed",
+    "region": "us-east-1",
+    "cloud": "aws",
+    "environment": "aped-4627-b74a"
+  },
+  "read_capacity": {
+    "mode": "Dedicated",
+    "dedicated": {
+      "node_type": "b1",
+      "scaling": "Manual",
+      "manual": {
+        "shards": 1, // <---- desired state
+        "replicas": 1
       }
-      ```
-    </CodeGroup>
+    },
+    "status": {
+      "state": "Migrating",
+      "current_shards": null, // <---- current state
+      "current_replicas": null
+    }
+  },
+  "schema": {
+    "fields": {
+      "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
+    }
+  },
+  "deletion_protection": "disabled",
+  "tags": null
+}
+```
 
-    The response includes two status fields:
+The response includes two status fields:
 
-    | Field | Description |
-    | :- | :- |
-    | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+| Field | Description |
+| :- | :- |
+| **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
+| **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
-    <Warning>
-      If `status.state` is set to `Error`, the allocated number of shards was insufficient for the size of the index. Try again, adding more shards as needed.
-    </Warning>
-  </Step>
+> [!WARNING]
+>
+> If `status.state` is set to `Error`, the allocated number of shards was insufficient for the size of the index. Try again, adding more shards as needed.
 
-  <Step title="Monitor the migration">
-    [Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `read_capacity.status.state` is `Ready`.
-  </Step>
+**5. Monitor the migration**
 
-  <Step title="Verify performance">
-    Confirm the index meets your latency and throughput targets.
-  </Step>
-</Steps>
+[Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `read_capacity.status.state` is `Ready`.
+
+**6. Verify performance**
+
+Confirm the index meets your latency and throughput targets.

@@ -10,19 +10,17 @@ Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) 
 
 New to Nexus? Start with the [Quickstart](/nexus/quickstart). For the product overview, see the [Nexus product page](https://fireworks.ai/nexus).
 
-<Columns>
-  <Card title="Quickstart" icon="rocket" href="/nexus/quickstart">
-    Connect your first harness, app, or gateway.
-  </Card>
+> **[Quickstart](/nexus/quickstart)**
+>
+> Connect your first harness, app, or gateway.
 
-  <Card title="FireConnect" icon="bolt" href="/nexus/fireconnect">
-    One command to route a coding harness through Fireworks.
-  </Card>
+> **[FireConnect](/nexus/fireconnect)**
+>
+> One command to route a coding harness through Fireworks.
 
-  <Card title="FireRouter" icon="shuffle" href="/nexus/firerouter">
-    One model ID that picks a model for each turn.
-  </Card>
-</Columns>
+> **[FireRouter](/nexus/firerouter)**
+>
+> One model ID that picks a model for each turn.
 
 ## How Nexus fits together
 
@@ -40,20 +38,18 @@ flowchart LR
   FR --> CM[Claude and GPT models<br/>on your provider account]
 ```
 
-<Steps>
-  <Step title="Connect" icon="plug">
-    [FireConnect](/nexus/fireconnect) for coding harnesses, [APIs and SDKs](/nexus/apis-and-sdks) for your own code, or [LLM Gateways](/nexus/llm-gateways) for LiteLLM, Portkey, and others. Prefer not to install FireConnect? Every harness has [manual setup](/nexus/harnesses).
-  </Step>
+**1. Connect**
 
-  <Step title="Choose models" icon="sparkles">
-    Select [Open Models](/nexus/open-models) directly, or let [FireRouter](/nexus/firerouter) pick one for each user turn.
-  </Step>
+[FireConnect](/nexus/fireconnect) for coding harnesses, [APIs and SDKs](/nexus/apis-and-sdks) for your own code, or [LLM Gateways](/nexus/llm-gateways) for LiteLLM, Portkey, and others. Prefer not to install FireConnect? Every harness has [manual setup](/nexus/harnesses).
 
-  <Step title="Add closed models" icon="key">
-    FireRouter calls Claude and GPT models on your own Anthropic, OpenAI, or Amazon Bedrock account. Connect [Provider Keys](/nexus/provider-keys) once where available, or send the key with each request.
-  </Step>
+**2. Choose models**
 
-  <Step title="Operate" icon="chart-line">
-    [Usage and Cost](/nexus/metrics) shows Claude Code session estimates and dashboard usage for Fireworks models. [Spend Limits](/nexus/usage-limits) caps supported Fireworks serverless usage.
-  </Step>
-</Steps>
+Select [Open Models](/nexus/open-models) directly, or let [FireRouter](/nexus/firerouter) pick one for each user turn.
+
+**3. Add closed models**
+
+FireRouter calls Claude and GPT models on your own Anthropic, OpenAI, or Amazon Bedrock account. Connect [Provider Keys](/nexus/provider-keys) once where available, or send the key with each request.
+
+**4. Operate**
+
+[Usage and Cost](/nexus/metrics) shows Claude Code session estimates and dashboard usage for Fireworks models. [Spend Limits](/nexus/usage-limits) caps supported Fireworks serverless usage.

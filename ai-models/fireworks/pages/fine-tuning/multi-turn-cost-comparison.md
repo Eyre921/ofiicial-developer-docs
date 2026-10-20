@@ -23,7 +23,59 @@ The calculator below makes that difference concrete. Set your episode shape
 * **Tinker** — flat per-token billing, no cross-turn cache (re-prefill every turn)
 * **Fireworks Dedicated** — on-demand GPU-hour billing; the cache savings show up as more work per hour, not as a discounted token rate
 
-<MultiTurnCostCalculator />
+Model
+
+<select />
+
+Episodes
+
+<input type="number" />
+
+Turns per episode
+
+<input type="number" />
+
+Initial prompt (tokens)
+
+<input type="number" />
+
+Tokens added per turn (gen + tool result)
+
+<input type="number" />
+
+Generation tokens per turn
+
+<input type="number" />
+
+<details>
+  <summary>Advanced — dedicated cluster sizing & throughput (defaults are saturated estimates)</summary>
+
+  Dedicated GPUs ()
+  · max  (at-par with Tinker)
+
+  <input type="number" />
+
+  Prompt tokens/sec (cluster)
+  · min  (at-par)
+
+  <input type="number" />
+
+  Decode tokens/sec (cluster)
+  · min  (at-par)
+
+  <input type="number" />
+</details>
+
+**Per-episode token math:**
+prompt-tokens-summed (Tinker bills all of these as prefill);
+unique tokens prefilled on Fireworks (rest hit the prefix cache);
+decode tokens.
+**Cache hit:** %
+
+Order-of-magnitude estimates. Pricing constants reflect rates last verified 2026-05-16:
+Tinker rates from [thinkingmachines.ai/tinker](https://thinkingmachines.ai/tinker),
+Fireworks GPU-hour from [fireworks.ai/pricing](https://fireworks.ai/pricing).
+Dedicated throughput defaults are saturated estimates; tune them in the Advanced panel for your workload.
 
 ## Performance and benchmarking notes
 
@@ -169,13 +221,13 @@ cluster's effective \$/M token rate falls as utilization rises. For continuous
 RL training, where rollouts run at sustained pace, dedicated is typically the
 cheapest path at scale.
 
-<Note>
-  The calculator's dedicated path uses *saturated* throughput estimates as
-  defaults. A small, lightly-loaded test deployment will look more expensive per
-  token than these numbers because the cluster is paid for whether it's busy or
-  idle. Tune the throughput inputs in the **Advanced** panel to match your
-  actual rollout pace.
-</Note>
+> [!NOTE]
+>
+> The calculator's dedicated path uses *saturated* throughput estimates as
+> defaults. A small, lightly-loaded test deployment will look more expensive per
+> token than these numbers because the cluster is paid for whether it's busy or
+> idle. Tune the throughput inputs in the **Advanced** panel to match your
+> actual rollout pace.
 
 ## What's covered
 
@@ -214,8 +266,8 @@ and effective context window between providers before drawing conclusions.
 * Related: [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl) — the recipe these
   rollout and scheduling numbers describe.
 
-<Warning>
-  This is an estimator, not a quote (updated). Real costs depend on your exact
-  workload, cache hit rate, hardware utilization, and rate-card terms at run
-  time.
-</Warning>
+> [!WARNING]
+>
+> This is an estimator, not a quote (updated). Real costs depend on your exact
+> workload, cache hit rate, hardware utilization, and rate-card terms at run
+> time.

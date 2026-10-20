@@ -14,11 +14,11 @@ Notion encrypts worker secrets at rest and exposes them as environment variables
 const apiKey = process.env.OPENWEATHER_API_KEY;
 ```
 
-<Warning>
-  Never commit `.env` files or any type of secret to source control. Worker
-  projects created from the template include `.env` and `.env.*` in `.gitignore`
-  by default.
-</Warning>
+> [!WARNING]
+>
+> Never commit `.env` files or any type of secret to source control. Worker
+> projects created from the template include `.env` and `.env.*` in `.gitignore`
+> by default.
 
 ## Add a secret
 
@@ -36,10 +36,10 @@ ntn workers env set GITHUB_CLIENT_ID=your-client-id GITHUB_CLIENT_SECRET=your-cl
 
 If a key already exists, setting it again replaces the previous value.
 
-<Tip>
-  Quote values that contain spaces, shell metacharacters, or other characters
-  your shell might interpret.
-</Tip>
+> [!TIP]
+>
+> Quote values that contain spaces, shell metacharacters, or other characters
+> your shell might interpret.
 
 ## Use a secret in worker code
 
@@ -99,10 +99,10 @@ For non-interactive scripts, add `--yes` to skip the confirmation prompt:
 ntn workers env pull --yes
 ```
 
-<Warning>
-  Treat any pulled `.env` file as sensitive. Confirm that the file is ignored by Git
-  before you pull secrets into a project.
-</Warning>
+> [!WARNING]
+>
+> Treat any pulled `.env` file as sensitive. Confirm that the file is ignored by Git
+> before you pull secrets into a project.
 
 ## Push local secrets to your worker
 
@@ -180,20 +180,18 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers en
 
 ## Next steps
 
-<CardGroup>
-  <Card title="OAuth" icon="key" href="/workers/guides/oauth">
-    Authenticate with third-party APIs using OAuth.
-  </Card>
+> **[OAuth](/workers/guides/oauth)**
+>
+> Authenticate with third-party APIs using OAuth.
 
-  <Card title="Syncs" icon="rotate" href="/workers/guides/syncs">
-    Sync external data into Notion databases.
-  </Card>
+> **[Syncs](/workers/guides/syncs)**
+>
+> Sync external data into Notion databases.
 
-  <Card title="Agent tools" icon="wand-magic-sparkles" href="/workers/guides/tools">
-    Build custom tools for Notion AI.
-  </Card>
+> **[Agent tools](/workers/guides/tools)**
+>
+> Build custom tools for Notion AI.
 
-  <Card title="Webhooks" icon="bell" href="/workers/guides/webhooks">
-    Receive HTTP events from external services.
-  </Card>
-</CardGroup>
+> **[Webhooks](/workers/guides/webhooks)**
+>
+> Receive HTTP events from external services.

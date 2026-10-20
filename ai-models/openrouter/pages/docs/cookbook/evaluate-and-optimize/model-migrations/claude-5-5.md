@@ -252,7 +252,7 @@ With `drop_block`, each removal is reported in the response's `input_transformat
 These Messages API controls work on all three models through OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message) (`/api/v1/messages`). You do **not** need to send Anthropic beta headers: OpenRouter detects each feature, attaches the beta, and routes only to providers that support it.
 
 * **Mid-conversation system messages and `clear_at`**: append a `role: "system"` message instead of editing the system prompt, and mark one-turn reminders with `clear_at: "next_user_message"`. See [Fable 5.1](/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1#ephemeral-mid-conversation-system-messages-beta).
-* <a id="per-turn-effort-changes-beta" />**Per-turn effort changes**: a system message with `output_config.effort` changes effort for later turns without busting the prompt cache. See [Fable 5.1](/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1#per-turn-effort-changes-beta).
+* **Per-turn effort changes**: a system message with `output_config.effort` changes effort for later turns without busting the prompt cache. See [Fable 5.1](/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1#per-turn-effort-changes-beta).
 
 ## Migration Checklist
 

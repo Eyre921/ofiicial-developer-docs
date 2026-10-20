@@ -20,4 +20,4 @@ The integration provides:
 
 Use this integration to build AI agents that search and retrieve information from Pinecone indexes, with full observability and control over the retrieval process.
 
-<PrimarySecondaryCTA />
+[Get started](https://voltagent.dev/docs/rag/pinecone/)

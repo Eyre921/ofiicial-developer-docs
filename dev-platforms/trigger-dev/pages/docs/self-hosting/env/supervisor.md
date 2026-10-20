@@ -66,6 +66,7 @@ Environment variables for the supervisor container.
 | `FAILED_POD_HANDLER_ENABLED` | No | true | Enable failed pod handler. |
 | `FAILED_POD_HANDLER_RECONNECT_INTERVAL_MS` | No | 1000 (1s) | Failed pod handler reconnect interval (ms). |
 | `FAILED_POD_HANDLER_WATCH_TIMEOUT_SECONDS` | No | 300 (5m) | How long the server keeps each failed pod watch open (s). |
+| `RUNNER_KILL_REPORTS_ENABLED` | No | true | Fail a run straight away when its pod is killed, as out of memory only if Kubernetes reports `OOMKilled`. |
 | **Debug** | | | |
 | `DEBUG` | No | false | Enable debug logs. |
 | `SEND_RUN_DEBUG_LOGS` | No | false | Send run debug logs to the platform. |

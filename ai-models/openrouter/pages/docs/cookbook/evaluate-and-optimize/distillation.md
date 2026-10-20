@@ -22,9 +22,9 @@ When you use model outputs to train or fine-tune other models, you need to ensur
 
 OpenRouter tracks which models allow their outputs to be used for training purposes through the `is_trainable_text` property. Models where the author has explicitly allowed text distillation are marked as distillable.
 
-<Tip>
-  OpenRouter provides distillation information on a best-effort basis. You should always verify the specific license terms for your use case, as licensing requirements may vary depending on how you intend to use the model outputs.
-</Tip>
+> [!TIP]
+>
+> OpenRouter provides distillation information on a best-effort basis. You should always verify the specific license terms for your use case, as licensing requirements may vary depending on how you intend to use the model outputs.
 
 ## Finding Distillable Models on the Model Page
 
@@ -47,79 +47,77 @@ When `enforce_distillable_text` is set to `true`, the request will only be route
 
 ### Example: Enforcing Distillable Models
 
-<CodeGroup>
-  ```typescript title="TypeScript SDK" lines theme={null}
-  import { OpenRouter } from '@openrouter/sdk';
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
 
-  const openRouter = new OpenRouter({
-    apiKey: '<OPENROUTER_API_KEY>',
-  });
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
 
-  const completion = await openRouter.chat.send({
-    chatRequest: {
-      model: 'meta-llama/llama-3.1-70b-instruct',
-      messages: [{ role: 'user', content: 'Explain quantum computing' }],
-      provider: {
-        enforceDistillableText: true,
-      },
-      stream: false,
+const completion = await openRouter.chat.send({
+  chatRequest: {
+    model: 'meta-llama/llama-3.1-70b-instruct',
+    messages: [{ role: 'user', content: 'Explain quantum computing' }],
+    provider: {
+      enforceDistillableText: true,
     },
-  });
-  ```
+    stream: false,
+  },
+});
+```
 
-  ```typescript title="TypeScript (fetch)" lines theme={null}
-  fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer <OPENROUTER_API_KEY>',
-      'HTTP-Referer': '<YOUR_SITE_URL>',
-      'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'meta-llama/llama-3.1-70b-instruct',
-      messages: [{ role: 'user', content: 'Explain quantum computing' }],
-      provider: {
-        enforce_distillable_text: true,
-      },
-    }),
-  });
-  ```
-
-  ```python title="Python" lines theme={null}
-  import requests
-
-  headers = {
+```typescript title="TypeScript (fetch)" lines theme={null}
+fetch('https://openrouter.ai/api/v1/chat/completions', {
+  method: 'POST',
+  headers: {
     'Authorization': 'Bearer <OPENROUTER_API_KEY>',
     'HTTP-Referer': '<YOUR_SITE_URL>',
     'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
     'Content-Type': 'application/json',
-  }
-
-  response = requests.post('https://openrouter.ai/api/v1/chat/completions', headers=headers, json={
-    'model': 'meta-llama/llama-3.1-70b-instruct',
-    'messages': [{ 'role': 'user', 'content': 'Explain quantum computing' }],
-    'provider': {
-      'enforce_distillable_text': True,
+  },
+  body: JSON.stringify({
+    model: 'meta-llama/llama-3.1-70b-instruct',
+    messages: [{ role: 'user', content: 'Explain quantum computing' }],
+    provider: {
+      enforce_distillable_text: true,
     },
-  })
-  ```
+  }),
+});
+```
 
-  ```bash title="cURL" lines theme={null}
-  curl https://openrouter.ai/api/v1/chat/completions \
-    -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
-    -H "HTTP-Referer: <YOUR_SITE_URL>" \
-    -H "X-OpenRouter-Title: <YOUR_SITE_NAME>" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "meta-llama/llama-3.1-70b-instruct",
-      "messages": [{"role": "user", "content": "Explain quantum computing"}],
-      "provider": {
-        "enforce_distillable_text": true
-      }
-    }'
-  ```
-</CodeGroup>
+```python title="Python" lines theme={null}
+import requests
+
+headers = {
+  'Authorization': 'Bearer <OPENROUTER_API_KEY>',
+  'HTTP-Referer': '<YOUR_SITE_URL>',
+  'X-OpenRouter-Title': '<YOUR_SITE_NAME>',
+  'Content-Type': 'application/json',
+}
+
+response = requests.post('https://openrouter.ai/api/v1/chat/completions', headers=headers, json={
+  'model': 'meta-llama/llama-3.1-70b-instruct',
+  'messages': [{ 'role': 'user', 'content': 'Explain quantum computing' }],
+  'provider': {
+    'enforce_distillable_text': True,
+  },
+})
+```
+
+```bash title="cURL" lines theme={null}
+curl https://openrouter.ai/api/v1/chat/completions \
+  -H "Authorization: Bearer <OPENROUTER_API_KEY>" \
+  -H "HTTP-Referer: <YOUR_SITE_URL>" \
+  -H "X-OpenRouter-Title: <YOUR_SITE_NAME>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/llama-3.1-70b-instruct",
+    "messages": [{"role": "user", "content": "Explain quantum computing"}],
+    "provider": {
+      "enforce_distillable_text": true
+    }
+  }'
+```
 
 ## Use Cases
 

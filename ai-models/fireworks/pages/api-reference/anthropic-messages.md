@@ -15,8 +15,8 @@ The Messages API can be used for either single queries or stateless multi-turn c
 - [Serverless Quickstart](/getting-started/quickstart)
 - [Deployments Quickstart](/getting-started/ondemand-quickstart)
 
-<Note>
-  This endpoint provides an Anthropic-compatible Messages API surface on Fireworks.
-
-  For setup, supported features, and known differences, see [Anthropic compatibility](/tools-sdks/anthropic-compatibility).
-</Note>
+> [!NOTE]
+>
+> This endpoint provides an Anthropic-compatible Messages API surface on Fireworks.
+>
+> For setup, supported features, and known differences, see [Anthropic compatibility](/tools-sdks/anthropic-compatibility).

@@ -7,121 +7,146 @@ path: docs/api-reference/domains/list-domains
 GET /domains
 Retrieve a list of domains for the authenticated user.
 
-<Info>
-  See all available [domain `status`
-  types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
-</Info>
+> [!NOTE]
+>
+> See all available [domain `status`
+> types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
 
-<QueryParams type="domains" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Note that the `limit` parameter is *optional*. If
+you do not provide a `limit`, all domains will be returned
+in a single response.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**limit** `number`
 
-  const { data, error } = await resend.domains.list();
-  ```
+Number of domains to retrieve.
+<ul><li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+**after** `string`
 
-  $resend->domains->list();
-  ```
+The ID *after* which we'll retrieve more domains (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+The ID *before* which we'll retrieve more domains (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  resend.api_key = "re_xxxxxxxxx"
-  resend.Domains.list()
-  ```
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  Resend.api_key = "re_xxxxxxxxx"
+const resend = new Resend('re_xxxxxxxxx');
 
-  Resend::Domains.list
-  ```
+const { data, error } = await resend.domains.list();
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  import "github.com/resend/resend-go/v4"
+$resend->domains->list();
+```
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  	client.Domains.List()
-  }
-  ```
+resend.api_key = "re_xxxxxxxxx"
+resend.Domains.list()
+```
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result, list_opts::ListOptions};
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+Resend.api_key = "re_xxxxxxxxx"
 
-    let _domains = resend.domains.list(ListOptions::default()).await?;
+Resend::Domains.list
+```
 
-    Ok(())
-  }
-  ```
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
-  import com.resend.services.domains.model.ListDomainsResponse;
+import "github.com/resend/resend-go/v4"
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
 
-          ListDomainsResponse response = resend.domains().list();
+	client.Domains.List()
+}
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _domains = resend.domains.list(ListOptions::default()).await?;
+
+  Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.domains.model.ListDomainsResponse;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListDomainsResponse response = resend.domains().list();
+    }
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.DomainListAsync();
+Console.WriteLine( "Nr Domains={0}", resp.Content.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/domains' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend domains list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "d91cd9bd-1176-453e-8fc1-35364d380206",
+      "name": "example.com",
+      "status": "not_started",
+      "created_at": "2026-04-26 20:21:26.347412+00",
+      "region": "us-east-1",
+      "open_tracking": true,
+      "click_tracking": false,
+      "capabilities": {
+        "sending": "enabled",
+        "receiving": "disabled"
       }
-  }
-  ```
-
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
-
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
-
-  var resp = await resend.DomainListAsync();
-  Console.WriteLine( "Nr Domains={0}", resp.Content.Count );
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/domains' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
-
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend domains list
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "d91cd9bd-1176-453e-8fc1-35364d380206",
-        "name": "example.com",
-        "status": "not_started",
-        "created_at": "2026-04-26 20:21:26.347412+00",
-        "region": "us-east-1",
-        "open_tracking": true,
-        "click_tracking": false,
-        "capabilities": {
-          "sending": "enabled",
-          "receiving": "disabled"
-        }
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+    }
+  ]
+}
+```

@@ -16,9 +16,9 @@ Use this guide when you need to add reference-to-video generation where images i
 
 By the end, your implementation should submit a reference-to-video job with `input_references`.
 
-<Tip>
-  For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
-</Tip>
+> [!TIP]
+>
+> For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 
 ## Before you start
 
@@ -29,9 +29,9 @@ You need:
 * One or more public HTTPS image URLs, starting with `REFERENCE_IMAGE_URL`
 * A model that supports reference-to-video, confirmed from the current OpenRouter video docs or model description
 
-<Tip>
-  If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
-</Tip>
+> [!TIP]
+>
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
@@ -43,9 +43,9 @@ Use `input_references` for visual guidance. Use `frame_images` only when you nee
 
 Use stable, directly downloadable image URLs. Some providers cannot fetch image URLs that require cookies, redirects through HTML pages, bot checks, or unusual headers.
 
-<Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
-</Warning>
+> [!WARNING]
+>
+> Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 
 The video models endpoint doesn't expose a dedicated structured reference-image field for every provider. Confirm reference support from the model description or current docs before you submit:
 

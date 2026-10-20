@@ -10,9 +10,9 @@ Reference for firectl deployment create: launch a new Fireworks on-demand deploy
 firectl deployment create [flags]
 ```
 
-<Warning>
-  **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in (`--accept-shapeless-risk`). Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
-</Warning>
+> [!WARNING]
+>
+> **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip validation, are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in (`--accept-shapeless-risk`). Find shapes for your model with [`firectl deployment-shape-version match`](/tools-sdks/firectl/commands/deployment-shape-version-match), and see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes) for details.
 
 ### Examples
 

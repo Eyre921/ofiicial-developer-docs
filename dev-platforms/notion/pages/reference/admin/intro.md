@@ -8,9 +8,9 @@ Learn the conventions, authentication, and pagination patterns used for Notion's
 
 The Admin API can be used to manage Notion resources associated with your organization. Use the navigation on the left to find details for endpoints used in the API.
 
-<Info>
-  The Admin API is only available to organizations and workspaces that are actively on the [enterprise plan](https://www.notion.com/enterprise).
-</Info>
+> [!NOTE]
+>
+> The Admin API is only available to organizations and workspaces that are actively on the [enterprise plan](https://www.notion.com/enterprise).
 
 ## Creating & managing tokens
 

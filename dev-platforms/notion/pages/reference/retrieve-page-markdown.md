@@ -19,13 +19,13 @@ Returns a `page_markdown` object containing the page content as a markdown strin
 
 Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
-<Info>
-  **Requirements**
-
-  Your connection must have [read content capabilities](/reference/capabilities#content-capabilities) on the target page in order to call this endpoint. To update your connection's capabilities, navigate to the <a href={developerConnectionsUrl}>Developer portal</a>, select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
-
-  Attempting to call this endpoint without read content capabilities returns an HTTP response with a 403 status code.
-</Info>
+> [!NOTE]
+>
+> **Requirements**
+>
+> Your connection must have [read content capabilities](/reference/capabilities#content-capabilities) on the target page in order to call this endpoint. To update your connection's capabilities, navigate to the [Developer portal](https://app.notion.com/developers/connections), select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
+>
+> Attempting to call this endpoint without read content capabilities returns an HTTP response with a 403 status code.
 
 ### Unknown blocks
 
@@ -39,9 +39,9 @@ When truncation or permissions cause unknown blocks, the `truncated` field is se
 
 You can attempt to fetch unloaded blocks by passing their IDs back to this same endpoint as the `page_id` path parameter. Blocks that are unknown due to permissions will return a 404 error since the connection does not have access.
 
-<Note>
-  The `unknown_block_ids` array does not distinguish between truncated and inaccessible blocks. Handle `object_not_found` errors gracefully when re-fetching unknown block IDs.
-</Note>
+> [!NOTE]
+>
+> The `unknown_block_ids` array does not distinguish between truncated and inaccessible blocks. Handle `object_not_found` errors gracefully when re-fetching unknown block IDs.
 
 For unsupported block types, use the [block-based API](/reference/retrieve-a-block) to retrieve the full structured data.
 

@@ -6,14 +6,14 @@ path: prompts/setup
 
 Set up Notion as durable, shared context for your agents.
 
-<Info>
-  This page contains instructions for your agent to use the Notion MCP as
-  effectively as possible. To get started, share this page with your agent!
-
-  Important: this won’t change any of your existing conventions, preferences,
-  or workspace organization! It adapts to your existing setup, and won’t touch
-  anything without your permission.
-</Info>
+> [!NOTE]
+>
+> This page contains instructions for your agent to use the Notion MCP as
+> effectively as possible. To get started, share this page with your agent!
+>
+> Important: this won’t change any of your existing conventions, preferences,
+> or workspace organization! It adapts to your existing setup, and won’t touch
+> anything without your permission.
 
 | Version | Published |
 | - | - |

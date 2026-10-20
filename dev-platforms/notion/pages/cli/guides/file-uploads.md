@@ -118,10 +118,10 @@ ntn api "v1/pages/$PAGE_ID" -X PATCH \
 
 Replace `Attachments` with the name of your files property.
 
-<Note>
-  Attach file uploads within one hour. Uploads that are not attached before
-  their `expiry_time` can expire and cannot be attached later.
-</Note>
+> [!NOTE]
+>
+> Attach file uploads within one hour. Uploads that are not attached before
+> their `expiry_time` can expire and cannot be attached later.
 
 ## Find an existing upload
 
@@ -175,12 +175,10 @@ ntn api "v1/file_uploads/$FILE_UPLOAD_ID/send" \
 
 ## Next steps
 
-<CardGroup>
-  <Card title="API request syntax" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/terminal.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=ed75fe4bd49b0ec0117eeead6adb4e5d" href="/cli/guides/api-requests">
-    Build Notion API requests with `ntn api`.
-  </Card>
+> **[API request syntax](/cli/guides/api-requests)**
+>
+> Build Notion API requests with `ntn api`.
 
-  <Card title="File Upload reference" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowTrayUp.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=3b991e18c85512f06c2d7214acf94f12" href="/reference/file-upload">
-    See File Upload statuses, fields, size limits, and endpoints.
-  </Card>
-</CardGroup>
+> **[File Upload reference](/reference/file-upload)**
+>
+> See File Upload statuses, fields, size limits, and endpoints.

@@ -134,6 +134,38 @@ Same accuracy on everyday speech as Scribe v2
 
 Same features, languages, pricing, and API as Scribe v2
 
+### Voice agents
+
+#### [Eleven Realtime v1 Mini](/docs/overview/models#eleven-realtime)
+
+Our Realtime model for fast, natural conversation
+
+Complete voice agent with speech recognition, turn-taking, LLM, and voice, tuned as one
+system
+
+Optimized for speed and natural conversational flow
+
+Natural turn-taking and interruption handling
+
+90+ languages supported
+
+Available in ElevenAgents and via the OpenAI-compatible Realtime API
+
+#### [Eleven Realtime v1 Max](/docs/overview/models#eleven-realtime)
+
+Our Realtime model for complex tasks
+
+Complete voice agent with speech recognition, turn-taking, LLM, and voice, tuned as one
+system
+
+Optimized for precise, thoughtful responses across multi-step tasks
+
+Tool calling for lookups and actions during a conversation
+
+90+ languages supported
+
+Available in ElevenAgents and via the OpenAI-compatible Realtime API
+
 ### Music
 
 #### [Eleven Music v2.5](/docs/overview/models#eleven-music)
@@ -178,15 +210,16 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `eleven_multilingual_ttv_v2` | State-of-the-art multilingual voice designer model (Text to Voice)                                                                                                                     | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                                                                                                                    | `en`                                                                                                                                                                          |
 | `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
-| `scribe_v2_medical`          | Speech recognition fine-tuned for clinical audio                                                                                                                                       | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2_medical`          | Speech recognition model specialized for medical and clinical audio                                                                                                                    | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `eleven_realtime_v1_mini`    | Complete voice agent model configuration, optimized for fast, natural conversation                                                                                                     | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_realtime_v1_max`     | Complete voice agent model configuration, optimized for complex, multi-step tasks                                                                                                      | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                                                                                                             | N/A                                                                                                                                                                           |
 | `music_v2_5`                 | Our most advanced music model. Studio-grade generation from text prompts, composition plans and previously generated songs, with improved quality and prompt adherence over `music_v2` | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs                                                                                      | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2` and `music_v2_5`                                                                                             | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 
-† Excluding application & network latency
+† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
 
 ### Deprecated models
 
@@ -331,7 +364,7 @@ Flash v2.5 supports 32 languages - all languages from v2 models plus:
 
 *Hungarian, Norwegian & Vietnamese*
 
-† Excluding application & network latency
+† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
 
 ### Considerations
 
@@ -490,6 +523,41 @@ Scribe v2 Medical is eligible for HIPAA, with Business Associate Agreements avai
 > sending protected health information.
 
 Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text).
+
+## Eleven Realtime
+
+Eleven Realtime is a new class of Speech to Speech models for building natural voice agents. Each Realtime model is a complete voice agent: speech recognition, voice activity detection and turn-taking, LLM, and text to speech, selected and tuned by ElevenLabs to work together as one system. Select a Realtime model and you get a well-performing agent from a single choice, with no components to configure.
+
+Two Realtime models are available.
+
+**Eleven Realtime v1 Mini** is optimized for fast, natural conversation and works well in the following scenarios:
+
+* **AI assistants**: Fast, expressive dialogue where the conversation itself is the product.
+* **Educational tutors**: Natural back-and-forth that keeps up with the learner's pace.
+* **Interactive characters**: Expressive characters for games and entertainment.
+
+**Eleven Realtime v1 Max** is optimized for complex tasks and works well in the following scenarios:
+
+* **Customer support**: Resolving queries that require following a process and looking up information.
+* **Lead qualification**: Structured conversations that gather information and decide next steps.
+* **Multi-step workflows**: Tasks that call tools to look things up or take actions.
+
+Key features:
+
+* Speech recognition, turn-taking, language model, and voice in one model choice
+* Natural turn-taking and interruption handling
+* Tool calling
+* Customizable voices from the ElevenLabs voice library
+* Support for 90+ languages
+* Switch between v1 Mini and v1 Max with a model selection, not an integration change
+
+Eleven Realtime is available in ElevenAgents, where you select a Realtime model from the model dropdown, and via the Realtime API, which is designed to be compatible with OpenAI's Realtime API over WebSocket. If you are already using OpenAI's Realtime API, see the [migration guide](/docs/eleven-agents/guides/openai-realtime-compatibility).
+
+### Supported languages
+
+Realtime models support 90+ languages. See the [Eleven v4 language list](/docs/overview/models#supported-languages).
+
+Read more about Eleven Realtime [here](/docs/eleven-agents/customization/realtime-models).
 
 ## Eleven Music
 

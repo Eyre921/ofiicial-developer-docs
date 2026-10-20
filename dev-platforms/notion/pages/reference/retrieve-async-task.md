@@ -18,9 +18,9 @@ The first async-capable REST endpoints are:
 
 Set `allow_async: true` on a supported operation to opt into an `async_task` response. When `allow_async` is omitted or `false`, the endpoint keeps its existing synchronous response shape. `allow_async` changes response behavior only; it does not change validation, permissions, or the operation being performed.
 
-<Note>
-  Async task completion is polling-first in this version. Webhook notifications and ETA estimates are not part of the async task contract.
-</Note>
+> [!NOTE]
+>
+> Async task completion is polling-first in this version. Webhook notifications and ETA estimates are not part of the async task contract.
 
 ### Async task response
 

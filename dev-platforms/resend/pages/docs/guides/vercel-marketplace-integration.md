@@ -75,10 +75,10 @@ See [Send emails with v0 and Resend](/docs/v0-integration) for the full walkthro
 
 Accounts created from the Marketplace are billed by Vercel. Manage your account from the Vercel installation dashboard.
 
-<Warning>
-  Discounts, promo codes, and startup or partner credits do not apply to
-  Marketplace plans.
-</Warning>
+> [!WARNING]
+>
+> Discounts, promo codes, and startup or partner credits do not apply to
+> Marketplace plans.
 
 ## Next steps
 

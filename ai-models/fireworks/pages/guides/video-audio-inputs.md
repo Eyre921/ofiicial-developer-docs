@@ -17,9 +17,9 @@ Some multimodal models can process audio and/or video inputs directly, enabling 
 | [Molmo2-4B](https://fireworks.ai/models/fireworks/molmo2-4b) | Video, text | Dedicated deployment required |
 | [Molmo2-8B](https://fireworks.ai/models/fireworks/molmo2-8b) | Video, text | Dedicated deployment required |
 
-<Note>
-  GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
-</Note>
+> [!NOTE]
+>
+> GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
 
 ## Choose an inference option
 
@@ -43,9 +43,9 @@ firectl deployment create qwen3-omni-30b-a3b-instruct \
   --deployment-shape qwen3-omni-30b-a3b-instruct-minimal
 ```
 
-<Note>
-  Make sure to use the predefined `qwen3-omni-30b-a3b-instruct-minimal` deployment shape for your deployment to work correctly.
-</Note>
+> [!NOTE]
+>
+> Make sure to use the predefined `qwen3-omni-30b-a3b-instruct-minimal` deployment shape for your deployment to work correctly.
 
 ## Chat Completions API
 
@@ -53,68 +53,66 @@ firectl deployment create qwen3-omni-30b-a3b-instruct \
 
 GLM 5.3 Flash accepts a reachable video URL in a `video_url` content block.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={null}
-    import os
-    import requests
+**Python**
 
-    url = "https://api.fireworks.ai/inference/v1/chat/completions"
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
-    }
+```python theme={null}
+import os
+import requests
 
-    payload = {
-        "model": "accounts/fireworks/models/glm-5p3-flash",
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": "What happens in this video?"},
-                    {
-                        "type": "video_url",
-                        "video_url": {
-                            "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-                        },
-                    },
-                ],
-            }
-        ],
-    }
+url = "https://api.fireworks.ai/inference/v1/chat/completions"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
+}
 
-    response = requests.post(url, headers=headers, json=payload, timeout=300)
-    response.raise_for_status()
-    print(response.json()["choices"][0]["message"]["content"])
-    ```
-  </Tab>
-
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/fireworks/models/glm-5p3-flash",
-        "messages": [
-          {
+payload = {
+    "model": "accounts/fireworks/models/glm-5p3-flash",
+    "messages": [
+        {
             "role": "user",
             "content": [
-              {"type": "text", "text": "What happens in this video?"},
-              {
-                "type": "video_url",
-                "video_url": {
-                  "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-                }
-              }
-            ]
+                {"type": "text", "text": "What happens in this video?"},
+                {
+                    "type": "video_url",
+                    "video_url": {
+                        "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                    },
+                },
+            ],
+        }
+    ],
+}
+
+response = requests.post(url, headers=headers, json=payload, timeout=300)
+response.raise_for_status()
+print(response.json()["choices"][0]["message"]["content"])
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/models/glm-5p3-flash",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "text", "text": "What happens in this video?"},
+          {
+            "type": "video_url",
+            "video_url": {
+              "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+            }
           }
         ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+      }
+    ]
+  }'
+```
 
 The URL must return the media file directly and remain reachable while the request is processed. For private media, use a signed HTTPS URL that remains valid until inference finishes.
 
@@ -122,77 +120,75 @@ The URL must return the media file directly and remain reachable while the reque
 
 Qwen3 Omni accepts `video_url`, `audio_url`, and `text` content types. Provide the video and audio as Base64-encoded data URLs.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={null}
-    import os
-    import base64
-    import requests
+**Python**
 
-    # Load and encode your preprocessed video and audio
-    with open("processed_video.mp4", "rb") as f:
-        video_b64 = base64.b64encode(f.read()).decode("utf-8")
+```python theme={null}
+import os
+import base64
+import requests
 
-    with open("audio.ogg", "rb") as f:
-        audio_b64 = base64.b64encode(f.read()).decode("utf-8")
+# Load and encode your preprocessed video and audio
+with open("processed_video.mp4", "rb") as f:
+    video_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-    # API configuration
-    url = "https://api.fireworks.ai/inference/v1/chat/completions"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
-    }
+with open("audio.ogg", "rb") as f:
+    audio_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-    # Request payload
-    payload = {
-        "model": "accounts/<YOUR_ACCOUNT_ID>/models/qwen3-omni-30b-a3b-instruct#accounts/<YOUR_ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        "max_tokens": 1000,
-        "temperature": 0.3,
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{video_b64}"}},
-                    {"type": "audio_url", "audio_url": {"url": f"data:audio/ogg;base64,{audio_b64}"}},
-                    {"type": "text", "text": "Describe what happens in this video."},
-                ],
-            },
-        ],
-    }
+# API configuration
+url = "https://api.fireworks.ai/inference/v1/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
+}
 
-    # Send request
-    response = requests.post(url, headers=headers, json=payload)
-    print(response.json()["choices"][0]["message"]["content"])
-    ```
-  </Tab>
-
-  <Tab title="curl">
-    ```bash theme={null}
-    # Encode your files (run these separately)
-    VIDEO_B64=$(base64 -i processed_video.mp4)
-    AUDIO_B64=$(base64 -i audio.ogg)
-
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/<YOUR_ACCOUNT_ID>/models/qwen3-omni-30b-a3b-instruct#accounts/<YOUR_ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        "max_tokens": 1000,
-        "temperature": 0.3,
-        "messages": [
-          {
+# Request payload
+payload = {
+    "model": "accounts/<YOUR_ACCOUNT_ID>/models/qwen3-omni-30b-a3b-instruct#accounts/<YOUR_ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    "max_tokens": 1000,
+    "temperature": 0.3,
+    "messages": [
+        {
             "role": "user",
             "content": [
-              {"type": "video_url", "video_url": {"url": "data:video/mp4;base64,'$VIDEO_B64'"}},
-              {"type": "audio_url", "audio_url": {"url": "data:audio/ogg;base64,'$AUDIO_B64'"}},
-              {"type": "text", "text": "Describe what happens in this video."}
-            ]
-          }
+                {"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{video_b64}"}},
+                {"type": "audio_url", "audio_url": {"url": f"data:audio/ogg;base64,{audio_b64}"}},
+                {"type": "text", "text": "Describe what happens in this video."},
+            ],
+        },
+    ],
+}
+
+# Send request
+response = requests.post(url, headers=headers, json=payload)
+print(response.json()["choices"][0]["message"]["content"])
+```
+
+**curl**
+
+```bash theme={null}
+# Encode your files (run these separately)
+VIDEO_B64=$(base64 -i processed_video.mp4)
+AUDIO_B64=$(base64 -i audio.ogg)
+
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/<YOUR_ACCOUNT_ID>/models/qwen3-omni-30b-a3b-instruct#accounts/<YOUR_ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    "max_tokens": 1000,
+    "temperature": 0.3,
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "video_url", "video_url": {"url": "data:video/mp4;base64,'$VIDEO_B64'"}},
+          {"type": "audio_url", "audio_url": {"url": "data:audio/ogg;base64,'$AUDIO_B64'"}},
+          {"type": "text", "text": "Describe what happens in this video."}
         ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+      }
+    ]
+  }'
+```
 
 ## Working with videos
 
@@ -298,9 +294,9 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
         os.unlink(audio_path)
 ```
 
-<Tip>
-  Preprocessing is highly recommended to reduce latency and ensure consistent performance.
-</Tip>
+> [!TIP]
+>
+> Preprocessing is highly recommended to reduce latency and ensure consistent performance.
 
 ## Performance considerations
 
@@ -322,16 +318,14 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 
 ## Related resources
 
-<CardGroup>
-  <Card title="Chat with Video using Qwen3 Omni" href="https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb" icon="video">
-    Interactive notebook for video and audio analysis
-  </Card>
+> **[Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)**
+>
+> Interactive notebook for video and audio analysis
 
-  <Card title="Vision models" href="/guides/querying-vision-language-models" icon="image">
-    Query models with image inputs
-  </Card>
+> **[Vision models](/guides/querying-vision-language-models)**
+>
+> Query models with image inputs
 
-  <Card title="Dedicated deployments" href="/getting-started/ondemand-quickstart" icon="server">
-    Deploy models on dedicated GPUs
-  </Card>
-</CardGroup>
+> **[Dedicated deployments](/getting-started/ondemand-quickstart)**
+>
+> Deploy models on dedicated GPUs

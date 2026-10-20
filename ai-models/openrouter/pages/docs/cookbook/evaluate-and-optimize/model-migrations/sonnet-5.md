@@ -95,9 +95,9 @@ A new `'xhigh'` effort level is available between `'high'` and `'max'` via the `
 
 The full effort scale is now: `low` → `medium` → `high` → `xhigh` → `max`.
 
-<Note>
-  Sonnet 4.6 supported `low`, `medium`, `high`, and `max`. Sonnet 5 adds `'xhigh'` between `'high'` and `'max'`. For models that don't support a given level, it automatically falls back to the next supported level (`'xhigh'` → `'high'`).
-</Note>
+> [!NOTE]
+>
+> Sonnet 4.6 supported `low`, `medium`, `high`, and `max`. Sonnet 5 adds `'xhigh'` between `'high'` and `'max'`. For models that don't support a given level, it automatically falls back to the next supported level (`'xhigh'` → `'high'`).
 
 ## Cyber Safeguards
 

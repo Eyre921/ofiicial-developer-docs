@@ -55,11 +55,11 @@ These are all serverless aliases as of September 27, 2026. Aliases can move to n
 
 `qwen-max-latest` is not in the coding catalog, so `fireconnect model list` does not show it.
 
-<Note>
-  Aliases may change as Fireworks adds and retires models. For example,
-  `deepseek-pro-latest` is retired. Check the current list before you
-  hard-code an alias, as shown in [Find a model ID](#find-a-model-id).
-</Note>
+> [!NOTE]
+>
+> Aliases may change as Fireworks adds and retires models. For example,
+> `deepseek-pro-latest` is retired. Check the current list before you
+> hard-code an alias, as shown in [Find a model ID](#find-a-model-id).
 
 ## Find a model ID
 

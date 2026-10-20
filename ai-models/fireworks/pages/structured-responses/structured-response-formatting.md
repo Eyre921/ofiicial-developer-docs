@@ -8,9 +8,9 @@ Enforce Fireworks LLM output formats with JSON schemas or custom grammars, inclu
 
 Structured outputs ensure model responses conform to your specified format, making them easy to parse and integrate into your application. Fireworks supports two methods: **JSON mode** (using JSON schemas) and **Grammar mode** (using custom BNF grammars).
 
-<Info>
-  New to structured outputs? Check out the [Serverless Quickstart](/getting-started/quickstart#structured-outputs-json-mode) for a quick introduction.
-</Info>
+> [!NOTE]
+>
+> New to structured outputs? Check out the [Serverless Quickstart](/getting-started/quickstart#structured-outputs-json-mode) for a quick introduction.
 
 ## Quick Start
 
@@ -50,9 +50,9 @@ print(response.choices[0].message.content)
 # Output: {"winner": "Barack Obama"}
 ```
 
-<Tip>
-  Include the schema in **both** your prompt and the `response_format` for best results. The model doesn't automatically "see" the schema—it's enforced during generation.
-</Tip>
+> [!TIP]
+>
+> Include the schema in **both** your prompt and the `response_format` for best results. The model doesn't automatically "see" the schema—it's enforced during generation.
 
 ## Response Format Options
 
@@ -61,36 +61,34 @@ Fireworks supports two JSON mode variants:
 * **`json_object`** – Force any valid JSON output (no specific schema)
 * **`json_schema`** – Enforce a specific JSON schema (recommended)
 
-<Warning>
-  Always instruct the model to produce JSON in your prompt. Without this, the model may generate whitespace indefinitely until hitting token limits.
-</Warning>
+> [!WARNING]
+>
+> Always instruct the model to produce JSON in your prompt. Without this, the model may generate whitespace indefinitely until hitting token limits.
 
-<AccordionGroup>
-  <Accordion title="Using arbitrary JSON mode">
-    To force JSON output without a specific schema:
+> **Using arbitrary JSON mode**
+>
+> To force JSON output without a specific schema:
+>
+> ```python theme={null}
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/kimi-k2p5",
+>     response_format={"type": "json_object"},
+>     messages=[{
+>         "role": "user",
+>         "content": "List the top 3 programming languages in JSON format."
+>     }]
+> )
+> ```
+>
+> This is similar to [OpenAI's JSON mode](https://platform.openai.com/docs/guides/text-generation/json-mode).
 
-    ```python theme={null}
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2p5",
-        response_format={"type": "json_object"},
-        messages=[{
-            "role": "user",
-            "content": "List the top 3 programming languages in JSON format."
-        }]
-    )
-    ```
-
-    This is similar to [OpenAI's JSON mode](https://platform.openai.com/docs/guides/text-generation/json-mode).
-  </Accordion>
-
-  <Accordion title="Important notes and limitations">
-    **Token limits:** If `finish_reason="length"`, the response may be truncated and invalid JSON. Increase `max_tokens` if needed.
-
-    **Completions API:** JSON mode works with both Chat Completions and Completions APIs.
-
-    **Function calling:** When using [Tool Calling](/guides/function-calling), JSON mode is enabled automatically—these guidelines don't apply.
-  </Accordion>
-</AccordionGroup>
+> **Important notes and limitations**
+>
+> **Token limits:** If `finish_reason="length"`, the response may be truncated and invalid JSON. Increase `max_tokens` if needed.
+>
+> **Completions API:** JSON mode works with both Chat Completions and Completions APIs.
+>
+> **Function calling:** When using [Tool Calling](/guides/function-calling), JSON mode is enabled automatically—these guidelines don't apply.
 
 ## JSON Schema Support
 
@@ -112,13 +110,13 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 
 * External `$ref` URIs (HTTP/file). Only in-document JSON Pointer fragments are resolved.
 
-<Tip>
-  Fireworks automatically prevents hallucinated fields by treating schemas with `properties` as if `"unevaluatedProperties": false` is set.
-</Tip>
+> [!TIP]
+>
+> Fireworks automatically prevents hallucinated fields by treating schemas with `properties` as if `"unevaluatedProperties": false` is set.
 
-<Note>
-  `pattern` is enforced on a best-effort basis: regexes that can be compiled into the underlying grammar are enforced, and constructs that can't (e.g. lookahead/lookbehind) are safely ignored — the field falls back to an unconstrained string and the request still succeeds.
-</Note>
+> [!NOTE]
+>
+> `pattern` is enforced on a best-effort basis: regexes that can be compiled into the underlying grammar are enforced, and constructs that can't (e.g. lookahead/lookbehind) are safely ignored — the field falls back to an unconstrained string and the request still succeeds.
 
 ### JSON Pointer references (`$ref`)
 
@@ -134,120 +132,120 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 * **Nested vs. nested:** if `Foo` appears at multiple nested locations and there is no root entry, the first occurrence in document order wins (and the server logs a warning). If you need both, give them distinct names or hoist the shared definition to the root.
 * **`$defs` and `definitions` are independent pools** — `#/$defs/Foo` and `#/definitions/Foo` address two different schemas, exactly as the spec defines.
 
-<Tip>
-  For maximum portability, place all `$defs` at the document root and reference them with `#/$defs/<Name>`. This is the shape OpenAI, pydantic v2, and the JSON Schema spec recommend, and works on every conformant validator.
-</Tip>
+> [!TIP]
+>
+> For maximum portability, place all `$defs` at the document root and reference them with `#/$defs/<Name>`. This is the shape OpenAI, pydantic v2, and the JSON Schema spec recommend, and works on every conformant validator.
 
-<Accordion title="Example: recursive schema (linked list)">
-  Self-recursive and mutually recursive schemas are supported. The example below is the canonical linked-list shape and works in both `response_format` and tool calling parameters:
+> **Example: recursive schema (linked list)**
+>
+> Self-recursive and mutually recursive schemas are supported. The example below is the canonical linked-list shape and works in both `response_format` and tool calling parameters:
+>
+> ```json theme={null}
+> {
+>   "$defs": {
+>     "linked_list_node": {
+>       "type": "object",
+>       "properties": {
+>         "value": {"type": "integer"},
+>         "next": {
+>           "anyOf": [
+>             {"$ref": "#/$defs/linked_list_node"},
+>             {"type": "null"}
+>           ]
+>         }
+>       },
+>       "required": ["value"]
+>     }
+>   },
+>   "$ref": "#/$defs/linked_list_node"
+> }
+> ```
 
-  ```json theme={null}
-  {
-    "$defs": {
-      "linked_list_node": {
-        "type": "object",
-        "properties": {
-          "value": {"type": "integer"},
-          "next": {
-            "anyOf": [
-              {"$ref": "#/$defs/linked_list_node"},
-              {"type": "null"}
-            ]
-          }
-        },
-        "required": ["value"]
-      }
-    },
-    "$ref": "#/$defs/linked_list_node"
-  }
-  ```
-</Accordion>
+> **Example: pydantic v2 schemas with `$id`**
+>
+> Schemas emitted by `pydantic.BaseModel.model_json_schema()` typically carry a root `$id` annotation. This is treated as an identity annotation only — Fireworks never attempts to fetch the URI — and `#/$defs/...` references resolve correctly within the document:
+>
+> ```python theme={null}
+> from pydantic import BaseModel
+>
+> class Person(BaseModel):
+>     name: str
+>     age: int
+>
+> class Response(BaseModel):
+>     person: Person
+>
+> # Response.model_json_schema() returns a schema with `$id`, `$defs`, and `$ref`.
+> # Pass it directly into `response_format={"type": "json_schema", ...}`.
+> ```
 
-<Accordion title="Example: pydantic v2 schemas with `$id`">
-  Schemas emitted by `pydantic.BaseModel.model_json_schema()` typically carry a root `$id` annotation. This is treated as an identity annotation only — Fireworks never attempts to fetch the URI — and `#/$defs/...` references resolve correctly within the document:
-
-  ```python theme={null}
-  from pydantic import BaseModel
-
-  class Person(BaseModel):
-      name: str
-      age: int
-
-  class Response(BaseModel):
-      person: Person
-
-  # Response.model_json_schema() returns a schema with `$id`, `$defs`, and `$ref`.
-  # Pass it directly into `response_format={"type": "json_schema", ...}`.
-  ```
-</Accordion>
-
-<Accordion title="Advanced: Reasoning Model JSON Mode">
-  Some models support generating structured JSON outputs alongside their reasoning process. The [Fireworks Python SDK](/tools-sdks/python-sdk) exposes the model's reasoning via the `reasoning_content` field, keeping it separate from the JSON output in the `content` field.
-
-  <Warning>
-    Using `response_format` with `json_schema` disables reasoning output. To get **both** reasoning and structured JSON, include the schema in your prompt instead and omit the `response_format` parameter.
-  </Warning>
-
-  #### Example Usage
-
-  ````python theme={null}
-  import json
-  from fireworks import Fireworks
-  from pydantic import BaseModel
-
-  client = Fireworks()
-
-  # Define the output schema
-  class QAResult(BaseModel):
-      question: str
-      answer: str
-
-  # Include the schema in the prompt to preserve reasoning
-  schema = QAResult.model_json_schema()
-
-  response = client.chat.completions.create(
-      model="accounts/fireworks/models/kimi-k2p5",
-      messages=[{
-          "role": "user",
-          "content": (
-              "Who wrote 'Pride and Prejudice'?\n\n"
-              f"Reply in JSON matching this schema:\n{json.dumps(schema, indent=2)}"
-          )
-      }],
-      max_tokens=1000
-  )
-
-  # The Fireworks SDK separates reasoning into its own field
-  reasoning = response.choices[0].message.reasoning_content
-  content = response.choices[0].message.content
-
-  # Strip markdown code fences if the model wraps the JSON
-  json_str = content.strip()
-  if json_str.startswith("```"):
-      json_str = json_str.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-
-  # Parse into Pydantic model
-  qa_result = QAResult.model_validate_json(json_str)
-
-  if reasoning:
-      print("Reasoning:", reasoning)
-  print("Result:", qa_result.model_dump_json(indent=2))
-  ````
-
-  <Tip>
-    If you don't need reasoning and just want guaranteed schema-conformant JSON, use the `response_format` parameter as shown in the [Quick Start](#quick-start) above. The `response_format` approach enforces the schema during generation, eliminating the need to parse the JSON yourself.
-  </Tip>
-
-  #### Use Cases
-
-  Reasoning mode is useful for:
-
-  * **Debugging**: Understanding why the model generated specific outputs
-  * **Auditing**: Documenting the decision-making process
-  * **Complex tasks**: Scenarios where the reasoning is as valuable as the final answer
-
-  See the [Reasoning guide](/guides/reasoning) for more on working with reasoning models.
-</Accordion>
+> **Advanced: Reasoning Model JSON Mode**
+>
+> Some models support generating structured JSON outputs alongside their reasoning process. The [Fireworks Python SDK](/tools-sdks/python-sdk) exposes the model's reasoning via the `reasoning_content` field, keeping it separate from the JSON output in the `content` field.
+>
+> > [!WARNING]
+> >
+> > Using `response_format` with `json_schema` disables reasoning output. To get **both** reasoning and structured JSON, include the schema in your prompt instead and omit the `response_format` parameter.
+>
+> #### Example Usage
+>
+> ````python theme={null}
+> import json
+> from fireworks import Fireworks
+> from pydantic import BaseModel
+>
+> client = Fireworks()
+>
+> # Define the output schema
+> class QAResult(BaseModel):
+>     question: str
+>     answer: str
+>
+> # Include the schema in the prompt to preserve reasoning
+> schema = QAResult.model_json_schema()
+>
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/kimi-k2p5",
+>     messages=[{
+>         "role": "user",
+>         "content": (
+>             "Who wrote 'Pride and Prejudice'?\n\n"
+>             f"Reply in JSON matching this schema:\n{json.dumps(schema, indent=2)}"
+>         )
+>     }],
+>     max_tokens=1000
+> )
+>
+> # The Fireworks SDK separates reasoning into its own field
+> reasoning = response.choices[0].message.reasoning_content
+> content = response.choices[0].message.content
+>
+> # Strip markdown code fences if the model wraps the JSON
+> json_str = content.strip()
+> if json_str.startswith("```"):
+>     json_str = json_str.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+>
+> # Parse into Pydantic model
+> qa_result = QAResult.model_validate_json(json_str)
+>
+> if reasoning:
+>     print("Reasoning:", reasoning)
+> print("Result:", qa_result.model_dump_json(indent=2))
+> ````
+>
+> > [!TIP]
+> >
+> > If you don't need reasoning and just want guaranteed schema-conformant JSON, use the `response_format` parameter as shown in the [Quick Start](#quick-start) above. The `response_format` approach enforces the schema during generation, eliminating the need to parse the JSON yourself.
+>
+> #### Use Cases
+>
+> Reasoning mode is useful for:
+>
+> * **Debugging**: Understanding why the model generated specific outputs
+> * **Auditing**: Documenting the decision-making process
+> * **Complex tasks**: Scenarios where the reasoning is as valuable as the final answer
+>
+> See the [Reasoning guide](/guides/reasoning) for more on working with reasoning models.
 
 ## Grammar Mode
 

@@ -18,7 +18,7 @@ Use the Pinecone Assistant node for managed RAG with minimal setup. Upload files
 
 The following quickstart uses the **Pinecone Assistant** node.
 
-<PrimarySecondaryCTA />
+[View Assistant Quickstart](/guides/assistant/quickstart/n8n-quickstart)
 
 ## Getting started (Pinecone Assistant)
 

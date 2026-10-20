@@ -120,7 +120,7 @@ The platform then [onboards the connected account](https://docs.stripe.com/conne
 2. Providing a form to collect the information required from your connected account.
 3. Updating the `Account` with the collected information, specifying the connected account in the `Stripe-Context` header: `{{CONNECTED_ACCOUNT_ID}}` to identify the connected account as the account to update.
 
-Alternatively, the platform might create an [account link](https://docs.stripe.com/connect/hosted-onboarding.md?accounts-namespace=v2&lang=curl#create-account-link) specifying the `type` as the `merchant` and `money_manager` configurations, then send the returned URL to the connected account before it expires so they can provide the required information in a Stripe-hosted interface.
+Alternatively, the platform can create an [account link](https://docs.stripe.com/connect/hosted-onboarding.md?accounts-namespace=v2&lang=curl#create-account-link) for the connected account with `use_case.type` set to `account_onboarding`. The platform sends the returned URL to the connected account before it expires so they can provide the required information in a Stripe-hosted interface.
 
 The platform listens for the `v2.core.account[configuration.money_manager].capability_status_updated` [webhook](https://docs.stripe.com/webhooks.md) to confirm the capabilities are active for its connected account.
 

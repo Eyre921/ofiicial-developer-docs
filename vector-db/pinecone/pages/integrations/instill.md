@@ -10,4 +10,4 @@ Instill AI builds tools for data, models, and pipeline orchestration. Its flagsh
 
 The Pinecone integration with Instill adds Pinecone vector upsert and query tasks to your AI pipelines. To configure the Pinecone component in Instill Core, provide your API key and base URL. You can then query for similar vectors to retrieve the most relevant results, with metadata and similarity scores, or upsert new vectors to keep your datasets up to date. This lets you add knowledge to LLMs through retrieval-augmented generation (RAG) for autonomous agents, chatbots, question-answering systems, and multi-agent systems.
 
-<PrimarySecondaryCTA />
+[Get started](https://github.com/instill-ai/pipeline-backend/blob/main/pkg/component/data/pinecone/v0/README.mdx)

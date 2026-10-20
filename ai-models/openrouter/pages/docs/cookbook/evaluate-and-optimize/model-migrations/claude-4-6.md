@@ -12,11 +12,11 @@ path: docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6
 
 > Migrate to Claude 4.6 with adaptive thinking and max effort level
 
-<Note>
-  **Update · June 22, 2026**
-
-  As of June 22, 2026, OpenRouter maps `reasoning.effort` to Anthropic's `output_config.effort` on Claude 4.6 and newer models — previously it was ignored. `verbosity` is unchanged: it still sets `output_config.effort`, and wins if both are passed.
-</Note>
+> [!NOTE]
+>
+> **Update · June 22, 2026**
+>
+> As of June 22, 2026, OpenRouter maps `reasoning.effort` to Anthropic's `output_config.effort` on Claude 4.6 and newer models — previously it was ignored. `verbosity` is unchanged: it still sets `output_config.effort`, and wins if both are passed.
 
 ## What's New
 
@@ -69,9 +69,9 @@ A new `'max'` effort level is available for Claude 4.6 Opus and 4.6 Sonnet via t
 }
 ```
 
-<Note>
-  `'max'` is only supported on Claude 4.6 Opus and 4.6 Sonnet. For other models, it automatically falls back to `'high'`.
-</Note>
+> [!NOTE]
+>
+> `'max'` is only supported on Claude 4.6 Opus and 4.6 Sonnet. For other models, it automatically falls back to `'high'`.
 
 ## Verbosity vs Reasoning Effort
 

@@ -49,9 +49,9 @@ The owner, manager, and member roles have these project settings, resource, and 
 
 For pod-based indexes, the roles have these additional permissions:
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 | Permission | Owner | Manager | Member |
 | :- | :-: | :-: | :-: |
@@ -59,9 +59,9 @@ For pod-based indexes, the roles have these additional permissions:
 | Update project pod limits | ✓ | | |
 | Update index size | ✓ | ✓ | |
 
-<Note>
-  Pod-based indexes don't support role-based access control and always grant data plane read and write access to project members.
-</Note>
+> [!NOTE]
+>
+> Pod-based indexes don't support role-based access control and always grant data plane read and write access to project members.
 
 ### Role permissions
 

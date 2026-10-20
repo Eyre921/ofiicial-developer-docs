@@ -12,62 +12,15 @@ path: docs/cookbook/video-generation/choose-video-model
 
 > Select an OpenRouter video model by matching clip requirements and scoring priorities
 
-export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleClick = () => {
-    navigator.clipboard.writeText(prompt).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  };
-  return <div className="mt-3">
-      <button type="button" onClick={handleClick} className="border-border inline-flex items-center gap-2 rounded-lg border px-3 py-2 font-semibold cursor-pointer border-green-200 dark:border-green-900">
-        {isCopied ? "Copied" : buttonLabel}
-      </button>
-    </div>;
-};
-
 Use this guide when you need to add video model selection based on the clip your app needs to generate.
 
 By the end, your implementation should have a small model-selection helper that filters models by capability and scores them by priority before submitting a video job.
 
-<Tip>
-  Not sure what model to use? Copy this prompt to run a model-selection process.
-
-  For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
-
-  <CopyPromptButton
-    prompt={`You are helping me choose the best OpenRouter video generation model for my app.
-
-If Agent Skills are available, first check whether the OpenRouter video skill is installed. If it is not installed, tell me I can install it with:
-gh skill install OpenRouterTeam/skills openrouter-video
-
-Use this OpenRouter cookbook guide as your primary workflow:
-https://openrouter.ai/docs/cookbook/video-generation/choose-video-model
-
-Use these OpenRouter docs as source-of-truth references when you need exact fields or implementation details:
-- Video model metadata API: https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models
-- Video generation request API: https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request
-- Video generation overview: https://openrouter.ai/docs/guides/overview/multimodal/video-generation
-- OpenRouter video skill: https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video
-- TypeScript SDK video generation reference, if I am using the SDK: https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README
-
-Start by asking me for a brief description of what I want to make with video generation.
-
-Use that description to infer the likely video requirements: generation mode, duration, resolution, aspect ratio, whether audio matters, whether image/frame/reference inputs are needed, and whether speed, cost, or output quality should matter most. Ask a follow-up question only if a missing detail would materially change the model recommendation.
-
-After I answer, run this model-selection process:
-1. Fetch the current model list from GET https://openrouter.ai/api/v1/videos/models.
-2. Filter out models that do not satisfy hard requirements. Use supported_durations, supported_resolutions, supported_aspect_ratios, supported_frame_images, generate_audio, and allowed_passthrough_parameters.
-3. Score the remaining models with weighted priorities:
-- speed: prefer models with fast, lite, or std in the model slug. Replace this heuristic with real latency telemetry if available.
-- cost: prefer lower estimated cost from pricing_skus. Inspect SKU units before making production routing decisions.
-- quality: prefer higher supported resolution, especially 1080p or 4K, and consider provider or model tier when relevant.
-4. Use fast-and-cheap weights when I care about previews or low latency: speed 0.55, cost 0.35, quality 0.10.
-5. Use quality-and-cost weights when I care about final output quality: quality 0.55, cost 0.30, speed 0.15.
-6. Return the selected model slug, a ranked shortlist, the reason for the choice, any assumptions you made, and the exact raw API or SDK video request body you would submit.`}
-  />
-</Tip>
+> [!TIP]
+>
+> Not sure what model to use? Copy this prompt to run a model-selection process.
+>
+> For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 
 ## Before you start
 
@@ -83,9 +36,9 @@ Use the API reference pages as the source of truth for exact fields:
 * [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models)
 * [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README)
 
-<Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits. Use the model-selection and request-preview steps first, then submit only when the request is ready.
-</Warning>
+> [!WARNING]
+>
+> Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits. Use the model-selection and request-preview steps first, then submit only when the request is ready.
 
 ## Step 1: Fetch the video model list
 

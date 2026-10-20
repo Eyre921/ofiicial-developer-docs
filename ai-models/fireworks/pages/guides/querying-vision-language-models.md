@@ -14,170 +14,166 @@ Vision-language models (VLMs) process both text and images in a single request, 
 
 Provide images via URL or base64 encoding. The request structure is identical to OpenAI's vision API.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={null}
-    from fireworks import Fireworks
+**Python**
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2p5",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": "Can you describe this image?"},
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
-                        }
-                    }
-                ]
-            }
-        ]
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-
-    <Tip>
-      You can also use the [OpenAI SDK](/tools-sdks/openai-compatibility) with Fireworks by changing the base URL and API key.
-    </Tip>
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
-
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
-
-    const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/kimi-k2p5",
-      messages: [
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k2p5",
+    messages=[
         {
-          role: "user",
-          content: [
-            { type: "text", text: "Can you describe this image?" },
-            {
-              type: "image_url",
-              image_url: {
-                url: "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
-              }
-            }
-          ]
-        }
-      ]
-    });
-
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
-
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/fireworks/models/kimi-k2p5",
-        "messages": [
-          {
             "role": "user",
             "content": [
-              {"type": "text", "text": "Can you describe this image?"},
-              {
-                "type": "image_url",
-                "image_url": {
-                  "url": "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
+                {"type": "text", "text": "Can you describe this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
+                    }
                 }
-              }
             ]
+        }
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+> [!TIP]
+>
+> You can also use the [OpenAI SDK](/tools-sdks/openai-compatibility) with Fireworks by changing the base URL and API key.
+
+**JavaScript**
+
+```javascript theme={null}
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "accounts/fireworks/models/kimi-k2p5",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "Can you describe this image?" },
+        {
+          type: "image_url",
+          image_url: {
+            url: "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
+          }
+        }
+      ]
+    }
+  ]
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/models/kimi-k2p5",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "text", "text": "Can you describe this image?"},
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?w=800"
+            }
           }
         ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+      }
+    ]
+  }'
+```
 
 ### Using base64-encoded images
 
 For local files, encode them as base64 with the appropriate MIME type prefix:
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={null}
-    import base64
-    from fireworks import Fireworks
+**Python**
 
-    def encode_image(image_path):
-        with open(image_path, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode("utf-8")
+```python theme={null}
+import base64
+from fireworks import Fireworks
 
-    image_base64 = encode_image("your_image.jpg")
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
 
-    client = Fireworks()
+image_base64 = encode_image("your_image.jpg")
 
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2p5",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": "Can you describe this image?"},
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{image_base64}"
-                        }
-                    }
-                ]
-            }
-        ]
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
-    import fs from "fs";
-
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
-
-    const imageBase64 = fs.readFileSync("your_image.jpg").toString("base64");
-
-    const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/kimi-k2p5",
-      messages: [
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k2p5",
+    messages=[
         {
-          role: "user",
-          content: [
-            { type: "text", text: "Can you describe this image?" },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:image/jpeg;base64,${imageBase64}`
-              }
-            }
-          ]
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "Can you describe this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{image_base64}"
+                    }
+                }
+            ]
+        }
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+**JavaScript**
+
+```javascript theme={null}
+import OpenAI from "openai";
+import fs from "fs";
+
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const imageBase64 = fs.readFileSync("your_image.jpg").toString("base64");
+
+const response = await client.chat.completions.create({
+  model: "accounts/fireworks/models/kimi-k2p5",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "Can you describe this image?" },
+        {
+          type: "image_url",
+          image_url: {
+            url: `data:image/jpeg;base64,${imageBase64}`
+          }
         }
       ]
-    });
+    }
+  ]
+});
 
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
-</Tabs>
+console.log(response.choices[0].message.content);
+```
 
 ## Working with images
 
@@ -190,116 +186,191 @@ Vision-language models support [prompt caching](/guides/prompt-caching) to impro
 * **Structure prompts for caching** – Place static instructions at the beginning, variable content at the end
 * **Include metadata in prompts** – Add context about the image directly in your text prompt
 
-## Working with PDFs
+## Working with PDFs and Word documents
 
-VLMs do not natively accept PDF files as input. To analyze PDF documents, convert each page to an image and pass the images to the model using base64 encoding.
+VLMs do not natively accept PDF or Word (`.docx`) files as input. Convert them on your side before sending the request:
 
-<Note>
-  Remember the [30-image limit per request](#known-limitations). For long documents, process pages in batches or select only the relevant pages.
-</Note>
+* **PDF**: render each page to an image and pass the images to the model using base64 encoding.
+* **DOCX**: extract the text, and pass any embedded images alongside it.
 
-<Tabs>
-  <Tab title="Python">
-    Install [PyMuPDF](https://pymupdf.readthedocs.io/):
+> [!NOTE]
+>
+> Remember the [120-image limit per request](#known-limitations). The count includes images in earlier messages of the conversation that you resend with each request. For long documents, process pages in batches or select only the relevant pages.
 
-    ```bash theme={null}
-    pip install pymupdf fireworks-ai
-    ```
+**Python**
 
-    ```python theme={null}
-    import base64
-    import fitz
-    from fireworks.client import Fireworks
+Install [pypdfium2](https://pypi.org/project/pypdfium2/), [Pillow](https://pypi.org/project/pillow/), and [python-docx](https://pypi.org/project/python-docx/):
 
+```bash theme={null}
+python3 -m pip install pypdfium2 pillow python-docx fireworks-ai
+```
 
-    def pdf_pages_to_base64(pdf_path, dpi=200):
-        doc = fitz.open(pdf_path)
-        images = []
-        for page in doc:
-            pix = page.get_pixmap(dpi=dpi)
-            images.append(base64.b64encode(pix.tobytes("png")).decode("utf-8"))
-        doc.close()
-        return images
+```python theme={null}
+import base64
+import io
+from pathlib import Path
+
+import docx
+import pypdfium2 as pdfium
+from docx.table import Table
+from fireworks import Fireworks
 
 
-    page_images = pdf_pages_to_base64("document.pdf")
-
-    client = Fireworks()
-
-    content = [{"type": "text", "text": "Summarize this document."}]
-    for img in page_images:
+def pdf_to_content(pdf_path, dpi=200):
+    doc = pdfium.PdfDocument(pdf_path)
+    content = []
+    for page in doc:
+        buf = io.BytesIO()
+        page.render(scale=dpi / 72).to_pil().save(buf, format="PNG")
+        img = base64.b64encode(buf.getvalue()).decode("utf-8")
         content.append({
             "type": "image_url",
             "image_url": {"url": f"data:image/png;base64,{img}"}
         })
+    doc.close()
+    return content
 
-    response = client.chat.completions.create(
-        model="accounts/fireworks/models/kimi-k2p5",
-        messages=[{"role": "user", "content": content}]
-    )
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+def docx_to_content(docx_path):
+    doc = docx.Document(docx_path)
+    parts = []
+    for block in doc.iter_inner_content():  # paragraphs and tables in document order
+        if isinstance(block, Table):
+            for row in block.rows:
+                parts.append(" | ".join(cell.text.strip() for cell in row.cells))
+        elif block.text.strip():
+            parts.append(block.text)
+    content = [{"type": "text", "text": "\n".join(parts)}]
 
-  <Tab title="JavaScript">
-    Install [pdf-to-img](https://www.npmjs.com/package/pdf-to-img) and [openai](https://www.npmjs.com/package/openai):
+    for rel in doc.part.rels.values():
+        if "image" in rel.reltype:
+            mime = rel.target_part.content_type
+            if mime not in ("image/png", "image/jpeg", "image/gif"):
+                continue
+            img = base64.b64encode(rel.target_part.blob).decode("utf-8")
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:{mime};base64,{img}"}
+            })
+    return content
 
-    ```bash theme={null}
-    npm install pdf-to-img openai
-    ```
 
-    ```javascript theme={null}
-    import { pdf } from "pdf-to-img";
-    import OpenAI from "openai";
+def file_to_content(path):
+    suffix = Path(path).suffix.lower()
+    if suffix == ".pdf":
+        return pdf_to_content(path)
+    if suffix == ".docx":
+        return docx_to_content(path)
+    raise ValueError(f"Unsupported file type: {suffix}")
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
+
+client = Fireworks()
+
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k3",
+    messages=[{
+        "role": "user",
+        "content": [{"type": "text", "text": "Summarize this document."}]
+        + file_to_content("document.pdf")  # or "document.docx"
+    }]
+)
+
+print(response.choices[0].message.content)
+```
+
+**JavaScript**
+
+Install [pdf-to-img](https://www.npmjs.com/package/pdf-to-img), [mammoth](https://www.npmjs.com/package/mammoth), and [openai](https://www.npmjs.com/package/openai):
+
+```bash theme={null}
+npm install pdf-to-img mammoth openai
+```
+
+```javascript theme={null}
+import path from "node:path";
+import mammoth from "mammoth";
+import OpenAI from "openai";
+import { pdf } from "pdf-to-img";
+
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+async function pdfToContent(pdfPath) {
+  const content = [];
+  for await (const page of await pdf(pdfPath, { scale: 2.0 })) {
+    content.push({
+      type: "image_url",
+      image_url: { url: `data:image/png;base64,${Buffer.from(page).toString("base64")}` },
     });
+  }
+  return content;
+}
 
-    const pages = [];
-    for await (const page of await pdf("document.pdf", { scale: 2.0 })) {
-      pages.push(Buffer.from(page).toString("base64"));
-    }
+async function docxToContent(docxPath) {
+  const { value: text } = await mammoth.extractRawText({ path: docxPath });
+  const content = [{ type: "text", text }];
 
-    const content = [
-      { type: "text", text: "Summarize this document." },
-      ...pages.map((base64) => ({
-        type: "image_url",
-        image_url: { url: `data:image/png;base64,${base64}` },
-      })),
-    ];
+  const supported = ["image/png", "image/jpeg", "image/gif"];
+  await mammoth.convertToHtml(
+    { path: docxPath },
+    {
+      convertImage: mammoth.images.imgElement(async (image) => {
+        if (supported.includes(image.contentType)) {
+          const base64 = await image.readAsBase64String();
+          content.push({
+            type: "image_url",
+            image_url: { url: `data:${image.contentType};base64,${base64}` },
+          });
+        }
+        return { src: "" };
+      }),
+    },
+  );
+  return content;
+}
 
-    const response = await client.chat.completions.create({
-      model: "accounts/fireworks/models/kimi-k2p5",
-      messages: [{ role: "user", content }],
-    });
+async function fileToContent(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".pdf") return pdfToContent(filePath);
+  if (ext === ".docx") return docxToContent(filePath);
+  throw new Error(`Unsupported file type: ${ext}`);
+}
 
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
-</Tabs>
+const response = await client.chat.completions.create({
+  model: "accounts/fireworks/models/kimi-k3",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "Summarize this document." },
+        ...(await fileToContent("document.pdf")), // or "document.docx"
+      ],
+    },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
 
 ## Advanced capabilities
 
-<CardGroup>
-  <Card title="Vision training" href="/fine-tuning/fine-tuning-models#vision-training" icon="sliders">
-    Train VLMs for specialized visual tasks
-  </Card>
+> **[Vision training](/fine-tuning/fine-tuning-models#vision-training)**
+>
+> Train VLMs for specialized visual tasks
 
-  <Card title="LoRA adapters" href="/models/uploading-custom-models" icon="layer-group">
-    Deploy custom LoRA adapters for vision models
-  </Card>
+> **[LoRA adapters](/models/uploading-custom-models)**
+>
+> Deploy custom LoRA adapters for vision models
 
-  <Card title="Dedicated deployments" href="/getting-started/ondemand-quickstart" icon="server">
-    Deploy VLMs on dedicated GPUs for better performance
-  </Card>
+> **[Dedicated deployments](/getting-started/ondemand-quickstart)**
+>
+> Deploy VLMs on dedicated GPUs for better performance
 
-  <Card title="Video & audio inputs" href="/guides/video-audio-inputs" icon="video">
-    Process video and audio content with multimodal models
-  </Card>
-</CardGroup>
+> **[Video & audio inputs](/guides/video-audio-inputs)**
+>
+> Process video and audio content with multimodal models
 
 ## Alternative query methods
 
@@ -319,7 +390,7 @@ print(response.choices[0].text)
 
 ## Known limitations
 
-1. **Maximum images per request**: 30 images maximum, regardless of format (base64 or URL)
+1. **Maximum images per request**: 120 images maximum, including images in earlier messages of the conversation, regardless of format (base64 or URL)
 2. **Base64 size limit**: Total base64-encoded images must be less than 10MB
 3. **URL size and timeout**: Each image URL must be smaller than 5MB and download within 1.5 seconds
 4. **Supported formats**: `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`, `.tiff`, `.ppm`

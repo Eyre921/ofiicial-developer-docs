@@ -11,22 +11,20 @@ The restored index inherits the schema of the index the backup was taken from, i
 
 For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"
 
-  curl "https://api.pinecone.io/backups/$BACKUP_ID/create-index" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -H 'Content-Type: application/json' \
-    -d '{
-          "name": "restored-index",
-          "tags": {
-            "tag0": "val0",
-            "tag1": "val1"
-          },
-          "deletion_protection": "enabled"
-        }'
-  ```
-</RequestExample>
+curl "https://api.pinecone.io/backups/$BACKUP_ID/create-index" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "name": "restored-index",
+        "tags": {
+          "tag0": "val0",
+          "tag1": "val1"
+        },
+        "deletion_protection": "enabled"
+      }'
+```

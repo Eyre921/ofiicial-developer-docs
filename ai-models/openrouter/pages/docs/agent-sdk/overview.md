@@ -28,9 +28,9 @@ Choose the Agent SDK when you need **agentic behavior**: multi-step reasoning wh
 * **Dynamic parameters**: change model, temperature, or tools between turns based on context
 * **MCP tools**: plug in a remote [Model Context Protocol](/docs/agent-sdk/call-model/mcp-tools) server and its tools drop straight into `callModel`
 
-<Tip>
-  If you only need simple request/response calls to a model without agent loops, the [Client SDKs](/docs/client-sdks/overview) are a lighter-weight option.
-</Tip>
+> [!TIP]
+>
+> If you only need simple request/response calls to a model without agent loops, the [Client SDKs](/docs/client-sdks/overview) are a lighter-weight option.
 
 ## Installation
 
@@ -40,35 +40,33 @@ Choose the Agent SDK when you need **agentic behavior**: multi-step reasoning wh
 | Python | [`openrouter-agent-sdk`](https://pypi.org/project/openrouter-agent-sdk/) |
 | Go | [`go-agent`](https://pkg.go.dev/github.com/OpenRouterTeam/go-agent) |
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install @openrouter/agent
-  ```
+```bash title="npm" lines theme={null}
+npm install @openrouter/agent
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add @openrouter/agent
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add @openrouter/agent
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add @openrouter/agent
-  ```
+```bash title="yarn" lines theme={null}
+yarn add @openrouter/agent
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add @openrouter/agent
-  ```
+```bash title="bun" lines theme={null}
+bun add @openrouter/agent
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add npm:@openrouter/agent
-  ```
+```bash title="deno" lines theme={null}
+deno add npm:@openrouter/agent
+```
 
-  ```bash title="pip (Python)" lines theme={null}
-  pip install openrouter-agent-sdk
-  ```
+```bash title="pip (Python)" lines theme={null}
+pip install openrouter-agent-sdk
+```
 
-  ```bash title="go (Go)" lines theme={null}
-  go get github.com/OpenRouterTeam/go-agent
-  ```
-</CodeGroup>
+```bash title="go (Go)" lines theme={null}
+go get github.com/OpenRouterTeam/go-agent
+```
 
 The Python and Go packages are ports of `@openrouter/agent` kept in sync automatically. See the [Python agent SDK repository](https://github.com/OpenRouterTeam/python-agent) and [Go agent SDK repository](https://github.com/OpenRouterTeam/go-agent) for language-specific details. The rest of this Agent SDK documentation uses TypeScript examples.
 

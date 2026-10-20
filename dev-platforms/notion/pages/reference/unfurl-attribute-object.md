@@ -14,159 +14,149 @@ Link Previews can be displayed in their full format, or they can be shown as a "
 
 Let's first look at an example of a full-format Link Preview:
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
 
 Here is the same link again but now as a Mention — a miniature version of a Link Preview that uses the same data.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
 
 A Link Preview or Mention displays data that is sent to Notion as an array of unfurl attribute objects. There are a number of optional attributes. However, **every array must contain a `title` attribute and a `dev` attribute.**
 
 Using the same Link Preview and Mention we saw above, let's look at the array of unfurl attribute objects that would render these previews. The following payload represents the example Link Preview and Mention above:
 
-<CodeGroup>
-  ```json JSON expandable theme={null}
-  [
-    {
-      "id": "title",
-      "name": "Title",
-      "type": "inline",
-      "inline": {
-        "title": {
-          "value": "Feature Request: Link Previews",
-          "section": "title"
-        }
-      }
-    },
-    {
-      "id": "dev",
-      "name": "Developer Name",
-      "type": "inline",
-      "inline": {
-        "plain_text": {
-          "value": "Acme Inc",
-          "section": "secondary"
-        }
-      }
-    },
-    {
-      "id": "state",
-      "name": "State",
-      "type": "relation",
-      "relation": {
-        "uri": "acme:item_state/open",
-        "mention": {
-          "section": "primary"
-        }
-      }
-    },
-    {
-      "id": "itemId",
-      "name": "Item Id",
-      "type": "inline",
-      "inline": {
-        "plain_text": {
-          "value": "#23487",
-          "section": "identifier"
-        }
-      }
-    },
-    {
-      "id": "itemIcon",
-      "name": "Item Icon",
-      "type": "inline",
-      "inline": {
-        "color": {
-          "value": {
-            "r": 247,
-            "g": 247,
-            "b": 42
-          },
-          "section": "entity"
-        }
-      }
-    },
-    {
-      "id": "description",
-      "name": "Description",
-      "type": "inline",
-      "inline": {
-        "plain_text": {
-          "value": "Would love to be able to preview some Acme resources in Notion!\n Maybe an open item?",
-          "section": "body"
-        }
-      }
-    },
-    {
-      "id": "updated_at",
-      "name": "Updated At",
-      "type": "inline",
-      "inline": {
-        "datetime": {
-          "value": "2022-01-11T19:53:18.829Z",
-          "section": "secondary"
-        }
-      }
-    },
-    {
-      "id": "label",
-      "name": "Label",
-      "type": "inline",
-      "inline": {
-        "enum": {
-          "value": "🔨 Ready to Build",
-          "color": {
-            "r": 100,
-            "g": 100,
-            "b": 100
-          },
-          "section": "primary"
-        }
-      }
-    },
-    {
-      "id": "media",
-      "name": "Embed",
-      "embed": {
-        "src_url": "https://c.tenor.com/XgaU95K_XiwAAAAC/kermit-typing.gif",
-        "image": {
-          "section": "embed"
-        }
+```json JSON expandable theme={null}
+[
+  {
+    "id": "title",
+    "name": "Title",
+    "type": "inline",
+    "inline": {
+      "title": {
+        "value": "Feature Request: Link Previews",
+        "section": "title"
       }
     }
-  ]
-  ```
-</CodeGroup>
+  },
+  {
+    "id": "dev",
+    "name": "Developer Name",
+    "type": "inline",
+    "inline": {
+      "plain_text": {
+        "value": "Acme Inc",
+        "section": "secondary"
+      }
+    }
+  },
+  {
+    "id": "state",
+    "name": "State",
+    "type": "relation",
+    "relation": {
+      "uri": "acme:item_state/open",
+      "mention": {
+        "section": "primary"
+      }
+    }
+  },
+  {
+    "id": "itemId",
+    "name": "Item Id",
+    "type": "inline",
+    "inline": {
+      "plain_text": {
+        "value": "#23487",
+        "section": "identifier"
+      }
+    }
+  },
+  {
+    "id": "itemIcon",
+    "name": "Item Icon",
+    "type": "inline",
+    "inline": {
+      "color": {
+        "value": {
+          "r": 247,
+          "g": 247,
+          "b": 42
+        },
+        "section": "entity"
+      }
+    }
+  },
+  {
+    "id": "description",
+    "name": "Description",
+    "type": "inline",
+    "inline": {
+      "plain_text": {
+        "value": "Would love to be able to preview some Acme resources in Notion!\n Maybe an open item?",
+        "section": "body"
+      }
+    }
+  },
+  {
+    "id": "updated_at",
+    "name": "Updated At",
+    "type": "inline",
+    "inline": {
+      "datetime": {
+        "value": "2022-01-11T19:53:18.829Z",
+        "section": "secondary"
+      }
+    }
+  },
+  {
+    "id": "label",
+    "name": "Label",
+    "type": "inline",
+    "inline": {
+      "enum": {
+        "value": "🔨 Ready to Build",
+        "color": {
+          "r": 100,
+          "g": 100,
+          "b": 100
+        },
+        "section": "primary"
+      }
+    }
+  },
+  {
+    "id": "media",
+    "name": "Embed",
+    "embed": {
+      "src_url": "https://c.tenor.com/XgaU95K_XiwAAAAC/kermit-typing.gif",
+      "image": {
+        "section": "embed"
+      }
+    }
+  }
+]
+```
 
 Each unfurl attribute object in this array maps to a different customizable section of a Link Preview. (To learn more about each section, jump to [The `section` value](/reference/unfurl-attribute-object#the-section-value).
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
 
 First, let's let at the properties in each individual unfurl attribute object.
 
 ## The unfurl attribute object
 
-<CodeGroup>
-  ```json Example unfurl attribute object theme={null}
-  {
-      "id": "title",
-      "name": "Title",
-      "type": "inline",
-      "inline": {
-        "title": {
-          "value": "Feature Request: Link Previews",
-          "section": "title"
-        }
+```json Example unfurl attribute object theme={null}
+{
+    "id": "title",
+    "name": "Title",
+    "type": "inline",
+    "inline": {
+      "title": {
+        "value": "Feature Request: Link Previews",
+        "section": "title"
       }
     }
-  ```
-</CodeGroup>
+  }
+```
 
 Each unfurl attribute object contains the following values:
 
@@ -194,29 +184,25 @@ The key of inline sub-type objects represents the kind of sub-type. The values o
 
 Every array of attribute objects that is sent to Notion to render a Link Preview must also include a `dev` attribute. The attribute indicates the service or company associated with the Link Preview. It takes the following format:
 
-<CodeGroup>
-  ```json Example dev attribute theme={null}
-  {
-      "id": "dev",
-      "name": "Developer Name",
-      "type": "inline",
-      "inline": {
-        "plain_text": {
-          "value": "Acme Inc",
-          "section": "secondary"
-       }
+```json Example dev attribute theme={null}
+{
+    "id": "dev",
+    "name": "Developer Name",
+    "type": "inline",
+    "inline": {
+      "plain_text": {
+        "value": "Acme Inc",
+        "section": "secondary"
      }
    }
-  ```
-</CodeGroup>
+ }
+```
 
 ### Embed sub-type child objects
 
 The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a Link Preview.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
 
 All embed sub-type objects contain: a `src_url` field that is a link to the embed, and an object whose key is the sub-type of the embed and whose value is an object indicating the `section` of the Link Preview where the value is rendered.
 
@@ -227,23 +213,17 @@ All embed sub-type objects contain: a `src_url` field that is a link to the embe
 | `image` | Image from a source URL. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.png", "image": { "section": "avatar" } }` |
 | `video` | Video from a source URL. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.mp4", "video": { "section": "embed" } }` |
 
-<Note>
-  There’s no need to ask a user to log in to the source service in an iFrame embed. If they’re using a Link Preview, then they’ve already authenticated.
-</Note>
+> [!NOTE]
+>
+> There’s no need to ask a user to log in to the source service in an iFrame embed. If they’re using a Link Preview, then they’ve already authenticated.
 
 ### The `section` value
 
 The `section` value of an unfurl attribute object defines where an attribute is rendered in the Link Preview or Mention.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
 
-<br />
-
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
 
 A `section` is specified in the sub-type object for the attribute. Refer to the table below for details about each `section` and its valid parent sub-types.
 

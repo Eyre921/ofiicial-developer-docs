@@ -21,8 +21,10 @@ When a reservation approaches its end time, ensure that you either renew your re
 Reservations are invoiced separately from your on-demand usage, at a frequency determined by your reservation contract
 (e.g. monthly, quarterly, or yearly).
 
-<Note>Reserved capacity will always be billed until the reservation ends, regardless of whether the reservation is
-actively used.</Note>
+> [!NOTE]
+>
+> Reserved capacity will always be billed until the reservation ends, regardless of whether the reservation is
+> actively used.
 
 ## Purchasing or renewing a reservation
 

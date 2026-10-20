@@ -35,6 +35,6 @@ Combine multiple conditions with `AND`:
 snapshot.base_model="accounts/fireworks/models/MODEL_NAME" AND latest_validated=true
 ```
 
-<Note>
-  Remember to URL-encode the filter value when using curl directly. `=` becomes `%3D`, `"` becomes `%22`, and `/` becomes `%2F`.
-</Note>
+> [!NOTE]
+>
+> Remember to URL-encode the filter value when using curl directly. `=` becomes `%3D`, `"` becomes `%22`, and `/` becomes `%2F`.

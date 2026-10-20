@@ -17,22 +17,20 @@ Emoji and icon objects represent icons on pages, databases, and callout blocks. 
 | `"file"` | Yes | No | A Notion-hosted file (uploaded via the UI). Returned in responses only. See [File object](/reference/file-object). |
 | `"file_upload"` | No | Yes | A file uploaded via the [File Upload API](/reference/file-upload). Write-only. See [File object](/reference/file-object). |
 
-<Note>
-  The read/write columns above apply to **page** and **database** icons. Callout block icons support all types except `file_upload` on write — use `emoji`, `external`, `custom_emoji`, or `icon` instead.
-</Note>
+> [!NOTE]
+>
+> The read/write columns above apply to **page** and **database** icons. Callout block icons support all types except `file_upload` on write — use `emoji`, `external`, `custom_emoji`, or `icon` instead.
 
 ***
 
 ## Emoji
 
-<CodeGroup>
-  ```json Example emoji object theme={null}
-  {
-    "type": "emoji",
-    "emoji": "😻"
-  }
-  ```
-</CodeGroup>
+```json Example emoji object theme={null}
+{
+  "type": "emoji",
+  "emoji": "😻"
+}
+```
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
@@ -41,52 +39,48 @@ Emoji and icon objects represent icons on pages, databases, and callout blocks. 
 
 ### Example: set a page icon via the [Create a page](/reference/post-page) endpoint
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl 'https://api.notion.com/v1/pages' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-    "parent": {
-      "page_id": "13d6da822f9343fa8ec14c89b8184d5a"
-    },
-    "properties": {
-      "title": [
-        {
-          "type": "text",
-          "text": {
-            "content": "A page with an avocado icon",
-            "link": null
-          }
+```bash cURL theme={null}
+curl 'https://api.notion.com/v1/pages' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+  "parent": {
+    "page_id": "13d6da822f9343fa8ec14c89b8184d5a"
+  },
+  "properties": {
+    "title": [
+      {
+        "type": "text",
+        "text": {
+          "content": "A page with an avocado icon",
+          "link": null
         }
-      ]
-    },
-    "icon": {
-      "type": "emoji",
-      "emoji": "🥑"
-    }
-  }'
-  ```
-</CodeGroup>
+      }
+    ]
+  },
+  "icon": {
+    "type": "emoji",
+    "emoji": "🥑"
+  }
+}'
+```
 
 ### Example: set a page icon via the [Update page](/reference/patch-page) endpoint
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    -X PATCH \
-  	--data '{
-    "icon": {
-  	  "type": "emoji",
-  	  "emoji": "🥨"
-      }
-  }'
-  ```
-</CodeGroup>
+```bash cURL theme={null}
+curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  -X PATCH \
+	--data '{
+  "icon": {
+	  "type": "emoji",
+	  "emoji": "🥨"
+    }
+}'
+```
 
 ***
 
@@ -101,112 +95,102 @@ Custom emojis are icons uploaded and managed in your workspace. Use the [List cu
 
 ### Example: custom emoji in a page icon response
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "icon": {
-      "type": "custom_emoji",
-      "custom_emoji": {
-        "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
-        "name": "bufo",
-        "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
-      }
+```json JSON theme={null}
+{
+  "icon": {
+    "type": "custom_emoji",
+    "custom_emoji": {
+      "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
+      "name": "bufo",
+      "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Example: inline custom emoji in rich text
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "mention",
-    "mention": {
-      "type": "custom_emoji",
-      "custom_emoji": {
-        "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
-        "name": "bufo",
-        "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
-      }
+```json JSON theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "custom_emoji",
+    "custom_emoji": {
+      "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
+      "name": "bufo",
+      "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Example: set a page icon to a custom emoji
 
 When writing, only the `id` field is required inside `custom_emoji`. The ID must belong to a custom emoji in the same workspace as the integration. Otherwise, the request returns a `validation_error`.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    -X PATCH \
-    --data '{
-    "icon": {
-      "type": "custom_emoji",
-      "custom_emoji": {
-        "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b"
-      }
+```bash cURL theme={null}
+curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  -X PATCH \
+  --data '{
+  "icon": {
+    "type": "custom_emoji",
+    "custom_emoji": {
+      "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b"
     }
-  }'
-  ```
-</CodeGroup>
+  }
+}'
+```
 
 ### Example: look up a custom emoji by name
 
 Use the `name` query parameter on [List custom emojis](/reference/list-custom-emojis) to resolve a custom emoji name to its ID, then use the ID to set a page icon.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl 'https://api.notion.com/v1/custom_emojis?name=bufo' \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl 'https://api.notion.com/v1/custom_emojis?name=bufo' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript TypeScript SDK theme={null}
-  import { Client } from "@notionhq/client"
+```javascript TypeScript SDK theme={null}
+import { Client } from "@notionhq/client"
 
-  const notion = new Client()
+const notion = new Client()
 
-  const response = await notion.customEmojis.list({ name: "bufo" })
-  const emoji = response.results[0]
+const response = await notion.customEmojis.list({ name: "bufo" })
+const emoji = response.results[0]
 
-  // Use the ID to set a page icon
-  if (emoji) {
-    await notion.pages.update({
-      page_id: "60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7",
-      icon: {
-        type: "custom_emoji",
-        custom_emoji: { id: emoji.id },
-      },
-    })
-  }
-  ```
-</CodeGroup>
+// Use the ID to set a page icon
+if (emoji) {
+  await notion.pages.update({
+    page_id: "60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7",
+    icon: {
+      type: "custom_emoji",
+      custom_emoji: { id: emoji.id },
+    },
+  })
+}
+```
 
 **Example response:**
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "object": "list",
-    "type": "custom_emoji",
-    "results": [
-      {
-        "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
-        "name": "bufo",
-        "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
-      }
-    ],
-    "has_more": false,
-    "next_cursor": null
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "object": "list",
+  "type": "custom_emoji",
+  "results": [
+    {
+      "id": "45ce454c-d427-4f53-9489-e5d0f3d1db6b",
+      "name": "bufo",
+      "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/865e85fc-7442-44d3-b323-9b03a2111720/3c6796979c50f4aa.png"
+    }
+  ],
+  "has_more": false,
+  "next_cursor": null
+}
+```
 
 ***
 
@@ -214,17 +198,15 @@ Use the `name` query parameter on [List custom emojis](/reference/list-custom-em
 
 Native Notion icons are built-in icons with a name and color. They appear in the Notion UI icon picker under the "Icons" tab.
 
-<CodeGroup>
-  ```json Example icon object theme={null}
-  {
-    "type": "icon",
-    "icon": {
-      "name": "pizza",
-      "color": "blue"
-    }
+```json Example icon object theme={null}
+{
+  "type": "icon",
+  "icon": {
+    "name": "pizza",
+    "color": "blue"
   }
-  ```
-</CodeGroup>
+}
+```
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
@@ -245,38 +227,36 @@ If omitted when setting an icon, the color defaults to `"gray"`.
 
 ### Example: set a page icon to a native icon
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    -X PATCH \
-    --data '{
+```bash cURL theme={null}
+curl https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7 \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  -X PATCH \
+  --data '{
+  "icon": {
+    "type": "icon",
     "icon": {
-      "type": "icon",
-      "icon": {
-        "name": "pizza",
-        "color": "blue"
-      }
+      "name": "pizza",
+      "color": "blue"
     }
-  }'
-  ```
+  }
+}'
+```
 
-  ```javascript TypeScript SDK theme={null}
-  import { Client } from "@notionhq/client"
+```javascript TypeScript SDK theme={null}
+import { Client } from "@notionhq/client"
 
-  const notion = new Client()
+const notion = new Client()
 
-  const response = await notion.pages.update({
-    page_id: "60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7",
-    icon: {
-      type: "icon",
-      icon: { name: "pizza", color: "blue" },
-    },
-  })
-  ```
-</CodeGroup>
+const response = await notion.pages.update({
+  page_id: "60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7",
+  icon: {
+    type: "icon",
+    icon: { name: "pizza", color: "blue" },
+  },
+})
+```
 
 ### Native icons from `external` URLs
 

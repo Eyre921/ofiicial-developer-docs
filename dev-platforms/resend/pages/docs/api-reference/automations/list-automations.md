@@ -7,122 +7,142 @@ path: docs/api-reference/automations/list-automations
 GET /automations
 Retrieve a list of automations.
 
-<QueryParams type="automations" />
+## Query Parameters
 
-<ResendParamField type="string">
-  Filter automations by status. Possible values: `enabled`, `disabled`.
-</ResendParamField>
+**limit** `number`
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+Number of automations to retrieve.
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  const resend = new Resend('re_xxxxxxxxx');
+**after** `string`
 
-  const { data, error } = await resend.automations.list();
-  ```
+The ID *after* which we'll retrieve more automations (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+The ID *before* which we'll retrieve more automations (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  $resend->automations->list();
-  ```
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+Filter automations by status. Possible values: `enabled`, `disabled`.
 
-  resend.api_key = "re_xxxxxxxxx"
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  resend.Automations.list()
-  ```
+const resend = new Resend('re_xxxxxxxxx');
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+const { data, error } = await resend.automations.list();
+```
 
-  Resend.api_key = "re_xxxxxxxxx"
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  Resend::Automations.list
-  ```
+$resend->automations->list();
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  import "github.com/resend/resend-go/v4"
+resend.api_key = "re_xxxxxxxxx"
 
-  func main() {
-  	client := resend.NewClient("re_xxxxxxxxx")
+resend.Automations.list()
+```
 
-  	client.Automations.List()
-  }
-  ```
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{list_opts::ListOptions, Resend, Result};
+Resend.api_key = "re_xxxxxxxxx"
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+Resend::Automations.list
+```
 
-    let _automations = resend.automations.list(ListOptions::default()).await?;
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-    Ok(())
-  }
-  ```
+import "github.com/resend/resend-go/v4"
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
-  import com.resend.services.automations.model.ListAutomationsResponseSuccess;
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+	client.Automations.List()
+}
+```
 
-          ListAutomationsResponseSuccess data = resend.automations().list();
-      }
-  }
-  ```
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{list_opts::ListOptions, Resend, Result};
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+  let _automations = resend.automations.list(ListOptions::default()).await?;
 
-  var resp = await resend.AutomationListAsync();
-  Console.WriteLine( "Count={0}", resp.Content.Data.Count );
-  ```
+  Ok(())
+}
+```
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/automations' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.automations.model.ListAutomationsResponseSuccess;
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend automations list
-  ```
-</RequestExample>
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
-        "name": "Welcome series",
-        "status": "enabled",
-        "created_at": "2026-10-01 12:00:00.000000+00",
-        "updated_at": "2026-10-01 12:00:00.000000+00"
-      },
-      {
-        "id": "662892b2-4270-4130-a186-33a19752319d",
-        "name": "Re-engagement",
-        "status": "disabled",
-        "created_at": "2026-09-15 08:30:00.000000+00",
-        "updated_at": "2026-09-20 14:00:00.000000+00"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+        ListAutomationsResponseSuccess data = resend.automations().list();
+    }
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+var resp = await resend.AutomationListAsync();
+Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/automations' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend automations list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd",
+      "name": "Welcome series",
+      "status": "enabled",
+      "created_at": "2026-10-01 12:00:00.000000+00",
+      "updated_at": "2026-10-01 12:00:00.000000+00"
+    },
+    {
+      "id": "662892b2-4270-4130-a186-33a19752319d",
+      "name": "Re-engagement",
+      "status": "disabled",
+      "created_at": "2026-09-15 08:30:00.000000+00",
+      "updated_at": "2026-09-20 14:00:00.000000+00"
+    }
+  ]
+}
+```

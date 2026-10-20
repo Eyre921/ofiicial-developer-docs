@@ -47,9 +47,9 @@ See the recipe’s `Config` dataclass for its checkpoint fields.
 
 For transient control-plane or worker interruptions, the trainer job manager exposes [`reconnect_and_wait`](/fine-tuning/training-api/reference/trainer-job-manager) so your driver can wait for a resumable state and resume cleanly.
 
-<Note>
-  `load_state_with_optimizer()` only restores optimizer state from DCP-format checkpoints. HF or sampler snapshots are not resumable optimizer checkpoints. Always load from the path returned by `save_state()` when you need full optimizer restore. See [Saving and loading](/fine-tuning/training-api/dedicated#saving-and-loading).
-</Note>
+> [!NOTE]
+>
+> `load_state_with_optimizer()` only restores optimizer state from DCP-format checkpoints. HF or sampler snapshots are not resumable optimizer checkpoints. Always load from the path returned by `save_state()` when you need full optimizer restore. See [Saving and loading](/fine-tuning/training-api/dedicated#saving-and-loading).
 
 ***
 

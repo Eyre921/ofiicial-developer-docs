@@ -13,6 +13,6 @@ The organization bot token must have the following scopes:
 
 Returns all legal holds for your organization, both active and released.
 
-<Info>
-  The API does not guarantee a particular sort order for returned legal holds.
-</Info>
+> [!NOTE]
+>
+> The API does not guarantee a particular sort order for returned legal holds.

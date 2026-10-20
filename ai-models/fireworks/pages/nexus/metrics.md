@@ -21,9 +21,7 @@ Track estimated cost and model choices for one Claude Code session, then review 
 
 The status line shows which models served turns during the session. Each segment is sized by its share of estimated cost.
 
-<Frame>
-  <img alt="Claude Code status line with a session cost bar split across several models" />
-</Frame>
+![Claude Code status line with a session cost bar split across several models](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireworks-nexus/session-cost/status-line.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=01b2d8a5d81c24a5d898a694feb379a6)
 
 Open the session meter for request-level detail:
 
@@ -37,13 +35,11 @@ The meter is local to the machine where Claude Code ran. Other harnesses route t
 
 Use the [usage dashboard](https://app.fireworks.ai/account/usage) to break down Fireworks traffic by model, user, or API key over the selected date range. The **Cost** view groups Fireworks account spend by model:
 
-<Frame>
-  <img alt="Usage dashboard Cost view split across several models" />
-</Frame>
+![Usage dashboard Cost view split across several models](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireworks-nexus/session-cost/account-cost.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=f2b646e4aa48b555f264e29521e253df)
 
-<Note>
-  The account dashboard covers Fireworks model usage and cost. It does not include usage billed by closed-model providers.
-</Note>
+> [!NOTE]
+>
+> The account dashboard covers Fireworks model usage and cost. It does not include usage billed by closed-model providers.
 
 ## Know which number you are reading
 

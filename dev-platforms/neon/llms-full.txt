@@ -24514,6 +24514,14 @@ Show a git-style schema diff between the current branch and another branch.
 
 Usage: `neon diff [compare-branch] [options]`
 
+### docs
+
+Search neon.com docs, guides, and more.
+
+| Subcommand                 | Description                                                                                  |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| `neon docs search <query>` | Search neon.com: docs, API reference, PostgreSQL tutorial, guides, FAQs, changelog, and blog |
+
 ### env
 
 Manage a branch's Neon env variables locally.
@@ -25124,7 +25132,7 @@ neon api /projects -Q org_id=org-cool-darkness-12345678 -o yaml
 
 Ask the Neon assistant a question from the terminal
 
-The `ask` command sends a question to the Neon assistant and prints the answer to your terminal: `neon ask --prompt "<question>"`. The assistant answers from Neon's documentation, so keep questions scoped to Neon and Lakebase Postgres rather than general chat. No login is required, and it doesn't touch your projects or account. To send feedback to the Neon team instead, use [`neon feedback`](https://neon.com/docs/cli/feedback).
+The `ask` command sends a question to the Neon assistant and prints the answer to your terminal: `neon ask --prompt "<question>"`. The assistant answers from Neon's documentation, so keep questions scoped to Neon and Lakebase Postgres rather than general chat. No login is required, and it doesn't touch your projects or account. To find docs pages on a topic, use [`neon docs search`](https://neon.com/docs/cli/docs). To send feedback to the Neon team instead, use [`neon feedback`](https://neon.com/docs/cli/feedback).
 
 The answer is natural-language text, not structured data. By default it streams as markdown, use `--output json` to get the answer back as a single `text` field you can parse.
 
@@ -26839,7 +26847,7 @@ neon credentials create [options]
 | Option         | Description                                                                                                                                                                                          | Type   | Default | Required |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
 | `--name`       | Label for the credential                                                                                                                                                                             | string | —       |    No    |
-| `--scope`      | Capability to grant. Repeatable. Values: storage:read, storage:write, ai\_gateway:invoke, functions:invoke Possible values: `storage:read`, `storage:write`, `ai_gateway:invoke`, `functions:invoke` | string | —       |    Yes   |
+| `--scope`      | Capability to grant. Repeatable. Values: storage:read, storage:write, ai\_gateway:invoke, functions:invoke Possible values: `storage:read`, `storage:write`, `ai_gateway:invoke`, `functions:invoke` | array  | —       |    Yes   |
 | `--branch`     | Branch ID or name                                                                                                                                                                                    | string | —       |    No    |
 | `--project-id` | Project ID                                                                                                                                                                                           | string | —       |    No    |
 
@@ -27371,6 +27379,87 @@ diff --neon database neondb
 
 Each branch's schema is dumped as `pg_dump --schema-only` SQL and the two dumps are compared, so the diff includes generated lines you didn't write directly, such as `-- Name: ...` comments and `ALTER TABLE ... OWNER TO` statements. Lines prefixed with `+` exist only on the branch under review; `-` lines exist only on the compare branch. If the schemas match, `diff` reports no differences instead.
 
+--- [Document source](https://neon.com/docs/cli/docs.md) ---
+
+> Summary: The Neon CLI `docs` command searches neon.com from your terminal: the docs, API reference, PostgreSQL tutorial, guides, FAQs, changelog, and blog. It needs no login; use `--category` to narrow results and `--output json` for machine-readable output when scripting or calling it from an agent.
+
+# Neon CLI command: docs
+
+Search the Neon docs, guides, and more from the terminal
+
+The `docs` command searches neon.com and prints matching pages in your terminal. It covers the docs, API reference, PostgreSQL tutorial, guides, FAQs, changelog, and blog. No login is required, and it doesn't touch your projects or account. To get a written answer instead of a list of pages, use [`neon ask`](https://neon.com/docs/cli/ask).
+
+Subcommands: [search](https://neon.com/docs/cli/docs#search)
+
+## neon docs search
+
+Searches neon.com and lists the matching pages.
+
+```bash
+neon docs search <query> [options]
+```
+
+| Option       | Description                                                                                                                            | Type   | Default | Required |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--category` | Only return pages in these categories (repeatable) Possible values: `docs`, `api`, `postgresql`, `guides`, `faqs`, `blog`, `changelog` | array  | —       |    No    |
+| `--limit`    | Maximum number of results (1-40)                                                                                                       | number | `10`    |    No    |
+
+The default table shows each result's page title, the section that matched, and the page URL. The section is blank when the matching heading is the page title. `--output json` and `--output yaml` also include each result's `category`, `breadcrumb`, and a short `excerpt` of the matching text.
+
+To search more than one category, repeat `--category`.
+
+Search for a topic:
+
+```bash
+neon docs search "reset a branch"
+```
+
+Search only the API reference and the docs, and return the top three results:
+
+```bash
+neon docs search "create branch" --category api --category docs --limit 3
+```
+
+```text
+Title                       Heading                                                     URL
+Manage branches             Branching with the Neon API > Create a branch with the API  https://neon.com/docs/manage/branches
+Neon CLI command: branches  neon branches create                                        https://neon.com/docs/cli/branches
+Neon CLI quickstart         Common operations > Create a branch                         https://neon.com/docs/cli/quickstart
+```
+
+Get results as JSON so you can process them in a script:
+
+```bash
+neon docs search "reset a branch" --limit 2 --output json
+```
+
+<details>
+
+<summary>Show output</summary>
+
+```json
+[
+  {
+    "title": "Manage branches",
+    "url": "https://neon.com/docs/manage/branches",
+    "category": "docs",
+    "breadcrumb": ["Docs", "Manage & operate", "Projects & resources"],
+    "heading": "Manage branches > Reset a branch from parent",
+    "excerpt": "You can use Neon's Reset from parent feature to instantly update a branch with the latest schema and data from its parent. This feature can be an integral part of your CI/CD automation. You can use the Neon Console, CLI, or API. For details, see Reset from parent."
+  },
+  {
+    "title": "Branching with the Neon CLI",
+    "url": "https://neon.com/docs/guides/branching-neon-cli",
+    "category": "docs",
+    "breadcrumb": ["Docs", "Postgres", "Branching", "Automate & workflows"],
+    "heading": "Branching with the Neon CLI > Resetting a branch from its parent",
+    "excerpt": "Depending on your development workflow, you might need to periodically reset a branch to match the latest state of its parent. This is useful, for example, when resetting a development branch back to the production branch before starting work on a new feature. Use the followin..."
+  }
+]
+```
+
+</details>
+
 --- [Document source](https://neon.com/docs/cli/env.md) ---
 
 > Summary: The Neon CLI `neon env pull` command writes a branch's Neon environment variables to a local .env file. By default it targets an existing .env file, otherwise .env.local, and only Neon-managed variables are rewritten; other lines in the file are preserved. Use --file to target a specific file, --branch to pull from a specific branch, and --service to pull only selected services.
@@ -27497,7 +27586,7 @@ neon functions deploy <slug> [options]
 | Option         | Description                                                                                                                              | Type    | Default | Required |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
 | `--bundle`     | Bundle --src with esbuild. Use --no-bundle to zip a prebuilt directory (root must contain index.mjs or index.js) or a file of that name. | boolean | `true`  |    No    |
-| `--env`        | Environment variable as KEY=VALUE (repeatable)                                                                                           | string  | —       |    No    |
+| `--env`        | Environment variable as KEY=VALUE (repeatable)                                                                                           | array   | —       |    No    |
 | `--runtime`    | Function runtime Possible values: `nodejs24`                                                                                             | string  | —       |    No    |
 | `--src`        | Function source: a directory containing index.ts, index.js, or index.mjs (first file match is the entry), or a path to the entry file    | string  | —       |    No    |
 | `--wait`       | Wait for the deployment to finish building                                                                                               | boolean | `true`  |    No    |
@@ -29549,7 +29638,7 @@ neon neon-auth config webhook update [options]
 | Option             | Description                                                                                           | Type    | Default | Required |
 | ------------------ | ----------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
 | `--enabled`        | Enable webhooks                                                                                       | boolean | —       |    Yes   |
-| `--enabled-events` | Events to enable Possible values: `user.before_create`, `user.created`, `send.otp`, `send.magic_link` | string  | —       |    No    |
+| `--enabled-events` | Events to enable Possible values: `user.before_create`, `user.created`, `send.otp`, `send.magic_link` | array   | —       |    No    |
 | `--timeout`        | Webhook timeout in seconds (1-10)                                                                     | number  | —       |    No    |
 | `--url`            | Webhook endpoint URL                                                                                  | string  | —       |    No    |
 | `--branch`         | Branch ID or name                                                                                     | string  | —       |    No    |
@@ -29651,7 +29740,7 @@ neon neon-auth user set-role <user-id> [options]
 
 | Option         | Description       | Type   | Default | Required |
 | -------------- | ----------------- | ------ | ------- | :------: |
-| `--roles`      | Roles to assign   | string | —       |    Yes   |
+| `--roles`      | Roles to assign   | array  | —       |    Yes   |
 | `--branch`     | Branch ID or name | string | —       |    No    |
 | `--project-id` | Project ID        | string | —       |    No    |
 
@@ -80507,6 +80596,10 @@ Here are the relevant metrics that you can track in order to understand your use
 
 These consumption metrics represent total cumulative usage across all branches and computes in a given project, accrued so far in a given monthly billing period. Metrics are refreshed on the first day of the following month, when the new billing period starts.
 
+**Note: Not for billing**
+
+These fields are approximate and not intended for billing or metering. For billing, use the [consumption history API](https://neon.com/docs/guides/consumption-metrics) (`/consumption_history/v2/projects`).
+
 #### Branch-level metric
 
 There is an additional value that you also might want to track: `logical_size`, which gives you the current size of a particular branch.
@@ -80574,7 +80667,7 @@ When any configured metric reaches its quota limit, all active computes for that
 
 See [Querying metrics and quotas](https://neon.com/docs/guides/consumption-limits#querying-metrics-and-quotas) to find the reset date, billing period, and other values related to a project's consumption.
 
-**Note:** Neon tracks these consumption metrics on a monthly cycle. If you want to track metrics on a different cycle, you need to take snapshots of your metrics at the desired interval and store the data externally. You can also use the  [Consumption API](https://neon.com/docs/guides/consumption-limits#retrieving-metrics-for-all-projects) to collect metrics from across a range of billing periods.
+**Note:** Neon tracks these consumption metrics on a monthly cycle. To track usage on a different cycle or across billing periods, use the [consumption history API](https://neon.com/docs/guides/consumption-metrics) (`/consumption_history/v2/projects`), which returns hourly, daily, or monthly metrics.
 
 ## Configuring quotas
 
@@ -121918,6 +122011,10 @@ The response includes:
 
 On paid plans, the [consumption history API](https://neon.com/docs/introduction/usage-calculations#fetch-your-usage) provides these as separate metrics: `compute_time_seconds` corresponds to `compute_unit_seconds`, `data_storage_bytes_hour` splits into `root_branch_bytes_month`, `child_branch_bytes_month`, and `instant_restore_bytes_month`, and `data_transfer_bytes` splits into `public_network_transfer_bytes` and `private_network_transfer_bytes`.
 
+**Note: Not for billing**
+
+These fields are approximate and meant for monitoring usage, not for billing or metering. On paid plans, use the [consumption history API](https://neon.com/docs/introduction/usage-calculations#fetch-your-usage) (`/consumption_history/v2/projects`) for billing.
+
 ### Branch storage
 
 The Free plan caps storage per project based on `logical_size` across branches. Use `GET /projects/{project_id}/branches` to check each branch's size:
@@ -126335,18 +126432,9 @@ For attribute definitions, find the [Retrieve project consumption metrics](https
 
 </details>
 
-### Project-level metrics (for the current billing period)
+### Invoice-aligned metrics
 
-To get basic billing period-based consumption metrics for each project in the organization `org-ocean-art-12345678`, include `org_id` in the `GET /projects` request for consumption metrics:
-
-```bash
-curl --request GET \
-     --url 'https://console.neon.tech/api/v2/projects?org_id=org-ocean-art-12345678' \
-     --header 'accept: application/json' \
-     --header 'authorization: Bearer $ORG_API_KEY'
-```
-
-See more details about using this endpoint on the [Manage billing with consumption limits](https://neon.com/docs/guides/consumption-limits#retrieving-metrics-for-all-projects) page in our Platform integration guide.
+For metrics that match your invoice on usage-based plans (Launch, Scale, Agent, and Enterprise), use `/consumption_history/v2/projects`. See [Query consumption metrics](https://neon.com/docs/guides/consumption-metrics).
 
 ## Metric definitions
 
@@ -131667,6 +131755,7 @@ These apps in the `neondatabase/examples` repository use Drizzle:
 - [`realtime/guides-chat-app`](https://github.com/neondatabase/examples/tree/main/realtime/guides-chat-app): the chat app the guides build, with a snake_case schema
 - [`realtime/with-react`](https://github.com/neondatabase/examples/tree/main/realtime/with-react): Hono and React, with a minimal Drizzle setup
 - [`realtime/with-tanstack`](https://github.com/neondatabase/examples/tree/main/realtime/with-tanstack): TanStack Start, with a camelCase schema and an aliased column
+- [`realtime/with-nextjs`](https://github.com/neondatabase/examples/tree/main/realtime/with-nextjs): Next.js and Managed Better Auth, with a per-user snake_case schema
 
 ## Setup
 
@@ -131970,12 +132059,12 @@ These Drizzle query shapes don't work as live queries. All but the last fail on 
 - read the [queries guide](../guides/queries)
 - see how the client applies writes optimistically in the [mutations guide](../guides/mutations)
 - look up `drizzleAdapter()` and `drizzleParsers` in the [Drizzle section of the SDK reference](../sdks/typescript#drizzle)
-- see Drizzle in a full-stack app in the [TanStack example](./tanstack)
-- browse the full source of the [chat app](https://github.com/neondatabase/examples/tree/main/realtime/guides-chat-app), [`with-react`](https://github.com/neondatabase/examples/tree/main/realtime/with-react) and [`with-tanstack`](https://github.com/neondatabase/examples/tree/main/realtime/with-tanstack) on GitHub
+- see Drizzle in a full-stack app in the [Next.js](./nextjs) and [TanStack](./tanstack) examples
+- browse the full source of the [chat app](https://github.com/neondatabase/examples/tree/main/realtime/guides-chat-app), [`with-react`](https://github.com/neondatabase/examples/tree/main/realtime/with-react), [`with-tanstack`](https://github.com/neondatabase/examples/tree/main/realtime/with-tanstack) and [`with-nextjs`](https://github.com/neondatabase/examples/tree/main/realtime/with-nextjs) on GitHub
 
 --- [Document source](https://neon.com/docs/realtime/examples/kysely.md) ---
 
-> Summary: Use Kysely with Neon Realtime: add the Kysely adapter, seal Kysely selects with parameters, keep live rows typed and return the txid from Kysely writes.
+> Summary: Use Kysely with Neon Realtime: add the Kysely adapter, seal a Kysely select, keep live rows typed and return the txid from Kysely writes.
 
 # Kysely example
 
@@ -131983,11 +132072,11 @@ Using Realtime with your Kysely schema and queries.
 
 This page shows how to build a Realtime app with [Kysely](https://kysely.dev), using your existing schema, queries, types and writes.
 
-You'll learn how to [add the Kysely adapter](https://neon.com/docs/realtime/examples/kysely#create-the-realtime-server), [define your schema, migrations and live queries](https://neon.com/docs/realtime/examples/kysely#defining-queries), [pass query parameters](https://neon.com/docs/realtime/examples/kysely#pass-query-parameters), [keep end-to-end type-safety](https://neon.com/docs/realtime/examples/kysely#subscribing-to-queries) and [return the transaction ID from Kysely writes](https://neon.com/docs/realtime/examples/kysely#return-the-txid-from-kysely-writes).
+You'll learn how to [add the Kysely adapter](https://neon.com/docs/realtime/examples/kysely#create-the-realtime-server), [define your schema, migrations and live queries](https://neon.com/docs/realtime/examples/kysely#defining-queries), [pass query parameters](https://neon.com/docs/realtime/examples/kysely#passing-query-parameters), [keep end-to-end type-safety](https://neon.com/docs/realtime/examples/kysely#subscribing-to-queries) and [return the transaction ID from Kysely writes](https://neon.com/docs/realtime/examples/kysely#return-the-txid-from-kysely-writes).
 
 **Tip: Full example on GitHub**
 
-The [`realtime/with-nextjs`](https://github.com/neondatabase/examples/tree/main/realtime/with-nextjs) app in the `neondatabase/examples` repository uses Kysely.
+The [`realtime/with-kysely`](https://github.com/neondatabase/examples/tree/main/realtime/with-kysely) app in the `neondatabase/examples` repository is a framework-free TypeScript app built with Kysely and Realtime.
 
 ## Setup
 
@@ -132000,27 +132089,25 @@ npm install @neon/realtime @neon/realtime-kysely kysely pg
 npm install -D @types/pg
 ```
 
-`@neon/realtime-kysely` exports `kyselyAdapter()` for your server. The browser needs nothing from it.
-
-The queries guide's [setup](../guides/queries#setup) covers the rest: Neon's [Managed Better Auth](https://neon.com/docs/auth/overview), `neon.ts` and the environment variables. For Kysely on Neon in general, see [Connect from Kysely to Neon](https://neon.com/docs/guides/kysely).
+`@neon/realtime-kysely` exports `kyselyAdapter()` to use in your backend. There are no client imports. The queries guide's [setup](../guides/queries#setup) covers `neon.ts` and the environment variables. For Kysely on Neon in general, see [Connect from Kysely to Neon](https://neon.com/docs/guides/kysely).
 
 ### Create the Realtime server
 
 Pass `kyselyAdapter()` to [`createRealtime`](../sdks/typescript#backend-createrealtime), so the Realtime server accepts Kysely queries:
 
-```ts filename="backend/realtime.ts" {2,7}
+```ts filename="src/server.ts" {2,7}
 import { createRealtime } from "@neon/realtime/server"
 import { kyselyAdapter } from "@neon/realtime-kysely"
 
-export const realtime = createRealtime({
-  secret: process.env.NEON_REALTIME_SECRET!,
-  db: "neondb",
-  adapter: kyselyAdapter()
+const realtime = createRealtime({
+  secret: env.realtime.secret,
+  db: postgresDatabaseName,
+  adapter: kyselyAdapter() // seals Kysely query builders, not raw SQL
 })
 ```
 
 - [`kyselyAdapter()`](../sdks/typescript#kysely-kyselyadapter) takes no options. When you seal a Kysely select, it compiles it to SQL and bind parameters
-- `db` is the database name, such as `"neondb"`, not a Kysely instance. Use the database in your `DATABASE_URL`, and keep `NEON_REALTIME_SECRET` [on the server](../guides/queries#sealing-queries)
+- `db` is the database name, not a Kysely instance. The example derives it from `DATABASE_URL` with `@neon/env` (as `postgresDatabaseName` in `src/env.ts`), reads the secret from the same parsed env, and keeps `NEON_REALTIME_SECRET` [on the server](../guides/queries#sealing-queries)
 - the same server still seals [`rawSql`](../guides/queries#using-raw-sql) queries, so you can mix the two
 
 ## Defining queries
@@ -132031,38 +132118,52 @@ Define live queries with your usual Kysely schema, instance and select builder, 
 
 Your `Database` interface stays plain Kysely. Use the column names as its keys:
 
-```ts filename="backend/schema.ts"
-import type { Generated } from "kysely"
+```ts filename="src/schema.ts"
+import type { Generated, Selectable } from "kysely"
 
+// Kysely's types for the table. src/setup.ts creates it.
+// Keys equal the column names: Realtime builds live rows from PostgreSQL's result names, so the
+// live rows and the rows the server reads share the same keys.
 export interface TodosTable {
-  // No default: the client generates the ID, so an optimistic row already has its key
-  id: string
-  user_id: string
+  id: Generated<number> // SERIAL PRIMARY KEY
   title: string
-  completed: Generated<boolean>
-  created_at: Generated<Date>
+  completed: Generated<boolean> // defaults to false
 }
 
 export interface Database {
-  todos: TodosTable
+  realtime_todos: TodosTable
 }
+
+// The row the live query returns. Kysely infers it from the table instead of a handwritten
+// interface, keeping the `{ id, title, completed }` shape that api-types.ts and the client import.
+export type Todo = Selectable<Database["realtime_todos"]>
 ```
 
 Realtime names each field in a live row after the column name Postgres returns, so keys that match the columns keep live rows and Kysely's types in step. That's why [`CamelCasePlugin` doesn't work](https://neon.com/docs/realtime/examples/kysely#common-pitfalls).
 
-Create the table with a [Kysely migration](https://kysely.dev/docs/migrations) or your usual migration tool:
+The example creates the table once with Kysely's schema builder in `src/setup.ts`, run with `npm run db:setup`. You could also use a [Kysely migration](https://kysely.dev/docs/migrations) or your usual migration tool:
 
-```ts filename="migrations/0001_create_todos.ts"
-import { type Kysely, sql } from "kysely"
+```ts filename="src/setup.ts"
+await db.schema
+  .createTable("realtime_todos")
+  .ifNotExists()
+  .addColumn("id", "serial", (column) => column.primaryKey())
+  .addColumn("title", "text", (column) => column.notNull())
+  .addColumn("completed", "boolean", (column) =>
+    column.notNull().defaultTo(false)
+  )
+  .execute()
 
-export async function up(db: Kysely<any>): Promise<void> {
-  await db.schema
-    .createTable("todos")
-    .addColumn("id", "uuid", (c) => c.primaryKey())
-    .addColumn("user_id", "uuid", (c) => c.notNull())
-    .addColumn("title", "text", (c) => c.notNull())
-    .addColumn("completed", "boolean", (c) => c.notNull().defaultTo(false))
-    .addColumn("created_at", "timestamptz", (c) => c.notNull().defaultTo(sql`now()`))
+// Seed one row only when the table is empty, so re-running stays idempotent.
+const existing = await db
+  .selectFrom("realtime_todos")
+  .select("id")
+  .limit(1)
+  .executeTakeFirst()
+if (!existing) {
+  await db
+    .insertInto("realtime_todos")
+    .values({ title: "Open this app in another tab" })
     .execute()
 }
 ```
@@ -132071,90 +132172,72 @@ The primary key is all Realtime needs to work. See the [table requirements](../g
 
 ### Create the Kysely instance
 
-You build live queries with your usual Kysely `db`. The adapter then compiles them using Kysely's PostgreSQL compiler, whatever your dialect. `db` still runs your writes and any reads on the server, such as server-rendered rows:
+The example keeps the `pg` pool in `src/db.ts`:
 
-```ts filename="backend/db.ts"
-import { Kysely, PostgresDialect } from "kysely"
+```ts filename="src/db.ts"
 import { Pool } from "pg"
 
-import type { Database } from "./schema"
+import { env } from "./env.js"
 
-const pool = new Pool({
-  // Neon URLs say sslmode=require. Asking pg for verify-full keeps today's checks and skips its warning
-  connectionString: process.env.DATABASE_URL!.replace("sslmode=require", "sslmode=verify-full")
+export const pool = new Pool({
+  connectionString: env.postgres.databaseUrl,
+  max: 5,
+  min: 1
 })
-export const db = new Kysely<Database>({
+
+pool.on("error", (error) => {
+  console.error("Unexpected error on idle PostgreSQL client", error)
+})
+```
+
+`src/server.ts` and `src/setup.ts` build a Kysely instance over that pool. The adapter compiles your queries using Kysely's PostgreSQL compiler, whatever your dialect. `db` still runs your writes and any reads on the server, such as server-rendered rows:
+
+```ts filename="src/server.ts"
+import { Kysely, PostgresDialect } from "kysely"
+
+import { pool } from "./db.js"
+import type { Database } from "./schema.js"
+
+const db = new Kysely<Database>({
   dialect: new PostgresDialect({ pool })
 })
-
-// So an idle connection error, for example when the compute scales to zero, doesn't crash the API
-pool.on("error", (error: Error) => console.error(error))
 ```
 
 ### Define the live query
 
-A live query is a Kysely select that you build but don't execute. Wrap it in a function, so each call builds a fresh query for its values:
+A live query is a Kysely select that you build but don't execute. Wrap it in a function, so each call builds a fresh query:
 
-```ts filename="backend/queries.ts"
-import type { InferResult } from "kysely"
-
-import { db } from "./db"
-
-export function todosQuery(userId: string) {
-  return db
-    .selectFrom("todos")
-    .select(["id", "title", "completed", "created_at"])
-    .where("user_id", "=", userId)
-    .orderBy("created_at", "desc")
-    .orderBy("id", "desc")
-}
-
-export type TodoRow = InferResult<ReturnType<typeof todosQuery>>[number]
+```ts filename="src/server.ts"
+// The only place the live query is built, so the sealed query matches the rows the server reads.
+const selectTodos = () =>
+  db
+    .selectFrom("realtime_todos")
+    .select(["id", "title", "completed"])
+    .orderBy("id")
 ```
 
-- the `where` clause is the authorization: a user only sees their own todos. See [sealing authorized queries](../guides/queries#sealing-authorized-queries)
-- call `.execute()` on the same query to read the rows on the server, for example to server-render the first results. See [return the sealed query and initial results](../guides/ssr#return-the-sealed-query-and-initial-results)
+- this example's list is shared, so the query has no `where` clause. To scope a live query so each user only sees their own rows, add a `where` on context you trust; that clause is the authorization. See [sealing authorized queries](../guides/queries#sealing-authorized-queries)
+- call `.execute()` on the same builder to read the rows on the server, for example to server-render the first results. See [return the sealed query and initial results](../guides/ssr#return-the-sealed-query-and-initial-results)
 - rename a field with an alias, as in `"id as todoId"`, and name a computed field with `.as()`
-- `TodoRow` is the row type. You'll use it [in the browser](https://neon.com/docs/realtime/examples/kysely#subscribing-to-queries)
+- `Todo` is the row type, which `src/schema.ts` infers from the table. You'll use it [in the browser](https://neon.com/docs/realtime/examples/kysely#subscribing-to-queries)
 
 The adapter doesn't check the SQL. That happens when a client subscribes, so a query that calls a non-deterministic function such as `now()` seals and then fails to subscribe. See the rules for [defining live queries](../guides/queries#defining-live-queries).
 
 ## Sealing queries
 
-Seal each query on the server. The browser can subscribe to a sealed query, but it can't read or change it, as the queries guide explains in [sealing queries](../guides/queries#sealing-queries).
+### Passing query parameters
 
-### Pass query parameters
+This example seals a single query with no parameters. When a query does need a parameter (like a user ID or search term) Kysely compiles each value to a bind parameter. The adapter encodes values the way node-postgres does, and Postgres infers each parameter's type from the SQL.
 
-Kysely has no special syntax for live query parameters: they're the values you pass to the query function. Fill them in on the server from context you trust. Take the user ID from the verified session, validate anything from the request, then seal with `realtime.seal({ query: todosQuery(user.id) })`. The queries guide shows this in an [API endpoint](../guides/queries#exposing-an-endpoint) and a [server function](../guides/queries#using-server-functions).
-
-Another parameter is another argument. This query adds `since`:
-
-```ts filename="backend/recent-todos.ts" {8}
-import { db } from "./db"
-
-export function todosSinceQuery(userId: string, since: Date) {
-  return db
-    .selectFrom("todos")
-    .select(["id", "title", "completed", "created_at"])
-    .where("user_id", "=", userId)
-    .where("created_at", ">", since)
-    .orderBy("created_at", "desc")
-    .orderBy("id", "desc")
-}
-```
-
-- Kysely compiles each value to a bind parameter. The sealed query carries the values alongside the SQL, never spliced into it
-- the adapter encodes values the way node-postgres does, and Postgres infers each parameter's type from the SQL. So unlike [raw SQL parameters](../guides/queries#parameter-types), a `Date` or JSON value needs no `pgParam` wrapper
-- where Postgres can't infer a parameter's type from the SQL, wrap the value in a [`pgParam`](../sdks/typescript#backend-pgparam) helper for a built-in type, inside a `sql` template
-- each sealed query is for one set of values. To change them, the browser fetches a new sealed query. See [changing query parameters](../guides/reactivity#changing-query-parameters) and [renewing sealed queries](../guides/queries#renewing-sealed-queries)
+Where Postgres can't infer a parameter's type from the SQL, wrap the value in a [`pgParam`](../sdks/typescript#backend-pgparam) helper for a built-in type, inside a `sql` template.
 
 ## Subscribing to queries
 
-Subscribe in the browser as the [subscribing guide](../guides/subscribing) shows. The client needs no Kysely-specific parsers: its defaults decode like node-postgres, which `PostgresDialect` uses, so a `timestamptz` column is a `Date` in live rows, as it is when Kysely runs the query.
+Subscribe in the browser as the [subscribing guide](../guides/subscribing) shows. The client needs no Kysely-specific parsers: its defaults decode like node-postgres, which `PostgresDialect` uses, so each live row is the same `{ id, title, completed }` — a number, a string and a boolean — that Kysely reads on the server.
 
-[`seal()`](../sdks/typescript#backend-realtimeserverseal) infers the row type from the select: `realtime.seal({ query: todosQuery(userId) })` resolves to a [`SealedLiveQuery<TodoRow>`](../sdks/typescript#backend-sealedlivequery).
+[`seal()`](../sdks/typescript#backend-realtimeserverseal) infers the row type from the select: `realtime.seal({ query: selectTodos() })` resolves to a [`SealedLiveQuery<Todo>`](../sdks/typescript#backend-sealedlivequery).
 
-- to name the row type in the browser, use `import type { TodoRow } from "../backend/queries"`. TypeScript erases the import, so Kysely and your server code stay out of the browser bundle
+- to name the row type in the browser, use `import type { Todo } from "../../src/schema.js"`. TypeScript erases the import, so Kysely and your server code stay out of the browser bundle
 - if your dialect runs on another driver, pass its parsers, such as [`postgresJsParsers`](../sdks/typescript#client-postgresjsparsers). For custom types, register a parser with [`defineParsers`](../sdks/typescript#client-defineparsers)
 - for the rest, see [subscribing to the sealed query](../guides/subscribing#subscribe-to-the-sealed-query) and the [React and TanStack DB bindings](../guides/reactivity)
 
@@ -132164,35 +132247,30 @@ The client holds each optimistic change until the write's transaction ID comes b
 
 ### Return the txid from Kysely writes
 
-Return the [transaction ID](../guides/mutations#returning-the-txid-from-your-backend) from the write's own statement, with `.returning()`. For example, a function that completes a todo:
+Return the [transaction ID](../guides/mutations#returning-the-txid-from-your-backend) from the write's own statement, with `.returning()`. Every mutation in the example — insert, toggle and delete — returns it. The example is a plain Node HTTP server; here is its toggle handler:
 
-```ts filename="backend/server.ts" {9,17}
+```ts filename="src/server.ts" {5,12}
 import { sql } from "kysely"
 
-import { db } from "./db"
-
-export type MutationResponse =
-  | { readonly kind: "committed"; readonly txid: string }
-  | { readonly kind: "unchanged" }
-
+// Same statement on every mutation: the client waits for this txid over Realtime before dropping
+// its optimistic state, so the write must keep returning it.
 const txid = sql<string>`pg_current_xact_id()::text`.as("txid")
 
-export async function setTodoCompleted(userId: string, id: string, completed: boolean): Promise<MutationResponse> {
-  const row = await db
-    .updateTable("todos")
-    .set({ completed })
-    .where("id", "=", id)
-    .where("user_id", "=", userId)
-    .returning(txid)
-    .executeTakeFirst()
-
-  return row ? { kind: "committed", txid: row.txid } : { kind: "unchanged" }
-}
+// ...inside the request handler, for PATCH /api/todos/:id
+const result = await db
+  .updateTable("realtime_todos")
+  .set({ completed: sql<boolean>`NOT completed` })
+  .where("id", "=", Number(match[1]))
+  .returning(txid)
+  .executeTakeFirst()
+return result
+  ? json(response, 200, result satisfies MutationResponse)
+  : json(response, 404, { error: "Todo not found" })
 ```
 
 - `pg_current_xact_id()` runs in the write's statement, so it returns the ID of the transaction that made the change, with any driver. The `text` cast keeps the 64-bit ID exact, as the decimal string the client waits for
-- `executeTakeFirst()` returns `undefined` when no row matched. Nothing comes over Realtime, so the function returns `unchanged` and the client has nothing to wait for
-- take `userId` from the verified session, never from the request: the `user_id` condition stops one user changing another's todos
+- `executeTakeFirst()` returns `undefined` when no row matched. Nothing comes over Realtime, so the handler responds `404` and the client has nothing to wait for
+- the insert returns the new `id` too, with `.returning(["id", txid])`, so the client can swap its optimistic row for the real one. This demo doesn't authenticate its routes — add authorization before adapting it for production
 - for writes that span several statements, run them all on `trx` in `db.transaction().execute(async (trx) => ...)`, and read the txid there with `trx.selectNoFrom(txid).executeTakeFirstOrThrow()`
 - call it from a route or server function, and see how the frontend [calls these writes](../guides/mutations#calling-the-routes-from-the-frontend)
 
@@ -132208,7 +132286,7 @@ These don't work as live queries:
 - read the [queries guide](../guides/queries)
 - see how the client applies writes optimistically in the [mutations guide](../guides/mutations)
 - look up `kyselyAdapter()` in the [Kysely section of the SDK reference](../sdks/typescript#kysely)
-- see Kysely in a full-stack app in the [Next.js example](./nextjs), or browse [its source](https://github.com/neondatabase/examples/tree/main/realtime/with-nextjs) on GitHub
+- browse the full [`realtime/with-kysely`](https://github.com/neondatabase/examples/tree/main/realtime/with-kysely) example on GitHub
 
 --- [Document source](https://neon.com/docs/realtime/examples/mastra.md) ---
 
@@ -132419,13 +132497,13 @@ The abort reaches `generate()` through its `abortSignal` and the tools check the
 
 --- [Document source](https://neon.com/docs/realtime/examples/nextjs.md) ---
 
-> Summary: Build a per-user todo app with Next.js, Kysely and Managed Better Auth on Neon Realtime: read and seal live queries in a Server Component, renew them through a Route Handler, and settle optimistic server action writes by txid.
+> Summary: Build a per-user todo app with Next.js, Drizzle and Managed Better Auth on Neon Realtime: read and seal live queries in a Server Component, renew them through a Route Handler, and settle optimistic server action writes by txid.
 
 # Next.js example
 
 Full-stack example app using Realtime with Next.js.
 
-This example shows how to use Neon Realtime with [Next.js](https://nextjs.org), [Kysely](https://kysely.dev) and Neon's [Managed Better Auth](https://neon.com/docs/auth/overview), with support for [auth](https://neon.com/docs/realtime/examples/nextjs#authorize-with-the-session), [SSR](https://neon.com/docs/realtime/examples/nextjs#server-side-rendering), [client-side reactivity](https://neon.com/docs/realtime/examples/nextjs#client-side-reactivity) and [optimistic mutations](https://neon.com/docs/realtime/examples/nextjs#optimistic-mutations).
+This example shows how to use Neon Realtime with [Next.js](https://nextjs.org), [Drizzle ORM](https://orm.drizzle.team) and Neon's [Managed Better Auth](https://neon.com/docs/auth/overview), with support for [auth](https://neon.com/docs/realtime/examples/nextjs#authorize-with-the-session), [SSR](https://neon.com/docs/realtime/examples/nextjs#server-side-rendering), [client-side reactivity](https://neon.com/docs/realtime/examples/nextjs#client-side-reactivity) and [optimistic mutations](https://neon.com/docs/realtime/examples/nextjs#optimistic-mutations).
 
 The sections follow the same order as the guides, from [defining](https://neon.com/docs/realtime/examples/nextjs#defining-queries) and [sealing](https://neon.com/docs/realtime/examples/nextjs#sealing-queries) queries to writing to them, and show the Next.js code for each step.
 
@@ -132435,10 +132513,11 @@ The complete app is in the [`realtime/with-nextjs`](https://github.com/neondatab
 
 ## Setup
 
-Install the Realtime SDK with its Kysely adapter and React bindings:
+Install the Realtime SDK with its Drizzle adapter and React bindings, Drizzle ORM and `drizzle-kit` for migrations:
 
 ```bash filename="Terminal"
-npm install @neon/realtime @neon/realtime-kysely @neon/realtime-react
+npm install @neon/realtime @neon/realtime-drizzle @neon/realtime-react drizzle-orm
+npm install -D drizzle-kit dotenv
 ```
 
 Add a `neon.ts` that enables Managed Better Auth and Realtime on your branch:
@@ -132474,27 +132553,36 @@ Note that `NEON_REALTIME_SECRET` never gets a `NEXT_PUBLIC_` prefix. The browser
 
 ### Define the schema
 
-Define your database schema. In this example, we're using Kysely and defining a single table:
+Define your database schema. In this example, we're using Drizzle and defining a single table:
 
 ```ts filename="src/lib/schema.ts"
-import type { Generated } from "kysely"
+import { boolean, index, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
-// Keys equal the column names. Realtime builds live rows from PostgreSQL's result names, so a
-// result-transforming plugin such as CamelCasePlugin would give live rows different keys from server rows.
-export interface TodosTable {
-  id: string; // uuid, created in the browser, so the optimistic row and the live row share it
-  user_id: string; // uuid, the Managed Better Auth user id; only ever set from the session
-  title: string;
-  completed: Generated<boolean>;
-  created_at: Generated<Date>; // timestamptz: pg and the Realtime client both parse it to a Date
-}
+// The single schema source: the app and `drizzle-kit push` both read it. Columns are declared snake_case
+// on purpose. Realtime builds live rows from PostgreSQL's result names, so a camelCase JS property that
+// mapped to a different column would give live rows different keys from server rows.
+export const todos = pgTable(
+  "realtime_next_todos",
+  {
+    // uuid, created in the browser, so the optimistic row and the live row share it. This primary key is
+    // the replica identity Realtime needs.
+    id: uuid("id").primaryKey(),
+    // uuid, the Managed Better Auth user id; only ever set from the session. No foreign key to
+    // neon_auth."user": this app doesn't manage the neon_auth schema.
+    user_id: uuid("user_id").notNull(),
+    title: text("title").notNull(),
+    completed: boolean("completed").notNull().default(false),
+    // timestamptz: pg and the Realtime client both parse it to a Date.
+    created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  // Supports the `WHERE user_id = … ORDER BY created_at DESC` live query.
+  (t) => [index("realtime_next_todos_user_id_created_at_idx").on(t.user_id, t.created_at)]
+)
 
-export interface Database {
-  realtime_next_todos: TodosTable;
-}
+export type Todo = typeof todos.$inferSelect
 ```
 
-Give the table a primary key, here `id`, and create it with a [Kysely migration](https://kysely.dev/docs/migrations) or your usual migration tool. A primary key is all Realtime needs from the table, as [table requirements](../guides/queries#table-requirements) explains.
+Give the table a primary key, here `id`, and create it with [`drizzle-kit push`](https://neon.com/docs/guides/drizzle-migrations) or your usual migration tool. A primary key is all Realtime needs from the table, as [table requirements](../guides/queries#table-requirements) explains.
 
 ## Defining queries
 
@@ -132502,30 +132590,35 @@ Define, run and seal your live queries on the server, both to provide `initialDa
 
 ### Define the live query
 
-We then [define a query](../guides/queries#using-a-query-builder-or-orm) with Kysely. `getDb()` returns a Kysely client over a node-postgres (`pg`) pool, in `src/lib/db.ts`:
+We then [define a query](../guides/queries#using-a-query-builder-or-orm) with Drizzle. `getDb()` returns a Drizzle client over a node-postgres (`pg`) pool, in `src/lib/db.ts`:
 
 ```ts filename="src/lib/todos.ts"
 import "server-only"
 
-import type { InferResult } from "kysely"
+import { desc, eq } from "drizzle-orm"
 
 import { getDb } from "./db"
+import { todos } from "./schema"
 
 // The only place the live query is built. The server read, the seal and every renewal use it, so their
-// fingerprints match.
+// fingerprints match. `userId` must come from getUser(), never from the client.
 function todosQuery(userId: string) {
   return getDb()
-    .selectFrom("realtime_next_todos")
-    .select(["id", "title", "completed", "created_at"])
-    .where("user_id", "=", userId)
-    .orderBy("created_at", "desc")
-    .orderBy("id", "desc")
+    .select({
+      id: todos.id,
+      title: todos.title,
+      completed: todos.completed,
+      created_at: todos.created_at
+    })
+    .from(todos)
+    .where(eq(todos.user_id, userId))
+    .orderBy(desc(todos.created_at), desc(todos.id))
 }
 
-export type TodoRow = InferResult<ReturnType<typeof todosQuery>>[number]
+export type TodoRow = Awaited<ReturnType<typeof todosQuery>>[number]
 ```
 
-`TodoRow` is the row type Kysely infers from the select. The browser imports it as a type only, so no server code reaches it. `userId` always comes from the [server session](https://neon.com/docs/realtime/examples/nextjs#authorize-with-the-session), never from the browser, and this `WHERE` keeps each user's todos separate.
+`TodoRow` is the row type Drizzle infers from the select. The browser imports it as a type only, so no server code reaches it. `userId` always comes from the [server session](https://neon.com/docs/realtime/examples/nextjs#authorize-with-the-session), never from the browser, and this `WHERE` keeps each user's todos separate.
 
 Live rows don't keep the query's `ORDER BY` order, so the browser [sorts them](https://neon.com/docs/realtime/examples/nextjs#apply-writes-optimistically) too.
 
@@ -132535,13 +132628,13 @@ Seal the query on the server, for the user in the session. The browser can subsc
 
 ### Create the Realtime server
 
-The Realtime server, from [`createRealtime()`](../sdks/typescript#backend-createrealtime), holds the secret and seals queries. It should be created and then used in your trusted server code. Pass it [`kyselyAdapter()`](../sdks/typescript#kysely-kyselyadapter), so it can seal Kysely queries:
+The Realtime server, from [`createRealtime()`](../sdks/typescript#backend-createrealtime), holds the secret and seals queries. It should be created and then used in your trusted server code. Pass it [`drizzleAdapter()`](../sdks/typescript#drizzle-drizzleadapter), so it can seal Drizzle queries:
 
 ```ts filename="src/lib/realtime.ts"
 import "server-only"
 
 import { createRealtime } from "@neon/realtime/server"
-import { kyselyAdapter } from "@neon/realtime-kysely"
+import { drizzleAdapter } from "@neon/realtime-drizzle"
 
 import { getEnv } from "./env"
 
@@ -132551,7 +132644,7 @@ function create() {
   return createRealtime({
     secret: env.realtimeSecret,
     db: env.database,
-    adapter: kyselyAdapter(),
+    adapter: drizzleAdapter(),
     debugMode: process.env.NODE_ENV === "development" // full database errors in dev only
   })
 }
@@ -132645,11 +132738,11 @@ Run the query and seal it in the same function, so the rows and the sealed query
 
 ```ts filename="src/lib/todos.ts"
 // Read and seal the same query. The stream's first full result replaces these rows, so nothing is missed
-// or doubled.
+// or doubled. It sends every row again rather than resuming from these.
 export async function loadTodos(userId: string) {
   const query = todosQuery(userId)
   const [rows, sealedQuery] = await Promise.all([
-    query.execute(),
+    query, // awaiting the builder runs it
     getRealtime().seal({ query }) // compiles the builder to SQL; never runs it
   ])
   return { rows, sealedQuery }
@@ -132751,18 +132844,20 @@ Create the Realtime client once, inside the React tree, in a `useState` initiali
 "use client"
 
 import { createRealtimeClient } from "@neon/realtime/client"
+import { drizzleParsers } from "@neon/realtime-drizzle/client"
 // @neon/realtime-react's build has no "use client" directive: import it only from client modules.
 import { RealtimeProvider } from "@neon/realtime-react"
 import { type ReactNode, useState } from "react"
 
 export function RealtimeRoot({ url, children }: { url: string; children: ReactNode }) {
-  // No parsers: the client's defaults match node-postgres, which Kysely's PostgresDialect uses on the server.
-  const [client] = useState(() => createRealtimeClient({ url }))
+  // drizzleParsers make the browser parse live rows the way Drizzle parses server rows, so created_at
+  // stays a Date and completed a boolean (todo-list.tsx reads both).
+  const [client] = useState(() => createRealtimeClient({ url, parsers: { ...drizzleParsers } }))
   return <RealtimeProvider client={client}>{children}</RealtimeProvider>
 }
 ```
 
-Creating the client doesn't connect, so it's safe during the server render. It connects on the first subscribe and disconnects after the last one ends, so you don't need an effect that closes it. With the default parsers, live rows have the same types as the rows Kysely reads on the server, and Server Component props keep `created_at` a `Date`, as [keep row shapes identical](../guides/ssr#keep-row-shapes-identical) explains.
+Creating the client doesn't connect, so it's safe during the server render. It connects on the first subscribe and disconnects after the last one ends, so you don't need an effect that closes it. With `drizzleParsers`, live rows have the same types as the rows Drizzle reads on the server, and Server Component props keep `created_at` a `Date`, as [keep row shapes identical](../guides/ssr#keep-row-shapes-identical) explains.
 
 Render `RealtimeRoot` around the components that subscribe. With one live query on the page, it can wrap that component and share its key, as `Todos` does. With several, render it higher up, for example in your root layout, and key each subscribing component on its own `queryFingerprint`.
 
@@ -132937,11 +133032,12 @@ On the server, each write is a server action that returns the transaction ID:
 ```ts filename="src/app/actions.ts"
 "use server"
 
-import { sql } from "kysely"
+import { and, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { getUser } from "../auth/server"
 import { getDb } from "../lib/db"
+import { todos } from "../lib/schema"
 
 // Typed results rather than throws: in production Next.js hides a thrown error's message.
 export type WriteResult =
@@ -132954,7 +133050,7 @@ const setCompletedInput = z.object({ id: z.uuid(), completed: z.boolean() })
 const deleteInput = z.object({ id: z.uuid() })
 
 // Same statement, same transaction; works on any driver.
-const txid = sql<string>`pg_current_xact_id()::text`.as("txid")
+const txid = sql<string>`pg_current_xact_id()::text`
 const toResult = (row?: { txid: string }): WriteResult =>
   row ? { kind: "committed", txid: row.txid } : { kind: "unchanged" }
 
@@ -132963,12 +133059,11 @@ export async function addTodo(pageUserId: string, raw: z.input<typeof addInput>)
   if (!user) return { kind: "rejected", reason: "UNAUTHENTICATED" }
   const input = addInput.safeParse(raw)
   if (!input.success) return { kind: "rejected", reason: "INVALID_INPUT" }
-  const row = await getDb()
-    .insertInto("realtime_next_todos")
+  const [row] = await getDb()
+    .insert(todos)
     .values({ id: input.data.id, user_id: user.id, title: input.data.title }) // user_id from the session only
-    .onConflict((oc) => oc.column("id").doNothing()) // replayed id: no write, nothing to wait for
-    .returning(txid)
-    .executeTakeFirst()
+    .onConflictDoNothing({ target: todos.id }) // replayed id: no write, nothing to wait for
+    .returning({ txid })
   return toResult(row)
 }
 
@@ -132977,13 +133072,11 @@ export async function setTodoCompleted(pageUserId: string, raw: z.input<typeof s
   if (!user) return { kind: "rejected", reason: "UNAUTHENTICATED" }
   const input = setCompletedInput.safeParse(raw)
   if (!input.success) return { kind: "rejected", reason: "INVALID_INPUT" }
-  const row = await getDb()
-    .updateTable("realtime_next_todos")
+  const [row] = await getDb()
+    .update(todos)
     .set({ completed: input.data.completed })
-    .where("id", "=", input.data.id)
-    .where("user_id", "=", user.id) // only the user's own row
-    .returning(txid)
-    .executeTakeFirst()
+    .where(and(eq(todos.id, input.data.id), eq(todos.user_id, user.id))) // only the user's own row
+    .returning({ txid })
   return toResult(row)
 }
 
@@ -132992,12 +133085,10 @@ export async function deleteTodo(pageUserId: string, raw: z.input<typeof deleteI
   if (!user) return { kind: "rejected", reason: "UNAUTHENTICATED" }
   const input = deleteInput.safeParse(raw)
   if (!input.success) return { kind: "rejected", reason: "INVALID_INPUT" }
-  const row = await getDb()
-    .deleteFrom("realtime_next_todos")
-    .where("id", "=", input.data.id)
-    .where("user_id", "=", user.id) // only the user's own row
-    .returning(txid)
-    .executeTakeFirst()
+  const [row] = await getDb()
+    .delete(todos)
+    .where(and(eq(todos.id, input.data.id), eq(todos.user_id, user.id))) // only the user's own row
+    .returning({ txid })
   return toResult(row)
 }
 ```
@@ -133012,6 +133103,7 @@ Don't revalidate after a write. The live query already delivers it, and a revali
 
 - read the guides on [reactivity](../guides/reactivity), [optimistic mutations](../guides/mutations) and [server-side rendering](../guides/ssr) for the concepts behind each step
 - look up `useLiveQuery()` and `RealtimeProvider` in the [React section of the SDK reference](../sdks/typescript#react)
+- see how Realtime works with your own Drizzle schema, selects and writes in the [Drizzle example](./drizzle)
 - see the [TanStack example](./tanstack), which seeds a TanStack DB collection in a route loader and writes through collection handlers
 - browse the [full source on GitHub](https://github.com/neondatabase/examples/tree/main/realtime/with-nextjs)
 

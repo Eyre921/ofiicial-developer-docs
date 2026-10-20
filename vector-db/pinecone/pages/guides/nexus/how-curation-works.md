@@ -12,9 +12,7 @@ Curation is how Pinecone Nexus turns a context's source documents into the chunk
 
 Curation does the hard work *up front* so retrieval gets a head start at query time. Sources aren't just chopped into chunks. They're reorganized into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
 
-<img alt="Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables" />
-
-<img alt="Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables" />
+![Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/curation-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=2065936462acb85fa9d7109bd615fe94)
 
 ## The curation runtime
 

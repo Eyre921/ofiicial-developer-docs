@@ -8,9 +8,9 @@ Set monthly spend alerts in Pinecone to email the recipients you choose when you
 
 You can set up email alerts that track your organization's monthly spending. An alert notifies the recipients you choose when spending reaches a threshold you set, and it resets at the start of each monthly billing cycle.
 
-<Note>
-  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
-</Note>
+> [!NOTE]
+>
+> Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
 
 ## Set a spend alert
 

@@ -12,9 +12,9 @@ path: docs/cookbook/coding-agents/claude-code-integration
 
 > Use Claude Code with OpenRouter
 
-<Warning>
-  Claude Code with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection) when using Claude Code.
-</Warning>
+> [!WARNING]
+>
+> Claude Code with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection) when using Claude Code.
 
 ## Why Use OpenRouter with Claude Code?
 
@@ -38,29 +38,27 @@ This guide will get you running [Claude Code](https://code.claude.com/docs/en/ov
 
 ### Step 1: Install Claude Code
 
-<Tabs>
-  <Tab title="Native Install (Recommended)">
-    **macOS, Linux, WSL:**
+**Native Install (Recommended)**
 
-    ```bash lines theme={null}
-    curl -fsSL https://claude.ai/install.sh | bash
-    ```
+**macOS, Linux, WSL:**
 
-    **Windows PowerShell:**
+```bash lines theme={null}
+curl -fsSL https://claude.ai/install.sh | bash
+```
 
-    ```powershell lines theme={null}
-    irm https://claude.ai/install.ps1 | iex
-    ```
-  </Tab>
+**Windows PowerShell:**
 
-  <Tab title="npm">
-    Requires [Node.js 18 or newer](https://nodejs.org/en/download/).
+```powershell lines theme={null}
+irm https://claude.ai/install.ps1 | iex
+```
 
-    ```bash lines theme={null}
-    npm install -g @anthropic-ai/claude-code
-    ```
-  </Tab>
-</Tabs>
+**npm**
+
+Requires [Node.js 18 or newer](https://nodejs.org/en/download/).
+
+```bash lines theme={null}
+npm install -g @anthropic-ai/claude-code
+```
 
 ### Step 2: Connect Claude to OpenRouter
 
@@ -72,70 +70,68 @@ Requirements:
 2. Provide your [OpenRouter API key](https://openrouter.ai/settings/keys) as `ANTHROPIC_AUTH_TOKEN`
 3. **Important:** Explicitly blank out `ANTHROPIC_API_KEY` to prevent conflicts
 
-<Note>
-  **Why `ANTHROPIC_AUTH_TOKEN`:** OpenRouter is an LLM gateway that authenticates requests with a bearer token, and Claude Code sends `ANTHROPIC_AUTH_TOKEN` as `Authorization: Bearer <token>` — the credential variable [Anthropic documents for bearer-authenticated gateways](https://code.claude.com/docs/en/llm-gateway-connect#set-the-credential-variable). `ANTHROPIC_API_KEY` is instead sent as `x-api-key`, is treated as a direct-Anthropic credential, and prompts you once in interactive mode to approve it over a saved login. Setting it to an empty string keeps Claude Code from falling back to authenticating against Anthropic directly.
-</Note>
+> [!NOTE]
+>
+> **Why `ANTHROPIC_AUTH_TOKEN`:** OpenRouter is an LLM gateway that authenticates requests with a bearer token, and Claude Code sends `ANTHROPIC_AUTH_TOKEN` as `Authorization: Bearer <token>` — the credential variable [Anthropic documents for bearer-authenticated gateways](https://code.claude.com/docs/en/llm-gateway-connect#set-the-credential-variable). `ANTHROPIC_API_KEY` is instead sent as `x-api-key`, is treated as a direct-Anthropic credential, and prompts you once in interactive mode to approve it over a saved login. Setting it to an empty string keeps Claude Code from falling back to authenticating against Anthropic directly.
 
-<Tabs>
-  <Tab title="Shell Profile">
-    Add these environment variables to your shell profile:
+**Shell Profile**
 
-    ```bash lines theme={null}
-    # Open your shell profile in nano
-    nano ~/.zshrc  # or ~/.bashrc for Bash users
+Add these environment variables to your shell profile:
 
-    # Add these lines to the file:
-    export OPENROUTER_API_KEY="<your-openrouter-api-key>"
-    export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
-    export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
-    export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
-    export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 # Optional: enables the gateway model picker
-    ```
+```bash lines theme={null}
+# Open your shell profile in nano
+nano ~/.zshrc  # or ~/.bashrc for Bash users
 
-    Then reload your shell so the new values are live — otherwise you will keep testing the old environment and conclude the configuration does not work:
+# Add these lines to the file:
+export OPENROUTER_API_KEY="<your-openrouter-api-key>"
+export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
+export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
+export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 # Optional: enables the gateway model picker
+```
 
-    ```bash lines theme={null}
-    source ~/.zshrc  # or ~/.bashrc, or open a new terminal
-    ```
+Then reload your shell so the new values are live — otherwise you will keep testing the old environment and conclude the configuration does not work:
 
-    <Note>
-      **Persistence:** We recommend adding these lines to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`).
-    </Note>
+```bash lines theme={null}
+source ~/.zshrc  # or ~/.bashrc, or open a new terminal
+```
 
-    <Warning>
-      **Ordering matters:** `ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"` is expanded when the profile is sourced. If `OPENROUTER_API_KEY` is defined *later* in the file, in a different file, or injected by a secrets manager after your profile runs, the auth token expands to an empty string and every request fails with an auth error. Ensure the key is defined **before** it is consumed by `ANTHROPIC_AUTH_TOKEN`, or put it in a file that loads earlier (e.g. `~/.zshenv` for zsh).
-    </Warning>
+> [!NOTE]
+>
+> **Persistence:** We recommend adding these lines to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`).
 
-    <Note>
-      **Secret hygiene:** This puts a plaintext API key in your shell profile — a file that is easy to accidentally commit to a dotfiles repo or paste into a gist. Consider loading the key from your OS keychain instead, e.g. on macOS: `export OPENROUTER_API_KEY="$(security find-generic-password -s openrouter -w)"`. If a key does leak, revoke and rotate it at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
-    </Note>
-  </Tab>
+> [!WARNING]
+>
+> **Ordering matters:** `ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"` is expanded when the profile is sourced. If `OPENROUTER_API_KEY` is defined *later* in the file, in a different file, or injected by a secrets manager after your profile runs, the auth token expands to an empty string and every request fails with an auth error. Ensure the key is defined **before** it is consumed by `ANTHROPIC_AUTH_TOKEN`, or put it in a file that loads earlier (e.g. `~/.zshenv` for zsh).
 
-  <Tab title="Project Settings File">
-    Alternatively, you can configure Claude Code using a project-level settings file at `.claude/settings.local.json` in your project root:
+> [!NOTE]
+>
+> **Secret hygiene:** This puts a plaintext API key in your shell profile — a file that is easy to accidentally commit to a dotfiles repo or paste into a gist. Consider loading the key from your OS keychain instead, e.g. on macOS: `export OPENROUTER_API_KEY="$(security find-generic-password -s openrouter -w)"`. If a key does leak, revoke and rotate it at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
 
-    ```json lines theme={null}
-    {
-      "env": {
-        "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-        "ANTHROPIC_AUTH_TOKEN": "<your-openrouter-api-key>",
-        "ANTHROPIC_API_KEY": "",
-        "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
-      }
-    }
-    ```
+**Project Settings File**
 
-    Replace `<your-openrouter-api-key>` with your actual OpenRouter API key.
+Alternatively, you can configure Claude Code using a project-level settings file at `.claude/settings.local.json` in your project root:
 
-    <Note>
-      **Note:** This method keeps your configuration scoped to the project, making it easy to share OpenRouter settings with your team via version control (just be careful not to commit your API key).
-    </Note>
-  </Tab>
-</Tabs>
+```json lines theme={null}
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+    "ANTHROPIC_AUTH_TOKEN": "<your-openrouter-api-key>",
+    "ANTHROPIC_API_KEY": "",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  }
+}
+```
 
-<Warning>
-  **Variable Location:** Do not put these in a project-level `.env` file. The native Claude Code installer does not read standard `.env` files.
-</Warning>
+Replace `<your-openrouter-api-key>` with your actual OpenRouter API key.
+
+> [!NOTE]
+>
+> **Note:** This method keeps your configuration scoped to the project, making it easy to share OpenRouter settings with your team via version control (just be careful not to commit your API key).
+
+> [!WARNING]
+>
+> **Variable Location:** Do not put these in a project-level `.env` file. The native Claude Code installer does not read standard `.env` files.
 
 ### Step 3: Clear any cached Anthropic login
 
@@ -147,19 +143,19 @@ If you were previously logged in to Claude Code with an Anthropic account, you m
 
 Then quit and re-launch `claude` so it picks up the new environment variables.
 
-<Note>
-  If you have never logged in to Claude Code with Anthropic, you can skip this step.
-</Note>
+> [!NOTE]
+>
+> If you have never logged in to Claude Code with Anthropic, you can skip this step.
 
-<Note>
-  **Where the cached login lives:** On macOS the cached session is stored in the Keychain as a generic password named `Claude Code-credentials` (native installs do not write `~/.claude/.credentials.json`). If you are debugging a stubborn auth conflict, you can confirm a stale session exists with:
-
-  ```bash lines theme={null}
-  security find-generic-password -s "Claude Code-credentials"
-  ```
-
-  If it prints an entry after `/logout`, delete it with `security delete-generic-password -s "Claude Code-credentials"` and relaunch `claude`.
-</Note>
+> [!NOTE]
+>
+> **Where the cached login lives:** On macOS the cached session is stored in the Keychain as a generic password named `Claude Code-credentials` (native installs do not write `~/.claude/.credentials.json`). If you are debugging a stubborn auth conflict, you can confirm a stale session exists with:
+>
+> ```bash lines theme={null}
+> security find-generic-password -s "Claude Code-credentials"
+> ```
+>
+> If it prints an entry after `/logout`, delete it with `security delete-generic-password -s "Claude Code-credentials"` and relaunch `claude`.
 
 ### Step 4: Start your session
 
@@ -214,9 +210,9 @@ export CLAUDE_CODE_SUBAGENT_MODEL="~anthropic/claude-opus-latest[1m]"
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | The model used for Haiku-class tasks (e.g. quick completions) |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | The model used for sub-agent tasks spawned by Claude Code |
 
-<Warning>
-  Claude Code 2.1.x added Fable as a fourth model class. When Claude Code points at OpenRouter, Fable is **not** offered in `/model` by default — setting `ANTHROPIC_DEFAULT_FABLE_MODEL` is the only way to make it selectable.
-</Warning>
+> [!WARNING]
+>
+> Claude Code 2.1.x added Fable as a fourth model class. When Claude Code points at OpenRouter, Fable is **not** offered in `/model` by default — setting `ANTHROPIC_DEFAULT_FABLE_MODEL` is the only way to make it selectable.
 
 After setting the overrides, open `/model` inside Claude Code to confirm every model class you expect is listed, and check the model column in your [Activity Dashboard](https://openrouter.ai/activity) to confirm requests route to the models you configured.
 
@@ -240,9 +236,9 @@ On OpenRouter, fast mode is a [`fast` service tier endpoint](/docs/guides/featur
 
 The required beta header is injected automatically whenever the fast tier endpoint serves the request.
 
-<Note>
-  Each supported Opus version also has a dedicated `*-fast` model (for example, [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/claude-opus-5-fast)). These are deprecated: they keep working for existing integrations and are served by the same fast tier capacity, but new integrations should use one of the options above on the regular model. New Anthropic models will not receive `*-fast` siblings.
-</Note>
+> [!NOTE]
+>
+> Each supported Opus version also has a dedicated `*-fast` model (for example, [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/claude-opus-5-fast)). These are deprecated: they keep working for existing integrations and are served by the same fast tier capacity, but new integrations should use one of the options above on the regular model. New Anthropic models will not receive `*-fast` siblings.
 
 ### Using `/fast` in Claude Code
 
@@ -252,21 +248,21 @@ Claude Code has a built-in `/fast` command that toggles fast mode. When enabled,
 export CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK=1
 ```
 
-<Note>
-  Requires Claude Code v2.1.96 or newer.
-</Note>
+> [!NOTE]
+>
+> Requires Claude Code v2.1.96 or newer.
 
-<Warning>
-  Claude Code only attaches `speed: "fast"` when the resolved model ID matches a supported Opus version (e.g. `anthropic/claude-opus-5`). With `ANTHROPIC_DEFAULT_OPUS_MODEL` set to the `~anthropic/claude-opus-latest` alias — including the example in [Configuring Models](#configuring-models) above — `/fast` reports "Fast mode ON" but requests are sent without the `speed` parameter: standard speed, standard pricing. To actually use fast mode, pin the variable to a specific Opus ID such as `anthropic/claude-opus-5`.
-</Warning>
+> [!WARNING]
+>
+> Claude Code only attaches `speed: "fast"` when the resolved model ID matches a supported Opus version (e.g. `anthropic/claude-opus-5`). With `ANTHROPIC_DEFAULT_OPUS_MODEL` set to the `~anthropic/claude-opus-latest` alias — including the example in [Configuring Models](#configuring-models) above — `/fast` reports "Fast mode ON" but requests are sent without the `speed` parameter: standard speed, standard pricing. To actually use fast mode, pin the variable to a specific Opus ID such as `anthropic/claude-opus-5`.
 
 ### Pricing
 
 Fast mode is priced at a premium over the underlying Claude Opus model's standard token rates. See [Anthropic's fast mode pricing](https://platform.claude.com/docs/en/build-with-claude/fast-mode#pricing) for current rates. When fast mode is active, the response's `usage` object includes `"speed": "fast"` to confirm the request was processed at the higher speed tier, and the reported service tier is `priority` (the Messages API returns it in `usage.service_tier`; the Chat Completions and Responses APIs return a top-level `service_tier` field).
 
-<Note>
-  If `speed: "fast"` is sent for a model that does not support fast mode, it still requests the [priority service tier](/docs/guides/features/service-tiers#fast-mode) where a provider offers one (at priority pricing); otherwise the request proceeds at standard speed with standard pricing. **Claude Fable has no fast tier** — toggling `/fast` while on a Fable model does not speed Fable up. Instead, Claude Code switches your session to your configured Opus model, so subsequent requests run (and bill) on Opus rather than Fable.
-</Note>
+> [!NOTE]
+>
+> If `speed: "fast"` is sent for a model that does not support fast mode, it still requests the [priority service tier](/docs/guides/features/service-tiers#fast-mode) where a provider offers one (at priority pricing); otherwise the request proceeds at standard speed with standard pricing. **Claude Fable has no fast tier** — toggling `/fast` while on a Fable model does not speed Fable up. Instead, Claude Code switches your session to your configured Opus model, so subsequent requests run (and bill) on Opus rather than Fable.
 
 ### Routing behavior
 
@@ -301,9 +297,7 @@ The action requires the `anthropic_api_key` input before it will launch Claude C
 
 You can add a custom statusline to Claude Code that tracks your OpenRouter API costs in real-time. The statusline displays the provider, model, cumulative cost, and cache discounts for your session.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-code-integration/claude-code-statusline.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=06adfa14552de4c90bf429d9bdbe46c6" alt="Claude Code statusline showing OpenRouter cost tracking" width="2286" height="766" data-path="assets/cookbook/coding-agents/claude-code-integration/claude-code-statusline.png" />
-</Frame>
+![Claude Code statusline showing OpenRouter cost tracking](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-code-integration/claude-code-statusline.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=06adfa14552de4c90bf429d9bdbe46c6)
 
 Download the statusline scripts from the [openrouter-examples repository](https://github.com/OpenRouterTeam/openrouter-examples/tree/main/claude-code), make them executable, and add the following to your `~/.claude/settings.json`:
 

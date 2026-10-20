@@ -14,7 +14,7 @@ Cloudera AI integrates with the rest of the Cloudera ecosystem, so data flows ac
 
 Cloudera's Accelerators for Machine Learning Projects (AMPs) are prebuilt projects that do the development work of deploying RAG architectures for you. This AMP is a prototype that fully integrates Pinecone into a RAG use case and shows semantic search with RAG at scale.
 
-<PrimarySecondaryCTA />
+[Get started](https://github.com/cloudera/CML_AMP_Intelligent-QA-Chatbot-with-NiFi-Pinecone-and-Llama2)
 
 ## Resources
 

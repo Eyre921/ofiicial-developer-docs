@@ -14,9 +14,9 @@ path: docs/agent-sdk/call-model/mcp-tools
 
 `@openrouter/mcp` connects to a remote [Model Context Protocol](https://modelcontextprotocol.io) server (Streamable HTTP or SSE) and exposes its tools as first-class `callModel` tools. You authenticate once, spread the returned tools into `callModel({ tools })`, and the SDK handles discovery, invocation, progress events, cancellation, resources, and elicitation.
 
-<Note>
-  `stdio` MCP servers are intentionally out of scope. This package targets remote servers you can reach over HTTP.
-</Note>
+> [!NOTE]
+>
+> `stdio` MCP servers are intentionally out of scope. This package targets remote servers you can reach over HTTP.
 
 ## When to use it
 
@@ -26,19 +26,17 @@ If you only need a hosted MCP server for your editor or coding assistant, see th
 
 ## Installation
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install @openrouter/mcp @openrouter/agent
-  ```
+```bash title="npm" lines theme={null}
+npm install @openrouter/mcp @openrouter/agent
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add @openrouter/mcp @openrouter/agent
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add @openrouter/mcp @openrouter/agent
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add @openrouter/mcp @openrouter/agent
-  ```
-</CodeGroup>
+```bash title="bun" lines theme={null}
+bun add @openrouter/mcp @openrouter/agent
+```
 
 ## Quick start
 
@@ -203,9 +201,9 @@ const mcp = await createMCPTools({
 
 Implement `MCPCacheStore` (a small `get` / `set` / `delete` interface) to back the cache with Redis, a database, or any KV store you already run.
 
-<Warning>
-  `cacheCredentials` is `false` by default. When enabled, snapshots contain bearer tokens or headers, so treat the store as a secret store and namespace cache keys by principal in multi-tenant setups.
-</Warning>
+> [!WARNING]
+>
+> `cacheCredentials` is `false` by default. When enabled, snapshots contain bearer tokens or headers, so treat the store as a secret store and namespace cache keys by principal in multi-tenant setups.
 
 ## Streaming, progress, and cancellation
 
@@ -225,33 +223,31 @@ Pass an `AbortSignal` to `createMCPTools({ signal })` and every in-flight tool c
 
 ## Resources and elicitation
 
-<AccordionGroup>
-  <Accordion title="Resources as synthetic tools">
-    When the MCP server advertises resources, `@openrouter/mcp` exposes them as two synthetic tools the model can call directly:
+> **Resources as synthetic tools**
+>
+> When the MCP server advertises resources, `@openrouter/mcp` exposes them as two synthetic tools the model can call directly:
+>
+> * `list_resources`, enumerate available resources.
+> * `read_resource`, fetch a resource by URI.
+>
+> These are on by default. Set `resources: false` to hide them, or `resources: { mode: 'synthetic-tools' }` to configure future modes.
 
-    * `list_resources`, enumerate available resources.
-    * `read_resource`, fetch a resource by URI.
-
-    These are on by default. Set `resources: false` to hide them, or `resources: { mode: 'synthetic-tools' }` to configure future modes.
-  </Accordion>
-
-  <Accordion title="Handling elicitation requests">
-    Some MCP servers pause a tool call to ask the caller for structured input (`elicitation/create`). Pass an `onElicitation` handler to answer them:
-
-    ```typescript lines theme={null}
-    const mcp = await createMCPTools({
-      url,
-      auth,
-      onElicitation: async ({ message, requestedSchema }) => {
-        const answer = await promptUser(message, requestedSchema);
-        return { action: 'accept', content: answer };
-      },
-    });
-    ```
-
-    If you omit the handler, requests are auto-declined so the tool call fails cleanly rather than hanging.
-  </Accordion>
-</AccordionGroup>
+> **Handling elicitation requests**
+>
+> Some MCP servers pause a tool call to ask the caller for structured input (`elicitation/create`). Pass an `onElicitation` handler to answer them:
+>
+> ```typescript lines theme={null}
+> const mcp = await createMCPTools({
+>   url,
+>   auth,
+>   onElicitation: async ({ message, requestedSchema }) => {
+>     const answer = await promptUser(message, requestedSchema);
+>     return { action: 'accept', content: answer };
+>   },
+> });
+> ```
+>
+> If you omit the handler, requests are auto-declined so the tool call fails cleanly rather than hanging.
 
 ## Multiple servers
 

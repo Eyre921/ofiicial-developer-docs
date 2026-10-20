@@ -29,10 +29,10 @@ curl -X POST 'https://api.notion.com/v1/search?filter_properties=title&filter_pr
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Info>
-  The Search endpoint supports pagination. To learn more about working with [paginated](/reference/intro#pagination) responses, see the pagination section of the Notion API Introduction.
-</Info>
+> [!NOTE]
+>
+> The Search endpoint supports pagination. To learn more about working with [paginated](/reference/intro#pagination) responses, see the pagination section of the Notion API Introduction.
 
-<Warning>
-  To search a specific data\_source — not all sources shared with the connection — use the [Query a data\_source](/reference/query-a-data-source) endpoint instead.
-</Warning>
+> [!WARNING]
+>
+> To search a specific data\_source — not all sources shared with the connection — use the [Query a data\_source](/reference/query-a-data-source) endpoint instead.

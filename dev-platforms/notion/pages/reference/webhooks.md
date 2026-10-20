@@ -8,9 +8,7 @@ Learn how your connection can automatically respond to workspace activity in rea
 
 Webhooks let your connection receive real-time updates from Notion. Whenever a page or database changes, Notion sends a secure HTTP POST request to your webhook endpoint. This allows your application to respond to workspace activity as it happens — whether that's syncing data, triggering automation, or keeping your UI in sync with user activity.
 
-<Frame>
-  <img alt="" />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/cf4e4b4cbb5de9c5b1277b35386a21574b4960af36c14fe7d648d905377db478-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=1c744340e3bd893d14a8a63faeee7e69)
 
 **Think of it like this:** Instead of repeatedly polling the Notion API to check if anything has changed, Notion will tell you the moment something important happens.
 
@@ -18,31 +16,29 @@ Webhooks let your connection receive real-time updates from Notion. Whenever a p
 
 **Let’s walk through an example from start to finish:**
 
-<Steps>
-  <Step>
-    Your connection is subscribed to `page.content_updated` events.
-  </Step>
+**Step 1**
 
-  <Step>
-    A user edits the title of a page in Notion.
-  </Step>
+Your connection is subscribed to `page.content_updated` events.
 
-  <Step>
-    Within a minute, Notion sends a webhook request to your configured endpoint.
-  </Step>
+**Step 2**
 
-  <Step>
-    The event payload includes metadata such as the page ID, the event type, and a timestamp.
-  </Step>
+A user edits the title of a page in Notion.
 
-  <Step>
-    Your server receives the event, verifies it, and calls the Notion API to fetch the updated title using the page ID from the event.
-  </Step>
+**Step 3**
 
-  <Step>
-    Your application updates its internal data or takes any other action you’ve defined.
-  </Step>
-</Steps>
+Within a minute, Notion sends a webhook request to your configured endpoint.
+
+**Step 4**
+
+The event payload includes metadata such as the page ID, the event type, and a timestamp.
+
+**Step 5**
+
+Your server receives the event, verifies it, and calls the Notion API to fetch the updated title using the page ID from the event.
+
+**Step 6**
+
+Your application updates its internal data or takes any other action you’ve defined.
 
 This flow lets you react quickly to user activity, without polling or guessing when something has changed.
 
@@ -54,43 +50,35 @@ To receive webhook events, you’ll need to create a subscription through your c
 
 **You’ll need to:**
 
-<Steps>
-  <Step>
-    Visit your <a href={developerConnectionsUrl}>connection settings</a>.
-  </Step>
+**Step 1**
 
-  <Step>
-    Either create a new connection or select an existing one.
-  </Step>
+Visit your [connection settings](https://app.notion.com/developers/connections).
 
-  <Step>
-    Navigate to the **Webhooks** tab and click **+ Create a subscription**.
+**Step 2**
 
-    <Frame>
-      <img alt="" />
-    </Frame>
-  </Step>
+Either create a new connection or select an existing one.
 
-  <Step>
-    Enter your public **Webhook URL** — this is the public endpoint where you want Notion to send events. It must be a secure (SSL) and publicly available endpoint. Endpoints in localhost are not reachable.
+**Step 3**
 
-    <Frame>
-      <img alt="" />
-    </Frame>
-  </Step>
+Navigate to the **Webhooks** tab and click **+ Create a subscription**.
 
-  <Step>
-    Choose which event types you'd like to subscribe to. You can modify these later if needed.
-  </Step>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/522e40363df1bd7437239b25a1caacc8cc607426f45fc90febfff5f00647aeb4-webhooks-1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d749482045c385e3bd2b0200208e1cb3)
 
-  <Step>
-    Click **Create subscription**.
+**Step 4**
 
-    <Frame>
-      <img alt="" />
-    </Frame>
-  </Step>
-</Steps>
+Enter your public **Webhook URL** — this is the public endpoint where you want Notion to send events. It must be a secure (SSL) and publicly available endpoint. Endpoints in localhost are not reachable.
+
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1ef497d7b9b3622de379e6907cd722167766413693ac9f1885b59eb028b4e7dd-webhooks-2.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=b0448cd6aabad1fb6be140e4cfddddd9)
+
+**Step 5**
+
+Choose which event types you'd like to subscribe to. You can modify these later if needed.
+
+**Step 6**
+
+Click **Create subscription**.
+
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
 At this point, your webhook is created but not yet verified. To complete the setup, you’ll need to confirm that your endpoint can receive and respond to verification.
 
@@ -100,49 +88,41 @@ When you create a subscription, Notion sends a one-time POST request to your web
 
 **Example payload with `verification_token`**:
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "verification_token": "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "verification_token": "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
+}
+```
 
 **You’ll need to:**
 
-<Steps>
-  <Step>
-    Inspect the incoming request at your endpoint and extract the `verification_token` from the JSON payload.
+**Step 1**
 
-    1. (Optional): Securely store this token for payload validation setup later, [in step 3](#step-3-validating-event-payloads-recommended).
-  </Step>
+Inspect the incoming request at your endpoint and extract the `verification_token` from the JSON payload.
 
-  <Step>
-    Go back to the **Webhooks** tab within your Notion connection UI and click **⚠️ Verify** on the bottom left of the page
+1. (Optional): Securely store this token for payload validation setup later, [in step 3](#step-3-validating-event-payloads-recommended).
 
-    <Frame>
-      <img alt="" />
-    </Frame>
-  </Step>
+**Step 2**
 
-  <Step>
-    Paste the `verification_token` value into the form and click **Verify subscription.**
+Go back to the **Webhooks** tab within your Notion connection UI and click **⚠️ Verify** on the bottom left of the page
 
-    <Frame>
-      <img alt="" />
-    </Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
-    If you did not receive a `verification_token`, you can click **Resend token** from the webhook verification modal.
-  </Step>
-</Steps>
+**Step 3**
+
+Paste the `verification_token` value into the form and click **Verify subscription.**
+
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/42b82e16a49278f78ecfdfb6a8f5acafe1ae251376bdc636d43c68abf4f685e5-webhooks-4.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=88f55f71314ea42a4ca48806f1921e29)
+
+If you did not receive a `verification_token`, you can click **Resend token** from the webhook verification modal.
 
 Once submitted, your webhook subscription is considered active, and will start receiving events.
 
-<Info>
-  **Changing your webhook URL or event subscriptions**
-
-  You can only change the webhook URL before verification. After verification, if you need to change the URL, you must delete and recreate the subscription. You can change the subscribed events at any time.
-</Info>
+> [!NOTE]
+>
+> **Changing your webhook URL or event subscriptions**
+>
+> You can only change the webhook URL before verification. After verification, if you need to change the URL, you must delete and recreate the subscription. You can change the subscribed events at any time.
 
 ### Step 3 - Validating event payloads (Recommended)
 
@@ -150,11 +130,11 @@ To help ensure the security of your connection, Notion includes a cryptographic 
 
 While payload validation is optional, we recommend implementing it for any production environment.
 
-<Info>
-  **Using a no-code or low-code platform?**
-
-  If you're using a no-code or low-code platform (like Zapier, Make, or Pipedream), you may not have access to custom code for signature verification — and that’s okay. Validation is encouraged, but not required for webhooks to work.
-</Info>
+> [!NOTE]
+>
+> **Using a no-code or low-code platform?**
+>
+> If you're using a no-code or low-code platform (like Zapier, Make, or Pipedream), you may not have access to custom code for signature verification — and that’s okay. Validation is encouraged, but not required for webhooks to work.
 
 #### How it works
 
@@ -164,127 +144,123 @@ Every webhook request from Notion includes an `X-Notion-Signature` header, which
 
 **Sample `X-Notion-Signature` from Notion**:
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "X-Notion-Signature": "sha256=461e8cbcba8a75c3edd866f0e71280f5a85cbf21eff040ebd10fe266df38a735"
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "X-Notion-Signature": "sha256=461e8cbcba8a75c3edd866f0e71280f5a85cbf21eff040ebd10fe266df38a735"
+}
+```
 
 To validate the request, you can use the `verification_token` along with the event's payload to recompute the signature and verify the request's authenticity. If they match, the payload is trustworthy.
 
-<Tip>
-  **Using the SDK for JavaScript and TypeScript?**
-
-  [`@notionhq/client`](https://github.com/makenotion/notion-sdk-js) v5.23.0 and later includes a `verifyWebhookSignature()` helper that performs this check for you, including the constant-time comparison. Pass the raw request body exactly as it arrived (re-serialized JSON produces different bytes and fails verification), the `X-Notion-Signature` header value, and your `verification_token`:
-
-  ```javascript theme={null}
-  import { verifyWebhookSignature } from "@notionhq/client"
-
-  const isTrustedPayload = await verifyWebhookSignature({
-    body: rawRequestBody,
-    signature: request.headers["x-notion-signature"],
-    verificationToken,
-  })
-  ```
-
-  It works without configuration in Node.js 18+, Bun, Deno, Cloudflare Workers, Vercel Edge Functions, and browsers. The SDK also exports `signWebhookPayload()` for generating signatures when testing your handler.
-</Tip>
+> [!TIP]
+>
+> **Using the SDK for JavaScript and TypeScript?**
+>
+> [`@notionhq/client`](https://github.com/makenotion/notion-sdk-js) v5.23.0 and later includes a `verifyWebhookSignature()` helper that performs this check for you, including the constant-time comparison. Pass the raw request body exactly as it arrived (re-serialized JSON produces different bytes and fails verification), the `X-Notion-Signature` header value, and your `verification_token`:
+>
+> ```javascript theme={null}
+> import { verifyWebhookSignature } from "@notionhq/client"
+>
+> const isTrustedPayload = await verifyWebhookSignature({
+>   body: rawRequestBody,
+>   signature: request.headers["x-notion-signature"],
+>   verificationToken,
+> })
+> ```
+>
+> It works without configuration in Node.js 18+, Bun, Deno, Cloudflare Workers, Vercel Edge Functions, and browsers. The SDK also exports `signWebhookPayload()` for generating signatures when testing your handler.
 
 **Sample code for computing the signature and validating the webhook payload:**
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  import { createHmac, timingSafeEqual } from "crypto"
+```javascript JavaScript theme={null}
+import { createHmac, timingSafeEqual } from "crypto"
 
-  // Retrieve the `verification_token` from the initial request
-  // (subscription verification; Step 2)
-  const verificationToken = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
+// Retrieve the `verification_token` from the initial request
+// (subscription verification; Step 2)
+const verificationToken = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
 
-  // This body should come from your request body for subsequent validations
-  const body = {"verification_token":"secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"}
+// This body should come from your request body for subsequent validations
+const body = {"verification_token":"secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"}
 
-  const calculatedSignature = `sha256=${createHmac("sha256", verificationToken).update(JSON.stringify(body)).digest("hex")}`
+const calculatedSignature = `sha256=${createHmac("sha256", verificationToken).update(JSON.stringify(body)).digest("hex")}`
 
-  const isTrustedPayload = timingSafeEqual(
-    Buffer.from(calculatedSignature),
-    Buffer.from(headers["X-Notion-Signature"]),
-  )
+const isTrustedPayload = timingSafeEqual(
+  Buffer.from(calculatedSignature),
+  Buffer.from(headers["X-Notion-Signature"]),
+)
 
-  if (!isTrustedPayload) {
-    // Ignore the event
-    return
-  }
-  ```
+if (!isTrustedPayload) {
+  // Ignore the event
+  return
+}
+```
 
-  ```python Python theme={null}
-  import hmac
-  import hashlib
-  import json
+```python Python theme={null}
+import hmac
+import hashlib
+import json
 
-  # Retrieve the `verification_token` from initial request
-  # (subscription verification; Step 2)
-  verification_token = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
+# Retrieve the `verification_token` from initial request
+# (subscription verification; Step 2)
+verification_token = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
 
-  # This body should come from your request body for subsequent validations
-  body = {"verification_token": "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"}
+# This body should come from your request body for subsequent validations
+body = {"verification_token": "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"}
 
-  # Calculate the signature
-  body_json = json.dumps(body, separators=(",", ":"))  # Minified JSON, matches JSON.stringify
-  hmac_obj = hmac.new(
-      verification_token.encode("utf-8"),
-      body_json.encode("utf-8"),
-      hashlib.sha256
-  )
-  calculated_signature = "sha256=" + hmac_obj.hexdigest()
+# Calculate the signature
+body_json = json.dumps(body, separators=(",", ":"))  # Minified JSON, matches JSON.stringify
+hmac_obj = hmac.new(
+    verification_token.encode("utf-8"),
+    body_json.encode("utf-8"),
+    hashlib.sha256
+)
+calculated_signature = "sha256=" + hmac_obj.hexdigest()
 
-  # Assume headers is a dict containing HTTP headers
-  # Example:
-  # headers = {"X-Notion-Signature": "<signature from request>"}
+# Assume headers is a dict containing HTTP headers
+# Example:
+# headers = {"X-Notion-Signature": "<signature from request>"}
 
-  # Use hmac.compare_digest for timing-safe comparison
-  is_trusted_payload = hmac.compare_digest(
-      calculated_signature,
-      headers["X-Notion-Signature"]
-  )
-
-  if not is_trusted_payload:
-      # Ignore the event
-      return
-  ```
-
-  ```ruby Ruby theme={null}
-  require 'openssl'
-  require 'json'
-
-  # Retrieve the verification_token from initial request
-  verification_token = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
-
-  # This body should come from your request body for subsequent validations
-  body = { "verification_token" => "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl" }
-
-  # Calculate the signature (minified JSON to match JSON.stringify)
-  body_json = JSON.generate(body)
-  digest = OpenSSL::HMAC.hexdigest("SHA256", verification_token, body_json)
-  calculated_signature = "sha256=#{digest}"
-
-  # Assume headers is a Hash containing HTTP headers
-  # Example:
-  # headers = { "X-Notion-Signature" => "<signature from request>" }
-
-  # Constant-time comparison
-  is_trusted_payload = ActiveSupport::SecurityUtils.secure_compare(
+# Use hmac.compare_digest for timing-safe comparison
+is_trusted_payload = hmac.compare_digest(
     calculated_signature,
     headers["X-Notion-Signature"]
-  )
+)
 
-  unless is_trusted_payload
+if not is_trusted_payload:
     # Ignore the event
     return
-  end
-  ```
-</CodeGroup>
+```
+
+```ruby Ruby theme={null}
+require 'openssl'
+require 'json'
+
+# Retrieve the verification_token from initial request
+verification_token = "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl"
+
+# This body should come from your request body for subsequent validations
+body = { "verification_token" => "secret_tMrlL1qK5vuQAh1b6cZGhFChZTSYJlce98V0pYn7yBl" }
+
+# Calculate the signature (minified JSON to match JSON.stringify)
+body_json = JSON.generate(body)
+digest = OpenSSL::HMAC.hexdigest("SHA256", verification_token, body_json)
+calculated_signature = "sha256=#{digest}"
+
+# Assume headers is a Hash containing HTTP headers
+# Example:
+# headers = { "X-Notion-Signature" => "<signature from request>" }
+
+# Constant-time comparison
+is_trusted_payload = ActiveSupport::SecurityUtils.secure_compare(
+  calculated_signature,
+  headers["X-Notion-Signature"]
+)
+
+unless is_trusted_payload
+  # Ignore the event
+  return
+end
+```
 
 Implementing this validation step is a small lift that adds a strong layer of security to your webhook connection. If you ever rotate or recreate your webhook subscription, be sure to update your stored `verification_token`.
 
@@ -300,27 +276,25 @@ This test checks your webhook’s ability to handle aggregated events, which are
 
 **You’ll need to:**
 
-<Steps>
-  <Step>
-    In your Notion workspace, add the connection to a page.
-  </Step>
+**Step 1**
 
-  <Step>
-    Change the title of that page.
-  </Step>
+In your Notion workspace, add the connection to a page.
 
-  <Step>
-    Wait a minute or two because aggregated events like `page.content_updated` are batched and may not be sent immediately.
-  </Step>
+**Step 2**
 
-  <Step>
-    Check your server logs or webhook handler. You should receive a `page.content_updated` event.
-  </Step>
+Change the title of that page.
 
-  <Step>
-    Use the entity.id value from the payload to call the `retrieve a page` endpoint and confirm the new title.
-  </Step>
-</Steps>
+**Step 3**
+
+Wait a minute or two because aggregated events like `page.content_updated` are batched and may not be sent immediately.
+
+**Step 4**
+
+Check your server logs or webhook handler. You should receive a `page.content_updated` event.
+
+**Step 5**
+
+Use the entity.id value from the payload to call the `retrieve a page` endpoint and confirm the new title.
 
 ### Test 2 - Add a comment
 
@@ -328,15 +302,13 @@ This test checks event delivery for comments, which require specific capabilitie
 
 **You’ll need to:**
 
-<Steps>
-  <Step>
-    In a page your connection has access to, add a new comment.
-  </Step>
+**Step 1**
 
-  <Step>
-    Your webhook should receive a `comment.created` event within a few seconds.
-  </Step>
-</Steps>
+In a page your connection has access to, add a new comment.
+
+**Step 2**
+
+Your webhook should receive a `comment.created` event within a few seconds.
 
 **Important:**
 
@@ -348,19 +320,17 @@ This test verifies that structural changes to databases are triggering events.
 
 **You’ll need to:**
 
-<Steps>
-  <Step>
-    Open any database your connection is connected to.
-  </Step>
+**Step 1**
 
-  <Step>
-    Make a schema change — for example, add a new property (column), rename an existing one, or delete a property.
-  </Step>
+Open any database your connection is connected to.
 
-  <Step>
-    Your webhook should receive a `data_source.schema_updated` (in the new 2025-09-03 API version) or `database.schema_updated` (deprecated after 2022-06-28 API version) event shortly after the change.
-  </Step>
-</Steps>
+**Step 2**
+
+Make a schema change — for example, add a new property (column), rename an existing one, or delete a property.
+
+**Step 3**
+
+Your webhook should receive a `data_source.schema_updated` (in the new 2025-09-03 API version) or `database.schema_updated` (deprecated after 2022-06-28 API version) event shortly after the change.
 
 ## Troubleshooting tips
 
@@ -384,11 +354,11 @@ Not all webhook events are sent immediately. Some, like page.content\_updated, a
 
 See [Event Delivery ](/reference/webhooks-events-delivery#event-delivery)for a deeper explanation.
 
-<Tip>
-  **Tip:**
-
-  If you're testing and expecting an instant response, start with non-aggregated events like `comment.created` or `page.locked`.
-</Tip>
+> [!TIP]
+>
+> **Tip:**
+>
+> If you're testing and expecting an instant response, start with non-aggregated events like `comment.created` or `page.locked`.
 
 ### ☑️ Confirm your subscription status
 

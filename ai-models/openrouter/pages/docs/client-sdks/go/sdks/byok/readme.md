@@ -307,7 +307,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
-| `updateBYOKKeyRequest` | [components.UpdateBYOKKeyRequest](../../models/components/updatebyokkeyrequest.mdx) | ✅ | N/A | \{<br />"disabled": false,<br />"name": "Updated OpenAI Key"<br />} |
+| `updateBYOKKeyRequest` | [components.UpdateBYOKKeyRequest](../../models/components/updatebyokkeyrequest.mdx) | ✅ | N/A | \{ "disabled": false, "name": "Updated OpenAI Key" } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

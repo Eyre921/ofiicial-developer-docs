@@ -11,11 +11,11 @@ Executes the view's filter and sort configuration against its data source, cache
 
 Cached results expire after 15 minutes. Use the `expires_at` field to check when the cache will be invalidated.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Pagination limit
 
@@ -37,11 +37,11 @@ To work around this limit:
 * Narrow the view's filter and sort configuration via [Update a view](/reference/update-a-view) (for example, filter by `last_edited_time` to only include recently changed rows).
 * Set up [connection webhooks](/reference/webhooks) to detect changes in real time instead of polling this endpoint.
 
-<Warning>
-  **Incremental sync via webhooks**
-
-  If your connection runs this endpoint on a recurring schedule to detect changes, consider switching to [connection webhooks](/reference/webhooks) for incremental sync. Webhooks notify your connection when rows change, removing the need to re-query the view and avoiding the pagination depth limit entirely.
-</Warning>
+> [!WARNING]
+>
+> **Incremental sync via webhooks**
+>
+> If your connection runs this endpoint on a recurring schedule to detect changes, consider switching to [connection webhooks](/reference/webhooks) for incremental sync. Webhooks notify your connection when rows change, removing the need to re-query the view and avoiding the pagination depth limit entirely.
 
 ### Errors
 

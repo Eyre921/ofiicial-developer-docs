@@ -6,9 +6,9 @@ path: guides/indexes/pods/manage-pod-based-indexes
 
 Manage Pinecone pod-based indexes. Pod indexes are legacy and unavailable to new customers, and serverless is recommended for new projects.
 
-<Warning>
-  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-</Warning>
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 This page shows you how to manage pod-based indexes.
 
@@ -18,268 +18,264 @@ For guidance on serverless indexes, see [Manage serverless indexes](/guides/mana
 
 Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.describe_index(name="docs-example")
+pc.describe_index(name="docs-example")
 
-  # Response:
-  # {'dimension': 1536,
-  #  'host': 'docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io',
-  #  'metric': 'cosine',
-  #  'name': 'docs-example',
-  #  'spec': {'pod': {'environment': 'us-east-1-aws',
-  #                   'pod_type': 's1.x1',
-  #                   'pods': 1,
-  #                   'replicas': 1,
-  #                   'shards': 1}},
-  #  'status': {'ready': True, 'state': 'Ready'}}
-  ```
+# Response:
+# {'dimension': 1536,
+#  'host': 'docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io',
+#  'metric': 'cosine',
+#  'name': 'docs-example',
+#  'spec': {'pod': {'environment': 'us-east-1-aws',
+#                   'pod_type': 's1.x1',
+#                   'pods': 1,
+#                   'replicas': 1,
+#                   'shards': 1}},
+#  'status': {'ready': True, 'state': 'Ready'}}
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await pc.describeIndex('docs-example');
+await pc.describeIndex('docs-example');
 
-  // Response:
-  // {
-  //    "name": "docs-example",
-  //    "dimension": 1536,
-  //    "metric": "cosine",
-  //    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-  //    "deletionProtection": "disabled",
-  //    "spec": {
-  //       "pod": {
-  //          "environment": "us-east-1-aws",
-  //          "pod_type": "s1.x1",
-  //          "pods": 1,
-  //          "replicas": 1,
-  //          "shards": 1
-  //       }
-  //    },
-  //    "status": {
-  //       "ready": true,
-  //       "state": "Ready"
-  //    }
-  // }
-  ```
+// Response:
+// {
+//    "name": "docs-example",
+//    "dimension": 1536,
+//    "metric": "cosine",
+//    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+//    "deletionProtection": "disabled",
+//    "spec": {
+//       "pod": {
+//          "environment": "us-east-1-aws",
+//          "pod_type": "s1.x1",
+//          "pods": 1,
+//          "replicas": 1,
+//          "shards": 1
+//       }
+//    },
+//    "status": {
+//       "ready": true,
+//       "state": "Ready"
+//    }
+// }
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.*;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import org.openapitools.db_control.client.model.*;
 
-  public class DescribeIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
-          IndexModel indexModel = pc.describeIndex("docs-example");
-          System.out.println(indexModel);
-      }
-  }
+public class DescribeIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
+        IndexModel indexModel = pc.describeIndex("docs-example");
+        System.out.println(indexModel);
+    }
+}
 
-  // Response:
-  // class IndexModel {
-  //     name: docs-example
-  //     dimension: 1536
-  //     metric: cosine
-  //     host: docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io
-  //     deletionProtection: disabled
-  //     spec: class IndexModelSpec {
-  //         serverless: null
-  //         pod: class PodSpec {
-  //             cloud: aws
-  //             region: us-east-1
-  //             environment: us-east-1-aws,
-  //             podType: s1.x1,
-  //             pods: 1,
-  //             replicas: 1,
-  //             shards: 1
-  //         }
-  //     }
-  //     status: class IndexModelStatus {
-  //         ready: true
-  //         state: Ready
-  //     }
-  // }
-  ```
+// Response:
+// class IndexModel {
+//     name: docs-example
+//     dimension: 1536
+//     metric: cosine
+//     host: docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io
+//     deletionProtection: disabled
+//     spec: class IndexModelSpec {
+//         serverless: null
+//         pod: class PodSpec {
+//             cloud: aws
+//             region: us-east-1
+//             environment: us-east-1-aws,
+//             podType: s1.x1,
+//             pods: 1,
+//             replicas: 1,
+//             shards: 1
+//         }
+//     }
+//     status: class IndexModelStatus {
+//         ready: true
+//         state: Ready
+//     }
+// }
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func prettifyStruct(obj interface{}) string {
-      bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
+func prettifyStruct(obj interface{}) string {
+    bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      idx, err := pc.DescribeIndex(ctx, "docs-example")
-      if err != nil {
-          log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-      } else {
-          fmt.Printf("index: %v\n", prettifyStruct(idx))
-      }
-  }
+    idx, err := pc.DescribeIndex(ctx, "docs-example")
+    if err != nil {
+        log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("index: %v\n", prettifyStruct(idx))
+    }
+}
 
-  // Response:
-  // index: {
-  // 	"name": "docs-example",
-  // 	"dimension": 1536,
-  // 	"host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-  // 	"metric": "cosine",
-  //  "deletion_protection": "disabled",
-  // 	"spec": {
-  // 	  "pod": {
-  //       "environment": "us-east-1-aws",
-  //       "pod_type": "s1.x1",
-  //       "pods": 1,
-  //       "replicas": 1,
-  //       "shards": 1
-  // 	  }
-  // 	},
-  // 	"status": {
-  // 	  "ready": true,
-  // 	  "state": "Ready"
-  // 	}
-  // }
-  ```
+// Response:
+// index: {
+// 	"name": "docs-example",
+// 	"dimension": 1536,
+// 	"host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+// 	"metric": "cosine",
+//  "deletion_protection": "disabled",
+// 	"spec": {
+// 	  "pod": {
+//       "environment": "us-east-1-aws",
+//       "pod_type": "s1.x1",
+//       "pods": 1,
+//       "replicas": 1,
+//       "shards": 1
+// 	  }
+// 	},
+// 	"status": {
+// 	  "ready": true,
+// 	  "state": "Ready"
+// 	}
+// }
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10"
-  # Response:
-  # {
-  #    "name": "docs-example",
-  #    "metric": "cosine",
-  #    "dimension": 1536,
-  #    "status": {
-  #       "ready": true,
-  #       "state": "Ready"
-  #    },
-  #    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-  #    "spec": {
-  #       "pod": {
-  #          "environment": "us-east-1-aws",
-  #          "pod_type": "s1.x1",
-  #          "pods": 1,
-  #          "replicas": 1,
-  #          "shards": 1
-  #       }
-  #    }
-  # }
-  ```
-</CodeGroup>
+curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2025-10"
+# Response:
+# {
+#    "name": "docs-example",
+#    "metric": "cosine",
+#    "dimension": 1536,
+#    "status": {
+#       "ready": true,
+#       "state": "Ready"
+#    },
+#    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+#    "spec": {
+#       "pod": {
+#          "environment": "us-east-1-aws",
+#          "pod_type": "s1.x1",
+#          "pods": 1,
+#          "replicas": 1,
+#          "shards": 1
+#       }
+#    }
+# }
+```
 
-<Warning>
-  **Do not target an index by name in production.**
-
-  When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
-</Warning>
+> [!WARNING]
+>
+> **Do not target an index by name in production.**
+>
+> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
 
 ## Delete a pod-based index
 
 Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
 
-<Note>
-  You are billed for a pod-based index even when it's not in use.
-</Note>
+> [!NOTE]
+>
+> You are billed for a pod-based index even when it's not in use.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # pip install pinecone
-  from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+```python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.delete_index(name="docs-example")
-  ```
+pc.delete_index(name="docs-example")
+```
 
-  ```javascript JavaScript theme={null}
-  // npm install @pinecone-database/pinecone
-  import { Pinecone } from '@pinecone-database/pinecone'
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({
-    apiKey: 'YOUR_API_KEY'
-  });
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
 
-  await pc.deleteIndex('docs-example');
-  ```
+await pc.deleteIndex('docs-example');
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
 
-  public class DeleteIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          pc.deleteIndex("docs-example");
-      }
-  }
-  ```
+public class DeleteIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.deleteIndex("docs-example");
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
+import (
+    "context"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      indexName := "docs-example"
+    indexName := "docs-example"
 
-      err = pc.DeleteIndex(ctx, indexName)
-      if err != nil {
-          log.Fatalf("Failed to delete index: %v", err)
-      } else {
-          fmt.Println("Index \"%v\" deleted successfully", indexName)
-      }
-  }
-  ```
+    err = pc.DeleteIndex(ctx, indexName)
+    if err != nil {
+        log.Fatalf("Failed to delete index: %v", err)
+    } else {
+        fmt.Println("Index \"%v\" deleted successfully", indexName)
+    }
+}
+```
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -i -X DELETE "https://api.pinecone.io/indexes/docs-example" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
-  ```
-</CodeGroup>
+curl -i -X DELETE "https://api.pinecone.io/indexes/docs-example" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10"
+```
 
 If deletion protection is enabled on an index, requests to delete it will fail and return a `403 - FORBIDDEN` status with the following error:
 
@@ -289,9 +285,9 @@ Deletion protection is enabled for this index. Disable deletion protection befor
 
 Before you can delete such an index, you must first [disable deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
 
-<Tip>
-  You can delete an index using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). For the index you want to delete, click the three dots to the right of the index name, then click **Delete**.
-</Tip>
+> [!TIP]
+>
+> You can delete an index using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). For the index you want to delete, click the three dots to the right of the index name, then click **Delete**.
 
 ## Selective metadata indexing
 
@@ -299,9 +295,9 @@ For pod-based indexes, Pinecone indexes all metadata fields by default. When met
 
 To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/index-data/indexing-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
 
-<Note>
-  Since high-cardinality metadata doesn't cause high memory utilization in serverless indexes, selective metadata indexing isn't supported.
-</Note>
+> [!NOTE]
+>
+> Since high-cardinality metadata doesn't cause high memory utilization in serverless indexes, selective metadata indexing isn't supported.
 
 The value for the `metadata_config` parameter is a JSON object containing the names of the metadata fields to index.
 
@@ -319,350 +315,345 @@ The value for the `metadata_config` parameter is a JSON object containing the na
 
 The following example creates a pod-based index that only indexes the `genre` metadata field. Queries against this index that filter for the `genre` metadata field may return results; queries that filter for other metadata fields behave as though those fields don't exist.
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.create_index(
-    name="docs-example",
-    dimension=1536,
-    metric="cosine",
-    spec=PodSpec(
-      environment="us-west1-gcp",
-      pod_type="p1.x1",
-      pods=1,
-      metadata_config = {
-        "indexed": ["genre"]
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west1-gcp",
+    pod_type="p1.x1",
+    pods=1,
+    metadata_config = {
+      "indexed": ["genre"]
+    }
+  ),
+  deletion_protection="disabled"
+
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west1-gcp',
+      podType: 'p1.x1',
+      pods: 1,
+      metadata_config: {
+        indexed: ["genre"]
       }
-    ),
-    deletion_protection="disabled"
+    }
+  },
+  deletionProtection: 'disabled',
+});
+```
 
-  )
-  ```
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import org.openapitools.db_control.client.model.PodSpecMetadataConfig;
+import java.util.Arrays;
+import java.util.List;
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+public class CreateIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        PodSpecMetadataConfig podSpecMetadataConfig = new PodSpecMetadataConfig();
+        List<String> indexedItems = Arrays.asList("genre", "year");
+        podSpecMetadataConfig.setIndexed(indexedItems);
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, podSpecMetadataConfig, null, "disabled", null);
+    }
+}
+```
 
-  const pc = new Pinecone({
-    apiKey: 'YOUR_API_KEY'
-  });
+```go Go theme={null}
+package main
 
-  await pc.createIndex({
-    name: 'docs-example',
-    dimension: 1536,
-    metric: 'cosine',
-    spec: {
-      pod: {
-        environment: 'us-west1-gcp',
-        podType: 'p1.x1',
-        pods: 1,
-        metadata_config: {
-          indexed: ["genre"]
-        }
-      }
-    },
-    deletionProtection: 'disabled',
-  });
-  ```
+import (
+    "context"
+    "fmt"
+    "log"
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.IndexModel;
-  import org.openapitools.db_control.client.model.DeletionProtection;
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
 
-  public class CreateIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          CreateIndexRequestSpecPodMetadataConfig podSpecMetadataConfig = new CreateIndexRequestSpecPodMetadataConfig();
-          List<String> indexedItems = Arrays.asList("genre", "year");
-          podSpecMetadataConfig.setIndexed(indexedItems);
-          pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                  "p1.x1", "cosine", podSpecMetadataConfig, DeletionProtection.DISABLED);
-      }
-  }
-  ```
+func main() {
+    ctx := context.Background()
 
-  ```go Go theme={null}
-  package main
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-  import (
-      "context"
-      "fmt"
-      "log"
+    podIndexMetadata := &pinecone.PodSpecMetadataConfig{
+        Indexed: &[]string{"genre"},
+    }
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    indexName := "docs-example"
+  	metric := pinecone.Dotproduct
+	deletionProtection := pinecone.DeletionProtectionDisabled
 
-  func main() {
-      ctx := context.Background()
+	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        MetadataConfig:     podIndexMetadata,
+        DeletionProtection: &deletionProtection,
+  	})
+  	if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-      podIndexMetadata := &pinecone.PodSpecMetadataConfig{
-          Indexed: &[]string{"genre"},
-      }
-
-      indexName := "docs-example"
-    	metric := pinecone.Dotproduct
-  	deletionProtection := pinecone.DeletionProtectionDisabled
-
-  	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-          Name:               indexName,
-          Metric:             &metric,
-          Dimension:          1536,
-          Environment:        "us-east1-gcp",
-          PodType:            "p1.x1",
-          DeletionProtection: &deletionProtection,
-    	})
-    	if err != nil {
-          log.Fatalf("Failed to create pod-based index: %v", idx.Name)
-      } else {
-          fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-      }
-  }
-  ```
-
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  curl -s https://api.pinecone.io/indexes \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-    -d '{
-           "name": "docs-example",
-           "dimension": 1536,
-           "metric": "cosine",
-           "spec": {
-              "pod": {
-                 "environment": "us-west1-gcp",
-                 "pod_type": "p1.x1",
-                 "pods": 1,
-                 "metadata_config": {
-                    "indexed": ["genre"]
-                 }
-              }
-           },
-           "deletion_protection": "disabled"
-        }'
-  ```
-</CodeGroup>
+curl -s https://api.pinecone.io/indexes \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 1536,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1,
+               "metadata_config": {
+                  "indexed": ["genre"]
+               }
+            }
+         },
+         "deletion_protection": "disabled"
+      }'
+```
 
 ## Prevent index deletion
 
-<Note>
-  This feature requires [Pinecone API version](/reference/api/versioning) `2024-07`, [Python SDK](/reference/sdks/python/overview) v5.0.0, [Node.js SDK](/reference/sdks/node/overview) v3.0.0, [Java SDK](/reference/sdks/java/overview) v2.0.0, or [Go SDK](/reference/sdks/go/overview) v1.0.0 or later.
-</Note>
+> [!NOTE]
+>
+> This feature requires [Pinecone API version](/reference/api/versioning) `2024-07`, [Python SDK](/reference/sdks/python/overview) v5.0.0, [Node.js SDK](/reference/sdks/node/overview) v3.0.0, [Java SDK](/reference/sdks/java/overview) v2.0.0, or [Go SDK](/reference/sdks/go/overview) v1.0.0 or later.
 
 You can prevent an index and its data from accidental deleting when [creating a new index](/guides/index-data/create-an-index) or when [configuring an existing index](/guides/indexes/pods/manage-pod-based-indexes). In both cases, you set the `deletion_protection` parameter to `enabled`.
 
 To enable deletion protection when creating a new index:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # pip install pinecone
-  from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+```python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.create_index(
-    name="docs-example",
-    dimension=1536,
-    metric="cosine",
-    spec=PodSpec(
-      environment="us-west1-gcp",
-      pod_type="p1.x1",
-      pods=1
-    ),
-      deletion_protection="enabled"
-  )
-  ```
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west1-gcp",
+    pod_type="p1.x1",
+    pods=1
+  ),
+    deletion_protection="enabled"
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({
-    apiKey: 'YOUR_API_KEY'
-  });
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
 
-  await pc.createIndex({
-    name: 'docs-example',
-    dimension: 1536,
-    metric: 'cosine',
-    spec: {
-      pod: {
-        environment: 'us-west1-gcp',
-        podType: 'p1.x1',
-        pods: 1
-      }
-    },
-    deletionProtection: 'enabled',
-  });
-  ```
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west1-gcp',
+      podType: 'p1.x1',
+      pods: 1
+    }
+  },
+  deletionProtection: 'enabled',
+});
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.IndexModel;
-  import org.openapitools.db_control.client.model.DeletionProtection;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
 
-  public class CreateIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                  "p1.x1", "cosine", DeletionProtection.ENABLED);
-      }
-  }
-  ```
+public class CreateIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, null, null, "enabled", null);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
+import (
+    "context"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      indexName := "docs-example"
-    	metric := pinecone.Dotproduct
-  	deletionProtection := pinecone.DeletionProtectionDisabled
+    indexName := "docs-example"
+  	metric := pinecone.Dotproduct
+	deletionProtection := pinecone.DeletionProtectionDisabled
 
-  	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-          Name:               indexName,
-          Metric:             &metric,
-          Dimension:          1536,
-          Environment:        "us-east1-gcp",
-          PodType:            "p1.x1",
-          DeletionProtection: &deletionProtection,
-    	})
-    	if err != nil {
-          log.Fatalf("Failed to create pod-based index: %v", idx.Name)
-      } else {
-          fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-      }
-  }
-  ```
+	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        DeletionProtection: &deletionProtection,
+  	})
+  	if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -s "https://api.pinecone.io/indexes" \
-    -H "Accept: application/json" \
+curl -s "https://api.pinecone.io/indexes" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 1536,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1
+            }
+         },
+         "deletion_protection": "enabled"
+      }'
+```
+
+To enable deletion protection when configuring an existing index:
+
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.configure_index(
+   name="docs-example", 
+   deletion_protection="enabled"
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+await client.configureIndex('docs-example', { deletionProtection: 'enabled' });
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class ConfigureIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.configurePodsIndex("docs-example", "enabled");
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "enabled"})
+  	if err != nil {
+        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+    }
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "X-Pinecone-Api-Version: 2025-10" \
     -d '{
-           "name": "docs-example",
-           "dimension": 1536,
-           "metric": "cosine",
-           "spec": {
-              "pod": {
-                 "environment": "us-west1-gcp",
-                 "pod_type": "p1.x1",
-                 "pods": 1
-              }
-           },
-           "deletion_protection": "enabled"
+        "deletion_protection": "enabled"
         }'
-  ```
-</CodeGroup>
-
-To enable deletion protection when configuring an existing index:
-
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
-
-  pc = Pinecone(api_key="YOUR_API_KEY")
-
-  pc.configure_index(
-     name="docs-example", 
-     deletion_protection="enabled"
-  )
-  ```
-
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
-
-  const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-  await client.configureIndex('docs-example', { deletionProtection: 'enabled' });
-  ```
-
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.*;
-
-  public class ConfigureIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          pc.configurePodsIndex("docs-example", DeletionProtection.ENABLED);
-      }
-  }
-  ```
-
-  ```go Go theme={null}
-  package main
-
-  import (
-      "context"
-      "fmt"
-      "log"
-
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
-
-  func main() {
-      ctx := context.Background()
-
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
-
-      idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "enabled"})
-    	if err != nil {
-          log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-      } else {
-          fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-      }
-  }
-  ```
-
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
-      -H "Content-Type: application/json" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10" \
-      -d '{
-          "deletion_protection": "enabled"
-          }'
-  ```
-</CodeGroup>
+```
 
 When deletion protection is enabled on an index, requests to delete the index fail and return a `403 - FORBIDDEN` status with the following error:
 
@@ -674,80 +665,77 @@ Deletion protection is enabled for this index. Disable deletion protection befor
 
 Before you can [delete an index](#delete-a-pod-based-index) with deletion protection enabled, you must first disable deletion protection as follows:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.configure_index(
-     name="docs-example", 
-     deletion_protection="disabled"
-  )
-  ```
+pc.configure_index(
+   name="docs-example", 
+   deletion_protection="disabled"
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await client.configureIndex('docs-example', { deletionProtection: 'disabled' });
-  ```
+await client.configureIndex('docs-example', { deletionProtection: 'disabled' });
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import org.openapitools.db_control.client.model.*;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
 
-  public class ConfigureIndexExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-          pc.configurePodsIndex("docs-example", DeletionProtection.DISABLED);
-      }
-  }
-  ```
+public class ConfigureIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.configurePodsIndex("docs-example", "disabled");
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
+import (
+    "context"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "disabled"})
-    	if err != nil {
-          log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-      } else {
-          fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-      }
-  }
-  ```
+    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "disabled"})
+  	if err != nil {
+        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+    }
+}
+```
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
-      -H "Content-Type: application/json" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2025-10" \
-      -d '{
-          "deletion_protection": "disabled"
-          }'
-  ```
-</CodeGroup>
+curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
+    -H "Content-Type: application/json" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2025-10" \
+    -d '{
+        "deletion_protection": "disabled"
+        }'
+```
 
 ## Delete an entire namespace
 
@@ -757,202 +745,198 @@ In pod-based indexes, reads and writes share compute resources, so deleting an e
 
 In pod-based indexes, reads and writes share compute resources, so deleting an entire namespace or a large number of records can increase the latency of read operations. To avoid this, delete records in batches of up to 1000, with a brief sleep between requests. Consider using smaller batches if the index has active read traffic.
 
-<CodeGroup>
-  ```python Batch delete a namespace theme={null}
-  from pinecone import Pinecone
-  import numpy as np
-  import time
+```python Batch delete a namespace theme={null}
+from pinecone import Pinecone
+import numpy as np
+import time
 
-  pc = Pinecone(api_key='API_KEY')
+pc = Pinecone(api_key='API_KEY')
 
-  INDEX_NAME = 'INDEX_NAME'
-  NAMESPACE = 'NAMESPACE_NAME'
-  # Consider using smaller batches if you have a high RPS for read operations
-  BATCH = 1000
+INDEX_NAME = 'INDEX_NAME'
+NAMESPACE = 'NAMESPACE_NAME'
+# Consider using smaller batches if you have a high RPS for read operations
+BATCH = 1000
 
-  index = pc.Index(name=INDEX_NAME)
-  dimensions = index.describe_index_stats()['dimension']
+index = pc.Index(name=INDEX_NAME)
+dimensions = index.describe_index_stats()['dimension']
 
-  # Create the query vector
-  query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
-  results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
+# Create the query vector
+query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
+results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
 
-  # Delete in batches until the query returns no results
-  while len(results['matches']) > 0:
-      ids = [i['id'] for i in results['matches']]
-      index.delete(ids=ids, namespace=NAMESPACE)
-      time.sleep(0.01)
-      results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
-  ```
+# Delete in batches until the query returns no results
+while len(results['matches']) > 0:
+    ids = [i['id'] for i in results['matches']]
+    index.delete(ids=ids, namespace=NAMESPACE)
+    time.sleep(0.01)
+    results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
+```
 
-  ```python Batch delete by metadata theme={null}
-  from pinecone import Pinecone
-  import numpy as np
-  import time
+```python Batch delete by metadata theme={null}
+from pinecone import Pinecone
+import numpy as np
+import time
 
-  pc = Pinecone(api_key='API_KEY')
+pc = Pinecone(api_key='API_KEY')
 
-  INDEX_NAME = 'INDEX_NAME'
-  NAMESPACE = 'NAMESPACE_NAME'
-  # Consider using smaller batches if you have a high RPS for read operations
-  BATCH = 1000
+INDEX_NAME = 'INDEX_NAME'
+NAMESPACE = 'NAMESPACE_NAME'
+# Consider using smaller batches if you have a high RPS for read operations
+BATCH = 1000
 
-  index = pc.Index(name=INDEX_NAME)
-  dimensions = index.describe_index_stats()['dimension']
+index = pc.Index(name=INDEX_NAME)
+dimensions = index.describe_index_stats()['dimension']
 
-  METADATA_FILTER = {}
+METADATA_FILTER = {}
 
-  # Create the query vector with a filter
-  query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
-  results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
+# Create the query vector with a filter
+query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
+results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
 
-  # Delete in batches until the query returns no results
-  while len(results['matches']) > 0:
-      ids = [i['id'] for i in results['matches']]
-      index.delete(ids=ids, namespace=NAMESPACE)
-      time.sleep(0.01)
-      results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
-  ```
-</CodeGroup>
+# Delete in batches until the query returns no results
+while len(results['matches']) > 0:
+    ids = [i['id'] for i in results['matches']]
+    index.delete(ids=ids, namespace=NAMESPACE)
+    time.sleep(0.01)
+    results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
+```
 
 ## Delete records by metadata
 
-<Note>
-  In pod-based indexes, if you are targeting a large number of records for deletion and the index has active read traffic, consider [deleting records in batches](#delete-records-in-batches).
-</Note>
+> [!NOTE]
+>
+> In pod-based indexes, if you are targeting a large number of records for deletion and the index has active read traffic, consider [deleting records in batches](#delete-records-in-batches).
 
 To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/index-data/indexing-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  # pip install pinecone
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  index.delete(
-      filter={
-          "genre": {"$eq": "documentary"}
-      },
-      namespace="example-namespace" 
-  )
-  ```
+index.delete(
+    filter={
+        "genre": {"$eq": "documentary"}
+    },
+    namespace="example-namespace" 
+)
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  const ns = index.namespace('example-namespace')
+const ns = index.namespace('example-namespace')
 
-  await ns.deleteMany({
-    genre: { $eq: "documentary" },
-  });
-  ```
+await ns.deleteMany({
+  genre: { $eq: "documentary" },
+});
+```
 
-  ```java Java theme={null}
-  import com.google.protobuf.Struct;
-  import com.google.protobuf.Value;
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
+```java Java theme={null}
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
 
-  import java.util.Arrays;
-  import java.util.List;
+import java.util.Arrays;
+import java.util.List;
 
-  public class DeleteExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          Index index = new Index(connection, "INDEX_NAME");
-          Struct filter = Struct.newBuilder()
-                  .putFields("genre", Value.newBuilder()
-                          .setStructValue(Struct.newBuilder()
-                                  .putFields("$eq", Value.newBuilder()
-                                          .setStringValue("documentary")
-                                          .build()))
-                          .build())
-                  .build();
-          index.deleteByFilter(filter, "example-namespace");
-          
-      }
-  }
-  ```
+public class DeleteExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(connection, "INDEX_NAME");
+        Struct filter = Struct.newBuilder()
+                .putFields("genre", Value.newBuilder()
+                        .setStructValue(Struct.newBuilder()
+                                .putFields("$eq", Value.newBuilder()
+                                        .setStringValue("documentary")
+                                        .build()))
+                        .build())
+                .build();
+        index.deleteByFilter(filter, "example-namespace");
+        
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "log"
+import (
+    "context"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-    	}
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
 
-      metadataFilter := map[string]interface{}{
-  		"genre": map[string]interface{}{
-  			"$eq": "documentary",
-  		},
-      }
+    metadataFilter := map[string]interface{}{
+		"genre": map[string]interface{}{
+			"$eq": "documentary",
+		},
+    }
 
-      filter, err := structpb.NewStruct(metadataFilter)
-      if err != nil {
-          log.Fatalf("Failed to create metadata filter: %v", err)
-      }
+    filter, err := structpb.NewStruct(metadataFilter)
+    if err != nil {
+        log.Fatalf("Failed to create metadata filter: %v", err)
+    }
 
-      err = idxConnection.DeleteVectorsByFilter(ctx, filter)
-      if err != nil {
-          log.Fatalf("Failed to delete vector(s) with filter %+v: %v", filter, err)
-      }
-  }
-  ```
+    err = idxConnection.DeleteVectorsByFilter(ctx, filter)
+    if err != nil {
+        log.Fatalf("Failed to delete vector(s) with filter %+v: %v", filter, err)
+    }
+}
+```
 
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -i "https://$INDEX_HOST/vectors/delete" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "filter": {"genre": {"$eq": "documentary"}},
-      "namespace": "example-namespace"
-    }'
-  ```
-</CodeGroup>
+curl -i "https://$INDEX_HOST/vectors/delete" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "filter": {"genre": {"$eq": "documentary"}},
+    "namespace": "example-namespace"
+  }'
+```
 
 ## Tag an index
 
@@ -964,44 +948,42 @@ When configuring an index, you can tag the index to help with index organization
 
 To control costs, [project owners](/admin/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
 
-<Tabs>
-  <Tab title="Pinecone console">
-    1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
-    2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
-    3. In the **Pod Limit** section, update the number of pods.
-    4. Click **Save Changes**.
-  </Tab>
+**Pinecone console**
 
-  <Tab title="API">
-    <token />
+1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
+2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
+3. In the **Pod Limit** section, update the number of pods.
+4. Click **Save Changes**.
 
-    ```bash curl theme={null}
-    PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-    PROJECT_ID="YOUR_PROJECT_ID"
+**API**
 
-    curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-      -H "accept: application/json" \
-      -H "Content-Type: application/json" \
-    	-H "X-Pinecone-Api-Version: 2025-10" \
-      -d '{
-        "max_pods": 5
-        }'
-    ```
+<token />
 
-    The example returns a response like the following:
+```bash curl theme={null}
+PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+PROJECT_ID="YOUR_PROJECT_ID"
 
-    ```json theme={null}
-    {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "name": "example-project",
-      "max_pods": 5,
-      "force_encryption_with_cmek": false,
-      "organization_id": "string",
-      "created_at": "2025-03-17T00:42:31.912Z"
-    }
-    ```
-  </Tab>
-</Tabs>
+curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+	-H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+    "max_pods": 5
+    }'
+```
+
+The example returns a response like the following:
+
+```json theme={null}
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "name": "example-project",
+  "max_pods": 5,
+  "force_encryption_with_cmek": false,
+  "organization_id": "string",
+  "created_at": "2025-03-17T00:42:31.912Z"
+}
+```
 
 ### Back up inactive pod-based indexes
 
@@ -1011,9 +993,9 @@ For each pod-based index, billing is determined by the per-minute price per pod 
 
 Pod sizes are designed for different applications, and some are more expensive than others. [Choose the appropriate pod type and size](/guides/indexes/pods/choose-a-pod-type-and-size), so you pay for the resources you need. For example, the `s1` pod type provides large storage capacity and lower overall costs with slightly higher query latencies than `p1` pods. By switching to a different pod type, you may be able to reduce costs while still getting the performance your application needs.
 
-<Note>
-  For pod-based indexes, project owners can [set limits for the total number of pods](/guides/indexes/pods/manage-pod-based-indexes#set-a-project-pod-limit) across all indexes in the project. The default pod limit is 5.
-</Note>
+> [!NOTE]
+>
+> For pod-based indexes, project owners can [set limits for the total number of pods](/guides/indexes/pods/manage-pod-based-indexes#set-a-project-pod-limit) across all indexes in the project. The default pod limit is 5.
 
 ## Monitor performance
 
@@ -1033,15 +1015,15 @@ To view performance metrics in the Pinecone console:
 
 To monitor Pinecone with Datadog, use Datadog's [Pinecone integration](/integrations/datadog).
 
-<Note>
-  This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 ### Use Prometheus
 
-<Note>
-  This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/). When using [Bring Your Own Cloud](/guides/production/bring-your-own-cloud), you must configure Prometheus monitoring within your VPC.
-</Note>
+> [!NOTE]
+>
+> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/). When using [Bring Your Own Cloud](/guides/production/bring-your-own-cloud), you must configure Prometheus monitoring within your VPC.
 
 To monitor all pod-based indexes in a specific region of a project, insert the following snippet into the [`scrape_configs`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) section of your `prometheus.yml` file and update it with values for your Prometheus integration:
 

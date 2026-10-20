@@ -10,48 +10,46 @@ This page shows you how to [evaluate responses](/guides/assistant/evaluation-ove
 
 You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment) from an assistant, as in the following example. The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  result = pc.assistants.evaluate_alignment(
-      question="What are the capital cities of France, England and Spain?",
-      answer="Paris is the capital city of France and Barcelona of Spain",
-      ground_truth_answer="Paris is the capital city of France, London of England and Madrid of Spain.",
-  )
+result = pc.assistants.evaluate_alignment(
+    question="What are the capital cities of France, England and Spain?",
+    answer="Paris is the capital city of France and Barcelona of Spain",
+    ground_truth_answer="Paris is the capital city of France, London of England and Madrid of Spain.",
+)
 
-  print(result)
-  ```
+print(result)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const result = await pc.assistants.evaluate({
-    question: 'What are the capital cities of France, England and Spain?',
-    answer: 'Paris is the capital city of France and Barcelona of Spain',
-    groundTruth: 'Paris is the capital city of France, London of England and Madrid of Spain.',
-  });
+const result = await pc.assistants.evaluate({
+  question: 'What are the capital cities of France, England and Spain?',
+  answer: 'Paris is the capital city of France and Barcelona of Spain',
+  groundTruth: 'Paris is the capital city of France, London of England and Madrid of Spain.',
+});
 
-  console.log(result);
-  ```
+console.log(result);
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  curl "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-    "question": "What are the capital cities of France, England and Spain?",
-    "answer": "Paris is the capital city of France and Barcelona of Spain",
-    "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain"
-  }'
-  ```
-</CodeGroup>
+curl "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "question": "What are the capital cities of France, England and Spain?",
+  "answer": "Paris is the capital city of France and Barcelona of Spain",
+  "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain"
+}'
+```
 
 ```json Response theme={null}
 {

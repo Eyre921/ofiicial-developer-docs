@@ -6,9 +6,9 @@ path: integrations/datadog
 
 Monitor Pinecone with the Datadog integration to track request latency, index fullness, and usage trends, and alert on anomalies in vector workloads.
 
-<Note>
-  This feature is available on the [Builder, Standard, and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on the [Builder, Standard, and Enterprise plans](https://www.pinecone.io/pricing/).
 
 Datadog is a monitoring and analytics tool that tracks performance metrics and monitors events for infrastructure and cloud services. You can use Datadog with Pinecone in the following ways:
 

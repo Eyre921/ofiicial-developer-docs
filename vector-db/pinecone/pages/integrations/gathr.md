@@ -12,4 +12,4 @@ Gathr combines data engineering, machine learning, generative AI, analytics, and
 
 Use Gathr Gen AI Fabric to build enterprise generative AI solutions on a single platform. It offers building blocks for generative AI solutions, solution templates, and GathrIQ, a data-to-outcome copilot. Its building blocks include integration with vector databases and knowledge graphs, and the Pinecone connector supports use cases that require knowledge graphs.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.gathr.one/gathr-saas/docs/components/pinecone/)

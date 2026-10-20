@@ -26,9 +26,7 @@ Navigate to [openrouter.ai/chat](https://openrouter.ai/chat) to access the Chat 
 
 Click the **Add Model** button (or press `Cmd+K` / `Ctrl+K`) to open the model selector. Type "free" in the search box to filter for free models.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-models-search.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=c99cb85c309b9b104c2bdaf3089e38c0" alt="Searching for free models in the model selector" width="1550" height="1035" data-path="assets/cookbook/get-started/free-models-router-playground/free-models-search.png" />
-</Frame>
+![Searching for free models in the model selector](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-models-search.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=c99cb85c309b9b104c2bdaf3089e38c0)
 
 You'll see a list of available free models, including the **Free Models Router** option.
 
@@ -36,17 +34,13 @@ You'll see a list of available free models, including the **Free Models Router**
 
 Click on **Free Models Router** to select it. This router will automatically choose a free model for each request based on your needs.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-router-selected.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=da5c29afeab8f3f1d6b277c4f21bde1b" alt="Free Models Router selected in the chat playground" width="1550" height="1035" data-path="assets/cookbook/get-started/free-models-router-playground/free-router-selected.png" />
-</Frame>
+![Free Models Router selected in the chat playground](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-router-selected.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=da5c29afeab8f3f1d6b277c4f21bde1b)
 
 ### Step 4: Start Chatting
 
 Once selected, you can start sending messages. The Free Models Router will route your request to an appropriate free model, and you'll see which model responded in the chat.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-router-response.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=f8386a7b19a310ecaf210cc18133ac3b" alt="A response from a free model showing the model name" width="2984" height="1866" data-path="assets/cookbook/get-started/free-models-router-playground/free-router-response.png" />
-</Frame>
+![A response from a free model showing the model name](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/get-started/free-models-router-playground/free-router-response.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=f8386a7b19a310ecaf210cc18133ac3b)
 
 In this example, the Free Models Router selected Solar Pro 3 (free) to respond to the message.
 
@@ -79,11 +73,11 @@ For more details on the Free Models Router API, see the [API Quickstart](https:/
 
 Free models may have different rate limits and availability compared to paid models. They are ideal for experimentation, learning, and low-volume use cases. For production workloads with higher reliability requirements, consider using paid models.
 
-<Warning>
-  **Fallbacks to paid models are billed**
-
-  On its own, the Free Models Router falls back only to other free models. If you add paid models to a [`models` fallback array](/docs/guides/routing/model-fallbacks) alongside `openrouter/free` or a `:free` model, OpenRouter uses those paid models when the free models can't serve the request, and bills them at their own price. To keep a request free, list only `openrouter/free` or `:free` models in `models`.
-</Warning>
+> [!WARNING]
+>
+> **Fallbacks to paid models are billed**
+>
+> On its own, the Free Models Router falls back only to other free models. If you add paid models to a [`models` fallback array](/docs/guides/routing/model-fallbacks) alongside `openrouter/free` or a `:free` model, OpenRouter uses those paid models when the free models can't serve the request, and bills them at their own price. To keep a request free, list only `openrouter/free` or `:free` models in `models`.
 
 ## Related Resources
 

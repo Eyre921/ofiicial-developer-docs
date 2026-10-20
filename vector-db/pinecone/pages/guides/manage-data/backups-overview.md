@@ -29,9 +29,9 @@ Each index supports one active schedule at a time. Backups created by a schedule
 
 You can create and manage backup schedules in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) or with the API. For step-by-step instructions, see [Schedule automated backups](/guides/manage-data/back-up-an-index#schedule-automated-backups).
 
-<Note>
-  Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
-</Note>
+> [!NOTE]
+>
+> Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
 
 For example, to create a daily backup that expires after 7 days:
 
@@ -76,9 +76,9 @@ Backup and restore times depend upon the size of the index and number of namespa
 | :- | :- | :- | :- | :- |
 | Backups per project | N/A | N/A | 500 | 1000 |
 
-<Note>
-  Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
+> [!NOTE]
+>
+> Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
 ## Limitations
 
@@ -90,6 +90,7 @@ Backup limitations are as follows:
 * You can only perform operations on backups in the current Pinecone project.
 * Backups are supported for all serverless indexes, including document indexes with a schema (`full_text_search`, `dense_vector`, and `sparse_vector` fields) and indexes that use integrated embedding.
 * Backups aren't available for indexes in a project that uses [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek).
+* A restored index inherits the source index's schema, including its `full_text_search`, `dense_vector`, `sparse_vector`, `embed`, and `sparse_embed` fields, and the restore request can't override it.
 
 ## Backup and restore cost
 

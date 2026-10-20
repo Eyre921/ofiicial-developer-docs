@@ -110,9 +110,9 @@ This stream yields all item types:
 
 ### getNewMessagesStream()
 
-<Warning>
-  `getNewMessagesStream()` is deprecated. Use `getItemsStream()` instead, which includes all item types and follows the items-based paradigm.
-</Warning>
+> [!WARNING]
+>
+> `getNewMessagesStream()` is deprecated. Use `getItemsStream()` instead, which includes all item types and follows the items-based paradigm.
 
 Stream cumulative message snapshots in the OpenResponses format:
 

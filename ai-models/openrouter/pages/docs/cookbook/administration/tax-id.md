@@ -28,9 +28,9 @@ OpenRouter uses [Stripe](https://stripe.com) for payments and tax handling. Once
 
 That's it. Your tax ID now appears on all invoices going forward.
 
-<Note>
-  You can add multiple tax IDs if needed, for example, an EU VAT number and a local tax registration number. Each saved ID shows as a chip above the input field. Click the trash icon next to any ID to remove it.
-</Note>
+> [!NOTE]
+>
+> You can add multiple tax IDs if needed, for example, an EU VAT number and a local tax registration number. Each saved ID shows as a chip above the input field. Click the trash icon next to any ID to remove it.
 
 ## Supported tax ID types
 

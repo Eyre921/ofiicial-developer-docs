@@ -12,9 +12,9 @@ path: docs/cookbook/building-agents/gate-tool-calls-with-jev
 
 > Check each risky tool call against the ticket with Jev so safe calls run, unsupported calls are refused, and only ambiguous calls pause for a human
 
-<Tip>
-  This recipe assumes you already have an Agent SDK agent with a tool that pauses for human review, built the way [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools) describes. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the agent model and the check run on the same API key.
-</Tip>
+> [!TIP]
+>
+> This recipe assumes you already have an Agent SDK agent with a tool that pauses for human review, built the way [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools) describes. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the agent model and the check run on the same API key.
 
 **Goal:** Replace a blanket rule that pauses every call to this tool for human approval with a per-call check against the evidence in the conversation, so the human only sees the calls that are genuinely unclear.
 
@@ -352,9 +352,9 @@ The fourth call, `8000` cents on the kettle order whose `total_cents` is `6800`,
 
 The third case is the one a human should see. The policy covers damaged items and says nothing about damaged packaging, so Jev returns `policy_covers` in the middle of the range. A static rule would have sent all four to the queue.
 
-<Info>
-  Store the whole `GateDecision` with the ticket. `reason` and `checks` are the audit record for the outcome. After a few weeks of real traffic, look at which `review` decisions the human approved and which they rejected. If nearly all were approved, the ambiguity is in your policy text, and tightening the wording of `REFUND_POLICY` moves those cases to `approve` without touching the thresholds.
-</Info>
+> [!NOTE]
+>
+> Store the whole `GateDecision` with the ticket. `reason` and `checks` are the audit record for the outcome. After a few weeks of real traffic, look at which `review` decisions the human approved and which they rejected. If nearly all were approved, the ambiguity is in your policy text, and tightening the wording of `REFUND_POLICY` moves those cases to `approve` without touching the thresholds.
 
 ## 4. Gate the tool
 
@@ -421,9 +421,9 @@ const refund = tool({
 
 Both hooks start by parsing the ticket out of the context. When that parse throws, or `askJev` throws because Decisions is down or returned something the schema rejects, the SDK records the error as that call's output in the form `{ error: ... }`. The model receives the error instead of a refund result, nothing is issued, and the model may call `refund` again, which runs the gate again. If you'd rather a human reviewed the calls Jev couldn't evaluate, catch the error from `gateRefund` alone and return `null`. Don't do the same for the ticket parse, since `onResponseReceived` parses the same context and a reviewer's approval would fail on it too. The gate never returns `approve` without the required evidence.
 
-<Warning>
-  `issueRefund` is a placeholder. Wire it to your payments provider only after the step 3 runner and the step 5 ticket runs reproduce the captured outcomes with the placeholder in place. Your ledger, not this file, is the record of what's been refunded. Read `refunded_cents` from it when you build the ticket. Have the provider reject any amount above the remaining balance at execution time, so concurrent turns can't overdraw it, and give the provider an idempotency key so a retried turn can't pay the same refund twice.
-</Warning>
+> [!WARNING]
+>
+> `issueRefund` is a placeholder. Wire it to your payments provider only after the step 3 runner and the step 5 ticket runs reproduce the captured outcomes with the placeholder in place. Your ledger, not this file, is the record of what's been refunded. Read `refunded_cents` from it when you build the ticket. Have the provider reject any amount above the remaining balance at execution time, so concurrent turns can't overdraw it, and give the provider an idempotency key so a retried turn can't pay the same refund twice.
 
 ## 5. Pass the ticket and handle the pause
 
@@ -533,9 +533,9 @@ Your full refund of **$89.00** for order **ORD-5520** has been issued. Refund ID
 
 The probabilities differ from step 3 because `refund.reason` is part of the state and the model wrote its own. The agent model didn't propose the espresso refund in any of our runs, so we exercise the `block` path by calling `gateRefund` directly, as in step 3. The gate guarantees the outcome. The model's judgment doesn't.
 
-<Warning>
-  Each `handleTicket` call spends credits on the agent model and on one Decisions request per proposed refund. In our runs each Decisions request cost under \$0.0001 (`usage.cost` between 0.000030 and 0.000036) and returned in under 600 ms.
-</Warning>
+> [!WARNING]
+>
+> Each `handleTicket` call spends credits on the agent model and on one Decisions request per proposed refund. In our runs each Decisions request cost under \$0.0001 (`usage.cost` between 0.000030 and 0.000036) and returned in under 600 ms.
 
 ## Next steps
 

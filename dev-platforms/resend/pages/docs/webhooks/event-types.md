@@ -8,493 +8,257 @@ List of supported event types and their payload.
 
 ## Email Events
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.bounced`](/docs/webhooks/emails/bounced)
-    </div>
+[`email.bounced`](/docs/webhooks/emails/bounced)
 
-    <div>
-      Occurs whenever the recipient's mail server **permanently rejected the
-      email**.
-    </div>
-  </div>
+Occurs whenever the recipient's mail server **permanently rejected the
+email**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.clicked`](/docs/webhooks/emails/clicked)
-    </div>
+[`email.clicked`](/docs/webhooks/emails/clicked)
 
-    <div>
-      Occurs whenever the **recipient clicks on an email link**.
-    </div>
-  </div>
+Occurs whenever the **recipient clicks on an email link**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.complained`](/docs/webhooks/emails/complained)
-    </div>
+[`email.complained`](/docs/webhooks/emails/complained)
 
-    <div>
-      Occurs whenever the email was successfully **delivered, but the recipient
-      marked it as spam**.
-    </div>
-  </div>
+Occurs whenever the email was successfully **delivered, but the recipient
+marked it as spam**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.delivered`](/docs/webhooks/emails/delivered)
-    </div>
+[`email.delivered`](/docs/webhooks/emails/delivered)
 
-    <div>
-      Occurs whenever Resend **successfully delivered the email** to the
-      recipient's mail server.
-    </div>
-  </div>
+Occurs whenever Resend **successfully delivered the email** to the
+recipient's mail server.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.delivery_delayed`](/docs/webhooks/emails/delivery-delayed)
-    </div>
+[`email.delivery_delayed`](/docs/webhooks/emails/delivery-delayed)
 
-    <div>
-      Occurs whenever the **email couldn't be delivered due to a temporary
-      issue**. Delivery delays can occur, for example, when the recipient's
-      inbox is full, or when the receiving email server experiences a transient
-      issue.
-    </div>
-  </div>
+Occurs whenever the **email couldn't be delivered due to a temporary
+issue**. Delivery delays can occur, for example, when the recipient's
+inbox is full, or when the receiving email server experiences a transient
+issue.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.failed`](/docs/webhooks/emails/failed)
-    </div>
+[`email.failed`](/docs/webhooks/emails/failed)
 
-    <div>
-      Occurs whenever the **email failed to send due to an error**. This event
-      is triggered when there are issues such as invalid recipients, API key
-      problems, domain verification issues, email quota limits, or other sending
-      failures.
-    </div>
-  </div>
+Occurs whenever the **email failed to send due to an error**. This event
+is triggered when there are issues such as invalid recipients, API key
+problems, domain verification issues, email quota limits, or other sending
+failures.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.opened`](/docs/webhooks/emails/opened)
-    </div>
+[`email.opened`](/docs/webhooks/emails/opened)
 
-    <div>
-      Occurs whenever the **recipient opened the email**.
-    </div>
-  </div>
+Occurs whenever the **recipient opened the email**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.received`](/docs/webhooks/emails/received)
-    </div>
+[`email.received`](/docs/webhooks/emails/received)
 
-    <div>
-      Occurs whenever Resend **successfully receives an email**.
-    </div>
-  </div>
+Occurs whenever Resend **successfully receives an email**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.scheduled`](/docs/webhooks/emails/scheduled)
-    </div>
+[`email.scheduled`](/docs/webhooks/emails/scheduled)
 
-    <div>
-      Occurs whenever the **email is scheduled to be sent**.
-    </div>
-  </div>
+Occurs whenever the **email is scheduled to be sent**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.sent`](/docs/webhooks/emails/sent)
-    </div>
+[`email.sent`](/docs/webhooks/emails/sent)
 
-    <div>
-      Occurs whenever the **API request was successful**. Resend will attempt to
-      deliver the message to the recipient's mail server.
-    </div>
-  </div>
+Occurs whenever the **API request was successful**. Resend will attempt to
+deliver the message to the recipient's mail server.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`email.suppressed`](/docs/webhooks/emails/suppressed)
-    </div>
+[`email.suppressed`](/docs/webhooks/emails/suppressed)
 
-    <div>
-      Occurs whenever the **email is suppressed** by Resend.
-    </div>
-  </div>
-</div>
+Occurs whenever the **email is suppressed** by Resend.
 
 ## Domain Events
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`domain.created`](/docs/webhooks/domains/created)
-    </div>
+[`domain.created`](/docs/webhooks/domains/created)
 
-    <div>
-      Occurs when a **domain was successfully created**.
-    </div>
-  </div>
+Occurs when a **domain was successfully created**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`domain.updated`](/docs/webhooks/domains/updated)
-    </div>
+[`domain.updated`](/docs/webhooks/domains/updated)
 
-    <div>
-      Occurs when a **domain was successfully updated**.
-    </div>
-  </div>
+Occurs when a **domain was successfully updated**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`domain.deleted`](/docs/webhooks/domains/deleted)
-    </div>
+[`domain.deleted`](/docs/webhooks/domains/deleted)
 
-    <div>
-      Occurs when a **domain was successfully deleted**.
-    </div>
-  </div>
-</div>
+Occurs when a **domain was successfully deleted**.
 
 ## Contact Events
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`contact.created`](/docs/webhooks/contacts/created)
-    </div>
+[`contact.created`](/docs/webhooks/contacts/created)
 
-    <div>
-      Occurs whenever a **contact was successfully created**.
-    </div>
+Occurs whenever a **contact was successfully created**.
 
-    <div>
-      *Note: When importing multiple contacts using CSV, these events won't be
-      triggered. [Contact support](https://resend.com/help) if you have any
-      questions.*
-    </div>
-  </div>
+*Note: When importing multiple contacts using CSV, these events won't be
+triggered. [Contact support](https://resend.com/help) if you have any
+questions.*
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`contact.updated`](/docs/webhooks/contacts/updated)
-    </div>
+[`contact.updated`](/docs/webhooks/contacts/updated)
 
-    <div>
-      Occurs whenever a **contact was successfully updated**.
-    </div>
-  </div>
+Occurs whenever a **contact was successfully updated**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`contact.deleted`](/docs/webhooks/contacts/deleted)
-    </div>
+[`contact.deleted`](/docs/webhooks/contacts/deleted)
 
-    <div>
-      Occurs whenever a **contact was successfully deleted**.
-    </div>
-  </div>
+Occurs whenever a **contact was successfully deleted**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`contact.topics.updated`](/docs/webhooks/contacts/topics-updated)
-    </div>
+[`contact.topics.updated`](/docs/webhooks/contacts/topics-updated)
 
-    <div>
-      Occurs whenever a **contact's topic subscriptions change**.
-    </div>
-  </div>
-</div>
+Occurs whenever a **contact's topic subscriptions change**.
 
 ## Suppression Events
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`suppression.added`](/docs/webhooks/suppressions/added)
-    </div>
+[`suppression.added`](/docs/webhooks/suppressions/added)
 
-    <div>
-      Occurs whenever an **email address is added to your suppression list**,
-      automatically after a hard bounce or spam complaint, or manually through
-      the dashboard or API.
-    </div>
-  </div>
+Occurs whenever an **email address is added to your suppression list**,
+automatically after a hard bounce or spam complaint, or manually through
+the dashboard or API.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`suppression.removed`](/docs/webhooks/suppressions/removed)
-    </div>
+[`suppression.removed`](/docs/webhooks/suppressions/removed)
 
-    <div>
-      Occurs whenever an **email address is removed from your suppression
-      list**.
-    </div>
-  </div>
-</div>
+Occurs whenever an **email address is removed from your suppression
+list**.
 
 ## Topic Events
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`topic.created`](/docs/webhooks/topics/created)
-    </div>
+[`topic.created`](/docs/webhooks/topics/created)
 
-    <div>
-      Occurs whenever a **topic is created**.
-    </div>
-  </div>
+Occurs whenever a **topic is created**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`topic.updated`](/docs/webhooks/topics/updated)
-    </div>
+[`topic.updated`](/docs/webhooks/topics/updated)
 
-    <div>
-      Occurs whenever a **topic is updated**.
-    </div>
-  </div>
+Occurs whenever a **topic is updated**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`topic.deleted`](/docs/webhooks/topics/deleted)
-    </div>
+[`topic.deleted`](/docs/webhooks/topics/deleted)
 
-    <div>
-      Occurs whenever a **topic is deleted**.
-    </div>
-  </div>
-</div>
+Occurs whenever a **topic is deleted**.
 
 ## Inbox Events
 
-Inboxes are in private beta. Every inbox event's `data` has `source` and `inbox_id`, plus the IDs and objects that apply to the event. Keys that don't apply are left out, not sent as `null`.
+Every inbox event's `data` has `source` and `inbox_id`, plus the IDs and objects that apply to the event. Keys that don't apply are left out, not sent as `null`.
 
 The `thread`, `email`, `draft` and `inbox` objects are loaded when the webhook is sent, not when the change happened, so two quick changes can both show the second state. `email` and `draft` leave out `html` and `text`; fetch the body from the API. Retries keep the same `svix-id` header, so dedupe on it.
 
-<div>
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.created`](/docs/webhooks/inboxes/created)
-    </div>
+[`inbox.created`](/docs/webhooks/inboxes/created)
 
-    <div>
-      Occurs whenever an **inbox is created**.
-    </div>
-  </div>
+Occurs whenever an **inbox is created**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.updated`](/docs/webhooks/inboxes/updated)
-    </div>
+[`inbox.updated`](/docs/webhooks/inboxes/updated)
 
-    <div>
-      Occurs whenever an **inbox's settings change**.
-    </div>
-  </div>
+Occurs whenever an **inbox's settings change**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.deleted`](/docs/webhooks/inboxes/deleted)
-    </div>
+[`inbox.deleted`](/docs/webhooks/inboxes/deleted)
 
-    <div>
-      Occurs whenever an **inbox is deleted**.
-    </div>
-  </div>
+Occurs whenever an **inbox is deleted**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.thread.created`](/docs/webhooks/inboxes/thread-created)
-    </div>
+[`inbox.thread.created`](/docs/webhooks/inboxes/thread-created)
 
-    <div>
-      Occurs whenever the **first email of a thread** lands in the inbox,
-      inbound or outbound.
-    </div>
-  </div>
+Occurs whenever the **first email of a thread** lands in the inbox,
+inbound or outbound.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.thread.folder.updated`](/docs/webhooks/inboxes/thread-folder-updated)
-    </div>
+[`inbox.thread.folder.updated`](/docs/webhooks/inboxes/thread-folder-updated)
 
-    <div>
-      Occurs whenever a **thread moves between folders**.
-    </div>
-  </div>
+Occurs whenever a **thread moves between folders**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.thread.assigned`](/docs/webhooks/inboxes/thread-assigned)
-    </div>
+[`inbox.thread.assigned`](/docs/webhooks/inboxes/thread-assigned)
 
-    <div>
-      Occurs whenever a **thread is assigned or reassigned**.
-    </div>
-  </div>
+Occurs whenever a **thread is assigned or reassigned**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.thread.unassigned`](/docs/webhooks/inboxes/thread-unassigned)
-    </div>
+[`inbox.thread.unassigned`](/docs/webhooks/inboxes/thread-unassigned)
 
-    <div>
-      Occurs whenever a **thread is unassigned**.
-    </div>
-  </div>
+Occurs whenever a **thread is unassigned**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.thread.labels.updated`](/docs/webhooks/inboxes/thread-labels-updated)
-    </div>
+[`inbox.thread.labels.updated`](/docs/webhooks/inboxes/thread-labels-updated)
 
-    <div>
-      Occurs whenever a **label is applied to or removed from a thread**.
-    </div>
-  </div>
+Occurs whenever a **label is applied to or removed from a thread**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.email.received`](/docs/webhooks/inboxes/email-received)
-    </div>
+[`inbox.email.received`](/docs/webhooks/inboxes/email-received)
 
-    <div>
-      Occurs whenever an **inbound email is added to a thread**.
-    </div>
-  </div>
+Occurs whenever an **inbound email is added to a thread**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.email.sent`](/docs/webhooks/inboxes/email-sent)
-    </div>
+[`inbox.email.sent`](/docs/webhooks/inboxes/email-sent)
 
-    <div>
-      Occurs whenever an **outbound email is accepted for delivery** and added
-      to a thread.
-    </div>
-  </div>
+Occurs whenever an **outbound email is accepted for delivery** and added
+to a thread.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.draft.created`](/docs/webhooks/inboxes/draft-created)
-    </div>
+[`inbox.draft.created`](/docs/webhooks/inboxes/draft-created)
 
-    <div>
-      Occurs whenever a **draft is created**, standalone or reply.
-    </div>
-  </div>
+Occurs whenever a **draft is created**, standalone or reply.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.draft.updated`](/docs/webhooks/inboxes/draft-updated)
-    </div>
+[`inbox.draft.updated`](/docs/webhooks/inboxes/draft-updated)
 
-    <div>
-      Occurs whenever a **draft is edited**.
-    </div>
-  </div>
+Occurs whenever a **draft is edited**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.draft.sent`](/docs/webhooks/inboxes/draft-sent)
-    </div>
+[`inbox.draft.sent`](/docs/webhooks/inboxes/draft-sent)
 
-    <div>
-      Occurs whenever a **draft is sent**.
-    </div>
-  </div>
+Occurs whenever a **draft is sent**.
 
-  <div>
-    <div>
-      <span />
+&#x20;
 
-      [`inbox.draft.deleted`](/docs/webhooks/inboxes/draft-deleted)
-    </div>
+[`inbox.draft.deleted`](/docs/webhooks/inboxes/draft-deleted)
 
-    <div>
-      Occurs whenever a **draft is discarded**.
-    </div>
-  </div>
-</div>
+Occurs whenever a **draft is discarded**.

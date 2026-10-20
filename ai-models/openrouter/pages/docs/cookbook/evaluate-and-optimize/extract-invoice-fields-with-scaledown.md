@@ -18,12 +18,12 @@ To automate accounts payable, you need four things from every invoice: who sent 
 
 **Outcome:** Consistent invoices post with every field filled in. An invoice with a missing field or totals that don't add up goes to review with the reason attached. Running the same invoice twice gives the same fields.
 
-<Tip>
-  Prerequisites:
-
-  * Your existing TypeScript app runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and has the invoice text as a string.
-  * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
-</Tip>
+> [!TIP]
+>
+> Prerequisites:
+>
+> * Your existing TypeScript app runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and has the invoice text as a string.
+> * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
 
 ## 1. Describe the fields
 
@@ -126,9 +126,9 @@ console.log(JSON.stringify(entities, null, 2));
 
 A field Extract can't find is left out of `entities`. Read `confidence` as "a match was found", not as the chance the value is right, and don't route invoices on it.
 
-<Warning>
-  Each `extractInvoice` call is one paid request billed to your OpenRouter account at the [scaledown/extract](https://openrouter.ai/scaledown/extract) rate. In our runs that came to \$0.012 to \$0.015 per 1,000 invoices.
-</Warning>
+> [!WARNING]
+>
+> Each `extractInvoice` call is one paid request billed to your OpenRouter account at the [scaledown/extract](https://openrouter.ai/scaledown/extract) rate. In our runs that came to \$0.012 to \$0.015 per 1,000 invoices.
 
 ## 3. Check the invoice before you post it
 

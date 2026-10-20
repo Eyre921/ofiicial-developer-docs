@@ -40,79 +40,73 @@ Every public connection has an **installation scope** that controls which worksp
 | Any workspace | Any Notion user, in any workspace. | Yes |
 | Selected workspaces only | Only the workspaces you select at creation time. | No |
 
-<Warning>
-  Installation scope is set once, at creation time, and can't be changed afterward. If you pick **Selected workspaces only** and later want to list on the Marketplace, create a new connection.
-</Warning>
+> [!WARNING]
+>
+> Installation scope is set once, at creation time, and can't be changed afterward. If you pick **Selected workspaces only** and later want to list on the Marketplace, create a new connection.
 
 ## How users authorize a public connection
 
 When a user wants to use your public connection, they go through an OAuth authorization flow:
 
-<Steps>
-  <Step>
-    The user visits the connection's authorization URL. Find this URL in the **Configuration** tab of your connection in the Developer portal.
-  </Step>
+**Step 1**
 
-  <Step>
-    Notion presents a prompt describing the connection's [capabilities](/reference/capabilities) — what it will be able to do in the user's workspace.
-  </Step>
+The user visits the connection's authorization URL. Find this URL in the **Configuration** tab of your connection in the Developer portal.
 
-  <Step>
-    The user selects which pages to grant the connection access to using the page picker.
-  </Step>
+**Step 2**
 
-  <Step>
-    After the user approves, Notion redirects them to your redirect URI with a temporary authorization code.
-  </Step>
+Notion presents a prompt describing the connection's [capabilities](/reference/capabilities) — what it will be able to do in the user's workspace.
 
-  <Step>
-    Your connection exchanges the code for an access token, which is used for all subsequent API requests on behalf of that user.
-  </Step>
-</Steps>
+**Step 3**
+
+The user selects which pages to grant the connection access to using the page picker.
+
+**Step 4**
+
+After the user approves, Notion redirects them to your redirect URI with a temporary authorization code.
+
+**Step 5**
+
+Your connection exchanges the code for an access token, which is used for all subsequent API requests on behalf of that user.
 
 Public connections can also offer a Notion template during the auth flow. If configured, users can choose to duplicate the template into their workspace instead of selecting existing pages. See the [Authorization guide](/guides/get-started/authorization#prompt-for-a-connection-with-a-notion-template-option) for details on configuring templates.
 
-<Note>
-  After a user authorizes a public connection, only that user can interact with the connection in their workspace. If multiple members in a workspace want to use the same public connection, each user needs to complete the authorization flow individually.
-</Note>
+> [!NOTE]
+>
+> After a user authorizes a public connection, only that user can interact with the connection in their workspace. If multiple members in a workspace want to use the same public connection, each user needs to complete the authorization flow individually.
 
 ## Creating a public connection
 
-<Steps>
-  <Step>
-    Navigate to the <a href={developerConnectionsUrl}>Developer portal</a>.
-  </Step>
+**Step 1**
 
-  <Step>
-    In the **Build** section of the sidebar, select **Public connections**.
-  </Step>
+Navigate to the [Developer portal](https://app.notion.com/developers/connections).
 
-  <Step>
-    Click **Create new connection** and fill in the required fields, including:
+**Step 2**
 
-    * Connection name and development workspace
-    * [Redirect URI(s)](https://www.oauth.com/oauth2-servers/redirect-uris/) for the OAuth flow
-    * [Installation scope](#installation-scope) — choose **Any workspace** or **Selected workspaces only** (if you pick the latter, select the workspaces from the list that appears)
-    * Connection [capabilities](/reference/capabilities) (read content, update content, insert content, etc.)
-  </Step>
+In the **Build** section of the sidebar, select **Public connections**.
 
-  <Step>
-    After creation, visit the **Configuration** tab to retrieve your **OAuth client ID** and **OAuth client secret**. The client ID identifies your connection to Notion during the OAuth flow, and the client secret proves your connection is who it claims to be. Both are required when your server exchanges the authorization code for an access token. See the [Authorization guide](/guides/get-started/authorization) for the full implementation.
-  </Step>
-</Steps>
+**Step 3**
 
-<Note>
-  Marketplace listing details (such as descriptions, categories, and images) are managed separately through the **Listings** section. See [List on the Marketplace](/guides/get-started/marketplace-listing) for details.
-</Note>
+Click **Create new connection** and fill in the required fields, including:
+
+* Connection name and development workspace
+* [Redirect URI(s)](https://www.oauth.com/oauth2-servers/redirect-uris/) for the OAuth flow
+* [Installation scope](#installation-scope) — choose **Any workspace** or **Selected workspaces only** (if you pick the latter, select the workspaces from the list that appears)
+* Connection [capabilities](/reference/capabilities) (read content, update content, insert content, etc.)
+
+**Step 4**
+
+After creation, visit the **Configuration** tab to retrieve your **OAuth client ID** and **OAuth client secret**. The client ID identifies your connection to Notion during the OAuth flow, and the client secret proves your connection is who it claims to be. Both are required when your server exchanges the authorization code for an access token. See the [Authorization guide](/guides/get-started/authorization) for the full implementation.
+
+> [!NOTE]
+>
+> Marketplace listing details (such as descriptions, categories, and images) are managed separately through the **Listings** section. See [List on the Marketplace](/guides/get-started/marketplace-listing) for details.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Set up OAuth authorization" icon="lock" href="/guides/get-started/authorization">
-    Implement the full OAuth 2.0 flow for your public connection.
-  </Card>
+> **[Set up OAuth authorization](/guides/get-started/authorization)**
+>
+> Implement the full OAuth 2.0 flow for your public connection.
 
-  <Card title="Preparing for users" icon="wand-magic-sparkles" href="/guides/get-started/preparing-for-users">
-    Automate user onboarding after they install your connection.
-  </Card>
-</CardGroup>
+> **[Preparing for users](/guides/get-started/preparing-for-users)**
+>
+> Automate user onboarding after they install your connection.

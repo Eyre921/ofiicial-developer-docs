@@ -27,7 +27,7 @@ The [API Dashboard](https://resend.com/api-keys) shows you all the API keys you 
 
 Different color indicators let you quickly scan and detect which API keys are being used and which are not.
 
-<img alt="View All API keys" />
+![View All API keys](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/dashboard-api-keys-view-all.jpg?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=f195ef7f60a110407e2739f30c10ca2a)
 
 ## Edit API key details
 
@@ -37,33 +37,35 @@ After [creating an API key](/docs/create-an-api-key), you can edit the following
 * [Permission](/docs/api-reference/api-keys/create-api-key#param-permission)
 * [Domain](/docs/api-reference/api-keys/create-api-key#domain-id)
 
-<Info>You cannot view or edit an API key value after it has been created.</Info>
+> [!NOTE]
+>
+> You cannot view or edit an API key value after it has been created.
 
-To edit an API key in the Resend Dashboard, click the **More options** <Icon icon="ellipsis" /> button and then **Edit API key**.
+To edit an API key in the Resend Dashboard, click the **More options**  button and then **Edit API key**.
 
 You can also rename an API key programmatically using the [Update API key endpoint](/docs/api-reference/api-keys/update-api-key). The API only updates the key's name, while permission and domain can only be edited in the Dashboard.
 
-<img alt="View Inactive API key" />
+![View Inactive API key](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/dashboard-api-keys-edit.jpeg?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=7abe8e055cf311a7f66a40477db7946a)
 
 ## Delete inactive API keys
 
 If an API key **hasn't been used in the last 30 days**, consider deleting it to keep your account secure.
 
-<img alt="View Inactive API key" />
+![View Inactive API key](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/dashboard-api-keys-view-inactive.jpg?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=fa99650454696902100e03b669d3a9c1)
 
-You can delete an API key by clicking the **More options** <Icon icon="ellipsis" /> button and then **Remove API key**.
+You can delete an API key by clicking the **More options**  button and then **Remove API key**.
 
-<img alt="Delete API key" />
+![Delete API key](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/dashboard-api-keys-remove.jpeg?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=9fc76ff5dc4cd38f465539cd3a435706)
 
-<Tip>
-  See more [API key security practices](/docs/knowledge-base/how-to-handle-api-keys).
-</Tip>
+> [!TIP]
+>
+> See more [API key security practices](/docs/knowledge-base/how-to-handle-api-keys).
 
 ## View API key logs
 
 When visualizing an active API key, you can see the **total number of requests** made to the key. For more detailed logging information, select the underlined number of requests to view all logs for that API key.
 
-<img alt="View Active API key" />
+![View Active API key](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/dashboard-api-keys-view-active.jpg?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=e0c0584545565e1e78e460b240d2c221)
 
 ## Export your data
 
@@ -77,7 +79,9 @@ Admins can download your data in CSV format for the following resources:
 * Logs
 * API keys
 
-<Info>Currently, exports are limited to admin users of your team.</Info>
+> [!NOTE]
+>
+> Currently, exports are limited to admin users of your team.
 
 To start, apply filters to your data and click on the "Export" button. Confirm your filters before exporting your data.
 
@@ -87,9 +91,9 @@ If your exported data includes 1,000 items or less, the export will download imm
 
 All admins on your team can securely access the export for 7 days. Unavailable exports are marked as "Expired."
 
-<Note>
-  All exports your team creates are listed in the
-  [Exports](https://resend.com/exports) page under **Settings** > **Team** >
-  **Exports**. Select any export to view its details page. All members of your
-  team can view your exports, but only admins can download the data.
-</Note>
+> [!NOTE]
+>
+> All exports your team creates are listed in the
+> [Exports](https://resend.com/exports) page under **Settings** > **Team** >
+> **Exports**. Select any export to view its details page. All members of your
+> team can view your exports, but only admins can download the data.

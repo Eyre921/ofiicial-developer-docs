@@ -7,148 +7,170 @@ path: docs/api-reference/logs/list-logs
 GET /logs
 Retrieve a list of API request logs.
 
-<QueryParams type="logs" />
+## Query Parameters
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+**limit** `number`
 
-  const resend = new Resend('re_xxxxxxxxx');
+Number of logs to retrieve.
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
+<li>Minimum value: `1`</li></ul>
 
-  const { data, error } = await resend.logs.list();
-  ```
+**after** `string`
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+The ID *after* which we'll retrieve more logs (for pagination).
+This ID will *not* be included in the returned list. Cannot be
+used with the
+`before` parameter.
+**before** `string`
 
-  $resend->logs->list();
-  ```
+The ID *before* which we'll retrieve more logs (for
+pagination). This ID will *not* be included in the returned list.
+Cannot be used with the `after` parameter.
 
-  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import resend
+> [!NOTE]
+>
+> You can only use either `after` or `before`
+> parameter, not both. See our
+> [pagination guide](/docs/api-reference/pagination) for more
+> information.
 
-  resend.api_key = "re_xxxxxxxxx"
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
 
-  resend.Logs.list()
-  ```
+const resend = new Resend('re_xxxxxxxxx');
 
-  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
-  require "resend"
+const { data, error } = await resend.logs.list();
+```
 
-  Resend.api_key = "re_xxxxxxxxx"
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
 
-  logs = Resend::Logs.list
-  puts logs
-  ```
+$resend->logs->list();
+```
 
-  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
-  package main
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
 
-  import (
-  	"context"
+resend.api_key = "re_xxxxxxxxx"
 
-  	"github.com/resend/resend-go/v4"
-  )
+resend.Logs.list()
+```
 
-  func main() {
-  	ctx := context.TODO()
-  	client := resend.NewClient("re_xxxxxxxxx")
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
 
-  	logs, err := client.Logs.ListWithOptions(ctx, nil)
-  	if err != nil {
-  		panic(err)
-  	}
+Resend.api_key = "re_xxxxxxxxx"
 
-  	if logs.HasMore {
-  		opts := &resend.ListOptions{
-  			After: &logs.Data[len(logs.Data)-1].Id,
-  		}
-  		client.Logs.ListWithOptions(ctx, opts)
-  	}
-  }
-  ```
+logs = Resend::Logs.list
+puts logs
+```
 
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result, list_opts::ListOptions};
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
 
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
+import (
+	"context"
 
-    let _logs = resend
-      .logs
-      .list(ListOptions::default())
-      .await?;
+	"github.com/resend/resend-go/v4"
+)
 
-    Ok(())
-  }
-  ```
+func main() {
+	ctx := context.TODO()
+	client := resend.NewClient("re_xxxxxxxxx")
 
-  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import com.resend.Resend;
-  import com.resend.core.exception.ResendException;
+	logs, err := client.Logs.ListWithOptions(ctx, nil)
+	if err != nil {
+		panic(err)
+	}
 
-  public class Main {
-      public static void main(String[] args) throws ResendException {
-          Resend resend = new Resend("re_xxxxxxxxx");
+	if logs.HasMore {
+		opts := &resend.ListOptions{
+			After: &logs.Data[len(logs.Data)-1].Id,
+		}
+		client.Logs.ListWithOptions(ctx, opts)
+	}
+}
+```
 
-          resend.logs().list();
-      }
-  }
-  ```
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
 
-  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
-  using Resend;
-  using System.Linq;
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
 
-  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+  let _logs = resend
+    .logs
+    .list(ListOptions::default())
+    .await?;
 
-  var resp = await resend.LogListAsync();
-  Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+  Ok(())
+}
+```
 
-  if ( resp.Content.HasMore )
-  {
-      var lastId = resp.Content.Data.Last().Id;
-      await resend.LogListAsync( new PaginatedQuery()
-      {
-          After = lastId.ToString(),
-      } );
-  }
-  ```
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/logs' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend logs list
-  ```
-</RequestExample>
+        resend.logs().list();
+    }
+}
+```
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "list",
-    "has_more": false,
-    "data": [
-      {
-        "id": "37e4414c-5e25-4dbc-a071-43552a4bd53b",
-        "created_at": "2026-03-30 13:43:54.622865+00",
-        "endpoint": "/emails",
-        "method": "POST",
-        "response_status": 200,
-        "user_agent": "resend-node:6.0.3"
-      },
-      {
-        "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-        "created_at": "2026-03-30 12:15:00.123456+00",
-        "endpoint": "/emails/4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
-        "method": "GET",
-        "response_status": 200,
-        "user_agent": "curl/8.7.1"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+using System.Linq;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.LogListAsync();
+Console.WriteLine( "Count={0}", resp.Content.Data.Count );
+
+if ( resp.Content.HasMore )
+{
+    var lastId = resp.Content.Data.Last().Id;
+    await resend.LogListAsync( new PaginatedQuery()
+    {
+        After = lastId.ToString(),
+    } );
+}
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/logs' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend logs list
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "37e4414c-5e25-4dbc-a071-43552a4bd53b",
+      "created_at": "2026-03-30 13:43:54.622865+00",
+      "endpoint": "/emails",
+      "method": "POST",
+      "response_status": 200,
+      "user_agent": "resend-node:6.0.3"
+    },
+    {
+      "id": "a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "created_at": "2026-03-30 12:15:00.123456+00",
+      "endpoint": "/emails/4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
+      "method": "GET",
+      "response_status": 200,
+      "user_agent": "curl/8.7.1"
+    }
+  ]
+}
+```

@@ -28,9 +28,9 @@ A common setup chains these together:
 Your App (OTel SDK) → OTel Collector → Prometheus (storage) → Grafana (visualization)
 ```
 
-<Note>
-  This is just one example pipeline. You can substitute Datadog, New Relic, or any OTel-compatible backend. You can also skip OTel entirely and use [Micrometer](#example-micrometerprometheus), custom logging, or any approach that suits your stack.
-</Note>
+> [!NOTE]
+>
+> This is just one example pipeline. You can substitute Datadog, New Relic, or any OTel-compatible backend. You can also skip OTel entirely and use [Micrometer](#example-micrometerprometheus), custom logging, or any approach that suits your stack.
 
 ## Response metadata listener
 
@@ -273,9 +273,9 @@ index.upsert("id-1", Arrays.asList(0.1f, 0.2f, 0.3f));
 index.query(3, Arrays.asList(0.1f, 0.2f, 0.3f));
 ```
 
-<Tip>
-  For a complete runnable example with Docker Compose, Prometheus, and Grafana, see the [java-otel-metrics example project](https://github.com/pinecone-io/pinecone-java-client/tree/main/examples/java-otel-metrics) in the SDK repository.
-</Tip>
+> [!TIP]
+>
+> For a complete runnable example with Docker Compose, Prometheus, and Grafana, see the [java-otel-metrics example project](https://github.com/pinecone-io/pinecone-java-client/tree/main/examples/java-otel-metrics) in the SDK repository.
 
 ## Example: Micrometer/Prometheus
 

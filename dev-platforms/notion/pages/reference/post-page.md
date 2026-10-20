@@ -51,17 +51,17 @@ When creating a page with the `markdown` body parameter, you can set `allow_asyn
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
 
-<Tip>
-  **Newlines in markdown content**
+> [!TIP]
+>
+> **Newlines in markdown content**
+>
+> When using the `markdown` body parameter, newlines must be encoded as `\n` in the JSON string. For example, `"# Heading\n\nParagraph"`. The interactive API explorer on this page does not support multiline input, so use cURL, an SDK, or any HTTP client that sends properly encoded JSON. When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is preserved for the JSON parser.
 
-  When using the `markdown` body parameter, newlines must be encoded as `\n` in the JSON string. For example, `"# Heading\n\nParagraph"`. The interactive API explorer on this page does not support multiline input, so use cURL, an SDK, or any HTTP client that sends properly encoded JSON. When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is preserved for the JSON parser.
-</Tip>
-
-<Warning>
-  **Some page `properties` are not supported via the API**
-
-  Formula, rollup, ID, creation, and last-edit values are set by Notion. Button actions cannot be set through a page write. Omit these fields from `properties`; see the [read-only property types](/reference/page-property-values#type-objects).
-</Warning>
+> [!WARNING]
+>
+> **Some page `properties` are not supported via the API**
+>
+> Formula, rollup, ID, creation, and last-edit values are set by Notion. Button actions cannot be set through a page write. Omit these fields from `properties`; see the [read-only property types](/reference/page-property-values#type-objects).
 
 ### Control notifications from page writes
 
@@ -80,13 +80,13 @@ Some effects of the change happen in either mode:
 * [Connection webhooks](/reference/webhooks) still receive events for the change.
 * Page history, page activity, and workspace audit logs still record the change.
 
-<Info>
-  **Requirements**
-
-  Your connection must have [Insert Content capabilities](/reference/capabilities#content-capabilities) on the target parent page or database in order to call this endpoint. To update your connection's capabilities, navigate to the <a href={developerConnectionsUrl}>Developer portal</a>, select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
-
-  Attempting a query without update content capabilities returns an HTTP response with a 403 status code.
-</Info>
+> [!NOTE]
+>
+> **Requirements**
+>
+> Your connection must have [Insert Content capabilities](/reference/capabilities#content-capabilities) on the target parent page or database in order to call this endpoint. To update your connection's capabilities, navigate to the [Developer portal](https://app.notion.com/developers/connections), select your connection, open the **Configuration** tab, and scroll to the Capabilities section.
+>
+> Attempting a query without update content capabilities returns an HTTP response with a 403 status code.
 
 ### Errors
 

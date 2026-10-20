@@ -9,21 +9,19 @@ Look up and return records by metadata from a single namespace. The returned rec
 
 For guidance and examples, see [Fetch data](https://docs.pinecone.io/guides/manage-data/fetch-data).
 
-<RequestExample>
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "namespace": "__default__",
-      "filter": {"genre": {"$eq": "Action/Adventure"}},
-      "limit": 2
-    }'
-  ```
-</RequestExample>
+curl -X POST "https://$INDEX_HOST/vectors/fetch_by_metadata" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "namespace": "__default__",
+    "filter": {"genre": {"$eq": "Action/Adventure"}},
+    "limit": 2
+  }'
+```

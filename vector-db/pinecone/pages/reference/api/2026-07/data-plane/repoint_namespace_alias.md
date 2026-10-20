@@ -11,20 +11,18 @@ The call returns once the new target is live on every reader, which takes about 
 
 For guidance and examples, see [Manage namespace aliases](https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-aliases).
 
-<RequestExample>
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
-  ALIAS_NAME="dataset"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+ALIAS_NAME="dataset"
 
-  curl -X PATCH "https://$INDEX_HOST/namespace-aliases/$ALIAS_NAME" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -d '{
-          "target_namespace": "dataset_v2"
-      }'
-  ```
-</RequestExample>
+curl -X PATCH "https://$INDEX_HOST/namespace-aliases/$ALIAS_NAME" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+        "target_namespace": "dataset_v2"
+    }'
+```

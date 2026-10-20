@@ -24,6 +24,6 @@ The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/re
 
 Context retrieval usage is [measured in tokens](/guides/assistant/pricing-and-limits#token-usage), similar to Pinecone Assistant. See [Pricing](https://www.pinecone.io/pricing/) for up-to-date pricing information.
 
-<Note>
-  Pricing updates specific to context retrieval will be made as the feature becomes generally available.
-</Note>
+> [!NOTE]
+>
+> Pricing updates specific to context retrieval will be made as the feature becomes generally available.

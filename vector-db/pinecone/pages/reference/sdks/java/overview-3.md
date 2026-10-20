@@ -6,9 +6,9 @@ path: reference/sdks/java/overview
 
 Install and use the Pinecone Java SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Java.
 
-<Tip>
-  For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
-</Tip>
+> [!TIP]
+>
+> For installation instructions and usage examples, see the [Pinecone Java SDK documentation](https://github.com/pinecone-io/pinecone-java-client). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-java-client/issues).
 
 ## Requirements
 
@@ -50,9 +50,9 @@ Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-al
 
 ## Upgrade
 
-<Warning>
-  Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
-</Warning>
+> [!WARNING]
+>
+> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 

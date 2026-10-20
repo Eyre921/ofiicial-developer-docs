@@ -8,9 +8,9 @@ Run Fireworks inference inside your own Kubernetes cluster, cloud account, or da
 
 Bring Your Own Cluster (BYOC) lets Enterprise customers run Fireworks inference inside their own Kubernetes cluster. Your inference compute runs in your cloud account or data center boundary, while Fireworks installs and operates the serving stack for you.
 
-<Warning>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to discuss whether BYOC is a fit and to participate in the preview.
-</Warning>
+> [!WARNING]
+>
+> Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to discuss whether BYOC is a fit and to participate in the preview.
 
 ## What BYOC provides
 
@@ -18,9 +18,9 @@ With BYOC, Fireworks deploys the managed serving software stack into Kubernetes 
 
 You continue using the Fireworks product surface: the same APIs, SDKs, model deployment workflows, and performance work available across the Fireworks platform. The main difference is where inference runs: the model serving workload runs in your environment instead of Fireworks-managed cloud infrastructure.
 
-<Note>
-  Architecture diagram coming soon. During Private Preview, Fireworks reviews the exact deployment architecture, networking boundaries, and request flow with each customer during onboarding.
-</Note>
+> [!NOTE]
+>
+> Architecture diagram coming soon. During Private Preview, Fireworks reviews the exact deployment architecture, networking boundaries, and request flow with each customer during onboarding.
 
 ## Why choose BYOC
 
@@ -49,23 +49,21 @@ For workloads where Fireworks-managed infrastructure already satisfies your comp
 
 BYOC is not a raw self-hosting kit. Fireworks brings the managed serving experience to infrastructure you own, so your team can focus on applications instead of rebuilding model serving operations.
 
-<CardGroup>
-  <Card title="Inference performance focus" icon="gauge-high">
-    Fireworks continuously optimizes serving performance across model configuration, deployment shape, scheduling, quantization, speculative decoding, and workload-specific tuning such as FireOptimizer where enabled.
-  </Card>
+> **Inference performance focus**
+>
+> Fireworks continuously optimizes serving performance across model configuration, deployment shape, scheduling, quantization, speculative decoding, and workload-specific tuning such as FireOptimizer where enabled.
 
-  <Card title="Managed operations and upgrades" icon="gears">
-    Fireworks handles serving-stack installation, rollout, maintenance, upgrades, and day-to-day operations so your team does not have to rebuild a self-hosted inference platform.
-  </Card>
+> **Managed operations and upgrades**
+>
+> Fireworks handles serving-stack installation, rollout, maintenance, upgrades, and day-to-day operations so your team does not have to rebuild a self-hosted inference platform.
 
-  <Card title="GPU reliability operations" icon="heart-pulse">
-    Fireworks monitors GPU and node health, detects unhealthy capacity, and safely remediates issues to reduce the operational burden of running inference on large GPU fleets.
-  </Card>
+> **GPU reliability operations**
+>
+> Fireworks monitors GPU and node health, detects unhealthy capacity, and safely remediates issues to reduce the operational burden of running inference on large GPU fleets.
 
-  <Card title="Current models and GPU generations" icon="microchip">
-    Fireworks tracks new model releases and new GPU generations, including day-0 enablement for supported models and kernel-level optimizations for supported hardware, so your BYOC environment can adopt supported updates without your team rebuilding the serving stack.
-  </Card>
-</CardGroup>
+> **Current models and GPU generations**
+>
+> Fireworks tracks new model releases and new GPU generations, including day-0 enablement for supported models and kernel-level optimizations for supported hardware, so your BYOC environment can adopt supported updates without your team rebuilding the serving stack.
 
 ## Hybrid BYOC and Fireworks-managed capacity
 
@@ -78,9 +76,9 @@ Hybrid operation can help when:
 * Some workloads can run outside the BYOC environment while others must remain within your network boundary
 * Your team wants a consistent Fireworks API surface across BYOC and Fireworks-managed deployments
 
-<Note>
-  Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
-</Note>
+> [!NOTE]
+>
+> Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
 
 ## Known gaps during Private Preview
 
@@ -100,12 +98,10 @@ At a high level, BYOC requires:
 
 If BYOC may be a fit, [contact us](https://fireworks.ai/contact) to review your requirements and preview eligibility.
 
-<CardGroup>
-  <Card title="How setup works" icon="diagram-project" href="/ecosystem/integrations/byoc/how-setup-works">
-    Understand prerequisites, setup access, installation, and validation.
-  </Card>
+> **[How setup works](/ecosystem/integrations/byoc/how-setup-works)**
+>
+> Understand prerequisites, setup access, installation, and validation.
 
-  <Card title="Operational model" icon="gears" href="/ecosystem/integrations/byoc/operational-model">
-    Learn how Fireworks operates BYOC clusters after onboarding.
-  </Card>
-</CardGroup>
+> **[Operational model](/ecosystem/integrations/byoc/operational-model)**
+>
+> Learn how Fireworks operates BYOC clusters after onboarding.

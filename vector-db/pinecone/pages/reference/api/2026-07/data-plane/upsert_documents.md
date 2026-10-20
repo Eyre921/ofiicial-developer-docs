@@ -17,170 +17,168 @@ Documents aren't deduplicated by `_id` within a request. Each entry is written, 
 
 Upsert fully replaces any document with the same `_id`, so fields you omit are removed. To change specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents). If any document fails schema validation, the whole request fails and nothing is written. The namespace is created on first upsert (use `__default__` if you don't need partitioning), and documents become searchable within about a minute.
 
-<RequestExample>
-  ```python Python theme={null}
-  # pip install --upgrade pinecone
-  import os
-  from pinecone import Pinecone
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-  index = pc.Index(name="articles")
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+index = pc.Index(name="articles")
 
-  NAMESPACE = "example-namespace"
+NAMESPACE = "example-namespace"
 
-  docs = [
-      {"_id": "doc1", "title": "Machine learning in 2024", "body": "Machine learning models are revolutionizing natural language processing", "category": "technology", "year": 2024},
-      {"_id": "doc2", "title": "Vector databases", "body": "Vector databases enable fast similarity search across embeddings", "category": "technology", "year": 2023},
-      {"_id": "doc3", "title": "Quantum computing", "body": "Quantum computers leverage superposition for faster computation", "category": "science", "year": 2024},
-  ]
+docs = [
+    {"_id": "doc1", "title": "Machine learning in 2024", "body": "Machine learning models are revolutionizing natural language processing", "category": "technology", "year": 2024},
+    {"_id": "doc2", "title": "Vector databases", "body": "Vector databases enable fast similarity search across embeddings", "category": "technology", "year": 2023},
+    {"_id": "doc3", "title": "Quantum computing", "body": "Quantum computers leverage superposition for faster computation", "category": "science", "year": 2024},
+]
 
-  # For large ingests, index.documents.batch_upsert(...) splits documents into
-  # concurrent requests to this endpoint.
-  index.documents.upsert(
-      namespace=NAMESPACE,
-      documents=docs,
-  )
-  ```
+# For large ingests, index.documents.batch_upsert(...) splits documents into
+# concurrent requests to this endpoint.
+index.documents.upsert(
+    namespace=NAMESPACE,
+    documents=docs,
+)
+```
 
-  ```javascript JavaScript theme={null}
-  // npm install @pinecone-database/pinecone
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  // Reads PINECONE_API_KEY from the environment
-  const pc = new Pinecone();
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
 
-  const index = pc.index({
-    name: 'articles',
-    namespace: 'example-namespace',
-  });
+const index = pc.index({
+  name: 'articles',
+  namespace: 'example-namespace',
+});
 
-  const result = await index.documents.upsert({
-    documents: [
-      {
-        _id: 'doc1',
-        title: 'Machine learning in 2024',
-        body: 'Machine learning models are revolutionizing natural language processing',
-        category: 'technology',
-        year: 2024,
-      },
-      {
-        _id: 'doc2',
-        title: 'Vector databases',
-        body: 'Vector databases enable fast similarity search across embeddings',
-        category: 'technology',
-        year: 2023,
-      },
-      {
-        _id: 'doc3',
-        title: 'Quantum computing',
-        body: 'Quantum computers leverage superposition for faster computation',
-        category: 'science',
-        year: 2024,
-      },
-    ],
-  });
+const result = await index.documents.upsert({
+  documents: [
+    {
+      _id: 'doc1',
+      title: 'Machine learning in 2024',
+      body: 'Machine learning models are revolutionizing natural language processing',
+      category: 'technology',
+      year: 2024,
+    },
+    {
+      _id: 'doc2',
+      title: 'Vector databases',
+      body: 'Vector databases enable fast similarity search across embeddings',
+      category: 'technology',
+      year: 2023,
+    },
+    {
+      _id: 'doc3',
+      title: 'Quantum computing',
+      body: 'Quantum computers leverage superposition for faster computation',
+      category: 'science',
+      year: 2024,
+    },
+  ],
+});
 
-  console.log(`Upserted ${result.upsertedCount} documents`);
-  ```
+console.log(`Upserted ${result.upsertedCount} documents`);
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
 
-      "github.com/pinecone-io/go-pinecone/v7/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: os.Getenv("PINECONE_API_KEY"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      idx, err := pc.DescribeIndex(ctx, "articles")
-      if err != nil {
-          log.Fatalf("Failed to describe index: %v", err)
-      }
+    idx, err := pc.DescribeIndex(ctx, "articles")
+    if err != nil {
+        log.Fatalf("Failed to describe index: %v", err)
+    }
 
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
-          Host:      idx.Host,
-          Namespace: "example-namespace",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection: %v", err)
-      }
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
+        Host:      idx.Host,
+        Namespace: "example-namespace",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection: %v", err)
+    }
 
-      res, err := idxConnection.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{
-          Documents: []pinecone.Document{
-              {
-                  "_id":      "doc1",
-                  "title":    "Machine learning in 2024",
-                  "body":     "Machine learning models are revolutionizing natural language processing",
-                  "category": "technology",
-                  "year":     2024,
-              },
-              {
-                  "_id":      "doc2",
-                  "title":    "Vector databases",
-                  "body":     "Vector databases enable fast similarity search across embeddings",
-                  "category": "technology",
-                  "year":     2023,
-              },
-              {
-                  "_id":      "doc3",
-                  "title":    "Quantum computing",
-                  "body":     "Quantum computers leverage superposition for faster computation",
-                  "category": "science",
-                  "year":     2024,
-              },
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to upsert documents: %v", err)
-      }
-      fmt.Printf("Upserted %d documents\n", res.UpsertedCount)
-  }
-  ```
-
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="articles-abc123.svc.us-east-1.pinecone.io"
-  curl "https://$INDEX_HOST/namespaces/__default__/documents/upsert" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "documents": [
-        {
-          "_id": "doc1",
-          "title": "Machine learning in 2024",
-          "body": "Machine learning models are revolutionizing natural language processing",
-          "category": "technology",
-          "year": 2024
+    res, err := idxConnection.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{
+        Documents: []pinecone.Document{
+            {
+                "_id":      "doc1",
+                "title":    "Machine learning in 2024",
+                "body":     "Machine learning models are revolutionizing natural language processing",
+                "category": "technology",
+                "year":     2024,
+            },
+            {
+                "_id":      "doc2",
+                "title":    "Vector databases",
+                "body":     "Vector databases enable fast similarity search across embeddings",
+                "category": "technology",
+                "year":     2023,
+            },
+            {
+                "_id":      "doc3",
+                "title":    "Quantum computing",
+                "body":     "Quantum computers leverage superposition for faster computation",
+                "category": "science",
+                "year":     2024,
+            },
         },
-        {
-          "_id": "doc2",
-          "title": "Vector databases",
-          "body": "Vector databases enable fast similarity search across embeddings",
-          "category": "technology",
-          "year": 2023
-        },
-        {
-          "_id": "doc3",
-          "title": "Quantum computing",
-          "body": "Quantum computers leverage superposition for faster computation",
-          "category": "science",
-          "year": 2024
-        }
-      ]
-    }'
-  ```
-</RequestExample>
+    })
+    if err != nil {
+        log.Fatalf("Failed to upsert documents: %v", err)
+    }
+    fmt.Printf("Upserted %d documents\n", res.UpsertedCount)
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="articles-abc123.svc.us-east-1.pinecone.io"
+curl "https://$INDEX_HOST/namespaces/__default__/documents/upsert" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "documents": [
+      {
+        "_id": "doc1",
+        "title": "Machine learning in 2024",
+        "body": "Machine learning models are revolutionizing natural language processing",
+        "category": "technology",
+        "year": 2024
+      },
+      {
+        "_id": "doc2",
+        "title": "Vector databases",
+        "body": "Vector databases enable fast similarity search across embeddings",
+        "category": "technology",
+        "year": 2023
+      },
+      {
+        "_id": "doc3",
+        "title": "Quantum computing",
+        "body": "Quantum computers leverage superposition for faster computation",
+        "category": "science",
+        "year": 2024
+      }
+    ]
+  }'
+```

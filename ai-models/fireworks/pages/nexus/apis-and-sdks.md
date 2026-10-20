@@ -38,10 +38,10 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 `firerouter` works the same way on all three APIs.
 
-<Card title="FireRouter examples for every API and SDK" icon="code" href="/nexus/firerouter/setup#api-and-sdk">
-  cURL, OpenAI, Anthropic, and Fireworks SDK examples for Chat Completions,
-  Responses, and Messages, with provider-key headers.
-</Card>
+> **[FireRouter examples for every API and SDK](/nexus/firerouter/setup#api-and-sdk)**
+>
+> cURL, OpenAI, Anthropic, and Fireworks SDK examples for Chat Completions,
+> Responses, and Messages, with provider-key headers.
 
 ## Read the serving model
 

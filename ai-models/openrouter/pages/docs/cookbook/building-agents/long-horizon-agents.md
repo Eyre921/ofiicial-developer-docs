@@ -12,9 +12,9 @@ path: docs/cookbook/building-agents/long-horizon-agents
 
 > Run multi-hour agent loops with cost ceilings, resumable state, and voice input
 
-<Tip>
-  This cookbook assumes you have an OpenRouter API key and are using the Agent SDK (`@openrouter/agent`). If you are starting from scratch, read the [Agent SDK overview](/docs/agent-sdk/overview) and the [callModel reference](/docs/agent-sdk/call-model/overview) first.
-</Tip>
+> [!TIP]
+>
+> This cookbook assumes you have an OpenRouter API key and are using the Agent SDK (`@openrouter/agent`). If you are starting from scratch, read the [Agent SDK overview](/docs/agent-sdk/overview) and the [callModel reference](/docs/agent-sdk/call-model/overview) first.
 
 **Goal:** Run an agent that can keep working for hours, not seconds — research projects, multi-stage migrations, voice-driven assistants, or background jobs that span days. The same `callModel` loop works for all of them once you wire up four primitives.
 
@@ -36,27 +36,25 @@ You can hand this page to your coding agent as the implementation brief. Adapt t
 * A place to persist state — a database, Redis, S3, or the local filesystem
 * Optional: a microphone or audio file for the voice section
 
-<CodeGroup>
-  ```bash title="npm" lines theme={null}
-  npm install @openrouter/agent @openrouter/sdk zod
-  ```
+```bash title="npm" lines theme={null}
+npm install @openrouter/agent @openrouter/sdk zod
+```
 
-  ```bash title="pnpm" lines theme={null}
-  pnpm add @openrouter/agent @openrouter/sdk zod
-  ```
+```bash title="pnpm" lines theme={null}
+pnpm add @openrouter/agent @openrouter/sdk zod
+```
 
-  ```bash title="yarn" lines theme={null}
-  yarn add @openrouter/agent @openrouter/sdk zod
-  ```
+```bash title="yarn" lines theme={null}
+yarn add @openrouter/agent @openrouter/sdk zod
+```
 
-  ```bash title="bun" lines theme={null}
-  bun add @openrouter/agent @openrouter/sdk zod
-  ```
+```bash title="bun" lines theme={null}
+bun add @openrouter/agent @openrouter/sdk zod
+```
 
-  ```bash title="deno" lines theme={null}
-  deno add npm:@openrouter/agent npm:@openrouter/sdk npm:zod
-  ```
-</CodeGroup>
+```bash title="deno" lines theme={null}
+deno add npm:@openrouter/agent npm:@openrouter/sdk npm:zod
+```
 
 ## 1. Set hard ceilings on every run
 
@@ -92,9 +90,9 @@ const text = await result.getText();
 
 See the [Stop Conditions reference](/docs/agent-sdk/call-model/stop-conditions) for the full list (`stepCountIs`, `hasToolCall`, `maxTokensUsed`, `maxCost`, `finishReasonIs`) and how to compose custom predicates.
 
-<Warning>
-  Long-horizon runs spend real credits. Always set both a step ceiling and a cost ceiling before you start a multi-hour run, and start small while you are iterating.
-</Warning>
+> [!WARNING]
+>
+> Long-horizon runs spend real credits. Always set both a step ceiling and a cost ceiling before you start a multi-hour run, and start small while you are iterating.
 
 ## 2. Persist state for resumability
 
@@ -231,9 +229,9 @@ for (let i = 0; i < SELF_ASK_MAX_ITERATIONS; i++) {
 
 The `[DONE]` sentinel is intentionally cheap: any model can produce it, and a plain `String.includes` check keeps the control flow obvious. Swap the review prompt or the reviewer model (for example a faster `~anthropic/claude-sonnet-latest` critiquing an Opus researcher) without changing the loop. Three layers of ceilings keep cost bounded: `SELF_ASK_MAX_ITERATIONS` caps the number of review rounds, and each round inherits its own `stepCountIs` + `maxCost` budget.
 
-<Tip>
-  Pair this with the `state` accessor from step 2 so the loop survives crashes mid-review. On resume, re-enter the loop from the saved state and continue reviewing.
-</Tip>
+> [!TIP]
+>
+> Pair this with the `state` accessor from step 2 so the loop survives crashes mid-review. On resume, re-enter the loop from the saved state and continue reviewing.
 
 ## 5. Add voice input
 

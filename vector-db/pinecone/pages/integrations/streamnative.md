@@ -10,4 +10,4 @@ Use the StreamNative Pinecone sink connector to write messages from Apache Pulsa
 
 StreamNative was founded by the original developers of Apache Pulsar and Apache BookKeeper. It also supports on-premises Pulsar deployments with commercial support, and offers Kafka compatibility for integrating with existing Kafka-based systems.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.streamnative.io/hub/connector-pinecone-sink-v3.3#pinecone-sink-connector)

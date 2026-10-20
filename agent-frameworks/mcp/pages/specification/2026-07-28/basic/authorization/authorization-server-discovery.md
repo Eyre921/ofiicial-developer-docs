@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authoriza
 path: specification/2026-07-28/basic/authorization/authorization-server-discovery
 ---
 
-<div />
-
 This document describes the mechanisms by which MCP servers advertise their associated
 authorization servers to MCP clients, as well as the discovery process through which MCP
 clients can determine authorization server endpoints and supported capabilities.

@@ -42,15 +42,15 @@ A user can be assigned roles for each organization they belong to, and any proje
 
 ## Compliance
 
-<Note>
-  To learn more about data privacy and compliance at Pinecone, visit the [Pinecone Trust and Security Center](https://security.pinecone.io/).
-</Note>
+> [!NOTE]
+>
+> To learn more about data privacy and compliance at Pinecone, visit the [Pinecone Trust and Security Center](https://security.pinecone.io/).
 
 ### Audit logs
 
-<Note>
-  To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
-</Note>
+> [!NOTE]
+>
+> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
 
 [Audit logs](/admin/security/configure-audit-logs) provide a detailed record of user and API actions that occur within Pinecone.
 
@@ -153,9 +153,9 @@ For [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud), you 
 
 ### Backup and recovery
 
-<Note>
-  This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 A backup is a static copy of your index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of an index, and you can [create a new index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
 
@@ -169,7 +169,7 @@ Pinecone encrypts stored data using the 256-bit Advanced Encryption Standard (AE
 
 Pinecone uses standard protocols to encrypt user data in transit. Clients open HTTPS or gRPC connections to the Pinecone API. The Pinecone API gateway uses gRPC connections to user deployments in the cloud. These HTTPS and gRPC connections use the TLS 1.2 protocol with 256-bit Advanced Encryption Standard (AES-256) encryption.
 
-<img alt="Diagram showing encryption protocols for user data in transit" />
+![Diagram showing encryption protocols for user data in transit](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/encryption-in-transit-2.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=6da22e2916d66cf6ff03a4cfd7623705)
 
 Traffic is also encrypted in transit between the Pinecone backend and cloud infrastructure services, such as S3 and GCS. For more information, see [Google Cloud Platform](https://cloud.google.com/docs/security/encryption-in-transit) and [AWS security documentation](https://docs.aws.amazon.com/AmazonS3/userguide/UsingEncryption.html).
 
@@ -179,7 +179,7 @@ Traffic is also encrypted in transit between the Pinecone backend and cloud infr
 
 Use [Private Endpoints](/guides/production/configure-private-endpoints) to connect through AWS PrivateLink or Azure Private Link. This establishes private connectivity between your Pinecone serverless indexes and your cloud VPC or VNet while keeping traffic off the public internet.
 
-<img alt="PrivateLink diagram" />
+![PrivateLink diagram](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/privatelink.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=20101bb766f1d56a181a967adf4fa9f3)
 
 Private Endpoints are additive to other Pinecone security features: data is also [encrypted in transit](#encryption-in-transit), [encrypted at rest](#encryption-at-rest), and an [API key](#api-keys) is required to authenticate.
 

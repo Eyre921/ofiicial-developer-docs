@@ -84,7 +84,7 @@ def text_to_speech_file(text: str) -> str:
 ```typescript TypeScript
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import * as dotenv from "dotenv";
-import { createWriteStream } from "fs";
+import { writeFile } from "node:fs/promises";
 import { v4 as uuid } from "uuid";
 
 dotenv.config();
@@ -96,31 +96,22 @@ const elevenlabs = new ElevenLabsClient({
 });
 
 export const createAudioFileFromText = async (text: string): Promise<string> => {
-  return new Promise<string>(async (resolve, reject) => {
-    try {
-      const audio = await elevenlabs.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb", {
-        modelId: "eleven_v4",
-        text,
-        outputFormat: "mp3_44100_128",
-        // Optional voice settings that allow you to customize the output
-        voiceSettings: {
-          stability: 0,
-          similarityBoost: 0,
-          useSpeakerBoost: true,
-          speed: 1.0,
-        },
-      });
-
-      const fileName = `${uuid()}.mp3`;
-      const fileStream = createWriteStream(fileName);
-
-      audio.pipe(fileStream);
-      fileStream.on("finish", () => resolve(fileName)); // Resolve with the fileName
-      fileStream.on("error", reject);
-    } catch (error) {
-      reject(error);
-    }
+  const audio = await elevenlabs.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb", {
+    modelId: "eleven_v4",
+    text,
+    outputFormat: "mp3_44100_128",
+    // Optional voice settings that allow you to customize the output
+    voiceSettings: {
+      stability: 0,
+      similarityBoost: 0,
+      useSpeakerBoost: true,
+      speed: 1.0,
+    },
   });
+
+  const fileName = `${uuid()}.mp3`;
+  await writeFile(fileName, Buffer.from(await new Response(audio).arrayBuffer()));
+  return fileName;
 };
 ```
 

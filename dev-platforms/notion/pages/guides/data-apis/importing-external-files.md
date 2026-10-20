@@ -10,20 +10,18 @@ Learn how to migrate files from an external URL to Notion.
 
 To initiate the process of transferring a temporarily-hosted public file into your Notion workspace, use the [Create a file upload](/reference/create-file) with a `mode` of `"external_url"`, a `filename`, and the `external_url` itself:
 
-<CodeGroup>
-  ```curl cURL theme={null}
-  curl --request POST \
-    --url 'https://api.notion.com/v1/file_uploads' \
-    -H 'Authorization: Bearer ntn_****' \
-    -H 'Content-Type: application/json' \
-    -H  'Notion-Version: 2026-03-11' \
-    --data '{
-      "mode": "external_url",
-      "external_url": "https://example.com/image.png",
-      "filename": "image.png"
-    }'
-  ```
-</CodeGroup>
+```curl cURL theme={null}
+curl --request POST \
+  --url 'https://api.notion.com/v1/file_uploads' \
+  -H 'Authorization: Bearer ntn_****' \
+  -H 'Content-Type: application/json' \
+  -H  'Notion-Version: 2026-03-11' \
+  --data '{
+    "mode": "external_url",
+    "external_url": "https://example.com/image.png",
+    "filename": "image.png"
+  }'
+```
 
 At this step, Notion will return a `validation_error` (HTTP 400) if any of the following are true:
 
@@ -57,35 +55,31 @@ After Step 1, Notion begins processing the file import asynchronously. To wait f
 
    3. For both success and failure, the `entity` of the webhook payload will contain a `type` of `"file_upload"` and an `id` containing the ID of the FileUpload from Step 1.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
 
 The outcome of the file import is recorded on the [File Upload](/reference/file-upload) object. If the import fails, the status changes to `failed`. If it succeeds, the status changes to `uploaded`.
 
 For example, in response to a `file_upload.upload_failed` webhook, your system can read the `data.file_import_result.error` from the webhook response, or use the [Retrieve a file upload](/reference/retrieve-file-upload) API and check the `file_import_result.error` to debug the import failure:
 
-<CodeGroup>
-  ```typescript TypeScript theme={null}
-  // GET /v1/file_uploads/:file_upload_id
-  // --- RETURNS -->
-  {
-    "object": "file_upload",
-    // ...
-    "status": "failed",
-    "file_import_result": {
-      "type": "error",
-      "error": {
-        "type": "validation_error",
-        "code": "file_upload_invalid_size",
-        "message": "The file size is not within the allowed limit of 5 MiB. Please try again with a new file upload.",
-        "parameter": null,
-        "status_code": null
-      },
-    }
+```typescript TypeScript theme={null}
+// GET /v1/file_uploads/:file_upload_id
+// --- RETURNS -->
+{
+  "object": "file_upload",
+  // ...
+  "status": "failed",
+  "file_import_result": {
+    "type": "error",
+    "error": {
+      "type": "validation_error",
+      "code": "file_upload_invalid_size",
+      "message": "The file size is not within the allowed limit of 5 MiB. Please try again with a new file upload.",
+      "parameter": null,
+      "status_code": null
+    },
   }
-  ```
-</CodeGroup>
+}
+```
 
 The `file_import_result` object contains details on the `success` or `error`. In this example, the problem is a file size validation issue that wasn’t caught during Step 1—potentially because the external host did not provide a `Content-Length` header for Notion to validate with a `HEAD` request. The same file size limits of 5 MiB for a free workspace and 5 GiB for a paid workspace apply to external URL mode.
 

@@ -6,9 +6,9 @@ path: guides/ondemand-deployments
 
 Create and manage on-demand Fireworks deployments on dedicated GPUs: choose accelerator shapes, autoscaling, replicas, and lifecycle controls for production.
 
-<Info>
-  **New to deployments?** Start with our [Deployments Quickstart](/getting-started/ondemand-quickstart) to deploy and query your first model in minutes, then return here to learn about configuration options.
-</Info>
+> [!NOTE]
+>
+> **New to deployments?** Start with our [Deployments Quickstart](/getting-started/ondemand-quickstart) to deploy and query your first model in minutes, then return here to learn about configuration options.
 
 On-demand deployments give you dedicated GPUs for your models, providing several advantages over serverless:
 
@@ -33,33 +33,33 @@ firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
 
 `--deployment-shape default` has Fireworks pick a validated shape for the model — see [Letting Fireworks pick a shape](#letting-fireworks-pick-a-shape). To choose a shape yourself, run `firectl deployment-shape-version match --model <model-id>` first and pass a shape's name to `--deployment-shape`.
 
-<Warning>
-  **Deployment placement (`--region`) must be set at creation time and cannot be changed in place.**
-
-  If you do not specify `--region`, the deployment is pinned to a single datacenter at creation time and will not be automatically migrated later.
-
-  For production workloads that need geographic availability or capacity failover, always set `--region` explicitly:
-
-  ```bash theme={null}
-  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
-    --deployment-shape default \
-    --region GLOBAL   # recommended default
-  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
-    --deployment-shape default \
-    --region US
-  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
-    --deployment-shape default \
-    --region CANADA
-  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
-    --deployment-shape default \
-    --region EUROPE
-  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
-    --deployment-shape default \
-    --region APAC
-  ```
-
-  Only **GLOBAL** is available by default. Quota for **US**, **CANADA**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — [contact us](https://fireworks.ai/contact). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
-</Warning>
+> [!WARNING]
+>
+> **Deployment placement (`--region`) must be set at creation time and cannot be changed in place.**
+>
+> If you do not specify `--region`, the deployment is pinned to a single datacenter at creation time and will not be automatically migrated later.
+>
+> For production workloads that need geographic availability or capacity failover, always set `--region` explicitly:
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+>   --deployment-shape default \
+>   --region GLOBAL   # recommended default
+> firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+>   --deployment-shape default \
+>   --region US
+> firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+>   --deployment-shape default \
+>   --region CANADA
+> firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+>   --deployment-shape default \
+>   --region EUROPE
+> firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+>   --deployment-shape default \
+>   --region APAC
+> ```
+>
+> Only **GLOBAL** is available by default. Quota for **US**, **CANADA**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — [contact us](https://fireworks.ai/contact). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
 
 ### Check current placement
 
@@ -98,9 +98,9 @@ After creating a deployment, query it using this format:
 accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>
 ```
 
-<Tip>
-  You can find your deployment name anytime with `firectl deployment list` and `firectl deployment get <DEPLOYMENT_ID>`.
-</Tip>
+> [!TIP]
+>
+> You can find your deployment name anytime with `firectl deployment list` and `firectl deployment get <DEPLOYMENT_ID>`.
 
 **Example:**
 
@@ -110,81 +110,79 @@ accounts/alice/deployments/12345678
 
 ### Code examples
 
-<Tabs>
-  <Tab title="Python (Fireworks SDK)">
-    ```python theme={null}
-    from fireworks import Fireworks
+**Python (Fireworks SDK)**
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.chat.completions.create(
-      model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
-      messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+response = client.chat.completions.create(
+  model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
+  messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
+)
 
-  <Tab title="Python (OpenAI SDK)">
-    ```python theme={null}
-    import os
-    from openai import OpenAI
+print(response.choices[0].message.content)
+```
 
-    client = OpenAI(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference/v1"
-    )
+**Python (OpenAI SDK)**
 
-    response = client.chat.completions.create(
-        model="accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
-    )
+```python theme={null}
+import os
+from openai import OpenAI
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1"
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
+response = client.chat.completions.create(
+    model="accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
+)
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
+print(response.choices[0].message.content)
+```
 
-    const response = await client.chat.completions.create({
-      model: "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-      messages: [
-        {
-          role: "user",
-          content: "Explain quantum computing in simple terms",
-        },
-      ],
-    });
+**JavaScript**
 
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
+```javascript theme={null}
+import OpenAI from "openai";
 
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Explain quantum computing in simple terms"
-          }
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+  messages: [
+    {
+      role: "user",
+      content: "Explain quantum computing in simple terms",
+    },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain quantum computing in simple terms"
+      }
+    ]
+  }'
+```
 
 ### Deployment status states
 
@@ -208,9 +206,9 @@ These are display labels computed from deployment fields; they are not new backe
 
 Deployment shapes are the primary way to configure deployments. They're pre-configured templates optimized for speed, cost, or efficiency, including hardware, quantization, and other [performance factors](/deployments/benchmarking). Every shape is validated by Fireworks, so a deployment created from a shape uses a known-good configuration of GPU count, precision, and serving parameters.
 
-<Warning>
-  **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip these validation checks — mistakes like a GPU count that can't fit the model surface only at creation, where they cause failures. Most failed deployment creations on Fireworks are deployments without a shape. Enforcement is coming soon: shapeless creation will then require an explicit opt-in — see [Explicitly creating a deployment without a shape](#explicitly-creating-a-deployment-without-a-shape-advanced-users-only). If no shape fits your workload, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
-</Warning>
+> [!WARNING]
+>
+> **Do not create deployments without a shape.** Always pass `--deployment-shape` — a concrete shape, or `default` to have Fireworks pick one. Deployments created without a shape skip these validation checks — mistakes like a GPU count that can't fit the model surface only at creation, where they cause failures. Most failed deployment creations on Fireworks are deployments without a shape. Enforcement is coming soon: shapeless creation will then require an explicit opt-in — see [Explicitly creating a deployment without a shape](#explicitly-creating-a-deployment-without-a-shape-advanced-users-only). If no shape fits your workload, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
 Over the API, `deploymentShape` also accepts the special value `default`: the server picks a validated shape for the model for you — pass `--deployment-shape default` with firectl. For details, see [Letting Fireworks pick a shape](#letting-fireworks-pick-a-shape).
 
@@ -231,9 +229,9 @@ firectl deployment-shape-version match --model <model-id>
 firectl deployment create accounts/fireworks/models/deepseek-v3 --deployment-shape throughput
 ```
 
-<Note>
-  `match` reports the deployable set. Shapes your account cannot deploy on are dropped, exact base-model matches are preferred over same-model-type and parameter-count siblings, and LoRA addon and live-merge models are matched against their base model. Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions). To see every validated shape matching a base model instead (including ones your account cannot use), use `firectl deployment-shape-version list --base-model <model-id>` — base models only, it fails on LoRA addon and live-merge models. `match` does not take addons into account. For a deployment with `--enable-addons`, use the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) API with `enableAddons` set.
-</Note>
+> [!NOTE]
+>
+> `match` reports the deployable set. Shapes your account cannot deploy on are dropped, exact base-model matches are preferred over same-model-type and parameter-count siblings, and LoRA addon and live-merge models are matched against their base model. Over the API, the equivalent is [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions). To see every validated shape matching a base model instead (including ones your account cannot use), use `firectl deployment-shape-version list --base-model <model-id>` — base models only, it fails on LoRA addon and live-merge models. `match` does not take addons into account. For a deployment with `--enable-addons`, use the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) API with `enableAddons` set.
 
 ```bash theme={null}
 # Create with full shape ID
@@ -248,41 +246,39 @@ firectl deployment-shape-version get <full-deployment-shape-version-id>
 
 Every client surface accepts a special value that has the server pick a validated shape for the model and apply it, the same as passing that shape explicitly:
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-      --deployment-shape default
-    ```
-  </Tab>
+**firectl**
 
-  <Tab title="REST API">
-    Pass `"default"` as `deploymentShape`:
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/gpt-oss-120b \
+  --deployment-shape default
+```
 
-    ```bash theme={null}
-    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "baseModel": "accounts/fireworks/models/gpt-oss-120b",
-        "deploymentShape": "default"
-      }'
-    ```
-  </Tab>
+**REST API**
 
-  <Tab title="Python SDK">
-    ```python theme={null}
-    from fireworks import Fireworks
+Pass `"default"` as `deploymentShape`:
 
-    client = Fireworks()
-    client.deployments.create(
-        account_id="YOUR_ACCOUNT_ID",
-        base_model="accounts/fireworks/models/gpt-oss-120b",
-        deployment_shape="default",
-    )
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "baseModel": "accounts/fireworks/models/gpt-oss-120b",
+    "deploymentShape": "default"
+  }'
+```
+
+**Python SDK**
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+client.deployments.create(
+    account_id="YOUR_ACCOUNT_ID",
+    base_model="accounts/fireworks/models/gpt-oss-120b",
+    deployment_shape="default",
+)
+```
 
 The pick never silently overrides fields you set. If every compatible shape conflicts with fields in your request (for example an `acceleratorType` no shape validates), the request fails with an error naming the conflicting fields, the compatible shapes, and how to create the deployment without a shape. If no shape is compatible with the model at all, the request also fails — in that case, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
@@ -290,48 +286,46 @@ The pick never silently overrides fields you set. If every compatible shape conf
 
 Every surface accepts an explicit opt-out that creates the deployment without a shape. Setting it together with a shape is an error — a deployment is either shaped or explicitly shapeless.
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-      --accept-shapeless-risk
-    ```
-  </Tab>
+**firectl**
 
-  <Tab title="REST API">
-    Pass `acceptShapelessRisk=true` as a query parameter:
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/gpt-oss-120b \
+  --accept-shapeless-risk
+```
 
-    ```bash theme={null}
-    curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments?acceptShapelessRisk=true" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "baseModel": "accounts/fireworks/models/gpt-oss-120b"
-      }'
-    ```
-  </Tab>
+**REST API**
 
-  <Tab title="Python SDK">
-    ```python theme={null}
-    from fireworks import Fireworks
+Pass `acceptShapelessRisk=true` as a query parameter:
 
-    client = Fireworks()
-    client.deployments.create(
-        account_id="YOUR_ACCOUNT_ID",
-        base_model="accounts/fireworks/models/gpt-oss-120b",
-        accept_shapeless_risk=True,
-    )
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments?acceptShapelessRisk=true" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+  }'
+```
 
-<Warning>
-  Deployments created this way skip shape validation and are far more likely to fail at creation — most failed deployment creations on Fireworks are shapeless deployments. Only use the opt-out when you have a specific reason no shape covers, and [contact us](https://fireworks.ai/contact) so we can help. Enforcement is coming soon: shapeless creation will then *require* this flag, so use a shape (or `default`) now unless you deliberately need this path.
-</Warning>
+**Python SDK**
 
-<Tip>
-  Need even better performance with tailored optimizations? [Contact our team](https://fireworks.ai/contact).
-</Tip>
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+client.deployments.create(
+    account_id="YOUR_ACCOUNT_ID",
+    base_model="accounts/fireworks/models/gpt-oss-120b",
+    accept_shapeless_risk=True,
+)
+```
+
+> [!WARNING]
+>
+> Deployments created this way skip shape validation and are far more likely to fail at creation — most failed deployment creations on Fireworks are shapeless deployments. Only use the opt-out when you have a specific reason no shape covers, and [contact us](https://fireworks.ai/contact) so we can help. Enforcement is coming soon: shapeless creation will then *require* this flag, so use a shape (or `default`) now unless you deliberately need this path.
+
+> [!TIP]
+>
+> Need even better performance with tailored optimizations? [Contact our team](https://fireworks.ai/contact).
 
 ## Managing & configuring deployments
 
@@ -350,19 +344,19 @@ firectl deployment delete <DEPLOYMENT_ID>
 
 Use [deployment tags](/deployments/deployment-tags) to attach customer-defined metadata such as an environment, team, or workload.
 
-<Note>
-  By default, deployments scale to zero if unused for 1 hour. Deployments with min replicas set to 0 are automatically deleted after 7 days of no traffic.
-</Note>
+> [!NOTE]
+>
+> By default, deployments scale to zero if unused for 1 hour. Deployments with min replicas set to 0 are automatically deleted after 7 days of no traffic.
 
-<Warning>
-  When a deployment is scaled to zero, requests return a `503` error immediately while the deployment scales up. Your application should implement retry logic to handle this. See [Scaling from zero behavior](/deployments/autoscaling#scaling-from-zero-behavior) for implementation details.
-</Warning>
+> [!WARNING]
+>
+> When a deployment is scaled to zero, requests return a `503` error immediately while the deployment scales up. Your application should implement retry logic to handle this. See [Scaling from zero behavior](/deployments/autoscaling#scaling-from-zero-behavior) for implementation details.
 
 ### GPU hardware
 
-<Warning>
-  **Do not create deployments without a shape.** If a [deployment shape](#deployment-shapes) fits your workload, use it — this section only applies when no shape fits. Creating a deployment without a shape (not passing `--deployment-shape`) skips validation: most failed deployment creations on Fireworks are deployments without a shape, and shapeless creation will soon require an explicit opt-in. If you need a configuration no shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
-</Warning>
+> [!WARNING]
+>
+> **Do not create deployments without a shape.** If a [deployment shape](#deployment-shapes) fits your workload, use it — this section only applies when no shape fits. Creating a deployment without a shape (not passing `--deployment-shape`) skips validation: most failed deployment creations on Fireworks are deployments without a shape, and shapeless creation will soon require an explicit opt-in. If you need a configuration no shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
 Choose GPU type with `--accelerator-type`:
 
@@ -376,15 +370,15 @@ Choose GPU type with `--accelerator-type`:
 
 GPU availability varies by [region](/deployments/regions). See the [Create Deployment API reference](/api-reference/create-deployment#body-accelerator-type) for the authoritative list of supported accelerator types.
 
-<Note>
-  **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, match its deployment shapes:
-
-  ```bash theme={null}
-  firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
-  ```
-
-  The `GPUS`, `ACCELERATOR`, and `PRECISION` columns are the validated combinations; the model's page in the [Fireworks console](https://app.fireworks.ai) shows the same options under dedicated deployments. Setting `--accelerator-type` or `--accelerator-count` to a combination no shape validates will typically fail at creation — often with a generic `Internal error occurred` message that does not name the hardware mismatch. If you need hardware no shape covers, [contact us](https://fireworks.ai/contact).
-</Note>
+> [!NOTE]
+>
+> **Not every model runs on every GPU.** Each model is validated only on specific accelerator type, GPU count, and precision combinations — many models support just one or two entries from the list above. To see what a model supports, match its deployment shapes:
+>
+> ```bash theme={null}
+> firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL_NAME>
+> ```
+>
+> The `GPUS`, `ACCELERATOR`, and `PRECISION` columns are the validated combinations; the model's page in the [Fireworks console](https://app.fireworks.ai) shows the same options under dedicated deployments. Setting `--accelerator-type` or `--accelerator-count` to a combination no shape validates will typically fail at creation — often with a generic `Internal error occurred` message that does not name the hardware mismatch. If you need hardware no shape covers, [contact us](https://fireworks.ai/contact).
 
 ### Autoscaling
 
@@ -418,9 +412,9 @@ Preemptible deployments let you run **evaluation and batch workloads without hol
 
 Because the capacity is borrowed, it can be **reclaimed (preempted) at any time** and is not guaranteed. In practice a preemptible deployment usually stays up long enough to run an eval end to end, but you must treat disappearance as a normal outcome, not an error.
 
-<Warning>
-  **Eval and batch workloads only.** A preemptible deployment can be preempted mid-request and disappear with no warning. **Never** point production or latency-sensitive traffic at a preemptible deployment.
-</Warning>
+> [!WARNING]
+>
+> **Eval and batch workloads only.** A preemptible deployment can be preempted mid-request and disappear with no warning. **Never** point production or latency-sensitive traffic at a preemptible deployment.
 
 ### Guarantees vs. risks
 
@@ -433,9 +427,9 @@ Because the capacity is borrowed, it can be **reclaimed (preempted) at any time*
 | **Safe for production / latency-sensitive traffic?** | No | Yes |
 | **Intended for** | Evaluation, batch, one-off runs | Production and interactive serving |
 
-<Note>
-  **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.
-</Note>
+> [!NOTE]
+>
+> **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.
 
 ### Requirements
 
@@ -454,9 +448,9 @@ firectl deployment create accounts/fireworks/models/<MODEL> \
 
 `--wait` blocks until the deployment is ready (1 hour default; tune with `--wait-timeout`).
 
-<Warning>
-  **`--preemptible` is immutable.** It is set at creation time and cannot be toggled on or off later. To change it, delete the deployment and recreate it.
-</Warning>
+> [!WARNING]
+>
+> **`--preemptible` is immutable.** It is set at creation time and cannot be toggled on or off later. To change it, delete the deployment and recreate it.
 
 Check status and then send eval requests as you would to any deployment:
 
@@ -480,28 +474,26 @@ firectl deployment delete <NAME> -a <ACCOUNT_ID>
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Autoscaling" href="/deployments/autoscaling" icon="arrows-up-down">
-    Configure autoscaling for optimal cost and performance
-  </Card>
+> **[Autoscaling](/deployments/autoscaling)**
+>
+> Configure autoscaling for optimal cost and performance
 
-  <Card title="Upload custom models" href="/models/uploading-custom-models" icon="cloud-arrow-up">
-    Deploy your own models from Hugging Face
-  </Card>
+> **[Upload custom models](/models/uploading-custom-models)**
+>
+> Deploy your own models from Hugging Face
 
-  <Card title="Quantization" href="/models/quantization" icon="compress">
-    Reduce costs with model quantization
-  </Card>
+> **[Quantization](/models/quantization)**
+>
+> Reduce costs with model quantization
 
-  <Card title="Regions" href="/deployments/regions" icon="earth-americas">
-    Choose deployment regions for optimal latency
-  </Card>
+> **[Regions](/deployments/regions)**
+>
+> Choose deployment regions for optimal latency
 
-  <Card title="Reserved capacity" href="/deployments/reservations" icon="calendar-check">
-    Purchase reserved GPUs for guaranteed capacity
-  </Card>
+> **[Reserved capacity](/deployments/reservations)**
+>
+> Purchase reserved GPUs for guaranteed capacity
 
-  <Card title="Training" href="/fine-tuning/finetuning-intro" icon="wand-magic-sparkles">
-    Train models for your specific use case
-  </Card>
-</CardGroup>
+> **[Training](/fine-tuning/finetuning-intro)**
+>
+> Train models for your specific use case

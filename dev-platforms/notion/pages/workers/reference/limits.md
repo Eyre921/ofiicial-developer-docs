@@ -43,12 +43,10 @@ Sync upserts and deletes (the `changes` your `execute` function returns) are lim
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Syncs" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/arrowCircleLoopForward.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=25d8d1ea2405c9af06347df80ab90fcf" href="/workers/guides/syncs">
-    Configure sync schedules and pace outbound requests to third-party APIs.
-  </Card>
+> **[Syncs](/workers/guides/syncs)**
+>
+> Configure sync schedules and pace outbound requests to third-party APIs.
 
-  <Card title="Webhooks" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/bell.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=0ee1c6e084361d853c48609a1f989a2c" href="/workers/guides/webhooks">
-    Receive HTTP events and understand webhook delivery behavior.
-  </Card>
-</CardGroup>
+> **[Webhooks](/workers/guides/webhooks)**
+>
+> Receive HTTP events and understand webhook delivery behavior.

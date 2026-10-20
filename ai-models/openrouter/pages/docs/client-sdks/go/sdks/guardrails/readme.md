@@ -333,7 +333,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
-| `updateGuardrailRequest` | [components.UpdateGuardrailRequest](../../models/components/updateguardrailrequest.mdx) | ✅ | N/A | \{<br />"description": "Updated description",<br />"limit\_usd": 75,<br />"name": "Updated Guardrail Name",<br />"reset\_interval": "weekly"<br />} |
+| `updateGuardrailRequest` | [components.UpdateGuardrailRequest](../../models/components/updateguardrailrequest.mdx) | ✅ | N/A | \{ "description": "Updated description", "limit\_usd": 75, "name": "Updated Guardrail Name", "reset\_interval": "weekly" } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -465,7 +465,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkAssignKeysRequest` | [components.BulkAssignKeysRequest](../../models/components/bulkassignkeysrequest.mdx) | ✅ | N/A | \{<br />"key\_hashes": \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />]<br />} |
+| `bulkAssignKeysRequest` | [components.BulkAssignKeysRequest](../../models/components/bulkassignkeysrequest.mdx) | ✅ | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -527,7 +527,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkUnassignKeysRequest` | [components.BulkUnassignKeysRequest](../../models/components/bulkunassignkeysrequest.mdx) | ✅ | N/A | \{<br />"key\_hashes": \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />]<br />} |
+| `bulkUnassignKeysRequest` | [components.BulkUnassignKeysRequest](../../models/components/bulkunassignkeysrequest.mdx) | ✅ | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -658,7 +658,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkAssignMembersRequest` | [components.BulkAssignMembersRequest](../../models/components/bulkassignmembersrequest.mdx) | ✅ | N/A | \{<br />"member\_user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
+| `bulkAssignMembersRequest` | [components.BulkAssignMembersRequest](../../models/components/bulkassignmembersrequest.mdx) | ✅ | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -720,7 +720,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkUnassignMembersRequest` | [components.BulkUnassignMembersRequest](../../models/components/bulkunassignmembersrequest.mdx) | ✅ | N/A | \{<br />"member\_user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
+| `bulkUnassignMembersRequest` | [components.BulkUnassignMembersRequest](../../models/components/bulkunassignmembersrequest.mdx) | ✅ | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

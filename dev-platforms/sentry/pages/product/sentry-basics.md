@@ -41,14 +41,14 @@ Route alerts to [Slack](https://docs.sentry.io/integrations/notification-inciden
 
 After basic error monitoring, these features add the debugging context that will help you find and fix problems faster:
 
-| Feature                                                                | What it adds                                                | Set up                                                                                                           |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **[Tracing](https://docs.sentry.io/product/trace-explorer.md)**        | Follow requests across services, find slow queries and N+1s | Enable `tracesSampleRate` in SDK config                                                                          |
-| **[Logs](https://docs.sentry.io/product/logs.md)**                     | Structured logs alongside errors and traces                 | Enable `enableLogs: true` in SDK config — [set up guide](https://docs.sentry.io/product/logs/getting-started.md) |
-| **[Session Replay](https://docs.sentry.io/product/session-replay.md)** | Video-like recordings of user sessions (web and mobile)     | Enable replay in SDK config                                                                                      |
-| **[Profiling](https://docs.sentry.io/product/profiling.md)**           | CPU profiles showing which functions are slow               | Enable profiling in SDK config                                                                                   |
-| **[Application Metrics](https://docs.sentry.io/product/metrics.md)**   | Custom counters, gauges, distributions                      | Add metric calls to your code                                                                                    |
-| **[User Feedback](https://docs.sentry.io/product/user-feedback.md)**   | Collect bug reports from users, linked to errors            | Add the feedback widget                                                                                          |
+| Feature                                                                | What it adds                                                | Set up                                                                                                          |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **[Tracing](https://docs.sentry.io/product/trace-explorer.md)**        | Follow requests across services, find slow queries and N+1s | Enable `tracesSampleRate` in SDK config                                                                         |
+| **[Logs](https://docs.sentry.io/product/logs.md)**                     | Structured logs alongside errors and traces                 | Add log calls or a logging integration — [set up guide](https://docs.sentry.io/product/logs/getting-started.md) |
+| **[Session Replay](https://docs.sentry.io/product/session-replay.md)** | Video-like recordings of user sessions (web and mobile)     | Enable replay in SDK config                                                                                     |
+| **[Profiling](https://docs.sentry.io/product/profiling.md)**           | CPU profiles showing which functions are slow               | Enable profiling in SDK config                                                                                  |
+| **[Application Metrics](https://docs.sentry.io/product/metrics.md)**   | Custom counters, gauges, distributions                      | Add metric calls to your code                                                                                   |
+| **[User Feedback](https://docs.sentry.io/product/user-feedback.md)**   | Collect bug reports from users, linked to errors            | Add the feedback widget                                                                                         |
 
 Check out Sentry's [cookbooks](https://docs.sentry.io/get-started/cookbook.md) to learn more about how others use Sentry, and how to go deeper with each of Sentry's tools.
 

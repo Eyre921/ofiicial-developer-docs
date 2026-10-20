@@ -117,6 +117,8 @@ All other configurations are set by the child agent, included but not limited to
 >
 > Configure these settings consistently on each agent in the workflow to avoid mismatched behavior.
 
+An agent using a [Realtime model](/docs/eleven-agents/customization/realtime-models) can only transfer to and from other agents using a Realtime model.
+
 ### Transcript and chat history
 
 The full transcript is preserved across the entire conversation. User and agent messages from every preceding agent remain in the chat history.

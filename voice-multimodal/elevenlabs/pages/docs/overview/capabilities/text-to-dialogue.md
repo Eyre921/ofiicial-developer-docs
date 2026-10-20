@@ -40,7 +40,7 @@ Full API reference for the Text to Dialogue endpoint.
 
 ElevenLabs offers thousands of voices through multiple creation methods. Eleven v4 supports 90+ languages and Eleven v3 supports 70+ languages.
 
-* [Voice library](/docs/overview/capabilities/voices) with 3,000+ community-shared voices
+* [Voice library](/docs/overview/capabilities/voices) with 10,000+ community-shared voices
 * [Professional voice cloning](/docs/overview/capabilities/voices#cloned) for highest-fidelity replicas
 * [Instant voice cloning](/docs/overview/capabilities/voices#cloned) for quick voice replication
 * [Voice design](/docs/overview/capabilities/voices#voice-design) to generate custom voices from text descriptions

@@ -21,168 +21,164 @@ The `kind` sets what an artifact represents and how it's extracted. The `name` i
 
 These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication). The manifest here is a general concept-and-entity design: a per-document note, corpus-wide concepts and entities, and an edge linking them.
 
-<Steps>
-  <Step title="Create the context with your manifest">
-    Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
+**1. Create the context with your manifest**
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{
-        "slug": "company-knowledge",
-        "name": "Company knowledge",
-        "manifest": {
-          "curate": {
-            "artifacts": {
-              "enabled": true,
-              "artifact_types": [
-                { "name": "Note", "kind": "summary", "scope": "document",
-                  "description": "A per-document note: key points, decisions, and takeaways." },
-                { "name": "Concept", "kind": "topic", "scope": "corpus",
-                  "description": "A recurring concept or theme across the corpus." },
-                { "name": "Entity", "kind": "entity", "scope": "corpus",
-                  "description": "A named person, organization, product, or system across the corpus." }
-              ],
-              "edge_types": [
-                { "name": "relates_to", "from": "Entity", "to": "Concept",
-                  "description": "The entity relates to or exemplifies this concept." }
-              ]
-            }
-          }
+Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
+
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{
+    "slug": "company-knowledge",
+    "name": "Company knowledge",
+    "manifest": {
+      "curate": {
+        "artifacts": {
+          "enabled": true,
+          "artifact_types": [
+            { "name": "Note", "kind": "summary", "scope": "document",
+              "description": "A per-document note: key points, decisions, and takeaways." },
+            { "name": "Concept", "kind": "topic", "scope": "corpus",
+              "description": "A recurring concept or theme across the corpus." },
+            { "name": "Entity", "kind": "entity", "scope": "corpus",
+              "description": "A named person, organization, product, or system across the corpus." }
+          ],
+          "edge_types": [
+            { "name": "relates_to", "from": "Entity", "to": "Concept",
+              "description": "The entity relates to or exemplifies this concept." }
+          ]
         }
-      }'
-    ```
-  </Step>
+      }
+    }
+  }'
+```
 
-  <Step title="Add sources">
-    Curation needs sources. Upload files or import from a connector, then confirm at least one source is staged. See the [quickstart](/guides/nexus/quickstart) for adding sources.
-  </Step>
+**2. Add sources**
 
-  <Step title="Curate">
-    Curation executes the manifest against the sources, building your artifact and edge types:
+Curation needs sources. Upload files or import from a connector, then confirm at least one source is staged. See the [quickstart](/guides/nexus/quickstart) for adding sources.
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge/curate" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{}'
-    ```
+**3. Curate**
 
-    An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
-  </Step>
+Curation executes the manifest against the sources, building your artifact and edge types:
 
-  <Step title="Query the context">
-    Query the context to see the artifacts and edges curation built:
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge/curate" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{}'
+```
 
-    ```bash curl theme={null}
-    curl -fsS -X POST "$NEXUS_BASE_URL/query" \
-      -H "Authorization: Bearer $NEXUS_TOKEN" \
-      -H 'Content-Type: application/json' \
-      -H 'X-Pinecone-Api-Version: 2026-07' \
-      -d '{"scope": ["company-knowledge"], "ask": "How do the entities relate to each concept?"}'
-    ```
-  </Step>
-</Steps>
+An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+
+**4. Query the context**
+
+Query the context to see the artifacts and edges curation built:
+
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{"scope": ["company-knowledge"], "ask": "How do the entities relate to each concept?"}'
+```
 
 ## More example manifests
 
 Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
-<AccordionGroup>
-  <Accordion title="Contracts, obligations, and key dates">
-    Shows the `event` kind, a `coverage` list on a type, and edge `attributes`.
+> **Contracts, obligations, and key dates**
+>
+> Shows the `event` kind, a `coverage` list on a type, and edge `attributes`.
+>
+> ```json theme={null}
+> {
+>   "curate": {
+>     "artifacts": {
+>       "enabled": true,
+>       "artifact_types": [
+>         { "name": "Agreement", "kind": "entity", "scope": "corpus",
+>           "description": "One contract or agreement in the corpus." },
+>         { "name": "Party", "kind": "entity", "scope": "corpus",
+>           "description": "A person or organization that is party to an agreement." },
+>         { "name": "Obligation", "kind": "topic", "scope": "corpus",
+>           "description": "A duty an agreement imposes on a party.",
+>           "coverage": ["Who owes the obligation", "What it requires", "Any deadline or condition"] },
+>         { "name": "Key Date", "kind": "event", "scope": "corpus",
+>           "description": "A dated milestone in an agreement, such as an effective or renewal date." }
+>       ],
+>       "edge_types": [
+>         { "name": "party_to", "from": "Party", "to": "Agreement",
+>           "description": "The party is bound by this agreement.", "attributes": ["role"] },
+>         { "name": "owed_by", "from": "Party", "to": "Obligation",
+>           "description": "The party owes this obligation." },
+>         { "name": "effective_on", "from": "Agreement", "to": "Key Date",
+>           "description": "The agreement takes effect on this date.", "attributes": ["type"] }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-    ```json theme={null}
-    {
-      "curate": {
-        "artifacts": {
-          "enabled": true,
-          "artifact_types": [
-            { "name": "Agreement", "kind": "entity", "scope": "corpus",
-              "description": "One contract or agreement in the corpus." },
-            { "name": "Party", "kind": "entity", "scope": "corpus",
-              "description": "A person or organization that is party to an agreement." },
-            { "name": "Obligation", "kind": "topic", "scope": "corpus",
-              "description": "A duty an agreement imposes on a party.",
-              "coverage": ["Who owes the obligation", "What it requires", "Any deadline or condition"] },
-            { "name": "Key Date", "kind": "event", "scope": "corpus",
-              "description": "A dated milestone in an agreement, such as an effective or renewal date." }
-          ],
-          "edge_types": [
-            { "name": "party_to", "from": "Party", "to": "Agreement",
-              "description": "The party is bound by this agreement.", "attributes": ["role"] },
-            { "name": "owed_by", "from": "Party", "to": "Obligation",
-              "description": "The party owes this obligation." },
-            { "name": "effective_on", "from": "Agreement", "to": "Key Date",
-              "description": "The agreement takes effect on this date.", "attributes": ["type"] }
-          ]
-        }
-      }
-    }
-    ```
-  </Accordion>
+> **Papers and citations**
+>
+> Shows a per-document summary and a self-referential edge (a paper cites another paper).
+>
+> ```json theme={null}
+> {
+>   "curate": {
+>     "artifacts": {
+>       "enabled": true,
+>       "artifact_types": [
+>         { "name": "Paper Summary", "kind": "summary", "scope": "document",
+>           "description": "A per-paper summary: the problem, method, and headline result." },
+>         { "name": "Paper", "kind": "entity", "scope": "corpus",
+>           "description": "One research paper in the corpus." },
+>         { "name": "Method", "kind": "topic", "scope": "corpus",
+>           "description": "A method or technique a paper uses." }
+>       ],
+>       "edge_types": [
+>         { "name": "uses_method", "from": "Paper", "to": "Method",
+>           "description": "The paper uses this method." },
+>         { "name": "cites", "from": "Paper", "to": "Paper",
+>           "description": "The paper cites another paper.", "attributes": ["context"] }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-  <Accordion title="Papers and citations">
-    Shows a per-document summary and a self-referential edge (a paper cites another paper).
-
-    ```json theme={null}
-    {
-      "curate": {
-        "artifacts": {
-          "enabled": true,
-          "artifact_types": [
-            { "name": "Paper Summary", "kind": "summary", "scope": "document",
-              "description": "A per-paper summary: the problem, method, and headline result." },
-            { "name": "Paper", "kind": "entity", "scope": "corpus",
-              "description": "One research paper in the corpus." },
-            { "name": "Method", "kind": "topic", "scope": "corpus",
-              "description": "A method or technique a paper uses." }
-          ],
-          "edge_types": [
-            { "name": "uses_method", "from": "Paper", "to": "Method",
-              "description": "The paper uses this method." },
-            { "name": "cites", "from": "Paper", "to": "Paper",
-              "description": "The paper cites another paper.", "attributes": ["context"] }
-          ]
-        }
-      }
-    }
-    ```
-  </Accordion>
-
-  <Accordion title="Code and technical docs">
-    Shows a dependency graph: a self-referential `depends_on` edge, plus edge `attributes`.
-
-    ```json theme={null}
-    {
-      "curate": {
-        "artifacts": {
-          "enabled": true,
-          "artifact_types": [
-            { "name": "Component", "kind": "entity", "scope": "corpus",
-              "description": "A service, module, or library in the codebase." },
-            { "name": "API Endpoint", "kind": "entity", "scope": "corpus",
-              "description": "An endpoint a component exposes." },
-            { "name": "Pattern", "kind": "topic", "scope": "corpus",
-              "description": "A design or architectural pattern used across the codebase." }
-          ],
-          "edge_types": [
-            { "name": "depends_on", "from": "Component", "to": "Component",
-              "description": "The component depends on another component.", "attributes": ["type"] },
-            { "name": "exposes_endpoint", "from": "Component", "to": "API Endpoint",
-              "description": "The component exposes this endpoint.", "attributes": ["method"] },
-            { "name": "implements_pattern", "from": "Component", "to": "Pattern",
-              "description": "The component implements this pattern." }
-          ]
-        }
-      }
-    }
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Code and technical docs**
+>
+> Shows a dependency graph: a self-referential `depends_on` edge, plus edge `attributes`.
+>
+> ```json theme={null}
+> {
+>   "curate": {
+>     "artifacts": {
+>       "enabled": true,
+>       "artifact_types": [
+>         { "name": "Component", "kind": "entity", "scope": "corpus",
+>           "description": "A service, module, or library in the codebase." },
+>         { "name": "API Endpoint", "kind": "entity", "scope": "corpus",
+>           "description": "An endpoint a component exposes." },
+>         { "name": "Pattern", "kind": "topic", "scope": "corpus",
+>           "description": "A design or architectural pattern used across the codebase." }
+>       ],
+>       "edge_types": [
+>         { "name": "depends_on", "from": "Component", "to": "Component",
+>           "description": "The component depends on another component.", "attributes": ["type"] },
+>         { "name": "exposes_endpoint", "from": "Component", "to": "API Endpoint",
+>           "description": "The component exposes this endpoint.", "attributes": ["method"] },
+>         { "name": "implements_pattern", "from": "Component", "to": "Pattern",
+>           "description": "The component implements this pattern." }
+>       ]
+>     }
+>   }
+> }
+> ```
 
 ## Tune the design
 

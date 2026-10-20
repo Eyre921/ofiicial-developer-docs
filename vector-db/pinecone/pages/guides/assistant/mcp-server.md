@@ -8,9 +8,9 @@ Connect AI agents to a Pinecone Assistant MCP server via remote or local Model C
 
 Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This page shows you how to connect an assistant's MCP server with Cursor, Claude Desktop, and LangChain.
 
-<Note>
-  Pinecone also provides an MCP server for managing indexes, upserting data, and querying your Pinecone database directly from an AI agent. See [Use the Pinecone MCP server](/guides/operations/mcp-server).
-</Note>
+> [!NOTE]
+>
+> Pinecone also provides an MCP server for managing indexes, upserting data, and querying your Pinecone database directly from an AI agent. See [Use the Pinecone MCP server](/guides/operations/mcp-server).
 
 There are two ways to connect to an assistant MCP server:
 
@@ -29,9 +29,9 @@ The MCP endpoint for an assistant is:
 https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 ```
 
-<Warning>
-  The previous SSE-based endpoint (with `/sse` suffix) is deprecated and will stop working on August 31, 2025 at 11:59:59 PM UTC. Before then, update to the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification and provides improved flexibility and compatibility.
-</Warning>
+> [!WARNING]
+>
+> The previous SSE-based endpoint (with `/sse` suffix) is deprecated and will stop working on August 31, 2025 at 11:59:59 PM UTC. Before then, update to the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification and provides improved flexibility and compatibility.
 
 ### Prerequisites
 
@@ -65,9 +65,9 @@ You can use the Claude CLI to configure Claude Code to use your assistant's remo
 
 You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of **remote** MCP server adoption, the Claude Desktop application doesn't support remote server URLs. In the example below, we work around this by using a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), to forward requests to the remote MCP server with your API key.
 
-<Warning>
-  [supergateway](https://github.com/supercorp-ai/supergateway) is an open-source third-party tool. Use at your own risk.
-</Warning>
+> [!WARNING]
+>
+> [supergateway](https://github.com/supercorp-ai/supergateway) is an open-source third-party tool. Use at your own risk.
 
 1. Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
 

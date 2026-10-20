@@ -6,15 +6,15 @@ path: admin/organizations/manage-service-accounts
 
 Create and manage service accounts at the organization level in Pinecone for programmatic Admin API access, including client secrets and role assignment.
 
-<Note>
-  This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
 
 This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) can add and manage service accounts at the organization level. Service accounts enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
 
-<Tip>
-  Once you add a service account at the organization level, you can add it to a project. For more information, see [Manage service accounts at the project level](/admin/projects/manage-service-accounts).
-</Tip>
+> [!TIP]
+>
+> Once you add a service account at the organization level, you can add it to a project. For more information, see [Manage service accounts at the project level](/admin/projects/manage-service-accounts).
 
 ## Create a service account
 
@@ -28,9 +28,9 @@ This page shows how [organization owners](/admin/organizations/understanding-org
 
 5. Copy and save the **Client secret** in a secure place for future use. You'll need the client secret to retrieve an access token.
 
-   <Warning>
-     You cannot view the client secret again after you close the dialog.
-   </Warning>
+   > [!WARNING]
+   >
+   > You cannot view the client secret again after you close the dialog.
 
 6. Click **Copy and Continue**.
 
@@ -90,9 +90,9 @@ The response includes an `access_token` field, which you can use to authenticate
 
 5. Copy and save the **Client secret** in a secure place for future use.
 
-   <Warning>
-     You cannot view the client secret again after you close the dialog.
-   </Warning>
+   > [!WARNING]
+   >
+   > You cannot view the client secret again after you close the dialog.
 
 6. Click **Copy and Continue**.
 

@@ -31,126 +31,124 @@ Single-item responses use the same value shape as page responses. Follow a type 
 
 | Type | Response |
 | :- | :- |
-| <span />[`button`](/reference/page-property-values#button) | One property item. |
-| <span />[`checkbox`](/reference/page-property-values#checkbox) | One property item. |
-| <span />[`created_by`](/reference/page-property-values#created-by) | One property item. |
-| <span />[`created_time`](/reference/page-property-values#created-time) | One property item. |
-| <span />[`date`](/reference/page-property-values#date) | One property item. |
-| <span />[`email`](/reference/page-property-values#email) | One property item. |
-| <span />[`files`](/reference/page-property-values#files) | One property item. |
+| [`button`](/reference/page-property-values#button) | One property item. |
+| [`checkbox`](/reference/page-property-values#checkbox) | One property item. |
+| [`created_by`](/reference/page-property-values#created-by) | One property item. |
+| [`created_time`](/reference/page-property-values#created-time) | One property item. |
+| [`date`](/reference/page-property-values#date) | One property item. |
+| [`email`](/reference/page-property-values#email) | One property item. |
+| [`files`](/reference/page-property-values#files) | One property item. |
 | [`formula`](/reference/page-property-values#formula) | One property item. |
-| <span />[`last_edited_by`](/reference/page-property-values#last-edited-by) | One property item. |
-| <span />[`last_edited_time`](/reference/page-property-values#last-edited-time) | One property item. |
-| <span />[`multi_select`](/reference/page-property-values#multi-select) | One property item. |
-| <span />[`number`](/reference/page-property-values#number) | One property item. |
-| <span />[`people`](/reference/page-property-values#people) | A paginated list; each item contains one user object. |
-| <span />[`phone_number`](/reference/page-property-values#phone-number) | One property item. |
-| <span />[`place`](/reference/page-property-values#place) | One property item. |
-| <span />[`relation`](/reference/page-property-values#relation) | A paginated list; each item contains one page reference. |
-| <span />[`rich_text`](/reference/page-property-values#rich-text) | A paginated list; each item contains one rich text object. |
+| [`last_edited_by`](/reference/page-property-values#last-edited-by) | One property item. |
+| [`last_edited_time`](/reference/page-property-values#last-edited-time) | One property item. |
+| [`multi_select`](/reference/page-property-values#multi-select) | One property item. |
+| [`number`](/reference/page-property-values#number) | One property item. |
+| [`people`](/reference/page-property-values#people) | A paginated list; each item contains one user object. |
+| [`phone_number`](/reference/page-property-values#phone-number) | One property item. |
+| [`place`](/reference/page-property-values#place) | One property item. |
+| [`relation`](/reference/page-property-values#relation) | A paginated list; each item contains one page reference. |
+| [`rich_text`](/reference/page-property-values#rich-text) | A paginated list; each item contains one rich text object. |
 | [`rollup`](/reference/page-property-values#rollup) | A paginated list with metadata in `property_item.rollup`. |
-| <span />[`select`](/reference/page-property-values#select) | One property item. |
+| [`select`](/reference/page-property-values#select) | One property item. |
 | [`status`](/reference/page-property-values#status) | One property item. |
-| <span />[`title`](/reference/page-property-values#title) | A paginated list; each item contains one rich text object. |
-| <span />[`unique_id`](/reference/page-property-values#unique-id) | One property item. |
-| <span />[`url`](/reference/page-property-values#url) | One property item. |
-| <span />[`verification`](/reference/page-property-values#verification) | One property item. |
+| [`title`](/reference/page-property-values#title) | A paginated list; each item contains one rich text object. |
+| [`unique_id`](/reference/page-property-values#unique-id) | One property item. |
+| [`url`](/reference/page-property-values#url) | One property item. |
+| [`verification`](/reference/page-property-values#verification) | One property item. |
 
 ## Status
 
 Status is a single property item. The response is not wrapped in a property name or a `properties` object.
 
-<Tabs>
-  <Tab title="Schema">
-    ```json Schema theme={null}
-    {
-      "Status": {
-        "id": "stat",
-        "name": "Status",
-        "description": null,
-        "type": "status",
-        "status": {
-          "options": [
-            {
-              "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-              "name": "In progress",
-              "color": "blue",
-              "description": null
-            }
-          ],
-          "groups": [
-            {
-              "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
-              "name": "To-do",
-              "color": "gray",
-              "option_ids": []
-            },
-            {
-              "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
-              "name": "In progress",
-              "color": "blue",
-              "option_ids": [
-                "330aeafb-598c-4e1c-bc13-1148aa5963d3"
-              ]
-            },
-            {
-              "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
-              "name": "Complete",
-              "color": "green",
-              "option_ids": []
-            }
-          ]
-        }
-      }
-    }
-    ```
-  </Tab>
+**Schema**
 
-  <Tab title="Page value">
-    ```json Page value theme={null}
-    {
-      "Status": {
-        "id": "stat",
-        "type": "status",
-        "status": {
+```json Schema theme={null}
+{
+  "Status": {
+    "id": "stat",
+    "name": "Status",
+    "description": null,
+    "type": "status",
+    "status": {
+      "options": [
+        {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
           "name": "In progress",
-          "color": "blue"
+          "color": "blue",
+          "description": null
         }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Page write">
-    ```json Page write theme={null}
-    {
-      "properties": {
-        "Status": {
-          "status": {
-            "name": "In progress"
-          }
+      ],
+      "groups": [
+        {
+          "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+          "name": "To-do",
+          "color": "gray",
+          "option_ids": []
+        },
+        {
+          "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+          "name": "In progress",
+          "color": "blue",
+          "option_ids": [
+            "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+          ]
+        },
+        {
+          "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+          "name": "Complete",
+          "color": "green",
+          "option_ids": []
         }
-      }
+      ]
     }
-    ```
-  </Tab>
+  }
+}
+```
 
-  <Tab title="Property item">
-    ```json Property item theme={null}
-    {
-      "object": "property_item",
-      "id": "stat",
-      "type": "status",
+**Page value**
+
+```json Page value theme={null}
+{
+  "Status": {
+    "id": "stat",
+    "type": "status",
+    "status": {
+      "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+      "name": "In progress",
+      "color": "blue"
+    }
+  }
+}
+```
+
+**Page write**
+
+```json Page write theme={null}
+{
+  "properties": {
+    "Status": {
       "status": {
-        "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-        "name": "In progress",
-        "color": "blue"
+        "name": "In progress"
       }
     }
-    ```
-  </Tab>
-</Tabs>
+  }
+}
+```
+
+**Property item**
+
+```json Property item theme={null}
+{
+  "object": "property_item",
+  "id": "stat",
+  "type": "status",
+  "status": {
+    "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+    "name": "In progress",
+    "color": "blue"
+  }
+}
+```
 
 ## Paginated values
 
@@ -198,19 +196,9 @@ Continue with `next_cursor` until `has_more` is `false`. In the final response, 
 
 The [pagination reference](/reference/pagination) defines `start_cursor` and `page_size`. For a complete SDK example, see [Read every item in a page property](/guides/data-apis/read-page-property-values).
 
-<span />
-
 Select, multi-select, and status [option values](/reference/property-object#select-options) share the same fields.
 
 ## Formula
-
-<span />
-
-<span />
-
-<span />
-
-<span />
 
 A formula returns one property item with a typed `formula` result. It does not return a paginated list. See [Formula result types](/reference/page-property-values#formula-result-types) for string, number, boolean, and date examples.
 
@@ -228,12 +216,6 @@ For `show_original`, `results` contains the target property’s values, flattene
 
 For a supported calculation such as `sum`, `results` contains relation items. The calculation is incomplete until you read the final page. Do not sum partial responses yourself or treat the first response as the final value.
 
-<span />
-
-<span />
-
-<span />
-
 | Rollup `type` | Meaning |
 | :- | :- |
 | `number` | A completed number result in `number`, which can be `null`. |
@@ -246,25 +228,23 @@ For a supported calculation such as `sum`, `results` contains relation items. Th
 
 These examples show the `property_item` metadata from consecutive responses. The first response has `has_more: true`; the final response has `has_more: false`.
 
-<CodeGroup>
-  ```json More results remain theme={null}
-  {
-    "id": "roll",
-    "next_url": "https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7/properties/roll?start_cursor=opaque-cursor&page_size=1",
-    "type": "rollup",
-    "rollup": { "type": "incomplete", "incomplete": {}, "function": "sum" }
-  }
-  ```
+```json More results remain theme={null}
+{
+  "id": "roll",
+  "next_url": "https://api.notion.com/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7/properties/roll?start_cursor=opaque-cursor&page_size=1",
+  "type": "rollup",
+  "rollup": { "type": "incomplete", "incomplete": {}, "function": "sum" }
+}
+```
 
-  ```json Final result theme={null}
-  {
-    "id": "roll",
-    "next_url": null,
-    "type": "rollup",
-    "rollup": { "type": "number", "number": 13, "function": "sum" }
-  }
-  ```
-</CodeGroup>
+```json Final result theme={null}
+{
+  "id": "roll",
+  "next_url": null,
+  "type": "rollup",
+  "rollup": { "type": "number", "number": 13, "function": "sum" }
+}
+```
 
 ### Unsupported rollup
 

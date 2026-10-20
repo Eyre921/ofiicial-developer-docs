@@ -12,9 +12,9 @@ path: docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev
 
 > Auto-approve routine permission prompts in OpenCode, Claude Code, Codex CLI, and Cursor with Jev, keep risky commands on a static rule, and send unclear ones to you
 
-<Tip>
-  This recipe assumes a coding agent is already running against OpenRouter, for OpenCode the way [OpenCode Integration](/docs/cookbook/coding-agents/opencode-integration) describes, and that `OPENROUTER_API_KEY` is set in the environment the agent runs in. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the coding model and the approval check can bill to the same key.
-</Tip>
+> [!TIP]
+>
+> This recipe assumes a coding agent is already running against OpenRouter, for OpenCode the way [OpenCode Integration](/docs/cookbook/coding-agents/opencode-integration) describes, and that `OPENROUTER_API_KEY` is set in the environment the agent runs in. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the coding model and the approval check can bill to the same key.
 
 **Goal:** Stop approving `bun test`, `git status`, and `ls src` by hand in your coding agent without switching shell permissions to allow everything.
 
@@ -135,9 +135,9 @@ function isProbability(value: unknown): value is number {
 
 The response also includes `id`, `provider`, `model`, and `usage` (which has `input_tokens`, `output_tokens`, and `cost`). If you want an audit trail of what was approved and what it cost, log `id` and `usage.cost` next to the commands.
 
-<Warning>
-  Each prompt that passes the risk list is one paid Decisions request. In the captured runs below, a request with a 400-token state cost \$0.0000168. Jev's answer is only as good as the state. A command that reads a secret from a file whose name isn't on your risk list looks like a routine `cat` to Jev, so treat the risk list, not the threshold, as the security boundary.
-</Warning>
+> [!WARNING]
+>
+> Each prompt that passes the risk list is one paid Decisions request. In the captured runs below, a request with a 400-token state cost \$0.0000168. Jev's answer is only as good as the state. A command that reads a secret from a file whose name isn't on your risk list looks like a routine `cat` to Jev, so treat the risk list, not the threshold, as the security boundary.
 
 ## 3. Check the thresholds against real commands
 
@@ -290,9 +290,9 @@ The script from the Claude Code section serves Codex too, with one difference in
 
 Codex picks up the same script through its own registration in `.codex/hooks.json` in your project, and the entry mirrors the Claude Code one with an optional status line shown while the hook runs. Codex loads project-local hooks only when the project's `.codex/` layer is trusted, and it requires you to review and trust each new or changed non-managed hook through `/hooks` in the CLI before it runs. Until you do, Codex skips the hook and every approval prompts as before.
 
-<Info>
-  In a Codex CLI 0.155.1 session on 2026-09-22, the hook process received no environment variable whose name contained `KEY`, including `OPENROUTER_API_KEY`, even with `shell_environment_policy.inherit` set to `all`, so the Decisions request failed and every command prompted. Bun loads a `.env` file from the directory the hook runs in, which is your project, so put `OPENROUTER_API_KEY` in a `.env` that Git ignores and the script works unchanged.
-</Info>
+> [!NOTE]
+>
+> In a Codex CLI 0.155.1 session on 2026-09-22, the hook process received no environment variable whose name contained `KEY`, including `OPENROUTER_API_KEY`, even with `shell_environment_policy.inherit` set to `all`, so the Decisions request failed and every command prompted. Bun loads a `.env` file from the directory the hook runs in, which is your project, so put `OPENROUTER_API_KEY` in a `.env` that Git ignores and the script works unchanged.
 
 ```json lines theme={null}
 {

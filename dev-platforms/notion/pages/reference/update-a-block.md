@@ -10,33 +10,33 @@ Updates the content for the specified `block_id` based on the block type. Suppor
 
 **Note**: The update replaces the *entire* value for a given field. If a field is omitted (ex: omitting `checked` when updating a `to_do` block), the value will not be changed.
 
-<Info>
-  **Updating `child_page` blocks**
+> [!NOTE]
+>
+> **Updating `child_page` blocks**
+>
+> To update `child_page` type blocks, use the [Update page](/reference/patch-page) endpoint. Updating the page's `title` updates the text displayed in the associated `child_page` block.
 
-  To update `child_page` type blocks, use the [Update page](/reference/patch-page) endpoint. Updating the page's `title` updates the text displayed in the associated `child_page` block.
-</Info>
+> [!NOTE]
+>
+> **Updating `child_database` blocks**
+>
+> To update `child_database` type blocks, use the [Update database](/reference/update-a-database) endpoint. Updating the page's `title` updates the text displayed in the associated `child_database` block.
 
-<Info>
-  **Updating `child_database` blocks**
-
-  To update `child_database` type blocks, use the [Update database](/reference/update-a-database) endpoint. Updating the page's `title` updates the text displayed in the associated `child_database` block.
-</Info>
-
-<Info>
-  **Updating `children`**
-
-  A block's children *CANNOT* be directly updated with this endpoint. Instead use [Append block children](/reference/patch-block-children) to add children.
-</Info>
+> [!NOTE]
+>
+> **Updating `children`**
+>
+> A block's children *CANNOT* be directly updated with this endpoint. Instead use [Append block children](/reference/patch-block-children) to add children.
 
 ### Success
 
 Returns a 200 HTTP response containing the updated [block object](/reference/block) on success.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have update content capabilities. Attempting to call this API without update content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have update content capabilities. Attempting to call this API without update content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

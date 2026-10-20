@@ -8,9 +8,9 @@ Legacy Training API reference for WeightSyncer, the standalone checkpoint-then-s
 
 ## Overview
 
-<Warning>
-  `WeightSyncer` is a legacy low-level helper kept only for backward compatibility in SDK API reference. Do not use it in new cookbook recipes or direct user loops. Use the SDK-managed service flow instead: `training_client.save_weights_for_sampler(...).result()` followed by `service.create_sampling_client(model_path=saved.path)` or `service.create_deployment_sampler(model_path=saved.path)`.
-</Warning>
+> [!WARNING]
+>
+> `WeightSyncer` is a legacy low-level helper kept only for backward compatibility in SDK API reference. Do not use it in new cookbook recipes or direct user loops. Use the SDK-managed service flow instead: `training_client.save_weights_for_sampler(...).result()` followed by `service.create_sampling_client(model_path=saved.path)` or `service.create_deployment_sampler(model_path=saved.path)`.
 
 `WeightSyncer` coordinates saving sampler checkpoints and syncing them to a deployment, including automatic base/delta chain state tracking, session-scoped snapshot naming, and post-sync warmup. The managed service client now owns this logic internally.
 
@@ -18,9 +18,9 @@ Legacy Training API reference for WeightSyncer, the standalone checkpoint-then-s
 from fireworks.training.sdk import WeightSyncer
 ```
 
-<Note>
-  For full-parameter training, only the first checkpoint (saved as `base`) is promotable; subsequent `delta` checkpoints are not. LoRA checkpoints are always promotable (delta chain is disabled via `lora_rank > 0`). See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
-</Note>
+> [!NOTE]
+>
+> For full-parameter training, only the first checkpoint (saved as `base`) is promotable; subsequent `delta` checkpoints are not. LoRA checkpoints are always promotable (delta chain is disabled via `lora_rank > 0`). See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
 
 ## Constructor
 

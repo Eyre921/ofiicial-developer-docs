@@ -6,16 +6,16 @@ path: docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-ema
 
 Everything to do before you start sending authentication emails with Resend and Supabase.
 
-<Note>
-  If you haven't yet, [configure your own Supabase
-  integration](https://resend.com/settings/integrations)!
-</Note>
+> [!NOTE]
+>
+> If you haven't yet, [configure your own Supabase
+> integration](https://resend.com/settings/integrations)!
 
 Below are **five steps to improve the deliverability of your authentication emails**.
 
 Prefer watching a video? Check out our video walkthrough below.
 
-<YouTube />
+[YouTube video player](https://www.youtube.com/embed/51vzcGEmjRI)
 
 ## Setup a custom domain on Supabase
 
@@ -45,15 +45,15 @@ For authentication emails, using a subdomain is particularly helpful because it 
 
 This clarity is essential because it helps the inbox provider understand that this subdomain is not used for sending marketing emails, which are more likely to be marked as spam.
 
-<Note>
-  If you don't want a subdomain just for auth, you can also achieve this by
-  establishing one subdomain for all your transactional emails (e.g.,
-  `notifications.example.com`).
-</Note>
+> [!NOTE]
+>
+> If you don't want a subdomain just for auth, you can also achieve this by
+> establishing one subdomain for all your transactional emails (e.g.,
+> `notifications.example.com`).
 
 To add a subdomain to Resend, you can [add it as a domain on the dashboard](https://resend.com/domains).
 
-<img alt="Create auth subdomain" />
+![Create auth subdomain](https://mintcdn.com/resend/OWNnQaVDyqcGyhhN/images/kb-create-auth-subdomain.png?fit=max\&auto=format\&n=OWNnQaVDyqcGyhhN\&q=85\&s=3d0629c74757298069867f0019e69a90)
 
 ## Disable link and open tracking
 
@@ -63,7 +63,7 @@ Also, Supabase has noted that link tracking is [known for corrupting verificatio
 
 You can disable link and open tracking by clicking on your domain and disabling at the bottom.
 
-<img alt="Disable link and open tracking" />
+![Disable link and open tracking](https://mintcdn.com/resend/OWNnQaVDyqcGyhhN/images/kb-disable-tracking.png?fit=max\&auto=format\&n=OWNnQaVDyqcGyhhN\&q=85\&s=1deeae548895ad4047ca7283faad95c6)
 
 ## Prepare for link scanners
 
@@ -79,6 +79,6 @@ That is where DMARC comes in. As the industry standard for email authentication,
 
 Following security best practices like DMARC will show your validity and authenticity.
 
-<img alt="DMARC policy details" />
+![DMARC policy details](https://mintcdn.com/resend/OWNnQaVDyqcGyhhN/images/kb-dmarc.png?fit=max\&auto=format\&n=OWNnQaVDyqcGyhhN\&q=85\&s=2b853e7501c2863ddd2ded6de271e0b6)
 
 You can use our [DMARC setup guide to get started](/docs/dashboard/domains/dmarc).

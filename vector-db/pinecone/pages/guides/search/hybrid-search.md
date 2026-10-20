@@ -8,9 +8,9 @@ Combine keyword and semantic retrieval in Pinecone with a text-match filter on a
 
 Hybrid search combines a keyword signal with a semantic signal so a single query benefits from both. Keyword retrieval (full-text BM25 or sparse vectors) matches specific tokens like product codes, error strings, and names. Semantic retrieval (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the other catches, and hybrid search closes that gap.
 
-<Note>
-  "Hybrid" isn't one fixed method. Qualify what you are combining: full-text (BM25) plus dense, sparse plus dense, or a keyword filter plus dense. This page uses those qualifiers throughout.
-</Note>
+> [!NOTE]
+>
+> "Hybrid" isn't one fixed method. Qualify what you are combining: full-text (BM25) plus dense, sparse plus dense, or a keyword filter plus dense. This page uses those qualifiers throughout.
 
 ## Combine signals
 

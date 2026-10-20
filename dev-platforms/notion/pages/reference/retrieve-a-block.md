@@ -13,11 +13,11 @@ To retrieve page content for a specific page, use [Retrieve block children](/ref
 
 For more information, read the [Working with page content guide](/guides/data-apis/working-with-page-content#modeling-content-as-blocks).
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

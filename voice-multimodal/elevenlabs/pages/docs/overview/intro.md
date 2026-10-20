@@ -8,25 +8,31 @@ path: docs/overview/intro
 
 # ElevenLabs Documentation
 
-## How ElevenLabs works
+> ElevenLabs API docs for text to speech, speech to text and voice agents, with Python and TypeScript SDKs, model guides, quickstarts and API reference.
 
-ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voice cloning, conversational agents, and generative audio. You can use it in four ways, suited to different audiences.
+> **Tip**
+>
+> Get started with your coding agent. No account or API key needed beforehand.
+>
+> Paste this into Claude Code, Cursor or Codex. It signs you in or creates an account, creates a key, and adds the SDK to your project.
+>
+> ```text
+> Add ElevenLabs to my project: run `npx -y @elevenlabs/cli@latest onboard init` and follow what it prints.
+> ```
+>
+> [See how it works](/docs/eleven-api/quickstart#set-up-with-your-coding-agent), or read the [`onboard` command's source](https://github.com/elevenlabs/cli/tree/main/cli/elevenlabs/workflow/onboard) to see exactly what it tells your agent.
+
+## How does ElevenLabs work?
+
+ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voice cloning, voice agents, and generative audio. You can use it in four ways, suited to different audiences.
 
 **[ElevenCreative](/docs/eleven-creative)** is a no-code web application where creators, producers, and editors generate voiceovers, music, dubs, and studio projects directly in the browser.
 
-**[ElevenAgents](/docs/eleven-agents)** is the platform for designing and operating conversational voice agents, with a visual builder for non-technical users and full programmatic control for developers.
+**[ElevenAgents](/docs/eleven-agents)** is the platform for designing and operating voice agents, with a visual builder for non-technical users and full programmatic control for developers.
 
 **[ElevenAPI](/docs/eleven-api)** exposes every capability as a REST interface with official Python and TypeScript SDKs, so developers can embed voice into their own applications and workflows.
 
-**[Reception AI](/docs/reception-ai)** is a ready-to-deploy AI phone receptionist for small and medium businesses that answers calls, books appointments, and manages day-to-day operations from a single dashboard.
-
-### Concepts
-
-**Voices** are the speech persona used in audio generation. Each voice has a unique ID — for example, `JBFqnCBsd6RMkjVDRZzb` — that you select in the dashboard or pass in API requests. ElevenLabs maintains a [library of 10,000+ voices](https://elevenlabs.io/app/voice-library). You can also clone a voice from an audio recording or generate one from a text description.
-
-**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v4`](/docs/overview/models) produces the most expressive output across 90+ languages. [`eleven_v4_turbo`](/docs/overview/models) targets real-time use at median inference latency of \~100ms. Each capability — speech-to-text, music, sound effects — has its own dedicated model.
-
-**Credits** are the unit of consumption shared across every product. Text-to-speech costs one credit per character of input text. Other operations are charged per second of audio processed. Credits reset monthly and unused credits roll over for up to two months. See [pricing](https://elevenlabs.io/pricing/api) for a full breakdown.
+**[Reception.ai](/docs/reception-ai)** is a ready-to-deploy AI phone receptionist for small and medium businesses that answers calls, books appointments, and manages day-to-day operations from a single dashboard.
 
 ## Choose your path
 
@@ -48,7 +54,145 @@ Learn how to build, launch, and scale agents with ElevenLabs
 
 Learn how to integrate with the ElevenLabs API with examples and tutorials
 
-## Meet the models
+## Concepts
+
+**Voices** are the speech persona used in audio generation. Each voice has a unique ID — for example, `JBFqnCBsd6RMkjVDRZzb` — that you select in the dashboard or pass in API requests. ElevenLabs maintains a [library of 10,000+ voices](https://elevenlabs.io/app/voice-library). You can also clone a voice from an audio recording or generate one from a text description.
+
+**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v4`](/docs/overview/models) produces the most expressive output across 90+ languages. [`eleven_v4_turbo`](/docs/overview/models) targets real-time use at median inference latency of \~100ms. Each capability — speech-to-text, music, sound effects — has its own dedicated model. See [Which model should I use?](#which-model-should-i-use) to pick one.
+
+## How does pricing work?
+
+**Credits** are the unit of consumption shared across every product. Text-to-speech costs one credit per character of input text. Other operations are charged per second of audio processed. Credits reset monthly and unused credits roll over for up to two months. See [pricing](https://elevenlabs.io/pricing/api) for a full breakdown.
+
+To use the API without a monthly subscription, [Pay As You Go](/docs/overview/administration/pay-as-you-go) lets you prepay a balance that is drawn down as you use ElevenLabs, after any subscription credits are used up.
+
+## Built for production
+
+### How fast is ElevenLabs text to speech?
+
+Eleven Flash v2.5 generates audio with \~75ms of model inference latency, and Eleven v4 Turbo with a median of \~100ms. Scribe v2 Realtime returns partial transcripts in \~150ms. These figures exclude application and network latency, so the time until your users hear audio is higher. [Understanding latency](/docs/eleven-api/concepts/latency) explains what the figures cover, and [Latency optimization](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) covers how to reduce end-to-end latency.
+
+### How does ElevenLabs handle scale?
+
+Your plan sets how many requests are processed at the same time. A concurrency limit is not a cap on simultaneous conversations: as a rule of thumb, a limit of 5 can typically support around 100 simultaneous audio broadcasts, depending on the voices used and the use case. Enterprise plans have elevated limits. See [Concurrency and priority](/docs/overview/models#concurrency-and-priority) for per-plan limits and load testing guidance.
+
+### Enterprise controls
+
+* **[Private deployments](/docs/overview/capabilities/private-deployment)** run ElevenAgents, Text to Speech and Speech to Text inside your own cloud account, so text, audio and transcripts stay in your network.
+* **[Data residency](/docs/overview/administration/data-residency)** stores your data in isolated environments in the EU, India or Singapore instead of the default U.S. location. It is an Enterprise feature.
+* **[Workspaces](/docs/overview/administration/workspaces/overview)** centralize billing, shared resources, team access and API key management. Enterprise workspaces add [SSO](/docs/overview/administration/workspaces/sso) over SAML 2.0 or OIDC, and [audit logs](/docs/overview/administration/workspaces/audit-logs) of administrative actions in the OCSF schema.
+
+## Generate your first audio
+
+Install the SDK, set your API key as an environment variable, and convert text to an MP3 file in a single request. To have your coding agent do this setup instead, see [Set up with your coding agent](/docs/eleven-api/quickstart#set-up-with-your-coding-agent).
+
+#### Install the SDK
+
+**`Python`**
+
+```bash title="Python"
+pip install elevenlabs python-dotenv
+```
+
+**`TypeScript`**
+
+```bash title="TypeScript"
+npm install @elevenlabs/elevenlabs-js dotenv
+```
+
+#### Set your API key
+
+[Create an API key](https://elevenlabs.io/app/settings/api-keys) and add it to a `.env` file in your project directory:
+
+**`.env`**
+
+```js title=".env"
+ELEVENLABS_API_KEY=<your_api_key_here>
+```
+
+#### Generate and save audio
+
+```python
+from dotenv import load_dotenv
+from elevenlabs.client import ElevenLabs
+import os
+
+load_dotenv()
+
+elevenlabs = ElevenLabs(
+  api_key=os.getenv("ELEVENLABS_API_KEY"),
+)
+
+audio = elevenlabs.text_to_speech.convert(
+    text="The first move is what sets everything in motion.",
+    voice_id="JBFqnCBsd6RMkjVDRZzb",  # "George" - browse voices at elevenlabs.io/app/voice-library
+    model_id="eleven_v4",
+    output_format="mp3_44100_128",
+)
+
+with open("output.mp3", "wb") as f:
+    for chunk in audio:
+        f.write(chunk)
+
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import "dotenv/config";
+import { writeFile } from "node:fs/promises";
+
+const elevenlabs = new ElevenLabsClient();
+const audio = await elevenlabs.textToSpeech.convert(
+  "JBFqnCBsd6RMkjVDRZzb", // "George" - browse voices at elevenlabs.io/app/voice-library
+  {
+    text: "The first move is what sets everything in motion.",
+    modelId: "eleven_v4",
+    outputFormat: "mp3_44100_128",
+  }
+);
+
+await writeFile("output.mp3", Buffer.from(await new Response(audio).arrayBuffer()));
+
+```
+
+Run the script with `python example.py` or `npx tsx example.mts`, then open `output.mp3`. To do the same from the terminal, use the [ElevenLabs CLI](/docs/eleven-api/quickstart):
+
+```bash
+elevenlabs text-to-speech convert \
+  --voice-id JBFqnCBsd6RMkjVDRZzb \
+  --model-id eleven_v4 \
+  --text "The first move is what sets everything in motion." \
+  --output-format mp3_44100_128 \
+  --output output.mp3
+```
+
+The [ElevenAPI quickstart](/docs/eleven-api/quickstart) covers the same request in more detail, including CLI setup and playing audio through your speakers.
+
+## What can I build with ElevenAgents?
+
+ElevenAgents combines speech recognition, an LLM of your choice, text to speech and turn-taking into a single voice agent that you configure in the dashboard or through the SDKs.
+
+* **Customer support**: answer questions from your own documentation by attaching a [knowledge base](/docs/eleven-agents/customization/knowledge-base) to the agent.
+* **Phone lines**: connect a Twilio number with the [native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) to handle inbound and outbound calls, or bring your existing phone system over SIP trunking.
+* **Outbound campaigns**: place many outbound calls at once with [batch calling](/docs/eleven-agents/phone-numbers/batch-calls).
+* **Websites and apps**: embed an agent that handles both voice and text with the [widget](/docs/eleven-agents/customization/widget).
+
+The [ElevenAgents quickstart](/docs/eleven-agents/quickstart) builds a first agent end to end.
+
+## Which model should I use?
+
+Start from your use case. Each model ID below is the value to pass as `model_id` in API requests.
+
+| Use case                          | Recommended model  | Model ID             | Why                                                                                                                                                                                                        |
+| --------------------------------- | ------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real-time voice agents            | Eleven v4 Turbo    | `eleven_v4_turbo`    | Median inference latency of \~100ms† with the most expressive real-time delivery. For the lowest latency, use `eleven_flash_v2_5` (\~75ms†).                                                               |
+| Expressive or long-form narration | Eleven v4          | `eleven_v4`          | The most expressive model, suited to audiobooks and character voiceovers. Up to 10,000 characters (\~10 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
+| Multilingual content              | Eleven v4          | `eleven_v4`          | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                            |
+| Lowest cost                       | Eleven Flash v2.5  | `eleven_flash_v2_5`  | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                  |
+| Speech to text, batch             | Scribe v2          | `scribe_v2`          | Transcription in 90+ languages with word-level timestamps, speaker diarization for up to 32 speakers, and keyterm prompting. Use `scribe_v2_medical` for clinical audio.                                   |
+| Speech to text, realtime          | Scribe v2 Realtime | `scribe_v2_realtime` | Streams transcripts with \~150ms† latency in 90+ languages.                                                                                                                                                |
+
+See [Choosing the right model](/docs/eleven-api/choosing-the-right-model) for more use cases and the [models reference](/docs/overview/models) for full specifications.
 
 #### [Eleven v4](/docs/overview/models#eleven-v4)
 
@@ -170,7 +314,7 @@ Same features, languages, pricing, and API as Scribe v2
 
 [Explore all](/docs/overview/models)
 
-† Excluding application & network latency
+† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
 
 ## Browse by capability
 

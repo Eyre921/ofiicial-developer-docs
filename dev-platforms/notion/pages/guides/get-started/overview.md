@@ -18,9 +18,7 @@ A Notion [connection](https://www.notion.com/help/add-and-manage-connections-wit
 
 Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
 
 Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
 
@@ -32,9 +30,9 @@ Notion supports three authentication models:
 * **Public connections** use OAuth 2.0 for authentication. At creation time, you choose their [installation scope](/guides/get-started/public-connections#installation-scope): **Any workspace** (any Notion user can install; Marketplace-eligible) or **Selected workspaces only** (restricted to workspaces you select; not Marketplace-eligible).
 * **Personal access tokens (PATs)** are user-scoped tokens for scripts, CLI workflows, Workers, and tools that should act as one Notion user. A PAT uses the creator's workspace membership and page permissions. See [Personal access tokens](/guides/get-started/personal-access-tokens).
 
-<Note>
-  Public connections must undergo a Notion security review before being [listed on the Marketplace](/guides/get-started/marketplace-listing). You can create and use a public connection without listing it.
-</Note>
+> [!NOTE]
+>
+> Public connections must undergo a Notion security review before being [listed on the Marketplace](/guides/get-started/marketplace-listing). You can create and use a public connection without listing it.
 
 ### Comparison
 
@@ -46,17 +44,15 @@ Notion supports three authentication models:
 | Content access | Granted directly to the connection, not tied to any specific user. | Users choose which pages to share during the OAuth flow or via the Add connections menu. | Uses the creator's Notion permissions; pages do not need to be shared with a bot. |
 | Authentication | Internal connection API token. | OAuth 2.0. | Static bearer token. |
 
-<Info>
-  **Looking for SCIM or SAML SSO?**
-
-  Enterprise identity management (user provisioning, group management, and Single Sign-On) is covered in Notion's Help Center, not in these API docs.
-
-  <CardGroup>
-    <Card title="Provision users and groups with SCIM" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/provision-users-and-groups-with-scim" />
-
-    <Card title="SAML SSO configuration" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/saml-sso-configuration" />
-  </CardGroup>
-</Info>
+> [!NOTE]
+>
+> **Looking for SCIM or SAML SSO?**
+>
+> Enterprise identity management (user provisioning, group management, and Single Sign-On) is covered in Notion's Help Center, not in these API docs.
+>
+> > **[Provision users and groups with SCIM](https://www.notion.com/help/provision-users-and-groups-with-scim)**
+>
+> > **[SAML SSO configuration](https://www.notion.com/help/saml-sso-configuration)**
 
 ## Shared concepts
 
@@ -66,39 +62,37 @@ All connection and token types share a few core concepts.
 
 Every connection or token has a set of capabilities that control what it can do — read content, update content, insert content, read comments, and more. You configure capabilities when you create a connection or PAT. See the [Capabilities reference](/reference/capabilities) for the full list.
 
-<CardGroup>
-  <Card title="Pages" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/page.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=2d9752eedbbf14b504929f853c3dcd12" href="/guides/data-apis/working-with-page-content">
-    Create, update, and retrieve page content.
-  </Card>
+> **[Pages](/guides/data-apis/working-with-page-content)**
+>
+> Create, update, and retrieve page content.
 
-  <Card title="Databases" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/databaseEmbed.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=7b907de012695ed2c9dba2c6505536a0" href="/guides/data-apis/working-with-databases">
-    Manage database, properties, entries, and schemas.
-  </Card>
+> **[Databases](/guides/data-apis/working-with-databases)**
+>
+> Manage database, properties, entries, and schemas.
 
-  <Card title="Views" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/viewTable.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=8b8f0d1339820228c542e78d8fb372aa" href="/guides/data-apis/working-with-views">
-    Create and configure database views programmatically.
-  </Card>
+> **[Views](/guides/data-apis/working-with-views)**
+>
+> Create and configure database views programmatically.
 
-  <Card title="Data sources" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/pathRoundEnds.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=f1b9491091d34c2249a03218696218a3" href="/reference/data-source">
-    Manage data sources, properties, entries, and schemas.
-  </Card>
+> **[Data sources](/reference/data-source)**
+>
+> Manage data sources, properties, entries, and schemas.
 
-  <Card title="File uploads" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowTrayUp.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=3b991e18c85512f06c2d7214acf94f12" href="/guides/data-apis/working-with-files-and-media">
-    Upload and attach files to pages and databases.
-  </Card>
+> **[File uploads](/guides/data-apis/working-with-files-and-media)**
+>
+> Upload and attach files to pages and databases.
 
-  <Card title="Comments" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/comment.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=58788fe12adbfeb3cd20b7c30d100921" href="/guides/data-apis/working-with-comments">
-    Handle page and inline comments.
-  </Card>
+> **[Comments](/guides/data-apis/working-with-comments)**
+>
+> Handle page and inline comments.
 
-  <Card title="Content queries" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/magnifyingGlass.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=532b9d39e18feeffe9c342c0ebab7da6" href="/reference/post-search">
-    Search through workspace content.
-  </Card>
+> **[Content queries](/reference/post-search)**
+>
+> Search through workspace content.
 
-  <Card title="Users" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/people.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=9db041f17fd02578d17a1e9a633f4c46" href="/reference/user">
-    Access user profiles and permissions.
-  </Card>
-</CardGroup>
+> **[Users](/reference/user)**
+>
+> Access user profiles and permissions.
 
 ### Content access
 
@@ -120,50 +114,46 @@ The fastest way to start building is the [**Quickstart**](/guides/get-started/qu
 
 Once you're ready to build further, choose the authentication model that fits your use case:
 
-<Steps>
-  <Step>
-    [**Personal access tokens**](/guides/get-started/personal-access-tokens) — Authenticate as yourself for scripts, CLI workflows, Workers, or trusted tools.
-  </Step>
+**Step 1**
 
-  <Step>
-    [**Internal connections**](/guides/get-started/internal-connections) — Build team-owned automations with a dedicated bot identity scoped to one workspace.
-  </Step>
+[**Personal access tokens**](/guides/get-started/personal-access-tokens) — Authenticate as yourself for scripts, CLI workflows, Workers, or trusted tools.
 
-  <Step>
-    [**Public connections**](/guides/get-started/public-connections) — Build apps for other Notion users with OAuth 2.0.
-  </Step>
+**Step 2**
 
-  <Step>
-    [**Authorization**](/guides/get-started/authorization) — Implement the OAuth 2.0 flow for public connections.
-  </Step>
+[**Internal connections**](/guides/get-started/internal-connections) — Build team-owned automations with a dedicated bot identity scoped to one workspace.
 
-  <Step>
-    [**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
-  </Step>
+**Step 3**
 
-  <Step>
-    [**Preparing for users**](/guides/get-started/preparing-for-users) — Set up databases, pages, and views automatically when users install your connection.
-  </Step>
+[**Public connections**](/guides/get-started/public-connections) — Build apps for other Notion users with OAuth 2.0.
 
-  <Step>
-    [**List on the Marketplace**](/guides/get-started/marketplace-listing) — Make your public connection discoverable to all Notion users.
-  </Step>
-</Steps>
+**Step 4**
+
+[**Authorization**](/guides/get-started/authorization) — Implement the OAuth 2.0 flow for public connections.
+
+**Step 5**
+
+[**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
+
+**Step 6**
+
+[**Preparing for users**](/guides/get-started/preparing-for-users) — Set up databases, pages, and views automatically when users install your connection.
+
+**Step 7**
+
+[**List on the Marketplace**](/guides/get-started/marketplace-listing) — Make your public connection discoverable to all Notion users.
 
 ## Resources
 
 Explore the links below to get started, and join the [Notion Devs Slack community](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA) to share your projects and connect with fellow developers.
 
-<CardGroup>
-  <Card title="API reference" icon="https://mintcdn.com/notion-demo/7WdlNb9IZkRhGCcR/icons/nds/curlyBraces.svg?fit=max&auto=format&n=7WdlNb9IZkRhGCcR&q=85&s=46f7a8b4a34544f9b03002e4ecc35ad5" href="/reference/intro" />
+> **[API reference](/reference/intro)**
 
-  <Card title="Notion SDK for JavaScript" icon="js" href="https://github.com/makenotion/notion-sdk-js" />
+> **[Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js)**
 
-  <Card title="Starter templates" icon="github" href="https://github.com/makenotion/notion-sdk-typescript-starter" />
+> **[Starter templates](https://github.com/makenotion/notion-sdk-typescript-starter)**
 
-  <Card title="Postman collection" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/cube.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=ca03d98b0912c199f06d1110d9c2f64b" href="https://www.postman.com/notionhq/notion-s-api-workspace/collection/52041987-03f70d8f-b6e5-4306-805c-f95f7cdf05b9" />
+> **[Postman collection](https://www.postman.com/notionhq/notion-s-api-workspace/collection/52041987-03f70d8f-b6e5-4306-805c-f95f7cdf05b9)**
 
-  <Card title="FAQs" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/questionMarkCircle.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=20159b5b3d48676a4735f2c3f9fdda77" href="/page/frequently-asked-questions" />
+> **[FAQs](/page/frequently-asked-questions)**
 
-  <Card title="Notion Devs Slack" icon="slack" href="https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA" />
-</CardGroup>
+> **[Notion Devs Slack](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA)**

@@ -18,28 +18,26 @@ If you use an AI coding agent, the quickest path is to let it do the setup: it d
 
 The steps below use Claude Code. Using Cursor, Codex, or another agent? See [all supported AI coding tools](/integrations/ai-coding-tools) for the equivalent setup.
 
-<Steps>
-  <Step title="Set your API key and install the plugin">
-    The plugin needs [Node.js](https://nodejs.org/) and [uv](https://docs.astral.sh/uv/getting-started/installation/) installed. The quickstart skill uses uv to run its bundled Python scripts.
+**1. Set your API key and install the plugin**
 
-    <Note>
-      Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
-    </Note>
+The plugin needs [Node.js](https://nodejs.org/) and [uv](https://docs.astral.sh/uv/getting-started/installation/) installed. The quickstart skill uses uv to run its bundled Python scripts.
 
-    ```bash theme={null}
-    export PINECONE_API_KEY="YOUR_API_KEY"
-    claude plugin install pinecone
-    ```
+> [!NOTE]
+>
+> Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
 
-    Restart Claude Code to activate the plugin.
-  </Step>
+```bash theme={null}
+export PINECONE_API_KEY="YOUR_API_KEY"
+claude plugin install pinecone
+```
 
-  <Step title="Run the quickstart command">
-    ```text theme={null}
-    /pinecone:quickstart
-    ```
-  </Step>
-</Steps>
+Restart Claude Code to activate the plugin.
+
+**2. Run the quickstart command**
+
+```text theme={null}
+/pinecone:quickstart
+```
 
 ## Manual: Choose your path
 

@@ -34,23 +34,21 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 
 **Examples**
 
-<AccordionGroup>
-  <Accordion title="Usage below monthly minimum">
-    * You are on the Standard plan.
-    * Your usage for the month of August amounts to \$20.
-    * Your usage is below the \$50 monthly minimum, so your total for the month is \$50.
+> **Usage below monthly minimum**
+>
+> * You are on the Standard plan.
+> * Your usage for the month of August amounts to \$20.
+> * Your usage is below the \$50 monthly minimum, so your total for the month is \$50.
+>
+> In this case, the August invoice would include line items for each service you used (totaling \$20), plus a single line item covering the rest of the minimum usage commitment (\$30).
 
-    In this case, the August invoice would include line items for each service you used (totaling \$20), plus a single line item covering the rest of the minimum usage commitment (\$30).
-  </Accordion>
-
-  <Accordion title="Usage exceeds monthly minimum">
-    * You are on the Standard plan.
-    * Your usage for the month of August amounts to \$100.
-    * Your usage exceeds the \$50 monthly minimum, so your total for the month is \$100.
-
-    In this case, the August invoice would only show line items for each service you used (totaling \$100). Since your usage exceeds the minimum usage commitment, you are only charged for your actual usage and no additional minimum usage line item appears on your invoice.
-  </Accordion>
-</AccordionGroup>
+> **Usage exceeds monthly minimum**
+>
+> * You are on the Standard plan.
+> * Your usage for the month of August amounts to \$100.
+> * Your usage exceeds the \$50 monthly minimum, so your total for the month is \$100.
+>
+> In this case, the August invoice would only show line items for each service you used (totaling \$100). Since your usage exceeds the minimum usage commitment, you are only charged for your actual usage and no additional minimum usage line item appears on your invoice.
 
 ### Ingestion
 
@@ -92,9 +90,9 @@ For paid plans, you are charged for the number of tokens used by each assistant.
 | Standard | \$8/million tokens | \$15/million tokens |
 | Enterprise | \$8/million tokens | \$15/million tokens |
 
-<Note>
-  Chat input tokens appear as "Assistants Input Tokens" on invoices and `prompt_tokens` in API responses. Chat output tokens appear as "Assistants Output Tokens" on invoices and `completion_tokens` in API responses.
-</Note>
+> [!NOTE]
+>
+> Chat input tokens appear as "Assistants Input Tokens" on invoices and `prompt_tokens` in API responses. Chat output tokens appear as "Assistants Output Tokens" on invoices and `completion_tokens` in API responses.
 
 #### Context tokens
 
@@ -107,9 +105,9 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 | Standard | \$5/million tokens |
 | Enterprise | \$5/million tokens |
 
-<Note>
-  Context retrieval tokens appear as **Assistants Context Tokens Processed** on invoices and `prompt_tokens` in API responses. In API responses, `completion_tokens` will always be 0 because, unlike for chat, there is no answer from a model.
-</Note>
+> [!NOTE]
+>
+> Context retrieval tokens appear as **Assistants Context Tokens Processed** on invoices and `prompt_tokens` in API responses. In API responses, `completion_tokens` will always be 0 because, unlike for chat, there is no answer from a model.
 
 #### Evaluation tokens
 
@@ -125,9 +123,9 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 | Standard | \$8/million tokens | \$15/million tokens |
 | Enterprise | \$8/million tokens | \$15/million tokens |
 
-<Note>
-  Evaluation input tokens appear as **Assistants Evaluation Tokens Processed** on invoices and `prompt_tokens` in API responses. Evaluation output tokens appear as **Assistants Evaluation Tokens Out** on invoices and `completion_tokens` in API responses.
-</Note>
+> [!NOTE]
+>
+> Evaluation input tokens appear as **Assistants Evaluation Tokens Processed** on invoices and `prompt_tokens` in API responses. Evaluation output tokens appear as **Assistants Evaluation Tokens Out** on invoices and `completion_tokens` in API responses.
 
 ### Storage
 
@@ -177,7 +175,9 @@ Rate limits help protect your applications from misuse and maintain the health o
 
 Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` status.
 
-<Tip>To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).</Tip>
+> [!TIP]
+>
+> To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
 | Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |

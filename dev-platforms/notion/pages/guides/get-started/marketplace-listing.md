@@ -16,56 +16,52 @@ This guide covers how to:
 * Submit your listing for review
 * Understand the review process and timeline
 
-<Note>
-  Only public connections with an installation scope of **Any workspace** can be listed on the Marketplace. Internal connections and **Selected workspaces only** public connections are not eligible. Installation scope is set when the connection is created and can't be changed afterward — see [Installation scope](/guides/get-started/public-connections#installation-scope).
-</Note>
+> [!NOTE]
+>
+> Only public connections with an installation scope of **Any workspace** can be listed on the Marketplace. Internal connections and **Selected workspaces only** public connections are not eligible. Installation scope is set when the connection is created and can't be changed afterward — see [Installation scope](/guides/get-started/public-connections#installation-scope).
 
 ## Start a new listing
 
-<Steps>
-  <Step>
-    Navigate to the <a href={marketplaceListingsUrl}>Marketplace listing dashboard</a>.
-  </Step>
+**Step 1**
 
-  <Step>
-    In the **Listings** section of the sidebar, select **Connections**.
-  </Step>
+Navigate to the [Marketplace listing dashboard](https://www.notion.so/profile/connections).
 
-  <Step>
-    Under **Drafts**, click **Start a new connection listing**.
-  </Step>
+**Step 2**
 
-  <Step>
-    Fill in the listing details, including:
+In the **Listings** section of the sidebar, select **Connections**.
 
-    * Listing name and description
-    * Category and tags
-    * Listing images and logo
-    * The public connection to associate with this listing
-  </Step>
+**Step 3**
 
-  <Step>
-    Save your listing as a draft. You can return to edit it at any time before submitting.
-  </Step>
-</Steps>
+Under **Drafts**, click **Start a new connection listing**.
+
+**Step 4**
+
+Fill in the listing details, including:
+
+* Listing name and description
+* Category and tags
+* Listing images and logo
+* The public connection to associate with this listing
+
+**Step 5**
+
+Save your listing as a draft. You can return to edit it at any time before submitting.
 
 ## Submit for review
 
 When your listing is ready, submit it for review from the **Connections** listing page.
 
-<Steps>
-  <Step>
-    From the **Listings > Connections** page, find your draft listing.
-  </Step>
+**Step 1**
 
-  <Step>
-    Review all listing details to ensure they are complete and accurate.
-  </Step>
+From the **Listings > Connections** page, find your draft listing.
 
-  <Step>
-    Submit your listing for review by the Notion team.
-  </Step>
-</Steps>
+**Step 2**
+
+Review all listing details to ensure they are complete and accurate.
+
+**Step 3**
+
+Submit your listing for review by the Notion team.
 
 After submission, your listing moves to the **Submitted** section where you can track its review status.
 
@@ -81,32 +77,28 @@ For guidance on the review process and best practices to get your connection app
 
 ## Frequently asked questions
 
-<AccordionGroup>
-  <Accordion title="How long will it take for Notion to publish my submitted connection?">
-    After submission, expect to hear back from our team within 5-10 business days via email. Check the status of your connection submission from the **Listings > Connections** page in the Marketplace listing dashboard.
-  </Accordion>
+> **How long will it take for Notion to publish my submitted connection?**
+>
+> After submission, expect to hear back from our team within 5-10 business days via email. Check the status of your connection submission from the **Listings > Connections** page in the Marketplace listing dashboard.
 
-  <Accordion title="What if my connection doesn't meet the requirements?">
-    The Notion team sends an email explaining why your listing was not approved. Check the status from the **Listings > Connections** page.
-  </Accordion>
+> **What if my connection doesn't meet the requirements?**
+>
+> The Notion team sends an email explaining why your listing was not approved. Check the status from the **Listings > Connections** page.
 
-  <Accordion title="What if my connection is rejected?">
-    Connections are rejected for various reasons, from brand/trademark issues to quality concerns to situations where the baseline connection criteria isn't met. We encourage developers to review our feedback, make necessary changes, and resubmit. Our goal is to help you create high-quality and valuable tools for the Notion community.
-  </Accordion>
+> **What if my connection is rejected?**
+>
+> Connections are rejected for various reasons, from brand/trademark issues to quality concerns to situations where the baseline connection criteria isn't met. We encourage developers to review our feedback, make necessary changes, and resubmit. Our goal is to help you create high-quality and valuable tools for the Notion community.
 
-  <Accordion title="Do I need to list my public connection on the Marketplace?">
-    No. Public connections work independently of Marketplace listings. Listing on the Marketplace is optional and helps your connection reach a wider audience, but your connection can be used via its OAuth flow without being listed.
-  </Accordion>
+> **Do I need to list my public connection on the Marketplace?**
+>
+> No. Public connections work independently of Marketplace listings. Listing on the Marketplace is optional and helps your connection reach a wider audience, but your connection can be used via its OAuth flow without being listed.
 
-  <Accordion title="Can you point me to other helpful resources?">
-    <CardGroup>
-      <Card title="Notion Developers" icon="angles-right" href="/" />
-
-      <Card title="Overview" icon="angles-right" href="/guides/get-started/overview" />
-
-      <Card title="Create connections with the Notion API" icon="angles-right" href="https://www.notion.com/help/create-integrations-with-the-notion-api" />
-
-      <Card title="Authorization guide" icon="angles-right" href="/guides/get-started/authorization" />
-    </CardGroup>
-  </Accordion>
-</AccordionGroup>
+> **Can you point me to other helpful resources?**
+>
+> > **[Notion Developers](/)**
+>
+> > **[Overview](/guides/get-started/overview)**
+>
+> > **[Create connections with the Notion API](https://www.notion.com/help/create-integrations-with-the-notion-api)**
+>
+> > **[Authorization guide](/guides/get-started/authorization)**

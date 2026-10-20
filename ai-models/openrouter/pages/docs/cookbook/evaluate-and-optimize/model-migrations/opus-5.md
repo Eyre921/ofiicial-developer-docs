@@ -86,9 +86,9 @@ Opus 5 supports [changing the available tool set between turns](https://platform
 
 Blocks reference a tool by name from the request's `tools[]` — individual MCP tools and whole MCP toolsets can also be referenced — so the `tools[]` array itself never changes and the cached prefix stays intact.
 
-<Note>
-  Model support: [Claude Opus 5](https://openrouter.ai/anthropic/claude-opus-5), [Claude Opus 4.8](https://openrouter.ai/anthropic/claude-opus-4.8) (including their fast variants), and [Claude Fable 5](https://openrouter.ai/anthropic/claude-fable-5). **Not** supported on Claude Sonnet 5 or models older than Claude Opus 4.8 — note this differs from [mid-conversation system messages](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages), which Sonnet 5 does support. As of launch, Amazon Bedrock supports tool changes on Claude Opus 5 only.
-</Note>
+> [!NOTE]
+>
+> Model support: [Claude Opus 5](https://openrouter.ai/anthropic/claude-opus-5), [Claude Opus 4.8](https://openrouter.ai/anthropic/claude-opus-4.8) (including their fast variants), and [Claude Fable 5](https://openrouter.ai/anthropic/claude-fable-5). **Not** supported on Claude Sonnet 5 or models older than Claude Opus 4.8 — note this differs from [mid-conversation system messages](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages), which Sonnet 5 does support. As of launch, Amazon Bedrock supports tool changes on Claude Opus 5 only.
 
 ```json lines theme={null}
 // Messages API
@@ -122,9 +122,9 @@ Blocks reference a tool by name from the request's `tools[]` — individual MCP 
 
 To change a tool's definition, remove the old tool with `tool_removal`, then send the updated definition in `tools[]` on the next request.
 
-<Note>
-  This feature is only supported on OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message) (`/api/v1/messages`) — the Chat Completions API has no representation for these blocks. You do **not** need to send the `anthropic-beta: mid-conversation-tool-changes-2026-07-01` header: OpenRouter detects requests that use tool changes and attaches the beta for you, and routes those requests only to providers that support it.
-</Note>
+> [!NOTE]
+>
+> This feature is only supported on OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message) (`/api/v1/messages`) — the Chat Completions API has no representation for these blocks. You do **not** need to send the `anthropic-beta: mid-conversation-tool-changes-2026-07-01` header: OpenRouter detects requests that use tool changes and attaches the beta for you, and routes those requests only to providers that support it.
 
 ## Fast Mode
 

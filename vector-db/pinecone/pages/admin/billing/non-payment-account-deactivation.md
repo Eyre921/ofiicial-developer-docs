@@ -15,9 +15,9 @@ When your account is deactivated for non-payment:
 * Your account data is retained for 30 days from deactivation.
 * After 30 days, all account data is permanently deleted. This action can't be undone.
 
-<Note>
-  This 30-day retention period applies specifically to accounts deactivated for continued non-payment. Other deletion flows, such as when you [delete resources](/guides/production/data-deletion) or [end your relationship with Pinecone](/guides/production/data-deletion), follow different retention timelines described in the [data deletion policy](/guides/production/data-deletion).
-</Note>
+> [!NOTE]
+>
+> This 30-day retention period applies specifically to accounts deactivated for continued non-payment. Other deletion flows, such as when you [delete resources](/guides/production/data-deletion) or [end your relationship with Pinecone](/guides/production/data-deletion), follow different retention timelines described in the [data deletion policy](/guides/production/data-deletion).
 
 When your account is deactivated, organization owners see this notice in the Pinecone console:
 

@@ -9,21 +9,19 @@ Search a namespace using a query vector. It retrieves the ids of the most simila
 
 For guidance, examples, and limits, see [Search](https://docs.pinecone.io/guides/search/search-overview).
 
-<RequestExample>
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/query" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "namespace": "example-namespace",
-      "vector": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
-      "filter": {"genre": {"$eq": "documentary"}},
-      "topK": 3,
-      "includeValues": true
-    }'
-  ```
-</RequestExample>
+curl "https://$INDEX_HOST/query" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "namespace": "example-namespace",
+    "vector": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
+    "filter": {"genre": {"$eq": "documentary"}},
+    "topK": 3,
+    "includeValues": true
+  }'
+```

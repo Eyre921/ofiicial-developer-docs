@@ -10,7 +10,9 @@ Airbyte is a platform for creating ETL pipelines without writing integration cod
 
 The Pinecone connector for Airbyte connects these systems to Pinecone. The connector fetches data from the connected source, embeds the data using a large language model (LLM), and then upserts it into Pinecone. You can use it with Airbyte's source connectors for use cases like semantic search and recommendation systems.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.airbyte.com/integrations/destinations/pinecone)
+
+[View setup guide](https://www.pinecone.io/learn/series/airbyte/)
 
 ## Resources
 

@@ -20,15 +20,15 @@ General parenting rules:
 * Data sources are parented by databases.
   * *Linked or externally synced external data sources may have data source parents, but aren't thoroughly supported in Notion's API.*
 
-<Warning>
-  **Exceptions apply**
-
-  These parenting rules reflect the possible response you may receive when retrieving information about pages, databases, and blocks via Notion’s REST API in the latest APIversion.
-
-  If you are creating new pages, databases, or blocks via Notion’s public REST API, the parenting rules may vary. For example, the parent of a database currently must be a page if it is [created](/reference/create-a-database) via the API.
-
-  Refer to the API reference documentation for creating [pages](/reference/post-page), [databases](/reference/create-database), [data sources](/reference/create-a-data-source), and [blocks](/reference/patch-block-children) for more information on current parenting rules.
-</Warning>
+> [!WARNING]
+>
+> **Exceptions apply**
+>
+> These parenting rules reflect the possible response you may receive when retrieving information about pages, databases, and blocks via Notion’s REST API in the latest APIversion.
+>
+> If you are creating new pages, databases, or blocks via Notion’s public REST API, the parenting rules may vary. For example, the parent of a database currently must be a page if it is [created](/reference/create-a-database) via the API.
+>
+> Refer to the API reference documentation for creating [pages](/reference/post-page), [databases](/reference/create-database), [data sources](/reference/create-a-data-source), and [blocks](/reference/patch-block-children) for more information on current parenting rules.
 
 ### Database parent
 
@@ -39,14 +39,12 @@ Database parents most commonly show up for [Data source](/reference/data-source)
 | `type` | `string` | Always `"database_id"`. | `"database_id"` |
 | `database_id` | `string` (UUIDv4) | The ID of the [database](/reference/database) that this page belongs to. | `"b8595b75-abd1-4cad-8dfe-f935a8ef57cb"` |
 
-<CodeGroup>
-  ```json Database parent example theme={null}
-  {
-    "type": "database_id",
-    "database_id": "d9824bdc-8445-4327-be8b-5b47500af6ce"
-  }
-  ```
-</CodeGroup>
+```json Database parent example theme={null}
+{
+  "type": "database_id",
+  "database_id": "d9824bdc-8445-4327-be8b-5b47500af6ce"
+}
+```
 
 ### Data source parent
 
@@ -58,15 +56,13 @@ Data source parents most commonly show up for [Page](/reference/page) objects.
 | `data_source_id` | `string` (UUIDv4) | The ID of the [data source](/reference/data-source) that this page belongs to. | `"1a44be12-0953-4631-b498-9e5817518db8"` |
 | `database_id` | `string` (UUIDv4) | The ID of the [database](/reference/database) that the data source belongs to, provided in the API response for convenience. | `"b8595b75-abd1-4cad-8dfe-f935a8ef57cb"` |
 
-<CodeGroup>
-  ```json Data source parent example theme={null}
-  {
-    "type": "data_source_id",
-    "data_source_id": "1a44be12-0953-4631-b498-9e5817518db8",
-    "database_id": "d9824bdc-8445-4327-be8b-5b47500af6ce"
-  }
-  ```
-</CodeGroup>
+```json Data source parent example theme={null}
+{
+  "type": "data_source_id",
+  "data_source_id": "1a44be12-0953-4631-b498-9e5817518db8",
+  "database_id": "d9824bdc-8445-4327-be8b-5b47500af6ce"
+}
+```
 
 ### Page parent
 
@@ -75,14 +71,12 @@ Data source parents most commonly show up for [Page](/reference/page) objects.
 | `type` | `string` | Always `"page_id"`. | `"page_id"` |
 | `page_id` | `string` (UUIDv4) | The ID of the [page](/reference/page) that this page belongs to. | `"59833787-2cf9-4fdf-8782-e53db20768a5"` |
 
-<CodeGroup>
-  ```json Page parent example theme={null}
-  {
-    "type": "page_id",
-    "page_id": "59833787-2cf9-4fdf-8782-e53db20768a5"
-  }
-  ```
-</CodeGroup>
+```json Page parent example theme={null}
+{
+  "type": "page_id",
+  "page_id": "59833787-2cf9-4fdf-8782-e53db20768a5"
+}
+```
 
 ### Workspace parent
 
@@ -95,14 +89,12 @@ The workspace `parent` object contains the following keys:
 | `type` | `type` | Always `"workspace"`. | `"workspace"` |
 | `workspace` | `boolean` | Always `true`. | `true` |
 
-<CodeGroup>
-  ```json Workspace parent example theme={null}
-  {
-    "type": "workspace",
-    "workspace": true
-  }
-  ```
-</CodeGroup>
+```json Workspace parent example theme={null}
+{
+  "type": "workspace",
+  "workspace": true
+}
+```
 
 ### Block parent
 
@@ -113,14 +105,12 @@ A page may have a block parent if it is created inline in a chunk of text, or is
 | `type` | `type` | Always `"block_id"`. | `"block_id"` |
 | `block_id` | `string` (UUIDv4) | The ID of the [page](/reference/page) that this page belongs to. | `"ea29285f-7282-4b00-b80c-32bdbab50261"` |
 
-<CodeGroup>
-  ```json Block parent example theme={null}
-  {
-    "type": "block_id",
-    "block_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b"
-  }
-  ```
-</CodeGroup>
+```json Block parent example theme={null}
+{
+  "type": "block_id",
+  "block_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b"
+}
+```
 
 ### Agent parent
 
@@ -131,11 +121,9 @@ Agent parents show up on agent instruction pages and the blocks that make them u
 | `type` | `type` | Always `"agent_id"`. | `"agent_id"` |
 | `agent_id` | `string` (UUIDv4) | The ID of the agent that owns this instruction page or block. | `"7d50a184-5bbe-4d90-8f29-6bec57ed817b"` |
 
-<CodeGroup>
-  ```json Agent parent example theme={null}
-  {
-    "type": "agent_id",
-    "agent_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b"
-  }
-  ```
-</CodeGroup>
+```json Agent parent example theme={null}
+{
+  "type": "agent_id",
+  "agent_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b"
+}
+```

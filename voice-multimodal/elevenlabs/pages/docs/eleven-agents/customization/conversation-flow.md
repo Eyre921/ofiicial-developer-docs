@@ -12,6 +12,8 @@ path: docs/eleven-agents/customization/conversation-flow
 
 Conversation flow settings determine how your assistant handles periods of user silence, interruptions during speech, and turn-taking behavior. These settings help create more natural conversations and can be customized based on your use case.
 
+These settings also apply to agents using a [Realtime model](/docs/eleven-agents/customization/realtime-models).
+
 #### [Maximum conversation duration](#maximum-conversation-duration)
 
 Limit the total duration of each conversation

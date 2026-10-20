@@ -16,7 +16,7 @@ You can also manage your scheduled and sent emails using Resend's code tools inc
 
 See all the metadata associated with a sent or scheduled email, including the sender address, recipient address, subject, and more from the [**Emails** Dashboard page](https://resend.com/emails). Select any email to view its details.
 
-<img alt="Email Details" />
+![Email Details](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-emails-item.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=406e90f545d6b4f4289cd86311a2642a)
 
 Each email contains a **Preview**, **Plain Text**, and **HTML** version to visualize the content of your sent email in its various formats.
 
@@ -41,17 +41,17 @@ Here are all the events that can be associated with an email:
 
 You can share a public link of a sent email, which is valid for 48 hours. Anyone with the link can view the email.
 
-To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and select **Share email**.
+To share a link, click on the **dropdown menu** , and select **Share email**.
 
-<img alt="Email - Share Link Option" />
+![Email - Share Link Option](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-emails-share-option.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=1e3019a33d90161bc41a77817e2a54c5)
 
 Copy the URL and share it with your team members.
 
-<img alt="Email - Share Link Modal" />
+![Email - Share Link Modal](https://mintcdn.com/resend/X9PImr4lu4mKo3Cs/images/dashboard-emails-share-modal.png?fit=max\&auto=format\&n=X9PImr4lu4mKo3Cs\&q=85\&s=26ec7bc493175030c8f99a2022774de3)
 
 Anyone with the link can view the email without authenticating for 48 hours.
 
-<img alt="Email - Share Link Item" />
+![Email - Share Link Item](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-emails-share-item.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=05c438ac1b5e0721475b3f028a6f6934)
 
 You can also create share links programmatically using the [Share Email API](/docs/api-reference/emails/share-email).
 
@@ -61,11 +61,11 @@ Check all the logs associated with an email to help you troubleshoot any issues 
 
 To view the logs, click on the dropdown menu, and select "View log".
 
-<img alt="Email - View Logs Option" />
+![Email - View Logs Option](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-emails-log-option.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=ad69ba9d638fe43f62974a0d76b1e01e)
 
 This will take you to logs, where you can see all the logs associated with the email.
 
-<img alt="Email - View Logs Item" />
+![Email - View Logs Item](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-emails-log-item.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=936f066559e1ae477523be37aa959f90)
 
 ## Export your data
 
@@ -79,7 +79,9 @@ Admins can download your data in CSV format for the following resources:
 * Logs
 * API keys
 
-<Info>Currently, exports are limited to admin users of your team.</Info>
+> [!NOTE]
+>
+> Currently, exports are limited to admin users of your team.
 
 To start, apply filters to your data and click on the "Export" button. Confirm your filters before exporting your data.
 
@@ -89,12 +91,12 @@ If your exported data includes 1,000 items or less, the export will download imm
 
 All admins on your team can securely access the export for 7 days. Unavailable exports are marked as "Expired."
 
-<Note>
-  All exports your team creates are listed in the
-  [Exports](https://resend.com/exports) page under **Settings** > **Team** >
-  **Exports**. Select any export to view its details page. All members of your
-  team can view your exports, but only admins can download the data.
-</Note>
+> [!NOTE]
+>
+> All exports your team creates are listed in the
+> [Exports](https://resend.com/exports) page under **Settings** > **Team** >
+> **Exports**. Select any export to view its details page. All members of your
+> team can view your exports, but only admins can download the data.
 
 ## API Reference
 

@@ -6,9 +6,9 @@ path: reference/sdks/go/overview
 
 Install and use the Pinecone Go SDK to manage indexes and namespaces, upsert vectors, run semantic search, and call the Admin and Inference APIs from Go.
 
-<Tip>
-  For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
-</Tip>
+> [!TIP]
+>
+> For installation instructions and usage examples, see the [Go SDK documentation](https://github.com/pinecone-io/go-pinecone). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/go-pinecone/issues).
 
 ## Requirements
 
@@ -55,17 +55,17 @@ go list -u -m all | grep go-pinecone
 
 ## Upgrade
 
-<Warning>
-  Before upgrading to `v7.0.0`, update all relevant code to account for the following breaking changes. See the [v7 migration guide](https://github.com/pinecone-io/go-pinecone/blob/main/guides/migration/v7.md) for before-and-after examples.
-
-  * Pod-based index creation is removed. `CreatePodIndex` and `CreatePodIndexRequest` no longer exist, but existing pod-based indexes keep working.
-  * Enum constants are prefixed with their type name. For example, `Aws` is now `CloudAWS`, and `Cosine` is now `IndexMetricCosine`.
-  * `ListImports` takes a `*ListImportsRequest`, and `QueryByVectorIdRequest.SparseValues` is removed.
-  * `SourceCollection` and `Schema` on the legacy create requests now return an error. `ConfigureIndexParams.Embed` is replaced by `ConfigureIndexParams.Schema`.
-  * `Backup` field types changed, and some invalid requests now fail client-side.
-
-  If you are upgrading from `v2` or earlier, also account for the `v3.0.0` breaking changes explained [here](/release-notes/2025#2025-02-07-4).
-</Warning>
+> [!WARNING]
+>
+> Before upgrading to `v7.0.0`, update all relevant code to account for the following breaking changes. See the [v7 migration guide](https://github.com/pinecone-io/go-pinecone/blob/main/guides/migration/v7.md) for before-and-after examples.
+>
+> * Pod-based index creation is removed. `CreatePodIndex` and `CreatePodIndexRequest` no longer exist, but existing pod-based indexes keep working.
+> * Enum constants are prefixed with their type name. For example, `Aws` is now `CloudAWS`, and `Cosine` is now `IndexMetricCosine`.
+> * `ListImports` takes a `*ListImportsRequest`, and `QueryByVectorIdRequest.SparseValues` is removed.
+> * `SourceCollection` and `Schema` on the legacy create requests now return an error. `ConfigureIndexParams.Embed` is replaced by `ConfigureIndexParams.Schema`.
+> * `Backup` field types changed, and some invalid requests now fail client-side.
+>
+> If you are upgrading from `v2` or earlier, also account for the `v3.0.0` breaking changes explained [here](/release-notes/2025#2025-02-07-4).
 
 Each major version carries its version number in the module path, so crossing a major requires updating the import path in every file that uses the SDK. For example, moving from `v6` to `v7` means changing:
 

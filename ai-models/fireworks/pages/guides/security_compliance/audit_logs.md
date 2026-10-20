@@ -18,9 +18,7 @@ You can view audit logs, including data access logs, using the Fireworks CLI:
 firectl audit-logs list
 ```
 
-<Frame>
-  <img alt="Audit logs table showing data access activities with columns for timestamp, principal, response code, resource path, and message" />
-</Frame>
+![Audit logs table showing data access activities with columns for timestamp, principal, response code, resource path, and message](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/audit-logs-example.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=fc20415afe3be68dc6d9205cd1075fa9)
 
 ### Narrow the range
 
@@ -94,9 +92,9 @@ An empty `auditLogs` array on its own does not mean there is nothing left to rea
 
 A short page is not an end-of-results signal either: `pageSize` is a ceiling, not a fill target, so a page can hold fewer entries than requested and still be followed by more pages.
 
-<Note>
-  `totalSize` is always `0` for audit logs — the number of matching entries isn't known until the scan finishes. Don't use it to size a loop or compute a page count.
-</Note>
+> [!NOTE]
+>
+> `totalSize` is always `0` for audit logs — the number of matching entries isn't known until the scan finishes. Don't use it to size a loop or compute a page count.
 
 This loop terminates on the absence of `nextPageToken` and treats empty pages as "keep going":
 

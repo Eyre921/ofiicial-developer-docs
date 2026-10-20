@@ -71,7 +71,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `limit` | `*int64` | ➖ | Maximum number of interns to return, from 1 through 500. | 50 |
-| `status` | \[][operations.Status](../../models/operations/status.mdx) | ➖ | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[<br />"queued",<br />"running"<br />] |
+| `status` | \[][operations.Status](../../models/operations/status.mdx) | ➖ | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[ "queued", "running" ] |
 | `startingAfter` | `*string` | ➖ | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400. | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
 | `workspaceID` | `*string` | ➖ | Only return interns in this workspace. It must match the API key workspace. | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
@@ -131,7 +131,7 @@ func main() {
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `createInternRequest` | [components.CreateInternRequest](../../models/components/createinternrequest.mdx) | ✅ | N/A | \{<br />"name": "research-assistant",<br />"provision": true,<br />"workspace\_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"<br />} |
+| `createInternRequest` | [components.CreateInternRequest](../../models/components/createinternrequest.mdx) | ✅ | N/A | \{ "name": "research-assistant", "provision": true, "workspace\_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb" } |
 | `idempotencyKey` | `*string` | ➖ | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
@@ -189,7 +189,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `internID` | `string` | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `deleteInternRequest` | [components.DeleteInternRequest](../../models/components/deleteinternrequest.mdx) | ✅ | N/A | \{<br />"acknowledge\_workspace\_loss": true<br />} |
+| `deleteInternRequest` | [components.DeleteInternRequest](../../models/components/deleteinternrequest.mdx) | ✅ | N/A | \{ "acknowledge\_workspace\_loss": true } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -301,7 +301,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `internID` | `string` | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `updateInternRequest` | [components.UpdateInternRequest](../../models/components/updateinternrequest.mdx) | ✅ | N/A | \{<br />"description": "Researches customer questions",<br />"model": "openai/gpt-5.4"<br />} |
+| `updateInternRequest` | [components.UpdateInternRequest](../../models/components/updateinternrequest.mdx) | ✅ | N/A | \{ "description": "Researches customer questions", "model": "openai/gpt-5.4" } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -718,7 +718,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `internID` | `string` | ✅ | The intern to talk to. | a11e0000-0000-4000-8000-000000000005 |
-| `internChatCompletionRequest` | [components.InternChatCompletionRequest](../../models/components/internchatcompletionrequest.mdx) | ✅ | N/A | \{<br />"approval\_mode": "manual",<br />"messages": \[<br />\{<br />"content": "Summarize the open pull requests.",<br />"role": "user"<br />}<br />],<br />"stream": true<br />} |
+| `internChatCompletionRequest` | [components.InternChatCompletionRequest](../../models/components/internchatcompletionrequest.mdx) | ✅ | N/A | \{ "approval\_mode": "manual", "messages": \[ \{ "content": "Summarize the open pull requests.", "role": "user" } ], "stream": true } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -783,7 +783,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `internID` | `string` | ✅ | The intern to run. | a11e0000-0000-4000-8000-000000000005 |
-| `internInvokeRequest` | [components.InternInvokeRequest](../../models/components/interninvokerequest.mdx) | ✅ | N/A | \{<br />"input": "New support ticket 48213. Case token: ct\_9f2c. Investigate and reply."<br />} |
+| `internInvokeRequest` | [components.InternInvokeRequest](../../models/components/interninvokerequest.mdx) | ✅ | N/A | \{ "input": "New support ticket 48213. Case token: ct\_9f2c. Investigate and reply." } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

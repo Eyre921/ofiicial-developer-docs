@@ -10,9 +10,9 @@ Pinecone uses [role-based access controls (RBAC)](/admin/security/security-overv
 
 This page shows how to assign and manage roles in the [Pinecone console](https://app.pinecone.io) and programmatically with the Admin API.
 
-<Note>
-  For the roles available at each scope and the permissions they grant, see [Organization roles](/admin/organizations/understanding-organizations#organization-roles) and [Project roles](/admin/projects/understanding-projects#project-roles).
-</Note>
+> [!NOTE]
+>
+> For the roles available at each scope and the permissions they grant, see [Organization roles](/admin/organizations/understanding-organizations#organization-roles) and [Project roles](/admin/projects/understanding-projects#project-roles).
 
 ## Common role assignments
 
@@ -29,9 +29,9 @@ A user must have an organization role to belong to the organization, and gains a
 | Read-only access to a project's resources and data | `OrgMember` | `ProjectMember`, `ControlPlaneViewer`, and `DataPlaneViewer` |
 | Work across two projects at different access levels | `OrgMember` | `ProjectManager` on one project and `ProjectMember` with `DataPlaneViewer` on another |
 
-<Note>
-  Assigning an organization role adds the user to the organization. Assigning a project role grants access to that specific project. To assign these roles in the console, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
-</Note>
+> [!NOTE]
+>
+> Assigning an organization role adds the user to the organization. Assigning a project role grants access to that specific project. To assign these roles in the console, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
 
 ### Invite a developer to a project
 
@@ -143,9 +143,9 @@ You can assign and change roles when you manage principals in the console:
 
 The Admin API represents each role assignment as a *role binding* that grants one role to one principal for one resource scope. You can assign roles when you create a principal, or manage role bindings directly after creation.
 
-<Note>
-  You need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) to authenticate with the Admin API.
-</Note>
+> [!NOTE]
+>
+> You need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token) to authenticate with the Admin API.
 
 ### Assign roles when creating a principal
 
@@ -252,8 +252,8 @@ curl -X DELETE "https://api.pinecone.io/admin/role-bindings/9a8e3528-b9c0-4358-8
   -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
 ```
 
-<Warning>
-  You cannot delete the last `OrgOwner` role binding for an organization. An organization must always have at least one owner.
-</Warning>
+> [!WARNING]
+>
+> You cannot delete the last `OrgOwner` role binding for an organization. An organization must always have at least one owner.
 
 For more information, see [Delete a role binding](/reference/api/latest/admin/role-bindings/delete-a-role-binding).

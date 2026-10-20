@@ -8,9 +8,7 @@ Learn how link previews work in Notion.
 
 A Link Preview is a real-time excerpt of authenticated content that unfurls in Notion when an authenticated user shares an enabled link. Instead of logging in to multiple tools at a time, collaborators can use Link Previews to centralize their work in Notion.
 
-<Frame>
-  <video />
-</Frame>
+<video />
 
 Notion supports Link Previews for selected partner services. For example:
 
@@ -23,9 +21,7 @@ Notion supports Link Previews for selected partner services. For example:
 
 A user shares a Link Preview enabled URL. Notion detects supported URLs based on the Link Preview connection settings for that service. If it’s the first time that a user has shared a supported URL, then Notion kicks off an auth flow to authenticate with the source service. After the user authenticates, Notion and the source service exchange tokens that allow Notion to show a Link Preview in the user’s workspace.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
 
 The source service also detects any changes to the data embedded in the Link Preview and alerts Notion when the Link Preview needs to be updated.
 
@@ -39,9 +35,9 @@ Link Previews are similar, but they display authenticated, structured content fr
 
 Since Link preview connections require [OAuth 2.0](https://www.oauth.com/) authentication, unfurled link content will update as the data being shared updates. For example, if a GitHub pull request is shared as a Link Preview, the data displayed in the preview will update as the pull request updates (e.g. when it is merged).
 
-<Info>
-  To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.com/help/embed-and-connect-other-apps).
-</Info>
+> [!NOTE]
+>
+> To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.com/help/embed-and-connect-other-apps).
 
 To learn more about Link Previews, see the following resources:
 

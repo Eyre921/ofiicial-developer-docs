@@ -390,7 +390,7 @@ After you create an account, [onboard its seller or service provider](https://do
 2. Providing a form to collect the information required from your connected account.
 3. Updating the `Account` with the collected information.
 
-Alternatively, you can create an [account link](https://docs.stripe.com/connect/hosted-onboarding.md?accounts-namespace=v2&lang=curl#create-account-link) specifying the `type` as the `merchant` and `money_manager` configurations, then send the returned URL to your connected account so they can provide the required information in a Stripe-hosted interface.
+Alternatively, create an [account link](https://docs.stripe.com/connect/hosted-onboarding.md?accounts-namespace=v2&lang=curl#create-account-link) for the connected account with `use_case.type` set to `account_onboarding`. Send the returned URL to your connected account so they can provide the required information in a Stripe-hosted interface.
 
 ## Specify payout methods for recipient accounts 
 

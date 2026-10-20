@@ -17,9 +17,9 @@ To change your primary email address on GitHub:
 1. Go to your [GitHub email settings](https://github.com/settings/emails)
 2. Select the email address you want to set as primary in the "Primary email address" section
 
-<Info>
-  You can also follow the [GitHub documentation](https://docs.github.com/en/enterprise-cloud@latest/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/changing-your-primary-email-address) for detailed instructions on managing email preferences.
-</Info>
+> [!NOTE]
+>
+> You can also follow the [GitHub documentation](https://docs.github.com/en/enterprise-cloud@latest/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/changing-your-primary-email-address) for detailed instructions on managing email preferences.
 
 ## Switching between accounts
 

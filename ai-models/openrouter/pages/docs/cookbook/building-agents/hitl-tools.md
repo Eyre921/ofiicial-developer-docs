@@ -12,9 +12,9 @@ path: docs/cookbook/building-agents/hitl-tools
 
 > Add HITL to an existing Agent SDK agent so it can pause high-stakes tool calls for human input
 
-<Tip>
-  This recipe assumes you already have an agent built with the OpenRouter Agent SDK and `callModel`. If you are starting from scratch, first read the [callModel overview](/docs/agent-sdk/call-model/overview) to learn about the Agent SDK.
-</Tip>
+> [!TIP]
+>
+> This recipe assumes you already have an agent built with the OpenRouter Agent SDK and `callModel`. If you are starting from scratch, first read the [callModel overview](/docs/agent-sdk/call-model/overview) to learn about the Agent SDK.
 
 **Goal:** Add human-in-the-loop (HITL) controls to an existing Agent SDK agent so one of its tools can auto-resolve routine decisions and pause for human input on high-stakes ones.
 

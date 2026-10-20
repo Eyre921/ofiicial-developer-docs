@@ -9,11 +9,11 @@ Retrieve a view by its ID.
 
 For a successful request, the response is a [View](/reference/view) object.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have read content capabilities. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

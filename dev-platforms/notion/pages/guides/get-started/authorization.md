@@ -12,21 +12,17 @@ Authorization is the process of granting a connection or token access to Notion 
 
 ## Internal connection auth flow set-up
 
-To use an internal connection, start by creating your connection in the <a href={developerConnectionsUrl}>Developer portal</a>.
+To use an internal connection, start by creating your connection in the [Developer portal](https://app.notion.com/developers/connections).
 
 The internal connection will be associated with the workspace of your choice. You are required to be a workspace owner to create a connection.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
 
 Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the API token in this tab.
 
 The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
 
 ### Connection permissions
 
@@ -34,69 +30,63 @@ Before a connection can interact with your Notion workspace page(s), the page mu
 
 Once the connection is shared, you can start making API requests. If the page is not shared, any API requests made will respond with an error.
 
-<Warning>
-  **Never share your API token**
-
-  Your API token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
-
-  [Learn more: Best Practices for Handling API Keys](/guides/get-started/handling-api-keys)
-</Warning>
+> [!WARNING]
+>
+> **Never share your API token**
+>
+> Your API token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
+>
+> [Learn more: Best Practices for Handling API Keys](/guides/get-started/handling-api-keys)
 
 ### Making API requests with an internal connection
 
 Any time your connection interacts with your workspace, include the API token in the `Authorization` header with every API request. However, if you are using Notion’s [SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) to interact with the REST API, the token is set once when a client is initialized.
 
-<CodeGroup>
-  ```http HTTP theme={null}
-  GET /v1/pages/b55c9c91-384d-452b-81db-d1ef79372b75 HTTP/1.1
-  Authorization: Bearer {INTEGRATION_TOKEN}
-  ```
-</CodeGroup>
+```http HTTP theme={null}
+GET /v1/pages/b55c9c91-384d-452b-81db-d1ef79372b75 HTTP/1.1
+Authorization: Bearer {INTEGRATION_TOKEN}
+```
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  const { Client } = require("@notionhq/client")
+```javascript JavaScript theme={null}
+const { Client } = require("@notionhq/client")
 
-  // Initializing a client
-  const notion = new Client({
-  	auth: process.env.NOTION_TOKEN,
-  })
+// Initializing a client
+const notion = new Client({
+	auth: process.env.NOTION_TOKEN,
+})
 
-  const getUsers = async () => {
-  	const listUsersResponse = await notion.users.list({})
-  }
-  ```
-</CodeGroup>
+const getUsers = async () => {
+	const listUsersResponse = await notion.users.list({})
+}
+```
 
-<Note>
-  If you are not using the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js), also set the [`Notion-Version`](/reference/versioning) and [`Content-type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) headers in all of your requests, like so:
-
-  ```json JSON theme={null}
-  headers: {
-    Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
-    "Notion-Version": "2026-03-11",
-    "Content-Type": "application/json",
-  },
-  ```
-</Note>
+> [!NOTE]
+>
+> If you are not using the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js), also set the [`Notion-Version`](/reference/versioning) and [`Content-type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) headers in all of your requests, like so:
+>
+> ```json JSON theme={null}
+> headers: {
+>   Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+>   "Notion-Version": "2026-03-11",
+>   "Content-Type": "application/json",
+> },
+> ```
 
 If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.com/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
 
 ## Personal access token authentication
 
-Personal access tokens (PATs) are created directly by a Notion user in the <a href={developerPortalUrl}>Developer portal</a>. There is no OAuth flow and no page picker. A PAT acts as the user who created it and uses that user's permissions in the selected workspace.
+Personal access tokens (PATs) are created directly by a Notion user in the [Developer portal](https://www.notion.so/developers). There is no OAuth flow and no page picker. A PAT acts as the user who created it and uses that user's permissions in the selected workspace.
 
 Use a PAT when a script, CLI workflow, Worker, or trusted tool should act as you. Use an internal connection for team-owned workspace automations, or a public connection when other Notion users need to install your app.
 
 PATs use the same `Authorization` header as other credentials for the Notion API:
 
-<CodeGroup>
-  ```http HTTP theme={null}
-  GET /v1/users/me HTTP/1.1
-  Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
-  Notion-Version: 2026-03-11
-  ```
-</CodeGroup>
+```http HTTP theme={null}
+GET /v1/users/me HTTP/1.1
+Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
+Notion-Version: 2026-03-11
+```
 
 See [Personal access tokens](/guides/get-started/personal-access-tokens) for creation steps, workspace admin controls, tier defaults, and security guidance.
 
@@ -108,15 +98,15 @@ A public connection isn't tied to a single workspace through an internal connect
 
 ### How to make a public connection
 
-Navigate to the <a href={developerConnectionsUrl}>Developer portal</a> and create a new public connection.
+Navigate to the [Developer portal](https://app.notion.com/developers/connections) and create a new public connection.
 
 Fill out the form with your connection details, including your redirect URI(s) under the OAuth configuration section and the connection's [installation scope](/guides/get-started/public-connections#installation-scope) — either **Any workspace** or **Selected workspaces only**. This can't be changed after creation.
 
 The redirect URI is the URI your users will be redirected to after authorizing the public connection. To learn more, read [OAuth’s description of redirect URIs](https://www.oauth.com/oauth2-servers/redirect-uris/).
 
-<Note>
-  Marketplace listing details (such as descriptions, categories, and images) are managed separately through the **Listings** section. Refer to the [List on the Marketplace](/guides/get-started/marketplace-listing) guide to learn more.
-</Note>
+> [!NOTE]
+>
+> Marketplace listing details (such as descriptions, categories, and images) are managed separately through the **Listings** section. Refer to the [List on the Marketplace](/guides/get-started/marketplace-listing) guide to learn more.
 
 ### Public connection authorization overview
 
@@ -124,57 +114,49 @@ Once your connection has been made public, you can update your connection code t
 
 As an overview, the authorization flow includes the following steps. Each step will be described in more detail below.
 
-<Steps>
-  <Step>
-    Navigate the user to the connection’s authorization URL. This URL is provided in the <a href={developerConnectionsUrl}>Developer portal</a>.
-  </Step>
+**Step 1**
 
-  <Step>
-    After the user selects which workspace pages to share, Notion redirects the user to the connection’s redirect URI and includes a `code` query parameter. The redirect URI is the one you specified in your <a href={developerConnectionsUrl}>Developer portal</a>.
-  </Step>
+Navigate the user to the connection’s authorization URL. This URL is provided in the [Developer portal](https://app.notion.com/developers/connections).
 
-  <Step>
-    Make a `POST` request to [create an access token](/reference/create-a-token), which exchanges the temporary `code` for an access token.
-  </Step>
+**Step 2**
 
-  <Step>
-    The Notion API responds with an access token and some additional information.
-  </Step>
+After the user selects which workspace pages to share, Notion redirects the user to the connection’s redirect URI and includes a `code` query parameter. The redirect URI is the one you specified in your [Developer portal](https://app.notion.com/developers/connections).
 
-  <Step>
-    Store the access token for future API requests. View the [API reference docs](/reference/intro) to learn about available endpoints.
-  </Step>
-</Steps>
+**Step 3**
+
+Make a `POST` request to [create an access token](/reference/create-a-token), which exchanges the temporary `code` for an access token.
+
+**Step 4**
+
+The Notion API responds with an access token and some additional information.
+
+**Step 5**
+
+Store the access token for future API requests. View the [API reference docs](/reference/intro) to learn about available endpoints.
 
 ### Step 1 - Navigate the user to the connection’s authorization URL
 
-After creating a public connection in the <a href={developerConnectionsUrl}>Developer portal</a>, access the connection’s secrets in the **Configuration** tab. Similarly to the internal connections, these values should be protected and should never be included in source code or version control.
+After creating a public connection in the [Developer portal](https://app.notion.com/developers/connections), access the connection’s secrets in the **Configuration** tab. Similarly to the internal connections, these values should be protected and should never be included in source code or version control.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
 
 As an example, your `.env` file using these secrets could look like this:
 
-<CodeGroup>
-  ```shell Shell theme={null}
-  #.env
+```shell Shell theme={null}
+#.env
 
-  OAUTH_CLIENT_ID=<your-client-id>
-  OAUTH_CLIENT_SECRET=<your-client-secret>
-  NOTION_AUTH_URL=<your-auth-url>
-  ```
-</CodeGroup>
+OAUTH_CLIENT_ID=<your-client-id>
+OAUTH_CLIENT_SECRET=<your-client-secret>
+NOTION_AUTH_URL=<your-auth-url>
+```
 
 To start the authorization flow for a public connection, direct the prospective user to the authorization URL. A common pattern is to include a hyperlink in the connection app that interacts with the Notion REST API. For example, an app that lets users create Notion pages in their workspaces should send users to the authorization URL first.
 
 The following example shows an authorization URL made available through a hyperlink:
 
-<CodeGroup>
-  ```html HTML theme={null}
-  <a href="https://api.notion.com/v1/oauth/authorize?owner=user&client_id=463558a3-725e-4f37-b6d3-0889894f68de&redirect_uri=https%3A%2F%2Fexample.com%2Fauth%2Fnotion%2Fcallback&response_type=code">Add to Notion</a>
-  ```
-</CodeGroup>
+```html HTML theme={null}
+<a href="https://api.notion.com/v1/oauth/authorize?owner=user&client_id=463558a3-725e-4f37-b6d3-0889894f68de&redirect_uri=https%3A%2F%2Fexample.com%2Fauth%2Fnotion%2Fcallback&response_type=code">Add to Notion</a>
+```
 
 The URL begins with `https://api.notion.com/v1/oauth/authorize` and has the following parameters:
 
@@ -192,9 +174,7 @@ Once the authorization URL is visited, the user will be shown a prompt that vari
 
 In the standard connection permissions flow, a prompt describes the connection [capabilities](/reference/capabilities), presented to the user as what the connection would like to be able to do in the workspace. A user can either select pages to grant the connection access to, or cancel the request.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
 
 If the user presses **Cancel**, they will be redirected to the redirect URI with and `error` query param added.
 
@@ -206,13 +186,11 @@ You can use this `error`query parameter to conditionally update your app’s sta
 
 If the user opts to `Select pages`, then a page picker interface opens. A user can search for and select pages and databases to share with the connection from the page picker.
 
-<Note>
-  The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
-</Note>
+> [!NOTE]
+>
+> The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
 
 Users can select which pages to give the connection access to, including both private and public pages available to them. Parent pages can be selected to quickly provide access to child pages, as giving access to a parent page will provide access to all available child pages. Users can return to this view at a later time to update access settings if circumstances change.
 
@@ -227,26 +205,20 @@ Public connections offer the option of providing a public Notion page to use as 
 To add a template to your workspace, complete the following steps:
 
 * Choose a public page in your workspace that you want users to be able to duplicate.
-* Navigate to your connection in the <a href={developerConnectionsUrl}>Developer portal</a> and open the **Configuration** tab, then scroll to the Basic information section.
+* Navigate to your connection in the [Developer portal](https://app.notion.com/developers/connections) and open the **Configuration** tab, then scroll to the Basic information section.
 * Scroll to the bottom of your distribution settings and add the URL of the Notion page you selected to the **Notion URL for optional template** input.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
 
 Once this URL is added, your auth flow prompt appearance will be updated.
 
 Going back to your prompt view, if the connection offers a Notion template option, the first step in the permissions flow will describe the connection [capabilities](/reference/capabilities). This is presented to the user as what the connection would be able to do in the workspace, and it prompts the user to click `Next`.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
 
 In the next step, a user can either choose to duplicate the template that you provided or to select existing pages to share with the connection.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
 
 If the user chooses to duplicate the template, then the following happens automatically:
 
@@ -256,9 +228,9 @@ If the user chooses to duplicate the template, then the following happens automa
 
 If the user chooses to select pages to share with the connection, then they continue to the page picker interface that’s part of the [prompt for a standard connection](#prompt-for-a-standard-connection-with-no-template-option-default).
 
-<Note>
-  After a user authorizes a public connection, only that user is able to interact or share pages and databases with the connection. Unlike internal connections, if multiple members in a workspace want to use a public connection, each prospective user needs to individually follow the auth flow for the connection.
-</Note>
+> [!NOTE]
+>
+> After a user authorizes a public connection, only that user is able to interact or share pages and databases with the connection. Unlike internal connections, if multiple members in a workspace want to use a public connection, each prospective user needs to individually follow the auth flow for the connection.
 
 **User authorization failures**
 
@@ -279,15 +251,13 @@ To complete the next step, retrieve the `code` query parameter provided in the r
 
 In a React component, for example, the query parameters are made available through the `useRouter()` hook:
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  export default function AuthRedirectPage() {
-    const router = useRouter();
-    const { code } = router.query;
-    ...
-  }
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+export default function AuthRedirectPage() {
+  const router = useRouter();
+  const { code } = router.query;
+  ...
+}
+```
 
 ### Step 3 - Send the `code` in a `POST` request to the Notion API
 
@@ -305,7 +275,7 @@ The request is authorized using HTTP Basic Authentication. The credential is a c
 CLIENT_ID:CLIENT_SECRET
 ```
 
-Find both of these values in the <a href={developerConnectionsUrl}>Developer portal</a>.
+Find both of these values in the [Developer portal](https://app.notion.com/developers/connections).
 
 Note that in [HTTP Basic Authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), credentials are `base64` encoded before being added to the `Authorization` header.
 
@@ -315,48 +285,44 @@ The body of the request contains the following JSON-encoded fields:
 | :- | :- | :- | :- |
 | `"grant_type"` | `string` | Always use `"authorization_code"`. | ✅ |
 | `"code"` | `string` | The temporary authorization code received in the incoming request to the `"redirect_uri"`. | ✅ |
-| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\* <br /><br /> \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
+| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\*   \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
 
 The following is an example request to exchange the authorization code for an access token:
 
-<CodeGroup>
-  ```http HTTP theme={null}
-  POST /v1/oauth/token HTTP/1.1
-  Authorization: Basic "$CLIENT_ID:$CLIENT_SECRET"
-  Content-Type: application/json
+```http HTTP theme={null}
+POST /v1/oauth/token HTTP/1.1
+Authorization: Basic "$CLIENT_ID:$CLIENT_SECRET"
+Content-Type: application/json
 
-  {"grant_type":"authorization_code","code":"e202e8c9-0990-40af-855f-ff8f872b1ec6", "redirect_uri":"https://example.com/auth/notion/callback"}
-  ```
-</CodeGroup>
+{"grant_type":"authorization_code","code":"e202e8c9-0990-40af-855f-ff8f872b1ec6", "redirect_uri":"https://example.com/auth/notion/callback"}
+```
 
 The Node-equivalent of this example would look something like this:
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  ...
-  const clientId = process.env.OAUTH_CLIENT_ID;
-  const clientSecret = process.env.OAUTH_CLIENT_SECRET;
-  const redirectUri = process.env.OAUTH_REDIRECT_URI;
+```javascript JavaScript theme={null}
+...
+const clientId = process.env.OAUTH_CLIENT_ID;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+const redirectUri = process.env.OAUTH_REDIRECT_URI;
 
-  // encode in base 64
-  const encoded = btoa(`${clientId}:${clientSecret}`);
+// encode in base 64
+const encoded = btoa(`${clientId}:${clientSecret}`);
 
-  const response = await fetch("https://api.notion.com/v1/oauth/token", {
-  	method: "POST",
-  	headers: {
-  	Accept: "application/json",
-  	"Content-Type": "application/json",
-  	Authorization: `Basic ${encoded}`,
-  },
-  	body: JSON.stringify({
-  		grant_type: "authorization_code",
-  		code: "your-temporary-code",
-  		redirect_uri: redirectUri,
-  	}),
-  });
-  ...
-  ```
-</CodeGroup>
+const response = await fetch("https://api.notion.com/v1/oauth/token", {
+	method: "POST",
+	headers: {
+	Accept: "application/json",
+	"Content-Type": "application/json",
+	Authorization: `Basic ${encoded}`,
+},
+	body: JSON.stringify({
+		grant_type: "authorization_code",
+		code: "your-temporary-code",
+		redirect_uri: redirectUri,
+	}),
+});
+...
+```
 
 ### Step 4 - Notion responds with an `access_token` , `refresh_token`, and additional information
 
@@ -403,7 +369,7 @@ The request is authorized using HTTP Basic Authentication. The credential is a c
 CLIENT_ID:CLIENT_SECRET
 ```
 
-Find both of these values in the <a href={developerConnectionsUrl}>Developer portal</a>.
+Find both of these values in the [Developer portal](https://app.notion.com/developers/connections).
 
 Note that in [HTTP Basic Authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication), credentials are `base64` encoded before being added to the `Authorization` header.
 
@@ -416,39 +382,35 @@ The body of the request contains the following JSON-encoded fields:
 
 The following is an example request to exchange the `refresh_token` for a new access token and new refresh token
 
-<CodeGroup>
-  ```http HTTP theme={null}
-  POST /v1/oauth/token HTTP/1.1
-  Authorization: Basic "$CLIENT_ID:$CLIENT_SECRET"
-  Content-Type: application/json
+```http HTTP theme={null}
+POST /v1/oauth/token HTTP/1.1
+Authorization: Basic "$CLIENT_ID:$CLIENT_SECRET"
+Content-Type: application/json
 
-  {"grant_type":"refresh_token","refresh_token":"nrt_4991090011501Ejc6Xn4sHguI7jZIN449mKe9PRhpMfNK"}
-  ```
-</CodeGroup>
+{"grant_type":"refresh_token","refresh_token":"nrt_4991090011501Ejc6Xn4sHguI7jZIN449mKe9PRhpMfNK"}
+```
 
 The Node-equivalent of this example would look something like this:
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  ...
-  const clientId = process.env.OAUTH_CLIENT_ID;
-  const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+```javascript JavaScript theme={null}
+...
+const clientId = process.env.OAUTH_CLIENT_ID;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET;
 
-  // encode in base 64
-  const encoded = btoa(`${clientId}:${clientSecret}`);
+// encode in base 64
+const encoded = btoa(`${clientId}:${clientSecret}`);
 
-  const response = await fetch("https://api.notion.com/v1/oauth/token", {
-  	method: "POST",
-  	headers: {
-  	Accept: "application/json",
-  	"Content-Type": "application/json",
-  	Authorization: `Basic ${encoded}`,
-  },
-  	body: JSON.stringify({
-  		grant_type: "refresh_token",
-  		refresh_token: "your-refresh-token",
-  	}),
-  });
-  ...
-  ```
-</CodeGroup>
+const response = await fetch("https://api.notion.com/v1/oauth/token", {
+	method: "POST",
+	headers: {
+	Accept: "application/json",
+	"Content-Type": "application/json",
+	Authorization: `Basic ${encoded}`,
+},
+	body: JSON.stringify({
+		grant_type: "refresh_token",
+		refresh_token: "your-refresh-token",
+	}),
+});
+...
+```

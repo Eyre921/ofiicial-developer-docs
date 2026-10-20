@@ -10,15 +10,13 @@ Browse official Pinecone SDKs for Python, Node.js, Java, and Go, including the v
 
 Official Pinecone SDKs provide convenient access to the [Pinecone APIs](/reference/api/introduction).
 
-<CardGroup>
-  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
+> **[Python SDK](/reference/sdks/python/overview)**
 
-  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
+> **[Node.js SDK](/reference/sdks/node/overview)**
 
-  <Card title="Java SDK" icon="java" href="/reference/sdks/java/overview" />
+> **[Java SDK](/reference/sdks/java/overview)**
 
-  <Card title="Go SDK" icon="golang" href="/reference/sdks/go/overview" />
-</CardGroup>
+> **[Go SDK](/reference/sdks/go/overview)**
 
 ## SDK versions
 
@@ -35,9 +33,9 @@ The mappings between API versions and SDK versions are as follows:
 
 When a new stable API version is released, you should upgrade your SDK to the latest version to ensure compatibility with the latest API changes.
 
-<Note>
-  The Java SDK targeting API version `2026-04` will be available soon.
-</Note>
+> [!NOTE]
+>
+> The Java SDK targeting API version `2026-04` will be available soon.
 
 ## Limitations
 

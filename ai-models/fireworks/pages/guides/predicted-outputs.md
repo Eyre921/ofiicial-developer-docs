@@ -6,9 +6,9 @@ path: guides/predicted-outputs
 
 Use Predicted Outputs on Fireworks to boost token generation speed for code editing, document rewriting, and other tasks where most of the output is known.
 
-<Tip>
-  This feature is in beta and we are working on improvements. We welcome your feedback on [Discord](https://discord.gg/fireworks-ai)
-</Tip>
+> [!TIP]
+>
+> This feature is in beta and we are working on improvements. We welcome your feedback on [Discord](https://discord.gg/fireworks-ai)
 
 In cases where large parts of the LLM output are known in advance, e.g. editing or rewriting a document or code snippet, you can improve output generation speeds with predicted outputs. Predicted outputs allows you to provide strong "guesses" of what output may look like.
 

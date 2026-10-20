@@ -20,75 +20,73 @@ Authenticate with your normal Fireworks API key. Set `model` to the System One m
 
 ## Quickstart
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.fireworks.ai/inference/v1/systemone \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-    "model": "accounts/<your-account>/models/<your-model>",
-    "state": {
-      "user_request": "Add retry with exponential backoff to the payments webhook handler, and don'\''t retry on 4xx.",
-      "last_command": "npm test -- webhooks",
-      "test_output": "PASS handler.test.ts (4 tests)\nFAIL retry.test.ts\n  x does not retry on 4xx responses\n    Expected forwardEvent to be called 1 time, received 5"
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/systemone \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "accounts/<your-account>/models/<your-model>",
+  "state": {
+    "user_request": "Add retry with exponential backoff to the payments webhook handler, and don'\''t retry on 4xx.",
+    "last_command": "npm test -- webhooks",
+    "test_output": "PASS handler.test.ts (4 tests)\nFAIL retry.test.ts\n  x does not retry on 4xx responses\n    Expected forwardEvent to be called 1 time, received 5"
+  },
+  "questions": {
+    "task_complete": {
+      "type": "noul",
+      "instructions": "Is the user'\''s request fully done?"
     },
-    "questions": {
-      "task_complete": {
-        "type": "noul",
-        "instructions": "Is the user'\''s request fully done?"
-      },
-      "next_action": {
-        "type": "choice",
-        "instructions": "What should the agent do next?",
-        "criteria": {
-          "edit_code": "Change the code to fix the failing behavior",
-          "rerun_tests": "Run the tests again without changing anything",
-          "ask_user": "Stop and ask the user a clarifying question",
-          "finish": "Report the task as done"
-        }
-      },
-      "risk": {
-        "type": "score",
-        "instructions": "How risky would it be to ship the current change as is?",
-        "criteria": ["safe", "minor risk", "moderate risk", "high risk", "would cause an incident"]
+    "next_action": {
+      "type": "choice",
+      "instructions": "What should the agent do next?",
+      "criteria": {
+        "edit_code": "Change the code to fix the failing behavior",
+        "rerun_tests": "Run the tests again without changing anything",
+        "ask_user": "Stop and ask the user a clarifying question",
+        "finish": "Report the task as done"
       }
+    },
+    "risk": {
+      "type": "score",
+      "instructions": "How risky would it be to ship the current change as is?",
+      "criteria": ["safe", "minor risk", "moderate risk", "high risk", "would cause an incident"]
     }
-  }'
-  ```
+  }
+}'
+```
 
-  ```python Python theme={null}
-  import os
-  import requests
+```python Python theme={null}
+import os
+import requests
 
-  response = requests.post(
-      "https://api.fireworks.ai/inference/v1/systemone",
-      headers={"Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}"},
-      json={
-          "model": "accounts/<your-account>/models/<your-model>",
-          "state": "Customer wrote: the package arrived late and damaged, I want my money back.",
-          "questions": {
-              "refund": {
-                  "type": "noul",
-                  "instructions": "Does the customer ask for a refund?",
-                  "criteria": {"true": "A refund is requested", "false": "No refund is requested"},
-              },
-              "tone": {
-                  "type": "choice",
-                  "instructions": "What is the customer's tone?",
-                  "criteria": {"angry": "Angry or hostile", "neutral": "Neutral", "positive": "Positive"},
-              },
-              "urgency": {
-                  "type": "score",
-                  "instructions": "How urgent is this ticket?",
-                  "criteria": ["not urgent", "somewhat urgent", "urgent", "critical"],
-              },
-          },
-      },
-  )
-  response.raise_for_status()
-  print(response.json()["answers"])
-  ```
-</CodeGroup>
+response = requests.post(
+    "https://api.fireworks.ai/inference/v1/systemone",
+    headers={"Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}"},
+    json={
+        "model": "accounts/<your-account>/models/<your-model>",
+        "state": "Customer wrote: the package arrived late and damaged, I want my money back.",
+        "questions": {
+            "refund": {
+                "type": "noul",
+                "instructions": "Does the customer ask for a refund?",
+                "criteria": {"true": "A refund is requested", "false": "No refund is requested"},
+            },
+            "tone": {
+                "type": "choice",
+                "instructions": "What is the customer's tone?",
+                "criteria": {"angry": "Angry or hostile", "neutral": "Neutral", "positive": "Positive"},
+            },
+            "urgency": {
+                "type": "score",
+                "instructions": "How urgent is this ticket?",
+                "criteria": ["not urgent", "somewhat urgent", "urgent", "critical"],
+            },
+        },
+    },
+)
+response.raise_for_status()
+print(response.json()["answers"])
+```
 
 ## Request
 

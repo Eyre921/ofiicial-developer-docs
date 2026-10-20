@@ -10,7 +10,7 @@ Amazon SageMaker is a fully managed service that brings together a broad set of 
 
 You can use Amazon SageMaker and Pinecone together for retrieval-augmented generation (RAG) use cases. The integration uses Amazon SageMaker to compute and host large language models (LLMs), and uses Pinecone as the knowledge base that keeps the LLMs up to date with the latest information, reducing the likelihood of hallucinations.
 
-<PrimarySecondaryCTA />
+[Get started](https://www.pinecone.io/learn/sagemaker-rag/)
 
 ## Resources
 

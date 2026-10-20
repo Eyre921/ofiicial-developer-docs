@@ -6,9 +6,9 @@ path: guides/operations/integrations/integrate-with-azure-blob-storage
 
 Set up a Pinecone storage integration with an Azure Blob Storage container using a service principal to bulk import data into your indexes.
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 This page describes how to integrate Pinecone with Azure Blob Storage. After setting up an integration, you can [import data](/guides/index-data/import-data) from an Azure Blob Storage container into a Pinecone index hosted on AWS, GCP, or Azure.
 
@@ -65,9 +65,9 @@ In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), add
 
 ### Use the API
 
-<Note>
-  This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
-</Note>
+> [!NOTE]
+>
+> This endpoint requires `X-Pinecone-Api-Version: unstable`. Unstable endpoints can change without notice.
 
 Pass the values you copied from Azure as the `azure_app_credentials` field:
 

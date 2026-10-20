@@ -8,17 +8,15 @@ Base models supported for fine-tuning on Fireworks, with per-model training surf
 
 Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT and DPO), Training API jobs by parameter mode (LoRA or full-parameter) and method (SFT, DPO, and RL).
 
-<Info>
-  Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30 ✨ No credit card required.
-
-  [Start a job](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
-</Info>
+> [!NOTE]
+>
+> Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30 ✨ No credit card required.
+>
+> [Start a job](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Model availability
 
 Pick a model to see the surfaces and methods it is enabled for, plus any training shapes that back it. Switch to **All models** for the full matrix.
-
-<ModelsCatalog />
 
 ## Vision and multimodal support
 
@@ -30,28 +28,26 @@ Vision support is model- and surface-specific. Use the catalog above to confirm 
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Managed Training" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
-    Hand Fireworks your data and let the platform run the job
-  </Card>
+> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+>
+> Hand Fireworks your data and let the platform run the job
 
-  <Card title="Training API" href="/fine-tuning/training-api/introduction" icon="code">
-    Write your own training loop against a Tinker-compatible API
-  </Card>
+> **[Training API](/fine-tuning/training-api/introduction)**
+>
+> Write your own training loop against a Tinker-compatible API
 
-  <Card title="Serverless Training" href="/fine-tuning/training-api/serverless" icon="bolt">
-    Train on shared pooled infrastructure with per-token billing
-  </Card>
+> **[Serverless Training](/fine-tuning/training-api/serverless)**
+>
+> Train on shared pooled infrastructure with per-token billing
 
-  <Card title="Training Shapes" href="/fine-tuning/training-api/training-shapes" icon="microchip">
-    What a shape pins and how to reference one
-  </Card>
+> **[Training Shapes](/fine-tuning/training-api/training-shapes)**
+>
+> What a shape pins and how to reference one
 
-  <Card title="Dedicated Training" href="/fine-tuning/training-api/dedicated" icon="server">
-    Provision a trainer and sampler on reserved GPU capacity
-  </Card>
+> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+>
+> Provision a trainer and sampler on reserved GPU capacity
 
-  <Card title="Pricing" href="https://fireworks.ai/pricing" icon="tag">
-    Current rates across training and inference
-  </Card>
-</CardGroup>
+> **[Pricing](https://fireworks.ai/pricing)**
+>
+> Current rates across training and inference

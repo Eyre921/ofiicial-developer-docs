@@ -14,9 +14,9 @@ This page shows you how to update the data in an index [namespace](/guides/index
 
 To replace whole documents or records, use the [upsert](/guides/index-data/upsert-data) operation instead.
 
-<Tip>
-  Updates consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#update) for how update cost is calculated.
-</Tip>
+> [!TIP]
+>
+> Updates consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#update) for how update cost is calculated.
 
 ## Update documents
 
@@ -24,67 +24,63 @@ In an index with a document schema, [upsert](/guides/index-data/upsert-data#upse
 
 To patch specific documents, send one entry per `_id`. Include the fields you want to set, and name any fields to drop in `_remove_fields`. Both schema-declared fields and metadata fields can be set or removed this way:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone import Pinecone
+```Python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  index.documents.update(
-      namespace="articles",
-      documents=[
-          {"_id": "doc1", "body": "Updated body text."},  # schema-declared field
-          {"_id": "doc2", "_remove_fields": ["author"]},  # metadata field
-      ],
-  )
-  ```
+index.documents.update(
+    namespace="articles",
+    documents=[
+        {"_id": "doc1", "body": "Updated body text."},  # schema-declared field
+        {"_id": "doc2", "_remove_fields": ["author"]},  # metadata field
+    ],
+)
+```
 
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/namespaces/articles/documents/update" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -d '{
-              "documents": [
-                  { "_id": "doc1", "body": "Updated body text." },
-                  { "_id": "doc2", "_remove_fields": ["author"] }
-              ]
-          }'
-  ```
-</CodeGroup>
+curl "https://$INDEX_HOST/namespaces/articles/documents/update" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+            "documents": [
+                { "_id": "doc1", "body": "Updated body text." },
+                { "_id": "doc2", "_remove_fields": ["author"] }
+            ]
+        }'
+```
 
 To apply the same patch to every document matching a [metadata filter expression](/guides/index-data/indexing-overview#metadata-filter-expressions), send `filter` with `set_fields`, `remove_fields`, or both:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  # Connect to an index as shown above.
-  index.documents.update(
-      namespace="articles",
-      filter={"category": {"$eq": "news"}},
-      set_fields={"status": "archived"},
-      remove_fields=["author"],
-  )
-  ```
+```Python Python theme={null}
+# Connect to an index as shown above.
+index.documents.update(
+    namespace="articles",
+    filter={"category": {"$eq": "news"}},
+    set_fields={"status": "archived"},
+    remove_fields=["author"],
+)
+```
 
-  ```bash curl theme={null}
-  curl "https://$INDEX_HOST/namespaces/articles/documents/update" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -d '{
-              "filter": { "category": { "$eq": "news" } },
-              "set_fields": { "status": "archived" },
-              "remove_fields": ["author"]
-          }'
-  ```
-</CodeGroup>
+```bash curl theme={null}
+curl "https://$INDEX_HOST/namespaces/articles/documents/update" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+            "filter": { "category": { "$eq": "news" } },
+            "set_fields": { "status": "archived" },
+            "remove_fields": ["author"]
+        }'
+```
 
 The response reports how many documents matched the filter:
 
@@ -98,13 +94,13 @@ For the full request and response schema, see [Update documents](/reference/api/
 
 ### Limitations
 
-* **By-ID requests**: Each request can patch up to 1,000 documents. See [Update limits](/reference/api/database-limits/operation-limits#update-limits).
+* **By-ID requests**: Each request can patch up to 1,000 documents, or 96 when the schema declares `embed` or `sparse_embed` (even a metadata-only patch). See [Update limits](/reference/api/database-limits/operation-limits#update-limits).
 * **By-filter requests**: `set_fields` and `remove_fields` both accept metadata fields only, and reject a field declared in the schema with a `400`. A by-filter update applies one value to every matched document, which would leave vector and full-text-searchable fields identical across the whole match set. To change a schema-declared field, patch each document by ID.
 * **Text-match filters**: A by-filter update rejects [text-match operators](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) with a `400`. To update documents by text match, [search](/guides/search/full-text-search) for them first and patch the IDs the search returns.
 
-<Warning>
-  This operation ignores the `dry_run` parameter that [Update by metadata](#update-by-metadata) supports. A `dry_run` request returns `202` with a `matched_records` count, exactly like the preview you expect, and the update is applied anyway. It also accepts unrecognized parameters rather than rejecting them, so check the parameter names before you send a request you can't undo.
-</Warning>
+> [!WARNING]
+>
+> This operation ignores the `dry_run` parameter that [Update by metadata](#update-by-metadata) supports. A `dry_run` request returns `202` with a `matched_records` count, exactly like the preview you expect, and the update is applied anyway. It also accepts unrecognized parameters rather than rejecting them, so check the parameter names before you send a request you can't undo.
 
 ## Update by ID
 
@@ -118,9 +114,9 @@ To update the vector and/or metadata of a single record, use the [Update a recor
     * `sparse_values`: For sparse vectors.
   * `setMetadata`: The metadata to add or change. When updating metadata, only the specified metadata fields are modified, and if a specified metadata field doesn't exist, it's added.
 
-<Warning>
-  If a non-existent record ID is specified, no records are affected and a `200 OK` status is returned.
-</Warning>
+> [!WARNING]
+>
+> If a non-existent record ID is specified, no records are affected and a `200 OK` status is returned.
 
 In this example, assume you are updating the dense vector values and one metadata value of the following record in the `example-namespace` namespace:
 
@@ -133,141 +129,139 @@ In this example, assume you are updating the dense vector values and one metadat
 )
 ```
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  index.update(
-  	namespace="example-namespace",
-  	id="id-3", 
-  	values=[5.0, 3.0], 
-  	set_metadata={"genre": "comedy"}
-  )
-  ```
+index.update(
+	namespace="example-namespace",
+	id="id-3", 
+	values=[5.0, 3.0], 
+	set_metadata={"genre": "comedy"}
+)
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  await index.namespace('example-namespace').update({
-    id: 'id-3',
-    values: [5.0, 3.0],
-    metadata: {
-      genre: "comedy",
-    },
-  });
-  ```
+await index.namespace('example-namespace').update({
+  id: 'id-3',
+  values: [5.0, 3.0],
+  metadata: {
+    genre: "comedy",
+  },
+});
+```
 
-  ```java Java theme={null}
-  import com.google.protobuf.Struct;
-  import com.google.protobuf.Value;
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.UpdateResponse;
+```java Java theme={null}
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.UpdateResponse;
 
-  import java.util.Arrays;
-  import java.util.List;
+import java.util.Arrays;
+import java.util.List;
 
-  public class UpdateExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          Index index = new Index(connection, "INDEX_NAME");
-          List<Float> values = Arrays.asList(5.0f, 3.0f);
-  		Struct metaData = Struct.newBuilder()
-  			.putFields("genre",
-  					Value.newBuilder().setStringValue("comedy").build())
-  			.build();
-          UpdateResponse updateResponse = index.update("id-3", values, metaData, "example-namespace", null, null);
-          System.out.println(updateResponse);
-      }
-  }
-  ```
+public class UpdateExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(connection, "INDEX_NAME");
+        List<Float> values = Arrays.asList(5.0f, 3.0f);
+		Struct metaData = Struct.newBuilder()
+			.putFields("genre",
+					Value.newBuilder().setStringValue("comedy").build())
+			.build();
+        UpdateResponse updateResponse = index.update("id-3", values, metaData, "example-namespace", null, null);
+        System.out.println(updateResponse);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "log"
+import (
+    "context"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-      "google.golang.org/protobuf/types/known/structpb"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+    "google.golang.org/protobuf/types/known/structpb"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-    	}
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
 
-      id := "id-3"
+    id := "id-3"
 
-      metadataMap := map[string]interface{}{
-          "genre": "comedy",
-      }
+    metadataMap := map[string]interface{}{
+        "genre": "comedy",
+    }
 
-      metadataFilter, err := structpb.NewStruct(metadataMap)
-      if err != nil {
-          log.Fatalf("Failed to create metadata map: %v", err)
-      }
+    metadataFilter, err := structpb.NewStruct(metadataMap)
+    if err != nil {
+        log.Fatalf("Failed to create metadata map: %v", err)
+    }
 
-      err = idxConnection.UpdateVector(ctx, &pinecone.UpdateVectorRequest{
-          Id:       id,
-          Values: []float32{5.0, 3.0},
-          Metadata: metadataFilter,
-      })
-      if err != nil {
-          log.Fatalf("Failed to update vector with ID %v: %v", id, err)
-      }
-  }
-  ```
+    err = idxConnection.UpdateVector(ctx, &pinecone.UpdateVectorRequest{
+        Id:       id,
+        Values: []float32{5.0, 3.0},
+        Metadata: metadataFilter,
+    })
+    if err != nil {
+        log.Fatalf("Failed to update vector with ID %v: %v", id, err)
+    }
+}
+```
 
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  # Update both values and metadata
-  curl "https://$INDEX_HOST/vectors/update" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "id": "id-3",
-          "values": [5.0, 3.0],
-          "setMetadata": {"genre": "comedy"},
-          "namespace": "example-namespace"
-        }'
-  ```
-</CodeGroup>
+# Update both values and metadata
+curl "https://$INDEX_HOST/vectors/update" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "id": "id-3",
+        "values": [5.0, 3.0],
+        "setMetadata": {"genre": "comedy"},
+        "namespace": "example-namespace"
+      }'
+```
 
 After the update, the dense vector values and the `genre` metadata value are changed, but the `type` metadata value is unchanged:
 
@@ -288,9 +282,9 @@ To add or change metadata across multiple records in a namespace, use the `updat
 * `setMetadata`: The metadata to add or change. When updating metadata, only the specified metadata fields are modified. If a specified metadata field doesn't exist, it is added.
 * `dry_run`: Optional. If `true`, the number of records that match the filter expression is returned, but the records aren't updated.
 
-  <Note>
-    Each request updates a maximum of 100,000 records. Use `"dry_run": true` to check if you need to run the request multiple times. See the example below for details.
-  </Note>
+  > [!NOTE]
+  >
+  > Each request updates a maximum of 100,000 records. Use `"dry_run": true` to check if you need to run the request multiple times. See the example below for details.
 
 For example, let's say you have records that represent chunks of a single document with metadata that keeps track of chunk and document details, and you want to store the author's name with each chunk of the document:
 
@@ -322,193 +316,191 @@ For example, let's say you have records that represent chunks of a single docume
 
 The following code updates all matching records with the new `author` metadata field:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  # Use dry_run to check how many records match the filter
-  dry_run_response = index.update(
-      namespace="example-namespace",
-      filter={"document_title": {"$eq": "Introduction to Vector Databases"}},
-      set_metadata={"author": "Del Klein"},
-      dry_run=True
-  )
-  print(dry_run_response.matched_records)
+# Use dry_run to check how many records match the filter
+dry_run_response = index.update(
+    namespace="example-namespace",
+    filter={"document_title": {"$eq": "Introduction to Vector Databases"}},
+    set_metadata={"author": "Del Klein"},
+    dry_run=True
+)
+print(dry_run_response.matched_records)
 
-  # Perform the update
-  response = index.update(
-      namespace="example-namespace",
-      filter={"document_title": {"$eq": "Introduction to Vector Databases"}},
-      set_metadata={"author": "Del Klein"}
-  )
-  ```
+# Perform the update
+response = index.update(
+    namespace="example-namespace",
+    filter={"document_title": {"$eq": "Introduction to Vector Databases"}},
+    set_metadata={"author": "Del Klein"}
+)
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  await index.namespace('example-namespace').update({
-    filter: { document_title: { $eq: 'Introduction to Vector Databases' } },
-    metadata: { author: 'Del Klein' },
-  });
-  ```
+await index.namespace('example-namespace').update({
+  filter: { document_title: { $eq: 'Introduction to Vector Databases' } },
+  metadata: { author: 'Del Klein' },
+});
+```
 
-  ```java Java theme={null}
-  import com.google.protobuf.Struct;
-  import com.google.protobuf.Value;
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.UpdateResponse;
+```java Java theme={null}
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.UpdateResponse;
 
-  public class UpdateByMetadataExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          Index index = new Index(connection, "INDEX_NAME");
+public class UpdateByMetadataExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(connection, "INDEX_NAME");
 
-          Struct filter = Struct.newBuilder()
-              .putFields("document_title", Value.newBuilder()
-                  .setStructValue(Struct.newBuilder()
-                      .putFields("$eq", Value.newBuilder()
-                          .setStringValue("Introduction to Vector Databases")
-                          .build())
-                      .build())
-                  .build())
-              .build();
+        Struct filter = Struct.newBuilder()
+            .putFields("document_title", Value.newBuilder()
+                .setStructValue(Struct.newBuilder()
+                    .putFields("$eq", Value.newBuilder()
+                        .setStringValue("Introduction to Vector Databases")
+                        .build())
+                    .build())
+                .build())
+            .build();
 
-          Struct metadata = Struct.newBuilder()
-              .putFields("author", Value.newBuilder()
-                  .setStringValue("Del Klein")
-                  .build())
-              .build();
+        Struct metadata = Struct.newBuilder()
+            .putFields("author", Value.newBuilder()
+                .setStringValue("Del Klein")
+                .build())
+            .build();
 
-          // Dry run to check how many records match
-          UpdateResponse dryRunResponse = index.updateByMetadata(
-              filter, metadata, "example-namespace", true);
-          System.out.println("Matched records: " + dryRunResponse.getMatchedRecords());
+        // Dry run to check how many records match
+        UpdateResponse dryRunResponse = index.updateByMetadata(
+            filter, metadata, "example-namespace", true);
+        System.out.println("Matched records: " + dryRunResponse.getMatchedRecords());
 
-          // Perform the update
-          UpdateResponse response = index.updateByMetadata(
-              filter, metadata, "example-namespace");
-          System.out.println(response);
-      }
-  }
-  ```
+        // Perform the update
+        UpdateResponse response = index.updateByMetadata(
+            filter, metadata, "example-namespace");
+        System.out.println(response);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "fmt"
-      "log"
+import (
+    "context"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-      "google.golang.org/protobuf/types/known/structpb"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+    "google.golang.org/protobuf/types/known/structpb"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
-          Host:      "INDEX_HOST",
-          Namespace: "example-namespace",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      }
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
+        Host:      "INDEX_HOST",
+        Namespace: "example-namespace",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    }
 
-      filter, err := structpb.NewStruct(map[string]interface{}{
-          "document_title": map[string]interface{}{
-              "$eq": "Introduction to Vector Databases",
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to create filter: %v", err)
-      }
+    filter, err := structpb.NewStruct(map[string]interface{}{
+        "document_title": map[string]interface{}{
+            "$eq": "Introduction to Vector Databases",
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to create filter: %v", err)
+    }
 
-      metadata, err := structpb.NewStruct(map[string]interface{}{
-          "author": "Del Klein",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create metadata: %v", err)
-      }
+    metadata, err := structpb.NewStruct(map[string]interface{}{
+        "author": "Del Klein",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create metadata: %v", err)
+    }
 
-      // Dry run to check how many records match
-      dryRun := true
-      dryRunRes, err := idxConnection.UpdateVectorsByMetadata(ctx, &pinecone.UpdateVectorsByMetadataRequest{
-          Filter:   filter,
-          Metadata: metadata,
-          DryRun:   &dryRun,
-      })
-      if err != nil {
-          log.Fatalf("Failed to dry run update: %v", err)
-      }
-      fmt.Printf("Matched records: %d\n", dryRunRes.MatchedRecords)
+    // Dry run to check how many records match
+    dryRun := true
+    dryRunRes, err := idxConnection.UpdateVectorsByMetadata(ctx, &pinecone.UpdateVectorsByMetadataRequest{
+        Filter:   filter,
+        Metadata: metadata,
+        DryRun:   &dryRun,
+    })
+    if err != nil {
+        log.Fatalf("Failed to dry run update: %v", err)
+    }
+    fmt.Printf("Matched records: %d\n", dryRunRes.MatchedRecords)
 
-      // Perform the update
-      res, err := idxConnection.UpdateVectorsByMetadata(ctx, &pinecone.UpdateVectorsByMetadataRequest{
-          Filter:   filter,
-          Metadata: metadata,
-      })
-      if err != nil {
-          log.Fatalf("Failed to update vectors by metadata: %v", err)
-      }
-      fmt.Printf("Updated records: %d\n", res.MatchedRecords)
-  }
-  ```
+    // Perform the update
+    res, err := idxConnection.UpdateVectorsByMetadata(ctx, &pinecone.UpdateVectorsByMetadataRequest{
+        Filter:   filter,
+        Metadata: metadata,
+    })
+    if err != nil {
+        log.Fatalf("Failed to update vectors by metadata: %v", err)
+    }
+    fmt.Printf("Updated records: %d\n", res.MatchedRecords)
+}
+```
 
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/vectors/update" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H 'Content-Type: application/json' \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -d '{
-              "namespace": "example-namespace",
-              "filter": {
-                  "document_title": {"$eq": "Introduction to Vector Databases"}
-              },
-              "setMetadata": {
-                  "author": "Del Klein"
-              } 
-          }'
-  ```
-</CodeGroup>
+curl "https://$INDEX_HOST/vectors/update" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H 'Content-Type: application/json' \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+            "namespace": "example-namespace",
+            "filter": {
+                "document_title": {"$eq": "Introduction to Vector Databases"}
+            },
+            "setMetadata": {
+                "author": "Del Klein"
+            } 
+        }'
+```
 
 ### Handling large updates
 
-<Tip>
-  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
-</Tip>
+> [!TIP]
+>
+> If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
 
 Each request updates a maximum of 100,000 records. For larger datasets, use `dry_run` to check the count and repeat the request as needed:
 

@@ -14,11 +14,7 @@ When you create a dedicated read nodes index, Pinecone provisions resources base
 
 Dedicated read nodes support dense, sparse, hybrid, and [full-text search](/guides/search/full-text-search) indexes, giving you flexibility in your search and retrieval strategy. Because storage (shards) and compute (replicas) scale independently, you can optimize for your specific workload characteristics.
 
-<Frame>
-  <img />
-
-  <img />
-</Frame>
+![](https://mintcdn.com/pinecone/id0yJFEuv83Kq3F9/images/drn-read-path_light.png?fit=max\&auto=format\&n=id0yJFEuv83Kq3F9\&q=85\&s=d139d1364ec4349c0028f6036769a61a)
 
 ## On-demand vs. dedicated read nodes
 
@@ -45,77 +41,73 @@ Dedicated read nodes are ideal for workloads with millions to billions of record
 
 There's no universal formula for choosing between on-demand and dedicated read nodes. Performance and cost vary by workload (vector dimensionality, metadata filtering, and query patterns). Consider the following factors when making your decision:
 
-<AccordionGroup>
-  <Accordion title="Predictable, consistent performance and cost">
-    With dedicated read nodes, you allocate dedicated read hardware for your index, and your data is cached in memory and on local SSDs. This provides:
+> **Predictable, consistent performance and cost**
+>
+> With dedicated read nodes, you allocate dedicated read hardware for your index, and your data is cached in memory and on local SSDs. This provides:
+>
+> * Consistent low latency under heavy load
+> * No cold starts (fetching data from object storage)
+> * Performance isolation from other workloads
+> * Linear scaling by adding replicas
+> * Predictable costs based on fixed hourly rates for provisioned hardware
+>
+> If predictable performance and cost are critical for your application, dedicated read nodes may be a better fit than on-demand.
 
-    * Consistent low latency under heavy load
-    * No cold starts (fetching data from object storage)
-    * Performance isolation from other workloads
-    * Linear scaling by adding replicas
-    * Predictable costs based on fixed hourly rates for provisioned hardware
+> **High throughput without rate limits or throttling**
+>
+> On-demand indexes are subject to [read unit rate limits](/reference/api/database-limits/rate-limits) (default: 2,000 RU/second per index).
+>
+> A high query volume on a large index can exceed these limits. For example, a 15 GB namespace at 150 QPS requires approximately 2,250 RU/second (`15 RU per query × 150 QPS`), which exceeds the default rate limit.
+>
+> Dedicated read nodes have no read rate limits and provide dedicated capacity for predictable QPS without throttling (bounded only by CPU capacity), making them better suited for high-throughput workloads.
 
-    If predictable performance and cost are critical for your application, dedicated read nodes may be a better fit than on-demand.
-  </Accordion>
+> **Recommendation engines and real-time use cases**
+>
+> Recommendation engines for use cases such as e-commerce and media require very high throughput and low latency to maintain positive user experiences. Dedicated read nodes are purpose-built for these use cases, providing:
+>
+> * Consistent performance for thousands of queries per second
+> * Low latency for real-time recommendations
+> * Scalability to billion-vector datasets
+> * No performance degradation during traffic spikes
+>
+> Similar requirements apply to other real-time use cases like semantic search at scale, personalization engines, and mission-critical services with strict performance SLOs.
 
-  <Accordion title="High throughput without rate limits or throttling">
-    On-demand indexes are subject to [read unit rate limits](/reference/api/database-limits/rate-limits) (default: 2,000 RU/second per index).
+> **Single namespace workload**
+>
+> Dedicated read nodes indexes support only a single namespace. If your application requires multiple namespaces, on-demand is a better fit.
+>
+> > [!NOTE]
+> >
+> > To request early access to multi-namespace support, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-    A high query volume on a large index can exceed these limits. For example, a 15 GB namespace at 150 QPS requires approximately 2,250 RU/second (`15 RU per query × 150 QPS`), which exceeds the default rate limit.
+> On-demand indexes are better suited for workloads with unpredictable or highly variable traffic patterns. For example:
+>
+> * RAG systems with variable query volumes
+> * Agentic applications with sporadic usage
+> * Prototypes and development environments with intermittent activity
+> * Scheduled jobs with infrequent, batch-style queries
+>
+> Additionally, on-demand is better for indexes with many namespaces, even if you have high query volumes. Dedicated read nodes support single-namespace indexes only, so multi-tenant applications requiring namespace-based isolation should use on-demand.
+>
+> For these scenarios, on-demand's elasticity and usage-based pricing provide better cost efficiency than provisioning dedicated capacity.
+>
+> > [!NOTE]
+> >
+> > Dedicated read nodes *can* handle predictable traffic spikes efficiently if you scale replicas proactively via the API. For example, you can provision extra replicas before a scheduled email campaign and scale back down afterward.
 
-    Dedicated read nodes have no read rate limits and provide dedicated capacity for predictable QPS without throttling (bounded only by CPU capacity), making them better suited for high-throughput workloads.
-  </Accordion>
+> **Cost considerations**
+>
+> On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write, storage, and egress costs are usage-based for both modes.
+>
+> Dedicated read nodes become cost-effective when you have predictable, sustained query volumes that make full use of your provisioned capacity. With unpredictable or low query volumes, you pay hourly rates even when your machines sit idle, making on-demand's usage-based pricing more economical.
+>
+> For detailed cost information, comparison tables, and estimation tools, see the [Cost](#cost) section of this guide.
 
-  <Accordion title="Recommendation engines and real-time use cases">
-    Recommendation engines for use cases such as e-commerce and media require very high throughput and low latency to maintain positive user experiences. Dedicated read nodes are purpose-built for these use cases, providing:
-
-    * Consistent performance for thousands of queries per second
-    * Low latency for real-time recommendations
-    * Scalability to billion-vector datasets
-    * No performance degradation during traffic spikes
-
-    Similar requirements apply to other real-time use cases like semantic search at scale, personalization engines, and mission-critical services with strict performance SLOs.
-  </Accordion>
-
-  <Accordion title="Single namespace workload">
-    Dedicated read nodes indexes support only a single namespace. If your application requires multiple namespaces, on-demand is a better fit.
-
-    <Note>
-      To request early access to multi-namespace support, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-    </Note>
-  </Accordion>
-
-  <Accordion title={<>When <em>not</em> to use dedicated read nodes</>}>
-    On-demand indexes are better suited for workloads with unpredictable or highly variable traffic patterns. For example:
-
-    * RAG systems with variable query volumes
-    * Agentic applications with sporadic usage
-    * Prototypes and development environments with intermittent activity
-    * Scheduled jobs with infrequent, batch-style queries
-
-    Additionally, on-demand is better for indexes with many namespaces, even if you have high query volumes. Dedicated read nodes support single-namespace indexes only, so multi-tenant applications requiring namespace-based isolation should use on-demand.
-
-    For these scenarios, on-demand's elasticity and usage-based pricing provide better cost efficiency than provisioning dedicated capacity.
-
-    <Note>
-      Dedicated read nodes *can* handle predictable traffic spikes efficiently if you scale replicas proactively via the API. For example, you can provision extra replicas before a scheduled email campaign and scale back down afterward.
-    </Note>
-  </Accordion>
-
-  <Accordion title="Cost considerations">
-    On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write, storage, and egress costs are usage-based for both modes.
-
-    Dedicated read nodes become cost-effective when you have predictable, sustained query volumes that make full use of your provisioned capacity. With unpredictable or low query volumes, you pay hourly rates even when your machines sit idle, making on-demand's usage-based pricing more economical.
-
-    For detailed cost information, comparison tables, and estimation tools, see the [Cost](#cost) section of this guide.
-  </Accordion>
-
-  <Accordion title="Test results for your workload">
-    Performance depends on your specific workload: index size, vector dimensionality, metadata filtering, query patterns, throughput requirements, and latency requirements. Testing is the only way to know for sure whether dedicated read nodes are right for your scenario.
-
-    For a step-by-step guide to testing, see [Test your workload](/guides/index-data/dedicated-read-nodes/size-and-test#test-your-workload).
-  </Accordion>
-</AccordionGroup>
+> **Test results for your workload**
+>
+> Performance depends on your specific workload: index size, vector dimensionality, metadata filtering, query patterns, throughput requirements, and latency requirements. Testing is the only way to know for sure whether dedicated read nodes are right for your scenario.
+>
+> For a step-by-step guide to testing, see [Test your workload](/guides/index-data/dedicated-read-nodes/size-and-test#test-your-workload).
 
 If you need guidance choosing a capacity mode (on-demand or dedicated read nodes) or sizing your index configuration, [contact us](https://www.pinecone.io/contact/).
 
@@ -149,14 +141,14 @@ Nodes are a project-level limit, not a per-index limit. To calculate your total 
 
 To increase your project's node limit, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-<Note>
-  Configuration change limits:
-
-  * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
-  * A new configuration change can only be initiated after the previous configuration change has completed.
-  * Each configuration change can take up to 30 minutes to complete.
-  * Read and write operations continue normally during configuration changes.
-</Note>
+> [!NOTE]
+>
+> Configuration change limits:
+>
+> * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
+> * A new configuration change can only be initiated after the previous configuration change has completed.
+> * Each configuration change can take up to 30 minutes to complete.
+> * Read and write operations continue normally during configuration changes.
 
 ### Memory fullness
 
@@ -164,9 +156,9 @@ To increase your project's node limit, [contact support](https://app.pinecone.io
 
 ## Cost
 
-<Note>
-  For the latest pricing information, see the [Pinecone pricing page](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> For the latest pricing information, see the [Pinecone pricing page](https://www.pinecone.io/pricing/).
 
 The cost of an index has four components: read costs, write costs, storage costs, and egress costs.
 
@@ -179,9 +171,9 @@ On-demand and dedicated read nodes share infrastructure for writes and storage, 
 | Storage costs | [Usage-based](/guides/manage-cost/understanding-cost#storage) | [Usage-based](/guides/manage-cost/understanding-cost#storage) (same as on-demand) |
 | Egress costs | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance) | [Usage-based](/guides/manage-cost/understanding-cost#egress) (same as on-demand) |
 
-<Note>
-  If you use a hosted model for search or reranking, there are additional [inference costs](https://www.pinecone.io/pricing).
-</Note>
+> [!NOTE]
+>
+> If you use a hosted model for search or reranking, there are additional [inference costs](https://www.pinecone.io/pricing).
 
 ### Calculate dedicated read nodes costs
 
@@ -200,9 +192,9 @@ To calculate the total cost of a dedicated read nodes index, use this formula:
 | Write costs | [Usage-based](/guides/manage-cost/understanding-cost#write-units), same as on-demand |
 | Egress costs | [Usage-based](/guides/manage-cost/understanding-cost#egress) beyond your plan's [egress allowance](/guides/manage-cost/understanding-cost#egress-allowance), same as on-demand |
 
-<Tip>
-  For help estimating costs, use the [Pinecone pricing calculator](https://www.pinecone.io/pricing/estimate/) or [contact us](https://www.pinecone.io/contact/).
-</Tip>
+> [!TIP]
+>
+> For help estimating costs, use the [Pinecone pricing calculator](https://www.pinecone.io/pricing/estimate/) or [contact us](https://www.pinecone.io/contact/).
 
 **Example:** If the rate for `b1` nodes on `aws-us-east-1` is \$336.42/month (\$0.46/hour), an index with two shards and two replicas would cost:
 

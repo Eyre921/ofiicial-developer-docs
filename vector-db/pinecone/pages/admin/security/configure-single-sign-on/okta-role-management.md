@@ -8,7 +8,9 @@ Automatically assign Pinecone organization and project roles from SAML attribute
 
 Instead of managing roles manually in Pinecone, you can have Pinecone automatically assign organization and project roles from your identity provider (IdP) on each login. This page continues [Configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and shows how to set up SAML role management with Okta. You can adapt these instructions for any provider with SAML 2.0 support.
 
-<Note>SAML role management is available on the Enterprise plan and builds on SAML SSO. Before you begin, [configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and enforce SSO for your organization.</Note>
+> [!NOTE]
+>
+> SAML role management is available on the Enterprise plan and builds on SAML SSO. Before you begin, [configure SSO with Okta](/admin/security/configure-single-sign-on/okta) and enforce SSO for your organization.
 
 ## How it works
 
@@ -19,15 +21,15 @@ When SAML role management is enabled, Pinecone reconciles each user's roles on e
 * Because roles come entirely from your IdP, while this mode is enabled you can no longer invite members or edit roles in the Pinecone console or through the Admin API, and the SSO **Default role** isn't applied.
 * To revoke a member's access, remove their roles in your IdP. At their next sign-in, Pinecone clears all of their organization and project roles and blocks the login. Active members are re-authenticated at least every 24 hours, so the change applies within a day.
 
-<Note>
-  Because SSO is enforced, deactivating or removing a member in your IdP blocks them from signing in to Pinecone right away, so their access ends immediately. Their role assignments stay in Pinecone until their next sign-in, which a removed member never reaches. The assignments remain but grant no access on their own. To clear them, or to have Pinecone remove members automatically, use [SCIM provisioning](/admin/security/configure-single-sign-on/okta-scim-provisioning). You can also switch to **Manage roles in Pinecone** to remove the member manually, then switch back.
-</Note>
+> [!NOTE]
+>
+> Because SSO is enforced, deactivating or removing a member in your IdP blocks them from signing in to Pinecone right away, so their access ends immediately. Their role assignments stay in Pinecone until their next sign-in, which a removed member never reaches. The assignments remain but grant no access on their own. To clear them, or to have Pinecone remove members automatically, use [SCIM provisioning](/admin/security/configure-single-sign-on/okta-scim-provisioning). You can also switch to **Manage roles in Pinecone** to remove the member manually, then switch back.
 
 To avoid losing access, configure and verify the `roles` attribute in Okta *before* you enable SAML role management in Pinecone. The steps below are in that order.
 
-<Warning>
-  Enabling SAML role management does not validate your IdP configuration, so a user missing an organization role can be locked out on their next login. Before you enable it, verify the `roles` attribute for a current owner (see [Step 2](#2-verify-the-roles-in-the-saml-assertion)).
-</Warning>
+> [!WARNING]
+>
+> Enabling SAML role management does not validate your IdP configuration, so a user missing an organization role can be locked out on their next login. Before you enable it, verify the `roles` attribute for a current owner (see [Step 2](#2-verify-the-roles-in-the-saml-assertion)).
 
 ## Role attribute values
 
@@ -76,9 +78,9 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 Configure Okta to send each user's roles in a SAML attribute named `roles`, where each value is one of the [role attribute values](#role-attribute-values) above. You can populate that attribute in a few ways. Choose whichever fits how you already manage users in Okta.
 
-<Note>
-  In newer versions of Okta, attribute and group statements are configured on the app's **Sign On** tab after the app is created, rather than in the app creation wizard. If you don't see the **Attribute Statements (SAML)** section, expand **Show legacy configuration** within it.
-</Note>
+> [!NOTE]
+>
+> In newer versions of Okta, attribute and group statements are configured on the app's **Sign On** tab after the app is created, rather than in the app creation wizard. If you don't see the **Attribute Statements (SAML)** section, expand **Show legacy configuration** within it.
 
 ### Option A: From a user profile attribute
 
@@ -103,9 +105,9 @@ Use this option to assign roles by adding users to Okta groups.
    * A **Group Attribute Statement** with **Name** `roles`, **Name format** `Unspecified`, and **Filter** **Starts with** `pinecone:`.
    * Or an **Attribute Statement** with **Name** `roles` and the expression `user.getGroups({'group.profile.name': 'pinecone:', 'operator': 'STARTS_WITH'}).![profile.name]`.
 
-<Note>
-  The `user.getGroups(...).![profile.name]` expression is for an app-level attribute statement on the **Sign On** tab, and it returns every matching group, so no `limit` argument is required. (Only the `Groups.startsWith`, `Groups.endsWith`, and `Groups.contains` functions require a `limit`.) If you configure this claim on a custom authorization server instead, use the `.![name]` projection.
-</Note>
+> [!NOTE]
+>
+> The `user.getGroups(...).![profile.name]` expression is for an app-level attribute statement on the **Sign On** tab, and it returns every matching group, so no `limit` argument is required. (Only the `Groups.startsWith`, `Groups.endsWith`, and `Groups.contains` functions require a `limit`.) If you configure this claim on a custom authorization server instead, use the `.![name]` projection.
 
 Any other approach works, as long as the `roles` attribute resolves to the role attribute values.
 
@@ -117,13 +119,15 @@ Before you hand role management to Okta, confirm the `roles` attribute contains 
 2. Select a user who should be an organization owner and generate the preview.
 3. Confirm the assertion includes a `roles` attribute containing `pinecone:OrgOwner` (and any project roles you assigned).
 
-<Warning>
-  If no current organization owner's preview includes `pinecone:OrgOwner`, fix your Okta configuration before continuing. Enabling SAML role management without a provisioned owner can lock your organization out of role management. If the `roles` attribute is empty or missing, re-check your attribute statement expression and projection before continuing. A malformed expression returns no roles rather than an error.
-</Warning>
+> [!WARNING]
+>
+> If no current organization owner's preview includes `pinecone:OrgOwner`, fix your Okta configuration before continuing. Enabling SAML role management without a provisioned owner can lock your organization out of role management. If the `roles` attribute is empty or missing, re-check your attribute statement expression and projection before continuing. A malformed expression returns no roles rather than an error.
 
 ## 3. Enable SAML role management in Pinecone
 
-<Note>You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.</Note>
+> [!NOTE]
+>
+> You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
 2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.

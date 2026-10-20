@@ -12,57 +12,17 @@ path: docs/cookbook/administration/analytics-cost-control
 
 > Hand your coding agent a management key and the analytics skill, then ask it where your money is going
 
-export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleClick = () => {
-    navigator.clipboard.writeText(prompt).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  };
-  return <div className="mt-3">
-      <button type="button" onClick={handleClick} className="border-border inline-flex items-center gap-2 rounded-lg border px-3 py-2 font-semibold cursor-pointer border-green-200 dark:border-green-900">
-        {isCopied ? "Copied" : buttonLabel}
-      </button>
-    </div>;
-};
-
 **Goal:** Run a cost review on your OpenRouter account using your coding agent, the [Analytics API](/docs/api/api-reference/analytics/query-analytics-data), and the [openrouter-analytics skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-analytics).
 
 **Outcome:** A set of query recipes and agent prompts for digging into your own usage data: which models burn the most, which API keys cause it, and what to repoint or cache.
 
-<Tip>
-  <Markdown src="/docs/snippets/openrouter-analytics-skill.mdx" />
+> [!TIP]
+>
+> Then copy this prompt into your agent to run the full cost review.
 
-  Then copy this prompt into your agent to run the full cost review.
-
-  <CopyPromptButton
-    prompt={`Run a cost review on my OpenRouter account and give me ranked recommendations for reducing spend next month.
-
-Use the openrouter-analytics skill if it's installed (clone https://github.com/OpenRouterTeam/skills and run npm install in skills/openrouter-analytics/scripts). Otherwise call the API directly. Either way, read these source-of-truth docs for the current query schema, metrics, and dimensions before writing any query:
-- Query endpoint reference: https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data
-- Skill with runnable query scripts: https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-analytics
-
-Auth: the Analytics API needs an OpenRouter management key (regular inference keys get a 403). Look for one in my environment or secret store first; the skill's scripts read it from OPENROUTER_API_KEY or a --api-key flag. If you can't find one, stop and ask me to create one at https://openrouter.ai/settings/management-keys instead of guessing.
-
-Method:
-1. Fetch /api/v1/analytics/meta and use only metrics, dimensions, and operators it actually returns.
-2. Inspect this codebase (and any sibling services you can see) to map API key names and apps in the analytics data to the pipelines, jobs, or features that call them, so recommendations name the actual code to change.
-3. Establish the baseline: total spend, tokens, and requests over the last full month, plus the blended $/Mtok rate (total_usage / tokens_total * 1e6).
-4. Break spend down by model with cache_hit_rate and tokens. Flag any model whose effective $/Mtok is a large multiple of the blended rate, especially preview or frontier models on high-volume traffic.
-5. For each flagged model, drill into api_key_id (and app or user if populated) with a filter on that model to find who's responsible.
-6. Decompose spend with the usage_* component metrics to see if money is going to upstream inference, web search, file parsing, or being saved by caching and discounts.
-7. Check prompt-heaviness (tokens_prompt vs tokens_completion) and reasoning_tokens share to decide whether caching or prompt trimming is even worth recommending.
-
-For every recommendation, state the monthly dollar impact, the specific key or pipeline to change, the suggested replacement (cheaper model, caching, prompt change), and the risk. Order by impact. Skip generic advice that my data doesn't support. Mind that latency/throughput metrics and the generation_id dimension only work for time ranges up to 31 days, and check metadata.truncated on every response before summing rows.
-
-Finish with the exact queries to re-run next month to verify each fix worked.`}
-  />
-</Tip>
-
-<Warning>
-  Analytics queries need a **management key** from [Settings → Management Keys](https://openrouter.ai/settings/management-keys). Regular inference keys get a 403. Management keys can't make model requests, so the whole workflow is read-only and free, but the data it returns is your org's full spend breakdown. Treat the key like any other credential.
-</Warning>
+> [!WARNING]
+>
+> Analytics queries need a **management key** from [Settings → Management Keys](https://openrouter.ai/settings/management-keys). Regular inference keys get a 403. Management keys can't make model requests, so the whole workflow is read-only and free, but the data it returns is your org's full spend breakdown. Treat the key like any other credential.
 
 ## Before you start
 

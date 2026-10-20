@@ -6,73 +6,59 @@ path: fine-tuning/training-api/dedicated
 
 Run Training API workloads with provisioned trainer and deployment resources on Fireworks, with explicit checkpoints, weight-sync, and lifecycle control.
 
-<Info>
-  Serverless Training is now generally available and a great starting point. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
-</Info>
+> [!NOTE]
+>
+> Serverless Training is now generally available and a great starting point. Graduate to Dedicated Training for larger workloads, more model selection, or full-parameter training. [Request access here](https://fireworks.ai/contact-training).
 
 Dedicated training provisions trainer and deployment resources for your run. Use it when you need a model outside the serverless pool, full-parameter training, sustained workloads, explicit checkpoint resume, or control over rollout and evaluation deployments.
 
 If LoRA SFT, DPO, ORPO, RL, distillation, or a custom loop on a supported shared-pool model is sufficient, compare this path with [Serverless Training](/fine-tuning/training-api/serverless) before provisioning resources.
 
-<Tip>
-  **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes), and use the [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) for losses, checkpoints, and debugging depth.
-</Tip>
+> [!TIP]
+>
+> **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes), and use the [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) for losses, checkpoints, and debugging depth.
 
 ## How dedicated training runs
 
-<div aria-label="Dedicated Training lifecycle using provisioned trainer and inference resources">
-  <div>
-    <div>1 · Local</div>
-    <strong>Your Python loop</strong>
-    <div>Controls data, losses, rewards, and experiment logic.</div>
-  </div>
+1 · Local
+**Your Python loop**
+Controls data, losses, rewards, and experiment logic.
 
-  <div>
-    <div>2 · Provisioned</div>
-    <strong>Dedicated trainer</strong>
-    <div>Runs remote model and optimizer operations on the selected shape.</div>
-  </div>
+2 · Provisioned
+**Dedicated trainer**
+Runs remote model and optimizer operations on the selected shape.
 
-  <div>
-    <div>3 · Persistent</div>
-    <strong>Training artifacts</strong>
-    <div>Stores sampler snapshots or resumable training state.</div>
-  </div>
+3 · Persistent
+**Training artifacts**
+Stores sampler snapshots or resumable training state.
 
-  <div>
-    <div>4 · Optional</div>
-    <strong>Inference deployment</strong>
-    <div>Loads sampler weights for rollouts and evaluation.</div>
-  </div>
+4 · Optional
+**Inference deployment**
+Loads sampler weights for rollouts and evaluation.
 
-  <div>
-    <div>5 · Explicit</div>
-    <strong>Promote and clean up</strong>
-    <div>Register the selected model, then release billable compute.</div>
-  </div>
-</div>
+5 · Explicit
+**Promote and clean up**
+Register the selected model, then release billable compute.
 
 The trainer and inference deployment are separate resources with separate billing and cleanup. Promotion registers a model but does not deploy it.
 
 ## What you can run
 
-<CardGroup>
-  <Card title="SFT, DPO, and ORPO" icon="messages">
-    Use cookbook recipes with LoRA or full-parameter configurations supported by the selected training shape.
-  </Card>
+> **SFT, DPO, and ORPO**
+>
+> Use cookbook recipes with LoRA or full-parameter configurations supported by the selected training shape.
 
-  <Card title="RL and RFT" icon="brain">
-    Run synchronous or asynchronous rollouts with custom rewards, losses, environments, and deployment sampling.
-  </Card>
+> **RL and RFT**
+>
+> Run synchronous or asynchronous rollouts with custom rewards, losses, environments, and deployment sampling.
 
-  <Card title="Distillation" icon="arrows-left-right">
-    Provision student and teacher resources for sampled reverse KL, top-k forward KL, and related workflows.
-  </Card>
+> **Distillation**
+>
+> Provision student and teacher resources for sampled reverse KL, top-k forward KL, and related workflows.
 
-  <Card title="Custom loops" icon="code">
-    Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
-  </Card>
-</CardGroup>
+> **Custom loops**
+>
+> Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
 
 ## Dedicated training quickstart
 
@@ -124,7 +110,7 @@ Dedicated recipes use two independently billed resources:
 
 Keep stable trainer and deployment IDs so retries reconnect instead of provisioning duplicates. The trainer owns optimization state; the deployment owns serving and sampling.
 
-Serverless and dedicated sampling use the same `DeploymentSampler` request contract. See [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for SDK-specific batching behavior, and use [Inference for RL rollouts](https://docs.fireworks.ai/guides/rollout-inference#inference-for-rl-rollouts) as the canonical session-affinity reference.
+Serverless and dedicated sampling use the same `DeploymentSampler` request contract. See [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for SDK-specific batching behavior, and use [Inference for RL rollouts](/guides/rollout-inference) as the canonical session-affinity reference.
 
 ## Loss functions
 
@@ -167,20 +153,18 @@ See [Serverless vs dedicated](/fine-tuning/training-api/introduction#infrastruct
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Cookbook overview" icon="book" href="/fine-tuning/training-api/cookbook/overview">
-    Recipe entry points
-  </Card>
+> **[Cookbook overview](/fine-tuning/training-api/cookbook/overview)**
+>
+> Recipe entry points
 
-  <Card title="Training Shapes" icon="microchip" href="/fine-tuning/training-api/training-shapes">
-    What a shape pins
-  </Card>
+> **[Training Shapes](/fine-tuning/training-api/training-shapes)**
+>
+> What a shape pins
 
-  <Card title="Models" icon="table" href="/fine-tuning/models">
-    Per-model shape catalog
-  </Card>
+> **[Models](/fine-tuning/models)**
+>
+> Per-model shape catalog
 
-  <Card title="Cleanup" icon="broom" href="/fine-tuning/training-api/reference/cleanup">
-    Teardown contract
-  </Card>
-</CardGroup>
+> **[Cleanup](/fine-tuning/training-api/reference/cleanup)**
+>
+> Teardown contract

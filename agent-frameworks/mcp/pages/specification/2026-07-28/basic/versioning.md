@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/versionin
 path: specification/2026-07-28/basic/versioning
 ---
 
-<div />
-
 This page defines how a client and server agree on what they are speaking:
 the protocol version, declared on every request; optional extensions,
 negotiated through capabilities; and interoperability with earlier,

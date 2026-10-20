@@ -12,4 +12,4 @@ You can customize the RAG pipeline for your use case, including the retrieval an
 
 When you create a knowledge box, you can choose to store its index in Pinecone. This is especially useful for large datasets where full-text search isn't key in the retrieval phase.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.rag.progress.cloud/docs/develop/js-sdk/interfaces/ExternalIndexProvider)

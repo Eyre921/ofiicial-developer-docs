@@ -10,64 +10,58 @@ A [data source query](/reference/query-a-data-source) can be sorted by a propert
 
 Here is an example of a sort on a data source property.
 
-<CodeGroup>
-  ```json Sorting by "Name" property in ascending direction theme={null}
-  {
-    "sorts": [
-      {
-        "property": "created_time",
-        "direction": "ascending"
-      },
-    ]
-  }
-  ```
-</CodeGroup>
+```json Sorting by "Name" property in ascending direction theme={null}
+{
+  "sorts": [
+    {
+      "property": "created_time",
+      "direction": "ascending"
+    },
+  ]
+}
+```
 
 If you’re using the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js), you can apply this sorting property to your query like so:
 
-<CodeGroup>
-  ```javascript JavaScript theme={null}
-  const { Client } = require('@notionhq/client');
+```javascript JavaScript theme={null}
+const { Client } = require('@notionhq/client');
 
-  const notion = new Client({ auth: process.env.NOTION_API_KEY });
-  // replace with your own data source ID
-  const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+// replace with your own data source ID
+const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
 
-  const sortedRows = async () => {
-    const response = await notion.dataSources.query({
-      database_id: databaseId,
-      sorts: [
-        {
-          property: "Name",
-          direction: "ascending"
-        }
-      ],
-    });
-    return response;
-  }
-  ```
-</CodeGroup>
+const sortedRows = async () => {
+  const response = await notion.dataSources.query({
+    database_id: databaseId,
+    sorts: [
+      {
+        property: "Name",
+        direction: "ascending"
+      }
+    ],
+  });
+  return response;
+}
+```
 
 Data source queries can also be sorted by two or more properties, which is formally called a nested sort. The sort object listed first in the nested sort list takes precedence.
 
 Here is an example of a nested sort.
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "sorts": [
-          {
-        "property": "Food group",
-        "direction": "descending"
-      },
-      {
-        "property": "Name",
-        "direction": "ascending"
-      }
-    ]
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+{
+  "sorts": [
+        {
+      "property": "Food group",
+      "direction": "descending"
+    },
+    {
+      "property": "Name",
+      "direction": "ascending"
+    }
+  ]
+}
+```
 
 In this example, the data source query will first be sorted by "Food group" and the set with the same food group is then sorted by "Name".
 

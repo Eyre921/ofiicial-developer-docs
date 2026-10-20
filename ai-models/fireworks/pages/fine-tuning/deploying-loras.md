@@ -10,13 +10,13 @@ After training your model on Fireworks, deploy it to make it available for infer
 
 To run training evals before production serving, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
 
-<Warning>
-  Trained LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
-</Warning>
+> [!WARNING]
+>
+> Trained LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
 
-<Note>
-  You can also upload and deploy LoRA models trained outside of Fireworks. See [importing trained models](/models/uploading-custom-models#importing-trained-models) for details.
-</Note>
+> [!NOTE]
+>
+> You can also upload and deploy LoRA models trained outside of Fireworks. See [importing trained models](/models/uploading-custom-models#importing-trained-models) for details.
 
 ## Choosing a deployment method
 
@@ -31,9 +31,9 @@ Fireworks offers two ways to deploy LoRA trained models. The right choice depend
 | **Cost efficiency** | One deployment per adapter | Share a single deployment across many adapters |
 | **Best for** | Production workloads requiring maximum performance | Experimentation, A/B testing, or serving many variants of the same base model |
 
-<Tip>
-  If you only need to serve a single trained model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
-</Tip>
+> [!TIP]
+>
+> If you only need to serve a single trained model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
 
 ## Live merge deployment
 
@@ -69,47 +69,45 @@ firectl deployment create "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>" \
 
 Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with the fine-tuned model as `baseModel` and pass one of the returned shape versions as `deploymentShape` in [Create Deployment](/api-reference/create-deployment).
 
-<Check>
-  Your deployment will be ready to use once it completes, with performance that matches the base model.
-</Check>
+> [!TIP]
+>
+> Your deployment will be ready to use once it completes, with performance that matches the base model.
 
 ### Sending requests
 
 Send inference requests to your live-merge deployment by referencing the deployment directly:
 
-<Tabs>
-  <Tab title="Python (Fireworks SDK)">
-    ```python theme={null}
-    from fireworks import Fireworks
+**Python (Fireworks SDK)**
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.chat.completions.create(
-      model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
-      messages=[{"role": "user", "content": "Hello!"}]
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+response = client.chat.completions.create(
+  model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
+  messages=[{"role": "user", "content": "Hello!"}]
+)
 
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Hello!"
-          }
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+print(response.choices[0].message.content)
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello!"
+      }
+    ]
+  }'
+```
 
 ### When to use live merge
 
@@ -177,123 +175,119 @@ firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \
 
 If no BF16 addon-compatible shape is available, use [live merge](#live-merge-deployment) (recommended for a single adapter) or merge the LoRA into a standalone Fireworks model, then deploy that merged model without `--enable-addons`. See [Uploading custom models](/models/uploading-custom-models#importing-trained-models) and [`firectl model create`](/tools-sdks/firectl/commands/model-create).
 
-<Note>
-  `"addons cannot be enabled with quantized precisions (FP8/FP4)"` — your model's default shape is quantized; use Option 1 or 2 above.
-
-  `"the deployment shape version does not exist or you do not have access to it"` — the shape you requested is not available on your account; contact support.
-</Note>
+> [!NOTE]
+>
+> `"addons cannot be enabled with quantized precisions (FP8/FP4)"` — your model's default shape is quantized; use Option 1 or 2 above.
+>
+> `"the deployment shape version does not exist or you do not have access to it"` — the shape you requested is not available on your account; contact support.
 
 ### Deploy with multi-LoRA
 
-<Warning>
-  Deployments for multi-LoRA serving must use a deployment shape. Do not create this deployment without `--deployment-shape` — deployments without a shape skip validation and are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
-</Warning>
+> [!WARNING]
+>
+> Deployments for multi-LoRA serving must use a deployment shape. Do not create this deployment without `--deployment-shape` — deployments without a shape skip validation and are the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
 
-<Steps>
-  <Step title="Create base model deployment with addon support">
-    Deploy the base model with addons enabled, using a BF16 [deployment shape](/guides/ondemand-deployments#deployment-shapes). Find one with [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set, or `firectl deployment-shape-version list --base-model accounts/fireworks/models/<BASE_MODEL_ID>` (check the `PRECISION` column) — see [LoRA addon shape compatibility](#lora-addon-shape-compatibility):
+**1. Create base model deployment with addon support**
 
-    ```bash theme={null}
-    firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \
-      --deployment-shape <bf16-shape-name> \
-      --enable-addons
-    ```
-  </Step>
+Deploy the base model with addons enabled, using a BF16 [deployment shape](/guides/ondemand-deployments#deployment-shapes). Find one with [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set, or `firectl deployment-shape-version list --base-model accounts/fireworks/models/<BASE_MODEL_ID>` (check the `PRECISION` column) — see [LoRA addon shape compatibility](#lora-addon-shape-compatibility):
 
-  <Step title="Load LoRA adapters">
-    Once the deployment is ready, load your LoRA models onto the deployment:
+```bash theme={null}
+firectl deployment create "accounts/fireworks/models/<BASE_MODEL_ID>" \
+  --deployment-shape <bf16-shape-name> \
+  --enable-addons
+```
 
-    ```bash theme={null}
-    firectl load-lora <FINE_TUNED_MODEL_ID> --deployment <DEPLOYMENT_ID>
-    ```
+**2. Load LoRA adapters**
 
-    Repeat this command for each LoRA adapter you want to load.
-  </Step>
-</Steps>
+Once the deployment is ready, load your LoRA models onto the deployment:
+
+```bash theme={null}
+firectl load-lora <FINE_TUNED_MODEL_ID> --deployment <DEPLOYMENT_ID>
+```
+
+Repeat this command for each LoRA adapter you want to load.
 
 ### Sending requests
 
 To route inference requests to a specific LoRA adapter on a multi-LoRA deployment, set the `model` field to `<model_name>#<deployment_name>`. The `#` separator tells Fireworks to route the request to the specified adapter on the given deployment.
 
-<Warning>
-  **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Use the `model` field with the `<model_name>#<deployment_name>` format shown below.
-</Warning>
+> [!WARNING]
+>
+> **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Use the `model` field with the `<model_name>#<deployment_name>` format shown below.
 
-<Tabs>
-  <Tab title="Python (Fireworks SDK)">
-    ```python theme={null}
-    from fireworks import Fireworks
+**Python (Fireworks SDK)**
 
-    client = Fireworks()
+```python theme={null}
+from fireworks import Fireworks
 
-    response = client.chat.completions.create(
-      model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-      messages=[{"role": "user", "content": "Hello!"}]
-    )
+client = Fireworks()
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+response = client.chat.completions.create(
+  model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+  messages=[{"role": "user", "content": "Hello!"}]
+)
 
-  <Tab title="Python (OpenAI SDK)">
-    ```python theme={null}
-    import os
-    from openai import OpenAI
+print(response.choices[0].message.content)
+```
 
-    client = OpenAI(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference/v1"
-    )
+**Python (OpenAI SDK)**
 
-    response = client.chat.completions.create(
-        model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        messages=[{"role": "user", "content": "Hello!"}]
-    )
+```python theme={null}
+import os
+from openai import OpenAI
 
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1"
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={null}
-    import OpenAI from "openai";
+response = client.chat.completions.create(
+    model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
 
-    const client = new OpenAI({
-      apiKey: process.env.FIREWORKS_API_KEY,
-      baseURL: "https://api.fireworks.ai/inference/v1",
-    });
+print(response.choices[0].message.content)
+```
 
-    const response = await client.chat.completions.create({
-      model: "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-      messages: [
-        {
-          role: "user",
-          content: "Hello!",
-        },
-      ],
-    });
+**JavaScript**
 
-    console.log(response.choices[0].message.content);
-    ```
-  </Tab>
+```javascript theme={null}
+import OpenAI from "openai";
 
-  <Tab title="curl">
-    ```bash theme={null}
-    curl https://api.fireworks.ai/inference/v1/chat/completions \
-      -H "Content-Type: application/json" \
-      -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-      -d '{
-        "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-        "messages": [
-          {
-            "role": "user",
-            "content": "Hello!"
-          }
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+  messages: [
+    {
+      role: "user",
+      content: "Hello!",
+    },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello!"
+      }
+    ]
+  }'
+```
 
 ### When to use multi-LoRA
 
@@ -316,9 +310,9 @@ firectl model download <FINE_TUNED_MODEL_ID> /path/to/checkpoint/
 
 See [`firectl model download`](/tools-sdks/firectl/commands/model-download) for flags.
 
-<Note>
-  The adapter alone is not enough to run inference. You also need the matching base model. The adapter was trained against a specific base (for example, a vendor checkpoint that may differ from the public Hugging Face weights), so pair the adapter with the exact base it was trained on. If you are unsure which base was used, ask your Fireworks contact before assuming the public Hugging Face weights are identical.
-</Note>
+> [!NOTE]
+>
+> The adapter alone is not enough to run inference. You also need the matching base model. The adapter was trained against a specific base (for example, a vendor checkpoint that may differ from the public Hugging Face weights), so pair the adapter with the exact base it was trained on. If you are unsure which base was used, ask your Fireworks contact before assuming the public Hugging Face weights are identical.
 
 ### Download the merged (base + adapter) model
 
@@ -351,9 +345,9 @@ If you want an FP8 merged model to run off-platform, merge in BF16 first, then q
 
 To reproduce this locally, merge in BF16 first, then quantize the merged weights to FP8.
 
-<Warning>
-  **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
-</Warning>
+> [!WARNING]
+>
+> **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
 
 ## LoRA performance
 
@@ -385,9 +379,9 @@ Training and deploying a **custom draft model** for your trained setup can match
 
 This is a subtle failure mode specific to multi-LoRA deployments. If the deployment shape you request is not **validated for the exact base model version** you are deploying, deployment create does **not** return an error. The unvalidated shape is **silently dropped**, and the deployment quietly falls back to the **default serving image**. That default image's addon loader then rejects addon (multi-LoRA) checkpoints, so you end up seeing base-model behavior or an addon-load failure with no obvious cause.
 
-<Warning>
-  This differs from training, where an unvalidated shape returns a **400**. At deployment create time there is no such error. The `skip_shape_validation` override is superuser-only, so you cannot force an unvalidated shape through yourself. The shape must be validated for your exact model version.
-</Warning>
+> [!WARNING]
+>
+> This differs from training, where an unvalidated shape returns a **400**. At deployment create time there is no such error. The `skip_shape_validation` override is superuser-only, so you cannot force an unvalidated shape through yourself. The shape must be validated for your exact model version.
 
 **Why it happens.** A deployment shape is validated against a specific base model version, not just a model family. A shape such as `deploymentShapes/<model>-h200-multilora` may have validated versions that bind one model version but **not** another version of the same family. Deploying a model version that no validated shape version binds triggers the silent drop.
 
@@ -418,12 +412,10 @@ Signs you have hit this failure mode:
 
 ## Next steps
 
-<CardGroup>
-  <Card title="On-Demand Deployments" href="/guides/ondemand-deployments" icon="rocket">
-    Deployment configuration, scaling, and hardware
-  </Card>
+> **[On-Demand Deployments](/guides/ondemand-deployments)**
+>
+> Deployment configuration, scaling, and hardware
 
-  <Card title="Import Trained Models" href="/models/uploading-custom-models#importing-trained-models" icon="upload">
-    Upload LoRA models trained outside Fireworks
-  </Card>
-</CardGroup>
+> **[Import Trained Models](/models/uploading-custom-models#importing-trained-models)**
+>
+> Upload LoRA models trained outside Fireworks

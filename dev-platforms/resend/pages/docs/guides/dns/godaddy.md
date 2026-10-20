@@ -10,15 +10,15 @@ Verify your domain on GoDaddy with Resend.
 
 First, log in to your [Resend Account](https://resend.com/login) and [add a domain](https://resend.com/domains).
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-domains-resend-add-domain.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=418dd93c2f2ead0b0d83d1b7c2fb0970)
 
-<Tip>
-  It is [best practice to use a
-  subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-  (updates.example.com) instead of the root domain (example.com). Using a
-  subdomain allows for proper reputation segmentation based on topics or purpose
-  (e.g. marketing) and is especially important if receiving emails with Resend.
-</Tip>
+> [!TIP]
+>
+> It is [best practice to use a
+> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
+> (updates.example.com) instead of the root domain (example.com). Using a
+> subdomain allows for proper reputation segmentation based on topics or purpose
+> (e.g. marketing) and is especially important if receiving emails with Resend.
 
 ## Automatic Setup (Recommended)
 
@@ -46,7 +46,7 @@ Log in to your [GoDaddy account](https://sso.godaddy.com):
 2. Find your domain in the list and select the domain
 3. This will take you to the DNS management page for the domain
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/lQ2IedTbqKrTHWy8/images/dashboard-domains-godaddy-manage.png?fit=max\&auto=format\&n=lQ2IedTbqKrTHWy8\&q=85\&s=544f608675414a8e562ee15665a9b102)
 
 ## Add MX SPF Record
 
@@ -60,15 +60,15 @@ Copy and paste the values MX in Resend to GoDaddy.
 6. Set the TTL to `600` (or use the default).
 7. Click `Save`.
 
-<Info>
-  Omit your domain from the record values in Resend when you paste. Instead of
-  `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
-  subdomain).
-</Info>
+> [!NOTE]
+>
+> Omit your domain from the record values in Resend when you paste. Instead of
+> `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
+> subdomain).
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-domains-resend-spf-mx.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=bb0db2dd2809135194cfb62b695225cd)
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/lQ2IedTbqKrTHWy8/images/dashboard-domains-godaddy-spf-mx.png?fit=max\&auto=format\&n=lQ2IedTbqKrTHWy8\&q=85\&s=22442a78539dc70a959a152a396e8508)
 
 Below is a mapping of the record fields from Resend to GoDaddy:
 
@@ -80,10 +80,10 @@ Below is a mapping of the record fields from Resend to GoDaddy:
 | TTL | - | `600` (or use default) |
 | Priority | Priority | `10` |
 
-<Info>
-  Do not use the same priority for multiple records. If Priority `10` is already
-  in use on another record, try a higher value `20` or `30`.
-</Info>
+> [!NOTE]
+>
+> Do not use the same priority for multiple records. If Priority `10` is already
+> in use on another record, try a higher value `20` or `30`.
 
 ## Add TXT SPF Record
 
@@ -96,15 +96,15 @@ In the same section, add another record in GoDaddy.
 5. Set the TTL to `600` (or use the default).
 6. Click `Save`.
 
-<Info>
-  Omit your domain from the record values in Resend when you paste. Instead of
-  `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
-  subdomain).
-</Info>
+> [!NOTE]
+>
+> Omit your domain from the record values in Resend when you paste. Instead of
+> `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
+> subdomain).
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-domains-resend-spf-txt.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=747425d0a224baeee2846c9a707d5bbc)
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/lQ2IedTbqKrTHWy8/images/dashboard-domains-godaddy-spf-txt.png?fit=max\&auto=format\&n=lQ2IedTbqKrTHWy8\&q=85\&s=849bd76a0e5c14daa2f727ed2f284036)
 
 Below is a mapping of the record fields from Resend to GoDaddy:
 
@@ -126,15 +126,15 @@ In the same section, add another record in GoDaddy.
 5. Set the TTL to `600` (or use the default).
 6. Click `Save`.
 
-<Info>
-  Omit your domain from the record values in Resend when you paste. Instead of
-  `resend._domainkey.example.com`, paste only `resend._domainkey` (or
-  `resend._domainkey.subdomain` if you're using a subdomain).
-</Info>
+> [!NOTE]
+>
+> Omit your domain from the record values in Resend when you paste. Instead of
+> `resend._domainkey.example.com`, paste only `resend._domainkey` (or
+> `resend._domainkey.subdomain` if you're using a subdomain).
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/JHWt09hsc7E33HK2/images/dashboard-domains-resend-dkim.png?fit=max\&auto=format\&n=JHWt09hsc7E33HK2\&q=85\&s=345d1dc6b7c138dbd92bd6928c634bd9)
 
-<img alt="Domain Details" />
+![Domain Details](https://mintcdn.com/resend/lQ2IedTbqKrTHWy8/images/dashboard-domains-godaddy-dkim-txt.png?fit=max\&auto=format\&n=lQ2IedTbqKrTHWy8\&q=85\&s=2df8ab88c72f0944f8071121e95295aa)
 
 Below is a mapping of the record fields from Resend to GoDaddy:
 
@@ -149,16 +149,16 @@ Below is a mapping of the record fields from Resend to GoDaddy:
 
 If you want to receive emails at your domain, toggle the "Receiving" switch on the domain details page.
 
-<img alt="Enable Receiving Emails for a verified domain" />
+![Enable Receiving Emails for a verified domain](https://mintcdn.com/resend/B7wTVm7aKL5pNT-6/images/inbound-domain-toggle.png?fit=max\&auto=format\&n=B7wTVm7aKL5pNT-6\&q=85\&s=46f6b4c142fb90e04b57861e338ed2d0)
 
-<Warning>
-  When you enable Inbound on a domain, Resend receives *all emails* sent to that
-  specific domain depending on the priority of the MX record. For this reason,
-  we strongly recommend verifying a subdomain (`subdomain.example.com`) instead
-  of the root domain (`example.com`). Learn more about [avoiding conflicts with
-  your existing MX
-  records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
-</Warning>
+> [!WARNING]
+>
+> When you enable Inbound on a domain, Resend receives *all emails* sent to that
+> specific domain depending on the priority of the MX record. For this reason,
+> we strongly recommend verifying a subdomain (`subdomain.example.com`) instead
+> of the root domain (`example.com`). Learn more about [avoiding conflicts with
+> your existing MX
+> records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
 
 Click `Add New Record` to create a new record:
 
@@ -189,12 +189,10 @@ Now click [Verify DNS Records](https://resend.com/domains) on your Domain in Res
 
 If your domain is not successfully verified, these are some common troubleshooting methods.
 
-<AccordionGroup>
-  <Accordion title="Resend shows my domain verification failed.">
-    Review the records you added to GoDaddy to rule out copy and paste errors.
-  </Accordion>
+> **Resend shows my domain verification failed.**
+>
+> Review the records you added to GoDaddy to rule out copy and paste errors.
 
-  <Accordion title="It has been longer than 72 hours and my domain is still Pending.">
-    [Review our guide on a domain not verifying](/docs/knowledge-base/what-if-my-domain-is-not-verifying).
-  </Accordion>
-</AccordionGroup>
+> **It has been longer than 72 hours and my domain is still Pending.**
+>
+> [Review our guide on a domain not verifying](/docs/knowledge-base/what-if-my-domain-is-not-verifying).

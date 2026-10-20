@@ -32,15 +32,15 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 | Tier 4 | Spend or add \$5,000 in credits | \$50,000 |
 | Unlimited | [Contact us](https://fireworks.ai/company/contact-us) | Unlimited |
 
-<Tip>
-  Add prepaid credits to unlock a higher tier. For example, adding \$100 moves you from Tier 1 to Tier 2. Your new tier activates within minutes.
-</Tip>
+> [!TIP]
+>
+> Add prepaid credits to unlock a higher tier. For example, adding \$100 moves you from Tier 1 to Tier 2. Your new tier activates within minutes.
 
-<Note>
-  These spending tiers control the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
-
-  Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
-</Note>
+> [!NOTE]
+>
+> These spending tiers control the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
+>
+> Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 
 ### Training GPU quota
 
@@ -55,9 +55,9 @@ Before you start a job, use the [training cost estimator](/fine-tuning/cost-esti
 
 If a job is rejected with HTTP 403 `quota_exceeded` or `tier_required`, add a payment method or free unused GPUs of that type, then resubmit.
 
-<Note>
-  Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
-</Note>
+> [!NOTE]
+>
+> Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
 
 ### Enterprise accounts
 
@@ -112,9 +112,9 @@ By default, Fireworks sends a warning email when usage reaches 80% of your month
 
 When usage reaches 100% of the limit, all API requests pause automatically across serverless inference, deployments, and training. Raise the monthly spend limit to resume usage. If your credit balance is also depleted, you must add credits as well.
 
-<Note>
-  The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.
-</Note>
+> [!NOTE]
+>
+> The suspension behavior described here does not apply to Enterprise accounts. Their monthly spend alerts are informational.
 
 ### On-demand deployment quotas
 
@@ -131,13 +131,11 @@ On-demand deployments have GPU quotas instead of rate limits. GPU quota is scope
 | AMD MI325X / MI350X | 0 GPUs |
 | LoRAs (on-demand) | 100 |
 
-<Tip>
-  Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.
-</Tip>
+> [!TIP]
+>
+> Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.
 
-<Callout type="info">
-  On-demand and dedicated deployments are **not limited by adaptive serverless TPM upper bounds**. If you receive HTTP **429** on those endpoints, it typically means **deployment saturation** (GPUs busy) rather than hitting a TPM tier cap. Requests still count toward [account-wide request limits](#account-wide-request-limits). See [understanding 429 errors](/guides/inference-error-codes#understanding-429-errors) for details and resolution steps.
-</Callout>
+On-demand and dedicated deployments are **not limited by adaptive serverless TPM upper bounds**. If you receive HTTP **429** on those endpoints, it typically means **deployment saturation** (GPUs busy) rather than hitting a TPM tier cap. Requests still count toward [account-wide request limits](#account-wide-request-limits). See [understanding 429 errors](/guides/inference-error-codes#understanding-429-errors) for details and resolution steps.
 
 ### Account recovery
 
@@ -147,6 +145,6 @@ If your account is suspended due to payment issues:
 2. Resolve failed payment methods and add credits (or pay outstanding invoices for postpaid accounts)
 3. Your account reactivates automatically within an hour
 
-<Tip>
-  Still suspended after resolving payment issues? Contact support via [Discord](https://discord.gg/fireworks-ai) or email [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai).
-</Tip>
+> [!TIP]
+>
+> Still suspended after resolving payment issues? Contact support via [Discord](https://discord.gg/fireworks-ai) or email [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai).

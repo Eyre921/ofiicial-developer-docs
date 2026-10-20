@@ -20,9 +20,9 @@ Your workspace-scoped token will be stored securely in your system's keychain.
 
 If you've already logged in to one or more workspaces, you can pick existing workspace to switch the default, or pick **Authenticate with new workspace** to start a fresh browser flow and add another workspace.
 
-<Note>
-  `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/get-started/personal-access-tokens) for more on who can create tokens.
-</Note>
+> [!NOTE]
+>
+> `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/get-started/personal-access-tokens) for more on who can create tokens.
 
 ## Log in without a browser
 
@@ -110,20 +110,18 @@ Run `ntn login --help` for the full list.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Workers quickstart" icon="rocket" href="/workers/get-started/quickstart">
-    Create and deploy your first Notion Worker.
-  </Card>
+> **[Workers quickstart](/workers/get-started/quickstart)**
+>
+> Create and deploy your first Notion Worker.
 
-  <Card title="API requests" icon="terminal" href="/cli/guides/api-requests">
-    Make Notion API requests from the terminal.
-  </Card>
+> **[API requests](/cli/guides/api-requests)**
+>
+> Make Notion API requests from the terminal.
 
-  <Card title="Command reference" icon="book-open" href="/cli/reference/commands">
-    Full reference for every ntn command.
-  </Card>
+> **[Command reference](/cli/reference/commands)**
+>
+> Full reference for every ntn command.
 
-  <Card title="Personal access tokens" icon="key" href="/guides/get-started/personal-access-tokens">
-    Create tokens for scripts and CI.
-  </Card>
-</CardGroup>
+> **[Personal access tokens](/guides/get-started/personal-access-tokens)**
+>
+> Create tokens for scripts and CI.

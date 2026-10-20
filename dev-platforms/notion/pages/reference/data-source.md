@@ -8,9 +8,7 @@ Learn more about Notion's data source object.
 
 **Data sources** are the individual tables of data that live under a Notion database. [Pages](/reference/page) are the items (or children) in a data source. [Page property values](/reference/page-property-values) must conform to the [property objects](/reference/property-object) laid out in the parent data source object.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 
 As of API version `2025-09-03`, there's a suite of APIs for managing data sources:
 
@@ -21,15 +19,15 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 
 ## Object fields
 
-<Note>
-  Properties marked with an asterisk (\*) are available to connections with any capabilities. Other properties require read content capabilities in order to be returned from the Notion API. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Note>
+> [!NOTE]
+>
+> Properties marked with an asterisk (\*) are available to connections with any capabilities. Other properties require read content capabilities in order to be returned from the Notion API. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `object`\* | `string` | Always `"data_source"`. | `"data_source"` |
 | `id`\* | `string` (UUID) | Unique identifier for the data source. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion. <br /><br />`key` string The name of the property as it appears in Notion. <br /><br />`value` object A [Property object](/reference/property-object). | |
+| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion.  `key` string The name of the property as it appears in Notion.  `value` object A [Property object](/reference/property-object). | |
 | `parent` | `object` | Information about the data source's immediate parent. Most data sources are parented by a database (`type: "database_id"`). Some externally synced data sources can be parented by another data source (`type: "data_source_id"`) and include the containing `database_id`. See [Parent object](/reference/parent-object). | `{"type": "database_id", "database_id": "842a0286-cef0-46a8-abba-eac4c8ca644e"}` |
 | `database_parent` | `object` | Information about the containing database's parent. See [Parent object](/reference/parent-object). | `{ "type": "page_id", "page_id": "af5f89b5-a8ff-4c56-a5e8-69797d11b9f8" }` |
 | `database_type` | `string` or `null` | The type of typed database this data source belongs to. `null` for a regular data source. | `"skills"` |
@@ -43,8 +41,8 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
 | `in_trash` | `boolean` | Whether the data source has been trashed. | `false` |
 
-<Warning>
-  **Schema limitations**
-
-  Notion recommends a max property count of **500** or a max schema size of **50KB**. Updates to database schemas that are too large will be blocked to help maintain database performance.
-</Warning>
+> [!WARNING]
+>
+> **Schema limitations**
+>
+> Notion recommends a max property count of **500** or a max schema size of **50KB**. Updates to database schemas that are too large will be blocked to help maintain database performance.

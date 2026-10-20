@@ -1841,7 +1841,7 @@ select
   vault.create_secret('http://api.supabase.internal:8000', 'project_url');
 ```
 
-When deploying to the cloud platform, open the [SQL editor](https://supabase.com/dashboard/project/_/sql/new) and run the following, replacing `<project-url>` with your [project's API URL](https://supabase.com/dashboard/project/_/settings/api):
+When deploying to the cloud platform, replace `<project-url>` with your [project's API URL](https://supabase.com/dashboard/project/_/settings/api). Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 select
@@ -9281,13 +9281,26 @@ To apply these controls, see [Grant access explicitly](#grant-access-explicitly)
 
 ### Default privileges
 
-On existing projects, tables created in `public` receive `SELECT`, `INSERT`, `UPDATE`, and `DELETE` privileges for `anon`, `authenticated`, and `service_role` by default. Functions receive `EXECUTE`. These grants make new objects reachable through the Data API, even when you don't intend to expose them.
+On existing projects, new objects in `public` receive the following default privileges:
+
+| Object type | Schema   | Roles                                   | Default privileges granted                                                                                     |
+| ----------- | -------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Tables      | `public` | `anon`, `authenticated`, `service_role` | `select`, `insert`, `update`, `delete`, `truncate`, `references`, `trigger`, and `maintain` (Postgres 17 only) |
+| Functions   | `public` | `anon`, `authenticated`, `service_role` | `execute`                                                                                                      |
+| Sequences   | `public` | `anon`, `authenticated`, `service_role` | `usage`, `select`, `update`                                                                                    |
+
+These grants make new objects reachable through the Data API, even when you don't intend to expose them. In the [Data API settings](https://supabase.com/dashboard/project/_/integrations/data_api/settings), disable **Automatically expose new tables** to revoke the privileges the Data API uses. The following privileges remain unchanged:
+
+- **Tables and sequences:** New tables keep `truncate`, `references`, `trigger`, and `maintain`, and new sequences keep `update`. The Data API doesn't use these privileges, but SQL that runs as `anon` or `authenticated` can, such as a database function.
+- **Functions:** New functions are callable by every role. Postgres grants `execute` to `PUBLIC` through a global default, and a revoke limited to one schema can't remove it.
+
+To revoke these privileges as well, see [Revoke default privileges](#revoke-default-privileges).
 
 Supabase is changing the platform default to revoke these automatic grants so that exposure becomes opt-in. See [the platform defaults discussion](https://github.com/orgs/supabase/discussions/45329) in the Supabase GitHub discussions.
 
 The default privileges are part of the standard Supabase permission model and don't bypass RLS. The internal `supabase_admin` role grants them to `anon`, `authenticated`, and `service_role`, but it can't authenticate through the Data API. See [`pg_default_acl`](https://www.postgresql.org/docs/current/catalog-pg-default-acl.html) in the Postgres documentation and [`supabase_admin`](https://supabase.com/docs/guides/database/postgres/roles#supabaseadmin) in the Supabase documentation.
 
-To prevent automatic grants on new objects, see [Revoke default privileges](#revoke-default-privileges).
+To see which privileges your project grants on new objects, see [Check your default privileges](#check-your-default-privileges). To prevent automatic grants on new objects, see [Revoke default privileges](#revoke-default-privileges).
 
 ### Dedicated API schemas
 
@@ -9431,7 +9444,7 @@ grant select, insert, update, delete on table public.your_table to service_role;
 grant execute on function public.your_function() to anon, authenticated;
 ```
 
-If a required grant is missing, PostgREST returns a `42501` error with a hint that names the exact `GRANT` statement you need:
+If a required grant is missing, PostgREST returns a `42501` error with a hint that names the exact `grant` statement you need:
 
 ```json
 {
@@ -9445,6 +9458,32 @@ See [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting
 
 **Migration:** Bundle grants with your RLS setup in the same migration. The `grant` command controls role access. The `enable row level security` command and policies control row access.
 
+### Check your default privileges
+
+Default privileges differ between projects, depending on when the project was created and its Data API settings. To see which privileges new objects receive, run the following query. Use the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) in the Supabase Dashboard, or `psql` over a [direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection):
+
+```sql
+select
+  case d.defaclobjtype
+    when 'r' then 'tables'
+    when 'S' then 'sequences'
+    when 'f' then 'functions'
+  end as object_type,
+  a.grantee::regrole as role,
+  string_agg(a.privilege_type, ', ' order by a.privilege_type) as privileges
+from pg_default_acl d
+cross join lateral aclexplode(d.defaclacl) a
+where d.defaclrole = 'postgres'::regrole
+  and d.defaclnamespace = 'public'::regnamespace
+  and a.grantee in ('anon'::regrole, 'authenticated'::regrole, 'service_role'::regrole)
+group by 1, 2
+order by 1, 2;
+```
+
+Each row lists a role and the privileges it receives on new tables, sequences, or functions that the `postgres` role creates in `public`. When the query returns no rows, new objects grant nothing to the Data API roles until you grant access explicitly.
+
+The query leaves out the `execute` privilege that every new function receives through `PUBLIC`. To remove it, see [Revoke default privileges](#revoke-default-privileges).
+
 ### Revoke default privileges
 
 Revoke automatic grants when you want new objects in `public` to remain inaccessible until you grant access:
@@ -9454,19 +9493,21 @@ Revoke automatic grants when you want new objects in `public` to remain inaccess
 
    ```sql
    alter default privileges for role postgres in schema public
-     revoke select, insert, update, delete on tables from anon, authenticated, service_role;
+     revoke all on tables from anon, authenticated, service_role;
 
    alter default privileges for role postgres in schema public
-     revoke execute on functions from anon, authenticated, service_role;
+     revoke all on sequences from anon, authenticated, service_role;
 
    alter default privileges for role postgres in schema public
-     revoke usage, select on sequences from anon, authenticated, service_role;
+     revoke all on functions from anon, authenticated, service_role;
 
-   alter default privileges for role postgres in schema public
+   alter default privileges for role postgres
      revoke execute on functions from public;
    ```
 
-New tables, functions, and sequences now require explicit grants before Data API roles can access them.
+New tables, sequences, and functions then require explicit grants before Data API roles can access them.
+
+Caution: The last statement also restricts functions that `postgres` creates in other schemas, such as helper functions that your Row Level Security policies call. Grant `execute` on each of those functions to the roles that call them, or the policies that use them fail. For more information, see [Function privileges](https://supabase.com/docs/guides/database/functions#function-privileges).
 
 ### Disable the Data API
 
@@ -9479,7 +9520,7 @@ With the Data API disabled, none of the auto-generated REST endpoints respond, r
 
 ### Enable RLS policies
 
-Danger: Tables and views exposed through the Data API without RLS can be accessed by any role with matching grants. Enable RLS or add equivalent controls to prevent unauthorized access. RLS doesn't apply to functions, so grant `EXECUTE` only to the roles that need to call them. Review every `SECURITY DEFINER` function carefully.
+Danger: Tables and views exposed through the Data API without RLS can be accessed by any role with matching grants. Enable RLS or add equivalent controls to prevent unauthorized access. RLS doesn't apply to functions, so grant `execute` only to the roles that need to call them. Review every `security definer` function carefully.
 
 Enable RLS on every table and view exposed through the Data API. You can then write policies that grant users access to specific rows based on their authentication token.
 
@@ -37627,7 +37668,7 @@ Track connection usage in the [Observability](https://supabase.com/dashboard/pro
 - **Dedicated Pooler Client Connections:** active client connections to PgBouncer.
 - **Shared Pooler (Supavisor) Client Connections:** active client connections to Supavisor.
 
-These reports are not real-time. They show the connection count from the last refresh. For up-to-the-second data, query `pg_stat_activity` in the SQL Editor:
+These reports are not real-time. They show the connection count from the last refresh. For up-to-the-second data, query `pg_stat_activity`. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 -- Count connections by application and user name
@@ -39715,7 +39756,7 @@ The Security Advisor might report that `pg_net` is installed in the `public` sch
 
 Danger: Dropping `pg_net` removes its extension-owned objects, including `net.http_request_queue` and `net._http_response`. If the request queue is empty, no pending requests are lost. If the queue contains pending HTTP requests, those requests are deleted and aren't sent. Stored responses are also deleted. Preserve any response data you need before continuing.
 
-Run the following commands in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 -- Ensure the target schema exists
@@ -59743,12 +59784,14 @@ By default, any role can run a database function. You can restrict execution in 
    revoke execute on all functions in schema public from anon, authenticated;
    ```
 
-   To restrict every function created later, change the default privileges for both `public` and the role you want to restrict:
+   To restrict every function created later, change the default privileges for both `public` and the role you want to restrict. Postgres grants `execute` to `PUBLIC` through a global default, so revoke it without `in schema`. A revoke limited to one schema has no effect on a global default:
 
    ```sql
-   alter default privileges in schema public revoke execute on functions from public;
+   alter default privileges revoke execute on functions from public;
    alter default privileges in schema public revoke execute on functions from anon, authenticated;
    ```
+
+   The first statement applies to every function your role creates later, in every schema. Grant `execute` on each new function to the roles that call it, including helper functions that your Row Level Security policies call.
 
 You can then regrant permissions for a specific function to a specific role:
 
@@ -62622,10 +62665,12 @@ The most efficient way to reclaim disk space, without locks, is to use [pg\_repa
 
 Useful snippet for deleting all tables in a given schema
 
-Execute the following query to drop all tables in a given schema.
+This query drops all tables in a given schema.
 Replace `my-schema-name` with the name of your schema. In Supabase, the default schema is `public`.
 
 Caution: This deletes all tables and their associated data. Ensure you have a recent [backup](https://supabase.com/docs/guides/platform/backups) before proceeding.
+
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 do $$ declare
@@ -62638,8 +62683,6 @@ end $$;
 ```
 
 This query works by listing out all the tables in the given schema and then executing a `drop table` for each (hence the `for... loop`).
-
-You can run this query using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard, or via `psql` if you're [connecting directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -62921,7 +62964,7 @@ The expected output we want is:
 | 3  |  Brighton |     34 |
 | 2  | Liverpool |     84 |
 
-From the [SQL Editor](https://supabase.com/dashboard/project/_/sql), you can run a query like:
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 select distinct
@@ -62939,8 +62982,6 @@ The important bits here are:
 
 - The `desc` keyword to order the `points` from highest to lowest.
 - The `distinct` keyword that tells Postgres to only return a single row per team.
-
-This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -64091,13 +64132,13 @@ You write RLS rules in SQL, so a rule can express whatever access logic your app
 
 Postgres runs two checks before a client touches a table. Grants decide whether a role can run an operation on the table at all. Policies decide which rows that operation applies to. Set both for every table you expose.
 
-On existing projects, a new table in `public` starts with every privilege already granted to all three roles:
+On existing projects, a new table in `public` starts with every privilege already granted to all three roles. The default grants include `select`, `insert`, `update`, `delete`, `truncate`, `references`, `trigger`, and, on Postgres 17, `maintain`:
 
-| Role            | Granted automatically                  | What it should keep                                     |
-| --------------- | -------------------------------------- | ------------------------------------------------------- |
-| `anon`          | `select`, `insert`, `update`, `delete` | Only what signed-out visitors are meant to read         |
-| `authenticated` | `select`, `insert`, `update`, `delete` | Only the operations your app exposes to signed-in users |
-| `service_role`  | `select`, `insert`, `update`, `delete` | Full access. It bypasses RLS, so keep it server-side    |
+| Role            | Granted automatically | What it should keep                                     |
+| --------------- | --------------------- | ------------------------------------------------------- |
+| `anon`          | Every privilege       | Only what signed-out visitors are meant to read         |
+| `authenticated` | Every privilege       | Only the operations your app exposes to signed-in users |
+| `service_role`  | Every privilege       | Full access. It bypasses RLS, so keep it server-side    |
 
 Adding policies doesn't take those grants back. A table protected only by policies still hands `anon` an insert path if you never revoke the grant.
 
@@ -64149,7 +64190,7 @@ Until the suite passes, you don't know whether the policies do what you intended
 
 ### Enable RLS and set the grants
 
-Run these statements in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) for a one-off change, or in a [migration](https://supabase.com/docs/guides/deployment/database-migrations) to keep the change reproducible across environments. Grants and RLS belong in the same migration.
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection). To keep the change reproducible across environments, put the statements in a [migration](https://supabase.com/docs/guides/deployment/database-migrations) instead. Grants and RLS belong in the same migration.
 
 Enable RLS, then set the grants to match what each role does in your app:
 
@@ -65155,7 +65196,7 @@ Useful snippet for finding out which version of postgres you are running
 
 It's important to know which version of Postgres you are running as each major version has different features and may cause breaking changes. You may also need to update your schema when [upgrading](https://www.postgresql.org/docs/current/pgupgrade.html) or downgrading to a major Postgres version.
 
-Run the following query using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard:
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 show server_version;
@@ -65166,8 +65207,6 @@ Which should return something like:
 ```
 15.1
 ```
-
-This query can also be executed via `psql` or any other query editor if you prefer to [connect directly to the database](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 
 ---
@@ -66435,17 +66474,18 @@ Click a pipeline in the list to inspect its metrics and table states.
 
 ### Replication lag metrics
 
-These metrics come from Postgres replication slot state. The pipeline list also shows a byte-based lag value: **Caught up** means no gap between the confirmed flush position and current WAL position at measurement time. It does not guarantee that every table has finished initial sync or that data is visible to destination queries.
+These metrics come from Postgres replication slot state. **Lag** measures the gap between WAL flushed on a primary, or replayed on a standby, and the slot's confirmed flush position. It includes unrelated database activity and can trail the pipeline's local progress until Postgres receives feedback. WAL bytes do not measure destination payload size or elapsed delay.
 
-| Metric                      | Meaning                                                                                            | Investigate when                                               |
-| --------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **Waiting to sync**         | WAL bytes between the confirmed flush position and current Postgres WAL position                   | The value keeps growing                                        |
-| **WAL retention remaining** | WAL that can accumulate before the slot risks becoming unusable, based on `max_slot_wal_keep_size` | The value is small or shrinking                                |
-| **Last check-in**           | Time since the last replication feedback to Postgres                                               | Feedback is old or missing                                     |
-| **Connected**               | Whether the replication slot is active                                                             | It says **Not connected** while the pipeline should be running |
-| **Slot status**             | Whether required WAL is still retained                                                             | The slot is **Unreserved** or **Lost**                         |
+**Caught up** means this gap is zero at measurement time. It does not guarantee that every table has finished initial sync or that data is visible to destination queries. Missing lag is shown as **Unavailable**.
 
-The Dashboard displays **Unlimited** when Postgres returns no `safe_wal_size`. That happens both with unlimited retention and with a **Lost** slot, so always check slot status. See [Postgres replication slot metrics](https://www.postgresql.org/docs/current/view-pg-replication-slots.html).
+| Metric                      | Meaning                                                                                            | Investigate when                       |
+| --------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| **Lag**                     | WAL bytes available for replication but not yet acknowledged on the main slot                      | The value keeps growing                |
+| **WAL retention remaining** | WAL that can accumulate before the slot risks becoming unusable, based on `max_slot_wal_keep_size` | The value is small or shrinking        |
+| **Last check-in**           | Source time minus the client's last feedback timestamp; clock skew can make this negative          | Feedback is old or missing             |
+| **Slot status**             | Whether required WAL is still retained                                                             | The slot is **Unreserved** or **Lost** |
+
+The Dashboard displays **Unavailable** when Postgres returns no `safe_wal_size`. This can mean unlimited retention or unavailable headroom, including a **Lost** slot. A negative value is shown as **Budget exceeded**. Check slot status alongside retention headroom. See [Postgres replication slot metrics](https://www.postgresql.org/docs/current/view-pg-replication-slots.html).
 
 Pipelines keeps sending feedback during slow writes and while WAL reading is paused. It repeats the last safe position without acknowledging unfinished writes. A recent check-in and an active connection can therefore coexist with growing lag.
 
@@ -66485,8 +66525,8 @@ Lag grows when Postgres produces WAL faster than Pipelines confirms progress. So
 
 ### Investigate the lag
 
-1. Open the pipeline and compare **Waiting to sync** with **WAL retention remaining** and **Slot status**.
-2. Check **Connected** and **Last check-in** for connection or feedback problems.
+1. Open the pipeline and compare **Lag** with **WAL retention remaining** and **Slot status**.
+2. Check **Last check-in** for connection or feedback problems.
 3. Check table states for initial sync or table errors.
 4. Open [replication logs](#viewing-logs) and look for destination errors, rate limits, retries, or repeated restarts.
 5. Compare the lag trend with source activity, such as bulk imports, large transactions, or long-running writes.
@@ -66496,6 +66536,8 @@ Common causes include a slow destination, source or pipeline resource limits, ne
 ### Initial sync and table-sync slots
 
 Pipelines uses one main slot plus up to one temporary slot per active table-sync worker. These slots retain changes made while rows are copied. After copying and catch-up finish, the temporary slot is removed and the table continues through the main slot.
+
+During copying, the table's **WAL backlog** grows from its snapshot boundary. Copying more rows does not advance this WAL position. After copying finishes, the table-sync worker applies accumulated changes and acknowledges progress. The table state distinguishes copying from this catch-up phase; the main slot's lag covers ongoing replication separately.
 
 If a table-sync slot is lost, that table must repeat its initial sync. Automatic retries can recover individual tables; a manual [table restart](#restarting-tables) temporarily stops the whole pipeline.
 
@@ -67475,35 +67517,51 @@ Configure Snowflake as a Supabase Pipelines destination.
 
 Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
-[Snowflake](https://www.snowflake.com/) is a managed data platform. Supabase Pipelines replicates each Postgres table to Snowflake as an append-only history of changes.
+[Snowflake](https://www.snowflake.com/) is a managed data platform. Supabase Pipelines replicates each Postgres table to Snowflake as an append-only history of changes. It also creates and maintains companion views that return the current rows, including values preserved across partial updates.
 
 To replicate data to Snowflake:
 
 1. [Prepare a database, schema, role, service user, and key pair](#prepare-snowflake-resources) in Snowflake.
-2. [Configure the Snowflake destination](#configure-snowflake-as-a-destination) in the Dashboard.
+2. [Configure the Snowflake destination](#configure-snowflake-as-a-destination) in the Supabase Dashboard.
 3. [Query or materialize the replicated data](#query-and-materialize-current-state) in Snowflake.
+
+Caution: An upgrade can fail if the Pipelines role lacks `CREATE VIEW` on the destination schema. Grant this permission **before upgrading an existing pipeline**. For the grant and query changes, see [Upgrade an existing pipeline](#upgrade-an-existing-pipeline).
 
 ## Source table requirements
 
-The operations enabled in the Postgres publication determine the required `REPLICA IDENTITY`:
+Every source table needs a stable, nondeferrable primary key, even with replica identity `FULL`. Publish every key column.
 
-| Published operations | Required replica identity                                                                                  |
-| -------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `INSERT` only        | No row identity is required.                                                                               |
-| `DELETE`             | A primary key, an identity index (`USING INDEX`), or full identity (`FULL`). Publish all identity columns. |
-| `UPDATE`             | `REPLICA IDENTITY FULL`.                                                                                   |
+Postgres uses the Oversized-Attribute Storage Technique (TOAST) to store large values. The following replica identities support the companion view:
 
-Set full replica identity before publishing updates:
+| Replica identity                                   | Stored updates                                                                                  | Tradeoff                                                                                       |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `DEFAULT` with a supported primary key             | Complete rows or partial updates when Postgres omits unchanged large values stored using TOAST. | Reduces repeated data transfer and storage; resolving omitted values adds query work.          |
+| `FULL` with a supported primary key                | Complete new rows, including unchanged values.                                                  | Increases write-ahead log (WAL) and ingestion volume; complete history allows a simpler query. |
+| `USING INDEX` with exactly the primary-key columns | Complete rows or partial updates, as with `DEFAULT`.                                            | The identity index must use the same columns as the primary key.                               |
+
+For tables with large values that change infrequently, start with `DEFAULT` and query the companion view. For small rows or frequent analytics queries, compare `FULL` with the [complete-row query](#query-complete-row-history). Measure ingestion and query costs together.
+
+To use the primary key as the replica identity:
+
+```sql
+alter table public.your_table replica identity default;
+```
+
+To provide complete update rows:
 
 ```sql
 alter table public.your_table replica identity full;
 ```
 
-`REPLICA IDENTITY FULL` increases WAL volume but allows Pipelines to construct complete new rows when Postgres omits unchanged out-of-line TOAST values. It applies only to new WAL records. If the retained WAL already contains an incompatible update, change the setting and then restart replication for the affected table.
+Supported primary-key types are `smallint`, `integer`, `bigint`, `oid`, `boolean`, `text`, `varchar`, Postgres `"char"`, `char(n)`, `name`, `uuid`, `bytea`, `numeric`, `date`, `timestamp`, and `timestamptz`.
+
+Tables without a supported primary key are unsupported, as are identity indexes that don't match the primary-key columns. Pipelines creates no companion view for a table with a source column whose name begins with `_cdc_`. Before you rely on the results as a replica, see [Requirements for current-state queries](#requirements-for-current-state-queries).
+
+If a table with a companion view stops meeting these requirements, the view becomes unavailable and Pipelines reports an error.
 
 ## Prepare Snowflake resources
 
-Before you create a pipeline, prepare a dedicated Snowflake database and an empty schema for the replicated tables. Pipelines also needs a service user and role that can create and manage those tables. Use unquoted identifiers for the service user and role so Snowflake stores them in uppercase. Pipelines also converts the account and user names to uppercase during authentication.
+Before you create a pipeline, prepare a dedicated Snowflake database and an empty schema for the replicated tables. Pipelines also needs a service user and role that can create, alter, and drop the tables and companion views. Use unquoted identifiers for the service user and role so Snowflake stores them in uppercase. Pipelines also converts the account and user names to uppercase during authentication.
 
 Run this setup as a Snowflake administrator, changing the example names as needed:
 
@@ -67522,9 +67580,10 @@ create schema if not exists PIPELINES_DB.REPLICATED;
 grant usage on database PIPELINES_DB to role PIPELINES_ROLE;
 grant usage on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
 grant create table on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
+grant create view on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
 ```
 
-In this example, Pipelines creates the destination tables using `PIPELINES_ROLE`. Whatever name you choose, the role must retain ownership so Pipelines can alter, truncate, or drop the tables when required. Do not create the tables in advance under another role.
+In this example, Pipelines creates the destination tables and views using `PIPELINES_ROLE`. The role must retain ownership to alter, replace, truncate, or drop these objects when required. Do not create them in advance under another role. Snowflake requires [`CREATE VIEW` on the schema](https://docs.snowflake.com/en/sql-reference/sql/create-view#access-control-requirements) to create a view, and ownership to replace an existing one.
 
 Snowflake automatically creates a managed default pipe named `<TABLE>-STREAMING` for each table. You don't need to provide a virtual warehouse, stage, or pipe for ingestion. See [Snowpipe Streaming access privileges](https://docs.snowflake.com/en/user-guide/snowpipe-streaming/snowpipe-streaming-access-control) for the required permissions.
 
@@ -67537,39 +67596,41 @@ Pipelines connects to Snowflake through separate interfaces for SQL requests and
 - SQL requests use the optional **Role** under **Advanced settings** in the Dashboard. When **Role** is empty, they use the user's default role.
 - Snowpipe Streaming uses the user's `DEFAULT_ROLE`. It does not use the optional **Role** setting.
 
-Grant the permissions above to a dedicated role such as `PIPELINES_ROLE`, then set it as the service user's `DEFAULT_ROLE`. In the Dashboard, either leave **Role** empty or enter the same role explicitly. This keeps SQL validation and streaming aligned.
+Grant the [required permissions](#prepare-snowflake-resources) to a dedicated role such as `PIPELINES_ROLE`, then set it as the service user's `DEFAULT_ROLE`. In the Dashboard, either leave **Role** empty or enter the same role explicitly. This keeps SQL validation and streaming aligned.
 
 ### Generate a key pair
 
-Pipelines uses an RSA key pair to authenticate with Snowflake. The key must be at least 2048 bits, and Snowflake recommends the PKCS #8 format. Run one of the following commands from the directory where you want to store the key. The command creates a private key named `rsa_key.p8` in that directory.
+Pipelines uses an RSA key pair to authenticate with Snowflake. The key must be at least 2048 bits, and Snowflake recommends the PKCS #8 format.
 
-For an unencrypted private key:
+1. Run one of the following commands from the directory where you want to store the key. Each command creates a private key named `rsa_key.p8`.
 
-```bash
-openssl genrsa 2048 | openssl pkcs8 -topk8 \
-  -inform PEM -out rsa_key.p8 -nocrypt
-```
+   For an unencrypted private key:
 
-Or, for a passphrase-protected private key:
+   ```bash
+   openssl genrsa 2048 | openssl pkcs8 -topk8 \
+     -inform PEM -out rsa_key.p8 -nocrypt
+   ```
 
-```bash
-openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 \
-  -inform PEM -out rsa_key.p8
-```
+   Or, for a passphrase-protected private key:
 
-Create a public key from the private key. Snowflake uses the public key to verify connections signed with `rsa_key.p8`:
+   ```bash
+   openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 \
+     -inform PEM -out rsa_key.p8
+   ```
 
-```bash
-openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub
-```
+2. Create a public key from the private key. Snowflake uses it to verify connections signed with `rsa_key.p8`:
 
-Open `rsa_key.pub` and copy the text between the `BEGIN PUBLIC KEY` and `END PUBLIC KEY` lines. In the following statement, replace the `<public-key-body>` placeholder with the copied text:
+   ```bash
+   openssl rsa -in rsa_key.p8 -pubout -out rsa_key.pub
+   ```
 
-```sql
-alter user PIPELINES_USER set rsa_public_key = '<public-key-body>';
-```
+3. Open `rsa_key.pub` and copy the text between the `BEGIN PUBLIC KEY` and `END PUBLIC KEY` lines. Replace `<public-key-body>` with the copied text and run this statement in Snowflake:
 
-When you configure the destination in the Dashboard, paste or upload the complete `rsa_key.p8` file into **Private key**. Preserve its original PEM header and footer. If the key is passphrase-protected, enter the passphrase into **Private key passphrase**.
+   ```sql
+   alter user PIPELINES_USER set rsa_public_key = '<public-key-body>';
+   ```
+
+4. When configuring the destination, paste or upload the complete `rsa_key.p8` file into **Private key**. Preserve its PEM header and footer. For a passphrase-protected key, enter the passphrase into **Private key passphrase**.
 
 Keep `rsa_key.p8` and its passphrase secret. The Dashboard accepts unencrypted PKCS #1 and PKCS #8 keys. It also accepts encrypted PKCS #8 keys with a passphrase, but not encrypted PKCS #1 keys.
 
@@ -67605,9 +67666,9 @@ Click **Start pipeline**, then complete the validation and cost confirmations.
 
 ## How it works
 
-Pipelines uses Snowflake's SQL REST API to validate the database and schema. It also uses the API to create, update, and recreate destination tables and to apply source `TRUNCATE` operations. Pipelines sends initial and ongoing row data through Snowpipe Streaming.
+Pipelines uses Snowflake's SQL REST API to validate the database and schema. It also uses the API to create, alter, and drop destination tables and companion views, and to apply source `TRUNCATE` operations. Pipelines sends initial and ongoing row data through Snowpipe Streaming.
 
-Validation checks authentication, database and schema visibility, and that `QUOTED_IDENTIFIERS_IGNORE_CASE` is `FALSE`. It does not verify that the role can create or own tables or write through Snowpipe Streaming.
+Validation checks authentication, database and schema visibility, and that `QUOTED_IDENTIFIERS_IGNORE_CASE` is `FALSE`. It does not verify that the role can create or own tables and views, or write through Snowpipe Streaming. Apply the [required grants](#prepare-snowflake-resources) even if validation succeeds.
 
 ### Destination table names
 
@@ -67622,156 +67683,32 @@ Postgres schema and table names cannot start or end with `_` or contain `"` or `
 
 ### Append-only change history
 
-Each destination table contains the replicated source columns plus two `VARCHAR NOT NULL` metadata columns:
+Each destination table contains the replicated source columns plus three change data capture (CDC) columns:
 
-| Column                 | Meaning                                                                                                  |
-| ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| `_cdc_operation`       | Lowercase operation: `insert`, `update`, or `delete`.                                                    |
-| `_cdc_sequence_number` | Fixed-width hexadecimal commit LSN and transaction ordinal, such as `00000000016b3740/0000000000000002`. |
+| Column                 | Type               | Meaning                                                                                                                                           |
+| ---------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `_cdc_operation`       | `VARCHAR NOT NULL` | Lowercase operation: `insert`, `update`, or `delete`.                                                                                             |
+| `_cdc_sequence_number` | `VARCHAR NOT NULL` | Fixed-width hexadecimal commit log sequence number (LSN) and transaction ordinal, such as `00000000016b3740/0000000000000002`.                    |
+| `_cdc_missing_columns` | Nullable `ARRAY`   | Stable column IDs for values omitted from a partial update or a key-only delete. Complete records use an empty array; `NULL` also means complete. |
 
-The metadata names are reserved and can't be used by source columns. Initial-sync rows use `insert` and the shared sequence number `0000000000000000/0000000000000000`.
+The three metadata names are reserved. Initial-sync rows use `insert` and the shared sequence number `0000000000000000/0000000000000000`.
 
-Snowflake tables contain an event history rather than a current-state replica:
+Pipelines records changes as follows:
 
 - An insert appends the new row.
-- An update appends the complete new row. It does not append a before image.
-- A delete appends the complete old row for `REPLICA IDENTITY FULL`. For a primary-key or `USING INDEX` identity, it sends only the identity columns. Other columns can contain destination defaults or `NULL`; do not treat them as the deleted row's original values.
+- An update appends the complete or partial new row, without a before image.
+- A delete appends the old row for `FULL`, or the key columns for a primary-key identity. Other fields in a key-only delete are `NULL` placeholders listed in `_cdc_missing_columns`.
 - Truncating the source table also truncates the Snowflake table and resets its streaming state. It does not append a truncate event.
+
+An omitted value is stored as a `NULL` placeholder with its column ID in `_cdc_missing_columns`. The companion view carries forward its last supplied value. An explicit SQL `NULL` has no missing-column entry and replaces the previous value. Testing a cell for `NULL` alone cannot distinguish these cases.
+
+Column IDs are Postgres attribute numbers, not names or Snowflake column positions. They remain stable across renames, and a dropped column's ID is not reused within that source table. You can [look up the IDs entirely in Snowflake](#inspect-the-column-id-mapping).
 
 The sequence number orders changes but is not a globally unique event ID. Snowpipe committed offsets suppress routine replay, but consumers must still tolerate [duplicate processing](https://supabase.com/docs/guides/database/replication/pipelines-faq#can-data-be-processed-more-than-once).
 
-[Restarting a table](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) drops the Snowflake table and its managed streaming state, which erases the replicated history. A restart cannot recover past events. By contrast, [removing a table from the publication](https://supabase.com/docs/guides/database/replication/pipelines#removing-tables-from-replication) leaves its destination history in place.
+[Restarting a table](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) erases its destination history. It copies existing source rows again only if the table is selected for **Initial sync**. By contrast, [removing a table from the publication](https://supabase.com/docs/guides/database/replication/pipelines#removing-tables-from-replication) leaves its destination history in place but stops updating it.
 
-## Query replicated data \[#query-and-materialize-current-state]
-
-Use the replicated change history to build current-state datasets for reporting and analytics. Pipelines maintains the history table, while you maintain the queries, views, or dynamic tables that read from it.
-
-| Approach                                           | When to use it                                            | Tradeoff                                                                               |
-| -------------------------------------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [Query or view](#query-current-state)              | Read current state from the changes already in Snowflake. | Computes the result when queried, so query cost can grow with the history.             |
-| [Dynamic table](#materialize-with-a-dynamic-table) | Store current state for repeated analytics queries.       | Uses compute and storage to maintain the result, with a configurable freshness target. |
-| [Streams and tasks](#use-streams-and-tasks)        | Control how and when a separate table is updated.         | Requires your own merge, initialization, and recovery logic.                           |
-
-### Before you start
-
-The examples use a source table named `public.orders` with the columns `id` and `status`. Pipelines replicates it to `PIPELINES_DB.REPLICATED.PUBLIC_ORDERS`. Replace these names with your own, and wait for the initial sync to finish before treating the results as a complete replica.
-
-Choose a unique, non-null identity that does not change when a row is updated. The examples use `id`. If you use a composite key, include every key column in `partition by`, such as `partition by "tenant_id", "id"`. The publication and delete events must include the same columns. `REPLICA IDENTITY FULL` alone does not make rows unique.
-
-Caution: If an identity value changes, the old identity can remain in the results. Pipelines appends the updated row without first appending a delete for the previous identity. Use an immutable key for this pattern.
-
-Create derived objects in a schema outside the Pipelines-managed `REPLICATED` schema, using a separate analytics role and warehouse. The examples use `ANALYTICS_ROLE`, `ANALYTICS_WH`, and `PIPELINES_DB.ANALYTICS`. Ask your Snowflake administrator to prepare these resources and grant the analytics role:
-
-- `USAGE` on the warehouse, database, and both schemas.
-- `SELECT` on the replicated table.
-- `CREATE VIEW` on the analytics schema to create a view, or `CREATE DYNAMIC TABLE` to create a dynamic table.
-
-The role must be available to the Snowflake user running the examples. Keep ownership of the replicated table with `PIPELINES_ROLE`. See Snowflake's [dynamic table access control](https://docs.snowflake.com/en/user-guide/dynamic-tables/privileges) for the full privilege requirements.
-
-### Query current state
-
-Run these statements in a Snowflake SQL worksheet with your analytics role:
-
-```sql
-use role ANALYTICS_ROLE;
-use warehouse ANALYTICS_WH;
-
-select "id", "status"
-from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS
-qualify row_number() over (
-  partition by "id" order by "_cdc_sequence_number" desc
-) = 1
-and "_cdc_operation" != 'delete';
-```
-
-The query returns one row for each identity whose latest operation is not `delete`. The fixed-width sequence string determines which change is the latest, and repeated copies of the same event collapse into one result row. Keep the double quotes around source and metadata column names because Pipelines creates them as case-sensitive identifiers.
-
-Keep the delete condition inside `qualify`. Moving it to `where "_cdc_operation" != 'delete'` would remove delete events before the rows are ranked, which could bring back an older version of a deleted row. Snowflake's [`QUALIFY` reference](https://docs.snowflake.com/en/sql-reference/constructs/qualify) explains this evaluation order.
-
-To reuse the query from an analytics tool, save it as a view:
-
-```sql
-create view PIPELINES_DB.ANALYTICS.ORDERS_CURRENT_VIEW as
-select "id", "status"
-from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS
-qualify row_number() over (
-  partition by "id" order by "_cdc_sequence_number" desc
-) = 1
-and "_cdc_operation" != 'delete';
-```
-
-A regular view stores the query definition rather than a separate copy of the results. Each read derives the current state from the history available at query time. See Snowflake's [comparison of views and dynamic tables](https://docs.snowflake.com/en/user-guide/overview-view-mview-dts).
-
-### Materialize with a dynamic table
-
-A dynamic table stores the query results and refreshes them as the replicated history changes. Use one when you need a maintained current-state dataset without maintaining a scheduled merge task.
-
-1. Ask the owner of the replicated table to enable change tracking in Snowflake. This is a table setting, not a change to the replicated columns or data. Run as `PIPELINES_ROLE`, or another role that inherits ownership:
-
-   ```sql
-   alter table PIPELINES_DB.REPLICATED.PUBLIC_ORDERS
-     set change_tracking = true;
-   ```
-
-   The analytics role does not own the replicated table, so it cannot enable change tracking automatically when creating the dynamic table. See Snowflake's [change tracking requirements](https://docs.snowflake.com/en/user-guide/dynamic-tables/troubleshoot-creation#change-tracking-not-enabled-on-base-tables).
-
-2. Switch to the analytics role and create the dynamic table:
-
-   ```sql
-   use role ANALYTICS_ROLE;
-   use warehouse ANALYTICS_WH;
-
-   create dynamic table PIPELINES_DB.ANALYTICS.ORDERS_CURRENT
-     target_lag = '5 minutes'
-     warehouse = ANALYTICS_WH
-     refresh_mode = incremental
-     initialize = on_create
-   as
-   select "id", "status"
-   from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS
-   qualify row_number() over (
-     partition by "id" order by "_cdc_sequence_number" desc
-   ) = 1
-   and "_cdc_operation" != 'delete';
-   ```
-
-   `initialize = on_create` populates the dynamic table before creation finishes. Explicit `refresh_mode = incremental` makes creation fail if your adapted query cannot refresh incrementally, instead of choosing a full refresh through `AUTO`. See Snowflake's [refresh modes](https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes) and [`CREATE DYNAMIC TABLE` reference](https://docs.snowflake.com/en/sql-reference/sql/create-dynamic-table).
-
-3. Check the refresh mode and read the materialized rows:
-
-   ```sql
-   show dynamic tables like 'ORDERS_CURRENT'
-     in schema PIPELINES_DB.ANALYTICS;
-
-   select "id", "status"
-   from PIPELINES_DB.ANALYTICS.ORDERS_CURRENT;
-   ```
-
-   Confirm that `refresh_mode` is `INCREMENTAL` and scheduling is running. Use [Snowflake's refresh monitoring](https://docs.snowflake.com/en/user-guide/dynamic-tables/monitoring) to check the last successful refresh and any errors. After an insert, update, or delete reaches the replicated table, the next successful refresh reflects it in `ORDERS_CURRENT`.
-
-The five-minute `target_lag` is an example freshness target relative to the history already in Snowflake. It is neither a fixed refresh schedule nor an end-to-end latency guarantee from Postgres. Both pipeline replication lag and dynamic-table refresh lag affect freshness. See Snowflake's [target lag guide](https://docs.snowflake.com/en/user-guide/dynamic-tables/target-lag).
-
-Refreshing a dynamic table consumes warehouse compute, while its materialized results consume storage. These costs are additional to ingestion and querying. Start with a freshness target that meets your reporting needs, then test its cost and refresh behavior with a representative workload. A dedicated warehouse can help isolate refresh costs. See Snowflake's [dynamic table cost guide](https://docs.snowflake.com/en/user-guide/dynamic-tables/cost).
-
-### Use streams and tasks
-
-Snowflake [streams and tasks](https://docs.snowflake.com/en/user-guide/data-pipelines-intro) can maintain a separate table through scheduled `MERGE` statements. Use them when you need more control over the update procedure or schedule. Snowflake's [SCD Type 1 examples](https://docs.snowflake.com/en/user-guide/dynamic-tables/migrate-streams-tasks#scd-type-1-upsert) compare this approach with dynamic tables.
-
-Adapt the merge to the `"_cdc_operation"` and `"_cdc_sequence_number"` columns created by Pipelines. A stream on the history table sees every appended row, including rows that represent source updates and deletes. Your job must interpret those operations, load the existing history, tolerate replay, and rebuild the current state after a source truncate or pipeline table reset.
-
-### Maintain derived objects
-
-Pipelines maintains the replicated history table, but does not update your view or dynamic-table definitions.
-
-| Change                                   | What to do                                                                                                                                                                                         |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source `TRUNCATE`                        | A direct query or view reads the truncated history. Check that the dynamic table completes a refresh before relying on its contents.                                                               |
-| Pipeline table reset                     | Wait for the new initial sync. Reapply table-specific read grants and change tracking to the recreated history table. Check dependent objects and recreate the dynamic table if it cannot refresh. |
-| Added, renamed, or dropped source column | Review the explicit column list. Add new columns to your definition when needed. Update or recreate derived objects that reference renamed or dropped columns.                                     |
-
-Recreating a dynamic table initializes its contents again and uses compute. See Snowflake's [dynamic table modification guide](https://docs.snowflake.com/en/user-guide/dynamic-tables/modify) for changes that require reinitialization.
-
-## Type mapping
+### Type mapping
 
 Pipelines creates Snowflake columns with these mappings:
 
@@ -67793,35 +67730,203 @@ Additional limits apply:
 
 - Multi-dimensional arrays aren't supported. Non-default lower bounds on one-dimensional arrays aren't preserved.
 - Non-finite `real` and `double precision` values are rejected. Non-finite `numeric` values are preserved as strings in `VARCHAR` columns.
-- An uncompressed serialized row larger than 2 MiB is rejected.
-- Source primary-key, unique, check, length, precision, and nullability constraints aren't copied. Only the two CDC metadata columns are `NOT NULL`.
+- Each compressed streaming request must fit within 4 MiB, including its framing. Each initial-copy row and all values supplied together in an insert or update must fit this limit. Partial updates omit only unchanged TOAST values.
+- SQL `NULL` and JSON `null` remain distinct in `json` and `jsonb` columns. Arrays of these types cannot contain SQL `NULL` elements; JSON `null` elements and a whole SQL `NULL` array are supported.
+- Source primary-key, unique, check, length, precision, and nullability constraints aren't copied. Only `_cdc_operation` and `_cdc_sequence_number` are `NOT NULL`.
 
-## Schema change support
+### Schema change support
 
-Pipelines supports:
+Pipelines supports adding, renaming, and dropping columns. Stable column IDs keep omission metadata valid across renames and drops, and the companion view uses the current column names. Dropping and re-adding a name creates a different column with a new ID.
 
-- Adding, renaming, or dropping columns
-- Adding or removing published columns on tracked tables
+Postgres announces schema changes with the next row event. A schema change alone does not update the destination. During a rename or drop, the companion view is temporarily unavailable while Pipelines changes the table and restores the view. Add-only changes replace the view definition without taking its public name offline.
 
-Replicated columns remain nullable in Snowflake, and changes to existing column defaults are not propagated. When a table is first created, Pipelines can copy compatible literal defaults. It can also copy string, numeric, or boolean literal defaults for columns added later in Postgres. Other defaults are omitted, although Postgres still supplies the source values through replication.
+Replicated columns remain nullable in Snowflake, and changes to existing column defaults are not propagated. Pipelines can copy supported literal defaults when creating a table or adding a column. Other defaults are omitted, although Postgres still supplies source values through replication. Partial-update support does not backfill arbitrary default expressions for untouched rows.
 
-Schema changes also affect the stored history. Renaming a column changes its name in earlier events, dropping a column removes its historical values, and adding a column with a default can populate older rows.
+Schema changes also affect stored history. A rename changes the column name in earlier events, and a drop removes its historical values. Adding a column with a supported default can populate older rows. Changing publication column selection can remove values or leave historical gaps; resync the table after such changes before relying on current-state results.
 
-Previously excluded columns are added without defaults, leaving historical events `NULL` for those columns. Removing a published column drops its destination values; adding it again does not restore them.
+For type changes, unsupported changes, and interrupted schema changes, see the shared [schema-change behavior and recovery](https://supabase.com/docs/guides/database/replication/pipelines#schema-change-support). Keep the primary key and its values stable. Apart from [enabling change tracking for a stream](#use-streams-and-tasks), do not alter managed destination objects manually.
 
-For type changes, unsupported changes, and interrupted schema changes, see the shared [schema-change behavior and recovery](https://supabase.com/docs/guides/database/replication/pipelines#schema-change-support). Apart from [enabling change tracking](#materialize-with-a-dynamic-table), do not alter managed destination objects manually.
+## Query replicated data \[#query-and-materialize-current-state]
+
+Query the automatically maintained companion view to read current rows. You don't need to generate SQL or create the view yourself. It resolves complete and partial updates, explicit `NULL` values, and deletes followed by reinserts.
+
+### Before you start
+
+The examples use a source table named `public.orders` with columns `id` and `status`. Its history table is `PIPELINES_DB.REPLICATED.PUBLIC_ORDERS` and its companion view is `PIPELINES_DB.REPLICATED.PUBLIC_ORDERS_CURRENT`. Replace these names with your own.
+
+Wait for initial sync to finish before treating the view as a complete replica. During initial sync or a table restart, it can expose rows while they are still being copied.
+
+Ask your Snowflake administrator to grant your analytics role `USAGE` on the query warehouse, database, and schema. The owner of the view can grant read access:
+
+```sql
+grant select on view PIPELINES_DB.REPLICATED.PUBLIC_ORDERS_CURRENT
+  to role ANALYTICS_ROLE;
+```
+
+Keep ownership of managed tables and views with `PIPELINES_ROLE`. Creating the view does not automatically grant existing table readers permission to read it.
+
+### Query current state
+
+Run these statements in a Snowflake SQL worksheet with your analytics role:
+
+```sql
+use role ANALYTICS_ROLE;
+use warehouse ANALYTICS_WH;
+
+select "id", "status"
+from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS_CURRENT;
+```
+
+The companion view is an ordinary view: it runs a query when read and does not store results or run a background refresh. It requires a Snowflake warehouse. Query cost grows with retained history, table width, and the amount of partial-update history to resolve. The query limits per-column work to each key's latest complete record and subsequent partial updates, but it still scans history to find row boundaries.
+
+The view also returns diagnostic columns:
+
+| Column                    | Meaning                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------- |
+| `_cdc_anchored`           | Whether the current row has an insert or initial-copy event after its last delete. |
+| `_cdc_unresolved_columns` | Current column names whose values cannot be resolved from the retained history.    |
+| `_cdc_last_sequence`      | Sequence number of the latest event for the current row.                           |
+
+Inspect incomplete rows before relying on the view:
+
+```sql
+select "id", "_cdc_anchored", "_cdc_unresolved_columns"
+from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS_CURRENT
+where not "_cdc_anchored" or array_size("_cdc_unresolved_columns") > 0;
+```
+
+Investigate these rows rather than hiding them with a filter. Empty diagnostics do not prove that all source changes were captured: the query cannot detect events excluded by a publication or arbitrary gaps in retained history.
+
+### Requirements for current-state queries
+
+Both the companion view and custom current-state queries require:
+
+- A [supported primary key](#source-table-requirements) whose values and representation remain stable. A complete update that changes a key value can leave the old identity in the result. Pipelines rejects a partial update that changes a key value.
+- An initial snapshot followed by uninterrupted publication coverage, including while replication is stopped. Keep publication actions, membership, and column selection unchanged, and do not use row filters.
+- All accepted history from that snapshot. Do not prune or manually edit events, or combine history from separate initial syncs.
+
+After incompatible key, schema, or publication changes, or lost history, [restart replication for the affected table](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) with the table selected for **Initial sync** to take a new snapshot. This erases the previous destination history. Restarting the replicator process or manually truncating a Snowflake table is not a substitute for a table resync.
+
+### Customize queries and materialization
+
+When you need custom SQL or separately stored results, use these options. The companion view remains the default query interface.
+
+#### Inspect the column-ID mapping
+
+For custom SQL, read the mapping from companion-view column comments:
+
+```sql
+select column_name,
+       try_parse_json(comment):column_id::integer as column_id,
+       try_parse_json(comment):primary_key_position::integer as primary_key_position
+from PIPELINES_DB.information_schema.columns
+where table_schema = 'REPLICATED'
+  and table_name = 'PUBLIC_ORDERS_CURRENT'
+  and try_parse_json(comment):column_id is not null
+order by ordinal_position;
+```
+
+Source-column comments contain JSON with `column_id` and nullable `primary_key_position`. Diagnostic columns have descriptive comments. Snowflake column positions cannot replace these IDs.
+
+Inspect the view's complete query with:
+
+```sql
+select get_ddl('VIEW', 'PIPELINES_DB.REPLICATED.PUBLIC_ORDERS_CURRENT');
+```
+
+Neither query requires access to the source Postgres database. After source schema changes, update your own SQL. Pipelines updates only its companion view.
+
+#### Query complete-row history
+
+If every relevant insert and update is complete, a latest-event-per-key query avoids resolving individual omitted values. This can reduce query work for `REPLICA IDENTITY FULL` workloads:
+
+```sql
+select "id", "status"
+from PIPELINES_DB.REPLICATED.PUBLIC_ORDERS
+qualify row_number() over (
+  partition by "id" order by "_cdc_sequence_number" desc
+) = 1
+and "_cdc_operation" != 'delete';
+```
+
+This query requires `SELECT` on the history table. For composite keys, include every primary-key column in `partition by`. Keep the delete condition in `qualify`; filtering deletes in `where` can bring back an earlier version of a deleted row.
+
+Do not use this query on mixed or partial history: it returns omitted values as `NULL`. Switching the source to `FULL` does not fill in earlier partial records. The companion view works with either format, subject to the [same key and history requirements](#requirements-for-current-state-queries).
+
+#### Materialize with a dynamic table
+
+For repeated analytics queries, you can maintain a separate stored result with a Snowflake [dynamic table](https://docs.snowflake.com/en/user-guide/overview-view-mview-dts). Pipelines does not create or manage dynamic tables.
+
+Create derived objects in a separate analytics schema. Choose a refresh mode supported by your query and check its actual refresh behavior; do not assume the companion view can refresh incrementally. A full refresh runs the current-state query again, so frequent refreshes can be expensive. See Snowflake's [refresh modes](https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes), [access control](https://docs.snowflake.com/en/user-guide/dynamic-tables/privileges), and [cost guide](https://docs.snowflake.com/en/user-guide/dynamic-tables/cost).
+
+#### Use streams and tasks
+
+Snowflake [streams and tasks](https://docs.snowflake.com/en/user-guide/data-pipelines-intro) can maintain a separate table through scheduled `MERGE` statements. This requires your own initialization, ordering, replay, and recovery logic.
+
+Before you create a stream on a history table, enable change tracking on it as `PIPELINES_ROLE`, the table's owner. Run this statement again after a table resync:
+
+```sql
+alter table PIPELINES_DB.REPLICATED.PUBLIC_ORDERS set change_tracking = true;
+```
+
+For more information, see Snowflake's documentation on [enabling change tracking](https://docs.snowflake.com/en/user-guide/streams-manage#explicitly-enable-change-tracking-on-the-underlying-tables).
+
+A stream on the history table sees appended CDC events, including source updates and deletes. Your merge must interpret `_cdc_operation`, `_cdc_sequence_number`, and `_cdc_missing_columns`. Carry forward a value only when its ID is marked missing; an explicit `NULL` must replace it. After a source truncate or table resync, rebuild derived state. Do not attach streams to the managed companion view: replacing its definition can make them stale.
+
+### Maintain derived objects
+
+Pipelines owns the `<TABLE>_CURRENT` view and the reserved `<TABLE>_CURRENT_PENDING` recovery name. For physical table names longer than 239 characters, the view uses `_ETL_<uppercase SHA-256 of the physical table name>_CURRENT` instead. Query the `_CURRENT` view, not the recovery object.
+
+Pipelines refreshes the companion view after supported schema changes. Explicit view grants survive definition replacement and same-name table resync. Do not edit its definition or comments, transfer ownership, or attach custom policies or tags. For custom behavior, create separate analytics objects.
+
+You maintain any additional queries, views, dynamic tables, or tasks:
+
+| Change                                 | What to do                                                                                                              |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Source `TRUNCATE`                      | The companion view reads the truncated history. Refresh or rebuild separately stored results.                           |
+| Table resync                           | Wait for initial sync to finish. Recheck dependent objects, history-table grants, and change tracking.                  |
+| Added, renamed, or dropped column      | Update custom queries and derived objects that use the changed columns. The companion view updates automatically.       |
+| Source table rename followed by resync | The destination and companion view use the new source name. Update references and grant readers access to the new view. |
+
+## Upgrade an existing pipeline
+
+To upgrade a pipeline whose history tables have only the `_cdc_operation` and `_cdc_sequence_number` metadata columns:
+
+1. Have a Snowflake administrator grant `CREATE VIEW` on the destination schema to the Pipelines role. Substitute the database, schema, and role from your configuration:
+
+   ```sql
+   grant create view on schema PIPELINES_DB.REPLICATED to role PIPELINES_ROLE;
+   ```
+
+   The role must also retain ownership of its existing history tables so Pipelines can alter them. Pipelines does not grant privileges automatically. Missing privileges or conflicting objects stop startup or setup. Pipelines does not silently skip a required companion view.
+
+2. For each table that can emit partial updates, pause consumers and derived-data jobs that assume complete rows before upgrading. Leaving them running might expose omitted values as `NULL` as soon as replication resumes. Consumers of tables that stay on `FULL` with complete history can keep their latest-event queries running.
+
+3. In the Supabase Dashboard, open the pipeline's actions menu and select **Update available**. For a running or failed pipeline, click **Update and restart**. For a stopped pipeline, click **Update version**, then **Start pipeline**. See [Managing your pipeline](https://supabase.com/docs/guides/database/replication/pipelines#managing-your-pipeline).
+
+4. After the pipeline restarts, grant consumers `SELECT` on each companion view and switch their current-state queries to it. Update jobs that read CDC events directly to [interpret `_cdc_missing_columns`](#use-streams-and-tasks). Then resume paused consumers and jobs. The upgrade doesn't change your own queries or derived objects.
+
+The managed update restarts the replicator using its saved progress. On startup, Pipelines validates owned tables in the supported previous format and adds the nullable `_cdc_missing_columns ARRAY` column. Existing `NULL` metadata means complete within the replicated schema at the time of the event; no backfill is required.
+
+Pipelines also creates companion views for eligible tables that finished initial sync, including idle tables. Stored history and replication offsets are preserved. This format upgrade alone does not require a resync.
+
+If startup fails because the grant is missing, apply the grant, then click **Restart pipeline** in the pipeline's actions menu. Do not restart the table and erase its history to fix a permissions error.
 
 ## Troubleshooting
 
-| Symptom                                    | What to check                                                                                                                                                                        |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Authentication fails                       | [Account identifier](#find-the-account-identifier), user, [key fingerprint and PEM](#generate-a-key-pair), and passphrase. Omit the passphrase for an unencrypted key.               |
-| Database or schema isn't found             | Exact identifier case and `USAGE` permissions on both objects                                                                                                                        |
-| Validation passes but table creation fails | [Grants and ownership](#prepare-snowflake-resources), including `CREATE TABLE`                                                                                                       |
-| Tables are created but writes fail         | [SQL and streaming role alignment](#keep-the-sql-and-streaming-roles-aligned), table permissions, and network access to the account control and discovered Snowpipe ingest endpoints |
-| Updates or deletes fail                    | [Source replica identity and published columns](#source-table-requirements)                                                                                                          |
-| A row is rejected                          | [Type and row-size limits](#type-mapping) and [reserved metadata columns](#append-only-change-history)                                                                               |
-| A schema change fails                      | [Supported changes](#schema-change-support); do not repair managed tables manually                                                                                                   |
+Use these checks to diagnose replication and query failures:
+
+| Symptom                                                | What to check                                                                                                                                                                        |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Authentication fails                                   | [Account identifier](#find-the-account-identifier), user, [key fingerprint and PEM](#generate-a-key-pair), and passphrase. Omit the passphrase for an unencrypted key.               |
+| Database or schema isn't found                         | Exact identifier case and `USAGE` permissions on both objects                                                                                                                        |
+| Validation passes but table or view creation fails     | [Grants and ownership](#prepare-snowflake-resources), including `CREATE TABLE` and `CREATE VIEW`                                                                                     |
+| Tables are created but writes fail                     | [SQL and streaming role alignment](#keep-the-sql-and-streaming-roles-aligned), table permissions, and network access to the account control and discovered Snowpipe ingest endpoints |
+| Updates or deletes fail                                | [Source replica identity and published columns](#source-table-requirements)                                                                                                          |
+| A row is rejected                                      | [Type and row-size limits](#type-mapping) and [reserved metadata columns](#append-only-change-history)                                                                               |
+| Current-state results contain unexpected `NULL` values | Use the companion view for partial history; check [diagnostic columns](#query-current-state) and [history requirements](#requirements-for-current-state-queries).                    |
+| Startup reports a conflicting companion view           | The `_CURRENT` and `_CURRENT_PENDING` names are reserved. Do not create objects under those names or change their ownership or comments.                                             |
+| A schema change fails                                  | [Supported changes](#schema-change-support); do not repair managed tables manually                                                                                                   |
 
 Use [pipeline monitoring](https://supabase.com/docs/guides/database/replication/pipelines-monitoring) to inspect errors. For unresolved failures, [contact support](https://supabase.com/dashboard/support/new) with the pipeline ID and error details.
 
@@ -70010,7 +70115,7 @@ The preview branch inherits the migration history of your base project, so it on
 
 ### Default privileges on branches
 
-New branches are secure by default. They are created without [default privileges](https://supabase.com/docs/guides/api/securing-your-api#default-privileges) on the `public` schema, regardless of the setting on your base project. New tables, functions, and sequences on a branch require explicit grants before `anon`, `authenticated`, or `service_role` can reach them through the Data API.
+New branches are secure by default. They are created without [default privileges](https://supabase.com/docs/guides/api/securing-your-api#default-privileges) on the `public` schema, regardless of the setting on your base project. New tables and sequences on a branch require explicit grants before `anon`, `authenticated`, or `service_role` can reach them through the Data API. New functions stay callable, because Postgres grants `execute` on every new function to `PUBLIC`. For how to restrict them, see [Revoke default privileges](https://supabase.com/docs/guides/api/securing-your-api#revoke-default-privileges).
 
 Your migrations control whether a branch re-enables these privileges. If your base project has default privileges enabled and your migration history was initialized by Supabase Branching or the Supabase CLI, the initial migration already contains the `alter default privileges` statements that grant access on `public`. Running it on a new branch restores the same access your base project has, so no changes are needed.
 
@@ -70025,7 +70130,7 @@ If your migration history was not initialized by Supabase Branching or the Supab
 
 1. **Turn on default privileges on your base project**
 
-Open the [Data API settings](https://supabase.com/dashboard/project/_/integrations/data_api/settings) in the Supabase Dashboard and turn on **Default privileges for new entities**.
+Open the [Data API settings](https://supabase.com/dashboard/project/_/integrations/data_api/settings) in the Supabase Dashboard and turn on **Automatically expose new tables**.
 
 2. **Add grants to your initial migration**
 
@@ -70051,7 +70156,7 @@ For improved security, we recommend not exposing the `public` schema automatical
 
 1. **Turn off default privileges on your base project**
 
-Open the [Data API settings](https://supabase.com/dashboard/project/_/integrations/data_api/settings) in the Supabase Dashboard and turn off **Default privileges for new entities**.
+Open the [Data API settings](https://supabase.com/dashboard/project/_/integrations/data_api/settings) in the Supabase Dashboard and turn off **Automatically expose new tables**.
 
 2. **Add a new migration that revokes the grants**
 
@@ -70068,6 +70173,8 @@ alter default privileges for role postgres in schema public revoke select, inser
 alter default privileges for role postgres in schema public revoke execute on functions from anon, authenticated, service_role, public;
 alter default privileges for role postgres in schema public revoke usage, select, update on sequences from anon, authenticated, service_role;
 ```
+
+These statements leave new tables with `truncate`, `references`, `trigger`, and, on Postgres 17, `maintain`, and leave new functions callable through `PUBLIC`. To also remove those privileges, see [Revoke default privileges](https://supabase.com/docs/guides/api/securing-your-api#revoke-default-privileges).
 
 3. **Commit and push**
 
@@ -71113,7 +71220,7 @@ Error: Error running pg_dump on remote database: pg_dump: error: query failed: E
 pg_dump: error: query was: LOCK TABLE "graphql"."_type" IN ACCESS SHARE MODE
 ```
 
-To resolve this error, you need to grant `postgres` role permissions to `graphql` schema. You can do that by running the following query from Supabase dashboard's SQL Editor.
+To resolve this error, you need to grant `postgres` role permissions to `graphql` schema. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 grant all on all tables in schema graphql to postgres, anon, authenticated, service_role;
@@ -81706,7 +81813,7 @@ Note: See [API keys](https://supabase.com/docs/guides/getting-started/api-keys) 
 
 This app signs users in anonymously, so [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
 
-Anonymous sign-ins use the `authenticated` role, but the database setup in step 2 grants read access to the `anon` role only. Without the privilege and a matching policy for `authenticated`, the instruments query returns no rows. Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) to grant the privilege and add the policy:
+Anonymous sign-ins use the `authenticated` role, but the database setup in step 2 grants read access to the `anon` role only. Without the privilege and a matching policy for `authenticated`, the instruments query returns no rows. Grant the privilege and add the policy. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql SQL_EDITOR
 grant select on public.instruments to authenticated;
@@ -83360,7 +83467,7 @@ export default App
 
 The scaffolded pages create and edit instruments, but the database setup in step 2 grants read access only. Without write privileges and matching policies, the create and edit pages fail with `permission denied for table instruments`.
 
-Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) to grant the privileges and add the policies:
+Grant the privileges and add the policies. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql SQL_EDITOR
 grant insert, update, delete on public.instruments to anon;
@@ -84040,7 +84147,7 @@ If the app fails to start with `Unable to determine Dialect without JDBC metadat
 
 By default Hibernate creates tables in the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
-Create the `app` schema before you start the app. Hibernate creates tables in that schema on startup, but it does not create the schema itself. Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+Create the `app` schema before you start the app. Hibernate creates tables in that schema on startup, but it does not create the schema itself. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql SQL_EDITOR
 create schema if not exists app;
@@ -109020,7 +109127,7 @@ npx supabase link
 npx supabase inspect db bloat --linked
 ```
 
-If you find a table you would like to immediately clean, you can run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+If you find a table you would like to immediately clean, run `vacuum full` on it. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 vacuum full <table name>;
@@ -109095,7 +109202,7 @@ limit 50;
 
 ### Disabling read-only mode
 
-You manually override read-only mode to reduce disk size. To do this, run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql):
+You manually override read-only mode to reduce disk size. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 First, change the [transaction access mode](https://www.postgresql.org/docs/current/sql-set-transaction.html):
 
@@ -115375,6 +115482,7 @@ A scoped personal access token used to authenticate the [MCP server](https://sup
 | `get_cost`                    | **Organization Settings** (Read) and **Projects (account-wide)** (Read)       |
 | `get_edge_function`           | **Edge Functions** (Read)                                                     |
 | `get_logs`                    | **Logs** (Read)                                                               |
+| `get_notebook`                | **Notebooks** (Read)                                                          |
 | `get_organization`            | **Organization Settings** (Read)                                              |
 | `get_project`                 | **Project Settings** (Read)                                                   |
 | `get_project_url`             | **Project Settings** (Read)                                                   |
@@ -115384,6 +115492,7 @@ A scoped personal access token used to authenticate the [MCP server](https://sup
 | `list_edge_functions`         | **Edge Functions** (Read)                                                     |
 | `list_extensions`             | **Database** (Read)                                                           |
 | `list_migrations`             | **Migrations** (Read)                                                         |
+| `list_notebooks`              | **Notebooks** (Read)                                                          |
 | `list_organizations`          | **Organizations** (Read)                                                      |
 | `list_projects`               | **Projects (account-wide)** (Read)                                            |
 | `list_storage_buckets`        | **Storage** (Read)                                                            |
@@ -115464,7 +115573,7 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/config/database/p
   }'
 ```
 
-To verify the setting, use the SQL Editor:
+Verify the setting. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 show log_connections;
@@ -118976,7 +119085,7 @@ This affects tools that rely on introspection:
 
 Regular data queries (e.g. `accountCollection`, `insertIntoAccountCollection`) are not affected.
 
-To re-enable introspection on a schema, run the following SQL in the SQL editor:
+Re-enable introspection on a schema. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 comment on schema public is e'@graphql({"introspection": true})';

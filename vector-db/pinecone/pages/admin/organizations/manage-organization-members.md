@@ -10,9 +10,9 @@ This page shows how [organization owners](/admin/organizations/understanding-org
 
 To assign and manage roles programmatically with the Admin API, or to manage roles for service accounts and API keys, see [Manage roles and access](/admin/security/manage-rbac).
 
-<Tip>
-  For information about managing members at the project level, see [Manage project members](/admin/projects/manage-project-members).
-</Tip>
+> [!TIP]
+>
+> For information about managing members at the project level, see [Manage project members](/admin/projects/manage-project-members).
 
 ## Add a member to an organization
 
@@ -36,6 +36,6 @@ When you invite a member, Pinecone emails them an invite link, whether or not th
 2. In the row of the member you want to remove, click **ellipsis (...) menu > Remove member**.
 3. Click **Remove member**.
 
-<Note>
-  To remove yourself from an organization, in your user's row, click **ellipsis (...) menu > Leave organization** and confirm. If you're the only owner, you can't leave.
-</Note>
+> [!NOTE]
+>
+> To remove yourself from an organization, in your user's row, click **ellipsis (...) menu > Leave organization** and confirm. If you're the only owner, you can't leave.

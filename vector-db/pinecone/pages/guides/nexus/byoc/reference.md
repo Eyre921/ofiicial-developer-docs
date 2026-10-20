@@ -6,9 +6,9 @@ path: guides/nexus/byoc/reference
 
 See where your data lives and travels in Nexus BYOC, plus its authentication, encryption, cluster footprint, and limitations.
 
-<Note>
-  Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
 The security and operational details of a Nexus BYOC deployment: where your data stays and where it travels, how you authenticate and encrypt it, the cluster footprint, and the current limitations. For what BYOC is and how it's architected, see the [Nexus BYOC overview](/guides/nexus/byoc/overview).
 
@@ -31,9 +31,9 @@ These live in your object storage, database, and metadata store, inside your vir
   * With the shipped defaults, the generation model is an external provider you bring (Google Gemini by default, using your key), so source text (during artifact generation) and query text plus retrieved passages go to that provider. Embedding and rerank run on Pinecone-hosted models, so the text being embedded or reranked is sent to Pinecone.
   * **Every model is BYOM and configurable.** You choose the provider (and therefore the destination) for generation, embedding, and rerank independently. To keep all customer content inside your trust boundary, repoint each of these at a model you host or otherwise control. A residency-strict deployment doesn't have to use any Pinecone-hosted or third-party model.
 
-<Warning>
-  This differs from [Database BYOC](/guides/production/bring-your-own-cloud), where [integrated embedding](/guides/production/bring-your-own-cloud#limitations) is unsupported specifically so that document text never leaves your account. Nexus always performs an embedding step, so by default some document and query text is sent to Pinecone.
-</Warning>
+> [!WARNING]
+>
+> This differs from [Database BYOC](/guides/production/bring-your-own-cloud), where [integrated embedding](/guides/production/bring-your-own-cloud#limitations) is unsupported specifically so that document text never leaves your account. Nexus always performs an embedding step, so by default some document and query text is sent to Pinecone.
 
 ## Authentication and access
 

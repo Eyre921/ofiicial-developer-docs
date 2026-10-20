@@ -28,9 +28,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-<Note>
-  The repository's `requirements.txt` installs the `pinecone`, `psycopg`, `pgvector`, and `pyarrow` packages used throughout this guide.
-</Note>
+> [!NOTE]
+>
+> The repository's `requirements.txt` installs the `pinecone`, `psycopg`, `pgvector`, and `pyarrow` packages used throughout this guide.
 
 Set the connection string, API key, and Pinecone index name as environment variables:
 
@@ -40,13 +40,13 @@ export PINECONE_API_KEY="YOUR_API_KEY"
 export PINECONE_INDEX="pgvector-migration"
 ```
 
-<Warning>
-  Complete the workflow first in a test or staging environment using a disposable Pinecone index and representative source data. Delete the disposable index after validation. When you repeat the workflow in production, create a new, empty production index and don't stream pilot records into its target namespaces. Bulk import requires those namespaces not to exist.
-</Warning>
+> [!WARNING]
+>
+> Complete the workflow first in a test or staging environment using a disposable Pinecone index and representative source data. Delete the disposable index after validation. When you repeat the workflow in production, create a new, empty production index and don't stream pilot records into its target namespaces. Bulk import requires those namespaces not to exist.
 
-<Tip>
-  The [`migration_walkthrough.ipynb`](https://github.com/pinecone-field/pgvector-migration/blob/main/migration_walkthrough.ipynb) notebook runs every step in this guide against a local Dockerized pgvector database, so you can test the workflow before running it against your own data.
-</Tip>
+> [!TIP]
+>
+> The [`migration_walkthrough.ipynb`](https://github.com/pinecone-field/pgvector-migration/blob/main/migration_walkthrough.ipynb) notebook runs every step in this guide against a local Dockerized pgvector database, so you can test the workflow before running it against your own data.
 
 ## 1. Inspect the pgvector data
 
@@ -126,9 +126,9 @@ Metadata values must be strings, numbers, booleans, or lists of strings. Omit `N
 
 ## 4. Create the Pinecone index
 
-<Note>
-  The examples below use two PostgreSQL tables, `documents` and `products`, with 768-dimensional vectors stored in an `embedding` column and queried using cosine distance. Replace all example table names, column names, dimensions, metrics, metadata fields, and namespaces with values from your workload.
-</Note>
+> [!NOTE]
+>
+> The examples below use two PostgreSQL tables, `documents` and `products`, with 768-dimensional vectors stored in an `embedding` column and queried using cosine distance. Replace all example table names, column names, dimensions, metrics, metadata fields, and namespaces with values from your workload.
 
 Create a new, empty production serverless index with the dimension and metric you identified from pgvector:
 
@@ -194,9 +194,9 @@ python sync.py init --strategy changelog
 
 For a production backfill, use [bulk import](/guides/index-data/import-data). Create an `export.py` file with the following code from the tool's migration workflow. It writes one import-ready Parquet file per table.
 
-<Note>
-  The export script reuses the PostgreSQL connection, `TABLES` configuration, and record-mapping helpers from `sync.py`. Configure `TABLES` in `sync.py` before running the export.
-</Note>
+> [!NOTE]
+>
+> The export script reuses the PostgreSQL connection, `TABLES` configuration, and record-mapping helpers from `sync.py`. Configure `TABLES` in `sync.py` before running the export.
 
 ```python Python theme={null}
 import json

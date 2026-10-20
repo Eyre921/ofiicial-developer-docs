@@ -13,16 +13,14 @@ This operation is asynchronous. The response includes an operation ID that can b
 
 For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/assistant/manage-files#upload-a-local-file).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  LOCAL_FILE_PATH="/Users/jdoe/Downloads/example_file.txt"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+LOCAL_FILE_PATH="/Users/jdoe/Downloads/example_file.txt"
 
-  curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
-       -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2026-07" \
-       -F "file=@$LOCAL_FILE_PATH" \
-       -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
-  ```
-</RequestExample>
+curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
+     -H "Api-Key: $PINECONE_API_KEY" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -F "file=@$LOCAL_FILE_PATH" \
+     -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
+```

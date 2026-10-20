@@ -6,1122 +6,1188 @@ path: updates/changelog
 
 Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
-<ChangelogSearch />
+All
 
-<Update label="2026-10-18">
-  <Badge>Training</Badge>
+<input type="search" placeholder="Search updates, e.g. GLM, deprecation, rate limits" aria-label="Search the changelog" />
 
-  # Upcoming Serverless Training deprecation: DeepSeek V4 Flash (0731)
+**2026-10-19**
 
-  On **November 2, 2026**, **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** will be removed from the shared Serverless Training pool. This change applies only to Serverless Training.
+Inference
 
-  If you train DeepSeek V4 Flash (0731) on Serverless Training, migrate to **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** before November 2, 2026.
-</Update>
+# Upcoming Serverless deprecation: GPT OSS 120B, Inkling, Nemotron, and US endpoints for MiniMax M3 and GLM 5.3 Flash
 
-<Update label="2026-10-18">
-  <Badge>Training</Badge>
+Several Serverless models will be decommissioned on **November 7, 2026** to better serve newer, higher-performance replacements. This applies **only to serverless inference**. **Dedicated deployments and Reserved Throughput are unaffected.**
 
-  # New Serverless Training model: DeepSeek V4.1 Flash 1017
+## **Action required**
 
-  **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. It's available on Serverless Training only: Managed Training and the Dedicated Training API don't support it yet.
+If you use any of the models below on serverless, migrate to a recommended replacement **before November 7, 2026**. After that date, they will no longer be available via serverless endpoints.
 
-  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+## **Recommended migrations**
 
-<Update label="2026-10-18">
-  <Badge>Training</Badge>
+* **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** — move to a dedicated deployment of **GPT OSS 120B**
+* **Inkling** — migrate to **Muse Spark Open** (US endpoint, 50% US regional premium waived)
+* **[NVIDIA Nemotron 3 Ultra](https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4)** — move to a dedicated deployment of **Nemotron Super VL**
+* **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)** — move to a dedicated deployment of **Nemotron Super VL**
+* **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) (US endpoint only)** — migrate to **DeepSeek V4.1 Flash 1017 (US endpoint)**. The global MiniMax M3 endpoint remains available.
+* **[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) (US endpoint only)** — migrate to **DeepSeek V4.1 Flash 1017 (US endpoint)**. The global GLM 5.3 Flash endpoint remains available.
 
-  # New training model: NVIDIA Nemotron 3.5 Super VL
+[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) and [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) are not affected and remain available on serverless.
 
-  **[NVIDIA Nemotron 3.5 Super VL 120B A12B](https://app.fireworks.ai/models/fireworks/nvidia-nemotron-3p5-super-vl-120b-a12b-bf16)** is now available for training on all three surfaces, with up to 262K context:
+## **New models on Serverless**
 
-  * **[Managed Training](/fine-tuning/managed-finetuning-intro):** LoRA SFT and DPO
-  * **[Dedicated Training API](/fine-tuning/training-api/dedicated):** LoRA and full-parameter training, including RL
-  * **[Serverless Training](/fine-tuning/training-api/serverless):** LoRA on the shared pool, billed per token
+* **DeepSeek V4.1 Flash 1017:** `accounts/fireworks/models/deepseek-v4p1-flash-1017`
+* **DeepSeek V4.1 Flash 1017 (US endpoint):** `accounts/fireworks/models/deepseek-v4p1-flash-1017-us`
+* **Muse Spark Open** (US endpoint, 50% US regional premium waived): `accounts/fireworks/models/muse-spark-open`
+* **MiniMax M3.1:** coming to serverless after its open-source release, expected Friday, October 23
 
-  See the [training model catalog](/fine-tuning/models) for current availability and training shapes.
-</Update>
+If you want to switch to a dedicated deployment, see the [Serverless model list](https://fireworks.ai/models?modelTypes=Serverless) and the [on-demand deployment quickstart](/getting-started/ondemand-quickstart).
 
-<Update label="2026-10-18">
-  <Badge>Inference</Badge>
+**2026-10-18**
 
-  # Expanded Small serverless rate-limit tier
+Training
 
-  The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
+# Upcoming Serverless Training deprecation: DeepSeek V4 Flash (0731)
 
-  This moves models such as [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) into the Small tier. The ceiling values for each tier are unchanged. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for the current thresholds and ceilings.
-</Update>
+On **November 2, 2026**, **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** will be removed from the shared Serverless Training pool. This change applies only to Serverless Training.
 
-<Update label="2026-10-15">
-  <Badge>Training</Badge>
+If you train DeepSeek V4 Flash (0731) on Serverless Training, migrate to **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** before November 2, 2026.
 
-  # New Serverless Training model: Muse Spark Open
+**2026-10-18**
 
-  **[Muse Spark Open](https://app.fireworks.ai/models/fireworks/muse-spark-open-nvfp4)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. Use `accounts/fireworks/models/muse-spark-open-nvfp4` as the base model.
+Training
 
-  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+# New Serverless Training model: DeepSeek V4.1 Flash 1017
 
-<Update label="2026-10-07">
-  <Badge>Inference</Badge>
+**[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. It's available on Serverless Training only: Managed Training and the Dedicated Training API don't support it yet.
 
-  # Doubled serverless rate limits for Small models
+See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 
-  We doubled the adaptive rate-limit ceilings for **Small** serverless models.
+**2026-10-18**
 
-  The Small tier now has these ceilings:
+Training
 
-  * **Total Prompt TPM:** 216M
-  * **Uncached Prompt TPM:** 54M
-  * **Generated TPM:** 2.16M
+# New training model: NVIDIA Nemotron 3.5 Super VL
 
-  Medium and Large model ceilings are unchanged. [Serverless rate limits](/serverless/rate-limits) now also lists which tier each Serverless model falls in.
-</Update>
+**[NVIDIA Nemotron 3.5 Super VL 120B A12B](https://app.fireworks.ai/models/fireworks/nvidia-nemotron-3p5-super-vl-120b-a12b-bf16)** is now available for training on all three surfaces, with up to 262K context:
 
-<Update label="2026-10-02">
-  <Badge>Inference</Badge>
+* **[Managed Training](/fine-tuning/managed-finetuning-intro):** LoRA SFT and DPO
+* **[Dedicated Training API](/fine-tuning/training-api/dedicated):** LoRA and full-parameter training, including RL
+* **[Serverless Training](/fine-tuning/training-api/serverless):** LoRA on the shared pool, billed per token
 
-  # Higher serverless rate limits for Small models
+See the [training model catalog](/fine-tuning/models) for current availability and training shapes.
 
-  We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier.
+**2026-10-18**
 
-  The Small tier now has these ceilings:
+Inference
 
-  * **Total Prompt TPM:** 108M
-  * **Uncached Prompt TPM:** 27M
-  * **Generated TPM:** 1.08M
+# Expanded Small serverless rate-limit tier
 
-  This applies to Small-tier serverless models such as [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash), [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash), and [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b). Medium and Large model ceilings are unchanged.
+The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
 
-  See [Serverless rate limits](/serverless/rate-limits) for the full tier table.
-</Update>
+This moves models such as [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) into the Small tier. The ceiling values for each tier are unchanged. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for the current thresholds and ceilings.
 
-<Update label="2026-10-01">
-  <Badge>Training</Badge>
+**2026-10-15**
 
-  # Managed RFT is paused; try RL on the Training API
+Training
 
-  **Managed reinforcement fine-tuning (RFT) is paused.** Managed Training no longer accepts new RFT jobs from the Fireworks UI, `firectl`, or the REST API. Existing jobs stay visible in your dashboard, and models you already trained with managed RFT keep serving.
+# New Serverless Training model: Muse Spark Open
 
-  Try RL on the [Training API](/fine-tuning/training-api/introduction), where you write the rollout and training loop yourself and Fireworks runs the GPUs. Compared with managed RFT, you also get:
+**[Muse Spark Open](https://app.fireworks.ai/models/fireworks/muse-spark-open-nvfp4)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. Use `accounts/fireworks/models/muse-spark-open-nvfp4` as the base model.
 
-  * **Full-parameter RL** on most current models, not just LoRA
-  * **The training shape's full context length**, up to 524K tokens, instead of managed RFT's fixed 32K limit
-  * **Other methods** such as on-policy distillation (OPD) and custom objectives
+See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 
-  Your evaluator logic carries over. Start with [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).
+**2026-10-07**
 
-  **Managed SFT and DPO are unaffected.**
+Inference
 
-  ## Models no longer available for fine-tuning
+# Doubled serverless rate limits for Small models
 
-  The 70 models below were tunable only through managed RFT. With managed RFT paused, none of them can be fine-tuned on Fireworks anymore, and they no longer appear on the [Models](/fine-tuning/models) page. Inference on these models is not affected by this change.
+We doubled the adaptive rate-limit ceilings for **Small** serverless models.
 
-  <Accordion title="Full list (70 models)">
-    * **DeepSeek:** `deepseek-r1`, `deepseek-r1-basic`, `deepseek-r1-0528`, `deepseek-r1-0528-distill-qwen3-8b`, `deepseek-r1-distill-llama-8b`, `deepseek-r1-distill-llama-70b`, `deepseek-r1-distill-qwen-14b`, `deepseek-r1-distill-qwen-32b`, `deepseek-v3`, `deepseek-v3-0324`, `deepseek-v3p1`, `deepseek-v3p1-terminus`, `deepseek-prover-v2`, `deepseek-coder-1b-base`
-    * **Kimi:** `kimi-k2-instruct`, `kimi-k2-instruct-0905`, `kimi-k2-thinking`
-    * **GLM:** `glm-4p5`, `glm-4p6`, `glm-4p7`
-    * **Qwen 3:** `qwen3-1p7b`, `qwen3-30b-a3b`, `qwen3-30b-a3b-thinking-2507`, `qwen3-235b-a22b`, `qwen3-235b-a22b-thinking-2507`, `qwen3-coder-30b-a3b-instruct`, `qwen3-vl-30b-a3b-instruct`, `qwen3-vl-30b-a3b-thinking`, `qwen3-vl-235b-a22b-instruct`, `qwen3-vl-235b-a22b-thinking`
-    * **Qwen 2.5 and QwQ:** `qwen2p5-14b`, `qwen2p5-14b-instruct`, `qwen-v2p5-14b-instruct`, `qwen2p5-32b`, `qwen2p5-coder-14b`, `qwen2p5-coder-14b-instruct`, `qwen2p5-coder-32b`, `qwen2p5-coder-32b-instruct`, `qwen2p5-coder-32b-instruct-32k-rope`, `qwen2p5-coder-32b-instruct-64k`, `qwen2p5-coder-32b-instruct-128k`, `qwen2p5-vl-7b-instruct`, `qwq-32b`, `qwen-qwq-32b-preview`
-    * **Llama:** `llama-v3-8b`, `llama-v3-8b-instruct`, `llama-v3-8b-instruct-hf`, `llama-v3-70b-instruct`, `llama-v3-70b-instruct-hf`, `llama-v3p1-70b-instruct`, `llama-v3p1-nemotron-70b-instruct`, `llama-v3p2-1b`, `llama-v3p2-1b-instruct`, `llama-guard-2-8b`, `llama-guard-3-1b`, `llama-guard-3-8b`
-    * **gpt-oss:** `gpt-oss-20b`, `gpt-oss-120b`, `gpt-oss-safeguard-20b`, `gpt-oss-safeguard-120b`
-    * **Gemma:** `gemma-3-27b-it`
-    * **Other:** `cogito-v1-preview-llama-8b`, `cogito-v1-preview-llama-70b`, `cogito-v1-preview-qwen-14b`, `cogito-v1-preview-qwen-32b`, `fare-20b`, `firefunction-v2`, `kat-dev-32b`, `mirothinker-1p7`, `rolm-ocr`
-  </Accordion>
-</Update>
+The Small tier now has these ceilings:
 
-<Update label="2026-10-01">
-  <Badge>Inference</Badge>
+* **Total Prompt TPM:** 216M
+* **Uncached Prompt TPM:** 54M
+* **Generated TPM:** 2.16M
 
-  # Serverless pricing update: DeepSeek V4.1 Flash
+Medium and Large model ceilings are unchanged. [Serverless rate limits](/serverless/rate-limits) now also lists which tier each Serverless model falls in.
 
-  On **October 1, 2026 at 00:00 UTC**, serverless pricing for [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) changes (uncached input / cached input / output price per 1M tokens):
+**2026-10-02**
 
-  * **Standard:** \$0.22 / \$0.007 / \$0.66 → **\$0.30 / \$0.006 / \$1.20**
-  * **Priority:** \$0.275 / \$0.00875 / \$0.825 → **\$0.375 / \$0.0075 / \$1.50**
+Inference
 
-  This adjustment brings our pricing in line with current market rates for this model. It applies only to serverless usage. If you run DeepSeek V4.1 Flash on a dedicated deployment or use Reserved Throughput, your pricing is unaffected.
+# Higher serverless rate limits for Small models
 
-  We are also rolling out infrastructure improvements designed to improve cache hit rate, minimize cost per task, and deliver a faster, more reliable experience across the board.
+We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier.
 
-  See [Serverless pricing](/serverless/pricing) for the full rate card.
-</Update>
+The Small tier now has these ceilings:
 
-<Update label="2026-09-28">
-  <Badge>Training</Badge>
+* **Total Prompt TPM:** 108M
+* **Uncached Prompt TPM:** 27M
+* **Generated TPM:** 1.08M
 
-  # New training model: DeepSeek V4.1 Flash
+This applies to Small-tier serverless models such as [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash), [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash), and [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b). Medium and Large model ceilings are unchanged.
 
-  **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 262K context. It's a strong base for agentic coding, terminal automation, and tool use. SFT is supported at launch, and RL support is coming soon.
+See [Serverless rate limits](/serverless/rate-limits) for the full tier table.
 
-  See the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+**2026-10-01**
 
-<Update label="2026-09-26">
-  <Badge>Inference</Badge>
+Training
 
-  # Serverless deprecation: DeepSeek V4 Pro (0813), DeepSeek V4 Flash (0731), and related models
+# Managed RFT is paused; try RL on the Training API
 
-  The serverless deprecation announced for **September 25, 2026** is now in effect. The models below are no longer available on public serverless, including Fast and US-only serverless endpoints where those existed. Dedicated deployments are unaffected.
+**Managed reinforcement fine-tuning (RFT) is paused.** Managed Training no longer accepts new RFT jobs from the Fireworks UI, `firectl`, or the REST API. Existing jobs stay visible in your dashboard, and models you already trained with managed RFT keep serving.
 
-  ## **Recommended migrations**
+Try RL on the [Training API](/fine-tuning/training-api/introduction), where you write the rollout and training loop yourself and Fireworks runs the GPUs. Compared with managed RFT, you also get:
 
-  * **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** — migrate to **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)**
-  * **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
-  * **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
-  * **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)**, including **GLM 5.2 Fast**, **GLM 5.2 Fast US**, and **GLM 5.2 US** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)**
+* **Full-parameter RL** on most current models, not just LoRA
+* **The training shape's full context length**, up to 524K tokens, instead of managed RFT's fixed 32K limit
+* **Other methods** such as on-policy distillation (OPD) and custom objectives
 
-  See [Serverless pricing](/serverless/pricing) and [Which model should I use?](/guides/recommended-models).
-</Update>
+Your evaluator logic carries over. Start with [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).
 
-<Update label="2026-09-22">
-  <Badge>Training</Badge>
+**Managed SFT and DPO are unaffected.**
 
-  # New Serverless Training model: GLM 5.3 Flash
+## Models no longer available for fine-tuning
 
-  **[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 200K context and both text and vision inputs.
+The 70 models below were tunable only through managed RFT. With managed RFT paused, none of them can be fine-tuned on Fireworks anymore, and they no longer appear on the [Models](/fine-tuning/models) page. Inference on these models is not affected by this change.
 
-  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+> **Full list (70 models)**
+>
+> * **DeepSeek:** `deepseek-r1`, `deepseek-r1-basic`, `deepseek-r1-0528`, `deepseek-r1-0528-distill-qwen3-8b`, `deepseek-r1-distill-llama-8b`, `deepseek-r1-distill-llama-70b`, `deepseek-r1-distill-qwen-14b`, `deepseek-r1-distill-qwen-32b`, `deepseek-v3`, `deepseek-v3-0324`, `deepseek-v3p1`, `deepseek-v3p1-terminus`, `deepseek-prover-v2`, `deepseek-coder-1b-base`
+> * **Kimi:** `kimi-k2-instruct`, `kimi-k2-instruct-0905`, `kimi-k2-thinking`
+> * **GLM:** `glm-4p5`, `glm-4p6`, `glm-4p7`
+> * **Qwen 3:** `qwen3-1p7b`, `qwen3-30b-a3b`, `qwen3-30b-a3b-thinking-2507`, `qwen3-235b-a22b`, `qwen3-235b-a22b-thinking-2507`, `qwen3-coder-30b-a3b-instruct`, `qwen3-vl-30b-a3b-instruct`, `qwen3-vl-30b-a3b-thinking`, `qwen3-vl-235b-a22b-instruct`, `qwen3-vl-235b-a22b-thinking`
+> * **Qwen 2.5 and QwQ:** `qwen2p5-14b`, `qwen2p5-14b-instruct`, `qwen-v2p5-14b-instruct`, `qwen2p5-32b`, `qwen2p5-coder-14b`, `qwen2p5-coder-14b-instruct`, `qwen2p5-coder-32b`, `qwen2p5-coder-32b-instruct`, `qwen2p5-coder-32b-instruct-32k-rope`, `qwen2p5-coder-32b-instruct-64k`, `qwen2p5-coder-32b-instruct-128k`, `qwen2p5-vl-7b-instruct`, `qwq-32b`, `qwen-qwq-32b-preview`
+> * **Llama:** `llama-v3-8b`, `llama-v3-8b-instruct`, `llama-v3-8b-instruct-hf`, `llama-v3-70b-instruct`, `llama-v3-70b-instruct-hf`, `llama-v3p1-70b-instruct`, `llama-v3p1-nemotron-70b-instruct`, `llama-v3p2-1b`, `llama-v3p2-1b-instruct`, `llama-guard-2-8b`, `llama-guard-3-1b`, `llama-guard-3-8b`
+> * **gpt-oss:** `gpt-oss-20b`, `gpt-oss-120b`, `gpt-oss-safeguard-20b`, `gpt-oss-safeguard-120b`
+> * **Gemma:** `gemma-3-27b-it`
+> * **Other:** `cogito-v1-preview-llama-8b`, `cogito-v1-preview-llama-70b`, `cogito-v1-preview-qwen-14b`, `cogito-v1-preview-qwen-32b`, `fare-20b`, `firefunction-v2`, `kat-dev-32b`, `mirothinker-1p7`, `rolm-ocr`
 
-<Update label="2026-09-16">
-  <Badge>Training</Badge>
+**2026-10-01**
 
-  # New Serverless Training model: GLM 5.3
+Inference
 
-  **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. There's no capacity to reserve and you pay per token. Move the same loop to [Dedicated Training](/fine-tuning/training-api/dedicated) for your most demanding workloads.
+# Serverless pricing update: DeepSeek V4.1 Flash
 
-  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+On **October 1, 2026 at 00:00 UTC**, serverless pricing for [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) changes (uncached input / cached input / output price per 1M tokens):
 
-<Update label="2026-09-16">
-  <Badge>Platform</Badge>
+* **Standard:** \$0.22 / \$0.007 / \$0.66 → **\$0.30 / \$0.006 / \$1.20**
+* **Priority:** \$0.275 / \$0.00875 / \$0.825 → **\$0.375 / \$0.0075 / \$1.50**
 
-  # New deployment creation flags: `deploymentShape: "default"` and `acceptShapelessRisk`
+This adjustment brings our pricing in line with current market rates for this model. It applies only to serverless usage. If you run DeepSeek V4.1 Flash on a dedicated deployment or use Reserved Throughput, your pricing is unaffected.
 
-  Two new options are available on the [Create Deployment](/api-reference/create-deployment) API, in firectl (`--deployment-shape default` / `--accept-shapeless-risk`), and in the Python SDK (`deployment_shape="default"` / `accept_shapeless_risk=True`):
+We are also rolling out infrastructure improvements designed to improve cache hit rate, minimize cost per task, and deliver a faster, more reliable experience across the board.
 
-  * **`deploymentShape: "default"`** — Fireworks picks a validated deployment shape for the model and creates the deployment from it. If every compatible shape conflicts with fields in your request, the request fails with an error naming the conflicting fields and compatible shapes; the pick never silently overrides your settings or falls back to creating without a shape.
-  * **`acceptShapelessRisk=true`** — an explicit opt-out that creates the deployment without a shape, preserving current behavior. It cannot be combined with a shape.
+See [Serverless pricing](/serverless/pricing) for the full rate card.
 
-  Deployments created without a shape skip shape validation and are the most common cause of failed deployment creations. Enforcement is coming soon: shapeless creation will then require the explicit opt-in, so start passing a shape (or `default`) now. The opt-out is for advanced users only. If you have a workload no existing shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
-</Update>
+**2026-09-28**
 
-<Update label="2026-09-13">
-  <Badge>Training</Badge>
+Training
 
-  # New training model: GLM 5.3 Flash
+# New training model: DeepSeek V4.1 Flash
 
-  **[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), including vision training, with up to 262K context. It performs well on agentic coding, document analysis, and tool use, and is cost-efficient to serve.
+**[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 262K context. It's a strong base for agentic coding, terminal automation, and tool use. SFT is supported at launch, and RL support is coming soon.
 
-  See the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+See the [training model catalog](/fine-tuning/models) for current availability.
 
-<Update label="2026-09-12">
-  <Badge>Inference</Badge>
+**2026-09-26**
 
-  # Upcoming Serverless deprecation: older DeepSeek, GLM, Muse, and Kimi models
+Inference
 
-  Several older Serverless models will be decommissioned on **September 25, 2026** to better serve newer, higher-performance replacements. This applies **only to serverless endpoints**, including Fast and US-only Serverless endpoints for models that have those variants. **Dedicated deployments are unaffected.**
+# Serverless deprecation: DeepSeek V4 Pro (0813), DeepSeek V4 Flash (0731), and related models
 
-  ## **Action required**
+The serverless deprecation announced for **September 25, 2026** is now in effect. The models below are no longer available on public serverless, including Fast and US-only serverless endpoints where those existed. Dedicated deployments are unaffected.
 
-  If you use any of the models below on serverless, migrate to a recommended replacement **before September 25, 2026**. After that date, they will no longer be available via serverless endpoints.
+## **Recommended migrations**
 
-  ## **Recommended migrations**
+* **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** — migrate to **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)**
+* **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+* **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+* **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)**, including **GLM 5.2 Fast**, **GLM 5.2 Fast US**, and **GLM 5.2 US** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)**
 
-  * **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
-  * **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)**
-  * **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** — migrate to **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)**
-  * **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
-  * **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+See [Serverless pricing](/serverless/pricing) and [Which model should I use?](/guides/recommended-models).
 
-  On official benchmarks, DeepSeek V4.1 Flash outperforms DeepSeek V4 Pro (0813). DeepSeek V4.1 Flash is also multimodal, with the same vision capability as DeepSeek V4 Flash Vision Exp.
+**2026-09-22**
 
-  If you want to switch to a dedicated deployment, see the [Serverless model list](https://fireworks.ai/models?modelTypes=Serverless) and the [on-demand deployment quickstart](/getting-started/ondemand-quickstart).
-</Update>
+Training
 
-<Update label="2026-09-09">
-  <Badge>Training</Badge>
+# New Serverless Training model: GLM 5.3 Flash
 
-  # Training cost estimator
+**[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 200K context and both text and vision inputs.
 
-  The new [training cost estimator](/fine-tuning/cost-estimator) helps you estimate what a training job will cost before you run it.
+See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 
-  Managed and Serverless estimates use published per-token rates. Dedicated estimates use allocated GPU-hour rates. Planning estimates are not quotes.
-</Update>
+**2026-09-16**
 
-<Update label="2026-09-09">
-  <Badge>Training</Badge>
+Training
 
-  # Training skill for coding agents
+# New Serverless Training model: GLM 5.3
 
-  A new Fireworks training skill is available for Claude Code, Cursor, Codex, and other compatible coding agents. Describe a training goal in plain language to plan a run, estimate cost, and wait for approval before spend.
+**[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. There's no capacity to reserve and you pay per token. Move the same loop to [Dedicated Training](/fine-tuning/training-api/dedicated) for your most demanding workloads.
 
-  See [Agent Skills](/fine-tuning/agent/use-with-coding-agents) for install commands.
-</Update>
+See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 
-<Update label="2026-09-08">
-  <Badge>Platform</Badge>
+**2026-09-16**
 
-  # Deployment tags and annotation API changes
+Platform
 
-  Deployment tags are customer-managed entries stored in a deployment's `annotations` map. firectl presents logical keys such as `environment`; the REST API represents the same key as `custom/environment`.
+# New deployment creation flags: `deploymentShape: "default"` and `acceptShapelessRisk`
 
-  * **firectl:** Version 1.8.3 adds `deployment tag set`, `unset`, and `list`, including atomic batch operations.
-  * **REST writes:** Customer-managed annotation keys must begin with `custom/`. Bare keys now return HTTP `403` (`PERMISSION_DENIED`).
-  * **REST reads:** For regular account users, `GetDeployment` and `ListDeployments` return only `custom/*` annotation entries. Keys outside that namespace are omitted without an error.
+Two new options are available on the [Create Deployment](/api-reference/create-deployment) API, in firectl (`--deployment-shape default` / `--accept-shapeless-risk`), and in the Python SDK (`deployment_shape="default"` / `accept_shapeless_risk=True`):
 
-  Existing stored annotations were not rewritten. Clients using a bare key such as `environment` should set `custom/environment` and update reads to use that canonical key.
+* **`deploymentShape: "default"`** — Fireworks picks a validated deployment shape for the model and creates the deployment from it. If every compatible shape conflicts with fields in your request, the request fails with an error naming the conflicting fields and compatible shapes; the pick never silently overrides your settings or falls back to creating without a shape.
+* **`acceptShapelessRisk=true`** — an explicit opt-out that creates the deployment without a shape, preserving current behavior. It cannot be combined with a shape.
 
-  See [Deployment Tags](/deployments/deployment-tags) for commands, REST examples, validation rules, and migration guidance.
-</Update>
+Deployments created without a shape skip shape validation and are the most common cause of failed deployment creations. Enforcement is coming soon: shapeless creation will then require the explicit opt-in, so start passing a shape (or `default`) now. The opt-out is for advanced users only. If you have a workload no existing shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
-<Update label="2026-09-07">
-  <Badge>Training</Badge>
+**2026-09-13**
 
-  # New training model: GLM 5.3
+Training
 
-  **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 204K context. It's built for complex coding and long-horizon agents.
+# New training model: GLM 5.3 Flash
 
-  See the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+**[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), including vision training, with up to 262K context. It performs well on agentic coding, document analysis, and tool use, and is cost-efficient to serve.
 
-<Update label="2026-09-01">
-  <Badge>Inference</Badge>
+See the [training model catalog](/fine-tuning/models) for current availability.
 
-  # Serverless rate limit ceilings now scale by model size
+**2026-09-12**
 
-  Serverless adaptive rate limit ceilings now vary by model size tier. Smaller models get higher ceilings, medium models get intermediate ceilings, and large models use lower ceilings. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for current tier thresholds and ceiling values.
-</Update>
+Inference
 
-<Update label="2026-08-30">
-  <Badge>Training</Badge>
+# Upcoming Serverless deprecation: older DeepSeek, GLM, Muse, and Kimi models
 
-  # New Serverless Training models: DeepSeek V4 Flash 0731, Qwen 3.8 27B, and Muse Glimmer 30B
+Several older Serverless models will be decommissioned on **September 25, 2026** to better serve newer, higher-performance replacements. This applies **only to serverless endpoints**, including Fast and US-only Serverless endpoints for models that have those variants. **Dedicated deployments are unaffected.**
 
-  The following models are now available for LoRA workloads on the shared Serverless Training pool:
+## **Action required**
 
-  * **[DeepSeek V4 Flash 0731](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** with up to 262K context
-  * **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)** with up to 128K context
-  * **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** with up to 128K context
+If you use any of the models below on serverless, migrate to a recommended replacement **before September 25, 2026**. After that date, they will no longer be available via serverless endpoints.
 
-  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
-</Update>
+## **Recommended migrations**
 
-<Update label="2026-08-27">
-  <Badge>Inference</Badge>
+* **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+* **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)**
+* **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** — migrate to **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)**
+* **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+* **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
 
-  # Serverless deprecation: MiniMax M2.7, GPT OSS 20B, Kimi K2.6 Turbo/Fast, Kimi K2.7 Code Fast, DeepSeek V4 Pro
+On official benchmarks, DeepSeek V4.1 Flash outperforms DeepSeek V4 Pro (0813). DeepSeek V4.1 Flash is also multimodal, with the same vision capability as DeepSeek V4 Flash Vision Exp.
 
-  The following models are deprecated from serverless effective August 27, 2026.
+If you want to switch to a dedicated deployment, see the [Serverless model list](https://fireworks.ai/models?modelTypes=Serverless) and the [on-demand deployment quickstart](/getting-started/ondemand-quickstart).
 
-  ## **Recommended migrations**
+**2026-09-09**
 
-  * **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
-  * **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
-  * **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard mode)
-  * **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard mode)
-  * **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
-</Update>
+Training
 
-<Update label="2026-08-26">
-  <Badge>Training</Badge>
+# Training cost estimator
 
-  # Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
+The new [training cost estimator](/fine-tuning/cost-estimator) helps you estimate what a training job will cost before you run it.
 
-  **Qwen 3.5 9B** and **Qwen 3.6 27B** are deprecated from Serverless Training effective August 26, 2026.
+Managed and Serverless estimates use published per-token rates. Dedicated estimates use allocated GPU-hour rates. Planning estimates are not quotes.
 
-  Migrate new and existing Serverless Training workloads to **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)**.
+**2026-09-09**
 
-  This change applies to the shared Serverless Training pool. Check the [training model catalog](/fine-tuning/models) for availability on other training surfaces.
-</Update>
+Training
 
-<Update label="2026-08-25">
-  <Badge>Platform</Badge>
+# Training skill for coding agents
 
-  # SSO documentation: IdP-initiated SAML
+A new Fireworks training skill is available for Claude Code, Cursor, Codex, and other compatible coding agents. Describe a training goal in plain language to plan a run, estimate cost, and wait for approval before spend.
 
-  Updated the [Custom SSO](/accounts/sso) guide. IdP-initiated SAML is supported as an opt-in (`--enable-idp-initiated-sso`); the previous troubleshooting copy that said Fireworks only supported SP-initiated login was incorrect.
-</Update>
+See [Agent Skills](/fine-tuning/agent/use-with-coding-agents) for install commands.
 
-<Update label="2026-08-14">
-  <Badge>Inference</Badge>
+**2026-09-08**
 
-  # Serverless deprecation: DeepSeek V4 Flash
+Platform
 
-  **DeepSeek V4 Flash** is deprecated from serverless. Migrate to **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)**.
-</Update>
+# Deployment tags and annotation API changes
 
-<Update label="2026-07-16">
-  <Badge>Training</Badge>
+Deployment tags are customer-managed entries stored in a deployment's `annotations` map. firectl presents logical keys such as `environment`; the REST API represents the same key as `custom/environment`.
 
-  # SFT learning rate scheduler documentation
+* **firectl:** Version 1.8.3 adds `deployment tag set`, `unset`, and `list`, including atomic batch operations.
+* **REST writes:** Customer-managed annotation keys must begin with `custom/`. Bare keys now return HTTP `403` (`PERMISSION_DENIED`).
+* **REST reads:** For regular account users, `GetDeployment` and `ListDeployments` return only `custom/*` annotation entries. Keys outside that namespace are omitted without an error.
 
-  Documented learning rate scheduler settings for supervised fine-tuning jobs, including `constant`, `linear`, and `cosine` schedules via `firectl` and the REST API `lrScheduler` object.
-</Update>
+Existing stored annotations were not rewritten. Clients using a bare key such as `environment` should set `custom/environment` and update reads to use that canonical key.
 
-<Update label="2026-06-26">
-  <Badge>Inference</Badge>
+See [Deployment Tags](/deployments/deployment-tags) for commands, REST examples, validation rules, and migration guidance.
 
-  # Serverless deprecation: Kimi K2.5 and Qwen 3.6 Plus
+**2026-09-07**
 
-  **Kimi K2.5** and **Qwen 3.6 Plus** are deprecated from serverless.
+Training
 
-  ## **Recommended migrations**
+# New training model: GLM 5.3
 
-  * **[Kimi K2.5](https://app.fireworks.ai/models/fireworks/kimi-k2p5)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
-  * **[Qwen 3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus)** — migrate to **[Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)**
-</Update>
+**[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 204K context. It's built for complex coding and long-horizon agents.
 
-<Update label="2026-06-17">
-  <Badge>Inference</Badge>
+See the [training model catalog](/fine-tuning/models) for current availability.
 
-  # Serverless deprecation: MiniMax M2.5
+**2026-09-01**
 
-  **MiniMax M2.5** is deprecated from serverless. Migrate to **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)**.
-</Update>
+Inference
 
-<Update label="2026-06-15">
-  <Badge>Inference</Badge>
+# Serverless rate limit ceilings now scale by model size
 
-  # New model: GLM 5.2
+Serverless adaptive rate limit ceilings now vary by model size tier. Smaller models get higher ceilings, medium models get intermediate ceilings, and large models use lower ceilings. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for current tier thresholds and ceiling values.
 
-  **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)** is now available in the Model Library.
-</Update>
+**2026-08-30**
 
-<Update label="2026-06-12">
-  <Badge>Inference</Badge>
+Training
 
-  # New models: Kimi K2.7 Code, MiniMax M3, and Qwen 3.7 Plus
+# New Serverless Training models: DeepSeek V4 Flash 0731, Qwen 3.8 27B, and Muse Glimmer 30B
 
-  The following models are now available in the Model Library:
+The following models are now available for LoRA workloads on the shared Serverless Training pool:
 
-  * **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)**
-  * **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
-  * **[Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)**
-</Update>
+* **[DeepSeek V4 Flash 0731](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** with up to 262K context
+* **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)** with up to 128K context
+* **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** with up to 128K context
 
-<Update label="2026-06-10">
-  <Badge>Inference</Badge>
+See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
 
-  # Audio inference and image generation deprecation
+**2026-08-27**
 
-  Audio inference and image generation are deprecated.
-</Update>
+Inference
 
-<Update label="2026-05-14">
-  <Badge>Inference</Badge>
+# Serverless deprecation: MiniMax M2.7, GPT OSS 20B, Kimi K2.6 Turbo/Fast, Kimi K2.7 Code Fast, DeepSeek V4 Pro
 
-  # Serverless deprecation: legacy models removed May 14, 2026
+The following models are deprecated from serverless effective August 27, 2026.
 
-  Several legacy serverless models will be decommissioned on **May 14, 2026** to make room for newer, higher-performance releases. This applies **only to serverless** usage; **dedicated deployments are unaffected**.
+## **Recommended migrations**
 
-  ## **Action required**
+* **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** — migrate to **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
+* **[GPT OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)** — migrate to **[GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)** or **[Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b)** for lower-latency workloads
+* **[Kimi K2.6 Turbo / Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** (standard mode)
+* **[Kimi K2.7 Code Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** (standard mode)
+* **[DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)** — migrate to **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)**
 
-  If you use any of the models below on serverless, migrate to a recommended replacement **before May 14, 2026**. After that date, they will no longer be available via serverless endpoints.
+**2026-08-26**
 
-  ## **Serverless migration guide**
+Training
 
-  * **DeepSeek V3.1** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** or **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
-  * **DeepSeek V3.2** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** or **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
-  * **GLM 4.7** — migrate to **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
-  * **GLM 5** — migrate to **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
-  * **Qwen3 8B** — migrate to **[GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)**
-  * **Qwen3 VL 30B A3B Thinking** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
-  * **Qwen3 VL 30B A3B Instruct** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
-  * **Llama 3.3 70B Instruct** — migrate to **[GPT-OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)**
+# Serverless Training deprecation: Qwen 3.5 9B and Qwen 3.6 27B
 
-  We are continuing to invest in faster, more capable models and appreciate your support during this transition.
-</Update>
+**Qwen 3.5 9B** and **Qwen 3.6 27B** are deprecated from Serverless Training effective August 26, 2026.
 
-<Update label="2026-02-05">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+Migrate new and existing Serverless Training workloads to **[Qwen 3.8 27B](https://app.fireworks.ai/models/fireworks/qwen3p8-27b)**.
 
-  # Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
+This change applies to the shared Serverless Training pool. Check the [training model catalog](/fine-tuning/models) for availability on other training surfaces.
 
-  ## **Video & Audio Input Models**
+**2026-08-25**
 
-  You can now query multimodal models with video and audio inputs for video captioning, scene analysis, and multimodal question answering. Deploy models like Qwen3 Omni and Molmo2 to process video and audio content directly using the Chat Completions API.
+Platform
 
-  See the [Video & Audio Inputs guide](/guides/video-audio-inputs) for deployment instructions and code examples.
+# SSO documentation: IdP-initiated SAML
 
-  ## **AWS S3 Integration for Training Datasets**
+Updated the [Custom SSO](/accounts/sso) guide. IdP-initiated SAML is supported as an opt-in (`--enable-idp-initiated-sso`); the previous troubleshooting copy that said Fireworks only supported SP-initiated login was incorrect.
 
-  Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
+**2026-08-14**
 
-  See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
+Inference
 
-  ## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
+# Serverless deprecation: DeepSeek V4 Flash
 
-  JIT user provisioning automatically creates user accounts when users sign in through SSO for the first time. Enable this when configuring your identity provider to eliminate manual user creation.
+**DeepSeek V4 Flash** is deprecated from serverless. Migrate to **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)**.
 
-  See the [SSO documentation](/accounts/sso) for setup instructions.
+**2026-07-16**
 
-  ## 📚 Documentation Updates
+Training
 
-  * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
-  * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
-  * **Rate Limits Clarification:** Expanded documentation on adaptive serverless limits, upper bounds, and monitoring ([Serverless rate limits](/serverless/rate-limits))
-  * **Anthropic-Compatible Thinking Parameter:** Control reasoning with `thinking` parameter alongside `reasoning_effort` ([Reasoning](/guides/reasoning))
-  * **Scaling from Zero Behavior:** Deployments scaled to zero return `503` immediately with retry guidance ([Autoscaling](/deployments/autoscaling))
-  * **Custom Model Configuration:** Generation defaults via `fireworks.json` for LoRA adapters ([Uploading Custom Models](/models/uploading-custom-models))
-  * **Service Account Roles:** Role assignment and management for service accounts ([Service Accounts](/accounts/service-accounts))
-  * **Free RFT:** Documentation highlighting free Reinforcement Fine-Tuning for models under 16B parameters
-  * **Serverless Model Retrieval:** Python SDK and curl examples for programmatically listing serverless models ([FAQ](/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless))
-  * **Function Tools in Responses API:** Client-executed function tools following OpenAI-compatible format ([Responses API](/guides/response-api))
-  * **Autoscaling Metric:** New `prompt_tokens_per_second` load target for prefill-heavy workloads ([Autoscaling](/deployments/autoscaling))
-  * **firectl CLI Syntax:** All documentation updated to `firectl <noun> <verb>` syntax
+# SFT learning rate scheduler documentation
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Model Library Enhancements:** Skeleton loader for faster perceived loading, new filter categories for Embeddings, Reranks, and Agents (Web App)
-    - **Service Account Roles:** Role column and role assignment in the Users management page (Web App)
-    - **JIT User Provisioning Toggle:** Enable JIT provisioning when configuring SSO identity providers (Web App, Enterprise)
-    - **Autoscaling Configuration:** Autoscaling metric and threshold settings in deployment creation form (Web App)
-    - **RFT Chunk Size:** Configurable chunk size setting with tooltips for Reinforcement Fine-Tuning creation (Web App)
-    - **Batch Inference Form:** Redesigned step-based form flow for batch inference job creation (Web App)
-    - **Full Precision Shape:** "Full Precision" deployment shape option displayed in deployment configuration (Web App)
-    - **Batch Inference Error Banner:** Error banners now display on batch inference job detail pages (Web App)
-    - **Audit Log Resource Column:** Improved readability with tooltip for long resource names (Web App)
-    - **API Key Error Messages:** Clearer permission error messages when users lack API key management access (Web App)
-    - **Fine-Tuning Cost Display:** Fixed estimated cost display for fine-tuning jobs (Web App)
-    - **Batch Inference Max Tokens:** Fallback max value increased to 128,000 tokens (Web App)
-    - **Playground Model Select:** Improved performance for model selection dropdown (Web App)
-    - **Embedding Model Shapes:** Deployment shapes correctly filtered by embedding model type (Web App)
-    - **Audit Logs Command:** New `firectl audit-logs list` command for querying audit logs (CLI)
-  </Accordion>
-</Update>
+Documented learning rate scheduler settings for supervised fine-tuning jobs, including `constant`, `linear`, and `cosine` schedules via `firectl` and the REST API `lrScheduler` object.
 
-<Update label="2026-01-20">
-  <Badge>Training</Badge> <Badge>Platform</Badge>
+**2026-06-26**
 
-  # Warm-Start Training and Azure Model Uploads
+Inference
 
-  ## **Warm-Start Training for Reinforcement Fine-Tuning**
+# Serverless deprecation: Kimi K2.5 and Qwen 3.6 Plus
 
-  You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
+**Kimi K2.5** and **Qwen 3.6 Plus** are deprecated from serverless.
 
-  See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models#warm-start) for details.
+## **Recommended migrations**
 
-  ## **Azure Federated Identity for Model Uploads**
+* **[Kimi K2.5](https://app.fireworks.ai/models/fireworks/kimi-k2p5)** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
+* **[Qwen 3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus)** — migrate to **[Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)**
 
-  Model uploads from Azure Blob Storage now support Azure AD federated identity authentication as an alternative to SAS tokens. This eliminates the need for credential rotation and enables secure, credential-less authentication.
+**2026-06-17**
 
-  See the [Uploading Custom Models documentation](/models/uploading-custom-models) for setup instructions.
+Inference
 
-  ## 📚 Documentation Updates
+# Serverless deprecation: MiniMax M2.5
 
-  * **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models#warm-start))
-  * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
-  * **Preserved Thinking:** Multi-turn reasoning with preserved thinking context ([Reasoning](/guides/reasoning))
-  * **GLM 4.7:** Added to models supporting `reasoning_effort` parameter
+**MiniMax M2.5** is deprecated from serverless. Migrate to **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)**.
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **RFT Cost Display:** Reinforcement Fine-Tuning job pages now show approximate final cost (Web App)
-    - **GPU Information:** Deployments table displays GPU type and count (Web App)
-    - **DPO Job Resume:** Preference Fine-Tuning jobs can now be resumed after stopping (Web App, API)
-    - **Free Tuning Filter:** New filter in RFT model selector for free-to-fine-tune models (Web App)
-    - **Playground Inputs:** Editable number inputs for temperature, top\_p, and other parameters (Web App)
-    - **Clone Fine-Tuning Jobs:** Fixed field population when cloning jobs (Web App)
-    - **Evaluation Job Errors:** Errors now display with alert banners (Web App)
-    - **Invoice CSV Export:** Improved download experience (Web App)
-    - **Playground Validation:** Prevents querying deployments with 0 replicas (Web App)
-    - **List Models Filter:** `firectl model list` supports `--name` and `--public-only` flags (CLI)
-    - **RFT Concurrency:** New `--max-concurrent-rollouts` and `--max-concurrent-evaluations` flags (CLI)
-  </Accordion>
-</Update>
+**2026-06-15**
 
-<Update label="2025-12-22">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+Inference
 
-  # Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
+# New model: GLM 5.2
 
-  ## **Playground Categories**
+**[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)** is now available in the Model Library.
 
-  The Playground now features category tabs (LLM, Image, TTS, STT) in the header for easier switching between model types. The playground automatically detects the appropriate category based on the selected model and provides smart defaults for each category.
+**2026-06-12**
 
-  ## **User Roles: Contributor and Inference**
+Inference
 
-  New user roles provide more granular access control for team collaboration:
+# New models: Kimi K2.7 Code, MiniMax M3, and Qwen 3.7 Plus
 
-  * **Contributor**: Read and write access to resources without administrative privileges
-  * **Inference**: Read-only access with the ability to run inference on deployments
+The following models are now available in the Model Library:
 
-  Assign these roles when inviting team members to provide appropriate access levels.
+* **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)**
+* **[MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)**
+* **[Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)**
 
-  ## **Fine-Tuning Improvements**
+**2026-06-10**
 
-  Fine-tuning workflows have been enhanced with several new capabilities:
+Inference
 
-  * **Stop and Resume Jobs**: Stop running fine-tuning jobs and resume them later from where they left off. Available for Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs.
-  * **Clone Jobs**: Quickly create new fine-tuning jobs based on existing job configurations using the Clone action.
-  * **Download Output Datasets**: Download output datasets from Reinforcement Fine-Tuning jobs, including individual files or bulk download as a ZIP archive.
-  * **Download Rollout Logs**: Download rollout logs from Reinforcement Fine-Tuning jobs for offline analysis.
+# Audio inference and image generation deprecation
 
-  ## ✨ New Models
+Audio inference and image generation are deprecated.
 
-  * **[Gemma 3 12B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-12b-it)** is now available in the Model Library
-  * **[Gemma 3 4B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-4b-it)** is now available in the Model Library
-  * **[Qwen3 Omni 30B A3B Instruct](https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct)** is now available in the Model Library
+**2026-05-14**
 
-  ## 📚 Documentation Updates
+Inference
 
-  * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
-  * **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
-  * **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), [Execute Reinforcement Fine-Tuning Step](/api-reference/execute-reinforcement-fine-tuning-step), and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
-  * **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
+# Serverless deprecation: legacy models removed May 14, 2026
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Deployment Progress Display:** Deployment details page now shows live deployment progress with replica status (pending, downloading, initializing, ready) and error banners (Web App)
-    - **Multi-LoRA Display:** Deployment details page now shows all deployed models with expandable sections, not just the default model (Web App)
-    - **Audio Usage Charts:** Audio usage metrics are now displayed in a dedicated Voice tab on the Usage page with filtering support (Web App)
-    - **Deployment Shape Search:** Improved deployment shape discovery for models where exact base model matches aren't found, using parameter count bucketing (Web App)
-    - **Vision Model Auto-Detection:** Vision-language models (Qwen VL, LLaVA, Phi-3 Vision, etc.) now automatically have image input support enabled when uploaded (API)
-    - **Dataset Loading UX:** Output dataset tables now stream results with a progress indicator for faster perceived loading (Web App)
-    - **File Size Limit:** Dataset uploads now enforce a clear file size limit with improved error messaging (Web App)
-    - **Number Input Fields:** Improved number input validation across forms (Web App)
-    - **Combobox Responsiveness:** Improved combobox dropdown height on smaller screens (Web App)
-    - **Evaluator Editor Scroll:** Prevented accidental page navigation when scrolling inside the evaluator code editor (Web App)
-    - **Evaluator Save Dialog:** Fixed overflow issues in the save evaluator dialog (Web App)
-    - **Evaluator Selector Labels:** Fixed label rendering in async evaluator select components (Web App)
-    - **Deploy Button Validation:** Deploy button is now disabled when the model is not ready (Web App)
-    - **Model Metadata:** Fixed missing model metadata display on deployment pages (Web App)
-    - **Invoice Display:** Invoice list now shows "paid" status for contract payments (Web App)
-    - **Color Palette Update:** Updated UI color palette for improved visual consistency (Web App)
-  </Accordion>
-</Update>
+Several legacy serverless models will be decommissioned on **May 14, 2026** to make room for newer, higher-performance releases. This applies **only to serverless** usage; **dedicated deployments are unaffected**.
 
-<Update label="2025-12-15">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+## **Action required**
 
-  # Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
+If you use any of the models below on serverless, migrate to a recommended replacement **before May 14, 2026**. After that date, they will no longer be available via serverless endpoints.
 
-  ## **Reasoning Guide**
+## **Serverless migration guide**
 
-  A new [Reasoning guide](/guides/reasoning) is now available in the documentation. This comprehensive guide covers:
+* **DeepSeek V3.1** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** or **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
+* **DeepSeek V3.2** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** or **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
+* **GLM 4.7** — migrate to **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
+* **GLM 5** — migrate to **[GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)**
+* **Qwen3 8B** — migrate to **[GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b)**
+* **Qwen3 VL 30B A3B Thinking** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
+* **Qwen3 VL 30B A3B Instruct** — migrate to **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)**
+* **Llama 3.3 70B Instruct** — migrate to **[GPT-OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b)**
 
-  * Accessing `reasoning_content` from thinking/reasoning models
-  * Controlling reasoning effort with the `reasoning_effort` parameter
-  * Streaming with reasoning content
-  * Interleaved thinking for multi-step tool-calling workflows
+We are continuing to invest in faster, more capable models and appreciate your support during this transition.
 
-  The guide provides code examples using the Fireworks Python SDK and explains how to work with models that support extended reasoning capabilities.
+**2026-02-05**
 
-  ## **Prompt Caching Updates**
+Inference
 
-  Prompt caching documentation has been updated with expanded guidance:
+Training
 
-  * Cached prompt tokens on serverless now cost 50% less than uncached tokens
-  * Session affinity routing via the `user` field or `x-session-affinity` header for improved cache hit rates
-  * Prompt optimization techniques for maximizing cache efficiency
+Platform
 
-  See the [Prompt Caching guide](/guides/prompt-caching) for details.
+# Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
 
-  ## ✨ New Models
+## **Video & Audio Input Models**
 
-  * **[Devstral Small 2 24B Instruct 2512](https://app.fireworks.ai/models/fireworks/devstral-small-2-24b-instruct-2512)** is now available in the Model Library
-  * **[NVIDIA Nemotron Nano 3 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-nano-3-30b-a3b)** is now available in the Model Library
+You can now query multimodal models with video and audio inputs for video captioning, scene analysis, and multimodal question answering. Deploy models like Qwen3 Omni and Molmo2 to process video and audio content directly using the Chat Completions API.
 
-  ## 📚 Documentation Updates
+See the [Video & Audio Inputs guide](/guides/video-audio-inputs) for deployment instructions and code examples.
 
-  * **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
-  * **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
-  * **OpenAI Compatibility:** Removed `stop` sequence documentation as Fireworks is now 1:1 compatible with OpenAI's behavior ([OpenAI Compatibility](/tools-sdks/openai-compatibility))
-  * **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations ([Evals API Reference](/api-reference/list-evaluators))
-  * **firectl CLI Reference:** Updated with new commands including `cancel dpo-job`, `cancel supervised-fine-tuning-job`, `set-api-key`, `redeem-credit-code`, and evaluator revision management
+## **AWS S3 Integration for Training Datasets**
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Audio Usage Charts:** Added a Voice modality tab to the Usage page for viewing audio-specific usage metrics and charts (Web App)
-    - **Deployment Page Redesign:** Redesigned deployment details page with inline action buttons (Edit, Delete, Enable/Disable), reordered metadata sections, and collapsible API examples (Web App)
-    - **Deployment API Examples:** API code examples now use the deployment route as the canonical model identifier for clearer usage patterns (Web App)
-    - **LoRA Addons Tab:** Renamed "Serverless LoRA" tab to "LoRA Addons" on the deployments dashboard for clarity (Web App)
-    - **Evaluator Selector:** Improved evaluator selector UI to display both display name and evaluator ID for easier identification (Web App)
-    - **Evaluator Delete Confirmation:** Added confirmation modal with success/error feedback when deleting evaluators (Web App)
-    - **Evaluator Code Viewer:** Evaluator source files now load asynchronously, preventing browser freezes with large files (Web App)
-    - **Dataset Image Preview:** Dataset preview now properly renders image content in message bubbles and comparison views (Web App)
-    - **Model Search:** Improved model search accuracy by restricting results to display name and model ID matches only (Web App)
-    - **Fine-Tuning Progress Status:** Fine-tuning job detail pages now show the initial job status immediately on page load (Web App)
-    - **Evaluator Test Controls:** Dataset selection and pagination are now disabled while an evaluator test is running to prevent conflicts (Web App)
-    - **Repository Name Validation:** Evaluator repository names now validate against GitHub naming conventions (Web App)
-    - **Billing Contracts Tab:** Added a Contracts tab to the billing page alongside Invoices for viewing contract details (Web App)
-    - **Dataset Size Limit:** Enforced 1GB maximum file size for dataset uploads with clear error messaging (Web App)
-    - **Evaluator Documentation Link:** Fixed evaluator documentation links to point to the correct location (Web App)
-    - **Session Update Fix:** Fixed an issue with session state updates in the web app (Web App)
-    - **Popover Fix:** Fixed popover components nested in dialogs not displaying correctly (Web App)
-    - **Per-Replica Status:** Deployment status now shows per-replica counts (pending, downloading, initializing, ready) for better visibility into deployment progress (CLI, API)
-    - **set-api-key Command:** The `set-api-key` command is now visible in firectl help output (CLI)
-    - **DPO Resume:** Added support for resuming cancelled DPO fine-tuning jobs (API)
-    - **Reasoning Effort Normalization:** `reasoning_effort` parameter now accepts boolean values in addition to strings and integers (API)
-  </Accordion>
-</Update>
+Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
-<Update label="2025-12-08">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
 
-  # DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
+## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
 
-  ## ☁️ Serverless
+JIT user provisioning automatically creates user accounts when users sign in through SSO for the first time. Enable this when configuring your identity provider to eliminate manual user creation.
 
-  * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available on serverless
+See the [SSO documentation](/accounts/sso) for setup instructions.
 
-  ## **Cached Token Pricing Display**
+## 📚 Documentation Updates
 
-  The Model Library and model detail pages now display cached and uncached input
-  token pricing for serverless models that support prompt caching. This gives you
-  better visibility into potential cost savings when using prompt caching with
-  supported models.
+* **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
+* **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
+* **Rate Limits Clarification:** Expanded documentation on adaptive serverless limits, upper bounds, and monitoring ([Serverless rate limits](/serverless/rate-limits))
+* **Anthropic-Compatible Thinking Parameter:** Control reasoning with `thinking` parameter alongside `reasoning_effort` ([Reasoning](/guides/reasoning))
+* **Scaling from Zero Behavior:** Deployments scaled to zero return `503` immediately with retry guidance ([Autoscaling](/deployments/autoscaling))
+* **Custom Model Configuration:** Generation defaults via `fireworks.json` for LoRA adapters ([Uploading Custom Models](/models/uploading-custom-models))
+* **Service Account Roles:** Role assignment and management for service accounts ([Service Accounts](/accounts/service-accounts))
+* **Free RFT:** Documentation highlighting free Reinforcement Fine-Tuning for models under 16B parameters
+* **Serverless Model Retrieval:** Python SDK and curl examples for programmatically listing serverless models ([FAQ](/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless))
+* **Function Tools in Responses API:** Client-executed function tools following OpenAI-compatible format ([Responses API](/guides/response-api))
+* **Autoscaling Metric:** New `prompt_tokens_per_second` load target for prefill-heavy workloads ([Autoscaling](/deployments/autoscaling))
+* **firectl CLI Syntax:** All documentation updated to `firectl <noun> <verb>` syntax
 
-  ## **Evaluations Dashboard Improvements**
+> **Bug Fixes & Minor Improvements**
+>
+> * **Model Library Enhancements:** Skeleton loader for faster perceived loading, new filter categories for Embeddings, Reranks, and Agents (Web App)
+> * **Service Account Roles:** Role column and role assignment in the Users management page (Web App)
+> * **JIT User Provisioning Toggle:** Enable JIT provisioning when configuring SSO identity providers (Web App, Enterprise)
+> * **Autoscaling Configuration:** Autoscaling metric and threshold settings in deployment creation form (Web App)
+> * **RFT Chunk Size:** Configurable chunk size setting with tooltips for Reinforcement Fine-Tuning creation (Web App)
+> * **Batch Inference Form:** Redesigned step-based form flow for batch inference job creation (Web App)
+> * **Full Precision Shape:** "Full Precision" deployment shape option displayed in deployment configuration (Web App)
+> * **Batch Inference Error Banner:** Error banners now display on batch inference job detail pages (Web App)
+> * **Audit Log Resource Column:** Improved readability with tooltip for long resource names (Web App)
+> * **API Key Error Messages:** Clearer permission error messages when users lack API key management access (Web App)
+> * **Fine-Tuning Cost Display:** Fixed estimated cost display for fine-tuning jobs (Web App)
+> * **Batch Inference Max Tokens:** Fallback max value increased to 128,000 tokens (Web App)
+> * **Playground Model Select:** Improved performance for model selection dropdown (Web App)
+> * **Embedding Model Shapes:** Deployment shapes correctly filtered by embedding model type (Web App)
+> * **Audit Logs Command:** New `firectl audit-logs list` command for querying audit logs (CLI)
 
-  The Evaluations dashboard has been enhanced with new filtering and status tracking capabilities:
+**2026-01-20**
 
-  * Status column showing evaluator build state (Active, Building, Failed)
-  * Quick filters to filter evaluators and evaluation jobs by status
-  * Improved table layout with actions integrated into the status column
+Training
 
-  ## ✨ New Models
+Platform
 
-  * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available in the Model Library
-  * **[Ministral 3 14B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-14b-instruct-2512)** is now available in the Model Library
-  * **[Ministral 3 8B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-8b-instruct-2512)** is now available in the Model Library
-  * **[Ministral 3 3B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-3b-instruct-2512)** is now available in the Model Library
-  * **[Mistral Large 3 675B Instruct](https://app.fireworks.ai/models/fireworks/mistral-large-3-fp8)** is now available in the Model Library
-  * **[Qwen3-VL-32B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-32b-instruct)** is now available in the Model Library
-  * **[Qwen3-VL-8B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-8b-instruct)** is now available in the Model Library
+# Warm-Start Training and Azure Model Uploads
 
-  ## 📚 Documentation Updates
+## **Warm-Start Training for Reinforcement Fine-Tuning**
 
-  * **Reranking Guide:** Added documentation for using the `/rerank` endpoint and `/embeddings` endpoint with `return_logits` for reranking, including parallel batching examples ([Querying Embeddings Models](/guides/querying-embeddings-models))
+You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Deployment Page Enhancements:** Redesigned deployment detail page with new model header, quick actions (Playground, Go to Model), tabbed API/Info interface, collapsible code examples, and improved GPU count display (Web App)
-    - **Login Page Redesign:** New marketing panel with customer testimonials carousel, highlighted platform capabilities, and improved visual design (Web App)
-    - **Playground CTA:** Added "Deploy on Demand" button next to "Try the API" for eligible models, making it easier to deploy models directly from the playground (Web App)
-    - **Console Navigation Icons:** Updated sidebar icons with a refreshed icon set for improved visual consistency (Web App)
-    - **Reinforcement Fine-Tuning Defaults:** Changed default epochs to 1 and increased maximum inference N from 8 to 32 for rollout configuration (Web App)
-    - **Failed Job Visibility:** Training progress and loss curves now display for failed and cancelled fine-tuning jobs, helping with debugging (Web App)
-    - **Large Dataset Uploads:** Improved upload handling for large JSONL files with progress tracking and direct-to-storage uploads (Web App)
-    - **Dataset Preview:** Fixed page freeze issue when previewing datasets with very long text content (Web App)
-    - **Loss Chart Y-Axis:** Fixed y-axis scaling on loss charts to properly display the full range of values (Web App)
-    - **Model Deletion Dialog:** Improved custom model delete confirmation dialog with better validation and feedback (Web App)
-    - **Billing Date Range:** Fixed date range calculation errors on the first day of the month in billing usage views (Web App)
-    - **Login Session:** Fixed an issue where expired sessions required manual cookie clearing to log in again (Web App)
-    - **Rollout Detail Panel:** Improved rollout log viewing with resizable split panels and better log formatting (Web App)
-    - **Checkpoint Promotion:** Added validation and error messages when promoting checkpoints with missing target modules or base model (Web App)
-    - **Model Validation:** Added validation before deploying fine-tuned models to ensure the model ID is valid (Web App)
-    - **Quota Error Message:** Improved error message clarity when request quota is exceeded in the playground (Web App)
-    - **Safari Layout:** Fixed extra spacing in login page marketing panel on Safari browsers (Web App)
-  </Accordion>
-</Update>
+See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models#warm-start) for details.
 
-<Update label="2025-12-01">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+## **Azure Federated Identity for Model Uploads**
 
-  # Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
+Model uploads from Azure Blob Storage now support Azure AD federated identity authentication as an alternative to SAS tokens. This eliminates the need for credential rotation and enables secure, credential-less authentication.
 
-  ## **Audit Logs in Web App**
+See the [Uploading Custom Models documentation](/models/uploading-custom-models) for setup instructions.
 
-  You can now view and search audit logs directly from the Fireworks web app. The new Audit Logs page provides:
+## 📚 Documentation Updates
 
-  * Search and filter logs by status and timeframe
-  * Detailed view panel for individual log entries
-  * Easy navigation from the console sidebar under Account settings
+* **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models#warm-start))
+* **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
+* **Preserved Thinking:** Multi-turn reasoning with preserved thinking context ([Reasoning](/guides/reasoning))
+* **GLM 4.7:** Added to models supporting `reasoning_effort` parameter
 
-  See the [Audit Logs documentation](/guides/security_compliance/audit_logs) for more information.
+> **Bug Fixes & Minor Improvements**
+>
+> * **RFT Cost Display:** Reinforcement Fine-Tuning job pages now show approximate final cost (Web App)
+> * **GPU Information:** Deployments table displays GPU type and count (Web App)
+> * **DPO Job Resume:** Preference Fine-Tuning jobs can now be resumed after stopping (Web App, API)
+> * **Free Tuning Filter:** New filter in RFT model selector for free-to-fine-tune models (Web App)
+> * **Playground Inputs:** Editable number inputs for temperature, top\_p, and other parameters (Web App)
+> * **Clone Fine-Tuning Jobs:** Fixed field population when cloning jobs (Web App)
+> * **Evaluation Job Errors:** Errors now display with alert banners (Web App)
+> * **Invoice CSV Export:** Improved download experience (Web App)
+> * **Playground Validation:** Prevents querying deployments with 0 replicas (Web App)
+> * **List Models Filter:** `firectl model list` supports `--name` and `--public-only` flags (CLI)
+> * **RFT Concurrency:** New `--max-concurrent-rollouts` and `--max-concurrent-evaluations` flags (CLI)
 
-  ## **Dataset Download**
+**2025-12-22**
 
-  You can now download datasets directly from the Fireworks web app. The new download functionality allows you to:
+Inference
 
-  * Download individual files from a dataset
-  * Download all files at once with "Download All"
-  * Access downloads from the Datasets table in the dashboard
+Training
 
-  ## **Weighted Training for Reinforcement Fine-Tuning**
+Platform
 
-  Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
+# Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
 
-  See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models#weighted-training) for details on the weight field format.
+## **Playground Categories**
 
-  ## ✨ New Models
+The Playground now features category tabs (LLM, Image, TTS, STT) in the header for easier switching between model types. The playground automatically detects the appropriate category based on the selected model and provides smart defaults for each category.
 
-  * **[KAT Coder](https://app.fireworks.ai/models/fireworks/kat-coder)** is now available in the Model Library
+## **User Roles: Contributor and Inference**
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Console Navigation:** Redesigned sidebar with organized groups (CREATE, EXPLORE, MANAGE) for easier navigation (Web App)
-    - **Fine-Tuning Progress Display:** Training progress (progress/epoch) now displays inline in the job title while Supervised Fine-Tuning jobs are running (Web App)
-    - **Reinforcement Fine-Tuning Evaluator Selection:** Evaluators that are still building are now disabled in the selector with a tooltip and status badge (Web App)
-    - **Loss Chart Smoothing:** Large datasets (>1000 metrics) now show EMA smoothing by default for improved visibility (Web App)
-    - **Checkpoint Restore:** Fixed base model resolution when promoting checkpoints from fine-tuning jobs (Web App)
-    - **Deployment Usage Charts:** Fixed usage graph display on deployment details page (Web App)
-    - **Evaluation Job Share Links:** Fixed incorrect output dataset share links and improved deep-link behavior for evaluation jobs (Web App)
-    - **Embedding Model Deployments:** Embedding models can now be deployed directly from the UI (Web App)
-    - **Dataset Download State:** Download option is now disabled for datasets that are still uploading (Web App)
-    - **GPU Hints:** Removed invalid GPU hints from region selector in deployment form (Web App)
-    - **PEFT Model Shapes:** Fixed deployment shape lookup for PEFT Addon and Live Merge models (Web App)
-    - **LoRA Validation:** Improved error messages when LoRA checkpoints are missing the required `language_model.` prefix, with actionable conversion instructions (API)
-    - **Reinforcement Fine-Tuning Timeout:** Extended maximum job timeout from 4 to 7 days for longer training runs (API)
-    - **Training Job Cancellation:** Added ability to cancel Supervised Fine-Tuning, DPO, and Reinforcement Fine-Tuning jobs via API (API)
-    - **Resource Errors:** Improved error messages for capacity-related issues during training and deployment (API)
-  </Accordion>
-</Update>
+New user roles provide more granular access control for team collaboration:
 
-<Update label="2025-11-24">
-  <Badge>Inference</Badge> <Badge>Training</Badge> <Badge>Platform</Badge>
+* **Contributor**: Read and write access to resources without administrative privileges
+* **Inference**: Read-only access with the ability to run inference on deployments
 
-  # Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
+Assign these roles when inviting team members to provide appropriate access levels.
 
-  ## **Improved Evaluator Creation Experience**
+## **Fine-Tuning Improvements**
 
-  The evaluator creation workflow has been significantly enhanced with GitHub template integration. You can now:
+Fine-tuning workflows have been enhanced with several new capabilities:
 
-  * Fork evaluator templates directly from GitHub repositories
-  * Browse and preview templates before using them
-  * Create evaluators with a streamlined save dialog
-  * View evaluators in a new sortable and paginated table
+* **Stop and Resume Jobs**: Stop running fine-tuning jobs and resume them later from where they left off. Available for Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs.
+* **Clone Jobs**: Quickly create new fine-tuning jobs based on existing job configurations using the Clone action.
+* **Download Output Datasets**: Download output datasets from Reinforcement Fine-Tuning jobs, including individual files or bulk download as a ZIP archive.
+* **Download Rollout Logs**: Download rollout logs from Reinforcement Fine-Tuning jobs for offline analysis.
 
-  ## **MLOps & Observability Integrations**
+## ✨ New Models
 
-  New documentation for integrating Fireworks with MLOps and observability tools:
+* **[Gemma 3 12B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-12b-it)** is now available in the Model Library
+* **[Gemma 3 4B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-4b-it)** is now available in the Model Library
+* **[Qwen3 Omni 30B A3B Instruct](https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct)** is now available in the Model Library
 
-  * [Weights & Biases (W\&B)](/ecosystem/integrations/wandb) integration for experiment tracking during fine-tuning
-  * MLflow integration for model management and experiment logging
+## 📚 Documentation Updates
 
-  ## ✨ New Models
+* **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
+* **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
+* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), [Execute Reinforcement Fine-Tuning Step](/api-reference/execute-reinforcement-fine-tuning-step), and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
+* **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
 
-  * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available in the Model Library
-  * **[KAT Dev 32B](https://app.fireworks.ai/models/fireworks/kat-dev-32b)** is now available in the Model Library
-  * **[KAT Dev 72B Exp](https://app.fireworks.ai/models/fireworks/kat-dev-72b-exp)** is now available in the Model Library
+> **Bug Fixes & Minor Improvements**
+>
+> * **Deployment Progress Display:** Deployment details page now shows live deployment progress with replica status (pending, downloading, initializing, ready) and error banners (Web App)
+> * **Multi-LoRA Display:** Deployment details page now shows all deployed models with expandable sections, not just the default model (Web App)
+> * **Audio Usage Charts:** Audio usage metrics are now displayed in a dedicated Voice tab on the Usage page with filtering support (Web App)
+> * **Deployment Shape Search:** Improved deployment shape discovery for models where exact base model matches aren't found, using parameter count bucketing (Web App)
+> * **Vision Model Auto-Detection:** Vision-language models (Qwen VL, LLaVA, Phi-3 Vision, etc.) now automatically have image input support enabled when uploaded (API)
+> * **Dataset Loading UX:** Output dataset tables now stream results with a progress indicator for faster perceived loading (Web App)
+> * **File Size Limit:** Dataset uploads now enforce a clear file size limit with improved error messaging (Web App)
+> * **Number Input Fields:** Improved number input validation across forms (Web App)
+> * **Combobox Responsiveness:** Improved combobox dropdown height on smaller screens (Web App)
+> * **Evaluator Editor Scroll:** Prevented accidental page navigation when scrolling inside the evaluator code editor (Web App)
+> * **Evaluator Save Dialog:** Fixed overflow issues in the save evaluator dialog (Web App)
+> * **Evaluator Selector Labels:** Fixed label rendering in async evaluator select components (Web App)
+> * **Deploy Button Validation:** Deploy button is now disabled when the model is not ready (Web App)
+> * **Model Metadata:** Fixed missing model metadata display on deployment pages (Web App)
+> * **Invoice Display:** Invoice list now shows "paid" status for contract payments (Web App)
+> * **Color Palette Update:** Updated UI color palette for improved visual consistency (Web App)
 
-  ## ☁️ Serverless
+**2025-12-15**
 
-  * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available on serverless
+Inference
 
-  ## 📚 New REST API Endpoints
+Training
 
-  New REST API endpoints are now available for managing Reinforcement Fine-Tuning Steps and deployments:
+Platform
 
-  * [Create Reinforcement Fine-Tuning Step](/api-reference/create-reinforcement-fine-tuning-step)
-  * [List Reinforcement Fine-Tuning Steps](/api-reference/list-reinforcement-fine-tuning-steps)
-  * [Get Reinforcement Fine-Tuning Step](/api-reference/get-reinforcement-fine-tuning-step)
-  * [Delete Reinforcement Fine-Tuning Step](/api-reference/delete-reinforcement-fine-tuning-step)
-  * [Scale Deployment](/api-reference/scale-deployment)
-  * [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)
-  * [Get Deployment Shape Version](/api-reference/get-deployment-shape-version)
-  * [Get Dataset Download Endpoint](/api-reference/get-dataset-download-endpoint)
+# Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
 
-  <Accordion title="Bug Fixes & Minor Improvements">
-    - **Deployment Region Selector:** Added GPU accelerator hints to the region selector, with Global set as default for optimal availability (Web App)
-    - **Preference Fine-Tuning (DPO):** Added to the Fine-Tuning page for training models with human preference data (Web App)
-    - **Redeem Credits:** Credit code redemption is now available to all users from the Billing page (Web App)
-    - **Model Library Search:** Improved fuzzy search with hybrid matching for better model discovery (Web App)
-    - **Cogito Models:** Added Cogito namespace to the Model Library for easier discovery (Web App)
-    - **Custom Model Editing:** You can now edit display name and description inline on custom model detail pages (Web App)
-    - **Loss Curve Charts:** Fixed an issue where loss curves were not updating in real-time during fine-tuning jobs (Web App)
-    - **Deployment Shapes:** Fixed deployment shape selection for fine-tuned models (PEFT and live-merge) (Web App)
-    - **Usage Charts:** Fixed replica calculation in multi-series usage charts (Web App)
-    - **Session Management:** Removed auto-logout on inactivity for improved user experience (Web App)
-    - **Onboarding:** Updated onboarding survey with improved profile and questionnaire flow (Web App)
-    - **Fine-Tuning Form:** Max context length now defaults to and is capped by the selected base model's context length (Web App)
-    - **Secrets for Evaluators:** Added documentation for using secrets in evaluators to securely call external services (Docs)
-    - **Region Selection:** Deprecated regions are now filtered from deployment options (Web App)
-    - **Playground:** Embedding and reranker models are now filtered from playground model selection (Web App)
-    - **LoRA Rank:** Updated valid LoRA rank range to 4-32 in documentation (Docs)
-    - **SFT Documentation:** Added documentation for batch size, learning rate warmup, and gradient accumulation settings (Docs)
-    - **Direct Routing:** Added OpenAI SDK code examples for direct routing (Docs)
-    - **Recommended Models:** Updated model recommendations with migration guidance from Claude, GPT, and Gemini (Docs)
-  </Accordion>
-</Update>
+## **Reasoning Guide**
 
-<Update label="2025-11-12">
-  <Badge>Training</Badge>
+A new [Reasoning guide](/guides/reasoning) is now available in the documentation. This comprehensive guide covers:
 
-  ## ☀️ Sunsetting Build SDK
+* Accessing `reasoning_content` from thinking/reasoning models
+* Controlling reasoning effort with the `reasoning_effort` parameter
+* Streaming with reasoning content
+* Interleaved thinking for multi-step tool-calling workflows
 
-  The Build SDK is being deprecated in favor of a new Python SDK generated
-  directly from our REST API. The new SDK is more up-to-date, flexible, and
-  continuously synchronized with our REST API. Please note that the last version
-  of the Build SDK will be `0.19.20`, and the new SDK will start at `1.0.0`.
-  Python package managers will not automatically update to the new SDK, so you
-  will need to manually update your dependencies and refactor your code.
+The guide provides code examples using the Fireworks Python SDK and explains how to work with models that support extended reasoning capabilities.
 
-  Existing codebases using the Build SDK will continue to function as before and
-  will not be affected unless you choose to upgrade to the new SDK version.
+## **Prompt Caching Updates**
 
-  The new SDK replaces the Build SDK's `LLM` and `Dataset` classes with REST
-  API-aligned methods. If you upgrade to version `1.0.0` or later, you will need
-  to migrate your code.
+Prompt caching documentation has been updated with expanded guidance:
 
-  ## 🚀 Improved RFT Experience
+* Cached prompt tokens on serverless now cost 50% less than uncached tokens
+* Session affinity routing via the `user` field or `x-session-affinity` header for improved cache hit rates
+* Prompt optimization techniques for maximizing cache efficiency
 
-  We've drastically improved the RFT experience with better reliability,
-  developer-friendly SDK for hooking up your existing agents, support for
-  multi-turn training, better observability in our Web App, and better overall
-  developer experience.
+See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
-  See [Reinforcement Fine-Tuning](/fine-tuning/reinforcement-fine-tuning-models) for more details.
-</Update>
+## ✨ New Models
 
-<Update label="2025-08-22">
-  <Badge>Training</Badge>
+* **[Devstral Small 2 24B Instruct 2512](https://app.fireworks.ai/models/fireworks/devstral-small-2-24b-instruct-2512)** is now available in the Model Library
+* **[NVIDIA Nemotron Nano 3 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-nano-3-30b-a3b)** is now available in the Model Library
 
-  ## Supervised Fine-Tuning
+## 📚 Documentation Updates
 
-  We now support supervised fine tuning with separate thinking traces for reasoning models (e.g. DeepSeek R1, GPT OSS, Qwen3 Thinking etc) that ensures training-inference consistency. An example including thinking traces would look like:
+* **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
+* **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
+* **OpenAI Compatibility:** Removed `stop` sequence documentation as Fireworks is now 1:1 compatible with OpenAI's behavior ([OpenAI Compatibility](/tools-sdks/openai-compatibility))
+* **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations ([Evals API Reference](/api-reference/list-evaluators))
+* **firectl CLI Reference:** Updated with new commands including `cancel dpo-job`, `cancel supervised-fine-tuning-job`, `set-api-key`, `redeem-credit-code`, and evaluator revision management
 
-  ```json theme={null}
-    {
-      "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the capital of France?"}, 
-        {"role": "assistant", "content": "Paris.", "reasoning_content": "The user is asking about the capital city of France, it should be Paris."}
-      ]
-    }
-    {
-      "messages": [
-        {"role": "user", "content": "What is 1+1?"},
-        {"role": "assistant", "content": "2", "weight": 0, "reasoning_content": "The user is asking about the result of 1+1, the answer is 2."},
-        {"role": "user", "content": "Now what is 2+2?"},
-        {"role": "assistant", "content": "4", "reasoning_content": "The user is asking about the result of 2+2, the answer should be 4."}
-      ]
-    }
-  ```
+> **Bug Fixes & Minor Improvements**
+>
+> * **Audio Usage Charts:** Added a Voice modality tab to the Usage page for viewing audio-specific usage metrics and charts (Web App)
+> * **Deployment Page Redesign:** Redesigned deployment details page with inline action buttons (Edit, Delete, Enable/Disable), reordered metadata sections, and collapsible API examples (Web App)
+> * **Deployment API Examples:** API code examples now use the deployment route as the canonical model identifier for clearer usage patterns (Web App)
+> * **LoRA Addons Tab:** Renamed "Serverless LoRA" tab to "LoRA Addons" on the deployments dashboard for clarity (Web App)
+> * **Evaluator Selector:** Improved evaluator selector UI to display both display name and evaluator ID for easier identification (Web App)
+> * **Evaluator Delete Confirmation:** Added confirmation modal with success/error feedback when deleting evaluators (Web App)
+> * **Evaluator Code Viewer:** Evaluator source files now load asynchronously, preventing browser freezes with large files (Web App)
+> * **Dataset Image Preview:** Dataset preview now properly renders image content in message bubbles and comparison views (Web App)
+> * **Model Search:** Improved model search accuracy by restricting results to display name and model ID matches only (Web App)
+> * **Fine-Tuning Progress Status:** Fine-tuning job detail pages now show the initial job status immediately on page load (Web App)
+> * **Evaluator Test Controls:** Dataset selection and pagination are now disabled while an evaluator test is running to prevent conflicts (Web App)
+> * **Repository Name Validation:** Evaluator repository names now validate against GitHub naming conventions (Web App)
+> * **Billing Contracts Tab:** Added a Contracts tab to the billing page alongside Invoices for viewing contract details (Web App)
+> * **Dataset Size Limit:** Enforced 1GB maximum file size for dataset uploads with clear error messaging (Web App)
+> * **Evaluator Documentation Link:** Fixed evaluator documentation links to point to the correct location (Web App)
+> * **Session Update Fix:** Fixed an issue with session state updates in the web app (Web App)
+> * **Popover Fix:** Fixed popover components nested in dialogs not displaying correctly (Web App)
+> * **Per-Replica Status:** Deployment status now shows per-replica counts (pending, downloading, initializing, ready) for better visibility into deployment progress (CLI, API)
+> * **set-api-key Command:** The `set-api-key` command is now visible in firectl help output (CLI)
+> * **DPO Resume:** Added support for resuming cancelled DPO fine-tuning jobs (API)
+> * **Reasoning Effort Normalization:** `reasoning_effort` parameter now accepts boolean values in addition to strings and integers (API)
 
-  We are also properly supporting multi-turn fine tuning (with or without thinking traces) for GPT OSS model family that ensures training-inference consistency.
-</Update>
+**2025-12-08**
 
-<Update label="2025-08-10">
-  <Badge>Training</Badge>
+Inference
 
-  ## Supervised Fine-Tuning
+Training
 
-  We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GPT OSS models for supervised fine-tuning. GPT OSS model fine tunning support is single-turn without thinking traces at the moment.
-</Update>
+Platform
 
-<Update label="2025-07-29">
-  <Badge>Training</Badge> <Badge>Platform</Badge>
+# DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
 
-  ## 🎨 Vision-Language Model Fine-Tuning
+## ☁️ Serverless
 
-  You can now fine-tune Vision-Language Models (VLMs) on Fireworks AI using the Qwen 2.5 VL model family.
-  This extends our Supervised Fine-tuning V2 platform to support multimodal training with both images and text data.
+* **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available on serverless
 
-  **Supported models:**
+## **Cached Token Pricing Display**
 
-  * Qwen 2.5 VL 3B Instruct
-  * Qwen 2.5 VL 7B Instruct
-  * Qwen 2.5 VL 32B Instruct
-  * Qwen 2.5 VL 72B Instruct
+The Model Library and model detail pages now display cached and uncached input
+token pricing for serverless models that support prompt caching. This gives you
+better visibility into potential cost savings when using prompt caching with
+supported models.
 
-  **Features:**
+## **Evaluations Dashboard Improvements**
 
-  * Fine-tune on datasets containing both images and text in JSONL format with base64-encoded images
-  * Support for up to 64K context length during training
-  * Built on the same Supervised Fine-tuning V2 infrastructure as text models
+The Evaluations dashboard has been enhanced with new filtering and status tracking capabilities:
 
-  See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-training) for setup instructions and dataset formatting requirements.
+* Status column showing evaluator build state (Active, Building, Failed)
+* Quick filters to filter evaluators and evaluation jobs by status
+* Improved table layout with actions integrated into the status column
 
-  ## 🔧 Build SDK: Deployment Configuration Application Requirement
+## ✨ New Models
 
-  The Build SDK now requires you to call `.apply()` to apply any deployment configurations to Fireworks when using `deployment_type="on-demand"` or `deployment_type="on-demand-lora"`. This change ensures explicit control over when deployments are created and helps prevent accidental deployment creation.
+* **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available in the Model Library
+* **[Ministral 3 14B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-14b-instruct-2512)** is now available in the Model Library
+* **[Ministral 3 8B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-8b-instruct-2512)** is now available in the Model Library
+* **[Ministral 3 3B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-3b-instruct-2512)** is now available in the Model Library
+* **[Mistral Large 3 675B Instruct](https://app.fireworks.ai/models/fireworks/mistral-large-3-fp8)** is now available in the Model Library
+* **[Qwen3-VL-32B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-32b-instruct)** is now available in the Model Library
+* **[Qwen3-VL-8B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-8b-instruct)** is now available in the Model Library
 
-  **Key changes:**
+## 📚 Documentation Updates
 
-  * `.apply()` is now required for on-demand and on-demand-lora deployments
-  * Serverless deployments do not require `.apply()` calls
-  * If you do not call `.apply()`, you are expected to set up the deployment through the deployment page at [https://app.fireworks.ai/dashboard/deployments](https://app.fireworks.ai/dashboard/deployments)
+* **Reranking Guide:** Added documentation for using the `/rerank` endpoint and `/embeddings` endpoint with `return_logits` for reranking, including parallel batching examples ([Querying Embeddings Models](/guides/querying-embeddings-models))
 
-  **Migration guide:**
+> **Bug Fixes & Minor Improvements**
+>
+> * **Deployment Page Enhancements:** Redesigned deployment detail page with new model header, quick actions (Playground, Go to Model), tabbed API/Info interface, collapsible code examples, and improved GPU count display (Web App)
+> * **Login Page Redesign:** New marketing panel with customer testimonials carousel, highlighted platform capabilities, and improved visual design (Web App)
+> * **Playground CTA:** Added "Deploy on Demand" button next to "Try the API" for eligible models, making it easier to deploy models directly from the playground (Web App)
+> * **Console Navigation Icons:** Updated sidebar icons with a refreshed icon set for improved visual consistency (Web App)
+> * **Reinforcement Fine-Tuning Defaults:** Changed default epochs to 1 and increased maximum inference N from 8 to 32 for rollout configuration (Web App)
+> * **Failed Job Visibility:** Training progress and loss curves now display for failed and cancelled fine-tuning jobs, helping with debugging (Web App)
+> * **Large Dataset Uploads:** Improved upload handling for large JSONL files with progress tracking and direct-to-storage uploads (Web App)
+> * **Dataset Preview:** Fixed page freeze issue when previewing datasets with very long text content (Web App)
+> * **Loss Chart Y-Axis:** Fixed y-axis scaling on loss charts to properly display the full range of values (Web App)
+> * **Model Deletion Dialog:** Improved custom model delete confirmation dialog with better validation and feedback (Web App)
+> * **Billing Date Range:** Fixed date range calculation errors on the first day of the month in billing usage views (Web App)
+> * **Login Session:** Fixed an issue where expired sessions required manual cookie clearing to log in again (Web App)
+> * **Rollout Detail Panel:** Improved rollout log viewing with resizable split panels and better log formatting (Web App)
+> * **Checkpoint Promotion:** Added validation and error messages when promoting checkpoints with missing target modules or base model (Web App)
+> * **Model Validation:** Added validation before deploying fine-tuned models to ensure the model ID is valid (Web App)
+> * **Quota Error Message:** Improved error message clarity when request quota is exceeded in the playground (Web App)
+> * **Safari Layout:** Fixed extra spacing in login page marketing panel on Safari browsers (Web App)
 
-  * Add `llm.apply()` after creating LLM instances with `deployment_type="on-demand"` or `deployment_type="on-demand-lora"`
-  * No changes needed for serverless deployments
-  * See updated documentation for examples and best practices
+**2025-12-01**
 
-  This change improves deployment management and provides better control over resource creation.
+Inference
 
-  <Note>
-    This applies to Python SDK version `>=0.19.14`.
-  </Note>
-</Update>
+Training
 
-<Update label="2025-07-23">
-  <Badge>Training</Badge>
+Platform
 
-  ## 🚀 Bring Your Own Rollout and Reward Development for Reinforcement Learning
+# Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
 
-  You can now develop your own custom rollout and reward functionality while using
-  Fireworks to manage the training and deployment of your models. This gives you
-  full control over your reinforcement learning workflows while leveraging
-  Fireworks' infrastructure for model training and deployment.
+## **Audit Logs in Web App**
 
-  See the new [LLM.reinforcement\_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
-</Update>
+You can now view and search audit logs directly from the Fireworks web app. The new Audit Logs page provides:
 
-<Update label="2025-07-16">
-  <Badge>Training</Badge>
+* Search and filter logs by status and timeframe
+* Detailed view panel for individual log entries
+* Easy navigation from the console sidebar under Account settings
 
-  ## Supervised Fine-Tuning V2
+See the [Audit Logs documentation](/guides/security_compliance/audit_logs) for more information.
 
-  We now support Llama 4 MoE model supervised fine-tuning (Llama 4 Scout, Llama 4 Maverick, Text only).
-</Update>
+## **Dataset Download**
 
-<Update label="2025-07-10">
-  <Badge>Platform</Badge>
+You can now download datasets directly from the Fireworks web app. The new download functionality allows you to:
 
-  ## 🏗️ Build SDK `LLM` Deployment Logic Refactor
+* Download individual files from a dataset
+* Download all files at once with "Download All"
+* Access downloads from the Datasets table in the dashboard
 
-  Based on early feedback from users and internal testing, we've refactored the
-  `LLM` class deployment logic in the Build SDK to make it easier to understand.
+## **Weighted Training for Reinforcement Fine-Tuning**
 
-  **Key changes:**
+Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
-  * The `id` parameter is now required when `deployment_type` is `"on-demand"`
-  * The `base_id` parameter is now required when `deployment_type` is `"on-demand-lora"`
-  * The `deployment_display_name` parameter is now optional and defaults to the filename where the LLM was instantiated
+See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models#weighted-training) for details on the weight field format.
 
-  A new deployment will be created if a deployment with the same `id` does not
-  exist. Otherwise, the existing deployment will be reused.
-</Update>
+## ✨ New Models
 
-<Update label="2025-07-02">
-  <Badge>Inference</Badge>
+* **[KAT Coder](https://app.fireworks.ai/models/fireworks/kat-coder)** is now available in the Model Library
 
-  ## 🚀 Support for Responses API in Python SDK
+> **Bug Fixes & Minor Improvements**
+>
+> * **Console Navigation:** Redesigned sidebar with organized groups (CREATE, EXPLORE, MANAGE) for easier navigation (Web App)
+> * **Fine-Tuning Progress Display:** Training progress (progress/epoch) now displays inline in the job title while Supervised Fine-Tuning jobs are running (Web App)
+> * **Reinforcement Fine-Tuning Evaluator Selection:** Evaluators that are still building are now disabled in the selector with a tooltip and status badge (Web App)
+> * **Loss Chart Smoothing:** Large datasets (>1000 metrics) now show EMA smoothing by default for improved visibility (Web App)
+> * **Checkpoint Restore:** Fixed base model resolution when promoting checkpoints from fine-tuning jobs (Web App)
+> * **Deployment Usage Charts:** Fixed usage graph display on deployment details page (Web App)
+> * **Evaluation Job Share Links:** Fixed incorrect output dataset share links and improved deep-link behavior for evaluation jobs (Web App)
+> * **Embedding Model Deployments:** Embedding models can now be deployed directly from the UI (Web App)
+> * **Dataset Download State:** Download option is now disabled for datasets that are still uploading (Web App)
+> * **GPU Hints:** Removed invalid GPU hints from region selector in deployment form (Web App)
+> * **PEFT Model Shapes:** Fixed deployment shape lookup for PEFT Addon and Live Merge models (Web App)
+> * **LoRA Validation:** Improved error messages when LoRA checkpoints are missing the required `language_model.` prefix, with actionable conversion instructions (API)
+> * **Reinforcement Fine-Tuning Timeout:** Extended maximum job timeout from 4 to 7 days for longer training runs (API)
+> * **Training Job Cancellation:** Added ability to cancel Supervised Fine-Tuning, DPO, and Reinforcement Fine-Tuning jobs via API (API)
+> * **Resource Errors:** Improved error messages for capacity-related issues during training and deployment (API)
 
-  You can now use the Responses API in the Python SDK. This is useful if you want to use the Responses API in your own applications.
+**2025-11-24**
 
-  See the [Responses API guide](/guides/response-api) for usage examples and details.
-</Update>
+Inference
 
-<Update label="2025-07-01">
-  <Badge>Platform</Badge>
+Training
 
-  ## Support for LinkedIn authentication
+Platform
 
-  You can now log in to Fireworks using your LinkedIn account. This is useful if
-  you already have a LinkedIn account and want to use it to log in to Fireworks.
+# Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
 
-  To log in with LinkedIn, go to the [Fireworks login
-  page](https://fireworks.ai/login) and click the "Continue with LinkedIn"
-  button.
+## **Improved Evaluator Creation Experience**
 
-  You can also log in with LinkedIn from the CLI using the `firectl login`
-  command.
+The evaluator creation workflow has been significantly enhanced with GitHub template integration. You can now:
 
-  **How it works:**
+* Fork evaluator templates directly from GitHub repositories
+* Browse and preview templates before using them
+* Create evaluators with a streamlined save dialog
+* View evaluators in a new sortable and paginated table
 
-  * Fireworks uses your LinkedIn primary email address for account identification
-  * You can switch between different Fireworks accounts by changing your LinkedIn primary email
-  * See our [LinkedIn authentication FAQ](/faq-new/account-access/what-email-does-linkedin-authentication-use) for detailed instructions on managing email addresses
-</Update>
+## **MLOps & Observability Integrations**
 
-<Update label="2025-06-30">
-  <Badge>Inference</Badge> <Badge>Platform</Badge>
+New documentation for integrating Fireworks with MLOps and observability tools:
 
-  ## Support for GitHub authentication
+* [Weights & Biases (W\&B)](/ecosystem/integrations/wandb) integration for experiment tracking during fine-tuning
+* MLflow integration for model management and experiment logging
 
-  You can now log in to Fireworks using your GitHub account. This is useful if
-  you already have a GitHub account and want to use it to log in to Fireworks.
+## ✨ New Models
 
-  To log in with GitHub, go to the [Fireworks login
-  page](https://fireworks.ai/login) and click the "Continue with GitHub"
-  button.
+* **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available in the Model Library
+* **[KAT Dev 32B](https://app.fireworks.ai/models/fireworks/kat-dev-32b)** is now available in the Model Library
+* **[KAT Dev 72B Exp](https://app.fireworks.ai/models/fireworks/kat-dev-72b-exp)** is now available in the Model Library
 
-  You can also log in with GitHub from the CLI using the `firectl login`
-  command.
+## ☁️ Serverless
 
-  ## 🚨 Document Inlining Deprecation
+* **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available on serverless
 
-  Document Inlining has been deprecated and is no longer available on the Fireworks platform. This feature allowed LLMs to process images and PDFs through the chat completions API by appending `#transform=inline` to document URLs.
+## 📚 New REST API Endpoints
 
-  **Migration recommendations:**
+New REST API endpoints are now available for managing Reinforcement Fine-Tuning Steps and deployments:
 
-  * For image processing: Use Vision Language Models (VLMs) like [Qwen2.5-VL 32B Instruct](https://app.fireworks.ai/models/fireworks/qwen2p5-vl-32b-instruct)
-  * For PDF processing: Use dedicated PDF processing libraries combined with text-based LLMs
-  * For structured extraction: Leverage our [structured responses](/structured-responses/structured-response-formatting) capabilities
+* [Create Reinforcement Fine-Tuning Step](/api-reference/create-reinforcement-fine-tuning-step)
+* [List Reinforcement Fine-Tuning Steps](/api-reference/list-reinforcement-fine-tuning-steps)
+* [Get Reinforcement Fine-Tuning Step](/api-reference/get-reinforcement-fine-tuning-step)
+* [Delete Reinforcement Fine-Tuning Step](/api-reference/delete-reinforcement-fine-tuning-step)
+* [Scale Deployment](/api-reference/scale-deployment)
+* [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)
+* [Get Deployment Shape Version](/api-reference/get-deployment-shape-version)
+* [Get Dataset Download Endpoint](/api-reference/get-dataset-download-endpoint)
 
-  For assistance with migration, please contact our support team or visit our [Discord community](https://discord.gg/fireworks-ai).
-</Update>
+> **Bug Fixes & Minor Improvements**
+>
+> * **Deployment Region Selector:** Added GPU accelerator hints to the region selector, with Global set as default for optimal availability (Web App)
+> * **Preference Fine-Tuning (DPO):** Added to the Fine-Tuning page for training models with human preference data (Web App)
+> * **Redeem Credits:** Credit code redemption is now available to all users from the Billing page (Web App)
+> * **Model Library Search:** Improved fuzzy search with hybrid matching for better model discovery (Web App)
+> * **Cogito Models:** Added Cogito namespace to the Model Library for easier discovery (Web App)
+> * **Custom Model Editing:** You can now edit display name and description inline on custom model detail pages (Web App)
+> * **Loss Curve Charts:** Fixed an issue where loss curves were not updating in real-time during fine-tuning jobs (Web App)
+> * **Deployment Shapes:** Fixed deployment shape selection for fine-tuned models (PEFT and live-merge) (Web App)
+> * **Usage Charts:** Fixed replica calculation in multi-series usage charts (Web App)
+> * **Session Management:** Removed auto-logout on inactivity for improved user experience (Web App)
+> * **Onboarding:** Updated onboarding survey with improved profile and questionnaire flow (Web App)
+> * **Fine-Tuning Form:** Max context length now defaults to and is capped by the selected base model's context length (Web App)
+> * **Secrets for Evaluators:** Added documentation for using secrets in evaluators to securely call external services (Docs)
+> * **Region Selection:** Deprecated regions are now filtered from deployment options (Web App)
+> * **Playground:** Embedding and reranker models are now filtered from playground model selection (Web App)
+> * **LoRA Rank:** Updated valid LoRA rank range to 4-32 in documentation (Docs)
+> * **SFT Documentation:** Added documentation for batch size, learning rate warmup, and gradient accumulation settings (Docs)
+> * **Direct Routing:** Added OpenAI SDK code examples for direct routing (Docs)
+> * **Recommended Models:** Updated model recommendations with migration guidance from Claude, GPT, and Gemini (Docs)
 
-<Update label="2025-06-24">
-  <Badge>Inference</Badge> <Badge>Training</Badge>
+**2025-11-12**
 
-  ## 🎯 Build SDK: Reward-kit integration for evaluator development
+Training
 
-  The Build SDK now natively integrates with [reward-kit](https://github.com/fw-ai-external/reward-kit) to simplify evaluator development for [Reinforcement Fine-Tuning (RFT)](/fine-tuning/reinforcement-fine-tuning-models). You can now create custom evaluators in Python with automatic dependency management and seamless deployment to Fireworks infrastructure.
+## ☀️ Sunsetting Build SDK
 
-  **Key features:**
+The Build SDK is being deprecated in favor of a new Python SDK generated
+directly from our REST API. The new SDK is more up-to-date, flexible, and
+continuously synchronized with our REST API. Please note that the last version
+of the Build SDK will be `0.19.20`, and the new SDK will start at `1.0.0`.
+Python package managers will not automatically update to the new SDK, so you
+will need to manually update your dependencies and refactor your code.
 
-  * Native reward-kit integration for evaluator development
-  * Automatic packaging of dependencies from `pyproject.toml` or `requirements.txt`
-  * Local testing capabilities before deployment
-  * Direct integration with Fireworks datasets and evaluation jobs
-  * Support for third-party libraries and complex evaluation logic
+Existing codebases using the Build SDK will continue to function as before and
+will not be affected unless you choose to upgrade to the new SDK version.
 
-  See our [Developing Evaluators](/tools-sdks/python-client/developing-evaluators) guide to get started with your first evaluator in minutes.
+The new SDK replaces the Build SDK's `LLM` and `Dataset` classes with REST
+API-aligned methods. If you upgrade to version `1.0.0` or later, you will need
+to migrate your code.
 
-  ## Added new Responses API for advanced conversational workflows and integrations
+## 🚀 Improved RFT Experience
 
-  * Continue conversations across multiple turns using the `previous_response_id` parameter to maintain context without resending full history
-  * Stream responses in real time as they are generated for responsive applications
-  * Control response storage with the `store` parameter—choose whether responses are retrievable by ID or ephemeral
+We've drastically improved the RFT experience with better reliability,
+developer-friendly SDK for hooking up your existing agents, support for
+multi-turn training, better observability in our Web App, and better overall
+developer experience.
 
-  See the [Response API guide](/guides/response-api) for usage examples and details.
-</Update>
+See [Reinforcement Fine-Tuning](/fine-tuning/reinforcement-fine-tuning-models) for more details.
 
-<Update label="2025-06-13">
-  <Badge>Training</Badge>
+**2025-08-22**
 
-  ## Supervised Fine-Tuning V2
+Training
 
-  Supervised Fine-Tuning V2 released.
+## Supervised Fine-Tuning
 
-  **Key features:**
+We now support supervised fine tuning with separate thinking traces for reasoning models (e.g. DeepSeek R1, GPT OSS, Qwen3 Thinking etc) that ensures training-inference consistency. An example including thinking traces would look like:
 
-  * Supports Qwen 2/2.5/3 series, Phi 4, Gemma 3, the Llama 3 family, Deepseek V2, V3, R1
-  * Longer context window up to full context length of the supported models
-  * Multi-turn function calling fine-tuning
-  * Quantization aware training
+```json theme={null}
+  {
+    "messages": [
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is the capital of France?"}, 
+      {"role": "assistant", "content": "Paris.", "reasoning_content": "The user is asking about the capital city of France, it should be Paris."}
+    ]
+  }
+  {
+    "messages": [
+      {"role": "user", "content": "What is 1+1?"},
+      {"role": "assistant", "content": "2", "weight": 0, "reasoning_content": "The user is asking about the result of 1+1, the answer is 2."},
+      {"role": "user", "content": "Now what is 2+2?"},
+      {"role": "assistant", "content": "4", "reasoning_content": "The user is asking about the result of 2+2, the answer should be 4."}
+    ]
+  }
+```
 
-  More details in the [blogpost](https://fireworks.ai/blog/supervised-finetuning-v2).
+We are also properly supporting multi-turn fine tuning (with or without thinking traces) for GPT OSS model family that ensures training-inference consistency.
 
-  ## Reinforcement Fine-Tuning (RFT)
+**2025-08-10**
 
-  Reinforcement Fine-Tuning released. Train expert models to surpass closed source frontier models through verifiable reward. More details in [blospost](https://fireworks.ai/blog/reinforcement-fine-tuning-models).
-</Update>
+Training
 
-<Update label="2025-05-20">
-  <Badge>Inference</Badge>
+## Supervised Fine-Tuning
 
-  ## Diarization and batch processing support added to audio inference
+We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GPT OSS models for supervised fine-tuning. GPT OSS model fine tunning support is single-turn without thinking traces at the moment.
 
-  See our [blog post](https://fireworks.ai/blog/audio-summer-updates-and-new-features) for details.
-</Update>
+**2025-07-29**
 
-<Update label="2025-05-19">
-  <Badge>Training</Badge>
+Training
 
-  ## 🚀 Easier & faster LoRA fine-tune deployments on Fireworks
+Platform
 
-  You can now deploy a LoRA fine-tune with a single command and get speeds that approximately match the base model:
+## 🎨 Vision-Language Model Fine-Tuning
 
-  ```bash theme={null}
-  firectl deployment create "accounts/fireworks/models/<MODEL_ID of lora model>"
-  ```
+You can now fine-tune Vision-Language Models (VLMs) on Fireworks AI using the Qwen 2.5 VL model family.
+This extends our Supervised Fine-tuning V2 platform to support multimodal training with both images and text data.
 
-  Previously, this involved two distinct steps, and the resulting deployment was slower than the base model:
+**Supported models:**
 
-  1. Create a deployment using `firectl deployment create "accounts/fireworks/models/<MODEL_ID of base model>" --enable-addons`
-  2. Then deploy the addon to the deployment: `firectl load-lora <MODEL_ID> --deployment <DEPLOYMENT_ID>`
+* Qwen 2.5 VL 3B Instruct
+* Qwen 2.5 VL 7B Instruct
+* Qwen 2.5 VL 32B Instruct
+* Qwen 2.5 VL 72B Instruct
 
-  For more information, see our [deployment documentation](https://docs.fireworks.ai/models/deploying#deploying-to-on-demand).
+**Features:**
 
-  <Note>
-    This change is for dedicated deployments with a single LoRA. You can still deploy multiple LoRAs on a deployment as described in the documentation.
-  </Note>
-</Update>
+* Fine-tune on datasets containing both images and text in JSONL format with base64-encoded images
+* Support for up to 64K context length during training
+* Built on the same Supervised Fine-tuning V2 infrastructure as text models
+
+See the [VLM fine-tuning documentation](/fine-tuning/fine-tuning-models#vision-training) for setup instructions and dataset formatting requirements.
+
+## 🔧 Build SDK: Deployment Configuration Application Requirement
+
+The Build SDK now requires you to call `.apply()` to apply any deployment configurations to Fireworks when using `deployment_type="on-demand"` or `deployment_type="on-demand-lora"`. This change ensures explicit control over when deployments are created and helps prevent accidental deployment creation.
+
+**Key changes:**
+
+* `.apply()` is now required for on-demand and on-demand-lora deployments
+* Serverless deployments do not require `.apply()` calls
+* If you do not call `.apply()`, you are expected to set up the deployment through the deployment page at [https://app.fireworks.ai/dashboard/deployments](https://app.fireworks.ai/dashboard/deployments)
+
+**Migration guide:**
+
+* Add `llm.apply()` after creating LLM instances with `deployment_type="on-demand"` or `deployment_type="on-demand-lora"`
+* No changes needed for serverless deployments
+* See updated documentation for examples and best practices
+
+This change improves deployment management and provides better control over resource creation.
+
+> [!NOTE]
+>
+> This applies to Python SDK version `>=0.19.14`.
+
+**2025-07-23**
+
+Training
+
+## 🚀 Bring Your Own Rollout and Reward Development for Reinforcement Learning
+
+You can now develop your own custom rollout and reward functionality while using
+Fireworks to manage the training and deployment of your models. This gives you
+full control over your reinforcement learning workflows while leveraging
+Fireworks' infrastructure for model training and deployment.
+
+See the new [LLM.reinforcement\_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
+
+**2025-07-16**
+
+Training
+
+## Supervised Fine-Tuning V2
+
+We now support Llama 4 MoE model supervised fine-tuning (Llama 4 Scout, Llama 4 Maverick, Text only).
+
+**2025-07-10**
+
+Platform
+
+## 🏗️ Build SDK `LLM` Deployment Logic Refactor
+
+Based on early feedback from users and internal testing, we've refactored the
+`LLM` class deployment logic in the Build SDK to make it easier to understand.
+
+**Key changes:**
+
+* The `id` parameter is now required when `deployment_type` is `"on-demand"`
+* The `base_id` parameter is now required when `deployment_type` is `"on-demand-lora"`
+* The `deployment_display_name` parameter is now optional and defaults to the filename where the LLM was instantiated
+
+A new deployment will be created if a deployment with the same `id` does not
+exist. Otherwise, the existing deployment will be reused.
+
+**2025-07-02**
+
+Inference
+
+## 🚀 Support for Responses API in Python SDK
+
+You can now use the Responses API in the Python SDK. This is useful if you want to use the Responses API in your own applications.
+
+See the [Responses API guide](/guides/response-api) for usage examples and details.
+
+**2025-07-01**
+
+Platform
+
+## Support for LinkedIn authentication
+
+You can now log in to Fireworks using your LinkedIn account. This is useful if
+you already have a LinkedIn account and want to use it to log in to Fireworks.
+
+To log in with LinkedIn, go to the [Fireworks login
+page](https://fireworks.ai/login) and click the "Continue with LinkedIn"
+button.
+
+You can also log in with LinkedIn from the CLI using the `firectl login`
+command.
+
+**How it works:**
+
+* Fireworks uses your LinkedIn primary email address for account identification
+* You can switch between different Fireworks accounts by changing your LinkedIn primary email
+* See our [LinkedIn authentication FAQ](/faq-new/account-access/what-email-does-linkedin-authentication-use) for detailed instructions on managing email addresses
+
+**2025-06-30**
+
+Inference
+
+Platform
+
+## Support for GitHub authentication
+
+You can now log in to Fireworks using your GitHub account. This is useful if
+you already have a GitHub account and want to use it to log in to Fireworks.
+
+To log in with GitHub, go to the [Fireworks login
+page](https://fireworks.ai/login) and click the "Continue with GitHub"
+button.
+
+You can also log in with GitHub from the CLI using the `firectl login`
+command.
+
+## 🚨 Document Inlining Deprecation
+
+Document Inlining has been deprecated and is no longer available on the Fireworks platform. This feature allowed LLMs to process images and PDFs through the chat completions API by appending `#transform=inline` to document URLs.
+
+**Migration recommendations:**
+
+* For image processing: Use Vision Language Models (VLMs) like [Qwen2.5-VL 32B Instruct](https://app.fireworks.ai/models/fireworks/qwen2p5-vl-32b-instruct)
+* For PDF processing: Use dedicated PDF processing libraries combined with text-based LLMs
+* For structured extraction: Leverage our [structured responses](/structured-responses/structured-response-formatting) capabilities
+
+For assistance with migration, please contact our support team or visit our [Discord community](https://discord.gg/fireworks-ai).
+
+**2025-06-24**
+
+Inference
+
+Training
+
+## 🎯 Build SDK: Reward-kit integration for evaluator development
+
+The Build SDK now natively integrates with [reward-kit](https://github.com/fw-ai-external/reward-kit) to simplify evaluator development for [Reinforcement Fine-Tuning (RFT)](/fine-tuning/reinforcement-fine-tuning-models). You can now create custom evaluators in Python with automatic dependency management and seamless deployment to Fireworks infrastructure.
+
+**Key features:**
+
+* Native reward-kit integration for evaluator development
+* Automatic packaging of dependencies from `pyproject.toml` or `requirements.txt`
+* Local testing capabilities before deployment
+* Direct integration with Fireworks datasets and evaluation jobs
+* Support for third-party libraries and complex evaluation logic
+
+See our [Developing Evaluators](/tools-sdks/python-client/developing-evaluators) guide to get started with your first evaluator in minutes.
+
+## Added new Responses API for advanced conversational workflows and integrations
+
+* Continue conversations across multiple turns using the `previous_response_id` parameter to maintain context without resending full history
+* Stream responses in real time as they are generated for responsive applications
+* Control response storage with the `store` parameter—choose whether responses are retrievable by ID or ephemeral
+
+See the [Response API guide](/guides/response-api) for usage examples and details.
+
+**2025-06-13**
+
+Training
+
+## Supervised Fine-Tuning V2
+
+Supervised Fine-Tuning V2 released.
+
+**Key features:**
+
+* Supports Qwen 2/2.5/3 series, Phi 4, Gemma 3, the Llama 3 family, Deepseek V2, V3, R1
+* Longer context window up to full context length of the supported models
+* Multi-turn function calling fine-tuning
+* Quantization aware training
+
+More details in the [blogpost](https://fireworks.ai/blog/supervised-finetuning-v2).
+
+## Reinforcement Fine-Tuning (RFT)
+
+Reinforcement Fine-Tuning released. Train expert models to surpass closed source frontier models through verifiable reward. More details in [blospost](https://fireworks.ai/blog/reinforcement-fine-tuning-models).
+
+**2025-05-20**
+
+Inference
+
+## Diarization and batch processing support added to audio inference
+
+See our [blog post](https://fireworks.ai/blog/audio-summer-updates-and-new-features) for details.
+
+**2025-05-19**
+
+Training
+
+## 🚀 Easier & faster LoRA fine-tune deployments on Fireworks
+
+You can now deploy a LoRA fine-tune with a single command and get speeds that approximately match the base model:
+
+```bash theme={null}
+firectl deployment create "accounts/fireworks/models/<MODEL_ID of lora model>"
+```
+
+Previously, this involved two distinct steps, and the resulting deployment was slower than the base model:
+
+1. Create a deployment using `firectl deployment create "accounts/fireworks/models/<MODEL_ID of base model>" --enable-addons`
+2. Then deploy the addon to the deployment: `firectl load-lora <MODEL_ID> --deployment <DEPLOYMENT_ID>`
+
+For more information, see our [deployment documentation](/fine-tuning/deploying-loras#live-merge-deployment).
+
+> [!NOTE]
+>
+> This change is for dedicated deployments with a single LoRA. You can still deploy multiple LoRAs on a deployment as described in the documentation.

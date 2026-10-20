@@ -212,7 +212,7 @@ Execute a TRQL query against your Trigger.dev data. TRQL is a SQL-style query la
 
 ### list\_dashboards
 
-List available built-in dashboards with their widgets. Each dashboard contains pre-built queries for common metrics.
+List the built-in dashboards and your organization's custom dashboards, with their widgets.
 
 **Example usage:**
 
@@ -221,12 +221,30 @@ List available built-in dashboards with their widgets. Each dashboard contains p
 
 ### run\_dashboard\_query
 
-Execute a single widget query from a built-in dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
+Execute a single widget query from a built-in or custom dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
 
 **Example usage:**
 
 * `"Run the total runs widget from the overview dashboard"`
 * `"Show me the LLM cost over time from the AI dashboard"`
+
+### create\_dashboard
+
+Create a custom dashboard, optionally with widgets. Each widget has a title, a TRQL query and a display: a table, a bar or line chart, a big number, or a section title. Queries are checked when the dashboard is saved.
+
+**Example usage:**
+
+* `"Make a dashboard for the email tasks with total runs, failures and runs per day"`
+* `"Create a dashboard that charts p95 duration by task"`
+
+### set\_dashboard\_widgets
+
+Replace every widget on a custom dashboard, and optionally rename it.
+
+**Example usage:**
+
+* `"Add a failed runs widget to the email dashboard"`
+* `"Change the runs per day chart to a line chart"`
 
 ### get\_report
 
@@ -268,7 +286,7 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Are there any build errors?"`
 
 <Callout type="warning">
-  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, and replay\_run.
+  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
 </Callout>
 
 ## Agent Chat Tools

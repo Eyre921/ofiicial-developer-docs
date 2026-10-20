@@ -35,9 +35,9 @@ There are no breaking changes. Existing requests keep working as-is. This guide 
 
 The examples below use `openai/gpt-6-astra` for async tools and `openai/gpt-6-sol` for effort updates. Every request shape is the same on `openai/gpt-6-luna`.
 
-<Note>
-  OpenAI supports `configuration_update` on the standard GPT-6 models (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) in single-agent mode only. In pro mode (`reasoning.mode: "pro"`, or a `-pro` slug such as `openai/gpt-6-sol-pro`) OpenAI rejects the item with `The 'configuration_update' item type is not supported with pro or tournament models.` Keep mid-conversation effort changes on the standard models. On OpenRouter, a request that carries an update is routed only to endpoints that accept it, and a request for a model that does not support it is rejected with a 400 rather than sent with the update silently dropped.
-</Note>
+> [!NOTE]
+>
+> OpenAI supports `configuration_update` on the standard GPT-6 models (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) in single-agent mode only. In pro mode (`reasoning.mode: "pro"`, or a `-pro` slug such as `openai/gpt-6-sol-pro`) OpenAI rejects the item with `The 'configuration_update' item type is not supported with pro or tournament models.` Keep mid-conversation effort changes on the standard models. On OpenRouter, a request that carries an update is routed only to endpoints that accept it, and a request for a model that does not support it is rejected with a 400 rather than sent with the update silently dropped.
 
 ## Async Tool Calling
 

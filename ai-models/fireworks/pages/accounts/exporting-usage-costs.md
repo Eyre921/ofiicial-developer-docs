@@ -12,15 +12,15 @@ Fireworks provides a CLI tool to export **rated dollar costs** for serverless in
 
 The export is the CSV counterpart of [`POST /usageCosts:query`](/api-reference/query-usage-costs).
 
-<Note title="Which export do I want?">
-  * **This page** — rated dollar costs for serverless inference, as a CSV grouped by model, model tier, user, or API key.
-  * **[Exporting Billing Metrics](/accounts/exporting-billing-metrics)** — metered quantities (tokens, accelerator-seconds) for every usage type, one CSV row per usage event. No dollars.
-  * **[Usage & Cost Breakdown](/accounts/exporting-usage-and-costs)** — the same data as ad-hoc CLI or HTTP API queries rather than a CSV, with richer grouping and filtering.
-</Note>
+> [!NOTE]
+>
+> * **This page** — rated dollar costs for serverless inference, as a CSV grouped by model, model tier, user, or API key.
+> * **[Exporting Billing Metrics](/accounts/exporting-billing-metrics)** — metered quantities (tokens, accelerator-seconds) for every usage type, one CSV row per usage event. No dollars.
+> * **[Usage & Cost Breakdown](/accounts/exporting-usage-and-costs)** — the same data as ad-hoc CLI or HTTP API queries rather than a CSV, with richer grouping and filtering.
 
-<Note>
-  This export reports costs for the whole account, so it requires **account administrator** access. Non-admin users can read their own costs through [`POST /usageCosts:query`](/api-reference/query-usage-costs) at `SELF` scope.
-</Note>
+> [!NOTE]
+>
+> This export reports costs for the whole account, so it requires **account administrator** access. Non-admin users can read their own costs through [`POST /usageCosts:query`](/api-reference/query-usage-costs) at `SELF` scope.
 
 ## Exporting usage costs
 
@@ -72,12 +72,12 @@ The exported CSV always has these six columns, regardless of which dimension you
 | `user` | User resource name, e.g. `accounts/my-account/users/alice` |
 | `api_key` | Stable API key ID, e.g. `key_4nMFyHCSZP4CRKqa`. Never plaintext key material |
 
-<Note>
-  Two reserved values can appear in `group_by_value`: `unattributed`, when the underlying billing
-  event carries no value for the requested dimension, and `unknown_model`, when a billing model
-  can't be mapped to a public model. Days with an exact-zero subtotal are omitted rather than
-  written as `0.000000000` rows, so a dimension value only appears on days it actually cost money.
-</Note>
+> [!NOTE]
+>
+> Two reserved values can appear in `group_by_value`: `unattributed`, when the underlying billing
+> event carries no value for the requested dimension, and `unknown_model`, when a billing model
+> can't be mapped to a public model. Days with an exact-zero subtotal are omitted rather than
+> written as `0.000000000` rows, so a dimension value only appears on days it actually cost money.
 
 ### Sample row
 
@@ -124,9 +124,9 @@ while [ "$(date -j -f "%Y-%m-%d" "$current_start" "+%s")" -lt "$(date -j -f "%Y-
 done
 ```
 
-<Tip>
-  Run `firectl billing export-usage-costs --help` to see all available flags and options.
-</Tip>
+> [!TIP]
+>
+> Run `firectl billing export-usage-costs --help` to see all available flags and options.
 
 ## Coverage
 

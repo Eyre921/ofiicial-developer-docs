@@ -10,4 +10,4 @@ Unstructured builds ETL tools for LLMs, including an open-source Python library,
 
 The Pinecone integration with Unstructured lets you load data from any source or document type into Pinecone with a single click, so you can build LLM apps that connect to your organization's data.
 
-<PrimarySecondaryCTA />
+[Get started](https://docs.unstructured.io/ui/destinations/pinecone-destination-quickstart)

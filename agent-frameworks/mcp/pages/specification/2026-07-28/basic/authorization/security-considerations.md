@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authoriza
 path: specification/2026-07-28/basic/authorization/security-considerations
 ---
 
-<div />
-
 This document outlines security requirements that implementers **MUST** consider when
 building MCP clients and servers.
 

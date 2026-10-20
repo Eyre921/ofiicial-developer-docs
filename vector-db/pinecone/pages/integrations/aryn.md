@@ -12,4 +12,4 @@ Aryn's ETL system has two components: Sycamore and the Aryn Partitioning Service
 
 The Aryn Partitioning Service is the first step in a Sycamore data processing pipeline. It identifies and extracts parts of documents, like text, tables, and images, using a vision segmentation AI model trained on hundreds of thousands of human-annotated documents.
 
-<PrimarySecondaryCTA />
+[Get started](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/pinecone.html)

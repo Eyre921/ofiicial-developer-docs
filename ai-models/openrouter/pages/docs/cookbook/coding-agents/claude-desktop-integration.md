@@ -12,9 +12,9 @@ path: docs/cookbook/coding-agents/claude-desktop-integration
 
 > Use Claude Desktop with OpenRouter
 
-<Warning>
-  Claude Desktop with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection) when using Claude Desktop.
-</Warning>
+> [!WARNING]
+>
+> Claude Desktop with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection) when using Claude Desktop.
 
 ## Why Use OpenRouter with Claude Desktop?
 
@@ -51,17 +51,13 @@ OpenRouter exposes an API that is compatible with the Anthropic Messages API.
 
 Launch Claude Desktop — you do not need to sign in. Open **Help > Troubleshooting** and click **Enable Developer Mode**. This adds a **Developer** menu to your menu bar.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-enable-developer-mode.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=b356225fcd78b146e03cac4816f2489c" alt="Claude Desktop Help menu showing Troubleshooting submenu with Enable Developer Mode highlighted" width="1969" height="1304" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-enable-developer-mode.png" />
-</Frame>
+![Claude Desktop Help menu showing Troubleshooting submenu with Enable Developer Mode highlighted](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-enable-developer-mode.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=b356225fcd78b146e03cac4816f2489c)
 
 ### Step 2: Open the Third-Party Inference Panel
 
 Click **Developer > Configure Third-Party Inference…** in the menu bar.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-configure-third-party.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=4feee5b27952c053aa04d5448c6adc48" alt="Claude Desktop Developer menu with Configure Third-Party Inference highlighted" width="1154" height="1274" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-configure-third-party.png" />
-</Frame>
+![Claude Desktop Developer menu with Configure Third-Party Inference highlighted](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-configure-third-party.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=4feee5b27952c053aa04d5448c6adc48)
 
 ### Step 3: Enter Gateway Credentials
 
@@ -74,15 +70,13 @@ Set the connection to **Gateway** and enter your OpenRouter credentials:
 | **Gateway auth scheme** | `bearer` |
 | **Credential kind** | `Static API key` |
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/UJAi9la2xaRSVbm0/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png?fit=max&auto=format&n=UJAi9la2xaRSVbm0&q=85&s=36ba965652ac6367679f4e58d08a3b21" alt="Claude Desktop third-party inference configuration panel showing Gateway selected with OpenRouter credentials" width="1800" height="1542" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png" />
-</Frame>
+![Claude Desktop third-party inference configuration panel showing Gateway selected with OpenRouter credentials](https://mintcdn.com/openrouter-d02e98a0/UJAi9la2xaRSVbm0/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png?fit=max\&auto=format\&n=UJAi9la2xaRSVbm0\&q=85\&s=36ba965652ac6367679f4e58d08a3b21)
 
 **Credential kind** pins which credential source the gateway uses. Set it to **Static API key** so Claude Desktop always authenticates with the OpenRouter API key you entered above and does not fall back to another source.
 
-<Warning>
-  Newer builds of Claude Desktop add optional **Sign-in session lifetime** and **Gateway SSO IdP (OIDC)** fields (Client ID, Issuer URL, Authorization URL) to this panel. When you authenticate with a static API key as shown above, **leave the OIDC IdP fields blank**. The OIDC option is only for gateways that act as (or sit behind) their own OAuth authorization server.
-</Warning>
+> [!WARNING]
+>
+> Newer builds of Claude Desktop add optional **Sign-in session lifetime** and **Gateway SSO IdP (OIDC)** fields (Client ID, Issuer URL, Authorization URL) to this panel. When you authenticate with a static API key as shown above, **leave the OIDC IdP fields blank**. The OIDC option is only for gateways that act as (or sit behind) their own OAuth authorization server.
 
 Click **Apply Changes** (labelled **Apply locally** in older builds) to save your settings.
 

@@ -12,9 +12,9 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 **Most rate limits can be adjusted upon request.** If you need higher limits, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
-</Note>
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 
 ## Monthly usage limits
 
@@ -37,12 +37,12 @@ Monthly rerank request limits vary by model:
 
 Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to continue.
 
-<Accordion title="Example error">
-  ```
-  Request failed. You've reached your read unit limit for the current month.
-  To continue reading data, upgrade your plan.
-  ```
-</Accordion>
+> **Example error**
+>
+> ```
+> Request failed. You've reached your read unit limit for the current month.
+> To continue reading data, upgrade your plan.
+> ```
 
 ## Data operation throughput limits
 
@@ -67,11 +67,11 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
 
-<Accordion title="Example error">
-  ```
-  Request failed. You've reached the query QPS limit for namespace {namespace_name} ({limit} QPS). Pace your queries, consider Dedicated Read Nodes for your index, or contact Pinecone Support (https://app.pinecone.io/organizations/-/settings/support/ticket) to request a higher limit.
-  ```
-</Accordion>
+> **Example error**
+>
+> ```
+> Request failed. You've reached the query QPS limit for namespace {namespace_name} ({limit} QPS). Pace your queries, consider Dedicated Read Nodes for your index, or contact Pinecone Support (https://app.pinecone.io/organizations/-/settings/support/ticket) to request a higher limit.
+> ```
 
 ## Model throughput limits
 
@@ -97,12 +97,12 @@ Per-minute request limits for reranking models:
 
 Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
-<Accordion title="Example error">
-  ```
-  Request failed. You've reached the max embedding tokens per minute (<limit>) model '<model name>' and input type '<passage|query>' for the current project.
-  To increase this limit, upgrade your plan.
-  ```
-</Accordion>
+> **Example error**
+>
+> ```
+> Request failed. You've reached the max embedding tokens per minute (<limit>) model '<model name>' and input type '<passage|query>' for the current project.
+> To increase this limit, upgrade your plan.
+> ```
 
 ## Inference request limits
 
@@ -113,10 +113,10 @@ Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade 
 
 Exceeding the per-second or per-minute limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic) to handle it.
 
-<Accordion title="Example error">
-  ```
-  Request failed. You've reached the max inference requests per second (<limit>) for the current project.
-  ```
-
-  The message names the per-second or per-minute limit, whichever you exceeded.
-</Accordion>
+> **Example error**
+>
+> ```
+> Request failed. You've reached the max inference requests per second (<limit>) for the current project.
+> ```
+>
+> The message names the per-second or per-minute limit, whichever you exceeded.

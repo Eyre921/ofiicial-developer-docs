@@ -8,9 +8,9 @@ Legacy Training API SDK reference for DeploymentManager: direct deployment lifec
 
 ## Overview
 
-<Warning>
-  `DeploymentManager` is a low-level compatibility API. New user code should not wire deployments or weight-sync buckets manually; use [`FiretitanServiceClient.from_firetitan_config(...)`](/fine-tuning/training-api/reference/service-client#from_firetitan_config), then `service.create_sampling_client(model_path=...)` or `service.create_deployment_sampler(model_path=...)`. This page remains for existing integrations, migration support, and advanced deployment debugging.
-</Warning>
+> [!WARNING]
+>
+> `DeploymentManager` is a low-level compatibility API. New user code should not wire deployments or weight-sync buckets manually; use [`FiretitanServiceClient.from_firetitan_config(...)`](/fine-tuning/training-api/reference/service-client#from_firetitan_config), then `service.create_sampling_client(model_path=...)` or `service.create_deployment_sampler(model_path=...)`. This page remains for existing integrations, migration support, and advanced deployment debugging.
 
 `DeploymentManager` manages the lifecycle of inference deployments that serve as sampling and weight-sync targets during training. For on-policy training (GRPO), the deployment is synced with the latest policy weights.
 
@@ -167,9 +167,9 @@ When `deployment_shape` is set (the recommended path), the shape owns the deploy
 | `disable_speculative_decoding` | `bool` | `False` | Disable speculative decoding |
 | `annotations` | `dict[str, str] \| None` | `None` | Deployment annotations |
 
-<Note>
-  On the recommended shape path, `deployment_shape` owns the deployment hardware and serving configuration, so do not override `accelerator_type`. For current launch guidance, follow the [training shape guide](/fine-tuning/training-api/training-shapes).
-</Note>
+> [!NOTE]
+>
+> On the recommended shape path, `deployment_shape` owns the deployment hardware and serving configuration, so do not override `accelerator_type`. For current launch guidance, follow the [training shape guide](/fine-tuning/training-api/training-shapes).
 
 ## DeploymentInfo
 

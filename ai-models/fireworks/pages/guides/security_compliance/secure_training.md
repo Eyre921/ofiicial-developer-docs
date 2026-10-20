@@ -26,9 +26,9 @@ Fireworks offers three ways to train, differing mainly in **where your training 
 | **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted | Checkpoints and traces only | Revoke bucket access after the job; request checkpoint/trace deletion |
 | **Training API** | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only | Request checkpoint/trace deletion |
 
-<Tip>
-  For the strictest data governance, use [BYOB](/guides/security_compliance/secure_training/byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
-</Tip>
+> [!TIP]
+>
+> For the strictest data governance, use [BYOB](/guides/security_compliance/secure_training/byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
 
 ## Data retention by surface
 
@@ -76,9 +76,9 @@ Where federation applies, you pin trust on these values:
 | Fireworks identity (subject) | Provided at onboarding |
 | Token audience | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
 
-<Note>
-  BYOB and CMEK authenticate as **different** Fireworks service accounts, so their subject identifiers differ — don't reuse one for the other. Two cases don't use this pattern: **GCS BYOB** grants access to Fireworks service account emails directly, with no token audience to scope, and **Azure BYOB** uses the fixed `api://AzureADTokenExchange` audience. Each setup page states which applies.
-</Note>
+> [!NOTE]
+>
+> BYOB and CMEK authenticate as **different** Fireworks service accounts, so their subject identifiers differ — don't reuse one for the other. Two cases don't use this pattern: **GCS BYOB** grants access to Fireworks service account emails directly, with no token audience to scope, and **Azure BYOB** uses the fixed `api://AzureADTokenExchange` audience. Each setup page states which applies.
 
 ## Two independent controls
 
@@ -112,24 +112,22 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 
 ## Related Resources
 
-<CardGroup>
-  <Card title="Zero Data Retention" href="/guides/security_compliance/data_handling" icon="lock">
-    How Fireworks handles inference data by default
-  </Card>
+> **[Zero Data Retention](/guides/security_compliance/data_handling)**
+>
+> How Fireworks handles inference data by default
 
-  <Card title="Customer-Managed Encryption Keys (CMEK)" href="/guides/security_compliance/secure_training/cmek" icon="key">
-    Encrypt managed training data with your own KMS key
-  </Card>
+> **[Customer-Managed Encryption Keys (CMEK)](/guides/security_compliance/secure_training/cmek)**
+>
+> Encrypt managed training data with your own KMS key
 
-  <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
-    Learn about our comprehensive security measures
-  </Card>
+> **[Data Security Overview](/guides/security_compliance/data_security)**
+>
+> Learn about our comprehensive security measures
 
-  <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
-    Full guide to reinforcement fine-tuning
-  </Card>
+> **[Reinforcement Fine Tuning](/fine-tuning/reinforcement-fine-tuning-models)**
+>
+> Full guide to reinforcement fine-tuning
 
-  <Card title="Training API" href="/fine-tuning/training-api/introduction" icon="code">
-    Custom training loops that keep your data on your side
-  </Card>
-</CardGroup>
+> **[Training API](/fine-tuning/training-api/introduction)**
+>
+> Custom training loops that keep your data on your side

@@ -29,66 +29,64 @@ flowchart TD
 
 These JSON excerpts show the fields that connect the objects. Other response fields are omitted.
 
-<CodeGroup>
-  ```json Database excerpt theme={null}
-  {
-    "object": "database",
-    "id": "248104cd-477e-80fd-b757-e945d38000bd",
-    "data_sources": [
-      {
-        "id": "248104cd-477e-80af-bc30-000bd28de8f9",
-        "name": "Grocery list"
-      }
-    ]
-  }
-  ```
+```json Database excerpt theme={null}
+{
+  "object": "database",
+  "id": "248104cd-477e-80fd-b757-e945d38000bd",
+  "data_sources": [
+    {
+      "id": "248104cd-477e-80af-bc30-000bd28de8f9",
+      "name": "Grocery list"
+    }
+  ]
+}
+```
 
-  ```json Data source excerpt theme={null}
-  {
-    "object": "data_source",
-    "id": "248104cd-477e-80af-bc30-000bd28de8f9",
-    "parent": {
-      "type": "database_id",
-      "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
+```json Data source excerpt theme={null}
+{
+  "object": "data_source",
+  "id": "248104cd-477e-80af-bc30-000bd28de8f9",
+  "parent": {
+    "type": "database_id",
+    "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
+  },
+  "properties": {
+    "Grocery item": {
+      "id": "title",
+      "name": "Grocery item",
+      "description": null,
+      "type": "title",
+      "title": {}
     },
-    "properties": {
-      "Grocery item": {
-        "id": "title",
-        "name": "Grocery item",
-        "description": null,
-        "type": "title",
-        "title": {}
-      },
-      "Price": {
-        "id": "prce",
-        "name": "Price",
-        "description": null,
-        "type": "number",
-        "number": { "format": "dollar" }
-      }
+    "Price": {
+      "id": "prce",
+      "name": "Price",
+      "description": null,
+      "type": "number",
+      "number": { "format": "dollar" }
     }
   }
-  ```
+}
+```
 
-  ```json Page excerpt theme={null}
-  {
-    "object": "page",
-    "id": "dd456007-6c66-4bba-957e-ea501dcda3a6",
-    "parent": {
-      "type": "data_source_id",
-      "data_source_id": "248104cd-477e-80af-bc30-000bd28de8f9",
-      "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
-    },
-    "properties": {
-      "Price": {
-        "id": "prce",
-        "type": "number",
-        "number": 1.49
-      }
+```json Page excerpt theme={null}
+{
+  "object": "page",
+  "id": "dd456007-6c66-4bba-957e-ea501dcda3a6",
+  "parent": {
+    "type": "data_source_id",
+    "data_source_id": "248104cd-477e-80af-bc30-000bd28de8f9",
+    "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
+  },
+  "properties": {
+    "Price": {
+      "id": "prce",
+      "type": "number",
+      "number": 1.49
     }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Database properties
 
@@ -100,58 +98,56 @@ The tabs compare the same property across API objects. Schema and Page value exa
 
 For `title`, `rich_text`, `people`, and `relation`, the Property item tab shows one entry in a paginated `results` array. For other types, it shows the endpoint response. Replace example names and IDs with values from your workspace.
 
-<Tabs>
-  <Tab title="Schema">
-    ```json Schema theme={null}
-    {
-      "Estimate": {
-        "id": "estM",
-        "name": "Estimate",
-        "description": null,
-        "type": "number",
-        "number": {
-          "format": "number"
-        }
-      }
-    }
-    ```
-  </Tab>
+**Schema**
 
-  <Tab title="Page value">
-    ```json Page value theme={null}
-    {
-      "Estimate": {
-        "id": "estM",
-        "type": "number",
-        "number": 8
-      }
+```json Schema theme={null}
+{
+  "Estimate": {
+    "id": "estM",
+    "name": "Estimate",
+    "description": null,
+    "type": "number",
+    "number": {
+      "format": "number"
     }
-    ```
-  </Tab>
+  }
+}
+```
 
-  <Tab title="Page write">
-    ```json Page write theme={null}
-    {
-      "properties": {
-        "Estimate": {
-          "number": 8
-        }
-      }
-    }
-    ```
-  </Tab>
+**Page value**
 
-  <Tab title="Property item">
-    ```json Property item theme={null}
-    {
-      "object": "property_item",
-      "id": "estM",
-      "type": "number",
+```json Page value theme={null}
+{
+  "Estimate": {
+    "id": "estM",
+    "type": "number",
+    "number": 8
+  }
+}
+```
+
+**Page write**
+
+```json Page write theme={null}
+{
+  "properties": {
+    "Estimate": {
       "number": 8
     }
-    ```
-  </Tab>
-</Tabs>
+  }
+}
+```
+
+**Property item**
+
+```json Property item theme={null}
+{
+  "object": "property_item",
+  "id": "estM",
+  "type": "number",
+  "number": 8
+}
+```
 
 The [property schema reference](/reference/property-object) defines each type’s settings. The [page value reference](/reference/page-property-values) defines its values and write rules. The [property-item reference](/reference/property-item-object) defines responses when reading one property, including paginated values.
 
@@ -215,8 +211,6 @@ A [linked database](https://www.notion.com/help/guides/using-linked-databases) d
 A [wiki](https://www.notion.com/help/wikis-and-verified-pages) organizes knowledge and supports page verification. Wikis are created in Notion and cannot contain multiple data sources.
 
 The API supports reading and writing the [Verification property](/reference/page-property-values#verification) on wiki pages. Verification describes whether a page’s content has been checked and can include an expiration date. It does not change the page’s other property values.
-
-<span />
 
 ### Next steps
 

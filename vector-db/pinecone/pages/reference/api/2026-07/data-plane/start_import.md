@@ -9,27 +9,25 @@ Start an asynchronous import of vectors from object storage into an index.
 
 For guidance and examples, see [Import data](https://docs.pinecone.io/guides/index-data/import-data).
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
-<RequestExample>
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/bulk/imports" \
-    -H 'Api-Key: $PINECONE_API_KEY' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Pinecone-Api-Version: 2026-07' \
-    -d '{
-          "integrationId": "a12b3d4c-47d2-492c-a97a-dd98c8dbefde",
-          "uri": "s3://BUCKET_NAME/PATH/TO/DIR",
-          "errorMode": {
-              "onError": "continue"
-              }
-          }'
-  ```
-</RequestExample>
+curl "https://$INDEX_HOST/bulk/imports" \
+  -H 'Api-Key: $PINECONE_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: 2026-07' \
+  -d '{
+        "integrationId": "a12b3d4c-47d2-492c-a97a-dd98c8dbefde",
+        "uri": "s3://BUCKET_NAME/PATH/TO/DIR",
+        "errorMode": {
+            "onError": "continue"
+            }
+        }'
+```

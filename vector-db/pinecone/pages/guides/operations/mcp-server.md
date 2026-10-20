@@ -10,13 +10,13 @@ The Pinecone MCP server enables AI agents to interact directly with Pinecone's f
 
 This page shows you how to configure [Antigravity](https://antigravity.google/), [Claude Desktop](https://claude.ai/download), [Claude Code](https://claude.ai/code), and [Cursor](https://www.cursor.com/) to connect with the Pinecone MCP server.
 
-<Note>
-  Pinecone also provides a dedicated MCP server for each [Pinecone Assistant](/guides/assistant/overview), giving AI agents direct access to context from that assistant's uploaded files. The assistant MCP server is available as a managed remote endpoint or as a self-hosted Docker container that you can extend and run in your own infrastructure. See [Use an Assistant MCP server](/guides/assistant/mcp-server).
-</Note>
+> [!NOTE]
+>
+> Pinecone also provides a dedicated MCP server for each [Pinecone Assistant](/guides/assistant/overview), giving AI agents direct access to context from that assistant's uploaded files. The assistant MCP server is available as a managed remote endpoint or as a self-hosted Docker container that you can extend and run in your own infrastructure. See [Use an Assistant MCP server](/guides/assistant/mcp-server).
 
-<Tip>
-  Pinecone also offers plugins with built-in skills for AI coding tools. See [AI coding tools](/integrations/ai-coding-tools) for an overview. You can also go straight to the [Claude Code plugin](/integrations/claude-code), [Codex plugin](/integrations/codex), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
-</Tip>
+> [!TIP]
+>
+> Pinecone also offers plugins with built-in skills for AI coding tools. See [AI coding tools](/integrations/ai-coding-tools) for an overview. You can also go straight to the [Claude Code plugin](/integrations/claude-code), [Codex plugin](/integrations/codex), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
 
 ## Tools
 
@@ -32,9 +32,9 @@ The Pinecone MCP server provides the following tools:
 * `cascading-search`: Searches for records across multiple indexes, deduplicating and reranking the results.
 * `rerank-documents`: Reranks a collection of records or text documents using a specialized reranking model.
 
-<Note>
-  The Pinecone MCP supports only [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding). Indexes for vectors you create with external embedding models aren't supported.
-</Note>
+> [!NOTE]
+>
+> The Pinecone MCP supports only [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding). Indexes for vectors you create with external embedding models aren't supported.
 
 ## Before you begin
 
@@ -47,208 +47,200 @@ Ensure you have the following:
 
 Antigravity supports MCP via its built-in MCP Store. You can install the Pinecone server from the store or add it via the raw config.
 
-<Steps>
-  <Step title="Add the MCP server">
-    **Install from the MCP Store**
+**1. Add the MCP server**
 
-    1. Open the **MCP Store** via the "..." dropdown at the top of the editor's agent panel.
-    2. Find **Pinecone** in the list of supported servers and click **Install**.
-    3. Follow the on-screen prompts to authenticate and set your Pinecone API key.
+**Install from the MCP Store**
 
-    **Add via raw config**
+1. Open the **MCP Store** via the "..." dropdown at the top of the editor's agent panel.
+2. Find **Pinecone** in the list of supported servers and click **Install**.
+3. Follow the on-screen prompts to authenticate and set your Pinecone API key.
 
-    1. Open the MCP Store via the "..." dropdown at the top of the editor's agent panel.
-    2. Click **Manage MCP Servers**, then **View raw config**.
-    3. Edit `mcp_config.json` and add the Pinecone server:
+**Add via raw config**
 
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "pinecone": {
-          "command": "npx",
-          "args": [
-            "-y", "@pinecone-database/mcp"
-          ],
-          "env": {
-            "PINECONE_API_KEY": "{{YOUR_API_KEY}}"
-          }
-        }
+1. Open the MCP Store via the "..." dropdown at the top of the editor's agent panel.
+2. Click **Manage MCP Servers**, then **View raw config**.
+3. Edit `mcp_config.json` and add the Pinecone server:
+
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone": {
+      "command": "npx",
+      "args": [
+        "-y", "@pinecone-database/mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "{{YOUR_API_KEY}}"
       }
     }
-    ```
+  }
+}
+```
 
-    Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
-  </Step>
+Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
 
-  <Step title="Check the status">
-    After installing or saving the config, the Pinecone server and its tools should appear in the agent panel. Use the MCP tools list to confirm the server is connected.
-  </Step>
+**2. Check the status**
 
-  <Step title="Test the server">
-    In the agent chat, try prompts that use Pinecone. For example, try generating code that creates an index, upserts records, or searches the index. The AI can use the connected MCP server for context and actions.
-  </Step>
-</Steps>
+After installing or saving the config, the Pinecone server and its tools should appear in the agent panel. Use the MCP tools list to confirm the server is connected.
+
+**3. Test the server**
+
+In the agent chat, try prompts that use Pinecone. For example, try generating code that creates an index, upserts records, or searches the index. The AI can use the connected MCP server for context and actions.
 
 ## Configure Claude Code
 
-<Tip>
-  For the easiest setup, install the [Pinecone Claude Code plugin](/integrations/claude-code) instead — it bundles the MCP server, 8 skills, and slash commands. The manual configuration below is for users who only want the MCP server.
-</Tip>
+> [!TIP]
+>
+> For the easiest setup, install the [Pinecone Claude Code plugin](/integrations/claude-code) instead — it bundles the MCP server, 8 skills, and slash commands. The manual configuration below is for users who only want the MCP server.
 
-<Steps>
-  <Step title="Add the MCP server">
-    Run the following command to add the Pinecone MCP server to your Claude Code instance:
+**1. Add the MCP server**
 
-    ```bash theme={null}
-    claude mcp add-json pinecone-mcp \
-      '{"type": "stdio",
-        "command": "npx",
-        "args": ["-y", "@pinecone-database/mcp"],
-        "env": {"PINECONE_API_KEY": "YOUR_API_KEY"}}'
-    ```
-  </Step>
+Run the following command to add the Pinecone MCP server to your Claude Code instance:
 
-  <Step title="Check the status">
-    Restart Claude Code. Then, run the `/mcp` command to check the status of the Pinecone MCP. You should see the following:
+```bash theme={null}
+claude mcp add-json pinecone-mcp \
+  '{"type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@pinecone-database/mcp"],
+    "env": {"PINECONE_API_KEY": "YOUR_API_KEY"}}'
+```
 
-    ```bash theme={null}
-      > /mcp 
-        ⎿  MCP Server Status
+**2. Check the status**
 
-          • pinecone-mcp: ✓ connected
+Restart Claude Code. Then, run the `/mcp` command to check the status of the Pinecone MCP. You should see the following:
 
-    ```
-  </Step>
+```bash theme={null}
+  > /mcp 
+    ⎿  MCP Server Status
 
-  <Step title="Test the server">
-    Test the Pinecone MCP server with prompts to Claude Code that require the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
+      • pinecone-mcp: ✓ connected
 
-    Generate code:
+```
 
-    > Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+**3. Test the server**
 
-    Perform tasks:
+Test the Pinecone MCP server with prompts to Claude Code that require the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
 
-    > Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.
-  </Step>
-</Steps>
+Generate code:
+
+> Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+
+Perform tasks:
+
+> Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.
 
 ## Configure Claude Desktop
 
-<Steps>
-  <Step title="Add the MCP server">
-    Go to **Settings > Developer > Edit Config** and add the following configuration:
+**1. Add the MCP server**
 
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "pinecone": {
-          "command": "npx",
-          "args": [
-            "-y", "@pinecone-database/mcp"
-          ],
-          "env": {
-            "PINECONE_API_KEY": "YOUR_API_KEY"
-          }
-        }
+Go to **Settings > Developer > Edit Config** and add the following configuration:
+
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone": {
+      "command": "npx",
+      "args": [
+        "-y", "@pinecone-database/mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "YOUR_API_KEY"
       }
     }
-    ```
+  }
+}
+```
 
-    Replace `YOUR_API_KEY` with your Pinecone API key.
-  </Step>
+Replace `YOUR_API_KEY` with your Pinecone API key.
 
-  <Step title="Check the status">
-    Restart Claude Desktop. On the new chat screen, you should see a hammer (MCP) icon appear with the new MCP tools available.
-  </Step>
+**2. Check the status**
 
-  <Step title="Test the server">
-    Test the Pinecone MCP server with prompts that required the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
+Restart Claude Desktop. On the new chat screen, you should see a hammer (MCP) icon appear with the new MCP tools available.
 
-    Generate code:
+**3. Test the server**
 
-    > Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+Test the Pinecone MCP server with prompts that required the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
 
-    Perform tasks:
+Generate code:
 
-    > Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.
-  </Step>
-</Steps>
+> Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+
+Perform tasks:
+
+> Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.
 
 ## Configure Cursor
 
-<Tip>
-  For the easiest setup, install the [Pinecone Cursor plugin](/integrations/cursor) instead — it bundles the MCP server, 8 skills, and slash commands. The manual configuration below is for users who only want the MCP server.
-</Tip>
+> [!TIP]
+>
+> For the easiest setup, install the [Pinecone Cursor plugin](/integrations/cursor) instead — it bundles the MCP server, 8 skills, and slash commands. The manual configuration below is for users who only want the MCP server.
 
-<Steps>
-  <Step title="Add the MCP server">
-    In your project root, create a `.cursor/mcp.json` file, if it doesn't exist, and add the following configuration:
+**1. Add the MCP server**
 
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "pinecone": {
-          "command": "npx",
-          "args": [
-            "-y", "@pinecone-database/mcp"
-          ],
-          "env": {
-            "PINECONE_API_KEY": "{{YOUR_API_KEY}}"
-          }
-        }
+In your project root, create a `.cursor/mcp.json` file, if it doesn't exist, and add the following configuration:
+
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone": {
+      "command": "npx",
+      "args": [
+        "-y", "@pinecone-database/mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "{{YOUR_API_KEY}}"
       }
     }
-    ```
-  </Step>
+  }
+}
+```
 
-  <Step title="Check the status">
-    Go to **Cursor Settings > MCP**. You should see the server and its list of tools.
-  </Step>
+**2. Check the status**
 
-  <Step title="Add Pinecone rules">
-    The Pinecone MCP server works well out of the box. However, you can add explicit rules to ensure the server behaves as you expect.
+Go to **Cursor Settings > MCP**. You should see the server and its list of tools.
 
-    In your project root, create a `.cursor/rules/pinecone.mdc` file and add the following:
+**3. Add Pinecone rules**
 
-    ```mdx [expandable] theme={null}
-    ### Tool Usage for Code Generation
+The Pinecone MCP server works well out of the box. However, you can add explicit rules to ensure the server behaves as you expect.
 
-    - When generating code related to Pinecone, always use the `pinecone` MCP and the `search_docs` tool.
+In your project root, create a `.cursor/rules/pinecone.mdc` file and add the following:
 
-    - Perform at least two distinct searches per request using different, relevant questions to ensure comprehensive context is gathered before writing code.
+```mdx [expandable] theme={null}
+### Tool Usage for Code Generation
 
-    ### Error Handling
+- When generating code related to Pinecone, always use the `pinecone` MCP and the `search_docs` tool.
 
-    - If an error occurs while executing Pinecone-related code, immediately invoke the `pinecone` MCP and the `search_docs` tool.
+- Perform at least two distinct searches per request using different, relevant questions to ensure comprehensive context is gathered before writing code.
 
-    - Search for guidance on the specific error encountered and incorporate any relevant findings into your resolution strategy.
+### Error Handling
 
-    ### Syntax and Version Accuracy
+- If an error occurs while executing Pinecone-related code, immediately invoke the `pinecone` MCP and the `search_docs` tool.
 
-    - Before writing any code, verify and use the correct syntax for the latest stable version of the Pinecone SDK.
+- Search for guidance on the specific error encountered and incorporate any relevant findings into your resolution strategy.
 
-    - Prefer official code snippets and examples from documentation over generated or assumed field values.
+### Syntax and Version Accuracy
 
-    - Do not fabricate field names, parameter values, or request formats.
+- Before writing any code, verify and use the correct syntax for the latest stable version of the Pinecone SDK.
 
-    ### SDK Installation Best Practices
+- Prefer official code snippets and examples from documentation over generated or assumed field values.
 
-    - When providing installation instructions, always reference the current official package name.
+- Do not fabricate field names, parameter values, or request formats.
 
-    - For Pinecone, use `pip install pinecone` not deprecated packages like `pinecone-client`.
-    ```
-  </Step>
+### SDK Installation Best Practices
 
-  <Step title="Test the server">
-    Press `Command + i` to open the Agent chat. Test the Pinecone MCP server with prompts that required the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
+- When providing installation instructions, always reference the current official package name.
 
-    Generate code:
+- For Pinecone, use `pip install pinecone` not deprecated packages like `pinecone-client`.
+```
 
-    > Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+**4. Test the server**
 
-    Perform tasks:
+Press `Command + i` to open the Agent chat. Test the Pinecone MCP server with prompts that required the server to generate Pinceone-compatible code and perform tasks in your Pinecone account.
 
-    > Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.
-  </Step>
-</Steps>
+Generate code:
+
+> Write a Python script that creates an index for dense vectors with integrated embedding, upserts 20 sentences about dogs, waits 10 seconds, searches the index, and reranks the results.
+
+Perform tasks:
+
+> Create an index for dense vectors with integrated embedding, upsert 20 sentences about dogs, waits 10 seconds, search the index, and reranks the results.

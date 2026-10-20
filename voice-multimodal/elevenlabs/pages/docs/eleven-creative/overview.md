@@ -25,7 +25,7 @@ Access 10,000+ pre-made voices or clone your own with instant or professional vo
 ## Platform capabilities
 
 ElevenLabs capabilities span synthesis, dubbing, music, sound design, voices, and analytics. Review
-the [capabilities overview](/docs/overview/intro#capabilities) for detailed breakdowns, parameters, and
+the [capabilities overview](/docs/overview/intro#browse-by-capability) for detailed breakdowns, parameters, and
 best-fit guidance across every use case.
 
 ## Use cases

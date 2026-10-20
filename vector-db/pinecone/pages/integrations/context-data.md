@@ -12,4 +12,4 @@ Before writing to Pinecone, you can transform data with aggregations, joins, and
 
 You can also chat with your Pinecone indexes from Context Data's privacy-focused Query Studio.
 
-<PrimarySecondaryCTA />
+[Get started](https://context-data.gitbook.io/context-data-1/adding-target-connections#add-a-pinecone-target-connection)

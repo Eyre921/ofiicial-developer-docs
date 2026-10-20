@@ -10,11 +10,11 @@ Export Fireworks billing and usage metrics as a per-event CSV dump across server
 
 Fireworks provides a CLI tool to export comprehensive billing metrics for all usage types including serverless inference, on-demand deployments, and training jobs. The exported data can be used for cost analysis, internal billing, and usage tracking.
 
-<Note>
-  This export reports metered **quantities** — tokens and accelerator-seconds — not dollars. For a
-  CSV of rated serverless **costs** grouped by model, model tier, user, or API key, use
-  [Exporting Usage Costs](/accounts/exporting-usage-costs).
-</Note>
+> [!NOTE]
+>
+> This export reports metered **quantities** — tokens and accelerator-seconds — not dollars. For a
+> CSV of rated serverless **costs** grouped by model, model tier, user, or API key, use
+> [Exporting Usage Costs](/accounts/exporting-usage-costs).
 
 ## Exporting billing metrics
 
@@ -63,12 +63,12 @@ The exported CSV includes the following columns:
 * **cached\_prompt\_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
 * **uncached\_prompt\_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
 
-<Note>
-  Older usage records and non-text usage types may not have a cached/uncached split
-  in the underlying data. Exports normalize these rows to `cached_prompt_tokens=0`
-  and `uncached_prompt_tokens=prompt_tokens`, so `prompt_tokens =
-      cached_prompt_tokens + uncached_prompt_tokens` always holds.
-</Note>
+> [!NOTE]
+>
+> Older usage records and non-text usage types may not have a cached/uncached split
+> in the underlying data. Exports normalize these rows to `cached_prompt_tokens=0`
+> and `uncached_prompt_tokens=prompt_tokens`, so `prompt_tokens =
+>     cached_prompt_tokens + uncached_prompt_tokens` always holds.
 
 ### Sample row
 
@@ -116,10 +116,10 @@ while [ "$(date -j -f "%Y-%m-%d" "$current_start" "+%s")" -lt "$(date -j -f "%Y-
 done
 ```
 
-<Tip>
-  Run `firectl billing export-metrics --help` to see all available flags and
-  options.
-</Tip>
+> [!TIP]
+>
+> Run `firectl billing export-metrics --help` to see all available flags and
+> options.
 
 ## Coverage
 
@@ -130,11 +130,11 @@ This export includes:
 * **Training jobs**: Training compute usage
 * **Other services**: All billable Fireworks services
 
-<Note>
-  For real-time monitoring of on-demand deployment performance metrics (latency,
-  throughput, etc.), use the [Prometheus metrics
-  endpoint](/deployments/exporting-metrics) instead.
-</Note>
+> [!NOTE]
+>
+> For real-time monitoring of on-demand deployment performance metrics (latency,
+> throughput, etc.), use the [Prometheus metrics
+> endpoint](/deployments/exporting-metrics) instead.
 
 ## See also
 

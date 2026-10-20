@@ -27,6 +27,8 @@ For more information about setting your workspace to have Zero Retention Mode ac
 
 To retrieve information about calls made with ZRM-enabled agents, you must use [post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks).
 
+Under Zero Retention Mode, Eleven Realtime v1 Max is the only available [Realtime model](/docs/eleven-agents/customization/realtime-models#compliance-and-data-residency), and only in the US and EU.
+
 > **Warning**
 >
 > Enabling Zero Retention Mode may impact ElevenLabs' ability to debug call-related issues for the

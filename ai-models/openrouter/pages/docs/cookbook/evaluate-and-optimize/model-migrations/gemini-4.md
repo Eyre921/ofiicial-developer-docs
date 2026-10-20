@@ -40,9 +40,9 @@ When `max_tokens` is omitted, OpenRouter sends its default output budget of 65,5
 
 `max_tokens` is cumulative across hops. A response that ended with `MAX_TOKENS` has spent its whole budget but still returns a continuation token: resend it with a higher `max_tokens` to continue. Resending it with the same `max_tokens` returns a 400 error. Raising `max_tokens` on a resume also works after `CONTINUATION`, so one rule covers both cases: set `max_tokens` above the total output of every hop so far.
 
-<Note>
-  At `high` effort the model can spend a hop's full per-request limit on reasoning and return little or no visible text in that hop. A hop with empty content and `native_finish_reason: "CONTINUATION"` is normal: resume it.
-</Note>
+> [!NOTE]
+>
+> At `high` effort the model can spend a hop's full per-request limit on reasoning and return little or no visible text in that hop. A hop with empty content and `native_finish_reason: "CONTINUATION"` is normal: resume it.
 
 ### The continuation loop
 

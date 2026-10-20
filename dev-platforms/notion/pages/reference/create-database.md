@@ -29,11 +29,11 @@ Property names follow the language preference of the user who owns the integrati
 
 `database_type` can't be combined with `initial_data_source`, because a typed database always uses Notion's schema. Sending both returns a 400 HTTP response. If you omit `title`, the database is named after its type. The created database and its data source both report the type back as `database_type`.
 
-<Info>
-  **Connection capabilities**
-
-  > This endpoint requires a connection to have insert content capabilities. Attempting to call this API without insert content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> > This endpoint requires a connection to have insert content capabilities. Attempting to call this API without insert content capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 
 ### Errors
 

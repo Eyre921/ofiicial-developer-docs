@@ -34,67 +34,59 @@ To retrieve files:
 
 Use the [Retrieve block children](/reference/get-block-children) endpoint to list blocks on a page:
 
-<CodeGroup>
-  ```bash Bash theme={null}
-  curl --request GET \
-    --url 'https://api.notion.com/v1/blocks/{block_id}/children' \
-    --header 'Authorization: Bearer {YOUR_API_KEY}' \
-    --header 'Notion-Version: 2026-03-11'
-  ```
-</CodeGroup>
+```bash Bash theme={null}
+curl --request GET \
+  --url 'https://api.notion.com/v1/blocks/{block_id}/children' \
+  --header 'Authorization: Bearer {YOUR_API_KEY}' \
+  --header 'Notion-Version: 2026-03-11'
+```
 
 If the page has image, video, or file blocks, they’ll look like this:
 
-<CodeGroup>
-  ```json JSON theme={null}
-  {
-    "type": "file",
-    "file": {
-      "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/...",
-      "expiry_time": "2025-04-24T22:49:22.765Z"
-    }
+```json JSON theme={null}
+{
+  "type": "file",
+  "file": {
+    "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/...",
+    "expiry_time": "2025-04-24T22:49:22.765Z"
   }
-  ```
-</CodeGroup>
+}
+```
 
-<Info>
-  **Note**:
-
-  The `url` is a temporary signed link that expires after 1 hour. Re-fetch the page to refresh it.
-</Info>
+> [!NOTE]
+>
+> **Note**:
+>
+> The `url` is a temporary signed link that expires after 1 hour. Re-fetch the page to refresh it.
 
 ### B. From database properties
 
 Use the [Retrieve a page](/reference/retrieve-a-page) endpoint to get a database item with file properties:
 
-<CodeGroup>
-  ```bash Bash theme={null}
-  curl --request GET \
-    --url 'https://api.notion.com/v1/pages/{page_id}' \
-    --header 'Authorization: Bearer {YOUR_API_KEY}' \
-    --header 'Notion-Version: 2026-03-11'
-  ```
-</CodeGroup>
+```bash Bash theme={null}
+curl --request GET \
+  --url 'https://api.notion.com/v1/pages/{page_id}' \
+  --header 'Authorization: Bearer {YOUR_API_KEY}' \
+  --header 'Notion-Version: 2026-03-11'
+```
 
 The `properties` field will include any file attachments in the `files` type:
 
-<CodeGroup>
-  ```json JSON theme={null}
-  "Files & media": {
-    "type": "files",
-    "files": [
-      {
-        "type": "file",
-        "file": {
-          "url": "https://s3.us-west-2.amazonaws.com/...",
-          "expiry_time": "2025-04-24T22:49:22.765Z"
-        },
-        "name": "Resume.pdf"
-      }
-    ]
-  }
-  ```
-</CodeGroup>
+```json JSON theme={null}
+"Files & media": {
+  "type": "files",
+  "files": [
+    {
+      "type": "file",
+      "file": {
+        "url": "https://s3.us-west-2.amazonaws.com/...",
+        "expiry_time": "2025-04-24T22:49:22.765Z"
+      },
+      "name": "Resume.pdf"
+    }
+  ]
+}
+```
 
 **What’s Next**
 

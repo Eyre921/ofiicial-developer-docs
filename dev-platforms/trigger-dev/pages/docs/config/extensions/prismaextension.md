@@ -191,7 +191,7 @@ prismaExtension({
   "scripts": {
     "prebuild": "prisma generate",
     "dev": "trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```
@@ -333,7 +333,7 @@ steps:
   - name: Generate Prisma client
     run: npx prisma@6.19.0 generate
   - name: Deploy Trigger.dev
-    run: npx trigger.dev@4.1.1 deploy
+    run: npx trigger.dev@4.1.1 deploy --env prod
     env:
       TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
 ```
@@ -904,7 +904,7 @@ datasource db {
   "scripts": {
     "generate": "prisma generate",
     "dev": "pnpm generate && trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```
@@ -977,7 +977,7 @@ export default defineConfig({
   "scripts": {
     "generate": "prisma generate",
     "dev": "pnpm generate && trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```

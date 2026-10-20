@@ -10,9 +10,9 @@ Pinecone serverless is usage-based, so you pay for the data you store and the op
 
 [Full-text search](/guides/search/full-text-search) on a document index, semantic search on a vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
 
-<Tip>
-  This page explains how usage is measured. For current rates, see [Pricing](https://www.pinecone.io/pricing/). For ways to spend less, see [Save on Pinecone costs](/guides/manage-cost/save-on-costs).
-</Tip>
+> [!TIP]
+>
+> This page explains how usage is measured. For current rates, see [Pricing](https://www.pinecone.io/pricing/). For ways to spend less, see [Save on Pinecone costs](/guides/manage-cost/save-on-costs).
 
 ## Minimum usage
 
@@ -31,23 +31,21 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 
 **Examples**
 
-<AccordionGroup>
-  <Accordion title="Usage below monthly minimum">
-    * You are on the Standard plan.
-    * Your usage for the month of August amounts to \$20.
-    * Your usage is below the \$50 monthly minimum, so your total for the month is \$50.
+> **Usage below monthly minimum**
+>
+> * You are on the Standard plan.
+> * Your usage for the month of August amounts to \$20.
+> * Your usage is below the \$50 monthly minimum, so your total for the month is \$50.
+>
+> In this case, the August invoice would include line items for each service you used (totaling \$20), plus a single line item covering the rest of the minimum usage commitment (\$30).
 
-    In this case, the August invoice would include line items for each service you used (totaling \$20), plus a single line item covering the rest of the minimum usage commitment (\$30).
-  </Accordion>
-
-  <Accordion title="Usage exceeds monthly minimum">
-    * You are on the Standard plan.
-    * Your usage for the month of August amounts to \$100.
-    * Your usage exceeds the \$50 monthly minimum, so your total for the month is \$100.
-
-    In this case, the August invoice would only show line items for each service you used (totaling \$100). Since your usage exceeds the minimum usage commitment, you are only charged for your actual usage and no additional minimum usage line item appears on your invoice.
-  </Accordion>
-</AccordionGroup>
+> **Usage exceeds monthly minimum**
+>
+> * You are on the Standard plan.
+> * Your usage for the month of August amounts to \$100.
+> * Your usage exceeds the \$50 monthly minimum, so your total for the month is \$100.
+>
+> In this case, the August invoice would only show line items for each service you used (totaling \$100). Since your usage exceeds the minimum usage commitment, you are only charged for your actual usage and no additional minimum usage line item appears on your invoice.
 
 ## Prepaid credits
 
@@ -59,9 +57,9 @@ Prepaid credits apply to Pinecone services at List Price. Any usage that exceeds
 
 Customers on Standard and Enterprise pay-as-you-go plans can purchase prepaid credits directly by navigating in the Pinecone console to [Settings > Billing > Plans](https://app.pinecone.io/organizations/-/settings/billing/plans).
 
-<Note>
-  Purchasing prepaid credits isn't available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
-</Note>
+> [!NOTE]
+>
+> Purchasing prepaid credits isn't available through cloud marketplace billing. To purchase prepaid credits through a cloud marketplace, contact [ar@pinecone.io](mailto:ar@pinecone.io).
 
 ## Read units
 
@@ -72,13 +70,13 @@ A read unit (RU) measures the compute, I/O, and network resources a read request
 * [List](#list)
 * [Full-text search](#full-text-search)
 
-<Tip>
-  Read responses include the number of RUs used, which you can use to [monitor read costs](/guides/manage-cost/check-usage-per-request#read-units).
-</Tip>
+> [!TIP]
+>
+> Read responses include the number of RUs used, which you can use to [monitor read costs](/guides/manage-cost/check-usage-per-request#read-units).
 
-<Note>
-  Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
-</Note>
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
 
 ### Query
 
@@ -94,9 +92,9 @@ A query uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs p
 
 To learn how to calculate your namespace size, see [Storage](#storage).
 
-<Note>
-  Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, don't affect query cost. Only the size of the namespace does.
-</Note>
+> [!NOTE]
+>
+> Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, don't affect query cost. Only the size of the namespace does.
 
 ### Fetch
 
@@ -110,9 +108,9 @@ A fetch request uses 1 RU for every 10 records fetched, for example:
 
 Specifying a non-existent ID or adding the same ID more than once doesn't increase the number of RUs used. A fetch request always uses at least 1 RU.
 
-<Note>
-  [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
-</Note>
+> [!NOTE]
+>
+> [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
 
 ### List
 
@@ -132,9 +130,9 @@ A write unit (WU) measures the storage and compute resources a write request use
 * [Update](#update)
 * [Delete](#delete)
 
-<Note>
-  Writes to a [document index](/guides/index-data/adopt-the-documents-api) use the same cost models as writes to a vector index. The formulas below apply to both.
-</Note>
+> [!NOTE]
+>
+> Writes to a [document index](/guides/index-data/adopt-the-documents-api) use the same cost models as writes to a vector index. The formulas below apply to both.
 
 ### Upsert
 
@@ -164,9 +162,9 @@ The following table shows the WUs used by an update at different record sizes:
 | 7.14 KB | 10 KB | 18 |
 | 3.17 KB | 3.17 KB | 7 |
 
-<Note>
-  [Updating records by metadata](/guides/manage-data/update-data#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
-</Note>
+> [!NOTE]
+>
+> [Updating records by metadata](/guides/manage-data/update-data#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
 
 ### Delete
 
@@ -186,9 +184,9 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
 
 [Deleting a namespace](/guides/manage-data/manage-namespaces#delete-a-namespace) or [deleting all records in a namespace using `deleteAll`](/guides/manage-data/delete-data#delete-all-records-in-a-namespace) uses 5 WUs.
 
-<Note>
-  [Deleting records by metadata](/guides/manage-data/delete-data#delete-records-by-metadata) uses the same cost model as deleting by ID: 1 WU for each 1 KB of records deleted.
-</Note>
+> [!NOTE]
+>
+> [Deleting records by metadata](/guides/manage-data/delete-data#delete-records-by-metadata) uses the same cost model as deleting by ID: 1 WU for each 1 KB of records deleted.
 
 ## Storage
 
@@ -196,138 +194,134 @@ Storage is billed monthly per gigabyte (GB) of index size. An index's size is th
 
 A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
-<div>
-  <Tabs>
-    <Tab title="Document index">
-      A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+**Document index**
 
-      ```text Calculate size theme={null}
-      Index size = Number of documents × (
-                     ID size +
-                     Metadata size +
-                     Total full-text-search field size +
-                     Dense vector dimensions × 4 bytes +
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
 
-      Where:
+```text Calculate size theme={null}
+Index size = Number of documents × (
+               ID size +
+               Metadata size +
+               Total full-text-search field size +
+               Dense vector dimensions × 4 bytes +
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
-      * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) but no `full_text_search` doesn't store its text, so only its generated vector counts. If a field has both, count its text here and its generated vector below.
-      * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
-      * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
+Where:
 
-      These examples assume 8-byte IDs:
+* `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
+* `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
+* Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
+* `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
 
-      | Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- | :- | :- |
-      | 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
-      | 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
-      | 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
+These examples assume 8-byte IDs:
 
-      <Note>
-        Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
-      </Note>
-    </Tab>
+| Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- | :- | :- |
+| 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
+| 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
+| 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
 
-    <Tab title="Index of dense vectors">
-      An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
+> [!NOTE]
+>
+> Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
 
-      <Note>
-        Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
-      </Note>
+**Index of dense vectors**
 
-      ```text Calculate size (assuming no sparse vectors) theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Dense vector dimensions × 4 bytes
-                   )
-      ```
+An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 
-      Where:
+> [!NOTE]
+>
+> Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * Each `Dense vector dimension` uses 4 bytes.
+```text Calculate size (assuming no sparse vectors) theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Dense vector dimensions × 4 bytes
+             )
+```
 
-      These examples assume 8-byte IDs:
+Where:
 
-      | Records | Dense vector dimensions | Avg metadata size | Index size |
-      | :- | :- | :- | :- |
-      | 500,000 | 768 | 500 bytes | 1.79 GB |
-      | 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
-      | 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
-      | 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* Each `Dense vector dimension` uses 4 bytes.
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
-      </Note>
-    </Tab>
+These examples assume 8-byte IDs:
 
-    <Tab title="Index of sparse vectors">
-      An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
+| Records | Dense vector dimensions | Avg metadata size | Index size |
+| :- | :- | :- | :- |
+| 500,000 | 768 | 500 bytes | 1.79 GB |
+| 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
+| 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
+| 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
 
-      ```text Calculate size theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
 
-      Where:
+**Index of sparse vectors**
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 
-      These examples assume 8-byte IDs:
+```text Calculate size theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      | Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- |
-      | 500,000 | 10 | 500 bytes | 0.29 GB |
-      | 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
-      | 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
-      | 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
+Where:
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
-      </Note>
-    </Tab>
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
 
-    <Tab title="Index with both dense and sparse vectors">
-      An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
+These examples assume 8-byte IDs:
 
-      ```text Calculate size theme={null}
-      Index size = Number of records × (
-                     ID size + 
-                     Metadata size +
-                     Dense vector dimensions × 4 bytes + 
-                     Number of non-zero sparse values × 8 bytes
-                   )
-      ```
+| Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- |
+| 500,000 | 10 | 500 bytes | 0.29 GB |
+| 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
+| 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
+| 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
 
-      Where:
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
 
-      * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
-      * Each `Dense vector dimension` uses 4 bytes.
-      * `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+**Index with both dense and sparse vectors**
 
-      These examples assume 8-byte IDs:
+An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
 
-      | Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :- | :- | :- | :- | :- |
-      | 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
-      | 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
-      | 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
-      | 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
+```text Calculate size theme={null}
+Index size = Number of records × (
+               ID size + 
+               Metadata size +
+               Dense vector dimensions × 4 bytes + 
+               Number of non-zero sparse values × 8 bytes
+             )
+```
 
-      <Note>
-        Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
-      </Note>
-    </Tab>
-  </Tabs>
-</div>
+Where:
+
+* `ID size` and `Metadata size` are measured in bytes, averaged across all records.
+* Each `Dense vector dimension` uses 4 bytes.
+* `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
+
+These examples assume 8-byte IDs:
+
+| Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+| :- | :- | :- | :- | :- |
+| 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
+| 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
+| 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
+| 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
+
+> [!NOTE]
+>
+> Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
 
 ## Egress
 
@@ -345,9 +339,9 @@ Write requests (upsert, update, delete, import), index statistics (such as `desc
 
 Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
-<Note>
-  Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.
-</Note>
+> [!NOTE]
+>
+> Egress accrues on all bytes returned by in-scope reads, including IDs, scores, and metadata. Leaving vector values out of a [query](/guides/search/search-overview) response (`include_values=false`, the default) lowers egress, but it doesn't exempt the request, because IDs and scores are still returned. `fetch` always returns values, so use `query` when you're searching and only need IDs or metadata.
 
 ### Egress allowance
 
@@ -387,9 +381,9 @@ For example, if you generate embeddings for the query, "What is the maximum diam
 
 To learn more about tokenization, see [Choosing an embedding model](https://www.pinecone.io/learn/series/rag/embedding-models-rundown/).
 
-<Tip>
-  Embedding requests return the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/check-usage-per-request#embedding-tokens).
-</Tip>
+> [!TIP]
+>
+> Embedding requests return the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/check-usage-per-request#embedding-tokens).
 
 ## Reranking
 
@@ -415,9 +409,9 @@ The HIPAA compliance add-on includes:
 * Enhanced security controls
 * BAA execution and compliance documentation support
 
-<Note>
-  If you upgrade to the Enterprise plan, the HIPAA compliance add-on is automatically removed because HIPAA compliance is included with Enterprise.
-</Note>
+> [!NOTE]
+>
+> If you upgrade to the Enterprise plan, the HIPAA compliance add-on is automatically removed because HIPAA compliance is included with Enterprise.
 
 ### Enable the HIPAA compliance add-on
 

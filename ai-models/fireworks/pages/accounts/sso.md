@@ -15,79 +15,75 @@ If you have an enterprise account, Fireworks supports bringing your own identity
 * SAML 2.0 provider
 * Optionally, the work-email domain your users sign in with, so they can start SSO by entering their email instead of your account ID
 
-<Info>
-  Coordinate with your Fireworks AI representative to enable the integration.
-</Info>
+> [!NOTE]
+>
+> Coordinate with your Fireworks AI representative to enable the integration.
 
 ## OpenID Connect (OIDC) provider
 
-<Steps>
-  <Step title="Create OIDC client application">
-    Create an OIDC client application in your identity provider, e.g. Okta.
-  </Step>
+**1. Create OIDC client application**
 
-  <Step title="Configure client">
-    Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client\_secret).
-  </Step>
+Create an OIDC client application in your identity provider, e.g. Okta.
 
-  <Step title="Set redirect URL">
-    Set the client's "allowed redirect URL" to the URL provided by Fireworks. It looks like:
+**2. Configure client**
 
-    ```
-    https://fireworks-<your-company-name>.auth.us-west-2.amazoncognito.com/oauth2/idpresponse
-    ```
-  </Step>
+Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client\_secret).
 
-  <Step title="Note down client details">
-    Note down the `issuer`, `client_id`, and `client_secret` for the newly created client. You will need to provide this to your Fireworks.ai representative to complete your account set up.
-  </Step>
-</Steps>
+**3. Set redirect URL**
+
+Set the client's "allowed redirect URL" to the URL provided by Fireworks. It looks like:
+
+```
+https://fireworks-<your-company-name>.auth.us-west-2.amazoncognito.com/oauth2/idpresponse
+```
+
+**4. Note down client details**
+
+Note down the `issuer`, `client_id`, and `client_secret` for the newly created client. You will need to provide this to your Fireworks.ai representative to complete your account set up.
 
 ## SAML 2.0 provider
 
-<Steps>
-  <Step title="Create SAML 2.0 application">
-    Create a SAML 2.0 application in your identity provider, e.g. [Okta](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_SAML.htm).
-  </Step>
+**1. Create SAML 2.0 application**
 
-  <Step title="Set SSO URL">
-    Set the SSO URL to the URL provided by Fireworks. It looks like:
+Create a SAML 2.0 application in your identity provider, e.g. [Okta](https://help.okta.com/en-us/Content/Topics/Apps/Apps_App_Integration_Wizard_SAML.htm).
 
-    ```
-    https://fireworks-<your-company-name>.auth.us-west-2.amazoncognito.com/saml2/idpresponse
-    ```
-  </Step>
+**2. Set SSO URL**
 
-  <Step title="Configure Audience URI">
-    Configure the Audience URI (SP Entity ID) as provided by Fireworks. It looks like:
+Set the SSO URL to the URL provided by Fireworks. It looks like:
 
-    ```
-    urn:amazon:cognito:sp:<some-unique-identifier>
-    ```
-  </Step>
+```
+https://fireworks-<your-company-name>.auth.us-west-2.amazoncognito.com/saml2/idpresponse
+```
 
-  <Step title="Create Attribute Statement">
-    Create an Attribute Statement with the name:
+**3. Configure Audience URI**
 
-    ```
-    http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
-    ```
+Configure the Audience URI (SP Entity ID) as provided by Fireworks. It looks like:
 
-    and the value `user.email`
+```
+urn:amazon:cognito:sp:<some-unique-identifier>
+```
 
-    <Note>
-      **Okta:** After saving the app, open **Sign On** → **Attribute Statements (SAML)** → expand **Show legacy configuration** → add the attribute statement there. Okta no longer configures this during app creation.
-    </Note>
-  </Step>
+**4. Create Attribute Statement**
 
-  <Step title="Keep default settings">
-    Leave the rest of the settings as defaults.
-  </Step>
+Create an Attribute Statement with the name:
 
-  <Step title="Note down metadata URL">
-    Note down the "metadata url" for your newly created application. You will need to provide this to your Fireworks AI representative to complete your account set up. If the metadata URL is not publicly reachable, provide the metadata XML file instead.
-  </Step>
-</Steps>
+```
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+```
+
+and the value `user.email`
+
+> [!NOTE]
+>
+> **Okta:** After saving the app, open **Sign On** → **Attribute Statements (SAML)** → expand **Show legacy configuration** → add the attribute statement there. Okta no longer configures this during app creation.
+
+**5. Keep default settings**
+
+Leave the rest of the settings as defaults.
+
+**6. Note down metadata URL**
+
+Note down the "metadata url" for your newly created application. You will need to provide this to your Fireworks AI representative to complete your account set up. If the metadata URL is not publicly reachable, provide the metadata XML file instead.
 
 ## SAML sign-in flow
 
@@ -107,36 +103,34 @@ System for Cross-domain Identity Management (SCIM) provisioning synchronizes the
 
 SCIM provisioning is available for enterprise accounts and works with supported directory providers, including Okta, Microsoft Entra ID, and Google Workspace. Fireworks uses [WorkOS Directory Sync](https://workos.com/docs/directory-sync) to connect to your directory.
 
-<Note>
-  SCIM manages provisioning only. Users continue to authenticate through your
-  existing OIDC or SAML SSO integration.
-</Note>
+> [!NOTE]
+>
+> SCIM manages provisioning only. Users continue to authenticate through your
+> existing OIDC or SAML SSO integration.
 
 ### Set up SCIM provisioning
 
-<Steps>
-  <Step title="Configure custom SSO">
-    Complete the OIDC or SAML setup above. Custom SSO must be configured before
-    you can enable SCIM provisioning.
-  </Step>
+**1. Configure custom SSO**
 
-  <Step title="Request SCIM enablement">
-    Contact your Fireworks AI representative. Fireworks will enable Directory
-    Sync for your account and provide a secure setup link.
-  </Step>
+Complete the OIDC or SAML setup above. Custom SSO must be configured before
+you can enable SCIM provisioning.
 
-  <Step title="Connect your directory">
-    Open the setup link, select your directory provider, and follow the
-    provider-specific instructions to authorize the connection.
-  </Step>
+**2. Request SCIM enablement**
 
-  <Step title="Assign users and groups">
-    In your identity provider, assign the users who should have access to
-    Fireworks, plus any groups you want mirrored into Fireworks. Confirm that
-    they appear on the **Users** and **Groups** tabs of the [Users
-    page](https://app.fireworks.ai/account/users).
-  </Step>
-</Steps>
+Contact your Fireworks AI representative. Fireworks will enable Directory
+Sync for your account and provide a secure setup link.
+
+**3. Connect your directory**
+
+Open the setup link, select your directory provider, and follow the
+provider-specific instructions to authorize the connection.
+
+**4. Assign users and groups**
+
+In your identity provider, assign the users who should have access to
+Fireworks, plus any groups you want mirrored into Fireworks. Confirm that
+they appear on the **Users** and **Groups** tabs of the [Users
+page](https://app.fireworks.ai/account/users).
 
 ### Group provisioning
 
@@ -146,12 +140,12 @@ Synced groups appear on the **Groups** tab of the [Users page](https://app.firew
 
 Synced groups have one use in Fireworks today: assigning them a [group limit](/nexus/usage-limits#group-limits), which caps serverless spend for each of the group's members. That is a **Fireworks Nexus** feature and is enabled separately — syncing groups does not by itself give your account spend limits.
 
-<Warning>
-  Group-to-role mappings are not currently supported: a group's members do not
-  inherit a role from the group, and provisioned users receive the `User` role
-  by default. Set roles per user as described in [Managing
-  users](/accounts/users#updating-a-users-role).
-</Warning>
+> [!WARNING]
+>
+> Group-to-role mappings are not currently supported: a group's members do not
+> inherit a role from the group, and provisioned users receive the `User` role
+> by default. Set roles per user as described in [Managing
+> users](/accounts/users#updating-a-users-role).
 
 We recommend disabling JIT provisioning when SCIM is enabled so that your directory remains the source of truth for account membership. SSO enforcement is also recommended to prevent access outside your configured identity provider.
 

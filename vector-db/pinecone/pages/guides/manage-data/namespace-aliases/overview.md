@@ -6,9 +6,9 @@ path: guides/manage-data/namespace-aliases/overview
 
 A namespace alias is a stable name for a namespace that you can repoint at any time, switching the data your application reads without a code change or redeploy.
 
-<Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
-</Note>
+> [!NOTE]
+>
+> Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 
 A **namespace alias** is a stable, repointable name inside an index that points at a [namespace](/guides/index-data/indexing-overview#namespaces). An alias holds no data of its own. It's a pointer. Your application reads through the alias name, and you can atomically repoint the alias to a different namespace in the same index at any time, with no application config change and no redeploy.
 

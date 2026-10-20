@@ -14,83 +14,79 @@ Fireworks exposes an Anthropic-compatible endpoint at `POST /v1/messages`.
 
 Install the Anthropic SDK for your language:
 
-<Tabs>
-  <Tab title="Python">
-    ```bash theme={null}
-    pip install anthropic
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JavaScript / TypeScript">
-    ```bash theme={null}
-    npm install @anthropic-ai/sdk
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+pip install anthropic
+```
+
+**JavaScript / TypeScript**
+
+```bash theme={null}
+npm install @anthropic-ai/sdk
+```
 
 Then make your first request:
 
-<CodeGroup>
-  ```python Python theme={null}
-  import os
-  import anthropic
+```python Python theme={null}
+import os
+import anthropic
 
-  client = anthropic.Anthropic(
-      api_key=os.environ["FIREWORKS_API_KEY"],
-      base_url="https://api.fireworks.ai/inference",
-  )
+client = anthropic.Anthropic(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference",
+)
 
-  response = client.messages.create(
-      model="accounts/fireworks/models/kimi-k2p5",
-      max_tokens=256,
-      messages=[
-          {"role": "user", "content": "Say hello in Spanish. Reply in one word."}
-      ],
-  )
-
-  print(response.content[0].text)
-  ```
-
-  ```javascript JavaScript theme={null}
-  import Anthropic from "@anthropic-ai/sdk";
-
-  const client = new Anthropic({
-    apiKey: process.env.FIREWORKS_API_KEY,
-    baseURL: "https://api.fireworks.ai/inference",
-  });
-
-  const response = await client.messages.create({
-    model: "accounts/fireworks/models/kimi-k2p5",
-    max_tokens: 256,
-    messages: [
-      { role: "user", content: "Say hello in Spanish. Reply in one word." },
+response = client.messages.create(
+    model="accounts/fireworks/models/kimi-k2p5",
+    max_tokens=256,
+    messages=[
+        {"role": "user", "content": "Say hello in Spanish. Reply in one word."}
     ],
-  });
+)
 
-  console.log(response.content[0].text);
-  ```
+print(response.content[0].text)
+```
 
-  ```bash cURL theme={null}
-  curl --request POST \
-    --url https://api.fireworks.ai/inference/v1/messages \
-    --header "Authorization: Bearer $FIREWORKS_API_KEY" \
-    --header "Content-Type: application/json" \
-    --data '{
-      "model": "accounts/fireworks/models/kimi-k2p5",
-      "max_tokens": 256,
-      "messages": [
-        {
-          "role": "user",
-          "content": "Say hello in Spanish. Reply in one word."
-        }
-      ]
-    }'
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+import Anthropic from "@anthropic-ai/sdk";
 
-<Note>
-  The base URL for the Anthropic SDK is `https://api.fireworks.ai/inference` (without the `/v1` suffix). The SDK appends `/v1/messages` automatically.
-</Note>
+const client = new Anthropic({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference",
+});
+
+const response = await client.messages.create({
+  model: "accounts/fireworks/models/kimi-k2p5",
+  max_tokens: 256,
+  messages: [
+    { role: "user", content: "Say hello in Spanish. Reply in one word." },
+  ],
+});
+
+console.log(response.content[0].text);
+```
+
+```bash cURL theme={null}
+curl --request POST \
+  --url https://api.fireworks.ai/inference/v1/messages \
+  --header "Authorization: Bearer $FIREWORKS_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "model": "accounts/fireworks/models/kimi-k2p5",
+    "max_tokens": 256,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Say hello in Spanish. Reply in one word."
+      }
+    ]
+  }'
+```
+
+> [!NOTE]
+>
+> The base URL for the Anthropic SDK is `https://api.fireworks.ai/inference` (without the `/v1` suffix). The SDK appends `/v1/messages` automatically.
 
 ## Usage
 
@@ -230,13 +226,13 @@ Tool definition schemas usually live at the top of a model's chat template, ahea
 
 This covers both Anthropic-native `tool_search_tool_*` tool names and clients that name their discovery tool `ToolSearch` (for example, Claude Code).
 
-<Note>
-  Fireworks translates the **client-side** tool-search discovery and deferred-loading wire format only. Anthropic's **server-side** tool search and server-side tool use—where the provider executes the search and tool calls on its side—are not supported. Server-side execution of the other server tool families (web search, code execution, memory, web fetch) is likewise not supported; see [Unsupported features](#unsupported-features).
-</Note>
+> [!NOTE]
+>
+> Fireworks translates the **client-side** tool-search discovery and deferred-loading wire format only. Anthropic's **server-side** tool search and server-side tool use—where the provider executes the search and tool calls on its side—are not supported. Server-side execution of the other server tool families (web search, code execution, memory, web fetch) is likewise not supported; see [Unsupported features](#unsupported-features).
 
-<Note>
-  An explicitly forced `tool_choice` naming a deferred tool overrides the drop: the forced tool stays callable in the request's tool definitions so the forced choice validates.
-</Note>
+> [!NOTE]
+>
+> An explicitly forced `tool_choice` naming a deferred tool overrides the drop: the forced tool stays callable in the request's tool definitions so the forced choice validates.
 
 ### Unsupported features
 
@@ -273,9 +269,9 @@ Errors use the Anthropic error envelope, so the `APIError` subclasses in the Ant
 
 Error messages refer to the Anthropic field you sent, not its Fireworks equivalent. If you send `stop_sequences`, a validation error names `stop_sequences` even though the field is called `stop` on the Fireworks chat completions API.
 
-<Note>
-  A few failures are raised before the request reaches the Anthropic-compatible layer — an unknown model or an unrouted path, for example. Those return the standard Fireworks error body (`{"error": {"code": "NOT_FOUND", ...}, "request_id": "..."}`) instead of the Anthropic envelope. Treat the HTTP status as authoritative and do not assume every error body has an `error.type`.
-</Note>
+> [!NOTE]
+>
+> A few failures are raised before the request reaches the Anthropic-compatible layer — an unknown model or an unrouted path, for example. Those return the standard Fireworks error body (`{"error": {"code": "NOT_FOUND", ...}, "request_id": "..."}`) instead of the Anthropic envelope. Treat the HTTP status as authoritative and do not assume every error body has an `error.type`.
 
 For the shared status-code catalog, see [Inference error codes](/guides/inference-error-codes).
 
@@ -306,9 +302,9 @@ The same settings work for the [Claude Agent SDK](https://github.com/anthropics/
 | `400` naming `web_search_20250305` | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool. |
 | Slow multi-turn responses | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
 
-<Note>
-  Claude Code's built-in WebSearch tool is served by Fireworks only in regions where the search backend is enabled, and only for the single-turn search shape Claude Code emits. It is not a general-purpose server-side web search tool.
-</Note>
+> [!NOTE]
+>
+> Claude Code's built-in WebSearch tool is served by Fireworks only in regions where the search backend is enabled, and only for the single-turn search shape Claude Code emits. It is not a general-purpose server-side web search tool.
 
 ## Token usage
 
@@ -320,81 +316,75 @@ Following Anthropic's accounting, `input_tokens` **excludes** tokens served from
 
 For non-streaming requests, usage is returned on the response object:
 
-<CodeGroup>
-  ```python Python theme={null}
-  response = client.messages.create(
-      model="accounts/fireworks/models/kimi-k2p5",
-      max_tokens=256,
-      messages=[{"role": "user", "content": "Say hello"}],
-  )
+```python Python theme={null}
+response = client.messages.create(
+    model="accounts/fireworks/models/kimi-k2p5",
+    max_tokens=256,
+    messages=[{"role": "user", "content": "Say hello"}],
+)
 
-  print(f"Input tokens:  {response.usage.input_tokens}")
-  print(f"Output tokens: {response.usage.output_tokens}")
-  ```
+print(f"Input tokens:  {response.usage.input_tokens}")
+print(f"Output tokens: {response.usage.output_tokens}")
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await client.messages.create({
-    model: "accounts/fireworks/models/kimi-k2p5",
-    max_tokens: 256,
-    messages: [{ role: "user", content: "Say hello" }],
-  });
+```javascript JavaScript theme={null}
+const response = await client.messages.create({
+  model: "accounts/fireworks/models/kimi-k2p5",
+  max_tokens: 256,
+  messages: [{ role: "user", content: "Say hello" }],
+});
 
-  console.log(`Input tokens:  ${response.usage.input_tokens}`);
-  console.log(`Output tokens: ${response.usage.output_tokens}`);
-  ```
-</CodeGroup>
+console.log(`Input tokens:  ${response.usage.input_tokens}`);
+console.log(`Output tokens: ${response.usage.output_tokens}`);
+```
 
 ### Streaming
 
 For streaming requests, token usage is included in the final `message_delta` event:
 
-<CodeGroup>
-  ```python Python theme={null}
-  stream = client.messages.create(
-      model="accounts/fireworks/models/kimi-k2p5",
-      max_tokens=256,
-      messages=[{"role": "user", "content": "Say hello"}],
-      stream=True,
-  )
+```python Python theme={null}
+stream = client.messages.create(
+    model="accounts/fireworks/models/kimi-k2p5",
+    max_tokens=256,
+    messages=[{"role": "user", "content": "Say hello"}],
+    stream=True,
+)
 
-  for event in stream:
-      if event.type == "message_delta":
-          print(f"Input tokens:  {event.usage.input_tokens}")
-          print(f"Output tokens: {event.usage.output_tokens}")
-  ```
+for event in stream:
+    if event.type == "message_delta":
+        print(f"Input tokens:  {event.usage.input_tokens}")
+        print(f"Output tokens: {event.usage.output_tokens}")
+```
 
-  ```javascript JavaScript theme={null}
-  const stream = client.messages.stream({
-    model: "accounts/fireworks/models/kimi-k2p5",
-    max_tokens: 256,
-    messages: [{ role: "user", content: "Say hello" }],
-  });
+```javascript JavaScript theme={null}
+const stream = client.messages.stream({
+  model: "accounts/fireworks/models/kimi-k2p5",
+  max_tokens: 256,
+  messages: [{ role: "user", content: "Say hello" }],
+});
 
-  for await (const event of stream) {
-    if (event.type === "message_delta") {
-      console.log(`Input tokens:  ${event.usage.input_tokens}`);
-      console.log(`Output tokens: ${event.usage.output_tokens}`);
-    }
+for await (const event of stream) {
+  if (event.type === "message_delta") {
+    console.log(`Input tokens:  ${event.usage.input_tokens}`);
+    console.log(`Output tokens: ${event.usage.output_tokens}`);
   }
-  ```
-</CodeGroup>
+}
+```
 
-<Note>
-  There is only one `message_delta` event per stream (the last event before `message_stop`), and it always contains the actual token counts. The `message_start` event also includes a `usage` field, but its values are always `0` and should be ignored for metering purposes.
-</Note>
+> [!NOTE]
+>
+> There is only one `message_delta` event per stream (the last event before `message_stop`), and it always contains the actual token counts. The `message_start` event also includes a `usage` field, but its values are always `0` and should be ignored for metering purposes.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" href="/getting-started/quickstart" icon="rocket">
-    Get started with your first API call
-  </Card>
+> **[Quickstart](/getting-started/quickstart)**
+>
+> Get started with your first API call
 
-  <Card title="Reasoning" href="/guides/reasoning" icon="brain">
-    Use reasoning with thinking models
-  </Card>
+> **[Reasoning](/guides/reasoning)**
+>
+> Use reasoning with thinking models
 
-  <Card title="API reference" href="/api-reference/anthropic-messages" icon="brackets-curly">
-    Full Anthropic Messages API reference
-  </Card>
-</CardGroup>
+> **[API reference](/api-reference/anthropic-messages)**
+>
+> Full Anthropic Messages API reference

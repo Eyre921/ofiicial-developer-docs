@@ -28,13 +28,13 @@ const githubAuth = worker.oauth("githubAuth", {
 });
 ```
 
-<Warning>
-  Store your `clientId` and `clientSecret` as [secrets](/workers/guides/secrets), not in code:
-
-  ```bash theme={null}
-  ntn workers env set GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=yyy
-  ```
-</Warning>
+> [!WARNING]
+>
+> Store your `clientId` and `clientSecret` as [secrets](/workers/guides/secrets), not in code:
+>
+> ```bash theme={null}
+> ntn workers env set GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=yyy
+> ```
 
 ### Configuration options
 
@@ -53,49 +53,47 @@ const githubAuth = worker.oauth("githubAuth", {
 
 Setting up OAuth requires multiple steps in a specific order. The worker must be deployed before you can store secrets or start the OAuth flow:
 
-<Steps>
-  <Step title="Deploy your worker">
-    If you haven't deployed at least once already, do so first. The first deploy registers the worker with Notion. Your OAuth credentials won't be available yet (that's expected).
+**1. Deploy your worker**
 
-    ```bash theme={null}
-    ntn workers deploy
-    ```
-  </Step>
+If you haven't deployed at least once already, do so first. The first deploy registers the worker with Notion. Your OAuth credentials won't be available yet (that's expected).
 
-  <Step title="Get your redirect URL">
-    ```bash theme={null}
-    ntn workers oauth show-redirect-url
-    ```
+```bash theme={null}
+ntn workers deploy
+```
 
-    You'll need this when creating the OAuth app with your provider.
-  </Step>
+**2. Get your redirect URL**
 
-  <Step title="Create an OAuth app with your provider">
-    Go to your provider's developer settings (e.g., GitHub Developer Settings, Google Cloud Console) and create an OAuth app. Add the redirect URL from the previous step as an authorized redirect URI. Copy the client ID and client secret.
-  </Step>
+```bash theme={null}
+ntn workers oauth show-redirect-url
+```
 
-  <Step title="Store your OAuth credentials">
-    ```bash theme={null}
-    ntn workers env set GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=yyy
-    ```
-  </Step>
+You'll need this when creating the OAuth app with your provider.
 
-  <Step title="Deploy again">
-    Redeploy so the worker picks up the credentials:
+**3. Create an OAuth app with your provider**
 
-    ```bash theme={null}
-    ntn workers deploy
-    ```
-  </Step>
+Go to your provider's developer settings (e.g., GitHub Developer Settings, Google Cloud Console) and create an OAuth app. Add the redirect URL from the previous step as an authorized redirect URI. Copy the client ID and client secret.
 
-  <Step title="Start the OAuth flow">
-    ```bash theme={null}
-    ntn workers oauth start githubAuth
-    ```
+**4. Store your OAuth credentials**
 
-    This opens a browser window where you authorize the connection. Once complete, the Workers runtime stores the token securely.
-  </Step>
-</Steps>
+```bash theme={null}
+ntn workers env set GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=yyy
+```
+
+**5. Deploy again**
+
+Redeploy so the worker picks up the credentials:
+
+```bash theme={null}
+ntn workers deploy
+```
+
+**6. Start the OAuth flow**
+
+```bash theme={null}
+ntn workers oauth start githubAuth
+```
+
+This opens a browser window where you authorize the connection. Once complete, the Workers runtime stores the token securely.
 
 ## Use the token
 
@@ -162,9 +160,9 @@ You can then test your capability locally with the `--local` flag:
 ntn workers exec getGitHubRepos --local
 ```
 
-<Info>
-  OAuth tokens expire. If you get a 401 from the provider, run `ntn workers env pull` again to get a refreshed token.
-</Info>
+> [!NOTE]
+>
+> OAuth tokens expire. If you get a 401 from the provider, run `ntn workers env pull` again to get a refreshed token.
 
 ## Examples
 
@@ -198,22 +196,20 @@ const salesforceAuth = worker.oauth("salesforceAuth", {
 });
 ```
 
-<Tip>
-  Some providers (like Salesforce) don't return `expires_in` in their token response. Set `accessTokenExpireMs` to a sensible default (e.g., `3600000` for 1 hour) so the runtime knows when to refresh.
-</Tip>
+> [!TIP]
+>
+> Some providers (like Salesforce) don't return `expires_in` in their token response. Set `accessTokenExpireMs` to a sensible default (e.g., `3600000` for 1 hour) so the runtime knows when to refresh.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
-    Store API keys and OAuth credentials securely.
-  </Card>
+> **[Secrets](/workers/guides/secrets)**
+>
+> Store API keys and OAuth credentials securely.
 
-  <Card title="Syncs" icon="rotate" href="/workers/guides/syncs">
-    Sync external data into Notion databases.
-  </Card>
+> **[Syncs](/workers/guides/syncs)**
+>
+> Sync external data into Notion databases.
 
-  <Card title="Webhooks" icon="bell" href="/workers/guides/webhooks">
-    Receive HTTP events from external services.
-  </Card>
-</CardGroup>
+> **[Webhooks](/workers/guides/webhooks)**
+>
+> Receive HTTP events from external services.

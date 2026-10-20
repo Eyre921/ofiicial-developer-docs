@@ -15,6 +15,8 @@ path: docs/eleven-agents/customization/llm/custom-llm
 
 **Custom LLMs** let you bring your own OpenAI API key or run an entirely custom LLM server.
 
+A custom LLM can't be used with a [Realtime model](/docs/eleven-agents/customization/realtime-models).
+
 ## Overview
 
 By default, we use our own internal credentials for popular models like OpenAI. To use a custom LLM server, it must align with one of the following OpenAI-compatible request/response structures:

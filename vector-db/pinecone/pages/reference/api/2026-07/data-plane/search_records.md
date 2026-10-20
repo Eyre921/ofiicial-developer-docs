@@ -13,73 +13,71 @@ Searching with text (`inputs`) is supported only for [legacy integrated indexes]
 
 For guidance and examples, see [Search](https://docs.pinecone.io/guides/search/search-overview).
 
-<RequestExample>
-  ```shell curl theme={null}
-  INDEX_HOST="INDEX_HOST"
-  NAMESPACE="YOUR_NAMESPACE"
-  PINECONE_API_KEY="YOUR_API_KEY"
+```shell curl theme={null}
+INDEX_HOST="INDEX_HOST"
+NAMESPACE="YOUR_NAMESPACE"
+PINECONE_API_KEY="YOUR_API_KEY"
 
-  # Search with a query text and rerank the results
-  # Supported only for indexes with integrated embedding
-  curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "query": {
-              "inputs": {"text": "Disease prevention"},
-              "top_k": 4
-          },
-          "fields": ["category", "chunk_text"],
-          "rerank": {
-              "model": "bge-reranker-v2-m3",
-              "top_n": 2,
-              "rank_fields": ["chunk_text"]
-          }
-       }'
+# Search with a query text and rerank the results
+# Supported only for indexes with integrated embedding
+curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "query": {
+            "inputs": {"text": "Disease prevention"},
+            "top_k": 4
+        },
+        "fields": ["category", "chunk_text"],
+        "rerank": {
+            "model": "bge-reranker-v2-m3",
+            "top_n": 2,
+            "rank_fields": ["chunk_text"]
+        }
+     }'
 
-  # Search with a query vector and rerank the results
-  curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "query": {
-              "vector": {
-                  "values": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
-              },
-              "top_k": 4
-          },
-          "fields": ["category", "chunk_text"],
-          "rerank": {
-              "query": "Disease prevention",
-              "model": "bge-reranker-v2-m3",
-              "top_n": 2,
-              "rank_fields": ["chunk_text"]
-          }
-       }'
+# Search with a query vector and rerank the results
+curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "query": {
+            "vector": {
+                "values": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+            },
+            "top_k": 4
+        },
+        "fields": ["category", "chunk_text"],
+        "rerank": {
+            "query": "Disease prevention",
+            "model": "bge-reranker-v2-m3",
+            "top_n": 2,
+            "rank_fields": ["chunk_text"]
+        }
+     }'
 
-  # Search with a record ID and rerank the results
-  # Supported only for indexes with integrated embedding
-  curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "query": {
-              "id": "rec1",
-              "top_k": 4
-          },
-          "fields": ["category", "chunk_text"],
-          "rerank": {
-              "query": "Disease prevention",
-              "model": "bge-reranker-v2-m3",
-              "top_n": 2,
-              "rank_fields": ["chunk_text"]
-          }
-       }'
-  ```
-</RequestExample>
+# Search with a record ID and rerank the results
+# Supported only for indexes with integrated embedding
+curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "query": {
+            "id": "rec1",
+            "top_k": 4
+        },
+        "fields": ["category", "chunk_text"],
+        "rerank": {
+            "query": "Disease prevention",
+            "model": "bge-reranker-v2-m3",
+            "top_n": 2,
+            "rank_fields": ["chunk_text"]
+        }
+     }'
+```

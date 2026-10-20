@@ -6,9 +6,9 @@ path: guides/data-apis/working-with-views
 
 Learn how to set up and manage database views using the Notion API.
 
-<Info>
-  The Views API requires API version `2025-09-03` or later. If your connection uses an older version, see the [upgrade guide](/guides/get-started/upgrade-guide-2025-09-03) for migration steps.
-</Info>
+> [!NOTE]
+>
+> The Views API requires API version `2025-09-03` or later. If your connection uses an older version, see the [upgrade guide](/guides/get-started/upgrade-guide-2025-09-03) for migration steps.
 
 ## Overview
 
@@ -18,19 +18,17 @@ The Notion API exposes views as first-class resources. This means connections ca
 
 In this guide, you'll learn:
 
-<CardGroup>
-  <Card title="How views relate to databases and data sources." href="#structure" icon="angles-right" />
+> **[How views relate to databases and data sources.](#structure)**
 
-  <Card title="What happens by default when you create a database." href="#default-behavior" icon="angles-right" />
+> **[What happens by default when you create a database.](#default-behavior)**
 
-  <Card title="How to list, create, and delete views." href="#listing-views" icon="angles-right" />
+> **[How to list, create, and delete views.](#listing-views)**
 
-  <Card title="How to configure view-specific settings." href="#view-configuration" icon="angles-right" />
+> **[How to configure view-specific settings.](#view-configuration)**
 
-  <Card title="How to create and manage dashboard views." href="#dashboard-views" icon="angles-right" />
+> **[How to create and manage dashboard views.](#dashboard-views)**
 
-  <Card title="How to query data through a view." href="#querying-a-view" icon="angles-right" />
-</CardGroup>
+> **[How to query data through a view.](#querying-a-view)**
 
 ## Structure
 
@@ -38,66 +36,64 @@ A **view** is scoped to a single [data source](/reference/data-source) within a 
 
 The view object looks like this:
 
-<CodeGroup>
-  ```json View object example expandable theme={null}
-  {
-    "object": "view",
-    "id": "a3f1b2c4-5678-4def-abcd-1234567890ab",
-    "parent": {
-      "type": "database_id",
-      "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
-    },
-    "data_source_id": "248104cd-477e-80af-bc30-000bd28de8f9",
-    "name": "High priority items",
+```json View object example expandable theme={null}
+{
+  "object": "view",
+  "id": "a3f1b2c4-5678-4def-abcd-1234567890ab",
+  "parent": {
+    "type": "database_id",
+    "database_id": "248104cd-477e-80fd-b757-e945d38000bd"
+  },
+  "data_source_id": "248104cd-477e-80af-bc30-000bd28de8f9",
+  "name": "High priority items",
+  "type": "table",
+  "filter": {
+    "property": "Priority",
+    "select": {
+      "equals": "High"
+    }
+  },
+  "sorts": [
+    {
+      "property": "Last ordered",
+      "direction": "descending"
+    }
+  ],
+  "quick_filters": {
+    "Status": {
+      "status": { "equals": "In progress" }
+    }
+  },
+  "configuration": {
     "type": "table",
-    "filter": {
-      "property": "Priority",
-      "select": {
-        "equals": "High"
-      }
-    },
-    "sorts": [
-      {
-        "property": "Last ordered",
-        "direction": "descending"
-      }
+    "properties": [
+      { "property_id": "title", "visible": true, "width": 300 },
+      { "property_id": "abc1", "visible": true, "width": 200 },
+      { "property_id": "def2", "visible": false }
     ],
-    "quick_filters": {
-      "Status": {
-        "status": { "equals": "In progress" }
-      }
+    "group_by": {
+      "type": "status",
+      "property_id": "ghi3",
+      "group_by": "group",
+      "sort": { "type": "manual" }
     },
-    "configuration": {
-      "type": "table",
-      "properties": [
-        { "property_id": "title", "visible": true, "width": 300 },
-        { "property_id": "abc1", "visible": true, "width": 200 },
-        { "property_id": "def2", "visible": false }
-      ],
-      "group_by": {
-        "type": "status",
-        "property_id": "ghi3",
-        "group_by": "group",
-        "sort": { "type": "manual" }
-      },
-      "wrap_cells": false,
-      "frozen_column_index": 1,
-      "show_vertical_lines": true
-    },
-    "created_time": "2026-01-15T10:30:00.000Z",
-    "last_edited_time": "2026-01-20T14:22:00.000Z",
-    "created_by": {
-      "object": "user",
-      "id": "e7f3a4b2-1234-5678-9abc-def012345678"
-    },
-    "last_edited_by": {
-      "object": "user",
-      "id": "e7f3a4b2-1234-5678-9abc-def012345678"
-    },
-    "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
-  }
-  ```
-</CodeGroup>
+    "wrap_cells": false,
+    "frozen_column_index": 1,
+    "show_vertical_lines": true
+  },
+  "created_time": "2026-01-15T10:30:00.000Z",
+  "last_edited_time": "2026-01-20T14:22:00.000Z",
+  "created_by": {
+    "object": "user",
+    "id": "e7f3a4b2-1234-5678-9abc-def012345678"
+  },
+  "last_edited_by": {
+    "object": "user",
+    "id": "e7f3a4b2-1234-5678-9abc-def012345678"
+  },
+  "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
+}
+```
 
 Key fields:
 
@@ -118,33 +114,31 @@ When you [create a database](/reference/create-database) through the API, Notion
 
 This means every newly created database is immediately usable — it has a data source to hold pages and a view to display them.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X POST https://api.notion.com/v1/databases \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "parent": { "type": "page_id", "page_id": "YOUR_PAGE_ID" },
-      "title": [{ "type": "text", "text": { "content": "My Database" } }],
-      "is_inline": false
-    }'
-  ```
+```bash cURL theme={null}
+curl -X POST https://api.notion.com/v1/databases \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "parent": { "type": "page_id", "page_id": "YOUR_PAGE_ID" },
+    "title": [{ "type": "text", "text": { "content": "My Database" } }],
+    "is_inline": false
+  }'
+```
 
-  ```javascript JavaScript theme={null}
-  const { Client } = require("@notionhq/client");
+```javascript JavaScript theme={null}
+const { Client } = require("@notionhq/client");
 
-  const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-  const database = await notion.databases.create({
-    parent: { type: "page_id", page_id: "YOUR_PAGE_ID" },
-    title: [{ type: "text", text: { content: "My Database" } }],
-    is_inline: false,
-  });
+const database = await notion.databases.create({
+  parent: { type: "page_id", page_id: "YOUR_PAGE_ID" },
+  title: [{ type: "text", text: { content: "My Database" } }],
+  is_inline: false,
+});
 
-  // database.data_sources[0].id is the auto-created data source
-  ```
-</CodeGroup>
+// database.data_sources[0].id is the auto-created data source
+```
 
 After creating the database, you can [list the views](#listing-views) to discover the default view, then create additional views as needed.
 
@@ -156,49 +150,45 @@ Use the [list endpoint](/reference/list-views) to discover views. You can filter
 
 Pass `database_id` to list the views belonging to a specific database block.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X GET "https://api.notion.com/v1/views?database_id=DATABASE_ID" \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X GET "https://api.notion.com/v1/views?database_id=DATABASE_ID" \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.views.list({
-    database_id: "DATABASE_ID",
-  });
+```javascript JavaScript theme={null}
+const response = await notion.views.list({
+  database_id: "DATABASE_ID",
+});
 
-  for (const view of response.results) {
-    console.log(view.id);
-  }
-  ```
-</CodeGroup>
+for (const view of response.results) {
+  console.log(view.id);
+}
+```
 
 ### By data source
 
 Pass `data_source_id` to list all views that reference a given data source (collection), including linked views on other pages across the workspace.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X GET "https://api.notion.com/v1/views?data_source_id=DATA_SOURCE_ID" \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X GET "https://api.notion.com/v1/views?data_source_id=DATA_SOURCE_ID" \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const response = await notion.views.list({
-    data_source_id: "DATA_SOURCE_ID",
-  });
+```javascript JavaScript theme={null}
+const response = await notion.views.list({
+  data_source_id: "DATA_SOURCE_ID",
+});
 
-  for (const view of response.results) {
-    console.log(view.id);
-  }
-  ```
-</CodeGroup>
+for (const view of response.results) {
+  console.log(view.id);
+}
+```
 
-<Info>
-  Results are filtered by your connection's access permissions. Views on pages the connection cannot access are excluded.
-</Info>
+> [!NOTE]
+>
+> Results are filtered by your connection's access permissions. Views on pages the connection cannot access are excluded.
 
 Both variants return a paginated list of view references:
 
@@ -214,31 +204,29 @@ Both variants return a paginated list of view references:
 }
 ```
 
-<Info>
-  The list endpoint returns minimal view references (just `object` and `id`). To get full view details including filters, sorts, and configuration, retrieve each view individually.
-</Info>
+> [!NOTE]
+>
+> The list endpoint returns minimal view references (just `object` and `id`). To get full view details including filters, sorts, and configuration, retrieve each view individually.
 
 ## Retrieving a view
 
 [Retrieve a view](/reference/retrieve-a-view) by its ID to see its full configuration, including filters, sorts, and layout settings.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X GET https://api.notion.com/v1/views/VIEW_ID \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X GET https://api.notion.com/v1/views/VIEW_ID \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const view = await notion.views.retrieve({
-    view_id: "VIEW_ID",
-  });
+```javascript JavaScript theme={null}
+const view = await notion.views.retrieve({
+  view_id: "VIEW_ID",
+});
 
-  console.log(view.name);            // "High priority items"
-  console.log(view.type);            // "table"
-  console.log(view.configuration);   // { type: "table", properties: [...], ... }
-  ```
-</CodeGroup>
+console.log(view.name);            // "High priority items"
+console.log(view.type);            // "table"
+console.log(view.configuration);   // { type: "table", properties: [...], ... }
+```
 
 The response is a full [view object](#structure).
 
@@ -246,112 +234,110 @@ The response is a full [view object](#structure).
 
 Create a new view by specifying the target data source, a name, and a view type. You must also provide one of `database_id` (to create a top-level view on a database), `view_id` (to add a widget view to an existing dashboard), or `create_database` (to create a linked database view on a page). You can optionally include filters, sorts, and a [configuration](#view-configuration) object. For the full parameter reference, see [Create a view](/reference/create-view).
 
-<Note>
-  `database_id` and `data_source_id` are different IDs. The `database_id` is the database container's ID (the same ID returned by the [Retrieve a database](/reference/retrieve-a-database) endpoint). The `data_source_id` is the ID of a specific data source within that database (found in the database's `data_sources` array). Most databases have a single data source, but both IDs are required.
-</Note>
+> [!NOTE]
+>
+> `database_id` and `data_source_id` are different IDs. The `database_id` is the database container's ID (the same ID returned by the [Retrieve a database](/reference/retrieve-a-database) endpoint). The `data_source_id` is the ID of a specific data source within that database (found in the database's `data_sources` array). Most databases have a single data source, but both IDs are required.
 
-<CodeGroup>
-  ```bash cURL expandable theme={null}
-  curl -X POST https://api.notion.com/v1/views \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "database_id": "DATABASE_ID",
-      "data_source_id": "DATA_SOURCE_ID",
-      "name": "Recent orders",
-      "type": "table",
-      "filter": {
-        "property": "Last ordered",
-        "date": {
-          "past_week": {}
-        }
-      },
-      "sorts": [
-        {
-          "property": "Last ordered",
-          "direction": "descending"
-        }
-      ],
-      "configuration": {
-        "type": "table",
-        "properties": [
-          { "property_id": "title", "visible": true, "width": 300 },
-          { "property_id": "abc1", "visible": true, "width": 200 }
-        ],
-        "wrap_cells": true
+```bash cURL expandable theme={null}
+curl -X POST https://api.notion.com/v1/views \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "database_id": "DATABASE_ID",
+    "data_source_id": "DATA_SOURCE_ID",
+    "name": "Recent orders",
+    "type": "table",
+    "filter": {
+      "property": "Last ordered",
+      "date": {
+        "past_week": {}
       }
-    }'
-  ```
-
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.create({
-    database_id: "DATABASE_ID",
-    data_source_id: "DATA_SOURCE_ID",
-    name: "Recent orders",
-    type: "table",
-    filter: {
-      property: "Last ordered",
-      date: {
-        past_week: {},
-      },
     },
-    sorts: [
+    "sorts": [
       {
-        property: "Last ordered",
-        direction: "descending",
-      },
+        "property": "Last ordered",
+        "direction": "descending"
+      }
     ],
-    configuration: {
-      type: "table",
-      properties: [
-        { property_id: "title", visible: true, width: 300 },
-        { property_id: "abc1", visible: true, width: 200 },
+    "configuration": {
+      "type": "table",
+      "properties": [
+        { "property_id": "title", "visible": true, "width": 300 },
+        { "property_id": "abc1", "visible": true, "width": 200 }
       ],
-      wrap_cells: true,
-    },
-  });
+      "wrap_cells": true
+    }
+  }'
+```
 
-  console.log(view.id);  // The new view's ID
-  console.log(view.url); // Deep link to the view in Notion
-  ```
-</CodeGroup>
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.create({
+  database_id: "DATABASE_ID",
+  data_source_id: "DATA_SOURCE_ID",
+  name: "Recent orders",
+  type: "table",
+  filter: {
+    property: "Last ordered",
+    date: {
+      past_week: {},
+    },
+  },
+  sorts: [
+    {
+      property: "Last ordered",
+      direction: "descending",
+    },
+  ],
+  configuration: {
+    type: "table",
+    properties: [
+      { property_id: "title", visible: true, width: 300 },
+      { property_id: "abc1", visible: true, width: 200 },
+    ],
+    wrap_cells: true,
+  },
+});
+
+console.log(view.id);  // The new view's ID
+console.log(view.url); // Deep link to the view in Notion
+```
 
 The response is the newly created [view object](#structure) with all fields populated.
 
-<Tip>
-  Views in a database can be configured to show pages from a data source that's owned by another database. In Notion, this is called a [linked database](https://www.notion.com/help/data-sources-and-linked-databases) (or linked view), and it's useful for showing the same underlying data in multiple places—for example, putting filtered views of your Tasks, Projects, and Bugs on a single dashboard page.
+> [!TIP]
+>
+> Views in a database can be configured to show pages from a data source that's owned by another database. In Notion, this is called a [linked database](https://www.notion.com/help/data-sources-and-linked-databases) (or linked view), and it's useful for showing the same underlying data in multiple places—for example, putting filtered views of your Tasks, Projects, and Bugs on a single dashboard page.
+>
+> In the API, the main requirement is that your connection has access to both the database that owns the data source, and the database you're creating the view in.
 
-  In the API, the main requirement is that your connection has access to both the database that owns the data source, and the database you're creating the view in.
-</Tip>
-
-<Tip>
-  **Filtering by multiple select or status values**
-
-  Select, status, and multi\_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
-
-  ```json theme={null}
-  {
-    "filter": {
-      "property": "Priority",
-      "select": { "equals": ["Low", "Medium"] }
-    }
-  }
-  ```
-
-  You can also exclude multiple values:
-
-  ```json theme={null}
-  {
-    "filter": {
-      "property": "Status",
-      "status": { "does_not_equal": ["Done", "Archive"] }
-    }
-  }
-  ```
-
-  The API validates each value in the array against the property's configured options. For status properties, group names (e.g. "To-do", "In progress", "Complete") are also accepted. If any value doesn't match an existing option or group, the API returns a descriptive error listing the available values.
-</Tip>
+> [!TIP]
+>
+> **Filtering by multiple select or status values**
+>
+> Select, status, and multi\_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
+>
+> ```json theme={null}
+> {
+>   "filter": {
+>     "property": "Priority",
+>     "select": { "equals": ["Low", "Medium"] }
+>   }
+> }
+> ```
+>
+> You can also exclude multiple values:
+>
+> ```json theme={null}
+> {
+>   "filter": {
+>     "property": "Status",
+>     "status": { "does_not_equal": ["Done", "Archive"] }
+>   }
+> }
+> ```
+>
+> The API validates each value in the array against the property's configured options. For status properties, group names (e.g. "To-do", "In progress", "Complete") are also accepted. If any value doesn't match an existing option or group, the API returns a descriptive error listing the available values.
 
 ### Required parameters
 
@@ -375,71 +361,69 @@ The response is the newly created [view object](#structure) with all fields popu
 | `position` | Where to place the new view in the database's view tab bar. Only applicable when `database_id` is provided. See [View positioning](#view-positioning). Defaults to appending at the end. |
 | `placement` | Where to place the new widget in a dashboard layout. Only applicable when `view_id` is provided. See [Widget placement](#widget-placement). Defaults to creating a new row at the end. |
 
-<Note>
-  You must provide exactly one of `database_id`, `view_id`, or `create_database`. Use `database_id` to create a top-level view on a database. Use `view_id` to add a widget view to an existing dashboard — see [Dashboard views](#dashboard-views) for details. Use `create_database` to create a linked database view on a page — see [Creating a linked database view](#creating-a-linked-database-view).
-</Note>
+> [!NOTE]
+>
+> You must provide exactly one of `database_id`, `view_id`, or `create_database`. Use `database_id` to create a top-level view on a database. Use `view_id` to add a widget view to an existing dashboard — see [Dashboard views](#dashboard-views) for details. Use `create_database` to create a linked database view on a page — see [Creating a linked database view](#creating-a-linked-database-view).
 
-<Note>
-  **Finding the data source ID**
-
-  If you already have a database ID, call the [Retrieve a database](/reference/retrieve-database) endpoint. The response includes a `data_sources` array with each data source's `id` and `name`.
-</Note>
+> [!NOTE]
+>
+> **Finding the data source ID**
+>
+> If you already have a database ID, call the [Retrieve a database](/reference/retrieve-database) endpoint. The response includes a `data_sources` array with each data source's `id` and `name`.
 
 ### Creating different view types
 
 Here's an example of creating a Board view with grouping, cover images, and property configuration:
 
-<CodeGroup>
-  ```bash cURL expandable theme={null}
-  curl -X POST https://api.notion.com/v1/views \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "database_id": "DATABASE_ID",
-      "data_source_id": "DATA_SOURCE_ID",
-      "name": "Task board",
+```bash cURL expandable theme={null}
+curl -X POST https://api.notion.com/v1/views \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "database_id": "DATABASE_ID",
+    "data_source_id": "DATA_SOURCE_ID",
+    "name": "Task board",
+    "type": "board",
+    "configuration": {
       "type": "board",
-      "configuration": {
-        "type": "board",
-        "group_by": {
-          "type": "status",
-          "property_id": "STATUS_PROPERTY_ID",
-          "group_by": "group",
-          "sort": { "type": "manual" }
-        },
-        "cover": {
-          "type": "page_cover"
-        },
-        "cover_size": "medium",
-        "card_layout": "compact"
-      }
-    }'
-  ```
+      "group_by": {
+        "type": "status",
+        "property_id": "STATUS_PROPERTY_ID",
+        "group_by": "group",
+        "sort": { "type": "manual" }
+      },
+      "cover": {
+        "type": "page_cover"
+      },
+      "cover_size": "medium",
+      "card_layout": "compact"
+    }
+  }'
+```
 
-  ```javascript JavaScript expandable theme={null}
-  const boardView = await notion.views.create({
-    database_id: "DATABASE_ID",
-    data_source_id: "DATA_SOURCE_ID",
-    name: "Task board",
+```javascript JavaScript expandable theme={null}
+const boardView = await notion.views.create({
+  database_id: "DATABASE_ID",
+  data_source_id: "DATA_SOURCE_ID",
+  name: "Task board",
+  type: "board",
+  configuration: {
     type: "board",
-    configuration: {
-      type: "board",
-      group_by: {
-        type: "status",
-        property_id: "STATUS_PROPERTY_ID",
-        group_by: "group",
-        sort: { type: "manual" },
-      },
-      cover: {
-        type: "page_cover",
-      },
-      cover_size: "medium",
-      card_layout: "compact",
+    group_by: {
+      type: "status",
+      property_id: "STATUS_PROPERTY_ID",
+      group_by: "group",
+      sort: { type: "manual" },
     },
-  });
-  ```
-</CodeGroup>
+    cover: {
+      type: "page_cover",
+    },
+    cover_size: "medium",
+    card_layout: "compact",
+  },
+});
+```
 
 ### View positioning
 
@@ -451,26 +435,24 @@ When creating a top-level database view (using `database_id`), you can control w
 | `end` | `type` | Places the new view as the last tab (default). |
 | `after_view` | `type`, `view_id` | Places the new view immediately after the specified view. |
 
-<CodeGroup>
-  ```json Place at start theme={null}
-  {
-    "position": { "type": "start" }
-  }
-  ```
+```json Place at start theme={null}
+{
+  "position": { "type": "start" }
+}
+```
 
-  ```json Place after a specific view theme={null}
-  {
-    "position": {
-      "type": "after_view",
-      "view_id": "EXISTING_VIEW_ID"
-    }
+```json Place after a specific view theme={null}
+{
+  "position": {
+    "type": "after_view",
+    "view_id": "EXISTING_VIEW_ID"
   }
-  ```
-</CodeGroup>
+}
+```
 
-<Note>
-  The `position` parameter is only valid when `database_id` is provided. It cannot be used with `view_id` (dashboard widget creation).
-</Note>
+> [!NOTE]
+>
+> The `position` parameter is only valid when `database_id` is provided. It cannot be used with `view_id` (dashboard widget creation).
 
 ### Creating a linked database view
 
@@ -478,39 +460,37 @@ Use the `create_database` parameter to create a lightweight linked database view
 
 This differs from `POST /v1/databases`, which creates a full standalone database with its own schema, data source, and default view. With `create_database`, the view points to an existing data source owned by another database, so no new schema is created.
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.create({
-    create_database: {
-      parent: {
-        type: "page_id",
-        page_id: "TARGET_PAGE_ID",
-      },
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.create({
+  create_database: {
+    parent: {
+      type: "page_id",
+      page_id: "TARGET_PAGE_ID",
     },
-    data_source_id: "EXISTING_DATA_SOURCE_ID",
-    name: "Tasks overview",
-    type: "table",
-  });
-  ```
+  },
+  data_source_id: "EXISTING_DATA_SOURCE_ID",
+  name: "Tasks overview",
+  type: "table",
+});
+```
 
-  ```bash cURL expandable theme={null}
-  curl -X POST https://api.notion.com/v1/views \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "create_database": {
-        "parent": {
-          "type": "page_id",
-          "page_id": "TARGET_PAGE_ID"
-        }
-      },
-      "data_source_id": "EXISTING_DATA_SOURCE_ID",
-      "name": "Tasks overview",
-      "type": "table"
-    }'
-  ```
-</CodeGroup>
+```bash cURL expandable theme={null}
+curl -X POST https://api.notion.com/v1/views \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "create_database": {
+      "parent": {
+        "type": "page_id",
+        "page_id": "TARGET_PAGE_ID"
+      }
+    },
+    "data_source_id": "EXISTING_DATA_SOURCE_ID",
+    "name": "Tasks overview",
+    "type": "table"
+  }'
+```
 
 The `create_database` object accepts the following fields:
 
@@ -518,89 +498,94 @@ The `create_database` object accepts the following fields:
 | - | - | - |
 | `parent` | Yes | The parent page for the linked database. Must be `{ "type": "page_id", "page_id": "..." }`. |
 | `position` | No | Controls where the new database block appears within the parent page. Use `{ "type": "after_block", "block_id": "..." }` to place it after a specific block. The referenced block must be a direct child of the parent page. Defaults to appending at the end. |
+| `show_data_source_title` | No | Whether to show the data source title above the new database's views. This is the same setting as **Show data source title** in the Notion app. Defaults to `true`. Pass `false` to hide it. |
+
+To change this setting on an existing database, use [Update a database](/reference/update-database) with `show_data_source_title`. [Retrieve a database](/reference/retrieve-database) returns the current value.
+
+> [!NOTE]
+>
+> `title` on [Update a database](/reference/update-database) doesn't change this header. The header shows the title of the data source that the view points to.
 
 All view types are supported with `create_database`, including `form` views with full form configuration and `dashboard` views. Dashboard views are created with an empty layout — add widgets to them via separate `POST /v1/views` calls with `view_id`.
 
-<Note>
-  Your connection must have access to both the target page (where the new database container is created) and the database that owns the data source being referenced.
-</Note>
+> [!NOTE]
+>
+> Your connection must have access to both the target page (where the new database container is created) and the database that owns the data source being referenced.
 
 ## Updating a view
 
 [Update a view](/reference/update-a-view) to change its name, filters, sorts, or configuration. All fields are optional — only include the fields you want to change.
 
-<CodeGroup>
-  ```bash cURL expandable theme={null}
-  curl -X PATCH https://api.notion.com/v1/views/VIEW_ID \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "name": "Completed this month",
-      "filter": {
-        "and": [
-          {
-            "property": "Status",
-            "status": { "equals": "Done" }
-          },
-          {
-            "property": "Completed date",
-            "date": { "this_month": {} }
-          }
-        ]
-      },
-      "sorts": [
+```bash cURL expandable theme={null}
+curl -X PATCH https://api.notion.com/v1/views/VIEW_ID \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "name": "Completed this month",
+    "filter": {
+      "and": [
+        {
+          "property": "Status",
+          "status": { "equals": "Done" }
+        },
         {
           "property": "Completed date",
-          "direction": "descending"
+          "date": { "this_month": {} }
         }
-      ],
-      "configuration": {
-        "type": "table",
-        "group_by": null,
-        "properties": [
-          { "property_id": "title", "visible": true, "width": 400 },
-          { "property_id": "abc1", "visible": true },
-          { "property_id": "def2", "visible": false }
-        ]
-      }
-    }'
-  ```
-
-  ```javascript JavaScript expandable theme={null}
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    name: "Completed this month",
-    filter: {
-      and: [
-        {
-          property: "Status",
-          status: { equals: "Done" },
-        },
-        {
-          property: "Completed date",
-          date: { this_month: {} },
-        },
-      ],
+      ]
     },
-    sorts: [
+    "sorts": [
+      {
+        "property": "Completed date",
+        "direction": "descending"
+      }
+    ],
+    "configuration": {
+      "type": "table",
+      "group_by": null,
+      "properties": [
+        { "property_id": "title", "visible": true, "width": 400 },
+        { "property_id": "abc1", "visible": true },
+        { "property_id": "def2", "visible": false }
+      ]
+    }
+  }'
+```
+
+```javascript JavaScript expandable theme={null}
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  name: "Completed this month",
+  filter: {
+    and: [
+      {
+        property: "Status",
+        status: { equals: "Done" },
+      },
       {
         property: "Completed date",
-        direction: "descending",
+        date: { this_month: {} },
       },
     ],
-    configuration: {
-      type: "table",
-      group_by: null,
-      properties: [
-        { property_id: "title", visible: true, width: 400 },
-        { property_id: "abc1", visible: true },
-        { property_id: "def2", visible: false },
-      ],
+  },
+  sorts: [
+    {
+      property: "Completed date",
+      direction: "descending",
     },
-  });
-  ```
-</CodeGroup>
+  ],
+  configuration: {
+    type: "table",
+    group_by: null,
+    properties: [
+      { property_id: "title", visible: true, width: 400 },
+      { property_id: "abc1", visible: true },
+      { property_id: "def2", visible: false },
+    ],
+  },
+});
+```
 
 To clear a view's filter, sorts, or specific configuration fields, set them to `null`. See [Clearing configuration with null](#clearing-configuration-with-null) for concrete examples.
 
@@ -608,32 +593,30 @@ To clear a view's filter, sorts, or specific configuration fields, set them to `
 
 [Delete a view](/reference/delete-view) by its ID. This permanently removes the view from the database's view list.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X DELETE https://api.notion.com/v1/views/VIEW_ID \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X DELETE https://api.notion.com/v1/views/VIEW_ID \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const deleted = await notion.views.delete({
-    view_id: "VIEW_ID",
-  });
+```javascript JavaScript theme={null}
+const deleted = await notion.views.delete({
+  view_id: "VIEW_ID",
+});
 
-  // deleted.object === "view"
-  // deleted.id === "VIEW_ID"
-  ```
-</CodeGroup>
+// deleted.object === "view"
+// deleted.id === "VIEW_ID"
+```
 
 The response is a partial view object containing only identity fields (`object`, `id`, `parent`, and `type`). Full view details like filters, sorts, and configuration are not included since the view has been deleted.
 
-<Warning>
-  Deleting a view cannot be undone through the API. The view will no longer appear in the database's view list.
-</Warning>
+> [!WARNING]
+>
+> Deleting a view cannot be undone through the API. The view will no longer appear in the database's view list.
 
-<Note>
-  A database must always have at least one view. Attempting to delete the last remaining view returns a `validation_error`. To remove the database entirely, set [`in_trash`](/reference/update-database#body-in-trash) to `true` via the update database endpoint instead.
-</Note>
+> [!NOTE]
+>
+> A database must always have at least one view. Attempting to delete the last remaining view returns a `validation_error`. To remove the database entirely, set [`in_trash`](/reference/update-database#body-in-trash) to `true` via the update database endpoint instead.
 
 ## View configuration
 
@@ -1029,9 +1012,9 @@ Reference lines are horizontal lines drawn at specific y-axis values for visual 
 | `width` | integer | Width of the widget in a 12-column grid (1–12). `12` means full width. |
 | `row_index` | integer | The 0-based index of the row this widget belongs to. Widgets in the same row share the same `row_index`. |
 
-<Info>
-  Dashboard configuration is **read-only** — it is returned when retrieving a dashboard view but cannot be set directly when creating or updating a view. The layout structure is managed by creating and deleting widget views via the `view_id` parameter on the create endpoint.
-</Info>
+> [!NOTE]
+>
+> Dashboard configuration is **read-only** — it is returned when retrieving a dashboard view but cannot be set directly when creating or updating a view. The layout structure is managed by creating and deleting widget views via the `view_id` parameter on the create endpoint.
 
 ### Property configuration
 
@@ -1095,49 +1078,47 @@ The following table shows which `type` values are supported and what extra field
 | `number` | `type`, `sort`, optionally `range_start`, `range_end`, `range_size` |
 | `checkbox` | `type`, `sort` |
 
-<CodeGroup>
-  ```json Group by select example theme={null}
-  {
-    "type": "select",
-    "property_id": "PRIORITY_PROPERTY_ID",
-    "sort": { "type": "manual" },
-    "hide_empty_groups": true
-  }
-  ```
+```json Group by select example theme={null}
+{
+  "type": "select",
+  "property_id": "PRIORITY_PROPERTY_ID",
+  "sort": { "type": "manual" },
+  "hide_empty_groups": true
+}
+```
 
-  ```json Group by status example theme={null}
-  {
-    "type": "status",
-    "property_id": "STATUS_PROPERTY_ID",
-    "group_by": "group",
-    "sort": { "type": "ascending" }
-  }
-  ```
+```json Group by status example theme={null}
+{
+  "type": "status",
+  "property_id": "STATUS_PROPERTY_ID",
+  "group_by": "group",
+  "sort": { "type": "ascending" }
+}
+```
 
-  ```json Group by date example theme={null}
-  {
-    "type": "date",
-    "property_id": "DUE_DATE_PROPERTY_ID",
-    "group_by": "week",
+```json Group by date example theme={null}
+{
+  "type": "date",
+  "property_id": "DUE_DATE_PROPERTY_ID",
+  "group_by": "week",
+  "sort": { "type": "ascending" },
+  "start_day_of_week": 1
+}
+```
+
+```json Group by formula example theme={null}
+{
+  "type": "formula",
+  "property_id": "FORMULA_PROPERTY_ID",
+  "group_by": {
+    "type": "number",
     "sort": { "type": "ascending" },
-    "start_day_of_week": 1
+    "range_start": 0,
+    "range_end": 100,
+    "range_size": 10
   }
-  ```
-
-  ```json Group by formula example theme={null}
-  {
-    "type": "formula",
-    "property_id": "FORMULA_PROPERTY_ID",
-    "group_by": {
-      "type": "number",
-      "sort": { "type": "ascending" },
-      "range_start": 0,
-      "range_end": 100,
-      "range_size": 10
-    }
-  }
-  ```
-</CodeGroup>
+}
+```
 
 ### Subtask configuration
 
@@ -1180,78 +1161,76 @@ When updating a view, you can pass `null` for any nullable configuration field t
 
 Here are common scenarios:
 
-<CodeGroup>
-  ```javascript Remove grouping from a table expandable theme={null}
-  // A table view currently has group_by set.
-  // Pass null to remove grouping and return to a flat table.
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    configuration: {
-      type: "table",
-      group_by: null,
+```javascript Remove grouping from a table expandable theme={null}
+// A table view currently has group_by set.
+// Pass null to remove grouping and return to a flat table.
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  configuration: {
+    type: "table",
+    group_by: null,
+  },
+});
+```
+
+```javascript Remove cover images from a board expandable theme={null}
+// A board view currently shows cover images.
+// Pass null for cover-related fields to remove them.
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  configuration: {
+    type: "board",
+    group_by: {
+      type: "status",
+      property_id: "STATUS_PROP_ID",
+      group_by: "group",
+      sort: { type: "manual" },
     },
-  });
-  ```
+    cover: null,
+    cover_size: null,
+    cover_aspect: null,
+  },
+});
+```
 
-  ```javascript Remove cover images from a board expandable theme={null}
-  // A board view currently shows cover images.
-  // Pass null for cover-related fields to remove them.
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    configuration: {
-      type: "board",
-      group_by: {
-        type: "status",
-        property_id: "STATUS_PROP_ID",
-        group_by: "group",
-        sort: { type: "manual" },
-      },
-      cover: null,
-      cover_size: null,
-      cover_aspect: null,
-    },
-  });
-  ```
+```javascript Disable subtasks on a table expandable theme={null}
+// Explicitly disable subtask rendering on a table view.
+// Note: passing subtasks: null resets to defaults (which may
+// still show subtasks). Use display_mode: "disabled" instead.
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  configuration: {
+    type: "table",
+    subtasks: { display_mode: "disabled" },
+  },
+});
+```
 
-  ```javascript Disable subtasks on a table expandable theme={null}
-  // Explicitly disable subtask rendering on a table view.
-  // Note: passing subtasks: null resets to defaults (which may
-  // still show subtasks). Use display_mode: "disabled" instead.
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    configuration: {
-      type: "table",
-      subtasks: { display_mode: "disabled" },
-    },
-  });
-  ```
+```javascript Remove dependency arrows from a timeline expandable theme={null}
+// A timeline view currently shows dependency arrows.
+// Pass null for arrows_by to remove them.
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  configuration: {
+    type: "timeline",
+    date_property_id: "START_DATE_PROP_ID",
+    arrows_by: null,
+  },
+});
+```
 
-  ```javascript Remove dependency arrows from a timeline expandable theme={null}
-  // A timeline view currently shows dependency arrows.
-  // Pass null for arrows_by to remove them.
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    configuration: {
-      type: "timeline",
-      date_property_id: "START_DATE_PROP_ID",
-      arrows_by: null,
-    },
-  });
-  ```
+```javascript Clear a view's filter and sorts expandable theme={null}
+// Clear the top-level filter and sorts (not inside configuration).
+const updated = await notion.views.update({
+  view_id: "VIEW_ID",
+  filter: null,
+  sorts: null,
+});
+```
 
-  ```javascript Clear a view's filter and sorts expandable theme={null}
-  // Clear the top-level filter and sorts (not inside configuration).
-  const updated = await notion.views.update({
-    view_id: "VIEW_ID",
-    filter: null,
-    sorts: null,
-  });
-  ```
-</CodeGroup>
-
-<Info>
-  Configuration updates use **shallow merge** — only the fields you include are changed, and omitted optional fields are preserved. The `configuration` field itself is optional (omit it to leave config unchanged). When present, you must include `type` and any fields marked as required for that view type (e.g., board views always require `group_by`, calendar/timeline views always require `date_property_id`). See [Feature support by view type](#feature-support-by-view-type) for which fields are required vs optional per view type.
-</Info>
+> [!NOTE]
+>
+> Configuration updates use **shallow merge** — only the fields you include are changed, and omitted optional fields are preserved. The `configuration` field itself is optional (omit it to leave config unchanged). When present, you must include `type` and any fields marked as required for that view type (e.g., board views always require `group_by`, calendar/timeline views always require `date_property_id`). See [Feature support by view type](#feature-support-by-view-type) for which fields are required vs optional per view type.
 
 ## Quick filters
 
@@ -1261,41 +1240,37 @@ People filters accept `"me"` as a value for `contains` and `does_not_contain` to
 
 ### Adding quick filters on create
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.create({
-    database_id: "DATABASE_ID",
-    data_source_id: "DATA_SOURCE_ID",
-    name: "Active tasks",
-    type: "table",
-    quick_filters: {
-      "Status": {
-        status: { equals: "In progress" },
-      },
-      "Priority": {
-        select: { equals: "High" },
-      },
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.create({
+  database_id: "DATABASE_ID",
+  data_source_id: "DATA_SOURCE_ID",
+  name: "Active tasks",
+  type: "table",
+  quick_filters: {
+    "Status": {
+      status: { equals: "In progress" },
     },
-  });
-  ```
-</CodeGroup>
+    "Priority": {
+      select: { equals: "High" },
+    },
+  },
+});
+```
 
 ### Adding or updating a quick filter
 
 To add a new quick filter or update an existing one, include the property key with the new filter condition. Other existing quick filters are preserved.
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.update({
-    view_id: "VIEW_ID",
-    quick_filters: {
-      "Assignee": {
-        people: { contains: "me" },
-      },
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.update({
+  view_id: "VIEW_ID",
+  quick_filters: {
+    "Assignee": {
+      people: { contains: "me" },
     },
-  });
-  ```
-</CodeGroup>
+  },
+});
+```
 
 ### Adding a quick filter without criteria
 
@@ -1303,45 +1278,39 @@ Pass an empty object to add a property to the filter bar without choosing a valu
 
 A quick filter without criteria doesn't change which pages the view shows. Files and place properties can't have an empty quick filter, so pass a condition for those. Some rollups that show original values need one too, such as a rollup whose related data source your integration can't read. Otherwise the request returns a `validation_error`.
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.update({
-    view_id: "VIEW_ID",
-    quick_filters: {
-      "Status": {},
-      "Assignee": {},
-    },
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.update({
+  view_id: "VIEW_ID",
+  quick_filters: {
+    "Status": {},
+    "Assignee": {},
+  },
+});
+```
 
 ### Removing a quick filter
 
 Set a specific quick filter to `null` to remove it from the filter bar. Other quick filters are preserved.
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.update({
-    view_id: "VIEW_ID",
-    quick_filters: {
-      "Status": null,
-    },
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.update({
+  view_id: "VIEW_ID",
+  quick_filters: {
+    "Status": null,
+  },
+});
+```
 
 ### Clearing all quick filters
 
 Set the entire `quick_filters` field to `null` to remove all quick filters from the view.
 
-<CodeGroup>
-  ```javascript JavaScript expandable theme={null}
-  const view = await notion.views.update({
-    view_id: "VIEW_ID",
-    quick_filters: null,
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript expandable theme={null}
+const view = await notion.views.update({
+  view_id: "VIEW_ID",
+  quick_filters: null,
+});
+```
 
 ## Dashboard views
 
@@ -1351,80 +1320,76 @@ Dashboard views let you arrange multiple widget views in a grid layout on a sing
 
 Create a dashboard view the same way as any other view — pass `type: "dashboard"` with a `database_id`:
 
-<CodeGroup>
-  ```bash cURL expandable theme={null}
-  curl -X POST https://api.notion.com/v1/views \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2025-09-03" \
-    --data '{
-      "database_id": "DATABASE_ID",
-      "data_source_id": "DATA_SOURCE_ID",
-      "name": "Project overview",
-      "type": "dashboard"
-    }'
-  ```
+```bash cURL expandable theme={null}
+curl -X POST https://api.notion.com/v1/views \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2025-09-03" \
+  --data '{
+    "database_id": "DATABASE_ID",
+    "data_source_id": "DATA_SOURCE_ID",
+    "name": "Project overview",
+    "type": "dashboard"
+  }'
+```
 
-  ```javascript JavaScript expandable theme={null}
-  const dashboard = await notion.views.create({
-    database_id: "DATABASE_ID",
-    data_source_id: "DATA_SOURCE_ID",
-    name: "Project overview",
-    type: "dashboard",
-  });
+```javascript JavaScript expandable theme={null}
+const dashboard = await notion.views.create({
+  database_id: "DATABASE_ID",
+  data_source_id: "DATA_SOURCE_ID",
+  name: "Project overview",
+  type: "dashboard",
+});
 
-  console.log(dashboard.id); // The dashboard view's ID
-  ```
-</CodeGroup>
+console.log(dashboard.id); // The dashboard view's ID
+```
 
 ### Adding widget views
 
 To add a widget to a dashboard, create a view with `view_id` set to the dashboard's ID instead of `database_id`. Each widget can use a different `data_source_id`. Dashboards support all view types as widgets except for other dashboards (no nested dashboards).
 
-<CodeGroup>
-  ```bash cURL expandable theme={null}
-  curl -X POST https://api.notion.com/v1/views \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2025-09-03" \
-    --data '{
-      "view_id": "DASHBOARD_VIEW_ID",
-      "data_source_id": "DATA_SOURCE_ID",
-      "name": "Tasks by status",
+```bash cURL expandable theme={null}
+curl -X POST https://api.notion.com/v1/views \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2025-09-03" \
+  --data '{
+    "view_id": "DASHBOARD_VIEW_ID",
+    "data_source_id": "DATA_SOURCE_ID",
+    "name": "Tasks by status",
+    "type": "board",
+    "configuration": {
       "type": "board",
-      "configuration": {
-        "type": "board",
-        "group_by": {
-          "type": "status",
-          "property_id": "STATUS_PROPERTY_ID",
-          "group_by": "group",
-          "sort": { "type": "manual" }
-        }
+      "group_by": {
+        "type": "status",
+        "property_id": "STATUS_PROPERTY_ID",
+        "group_by": "group",
+        "sort": { "type": "manual" }
       }
-    }'
-  ```
+    }
+  }'
+```
 
-  ```javascript JavaScript expandable theme={null}
-  const widget = await notion.views.create({
-    view_id: "DASHBOARD_VIEW_ID",
-    data_source_id: "DATA_SOURCE_ID",
-    name: "Tasks by status",
+```javascript JavaScript expandable theme={null}
+const widget = await notion.views.create({
+  view_id: "DASHBOARD_VIEW_ID",
+  data_source_id: "DATA_SOURCE_ID",
+  name: "Tasks by status",
+  type: "board",
+  configuration: {
     type: "board",
-    configuration: {
-      type: "board",
-      group_by: {
-        type: "status",
-        property_id: "STATUS_PROPERTY_ID",
-        group_by: "group",
-        sort: { type: "manual" },
-      },
+    group_by: {
+      type: "status",
+      property_id: "STATUS_PROPERTY_ID",
+      group_by: "group",
+      sort: { type: "manual" },
     },
-  });
+  },
+});
 
-  console.log(widget.id);                 // The widget view's ID
-  console.log(widget.dashboard_view_id);  // The parent dashboard's ID
-  ```
-</CodeGroup>
+console.log(widget.id);                 // The widget view's ID
+console.log(widget.dashboard_view_id);  // The parent dashboard's ID
+```
 
 ### Widget placement
 
@@ -1435,29 +1400,27 @@ When adding a widget to a dashboard, you can control where it appears in the lay
 | `new_row` | `type`, optional `row_index` | Creates a new row containing the widget. If `row_index` is omitted, the new row is appended at the end. If provided, the new row is inserted at that 0-based position. |
 | `existing_row` | `type`, `row_index` (required) | Adds the widget side-by-side to an existing row at the specified 0-based index. Column widths are automatically redistributed. |
 
-<CodeGroup>
-  ```json Append a new row (default) theme={null}
-  {
-    "placement": { "type": "new_row" }
-  }
-  ```
+```json Append a new row (default) theme={null}
+{
+  "placement": { "type": "new_row" }
+}
+```
 
-  ```json Insert a new row at the top theme={null}
-  {
-    "placement": { "type": "new_row", "row_index": 0 }
-  }
-  ```
+```json Insert a new row at the top theme={null}
+{
+  "placement": { "type": "new_row", "row_index": 0 }
+}
+```
 
-  ```json Add to an existing row theme={null}
-  {
-    "placement": { "type": "existing_row", "row_index": 2 }
-  }
-  ```
-</CodeGroup>
+```json Add to an existing row theme={null}
+{
+  "placement": { "type": "existing_row", "row_index": 2 }
+}
+```
 
-<Note>
-  The `placement` parameter is only valid when `view_id` is provided (dashboard widget creation). It cannot be used with `database_id`. Each dashboard row supports a maximum of 4 widgets.
-</Note>
+> [!NOTE]
+>
+> The `placement` parameter is only valid when `view_id` is provided (dashboard widget creation). It cannot be used with `database_id`. Each dashboard row supports a maximum of 4 widgets.
 
 ### Retrieving a dashboard
 
@@ -1489,9 +1452,9 @@ Widget views include a `dashboard_view_id` field that references their parent da
 
 Delete a widget view using the standard delete endpoint. This also removes the widget from the dashboard's layout structure.
 
-<Note>
-  Dashboard views cannot be nested — you cannot create a dashboard widget inside another dashboard.
-</Note>
+> [!NOTE]
+>
+> Dashboard views cannot be nested — you cannot create a dashboard widget inside another dashboard.
 
 ## Querying a view
 
@@ -1505,29 +1468,27 @@ View queries use a three-step pattern:
 
 ### Step 1: Create a view query
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X POST https://api.notion.com/v1/views/VIEW_ID/queries \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Content-Type: application/json" \
-    -H "Notion-Version: 2026-03-11" \
-    --data '{
-      "page_size": 50
-    }'
-  ```
+```bash cURL theme={null}
+curl -X POST https://api.notion.com/v1/views/VIEW_ID/queries \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2026-03-11" \
+  --data '{
+    "page_size": 50
+  }'
+```
 
-  ```javascript JavaScript theme={null}
-  const query = await notion.views.queries.create({
-    view_id: "VIEW_ID",
-    page_size: 50,
-  });
+```javascript JavaScript theme={null}
+const query = await notion.views.queries.create({
+  view_id: "VIEW_ID",
+  page_size: 50,
+});
 
-  console.log(query.id);          // Query ID for pagination
-  console.log(query.total_count); // Total matching pages
-  console.log(query.results);     // First page of results
-  console.log(query.has_more);    // Whether more pages exist
-  ```
-</CodeGroup>
+console.log(query.id);          // Query ID for pagination
+console.log(query.total_count); // Total matching pages
+console.log(query.results);     // First page of results
+console.log(query.has_more);    // Whether more pages exist
+```
 
 The response includes the first page of results inline:
 
@@ -1548,41 +1509,37 @@ The response includes the first page of results inline:
 
 ### Step 2: Paginate results
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X GET "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID?start_cursor=CURSOR&page_size=50" \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X GET "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID?start_cursor=CURSOR&page_size=50" \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  const nextPage = await notion.views.queries.results({
-    view_id: "VIEW_ID",
-    query_id: "QUERY_ID",
-    start_cursor: "CURSOR",
-    page_size: 50,
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+const nextPage = await notion.views.queries.results({
+  view_id: "VIEW_ID",
+  query_id: "QUERY_ID",
+  start_cursor: "CURSOR",
+  page_size: 50,
+});
+```
 
 ### Step 3: Delete the query (recommended)
 
 Once you've finished paginating, delete the query to free the cached result set. This is optional — queries expire automatically after approximately 15 minutes — but recommended as good practice, especially if your connection runs queries frequently.
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -X DELETE "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID" \
-    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-    -H "Notion-Version: 2026-03-11"
-  ```
+```bash cURL theme={null}
+curl -X DELETE "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID" \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
 
-  ```javascript JavaScript theme={null}
-  await notion.views.queries.delete({
-    view_id: "VIEW_ID",
-    query_id: "QUERY_ID",
-  });
-  ```
-</CodeGroup>
+```javascript JavaScript theme={null}
+await notion.views.queries.delete({
+  view_id: "VIEW_ID",
+  query_id: "QUERY_ID",
+});
+```
 
 The response confirms deletion:
 
@@ -1596,15 +1553,15 @@ The response confirms deletion:
 
 This endpoint is idempotent — calling it on an already-deleted or expired query still returns success.
 
-<Info>
-  **Query expiration**
+> [!NOTE]
+>
+> **Query expiration**
+>
+> Cached query results expire after a short TTL (approximately 15 minutes). If a query expires, create a new one. This caching approach provides stable pagination — results won't shift between pages due to concurrent data changes.
 
-  Cached query results expire after a short TTL (approximately 15 minutes). If a query expires, create a new one. This caching approach provides stable pagination — results won't shift between pages due to concurrent data changes.
-</Info>
-
-<Note>
-  View queries do not support stacking additional filters or sorts on top of the saved view definition. If you need different filter/sort criteria, create a new view (or update an existing one) and query that instead.
-</Note>
+> [!NOTE]
+>
+> View queries do not support stacking additional filters or sorts on top of the saved view definition. If you need different filter/sort criteria, create a new view (or update an existing one) and query that instead.
 
 ## Permissions
 

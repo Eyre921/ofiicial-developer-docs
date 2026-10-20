@@ -13,8 +13,8 @@ For [personal access tokens](/guides/get-started/personal-access-tokens), this e
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
-<Info>
-  **Connection capabilities**
-
-  This endpoint works for connections with any content, property, or comment capability. User information capabilities alone don't grant access. They only control what the owner fields in the [user object](/reference/user) show. To include the owner's email address, the connection needs user information with email addresses. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
-</Info>
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint works for connections with any content, property, or comment capability. User information capabilities alone don't grant access. They only control what the owner fields in the [user object](/reference/user) show. To include the owner's email address, the connection needs user information with email addresses. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).

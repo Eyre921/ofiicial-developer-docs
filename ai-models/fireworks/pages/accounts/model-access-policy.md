@@ -8,9 +8,9 @@ Restrict which models users on your Fireworks Enterprise account can access for 
 
 Model access policy lets Enterprise account admins control which models users on the account can use. You can allowlist models (deny by default, then permit specific models) or deny specific models while leaving the rest of the catalog open.
 
-<Info>
-  **Enterprise feature.** Model access policy is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
-</Info>
+> [!NOTE]
+>
+> **Enterprise feature.** Model access policy is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
 
 Policy applies **account-wide**: every user on the account shares the same rules. There is no per-user or per-group model access control today.
 

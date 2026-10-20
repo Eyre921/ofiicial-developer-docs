@@ -126,6 +126,8 @@ When operating in Zero Retention Mode, only the following LLMs are available:
 * [Custom LLM](/docs/eleven-agents/customization/llm/custom-llm) (supports any OpenAI-API
   compatible provider and requires you to bring your own API keys)
 
+Of the [Realtime models](/docs/eleven-agents/customization/realtime-models#compliance-and-data-residency), only Eleven Realtime v1 Max is available in Zero Retention Mode, in the US and EU.
+
 ## Technical implementation
 
 Zero Retention Mode implements several safeguards and is designed to:

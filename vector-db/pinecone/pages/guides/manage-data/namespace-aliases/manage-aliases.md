@@ -6,9 +6,9 @@ path: guides/manage-data/namespace-aliases/manage-aliases
 
 Create, list, describe, repoint, and delete namespace aliases in a Pinecone index with the REST API or the Pinecone console.
 
-<Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
-</Note>
+> [!NOTE]
+>
+> Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 
 Create, list, describe, repoint, and delete [namespace aliases](/guides/manage-data/namespace-aliases/overview) in an index. Each operation is a single REST call to your [index host](/guides/manage-data/target-an-index). To swap the data an application reads with no downtime, see [Swap a namespace](/guides/manage-data/namespace-aliases/swap-a-namespace).
 
@@ -150,9 +150,9 @@ curl -X PATCH "https://$INDEX_HOST/namespace-aliases/example-alias" \
 
 Deleting an alias never touches the target namespace or its data. A delete that returns a 404 means the alias is already gone, so a retry can safely treat it as done.
 
-<Warning>
-  Any application still reading through the alias name will start getting empty results, not an error. Move your readers to the namespace name, or to a different alias, before you delete.
-</Warning>
+> [!WARNING]
+>
+> Any application still reading through the alias name will start getting empty results, not an error. Move your readers to the namespace name, or to a different alias, before you delete.
 
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"

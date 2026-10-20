@@ -8,9 +8,9 @@ Evaluate a trained Fireworks model with in-session sampling during a serverless 
 
 After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have and whether the training session is still active.
 
-<Warning>
-  These workflows are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras).
-</Warning>
+> [!WARNING]
+>
+> These workflows are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras).
 
 ## Which approach to use
 
@@ -59,9 +59,9 @@ finally:
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 
-<Note>
-  Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
-</Note>
+> [!NOTE]
+>
+> Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
 
 ## Preemptible deployment
 
@@ -155,8 +155,6 @@ For more on preemptible capacity and guarantees, see [Preemptible deployments](/
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Deploying Trained Models" href="/fine-tuning/deploying-loras" icon="rocket">
-    Live merge or multi-LoRA for production serving
-  </Card>
-</CardGroup>
+> **[Deploying Trained Models](/fine-tuning/deploying-loras)**
+>
+> Live merge or multi-LoRA for production serving

@@ -41,13 +41,13 @@ trainer = TrainerConfig(
 )
 ```
 
-<Note>
-  Trainer hardware comes from the validated training shape. Cookbook clients do not set trainer accelerator type or count.
-</Note>
+> [!NOTE]
+>
+> Trainer hardware comes from the validated training shape. Cookbook clients do not set trainer accelerator type or count.
 
-<Tip>
-  Migrating from `InfraConfig`? See [Deprecated managed infra (InfraConfig)](#deprecated-managed-infra-infraconfig) for the field-rename table.
-</Tip>
+> [!TIP]
+>
+> Migrating from `InfraConfig`? See [Deprecated managed infra (InfraConfig)](#deprecated-managed-infra-infraconfig) for the field-rename table.
 
 ## DeployConfig
 
@@ -79,9 +79,9 @@ When `deployment_shape` is set (the recommended path), the shape owns deployment
 | `disable_speculative_decoding` | `bool` | `True` | Disable speculative decoding for weight-sync compatibility |
 | `replica_count` | `int \| None` | `None` | If set, pin the deployment to a fixed replica count (sets both min and max). |
 
-<Note>
-  Deployment hardware and serving configuration come from the deployment shape resolved for the selected training shape.
-</Note>
+> [!NOTE]
+>
+> Deployment hardware and serving configuration come from the deployment shape resolved for the selected training shape.
 
 ## ConcurrencyConfig
 
@@ -107,18 +107,18 @@ cfg = Config(
 )
 ```
 
-<Warning>
-  `dcp_save_interval=0` disables periodic saves, not the final checkpoint. Successful runs save final training state by default. Set a positive interval (e.g. `50`) for recovery from an interrupted run.
-</Warning>
+> [!WARNING]
+>
+> `dcp_save_interval=0` disables periodic saves, not the final checkpoint. Successful runs save final training state by default. Set a positive interval (e.g. `50`) for recovery from an interrupted run.
 
 | Field | Recipes | Type | Default | Description |
 | - | - | - | - | - |
 | `dcp_save_interval` | SFT, DPO, RL | `int` | `0` | Save resumable DCP checkpoints every N steps. `0` disables periodic saves. Set a positive interval for recovery during a run. |
 | `weight_sync_timeout` | RL family | `int` | `600` | Timeout for each weight sync (seconds). |
 
-<Note>
-  The old nested `WeightSyncConfig` recipe field is gone. Recipe `Config` objects set the fields above directly, and the SDK-managed service owns the underlying save and weight-sync state.
-</Note>
+> [!NOTE]
+>
+> The old nested `WeightSyncConfig` recipe field is gone. Recipe `Config` objects set the fields above directly, and the SDK-managed service owns the underlying save and weight-sync state.
 
 ## WandBConfig
 
@@ -144,9 +144,9 @@ wandb = WandBConfig(
 
 Blocking convenience wrapper around `FiretitanTrainingClient`. Most recipe calls block until the result is ready or the timeout expires. Async RL uses its native-future submission helpers to overlap pending backward requests. Failures propagate to the caller so the training loop can crash cleanly and resume from the last DCP checkpoint.
 
-<Note>
-  This is a recipe-internal wrapper. User code should not construct it with trainer managers. Recipes build it from the `FiretitanTrainingClient` returned by the SDK-managed service client.
-</Note>
+> [!NOTE]
+>
+> This is a recipe-internal wrapper. User code should not construct it with trainer managers. Recipes build it from the `FiretitanTrainingClient` returned by the SDK-managed service client.
 
 ```python theme={null}
 from fireworks.training.sdk import AdamParams
@@ -205,9 +205,9 @@ Agent-facing operational guidance for gradient accumulation normalization lives 
 
 Earlier cookbook releases provisioned trainers and deployments from the recipe layer using `InfraConfig`, `WeightSyncConfig`, and the standalone helpers `setup_infra` / `ResourceCleanup` / `make_reference_client` / `create_base_reference`. Provisioning now lives entirely behind the **SDK-managed service client** (`build_service_client(...)` → `service.create_*`), and recipes take `trainer=TrainerConfig(...)` plus `deployment=DeployConfig(...)`.
 
-<Warning>
-  This is a **breaking change to the recipe-facing interface**. The recipe `Config` no longer accepts `infra=` or `weight_sync=`, and `setup_infra` / `ResourceCleanup` have been removed. If you are **not ready to migrate, simply do not upgrade the SDK + cookbook** — pin your current versions and existing code keeps working. **Upgrading is recommended** (cleaner config, one provisioning path, SDK-owned lifecycle), but it is opt-in: the old and new surfaces do not coexist in one install.
-</Warning>
+> [!WARNING]
+>
+> This is a **breaking change to the recipe-facing interface**. The recipe `Config` no longer accepts `infra=` or `weight_sync=`, and `setup_infra` / `ResourceCleanup` have been removed. If you are **not ready to migrate, simply do not upgrade the SDK + cookbook** — pin your current versions and existing code keeps working. **Upgrading is recommended** (cleaner config, one provisioning path, SDK-owned lifecycle), but it is opt-in: the old and new surfaces do not coexist in one install.
 
 ### What to change
 

@@ -55,9 +55,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
 | `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
@@ -109,12 +109,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `config` | Dict\[str, *Any*] | ✅ | Provider-specific configuration. The shape depends on `type` and is validated server-side. | \{<br />"baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)",<br />"publicKey": "pk-l...EfGh",<br />"secretKey": "sk-l...AbCd"<br />} |
+| `config` | Dict\[str, *Any*] | ✅ | Provider-specific configuration. The shape depends on `type` and is validated server-side. | \{ "baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)", "publicKey": "pk-l...EfGh", "secretKey": "sk-l...AbCd" } |
 | `name` | *str* | ✅ | Human-readable name for the destination. | Production Langfuse |
 | `type` | [components.CreateObservabilityDestinationRequestType](../../components/createobservabilitydestinationrequesttype.mdx) | ✅ | The destination type. Only stable destination types are accepted. | langfuse |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | When true, include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
@@ -123,7 +123,7 @@ with OpenRouter(
 | `enabled` | *Optional\[bool]* | ➖ | Whether this destination should be enabled immediately. | true |
 | `filter_rules` | [OptionalNullable\[components.ObservabilityFilterRulesConfigNullable\]](../../components/observabilityfilterrulesconfignullable.mdx) | ➖ | Optional structured filter rules controlling which events are forwarded. | null |
 | `privacy_mode` | *Optional\[bool]* | ➖ | When true, request/response bodies are not forwarded — only metadata. | false |
-| `regions` | List\[[components.ObservabilityDataRegionInput](../../components/observabilitydataregioninput.mdx)] | ➖ | Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field defaults to \['global']; the array must be non-empty. | \[<br />"global"<br />] |
+| `regions` | List\[[components.ObservabilityDataRegionInput](../../components/observabilitydataregioninput.mdx)] | ➖ | Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field defaults to \['global']; the array must be non-empty. | \[ "global" ] |
 | `sampling_rate` | *Optional\[float]* | ➖ | Sampling rate between 0.0001 and 1 (1 = 100%). | 1 |
 | `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -173,9 +173,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -221,9 +221,9 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -269,20 +269,20 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | Whether to include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
 | `broadcast_generation_identity` | *Optional\[bool]* | ➖ | Whether to include identity generation metadata. | false |
 | `broadcast_generation_request_context` | *Optional\[bool]* | ➖ | Whether to include request-context generation metadata. | false |
-| `config` | Dict\[str, *Any*] | ➖ | Provider-specific configuration fields to update. Masked values are ignored; unset fields keep their current value. | \{<br />"baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)",<br />"publicKey": "pk-l...EfGh",<br />"secretKey": "sk-l...AbCd"<br />} |
+| `config` | Dict\[str, *Any*] | ➖ | Provider-specific configuration fields to update. Masked values are ignored; unset fields keep their current value. | \{ "baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)", "publicKey": "pk-l...EfGh", "secretKey": "sk-l...AbCd" } |
 | `enabled` | *Optional\[bool]* | ➖ | Whether the destination is enabled. | true |
 | `filter_rules` | [OptionalNullable\[components.ObservabilityFilterRulesConfigNullable\]](../../components/observabilityfilterrulesconfignullable.mdx) | ➖ | N/A | null |
 | `name` | *Optional\[str]* | ➖ | Human-readable name for the destination. | Production Langfuse |
 | `privacy_mode` | *Optional\[bool]* | ➖ | When true, request/response bodies are not forwarded — only metadata. | false |
-| `regions` | List\[[components.ObservabilityDataRegionInput](../../components/observabilitydataregioninput.mdx)] | ➖ | Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field keeps the current value; it cannot be cleared. | \[<br />"global"<br />] |
+| `regions` | List\[[components.ObservabilityDataRegionInput](../../components/observabilitydataregioninput.mdx)] | ➖ | Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field keeps the current value; it cannot be cleared. | \[ "global" ] |
 | `sampling_rate` | *Optional\[float]* | ➖ | Sampling rate between 0.0001 and 1 (1 = 100%). | 1 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 

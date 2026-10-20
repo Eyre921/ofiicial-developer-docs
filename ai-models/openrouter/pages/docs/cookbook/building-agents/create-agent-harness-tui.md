@@ -12,9 +12,9 @@ path: docs/cookbook/building-agents/create-agent-harness-tui
 
 > Scaffold a custom AI agent with a fully customizable terminal interface using an AI coding agent
 
-<Info>
-  Looking to build a headless agent for scripts, pipelines, or API servers instead? See the [Build Your Own Headless Agent](/docs/cookbook/building-agents/create-headless-agent) guide.
-</Info>
+> [!NOTE]
+>
+> Looking to build a headless agent for scripts, pipelines, or API servers instead? See the [Build Your Own Headless Agent](/docs/cookbook/building-agents/create-headless-agent) guide.
 
 The [create-agent-tui](https://github.com/OpenRouterTeam/skills/tree/main/skills/create-agent-tui) skill scaffolds a complete agent TUI (terminal user interface) in TypeScript — like `create-react-app` for terminal agents. Tell your AI coding agent what kind of agent you want, and it generates a runnable project targeting [OpenRouter](https://openrouter.ai) with a fully customizable terminal interface, tools, and configuration.
 
@@ -36,26 +36,24 @@ If you're already using Claude Code, Codex CLI, or Cursor as-is, you probably do
 
 The create-agent-tui skill is part of the [OpenRouter Skills](https://github.com/OpenRouterTeam/skills) collection. Install it with your AI coding agent of choice:
 
-<Tabs>
-  <Tab title="GitHub CLI">
-    Requires [GitHub CLI](https://cli.github.com/) v2.90.0+. Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and [many more agents](https://cli.github.com/manual/gh_skill_install):
+**GitHub CLI**
 
-    ```bash lines theme={null}
-    gh skill install OpenRouterTeam/skills create-agent-tui
-    ```
-  </Tab>
+Requires [GitHub CLI](https://cli.github.com/) v2.90.0+. Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and [many more agents](https://cli.github.com/manual/gh_skill_install):
 
-  <Tab title="Claude Code">
-    ```lines theme={null}
-    /plugin marketplace add OpenRouterTeam/skills
-    /plugin install openrouter@openrouter
-    ```
-  </Tab>
+```bash lines theme={null}
+gh skill install OpenRouterTeam/skills create-agent-tui
+```
 
-  <Tab title="Cursor">
-    Add via **Settings > Rules > Add Rule > Remote Rule (Github)** with `OpenRouterTeam/skills`.
-  </Tab>
-</Tabs>
+**Claude Code**
+
+```lines theme={null}
+/plugin marketplace add OpenRouterTeam/skills
+/plugin install openrouter@openrouter
+```
+
+**Cursor**
+
+Add via **Settings > Rules > Add Rule > Remote Rule (Github)** with `OpenRouterTeam/skills`.
 
 Once installed, ask your agent something like *"build me an agent TUI"* or *"scaffold a coding assistant"* and the skill activates automatically.
 
@@ -98,21 +96,15 @@ Choose how tool calls appear during agent execution. Set `display.toolDisplay` i
 
 **Grouped** — bold action labels with tree-branch output:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-grouped.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=9af120a40df609342a411864a334b8e7" alt="Grouped tool display" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/tool-display-grouped.png" />
-</Frame>
+![Grouped tool display](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-grouped.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=9af120a40df609342a411864a334b8e7)
 
 **Emoji** — per-call markers with tool name, arguments, and timing:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-emoji.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=fb13de6628931a227c94e0130f00a8a9" alt="Emoji tool display" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/tool-display-emoji.png" />
-</Frame>
+![Emoji tool display](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-emoji.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=fb13de6628931a227c94e0130f00a8a9)
 
 **Minimal** — aggregated one-liner summaries:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-minimal.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=ae60482d5364fa70f272e43a0638d733" alt="Minimal tool display" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/tool-display-minimal.png" />
-</Frame>
+![Minimal tool display](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/tool-display-minimal.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=ae60482d5364fa70f272e43a0638d733)
 
 You can also describe a completely custom tool display style and the skill will implement it for you.
 
@@ -129,21 +121,15 @@ Three input styles are available via `display.inputStyle` or `--input`.
 
 **Block** — full-width background input box that adapts to your terminal theme:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-block.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=2b96f4997b82b71144b0a498c7074c7b" alt="Block input style" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/input-style-block.png" />
-</Frame>
+![Block input style](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-block.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=2b96f4997b82b71144b0a498c7074c7b)
 
 **Bordered** — horizontal line frame that works on any terminal:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-bordered.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=71fde3d3b5d61d56905e53955cc97ccd" alt="Bordered input style" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/input-style-bordered.png" />
-</Frame>
+![Bordered input style](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-bordered.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=71fde3d3b5d61d56905e53955cc97ccd)
 
 **Plain** — simple readline prompt, no escape sequences:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-plain.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=95737609cbefab8cb263e150611dd46c" alt="Plain input style" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/input-style-plain.png" />
-</Frame>
+![Plain input style](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/input-style-plain.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=95737609cbefab8cb263e150611dd46c)
 
 You can also describe a completely custom input style and the skill will implement it for you.
 
@@ -160,21 +146,15 @@ Three loader styles shown while waiting for the model response. Set `display.loa
 
 **Gradient** — scrolling color shimmer:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-gradient.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=ef65fe345c3b097ce510e31a1c0d1a3c" alt="Gradient loader" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/loader-gradient.png" />
-</Frame>
+![Gradient loader](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-gradient.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=ef65fe345c3b097ce510e31a1c0d1a3c)
 
 **Spinner** — braille dot animation:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-spinner.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=4ca66d2a48131bc94ce89df51ac55bb5" alt="Spinner loader" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/loader-spinner.png" />
-</Frame>
+![Spinner loader](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-spinner.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=4ca66d2a48131bc94ce89df51ac55bb5)
 
 **Minimal** — trailing dots:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-minimal.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=190a85197f129673395e425cb0ea9a3b" alt="Minimal loader" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/loader-minimal.png" />
-</Frame>
+![Minimal loader](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/loader-minimal.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=190a85197f129673395e425cb0ea9a3b)
 
 You can also describe a completely custom loader animation and the skill will implement it for you.
 
@@ -182,9 +162,7 @@ You can also describe a completely custom loader animation and the skill will im
 
 Enable `showBanner` or pass `--banner "Your Agent Name"` to display a custom ASCII art logo on startup. The skill generates block-letter art for your project name using the `█` character, colored and sized to fit a 60-column terminal.
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/banner.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=d9c3d77f67846fd9bf810adef7514609" alt="ASCII banner on startup" width="1080" height="720" data-path="assets/cookbook/building-agents/create-agent-harness-tui/banner.png" />
-</Frame>
+![ASCII banner on startup](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/banner.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=d9c3d77f67846fd9bf810adef7514609)
 
 ## Generated project structure
 
@@ -228,9 +206,7 @@ Override visual styles at launch:
 npm start -- --banner "Acme Bot" --model '~anthropic/claude-sonnet-latest' --input bordered --tool-display emoji
 ```
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-tui.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=3d8cb85bf772c777311209e42dd94d9b" alt="Agent TUI running in the terminal" width="700" height="550" data-path="assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-tui.png" />
-</Frame>
+![Agent TUI running in the terminal](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-tui.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=3d8cb85bf772c777311209e42dd94d9b)
 
 ## Customization options
 
@@ -307,9 +283,7 @@ The skill generates a CLI REPL by default, but you can also ask for:
 
 Here's a demo app built entirely by the agent TUI skill — a GitHub trending repos viewer, scaffolded and running from a single prompt:
 
-<Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-demo.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=f5b663bbf7cc734c7a5c6a5aaf9b72d1" alt="A demo app built by the agent TUI" width="2624" height="2304" data-path="assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-demo.png" />
-</Frame>
+![A demo app built by the agent TUI](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/cookbook/building-agents/create-agent-harness-tui/agent-harness-demo.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=f5b663bbf7cc734c7a5c6a5aaf9b72d1)
 
 ## Resources
 

@@ -12,14 +12,6 @@ All requests to the [Pinecone Assistant API](/reference/api/assistant/introducti
 
 [Create a new API key](https://app.pinecone.io/organizations/-/projects/-/keys) in the Pinecone console, or use the connect widget below to generate a key.
 
-<div>
-  <div>
-    <div>
-      <div />
-    </div>
-  </div>
-</div>
-
 Copy your generated key:
 
 ```
@@ -32,36 +24,34 @@ PINECONE_API_KEY="{{YOUR_API_KEY}}"
 
 When using a Pinecone SDK, initialize a client object with your API key and then reuse the authenicated client in subsquent function calls. For example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
+```python Python theme={null}
+# To use the Python SDK, install the plugin:
+# pip install --upgrade pinecone pinecone-plugin-assistant
 
-  from pinecone import Pinecone
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # Creates an assistant using the API key stored in the client 'pc'.
-  assistant = pc.assistant.create_assistant(
-      assistant_name="example-assistant",
-      instructions="Use American English for spelling and grammar.",
-      region="us" 
-  )
-  ```
+# Creates an assistant using the API key stored in the client 'pc'.
+assistant = pc.assistant.create_assistant(
+    assistant_name="example-assistant",
+    instructions="Use American English for spelling and grammar.",
+    region="us" 
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  // Creates an index using the API key stored in the client 'pc'.
-  const assistant = await pc.createAssistant({
-    name: 'example-assistant',
-    instructions: 'Use American English for spelling and grammar.',
-    region: 'us'
-  });
-  ```
-</CodeGroup>
+// Creates an index using the API key stored in the client 'pc'.
+const assistant = await pc.createAssistant({
+  name: 'example-assistant',
+  instructions: 'Use American English for spelling and grammar.',
+  region: 'us'
+});
+```
 
 ## Add headers to an HTTP request
 

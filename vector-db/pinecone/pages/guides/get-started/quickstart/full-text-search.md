@@ -16,78 +16,76 @@ Full-text search matches exact terms: IDs, SKUs, error codes, and phrases. Creat
 
 ## Create an index and search
 
-<Steps>
-  <Step title="Set your API key">
-    Set your API key as an environment variable so the SDK can authenticate:
+**1. Set your API key**
 
-    ```bash theme={null}
-    export PINECONE_API_KEY="YOUR_API_KEY"
-    ```
-  </Step>
+Set your API key as an environment variable so the SDK can authenticate:
 
-  <Step title="Create an index">
-    Define a schema with a full-text (BM25) field, then create the index. Only search fields belong in the schema; filterable metadata like `category` goes in the documents and is indexed automatically.
+```bash theme={null}
+export PINECONE_API_KEY="YOUR_API_KEY"
+```
 
-    ```python theme={null}
-    import os, time
-    from pinecone import Pinecone, SchemaBuilder
+**2. Create an index**
 
-    pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+Define a schema with a full-text (BM25) field, then create the index. Only search fields belong in the schema; filterable metadata like `category` goes in the documents and is indexed automatically.
 
-    schema = (
-        SchemaBuilder()
-          .add_string_field(name="text", full_text_search={"language": "en"})
-          .build()
-    )
-    if not pc.indexes.exists(name="quickstart"):
-        pc.indexes.create(name="quickstart", schema=schema)
+```python theme={null}
+import os, time
+from pinecone import Pinecone, SchemaBuilder
 
-    while not pc.indexes.describe(name="quickstart").status.ready:
-        time.sleep(2)
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
-    index = pc.Index(name="quickstart")
-    ```
-  </Step>
+schema = (
+    SchemaBuilder()
+      .add_string_field(name="text", full_text_search={"language": "en"})
+      .build()
+)
+if not pc.indexes.exists(name="quickstart"):
+    pc.indexes.create(name="quickstart", schema=schema)
 
-  <Step title="Load sample documents">
-    Each document is a JSON object with a required `_id`, the `text` field from your schema (indexed for full-text search), and any metadata you want to attach. Here, `category` is metadata: it's not declared in the schema, but Pinecone indexes it automatically so you can filter on it.
+while not pc.indexes.describe(name="quickstart").status.ready:
+    time.sleep(2)
 
-    These five short strings are just samples. Real documents can carry many metadata fields (up to 40 KB per document), plus dense- or sparse-vector fields if your schema declares them, and you can upsert up to 1,000 per request.
+index = pc.Index(name="quickstart")
+```
 
-    ```python theme={null}
-    index.documents.upsert(
-        namespace="__default__",
-        documents=[
-            {"_id": "1", "text": "SKU KB-1024: wireless mechanical keyboard, USB-C, brown switches", "category": "product"},
-            {"_id": "2", "text": "SKU MON-4200: 27-inch 4K monitor, HDMI and USB-C", "category": "product"},
-            {"_id": "3", "text": "Order 88231 shipped on 2026-08-20 via express courier", "category": "order"},
-            {"_id": "4", "text": "Error E1042: connection timeout after 30 seconds", "category": "log"},
-            {"_id": "5", "text": "Ticket 5567 resolved: replaced faulty power adapter", "category": "support"},
-        ],
-    )
+**3. Load sample documents**
 
-    time.sleep(5)  # documents are indexed asynchronously, so wait a moment
-    ```
-  </Step>
+Each document is a JSON object with a required `_id`, the `text` field from your schema (indexed for full-text search), and any metadata you want to attach. Here, `category` is metadata: it's not declared in the schema, but Pinecone indexes it automatically so you can filter on it.
 
-  <Step title="Run a full-text search">
-    Search the index by choosing a scoring type with `score_by`. Here, `type: "text"` scores documents by BM25 keyword relevance on the `text` field, so an exact identifier like `E1042` surfaces the record that contains it.
+These five short strings are just samples. Real documents can carry many metadata fields (up to 40 KB per document), plus dense- or sparse-vector fields if your schema declares them, and you can upsert up to 1,000 per request.
 
-    ```python theme={null}
-    resp = index.documents.search(
-        namespace="__default__",
-        top_k=3,
-        score_by=[{"type": "text", "fields": ["text"], "query": "E1042"}],
-        include_fields=["*"],
-    )
+```python theme={null}
+index.documents.upsert(
+    namespace="__default__",
+    documents=[
+        {"_id": "1", "text": "SKU KB-1024: wireless mechanical keyboard, USB-C, brown switches", "category": "product"},
+        {"_id": "2", "text": "SKU MON-4200: 27-inch 4K monitor, HDMI and USB-C", "category": "product"},
+        {"_id": "3", "text": "Order 88231 shipped on 2026-08-20 via express courier", "category": "order"},
+        {"_id": "4", "text": "Error E1042: connection timeout after 30 seconds", "category": "log"},
+        {"_id": "5", "text": "Ticket 5567 resolved: replaced faulty power adapter", "category": "support"},
+    ],
+)
 
-    for m in resp.matches:
-        print(m._id, m._score, getattr(m, "text", ""))
-    ```
+time.sleep(5)  # documents are indexed asynchronously, so wait a moment
+```
 
-    To narrow results, add a `filter` such as `{"category": {"$eq": "product"}}`. For exact phrase matching, use a `query_string` search instead (see the [query syntax reference](/guides/search/full-text-search/query-syntax)).
-  </Step>
-</Steps>
+**4. Run a full-text search**
+
+Search the index by choosing a scoring type with `score_by`. Here, `type: "text"` scores documents by BM25 keyword relevance on the `text` field, so an exact identifier like `E1042` surfaces the record that contains it.
+
+```python theme={null}
+resp = index.documents.search(
+    namespace="__default__",
+    top_k=3,
+    score_by=[{"type": "text", "fields": ["text"], "query": "E1042"}],
+    include_fields=["*"],
+)
+
+for m in resp.matches:
+    print(m._id, m._score, getattr(m, "text", ""))
+```
+
+To narrow results, add a `filter` such as `{"category": {"$eq": "product"}}`. For exact phrase matching, use a `query_string` search instead (see the [query syntax reference](/guides/search/full-text-search/query-syntax)).
 
 ## Use your own data
 
@@ -107,18 +105,16 @@ For large sets, use [Bulk import](/guides/index-data/import-data) instead of ups
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Rank by meaning" icon="layer-group" href="/guides/search/full-text-search#schema-definition">
-    Add a `dense_vector` field to your schema for semantic search, or combine it with text for hybrid search.
-  </Card>
+> **[Rank by meaning](/guides/search/full-text-search#schema-definition)**
+>
+> Add a `dense_vector` field to your schema for semantic search, or combine it with text for hybrid search.
 
-  <Card title="Ingest your own files" icon="database" href="/guides/get-started/quickstart/ingest-files">
-    Embed your own files with Pinecone Inference and search by meaning
-  </Card>
+> **[Ingest your own files](/guides/get-started/quickstart/ingest-files)**
+>
+> Embed your own files with Pinecone Inference and search by meaning
 
-  <Card title="Bring your own vectors" icon="cube" href="/guides/get-started/quickstart/bring-your-own-vectors">
-    Upsert embeddings you already have directly.
-  </Card>
-</CardGroup>
+> **[Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors)**
+>
+> Upsert embeddings you already have directly.
 
 For the full reference (query syntax, filters, analyzers, and bulk import), see the [Full-text search guide](/guides/search/full-text-search).

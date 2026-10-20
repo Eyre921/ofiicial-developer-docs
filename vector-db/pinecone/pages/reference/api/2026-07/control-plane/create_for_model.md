@@ -15,38 +15,36 @@ The response is this version's index model, with the embedding configuration sur
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index#integrated-embedding).
 
-<RequestExample>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  index_model = pc.create_index_for_model(
-      name="docs-example",
-      cloud="aws",
-      region="us-east-1",
-      embed={
-          "model": "multilingual-e5-large",
-          "field_map": {"text": "chunk_text"}
-      }
-  )
-  ```
-
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  curl "https://api.pinecone.io/indexes/create-for-model" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "docs-example",
-      "cloud": "aws",
-      "region": "us-east-1",
-      "embed": {
+index_model = pc.create_index_for_model(
+    name="docs-example",
+    cloud="aws",
+    region="us-east-1",
+    embed={
         "model": "multilingual-e5-large",
         "field_map": {"text": "chunk_text"}
-      }
-    }'
-  ```
-</RequestExample>
+    }
+)
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://api.pinecone.io/indexes/create-for-model" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "docs-example",
+    "cloud": "aws",
+    "region": "us-east-1",
+    "embed": {
+      "model": "multilingual-e5-large",
+      "field_map": {"text": "chunk_text"}
+    }
+  }'
+```

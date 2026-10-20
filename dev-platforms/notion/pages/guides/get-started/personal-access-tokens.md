@@ -23,7 +23,7 @@ Don't use a PAT to authenticate a product used by many Notion users. Create a [p
 
 ## How PATs work
 
-Create PATs in the <a href={developerPortalUrl}>Developer portal</a>. For each PAT, you choose:
+Create PATs in the [Developer portal](https://www.notion.so/developers). For each PAT, you choose:
 
 * A token name.
 * The workspace the token belongs to.
@@ -40,22 +40,20 @@ The workspace's PAT creation policy controls who can use the Notion API capabili
 
 PATs authenticate requests the same way other credentials for the Notion API do:
 
-<CodeGroup>
-  ```http HTTP theme={null}
-  GET /v1/users/me HTTP/1.1
-  Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
-  Notion-Version: 2026-03-11
-  ```
+```http HTTP theme={null}
+GET /v1/users/me HTTP/1.1
+Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
+Notion-Version: 2026-03-11
+```
 
-  ```javascript JavaScript theme={null}
-  // Save this example in an .mjs file.
-  import { Client } from "@notionhq/client"
+```javascript JavaScript theme={null}
+// Save this example in an .mjs file.
+import { Client } from "@notionhq/client"
 
-  const notion = new Client({
-    auth: process.env.NOTION_PAT,
-  })
-  ```
-</CodeGroup>
+const notion = new Client({
+  auth: process.env.NOTION_PAT,
+})
+```
 
 ## Permissions and content access
 
@@ -68,9 +66,9 @@ A PAT acts as the user who created it:
 
 An internal connection operates as a separate bot user and can access only pages shared with that connection. A PAT uses a real user's permissions, so it is best for work owned by that user rather than team-owned automations.
 
-<Info>
-  [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve its bot user. Its `bot.owner.user` is the PAT creator. [Retrieve a user](/reference/get-user) can retrieve the creator by ID.
-</Info>
+> [!NOTE]
+>
+> [List all users](/reference/get-users) is not available to PATs. A PAT can use [Retrieve token's bot user](/reference/get-self) to retrieve its bot user. Its `bot.owner.user` is the PAT creator. [Retrieve a user](/reference/get-user) can retrieve the creator by ID.
 
 ## Workspace admin controls
 
@@ -103,23 +101,21 @@ On Enterprise, admins manage selected groups in the PAT creator settings. If no 
 
 ## Create a PAT
 
-<Steps>
-  <Step>
-    Open <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal.
-  </Step>
+**Step 1**
 
-  <Step>
-    Select **New token**.
-  </Step>
+Open [Personal access tokens](https://www.notion.so/developers/tokens) in the Developer portal.
 
-  <Step>
-    Name the token, then choose its capabilities and expiration. If a workspace picker appears, select the workspace the token belongs to.
-  </Step>
+**Step 2**
 
-  <Step>
-    Select **Create token**, then copy the token value and store it securely. You can't view it again.
-  </Step>
-</Steps>
+Select **New token**.
+
+**Step 3**
+
+Name the token, then choose its capabilities and expiration. If a workspace picker appears, select the workspace the token belongs to.
+
+**Step 4**
+
+Select **Create token**, then copy the token value and store it securely. You can't view it again.
 
 Choose an **Expiration** of **7 days**, **30 days**, **90 days**, **180 days**, or **1 year**. The form shows the exact expiration date before and after you create the token. If you don't choose an expiration, the token expires after 1 year. Create a new PAT and update your scripts or tools before then. Expired tokens return an `unauthorized` error.
 

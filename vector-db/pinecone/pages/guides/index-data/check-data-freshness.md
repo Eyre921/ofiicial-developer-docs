@@ -14,9 +14,9 @@ Pinecone is eventually consistent, so there can be a slight delay before new or 
 
 ## Check the log sequence number
 
-<Note>
-  This method is only available for serverless indexes through the [Database API](https://docs.pinecone.io/reference/api/latest/data-plane/upsert).
-</Note>
+> [!NOTE]
+>
+> This method is only available for serverless indexes through the [Database API](https://docs.pinecone.io/reference/api/latest/data-plane/upsert).
 
 ### Log sequence numbers
 
@@ -140,168 +140,164 @@ If you insert new records or delete records, the number of records in the index 
 
 To verify that your index contains the number of records you expect, [view index stats](/reference/api/latest/data-plane/describeindexstats):
 
-<CodeGroup>
-  ```python Python theme={null}
-  # pip install pinecone
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  index.describe_index_stats()
-  ```
+index.describe_index_stats()
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  const stats = await index.describeIndexStats();
-  ```
+const stats = await index.describeIndexStats();
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.proto.DescribeIndexStatsResponse;
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.proto.DescribeIndexStatsResponse;
 
-  public class DescribeIndexStatsExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          Index index = new Index(connection, "INDEX_NAME");
-          DescribeIndexStatsResponse indexStatsResponse = index.describeIndexStats();
-          System.out.println(indexStatsResponse);
-      }
-  }
-  ```
+public class DescribeIndexStatsExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(connection, "INDEX_NAME");
+        DescribeIndexStatsResponse indexStatsResponse = index.describeIndexStats();
+        System.out.println(indexStatsResponse);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "log"
+import (
+    "context"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-    	}
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
 
-      stats, err := idxConnection.DescribeIndexStats(ctx)
-      if err != nil {
-          log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-      } else {
-          fmt.Printf("%+v", *stats)
-      }
-  }
-  ```
+    stats, err := idxConnection.DescribeIndexStats(ctx)
+    if err != nil {
+        log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("%+v", *stats)
+    }
+}
+```
 
-  ```shell curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -X POST "https://$INDEX_HOST/describe_index_stats" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+curl -X POST "https://$INDEX_HOST/describe_index_stats" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```
 
 The response will look like this:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  {'dimension': 1024,
-   'index_fullness': 0,
-   'namespaces': {'example-namespace1': {'vector_count': 4}, 'example-namespace2': {'vector_count': 4}},
-   'total_vector_count': 8}
-  ```
+```Python Python theme={null}
+{'dimension': 1024,
+ 'index_fullness': 0,
+ 'namespaces': {'example-namespace1': {'vector_count': 4}, 'example-namespace2': {'vector_count': 4}},
+ 'total_vector_count': 8}
+```
 
-  ```JavaScript JavaScript theme={null}
-  Returns:
-  {
-    namespaces: { example-namespace1: { recordCount: 4 }, example-namespace2: { recordCount: 4 } },
-    dimension: 1024,
-    indexFullness: 0,
-    totalRecordCount: 8
+```JavaScript JavaScript theme={null}
+Returns:
+{
+  namespaces: { example-namespace1: { recordCount: 4 }, example-namespace2: { recordCount: 4 } },
+  dimension: 1024,
+  indexFullness: 0,
+  totalRecordCount: 8
+}
+
+// Note: the value of totalRecordCount is the same as total_vector_count.
+```
+
+```java Java theme={null}
+namespaces {
+  key: "example-namespace1"
+  value {
+    vector_count: 4
   }
-
-  // Note: the value of totalRecordCount is the same as total_vector_count.
-  ```
-
-  ```java Java theme={null}
-  namespaces {
-    key: "example-namespace1"
-    value {
-      vector_count: 4
-    }
+}
+namespaces {
+  key: "example-namespace2"
+  value {
+    vector_count: 4
   }
-  namespaces {
-    key: "example-namespace2"
-    value {
-      vector_count: 4
-    }
-  }
-  dimension: 1024
-  total_vector_count: 8
-  ```
+}
+dimension: 1024
+total_vector_count: 8
+```
 
-  ```go Go theme={null}
-  {
-    "dimension": 1024,
-    "index_fullness": 0,
-    "total_vector_count": 8,
-    "namespaces": {
-      "example-namespace1": {
-        "vector_count": 4
-      },
-      "example-namespace2": {
-        "vector_count": 4
-      }
-    }
-  }
-  ```
-
-  ```shell curl theme={null}
-  {
-    "namespaces": {
-      "example-namespace1": {
-        "vectorCount": 4
-      },
-      "example-namespace2": {
-        "vectorCount": 4
-      }
+```go Go theme={null}
+{
+  "dimension": 1024,
+  "index_fullness": 0,
+  "total_vector_count": 8,
+  "namespaces": {
+    "example-namespace1": {
+      "vector_count": 4
     },
-    "dimension": 1024,
-    "indexFullness": 0,
-    "totalVectorCount": 8
+    "example-namespace2": {
+      "vector_count": 4
+    }
   }
-  ```
-</CodeGroup>
+}
+```
+
+```shell curl theme={null}
+{
+  "namespaces": {
+    "example-namespace1": {
+      "vectorCount": 4
+    },
+    "example-namespace2": {
+      "vectorCount": 4
+    }
+  },
+  "dimension": 1024,
+  "indexFullness": 0,
+  "totalVectorCount": 8
+}
+```

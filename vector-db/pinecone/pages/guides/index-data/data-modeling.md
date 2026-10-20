@@ -11,9 +11,9 @@ Pinecone has two ways to model your data, and the choice is made when you create
 * **[Documents](#documents)** are the unit of data in an index with a **document schema**, the model behind [full-text search](/guides/search/full-text-search). A document is a JSON object that can carry text fields (ranked with BM25 and Lucene queries), a dense vector, a sparse vector, and metadata in a single index, and you pick the ranking signal per query with `score_by`. Use documents for text-first search or any workload that needs more than one ranking signal in one index.
 * **[Records](#records)** are the unit of data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors), the Vectors API. A record carries one vector (or raw text for Pinecone to embed) plus metadata. Use records for vector-only workloads.
 
-<Tip>
-  Deciding how tenants share indexes and namespaces? See [Design for multitenancy](/guides/index-data/design-for-multitenancy).
-</Tip>
+> [!TIP]
+>
+> Deciding how tenants share indexes and namespaces? See [Design for multitenancy](/guides/index-data/design-for-multitenancy).
 
 ## Documents
 
@@ -51,9 +51,9 @@ Field-name rules:
 
 For the full schema reference (language and analyzer options, multi-field schemas, scoring methods), see [Full-text search](/guides/search/full-text-search).
 
-<Note>
-  A document is the unit of retrieval: `top_k` and `_score` are computed per document, not per sub-section. Pinecone doesn't split a single document into multiple in-document chunks at index time. If your source content is longer than what you want to retrieve as one hit (a long article, a PDF, a transcript), do the chunking in your application before upsert and store each chunk as its own document, with an ID like `document1#chunk1`, `document1#chunk2`, and a metadata field that ties chunks back to the parent document for grouping at query time.
-</Note>
+> [!NOTE]
+>
+> A document is the unit of retrieval: `top_k` and `_score` are computed per document, not per sub-section. Pinecone doesn't split a single document into multiple in-document chunks at index time. If your source content is longer than what you want to retrieve as one hit (a long article, a PDF, a transcript), do the chunking in your application before upsert and store each chunk as its own document, with an ID like `document1#chunk1`, `document1#chunk2`, and a metadata field that ties chunks back to the parent document for grouping at query time.
 
 ### Schema validation
 
@@ -73,370 +73,364 @@ Each document in an [upsert](/reference/api/latest/data-plane/upsert_documents) 
 
 The same document model supports several common schema shapes. Pick the one that matches the signal you want to rank by, and plan your fields up front: schema migration isn't supported after index creation. Filters are deterministic per document and apply before scoring; choose your hard yes/no constraints (including text-match operators on FTS-enabled `string` fields) first, then pick a `score_by` method to rank whatever remains. See [Filters vs. scoring](/guides/search/full-text-search#filters-vs-scoring).
 
-<Note>
-  The Python snippets in each accordion below assume an initialized client and the schema-builder import:
+> [!NOTE]
+>
+> The Python snippets in each accordion below assume an initialized client and the schema-builder import:
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone, SchemaBuilder
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+> ```
+>
+> Each accordion shows the pattern-specific schema, an example document, and a search snippet. The control-plane (`pc.indexes.create(...)`) and data-plane (`index = pc.Index(name=...)`) calls in the snippets reuse this `pc`.
 
-  ```python Python theme={null}
-  from pinecone import Pinecone, SchemaBuilder
+> **Single text field — keyword search only (FTS)**
+>
+> Use when you want BM25 keyword ranking on one piece of text per document (a review body, a support ticket, a product description) and you don't have embeddings to manage.
+>
+> ```python Python theme={null}
+> from pinecone import SchemaBuilder
+>
+> schema = (
+>     SchemaBuilder()
+>     .add_string_field("review_text", full_text_search={"language": "en"})
+>     .build()
+> )
+>
+> pc.indexes.create(name="book-reviews", schema=schema)
+> ```
+>
+> A document upserted into this index looks like:
+>
+> ```json theme={null}
+> {
+>   "_id": "review-1234",
+>   "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances. The pacing is uneven but the central premise carries you through."
+> }
+> ```
+>
+> Search with a single `text` clause (the score\_by `type`, not a field type — this clause runs BM25 ranking on the named string field):
+>
+> ```python Python theme={null}
+> index.documents.search(
+>     namespace="reviews",
+>     top_k=10,
+>     score_by=[{"type": "text", "fields": ["review_text"], "query": "civilization"}],
+> )
+> ```
+>
+> See [Full-text search](/guides/search/full-text-search).
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
-  ```
+> **Multi-field FTS — score across two text fields (e.g. body + summary)**
+>
+> Use when a document has more than one piece of text that should both contribute to ranking, for example, a long `review_text` plus a short `review_summary`. Pinecone combines the per-field BM25 scores into one ranking per document.
+>
+> ```python Python theme={null}
+> schema = (
+>     SchemaBuilder()
+>     .add_string_field("review_text", full_text_search={"language": "en"})
+>     .add_string_field("review_summary", full_text_search={"language": "en"})
+>     .build()
+> )
+>
+> pc.indexes.create(name="book-reviews-multi", schema=schema)
+> ```
+>
+> A document upserted into this index looks like:
+>
+> ```json theme={null}
+> {
+>   "_id": "review-1234",
+>   "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances. The pacing is uneven but the central premise carries you through.",
+>   "review_summary": "Monumental science fiction with uneven pacing",
+>   "category": "science-fiction",
+>   "rating": 4.5
+> }
+> ```
+>
+> `category` and `rating` aren't declared in the schema. They're upserted as metadata, automatically indexed for filtering, and usable in `filter` expressions.
+>
+> Pass two `text` clauses in `score_by`; the server combines them into one ranking, with each contributing field weighted equally in `2026-07`.
+>
+> ```python Python theme={null}
+> index = pc.Index(name="book-reviews-multi")
+>
+> index.documents.search(
+>     namespace="reviews",
+>     top_k=5,
+>     score_by=[
+>         {"type": "text", "fields": ["review_text"],    "query": "disappointing"},
+>         {"type": "text", "fields": ["review_summary"], "query": "Disappointing"},
+>     ],
+>     include_fields=["*"],
+> )
+> ```
 
-  Each accordion shows the pattern-specific schema, an example document, and a search snippet. The control-plane (`pc.indexes.create(...)`) and data-plane (`index = pc.Index(name=...)`) calls in the snippets reuse this `pc`.
-</Note>
+> **Dense + FTS — semantic and keyword in one index**
+>
+> Most workloads that combine semantic ranking with keyword matching reach for this pattern: rank by dense (or sparse) similarity, restricted to documents that contain a specific term or phrase. Common examples include semantic search over patents, regulatory filings, internal knowledge bases, or other technical literature where the right answer must contain a specific term. A single schema can include one `dense_vector` field plus any number of FTS-enabled string fields:
+>
+> ```python Python theme={null}
+> schema = (
+>     SchemaBuilder()
+>     .add_string_field("book_title", full_text_search={"language": "en"})
+>     .add_string_field("review_text", full_text_search={"language": "en"})
+>     .add_dense_vector_field("review_embedding", dimension=1024, metric="cosine")
+>     .build()
+> )
+>
+> pc.indexes.create(name="book-reviews-dense", schema=schema)
+> ```
+>
+> A document upserted into this index looks like:
+>
+> ```json theme={null}
+> {
+>   "_id": "review-1234",
+>   "book_title": "The Three-Body Problem",
+>   "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances.",
+>   "review_embedding": [0.012, -0.087, 0.153, ...]
+> }
+> ```
+>
+> `review_embedding` is a 1024-dim list of floats produced by your dense embedding model. Use the same model at query time so the query vector lives in the same space.
+>
+> A single search request ranks by one scoring type. With this schema you have two query options:
+>
+> Option A, dense ranking restricted by a text-match filter (the most common hybrid pattern):
+>
+> ```python Python theme={null}
+> index = pc.Index(name="book-reviews-dense")
+>
+> # query_embedding is a 1024-dim list of floats from your embedding model.
+> query_embedding = embed("beautifully written, hard sci-fi")
+>
+> index.documents.search(
+>     namespace="reviews",
+>     top_k=5,
+>     score_by=[
+>         {"type": "dense_vector", "fields": ["review_embedding"], "values": query_embedding},
+>     ],
+>     filter={"review_text": {"$match_phrase": "beautifully written"}},
+> )
+> ```
+>
+> Option B, run BM25 and dense searches separately and merge client-side (when you want both signals to contribute to ranking, for example via [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)):
+>
+> ```python Python theme={null}
+> dense_hits = index.documents.search(
+>     namespace="reviews", top_k=50,
+>     score_by=[{"type": "dense_vector", "fields": ["review_embedding"], "values": query_embedding}],
+> )
+> bm25_hits = index.documents.search(
+>     namespace="reviews", top_k=50,
+>     score_by=[{"type": "text", "fields": ["review_text"], "query": "beautifully written"}],
+> )
+> # Merge dense_hits + bm25_hits in your application (e.g. RRF) to produce final ranking.
+> ```
+>
+> See [Hybrid search](/guides/search/hybrid-search) for a fuller discussion.
+>
+> > [!TIP]
+> >
+> > The `dense_vector` field's source content is independent of the FTS-enabled `string` fields it sits alongside. You can embed images (with a multimodal embedding model) and pair them with FTS-enabled `string` fields holding captions, geography, or taxonomy, then query the image vector with a text description and restrict matches with FTS filters on those `string` fields. The schema doesn't constrain what the dense vector represents; it just stores a vector of the declared dimension.
 
-<AccordionGroup>
-  <Accordion title="Single text field — keyword search only (FTS)">
-    Use when you want BM25 keyword ranking on one piece of text per document (a review body, a support ticket, a product description) and you don't have embeddings to manage.
+> **Multi-signal index — dense + sparse + FTS in one schema**
+>
+> Use when a single document is best described by more than one ranking signal, for example, a video catalog where each item has frame embeddings (dense), auto-generated captions you've encoded as sparse vectors (sparse), and a transcript text field (BM25/Lucene). One schema declares all three; you pick the ranking signal per query with `score_by`. You don't manage a second index or any cross-index linkage.
+>
+> ```python Python theme={null}
+> schema = (
+>     SchemaBuilder()
+>     .add_dense_vector_field("frame_embedding", dimension=1024, metric="cosine")
+>     .add_sparse_vector_field("caption_sparse")
+>     .add_string_field("transcript", full_text_search={"language": "en"})
+>     .build()
+> )
+>
+> pc.indexes.create(name="video-catalog", schema=schema)
+> ```
+>
+> A `language` field upserted alongside these ranking fields is treated as metadata: stored on the document, returned via `include_fields`, and auto-indexed for filtering.
+>
+> A document upserted into this index looks like:
+>
+> ```json theme={null}
+> {
+>   "_id": "video-7890#scene-3",
+>   "frame_embedding": [0.012, -0.087, 0.153, ...],
+>   "caption_sparse": {
+>     "indices": [42, 1077, 9821],
+>     "values":  [0.41, 0.33, 0.18]
+>   },
+>   "transcript": "I think we should go now before it gets dark.",
+>   "language": "en"
+> }
+> ```
+>
+> `frame_embedding` is a 1024-dim list of floats from your dense vision model. `caption_sparse` is the output of your sparse encoder, an object with parallel `indices` (token IDs) and `values` (token weights) arrays.
+>
+> The same index supports three different query shapes. All three assume:
+>
+> ```python Python theme={null}
+> index = pc.Index(name="video-catalog")
+>
+> # Replace with the outputs of your encoders.
+> query_embedding = embed_image(query_image)                 # 1024-dim list of floats
+> query_sparse    = sparse_encode("scene with a lighthouse") # {"indices": [...], "values": [...]}
+> ```
+>
+> Semantic frame search, ranking by visual similarity:
+>
+> ```python Python theme={null}
+> index.documents.search(
+>     namespace="videos",
+>     top_k=10,
+>     score_by=[{"type": "dense_vector", "fields": ["frame_embedding"], "values": query_embedding}],
+> )
+> ```
+>
+> Caption search, ranking by sparse-vector similarity over your encoded captions:
+>
+> ```python Python theme={null}
+> index.documents.search(
+>     namespace="videos",
+>     top_k=10,
+>     score_by=[{"type": "sparse_vector", "fields": ["caption_sparse"], "sparse_values": query_sparse}],
+> )
+> ```
+>
+> Semantic search restricted to a spoken phrase, narrowing semantic frame ranking to clips where the transcript contains a specific phrase:
+>
+> ```python Python theme={null}
+> index.documents.search(
+>     namespace="videos",
+>     top_k=10,
+>     score_by=[{"type": "dense_vector", "fields": ["frame_embedding"], "values": query_embedding}],
+>     filter={"transcript": {"$match_phrase": "I love you"}},
+> )
+> ```
+>
+> `score_by` selects one ranking signal per request, but every signal stays addressable on the same documents.
 
-    ```python Python theme={null}
-    from pinecone import SchemaBuilder
-
-    schema = (
-        SchemaBuilder()
-        .add_string_field("review_text", full_text_search={"language": "en"})
-        .build()
-    )
-
-    pc.indexes.create(name="book-reviews", schema=schema)
-    ```
-
-    A document upserted into this index looks like:
-
-    ```json theme={null}
-    {
-      "_id": "review-1234",
-      "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances. The pacing is uneven but the central premise carries you through."
-    }
-    ```
-
-    Search with a single `text` clause (the score\_by `type`, not a field type — this clause runs BM25 ranking on the named string field):
-
-    ```python Python theme={null}
-    index.documents.search(
-        namespace="reviews",
-        top_k=10,
-        score_by=[{"type": "text", "fields": ["review_text"], "query": "civilization"}],
-    )
-    ```
-
-    See [Full-text search](/guides/search/full-text-search).
-  </Accordion>
-
-  <Accordion title="Multi-field FTS — score across two text fields (e.g. body + summary)">
-    Use when a document has more than one piece of text that should both contribute to ranking, for example, a long `review_text` plus a short `review_summary`. Pinecone combines the per-field BM25 scores into one ranking per document.
-
-    ```python Python theme={null}
-    schema = (
-        SchemaBuilder()
-        .add_string_field("review_text", full_text_search={"language": "en"})
-        .add_string_field("review_summary", full_text_search={"language": "en"})
-        .build()
-    )
-
-    pc.indexes.create(name="book-reviews-multi", schema=schema)
-    ```
-
-    A document upserted into this index looks like:
-
-    ```json theme={null}
-    {
-      "_id": "review-1234",
-      "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances. The pacing is uneven but the central premise carries you through.",
-      "review_summary": "Monumental science fiction with uneven pacing",
-      "category": "science-fiction",
-      "rating": 4.5
-    }
-    ```
-
-    `category` and `rating` aren't declared in the schema. They're upserted as metadata, automatically indexed for filtering, and usable in `filter` expressions.
-
-    Pass two `text` clauses in `score_by`; the server combines them into one ranking, with each contributing field weighted equally in `2026-07`.
-
-    ```python Python theme={null}
-    index = pc.Index(name="book-reviews-multi")
-
-    index.documents.search(
-        namespace="reviews",
-        top_k=5,
-        score_by=[
-            {"type": "text", "fields": ["review_text"],    "query": "disappointing"},
-            {"type": "text", "fields": ["review_summary"], "query": "Disappointing"},
-        ],
-        include_fields=["*"],
-    )
-    ```
-  </Accordion>
-
-  <Accordion title="Dense + FTS — semantic and keyword in one index">
-    Most workloads that combine semantic ranking with keyword matching reach for this pattern: rank by dense (or sparse) similarity, restricted to documents that contain a specific term or phrase. Common examples include semantic search over patents, regulatory filings, internal knowledge bases, or other technical literature where the right answer must contain a specific term. A single schema can include one `dense_vector` field plus any number of FTS-enabled string fields:
-
-    ```python Python theme={null}
-    schema = (
-        SchemaBuilder()
-        .add_string_field("book_title", full_text_search={"language": "en"})
-        .add_string_field("review_text", full_text_search={"language": "en"})
-        .add_dense_vector_field("review_embedding", dimension=1024, metric="cosine")
-        .build()
-    )
-
-    pc.indexes.create(name="book-reviews-dense", schema=schema)
-    ```
-
-    A document upserted into this index looks like:
-
-    ```json theme={null}
-    {
-      "_id": "review-1234",
-      "book_title": "The Three-Body Problem",
-      "review_text": "Beautifully written exploration of contact, communication, and civilization across cosmic distances.",
-      "review_embedding": [0.012, -0.087, 0.153, ...]
-    }
-    ```
-
-    `review_embedding` is a 1024-dim list of floats produced by your dense embedding model. Use the same model at query time so the query vector lives in the same space.
-
-    A single search request ranks by one scoring type. With this schema you have two query options:
-
-    Option A, dense ranking restricted by a text-match filter (the most common hybrid pattern):
-
-    ```python Python theme={null}
-    index = pc.Index(name="book-reviews-dense")
-
-    # query_embedding is a 1024-dim list of floats from your embedding model.
-    query_embedding = embed("beautifully written, hard sci-fi")
-
-    index.documents.search(
-        namespace="reviews",
-        top_k=5,
-        score_by=[
-            {"type": "dense_vector", "fields": ["review_embedding"], "values": query_embedding},
-        ],
-        filter={"review_text": {"$match_phrase": "beautifully written"}},
-    )
-    ```
-
-    Option B, run BM25 and dense searches separately and merge client-side (when you want both signals to contribute to ranking, for example via [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)):
-
-    ```python Python theme={null}
-    dense_hits = index.documents.search(
-        namespace="reviews", top_k=50,
-        score_by=[{"type": "dense_vector", "fields": ["review_embedding"], "values": query_embedding}],
-    )
-    bm25_hits = index.documents.search(
-        namespace="reviews", top_k=50,
-        score_by=[{"type": "text", "fields": ["review_text"], "query": "beautifully written"}],
-    )
-    # Merge dense_hits + bm25_hits in your application (e.g. RRF) to produce final ranking.
-    ```
-
-    See [Hybrid search](/guides/search/hybrid-search) for a fuller discussion.
-
-    <Tip>
-      The `dense_vector` field's source content is independent of the FTS-enabled `string` fields it sits alongside. You can embed images (with a multimodal embedding model) and pair them with FTS-enabled `string` fields holding captions, geography, or taxonomy, then query the image vector with a text description and restrict matches with FTS filters on those `string` fields. The schema doesn't constrain what the dense vector represents; it just stores a vector of the declared dimension.
-    </Tip>
-  </Accordion>
-
-  <Accordion title="Multi-signal index — dense + sparse + FTS in one schema">
-    Use when a single document is best described by more than one ranking signal, for example, a video catalog where each item has frame embeddings (dense), auto-generated captions you've encoded as sparse vectors (sparse), and a transcript text field (BM25/Lucene). One schema declares all three; you pick the ranking signal per query with `score_by`. You don't manage a second index or any cross-index linkage.
-
-    ```python Python theme={null}
-    schema = (
-        SchemaBuilder()
-        .add_dense_vector_field("frame_embedding", dimension=1024, metric="cosine")
-        .add_sparse_vector_field("caption_sparse")
-        .add_string_field("transcript", full_text_search={"language": "en"})
-        .build()
-    )
-
-    pc.indexes.create(name="video-catalog", schema=schema)
-    ```
-
-    A `language` field upserted alongside these ranking fields is treated as metadata: stored on the document, returned via `include_fields`, and auto-indexed for filtering.
-
-    A document upserted into this index looks like:
-
-    ```json theme={null}
-    {
-      "_id": "video-7890#scene-3",
-      "frame_embedding": [0.012, -0.087, 0.153, ...],
-      "caption_sparse": {
-        "indices": [42, 1077, 9821],
-        "values":  [0.41, 0.33, 0.18]
-      },
-      "transcript": "I think we should go now before it gets dark.",
-      "language": "en"
-    }
-    ```
-
-    `frame_embedding` is a 1024-dim list of floats from your dense vision model. `caption_sparse` is the output of your sparse encoder, an object with parallel `indices` (token IDs) and `values` (token weights) arrays.
-
-    The same index supports three different query shapes. All three assume:
-
-    ```python Python theme={null}
-    index = pc.Index(name="video-catalog")
-
-    # Replace with the outputs of your encoders.
-    query_embedding = embed_image(query_image)                 # 1024-dim list of floats
-    query_sparse    = sparse_encode("scene with a lighthouse") # {"indices": [...], "values": [...]}
-    ```
-
-    Semantic frame search, ranking by visual similarity:
-
-    ```python Python theme={null}
-    index.documents.search(
-        namespace="videos",
-        top_k=10,
-        score_by=[{"type": "dense_vector", "fields": ["frame_embedding"], "values": query_embedding}],
-    )
-    ```
-
-    Caption search, ranking by sparse-vector similarity over your encoded captions:
-
-    ```python Python theme={null}
-    index.documents.search(
-        namespace="videos",
-        top_k=10,
-        score_by=[{"type": "sparse_vector", "fields": ["caption_sparse"], "sparse_values": query_sparse}],
-    )
-    ```
-
-    Semantic search restricted to a spoken phrase, narrowing semantic frame ranking to clips where the transcript contains a specific phrase:
-
-    ```python Python theme={null}
-    index.documents.search(
-        namespace="videos",
-        top_k=10,
-        score_by=[{"type": "dense_vector", "fields": ["frame_embedding"], "values": query_embedding}],
-        filter={"transcript": {"$match_phrase": "I love you"}},
-    )
-    ```
-
-    `score_by` selects one ranking signal per request, but every signal stays addressable on the same documents.
-  </Accordion>
-
-  <Accordion title="Sparse + dense hybrid — single-vector index (Vectors API)">
-    Use when you're modeling data with the [Vectors API](#records) (not the Documents API) and want to combine a sparse and dense vector in one record on a single index. For new document-centric projects with text data, prefer the document-index Dense + FTS pattern above.
-
-    ```json theme={null}
-    {
-      "id": "doc1#chunk1",
-      "values": [0.0236, -0.0329, ..., -0.0104, 0.0086],
-      "sparse_values": {
-        "indices": [822745112, 1009084850, ...],
-        "values":  [1.7958984, 0.41577148, ...]
-      },
-      "metadata": { "document_id": "doc1", "chunk_number": 1 }
-    }
-    ```
-
-    See [Hybrid search](/guides/search/hybrid-search).
-  </Accordion>
-</AccordionGroup>
+> **Sparse + dense hybrid — single-vector index (Vectors API)**
+>
+> Use when you're modeling data with the [Vectors API](#records) (not the Documents API) and want to combine a sparse and dense vector in one record on a single index. For new document-centric projects with text data, prefer the document-index Dense + FTS pattern above.
+>
+> ```json theme={null}
+> {
+>   "id": "doc1#chunk1",
+>   "values": [0.0236, -0.0329, ..., -0.0104, 0.0086],
+>   "sparse_values": {
+>     "indices": [822745112, 1009084850, ...],
+>     "values":  [1.7958984, 0.41577148, ...]
+>   },
+>   "metadata": { "document_id": "doc1", "chunk_number": 1 }
+> }
+> ```
+>
+> See [Hybrid search](/guides/search/hybrid-search).
 
 ## Records
 
 Records are how you model data for [indexes with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) and [indexes with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors). Each record carries one vector (dense, sparse, or both for single-index hybrid) plus optional metadata, and you can upsert raw text in place of a vector when the index is [integrated with an embedding model](/guides/index-data/index-configuration#embedding-models).
 
-<Tabs>
-  <Tab title="Vectors">
-    When you upsert pre-generated vectors, each record consists of the following:
+**Vectors**
 
-    * **ID**: A unique string identifier for the record.
-    * **Vector**: A dense vector for [semantic search](/guides/search/semantic-search), a sparse vector for [sparse-vector search](/guides/search/lexical-search), or both for single-index [hybrid search](/guides/search/hybrid-search) (Vectors API).
-    * **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects aren't supported). You can filter by metadata when searching or deleting records.
+When you upsert pre-generated vectors, each record consists of the following:
 
-    <Note>
-      When importing data from object storage, records must be in Parquet format. For more details, see [Import data](/guides/index-data/import-data#3-prepare-your-data).
-    </Note>
+* **ID**: A unique string identifier for the record.
+* **Vector**: A dense vector for [semantic search](/guides/search/semantic-search), a sparse vector for [sparse-vector search](/guides/search/lexical-search), or both for single-index [hybrid search](/guides/search/hybrid-search) (Vectors API).
+* **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects aren't supported). You can filter by metadata when searching or deleting records.
 
-    Example:
+> [!NOTE]
+>
+> When importing data from object storage, records must be in Parquet format. For more details, see [Import data](/guides/index-data/import-data#3-prepare-your-data).
 
-    <CodeGroup>
-      ```json Dense theme={null}
-      {
-        "id": "document1#chunk1", 
-        "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
-        "metadata": {
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases",
-          "chunk_number": 1,
-          "chunk_text": "First chunk of the document content...",
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        }
-      }
-      ```
+Example:
 
-      ```json Sparse theme={null}
-      {
-        "id": "document1#chunk1", 
-        "sparse_values": {
-          "values": [1.7958984, 0.41577148, ..., 4.4414062, 3.3554688],
-          "indices": [822745112, 1009084850, ..., 3517203014, 3590924191]
-        },
-        "metadata": {
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases",
-          "chunk_number": 1,
-          "chunk_text": "First chunk of the document content...",
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        }
-      }
-      ```
+```json Dense theme={null}
+{
+  "id": "document1#chunk1", 
+  "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
+  "metadata": {
+    "document_id": "document1",
+    "document_title": "Introduction to Vector Databases",
+    "chunk_number": 1,
+    "chunk_text": "First chunk of the document content...",
+    "document_url": "https://example.com/docs/document1",
+    "created_at": "2024-01-15",
+    "document_type": "tutorial"
+  }
+}
+```
 
-      ```json Hybrid theme={null}
-      {
-        "id": "document1#chunk1", 
-        "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
-        "sparse_values": {
-          "values": [1.7958984, 0.41577148, ..., 4.4414062, 3.3554688],
-          "indices": [822745112, 1009084850, ..., 3517203014, 3590924191]
-        },
-        "metadata": {
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases",
-          "chunk_number": 1,
-          "chunk_text": "First chunk of the document content...",
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        }
-      }
-      ```
-    </CodeGroup>
-  </Tab>
+```json Sparse theme={null}
+{
+  "id": "document1#chunk1", 
+  "sparse_values": {
+    "values": [1.7958984, 0.41577148, ..., 4.4414062, 3.3554688],
+    "indices": [822745112, 1009084850, ..., 3517203014, 3590924191]
+  },
+  "metadata": {
+    "document_id": "document1",
+    "document_title": "Introduction to Vector Databases",
+    "chunk_number": 1,
+    "chunk_text": "First chunk of the document content...",
+    "document_url": "https://example.com/docs/document1",
+    "created_at": "2024-01-15",
+    "document_type": "tutorial"
+  }
+}
+```
 
-  <Tab title="Text">
-    When you upsert raw text for Pinecone to convert to vectors automatically, each record consists of the following:
+```json Hybrid theme={null}
+{
+  "id": "document1#chunk1", 
+  "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
+  "sparse_values": {
+    "values": [1.7958984, 0.41577148, ..., 4.4414062, 3.3554688],
+    "indices": [822745112, 1009084850, ..., 3517203014, 3590924191]
+  },
+  "metadata": {
+    "document_id": "document1",
+    "document_title": "Introduction to Vector Databases",
+    "chunk_number": 1,
+    "chunk_text": "First chunk of the document content...",
+    "document_url": "https://example.com/docs/document1",
+    "created_at": "2024-01-15",
+    "document_type": "tutorial"
+  }
+}
+```
 
-    * **ID**: A unique string identifier for the record.
-    * **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
-    * **Metadata** (optional): All additional fields are stored as record metadata. You can filter by metadata when searching or deleting records.
+**Text**
 
-    <Note>
-      Upserting raw text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding).
-    </Note>
+When you upsert raw text for Pinecone to convert to vectors automatically, each record consists of the following:
 
-    Example:
+* **ID**: A unique string identifier for the record.
+* **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
+* **Metadata** (optional): All additional fields are stored as record metadata. You can filter by metadata when searching or deleting records.
 
-    ```json theme={null}
-    {
-      "_id": "document1#chunk1", 
-      "chunk_text": "First chunk of the document content...", // Text to convert to a vector. 
-      "document_id": "document1", // This and subsequent fields stored as metadata. 
-      "document_title": "Introduction to Vector Databases",
-      "chunk_number": 1,
-      "document_url": "https://example.com/docs/document1", 
-      "created_at": "2024-01-15",
-      "document_type": "tutorial"
-    }
-    ```
-  </Tab>
-</Tabs>
+> [!NOTE]
+>
+> Upserting raw text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#vector-embedding).
+
+Example:
+
+```json theme={null}
+{
+  "_id": "document1#chunk1", 
+  "chunk_text": "First chunk of the document content...", // Text to convert to a vector. 
+  "document_id": "document1", // This and subsequent fields stored as metadata. 
+  "document_title": "Introduction to Vector Databases",
+  "chunk_number": 1,
+  "document_url": "https://example.com/docs/document1", 
+  "created_at": "2024-01-15",
+  "document_type": "tutorial"
+}
+```
 
 ## Use structured IDs
 
@@ -473,9 +467,9 @@ Metadata keys must be strings, and metadata values must be one of the following 
 * Boolean (true, false)
 * List of strings
 
-<Note>
-  Pinecone supports 40 KB of metadata per record or document. `full_text_search` string fields aren't metadata and don't count toward this limit. Each `full_text_search` string field is limited to 100 KB and 10,000 tokens.
-</Note>
+> [!NOTE]
+>
+> Pinecone supports 40 KB of metadata per record or document. `full_text_search` string fields aren't metadata and don't count toward this limit. Each `full_text_search` string field is limited to 100 KB and 10,000 tokens.
 
 ## Example
 
@@ -485,175 +479,171 @@ This example demonstrates how to manage document chunks in Pinecone using struct
 
 When [upserting](/guides/index-data/upsert-data) documents that have been split into chunks, combine structured IDs with comprehensive metadata:
 
-<Tabs>
-  <Tab title="Upsert text">
-    <Note>
-      Upserting raw text is supported only for [indexes with integrated embedding](/guides/index-data/create-an-index#integrated-embedding).
-    </Note>
+**Upsert text**
 
-    ```python Python theme={null}
-    from pinecone.grpc import PineconeGRPC as Pinecone
+> [!NOTE]
+>
+> Upserting raw text is supported only for [indexes with integrated embedding](/guides/search/integrated-embedding).
 
-    pc = Pinecone(api_key="YOUR_API_KEY")
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-    # To get the unique host for an index, 
-    # see https://docs.pinecone.io/guides/manage-data/target-an-index
-    index = pc.Index(host="INDEX_HOST")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-    index.upsert_records(
-      "example-namespace",
-      [
-        {
-          "_id": "document1#chunk1", 
-          "chunk_text": "First chunk of the document content...",
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases",
-          "chunk_number": 1,
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        },
-        {
-          "_id": "document1#chunk2", 
-          "chunk_text": "Second chunk of the document content...",
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases", 
-          "chunk_number": 2,
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        },
-        {
-          "_id": "document1#chunk3", 
-          "chunk_text": "Third chunk of the document content...",
-          "document_id": "document1",
-          "document_title": "Introduction to Vector Databases",
-          "chunk_number": 3, 
-          "document_url": "https://example.com/docs/document1",
-          "created_at": "2024-01-15",
-          "document_type": "tutorial"
-        },
-      ]
-    )
-    ```
-  </Tab>
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  <Tab title="Upsert vectors">
-    ```python Python theme={null}
-    from pinecone.grpc import PineconeGRPC as Pinecone
+index.upsert_records(
+  "example-namespace",
+  [
+    {
+      "_id": "document1#chunk1", 
+      "chunk_text": "First chunk of the document content...",
+      "document_id": "document1",
+      "document_title": "Introduction to Vector Databases",
+      "chunk_number": 1,
+      "document_url": "https://example.com/docs/document1",
+      "created_at": "2024-01-15",
+      "document_type": "tutorial"
+    },
+    {
+      "_id": "document1#chunk2", 
+      "chunk_text": "Second chunk of the document content...",
+      "document_id": "document1",
+      "document_title": "Introduction to Vector Databases", 
+      "chunk_number": 2,
+      "document_url": "https://example.com/docs/document1",
+      "created_at": "2024-01-15",
+      "document_type": "tutorial"
+    },
+    {
+      "_id": "document1#chunk3", 
+      "chunk_text": "Third chunk of the document content...",
+      "document_id": "document1",
+      "document_title": "Introduction to Vector Databases",
+      "chunk_number": 3, 
+      "document_url": "https://example.com/docs/document1",
+      "created_at": "2024-01-15",
+      "document_type": "tutorial"
+    },
+  ]
+)
+```
 
-    pc = Pinecone(api_key="YOUR_API_KEY")
+**Upsert vectors**
 
-    # To get the unique host for an index, 
-    # see https://docs.pinecone.io/guides/manage-data/target-an-index
-    index = pc.Index(host="INDEX_HOST")
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-    index.upsert(
-      namespace="example-namespace",
-      vectors=[
-        {
-          "id": "document1#chunk1", 
-          "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
-          "metadata": {
-            "document_id": "document1",
-            "document_title": "Introduction to Vector Databases",
-            "chunk_number": 1,
-            "chunk_text": "First chunk of the document content...",
-            "document_url": "https://example.com/docs/document1",
-            "created_at": "2024-01-15",
-            "document_type": "tutorial"
-          }
-        },
-        {
-          "id": "document1#chunk2", 
-          "values": [-0.0412445068359375, 0.028839111328125, ..., 0.01953125, -0.0174560546875],
-          "metadata": {
-            "document_id": "document1",
-            "document_title": "Introduction to Vector Databases", 
-            "chunk_number": 2,
-            "chunk_text": "Second chunk of the document content...",
-            "document_url": "https://example.com/docs/document1",
-            "created_at": "2024-01-15",
-            "document_type": "tutorial"
-          }
-        },
-        {
-          "id": "document1#chunk3", 
-          "values": [0.0512237548828125, 0.041656494140625, ..., 0.02130126953125, -0.0394287109375],
-          "metadata": {
-            "document_id": "document1",
-            "document_title": "Introduction to Vector Databases",
-            "chunk_number": 3, 
-            "chunk_text": "Third chunk of the document content...",
-            "document_url": "https://example.com/docs/document1",
-            "created_at": "2024-01-15",
-            "document_type": "tutorial"
-          }
-        }
-      ]
-    )
-    ```
-  </Tab>
-</Tabs>
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
+
+index.upsert(
+  namespace="example-namespace",
+  vectors=[
+    {
+      "id": "document1#chunk1", 
+      "values": [0.0236663818359375, -0.032989501953125, ..., -0.01041412353515625, 0.0086669921875], 
+      "metadata": {
+        "document_id": "document1",
+        "document_title": "Introduction to Vector Databases",
+        "chunk_number": 1,
+        "chunk_text": "First chunk of the document content...",
+        "document_url": "https://example.com/docs/document1",
+        "created_at": "2024-01-15",
+        "document_type": "tutorial"
+      }
+    },
+    {
+      "id": "document1#chunk2", 
+      "values": [-0.0412445068359375, 0.028839111328125, ..., 0.01953125, -0.0174560546875],
+      "metadata": {
+        "document_id": "document1",
+        "document_title": "Introduction to Vector Databases", 
+        "chunk_number": 2,
+        "chunk_text": "Second chunk of the document content...",
+        "document_url": "https://example.com/docs/document1",
+        "created_at": "2024-01-15",
+        "document_type": "tutorial"
+      }
+    },
+    {
+      "id": "document1#chunk3", 
+      "values": [0.0512237548828125, 0.041656494140625, ..., 0.02130126953125, -0.0394287109375],
+      "metadata": {
+        "document_id": "document1",
+        "document_title": "Introduction to Vector Databases",
+        "chunk_number": 3, 
+        "chunk_text": "Third chunk of the document content...",
+        "document_url": "https://example.com/docs/document1",
+        "created_at": "2024-01-15",
+        "document_type": "tutorial"
+      }
+    }
+  ]
+)
+```
 
 ### Search chunks
 
 To search the chunks of a document, use a [metadata filter expression](/guides/search/filter-by-metadata#metadata-filter-expressions) that limits the search appropriately:
 
-<Tabs>
-  <Tab title="Search with text">
-    <Note>
-      Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/create-an-index#integrated-embedding).
-    </Note>
+**Search with text**
 
-    ```python Python theme={null}
-    from pinecone import Pinecone
+> [!NOTE]
+>
+> Searching with text is supported only for [indexes with integrated embedding](/guides/search/integrated-embedding).
 
-    pc = Pinecone(api_key="YOUR_API_KEY")
+```python Python theme={null}
+from pinecone import Pinecone
 
-    # To get the unique host for an index, 
-    # see https://docs.pinecone.io/guides/manage-data/target-an-index
-    index = pc.Index(host="INDEX_HOST")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-    filtered_results = index.search(
-        namespace="example-namespace", 
-        query={
-            "inputs": {"text": "What is a vector database?"}, 
-            "top_k": 3,
-            "filter": {"document_id": "document1"}
-        },
-        fields=["chunk_text"]
-    )
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-    print(filtered_results)
-    ```
-  </Tab>
+filtered_results = index.search(
+    namespace="example-namespace", 
+    query={
+        "inputs": {"text": "What is a vector database?"}, 
+        "top_k": 3,
+        "filter": {"document_id": "document1"}
+    },
+    fields=["chunk_text"]
+)
 
-  <Tab title="Search with a vector">
-    ```python Python theme={null}
-    from pinecone.grpc import PineconeGRPC as Pinecone
+print(filtered_results)
+```
 
-    pc = Pinecone(api_key="YOUR_API_KEY")
+**Search with a vector**
 
-    # To get the unique host for an index, 
-    # see https://docs.pinecone.io/guides/manage-data/target-an-index
-    index = pc.Index(host="INDEX_HOST")
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-    filtered_results = index.query(
-        namespace="example-namespace",
-        vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
-        top_k=3,
-        filter={
-            "document_id": {"$eq": "document1"}
-        },
-        include_metadata=True,
-        include_values=False
-    )
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-    print(filtered_results)
-    ```
-  </Tab>
-</Tabs>
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
+
+filtered_results = index.query(
+    namespace="example-namespace",
+    vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
+    top_k=3,
+    filter={
+        "document_id": {"$eq": "document1"}
+    },
+    include_metadata=True,
+    include_values=False
+)
+
+print(filtered_results)
+```
 
 ### Fetch chunks
 
@@ -685,9 +675,9 @@ if chunk_ids:
         # Process the vector values and metadata as needed
 ```
 
-<Note>
-  Pinecone is [eventually consistent](/guides/index-data/check-data-freshness), so it's possible that a write (upsert, update, or delete) followed immediately by a read (query, list, or fetch) may not return the latest version of the data. If your use case requires retrieving data immediately, consider implementing a small delay or [retry logic](/guides/production/error-handling#implement-retry-logic) after writes.
-</Note>
+> [!NOTE]
+>
+> Pinecone is [eventually consistent](/guides/index-data/check-data-freshness), so it's possible that a write (upsert, update, or delete) followed immediately by a read (query, list, or fetch) may not return the latest version of the data. If your use case requires retrieving data immediately, consider implementing a small delay or [retry logic](/guides/production/error-handling#implement-retry-logic) after writes.
 
 ### Update chunks
 
@@ -761,9 +751,9 @@ index.delete(
 
 ### Update an entire document
 
-<Tip>
-  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
-</Tip>
+> [!TIP]
+>
+> If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
 
 When the amount of chunks or ordering of chunks for a document changes, the recommended approach is to first [delete all chunks using a metadata filter](/guides/manage-data/delete-data#delete-records-by-metadata), and then [upsert](/guides/index-data/upsert-data) the new chunks:
 

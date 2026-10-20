@@ -10,7 +10,7 @@ Databricks is a Unified Analytics Platform on top of Apache Spark. The primary a
 
 Use Databricks and Pinecone to create, ingest, and update vector embeddings at scale.
 
-<PrimarySecondaryCTA />
+[Get started](/reference/tools/pinecone-spark-connector)
 
 ## Setup guide
 
@@ -24,192 +24,188 @@ Ensure you have the following:
 * A [Pinecone account](https://app.pinecone.io/)
 * A [Pinecone API key](/admin/projects/understanding-projects#api-keys)
 
-<Steps>
-  <Step title="Install the Spark-Pinecone connector">
-    <Tabs>
-      <Tab title="Databricks platform">
-        1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-        2. Configure the library as follows:
-           1. Select **File path/S3** as the **Library Source**.
+### 1. Install the Spark-Pinecone connector
 
-           2. Enter the S3 URI for the Pinecone assembly JAR file:
+**Databricks platform**
 
-              ```
-              s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
-              ```
+1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+2. Configure the library as follows:
+   1. Select **File path/S3** as the **Library Source**.
 
-              <Note>
-                Databricks platform users must use the Pinecone assembly jar listed above to ensure that the proper dependecies are installed.
-              </Note>
+   2. Enter the S3 URI for the Pinecone assembly JAR file:
 
-           3. Click **Install**.
-      </Tab>
+      ```
+      s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
+      ```
 
-      <Tab title="Databricks on AWS">
-        1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-        2. Configure the library as follows:
-           1. Select **File path/S3** as the **Library Source**.
+      > [!NOTE]
+      >
+      > Databricks platform users must use the Pinecone assembly jar listed above to ensure that the proper dependecies are installed.
 
-           2. Enter the S3 URI for the Pinecone assembly JAR file:
+   3. Click **Install**.
 
-              ```
-              s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
-              ```
+**Databricks on AWS**
 
-           3. Click **Install**.
-      </Tab>
+1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+2. Configure the library as follows:
+   1. Select **File path/S3** as the **Library Source**.
 
-      <Tab title="Databricks on GCP / Azure">
-        1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-        2. Configure the library as follows:
-           1. [Download the Pinecone assembly JAR file](https://repo1.maven.org/maven2/io/pinecone/spark-pinecone_2.12/1.2.0/).
-           2. Select **Workspace** as the **Library Source**.
-           3. Upload the JAR file.
-           4. Click **Install**.
-      </Tab>
-    </Tabs>
-  </Step>
+   2. Enter the S3 URI for the Pinecone assembly JAR file:
 
-  <Step title="Load the dataset into partitions">
-    This guide uses a collection of news articles from the Hugging Face Datasets library as the example dataset. To load it, follow these steps:
+      ```
+      s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
+      ```
 
-    1. [Create a new notebook](https://docs.databricks.com/en/notebooks/notebooks-manage.html#create-a-notebook) attached to your cluster.
+   3. Click **Install**.
 
-    2. Install dependencies:
+**Databricks on GCP / Azure**
 
-       ```shell Shell theme={null}
-       %pip install datasets transformers pinecone torch
-       ```
+1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+2. Configure the library as follows:
+   1. [Download the Pinecone assembly JAR file](https://repo1.maven.org/maven2/io/pinecone/spark-pinecone_2.12/1.2.0/).
+   2. Select **Workspace** as the **Library Source**.
+   3. Upload the JAR file.
+   4. Click **Install**.
 
-    3. Load the dataset:
+### 2. Load the dataset into partitions
 
-       ```Python Python theme={null}
-       from datasets import load_dataset  
-       dataset_name = "allenai/multinews_sparse_max"  
-       dataset = load_dataset(dataset_name, split="train")  
-       ```
+This guide uses a collection of news articles from the Hugging Face Datasets library as the example dataset. To load it, follow these steps:
 
-    4. Convert the dataset from the Hugging Face format and repartition it:
+1. [Create a new notebook](https://docs.databricks.com/en/notebooks/notebooks-manage.html#create-a-notebook) attached to your cluster.
 
-       ```Python Python theme={null}
-       dataset.to_parquet("/dbfs/tmp/dataset_parquet.pq")  
-       num_workers = 10  
-       dataset_df = spark.read.parquet("/tmp/dataset_parquet.pq").repartition(num_workers)  
-       ```
+2. Install dependencies:
 
-       Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It's conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. Each partition in the DataFrame has an equal amount of the original data.
+   ```shell Shell theme={null}
+   %pip install datasets transformers pinecone torch
+   ```
 
-    5. The dataset doesn't have identifiers associated with each document, so add them:
+3. Load the dataset:
 
-       ```Python Python theme={null}
-       from pyspark.sql.types import StringType  
-       from pyspark.sql.functions import monotonically_increasing_id  
-       dataset_df = dataset_df.withColumn("id", monotonically_increasing_id().cast(StringType()))  
-       ```
+   ```Python Python theme={null}
+   from datasets import load_dataset  
+   dataset_name = "allenai/multinews_sparse_max"  
+   dataset = load_dataset(dataset_name, split="train")  
+   ```
 
-       As its name suggests, `withColumn` adds a column to the dataframe, containing a simple increasing identifier that you cast to a string.
-  </Step>
+4. Convert the dataset from the Hugging Face format and repartition it:
 
-  <Step title="Create embeddings">
-    Generate an embedding for each document, and then convert the results to the schema Pinecone expects:
+   ```Python Python theme={null}
+   dataset.to_parquet("/dbfs/tmp/dataset_parquet.pq")  
+   num_workers = 10  
+   dataset_df = spark.read.parquet("/tmp/dataset_parquet.pq").repartition(num_workers)  
+   ```
 
-    1. Create a user-defined function (UDF) to create the embeddings, using the AutoTokenizer and AutoModel classes from the Hugging Face transformers library:
+   Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It's conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. Each partition in the DataFrame has an equal amount of the original data.
 
-       ```Python Python theme={null}
-       from transformers import AutoTokenizer, AutoModel  
-       def create_embeddings(partitionData):  
-           tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")  
-           model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")  
-           for row in partitionData:  
-               document = str(row.document)  
-               inputs = tokenizer(document, padding=True, truncation=True, return_tensors="pt", max_length=512)  
-               result = model(**inputs)  
-               embeddings = result.last_hidden_state[:, 0, :].cpu().detach().numpy()  
-               lst = embeddings.flatten().tolist()  
-               yield [row.id, lst, "", "{}", None]  
-       ```
+5. The dataset doesn't have identifiers associated with each document, so add them:
 
-    2. Apply the UDF to the data:
+   ```Python Python theme={null}
+   from pyspark.sql.types import StringType  
+   from pyspark.sql.functions import monotonically_increasing_id  
+   dataset_df = dataset_df.withColumn("id", monotonically_increasing_id().cast(StringType()))  
+   ```
 
-       ```Python Python theme={null}
-       embeddings = dataset_df.rdd.mapPartitions(create_embeddings)  
-       ```
+   As its name suggests, `withColumn` adds a column to the dataframe, containing a simple increasing identifier that you cast to a string.
 
-       A dataframe in Spark is a higher-level abstraction built on top of a more fundamental building block called a resilient distributed dataset (RDD). Here, you use the `mapPartitions` function, which provides finer control over the execution of the UDF by explicitly applying it to each partition of the RDD.
+### 3. Create embeddings
 
-    3. Convert the resulting RDD back into a dataframe with the schema required by Pinecone:
+Generate an embedding for each document, and then convert the results to the schema Pinecone expects:
 
-       ```Python Python theme={null}
-       from pyspark.sql.types import StructType, StructField, StringType, ArrayType, FloatType, LongType  
-       schema = StructType([  
-           StructField("id",StringType(),True),  
-           StructField("values",ArrayType(FloatType()),True),  
-           StructField("namespace",StringType(),True),  
-           StructField("metadata", StringType(), True),  
-           StructField("sparse_values", StructType([  
-               StructField("indices", ArrayType(LongType(), False), False),  
-               StructField("values", ArrayType(FloatType(), False), False)  
-           ]), True)  
-       ])  
-       embeddings_df = spark.createDataFrame(data=embeddings,schema=schema)  
-       ```
-  </Step>
+1. Create a user-defined function (UDF) to create the embeddings, using the AutoTokenizer and AutoModel classes from the Hugging Face transformers library:
 
-  <Step title="Store the embeddings">
-    Write the embeddings to a Pinecone index with the Spark-Pinecone connector, and then query the index:
+   ```Python Python theme={null}
+   from transformers import AutoTokenizer, AutoModel  
+   def create_embeddings(partitionData):  
+       tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")  
+       model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")  
+       for row in partitionData:  
+           document = str(row.document)  
+           inputs = tokenizer(document, padding=True, truncation=True, return_tensors="pt", max_length=512)  
+           result = model(**inputs)  
+           embeddings = result.last_hidden_state[:, 0, :].cpu().detach().numpy()  
+           lst = embeddings.flatten().tolist()  
+           yield [row.id, lst, "", "{}", None]  
+   ```
 
-    1. Initialize the connection to Pinecone:
+2. Apply the UDF to the data:
 
-       ```Python Python theme={null}
-       from pinecone.grpc import PineconeGRPC as Pinecone
-       from pinecone import ServerlessSpec
+   ```Python Python theme={null}
+   embeddings = dataset_df.rdd.mapPartitions(create_embeddings)  
+   ```
 
-       api_key = "YOUR_API_KEY"
-       index_name = "news"
+   A dataframe in Spark is a higher-level abstraction built on top of a more fundamental building block called a resilient distributed dataset (RDD). Here, you use the `mapPartitions` function, which provides finer control over the execution of the UDF by explicitly applying it to each partition of the RDD.
 
-       pc = Pinecone(api_key=api_key)
-       ```
+3. Convert the resulting RDD back into a dataframe with the schema required by Pinecone:
 
-    2. Create an index for your embeddings. The `dimension` must match the model's output size, which is 384 for all-MiniLM-L6-v2:
+   ```Python Python theme={null}
+   from pyspark.sql.types import StructType, StructField, StringType, ArrayType, FloatType, LongType  
+   schema = StructType([  
+       StructField("id",StringType(),True),  
+       StructField("values",ArrayType(FloatType()),True),  
+       StructField("namespace",StringType(),True),  
+       StructField("metadata", StringType(), True),  
+       StructField("sparse_values", StructType([  
+           StructField("indices", ArrayType(LongType(), False), False),  
+           StructField("values", ArrayType(FloatType(), False), False)  
+       ]), True)  
+   ])  
+   embeddings_df = spark.createDataFrame(data=embeddings,schema=schema)  
+   ```
 
-       ```Python Python theme={null}
-       if not pc.has_index(index_name):
-           pc.create_index(
-               name=index_name,
-               dimension=384,
-               metric="cosine",
-               spec=ServerlessSpec(
-                   cloud="aws",
-                   region="us-east-1"
-               )
+### 4. Store the embeddings
+
+Write the embeddings to a Pinecone index with the Spark-Pinecone connector, and then query the index:
+
+1. Initialize the connection to Pinecone:
+
+   ```Python Python theme={null}
+   from pinecone.grpc import PineconeGRPC as Pinecone
+   from pinecone import ServerlessSpec
+
+   api_key = "YOUR_API_KEY"
+   index_name = "news"
+
+   pc = Pinecone(api_key=api_key)
+   ```
+
+2. Create an index for your embeddings. The `dimension` must match the model's output size, which is 384 for all-MiniLM-L6-v2:
+
+   ```Python Python theme={null}
+   if not pc.has_index(index_name):
+       pc.create_index(
+           name=index_name,
+           dimension=384,
+           metric="cosine",
+           spec=ServerlessSpec(
+               cloud="aws",
+               region="us-east-1"
            )
-       ```
-
-    3. Use the Spark-Pinecone connector to save the embeddings to your index:
-
-       ```Python Python theme={null}
-       (  
-           embeddings_df.write  
-           .option("pinecone.apiKey", api_key) 
-           .option("pinecone.indexName", index_name)  
-           .format("io.pinecone.spark.pinecone.Pinecone")  
-           .mode("append")  
-           .save()  
-       )  
-       ```
-
-    4. Perform a similarity search using the embeddings you loaded into Pinecone by providing a set of vector values or a vector ID. The [query endpoint](/reference/api/2026-07/data-plane/query) returns the IDs of the most similar records in the index, along with their similarity scores:
-       ```Python Python theme={null}
-       index = pc.Index(index_name)
-
-       index.query(
-           vector=[0.3] * 384,
-           top_k=3,
-           include_values=True
        )
-       ```
-       <Note>
-         If you want to make a query with a text string (e.g., `"Summarize this article"`), use the [`search` endpoint via integrated inference](/reference/api/2026-07/data-plane/search_records).
-       </Note>
-  </Step>
-</Steps>
+   ```
+
+3. Use the Spark-Pinecone connector to save the embeddings to your index:
+
+   ```Python Python theme={null}
+   (  
+       embeddings_df.write  
+       .option("pinecone.apiKey", api_key) 
+       .option("pinecone.indexName", index_name)  
+       .format("io.pinecone.spark.pinecone.Pinecone")  
+       .mode("append")  
+       .save()  
+   )  
+   ```
+
+4. Perform a similarity search using the embeddings you loaded into Pinecone by providing a set of vector values or a vector ID. The [query endpoint](/reference/api/2026-07/data-plane/query) returns the IDs of the most similar records in the index, along with their similarity scores:
+   ```Python Python theme={null}
+   index = pc.Index(index_name)
+
+   index.query(
+       vector=[0.3] * 384,
+       top_k=3,
+       include_values=True
+   )
+   ```
+   > [!NOTE]
+   >
+   > If you want to make a query with a text string (e.g., `"Summarize this article"`), use the [`search` endpoint via integrated inference](/reference/api/2026-07/data-plane/search_records).

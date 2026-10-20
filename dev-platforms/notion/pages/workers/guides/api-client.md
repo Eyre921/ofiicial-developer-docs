@@ -32,21 +32,19 @@ To set a token for syncs, webhooks, or local development, you have two options:
 * **[Personal access token](/guides/get-started/personal-access-tokens):** acts as you and uses your page permissions. You don't need to connect it to each page.
 * **[Internal connection API token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
 
-<Steps>
-  <Step title="Create a token">
-    Create a [personal access token](https://www.notion.so/profile/integrations) or an [internal integration](https://www.notion.so/profile/integrations/internal) and copy the token.
-  </Step>
+**1. Create a token**
 
-  <Step title="Store the token as a secret">
-    ```bash theme={null}
-    ntn workers env set NOTION_API_TOKEN=ntn_...
-    ```
-  </Step>
+Create a [personal access token](https://www.notion.so/profile/integrations) or an [internal integration](https://www.notion.so/profile/integrations/internal) and copy the token.
 
-  <Step title="Grant access (internal integrations only)">
-    If using an internal integration, open each page or database your worker needs to access, select the **•••** menu in the top right, and add the integration under **Connections**. Personal access tokens don't need this step.
-  </Step>
-</Steps>
+**2. Store the token as a secret**
+
+```bash theme={null}
+ntn workers env set NOTION_API_TOKEN=ntn_...
+```
+
+**3. Grant access (internal integrations only)**
+
+If using an internal integration, open each page or database your worker needs to access, select the **•••** menu in the top right, and add the integration under **Connections**. Personal access tokens don't need this step.
 
 For local development, pull secrets to a `.env` file so the token is available when running `ntn workers exec`:
 
@@ -142,24 +140,22 @@ For full SDK documentation, see the [Notion API reference](/reference/intro) and
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Syncs" icon="rotate" href="/workers/guides/syncs">
-    Sync external data into Notion databases.
-  </Card>
+> **[Syncs](/workers/guides/syncs)**
+>
+> Sync external data into Notion databases.
 
-  <Card title="Agent tools" icon="wand-magic-sparkles" href="/workers/guides/tools">
-    Build custom tools for Notion AI.
-  </Card>
+> **[Agent tools](/workers/guides/tools)**
+>
+> Build custom tools for Notion AI.
 
-  <Card title="Webhooks" icon="bell" href="/workers/guides/webhooks">
-    Receive HTTP events from external services.
-  </Card>
+> **[Webhooks](/workers/guides/webhooks)**
+>
+> Receive HTTP events from external services.
 
-  <Card title="OAuth" icon="key" href="/workers/guides/oauth">
-    Connect to third-party APIs with user authorization.
-  </Card>
+> **[OAuth](/workers/guides/oauth)**
+>
+> Connect to third-party APIs with user authorization.
 
-  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
-    Store API keys and credentials securely.
-  </Card>
-</CardGroup>
+> **[Secrets](/workers/guides/secrets)**
+>
+> Store API keys and credentials securely.

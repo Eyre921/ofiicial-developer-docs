@@ -8,19 +8,19 @@ Run sparse-vector search in Pinecone with custom sparse encoders like pinecone-s
 
 This page shows you how to search an [index with sparse vectors](/guides/index-data/indexing-overview#sparse-vector-search) for records that most exactly match the words or phrases in a query.
 
-<Note>
-  For general-purpose text retrieval (product search, content discovery, document Q\&A), we recommend [full-text search](/guides/search/full-text-search). Full-text search runs over `string` fields you've declared with `full_text_search` enabled, using BM25 ranking and Lucene query syntax. The multi-field schema also lets you add `dense_vector` or `sparse_vector` ranking later in the same index.
-
-  Sparse-vector search (this page) is a distinct retrieval mode. Reach for it when your retrieval target is a token-weighted signal you already produce upstream of Pinecone, for example, when you're using a custom sparse encoder such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), or when your application owns the sparse-vector representation directly.
-</Note>
+> [!NOTE]
+>
+> For general-purpose text retrieval (product search, content discovery, document Q\&A), we recommend [full-text search](/guides/search/full-text-search). Full-text search runs over `string` fields you've declared with `full_text_search` enabled, using BM25 ranking and Lucene query syntax. The multi-field schema also lets you add `dense_vector` or `sparse_vector` ranking later in the same index.
+>
+> Sparse-vector search (this page) is a distinct retrieval mode. Reach for it when your retrieval target is a token-weighted signal you already produce upstream of Pinecone, for example, when you're using a custom sparse encoder such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), or when your application owns the sparse-vector representation directly.
 
 Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-retrieval/), which have a very large number of dimensions, where only a small proportion of values are non-zero. The dimensions represent words from a dictionary, and the values represent the importance of these words in the document. Words are scored independently and then summed, with the most similar records scored highest.
 
 ## Search with text
 
-<Note>
-  Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
-</Note>
+> [!NOTE]
+>
+> Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding). Document indexes support the same learned-sparse integrated embedding: declare `sparse_embed` on a `string` field and search it through the Documents API. See [Integrated embedding](/guides/search/integrated-embedding).
 
 To search an index of sparse vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
@@ -32,319 +32,315 @@ To search an index of sparse vectors with a query text, use the [Search with tex
 
 For example, the following code converts the query “What is AAPL's outlook, considering both product launches and market conditions?” to a sparse vector and then searches for the 3 most similar vectors in the `example-namespace` namespace:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  results = index.search(
-      namespace="example-namespace", 
-      query={
-          "inputs": {"text": "What is AAPL's outlook, considering both product launches and market conditions?"}, 
-          "top_k": 3
-      },
-      fields=["chunk_text", "quarter"]
-  )
-
-  print(results)
-  ```
-
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
-
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const namespace = pc.index("INDEX_NAME", "INDEX_HOST").namespace("example-namespace");
-
-  const response = await namespace.searchRecords({
-    query: {
-      topK: 3,
-      inputs: { text: "What is AAPL's outlook, considering both product launches and market conditions?" },
+results = index.search(
+    namespace="example-namespace", 
+    query={
+        "inputs": {"text": "What is AAPL's outlook, considering both product launches and market conditions?"}, 
+        "top_k": 3
     },
-    fields: ['chunk_text', 'quarter']
-  });
+    fields=["chunk_text", "quarter"]
+)
 
-  console.log(response);
-  ```
+print(results)
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import org.openapitools.db_data.client.ApiException;
-  import org.openapitools.db_data.client.model.SearchRecordsResponse;
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  import java.util.*;
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  public class SearchText {
-      public static void main(String[] args) throws ApiException {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const namespace = pc.index("INDEX_NAME", "INDEX_HOST").namespace("example-namespace");
 
-          Index index = new Index(config, connection, "integrated-sparse-java");
+const response = await namespace.searchRecords({
+  query: {
+    topK: 3,
+    inputs: { text: "What is AAPL's outlook, considering both product launches and market conditions?" },
+  },
+  fields: ['chunk_text', 'quarter']
+});
 
-          String query = "What is AAPL's outlook, considering both product launches and market conditions?";
-          List<String> fields = new ArrayList<>();
-          fields.add("category");
-          fields.add("chunk_text");
+console.log(response);
+```
 
-          // Search the index
-          SearchRecordsResponse recordsResponse = index.searchRecordsByText(query,  "example-namespace", fields, 3, null, null);
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import org.openapitools.db_data.client.ApiException;
+import org.openapitools.db_data.client.model.SearchRecordsResponse;
 
-          // Print the results
-          System.out.println(recordsResponse);
-      }
-  }
-  ```
+import java.util.*;
 
-  ```go Go theme={null}
-  package main
+public class SearchText {
+    public static void main(String[] args) throws ApiException {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+        Index index = new Index(config, connection, "integrated-sparse-java");
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+        String query = "What is AAPL's outlook, considering both product launches and market conditions?";
+        List<String> fields = new ArrayList<>();
+        fields.add("category");
+        fields.add("chunk_text");
 
-  func prettifyStruct(obj interface{}) string {
-    	bytes, _ := json.MarshalIndent(obj, "", "  ")
-      return string(bytes)
-  }
+        // Search the index
+        SearchRecordsResponse recordsResponse = index.searchRecordsByText(query,  "example-namespace", fields, 3, null, null);
 
-  func main() {
-      ctx := context.Background()
+        // Print the results
+        System.out.println(recordsResponse);
+    }
+}
+```
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+```go Go theme={null}
+package main
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-      } 
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      res, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
-          Query: pinecone.SearchRecordsQuery{
-              TopK: 3,
-              Inputs: &map[string]interface{}{
-                  "text": "What is AAPL's outlook, considering both product launches and market conditions?",
-              },
-          },
-          Fields: &[]string{"chunk_text", "category"},
-      })
-      if err != nil {
-          log.Fatalf("Failed to search records: %v", err)
-      }
-      fmt.Printf(prettifyStruct(res))
-  }
-  ```
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+func prettifyStruct(obj interface{}) string {
+  	bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
 
-  curl "https://$INDEX_HOST/records/namespaces/example-namespace/search" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "query": {
-            "inputs": { "text": "What is AAPL'\''s outlook, considering both product launches and market conditions?" },
-            "top_k": 3
-          },
-          "fields": ["chunk_text", "quarter"]
-      }'
-  ```
-</CodeGroup>
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    } 
+
+    res, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
+        Query: pinecone.SearchRecordsQuery{
+            TopK: 3,
+            Inputs: &map[string]interface{}{
+                "text": "What is AAPL's outlook, considering both product launches and market conditions?",
+            },
+        },
+        Fields: &[]string{"chunk_text", "category"},
+    })
+    if err != nil {
+        log.Fatalf("Failed to search records: %v", err)
+    }
+    fmt.Printf(prettifyStruct(res))
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/records/namespaces/example-namespace/search" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "query": {
+          "inputs": { "text": "What is AAPL'\''s outlook, considering both product launches and market conditions?" },
+          "top_k": 3
+        },
+        "fields": ["chunk_text", "quarter"]
+    }'
+```
 
 The results will look as follows. The most similar records are scored highest.
 
-<CodeGroup>
-  ```python Python theme={null}
-  {'result': {'hits': [{'_id': 'vec2',
-                        '_score': 10.77734375,
-                        'fields': {'chunk_text': "Analysts suggest that AAPL'''s "
-                                                 'upcoming Q4 product launch '
-                                                 'event might solidify its '
-                                                 'position in the premium '
-                                                 'smartphone market.',
-                                   'quarter': 'Q4'}},
-                       {'_id': 'vec3',
-                        '_score': 6.49066162109375,
-                        'fields': {'chunk_text': "AAPL'''s strategic Q3 "
-                                                 'partnerships with '
-                                                 'semiconductor suppliers could '
-                                                 'mitigate component risks and '
-                                                 'stabilize iPhone production.',
-                                   'quarter': 'Q3'}},
-                       {'_id': 'vec1',
-                        '_score': 5.3671875,
-                        'fields': {'chunk_text': 'AAPL reported a year-over-year '
-                                                 'revenue increase, expecting '
-                                                 'stronger Q3 demand for its '
-                                                 'flagship phones.',
-                                   'quarter': 'Q3'}}]},
-   'usage': {'embed_total_tokens': 18, 'read_units': 1}}
-  ```
+```python Python theme={null}
+{'result': {'hits': [{'_id': 'vec2',
+                      '_score': 10.77734375,
+                      'fields': {'chunk_text': "Analysts suggest that AAPL'''s "
+                                               'upcoming Q4 product launch '
+                                               'event might solidify its '
+                                               'position in the premium '
+                                               'smartphone market.',
+                                 'quarter': 'Q4'}},
+                     {'_id': 'vec3',
+                      '_score': 6.49066162109375,
+                      'fields': {'chunk_text': "AAPL'''s strategic Q3 "
+                                               'partnerships with '
+                                               'semiconductor suppliers could '
+                                               'mitigate component risks and '
+                                               'stabilize iPhone production.',
+                                 'quarter': 'Q3'}},
+                     {'_id': 'vec1',
+                      '_score': 5.3671875,
+                      'fields': {'chunk_text': 'AAPL reported a year-over-year '
+                                               'revenue increase, expecting '
+                                               'stronger Q3 demand for its '
+                                               'flagship phones.',
+                                 'quarter': 'Q3'}}]},
+ 'usage': {'embed_total_tokens': 18, 'read_units': 1}}
+```
 
-  ```javascript JavaScript theme={null}
-  {
-    result: { 
-      hits: [ 
-        {
-          _id: "vec2",
-          _score: 10.82421875,
-          fields: {
-            chunk_text: "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-            quarter: "Q4"
-          }
-        },
-        {
-          _id: "vec3",
-          _score: 6.49066162109375,
-          fields: {
-            chunk_text: "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
-            quarter: "Q3"
-          }
-        },
-        {
-          _id: "vec1",
-          _score: 5.3671875,
-          fields: {
-            chunk_text: "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-            quarter: "Q3"
-          }
+```javascript JavaScript theme={null}
+{
+  result: { 
+    hits: [ 
+      {
+        _id: "vec2",
+        _score: 10.82421875,
+        fields: {
+          chunk_text: "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
+          quarter: "Q4"
         }
-      ]
-    },
-    usage: { 
-      readUnits: 1, 
-      embedTotalTokens: 18 
-    }
-  }
-  ```
-
-  ```java Java theme={null}
-  class SearchRecordsResponse {
-      result: class SearchRecordsResponseResult {
-          hits: [class Hit {
-              id: vec2
-              score: 10.82421875
-              fields: {chunk_text=Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market., quarter=Q4}
-              additionalProperties: null
-          }, class Hit {
-              id: vec3
-              score: 6.49066162109375
-              fields: {chunk_text=AAAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production., quarter=Q3}
-              additionalProperties: null
-          }, class Hit {
-              id: vec1
-              score: 5.3671875
-              fields: {chunk_text=AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones., quarter=Q3}
-              additionalProperties: null
-          }]
-          additionalProperties: null
+      },
+      {
+        _id: "vec3",
+        _score: 6.49066162109375,
+        fields: {
+          chunk_text: "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+          quarter: "Q3"
+        }
+      },
+      {
+        _id: "vec1",
+        _score: 5.3671875,
+        fields: {
+          chunk_text: "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
+          quarter: "Q3"
+        }
       }
-      usage: class SearchUsage {
-          readUnits: 1
-          embedTotalTokens: 18
+    ]
+  },
+  usage: { 
+    readUnits: 1, 
+    embedTotalTokens: 18 
+  }
+}
+```
+
+```java Java theme={null}
+class SearchRecordsResponse {
+    result: class SearchRecordsResponseResult {
+        hits: [class Hit {
+            id: vec2
+            score: 10.82421875
+            fields: {chunk_text=Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market., quarter=Q4}
+            additionalProperties: null
+        }, class Hit {
+            id: vec3
+            score: 6.49066162109375
+            fields: {chunk_text=AAAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production., quarter=Q3}
+            additionalProperties: null
+        }, class Hit {
+            id: vec1
+            score: 5.3671875
+            fields: {chunk_text=AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones., quarter=Q3}
+            additionalProperties: null
+        }]
+        additionalProperties: null
+    }
+    usage: class SearchUsage {
+        readUnits: 1
+        embedTotalTokens: 18
+    }
+    additionalProperties: null
+}
+```
+
+```go Go theme={null}
+{
+  "result": {
+    "hits": [
+      {
+        "_id": "vec2",
+        "_score": 10.833984,
+        "fields": {
+          "chunk_text": "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
+          "quarter": "Q4"
+        }
+      },
+      {
+        "_id": "vec3",
+        "_score": 6.473572,
+        "fields": {
+          "chunk_text": "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+          "quarter": "Q3"
+        }
+      },
+      {
+        "_id": "vec1",
+        "_score": 5.3710938,
+        "fields": {
+          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
+          "quarter": "Q3"
+        }
       }
-      additionalProperties: null
+    ]
+  },
+  "usage": {
+    "read_units": 6,
+    "embed_total_tokens": 18
   }
-  ```
+}
+```
 
-  ```go Go theme={null}
-  {
-    "result": {
-      "hits": [
-        {
-          "_id": "vec2",
-          "_score": 10.833984,
-          "fields": {
-            "chunk_text": "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-            "quarter": "Q4"
-          }
-        },
-        {
-          "_id": "vec3",
-          "_score": 6.473572,
-          "fields": {
-            "chunk_text": "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
-            "quarter": "Q3"
-          }
-        },
-        {
-          "_id": "vec1",
-          "_score": 5.3710938,
-          "fields": {
-            "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-            "quarter": "Q3"
-          }
+```json curl theme={null}
+{
+  "result": {
+    "hits": [
+      {
+        "_id": "vec2",
+        "_score": 10.82421875,
+        "fields": {
+          "chunk_text": "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
+          "quarter": "Q4"
         }
-      ]
-    },
-    "usage": {
-      "read_units": 6,
-      "embed_total_tokens": 18
-    }
-  }
-  ```
-
-  ```json curl theme={null}
-  {
-    "result": {
-      "hits": [
-        {
-          "_id": "vec2",
-          "_score": 10.82421875,
-          "fields": {
-            "chunk_text": "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-            "quarter": "Q4"
-          }
-        },
-        {
-          "_id": "vec3",
-          "_score": 6.49066162109375,
-          "fields": {
-            "chunk_text": "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
-            "quarter": "Q3"
-          }
-        },
-        {
-          "_id": "vec1",
-          "_score": 5.3671875,
-          "fields": {
-            "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-            "quarter": "Q3"
-          }
+      },
+      {
+        "_id": "vec3",
+        "_score": 6.49066162109375,
+        "fields": {
+          "chunk_text": "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+          "quarter": "Q3"
         }
-      ]
-    },
-    "usage": {
-      "embed_total_tokens": 18,
-      "read_units": 1
-    }
+      },
+      {
+        "_id": "vec1",
+        "_score": 5.3671875,
+        "fields": {
+          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
+          "quarter": "Q3"
+        }
+      }
+    ]
+  },
+  "usage": {
+    "embed_total_tokens": 18,
+    "read_units": 1
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Search with a sparse vector
 
@@ -356,414 +352,410 @@ To search an index of sparse vectors with a sparse vector representation of a qu
 * `include_values`: Whether to include the vector values of the matching records in the response. Defaults to `false`.
 * `include_metadata`: Whether to include the metadata of the matching records in the response. Defaults to `false`.
 
-<Note>
-  When querying with `top_k` over 1000, for optimal performance set `include_values=false` and `include_metadata=false` to return only IDs and scores.
-
-  Since vectors values are retrieved from object storage, include them in your query results only when you need them (especially with higher `top_k` values). For details, see [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed).
-</Note>
+> [!NOTE]
+>
+> When querying with `top_k` over 1000, for optimal performance set `include_values=false` and `include_metadata=false` to return only IDs and scores.
+>
+> Since vectors values are retrieved from object storage, include them in your query results only when you need them (especially with higher `top_k` values). For details, see [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed).
 
 For example, the following code uses a sparse vector representation of the query "What is AAPL's outlook, considering both product launches and market conditions?" to search for the 3 most similar vectors in the `example-namespace` namespace:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from pinecone import Pinecone
+```python Python theme={null}
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  results = index.query(
-      namespace="example-namespace",
-      sparse_vector={
-        "values": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-        "indices": [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697]
-      }, 
-      top_k=3,
-      include_metadata=True,
-      include_values=False
-  )
+results = index.query(
+    namespace="example-namespace",
+    sparse_vector={
+      "values": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+      "indices": [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697]
+    }, 
+    top_k=3,
+    include_metadata=True,
+    include_values=False
+)
 
-  print(results)
-  ```
+print(results)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  const queryResponse = await index.namespace('example-namespace').query({
-      sparseVector: {
-          indices: [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697],
-          values: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-      },
-      topK: 3,
-      includeValues: false,
-      includeMetadata: true
-  });
+const queryResponse = await index.namespace('example-namespace').query({
+    sparseVector: {
+        indices: [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697],
+        values: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    },
+    topK: 3,
+    includeValues: false,
+    includeMetadata: true
+});
 
-  console.log(queryResponse);
-  ```
+console.log(queryResponse);
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
-  import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
-  import io.pinecone.clients.Index;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
+import io.pinecone.clients.Index;
 
-  import java.util.*;
+import java.util.*;
 
-  public class SearchSparseIndex {
-      public static void main(String[] args) throws InterruptedException {
-          // Instantiate Pinecone class
-          Pinecone pinecone = new Pinecone.Builder("YOUR_API_KEY").build();
+public class SearchSparseIndex {
+    public static void main(String[] args) throws InterruptedException {
+        // Instantiate Pinecone class
+        Pinecone pinecone = new Pinecone.Builder("YOUR_API_KEY").build();
 
-          String indexName = "docs-example";
+        String indexName = "docs-example";
 
-          Index index = pinecone.getIndexConnection(indexName);
+        Index index = pinecone.getIndexConnection(indexName);
 
-          List<Long> sparseIndices = Arrays.asList(
-                  767227209L, 1640781426L, 1690623792L, 2021799277L, 2152645940L,
-                  2295025838L, 2443437770L, 2779594451L, 2956155693L, 3476647774L,
-                  3818127854L, 428309169L);
-          List<Float> sparseValues = Arrays.asList(
-                  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-                  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+        List<Long> sparseIndices = Arrays.asList(
+                767227209L, 1640781426L, 1690623792L, 2021799277L, 2152645940L,
+                2295025838L, 2443437770L, 2779594451L, 2956155693L, 3476647774L,
+                3818127854L, 428309169L);
+        List<Float> sparseValues = Arrays.asList(
+                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
-          QueryResponseWithUnsignedIndices queryResponse = index.query(3, null, sparseIndices, sparseValues, null, "example-namespace", null, false, true);
-          System.out.println(queryResponse);
-      }
-  }
-  ```
+        QueryResponseWithUnsignedIndices queryResponse = index.query(3, null, sparseIndices, sparseValues, null, "example-namespace", null, false, true);
+        System.out.println(queryResponse);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-  	"context"
-  	"encoding/json"
-  	"fmt"
-  	"log"
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
 
-  	"github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func prettifyStruct(obj interface{}) string {
-  	bytes, _ := json.MarshalIndent(obj, "", "  ")
-  	return string(bytes)
-  }
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
 
-  func main() {
-  	ctx := context.Background()
+func main() {
+	ctx := context.Background()
 
-  	pc, err := pinecone.NewClient(pinecone.NewClientParams{
-  		ApiKey: "YOUR_API_KEY",
-  	})
-  	if err != nil {
-  		log.Fatalf("Failed to create Client: %v", err)
-  	}
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+		ApiKey: "YOUR_API_KEY",
+	})
+	if err != nil {
+		log.Fatalf("Failed to create Client: %v", err)
+	}
 
-  	// To get the unique host for an index,
-  	// see https://docs.pinecone.io/guides/manage-data/target-an-index
-  	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-  	if err != nil {
-  		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-  	}
+	// To get the unique host for an index,
+	// see https://docs.pinecone.io/guides/manage-data/target-an-index
+	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+	if err != nil {
+		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+	}
 
-  	sparseValues := pinecone.SparseValues{
-  		Indices: []uint32{767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697},
-  		Values:  []float32{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
-  	}
+	sparseValues := pinecone.SparseValues{
+		Indices: []uint32{767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697},
+		Values:  []float32{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+	}
 
-  	res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
-  		SparseValues:    &sparseValues,
-  		TopK:            3,
-  		IncludeValues:   false,
-  		IncludeMetadata: true,
-  	})
-  	if err != nil {
-  		log.Fatalf("Error encountered when querying by vector: %v", err)
-  	} else {
-  		fmt.Printf(prettifyStruct(res))
-  	}
-  }
-  ```
+	res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
+		SparseValues:    &sparseValues,
+		TopK:            3,
+		IncludeValues:   false,
+		IncludeMetadata: true,
+	})
+	if err != nil {
+		log.Fatalf("Error encountered when querying by vector: %v", err)
+	} else {
+		fmt.Printf(prettifyStruct(res))
+	}
+}
+```
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/query" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "sparseVector": {
-              "values": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-              "indices": [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697]
-          },
-          "namespace": "example-namespace",
-          "topK": 4,
-          "includeMetadata": true,
-          "includeValues": false
-      }'
-  ```
-</CodeGroup>
+curl "https://$INDEX_HOST/query" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "sparseVector": {
+            "values": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            "indices": [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697]
+        },
+        "namespace": "example-namespace",
+        "topK": 4,
+        "includeMetadata": true,
+        "includeValues": false
+    }'
+```
 
 The results will look as follows. The most similar records are scored highest.
 
-<CodeGroup>
-  ```python Python theme={null}
-  {'matches': [{'id': 'vec2',
-                'metadata': {'category': 'technology',
-                             'quarter': 'Q4',
-                             'chunk_text': "Analysts suggest that AAPL'''s "
-                                            'upcoming Q4 product launch event '
-                                            'might solidify its position in the '
-                                            'premium smartphone market.'},
-                'score': 10.9042969,
-                'values': []},
-               {'id': 'vec3',
-                'metadata': {'category': 'technology',
-                             'quarter': 'Q3',
-                             'chunk_text': "AAPL'''s strategic Q3 partnerships "
-                                            'with semiconductor suppliers could '
-                                            'mitigate component risks and '
-                                            'stabilize iPhone production'},
-                'score': 6.48010254,
-                'values': []},
-               {'id': 'vec1',
-                'metadata': {'category': 'technology',
-                             'quarter': 'Q3',
-                             'chunk_text': 'AAPL reported a year-over-year '
-                                            'revenue increase, expecting '
-                                            'stronger Q3 demand for its flagship '
-                                            'phones.'},
-                'score': 5.3671875,
-                'values': []}],
-   'namespace': 'example-namespace',
-   'usage': {'read_units': 1}}
-  ```
+```python Python theme={null}
+{'matches': [{'id': 'vec2',
+              'metadata': {'category': 'technology',
+                           'quarter': 'Q4',
+                           'chunk_text': "Analysts suggest that AAPL'''s "
+                                          'upcoming Q4 product launch event '
+                                          'might solidify its position in the '
+                                          'premium smartphone market.'},
+              'score': 10.9042969,
+              'values': []},
+             {'id': 'vec3',
+              'metadata': {'category': 'technology',
+                           'quarter': 'Q3',
+                           'chunk_text': "AAPL'''s strategic Q3 partnerships "
+                                          'with semiconductor suppliers could '
+                                          'mitigate component risks and '
+                                          'stabilize iPhone production'},
+              'score': 6.48010254,
+              'values': []},
+             {'id': 'vec1',
+              'metadata': {'category': 'technology',
+                           'quarter': 'Q3',
+                           'chunk_text': 'AAPL reported a year-over-year '
+                                          'revenue increase, expecting '
+                                          'stronger Q3 demand for its flagship '
+                                          'phones.'},
+              'score': 5.3671875,
+              'values': []}],
+ 'namespace': 'example-namespace',
+ 'usage': {'read_units': 1}}
+```
 
-  ```javascript JavaScript theme={null}
-  { 
-    matches: [
-              { 
-                id: 'vec2',
-                score: 10.9042969,
-                values: [],
-                metadata: {
-                  chunk_text: "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-                  category: 'technology',
-                  quarter: 'Q4'
-                }
-              },
-              {
-                id: 'vec3',
-                score: 6.48010254,
-                values: [],
-                metadata: {
-                  chunk_text: "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+```javascript JavaScript theme={null}
+{ 
+  matches: [
+            { 
+              id: 'vec2',
+              score: 10.9042969,
+              values: [],
+              metadata: {
+                chunk_text: "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
+                category: 'technology',
+                quarter: 'Q4'
+              }
+            },
+            {
+              id: 'vec3',
+              score: 6.48010254,
+              values: [],
+              metadata: {
+                chunk_text: "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+                category: 'technology',
+                quarter: 'Q3'
+              }
+            },
+            {
+              id: 'vec1',
+              score: 5.3671875,
+              values: [],
+              metadata: {
+                  chunk_text: 'AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.',
                   category: 'technology',
                   quarter: 'Q3'
-                }
-              },
-              {
-                id: 'vec1',
-                score: 5.3671875,
-                values: [],
-                metadata: {
-                    chunk_text: 'AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.',
-                    category: 'technology',
-                    quarter: 'Q3'
-                }
               }
-            ],
-    namespace: 'example-namespace',
-    usage: {readUnits: 1}
-  }
-  ```
+            }
+          ],
+  namespace: 'example-namespace',
+  usage: {readUnits: 1}
+}
+```
 
-  ```java Java theme={null}
-  class QueryResponseWithUnsignedIndices {
-      matches: [ScoredVectorWithUnsignedIndices {
-          score: 10.34375
-          id: vec2
-          values: []
-          metadata: fields {
-            key: "category"
-            value {
-              string_value: "technology"
-            }
+```java Java theme={null}
+class QueryResponseWithUnsignedIndices {
+    matches: [ScoredVectorWithUnsignedIndices {
+        score: 10.34375
+        id: vec2
+        values: []
+        metadata: fields {
+          key: "category"
+          value {
+            string_value: "technology"
           }
-          fields {
-            key: "chunk_text"
-            value {
-              string_value: "Analysts suggest that AAPL\'\\\'\'s upcoming Q4 product launch event might solidify its position in the premium smartphone market."
-            }
+        }
+        fields {
+          key: "chunk_text"
+          value {
+            string_value: "Analysts suggest that AAPL\'\\\'\'s upcoming Q4 product launch event might solidify its position in the premium smartphone market."
           }
-          fields {
-            key: "quarter"
-            value {
-              string_value: "Q4"
-            }
+        }
+        fields {
+          key: "quarter"
+          value {
+            string_value: "Q4"
           }
-          
-          sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-              indicesWithUnsigned32Int: []
-              values: []
+        }
+        
+        sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
+            indicesWithUnsigned32Int: []
+            values: []
+        }
+    }, ScoredVectorWithUnsignedIndices {
+        score: 5.8638916
+        id: vec3
+        values: []
+        metadata: fields {
+          key: "category"
+          value {
+            string_value: "technology"
           }
-      }, ScoredVectorWithUnsignedIndices {
-          score: 5.8638916
-          id: vec3
-          values: []
-          metadata: fields {
-            key: "category"
-            value {
-              string_value: "technology"
-            }
+        }
+        fields {
+          key: "chunk_text"
+          value {
+            string_value: "AAPL\'\\\'\'s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production"
           }
-          fields {
-            key: "chunk_text"
-            value {
-              string_value: "AAPL\'\\\'\'s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production"
-            }
+        }
+        fields {
+          key: "quarter"
+          value {
+            string_value: "Q3"
           }
-          fields {
-            key: "quarter"
-            value {
-              string_value: "Q3"
-            }
+        }
+        
+        sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
+            indicesWithUnsigned32Int: []
+            values: []
+        }
+    }, ScoredVectorWithUnsignedIndices {
+        score: 5.3671875
+        id: vec1
+        values: []
+        metadata: fields {
+          key: "category"
+          value {
+            string_value: "technology"
           }
-          
-          sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-              indicesWithUnsigned32Int: []
-              values: []
+        }
+        fields {
+          key: "chunk_text"
+          value {
+            string_value: "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones."
           }
-      }, ScoredVectorWithUnsignedIndices {
-          score: 5.3671875
-          id: vec1
-          values: []
-          metadata: fields {
-            key: "category"
-            value {
-              string_value: "technology"
-            }
+        }
+        fields {
+          key: "quarter"
+          value {
+            string_value: "Q3"
           }
-          fields {
-            key: "chunk_text"
-            value {
-              string_value: "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones."
-            }
-          }
-          fields {
-            key: "quarter"
-            value {
-              string_value: "Q3"
-            }
-          }
-          
-          sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-              indicesWithUnsigned32Int: []
-              values: []
-          }
-      }]
-      namespace: example-namespace
-      usage: read_units: 1
+        }
+        
+        sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
+            indicesWithUnsigned32Int: []
+            values: []
+        }
+    }]
+    namespace: example-namespace
+    usage: read_units: 1
 
-  }
-  ```
+}
+```
 
-  ```go Go theme={null}
-  {
-    "matches": [
-      {
-        "vector": {
-          "id": "vec2",
-          "metadata": {
-            "category": "technology",
-            "quarter": "Q4",
-            "chunk_text": "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market."
-          }
-        },
-        "score": 10.904296
-      },
-      {
-        "vector": {
-          "id": "vec3",
-          "metadata": {
-            "category": "technology",
-            "quarter": "Q3",
-            "chunk_text": "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production"
-          }
-        },
-        "score": 6.4801025
-      },
-      {
-        "vector": {
-          "id": "vec1",
-          "metadata": {
-            "category": "technology",
-            "quarter": "Q3",
-            "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones"
-          }
-        },
-        "score": 5.3671875
-      }
-    ],
-    "usage": {
-      "read_units": 1
-    },
-    "namespace": "example-namespace"
-  }
-  ```
-
-  ```json curl theme={null}
-  {
-    "results": [],
-    "matches": [
-      {
+```go Go theme={null}
+{
+  "matches": [
+    {
+      "vector": {
         "id": "vec2",
-        "score": 10.9042969,
-        "values": [],
         "metadata": {
-          "chunk_text": "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
           "category": "technology",
-          "quarter": "Q4"
+          "quarter": "Q4",
+          "chunk_text": "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market."
         }
       },
-      {
+      "score": 10.904296
+    },
+    {
+      "vector": {
         "id": "vec3",
-        "score": 6.48010254,
-        "values": [],
         "metadata": {
-          "chunk_text": "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+          "category": "technology",
+          "quarter": "Q3",
+          "chunk_text": "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production"
+        }
+      },
+      "score": 6.4801025
+    },
+    {
+      "vector": {
+        "id": "vec1",
+        "metadata": {
+          "category": "technology",
+          "quarter": "Q3",
+          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones"
+        }
+      },
+      "score": 5.3671875
+    }
+  ],
+  "usage": {
+    "read_units": 1
+  },
+  "namespace": "example-namespace"
+}
+```
+
+```json curl theme={null}
+{
+  "results": [],
+  "matches": [
+    {
+      "id": "vec2",
+      "score": 10.9042969,
+      "values": [],
+      "metadata": {
+        "chunk_text": "Analysts suggest that AAPL'''s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
+        "category": "technology",
+        "quarter": "Q4"
+      }
+    },
+    {
+      "id": "vec3",
+      "score": 6.48010254,
+      "values": [],
+      "metadata": {
+        "chunk_text": "AAPL'''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
+        "category": "technology",
+        "quarter": "Q3"
+      }
+    },
+    {
+      "id": "vec1",
+      "score": 5.3671875,
+      "values": [],
+      "metadata": {
+          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
           "category": "technology",
           "quarter": "Q3"
-        }
-      },
-      {
-        "id": "vec1",
-        "score": 5.3671875,
-        "values": [],
-        "metadata": {
-            "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-            "category": "technology",
-            "quarter": "Q3"
-        }
       }
-    ],
-    "namespace": "example-namespace",
-    "usage": {
-      "readUnits": 1
     }
+  ],
+  "namespace": "example-namespace",
+  "usage": {
+    "readUnits": 1
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Search with a record ID
 
@@ -775,144 +767,142 @@ When you search with a record ID, Pinecone uses the sparse vector associated wit
 * `include_values`: Whether to include the vector values of the matching records in the response. Defaults to `false`.
 * `include_metadata`: Whether to include the metadata of the matching records in the response. Defaults to `false`.
 
-<Note>
-  When querying with `top_k` over 1000, for optimal performance set `include_values=false` and `include_metadata=false` to return only IDs and scores.
-
-  Since vectors values are retrieved from object storage, include them in your query results only when you need them (especially with higher `top_k` values). For details, see [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed).
-</Note>
+> [!NOTE]
+>
+> When querying with `top_k` over 1000, for optimal performance set `include_values=false` and `include_metadata=false` to return only IDs and scores.
+>
+> Since vectors values are retrieved from object storage, include them in your query results only when you need them (especially with higher `top_k` values). For details, see [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed).
 
 For example, the following code uses an ID to search for the 3 records in the `example-namespace` namespace that best match the sparse vector in the record:
 
-<CodeGroup>
-  ```Python Python theme={null}
-  from pinecone.grpc import PineconeGRPC as Pinecone
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
 
-  pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # To get the unique host for an index, 
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  index = pc.Index(host="INDEX_HOST")
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
 
-  index.query(
-      namespace="example-namespace",
-      id="rec2", 
-      top_k=3,
-      include_metadata=True,
-      include_values=False
-  )
-  ```
+index.query(
+    namespace="example-namespace",
+    id="rec2", 
+    top_k=3,
+    include_metadata=True,
+    include_values=False
+)
+```
 
-  ```JavaScript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
 
-  const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pc.index("INDEX_NAME", "INDEX_HOST")
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
-  const queryResponse = await index.namespace('example-namespace').query({
-      id: 'rec2',
-      topK: 3,
-      includeValues: false,
-      includeMetadata: true,
-  });
-  ```
+const queryResponse = await index.namespace('example-namespace').query({
+    id: 'rec2',
+    topK: 3,
+    includeValues: false,
+    includeMetadata: true,
+});
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Index;
-  import io.pinecone.configs.PineconeConfig;
-  import io.pinecone.configs.PineconeConnection;
-  import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
+```java Java theme={null}
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
 
-  public class QueryExample {
-      public static void main(String[] args) {
-          PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-          // To get the unique host for an index, 
-          // see https://docs.pinecone.io/guides/manage-data/target-an-index
-          config.setHost("INDEX_HOST");
-          PineconeConnection connection = new PineconeConnection(config);
-          Index index = new Index(connection, "INDEX_NAME");
-          QueryResponseWithUnsignedIndices queryRespone = index.queryByVectorId(3, "rec2", "example-namespace", null, false, true);
-          System.out.println(queryResponse);
-      }
-  }
-  ```
+public class QueryExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(connection, "INDEX_NAME");
+        QueryResponseWithUnsignedIndices queryRespone = index.queryByVectorId(3, "rec2", "example-namespace", null, false, true);
+        System.out.println(queryResponse);
+    }
+}
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-      "context"
-      "encoding/json"
-      "fmt"
-      "log"
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
 
-      "github.com/pinecone-io/go-pinecone/v4/pinecone"
-  )
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-  func prettifyStruct(obj interface{}) string {
-  	bytes, _ := json.MarshalIndent(obj, "", "  ")
-  	return string(bytes)
-  }
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
 
-  func main() {
-      ctx := context.Background()
+func main() {
+    ctx := context.Background()
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: "YOUR_API_KEY",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-    	}
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
 
-      vectorId := "rec2"
-      res, err := idxConnection.QueryByVectorId(ctx, &pinecone.QueryByVectorIdRequest{
-          VectorId:      vectorId,
-          TopK:          3,
-          IncludeValues: false,
-          IncludeMetadata: true,
-      })
-      if err != nil {
-          log.Fatalf("Error encountered when querying by vector ID `%v`: %v", vectorId, err)
-      } else {
-          fmt.Printf(prettifyStruct(res.Matches))
-      }
-  }
-  ```
+    vectorId := "rec2"
+    res, err := idxConnection.QueryByVectorId(ctx, &pinecone.QueryByVectorIdRequest{
+        VectorId:      vectorId,
+        TopK:          3,
+        IncludeValues: false,
+        IncludeMetadata: true,
+    })
+    if err != nil {
+        log.Fatalf("Error encountered when querying by vector ID `%v`: %v", vectorId, err)
+    } else {
+        fmt.Printf(prettifyStruct(res.Matches))
+    }
+}
+```
 
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/query" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "id": "rec2",
-          "namespace": "example-namespace",
-          "topK": 3,
-          "includeMetadata": true,
-          "includeValues": false
-      }'
-  ```
-</CodeGroup>
+curl "https://$INDEX_HOST/query" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "id": "rec2",
+        "namespace": "example-namespace",
+        "topK": 3,
+        "includeMetadata": true,
+        "includeValues": false
+    }'
+```
 
 ## Filter by required terms
 
-<Note>
-  This feature is in [public preview](/release-notes/feature-availability) and is available only on the `2025-10` version of the API. See [limitations](#limitations) for details.
-</Note>
+> [!NOTE]
+>
+> This feature is in [public preview](/release-notes/feature-availability) and is available only on the `2025-10` version of the API. See [limitations](#limitations) for details.
 
 When [searching with text](#search-with-text), you can specify a list of terms that must be present in each sparse-vector search result. This is especially useful for:
 

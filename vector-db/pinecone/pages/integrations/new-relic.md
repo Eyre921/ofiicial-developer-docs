@@ -10,4 +10,4 @@ New Relic is an observability platform that includes application performance mon
 
 Integrate your Pinecone application with New Relic to monitor and analyze its performance. The New Relic for Pinecone (Prometheus) quickstart contains one dashboard with interactive visualizations that let you explore your data, understand context, and resolve problems. It also includes three alerts that detect changes in key performance metrics. You can connect these alerts to tools such as Slack or PagerDuty, and New Relic notifies you when something needs your attention.
 
-<PrimarySecondaryCTA />
+[Get started](https://newrelic.com/instant-observability/pinecone-prometheus)

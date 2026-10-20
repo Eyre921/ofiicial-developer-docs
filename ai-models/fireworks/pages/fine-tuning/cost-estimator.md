@@ -6,38 +6,46 @@ path: fine-tuning/cost-estimator
 
 Estimate Managed Training, compare Fireworks Serverless with Dedicated, or compare Fireworks Dedicated with Tinker
 
-<Info>
-  <ul>
-    <li>
-      Managed and Serverless are [priced per
-      token](https://fireworks.ai/pricing#training-pricing).
-    </li>
+> [!NOTE]
+>
+> <ul>
+>   <li>
+>     Managed and Serverless are [priced per
+>     token](https://fireworks.ai/pricing#training-pricing).
+>   </li>
+>
+>   <li>
+>     Dedicated is [priced per allocated GPU
+>     hour](https://fireworks.ai/pricing#on-demand-pricing).
+>   </li>
+> </ul>
 
-    <li>
-      Dedicated is [priced per allocated GPU
-      hour](https://fireworks.ai/pricing#on-demand-pricing).
-    </li>
-  </ul>
-</Info>
+Training cost estimator
 
-<TrainingCostEstimator />
+## Configure once. Compare every supported path.
 
-<Warning>
-  <ul>
-    <li>Planning estimates are not quotes.</li>
+Keep the method, model, workload, and assumptions visible while
+estimating Managed and comparing Fireworks Serverless vs Dedicated or
+Fireworks Dedicated vs Tinker.
 
-    <li>
-      Managed estimates can be low when rendered-token inputs omit multi-turn
-      unrolling. Dedicated compute floors can be low when sequences pack poorly.
-    </li>
+Training method
 
-    <li>
-      Dedicated shows a saturated compute floor. Allocated GPU time spent
-      initializing the model, writing checkpoints, or idle can make real jobs
-      cost more. Queue wait and pre-allocation provisioning are not billed.
-    </li>
-  </ul>
-</Warning>
+> [!WARNING]
+>
+> <ul>
+>   <li>Planning estimates are not quotes.</li>
+>
+>   <li>
+>     Managed estimates can be low when rendered-token inputs omit multi-turn
+>     unrolling. Dedicated compute floors can be low when sequences pack poorly.
+>   </li>
+>
+>   <li>
+>     Dedicated shows a saturated compute floor. Allocated GPU time spent
+>     initializing the model, writing checkpoints, or idle can make real jobs
+>     cost more. Queue wait and pre-allocation provisioning are not billed.
+>   </li>
+> </ul>
 
 ## Prepare inputs with the Training Skill
 

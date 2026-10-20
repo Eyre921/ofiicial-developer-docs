@@ -8,9 +8,9 @@ Enable Pinecone audit logging to an Amazon S3 bucket to track user, service acco
 
 Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/core-concepts/architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 as a destination for audit logs.
 
-<Note>
-  To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
-</Note>
+> [!NOTE]
+>
+> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
 
 ## Enable audit logs
 
@@ -18,9 +18,9 @@ Audit logs provide a detailed record of user, service account, and API actions t
 2. Go to [**Settings > Audit logs**](https://app.pinecone.io/organizations/-/settings/logging) in the Pinecone console.
 3. Enter the **Role ARN** of the IAM role you created.
 4. Enter the name of the Amazon S3 bucket you created.
-   <Note>
-     To write audit logs to a specific subdirectory, enter `bucket-name/subdirectory-path` in the bucket name field, for example, `my-bucket/pinecone-logs`. Make sure your [IAM policy is configured for subdirectory access](/guides/operations/integrations/integrate-with-amazon-s3#targeting-a-subdirectory-optional).
-   </Note>
+   > [!NOTE]
+   >
+   > To write audit logs to a specific subdirectory, enter `bucket-name/subdirectory-path` in the bucket name field, for example, `my-bucket/pinecone-logs`. Make sure your [IAM policy is configured for subdirectory access](/guides/operations/integrations/integrate-with-amazon-s3#targeting-a-subdirectory-optional).
 5. Click **Enable audit logging**.
 
 Once you enable audit logs, Pinecone starts writing logs to the S3 bucket. In your bucket, you'll also see a file named `audit-log-access-test`, a test file that Pinecone writes to verify that it has the necessary permissions to write logs to the bucket.
@@ -31,9 +31,9 @@ Audit logs are written to an Amazon S3 bucket you control, so you can enforce wr
 
 Enable [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) in compliance mode with a retention period. Object Lock requires bucket versioning and, in general, must be enabled when the bucket is created. Plan for it when you set up the [IAM policy and S3 bucket](/guides/operations/integrations/integrate-with-amazon-s3) above. Set the retention period to at least your required audit-log retention. Pinecone writes each log batch as a new, uniquely named file and doesn't modify or delete previously written logs.
 
-<Warning>
-  Compliance mode is intentionally irreversible: until a retention period expires, objects cannot be deleted and the period cannot be shortened, not even by the root account. Logs already written to the bucket are therefore retained for the full period even if you later disable or remove the audit log integration.
-</Warning>
+> [!WARNING]
+>
+> Compliance mode is intentionally irreversible: until a retention period expires, objects cannot be deleted and the period cannot be shortened, not even by the root account. Logs already written to the bucket are therefore retained for the full period even if you later disable or remove the audit log integration.
 
 ## View audit logs
 

@@ -4,8 +4,6 @@ source: https://modelcontextprotocol.io/specification/2026-07-28/basic/transport
 path: specification/2026-07-28/basic/transports/index
 ---
 
-<div />
-
 This page defines what a transport must provide to carry MCP messages, the
 standard transport bindings, and the requirements for defining new ones.
 

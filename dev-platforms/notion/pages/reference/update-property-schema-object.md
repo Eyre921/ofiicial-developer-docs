@@ -6,9 +6,9 @@ path: reference/update-property-schema-object
 
 Update property schemas with API versions through 2022-06-28.
 
-<Warning>
-  This page applies to API versions through `2022-06-28`. For `2025-09-03` and later, use [Update data source properties](/reference/update-data-source-properties). See the [upgrade guide](/guides/get-started/upgrade-guide-2025-09-03) for the database and data source split.
-</Warning>
+> [!WARNING]
+>
+> This page applies to API versions through `2022-06-28`. For `2025-09-03` and later, use [Update data source properties](/reference/update-data-source-properties). See the [upgrade guide](/guides/get-started/upgrade-guide-2025-09-03) for the database and data source split.
 
 [Retrieve the legacy database](/reference/retrieve-a-database) to get its property IDs. Send the operation’s JSON body to [Update a database](/reference/update-a-database), at `PATCH /v1/databases/{database_id}`. Your connection needs access and [update content capabilities](/reference/capabilities).
 
@@ -33,45 +33,41 @@ See [Property schemas](/reference/property-object) for every type and its settin
 
 Set the property entry to `null`. This removes the column for all pages in the data source. To clear a value on one page instead, use [Update page](/reference/page-property-values#writing-and-clearing-values).
 
-<CodeGroup>
-  ```json By ID theme={null}
-  {
-    "properties": {
-      "oldP": null
-    }
+```json By ID theme={null}
+{
+  "properties": {
+    "oldP": null
   }
-  ```
+}
+```
 
-  ```json By name theme={null}
-  {
-    "properties": {
-      "Old estimate": null
-    }
+```json By name theme={null}
+{
+  "properties": {
+    "Old estimate": null
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Rename a property
 
 Set `name` on the existing entry. Its ID stays the same. Prefer the ID if another user might rename the property while your connection is running.
 
-<CodeGroup>
-  ```json By ID theme={null}
-  {
-    "properties": {
-      "estM": { "name": "Hours" }
-    }
+```json By ID theme={null}
+{
+  "properties": {
+    "estM": { "name": "Hours" }
   }
-  ```
+}
+```
 
-  ```json By name theme={null}
-  {
-    "properties": {
-      "Estimate": { "name": "Hours" }
-    }
+```json By name theme={null}
+{
+  "properties": {
+    "Estimate": { "name": "Hours" }
   }
-  ```
-</CodeGroup>
+}
+```
 
 To update a property’s `description`, include it beside the type’s settings. Omit `description` to keep the current one, or send `null` to clear it.
 
@@ -87,9 +83,9 @@ Supply the new type’s settings under the existing name or ID.
 }
 ```
 
-<Warning>
-  Changing a type can make existing values unreadable in the new type. Check the change on a test data source first. The Name property (`title`) cannot be removed or converted. Other properties cannot become `title`. Place properties cannot be converted to or from another type.
-</Warning>
+> [!WARNING]
+>
+> Changing a type can make existing values unreadable in the new type. Check the change on a test data source first. The Name property (`title`) cannot be removed or converted. Other properties cannot become `title`. Place properties cannot be converted to or from another type.
 
 ### Select configuration updates
 

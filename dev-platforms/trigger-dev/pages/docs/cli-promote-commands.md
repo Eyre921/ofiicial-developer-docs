@@ -39,7 +39,12 @@ npx trigger.dev@latest promote <version>
 </ParamField>
 
 <ParamField type="-e, --env <env>">
-  The environment to promote in: `prod`, `staging` or `preview`. Defaults to `prod`.
+  The environment to promote in: `prod`, `staging` or `preview`. Defaults to the environment of the
+  API key in `TRIGGER_ACCESS_TOKEN`, otherwise `prod`.
+</ParamField>
+
+<ParamField type="--prod">
+  Promote in the `prod` environment. Shorthand for `--env prod`.
 </ParamField>
 
 <ParamField type="-b, --branch <branch>">

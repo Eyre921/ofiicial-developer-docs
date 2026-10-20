@@ -17,23 +17,21 @@ instead be included directly in the content field itself.
 We recommend using the [Fireworks Python SDK](/tools-sdks/python-sdk) to work with
 reasoning, as it supports Fireworks-specific parameters and response fields.
 
-<Note>
-  The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-</Note>
+> [!NOTE]
+>
+> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
 
-<CodeGroup>
-  ```bash pip theme={null}
-  pip install --pre fireworks-ai
-  ```
+```bash pip theme={null}
+pip install --pre fireworks-ai
+```
 
-  ```bash poetry theme={null}
-  poetry add --pre fireworks-ai
-  ```
+```bash poetry theme={null}
+poetry add --pre fireworks-ai
+```
 
-  ```bash uv theme={null}
-  uv add --pre fireworks-ai
-  ```
-</CodeGroup>
+```bash uv theme={null}
+uv add --pre fireworks-ai
+```
 
 ### Basic usage
 
@@ -108,9 +106,9 @@ completion = client.chat.completions.create(
 
 See the [thinking](/api-reference/post-chatcompletions) parameter for more details.
 
-<Warning>
-  You cannot specify both `thinking` and `reasoning_effort` in the same request. If both are provided, a validation error will be raised.
-</Warning>
+> [!WARNING]
+>
+> You cannot specify both `thinking` and `reasoning_effort` in the same request. If both are provided, a validation error will be raised.
 
 ### Streaming with reasoning content
 
@@ -153,9 +151,7 @@ When building multi-turn tool-calling agents with models that support
 interleaved thinking, you **MUST** include the `reasoning_content` from previous
 assistant turns in subsequent requests. This enables the model to think between tool calls and after receiving tool results, allowing for more complex, step-by-step reasoning.
 
-<Frame>
-  <img alt="Diagram showing interleaved thinking where reasoning is preserved within Turn 1 across multiple steps but starts fresh in Turn 2" />
-</Frame>
+![Diagram showing interleaved thinking where reasoning is preserved within Turn 1 across multiple steps but starts fresh in Turn 2](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/interleaved-thinking.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=f7755029148537652af1904607fb8c48)
 
 You can preserve reasoning context in two ways:
 
@@ -164,164 +160,162 @@ You can preserve reasoning context in two ways:
 2. **Manually include `reasoning_content`** - When constructing messages as
    dictionaries, explicitly add the `reasoning_content` field
 
-<Note>
-  Interleaved thinking is triggered when the last message in your API request
-  has `"role": "tool"`, enabling the model to use its previous reasoning process
-  when responding to the tool result. If a model does not support interleaved
-  thinking, it simply ignores the extra reasoning context so this pattern is
-  safe to use broadly.
-</Note>
+> [!NOTE]
+>
+> Interleaved thinking is triggered when the last message in your API request
+> has `"role": "tool"`, enabling the model to use its previous reasoning process
+> when responding to the tool result. If a model does not support interleaved
+> thinking, it simply ignores the extra reasoning context so this pattern is
+> safe to use broadly.
 
-<Note>
-  **Trained models:** whether historical `reasoning_content` was visible during
-  training depends on the base model and the job's thinking-history mode.
-  Interleaved removes thinking across user-turn boundaries while retaining the
-  assistant/tool trajectory within the current turn; Preserved retains thinking
-  across user turns. Datum unrolling is model-specific. For reliable results,
-  serve a trained model consistently with how it was trained; see
-  [thinking history in training](/fine-tuning/thinking-history)
-  for per-model behavior.
-</Note>
+> [!NOTE]
+>
+> **Trained models:** whether historical `reasoning_content` was visible during
+> training depends on the base model and the job's thinking-history mode.
+> Interleaved removes thinking across user-turn boundaries while retaining the
+> assistant/tool trajectory within the current turn; Preserved retains thinking
+> across user turns. Datum unrolling is model-specific. For reliable results,
+> serve a trained model consistently with how it was trained; see
+> [thinking history in training](/fine-tuning/thinking-history)
+> for per-model behavior.
 
 Here's how to preserve reasoning context using both approaches:
 
-<Tabs>
-  <Tab title="Pass Message object">
-    ```python theme={null}
-    # First turn: Get a response with reasoning_content
-    first_response = client.chat.completions.create(
-        messages=[{"role": "user", "content": "What is 15 + 27?"}],
-        model="accounts/fireworks/models/<reasoning-model>",
-        tools=tools,
-    )
+**Pass Message object**
 
-    # The assistant message contains reasoning_content, content, and tool_calls
-    assistant_message = first_response.choices[0].message
-    # assistant_message.reasoning_content -> "The user is asking for addition..."
-    # assistant_message.tool_calls -> [ToolCall(id="...", function=...)]
+```python theme={null}
+# First turn: Get a response with reasoning_content
+first_response = client.chat.completions.create(
+    messages=[{"role": "user", "content": "What is 15 + 27?"}],
+    model="accounts/fireworks/models/<reasoning-model>",
+    tools=tools,
+)
 
-    # Second turn: Pass the Message object directly
-    # This automatically includes reasoning_content alongside the message
-    second_response = client.chat.completions.create(
-        messages=[
-            {"role": "user", "content": "What is 15 + 27?"},
-            assistant_message,  # Pass the complete Message object
-            {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
-        ],
-        model="accounts/fireworks/models/<reasoning-model>",
-        tools=tools,
-    )
-    ```
-  </Tab>
+# The assistant message contains reasoning_content, content, and tool_calls
+assistant_message = first_response.choices[0].message
+# assistant_message.reasoning_content -> "The user is asking for addition..."
+# assistant_message.tool_calls -> [ToolCall(id="...", function=...)]
 
-  <Tab title="Manual dictionary">
-    ```python theme={null}
-    # First turn: Get a response with reasoning_content
-    first_response = client.chat.completions.create(
-        messages=[{"role": "user", "content": "What is 15 + 27?"}],
-        model="accounts/fireworks/models/<reasoning-model>",
-        tools=tools,
-    )
+# Second turn: Pass the Message object directly
+# This automatically includes reasoning_content alongside the message
+second_response = client.chat.completions.create(
+    messages=[
+        {"role": "user", "content": "What is 15 + 27?"},
+        assistant_message,  # Pass the complete Message object
+        {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
+    ],
+    model="accounts/fireworks/models/<reasoning-model>",
+    tools=tools,
+)
+```
 
-    assistant_message = first_response.choices[0].message
+**Manual dictionary**
 
-    # Second turn: Manually construct the assistant message dict
-    # Include reasoning_content explicitly alongside role, content, and tool_calls
-    second_response = client.chat.completions.create(
-        messages=[
-            {"role": "user", "content": "What is 15 + 27?"},
-            {
-                "role": "assistant",
-                "content": assistant_message.content,
-                "reasoning_content": assistant_message.reasoning_content,  # Include reasoning
-                "tool_calls": assistant_message.tool_calls,
-            },
-            {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
-        ],
-        model="accounts/fireworks/models/<reasoning-model>",
-        tools=tools,
-    )
-    ```
-  </Tab>
+```python theme={null}
+# First turn: Get a response with reasoning_content
+first_response = client.chat.completions.create(
+    messages=[{"role": "user", "content": "What is 15 + 27?"}],
+    model="accounts/fireworks/models/<reasoning-model>",
+    tools=tools,
+)
 
-  <Tab title="Anthropic SDK">
-    The Anthropic SDK uses `thinking` content blocks instead of `reasoning_content`. Pass the full `content` array (including thinking blocks) back as the assistant message, and send tool results as `tool_result` content blocks:
+assistant_message = first_response.choices[0].message
 
-    ```python theme={null}
-    import anthropic
-
-    client = anthropic.Anthropic(
-        api_key=os.environ.get("FIREWORKS_API_KEY"),
-        base_url="https://api.fireworks.ai/inference",
-    )
-
-    tools = [
+# Second turn: Manually construct the assistant message dict
+# Include reasoning_content explicitly alongside role, content, and tool_calls
+second_response = client.chat.completions.create(
+    messages=[
+        {"role": "user", "content": "What is 15 + 27?"},
         {
-            "name": "calculator",
-            "description": "Perform basic arithmetic operations",
-            "input_schema": {
-                "type": "object",
-                "properties": {
-                    "operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]},
-                    "a": {"type": "number"},
-                    "b": {"type": "number"},
-                },
-                "required": ["operation", "a", "b"],
+            "role": "assistant",
+            "content": assistant_message.content,
+            "reasoning_content": assistant_message.reasoning_content,  # Include reasoning
+            "tool_calls": assistant_message.tool_calls,
+        },
+        {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
+    ],
+    model="accounts/fireworks/models/<reasoning-model>",
+    tools=tools,
+)
+```
+
+**Anthropic SDK**
+
+The Anthropic SDK uses `thinking` content blocks instead of `reasoning_content`. Pass the full `content` array (including thinking blocks) back as the assistant message, and send tool results as `tool_result` content blocks:
+
+```python theme={null}
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference",
+)
+
+tools = [
+    {
+        "name": "calculator",
+        "description": "Perform basic arithmetic operations",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]},
+                "a": {"type": "number"},
+                "b": {"type": "number"},
             },
-        }
-    ]
+            "required": ["operation", "a", "b"],
+        },
+    }
+]
 
-    # First turn: thinking + tool_use
-    first_response = client.messages.create(
-        model="accounts/fireworks/models/<reasoning-model>",
-        max_tokens=16000,
-        thinking={"type": "enabled", "budget_tokens": 4096},
-        messages=[{"role": "user", "content": "What is 15 + 27? Use the calculator."}],
-        tools=tools,
-    )
+# First turn: thinking + tool_use
+first_response = client.messages.create(
+    model="accounts/fireworks/models/<reasoning-model>",
+    max_tokens=16000,
+    thinking={"type": "enabled", "budget_tokens": 4096},
+    messages=[{"role": "user", "content": "What is 15 + 27? Use the calculator."}],
+    tools=tools,
+)
 
-    # Response content includes [thinking_block, tool_use_block]
-    for block in first_response.content:
-        if block.type == "thinking":
-            print(f"Thinking: {block.thinking[:100]}...")
-        elif block.type == "tool_use":
-            print(f"Tool: {block.name}({block.input})")
+# Response content includes [thinking_block, tool_use_block]
+for block in first_response.content:
+    if block.type == "thinking":
+        print(f"Thinking: {block.thinking[:100]}...")
+    elif block.type == "tool_use":
+        print(f"Tool: {block.name}({block.input})")
 
-    tool_use = next(b for b in first_response.content if b.type == "tool_use")
+tool_use = next(b for b in first_response.content if b.type == "tool_use")
 
-    # Second turn: pass back the full content array (with thinking blocks) + tool result
-    second_response = client.messages.create(
-        model="accounts/fireworks/models/<reasoning-model>",
-        max_tokens=16000,
-        thinking={"type": "enabled", "budget_tokens": 4096},
-        messages=[
-            {"role": "user", "content": "What is 15 + 27? Use the calculator."},
-            {"role": "assistant", "content": first_response.content},
-            {
-                "role": "user",
-                "content": [
-                    {"type": "tool_result", "tool_use_id": tool_use.id, "content": "42"}
-                ],
-            },
-        ],
-        tools=tools,
-    )
+# Second turn: pass back the full content array (with thinking blocks) + tool result
+second_response = client.messages.create(
+    model="accounts/fireworks/models/<reasoning-model>",
+    max_tokens=16000,
+    thinking={"type": "enabled", "budget_tokens": 4096},
+    messages=[
+        {"role": "user", "content": "What is 15 + 27? Use the calculator."},
+        {"role": "assistant", "content": first_response.content},
+        {
+            "role": "user",
+            "content": [
+                {"type": "tool_result", "tool_use_id": tool_use.id, "content": "42"}
+            ],
+        },
+    ],
+    tools=tools,
+)
 
-    # The model thinks again (interleaved) and produces a text answer
-    for block in second_response.content:
-        if block.type == "thinking":
-            print(f"Thinking: {block.thinking[:100]}...")
-        elif block.type == "text":
-            print(f"Answer: {block.text}")
-    ```
-  </Tab>
-</Tabs>
+# The model thinks again (interleaved) and produces a text answer
+for block in second_response.content:
+    if block.type == "thinking":
+        print(f"Thinking: {block.thinking[:100]}...")
+    elif block.type == "text":
+        print(f"Answer: {block.text}")
+```
 
-<Warning>
-  If you construct the assistant message manually as a dictionary but omit the
-  `reasoning_content` field, the model will not have access to its previous
-  reasoning process.
-</Warning>
+> [!WARNING]
+>
+> If you construct the assistant message manually as a dictionary but omit the
+> `reasoning_content` field, the model will not have access to its previous
+> reasoning process.
 
 The following script demonstrates this behavior and validates that the
 `reasoning_content` from the first turn is included in subsequent requests:
@@ -457,142 +451,138 @@ print()
 
 Below is the expected output:
 
-<CodeGroup>
-  ```txt Kimi-K2-Thinking (output) expandable theme={null}
-  ════════════════════════════════════════════════════════════
-    FIRST TURN
-  ════════════════════════════════════════════════════════════
-    📝 Content: (none)
-    💭 Reasoning:
-      │ The user is asking for a simple addition calculation: 15 + 27.
-      │ 
-      │ I should use the calculator function with:
-      │ - operation: "add"
-      │ - a: 15
-      │ - b: 27
+```txt Kimi-K2-Thinking (output) expandable theme={null}
+════════════════════════════════════════════════════════════
+  FIRST TURN
+════════════════════════════════════════════════════════════
+  📝 Content: (none)
+  💭 Reasoning:
+    │ The user is asking for a simple addition calculation: 15 + 27.
+    │ 
+    │ I should use the calculator function with:
+    │ - operation: "add"
+    │ - a: 15
+    │ - b: 27
 
-    🔧 Tool Calls (1):
-      [1] id=functions.calculator:0
-          function=calculator
-          arguments={"operation": "add", "a": 15, "b": 27}
+  🔧 Tool Calls (1):
+    [1] id=functions.calculator:0
+        function=calculator
+        arguments={"operation": "add", "a": 15, "b": 27}
 
-    ✓ First response has reasoning_content
+  ✓ First response has reasoning_content
 
-  ════════════════════════════════════════════════════════════
-    SECOND TURN
-  ════════════════════════════════════════════════════════════
-    📝 Answer: 15 + 27 = 42
+════════════════════════════════════════════════════════════
+  SECOND TURN
+════════════════════════════════════════════════════════════
+  📝 Answer: 15 + 27 = 42
 
-  ────────────────────────────────────────────────────────────
-    RAW PROMPT SENT TO MODEL
-  ────────────────────────────────────────────────────────────
-  <|im_system|>tool_declare<|im_middle|>[{"function":{"description":"Perform basic arithmetic operations","name":"calculator","parameters":{"properties":{"a":{"type":"number"},"b":{"type":"number"},"operation":{"enum":["add","subtract","multiply","divide"],"type":"string"}},"required":["operation","a","b"],"type":"object"}},"type":"function"}]<|im_end|><|im_user|>user<|im_middle|>What is 15 + 27?<|im_end|><|im_assistant|>assistant<|im_middle|><think>The user is asking for a simple addition calculation: 15 + 27.
+────────────────────────────────────────────────────────────
+  RAW PROMPT SENT TO MODEL
+────────────────────────────────────────────────────────────
+<|im_system|>tool_declare<|im_middle|>[{"function":{"description":"Perform basic arithmetic operations","name":"calculator","parameters":{"properties":{"a":{"type":"number"},"b":{"type":"number"},"operation":{"enum":["add","subtract","multiply","divide"],"type":"string"}},"required":["operation","a","b"],"type":"object"}},"type":"function"}]<|im_end|><|im_user|>user<|im_middle|>What is 15 + 27?<|im_end|><|im_assistant|>assistant<|im_middle|><think>The user is asking for a simple addition calculation: 15 + 27.
 
-  I should use the calculator function with:
-  - operation: "add"
-  - a: 15
-  - b: 27</think><|tool_calls_section_begin|><|tool_call_begin|>functions.calculator:0<|tool_call_argument_begin|>{"operation": "add", "a": 15, "b": 27}<|tool_call_end|><|tool_calls_section_end|><|im_end|><|im_system|>tool<|im_middle|>## Return of None
-  42<|im_end|><|im_assistant|>assistant<|im_middle|>
+I should use the calculator function with:
+- operation: "add"
+- a: 15
+- b: 27</think><|tool_calls_section_begin|><|tool_call_begin|>functions.calculator:0<|tool_call_argument_begin|>{"operation": "add", "a": 15, "b": 27}<|tool_call_end|><|tool_calls_section_end|><|im_end|><|im_system|>tool<|im_middle|>## Return of None
+42<|im_end|><|im_assistant|>assistant<|im_middle|>
 
-  ════════════════════════════════════════════════════════════
-    RESULT
-  ════════════════════════════════════════════════════════════
-    ✅ SUCCESS: reasoning_content IS included in subsequent requests!
-  ```
+════════════════════════════════════════════════════════════
+  RESULT
+════════════════════════════════════════════════════════════
+  ✅ SUCCESS: reasoning_content IS included in subsequent requests!
+```
 
-  ```txt Minimax-M2 (output) expandable theme={null}
-  ════════════════════════════════════════════════════════════
-    FIRST TURN
-  ════════════════════════════════════════════════════════════
-    📝 Content: (none)
-    💭 Reasoning:
-      │ 
-      │ Okay, the user is asking a simple arithmetic question: "What is 15 + 27?". This is a basic addition operation. I have a calculator tool available that can perform arithmetic operations. This is the p...
+```txt Minimax-M2 (output) expandable theme={null}
+════════════════════════════════════════════════════════════
+  FIRST TURN
+════════════════════════════════════════════════════════════
+  📝 Content: (none)
+  💭 Reasoning:
+    │ 
+    │ Okay, the user is asking a simple arithmetic question: "What is 15 + 27?". This is a basic addition operation. I have a calculator tool available that can perform arithmetic operations. This is the p...
 
-    🔧 Tool Calls (1):
-      [1] id=chatcmpl-tool-249757d9ac8f4ca9afbdb580ced40ae6
-          function=calculator
-          arguments={"operation": "add", "a": 15, "b": 27}
+  🔧 Tool Calls (1):
+    [1] id=chatcmpl-tool-249757d9ac8f4ca9afbdb580ced40ae6
+        function=calculator
+        arguments={"operation": "add", "a": 15, "b": 27}
 
-    ✓ First response has reasoning_content
+  ✓ First response has reasoning_content
 
-  ════════════════════════════════════════════════════════════
-    SECOND TURN
-  ════════════════════════════════════════════════════════════
-    📝 Answer: 42
+════════════════════════════════════════════════════════════
+  SECOND TURN
+════════════════════════════════════════════════════════════
+  📝 Answer: 42
 
-  ────────────────────────────────────────────────────────────
-    RAW PROMPT SENT TO MODEL
-  ────────────────────────────────────────────────────────────
-  ]~b]system
-  You are a helpful assistant.
+────────────────────────────────────────────────────────────
+  RAW PROMPT SENT TO MODEL
+────────────────────────────────────────────────────────────
+]~b]system
+You are a helpful assistant.
 
-  # Tools
-  You may call one or more tools to assist with the user query.
-  Here are the tools available in JSONSchema format:
+# Tools
+You may call one or more tools to assist with the user query.
+Here are the tools available in JSONSchema format:
 
-  <tools>
-  <tool>{"name": "calculator", "description": "Perform basic arithmetic operations", "parameters": {"type": "object", "properties": {"operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]}, "a": {"type": "number"}, "b": {"type": "number"}}, "required": ["operation", "a", "b"]}}</tool>
-  </tools>
+<tools>
+<tool>{"name": "calculator", "description": "Perform basic arithmetic operations", "parameters": {"type": "object", "properties": {"operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]}, "a": {"type": "number"}, "b": {"type": "number"}}, "required": ["operation", "a", "b"]}}</tool>
+</tools>
 
-  When making tool calls, use XML format to invoke tools and pass parameters:
+When making tool calls, use XML format to invoke tools and pass parameters:
 
-  <minimax:tool_call>
-  <invoke name="tool-name-1">
-  <parameter name="param-key-1">param-value-1</parameter>
-  <parameter name="param-key-2">param-value-2</parameter>
-  ...
-  </invoke>
-  </minimax:tool_call>[e~[
-  ]~b]user
-  What is 15 + 27?[e~[
-  ]~b]ai
-  <think>
+<minimax:tool_call>
+<invoke name="tool-name-1">
+<parameter name="param-key-1">param-value-1</parameter>
+<parameter name="param-key-2">param-value-2</parameter>
+...
+</invoke>
+</minimax:tool_call>[e~[
+]~b]user
+What is 15 + 27?[e~[
+]~b]ai
+<think>
 
-  Okay, the user is asking a simple arithmetic question: "What is 15 + 27?". This is a basic addition operation. I have a calculator tool available that can perform arithmetic operations. This is the perfect tool for this task.
+Okay, the user is asking a simple arithmetic question: "What is 15 + 27?". This is a basic addition operation. I have a calculator tool available that can perform arithmetic operations. This is the perfect tool for this task.
 
-  Looking at the calculator tool parameters, I need to provide:
-  1. The operation: In this case, it would be "add" since we're adding two numbers
-  2. The first number: 15
-  3. The second number: 27
+Looking at the calculator tool parameters, I need to provide:
+1. The operation: In this case, it would be "add" since we're adding two numbers
+2. The first number: 15
+3. The second number: 27
 
-  The calculator tool will handle the actual computation. Addition is one of the most basic arithmetic operations, so I'm confident the calculator tool can handle this correctly. I don't need to do the calculation manually since we have a dedicated tool for this.
+The calculator tool will handle the actual computation. Addition is one of the most basic arithmetic operations, so I'm confident the calculator tool can handle this correctly. I don't need to do the calculation manually since we have a dedicated tool for this.
 
-  The user might be expecting me to simply state the answer, but using the calculator tool will ensure accuracy and follows the guidelines of using available tools when appropriate. The tool will take the two numbers (15 and 27) and add them together.
+The user might be expecting me to simply state the answer, but using the calculator tool will ensure accuracy and follows the guidelines of using available tools when appropriate. The tool will take the two numbers (15 and 27) and add them together.
 
-  So I'll make a tool call to the calculator with the operation "add", a=15, and b=27. The calculator will perform the addition and return the result, which I can then provide to the user as the final answer.
+So I'll make a tool call to the calculator with the operation "add", a=15, and b=27. The calculator will perform the addition and return the result, which I can then provide to the user as the final answer.
 
-  This is a straightforward request that aligns perfectly with the calculator tool's functionality. No additional clarification is needed from the user, and the operation doesn't require any special handling.
+This is a straightforward request that aligns perfectly with the calculator tool's functionality. No additional clarification is needed from the user, and the operation doesn't require any special handling.
 
-  </think>
-
-
-  <minimax:tool_call>
-  <invoke name="calculator">
-  <parameter name="operation">add</parameter>
-  <parameter name="a">15</parameter>
-  <parameter name="b">27</parameter>
-  </invoke>
-  </minimax:tool_call>[e~[
-  ]~b]tool
-  <response>42</response>[e~[
-  ]~b]ai
+</think>
 
 
-  ════════════════════════════════════════════════════════════
-    RESULT
-  ════════════════════════════════════════════════════════════
-    ✅ SUCCESS: reasoning_content IS included in subsequent requests!
-  ```
-</CodeGroup>
+<minimax:tool_call>
+<invoke name="calculator">
+<parameter name="operation">add</parameter>
+<parameter name="a">15</parameter>
+<parameter name="b">27</parameter>
+</invoke>
+</minimax:tool_call>[e~[
+]~b]tool
+<response>42</response>[e~[
+]~b]ai
+
+
+════════════════════════════════════════════════════════════
+  RESULT
+════════════════════════════════════════════════════════════
+  ✅ SUCCESS: reasoning_content IS included in subsequent requests!
+```
 
 ### Preserved thinking
 
 While interleaved thinking preserves reasoning within a single turn (across tool calls), **preserved thinking** extends this concept across multiple user turns. This allows the model to retain reasoning content from previous assistant turns in the conversation context, enabling more coherent multi-turn reasoning.
 
-<Frame>
-  <img alt="Diagram showing preserved thinking where reasoning from Turn 1 is included in the input context for Turn 2" />
-</Frame>
+![Diagram showing preserved thinking where reasoning from Turn 1 is included in the input context for Turn 2](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/preserved-thinking.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=bab229ba94450c52b8b9695310487681)
 
 #### Controlling reasoning history
 
@@ -612,9 +602,9 @@ completion = client.chat.completions.create(
 
 See the [`reasoning_history`](/api-reference/post-chatcompletions) parameter for all accepted values.
 
-<Note>
-  When `reasoning_history` is set to `"preserved"`, the model receives the full reasoning context from all previous turns. This is particularly useful for complex multi-turn conversations where maintaining reasoning continuity is important.
-</Note>
+> [!NOTE]
+>
+> When `reasoning_history` is set to `"preserved"`, the model receives the full reasoning context from all previous turns. This is particularly useful for complex multi-turn conversations where maintaining reasoning continuity is important.
 
 The following script demonstrates preserved thinking across multiple turns and validates that
 `reasoning_content` from all previous turns is included in subsequent requests:

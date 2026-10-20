@@ -10,31 +10,29 @@ The [Resend CLI](https://github.com/resend/resend-cli) is the official command-l
 
 ## Installation
 
-<Tabs>
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    curl -fsSL https://resend.com/install.sh | bash
-    ```
-  </Tab>
+**cURL**
 
-  <Tab title="npm">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli
-    ```
-  </Tab>
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -fsSL https://resend.com/install.sh | bash
+```
 
-  <Tab title="Homebrew">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    brew install resend/cli/resend
-    ```
-  </Tab>
+**npm**
 
-  <Tab title="PowerShell (Windows)">
-    ```powershell theme={"theme":{"light":"github-light","dark":"vesper"}}
-    irm https://resend.com/install.ps1 | iex
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+npm install -g resend-cli
+```
+
+**Homebrew**
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+brew install resend/cli/resend
+```
+
+**PowerShell (Windows)**
+
+```powershell theme={"theme":{"light":"github-light","dark":"vesper"}}
+irm https://resend.com/install.ps1 | iex
+```
 
 ## Authentication
 
@@ -461,11 +459,11 @@ resend webhooks listen \
 | `--forward-to <url>` | No | Forward payloads to a local server (passes original Svix headers) |
 | `--port <port>` | No | Local server port (default: 4318) |
 
-<Info>
-  See the [webhook events documentation](/docs/webhooks/event-types) for the full
-  list of available event types. For agent-specific webhook patterns, see [CLI
-  for AI Agents](/docs/cli-agents#closing-the-loop-with-webhooks).
-</Info>
+> [!NOTE]
+>
+> See the [webhook events documentation](/docs/webhooks/event-types) for the full
+> list of available event types. For agent-specific webhook patterns, see [CLI
+> for AI Agents](/docs/cli-agents#closing-the-loop-with-webhooks).
 
 **Other webhook commands**
 
@@ -476,9 +474,9 @@ resend webhooks update <id>       # Update endpoint URL, events, or status
 resend webhooks delete <id>       # Delete a webhook endpoint
 ```
 
-<Tip>
-  Run `resend <command> --help` for the full list of flags and options on any command.
-</Tip>
+> [!TIP]
+>
+> Run `resend <command> --help` for the full list of flags and options on any command.
 
 ## Automations
 
@@ -684,7 +682,7 @@ steps:
 | Credentials | System secure storage | macOS Keychain, Windows Credential Manager, or Linux secret service |
 | Install directory | `~/.resend/bin/` | Respects `$RESEND_INSTALL` |
 
-<Card title="Using the CLI with AI Agents" icon="microchip-ai" href="/docs/cli-agents">
-  Learn about Agent Skills, non-interactive mode, and local webhook development
-  for AI agents.
-</Card>
+> **[Using the CLI with AI Agents](/docs/cli-agents)**
+>
+> Learn about Agent Skills, non-interactive mode, and local webhook development
+> for AI agents.

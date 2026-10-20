@@ -8,9 +8,9 @@ Learn how to set a source tag in the Pinecone SDKs or the API User-Agent header 
 
 After you create your integration, specify a source tag when you create a client with a Pinecone SDK. If you call the API directly, pass the source tag in the `User-Agent` header.
 
-<Note>
-  Anyone can create an integration. To apply to become an official Pinecone partner, see [Integration ecosystem](/integrations/build-integration/integration-ecosystem).
-</Note>
+> [!NOTE]
+>
+> Anyone can create an integration. To apply to become an official Pinecone partner, see [Integration ecosystem](/integrations/build-integration/integration-ecosystem).
 
 ## Source tag naming conventions
 
@@ -34,60 +34,58 @@ Source tags require these minimum SDK versions:
 
 Pass the source tag when you create the client, or in the `User-Agent` header with curl:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # REST client
-  from pinecone import Pinecone
+```python Python theme={null}
+# REST client
+from pinecone import Pinecone
 
-  pc = Pinecone(
-      api_key="YOUR_API_KEY", 
-      source_tag="YOUR_SOURCE_TAG"
-  )
+pc = Pinecone(
+    api_key="YOUR_API_KEY", 
+    source_tag="YOUR_SOURCE_TAG"
+)
 
-  # gRPC client
-  from pinecone.grpc import PineconeGRPC
+# gRPC client
+from pinecone.grpc import PineconeGRPC
 
-  pc = PineconeGRPC(
-      api_key="YOUR_API_KEY", 
-      source_tag="YOUR_SOURCE_TAG"
-  )
-  ```
+pc = PineconeGRPC(
+    api_key="YOUR_API_KEY", 
+    source_tag="YOUR_SOURCE_TAG"
+)
+```
 
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  const pc = new Pinecone({ 
-      apiKey: 'YOUR_API_KEY', 
-      sourceTag: 'YOUR_SOURCE_TAG' 
-  });
-  ```
+const pc = new Pinecone({ 
+    apiKey: 'YOUR_API_KEY', 
+    sourceTag: 'YOUR_SOURCE_TAG' 
+});
+```
 
-  ```java Java theme={null}
-  import io.pinecone.clients.Pinecone;
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
 
-  public class IntegrationExample {
-      public static void main(String[] args) {
-          Pinecone pc = new Pinecone.Builder("YOUR_API_KEY")
-                  .withSourceTag("YOUR_SOURCE_TAG")
-                  .build();
-      }
-  }
-  ```
+public class IntegrationExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY")
+                .withSourceTag("YOUR_SOURCE_TAG")
+                .build();
+    }
+}
+```
 
-  ```go Go theme={null}
-  import "github.com/pinecone-io/go-pinecone/v4/pinecone"
+```go Go theme={null}
+import "github.com/pinecone-io/go-pinecone/v4/pinecone"
 
-  client, err := pinecone.NewClient(pinecone.NewClientParams{
-  	ApiKey: "YOUR_API_KEY",
-  	SourceTag: "YOUR_SOURCE_TAG",
-  })
-  ```
+client, err := pinecone.NewClient(pinecone.NewClientParams{
+	ApiKey: "YOUR_API_KEY",
+	SourceTag: "YOUR_SOURCE_TAG",
+})
+```
 
-  ```shell curl theme={null}
-  curl -i -X GET "https://api.pinecone.io/indexes" \
-    -H "Accept: application/json" \
-    -H "Api-Key: YOUR_API_KEY" \
-    -H "User-Agent: source_tag=YOUR_SOURCE_TAG" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</CodeGroup>
+```shell curl theme={null}
+curl -i -X GET "https://api.pinecone.io/indexes" \
+  -H "Accept: application/json" \
+  -H "Api-Key: YOUR_API_KEY" \
+  -H "User-Agent: source_tag=YOUR_SOURCE_TAG" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```

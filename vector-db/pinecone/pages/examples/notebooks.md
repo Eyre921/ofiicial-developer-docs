@@ -6,142 +6,174 @@ path: examples/notebooks
 
 Runnable Colab notebooks covering semantic search, lexical search, hybrid search, RAG, embeddings, reranking, and data ingestion with Pinecone.
 
-<h2>Search</h2>
+## Search
 
-<div>
-  <ExampleCard title="Full-text search">
-    <Tag />
+## [Full-text search](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/full-text-search.ipynb)
 
-    <Tag />
+Search typed JSON documents using BM25 scoring, Lucene query syntax, dense vector ranking of images.
 
-    <Tag />
-  </ExampleCard>
+Full-text search
 
-  <ExampleCard title="Semantic search">
-    <Tag />
+BM25
 
-    <Tag icon="/images/examples/huggingface-icon.svg" />
+gemini-embedding-2
 
-    <Tag />
-  </ExampleCard>
+## [Semantic search](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb)
 
-  <ExampleCard title="Lexical search">
-    <Tag />
+Implement semantic search over an index with dense vectors to find records that are similar in meaning to a given query.
 
-    <Tag />
+Pinecone Integrated Inference
 
-    <Tag />
-  </ExampleCard>
+![](/images/examples/huggingface-icon.svg)
+Hugging Face Datasets
 
-  <ExampleCard title="Cascading retrieval">
-    <Tag />
+llama-text-embed-v2
 
-    <Tag />
+## [Lexical search](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/lexical-search.ipynb)
 
-    <Tag />
+Implement lexical search over an index of sparse vectors to find records that most exactly match the words or phrases in a query.
 
-    <Tag />
-  </ExampleCard>
+Pinecone Integrated Inference
 
-  <ExampleCard title="Reranking search results">
-    <Tag />
+pinecone-sparse-english-v0
 
-    <Tag icon="https://cdn.sanity.io/images/vr8gru94/production/40b1d05ee1325e6d9e4886af4e76ff06d844faff-188x188.jpg" />
-  </ExampleCard>
-</div>
+bge-reranker-v2-m3
 
-<h2>Retrieval-augmented generation (RAG)</h2>
+## [Cascading retrieval](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/cascading-retrieval.ipynb)
 
-<div>
-  <ExampleCard title="RAG with hybrid search and Claude">
-    <Tag />
+Implement cascading retrieval (hybrid search with two indexes) to combine the benefits of semantic and lexical search.
 
-    <Tag />
+Pinecone Integrated Inference
 
-    <Tag />
+llama-text-embed-v2
 
-    <Tag />
+pinecone-sparse-english-v0
 
-    <Tag />
+bge-reranker-v2-m3
 
-    <Tag />
-  </ExampleCard>
+## [Reranking search results](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/pinecone-reranker.ipynb)
 
-  <ExampleCard title="Agentic RAG with Claude">
-    <Tag />
+Use Pinecone's reranking feature to enhance the accuracy of search results.
 
-    <Tag />
+Pinecone Inference
 
-    <Tag />
+![](https://cdn.sanity.io/images/vr8gru94/production/40b1d05ee1325e6d9e4886af4e76ff06d844faff-188x188.jpg)
+bge-reranker-v2-m3
 
-    <Tag />
-  </ExampleCard>
+## Retrieval-augmented generation (RAG)
 
-  <ExampleCard title="RAG with LangChain and OpenAI">
-    <Tag icon="/images/examples/openai-icon.svg" />
+## [RAG with hybrid search and Claude](https://colab.research.google.com/github/pinecone-io/examples/blob/master/learn/generation/traditional-rag/traditional-rag-with-claude-and-hybrid.ipynb)
 
-    <Tag icon="/images/examples/openai-icon.svg" />
+Implement simple retrieval-augmented generation with hybrid search and Anthropic's Claude models
 
-    <Tag />
+claude-3-5-haiku-latest
 
-    <Tag />
-  </ExampleCard>
+llama-text-embed-v2
 
-  <ExampleCard title="RAG with LlamaIndex and OpenAI">
-    <Tag icon="/images/examples/openai-icon.svg" />
+pinecone-sparse-english-v0
 
-    <Tag icon="/images/examples/openai-icon.svg" />
+Dense Indexes
 
-    <Tag />
+Sparse Indexes
 
-    <Tag />
-  </ExampleCard>
+Hybrid Search
 
-  <ExampleCard title="RAG with cascading retrieval and OpenAI ">
-    <Tag icon="/images/examples/openai-icon.svg" />
+## [Agentic RAG with Claude](https://colab.research.google.com/github/pinecone-io/examples/blob/master/learn/generation/agentic-rag/agentic-rag-with-claude.ipynb)
 
-    <Tag />
+Build an agentic RAG pipeline that uses tools to retrieve data from web search and Pinecone semantic search, then generates responses using Anthropic's Claude models
 
-    <Tag />
+claude-3-5-haiku-latest
 
-    <Tag />
+llama-text-embed-v2
 
-    <Tag />
+Dense Indexes
 
-    <Tag />
-  </ExampleCard>
+Tool use
 
-  <ExampleCard title="Retrieval agent with LangChain and OpenAI">
-    <Tag icon="/images/examples/openai-icon.svg" />
+## [RAG with LangChain and OpenAI](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/langchain-retrieval-augmentation.ipynb)
 
-    <Tag icon="/images/examples/openai-icon.svg" />
+Learn how RAG can be used with Pinecone to reduce hallucinations, by grounding responses using our own release notes
 
-    <Tag />
+![](/images/examples/openai-icon.svg)
+gpt-5
 
-    <Tag />
+![](/images/examples/openai-icon.svg)
+text-embedding-3-small
 
-    <Tag icon="/images/examples/huggingface-icon.svg" />
-  </ExampleCard>
+OpenAI
 
-  <ExampleCard title="Retrieval Agents with Pinecone Assistant, LangChain and LangGraph">
-    <Tag icon="/images/examples/openai-icon.svg" />
+LangChain
 
-    <Tag icon="/images/examples/openai-icon.svg" />
+## [RAG with LlamaIndex and OpenAI](https://colab.research.google.com/github/pinecone-io/examples/blob/main/learn/generation/llama-index/using-llamaindex-with-pinecone.ipynb)
 
-    <Tag />
+Load a research paper with LlamaIndex, search it in Pinecone, and evaluate the relevance of the LLM's answers
 
-    <Tag />
+![](/images/examples/openai-icon.svg)
+gpt-4o-mini
 
-    <Tag />
+![](/images/examples/openai-icon.svg)
+text-embedding-3-small
 
-    <Tag />
-  </ExampleCard>
-</div>
+OpenAI
 
-<h2>Miscellaneous</h2>
+LlamaIndex
 
-<div>
-  <ExampleCard title="Import from object storage">
-    <Tag />
-  </ExampleCard>
-</div>
+## [RAG with cascading retrieval and OpenAI](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb)
+
+Investigate research papers by implementing cascading retrieval, then pass results to OpenAI to generate answers
+
+![](/images/examples/openai-icon.svg)
+gpt-4o-mini
+
+llama-text-embed-v2
+
+pinecone-sparse-english-v0
+
+Dense Indexes
+
+Sparse Indexes
+
+Cascading Retrieval
+
+## [Retrieval agent with LangChain and OpenAI](https://colab.research.google.com/github/pinecone-io/examples/blob/main/learn/generation/langchain/handbook/08-langchain-retrieval-agent.ipynb)
+
+Build a conversational agent with memory that decides when to search a Pinecone index for context
+
+![](/images/examples/openai-icon.svg)
+gpt-4o-mini
+
+![](/images/examples/openai-icon.svg)
+text-embedding-3-small
+
+OpenAI
+
+LangChain
+
+![](/images/examples/huggingface-icon.svg)
+Hugging Face Datasets
+
+## [Retrieval Agents with Pinecone Assistant, LangChain and LangGraph](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/langchain-retrieval-agent.ipynb)
+
+Create a study guide generator using agentic retrieval and the Pinecone Assistant Context API
+
+![](/images/examples/openai-icon.svg)
+gpt-4o-mini
+
+![](/images/examples/openai-icon.svg)
+gpt-4.1
+
+LangChain
+
+LangGraph
+
+Agentic Retrieval
+
+Structured Generation
+
+## Miscellaneous
+
+## [Import from object storage](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/pinecone-import.ipynb)
+
+Import documents from JSONL files in an Amazon S3 bucket into a document index
+
+Amazon S3

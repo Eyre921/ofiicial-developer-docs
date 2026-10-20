@@ -39,99 +39,97 @@ The endpoint returns standard API keys only. Management API keys and keys create
 
 The following script reads your Management API key from the `OPENROUTER_MANAGEMENT_KEY` environment variable, lists the keys in every workspace, and prints the ones that have no spend limit, never expire, or have been idle for 90 days or more:
 
-<CodeGroup>
-  ```typescript title="TypeScript SDK" expandable lines theme={null}
-  import { OpenRouter } from '@openrouter/sdk';
+```typescript title="TypeScript SDK" expandable lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
 
-  const openRouter = new OpenRouter({
-    apiKey: process.env.OPENROUTER_MANAGEMENT_KEY,
-  });
+const openRouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_MANAGEMENT_KEY,
+});
 
-  const PAGE_SIZE = 100;
-  const IDLE_AFTER_MS = 90 * 24 * 60 * 60 * 1000;
+const PAGE_SIZE = 100;
+const IDLE_AFTER_MS = 90 * 24 * 60 * 60 * 1000;
 
-  async function* listKeys() {
-    const workspacePages = await openRouter.workspaces.list({ limit: PAGE_SIZE });
-    for await (const workspacePage of workspacePages) {
-      for (const workspace of workspacePage.result.data) {
-        for (let offset = 0; ; offset += PAGE_SIZE) {
-          const page = await openRouter.apiKeys.list({ workspaceId: workspace.id, offset });
-          yield* page.data;
-          if (page.data.length < PAGE_SIZE) break;
-        }
+async function* listKeys() {
+  const workspacePages = await openRouter.workspaces.list({ limit: PAGE_SIZE });
+  for await (const workspacePage of workspacePages) {
+    for (const workspace of workspacePage.result.data) {
+      for (let offset = 0; ; offset += PAGE_SIZE) {
+        const page = await openRouter.apiKeys.list({ workspaceId: workspace.id, offset });
+        yield* page.data;
+        if (page.data.length < PAGE_SIZE) break;
       }
     }
   }
+}
 
-  const now = Date.now();
-  for await (const key of listKeys()) {
-    const findings: string[] = [];
-    if (key.limit === null) findings.push('no spend limit');
-    if (key.expiresAt == null) findings.push('never expires');
-    if (key.lastUsedAt === null) {
-      findings.push(key.usage > 0 || key.byokUsage > 0 ? 'idle 90+ days' : 'never used');
-    } else if (now - key.lastUsedAt.getTime() >= IDLE_AFTER_MS) {
-      findings.push('idle 90+ days');
-    }
-    if (findings.length > 0) {
-      console.log(key.hash, key.name, key.creatorUserId, findings.join(', '));
-    }
+const now = Date.now();
+for await (const key of listKeys()) {
+  const findings: string[] = [];
+  if (key.limit === null) findings.push('no spend limit');
+  if (key.expiresAt == null) findings.push('never expires');
+  if (key.lastUsedAt === null) {
+    findings.push(key.usage > 0 || key.byokUsage > 0 ? 'idle 90+ days' : 'never used');
+  } else if (now - key.lastUsedAt.getTime() >= IDLE_AFTER_MS) {
+    findings.push('idle 90+ days');
   }
-  ```
+  if (findings.length > 0) {
+    console.log(key.hash, key.name, key.creatorUserId, findings.join(', '));
+  }
+}
+```
 
-  ```python title="Python" expandable lines theme={null}
-  import os
-  from datetime import datetime, timedelta, timezone
+```python title="Python" expandable lines theme={null}
+import os
+from datetime import datetime, timedelta, timezone
 
-  import requests
+import requests
 
-  MANAGEMENT_API_KEY = os.environ["OPENROUTER_MANAGEMENT_KEY"]
-  BASE_URL = "https://openrouter.ai/api/v1"
-  PAGE_SIZE = 100
-  IDLE_AFTER = timedelta(days=90)
-
-
-  def list_pages(path, params=None):
-      offset = 0
-      while True:
-          response = requests.get(
-              f"{BASE_URL}{path}",
-              headers={"Authorization": f"Bearer {MANAGEMENT_API_KEY}"},
-              params={**(params or {}), "offset": offset},
-          )
-          response.raise_for_status()
-          page = response.json()["data"]
-          yield from page
-          if len(page) < PAGE_SIZE:
-              return
-          offset += PAGE_SIZE
+MANAGEMENT_API_KEY = os.environ["OPENROUTER_MANAGEMENT_KEY"]
+BASE_URL = "https://openrouter.ai/api/v1"
+PAGE_SIZE = 100
+IDLE_AFTER = timedelta(days=90)
 
 
-  def list_keys():
-      for workspace in list_pages("/workspaces", {"limit": PAGE_SIZE}):
-          yield from list_pages("/keys", {"workspace_id": workspace["id"]})
+def list_pages(path, params=None):
+    offset = 0
+    while True:
+        response = requests.get(
+            f"{BASE_URL}{path}",
+            headers={"Authorization": f"Bearer {MANAGEMENT_API_KEY}"},
+            params={**(params or {}), "offset": offset},
+        )
+        response.raise_for_status()
+        page = response.json()["data"]
+        yield from page
+        if len(page) < PAGE_SIZE:
+            return
+        offset += PAGE_SIZE
 
 
-  def parse(timestamp):
-      return datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+def list_keys():
+    for workspace in list_pages("/workspaces", {"limit": PAGE_SIZE}):
+        yield from list_pages("/keys", {"workspace_id": workspace["id"]})
 
 
-  now = datetime.now(timezone.utc)
-  for key in list_keys():
-      findings = []
-      if key["limit"] is None:
-          findings.append("no spend limit")
-      if key["expires_at"] is None:
-          findings.append("never expires")
-      if key["last_used_at"] is None:
-          used = key["usage"] > 0 or key["byok_usage"] > 0
-          findings.append("idle 90+ days" if used else "never used")
-      elif now - parse(key["last_used_at"]) >= IDLE_AFTER:
-          findings.append("idle 90+ days")
-      if findings:
-          print(key["hash"], key["name"], key["creator_user_id"], ", ".join(findings))
-  ```
-</CodeGroup>
+def parse(timestamp):
+    return datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+
+
+now = datetime.now(timezone.utc)
+for key in list_keys():
+    findings = []
+    if key["limit"] is None:
+        findings.append("no spend limit")
+    if key["expires_at"] is None:
+        findings.append("never expires")
+    if key["last_used_at"] is None:
+        used = key["usage"] > 0 or key["byok_usage"] > 0
+        findings.append("idle 90+ days" if used else "never used")
+    elif now - parse(key["last_used_at"]) >= IDLE_AFTER:
+        findings.append("idle 90+ days")
+    if findings:
+        print(key["hash"], key["name"], key["creator_user_id"], ", ".join(findings))
+```
 
 To audit one workspace, list keys for that `workspace_id` only. To build a list for owners to review, group the output by `creator_user_id`.
 

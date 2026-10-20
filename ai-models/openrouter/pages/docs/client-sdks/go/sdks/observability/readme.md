@@ -424,7 +424,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
 | `id` | `string` | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `updateObservabilityDestinationRequest` | [components.UpdateObservabilityDestinationRequest](../../models/components/updateobservabilitydestinationrequest.mdx) | ✅ | N/A | \{<br />"enabled": false,<br />"name": "Updated Langfuse"<br />} |
+| `updateObservabilityDestinationRequest` | [components.UpdateObservabilityDestinationRequest](../../models/components/updateobservabilitydestinationrequest.mdx) | ✅ | N/A | \{ "enabled": false, "name": "Updated Langfuse" } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

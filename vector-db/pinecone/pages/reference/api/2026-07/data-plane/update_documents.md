@@ -16,174 +16,172 @@ On an index whose schema declares `embed` or `sparse_embed`, a per-ID update tha
 
 Pinecone embeds the text on every request that sets such a field, so a retried update is embedded, and metered, again. A per-ID update of a document that does not exist still embeds the text it sets. When the request embedded text, the response's `usage.embed_total_tokens` reports the tokens it consumed.
 
-<RequestExample>
-  ```python Python theme={null}
-  # pip install --upgrade pinecone
-  import os
-  from pinecone import Pinecone
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
 
-  pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-  index = pc.Index(name="articles")
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+index = pc.Index(name="articles")
 
-  NAMESPACE = "example-namespace"
+NAMESPACE = "example-namespace"
 
-  # Patch specific documents by ID
-  index.documents.update(
-      namespace=NAMESPACE,
-      documents=[
-          {"_id": "doc1", "title": "Updated title"},
-          {"_id": "doc2", "_remove_fields": ["content"]},
-      ],
-  )
-
-  # Apply the same patch to every document matching a metadata filter
-  index.documents.update(
-      namespace=NAMESPACE,
-      filter={"category": {"$eq": "news"}},
-      set_fields={"category": "archive"},
-      remove_fields=["year"],
-  )
-  ```
-
-  ```javascript JavaScript theme={null}
-  // npm install @pinecone-database/pinecone
-  import { Pinecone } from '@pinecone-database/pinecone';
-
-  // Reads PINECONE_API_KEY from the environment
-  const pc = new Pinecone();
-
-  const index = pc.index({
-    name: 'articles',
-    namespace: 'example-namespace',
-  });
-
-  // Patch specific documents by ID
-  await index.documents.update({
-    documents: [
-      {
-        _id: 'doc1',
-        title: 'Updated title',
-      },
-      {
-        _id: 'doc2',
-        _remove_fields: ['content'], // Reserved document key, sent as-is
-      },
+# Patch specific documents by ID
+index.documents.update(
+    namespace=NAMESPACE,
+    documents=[
+        {"_id": "doc1", "title": "Updated title"},
+        {"_id": "doc2", "_remove_fields": ["content"]},
     ],
-  });
+)
 
-  // Apply the same patch to every document matching a metadata filter
-  const response = await index.documents.update({
-    filter: {
-      category: {
-        $eq: 'news',
-      },
+# Apply the same patch to every document matching a metadata filter
+index.documents.update(
+    namespace=NAMESPACE,
+    filter={"category": {"$eq": "news"}},
+    set_fields={"category": "archive"},
+    remove_fields=["year"],
+)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const index = pc.index({
+  name: 'articles',
+  namespace: 'example-namespace',
+});
+
+// Patch specific documents by ID
+await index.documents.update({
+  documents: [
+    {
+      _id: 'doc1',
+      title: 'Updated title',
     },
-    setFields: {
-      category: 'archive',
+    {
+      _id: 'doc2',
+      _remove_fields: ['content'], // Reserved document key, sent as-is
     },
-    removeFields: ['year'],
-  });
-  console.log(`Matched ${response.matchedRecords} documents`);
-  ```
+  ],
+});
 
-  ```go Go theme={null}
-  package main
+// Apply the same patch to every document matching a metadata filter
+const response = await index.documents.update({
+  filter: {
+    category: {
+      $eq: 'news',
+    },
+  },
+  setFields: {
+    category: 'archive',
+  },
+  removeFields: ['year'],
+});
+console.log(`Matched ${response.matchedRecords} documents`);
+```
 
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
+```go Go theme={null}
+package main
 
-      "github.com/pinecone-io/go-pinecone/v7/pinecone"
-  )
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
 
-  func main() {
-      ctx := context.Background()
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: os.Getenv("PINECONE_API_KEY"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
+func main() {
+    ctx := context.Background()
 
-      idx, err := pc.DescribeIndex(ctx, "articles")
-      if err != nil {
-          log.Fatalf("Failed to describe index: %v", err)
-      }
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
 
-      idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
-          Host:      idx.Host,
-          Namespace: "example-namespace",
-      })
-      if err != nil {
-          log.Fatalf("Failed to create IndexConnection: %v", err)
-      }
+    idx, err := pc.DescribeIndex(ctx, "articles")
+    if err != nil {
+        log.Fatalf("Failed to describe index: %v", err)
+    }
 
-      // Patch specific documents by ID
-      _, err = idxConnection.UpdateDocuments(ctx, &pinecone.UpdateDocumentsRequest{
-          Documents: []pinecone.Document{
-              {
-                  "_id":   "doc1",
-                  "title": "Updated title",
-              },
-              {
-                  "_id":            "doc2",
-                  "_remove_fields": []string{"content"},
-              },
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to update documents: %v", err)
-      }
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
+        Host:      idx.Host,
+        Namespace: "example-namespace",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection: %v", err)
+    }
 
-      // Apply the same patch to every document matching a metadata filter
-      res, err := idxConnection.UpdateDocuments(ctx, &pinecone.UpdateDocumentsRequest{
-          Filter: map[string]interface{}{
-              "category": map[string]interface{}{
-                  "$eq": "news",
-              },
-          },
-          SetFields: map[string]interface{}{
-              "category": "archive",
-          },
-          RemoveFields: []string{"year"},
-      })
-      if err != nil {
-          log.Fatalf("Failed to update documents: %v", err)
-      }
-      if res.MatchedRecords != nil {
-          fmt.Printf("Matched %d documents\n", *res.MatchedRecords)
-      }
-  }
-  ```
+    // Patch specific documents by ID
+    _, err = idxConnection.UpdateDocuments(ctx, &pinecone.UpdateDocumentsRequest{
+        Documents: []pinecone.Document{
+            {
+                "_id":   "doc1",
+                "title": "Updated title",
+            },
+            {
+                "_id":            "doc2",
+                "_remove_fields": []string{"content"},
+            },
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to update documents: %v", err)
+    }
 
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="articles-abc123.svc.us-east-1.pinecone.io"
+    // Apply the same patch to every document matching a metadata filter
+    res, err := idxConnection.UpdateDocuments(ctx, &pinecone.UpdateDocumentsRequest{
+        Filter: map[string]interface{}{
+            "category": map[string]interface{}{
+                "$eq": "news",
+            },
+        },
+        SetFields: map[string]interface{}{
+            "category": "archive",
+        },
+        RemoveFields: []string{"year"},
+    })
+    if err != nil {
+        log.Fatalf("Failed to update documents: %v", err)
+    }
+    if res.MatchedRecords != nil {
+        fmt.Printf("Matched %d documents\n", *res.MatchedRecords)
+    }
+}
+```
 
-  # EXAMPLE REQUEST 1: Patch specific documents by ID
-  curl "https://$INDEX_HOST/namespaces/__default__/documents/update" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "documents": [
-        { "_id": "doc1", "title": "Updated title" },
-        { "_id": "doc2", "_remove_fields": ["content"] }
-      ]
-    }'
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="articles-abc123.svc.us-east-1.pinecone.io"
 
-  # EXAMPLE REQUEST 2: Update by metadata filter
-  curl "https://$INDEX_HOST/namespaces/__default__/documents/update" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "filter": { "category": { "$eq": "news" } },
-      "set_fields": { "category": "archive" },
-      "remove_fields": ["year"]
-    }'
-  ```
-</RequestExample>
+# EXAMPLE REQUEST 1: Patch specific documents by ID
+curl "https://$INDEX_HOST/namespaces/__default__/documents/update" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "documents": [
+      { "_id": "doc1", "title": "Updated title" },
+      { "_id": "doc2", "_remove_fields": ["content"] }
+    ]
+  }'
+
+# EXAMPLE REQUEST 2: Update by metadata filter
+curl "https://$INDEX_HOST/namespaces/__default__/documents/update" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "filter": { "category": { "$eq": "news" } },
+    "set_fields": { "category": "archive" },
+    "remove_fields": ["year"]
+  }'
+```

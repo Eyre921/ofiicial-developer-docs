@@ -10,4 +10,6 @@ Access Pinecone through its AWS Marketplace listing. AWS Marketplace lets you ma
 
 You can set up pay-as-you-go billing for a Pinecone organization through AWS Marketplace.
 
-<PrimarySecondaryCTA />
+[Try free with AWS](https://aws.amazon.com/marketplace/pp/prodview-xhgyscinlz4jk?trk=8d276e92-b310-40ce-908f-23a198ca7ffc\&sc_channel=el\&source=pinecone%20systems)
+
+[View setup guide](/admin/billing/upgrade-billing-plan)

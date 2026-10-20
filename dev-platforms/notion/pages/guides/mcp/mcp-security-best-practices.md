@@ -17,13 +17,13 @@ Review the [documentation for common MCP clients](/guides/mcp/common-mcp-clients
 
 [Prompt injection](https://devblogs.microsoft.com/blog/protecting-against-indirect-injection-attacks-mcp) occurs when untrusted content contains instructions that try to change a client's behavior.
 
-<Note>
-  **Protect your data**
-
-  An attacker could put a malicious instruction in content that your MCP client reads. If the client follows the instruction, it could disclose data or change content without your intent.
-
-  Treat content returned by tools as untrusted. Review proposed actions and data sharing before approving them.
-</Note>
+> [!NOTE]
+>
+> **Protect your data**
+>
+> An attacker could put a malicious instruction in content that your MCP client reads. If the client follows the instruction, it could disclose data or change content without your intent.
+>
+> Treat content returned by tools as untrusted. Review proposed actions and data sharing before approving them.
 
 Review the permissions of every MCP client and tool. Notion MCP operates within your workspace, but a connected client may send content returned by Notion MCP to systems outside Notion.
 

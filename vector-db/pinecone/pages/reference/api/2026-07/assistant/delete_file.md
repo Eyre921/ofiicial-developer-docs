@@ -9,14 +9,12 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 
 This operation is asynchronous. The response includes an operation ID that can be used to poll for completion via the describe operation endpoint.
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  FILE_ID="070513b3-022f-4966-b583-a9b12e0290ff"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+FILE_ID="070513b3-022f-4966-b583-a9b12e0290ff"
 
-  curl -X DELETE "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+curl -X DELETE "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
+```

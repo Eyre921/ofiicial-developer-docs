@@ -8,22 +8,20 @@ Find setup documentation for MCP clients that can connect to Notion MCP.
 
 These MCP clients can connect to Notion MCP. Follow the link for your client to learn how to add a remote MCP server.
 
-<CardGroup>
-  <Card title="Codex" href="https://developers.openai.com/codex/mcp" icon="angles-right" />
+> **[Codex](https://developers.openai.com/codex/mcp)**
 
-  <Card title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code/mcp" icon="angles-right" />
+> **[Claude Code](https://docs.anthropic.com/en/docs/claude-code/mcp)**
 
-  <Card title="Cursor" href="https://cursor.com/docs/mcp" icon="angles-right" />
+> **[Cursor](https://cursor.com/docs/mcp)**
 
-  <Card title="fx" href="https://fx.sh/docs/capabilities/mcp" icon="angles-right" />
+> **[fx](https://fx.sh/docs/capabilities/mcp)**
 
-  <Card title="Hermes" href="https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp" icon="angles-right" />
+> **[Hermes](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp)**
 
-  <Card title="Devin" href="https://docs.devin.ai/work-with-devin/mcp" icon="angles-right" />
+> **[Devin](https://docs.devin.ai/work-with-devin/mcp)**
 
-  <Card title="Pi" href="https://github.com/nicobailon/pi-mcp-adapter" icon="angles-right" />
+> **[Pi](https://github.com/nicobailon/pi-mcp-adapter)**
 
-  <Card title="VS Code" href="https://code.visualstudio.com/docs/agent-customization/mcp-servers" icon="angles-right" />
+> **[VS Code](https://code.visualstudio.com/docs/agent-customization/mcp-servers)**
 
-  <Card title="Antigravity" href="https://antigravity.google/docs/mcp" icon="angles-right" />
-</CardGroup>
+> **[Antigravity](https://antigravity.google/docs/mcp)**

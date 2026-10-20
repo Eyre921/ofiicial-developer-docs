@@ -25,9 +25,9 @@ Created with `pc.create_index(dimension=..., metric=..., vector_type=...)`. You 
 * Holds [records](/guides/core-concepts/key-terms#record), read and written through the Vectors API.
 * Serves [semantic search](/guides/search/semantic-search) and [sparse-vector search](/guides/search/lexical-search).
 
-<Note>
-  As of API version `2026-07`, `POST /indexes` in the REST API is schema-only. The SDKs still accept `dimension`, `metric`, and `vector_type` and create a vector index. Existing indexes keep working unchanged on the API they were created with. See [Adopt the Documents API](/guides/index-data/adopt-the-documents-api) for what changed and whether it affects your code.
-</Note>
+> [!NOTE]
+>
+> As of API version `2026-07`, `POST /indexes` in the REST API is schema-only. The SDKs still accept `dimension`, `metric`, and `vector_type` and create a vector index. Existing indexes keep working unchanged on the API they were created with. See [Adopt the Documents API](/guides/index-data/adopt-the-documents-api) for what changed and whether it affects your code.
 
 ## Search approaches
 
@@ -62,7 +62,7 @@ For the underlying concept, see [Dense vector](/guides/core-concepts/key-terms#d
 
 Learn more:
 
-* [Create an index for dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors)
+* [Create an index for dense vectors](/guides/index-data/create-an-index#dense-vectors)
 * [Upsert dense vectors](/guides/index-data/upsert-data#upsert-dense-vectors)
 * [Semantic search](/guides/search/semantic-search)
 
@@ -74,7 +74,7 @@ Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-spa
 
 Learn more:
 
-* [Create an index for sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors)
+* [Create an index for sparse vectors](/guides/index-data/create-an-index#sparse-vectors)
 * [Upsert sparse vectors](/guides/index-data/upsert-data#upsert-sparse-vectors)
 * [Sparse-vector search](/guides/search/lexical-search)
 
@@ -87,14 +87,14 @@ Indexes of sparse vectors have the following limitations:
 * Max queries per second per index of sparse vectors: 100
 * Max `top_k` value per query: 10,000
 
-  <Note>
-    You may get fewer than `top_k` results if `top_k` is larger than the number of sparse vectors in your index that match your query. That is, any vectors where the dotproduct score is `0` will be discarded.
-  </Note>
+  > [!NOTE]
+  >
+  > You may get fewer than `top_k` results if `top_k` is larger than the number of sparse vectors in your index that match your query. That is, any vectors where the dotproduct score is `0` will be discarded.
 * Max query results size: 4 MB
 
-<Tip>
-  Semantic search can miss exact keyword matches, while keyword search can miss semantically related results. To get the best of both, use [hybrid search](/guides/search/hybrid-search) — combine a keyword signal (BM25 or sparse) with a dense signal at query time, often with reranking.
-</Tip>
+> [!TIP]
+>
+> Semantic search can miss exact keyword matches, while keyword search can miss semantically related results. To get the best of both, use [hybrid search](/guides/search/hybrid-search) — combine a keyword signal (BM25 or sparse) with a dense signal at query time, often with reranking.
 
 ## Namespaces
 
@@ -106,13 +106,11 @@ Within an index, records or documents are partitioned into namespaces, and all [
 
 Namespaces are created automatically during [upsert](/guides/index-data/upsert-data). If a namespace doesn't exist, it's created implicitly.
 
-<Note>
-  [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-</Note>
+> [!NOTE]
+>
+> [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-<img />
-
-<img />
+![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/quickstart-upsert.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=c852ca55745a70ed51e5892330751830)
 
 ## Vector embedding
 
@@ -122,15 +120,15 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 ### Integrated embedding
 
-Integrated-embedding indexes are created with `pc.create_index_for_model` and read and written through the Records API. Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
+You can get integrated embedding two ways. On a [document index](/guides/search/integrated-embedding), declare a `string` field with `embed` or `sparse_embed` and read and write it through the Documents API. The steps below cover the other way, a legacy integrated index created with `pc.create_index_for_model` and served by the legacy Records API. Either way, Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
 
 1. [Create an index](/guides/index-data/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/index-data/index-configuration#embedding-models).
 2. [Upsert](/guides/index-data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
 3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
 
-<Note>
-  Indexes with integrated embedding don't support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
-</Note>
+> [!NOTE]
+>
+> Legacy integrated indexes (created with `create_index_for_model` and served by the legacy Records API) don't support [updating](/guides/manage-data/update-data) or [importing](/guides/index-data/import-data) with text.
 
 ### Bring your own vectors
 
@@ -158,33 +156,31 @@ Every record has an ID and a vector, and every document has an `_id` and the fie
 
 **Examples**
 
-<CodeGroup>
-  ```json Valid metadata theme={null}
-  {
+```json Valid metadata theme={null}
+{
+  "document_id": "document1",
+  "document_title": "Introduction to Vector Databases",
+  "chunk_number": 1,
+  "chunk_text": "First chunk of the document content...",
+  "is_public": true,
+  "tags": ["beginner", "database", "vector-db"],
+  "scores": ["85", "92"]
+}
+```
+
+```json Invalid metadata theme={null}
+{
+  "document": {       // Nested JSON objects are not supported
     "document_id": "document1",
     "document_title": "Introduction to Vector Databases",
-    "chunk_number": 1,
-    "chunk_text": "First chunk of the document content...",
-    "is_public": true,
-    "tags": ["beginner", "database", "vector-db"],
-    "scores": ["85", "92"]
-  }
-  ```
-
-  ```json Invalid metadata theme={null}
-  {
-    "document": {       // Nested JSON objects are not supported
-      "document_id": "document1",
-      "document_title": "Introduction to Vector Databases",
-    },
-    "$chunk_number": 1, // Keys must not start with a `$`
-    "chunk_text": null, // Null values are not supported
-    "is_public": true,
-    "tags": ["beginner", "database", "vector-db"],
-    "scores": [85, 92]  // Lists of non-strings are not supported
-  }
-  ```
-</CodeGroup>
+  },
+  "$chunk_number": 1, // Keys must not start with a `$`
+  "chunk_text": null, // Null values are not supported
+  "is_public": true,
+  "tags": ["beginner", "database", "vector-db"],
+  "scores": [85, 92]  // Lists of non-strings are not supported
+}
+```
 
 ### Metadata size
 
@@ -196,26 +192,26 @@ Pinecone's filtering language supports the following operators:
 
 | Operator | Function | Supported types |
 | :- | :- | :- |
-| `$eq` | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
-| `$ne` | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
-| `$gt` | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
-| `$gte` | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
-| `$lt` | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
-| `$lte` | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
-| `$in` | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
-| `$nin` | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
+| `$eq` | Matches records or documents with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
+| `$ne` | Matches records or documents with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
+| `$gt` | Matches records or documents with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
+| `$gte` | Matches records or documents with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
+| `$lt` | Matches records or documents with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
+| `$lte` | Matches records or documents with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
+| `$in` | Matches records or documents with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
+| `$nin` | Matches records or documents with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
+| `$exists` | Matches records or documents with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
 | `$and` | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
 | `$or` | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
-| `$not` | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
+| `$not` | Matches records or documents that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
 
-<Note>
-  At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
-</Note>
+> [!NOTE]
+>
+> At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
 
-<Note>
-  Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
-</Note>
+> [!NOTE]
+>
+> Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 
 For example, the following has a `"genre"` metadata field with a list of strings:
 

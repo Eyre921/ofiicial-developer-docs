@@ -128,7 +128,7 @@ Faster model, 50% lower price per character for API generations
 
 ElevenLabs offers thousands of voices across 32 languages through multiple creation methods:
 
-* [Voice library](/docs/overview/capabilities/voices) with 3,000+ community-shared voices
+* [Voice library](/docs/overview/capabilities/voices) with 10,000+ community-shared voices
 * [Professional voice cloning](/docs/overview/capabilities/voices#cloned) for highest-fidelity replicas
 * [Instant voice cloning](/docs/overview/capabilities/voices#cloned) for quick voice replication
 * [Voice design](/docs/overview/capabilities/voices#voice-design) to generate custom voices from text descriptions

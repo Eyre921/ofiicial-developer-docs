@@ -8,9 +8,9 @@ Reduce Fireworks model precision to FP16, FP8, BF16, or INT8 to cut cost by 30-5
 
 Quantization reduces the number of bits used to serve a model, improving performance and reducing cost by 30-50%. However, this can change model numerics which may introduce small changes to the output.
 
-<Tip>
-  Read our [blog post](https://fireworks.ai/blog/fireworks-quantization) for a detailed treatment of how quantization affects model quality.
-</Tip>
+> [!TIP]
+>
+> Read our [blog post](https://fireworks.ai/blog/fireworks-quantization) for a detailed treatment of how quantization affects model quality.
 
 ## Checking available precisions
 
@@ -34,69 +34,67 @@ The `Precisions` field indicates what precisions the model has been prepared for
 
 A model can be quantized to 8-bit floating-point (FP8) precision.
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl prepare-model <MODEL_ID>
-    ```
-  </Tab>
+**firectl**
 
-  <Tab title="Python (REST API)">
-    ```python theme={null}
-    import os
-    import requests
+```bash theme={null}
+firectl prepare-model <MODEL_ID>
+```
 
-    ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-    API_KEY = os.environ.get("FIREWORKS_API_KEY")
-    MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to prepare
+**Python (REST API)**
 
-    response = requests.post(
-      f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}:prepare",
-      headers={
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-      },
-      json={
-        "precision": "FP8"
-      }
-    )
+```python theme={null}
+import os
+import requests
 
-    print(response.json())
-    ```
-  </Tab>
-</Tabs>
+ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+API_KEY = os.environ.get("FIREWORKS_API_KEY")
+MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to prepare
 
-<Note>This is an additive process that enables creating deployments with additional precisions. The original FP16 checkpoint is still available for use.</Note>
+response = requests.post(
+  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}:prepare",
+  headers={
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json"
+  },
+  json={
+    "precision": "FP8"
+  }
+)
+
+print(response.json())
+```
+
+> [!NOTE]
+>
+> This is an additive process that enables creating deployments with additional precisions. The original FP16 checkpoint is still available for use.
 
 You can check on the status of preparation by running:
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl model get <MODEL_ID>
-    ```
-  </Tab>
+**firectl**
 
-  <Tab title="Python (REST API)">
-    ```python theme={null}
-    import os
-    import requests
+```bash theme={null}
+firectl model get <MODEL_ID>
+```
 
-    ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-    API_KEY = os.environ.get("FIREWORKS_API_KEY")
-    MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to get
+**Python (REST API)**
 
-    response = requests.get(
-      f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}",
-      headers={
-        "Authorization": f"Bearer {API_KEY}"
-      }
-    )
+```python theme={null}
+import os
+import requests
 
-    print(response.json())
-    ```
-  </Tab>
-</Tabs>
+ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+API_KEY = os.environ.get("FIREWORKS_API_KEY")
+MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to get
+
+response = requests.get(
+  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}",
+  headers={
+    "Authorization": f"Bearer {API_KEY}"
+  }
+)
+
+print(response.json())
+```
 
 and checking if the state is still in `PREPARING`. A successfully prepared model will have the desired precision added
 to the `Precisions` list.
@@ -109,42 +107,42 @@ Do not deploy without a [deployment shape](/guides/ondemand-deployments#deployme
 
 If no FP8 shape exists for your model, start from the closest shape and override the precision with `--precision`. Do not create the deployment without a shape entirely: it skips validation, is the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in:
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl deployment create <MODEL> --deployment-shape <shape> --precision FP8
-    ```
-  </Tab>
+**firectl**
 
-  <Tab title="Python (REST API)">
-    ```python theme={null}
-    import os
-    import requests
+```bash theme={null}
+firectl deployment create <MODEL> --deployment-shape <shape> --precision FP8
+```
 
-    ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-    API_KEY = os.environ.get("FIREWORKS_API_KEY")
-    # The ID of the model you want to deploy.
-    # The model must be prepared for FP8 precision.
-    MODEL_ID = "<YOUR_MODEL_ID>"
-    DEPLOYMENT_NAME = "My FP8 Deployment"
+**Python (REST API)**
 
-    response = requests.post(
-      f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/deployments",
-      headers={
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-      },
-      json={
-        "displayName": DEPLOYMENT_NAME,
-        "baseModel": MODEL_ID,
-        "deploymentShape": "<SHAPE_ID>",
-        "precision": "FP8",
-      }
-    )
+```python theme={null}
+import os
+import requests
 
-    print(response.json())
-    ```
-  </Tab>
-</Tabs>
+ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+API_KEY = os.environ.get("FIREWORKS_API_KEY")
+# The ID of the model you want to deploy.
+# The model must be prepared for FP8 precision.
+MODEL_ID = "<YOUR_MODEL_ID>"
+DEPLOYMENT_NAME = "My FP8 Deployment"
 
-<Note>Quantized deployments can only be served using H100 GPUs.</Note>
+response = requests.post(
+  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/deployments",
+  headers={
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json"
+  },
+  json={
+    "displayName": DEPLOYMENT_NAME,
+    "baseModel": MODEL_ID,
+    "deploymentShape": "<SHAPE_ID>",
+    "precision": "FP8",
+  }
+)
+
+print(response.json())
+```
+
+> [!NOTE]
+>
+> Quantized deployments can only be served using H100 GPUs.

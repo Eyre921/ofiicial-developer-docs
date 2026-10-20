@@ -9,14 +9,12 @@ When `include_deleted` is false (or omitted), `index_name` must resolve to an ac
 
 When `include_deleted` is true, the API returns backups from every index in the project that has ever used this name (active and deleted). The `source_index_deleted_at` field is present only when the backup is from a deleted index. **404** is returned only when no index by that name has ever existed in the project (active or deleted).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_NAME="docs-example"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_NAME="docs-example"
 
-  curl -X GET "https://api.pinecone.io/indexes/$INDEX_NAME/backups" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -H "accept: application/json"
-  ```
-</RequestExample>
+curl -X GET "https://api.pinecone.io/indexes/$INDEX_NAME/backups" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -H "accept: application/json"
+```

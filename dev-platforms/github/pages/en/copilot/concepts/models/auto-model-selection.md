@@ -14,7 +14,7 @@ More than just a model picker, auto model selection is an intelligent system del
 
 ### Auto with task optimization
 
-> \[!NOTE] Auto model selection with task optimization is generally available in Copilot Chat on the GitHub website, in VS Code, in Copilot CLI, in the GitHub Copilot app, and in JetBrains IDEs.
+> [!NOTE] Auto model selection with task optimization is generally available in Copilot Chat on the GitHub website, in VS Code, in Copilot CLI, in the GitHub Copilot app, and in JetBrains IDEs.
 
 Auto model selection with task optimization combines two systems to provide high quality results and better reliability. One system tracks real-time system health and availability, while the other evaluates task complexity. Putting these together, auto model selection routes the task to the optimal model.
 
@@ -75,6 +75,13 @@ Auto model selection may serve evaluation models to users on Copilot plans for i
 
 If you are on a paid Copilot plan, you qualify for a 10% discount on model costs while using auto model selection in Copilot Chat, Copilot CLI, the GitHub Copilot app, or Copilot cloud agent.
 
+<!-- expires 2026-10-28 -->
+
+> [!NOTE]
+> If you are on the Copilot Max plan, you'll receive a 30% discount through October 28, 2026 while using auto model selection.
+
+<!-- end expires 2026-10-28 -->
+
 ## Auto model selection in Copilot
 
 Auto model selection, with task optimization, is generally available in these Copilot products:
@@ -84,9 +91,9 @@ Auto model selection, with task optimization, is generally available in these Co
 * The GitHub Copilot app
 * Copilot cloud agent
 
-> \[!NOTE] Auto tiers are only available on VS Code, Copilot CLI, and the GitHub Copilot app .
+> [!NOTE] Auto tiers are only available on VS Code, Copilot CLI, and the GitHub Copilot app .
 
-> \[!TIP]
+> [!TIP]
 > You can see which model was used for each Copilot response.
 >
 > * In **Copilot Chat** and **the GitHub Copilot app**, hover over the response.

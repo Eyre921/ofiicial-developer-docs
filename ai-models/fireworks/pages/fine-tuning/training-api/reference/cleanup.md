@@ -39,9 +39,9 @@ finally:
 
 Cookbook recipes use the same service-client lifecycle internally and close the service through an `ExitStack`.
 
-<Note>
-  The standalone `ResourceCleanup` context manager and `setup_infra` helper have been **removed** from the cookbook. Provisioning and teardown now live behind the SDK-managed service client. See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
-</Note>
+> [!NOTE]
+>
+> The standalone `ResourceCleanup` context manager and `setup_infra` helper have been **removed** from the cookbook. Provisioning and teardown now live behind the SDK-managed service client. See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
 
 ## Trainer inactivity cleanup
 

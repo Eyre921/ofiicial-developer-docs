@@ -11,16 +11,14 @@ This operation is asynchronous. The file processing will occur in the background
 
 For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/assistant/manage-files#upload-a-local-file).
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
-  FILE_ID="my-custom-file-id"
-  LOCAL_FILE_PATH="/Users/jdoe/Downloads/example_file.txt"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+FILE_ID="my-custom-file-id"
+LOCAL_FILE_PATH="/Users/jdoe/Downloads/example_file.txt"
 
-  curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -F "file=@$LOCAL_FILE_PATH"
-  ```
-</RequestExample>
+curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -F "file=@$LOCAL_FILE_PATH"
+```

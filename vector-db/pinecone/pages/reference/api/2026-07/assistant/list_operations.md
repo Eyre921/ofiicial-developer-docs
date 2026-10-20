@@ -11,19 +11,17 @@ Both successful and failed operations are retained for 30 days after completion.
 
 Use the `operation_type` and `status` query parameters to filter results.
 
-<RequestExample>
-  ```bash curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  ASSISTANT_NAME="example-assistant"
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
 
-  # List all operations
-  curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07"
+# List all operations
+curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
 
-  # Filter by status
-  # curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME?status=Processing" \
-  #   -H "Api-Key: $PINECONE_API_KEY" \
-  #   -H "X-Pinecone-Api-Version: 2026-07"
-  ```
-</RequestExample>
+# Filter by status
+# curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME?status=Processing" \
+#   -H "Api-Key: $PINECONE_API_KEY" \
+#   -H "X-Pinecone-Api-Version: 2026-07"
+```

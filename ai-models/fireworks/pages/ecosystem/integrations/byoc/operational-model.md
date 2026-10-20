@@ -8,9 +8,9 @@ How Fireworks operates Bring Your Own Cluster environments day to day, including
 
 Bring Your Own Cluster (BYOC) is designed so your team keeps ownership of the cloud or hardware environment while Fireworks operates the model serving stack inside it.
 
-<Note>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm operational support terms for your deployment.
-</Note>
+> [!NOTE]
+>
+> Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm operational support terms for your deployment.
 
 ## Responsibilities
 
@@ -31,9 +31,9 @@ BYOC is a shared operational model.
 
 Fireworks deploys, updates, and version-manages inference deployments in the cluster. Customers request model or deployment changes through Fireworks, and Fireworks applies those changes through the managed BYOC operating process.
 
-<Warning>
-  Training is not supported in BYOC during Private Preview.
-</Warning>
+> [!WARNING]
+>
+> Training is not supported in BYOC during Private Preview.
 
 ## Autoscaling
 
@@ -61,9 +61,9 @@ Fireworks optimizes placement of workloads across the available GPUs to improve 
 
 Fireworks operates the stack using metrics, logs, and dashboards for the managed serving components. Fireworks monitors the environment, investigates service-impacting issues, and coordinates with your team when an incident requires customer-side action, such as hardware capacity, cloud account or data center, networking, or policy changes.
 
-<Note>
-  Detailed Enterprise BYOC support terms are coming soon. During Private Preview, Fireworks confirms support channels, escalation paths, and any deployment-specific operational expectations during onboarding.
-</Note>
+> [!NOTE]
+>
+> Detailed Enterprise BYOC support terms are coming soon. During Private Preview, Fireworks confirms support channels, escalation paths, and any deployment-specific operational expectations during onboarding.
 
 ## Upgrades
 

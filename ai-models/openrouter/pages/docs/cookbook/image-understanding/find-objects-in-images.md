@@ -16,9 +16,7 @@ Use this guide when you need to know where something is in an image, not only wh
 
 ## What you're building
 
-<Frame caption="Boxes around every screwdriver and a point on each hammer, from two requests to Moondream 3.1. Each request took under two seconds.">
-  <img src="https://mintcdn.com/openrouter-d02e98a0/ij25mP7SkzsfeYUD/assets/cookbook/image-understanding/find-objects-in-images/find-objects-in-images.webp?fit=max&auto=format&n=ij25mP7SkzsfeYUD&q=85&s=1fc473493092d034ccb97ff595439666" alt="A workshop bench with purple boxes around three screwdrivers and purple dots on two hammers" width="1360" height="768" data-path="assets/cookbook/image-understanding/find-objects-in-images/find-objects-in-images.webp" />
-</Frame>
+![A workshop bench with purple boxes around three screwdrivers and purple dots on two hammers](https://mintcdn.com/openrouter-d02e98a0/ij25mP7SkzsfeYUD/assets/cookbook/image-understanding/find-objects-in-images/find-objects-in-images.webp?fit=max\&auto=format\&n=ij25mP7SkzsfeYUD\&q=85\&s=1fc473493092d034ccb97ff595439666)
 
 Moondream models answer two slash commands in an ordinary chat completions request. Start the text of a user message with `/detect {"object":"screwdriver"}` and the model returns a bounding box for every match. Start it with `/point {"object":"hammer"}` and it returns one point per match. Both come back as JSON in `message.content`, with coordinates from 0 to 1 relative to the image, so you need no detection API, schema, or prompt engineering.
 
@@ -28,9 +26,9 @@ By the end, you will have a script that:
 2. Asks for a point on each instance of another.
 3. Draws the boxes and points on the photo and saves it as a PNG.
 
-<Tip>
-  Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to highlight the objects a user types in over the photo they upload, using this recipe.
-</Tip>
+> [!TIP]
+>
+> Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to highlight the objects a user types in over the photo they upload, using this recipe.
 
 ## Before you start
 

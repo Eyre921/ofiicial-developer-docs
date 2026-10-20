@@ -170,9 +170,9 @@ const approvePaymentTool = tool({
 
 When `onToolCalled` returns `null`, the conversation state moves to `status: 'awaiting_hitl'` and the paused call surfaces via `getToolCalls()` / `getPendingToolCalls()`. Resume by calling `callModel` again with a `function_call_output` item for each paused call in the input.
 
-<Note>
-  HITL tools differ from `requireApproval`: approval gates pause *before* execution for a yes/no decision, while HITL tools let `onToolCalled` run arbitrary logic first and only pause when it returns `null`. Use HITL when the decision is data-driven (e.g., amount thresholds, risk scoring); use `requireApproval` when you always want explicit human consent. See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state).
-</Note>
+> [!NOTE]
+>
+> HITL tools differ from `requireApproval`: approval gates pause *before* execution for a yes/no decision, while HITL tools let `onToolCalled` run arbitrary logic first and only pause when it returns `null`. Use HITL when the decision is data-driven (e.g., amount thresholds, risk scoring); use `requireApproval` when you always want explicit human consent. See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state).
 
 ## Schema Definition
 
@@ -411,9 +411,9 @@ const result = openrouter.callModel({
 });
 ```
 
-<Note>
-  `resolveContext` runs once at turn 0 to seed the context store. For per-turn mutations, use `setContext()` inside your tool's `execute` function.
-</Note>
+> [!NOTE]
+>
+> `resolveContext` runs once at turn 0 to seed the context store. For per-turn mutations, use `setContext()` inside your tool's `execute` function.
 
 ### Mutating Context with setContext
 
@@ -500,9 +500,9 @@ const result = openrouter.callModel({
 });
 ```
 
-<Note>
-  `context.local` is scoped to one tool. `context.shared` is visible to all tools and persists across turns. Pass the same `sharedSchema` to each tool for typed access, and `sharedContextSchema` to `callModel` for runtime validation.
-</Note>
+> [!NOTE]
+>
+> `context.local` is scoped to one tool. `context.shared` is visible to all tools and persists across turns. Pass the same `sharedSchema` to each tool for typed access, and `sharedContextSchema` to `callModel` for runtime validation.
 
 ## Tool Execution
 
@@ -716,9 +716,9 @@ type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = {
 
 The `tool.result` event provides the final output from tool execution along with all intermediate `preliminaryResults` that were yielded during execution (for generator tools). This is useful when you need both real-time progress updates and a summary of all progress at completion.
 
-<Warning>
-  The `source` field was added in `@openrouter/agent` 0.8.0. This is an additive breaking change for consumers that exhaustively matched (or constructed) `tool.result` events; add a `source` case, or spread it through, to keep type-checking clean.
-</Warning>
+> [!WARNING]
+>
+> The `source` field was added in `@openrouter/agent` 0.8.0. This is an additive breaking change for consumers that exhaustively matched (or constructed) `tool.result` events; add a `source` case, or spread it through, to keep type-checking clean.
 
 #### Narrowing MCP vs. client results
 

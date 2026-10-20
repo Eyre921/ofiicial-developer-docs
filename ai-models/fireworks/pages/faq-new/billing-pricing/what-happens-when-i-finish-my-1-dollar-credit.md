@@ -6,9 +6,9 @@ path: faq-new/billing-pricing/what-happens-when-i-finish-my-1-dollar-credit
 
 What happens when your $1 starter credit is depleted on Fireworks, how to add a payment method, enable auto top-up, and lift account spend tier limits.
 
-<Note>
-  Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
-</Note>
+> [!NOTE]
+>
+> Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 
 ## How credits are applied
 
@@ -52,6 +52,6 @@ When you finish your \$1 credit, the following occurs:
 
 Receipts for purchased credits are sent via Stripe upon purchase. Check your email for receipts from Stripe (not Fireworks). If you can't find your receipt, contact [community\_billing@fireworks.ai](mailto:community_billing@fireworks.ai).
 
-<Note>
-  For spend limits, tiers, and account-wide request limits, see [Account quotas](/guides/quotas_usage/account-quotas). For adaptive serverless TPM upper bounds, see [Serverless rate limits](/serverless/rate-limits).
-</Note>
+> [!NOTE]
+>
+> For spend limits, tiers, and account-wide request limits, see [Account quotas](/guides/quotas_usage/account-quotas). For adaptive serverless TPM upper bounds, see [Serverless rate limits](/serverless/rate-limits).

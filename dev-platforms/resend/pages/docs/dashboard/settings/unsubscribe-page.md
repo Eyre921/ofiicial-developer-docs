@@ -24,6 +24,6 @@ You can customize the following:
 
 <video />
 
-<Note>
-  Pro plan users or higher can also remove the “Powered by Resend” footer.
-</Note>
+> [!NOTE]
+>
+> Pro plan users or higher can also remove the “Powered by Resend” footer.

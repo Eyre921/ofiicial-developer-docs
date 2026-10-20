@@ -16,23 +16,21 @@ Use this guide when you want to turn a document, changelog, or article into a sh
 
 ## What you're building
 
-<Frame caption="A four-sentence paragraph about tides, scripted by a chat model and voiced by two speakers in one request. 49 seconds, $0.0074.">
-  <video controls playsInline preload="none" poster="/assets/cookbook/audio/two-voice-podcast/two-voice-podcast-poster.jpg" className="w-full aspect-video rounded-xl" src="https://mintcdn.com/openrouter-d02e98a0/ZIzjWwwi7QBT5P7F/assets/cookbook/audio/two-voice-podcast/two-voice-podcast.mp4?fit=max&auto=format&n=ZIzjWwwi7QBT5P7F&q=85&s=3d9c09295fa255c8f7eced521ae641ea" data-path="assets/cookbook/audio/two-voice-podcast/two-voice-podcast.mp4" />
-</Frame>
+<video controls playsInline preload="none" poster="/assets/cookbook/audio/two-voice-podcast/two-voice-podcast-poster.jpg" src="https://mintcdn.com/openrouter-d02e98a0/ZIzjWwwi7QBT5P7F/assets/cookbook/audio/two-voice-podcast/two-voice-podcast.mp4?fit=max&auto=format&n=ZIzjWwwi7QBT5P7F&q=85&s=3d9c09295fa255c8f7eced521ae641ea" />
 
-<Accordion title="Transcript">
-  **Host:** Welcome back! Today we're talking tides. Most people know the Moon causes them, but why do we get two high tides a day instead of just one?
-
-  **Guest:** It comes down to ocean bulges. The Moon's gravity pulls hardest on the ocean facing it, but it also creates a second bulge on the exact opposite side.
-
-  **Host:** Wait, on the far side too? How does the Moon pull water away from itself?
-
-  **Guest:** It pulls the Earth's center harder than the far water! Because the pull is weaker out there, the ocean stretches outward, forming that second bulge.
-
-  **Host:** Ah, so the Earth basically spins right beneath both of these bulges every day?
-
-  **Guest:** Exactly! Coastlines rotate through both, which is why we usually see two high and two low tides roughly every twenty-five hours.
-</Accordion>
+> **Transcript**
+>
+> **Host:** Welcome back! Today we're talking tides. Most people know the Moon causes them, but why do we get two high tides a day instead of just one?
+>
+> **Guest:** It comes down to ocean bulges. The Moon's gravity pulls hardest on the ocean facing it, but it also creates a second bulge on the exact opposite side.
+>
+> **Host:** Wait, on the far side too? How does the Moon pull water away from itself?
+>
+> **Guest:** It pulls the Earth's center harder than the far water! Because the pull is weaker out there, the ocean stretches outward, forming that second bulge.
+>
+> **Host:** Ah, so the Earth basically spins right beneath both of these bulges every day?
+>
+> **Guest:** Exactly! Coastlines rotate through both, which is why we usually see two high and two low tides roughly every twenty-five hours.
 
 The `/api/v1/audio/speech` endpoint accepts a list of turns as `input`, and each turn can name its own voice and delivery instructions. The model voices the whole conversation in one request and returns a single audio stream, so you never split the dialogue into per-line requests or stitch clips back together in order.
 
@@ -42,9 +40,9 @@ By the end, you will have a script that:
 2. Sends every turn to a Gemini TTS model in one request, with a different voice for each speaker.
 3. Saves the result as a WAV file you can play.
 
-<Tip>
-  Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to add a "listen to this post" button to your blog using this recipe.
-</Tip>
+> [!TIP]
+>
+> Building with a coding agent? Paste the URL of this page into Claude Code, Codex, or Cursor and ask it to add a "listen to this post" button to your blog using this recipe.
 
 ## Before you start
 

@@ -25,9 +25,9 @@ To create an organization:
 3. Follow the setup process to configure your organization details
 4. Invite team members to join your organization
 
-<Tip>
-  You must have a verified email address to create an organization.
-</Tip>
+> [!TIP]
+>
+> You must have a verified email address to create an organization.
 
 ### Switching Between Personal and Organization Accounts
 
@@ -55,9 +55,9 @@ Only organization administrators can:
 * View detailed billing information
 * Manage payment methods and invoicing settings
 
-<Warning>
-  Regular organization members cannot purchase credits or access billing information. Contact your organization administrator for credit-related requests.
-</Warning>
+> [!WARNING]
+>
+> Regular organization members cannot purchase credits or access billing information. Contact your organization administrator for credit-related requests.
 
 ### Transferring Credits from Personal to Organization
 
@@ -67,9 +67,9 @@ You can transfer eligible credits from your personal account to an organization 
 2. Select **Move credits to organization**
 3. Choose an eligible organization, review the amount, confirm the transfer, and select **Transfer**
 
-<Info>
-  Organizations that are invoiced or actively billed in arrears cannot receive transferred credits because they are billed by invoice instead of using a prepaid credit balance.
-</Info>
+> [!NOTE]
+>
+> Organizations that are invoiced or actively billed in arrears cannot receive transferred credits because they are billed by invoice instead of using a prepaid credit balance.
 
 The transfer dialog also enforces these restrictions:
 
@@ -94,9 +94,9 @@ Organizations provide flexible API key management with role-based permissions:
 * **Manage All Keys**: Full access to edit, disable, or delete any organization API key
 * **Monitor Usage**: Access to detailed usage analytics for all organization keys
 
-<Tip>
-  When creating API keys within an organization, consider using descriptive names that indicate the key's purpose or the team member responsible for it.
-</Tip>
+> [!TIP]
+>
+> When creating API keys within an organization, consider using descriptive names that indicate the key's purpose or the team member responsible for it.
 
 ## Activity and Usage Tracking
 
@@ -108,9 +108,9 @@ When viewing your activity feed while in organization context, you'll see:
 * **Metadata Only**: Activity shows model usage, costs, and request metadata
 * **Key Filtering**: Activity can be filtered by a specific API key to view usage for that key only
 
-<Warning>
-  **Known Limitation**: The activity feed currently shows all organization member activity when in organization context, not just your individual activity. Usage metadata (model used, cost, timing) is visible to all organization members.
-</Warning>
+> [!WARNING]
+>
+> **Known Limitation**: The activity feed currently shows all organization member activity when in organization context, not just your individual activity. Usage metadata (model used, cost, timing) is visible to all organization members.
 
 ### Usage Analytics
 
@@ -164,27 +164,25 @@ Organizations support role-based access control:
 
 ## Frequently Asked Questions
 
-<AccordionGroup>
-  <Accordion title="Can I convert my personal account to an organization?">
-    No, organizations are separate entities. You'll need to create a new organization and transfer resources as needed. Contact [support@openrouter.ai](mailto:support@openrouter.ai) for assistance with credit transfers.
-  </Accordion>
+> **Can I convert my personal account to an organization?**
+>
+> No, organizations are separate entities. You'll need to create a new organization and transfer resources as needed. Contact [support@openrouter.ai](mailto:support@openrouter.ai) for assistance with credit transfers.
 
-  <Accordion title="How many members can an organization have?">
-    An organization can only have 10 members. Contact support if you need more.
-  </Accordion>
+> **How many members can an organization have?**
+>
+> An organization can only have 10 members. Contact support if you need more.
 
-  <Accordion title="Can organization members see each other's usage data?">
-    Organization members can see usage metadata (model used, cost, timing) for all organization activity in the activity feed. OpenRouter does not store prompts or responses.
-  </Accordion>
+> **Can organization members see each other's usage data?**
+>
+> Organization members can see usage metadata (model used, cost, timing) for all organization activity in the activity feed. OpenRouter does not store prompts or responses.
 
-  <Accordion title="What happens if I leave an organization?">
-    When you leave an organization, you lose access to organization resources, credits, and API keys. Your personal account remains unaffected.
-  </Accordion>
+> **What happens if I leave an organization?**
+>
+> When you leave an organization, you lose access to organization resources, credits, and API keys. Your personal account remains unaffected.
 
-  <Accordion title="Can I be a member of multiple organizations?">
-    Yes, you can be a member of multiple organizations and switch between them using the organization switcher.
-  </Accordion>
-</AccordionGroup>
+> **Can I be a member of multiple organizations?**
+>
+> Yes, you can be a member of multiple organizations and switch between them using the organization switcher.
 
 ## Getting Help
 

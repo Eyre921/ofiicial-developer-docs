@@ -12,11 +12,11 @@ path: docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7
 
 > Migrate to Claude 4.7 Opus — sampling parameters removed, adaptive-only thinking, and new xhigh effort level
 
-<Note>
-  **Update · June 22, 2026**
-
-  As of June 22, 2026, OpenRouter maps `reasoning.effort` to Anthropic's `output_config.effort` on Claude 4.6 and newer models — previously it was ignored. `verbosity` is unchanged: it still sets `output_config.effort`, and wins if both are passed.
-</Note>
+> [!NOTE]
+>
+> **Update · June 22, 2026**
+>
+> As of June 22, 2026, OpenRouter maps `reasoning.effort` to Anthropic's `output_config.effort` on Claude 4.6 and newer models — previously it was ignored. `verbosity` is unchanged: it still sets `output_config.effort`, and wins if both are passed.
 
 ## What's New
 
@@ -99,9 +99,9 @@ A new `'xhigh'` effort level is available between `'high'` and `'max'` via the `
 
 The full effort scale is now: `low` → `medium` → `high` → `xhigh` → `max`.
 
-<Note>
-  `'xhigh'` is only supported on Claude 4.7 Opus. `'max'` is supported on Claude 4.6+. For older models, both automatically fall back to `'high'`.
-</Note>
+> [!NOTE]
+>
+> `'xhigh'` is only supported on Claude 4.7 Opus. `'max'` is supported on Claude 4.6+. For older models, both automatically fall back to `'high'`.
 
 ## Parameter Summary
 

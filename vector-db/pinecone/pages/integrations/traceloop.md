@@ -10,4 +10,4 @@ Instrument Pinecone with Traceloop's OpenLLMetry SDK to emit OpenTelemetry trace
 
 The Pinecone integration with Traceloop produces traces and metrics that you can view in any OpenTelemetry-based platform, such as Datadog, Grafana, or Traceloop.
 
-<PrimarySecondaryCTA />
+[Get started](https://www.traceloop.com/docs/openllmetry/getting-started-python)

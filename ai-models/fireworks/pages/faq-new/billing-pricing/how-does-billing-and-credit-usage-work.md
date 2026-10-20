@@ -6,9 +6,9 @@ path: faq-new/billing-pricing/how-does-billing-and-credit-usage-work
 
 How Fireworks pre-paid credits work across serverless, on-demand deployments, and fine-tuning, plus auto top-up, budget caps, and balance-zero behavior.
 
-<Note>
-  Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
-</Note>
+> [!NOTE]
+>
+> Contracted customers may have the option to move to post-paid billing. [Contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 
 Fireworks operates on a **pre-paid credits** billing system. You purchase credits to use the platform:
 
@@ -19,10 +19,10 @@ Fireworks operates on a **pre-paid credits** billing system. You purchase credit
 * Separately, you can set a monthly spend limit for your usage. Adding credits does not raise this limit.
 * Total Spend can lag live traffic by a day or more, especially for newly launched models. A jump in spend is often delayed aggregation, not a traffic spike.
 
-<Note>
-  Enterprise accounts do not have the same self-serve limits. Their monthly spend alerts track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
-</Note>
+> [!NOTE]
+>
+> Enterprise accounts do not have the same self-serve limits. Their monthly spend alerts track the cost of Fireworks usage, including usage paid for with credits. Adding credits itself does not count as spend. See [Enterprise quotas](/faq/enterprise/service/quotas) for more information.
 
-<Tip>
-  For details on spend limits and quota controls, see our [Account quotas guide](/guides/quotas_usage/account-quotas#view-and-adjust-your-spend-limit).
-</Tip>
+> [!TIP]
+>
+> For details on spend limits and quota controls, see our [Account quotas guide](/guides/quotas_usage/account-quotas#view-and-adjust-your-spend-limit).

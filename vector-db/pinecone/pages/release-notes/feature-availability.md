@@ -22,6 +22,6 @@ The availability phases are used to communicate the maturity and stability of a 
 
 * **End of life (EOL)**: Removed, and no longer supported or available.
 
-<Note>
-  A feature is in **general availability** unless explicitly marked otherwise.
-</Note>
+> [!NOTE]
+>
+> A feature is in **general availability** unless explicitly marked otherwise.

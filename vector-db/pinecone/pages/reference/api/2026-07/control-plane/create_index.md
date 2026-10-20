@@ -36,259 +36,257 @@ For managed (serverless) indexes, the `cloud` and `region` fields in `deployment
 
 The cloud and region can't be changed after a serverless index is created.
 
-<Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
-</Note>
+> [!NOTE]
+>
+> On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
 For BYOC indexes, set `deployment.environment` to the environment ID provisioned for your account instead. See [Bring Your Own Cloud](/guides/production/bring-your-own-cloud) for details.
 
-<RequestExample>
-  ```python Python theme={null}
-  # pip install --upgrade pinecone
-  import os
-  from pinecone import Pinecone, SchemaBuilder
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone, SchemaBuilder
 
-  pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
-  schema = (
-      SchemaBuilder()
-        .add_string_field(name="title", full_text_search={})
-        .add_string_field(name="body", full_text_search={"language": "en", "stemming": True, "stop_words": True})
-        .build()
-  )
+schema = (
+    SchemaBuilder()
+      .add_string_field(name="title", full_text_search={})
+      .add_string_field(name="body", full_text_search={"language": "en", "stemming": True, "stop_words": True})
+      .build()
+)
 
-  index_model = pc.indexes.create(
-      name="articles",
-      schema=schema,
-      read_capacity={"mode": "OnDemand"},
-  )
+index_model = pc.indexes.create(
+    name="articles",
+    schema=schema,
+    read_capacity={"mode": "OnDemand"},
+)
 
-  host = index_model.host
-  ```
+host = index_model.host
+```
 
-  ```javascript JavaScript theme={null}
-  // npm install @pinecone-database/pinecone
-  import { Pinecone } from '@pinecone-database/pinecone';
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
 
-  // Reads PINECONE_API_KEY from the environment
-  const pc = new Pinecone();
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
 
-  const indexModel = await pc.indexes.create({
-    name: 'articles',
-    schema: {
-      fields: {
-        title: {
-          type: 'string',
-          fullTextSearch: {},
-        },
-        body: {
-          type: 'string',
-          fullTextSearch: {
-            language: 'en',
-            stemming: true,
-            stopWords: true,
-          },
+const indexModel = await pc.indexes.create({
+  name: 'articles',
+  schema: {
+    fields: {
+      title: {
+        type: 'string',
+        fullTextSearch: {},
+      },
+      body: {
+        type: 'string',
+        fullTextSearch: {
+          language: 'en',
+          stemming: true,
+          stopWords: true,
         },
       },
     },
-    readCapacity: {
-      mode: 'OnDemand',
+  },
+  readCapacity: {
+    mode: 'OnDemand',
+  },
+});
+
+const host = indexModel.host;
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    language := "en"
+    stemming := true
+    stopWords := true
+
+    idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
+        Name: "articles",
+        Schema: pinecone.IndexSchema{
+            Fields: map[string]pinecone.IndexSchemaField{
+                "title": {
+                    String: &pinecone.StringField{
+                        FullTextSearch: &pinecone.FullTextSearchConfig{},
+                    },
+                },
+                "body": {
+                    String: &pinecone.StringField{
+                        FullTextSearch: &pinecone.FullTextSearchConfig{
+                            Language:  &language,
+                            Stemming:  &stemming,
+                            StopWords: &stopWords,
+                        },
+                    },
+                },
+            },
+        },
+        ReadCapacity: &pinecone.ReadCapacityParams{
+            OnDemand: &pinecone.ReadCapacityOnDemandConfig{},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to create index: %v", err)
+    }
+
+    host := idx.Host
+    fmt.Println(host)
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+# EXAMPLE REQUEST 1: On-demand read capacity (default)
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "articles",
+    "deployment": {
+      "deployment_type": "managed",
+      "cloud": "aws",
+      "region": "us-east-1"
     },
-  });
-
-  const host = indexModel.host;
-  ```
-
-  ```go Go theme={null}
-  package main
-
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
-
-      "github.com/pinecone-io/go-pinecone/v7/pinecone"
-  )
-
-  func main() {
-      ctx := context.Background()
-
-      pc, err := pinecone.NewClient(pinecone.NewClientParams{
-          ApiKey: os.Getenv("PINECONE_API_KEY"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create Client: %v", err)
-      }
-
-      language := "en"
-      stemming := true
-      stopWords := true
-
-      idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
-          Name: "articles",
-          Schema: pinecone.IndexSchema{
-              Fields: map[string]pinecone.IndexSchemaField{
-                  "title": {
-                      String: &pinecone.StringField{
-                          FullTextSearch: &pinecone.FullTextSearchConfig{},
-                      },
-                  },
-                  "body": {
-                      String: &pinecone.StringField{
-                          FullTextSearch: &pinecone.FullTextSearchConfig{
-                              Language:  &language,
-                              Stemming:  &stemming,
-                              StopWords: &stopWords,
-                          },
-                      },
-                  },
-              },
-          },
-          ReadCapacity: &pinecone.ReadCapacityParams{
-              OnDemand: &pinecone.ReadCapacityOnDemandConfig{},
-          },
-      })
-      if err != nil {
-          log.Fatalf("Failed to create index: %v", err)
-      }
-
-      host := idx.Host
-      fmt.Println(host)
-  }
-  ```
-
-  ```shell curl theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-
-  # EXAMPLE REQUEST 1: On-demand read capacity (default)
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "title": {
-            "type": "string",
-            "full_text_search": {}
-          },
-          "body": {
-            "type": "string",
-            "full_text_search": {}
-          }
-        }
-      },
-      "read_capacity": { "mode": "OnDemand" },
-      "deletion_protection": "disabled"
-    }'
-
-  # EXAMPLE REQUEST 2: Dedicated read capacity
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles-dedicated",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "content": {
-            "type": "string",
-            "full_text_search": {}
-          }
-        }
-      },
-      "read_capacity": {
-        "mode": "Dedicated",
-        "dedicated": {
-          "node_type": "b1",
-          "scaling": "Manual",
-          "manual": { "shards": 1, "replicas": 1 }
-        }
-      },
-      "deletion_protection": "disabled"
-    }'
-
-  # EXAMPLE REQUEST 3: Multi-field schema (text + dense + sparse ranking fields)
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "articles-multifield",
-      "deployment": {
-        "deployment_type": "managed",
-        "cloud": "aws",
-        "region": "us-east-1"
-      },
-      "schema": {
-        "fields": {
-          "title":     { "type": "string",        "full_text_search": {} },
-          "body":      { "type": "string",        "full_text_search": { "language": "en", "stemming": true, "stop_words": true } },
-          "embedding": { "type": "dense_vector",  "dimension": 1536, "metric": "cosine" },
-          "sparse_embedding": { "type": "sparse_vector" }
+    "schema": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "full_text_search": {}
+        },
+        "body": {
+          "type": "string",
+          "full_text_search": {}
         }
       }
-    }'
+    },
+    "read_capacity": { "mode": "OnDemand" },
+    "deletion_protection": "disabled"
+  }'
 
-  # EXAMPLE REQUEST 4: Bring-your-own-cloud (BYOC) deployment.
-  # BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "byoc-index",
-      "deployment": {
-        "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921.byoc"
-      },
-      "read_capacity": {
-        "mode": "Dedicated",
-        "dedicated": {
-          "node_type": "b1",
-          "scaling": "Manual",
-          "manual": { "shards": 1, "replicas": 1 }
-        }
-      },
-      "schema": {
-        "fields": {
-          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+# EXAMPLE REQUEST 2: Dedicated read capacity
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "articles-dedicated",
+    "deployment": {
+      "deployment_type": "managed",
+      "cloud": "aws",
+      "region": "us-east-1"
+    },
+    "schema": {
+      "fields": {
+        "content": {
+          "type": "string",
+          "full_text_search": {}
         }
       }
-    }'
-
-  # EXAMPLE REQUEST 5: BYOC deployment with on-demand read capacity.
-  # The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
-  curl "https://api.pinecone.io/indexes" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-      "name": "byoc-on-demand-index",
-      "deployment": {
-        "deployment_type": "byoc",
-        "environment": "aws-us-east-1-b921.byoc"
-      },
-      "read_capacity": {
-        "mode": "OnDemand"
-      },
-      "schema": {
-        "fields": {
-          "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
-        }
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": { "shards": 1, "replicas": 1 }
       }
-    }'
-  ```
-</RequestExample>
+    },
+    "deletion_protection": "disabled"
+  }'
+
+# EXAMPLE REQUEST 3: Multi-field schema (text + dense + sparse ranking fields)
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "articles-multifield",
+    "deployment": {
+      "deployment_type": "managed",
+      "cloud": "aws",
+      "region": "us-east-1"
+    },
+    "schema": {
+      "fields": {
+        "title":     { "type": "string",        "full_text_search": {} },
+        "body":      { "type": "string",        "full_text_search": { "language": "en", "stemming": true, "stop_words": true } },
+        "embedding": { "type": "dense_vector",  "dimension": 1536, "metric": "cosine" },
+        "sparse_embedding": { "type": "sparse_vector" }
+      }
+    }
+  }'
+
+# EXAMPLE REQUEST 4: Bring-your-own-cloud (BYOC) deployment.
+# BYOC indexes support on-demand and dedicated read capacity. This example uses dedicated.
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "byoc-index",
+    "deployment": {
+      "deployment_type": "byoc",
+      "environment": "aws-us-east-1-b921.byoc"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": { "shards": 1, "replicas": 1 }
+      }
+    },
+    "schema": {
+      "fields": {
+        "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+      }
+    }
+  }'
+
+# EXAMPLE REQUEST 5: BYOC deployment with on-demand read capacity.
+# The index runs on the shared on-demand pool in your BYOC cluster, so no shards or replicas are set.
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "byoc-on-demand-index",
+    "deployment": {
+      "deployment_type": "byoc",
+      "environment": "aws-us-east-1-b921.byoc"
+    },
+    "read_capacity": {
+      "mode": "OnDemand"
+    },
+    "schema": {
+      "fields": {
+        "embedding": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+      }
+    }
+  }'
+```

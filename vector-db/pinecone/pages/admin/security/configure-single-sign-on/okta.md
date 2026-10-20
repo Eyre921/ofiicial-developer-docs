@@ -8,7 +8,9 @@ Set up SAML single sign-on between Pinecone and Okta so your organization member
 
 This page describes how to set up Pinecone with Okta as the single sign-on (SSO) provider. You can adapt these instructions for any provider with SAML 2.0 support.
 
-<Note>SSO is available on Standard and Enterprise plans.</Note>
+> [!NOTE]
+>
+> SSO is available on Standard and Enterprise plans.
 
 ## Before you begin
 
@@ -61,9 +63,9 @@ Keep this window or browser tab open. You'll come back to it in [Step 4](#4-comp
    * **Name**: `email`
    * **Value**: `user.email`
 
-   <Note>
-     In newer versions of Okta, attribute statements are configured on the app's **Sign On** tab after the app is created, rather than in the app creation wizard. If you don't see the **Attribute Statements (SAML)** section here, finish creating the app, then add the attribute from **Applications > Pinecone > Sign On**, expanding **Show legacy configuration** if needed.
-   </Note>
+   > [!NOTE]
+   >
+   > In newer versions of Okta, attribute statements are configured on the app's **Sign On** tab after the app is created, rather than in the app creation wizard. If you don't see the **Attribute Statements (SAML)** section here, finish creating the app, then add the attribute from **Applications > Pinecone > Sign On**, expanding **Show legacy configuration** if needed.
 
 10. Click **Next**.
 
@@ -78,9 +80,9 @@ Next, in Okta, get the URL and certificate for the Pinecone application you just
 3. Copy the **Sign on URL**.
 4. Download the **Signing Certificate**.
 
-   <Warning>
-     Download the certificate, don't copy it. The downloaded version contains necessary `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines.
-   </Warning>
+   > [!WARNING]
+   >
+   > Download the certificate, don't copy it. The downloaded version contains necessary `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines.
 
 ## 4. Complete SSO setup in Pinecone
 
@@ -92,9 +94,9 @@ Return to the browser tab or window you kept open in [Step 1](#1-start-sso-setup
    * **Email domain**: Your company's email domain. To target multiple domains, enter each domain separated by a comma.
    * **Certificate**: The contents of the certificate file you copied in [Step 3](#3-get-the-sign-on-url-and-certificate-from-okta).
 
-     <Warning>
-       When pasting the certificate, include the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines.
-     </Warning>
+     > [!WARNING]
+     >
+     > When pasting the certificate, include the `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` lines.
 
 2. Choose whether to **Enforce SSO for all users**.
 
@@ -105,20 +107,20 @@ Return to the browser tab or window you kept open in [Step 1](#1-start-sso-setup
 
 4. Select a **Default role** for all users who log in with SSO. You can change user roles later.
 
-   <Note>
-     The **Default role** doesn't apply if you enable [SAML role management](/admin/security/configure-single-sign-on/okta-role-management). In that mode, every user's organization and project roles come entirely from your identity provider's SAML attributes.
-   </Note>
+   > [!NOTE]
+   >
+   > The **Default role** doesn't apply if you enable [SAML role management](/admin/security/configure-single-sign-on/okta-role-management). In that mode, every user's organization and project roles come entirely from your identity provider's SAML attributes.
 
-   <Warning>
-     When users first log in through SSO, they receive the default SSO role regardless of their previous role. Subsequent SSO logins do not change the role. If the default is **Member** or **Manager**, existing owners lose owner access on their first SSO login.
-
-     To prevent losing access to organization management features:
-
-     * **Sole owner**: Temporarily set the default to **Owner**, log in through SSO to retain owner access, then change the default back to **Member**. After changing it back, check your organization's user list to verify no one else logged in through SSO while the default was **Owner**. If they did, adjust their roles.
-     * **Multiple owners**: Keep at least one owner signed in with email while others log in through SSO. That owner can restore roles as needed, then log in through SSO last.
-
-     If all owners lose access, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-   </Warning>
+   > [!WARNING]
+   >
+   > When users first log in through SSO, they receive the default SSO role regardless of their previous role. Subsequent SSO logins do not change the role. If the default is **Member** or **Manager**, existing owners lose owner access on their first SSO login.
+   >
+   > To prevent losing access to organization management features:
+   >
+   > * **Sole owner**: Temporarily set the default to **Owner**, log in through SSO to retain owner access, then change the default back to **Member**. After changing it back, check your organization's user list to verify no one else logged in through SSO while the default was **Owner**. If they did, adjust their roles.
+   > * **Multiple owners**: Keep at least one owner signed in with email while others log in through SSO. That owner can restore roles as needed, then log in through SSO last.
+   >
+   > If all owners lose access, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
 Okta is now ready for single sign-on. To add users and groups, see the [Okta docs](https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-main.htm).
 

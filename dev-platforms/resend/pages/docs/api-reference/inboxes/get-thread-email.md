@@ -7,170 +7,147 @@ path: docs/api-reference/inboxes/get-thread-email
 GET /inboxes/:inbox_id/threads/:thread_id/emails/:email_id
 Retrieve a single message from a thread.
 
-<Warning>
-  Inboxes are currently in private beta and only available to a limited
-  number of users. The response shape might change before GA.
-
-  <span />
-
-  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the new methods:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.33.0
-    ```
-
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.25.0
-    ```
-  </CodeGroup>
-</Warning>
-
 Returns one message of a thread. Each item from [List Thread
 Emails](/docs/api-reference/inboxes/list-thread-emails) has this shape.
 
 ## Path Parameters
 
-<ResendParamField type="string">
-  The Inbox ID or the inbox email address, such as `support@example.com`.
-</ResendParamField>
+The Inbox ID or the inbox email address, such as `support@example.com`.
 
-<ResendParamField type="string">
-  The Thread ID.
-</ResendParamField>
+The Thread ID.
 
-<ResendParamField type="string">
-  The Email ID, as returned by [List Thread
-  Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`.
-</ResendParamField>
+The Email ID, as returned by [List Thread
+Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`.
 
 ## Response Fields
 
-<ParamField type="string">
-  The ID of the message.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  Whether the message was received by the inbox or sent from it. One of
-  `inbound` or `outbound`. A message the inbox sent to itself is `inbound`, so a
-  reply to it goes to its sender.
-</ParamField>
+The ID of the message.
 
-<ParamField type="string">
-  Sender email address. Includes the display name when the sender has one, in
-  the format `Name <sender@domain.com>`.
-</ParamField>
+**direction** `string`
 
-<ParamField type="string[]">
-  The recipients of the message. For a received message, these are the addresses
-  it was delivered to, not the full `To` header.
-</ParamField>
+Whether the message was received by the inbox or sent from it. One of
+`inbound` or `outbound`. A message the inbox sent to itself is `inbound`, so a
+reply to it goes to its sender.
 
-<ParamField type="string[]">
-  The CC recipients of the message.
-</ParamField>
+**from** `string`
 
-<ParamField type="string[]">
-  The BCC recipients of the message. Always empty for a received message.
-</ParamField>
+Sender email address. Includes the display name when the sender has one, in
+the format `Name <sender@domain.com>`.
 
-<ParamField type="string[]">
-  The Reply-To addresses.
-</ParamField>
+**to** `string[]`
 
-<ParamField type="string | null">
-  The subject of the message.
-</ParamField>
+The recipients of the message. For a received message, these are the addresses
+it was delivered to, not the full `To` header.
 
-<ParamField type="string | null">
-  The Message-ID header of the message.
-</ParamField>
+**cc** `string[]`
 
-<ParamField type="string | null">
-  The HTML body.
-</ParamField>
+The CC recipients of the message.
 
-<ParamField type="string | null">
-  The plain-text body.
-</ParamField>
+**bcc** `string[]`
 
-<ParamField type="array">
-  The attachments on the message.
+The BCC recipients of the message. Always empty for a received message.
 
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the attachment.
-    </ParamField>
+**reply\_to** `string[]`
 
-    <ParamField type="string | null">
-      The filename of the attachment.
-    </ParamField>
+The Reply-To addresses.
 
-    <ParamField type="number | null">
-      The size of the attachment in bytes.
-    </ParamField>
-  </Expandable>
-</ParamField>
+**subject** `string | null`
 
-<ParamField type="boolean">
-  Whether the message has been read.
-</ParamField>
+The subject of the message.
 
-<ParamField type="string">
-  ISO 8601 timestamp when the inbox received the message, or when the inbox sent
-  it.
-</ParamField>
+**message\_id** `string | null`
 
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
+The Message-ID header of the message.
 
-  const resend = new Resend('re_xxxxxxxxx');
+**html** `string | null`
 
-  const { data, error } = await resend.inboxes.threads.emails.get({
-    inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
-    threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
-    emailId: '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60',
-  });
-  ```
+The HTML body.
 
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/emails/5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
+**text** `string | null`
 
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend inboxes threads emails get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
-  ```
-</RequestExample>
+The plain-text body.
 
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
-    "direction": "inbound",
-    "from": "Ada Lovelace <ada@example.org>",
-    "to": ["support@example.com"],
-    "cc": [],
-    "bcc": [],
-    "reply_to": ["replies@example.org"],
-    "subject": "Refund for order 1041",
-    "message_id": "<1041@example.org>",
-    "html": "<p>Could I get a refund for order 1041?</p>",
-    "text": "Could I get a refund for order 1041?",
-    "attachments": [
-      {
-        "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-        "filename": "receipt.pdf",
-        "size": 20841
-      }
-    ],
-    "read": false,
-    "received_at": "2026-08-05T14:03:11.229Z"
-  }
-  ```
-</ResponseExample>
+**attachments** `array`
+
+The attachments on the message.
+
+**properties**
+
+**id** `string`
+
+The ID of the attachment.
+
+**filename** `string | null`
+
+The filename of the attachment.
+
+**size** `number | null`
+
+The size of the attachment in bytes.
+
+**read** `boolean`
+
+Whether the message has been read.
+
+**received\_at** `string`
+
+ISO 8601 timestamp when the inbox received the message, or when the inbox sent
+it.
+
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.inboxes.threads.emails.get({
+  inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+  threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
+  emailId: '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60',
+});
+```
+
+```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+$resend = Resend::client('re_xxxxxxxxx');
+
+$resend->inboxes->threads->emails->get(
+  'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
+  '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
+  '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60'
+);
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/emails/5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend inboxes threads emails get b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12 5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+  "direction": "inbound",
+  "from": "Ada Lovelace <ada@example.org>",
+  "to": ["support@example.com"],
+  "cc": [],
+  "bcc": [],
+  "reply_to": ["replies@example.org"],
+  "subject": "Refund for order 1041",
+  "message_id": "<1041@example.org>",
+  "html": "<p>Could I get a refund for order 1041?</p>",
+  "text": "Could I get a refund for order 1041?",
+  "attachments": [
+    {
+      "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
+      "filename": "receipt.pdf",
+      "size": 20841
+    }
+  ],
+  "read": false,
+  "received_at": "2026-08-05T14:03:11.229Z"
+}
+```

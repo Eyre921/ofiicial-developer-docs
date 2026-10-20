@@ -33,9 +33,9 @@ Add a replica when this exceeds 80%. Averaging over a window keeps a brief spike
 
 Throughput scales approximately linearly with replicas. For high availability, allocate `n+1` replicas, where `n` is the minimum number of replicas required to serve your expected throughput at your target latency. See [Number of replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas).
 
-<Tip>
-  If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](/guides/index-data/dedicated-read-nodes/tune-queries) to trade some recall for higher throughput.
-</Tip>
+> [!TIP]
+>
+> If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](/guides/index-data/dedicated-read-nodes/tune-queries) to trade some recall for higher throughput.
 
 To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2026-07/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
@@ -47,88 +47,84 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
 
 ### Example
 
-<CodeGroup>
-  ```bash Request expandable theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_NAME="YOUR_INDEX_NAME"
+```bash Request expandable theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_NAME="YOUR_INDEX_NAME"
 
-  curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-       -H "Accept: application/json" \
-       -H "Content-Type: application/json" \
-       -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2026-07" \
-       -d '{
-             "read_capacity": {
-               "mode": "Dedicated",
-               "dedicated": {
-                 "scaling": "Manual",
-                 "manual": {
-                   "replicas": 2
-                 }
+curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "Api-Key: $PINECONE_API_KEY" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -d '{
+           "read_capacity": {
+             "mode": "Dedicated",
+             "dedicated": {
+               "scaling": "Manual",
+               "manual": {
+                 "replicas": 2
                }
              }
-           }'
-  ```
-</CodeGroup>
+           }
+         }'
+```
 
-<CodeGroup>
-  ```jsonc Response expandable theme={null}
-  {
-    "name": "example-dedicated-index",
+```jsonc Response expandable theme={null}
+{
+  "name": "example-dedicated-index",
+  "status": {
+    "ready": true,
+    "state": "Ready"
+  },
+  "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
+  "deployment": {
+    "deployment_type": "managed",
+    "region": "us-east-1",
+    "cloud": "aws",
+    "environment": "aped-4627-b74a"
+  },
+  "read_capacity": {
+    "mode": "Dedicated",
+    "dedicated": {
+      "node_type": "b1",
+      "scaling": "Manual",
+      "manual": {
+        "shards": 1,
+        "replicas": 2 // <---- desired state
+      }
+    },
     "status": {
-      "ready": true,
-      "state": "Ready"
-    },
-    "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "deployment": {
-      "deployment_type": "managed",
-      "region": "us-east-1",
-      "cloud": "aws",
-      "environment": "aped-4627-b74a"
-    },
-    "read_capacity": {
-      "mode": "Dedicated",
-      "dedicated": {
-        "node_type": "b1",
-        "scaling": "Manual",
-        "manual": {
-          "shards": 1,
-          "replicas": 2 // <---- desired state
-        }
-      },
-      "status": {
-        "state": "Scaling",
-        "current_shards": 1,
-        "current_replicas": 1 // <---- current state
-      }
-    },
-    "schema": {
-      "fields": {
-        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
-      }
-    },
-    "deletion_protection": "disabled",
-    "tags": null
-  }
-  ```
-</CodeGroup>
+      "state": "Scaling",
+      "current_shards": 1,
+      "current_replicas": 1 // <---- current state
+    }
+  },
+  "schema": {
+    "fields": {
+      "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
+    }
+  },
+  "deletion_protection": "disabled",
+  "tags": null
+}
+```
 
-<Note>
-  Configuration change limits:
-
-  * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
-  * A new configuration change can only be initiated after the previous configuration change has completed.
-  * Each configuration change can take up to 30 minutes to complete.
-  * Read and write operations continue normally during configuration changes.
-</Note>
+> [!NOTE]
+>
+> Configuration change limits:
+>
+> * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
+> * A new configuration change can only be initiated after the previous configuration change has completed.
+> * Each configuration change can take up to 30 minutes to complete.
+> * Read and write operations continue normally during configuration changes.
 
 ## Add or remove shards
 
 [Index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness) reflects data volume. Writes are blocked once the index reaches capacity, while reads continue normally.
 
-<Note>
-  [Add shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) when [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
-</Note>
+> [!NOTE]
+>
+> [Add shards](/guides/index-data/dedicated-read-nodes/scale#add-or-remove-shards) when [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness) reaches 70-80%, especially if you expect continued growth. Adding shards reduces storage fullness (index data is spread across shards, so each stores less) and memory fullness (with less data per shard, there's less to cache in memory), helping you avoid write failures.
 
 To check the current value, see [Monitor index fullness](/guides/index-data/dedicated-read-nodes/manage#monitor-index-fullness).
 
@@ -142,77 +138,73 @@ To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shard
 
 ### Example
 
-<CodeGroup>
-  ```bash Request expandable theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_NAME="YOUR_INDEX_NAME"
+```bash Request expandable theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_NAME="YOUR_INDEX_NAME"
 
-  curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-       -H "Accept: application/json" \
-       -H "Content-Type: application/json" \
-       -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2026-07" \
-       -d '{
-             "read_capacity": {
-               "mode": "Dedicated",
-               "dedicated": {
-                 "scaling": "Manual",
-                 "manual": {
-                   "shards": 3
-                 }
+curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "Api-Key: $PINECONE_API_KEY" \
+     -H "X-Pinecone-Api-Version: 2026-07" \
+     -d '{
+           "read_capacity": {
+             "mode": "Dedicated",
+             "dedicated": {
+               "scaling": "Manual",
+               "manual": {
+                 "shards": 3
                }
              }
-           }'
-  ```
-</CodeGroup>
+           }
+         }'
+```
 
-<CodeGroup>
-  ```jsonc Response expandable theme={null}
-  {
-    "name": "example-dedicated-index",
+```jsonc Response expandable theme={null}
+{
+  "name": "example-dedicated-index",
+  "status": {
+    "ready": true,
+    "state": "Ready"
+  },
+  "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
+  "deployment": {
+    "deployment_type": "managed",
+    "region": "us-east-1",
+    "cloud": "aws",
+    "environment": "aped-4627-b74a"
+  },
+  "read_capacity": {
+    "mode": "Dedicated",
+    "dedicated": {
+      "node_type": "b1",
+      "scaling": "Manual",
+      "manual": {
+        "shards": 3, // <---- desired state
+        "replicas": 1
+      }
+    },
     "status": {
-      "ready": true,
-      "state": "Ready"
-    },
-    "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "deployment": {
-      "deployment_type": "managed",
-      "region": "us-east-1",
-      "cloud": "aws",
-      "environment": "aped-4627-b74a"
-    },
-    "read_capacity": {
-      "mode": "Dedicated",
-      "dedicated": {
-        "node_type": "b1",
-        "scaling": "Manual",
-        "manual": {
-          "shards": 3, // <---- desired state
-          "replicas": 1
-        }
-      },
-      "status": {
-        "state": "Scaling",
-        "current_shards": 2, // <---- current state
-        "current_replicas": 1
-      }
-    },
-    "schema": {
-      "fields": {
-        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
-      }
-    },
-    "deletion_protection": "disabled",
-    "tags": null
-  }
-  ```
-</CodeGroup>
+      "state": "Scaling",
+      "current_shards": 2, // <---- current state
+      "current_replicas": 1
+    }
+  },
+  "schema": {
+    "fields": {
+      "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
+    }
+  },
+  "deletion_protection": "disabled",
+  "tags": null
+}
+```
 
-<Note>
-  Configuration change limits:
-
-  * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
-  * A new configuration change can only be initiated after the previous configuration change has completed.
-  * Each configuration change can take up to 30 minutes to complete.
-  * Read and write operations continue normally during configuration changes.
-</Note>
+> [!NOTE]
+>
+> Configuration change limits:
+>
+> * You can make one configuration change every ten minutes, but you can batch multiple changes (node type, shards, and replicas) in a single request.
+> * A new configuration change can only be initiated after the previous configuration change has completed.
+> * Each configuration change can take up to 30 minutes to complete.
+> * Read and write operations continue normally during configuration changes.

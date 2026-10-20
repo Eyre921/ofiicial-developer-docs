@@ -745,7 +745,7 @@ Two `chat.agent()` options wire an agent to verified inbound webhooks. `events` 
 ```ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
-import { slack, webhookSource } from "@trigger.dev/slack";
+import { appMentions, slack, webhookSource } from "@trigger.dev/slack";
 
 const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
 const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
@@ -762,7 +762,14 @@ export const orderEvents = chat.event({
 export const myChat = chat.agent({
   id: "my-chat",
   events: [orderEvents],
-  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "support-slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   onAction: async ({ action }) => {
     // A verified order-events delivery arrives here as an action.
   },
@@ -10299,6 +10306,124 @@ If the body of `onRecoveryBoot` throws (or rejects), the runtime logs a warning 
 * [Lifecycle hooks](/docs/ai-chat/lifecycle-hooks) — where `onRecoveryBoot` sits in the broader hook taxonomy.
 
 
+# Redact chat content from traces
+Source: https://trigger.dev/docs/ai-chat/patterns/redacting-telemetry
+
+Stop a chat agent recording user messages and clientData on its spans, turn off AI SDK prompt and response recording, or redact span content with a span processor before it leaves the worker.
+
+A chat agent's run trace records conversation content by default: the user's message and the `clientData` your frontend sends. When AI SDK telemetry is on, it also records the prompts and responses of each model call. This page covers the three controls that change that, and what they don't cover.
+
+## What the run trace records
+
+| Span | Content | Control |
+| - | - | - |
+| `chat turn N` | The last user message (`chat.user_message`) and its first 80 characters as the span preview | `telemetry.recordUserMessage` |
+| `chat turn N` | The raw `clientData` (`chat.client_data`) | `telemetry.recordClientData` |
+| `pending message injected` | Messages sent mid-turn (`pending.messages`) | `telemetry.recordUserMessage` |
+| AI SDK model call spans, when AI SDK telemetry is on | Prompt messages, response text, tool calls | `experimental_telemetry` on the model call |
+| Any span | Everything above, plus your own attributes and span events | A span processor |
+
+## Stop recording chat content
+
+Set `telemetry` on the agent to stop the chat runtime recording the user's message and `clientData` on its spans. Both default to `true`.
+
+```ts /trigger/support-agent.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+
+export const supportAgent = chat.agent({
+  id: "support-agent",
+  telemetry: { recordUserMessage: false, recordClientData: false },
+  run: async ({ messages, signal, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+});
+```
+
+The spans still appear in the trace with their timings and token usage. The turn spans have no preview text.
+
+## Stop the AI SDK recording prompts and responses
+
+AI SDK model call spans appear when AI SDK telemetry is on: [`chat.prompt.set()`](/docs/ai-chat/backend#using-prompts) turns it on for you, or you pass `experimental_telemetry` yourself. Those spans include prompts and responses unless you turn that off with `recordInputs` and `recordOutputs`:
+
+```ts /trigger/support-agent.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+
+export const supportAgent = chat.agent({
+  id: "support-agent",
+  telemetry: { recordUserMessage: false, recordClientData: false },
+  run: async ({ messages, signal, streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      abortSignal: signal,
+      // Replaces any telemetry config from chat.prompt.set(), so keep isEnabled on
+      experimental_telemetry: { isEnabled: true, recordInputs: false, recordOutputs: false },
+    }),
+});
+```
+
+If you use `chat.prompt.set()`, your `experimental_telemetry` replaces the one it adds, including the metadata that links each generation to its prompt version. To keep that link, redact with a span processor instead.
+
+## Redact instead of dropping
+
+To keep the content but strip sensitive values from it, add a span processor in `trigger.config.ts`. It runs on every span before export, so one processor covers the chat runtime's spans, the AI SDK spans and your own.
+
+```ts trigger.config.ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
+import type { AttributeValue, Attributes } from "@opentelemetry/api";
+import type { SpanProcessor } from "@opentelemetry/sdk-trace-base";
+
+const EMAIL = /[\w.+-]+@[\w-]+\.[\w.]+/g;
+
+function redact(value: AttributeValue | undefined): AttributeValue | undefined {
+  if (typeof value === "string") return value.replace(EMAIL, "[email]");
+  // Some attributes are string arrays, like the messages sent mid-turn
+  if (Array.isArray(value)) {
+    return value.map((item) =>
+      typeof item === "string" ? item.replace(EMAIL, "[email]") : item
+    ) as AttributeValue;
+  }
+  return value;
+}
+
+function scrub(attributes: Attributes) {
+  for (const key of Object.keys(attributes)) attributes[key] = redact(attributes[key]);
+}
+
+const redactEmails: SpanProcessor = {
+  onStart: () => {},
+  onEnding: (span) => {
+    scrub(span.attributes);
+    for (const event of span.events) scrub(event.attributes ?? {});
+  },
+  onEnd: () => {},
+  forceFlush: async () => {},
+  shutdown: async () => {},
+};
+
+export default defineConfig({
+  project: "<project ref>",
+  telemetry: { spanProcessors: [redactEmails] },
+});
+```
+
+Scrubbing every string value, rather than matching attribute names, also catches the turn preview text. See [Span processors](/docs/config/config-file#span-processors) for when each hook runs and which attributes are kept.
+
+## What spans don't cover
+
+These controls change the run trace only. Conversation content also reaches the platform in two other places:
+
+* **Session streams.** Each message your frontend sends is written to the session's `session.in` stream, and the agent's output to `session.out`. They hold message content for their retention window, and the session view in the dashboard reads from them. See [transcript storage limits](/docs/ai-chat/transcript-storage#guarantees-and-limits).
+* **The run payload.** A chat agent run's payload includes `clientData` as `metadata`, and every `session.in` record carries it too. Send an id in `clientData` and look up the rest in `onPreload` or `run` instead of sending the values themselves.
+
+To keep a value off the platform entirely, redact or tokenize it in your frontend or backend before it's sent. The model then sees the redacted value too, unless your tools resolve the tokens.
+
+## Verify it
+
+Send a message containing a marker value (an email address, for example), then open the run in the dashboard. Select the `chat turn 1` span and check its properties: the marker is gone, or shows as `[email]` with the span processor above. The span list shows the same redacted preview.
+
+
 # Agent Skills
 Source: https://trigger.dev/docs/ai-chat/patterns/skills
 
@@ -12481,6 +12606,7 @@ Options for `chat.agent()`.
 | `onChatResume` | `(event: ChatResumeEvent) => Promise<void> \| void` | — | Fires right after the run resumes from suspension |
 | `exitAfterPreloadIdle` | `boolean` | `false` | Exit run after preload idle timeout instead of suspending. See [exitAfterPreloadIdle](/docs/ai-chat/lifecycle-hooks#exitafterpreloadidle) |
 | `oomMachine` | `MachinePresetName` | — | Fallback machine when an attempt fails with OOM. Setting it enables a single OOM retry on the larger machine. See [OOM resilience](/docs/ai-chat/patterns/oom-resilience) |
+| `telemetry` | `{ recordUserMessage?: boolean; recordClientData?: boolean }` | both `true` | What the chat runtime records on its spans. `recordUserMessage: false` drops the user message and turn preview (`chat.user_message`, `pending.messages`); `recordClientData: false` drops `chat.client_data`. See [Redact chat content from traces](/docs/ai-chat/patterns/redacting-telemetry) |
 
 Plus most standard [TaskOptions](/docs/tasks/overview) — `queue`, `machine`, `maxDuration`, **`onWait`**, **`onResume`**, **`onComplete`**, and other lifecycle hooks. Generic `retry` is **not** exposed on `chat.agent`; use `oomMachine` for OOM recovery, or drop down to a raw [`task()`](/docs/ai-chat/custom-agents) if you need richer retry semantics. Standard hooks use the same parameter shapes as on a normal `task()` (including `ctx`).
 
@@ -15359,7 +15485,7 @@ A few things to get right:
 ## Guarantees and limits
 
 * Crash recovery of a half-written answer is runtime-owned in every configuration. It comes from the durable session stream, which no application database can reconstruct. A storage holds settled turns; the runtime overlays the recovered tail and hands it to `save` like any other change.
-* Bringing your own database does not remove platform custody. Session streams still hold message content for their retention window.
+* Bringing your own database does not remove platform custody. Session streams still hold message content for their retention window. To keep content out of the run trace, see [Redact chat content from traces](/docs/ai-chat/patterns/redacting-telemetry).
 * The default storage rewrites the whole conversation each turn. A row-per-message storage writes only what changed. That is the reason to plug in your own.
 
 ## Migrating from hydrateMessages
@@ -16822,8 +16948,10 @@ Access presets define what a key can do. On the Free and Hobby plans only the **
 | - | - |
 | **Trigger only** | Trigger runs and batches for all or selected tasks. Trigger responses include scoped public access tokens for the runs and batches they create |
 | **Task operator** | Trigger all or selected tasks and inspect or operate on their runs |
-| **Observer** | Read runs, tasks, batches, logs, traces, and queues |
-| **Operator** | Observe and operate on runs and queues, and trigger tasks |
+| **Observer** | Read runs, tasks, batches, logs, traces, queues, errors, and webhooks |
+| **Operator** | Observe and operate on runs, queues, errors, and webhooks, and trigger tasks |
+| **Webhooks only** | Read and write [webhooks](/docs/webhooks/overview), which are in private beta. Replaying deliveries that trigger tasks and creating webhook waiters require task or waitpoint scopes |
+| **Waitpoints only** | Create, list, and retrieve [waitpoint tokens](/docs/wait-for-token). No task or run access |
 | **Deploy only** | Deploy versions, sync environment variables, and manage Preview branches |
 | **Variables only** | Read and write environment variables in this environment |
 | **No restrictions** | Full access to the environment |
@@ -16836,11 +16964,11 @@ Set a key in `TRIGGER_ACCESS_TOKEN` to authenticate `trigger deploy` without log
 
 <CodeGroup>
   ```bash npm theme={"theme":"css-variables"}
-  TRIGGER_ACCESS_TOKEN="tr_prod_sk_…" npx trigger.dev@latest deploy
+  TRIGGER_ACCESS_TOKEN="tr_prod_sk_…" npx trigger.dev@latest deploy --env prod
   ```
 </CodeGroup>
 
-The key must belong to the target environment. Use a Production key for the default deployment, a Staging key with `--env staging`, or a key from the Preview environment with `--env preview`. A Preview deployment key can create and archive Preview branches and sync their environment variables.
+The key must belong to the target environment. Use a Production key with `--env prod`, a Staging key with `--env staging`, or a key from the Preview environment with `--env preview`. If you leave out `--env`, the CLI deploys to the key's environment, and a `--env` that doesn't match the key is an error. A Preview deployment key can create and archive Preview branches and sync their environment variables.
 
 <Note>
   The deploy CLI reads environment API keys from `TRIGGER_ACCESS_TOKEN`, not
@@ -17327,15 +17455,15 @@ Run the command like this:
 
 <CodeGroup>
   ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest deploy
+  npx trigger.dev@latest deploy --env prod
   ```
 
   ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest deploy
+  pnpm dlx trigger.dev@latest deploy --env prod
   ```
 
   ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest deploy
+  yarn dlx trigger.dev@latest deploy --env prod
   ```
 </CodeGroup>
 
@@ -17349,7 +17477,7 @@ It performs a few steps to deploy:
 1. Optionally updates packages when running locally.
 2. Compiles and bundles the code.
 3. Deploys the code to the Trigger.dev instance.
-4. Registers the tasks as a new version in the environment (prod by default).
+4. Registers the tasks as a new version in the environment you pass with `--env`.
 
 ## Deploying from CI
 
@@ -17385,8 +17513,14 @@ npx trigger.dev@latest deploy [path]
 </ParamField>
 
 <ParamField type="--env | -e">
-  Defaults to `prod` but you can specify `staging` or `preview`. If you specify `preview` we will
-  try and automatically detect the branch name from git.
+  The environment to deploy to: `prod`, `staging` or `preview`. If you specify `preview` we will
+  try and automatically detect the branch name from git. When you don't pass `--env`, the deploy
+  goes to the environment of the API key in `TRIGGER_ACCESS_TOKEN`, or to `prod` if you're using a
+  personal access token. We recommend always passing `--env`.
+</ParamField>
+
+<ParamField type="--prod">
+  Deploy to the `prod` environment. Shorthand for `--env prod`.
 </ParamField>
 
 <ParamField type="--branch | -b">
@@ -17520,6 +17654,21 @@ It will first perform an update check to prevent version mismatches, failed depl
 You will see in the terminal that the server is running and listening for tasks. When you run a task, you will see it in the terminal along with a link to view it in the dashboard.
 
 It is worth noting that each task runs in a separate Node process. This means that if you have a long-running task, it will not block other tasks from running.
+
+When a build fails, the dev command keeps watching your files and rebuilds as soon as you fix the errors. Until then, new runs use the last version that built successfully.
+
+## Running dev from a coding agent
+
+The dev command detects when a coding agent such as Claude Code, Cursor, Codex or Gemini CLI is running it, and changes its output so the agent can act on it:
+
+* It skips the prompts to install the MCP server and agent skills.
+* If your `@trigger.dev/*` packages don't match the CLI version, it exits with instructions instead of asking whether to update them.
+* When the local worker is ready, it lists the task ids it registered and prints plain dashboard URLs.
+* Each run prints its dashboard URL, and successful runs print their output.
+
+If your agent isn't detected, set the `AI_AGENT` environment variable to its name.
+
+To test a task, an agent can trigger it with [`tasks trigger`](/docs/cli-tasks-commands) and `--wait`, which prints the run's output or error.
 
 ## Options
 
@@ -18261,7 +18410,12 @@ npx trigger.dev@latest promote <version>
 </ParamField>
 
 <ParamField type="-e, --env <env>">
-  The environment to promote in: `prod`, `staging` or `preview`. Defaults to `prod`.
+  The environment to promote in: `prod`, `staging` or `preview`. Defaults to the environment of the
+  API key in `TRIGGER_ACCESS_TOKEN`, otherwise `prod`.
+</ParamField>
+
+<ParamField type="--prod">
+  Promote in the `prod` environment. Shorthand for `--env prod`.
 </ParamField>
 
 <ParamField type="-b, --branch <branch>">
@@ -18387,7 +18541,7 @@ npx trigger.dev@latest runs cancel run_abc123
 </ParamField>
 
 <ParamField type="--branch | -b">
-  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
+  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`. With `--env dev`, it defaults to the same [dev branch](/docs/deployment/dev-branches) as the dev command.
 </ParamField>
 
 ### Common options
@@ -18450,6 +18604,124 @@ npx trigger.dev@latest switch [profile]
 
 <ParamField type="[profile]">
   The profile to switch to. If not specified, it will list all available profiles and run interactively.
+</ParamField>
+
+
+# CLI tasks commands
+Source: https://trigger.dev/docs/cli-tasks-commands
+
+Use these commands to trigger tasks from your terminal.
+
+## tasks trigger
+
+Triggers a task and prints the run ID and its dashboard URL. It runs in the `dev` environment unless you pass `--env`, so start the [dev command](/docs/cli-dev-commands) first.
+
+<CodeGroup>
+  ```bash npm theme={"theme":"css-variables"}
+  npx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+  ```
+
+  ```bash pnpm theme={"theme":"css-variables"}
+  pnpm dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+  ```
+
+  ```bash yarn theme={"theme":"css-variables"}
+  yarn dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+  ```
+</CodeGroup>
+
+Add `--wait` to wait for the run to finish. It prints the run's output, or its error and exits with code 1 if the run failed, which makes it useful in scripts and for coding agents testing a task:
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}' --wait
+```
+
+The command fails without creating a run if the current version has no task with that ID. In `dev`, it warns you when the dev command isn't running, because the run waits in the queue until it starts.
+
+<ParamField type="--payload">
+  The payload as JSON, e.g. `--payload '{"name":"Ada"}'`. Without it, the task gets no payload.
+</ParamField>
+
+<ParamField type="--payload-file">
+  Read the payload from a JSON file instead.
+</ParamField>
+
+<ParamField type="--wait">
+  Wait for the run to finish, then print its output or error.
+</ParamField>
+
+<ParamField type="--timeout">
+  With `--wait`, stop waiting after this many seconds and exit with code 1.
+</ParamField>
+
+<ParamField type="--tag">
+  A tag to add to the run. Repeat it to add more than one, e.g. `--tag cli --tag test`.
+</ParamField>
+
+<ParamField type="--idempotency-key">
+  If a run with this key already exists, return it instead of creating a new one. See [idempotency](/docs/idempotency).
+</ParamField>
+
+<ParamField type="--delay">
+  Wait before running, e.g. `30s`, `5m` or an ISO 8601 date.
+</ParamField>
+
+<ParamField type="--ttl">
+  Expire the run if it hasn't started within this time, e.g. `10m`.
+</ParamField>
+
+<ParamField type="--queue">
+  The queue to run in, instead of the queue set on the task.
+</ParamField>
+
+<ParamField type="--machine">
+  The machine to run on, e.g. `small-2x`. See [machines](/docs/machines). Has no effect in `dev`.
+</ParamField>
+
+## Options
+
+<ParamField type="--env | -e">
+  The environment to use: `dev`, `prod`, `staging` or `preview`. Defaults to `dev`.
+</ParamField>
+
+<ParamField type="--config | -c">
+  The name of the config file found at the project path. Defaults to `trigger.config.ts`
+</ParamField>
+
+<ParamField type="--project-ref | -p">
+  The project ref. Required if there is no config file.
+</ParamField>
+
+<ParamField type="--branch | -b">
+  The branch to use. Required with `--env preview`. In `dev`, it defaults to the same [dev branch](/docs/deployment/dev-branches) as the dev command.
+</ParamField>
+
+### Common options
+
+These options are available on most commands.
+
+<ParamField type="--profile">
+  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
+</ParamField>
+
+<ParamField type="--api-url | -a">
+  Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
+</ParamField>
+
+<ParamField type="--log-level | -l">
+  The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
+</ParamField>
+
+<ParamField type="--skip-telemetry">
+  Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
+</ParamField>
+
+<ParamField type="--help | -h">
+  Shows the help information for the command.
+</ParamField>
+
+<ParamField type="--version | -v">
+  Displays the version number of the CLI.
 </ParamField>
 
 
@@ -19256,6 +19528,64 @@ export default defineConfig({
   },
 });
 ```
+
+### Span processors
+
+Span processors run on every span before it is exported, to Trigger.dev and to any `exporters` you configure. Use them to redact or drop span content before it reaches the run trace.
+
+```ts trigger.config.ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
+import type { AttributeValue, Attributes } from "@opentelemetry/api";
+import type { SpanProcessor } from "@opentelemetry/sdk-trace-base";
+
+const EMAIL = /[\w.+-]+@[\w-]+\.[\w.]+/g;
+
+function redact(value: AttributeValue | undefined): AttributeValue | undefined {
+  if (typeof value === "string") return value.replace(EMAIL, "[email]");
+  // Some attributes are string arrays, like the messages sent mid-turn
+  if (Array.isArray(value)) {
+    return value.map((item) =>
+      typeof item === "string" ? item.replace(EMAIL, "[email]") : item
+    ) as AttributeValue;
+  }
+  return value;
+}
+
+function scrub(attributes: Attributes) {
+  for (const key of Object.keys(attributes)) attributes[key] = redact(attributes[key]);
+}
+
+const redactEmails: SpanProcessor = {
+  onStart: () => {},
+  // The span is complete here and still writable
+  onEnding: (span) => {
+    scrub(span.attributes);
+    for (const event of span.events) scrub(event.attributes ?? {});
+  },
+  onEnd: () => {},
+  forceFlush: async () => {},
+  shutdown: async () => {},
+};
+
+export default defineConfig({
+  project: "<project ref>",
+  telemetry: {
+    spanProcessors: [redactEmails],
+  },
+});
+```
+
+Your processors run ahead of ours, so they also see the in-progress copy of each span that the dashboard shows while a span is open. Redact in `onEnding`:
+
+* `onStart` runs before we add the run context, so it sees only the attributes the span was started with.
+* In `onEnd` the span is read-only and `setAttribute` does nothing. Writing to `span.attributes` directly still works.
+* Content can also sit in span events (exceptions, for example). Events are on `span.events`.
+
+After each call we restore the few attributes we use to link a span to its run, such as the run, task and attempt ids. Everything else can be redacted, including run tags and idempotency keys. If a processor throws, the error is reported and the span is still exported.
+
+<Note>
+  Span processors only change span content. Run payloads and outputs, and the messages on a chat agent's session streams, are stored as sent. For chat agents, see [Redact chat content from traces](/docs/ai-chat/patterns/redacting-telemetry).
+</Note>
 
 ## Runtime
 
@@ -20794,7 +21124,7 @@ prismaExtension({
   "scripts": {
     "prebuild": "prisma generate",
     "dev": "trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```
@@ -20936,7 +21266,7 @@ steps:
   - name: Generate Prisma client
     run: npx prisma@6.19.0 generate
   - name: Deploy Trigger.dev
-    run: npx trigger.dev@4.1.1 deploy
+    run: npx trigger.dev@4.1.1 deploy --env prod
     env:
       TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
 ```
@@ -21507,7 +21837,7 @@ datasource db {
   "scripts": {
     "generate": "prisma generate",
     "dev": "pnpm generate && trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```
@@ -21580,7 +21910,7 @@ export default defineConfig({
   "scripts": {
     "generate": "prisma generate",
     "dev": "pnpm generate && trigger dev",
-    "deploy": "trigger deploy"
+    "deploy": "trigger deploy --env prod"
   }
 }
 ```
@@ -23171,7 +23501,7 @@ The id is free-form and opaque to Trigger.dev — a commit SHA, a release tag, a
 <Steps>
   <Step title="Deploy your tasks with an external id">
     ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest deploy --external-id "$(git rev-parse HEAD)"
+    npx trigger.dev@latest deploy --env prod --external-id "$(git rev-parse HEAD)"
     ```
   </Step>
 
@@ -23347,7 +23677,7 @@ Read the commit in the place where it *is* available, and write it into both hal
 
 ```bash theme={"theme":"css-variables"}
 # 1. Deploy side — name the deployment after the commit.
-npx trigger.dev@latest deploy --external-id "$(git rev-parse HEAD)"
+npx trigger.dev@latest deploy --env prod --external-id "$(git rev-parse HEAD)"
 
 # 2. Application side — give the running app the same value.
 TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
@@ -23492,7 +23822,7 @@ If you filter deploys by path, derive the id from the same filter on both sides 
 
 ```bash theme={"theme":"css-variables"}
 TASK_ID=$(git log -1 --format=%H -- trigger/)
-npx trigger.dev@latest deploy --external-id "$TASK_ID"
+npx trigger.dev@latest deploy --env prod --external-id "$TASK_ID"
 ```
 
 Compute the same value where you set your app's variable. In GitHub Actions this needs `fetch-depth: 0` on `actions/checkout` — the default shallow clone can't see far enough back.
@@ -23823,7 +24153,7 @@ To keep your app and tasks in sync without coordinating promotion at all, see [a
 
 ## Staging deploys
 
-By default, the `deploy` command will deploy to the `prod` environment. If you want to deploy to a different environment, you can use the `--env` flag:
+Use the `--env` flag to choose the environment you deploy to. If you don't pass it, the `deploy` command deploys to the `prod` environment, unless `TRIGGER_ACCESS_TOKEN` holds an API key for another environment. To deploy to staging:
 
 ```bash theme={"theme":"css-variables"}
 npx trigger.dev deploy --env staging
@@ -24078,7 +24408,7 @@ Creating and deploying a preview branch manually is easy:
 npx trigger.dev@latest deploy --env preview
 ```
 
-This will create and deploy a preview branch, automatically detecting the git branch. If for some reason the auto-detection doesn't work it will let you know and tell you do this:
+This will create and deploy a preview branch, automatically detecting the git branch. When your CI checks out a detached HEAD, the branch is read from the CI provider's branch variable instead (GitLab, Bitbucket, CircleCI, Buildkite, Travis CI, Jenkins and Azure Pipelines are supported). If for some reason the auto-detection doesn't work it will let you know and tell you do this:
 
 ```bash theme={"theme":"css-variables"}
 npx trigger.dev@latest deploy --env preview --branch your-branch-name
@@ -24621,7 +24951,7 @@ This simple GitHub action workflow will deploy your Trigger.dev tasks when new c
           env:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
           run: |
-            npx trigger.dev@latest deploy --external-id ${{ github.sha }}
+            npx trigger.dev@latest deploy --env prod --external-id ${{ github.sha }}
   ```
 
   ```yaml .github/workflows/release-trigger-staging.yml theme={"theme":"css-variables"}
@@ -24755,7 +25085,7 @@ Tip: add the `trigger.dev` CLI to your `devDependencies` and the deploy command 
 ```json theme={"theme":"css-variables"}
 {
   "scripts": {
-    "deploy:trigger-prod": "trigger deploy",
+    "deploy:trigger-prod": "trigger deploy --env prod",
     "deploy:trigger": "trigger deploy --env staging"
   },
   "devDependencies": {
@@ -24824,7 +25154,7 @@ When self-hosting, you need to:
             TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
             TRIGGER_API_URL: ${{ secrets.TRIGGER_API_URL }}
           run: |
-            npx trigger.dev@latest deploy
+            npx trigger.dev@latest deploy --env prod
   ```
 </CodeGroup>
 
@@ -27545,6 +27875,303 @@ pnpm dev           # the Next.js app
 
   <Card title="Sessions" icon="clock-rotate-left" href="/docs/ai-chat/sessions">
     Durable sessions, idle timeouts, and checkpoint/resume between turns.
+  </Card>
+</CardGroup>
+
+
+# Grok AI Teammates: chat agents with their own cloud computer
+Source: https://trigger.dev/docs/guides/example-projects/grok-ai-teammates
+
+An open-source Grok Bot alternative by Code With Antonio. Each AI teammate gets its own Linux sandbox and desktop, runs durable chat turns on Trigger.dev chat.agent(), hands off work in group chats, and meters usage with a scheduled task.
+
+<iframe title="How I Build AI Teammates With Claude Code" />
+
+<Note>
+  This open-source project and video are by [Code With Antonio](https://github.com/code-with-antonio),
+  and are featured here with their permission. The code lives in their GitHub repository.
+</Note>
+
+## Overview
+
+Grok AI Teammates is an open-source, fullstack app where each bot has a name, a job and a persistent cloud computer of its own. A bot works in its sandbox through shell, file, mouse and keyboard tools, and you can watch its desktop live in the chat. Every chat turn runs as a durable [chat agent](/docs/ai-chat/overview) on Trigger.dev, so a long desktop task survives page refreshes, redeploys and closed tabs.
+
+**Tech stack:**
+
+* **[Trigger.dev AI chat](/docs/ai-chat/overview)** for the durable chat agent, and a [scheduled task](/docs/tasks/scheduled) that meters running sandboxes
+* **[Next.js](https://nextjs.org)** with [`useTriggerChatTransport`](/docs/ai-chat/frontend) and the [AI SDK](https://ai-sdk.dev) `useChat` hook
+* **[Daytona](https://www.daytona.io)** for one cloud sandbox per bot: a shell, a filesystem and a desktop the bot controls
+* **[Clerk](https://clerk.com)** for authentication, plus Billing for plans and feature gates
+* **[Neon](https://neon.com)** for serverless Postgres (with [Drizzle ORM](https://orm.drizzle.team)) and the AI gateway the model is called through
+* **[Sentry](https://sentry.io)** for errors, traces and logs from the app and every task run
+
+**Features:**
+
+* **A computer per teammate**: each bot gets a persistent Linux sandbox. Files it leaves there are still there next time.
+* **Live desktop view**: watch a bot move the mouse and type, streamed into the chat over noVNC.
+* **Group chats with handoffs**: a `handoff` tool passes the rest of a turn to the teammate whose job it is. A request can't bounce back to a bot that already held it.
+* **Memory across chats**: `remember` and `recall` tools read and write a notes file in the bot's sandbox, shared by every conversation the bot is in.
+* **Durable turns**: the turn loop, streaming and transcript storage all run in a `chat.agent()` task on Trigger.dev.
+* **Plans and usage limits**: model spend is recorded per turn in `onTurnComplete`; sandbox time is metered every 5 minutes by a scheduled task that stops sandboxes once an owner runs out.
+
+## GitHub repo
+
+<Card title="View the AI Teammates repo" icon="GitHub" href="https://github.com/code-with-antonio/ai-teammates">
+  Click here to view the full code for this project on GitHub. It's maintained by Code With Antonio,
+  and you can fork it and use it as a starting point for your own project.
+</Card>
+
+## How it works
+
+```mermaid theme={"theme":"css-variables"}
+flowchart LR
+    U([You]) --> APP[Next.js app]
+    APP -- start session / stream --> AGENT[chat agent]
+    AGENT -- shell, files, mouse, keyboard --> SANDBOX[Daytona sandboxes]
+    APP -- live desktop --> SANDBOX
+    METER[meter-sandboxes<br/>every 5 min] -- list running / stop --> SANDBOX
+    AGENT --> DB[(Neon Postgres)]
+    METER --> DB
+```
+
+### The chat agent
+
+One `chat.agent()` answers every chat, direct or group. The browser sends the `botId` a message is addressed to as typed [client data](/docs/ai-chat/server-chat), and the agent loads that bot's job and instructions from the database on every turn, so edits to a bot apply to the next message.
+
+Tools are built per chat in the `tools` callback: every bot gets its sandbox tools, and group chats also get the `handoff` tool. Declaring them on the agent config keeps screenshot tool results as images when earlier turns are replayed. The `run` function returns the [managed `streamText`](/docs/ai-chat/backend#the-managed-streamtext) with 2 stop conditions: a 50-step cap for desktop work, and the user's remaining model budget.
+
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { isStepCount } from "ai";
+import { z } from "zod";
+
+const clientDataSchema = z.object({ botId: z.string().optional() }).optional();
+
+export const chatAgent = chat
+  .withUIMessage<ChatUIMessage>()
+  .withClientData({ schema: clientDataSchema })
+  .agent({
+    id: "chat",
+    // Declared here so screenshots stay images when earlier turns are replayed
+    tools: async ({ chatId, clientData }) => {
+      const { chat, bots, bot } = await getChatBots(chatId, clientData?.botId);
+
+      // Whoever holds the turn; a handoff moves it, and the sandbox tools with it
+      let current = bot;
+      const sandboxTools = createSandboxTools(async () => current.sandboxId);
+
+      if (chat.kind !== "group") return sandboxTools;
+
+      return {
+        ...sandboxTools,
+        ...createHandoffTool((botId) => {
+          const target = bots.find((bot) => bot.id === botId);
+          if (!target) throw new Error("No teammate in this chat has that id.");
+          current = target;
+          return { botId: target.id, name: target.name };
+        }),
+      };
+    },
+    // Fires for stopped and failed turns too, which spent tokens all the same
+    onTurnComplete: async ({ chatId, runId, turn, usage }) => {
+      const [row] = await db
+        .select({ userId: chats.userId })
+        .from(chats)
+        .where(eq(chats.id, chatId));
+
+      if (usage && row) {
+        await recordUsage([
+          {
+            userId: row.userId,
+            kind: "ai",
+            amount: chatModelCost(usage),
+            idempotencyKey: `ai:${runId}:${turn}`,
+          },
+        ]);
+      }
+    },
+    run: async ({ chatId, clientData, messages, tools, signal, streamText }) => {
+      const { chat: row, bots, bot } = await getChatBots(chatId, clientData?.botId);
+      const group = row.kind === "group" ? { chat: row, bots } : undefined;
+
+      const usage = await getUsage(row.userId);
+      if (!usage || usage.remaining.ai <= 0) throw new Error(USAGE_LIMIT_ERROR);
+
+      return streamText({
+        model: chatModel(),
+        system: buildInstructions(bot, group),
+        messages,
+        tools,
+        // After a handoff, the rest of the turn uses the new bot's instructions
+        prepareStep: ({ steps }) => {
+          const handoff = steps
+            .flatMap((step) => step.toolResults)
+            .findLast((result) => result.toolName === "handoff");
+          const current =
+            handoff && bots.find((bot) => bot.id === (handoff.output as Handoff).botId);
+
+          return current ? { instructions: buildInstructions(current, group) } : undefined;
+        },
+        stopWhen: [
+          // Desktop work is one small action per step
+          isStepCount(50),
+          // A long turn ends once it has spent what was left
+          ({ steps }) =>
+            steps.reduce((cost, step) => cost + chatModelCost(step.usage), 0) >=
+            usage.remaining.ai,
+        ],
+        abortSignal: signal,
+      });
+    },
+  });
+```
+
+The `idempotencyKey` on each usage record is built from the run ID and turn number, so a retried `onTurnComplete` can't charge the same turn twice.
+
+### Metering sandboxes with a scheduled task
+
+Daytona stops idle sandboxes on its own and doesn't report running time, so the app measures it by looking. A [scheduled task](/docs/tasks/scheduled) runs every 5 minutes, charges each running sandbox's owner for the interval, and stops the sandboxes of owners with no hours left:
+
+```ts trigger/usage.ts theme={"theme":"css-variables"}
+import { schedules } from "@trigger.dev/sdk";
+import { inArray } from "drizzle-orm";
+
+const INTERVAL_MINUTES = 5;
+
+export const meterSandboxes = schedules.task({
+  id: "meter-sandboxes",
+  cron: `*/${INTERVAL_MINUTES} * * * *`,
+  maxDuration: 240,
+  run: async ({ timestamp }) => {
+    const running = await listRunningSandboxIds();
+    if (running.length === 0) return;
+
+    const owned = await db
+      .select({ sandboxId: bots.sandboxId, userId: bots.userId })
+      .from(bots)
+      .where(inArray(bots.sandboxId, running));
+
+    await recordUsage(
+      owned.map(({ sandboxId, userId }) => ({
+        userId,
+        kind: "sandbox" as const,
+        amount: INTERVAL_MINUTES * 60,
+        // A retried run meters the same moment again
+        idempotencyKey: `sandbox:${sandboxId}:${timestamp.toISOString()}`,
+      }))
+    );
+
+    for (const userId of new Set(owned.map((bot) => bot.userId))) {
+      const usage = await getUsage(userId);
+      if (usage && usage.remaining.sandbox > 0) continue;
+
+      const sandboxIds = owned
+        .filter((bot) => bot.userId === userId)
+        .map((bot) => bot.sandboxId);
+      await Promise.all(sandboxIds.map((id) => stopBotSandbox(id)));
+    }
+  },
+});
+```
+
+### The Next.js chat UI
+
+The browser talks to the agent directly through [`useTriggerChatTransport`](/docs/ai-chat/frontend). Server actions check that the signed-in user owns the chat and has a plan with the `bots` feature before they start a session or mint a session-scoped access token. Previous messages load with [`useLoadTranscript`](/docs/ai-chat/transcript-storage) from the agent's default transcript storage:
+
+```tsx components/chat.tsx theme={"theme":"css-variables"}
+import { useTriggerChatTransport, useLoadTranscript } from "@trigger.dev/sdk/chat/react";
+import type { chatAgent } from "@/trigger/chat";
+import { loadTranscript, mintChatAccessToken, startChatSession } from "@/actions/chat";
+
+function Chat({ chatId, bots }: { chatId: string; bots?: ChatBot[] }) {
+  const transport = useTriggerChatTransport<typeof chatAgent>({
+    task: "chat",
+    accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+    startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
+  });
+  const { messages, isLoading } = useLoadTranscript(chatId, loadTranscript, { transport });
+
+  // useChat only reads its initial messages on mount, so wait for the transcript
+  if (isLoading) return null;
+
+  return (
+    <ChatMessages
+      key={chatId}
+      chatId={chatId}
+      bots={bots}
+      initialMessages={messages}
+      transport={transport}
+    />
+  );
+}
+```
+
+```ts actions/chat.ts theme={"theme":"css-variables"}
+"use server";
+
+import { auth } from "@trigger.dev/sdk";
+import { chat, defaultStorage } from "@trigger.dev/sdk/ai";
+import type { chatAgent } from "@/trigger/chat";
+
+const startSession = chat.createStartSessionAction<typeof chatAgent>("chat");
+const loadStoredTranscript = chat.createLoadTranscriptAction(defaultStorage);
+
+export async function mintChatAccessToken(chatId: string) {
+  await assertFeature("bots");
+  await assertChatOwner(chatId);
+
+  return auth.createPublicToken({
+    scopes: { read: { sessions: chatId }, write: { sessions: chatId } },
+    expirationTime: "1h",
+  });
+}
+
+export async function loadTranscript(params: { chatId: string }) {
+  await assertChatOwner(params.chatId);
+
+  return loadStoredTranscript(params);
+}
+```
+
+### Running it
+
+You need accounts with Clerk, Neon, Trigger.dev and Daytona (Sentry is optional). Set the variables listed in the repo's README in `.env.local`, including `TRIGGER_SECRET_KEY` and `TRIGGER_PROJECT_REF`, then push the schema and run the app and the tasks in 2 terminals:
+
+```bash theme={"theme":"css-variables"}
+npm run db:push            # create the tables
+npm run dev                # terminal 1: Next.js
+npx trigger.dev@latest dev # terminal 2: Trigger.dev tasks
+```
+
+To deploy, run `npx trigger.dev@latest deploy` and add the tasks' variables (`DATABASE_URL`, `CLERK_SECRET_KEY`, `DAYTONA_API_KEY` and the Neon AI gateway settings) on the [Environment Variables page](/docs/deploy-environment-variables) of your production environment. The repo's README covers the Clerk Billing setup and hosting the Next.js app.
+
+## Relevant code
+
+* **Chat agent**: [trigger/chat.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/trigger/chat.ts): the `chat.agent()` definition, per-chat tools, handoffs, instructions, and per-turn usage recording
+* **Sandbox metering**: [trigger/usage.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/trigger/usage.ts): the scheduled task that charges and stops running sandboxes
+* **Global hooks**: [trigger/init.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/trigger/init.ts): Sentry setup with `tasks.onFailure`, `tasks.onWait` and `tasks.onComplete` hooks that flush logs before a run freezes
+* **Sandbox tools**: [lib/sandbox-tools.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/lib/sandbox-tools.ts): shell, file, mouse, keyboard, screenshot and memory tools on the bot's Daytona sandbox
+* **Handoff tool**: [lib/handoff-tool.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/lib/handoff-tool.ts): passes a group chat turn to another bot
+* **Server actions**: [actions/chat.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/actions/chat.ts): session start, token minting and transcript loading, each behind an ownership and plan check
+* **Chat UI**: [components/chat.tsx](https://github.com/code-with-antonio/ai-teammates/blob/main/components/chat.tsx): `useTriggerChatTransport`, `useLoadTranscript` and `useChat`
+* **Trigger.dev config**: [trigger.config.ts](https://github.com/code-with-antonio/ai-teammates/blob/main/trigger.config.ts): retries, max duration and the Sentry source map build extension
+
+## Learn more
+
+<CardGroup>
+  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
+    How chat agents, sessions, and the turn loop work.
+  </Card>
+
+  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
+    The chat transport, session tokens, and reconnection.
+  </Card>
+
+  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
+    Declaring tools on your agent and how they persist across turns.
+  </Card>
+
+  <Card title="Scheduled tasks" icon="clock" href="/docs/tasks/scheduled">
+    Run tasks on a cron schedule.
   </Card>
 </CardGroup>
 
@@ -36447,6 +37074,7 @@ Example projects are full projects with example repos you can fork and use. Thes
 | [ClickHouse chat agent](/docs/guides/example-projects/clickhouse-chat-agent) | Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps using `chat.agent()` and generative UI. | Next.js | [View the repo](https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent) |
 | [Cursor background agent](/docs/guides/example-projects/cursor-background-agent) | Run Cursor's headless CLI agent as a background task, streaming live output to the browser. | Next.js | [View the repo](https://github.com/triggerdotdev/examples/tree/main/cursor-cli-demo) |
 | [ElevenLabs Voice agent](/docs/guides/example-projects/elevenlabs-voice-agent) | Hold a spoken conversation with a voice assistant using streaming ElevenLabs speech-to-text and text-to-speech, on a Trigger.dev `chat.agent()`. | Next.js | [View the repo](https://github.com/triggerdotdev/examples/tree/main/voice-agent-demo) |
+| [Grok AI Teammates](/docs/guides/example-projects/grok-ai-teammates) | Open-source AI teammates (by Code With Antonio) that each get a cloud sandbox and desktop, hand off work in group chats, and run durable turns on `chat.agent()`. | Next.js | [View the repo](https://github.com/code-with-antonio/ai-teammates) |
 | [Human-in-the-loop workflow](/docs/guides/example-projects/human-in-the-loop-workflow) | Create audio summaries of newspaper articles using a human-in-the-loop workflow built with ReactFlow and Trigger.dev waitpoint tokens. | Next.js | [View the repo](https://github.com/triggerdotdev/examples/tree/main/article-summary-workflow) |
 | [Mastra agents with memory](/docs/guides/example-projects/mastra-agents-with-memory) | Use Mastra to create a weather agent that can collect live weather data and generate clothing recommendations. | — | [View the repo](https://github.com/triggerdotdev/examples/tree/main/mastra-agents) |
 | [OpenAI Agents SDK for Python guardrails](/docs/guides/example-projects/openai-agent-sdk-guardrails) | Use the OpenAI Agents SDK for Python to create a guardrails system for your AI agents. | — | [View the repo](https://github.com/triggerdotdev/examples/tree/main/openai-agent-sdk-guardrails-examples) |
@@ -39774,6 +40402,12 @@ You can view your current limits, quotas, and rate limit usage in real-time by v
   [Billing limits and alerts](/docs/billing-limits).
 </Note>
 
+## Run duration
+
+Runs have no maximum duration. You set a default `maxDuration` for your project and can override it per task or per run, or set it to `timeout.None` to let a run execute indefinitely.
+
+Trigger is built for long running AI agents and workflows and we have seen Trigger.dev users with runs lasting more than six months.
+
 ## Concurrency limits
 
 Concurrency is allocated **per environment**, not as a single figure for the whole organization. Each plan sets a separate default for production, staging, preview and development:
@@ -41945,11 +42579,43 @@ await preview.runs.list({ status: ["COMPLETED"] });
 ```
 
 
+# Add dashboard widget
+Source: https://trigger.dev/docs/management/query/add-dashboard-widget
+
+v3-openapi POST /api/v1/query/dashboards/{dashboardId}/widgets
+Add a widget to a custom dashboard. Without a position it is placed full width at the bottom.
+
+
+
+# Create dashboard
+Source: https://trigger.dev/docs/management/query/create-dashboard
+
+v3-openapi POST /api/v1/query/dashboards
+Create a custom dashboard, optionally with its widgets. Every widget query is checked against the queryable tables before it is saved. Creating more dashboards than your plan allows returns a 403.
+
+
+
 # List dashboards
 Source: https://trigger.dev/docs/management/query/dashboards
 
 v3-openapi GET /api/v1/query/dashboards
-List available built-in dashboards with their widgets. Each dashboard contains pre-built TRQL queries for common metrics like run success rates, costs, and LLM usage.
+List the built-in dashboards and your organization's custom dashboards, with their widgets. Built-in dashboards contain pre-built TRQL queries for common metrics like run success rates, costs, and LLM usage.
+
+
+
+# Delete dashboard
+Source: https://trigger.dev/docs/management/query/delete-dashboard
+
+v3-openapi DELETE /api/v1/query/dashboards/{dashboardId}
+Delete a custom dashboard.
+
+
+
+# Delete dashboard widget
+Source: https://trigger.dev/docs/management/query/delete-dashboard-widget
+
+v3-openapi DELETE /api/v1/query/dashboards/{dashboardId}/widgets/{widgetId}
+Remove a widget from a custom dashboard.
 
 
 
@@ -41967,11 +42633,43 @@ See the [Query documentation](/docs/observability/query#example-queries) for com
 * Performance metrics and percentiles
 
 
+# Replace dashboard widgets
+Source: https://trigger.dev/docs/management/query/replace-dashboard
+
+v3-openapi PUT /api/v1/query/dashboards/{dashboardId}
+Replace every widget on a custom dashboard, and optionally its title and description. A widget that already exists keeps its position unless you pass a new one; new widgets without a position are stacked full width below the others, in order.
+
+
+
+# Retrieve dashboard
+Source: https://trigger.dev/docs/management/query/retrieve-dashboard
+
+v3-openapi GET /api/v1/query/dashboards/{dashboardId}
+Retrieve a custom dashboard with every widget, its query, display and grid position.
+
+
+
 # Get query schema
 Source: https://trigger.dev/docs/management/query/schema
 
 v3-openapi GET /api/v1/query/schema
 Get the schema for TRQL queries, including all available tables, their columns, data types, descriptions, and allowed values.
+
+
+
+# Update dashboard
+Source: https://trigger.dev/docs/management/query/update-dashboard
+
+v3-openapi PATCH /api/v1/query/dashboards/{dashboardId}
+Rename a custom dashboard or change its description.
+
+
+
+# Update dashboard widget
+Source: https://trigger.dev/docs/management/query/update-dashboard-widget
+
+v3-openapi PATCH /api/v1/query/dashboards/{dashboardId}/widgets/{widgetId}
+Change a widget's title, query, display or position.
 
 
 
@@ -42648,7 +43346,7 @@ Then add scripts to your `package.json`:
 {
   "scripts": {
     "dev:trigger": "trigger dev",
-    "deploy:trigger": "trigger deploy"
+    "deploy:trigger": "trigger deploy --env prod"
   }
 }
 ```
@@ -43824,7 +44522,7 @@ Execute a TRQL query against your Trigger.dev data. TRQL is a SQL-style query la
 
 ### list\_dashboards
 
-List available built-in dashboards with their widgets. Each dashboard contains pre-built queries for common metrics.
+List the built-in dashboards and your organization's custom dashboards, with their widgets.
 
 **Example usage:**
 
@@ -43833,12 +44531,30 @@ List available built-in dashboards with their widgets. Each dashboard contains p
 
 ### run\_dashboard\_query
 
-Execute a single widget query from a built-in dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
+Execute a single widget query from a built-in or custom dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
 
 **Example usage:**
 
 * `"Run the total runs widget from the overview dashboard"`
 * `"Show me the LLM cost over time from the AI dashboard"`
+
+### create\_dashboard
+
+Create a custom dashboard, optionally with widgets. Each widget has a title, a TRQL query and a display: a table, a bar or line chart, a big number, or a section title. Queries are checked when the dashboard is saved.
+
+**Example usage:**
+
+* `"Make a dashboard for the email tasks with total runs, failures and runs per day"`
+* `"Create a dashboard that charts p95 duration by task"`
+
+### set\_dashboard\_widgets
+
+Replace every widget on a custom dashboard, and optionally rename it.
+
+**Example usage:**
+
+* `"Add a failed runs widget to the email dashboard"`
+* `"Change the runs per day chart to a line chart"`
 
 ### get\_report
 
@@ -43880,7 +44596,7 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Are there any build errors?"`
 
 <Callout type="warning">
-  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, and replay\_run.
+  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
 </Callout>
 
 ## Agent Chat Tools
@@ -45161,6 +45877,68 @@ You can also filter the data by:
 3. From the top-right you can "Add chart" or "Add title".
 4. For charts you write [TRQL queries](/docs/observability/query) and choose a visualization type.
 5. You can resize and reposition widgets on your dashboards.
+
+## Managing dashboards with the SDK
+
+Custom dashboards can also be created and edited from code, so you can keep them in your repository and set them up from CI or a script. `query.dashboards` covers the same operations as the dashboard UI.
+
+```ts scripts/dashboards.ts theme={"theme":"css-variables"}
+import { query } from "@trigger.dev/sdk";
+
+const dashboard = await query.dashboards.create({
+  title: "Email tasks",
+  widgets: [
+    { title: "Overview", display: { type: "title" } },
+    {
+      title: "Total runs",
+      query: "SELECT count() AS total FROM runs WHERE task_identifier = 'send-email'",
+      display: { type: "bignumber", column: "total", aggregation: "sum" },
+    },
+    {
+      title: "Runs per day",
+      query:
+        "SELECT timeBucket(), count() AS runs FROM runs WHERE task_identifier = 'send-email' GROUP BY timeBucket ORDER BY timeBucket",
+      display: {
+        type: "chart",
+        chartType: "bar",
+        xAxisColumn: "timebucket",
+        yAxisColumns: ["runs"],
+        groupByColumn: null,
+        stacked: false,
+        sortByColumn: null,
+        sortDirection: "asc",
+        aggregation: "sum",
+      },
+    },
+  ],
+});
+
+console.log(dashboard.id); // dashboard_...
+```
+
+Widgets without a `position` are stacked full width in the order you list them. Pass `position: { x, y, w, h }` on a 12-column grid to place a widget yourself.
+
+To keep a dashboard in sync with code, replace all of its widgets in one call. Widgets you keep, matched by `id`, stay where they are unless you pass a new `position`:
+
+```ts scripts/dashboards.ts theme={"theme":"css-variables"}
+const current = await query.dashboards.retrieve(dashboard.id);
+
+await query.dashboards.replace(dashboard.id, {
+  widgets: [
+    {
+      id: "failures",
+      title: "Failed runs",
+      query: "SELECT count() AS failed FROM runs WHERE status = 'Failed'",
+      display: { type: "bignumber", column: "failed", aggregation: "sum" },
+    },
+  ],
+  revision: current.revision,
+});
+```
+
+`revision` is optional. When you pass the revision you last read, the write fails with a 409 if someone changed the dashboard in the meantime, instead of overwriting their change.
+
+Every widget query is checked against the queryable tables when you save it, so a typo in a table or column name fails the request with the list of valid columns. `query.dashboards.widgets.add`, `widgets.update` and `widgets.del` change one widget at a time. Creating a dashboard or widget past your plan's limits returns a 403. See the [Query API reference](/docs/management/query/create-dashboard) for every endpoint.
 
 ## Performance considerations
 
@@ -51293,6 +52071,10 @@ Source: https://trigger.dev/docs/runs/max-duration
 
 Set a maximum duration for a task to run.
 
+Runs have no maximum duration. You set a default `maxDuration` for your project and can override it per task or per run, or set it to `timeout.None` to let a run execute indefinitely.
+
+Trigger is built for long running AI agents and workflows and we have seen Trigger.dev users with runs lasting more than six months.
+
 The `maxDuration` parameter sets a maximum compute time limit for tasks. When a task exceeds this duration, it will be automatically stopped. This helps prevent runaway tasks and manage compute resources effectively.
 
 You must set a default maxDuration in your `trigger.config.ts` file, which will apply to all tasks unless overridden:
@@ -52762,6 +53544,7 @@ Environment variables for the supervisor container.
 | `FAILED_POD_HANDLER_ENABLED` | No | true | Enable failed pod handler. |
 | `FAILED_POD_HANDLER_RECONNECT_INTERVAL_MS` | No | 1000 (1s) | Failed pod handler reconnect interval (ms). |
 | `FAILED_POD_HANDLER_WATCH_TIMEOUT_SECONDS` | No | 300 (5m) | How long the server keeps each failed pod watch open (s). |
+| `RUNNER_KILL_REPORTS_ENABLED` | No | true | Fail a run straight away when its pod is killed, as out of memory only if Kubernetes reports `OOMKilled`. |
 | **Debug** | | | |
 | `DEBUG` | No | false | Enable debug logs. |
 | `SEND_RUN_DEBUG_LOGS` | No | false | Send run debug logs to the platform. |
@@ -60379,14 +61162,21 @@ List channels on a [`chat.agent`](/docs/ai-chat/overview) alongside (or instead 
 ```ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
-import { slack, webhookSource } from "@trigger.dev/slack";
+import { appMentions, slack, webhookSource } from "@trigger.dev/slack";
 import { anthropic } from "@ai-sdk/anthropic";
 
 const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
 
 export const supportAgent = chat.agent({
   id: "support-agent",
-  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "support-slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   run: async ({ messages, streamText }) =>
     streamText({ model: anthropic("claude-sonnet-4-5"), messages }),
 });
@@ -60438,6 +61228,25 @@ An event that `inbound` maps to an empty message (no text, and no file or data p
 
 List the connector in `chat.agent({ channels: [mySurface] })`, which subscribes the agent to the endpoint with the id `agentId:connectorId`. Other subscribers on the endpoint keep receiving its deliveries.
 
+## When a turn fails
+
+When a turn fails (the model or provider returns an error, or the turn throws), the channel shows a short line instead of the error: "Something went wrong answering this. Try again." by default, or the connector's `errorMessage`. If the reply had partly streamed, the line goes after that text. The error is logged on the run, and `outbound` receives it as `reply.error`, so you can render a failure differently.
+
+`errorMessage` is a fixed string, or a function that builds the line from the failure. It receives the `error`, the `partialText` streamed before it failed, the triggering `event` (undefined on a turn the channel didn't start), the `runId`, the `chatId`, and the `defaultMessage`. Return nothing, or throw, to fall back to the default line.
+
+```ts theme={"theme":"css-variables"}
+slack({
+  id: "slack",
+  endpoint: slackEvents,
+  token: process.env.SLACK_BOT_TOKEN!,
+  startOn: appMentions(),
+  errorMessage: ({ error, runId }) =>
+    error.message.includes("rate limit")
+      ? "I'm getting a lot of requests right now. Try again in a minute."
+      : `Something went wrong answering this. Try again, or share ref ${runId} with support.`,
+});
+```
+
 ## Stopping a turn from the channel
 
 A connector can map an event to a control with `onControl`. Returning `{ kind: "stop" }` while a turn is running aborts it through the run's `stopSignal`, exactly like the browser's stop button: the partial reply posts with `stopped: true` and the event is consumed instead of running as a turn. `linear()` and `slack()` map their stop buttons this way; a custom connector might map a `/stop` command:
@@ -60456,7 +61265,7 @@ When nothing is running, the event is handled by `inbound` as an ordinary messag
 Two more hooks let a connector mirror the session into a surface that has its own notion of an agent, the way `slack()` does:
 
 * `lifecycle(state, ctx)` reports `working` when a turn starts (and every 50 minutes while it runs), `waiting` when it pauses on a human decision, `idle` when it ends for any reason, and `closed` on `chat.close()`. `ctx.firstTurn` and `ctx.prompt` are there to title a new conversation. Calls are serialized, so an older report never lands after a newer one.
-* `stream(ctx)`, with `delivery: "stream"`, returns a per-turn transport `{ text(delta), progress?(event), end(outcome) }`. The runtime feeds it the reply's markdown deltas and tool progress, then calls `end({ stopped, pending, errorText? })` once. Resolve `{ delivered: true }` when the reply reached the surface, and the runtime does not post it again. Call `ctx.opened(ref)` once the surface has created the stream message: the ref is saved with the session while the turn runs, and if the worker dies mid-stream the next one calls the connector's `endInterruptedStream(ref, ctx)` before it answers, so the old stream does not look like it is still being written.
+* `stream(ctx)`, with `delivery: "stream"`, returns a per-turn transport `{ text(delta), progress?(event), end(outcome) }`. The runtime feeds it the reply's markdown deltas and tool progress, then calls `end({ stopped, pending, errorText? })` once, with the connector's error line as `errorText` when the turn failed. Resolve `{ delivered: true }` when the reply reached the surface, and the runtime does not post it again. Call `ctx.opened(ref)` once the surface has created the stream message: the ref is saved with the session while the turn runs, and if the worker dies mid-stream the next one calls the connector's `endInterruptedStream(ref, ctx)` before it answers, so the old stream does not look like it is still being written.
 
 ## Bound sessions
 
@@ -60672,7 +61481,14 @@ Trigger.dev uses the endpoint and idempotency key to deduplicate incoming events
 
 A retry after the delivery window expires can create another delivery record. If the task-run idempotency window is still active, routing returns the existing run instead of starting another one.
 
-When the source maps a provider event ID, that ID becomes the key. For example, Stripe uses the event body's `id`, and GitHub uses the `X-GitHub-Delivery` header.
+When the source maps a provider event ID, that ID becomes the key, so the provider's own retries of an event are recognised as duplicates:
+
+| Key | Sources |
+| - | - |
+| A header | GitHub (`X-GitHub-Delivery`), Svix and Autumn (`svix-id`), Standard Webhooks, Loops and Granola (`webhook-id`), Linear (`Linear-Delivery`), PagerDuty (`X-Webhook-Id`), Jira (`X-Atlassian-Webhook-Identifier`), Zendesk (`X-Zendesk-Webhook-Invocation-Id`), Attio (`Idempotency-Key`), Shopify (`X-Shopify-Webhook-Id`) |
+| A body field | Stripe, Notion, Vercel, Intercom, WorkOS, Metronome, Mux, Langfuse and Plain (`id`), Square, Slack and Typeform (`event_id`), Firecrawl (`webhookId`) |
+
+The other named sources (Zoom, Calendly, Sentry, DocuSign, ElevenLabs, Vapi, Retell, Tailscale, Infisical, PlanetScale, Supabase, Discord) use the fallback below.
 
 If the source doesn't map an event ID, the key is derived from the raw body, timestamp, and signature. A retry with a different timestamp or signature can therefore produce a different key. For a [custom source](/docs/webhooks/sources#custom-providers), set `idempotencyField` to a stable event identifier when the provider supplies one.
 
@@ -60784,6 +61600,8 @@ Paths must have non-empty segments. `event.data.amount` is valid; `event.`, `eve
 
 Values are strings in single quotes (`'created'`), numbers (`10000`), booleans (`true`), or `null`. Use a list of these values with `in` and `not in`.
 
+A `null` value checks presence. `event.issue.pull_request != null` matches events that have the field, and `== null` matches events where it is missing or `null`. It works on any field, including fields your event type marks as required, because a missing field compares equal to `null`.
+
 ### Comparing two fields
 
 Equality and comparison operators also accept a field path on the right-hand side:
@@ -60798,6 +61616,12 @@ event.billing.country == event.shipping.country
 
 ```text Filter expression theme={"theme":"css-variables"}
 event.items any ( quantity > 0 )
+```
+
+When the payload itself is an array, as with providers that batch several events into one request (Tailscale, for example), quantify over `event`:
+
+```text Filter expression theme={"theme":"css-variables"}
+event any ( type == 'nodeCreated' )
 ```
 
 ### Spacing
@@ -60872,7 +61696,7 @@ Out of the box, `slack()` posts Approve and Deny buttons for any pending no-`exe
 ```ts trigger/support-agent.ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
-import { slack, webhookSource } from "@trigger.dev/slack";
+import { appMentions, slack, webhookSource } from "@trigger.dev/slack";
 import { tool } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
@@ -60891,7 +61715,14 @@ const requestApproval = tool({
 
 export const supportAgent = chat.agent({
   id: "support-agent",
-  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "support-slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   tools: { requestApproval },
   run: async ({ messages, tools, streamText }) =>
     streamText({
@@ -61062,7 +61893,7 @@ linear({ id: "linear", endpoint: linearEvents, token, context: { guidance: false
 | Turn starts | An ephemeral `thought` ("Looking into this...") |
 | A tool is called | An ephemeral `action` with the tool name and input, then the same action with its `result` |
 | The reply is ready | A `response` with the reply as markdown |
-| The turn fails | An `error` |
+| The turn fails | An `error` saying "Something went wrong answering this. Try again." (`errorMessage` changes it) |
 | A tool needs a human decision | An `elicitation` with Approve and Deny options, or the tool's own options from `interactions` (see [Approvals and choices](#approvals-and-choices)) |
 | The user picks an option | A `thought` recording the decision ("Approved by Jane.", "Jane chose "High".") |
 | A prompt arrives while the agent works | A `thought` ("Got it, I'll take that into account.") as soon as it arrives (see [Prompts sent while the agent is working](#prompts-sent-while-the-agent-is-working)) |
@@ -61171,6 +62002,7 @@ The first Linear turn binds the session to the agent session ([bound sessions](/
 | `approvals` | `{ [toolName]: (input, call) => { title?, body } }` | Custom approval card body per tool. Default lays the tool input out as markdown. |
 | `interactions` | `{ [toolName]: (call) => { title?, body, options } }` | A tool's own select card; the chosen option resolves the tool to `{ selected }`. |
 | `receivedThought` | `string`, function or `null` | Thought posted as soon as a prompt arrives while the agent is working. Default "Got it, I'll take that into account.", null for none. |
+| `errorMessage` | `string \| (ctx) => string` | The error activity's text when a turn fails, fixed or built from the failure ([details](/docs/webhooks/channels#when-a-turn-fails)). Default "Something went wrong answering this. Try again." |
 | `ack` | message, `null`, or function | The first thought. Pass `null` to post nothing before the response. |
 | `inbound` / `outbound` | functions | Map the event to the turn, and the reply to an activity. |
 | `delivery` | `"final"` or `"stream"` | `"final"` (default) posts the response when the turn ends. `"stream"` also posts ephemeral thoughts as the reply streams. |
@@ -61249,6 +62081,22 @@ Each subscriber has its own [filter](/docs/webhooks/filters), so one delivery ca
 | `headers` | Request headers as a Web `Headers` object, with case-insensitive `get()` and `has()` methods. Credentials such as signatures are removed. |
 | `endpoint` | The endpoint the delivery arrived on: `id`, `declaredId`, `tenantId`, `externalRef`, and the `metadata` you declared. |
 | `ctx` | The same [run context](/docs/context) that regular tasks receive. |
+
+`webhook()` also takes the options a [task](/docs/tasks/overview) does, such as `queue`, `concurrency`, `machine`, `retry`, `maxDuration` and the lifecycle hooks. For example, to handle one delivery at a time:
+
+```ts theme={"theme":"css-variables"}
+export const orders = webhook({
+  id: "stripe-orders",
+  endpoint: stripe,
+  queue: { concurrencyLimit: 1 },
+  retry: { maxAttempts: 5 },
+  onEvent: async ({ event }) => {
+    // ...
+  },
+});
+```
+
+The limit covers every delivery the task handles. To process each customer's events in order while different customers run in parallel, route them to an agent with [session routing](/docs/webhooks/session-routing): deliveries with the same key land in one session and are handled one after another.
 
 `webhooks.endpoint.define` also takes a `description` and `metadata`. The metadata is passed to every subscriber as `endpoint.metadata`. The endpoint `id` can't start with `wh_`, which is reserved for the ids Trigger.dev generates.
 
@@ -61387,7 +62235,14 @@ When the same session is also a [channel](/docs/webhooks/channels) conversation 
 ```ts theme={"theme":"css-variables"}
 export const orderAgent = chat.agent({
   id: "order-agent",
-  channels: [slack({ id: "support-slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "support-slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   events: [orderEvents],
   onAction: async ({ action }) => {
     if (action.type === "order.event") {
@@ -61441,7 +62296,7 @@ export const orderEvents = chat.event({
 # Slack agents
 Source: https://trigger.dev/docs/webhooks/slack
 
-Turn a chat.agent into a Slack agent: users message it in Slack, it shows its status while it works, streams its reply with tool calls as task cards, asks for approvals, and stops on Slack's stop button.
+Turn a chat.agent into a Slack agent: users message it in Slack, it shows its status while it works, streams its reply with its tool calls as a plan, asks for approvals, and stops on Slack's stop button.
 
 <PrivateBeta>
   [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
@@ -61454,14 +62309,21 @@ Turn a chat.agent into a Slack agent: users message it in Slack, it shows its st
 ```ts /trigger/support.ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
-import { slack, webhookSource } from "@trigger.dev/slack";
+import { appMentions, slack, webhookSource } from "@trigger.dev/slack";
 import { anthropic } from "@ai-sdk/anthropic";
 
 const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
 
 export const support = chat.agent({
   id: "support",
-  channels: [slack({ id: "slack", endpoint: slackEvents, token: process.env.SLACK_BOT_TOKEN! })],
+  channels: [
+    slack({
+      id: "slack",
+      endpoint: slackEvents,
+      token: process.env.SLACK_BOT_TOKEN!,
+      startOn: appMentions(),
+    }),
+  ],
   tools: { searchDocs, refundOrder },
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools, abortSignal: signal }),
@@ -61500,6 +62362,7 @@ export const support = chat.agent({
           - files:read
           - reactions:write
           - im:history
+          - app_mentions:read
           - channels:history
           - groups:history
     settings:
@@ -61507,6 +62370,7 @@ export const support = chat.agent({
         request_url: https://your-endpoint-url
         bot_events:
           - message.im
+          - app_mention
           - message.channels
           - message.groups
           - agent_session_stopped
@@ -61515,7 +62379,7 @@ export const support = chat.agent({
         request_url: https://your-endpoint-url
     ```
 
-    `agent_view` makes the app an agent, `agent_session_stopped` turns on the stop button, interactivity delivers clicks on the agent's buttons, `files:read` lets the agent read the images and PDFs users share with it, and `reactions:write` lets it mark a message it picked up mid-reply. Drop `message.channels`, `message.groups` and their `history` scopes if the agent should only answer in its own conversations.
+    `agent_view` makes the app an agent, `agent_session_stopped` turns on the stop button, interactivity delivers clicks on the agent's buttons, `files:read` lets the agent read the images and PDFs users share with it, `reactions:write` lets it mark a message it picked up mid-reply, and `app_mention` with `app_mentions:read` lets an @mention start a session in a channel (see [Channel threads](#channel-threads)). Drop `app_mention`, `message.channels`, `message.groups` and their scopes if the agent should only answer in its own conversations.
   </Step>
 
   <Step title="Connect the endpoint">
@@ -61533,18 +62397,20 @@ export const support = chat.agent({
 | - | - |
 | A turn starts | The session's status is **processing**. On the first turn the session is titled with the prompt. |
 | The model writes | The reply streams into the thread with `chat.startStream`, `chat.appendStream` and `chat.stopStream`, as markdown. |
-| A tool is called | A task card in the reply, marked complete when the tool returns and failed if it throws. |
+| A tool is called | A task in the reply's plan, titled by the tool's `title` (or its name made readable), marked complete when the tool returns and failed if it throws. The plan reads "Working on it", then "Done", "Stopped" or "Waiting for approval" when the turn ends. |
 | A tool needs a decision | Approve and Deny buttons, and the status is **suspended** (see [Approvals and buttons](#approvals-and-buttons)). |
+| The turn fails | The reply ends with "Something went wrong answering this. Try again." (`errorMessage` changes it). The error is logged on the run. |
 | The turn ends | The status goes back to **active**, whether it answered, stopped, failed or had nothing to say. |
 | `chat.close()` | The status is **closed**. |
 
-Set `title` to name the session yourself; return null to keep Slack's own. A title the user sets in Slack is never overwritten. Slack drops a processing status after an hour, so a longer turn re-sends it every 50 minutes. `progress: "off"` streams the reply without task cards, and `delivery: "final"` posts the whole reply once the turn ends instead of streaming it.
+Set `title` to name the session yourself; return null to keep Slack's own. A title the user sets in Slack is never overwritten. Slack drops a processing status after an hour, so a longer turn re-sends it every 50 minutes. Give a tool a readable task title with the AI SDK's `tool({ title: "Search the archive", ... })`; without one the task shows the tool's name made readable (`searchArchive` shows "Search archive"). `progress: "tasks"` shows one task card per call between the reply's text instead of a plan, `progress: "off"` streams the reply without them, and `delivery: "final"` posts the whole reply once the turn ends instead of streaming it.
 
 ```ts theme={"theme":"css-variables"}
 slack({
   id: "slack",
   endpoint: slackEvents,
   token,
+  startOn: appMentions(),
   title: (prompt) => `Support: ${prompt.slice(0, 80)}`,
 });
 ```
@@ -61562,6 +62428,7 @@ slack({
   id: "slack",
   endpoint: slackEvents,
   token,
+  startOn: appMentions(),
   approval: (call, { button }) => ({
     text: `Run ${call.toolName}?`,
     blocks: [
@@ -61588,6 +62455,7 @@ export const moji = chat.agent({
       id: "slack",
       endpoint: slackEvents,
       token,
+      startOn: appMentions(),
       interactions: {
         pickEmoji: (call, { button }) => {
           const { options } = call.input as { options: { name: string }[] };
@@ -61625,18 +62493,18 @@ The click resolves `pickEmoji` to `{ picked: "wizard" }`, the buttons collapse t
 Buttons that aren't answering a tool, such as follow-up questions, are built with `slackButton()` and posted with the surface's `post()`. A click reaches `onAction`, validated against `actionSchema` like a browser action, and returning `chat.turn(message)` answers it in the thread:
 
 ```ts theme={"theme":"css-variables"}
-import { slackButton, type SlackSurface } from "@trigger.dev/slack";
+import { slackButton, type SlackRunSurface } from "@trigger.dev/slack";
 
 export const support = chat.agent({
   id: "support",
-  channels: [slack({ id: "slack", endpoint: slackEvents, token })],
+  channels: [slack({ id: "slack", endpoint: slackEvents, token, startOn: appMentions() })],
   actionSchema: z.object({ type: z.literal("ask"), question: z.string() }),
   tools: {
     offerFollowUps: tool({
       description: "Offer the user up to three follow-up questions as buttons",
       inputSchema: z.object({ questions: z.array(z.string()).max(3) }),
       execute: async ({ questions }) => {
-        await chat.surface<SlackSurface>()?.post({
+        await chat.surface<SlackRunSurface>()?.post({
           text: "Follow-up questions",
           blocks: [
             {
@@ -61688,13 +62556,26 @@ Slack shows a stop button while the agent is working. It aborts the running turn
 
 ## Channel threads
 
-In a channel the agent answers every thread it can see. To have it answer only when it is @mentioned, pass `startOn` with the `mentions` helper and your bot's user id. A mention in a channel starts a session and the agent answers in a thread under it, then follows the rest of that thread without being mentioned again. `startOn` only applies to channels: a message in the agent's own conversation always starts a session.
+`startOn` is required: it decides which channel messages start a session. Pass `appMentions()` to have the agent answer only when it is @mentioned. A mention in a channel starts a session and the agent answers in a thread under it, then follows the rest of that thread without being mentioned again. `startOn` only applies to channels: a message in the agent's own conversation always starts a session.
 
 ```ts theme={"theme":"css-variables"}
-import { slack, mentions } from "@trigger.dev/slack";
+import { slack, appMentions } from "@trigger.dev/slack";
 
-slack({ id: "slack", endpoint: slackEvents, token, startOn: mentions("U012BOT") });
+slack({ id: "slack", endpoint: slackEvents, token, startOn: appMentions() });
 ```
+
+`appMentions()` uses Slack's `app_mention` event, so the app needs the `app_mention` bot event and the `app_mentions:read` scope (both in the manifest above), and no bot user id. Slack also delivers each mention as an ordinary channel message; the connector ignores that copy, so one mention runs one turn.
+
+What each value does:
+
+| `startOn` | The agent starts a session in a channel |
+| - | - |
+| `appMentions()` | When it is @mentioned (recommended). |
+| `mentions("U012BOT")` | When a message mentions that bot user id, from message events, without the `app_mention` subscription. |
+| `"event.event.type == 'message'"` | On every message it can see. |
+| `"event.event.channel_type == 'im'"` | Never: it answers only in its own conversation. |
+
+In a channel shared with another organization through Slack Connect, pass `ownWorkspaceOnly: true` to answer only people from your own workspace. Messages, mentions and button clicks from the other organization's users are dropped before they reach the agent. In Enterprise Grid this also drops users whose home workspace is another workspace in the org.
 
 When someone mentions the agent partway through a thread, `seedFromThread: true` loads the thread's earlier replies into the new session first, so the agent answers with the context a reader of the thread has. It loads the history once, on the session's first turn, paging through `conversations.replies` and keeping the newest 50 replies (`{ limit }` changes that). Slack limits new commercially distributed apps outside the Marketplace to 15 replies per call and one call a minute, so such an app may only get the thread's first page; internal apps keep the normal limits. A rate limit keeps what was fetched rather than failing the turn.
 
@@ -61705,7 +62586,7 @@ A message sent while the agent is still answering gets 👀 as soon as it arrive
 ```ts theme={"theme":"css-variables"}
 export const support = chat.agent({
   id: "support",
-  channels: [slack({ id: "slack", endpoint: slackEvents, token })],
+  channels: [slack({ id: "slack", endpoint: slackEvents, token, startOn: appMentions() })],
   pendingMessages: { shouldInject: () => true },
   run: async ({ messages, signal, streamText }) =>
     streamText({ model, messages, abortSignal: signal, stopWhen: stepCountIs(10) }),
@@ -61780,6 +62661,7 @@ slack({
   id: "slack",
   endpoint: slackEvents,
   token,
+  startOn: appMentions(),
   delivery: "final",
   outbound: (reply) =>
     reply.text
@@ -61800,14 +62682,16 @@ slack({
 | `token` | `string` or resolver | Bot token (`xoxb-...`), or a function of the event (its `team_id`) for multi-workspace apps. |
 | `delivery` | `"stream"` or `"final"` | `"stream"` (default) streams the reply natively. `"final"` posts it once when the turn ends. |
 | `title` | `(prompt, event) => string \| null` | The session title, set on its first turn. Defaults to the first line of the prompt. |
-| `progress` | `"tasks"` or `"off"` | Tool calls as task cards in the streamed reply. Default `"tasks"`. |
-| `startOn` | filter string | Only start a session in a channel when the event matches (see `mentions`). Existing sessions always resume, and the agent's own conversation always starts one. Checked against the endpoint's event type. |
+| `progress` | `"plan"`, `"tasks"` or `"off"` | How tool calls show in the streamed reply: one plan block (default), a task card per call, or none. Task titles come from each tool's `title`. |
+| `startOn` | filter string | Required. Which channel messages start a session, usually `appMentions()` (see [Channel threads](#channel-threads)). Existing sessions always resume, and the agent's own conversation always starts one. Checked against the endpoint's event type. |
 | `filter` | filter string | Extra [filter](/docs/webhooks/filters) for message events, composed with the built-in guard that drops the bot's own messages. Checked against the endpoint's event type, like `webhook()`'s `filter`. |
 | `key` | `string` | Session [key](/docs/webhooks/session-routing) template. Defaults to one session per thread. |
 | `seedFromThread` | `boolean` or `{ limit }` | Load a thread's earlier replies into a new session. Off by default. |
 | `approval` | `(call, { button }) => message` | The UI for a tool with no `execute`. Defaults to Approve and Deny resolving to `{ approved }`. |
 | `interactions` | `{ [toolName]: (call, { button }) => message }` | A tool's own UI; a click resolves the tool with the button's `output`. |
 | `receivedReaction` | `string \| null` | Emoji added, on arrival, to a message sent while the agent is answering. Default `"eyes"`, null for none. |
+| `errorMessage` | `string \| (ctx) => string` | What the reply shows when a turn fails, fixed or built from the failure ([details](/docs/webhooks/channels#when-a-turn-fails)). Default "Something went wrong answering this. Try again." |
+| `ownWorkspaceOnly` | `boolean` | Drop messages, mentions and button clicks from people outside the app's workspace, such as Slack Connect guests. Off by default. |
 | `inbound` / `outbound` | functions | Map a Slack event to the turn, and a posted reply to a Slack message. |
 | `apiBaseUrl` | `string` | Override the Slack Web API base, for testing against a mock. |
 
@@ -61909,13 +62793,16 @@ Each function below returns a source with its provider's verification configurat
 
 | Verification | Source functions |
 | - | - |
-| Svix | `clerk()`, `resend()`, `brex()` |
-| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `composio()` |
+| Svix | `clerk()`, `resend()`, `brex()`, `autumn()` |
+| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `composio()`, `loops()`, `granola()` |
 | HMAC-SHA256 with `X-Hub-Signature-256` | `whatsapp()` |
 | Shared secret in `X-Gitlab-Token` | `gitlab()` |
-| Provider-specific HMAC | `calendly()`, `calCom()`, `sentry()`, `pagerduty()`, `vercel()`, `linear()`, `notion()`, `typeform()`, `docusign()`, `jira()`, `intercom()`, `zendesk()`, `attio()`, `workos()`, `elevenlabs()`, `vapi()`, `retell()`, `shopify()` |
+| Shared secret as `Authorization: Bearer` | `supabase()` |
+| Provider-specific HMAC | `calendly()`, `calCom()`, `sentry()`, `pagerduty()`, `vercel()`, `linear()`, `notion()`, `typeform()`, `docusign()`, `jira()`, `intercom()`, `zendesk()`, `attio()`, `workos()`, `elevenlabs()`, `vapi()`, `retell()`, `shopify()`, `metronome()`, `mux()`, `tailscale()`, `langfuse()`, `infisical()`, `planetscale()`, `plain()`, `firecrawl()` |
 
 Provider IDs containing a hyphen use a camel case function name: the `cal-com` provider is `webhooks.calCom()`.
+
+Supabase database webhooks aren't signed, so `supabase()` checks a shared secret instead. Generate the endpoint's secret on Trigger.dev, then add an `Authorization` header with the value `Bearer <secret>` under the webhook's HTTP Headers in Supabase.
 
 Slack also ships as a chat channel in `@trigger.dev/slack`.
 

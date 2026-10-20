@@ -36,36 +36,32 @@ Use FireRouter in any coding harness. [FireConnect](/nexus/fireconnect) writes t
 
 Pick your harness, a router, and a setup method. Pick `firerouter` to route between Claude or GPT and Fireworks open models. Pick `auto` if you have only a Fireworks key. The commands and config files update as you choose, including the provider-key headers you need.
 
-<FireRouterHarnessSetup />
-
-<Accordion title="FireConnect quick start for Claude Code">
-  <Steps>
-    <Step title="Install and sign in">
-      ```bash wrap theme={null}
-      curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
-      fireconnect login
-      ```
-    </Step>
-
-    <Step title="Connect with a router">
-      ```bash wrap theme={null}
-      fireconnect claude --model firerouter
-      ```
-    </Step>
-
-    <Step title="Restart and pick FireRouter">
-      Start a new session and open `/model`. Claude turns use your Claude login.
-    </Step>
-
-    <Step title="Watch routing live">
-      ```bash wrap theme={null}
-      fireconnect claude live
-      ```
-
-      A meter beside Claude Code shows the model selected for each turn. See [Watch routing live](/nexus/firerouter#watch-routing-live).
-    </Step>
-  </Steps>
-</Accordion>
+> **FireConnect quick start for Claude Code**
+>
+> **1. Install and sign in**
+>
+> ```bash wrap theme={null}
+> curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
+> fireconnect login
+> ```
+>
+> **2. Connect with a router**
+>
+> ```bash wrap theme={null}
+> fireconnect claude --model firerouter
+> ```
+>
+> **3. Restart and pick FireRouter**
+>
+> Start a new session and open `/model`. Claude turns use your Claude login.
+>
+> **4. Watch routing live**
+>
+> ```bash wrap theme={null}
+> fireconnect claude live
+> ```
+>
+> A meter beside Claude Code shows the model selected for each turn. See [Watch routing live](/nexus/firerouter#watch-routing-live).
 
 ### Which harnesses can send provider keys
 
@@ -86,32 +82,30 @@ For every harness's files and restore behavior, see [Coding Harnesses](/nexus/ha
 
 ### Desktop apps
 
-<Tabs>
-  <Tab title="ChatGPT desktop app" icon="sparkles">
-    The ChatGPT desktop app shares the Codex CLI's config, so one command sets up both. Quit the ChatGPT desktop app first:
+**ChatGPT desktop app**
 
-    ```bash wrap theme={null}
-    fireconnect chatgpt
-    ```
+The ChatGPT desktop app shares the Codex CLI's config, so one command sets up both. Quit the ChatGPT desktop app first:
 
-    Reopen the app. FireRouter (`firerouter`) is the default model in its model list, and it routes between GPT Sol and Fireworks open models.
+```bash wrap theme={null}
+fireconnect chatgpt
+```
 
-    * GPT turns use the app's own sign-in: your ChatGPT plan, or the OpenAI key you signed in with. See [Codex](/nexus/harnesses#codex) for the exceptions.
-    * Sign-in billing is tested in the Codex CLI. The ChatGPT desktop app is not tested yet.
-  </Tab>
+Reopen the app. FireRouter (`firerouter`) is the default model in its model list, and it routes between GPT Sol and Fireworks open models.
 
-  <Tab title="Claude Desktop" icon="desktop">
-    FireConnect doesn't add FireRouter to Claude Desktop yet. On macOS, connect it with:
+* GPT turns use the app's own sign-in: your ChatGPT plan, or the OpenAI key you signed in with. See [Codex](/nexus/harnesses#codex) for the exceptions.
+* Sign-in billing is tested in the Codex CLI. The ChatGPT desktop app is not tested yet.
 
-    ```bash wrap theme={null}
-    fireconnect claude-desktop on
-    ```
+**Claude Desktop**
 
-    Reopen Claude Desktop. The picker starts on `auto`, which routes across Fireworks open models, followed by the Fireworks models. See [Claude Desktop](/nexus/harnesses#claude-desktop).
+FireConnect doesn't add FireRouter to Claude Desktop yet. On macOS, connect it with:
 
-    To route between Claude and open models, use FireRouter in [Claude Code](/nexus/harnesses#claude-code).
-  </Tab>
-</Tabs>
+```bash wrap theme={null}
+fireconnect claude-desktop on
+```
+
+Reopen Claude Desktop. The picker starts on `auto`, which routes across Fireworks open models, followed by the Fireworks models. See [Claude Desktop](/nexus/harnesses#claude-desktop).
+
+To route between Claude and open models, use FireRouter in [Claude Code](/nexus/harnesses#claude-code).
 
 ## LLM gateway
 
@@ -120,8 +114,6 @@ You do not need FireConnect behind a gateway. The gateway sends the `firerouter`
 ### Set up your gateway
 
 Choose LiteLLM or Portkey, pick a model ID, and choose where the provider keys live. The widget writes the gateway config and a test request.
-
-<FireRouterGatewaySetup />
 
 Clients never need provider keys when the gateway stores them or when [Provider Keys](/nexus/provider-keys) is connected. For other gateways and more detail on each credential option, see [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials).
 
@@ -146,21 +138,17 @@ Leave out a header when the matching [Provider Key](/nexus/provider-keys) is con
 
 Install the SDKs you use:
 
-<CodeGroup>
-  ```bash Python theme={null}
-  pip install openai anthropic fireworks-ai
-  ```
+```bash Python theme={null}
+pip install openai anthropic fireworks-ai
+```
 
-  ```bash TypeScript theme={null}
-  npm install openai @anthropic-ai/sdk
-  ```
-</CodeGroup>
+```bash TypeScript theme={null}
+npm install openai @anthropic-ai/sdk
+```
 
 ### Build your request
 
 Pick an API and a language. The command updates with the provider header that API needs.
-
-<FireRouterBuilder />
 
 ### Examples
 
@@ -173,208 +161,202 @@ Send both keys, or connect [Provider Keys](/nexus/provider-keys) for both provid
 
 #### Chat Completions
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.fireworks.ai/inference/v1/chat/completions \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "x-openai-api-key: $OPENAI_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "firerouter",
-      "messages": [{"role": "user", "content": "Say pong in one word."}]
-    }'
-  ```
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "x-openai-api-key: $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "firerouter",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
 
-  ```python OpenAI SDK (Python) theme={null}
-  import os
+```python OpenAI SDK (Python) theme={null}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      api_key=os.environ["FIREWORKS_API_KEY"],
-      base_url="https://api.fireworks.ai/inference/v1",
-      # Omit when an OpenAI Provider Key is connected.
-      default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
-  )
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+    # Omit when an OpenAI Provider Key is connected.
+    default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
+)
 
-  response = client.chat.completions.create(
-      model="firerouter",
-      messages=[{"role": "user", "content": "Say pong in one word."}],
-  )
+response = client.chat.completions.create(
+    model="firerouter",
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-  print(response.model, response.choices[0].message.content)
-  ```
+print(response.model, response.choices[0].message.content)
+```
 
-  ```typescript OpenAI SDK (TypeScript) theme={null}
-  import OpenAI from "openai";
+```typescript OpenAI SDK (TypeScript) theme={null}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    apiKey: process.env.FIREWORKS_API_KEY,
-    baseURL: "https://api.fireworks.ai/inference/v1",
-    // Omit when an OpenAI Provider Key is connected.
-    defaultHeaders: { "x-openai-api-key": process.env.OPENAI_API_KEY },
-  });
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+  // Omit when an OpenAI Provider Key is connected.
+  defaultHeaders: { "x-openai-api-key": process.env.OPENAI_API_KEY },
+});
 
-  const response = await client.chat.completions.create({
-    model: "firerouter",
-    messages: [{ role: "user", content: "Say pong in one word." }],
-  });
+const response = await client.chat.completions.create({
+  model: "firerouter",
+  messages: [{ role: "user", content: "Say pong in one word." }],
+});
 
-  console.log(response.model, response.choices[0].message.content);
-  ```
+console.log(response.model, response.choices[0].message.content);
+```
 
-  ```python Fireworks SDK (Python) theme={null}
-  import os
+```python Fireworks SDK (Python) theme={null}
+import os
 
-  from fireworks import Fireworks
+from fireworks import Fireworks
 
-  # Reads FIREWORKS_API_KEY from the environment.
-  client = Fireworks(
-      # Omit when an OpenAI Provider Key is connected.
-      default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
-  )
+# Reads FIREWORKS_API_KEY from the environment.
+client = Fireworks(
+    # Omit when an OpenAI Provider Key is connected.
+    default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
+)
 
-  response = client.chat.completions.create(
-      model="firerouter",
-      messages=[{"role": "user", "content": "Say pong in one word."}],
-  )
+response = client.chat.completions.create(
+    model="firerouter",
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-  print(response.model, response.choices[0].message.content)
-  ```
-</CodeGroup>
+print(response.model, response.choices[0].message.content)
+```
 
 #### Responses
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.fireworks.ai/inference/v1/responses \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "x-openai-api-key: $OPENAI_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "firerouter",
-      "input": "Say pong in one word."
-    }'
-  ```
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/responses \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "x-openai-api-key: $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "firerouter",
+    "input": "Say pong in one word."
+  }'
+```
 
-  ```python OpenAI SDK (Python) theme={null}
-  import os
+```python OpenAI SDK (Python) theme={null}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      api_key=os.environ["FIREWORKS_API_KEY"],
-      base_url="https://api.fireworks.ai/inference/v1",
-      # Omit when an OpenAI Provider Key is connected.
-      default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
-  )
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+    # Omit when an OpenAI Provider Key is connected.
+    default_headers={"x-openai-api-key": os.environ["OPENAI_API_KEY"]},
+)
 
-  response = client.responses.create(
-      model="firerouter",
-      input="Say pong in one word.",
-  )
+response = client.responses.create(
+    model="firerouter",
+    input="Say pong in one word.",
+)
 
-  print(response.model, response.output_text)
-  ```
+print(response.model, response.output_text)
+```
 
-  ```typescript OpenAI SDK (TypeScript) theme={null}
-  import OpenAI from "openai";
+```typescript OpenAI SDK (TypeScript) theme={null}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    apiKey: process.env.FIREWORKS_API_KEY,
-    baseURL: "https://api.fireworks.ai/inference/v1",
-    // Omit when an OpenAI Provider Key is connected.
-    defaultHeaders: { "x-openai-api-key": process.env.OPENAI_API_KEY },
-  });
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+  // Omit when an OpenAI Provider Key is connected.
+  defaultHeaders: { "x-openai-api-key": process.env.OPENAI_API_KEY },
+});
 
-  const response = await client.responses.create({
-    model: "firerouter",
-    input: "Say pong in one word.",
-  });
+const response = await client.responses.create({
+  model: "firerouter",
+  input: "Say pong in one word.",
+});
 
-  console.log(response.model, response.output_text);
-  ```
-</CodeGroup>
+console.log(response.model, response.output_text);
+```
 
 #### Messages
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl https://api.fireworks.ai/inference/v1/messages \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
-    -H "anthropic-version: 2023-06-01" \
-    -H "Content-Type: application/json" \
-    -d '{
-      "model": "firerouter",
-      "max_tokens": 1024,
-      "messages": [{"role": "user", "content": "Say pong in one word."}]
-    }'
-  ```
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/messages \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "firerouter",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
+```
 
-  ```python Anthropic SDK (Python) theme={null}
-  import os
+```python Anthropic SDK (Python) theme={null}
+import os
 
-  import anthropic
+import anthropic
 
-  client = anthropic.Anthropic(
-      api_key=os.environ["FIREWORKS_API_KEY"],
-      base_url="https://api.fireworks.ai/inference",
-      # Omit when an Anthropic Provider Key is connected.
-      default_headers={"x-anthropic-api-key": os.environ["ANTHROPIC_API_KEY"]},
-  )
+client = anthropic.Anthropic(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference",
+    # Omit when an Anthropic Provider Key is connected.
+    default_headers={"x-anthropic-api-key": os.environ["ANTHROPIC_API_KEY"]},
+)
 
-  message = client.messages.create(
-      model="firerouter",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "Say pong in one word."}],
-  )
+message = client.messages.create(
+    model="firerouter",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-  text = next(block.text for block in message.content if block.type == "text")
-  print(message.model, text)
-  ```
+text = next(block.text for block in message.content if block.type == "text")
+print(message.model, text)
+```
 
-  ```typescript Anthropic SDK (TypeScript) theme={null}
-  import Anthropic from "@anthropic-ai/sdk";
+```typescript Anthropic SDK (TypeScript) theme={null}
+import Anthropic from "@anthropic-ai/sdk";
 
-  const client = new Anthropic({
-    apiKey: process.env.FIREWORKS_API_KEY,
-    baseURL: "https://api.fireworks.ai/inference",
-    // Omit when an Anthropic Provider Key is connected.
-    defaultHeaders: { "x-anthropic-api-key": process.env.ANTHROPIC_API_KEY },
-  });
+const client = new Anthropic({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference",
+  // Omit when an Anthropic Provider Key is connected.
+  defaultHeaders: { "x-anthropic-api-key": process.env.ANTHROPIC_API_KEY },
+});
 
-  const message = await client.messages.create({
-    model: "firerouter",
-    max_tokens: 1024,
-    messages: [{ role: "user", content: "Say pong in one word." }],
-  });
+const message = await client.messages.create({
+  model: "firerouter",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Say pong in one word." }],
+});
 
-  const text = message.content.find((block) => block.type === "text");
-  console.log(message.model, text?.type === "text" ? text.text : "");
-  ```
+const text = message.content.find((block) => block.type === "text");
+console.log(message.model, text?.type === "text" ? text.text : "");
+```
 
-  ```python Fireworks SDK (Python) theme={null}
-  import os
+```python Fireworks SDK (Python) theme={null}
+import os
 
-  from fireworks import Fireworks
+from fireworks import Fireworks
 
-  # Reads FIREWORKS_API_KEY from the environment.
-  client = Fireworks(
-      # Omit when an Anthropic Provider Key is connected.
-      default_headers={"x-anthropic-api-key": os.environ["ANTHROPIC_API_KEY"]},
-  )
+# Reads FIREWORKS_API_KEY from the environment.
+client = Fireworks(
+    # Omit when an Anthropic Provider Key is connected.
+    default_headers={"x-anthropic-api-key": os.environ["ANTHROPIC_API_KEY"]},
+)
 
-  message = client.messages.create(
-      model="firerouter",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "Say pong in one word."}],
-  )
+message = client.messages.create(
+    model="firerouter",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
 
-  text = next(block.text for block in message.content if block.type == "text")
-  print(message.model, text)
-  ```
-</CodeGroup>
+text = next(block.text for block in message.content if block.type == "text")
+print(message.model, text)
+```
 
 The Anthropic SDK base URL is `https://api.fireworks.ai/inference`, without `/v1`. The SDK adds `/v1/messages`. Some models return a `thinking` block before the text, so read the first `text` block rather than `content[0]`.
 

@@ -26,42 +26,40 @@ Connect from the organization settings, or the first time you attach email to an
 
 Prefer a video walkthrough?
 
-<YouTube />
+[YouTube video player](https://www.youtube.com/embed/6UTw4x4VG_Q)
 
-<Steps>
-  <Step title="Open the canvas">
-    Open the environment canvas and choose the **Email** resource.
-  </Step>
+**1. Open the canvas**
 
-  <Step title="Approve full access">
-    On the Resend consent screen, pick the team Laravel Cloud should use and choose **Full access**. Laravel Cloud returns you to the same environment and imports the sending domains already on that team.
+Open the environment canvas and choose the **Email** resource.
 
-    <Info>
-      **Full access** lets Laravel Cloud import your existing domains and set up the
-      webhooks it needs. **Sending access** can only send email, so Laravel Cloud
-      can't finish setup with that permission.
-    </Info>
+**2. Approve full access**
 
-    <video aria-label="Connecting a Resend account from the Laravel Cloud canvas" />
-  </Step>
+On the Resend consent screen, pick the team Laravel Cloud should use and choose **Full access**. Laravel Cloud returns you to the same environment and imports the sending domains already on that team.
 
-  <Step title="Connect a domain and create a key">
-    Select a verified domain or create a new one. Click **Continue**.
+> [!NOTE]
+>
+> **Full access** lets Laravel Cloud import your existing domains and set up the
+> webhooks it needs. **Sending access** can only send email, so Laravel Cloud
+> can't finish setup with that permission.
 
-    <video aria-label="Choosing a sending domain, sender, and key, then attaching email to a Laravel Cloud environment" />
+<video aria-label="Connecting a Resend account from the Laravel Cloud canvas" />
 
-    Enter the sender address and sender name, then choose a sending key.
+**3. Connect a domain and create a key**
 
-    * **Create a new key** creates a full access key used by this environment.
-    * **Reuse existing key** shares a key already used by another environment in the organization.
+Select a verified domain or create a new one. Click **Continue**.
 
-    Confirm and attach email to finish.
-  </Step>
+<video aria-label="Choosing a sending domain, sender, and key, then attaching email to a Laravel Cloud environment" />
 
-  <Step title="Redeploy your application">
-    For changes to take effect, redeploy your application.
-  </Step>
-</Steps>
+Enter the sender address and sender name, then choose a sending key.
+
+* **Create a new key** creates a full access key used by this environment.
+* **Reuse existing key** shares a key already used by another environment in the organization.
+
+Confirm and attach email to finish.
+
+**4. Redeploy your application**
+
+For changes to take effect, redeploy your application.
 
 Connecting and disconnecting requires the **Edit organization integrations** permission. See [roles and permissions](https://laravel.com/cloud/docs/rbac) for more details.
 
@@ -104,11 +102,11 @@ The key has full access, so the same application can call the rest of the Resend
 
 Laravel Cloud injects `RESEND_API_KEY` for every runtime. Read the key from the environment and pass it to the [API](/docs/api-reference/introduction) or an [SDK](/docs/sdks).
 
-<Note>
-  Queued mail can fail as a failed job. [Laravel
-  Nightwatch](https://nightwatch.laravel.com) traces those jobs and alerts you
-  when they start failing.
-</Note>
+> [!NOTE]
+>
+> Queued mail can fail as a failed job. [Laravel
+> Nightwatch](https://nightwatch.laravel.com) traces those jobs and alerts you
+> when they start failing.
 
 ## Attach Resend with the API
 

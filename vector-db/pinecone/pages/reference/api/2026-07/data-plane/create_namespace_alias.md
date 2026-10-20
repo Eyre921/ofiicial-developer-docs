@@ -11,20 +11,18 @@ The call returns once the alias resolves on every reader, which takes about a se
 
 For guidance and examples, see [Manage namespace aliases](https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-aliases).
 
-<RequestExample>
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl -X POST "https://$INDEX_HOST/namespace-aliases" \
-      -H "Api-Key: $PINECONE_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Pinecone-Api-Version: 2026-07" \
-      -d '{
-          "name": "dataset",
-          "target_namespace": "dataset_v1"
-      }'
-  ```
-</RequestExample>
+curl -X POST "https://$INDEX_HOST/namespace-aliases" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+        "name": "dataset",
+        "target_namespace": "dataset_v1"
+    }'
+```

@@ -8,7 +8,7 @@ Install the official Pinecone plugin for Cursor to manage indexes, run vector se
 
 The official Pinecone plugin for [Cursor](https://www.cursor.com/) adds Pinecone skills, the Pinecone MCP server, and slash commands to your editor. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
-<PrimarySecondaryCTA />
+[View on GitHub](https://github.com/pinecone-io/pinecone-cursor-plugin)
 
 ## Features
 
@@ -27,34 +27,32 @@ The official Pinecone plugin for [Cursor](https://www.cursor.com/) adds Pinecone
 
 ## Installation
 
-<Steps>
-  <Step title="Set your API key">
-    Add your [Pinecone API key](https://app.pinecone.io/organizations/-/keys) to a `.env` file at your workspace root:
+**1. Set your API key**
 
-    ```text theme={null}
-    PINECONE_API_KEY=your-key
-    ```
+Add your [Pinecone API key](https://app.pinecone.io/organizations/-/keys) to a `.env` file at your workspace root:
 
-    Cursor loads this file into the MCP server via its [`envFile`](https://cursor.com/docs/mcp) field, so you don't need to export the key in your shell.
-  </Step>
+```text theme={null}
+PINECONE_API_KEY=your-key
+```
 
-  <Step title="Install the plugin">
-    In Cursor chat, run:
+Cursor loads this file into the MCP server via its [`envFile`](https://cursor.com/docs/mcp) field, so you don't need to export the key in your shell.
 
-    ```text theme={null}
-    /add-plugin pinecone
-    ```
+**2. Install the plugin**
 
-    Or install directly from the [Cursor Marketplace](https://cursor.com/marketplace/pinecone).
-  </Step>
+In Cursor chat, run:
 
-  <Step title="Verify the installation">
-    Open Cursor Agent chat and run `/pinecone-help` to confirm the skills are loaded. You can also check:
+```text theme={null}
+/add-plugin pinecone
+```
 
-    * Skills are listed under **Agent Decides** in **Cursor Settings > Rules**.
-    * The MCP server is listed in **Cursor Settings > Features > Model Context Protocol**.
-  </Step>
-</Steps>
+Or install directly from the [Cursor Marketplace](https://cursor.com/marketplace/pinecone).
+
+**3. Verify the installation**
+
+Open Cursor Agent chat and run `/pinecone-help` to confirm the skills are loaded. You can also check:
+
+* Skills are listed under **Agent Decides** in **Cursor Settings > Rules**.
+* The MCP server is listed in **Cursor Settings > Features > Model Context Protocol**.
 
 ## Available skills
 

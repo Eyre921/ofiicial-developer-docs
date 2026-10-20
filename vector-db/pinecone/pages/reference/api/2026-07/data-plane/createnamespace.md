@@ -11,29 +11,27 @@ For guidance and examples, see [Manage namespaces](https://docs.pinecone.io/guid
 
 **Note:** This operation is not supported for pod-based indexes.
 
-<RequestExample>
-  ```bash curl theme={null}
-  # To get the unique host for an index,
-  # see https://docs.pinecone.io/guides/manage-data/target-an-index
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_HOST="INDEX_HOST"
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
 
-  curl "https://$INDEX_HOST/namespaces" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-07" \
-    -d '{
-          "name": "example-namespace",
-          "schema": {
-  		  "fields": { 
-              "document_id": {"filterable": true},
-              "document_title": {"filterable": true},
-              "chunk_number": {"filterable": true},
-              "document_url": {"filterable": true},
-              "created_at": {"filterable": true}
-            }
+curl "https://$INDEX_HOST/namespaces" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "name": "example-namespace",
+        "schema": {
+		  "fields": { 
+            "document_id": {"filterable": true},
+            "document_title": {"filterable": true},
+            "chunk_number": {"filterable": true},
+            "document_url": {"filterable": true},
+            "created_at": {"filterable": true}
           }
-        }'
-  ```
-</RequestExample>
+        }
+      }'
+```

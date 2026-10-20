@@ -6,105 +6,97 @@ path: docs/webhooks/inboxes/thread-folder-updated
 
 Received when a thread moves between folders.
 
-<Warning>
-  Inboxes are currently in private beta and only available to a limited
-  number of users. The response shape might change before GA.
-
-  <span />
-
-  [Get early access](https://resend.com/settings/labs) if you're interested in testing this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the new methods:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.33.0
-    ```
-
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.25.0
-    ```
-  </CodeGroup>
-</Warning>
-
 Event triggered whenever a **thread moves between folders**.
 
 *Note: Moving a thread to a label can send both this event and `inbox.thread.labels.updated` for the same thread.*
 
-<ResponseBodyParameters type="inbox.thread.folder.updated">
-  <ParamField type="inbox | archive | spam | trash">
-    The folder the thread was in
-  </ParamField>
+## Response Body Parameters
 
-  <ParamField type="inbox | archive | spam | trash">
-    The folder the thread moved to
-  </ParamField>
+All webhook payloads follow a consistent top-level structure with
+event-specific data nested within the `data` object.
 
-  <ParamField type="api | dashboard | agent | system">
-    What made the change
-  </ParamField>
+**type** `string`
 
-  <ParamField type="string">
-    The ID of the inbox
-  </ParamField>
+The event type that triggered the webhook (e.g., `inbox.thread.folder.updated`).
+**created\_at** `string`
 
-  <ParamField type="string">
-    The ID of the thread
-  </ParamField>
+ISO 8601 timestamp when the webhook event was created.
+**data** `object`
 
-  <ParamField type="object">
-    The thread, as it is when the webhook is sent. Absent when the thread no longer exists
+Event-specific data containing detailed information about the event. The
+data object for the `inbox.thread.folder.updated` event contains the following
+parameters:
 
-    <Expandable title="thread object">
-      <ParamField type="string">
-        Always `inbox_thread`
-      </ParamField>
+**object parameters**
 
-      <ParamField type="string">
-        The ID of the thread
-      </ParamField>
+**from** `inbox | archive | spam | trash`
 
-      <ParamField type="string | null">
-        The subject of the thread
-      </ParamField>
+The folder the thread was in
 
-      <ParamField type="inbox | archive | spam | sent | trash">
-        The folder the thread lives in
-      </ParamField>
+**to** `inbox | archive | spam | trash`
 
-      <ParamField type="array">
-        The labels attached to the thread, each with an `id`, `name`, and `color`
-      </ParamField>
+The folder the thread moved to
 
-      <ParamField type="boolean">
-        True only when every message in the thread is read
-      </ParamField>
-    </Expandable>
-  </ParamField>
-</ResponseBodyParameters>
+**source** `api | dashboard | agent | system`
 
-<ResponseExample>
-  ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "type": "inbox.thread.folder.updated",
-    "created_at": "2026-09-29T12:00:00.000Z",
-    "data": {
-      "from": "inbox",
-      "to": "archive",
-      "source": "dashboard",
-      "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
-      "thread_id": "7c1f0a2e-5d3b-4e8a-9f61-2b8d4c6e1a90",
-      "thread": {
-        "object": "inbox_thread",
-        "id": "7c1f0a2e-5d3b-4e8a-9f61-2b8d4c6e1a90",
-        "subject": "Question about my invoice",
-        "folder": "archive",
-        "labels": [],
-        "read": true
-      }
+What made the change
+
+**inbox\_id** `string`
+
+The ID of the inbox
+
+**thread\_id** `string`
+
+The ID of the thread
+
+**thread** `object`
+
+The thread, as it is when the webhook is sent. Absent when the thread no longer exists
+
+**thread object**
+
+**object** `string`
+
+Always `inbox_thread`
+
+**id** `string`
+
+The ID of the thread
+
+**subject** `string | null`
+
+The subject of the thread
+
+**folder** `inbox | archive | spam | sent | trash`
+
+The folder the thread lives in
+
+**labels** `array`
+
+The labels attached to the thread, each with an `id`, `name`, and `color`
+
+**read** `boolean`
+
+True only when every message in the thread is read
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "type": "inbox.thread.folder.updated",
+  "created_at": "2026-09-29T12:00:00.000Z",
+  "data": {
+    "from": "inbox",
+    "to": "archive",
+    "source": "dashboard",
+    "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    "thread_id": "7c1f0a2e-5d3b-4e8a-9f61-2b8d4c6e1a90",
+    "thread": {
+      "object": "inbox_thread",
+      "id": "7c1f0a2e-5d3b-4e8a-9f61-2b8d4c6e1a90",
+      "subject": "Question about my invoice",
+      "folder": "archive",
+      "labels": [],
+      "read": true
     }
   }
-  ```
-</ResponseExample>
+}
+```
