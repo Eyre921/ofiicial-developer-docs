@@ -86,7 +86,7 @@ The output contains a `webhook_endpoint.signing_secret` value that starts with `
 
 #### Thin events
 
-If you are using [thin events](https://docs.stripe.com/api/v2/core/events/event-types.md), you will need to register a separate webhook endpoint. Read more about [the differences between thin and snapshot events](https://docs.stripe.com/events/how-events-work.md#event-formats).
+If you’re using [thin events](https://docs.stripe.com/api/v2/core/events/event-types.md), you’ll need to register a separate webhook endpoint. Read more about [the differences between thin and snapshot events](https://docs.stripe.com/events/how-events-work.md#event-formats).
 
 To listen to [thin events](https://docs.stripe.com/api/v2/core/events/event-types.md) from your own account, set the [event_payload](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-event_payload) value to `thin` and the [enabled_events](https://docs.stripe.com/api/v2/core/event-destinations/create.md#v2_create_event_destinations-enabled_events) value to the event types that you want to send to the webhook endpoint:
 

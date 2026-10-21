@@ -49,6 +49,9 @@ A list of fields for a specific project
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 

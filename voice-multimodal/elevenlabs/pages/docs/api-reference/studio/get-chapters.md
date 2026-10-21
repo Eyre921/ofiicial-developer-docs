@@ -78,6 +78,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### VoiceStatisticsResponseModel
 
 - `project_voice_ref_id` (string, required) — The project voice reference ID.

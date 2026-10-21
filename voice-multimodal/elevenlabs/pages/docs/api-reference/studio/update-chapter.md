@@ -103,6 +103,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ChapterContentParagraphTtsNodeInputModel
 
 - `type` ("tts_node", required)
@@ -123,6 +126,9 @@ Validation Error
 - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
 
 ### ChapterContentBlockResponseModelNodesItems
+
+- ChapterContentBlockTtsNodeResponseModel: ChapterContentBlockTtsNodeResponseModel
+- ChapterContentBlockExtendableNodeResponseModel: ChapterContentBlockExtendableNodeResponseModel
 
 ### ChapterContentBlockTtsNodeResponseModel
 

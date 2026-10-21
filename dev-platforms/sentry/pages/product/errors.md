@@ -14,11 +14,9 @@ url: https://docs.sentry.io/product/errors/
 
 ## [Overview](https://docs.sentry.io/product/errors.md#overview)
 
-The [**Errors**](https://sentry.io/orgredirect/organizations/:orgslug/explore/errors/homepage/) page lets you query all of your error event metadata across projects and environments. You can build custom queries with flexible filters, group and stack results, visualize trends over time, and save queries for reuse by your team.
+Errors are a dataset in [Explore](https://docs.sentry.io/product/explore.md). The [**Errors**](https://sentry.io/orgredirect/organizations/:orgslug/explore/errors/) page queries error event metadata across projects and environments. Build a query with filters, group and stack results, and chart trends over time.
 
-While [Issues](https://docs.sentry.io/product/issues.md) groups related error events for triage and resolution, the Errors page gives you a powerful way to ask questions across all your error data at once, surfacing patterns and trends that individual issues may not reveal.
-
-Your plan type determines your query window: Developer: 7 days | Team: 14 days | Business: 30 days.
+[Issues](https://docs.sentry.io/product/issues.md) groups related error events for triage. Use Errors to look across all of those events at once, including patterns that a single issue does not show. The [query window](https://docs.sentry.io/product/explore.md#query-window) depends on your plan.
 
 ## [Searching and Filtering](https://docs.sentry.io/product/errors.md#searching-and-filtering)
 
@@ -37,9 +35,7 @@ Use `OR` and `AND` between filters. Note that `OR` cannot be used between aggreg
 
 You can search multiple values for the same key by putting them in a list. For example, `x:[value1, value2]` returns the same results as `x:value1 OR x:value2`. Learn more about [Multiple Values on the Same Key](https://docs.sentry.io/concepts/search.md#multiple-values-on-the-same-key).
 
-### [Filter by Project, Environment, and Date Range](https://docs.sentry.io/product/errors.md#filter-by-project-environment-and-date-range)
-
-Use the common filters at the top of the page to scope your query by project, environment, and date range.
+Project, environment, and date range filters at the top of the page scope the query. See [Page Filters](https://docs.sentry.io/product/explore.md#page-filters).
 
 ### [Tag Summary Filters](https://docs.sentry.io/product/errors.md#tag-summary-filters)
 
@@ -114,7 +110,7 @@ Customize your default view by configuring a query with specific columns, charts
 
 ### [Export CSV](https://docs.sentry.io/product/errors.md#export-csv)
 
-Click "Export Data" to download a CSV file of the results. For large exports, you'll receive an email with the download link. The results are limited to 10 million rows or 1 GB, whichever comes first.
+Click **Export** to download a CSV of the results. For large exports, you'll receive an email with the download link. The results are limited to 10 million rows or 1 GB, whichever comes first. Other datasets use different formats and limits. See [Save a Query](https://docs.sentry.io/product/explore.md#save-a-query).
 
 The download includes a `SHA1` checksum you can use to verify integrity:
 

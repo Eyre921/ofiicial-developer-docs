@@ -11,6 +11,94 @@ The restored index inherits the schema of the index the backup was taken from, i
 
 For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+response = pc.create_index_from_backup(
+    backup_id="a65ff585-d987-4da5-a622-72e19a6ed5f4",
+    name="restored-index",
+    tags={
+        "tag0": "val0",
+        "tag1": "val1",
+    },
+    deletion_protection="enabled",
+    timeout=-1,  # Return the restore job ID without waiting for the index
+)
+print(response)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const response = await pc.backups.createIndex(
+  'a65ff585-d987-4da5-a622-72e19a6ed5f4',
+  {
+    name: 'restored-index',
+    tags: {
+      tag0: 'val0',
+      tag1: 'val1',
+    },
+    deletionProtection: 'enabled',
+  },
+);
+console.log(response);
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    deletionProtection := pinecone.DeletionProtectionEnabled
+    tags := pinecone.IndexTags{
+        "tag0": "val0",
+        "tag1": "val1",
+    }
+
+    response, err := pc.CreateIndexFromBackup(ctx, &pinecone.CreateIndexFromBackupParams{
+        BackupId:           "a65ff585-d987-4da5-a622-72e19a6ed5f4",
+        Name:               "restored-index",
+        Tags:               &tags,
+        DeletionProtection: &deletionProtection,
+    })
+    if err != nil {
+        log.Fatalf("Failed to create index from backup: %v", err)
+    }
+
+    out, err := json.MarshalIndent(response, "", "  ")
+    if err != nil {
+        log.Fatalf("Failed to marshal response: %v", err)
+    }
+    fmt.Println(string(out))
+}
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"

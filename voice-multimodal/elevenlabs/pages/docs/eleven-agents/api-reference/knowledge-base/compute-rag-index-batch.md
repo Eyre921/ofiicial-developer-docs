@@ -83,6 +83,9 @@ Validation Error
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### RagDocumentIndexUsage
 
 - `used_bytes` (integer, required)

@@ -162,6 +162,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### CaptionStyleTemplateModel
 
 - `key` (string, required)

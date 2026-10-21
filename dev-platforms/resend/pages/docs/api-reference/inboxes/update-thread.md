@@ -187,6 +187,30 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.MoveInboxThreadFolder;
+import com.resend.services.inboxes.model.UpdateInboxThreadOptions;
+import com.resend.services.inboxes.model.UpdateInboxThreadResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxThreadOptions params = UpdateInboxThreadOptions.builder()
+                .read(true)
+                .folder(MoveInboxThreadFolder.SPAM)
+                .build();
+
+        UpdateInboxThreadResponseSuccess data = resend.inboxes().threads().update(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 

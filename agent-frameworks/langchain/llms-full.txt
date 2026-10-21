@@ -3753,7 +3753,7 @@ Get a thread by ID.
 Source: https://docs.langchain.com/langsmith/agent-server-api/threads/get-thread-history
 
 /langsmith/agent-server-openapi.json get /threads/{thread_id}/history
-Get all past states for a thread.
+Get all past states for a thread. Can return fewer than `limit` states; page with `before` to read further.
 
 
 
@@ -3761,7 +3761,7 @@ Get all past states for a thread.
 Source: https://docs.langchain.com/langsmith/agent-server-api/threads/get-thread-history-post
 
 /langsmith/agent-server-openapi.json post /threads/{thread_id}/history
-Get all past states for a thread.
+Get all past states for a thread. Can return fewer than `limit` states; page with `before` to read further.
 
 
 
@@ -3862,22 +3862,81 @@ Deployments use the newest `stable` version by default and are automatically upd
 
 ## v0.17
 
-Latest version: `0.17.0rc1`
+Latest version: `0.17.0rc4`
 
-This minor line is still a release candidate. The last stable release is `0.16.0`.
+This minor line is still a release candidate. The last stable release is `0.16.2`.
 
 ### Changes
 
 #### New Features
 
 * Adds `exclude_metadata` to thread search and count to exclude threads whose metadata matches any given object
+* Added `FF_RESUME_DRAINED_RUNS` to resume runs stopped by `RunControl.request_drain()` from their checkpoint instead of failing them. Requires langgraph 1.2.15+ in the deployment's dependencies; on older langgraph the flag is ignored with a startup warning.
+* Hands off in-flight runs to another replica when a replica shuts down, on Postgres-backed deployments running langgraph 1.2.15 or later with `FF_RESUME_DRAINED_RUNS` enabled.
+* Add `LANGGRAPH_THREAD_HISTORY_MAX_STATE_BYTES` (off by default) to cap how much thread state one history request returns. When set, history returns the newest state, then stops before the entry that would exceed the limit.
 
 #### Fixes
 
 * Speeds up DeltaChannel reads on Postgres for threads that existed before the channel was added and had `update_state` run under langgraph before 1.2.13.
 * Fixes a prune that could delete DeltaChannel history needed by later reads on threads where `update_state` ran under langgraph before 1.2.13.
+* Fixes runs on Redis Cluster that kept running after a cancel or rollback request once a failover or scale-in removed a Redis node.
+* Fixes `input.respond` failing with `no_such_interrupt` while the interrupt's run is still going; the answer is now queued and applied when the run pauses.
+* Fixes `input.respond` rejecting interrupts with `no_such_interrupt` when the run that raised them then failed, timed out or was cancelled, or was started from an earlier checkpoint.
+* `run.start` input sent while a thread is paused on several interrupts now returns `invalid_argument` and leaves the thread paused, instead of starting a run that fails.
+* Preserves request IDs in worker logs for runs started or resumed through HTTP event-streaming commands.
+* A message sent with `run.start` while a run is going is now queued at once instead of after up to 5 seconds, and is no longer lost when sent while answered interrupts are running or after cancelling a run that had none open.
+* Thread event streams now reject a thread the caller can't read before streaming: `POST /threads/{thread_id}/stream/events` returns 403 or 404 instead of a 200 with an error frame (422 for a malformed thread ID), and the WebSocket endpoint closes with 4403, 4404 or 4422.
+* Restores 0.17.0rc1 handling of `run.start` input sent while a run is going, so a resume sent right after an interrupt (for example from `RemoteGraph`) resumes the run instead of starting a new one with the resume value as input.
+* Lower Agent Server memory use for streaming v2 SSE connections, which no longer keep a per-run event replay buffer.
+
+#### Security
+
+* Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 
 > **v0.17 releases**
+>
+> **2026-10-19**
+>
+> ## v0.17.0rc4
+>
+> ### New Features
+>
+> * Add `LANGGRAPH_THREAD_HISTORY_MAX_STATE_BYTES` (off by default) to cap how much thread state one history request returns. When set, history returns the newest state, then stops before the entry that would exceed the limit.
+>
+> ### Fixes
+>
+> * Lower Agent Server memory use for streaming v2 SSE connections, which no longer keep a per-run event replay buffer.
+>
+> ### Security
+>
+> * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
+>
+> **2026-10-16**
+>
+> ## v0.17.0rc3
+>
+> ### New Features
+>
+> * Added `FF_RESUME_DRAINED_RUNS` to resume runs stopped by `RunControl.request_drain()` from their checkpoint instead of failing them. Requires langgraph 1.2.15+ in the deployment's dependencies; on older langgraph the flag is ignored with a startup warning.
+> * Hands off in-flight runs to another replica when a replica shuts down, on Postgres-backed deployments running langgraph 1.2.15 or later with `FF_RESUME_DRAINED_RUNS` enabled.
+>
+> ### Fixes
+>
+> * Restores 0.17.0rc1 handling of `run.start` input sent while a run is going, so a resume sent right after an interrupt (for example from `RemoteGraph`) resumes the run instead of starting a new one with the resume value as input.
+>
+> **2026-10-15**
+>
+> ## v0.17.0rc2
+>
+> ### Fixes
+>
+> * Fixes runs on Redis Cluster that kept running after a cancel or rollback request once a failover or scale-in removed a Redis node.
+> * Fixes `input.respond` failing with `no_such_interrupt` while the interrupt's run is still going; the answer is now queued and applied when the run pauses.
+> * Fixes `input.respond` rejecting interrupts with `no_such_interrupt` when the run that raised them then failed, timed out or was cancelled, or was started from an earlier checkpoint.
+> * `run.start` input sent while a thread is paused on several interrupts now returns `invalid_argument` and leaves the thread paused, instead of starting a run that fails.
+> * Preserves request IDs in worker logs for runs started or resumed through HTTP event-streaming commands.
+> * A message sent with `run.start` while a run is going is now queued at once instead of after up to 5 seconds, and is no longer lost when sent while answered interrupts are running or after cancelling a run that had none open.
+> * Thread event streams now reject a thread the caller can't read before streaming: `POST /threads/{thread_id}/stream/events` returns 403 or 404 instead of a 200 with an error frame (422 for a malformed thread ID), and the WebSocket endpoint closes with 4403, 4404 or 4422.
 >
 > **2026-10-10**
 >
@@ -3894,7 +3953,7 @@ This minor line is still a release candidate. The last stable release is `0.16.0
 
 ## v0.16
 
-Latest version: `0.16.0`
+Latest version: `0.16.2`
 
 ### Changes
 
@@ -3939,6 +3998,7 @@ Latest version: `0.16.0`
 * Fixes delta channels reading back empty or incomplete on threads where `update_state` ran under langgraph before 1.2.13.
 * Speeds up DeltaChannel reads on Postgres for threads that existed before the channel was added and had `update_state` run under langgraph before 1.2.13.
 * Fixes a prune that could delete DeltaChannel history needed by later reads on threads where `update_state` ran under langgraph before 1.2.13.
+* Preserves request IDs in worker logs for runs started or resumed through HTTP event-streaming commands.
 
 #### Security
 
@@ -3949,8 +4009,30 @@ Latest version: `0.16.0`
 * Ensure LangGraph Server images install AnyIO 4.14.2 or newer to address upstream security vulnerabilities.
 * JS/TS custom auth handlers now have their request mutations applied by the server, including the store namespace rewrite used to scope items per user. This fixes cross-user store isolation in LangGraph.js deployments following the documented pattern. Namespaces produced by any custom auth handler, Python or JS, are now validated before reaching the store: an empty or period-containing label is rejected with 422 instead of writing an item that cannot be read back.
 * Updates bundled Datadog serverless-init, ddtrace, langgraph-sdk, and MongoDB Go driver to clear known CVEs.
+* Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
+* Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 
 > **v0.16 releases**
+>
+> **2026-10-20**
+>
+> ## v0.16.2
+>
+> ### Security
+>
+> * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
+>
+> **2026-10-15**
+>
+> ## v0.16.1
+>
+> ### Fixes
+>
+> * Preserves request IDs in worker logs for runs started or resumed through HTTP event-streaming commands.
+>
+> ### Security
+>
+> * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 >
 > **2026-10-09**
 >
@@ -4064,7 +4146,7 @@ Latest version: `0.16.0`
 
 ## v0.15
 
-Latest version: `0.15.4`
+Latest version: `0.15.6`
 
 ### Changes
 
@@ -4095,8 +4177,28 @@ Latest version: `0.15.4`
 * Backport Go and Hono security dependency updates.
 * JS/TS custom auth handlers now have their request mutations applied by the server, including the store namespace rewrite used to scope items per user. This fixes cross-user store isolation in LangGraph.js deployments following the documented pattern. Namespaces produced by any custom auth handler, Python or JS, are now validated before reaching the store: an empty or period-containing label is rejected with 422 instead of writing an item that cannot be read back.
 * Updates bundled Datadog serverless-init, ddtrace, langgraph-sdk, MongoDB Go driver, and OpenTelemetry SDK to clear known CVEs.
+* Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
+* Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
+* Updates bundled PyJWT, urllib3, Werkzeug, langgraph-sdk, and undici to clear known CVEs.
 
 > **v0.15 releases**
+>
+> **2026-10-20**
+>
+> ## v0.15.6
+>
+> ### Security
+>
+> * Updates bundled PyJWT, urllib3, Werkzeug, langgraph-sdk, and undici to clear known CVEs.
+>
+> **2026-10-19**
+>
+> ## v0.15.5
+>
+> ### Security
+>
+> * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
+> * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 >
 > **2026-10-08**
 >
@@ -13853,7 +13955,7 @@ LangSmith supports two ways to grade experiments created via the SDK:
 2. Click the **Evaluators** tab.
 3. Click **+ Evaluator** to open the **Configure Evaluator** panel.
 4. Choose one of the following:
-   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback). To use a [decision model](/langsmith/decision-model-evaluator) as the judge, select **LLM-as-a-Judge Evaluator**, then select a decision model.
+   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Decision Model](/langsmith/decision-model-evaluator), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).
    * **Attach an existing evaluator**: Select an evaluator already in your workspace to reuse it.
    * **Create from a template**: Start from a ready-made evaluator.
 
@@ -14047,7 +14149,7 @@ The following features are supported:
 * **[LLM Gateway](/langsmith/llm-gateway)**: Call models across providers with one LangSmith API key, with spend, rate limit, and data-protection policies enforced centrally.
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**: Connect MCP-compatible clients to LangSmith to query data.
 * **[Fleet](/langsmith/fleet/index)**: Build and run no-code agents from templates, connectors, and channels.
-* **[SmithDB](/langsmith/smithdb-sdk-migration)**: The purpose-built observability backend for trace data, persisting to S3 in your account.
+* **[SmithDB](/langsmith/smithdb-sdk-migration)**: The purpose-built observability backend for trace data, persisting to S3 in your account. Data planes created on or after October 21, 2026 run SmithDB only. ClickHouse is deprecated, and support ends in LangSmith v0.19.
 * **[Engine](/langsmith/engine)**: Automatic detection, diagnosis, and resolution of recurring issues found in production traces. On BYOC, Engine runs its models on your own model providers, and you configure your GitHub App and Slack app in the LangSmith UI. See [Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc).
 
 The following features are planned but not yet supported:
@@ -14098,12 +14200,16 @@ The table below summarizes the split:
 LangChain provisions the following in your account:
 
 * **VPC**: By default, a dedicated VPC spread across the region's availability zones, with private ingress. It uses VPC endpoints for private communication to AWS services, and PrivateLink for communication between the data plane and the control plane. With [BYOVPC](/langsmith/byoc-byovpc), you create and manage the VPC and its base network resources instead.
-* **Managed databases**: RDS for relational workloads, and ElastiCache for caching.
-* **Storage**: S3 buckets for the blob store holding trace data, VPC flow logs, and ClickHouse backups.
+* **Managed databases**: RDS for relational workloads and the SmithDB metastore, and ElastiCache for caching.
+* **Storage**: S3 buckets for the blob store holding trace data, the SmithDB object store, and VPC flow logs.
 * **EKS**: A private EKS cluster with managed add-ons.
 * **Compute**: A system node group for platform workloads, and application node groups through Karpenter.
 * **In-cluster resources**: The LangSmith Helm chart, Istio, KEDA, and other in-cluster resources.
 * **IAM roles**: The roles and permissions required for Kubernetes resources.
+
+> [!NOTE]
+>
+> Data planes created on or after October 21, 2026 store and query traces in [SmithDB](/langsmith/self-host-smithdb) only. ClickHouse is deprecated, and support ends in LangSmith v0.19. Data planes created with ClickHouse keep it, along with its S3 backups, until they migrate to SmithDB.
 
 ## Cross-account IAM permissions
 
@@ -14193,8 +14299,8 @@ The following resources contribute to data plane costs in your account. AWS char
 | **Amazon EC2** | Nodes running in the EKS cluster | Per instance-hour |
 | **Amazon RDS** | Instances for relational workloads. SmithDB uses an Aurora PostgreSQL Serverless v2 metastore. | Per instance-hour, including Multi-AZ, plus storage, backups, and snapshots. Aurora is billed per ACU-hour, plus storage and I/O. |
 | **Amazon ElastiCache** | Redis instance for caching and queueing workloads | Per node-hour |
-| **Amazon S3** | Bucket for LangSmith workloads, ClickHouse backups and VPC flow logs | Storage, requests, and data transfer |
-| **Amazon EBS** | Node root disks, and the volumes for ClickHouse storage | Per GB-month, plus provisioned IOPS and throughput above the gp3 baseline |
+| **Amazon S3** | Buckets for LangSmith workloads, the SmithDB object store, and VPC flow logs. Data planes that still run ClickHouse also store its backups here. | Storage, requests, and data transfer |
+| **Amazon EBS** | Node root disks, including the SmithDB node boot volumes, and the ClickHouse volumes on data planes that still run it | Per GB-month, plus provisioned IOPS and throughput above the gp3 baseline |
 | **Regional NAT gateway** | Outbound egress from the private subnets | Per hour, plus data processed |
 | **Elastic Load Balancing** | Two network load balancers: one in front of the Istio ingress, and one for the EKS API PrivateLink endpoint | Per NLB-hour, plus NLCUs |
 | **AWS PrivateLink** | The interface VPC endpoints the data plane uses | Per interface endpoint per availability zone-hour, plus data processed |
@@ -14221,7 +14327,7 @@ AWS enforces default quotas per region and per account. Defaults are often too l
 * **VPC endpoints**: Capacity for 12 interface endpoints and 1 S3 gateway endpoint.
 * **Load balancers**: Capacity for 2 Network Load Balancers and their target groups.
 * **EKS**: Capacity for 1 EKS cluster.
-* **Storage**: EBS volume and storage capacity for ClickHouse, ZooKeeper, node disks, and other persistent workloads.
+* **Storage**: EBS volume and storage capacity for node disks and other persistent workloads, plus ClickHouse and ZooKeeper on data planes that still run them.
 * **Databases**: Capacity for 2 RDS instances, one Aurora cluster for the SmithDB metastore (writer and reader), and 3 ElastiCache replicas.
 * **PrivateLink and networking**: Capacity for 1 endpoint service and 1 regional NAT gateway.
 
@@ -14279,6 +14385,47 @@ module "byoiam" {
 }
 ```
 
+### Use custom IAM names
+
+By default, the module names its resources with a `byoc-smith-` prefix. If your organization enforces an IAM naming convention, such as a mandatory prefix, override the names with these inputs:
+
+* **`role_names`**: A map of custom role names, keyed by role purpose. The keys match the module's `role_names` output, such as `eks-cluster-role` or `workload-iam-role`. Roles you omit keep their default names.
+* **`karpenter_instance_profile_name`**: A custom name for the Karpenter node instance profile.
+* **`karpenter_controller_policy_name`**: A custom name for the Karpenter controller policy.
+
+Each role name must be unique and at most 64 characters.
+
+```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+module "byoiam" {
+  source = "github.com/langchain-ai/terraform//modules/byoc/aws/byoiam?ref=main"
+
+  regions                  = ["us-east-1"]
+  permissions_boundary_arn = "arn:aws:iam::<account-id>:policy/<boundary>"
+  role_names = {
+    eks-cluster-role                  = "ACME-langsmith-eks-cluster"
+    eks-node-role                     = "ACME-langsmith-eks-node"
+    ebs-csi-role                      = "ACME-langsmith-ebs-csi"
+    karpenter-node-role               = "ACME-langsmith-karpenter-node"
+    karpenter-controller-role         = "ACME-langsmith-karpenter-controller"
+    postgres-monitoring-role          = "ACME-langsmith-postgres-monitoring"
+    smithdb-metastore-monitoring-role = "ACME-langsmith-smithdb-metastore-monitoring"
+    workload-iam-role                 = "ACME-langsmith-workload"
+    postgres-setup-iam-role           = "ACME-langsmith-postgres-setup"
+    smithdb-iam-role                  = "ACME-langsmith-smithdb"
+    smithdb-setup-iam-role            = "ACME-langsmith-smithdb-setup"
+    external-secrets-iam-role         = "ACME-langsmith-external-secrets"
+    lbc-role                          = "ACME-langsmith-lbc"
+    clickhouse-backup-iam-role        = "ACME-langsmith-clickhouse-backup"
+    privatelink-lambda-role           = "ACME-langsmith-privatelink-lambda"
+    juicefs-csi-iam-role              = "ACME-langsmith-juicefs-csi"
+  }
+  karpenter_instance_profile_name  = "ACME-langsmith-karpenter-node"
+  karpenter_controller_policy_name = "ACME-langsmith-karpenter-controller"
+}
+```
+
+Retain the `module.byoiam.role_names` and `module.byoiam.karpenter_instance_profile_name` outputs. You paste them into the data plane form when you [create the data plane](#deploy-the-data-plane-with-existing-roles). You do not paste the Karpenter controller policy name into LangSmith.
+
 ## Remove IAM management permissions from the provisioning role
 
 The [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) creates the cross-account role LangChain assumes to manage your data plane.
@@ -14286,9 +14433,25 @@ The [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/ter
 After creating the IAM resources, configure the provisioning role:
 
 1. Copy the external ID using the button next to the **Data Planes** header in **Settings > Data Planes**. Pass it to the role module as `external_id`. The role's trust policy must use this value in its `ExternalId` condition.
-2. Set `allow_iam_management_permissions = false` in your `langsmith-byoc-role` module configuration.
-3. Review and apply the Terraform changes. Retain the `crossplane_role_arn` output for data plane creation.
 
+2. Set `allow_iam_management_permissions = false` in your `langsmith-byoc-role` module configuration.
+
+3. Pass the outputs of the `byoiam` module, which you applied in [Create the IAM resources](#create-the-iam-resources), to the role module:
+
+   ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   module "langsmith_byoc_role" {
+     # ... other inputs ...
+
+     # Outputs from the byoiam module
+     byoiam_role_arns                       = values(module.byoiam.role_arns)
+     byoiam_instance_profile_name           = module.byoiam.karpenter_instance_profile_name
+     byoiam_karpenter_controller_policy_arn = module.byoiam.karpenter_controller_policy_arn
+   }
+   ```
+
+4. Review and apply the Terraform changes. Retain the `crossplane_role_arn` output for data plane creation.
+
+The provisioning role's default permissions match only the default `byoc-smith-` names. With [custom IAM names](#use-custom-iam-names), these inputs are required. They grant read and `iam:PassRole` access on the exact ARNs. With default names, they are redundant but harmless.
 Setting `allow_iam_management_permissions = false` changes the role's permissions:
 
 * **Removed**: IAM creation, modification, and deletion permissions, including service-linked role creation.
@@ -14311,7 +14474,9 @@ To deploy the data plane:
 1. Go to **Settings > Data Planes** and create a data plane.
 2. Supply the name, AWS region, network configuration, and load balancer access described in [BYOC onboarding](/langsmith/byoc-onboarding). Choose a region included in the module's `regions` input.
 3. Use the provisioning role's `crossplane_role_arn` output for the **AWS IAM role ARN**.
-4. Select **Use existing IAM roles** before submitting the request.
+4. Select **Use existing IAM roles**.
+5. If you set [custom IAM names](#use-custom-iam-names), paste the values of `module.byoiam.role_names` and `module.byoiam.karpenter_instance_profile_name` into the data plane form.
+6. Submit the request.
 
 Continue with provisioning and private connectivity in the onboarding guide.
 
@@ -14500,7 +14665,7 @@ Deleting a data plane removes LangChain-managed resources. Your VPC and other cu
 # AWS data plane cost estimate
 Source: https://docs.langchain.com/langsmith/byoc-data-plane-cost
 
-Rough AWS cost of a LangSmith BYOC data plane, with a ClickHouse footprint and SmithDB node, metastore, and storage estimates.
+Rough AWS cost of a LangSmith BYOC data plane running SmithDB, with a legacy estimate for data planes created with ClickHouse.
 
 > [!WARNING]
 >
@@ -14512,7 +14677,41 @@ This is a rough monthly cost for a LangSmith data plane in your AWS account.
 >
 > Scaling capacity for any resource can be lowered when required, as long as the deployment remains within safe operating limits. For cost-conscious or pre-production deployments, Multi-AZ can be turned off. That lowers monthly cost but reduces fault tolerance.
 
-**ClickHouse**
+**SmithDB**
+
+Data planes created on or after October 21, 2026 run SmithDB only. Running without ClickHouse and ZooKeeper saves about **\$980 per month** compared with a three-replica ClickHouse cluster, and about **\$325 per month** compared with a single replica of each. By default, SmithDB runs the Small tier from [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale): about 10 runs per second and 10 queries per second. LangSmith increases that tier as tracing volume requires it.
+
+| Area | Rough monthly estimate | Notes |
+| - | - | - |
+| RDS PostgreSQL | \$100–\$150 | `db.t4g.medium`, Multi-AZ, 50 GB starting storage. |
+| ElastiCache Redis | \$140–\$280 | Lower end without read replicas. Higher end if read replicas are enabled. |
+| EKS control plane | \~\$75 | One EKS cluster at standard hourly pricing. |
+| System node group | \~\$210 | 3 `m6i.large` on-demand nodes. |
+| Application worker nodes | \~\$325 | LangSmith pods. |
+| EBS volumes | \$200–\$350 | Node volumes and gp3 performance settings. |
+| Networking | \$150–\$300 | NAT gateways, load balancers, PrivateLink or VPC endpoints, and low-volume data processing. |
+| S3, Secrets Manager, CloudWatch | \$50–\$200 | Low-volume baseline. Grows with trace payloads, logs, and retention. |
+| SmithDB compute | \$1,550 | 2 x `m7gd.4xlarge` across two availability zones, plus a 100 GiB gp3 boot volume on each node. |
+| SmithDB metastore | \$210 | Aurora PostgreSQL 18 Serverless v2, writer and reader, 1 ACU minimum, 50 GB. |
+| SmithDB bucket | \$5–\$120 | S3 storage costs, would largely be dictated by trace payload size and retention. |
+
+Estimated monthly total: **\$3,015–\$3,770**
+
+### SmithDB object store pricing
+
+| Stored size per trace | 14-day retention | 400-day retention |
+| - | - | - |
+| 10 KB | \$2 per year | \$74 per year |
+| 50 KB | \$15 per year | \$368 per year |
+| 200 KB | \$52 per year | \$1,472 per year |
+
+See [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) for details of SmithDB infrastructure.
+
+**ClickHouse (deprecated)**
+
+> [!WARNING]
+>
+> ClickHouse is deprecated, and support ends in LangSmith v0.19. Data planes created on or after October 21, 2026 run SmithDB only. This estimate applies to data planes created with ClickHouse before that date that have not yet migrated to SmithDB.
 
 ClickHouse can also run as a single node instead of a replicated cluster. That lowers monthly cost but reduces fault tolerance.
 
@@ -14528,42 +14727,6 @@ ClickHouse can also run as a single node instead of a replicated cluster. That l
 | S3, Secrets Manager, CloudWatch | \$50–\$200 | Low-volume baseline. Grows with trace payloads, logs, and retention. |
 
 Estimated monthly total: **\$1,925–\$3,065**
-
-**SmithDB**
-
-By default, SmithDB runs the Small tier from [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale): about 10 runs per second and 10 queries per second. LangSmith increases that tier as tracing volume requires it.
-
-> [!WARNING]
->
-> After the SmithDB migration, ClickHouse and ZooKeeper are scaled down. If cost is a concern, ClickHouse can be turned off. That lowers monthly cost but reduces reliability, because there is no ClickHouse fallback.
-
-| Area | Rough monthly estimate | Notes |
-| - | - | - |
-| RDS PostgreSQL | \$100–\$150 | `db.t4g.medium`, Multi-AZ, 50 GB starting storage. |
-| ElastiCache Redis | \$140–\$280 | Lower end without read replicas. Higher end if read replicas are enabled. |
-| EKS control plane | \~\$75 | One EKS cluster at standard hourly pricing. |
-| System node group | \~\$210 | 3 `m6i.large` on-demand nodes. |
-| Application, ClickHouse, and ZooKeeper worker nodes | \$650 | Scaled down ClickHouse costs. |
-| EBS volumes | \$200–\$350 | ClickHouse, ZooKeeper, node volumes, and gp3 performance settings. Lower once those volumes shrink. |
-| Networking | \$150–\$300 | NAT gateways, load balancers, PrivateLink or VPC endpoints, and low-volume data processing. |
-| S3, Secrets Manager, CloudWatch | \$50–\$200 | Low-volume baseline. Grows with trace payloads, logs, and retention. |
-| SmithDB compute | \$1,550 | 2 x `m7gd.4xlarge` across two availability zones, plus a 100 GiB gp3 boot volume on each node. |
-| SmithDB metastore | \$210 | Aurora PostgreSQL 18 Serverless v2, writer and reader, 1 ACU minimum, 50 GB. |
-| SmithDB bucket | \$5–\$120 | S3 storage costs, would largely be dictated by trace payload size and retention. |
-
-Estimated monthly total: **\$3,340–\$4,095**
-
-### SmithDB object store pricing
-
-| Stored size per trace | 14-day retention | 400-day retention |
-| - | - | - |
-| 10 KB | \$2 per year | \$74 per year |
-| 50 KB | \$15 per year | \$368 per year |
-| 200 KB | \$52 per year | \$1,472 per year |
-
-A [ClickHouse backfill](/langsmith/self-host-smithdb-migrate) needs an extra `m7gd.4xlarge` for the migration job at about **\$24 per day**. That cost stops when the backfill finishes (Job finishes in a few days depending on tracing volume).
-
-See [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) for details of SmithDB infrastructure.
 
 ***
 
@@ -14814,7 +14977,8 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 > Backups run in your own account:
 >
 > * **RDS**: Backups are taken daily.
-> * **ClickHouse**: Backups are taken daily and stored in an S3 bucket.
+> * **SmithDB**: Object storage in S3 holds the durable trace data.
+> * **ClickHouse**: On data planes that still run it, backups are taken daily and stored in an S3 bucket.
 > * **ElastiCache**: No backups are taken, because the data is ephemeral.
 
 > **Does LangChain offer an uptime SLA for BYOC data planes?**
@@ -15141,7 +15305,7 @@ Two mechanisms keep upgrades free of downtime:
 
 ## Supporting service upgrades
 
-Background services such as Istio, KEDA, and the ClickHouse operator are upgraded on a regular cadence. These upgrades are non-intrusive, and no service interruption is expected.
+Background services such as Istio and KEDA are upgraded on a regular cadence. Data planes that still run ClickHouse also receive ClickHouse operator upgrades. These upgrades are non-intrusive, and no service interruption is expected.
 
 ## Kubernetes cluster upgrades
 
@@ -18253,13 +18417,16 @@ Before you start using Chat, you need to add an API key for the model you're usi
 
 In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets), ensure that your API key is set as a [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings).
 
-1. Navigate to  **Settings** and then move to the **Secrets** tab.
-2. Select **Add secret** and enter the key environment variable (e.g.,`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) and your API key as the **Value**.
-3. Select **Save secret**.
+Adding workspace secrets requires permission to manage secrets in the workspace. If you do not have it, ask a workspace admin to add the secret for you or to grant you access.
 
-> [!NOTE]
->
-> When adding workspace secrets in the LangSmith UI, make sure the secret keys match the environment variable names expected by your model provider.
+To add a workspace secret:
+
+1. Navigate to  **Settings** > **Integrations** > **Provider secrets**.
+2. Select **+ Secret**.
+3. Under **Provider**, select your model provider. LangSmith names the secret with the environment variable the provider expects, such as `OPENAI_API_KEY`. Enter your secret in that field.
+
+   If your provider is not listed, leave **Custom** as the provider. Enter the environment variable name your provider expects as the **Key** and your API key as the **Value**.
+4. Select **Save**.
 
 > [!NOTE]
 >
@@ -21185,6 +21352,84 @@ Select a metadata key from the **Charts** dropdown at the top-right of the compa
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/compare-experiment-results.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
+# Connect to a compatible decision model provider
+Source: https://docs.langchain.com/langsmith/compatible-decision-model-provider
+
+Point LangSmith decision model evaluators at any server that implements the OpenAI Decisions API or the TypeSafe System One API, such as OpenRouter or a self-hosted model.
+
+A compatible endpoint is a saved [model configuration](/langsmith/model-configurations) that sends a decision model evaluator's requests to a server you choose. With a compatible endpoint, you can call a decision model through another provider, such as OpenRouter, or call a decision model you host yourself. LangSmith supports two kinds:
+
+* **OpenAI-Decisions-compatible endpoint**: Calls any server that implements the [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions), with any model name that server serves.
+* **TypeSafe-compatible endpoint**: Calls any server that implements the [TypeSafe System One API](https://docs.typesafe.ai).
+
+Compatible endpoints are available in [decision model evaluators](/langsmith/decision-model-evaluator). To use `gpt-6-luna` directly from OpenAI or Jev directly from TypeSafe, you do not need a compatible endpoint. For chat models that implement the OpenAI API, see [Connect to an OpenAI compliant model provider/proxy](/langsmith/custom-openai-compliant-model).
+
+## Configuration
+
+A compatible endpoint has three settings:
+
+* **Model**: The model ID the server expects.
+* **API Key Name**: The name of the workspace secret that stores the server's API key.
+* **Base URL**: The root of the server's API. See [Base URL format](#base-url-format).
+
+The defaults depend on the kind of endpoint:
+
+| Setting | OpenAI-Decisions-compatible endpoint | TypeSafe-compatible endpoint |
+| - | - | - |
+| Model | `gpt-6-luna` | `jev-latest` |
+| API Key Name | `OPENAI_API_KEY` | `TYPESAFE_API_KEY` |
+
+## Use the endpoint in an evaluator
+
+An evaluator can use a compatible endpoint only after you save the endpoint as a model configuration.
+
+To use a compatible endpoint in an evaluator:
+
+1. Add the server's API key as a workspace secret. Go to **Settings > Integrations > Provider secrets**, click **+ Secret**, and select **Custom** to enter your own secret name. To use the default name, select **OpenAI** or **TypeSafe** instead.
+2. In the evaluator, under **Prompt & Model**, open **Model Configuration**.
+3. For **Provider**, select **OpenAI Decisions Compatible Endpoint** or **TypeSafe Compatible Endpoint**. Both appear under **Other**.
+4. Enter the **Model**, **API Key Name**, and **Base URL**.
+5. Click **Save as preset** and name the configuration.
+6. Select the saved configuration as the evaluator's model.
+
+When the evaluator runs, it calls the endpoint with the API key stored in the secret you entered in **API Key Name**. Next, add questions and save the evaluator, as described in [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
+
+## Base URL format
+
+The **Base URL** should point to the root of the server's API. The path LangSmith adds depends on the kind of endpoint.
+
+### OpenAI-Decisions-compatible endpoints
+
+LangSmith appends `/v1/decisions` to the Base URL, so do not include it.
+
+| Provider | Model | Example Base URL |
+| - | - | - |
+| [OpenAI](https://developers.openai.com/api/docs/guides/decisions) | `gpt-6-luna` | `https://api.openai.com` |
+| Self-hosted (remote) | Your model ID | `https://decisions.example.com` |
+
+### TypeSafe-compatible endpoints
+
+LangSmith appends `/v1/systemone` to the Base URL, so do not include it. To call the URL exactly as entered, including its path, clear **Append /v1/systemone**.
+
+| Provider | Model | Example Base URL |
+| - | - | - |
+| [TypeSafe](https://docs.typesafe.ai) | `jev-latest` | `https://api.typesafe.ai` |
+| [OpenRouter](https://openrouter.ai) | `~typesafe/jev-latest` | `https://openrouter.ai/api` |
+| Self-hosted (remote) | Your model ID | `https://my-model-server.example.com` |
+
+## See also
+
+* [How to define a decision model evaluator](/langsmith/decision-model-evaluator): Set up an evaluator that uses a decision model.
+* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call decision models through the LLM Gateway from your own application.
+* [Model configurations](/langsmith/model-configurations): Manage saved model configurations for your workspace.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/compatible-decision-model-provider.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
 # LangSmith Deployment components
@@ -28991,9 +29236,9 @@ And the transformations look as follows:
 # How to define a decision model evaluator
 Source: https://docs.langchain.com/langsmith/decision-model-evaluator
 
-Set up a LangSmith evaluator that uses Jev as the judge, with noul, choice, and score questions that each return typed feedback.
+Set up a LangSmith evaluator that uses a decision model as the judge with questions that each return typed feedback.
 
-A decision model evaluator uses a [decision model](/langsmith/online-evaluations-decision-models#decision-models), such as Jev, as the judge. Each question you define returns a typed answer that LangSmith records under its own feedback key.
+A decision model evaluator uses a [decision model](/langsmith/online-evaluations-decision-models#decision-models) as the judge. Each question you define returns a typed answer that LangSmith records under its own feedback key.
 
 This guide shows you how to define a decision model evaluator in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-decision-model-evaluator). You can use it on a dataset to [automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset), or on a tracing project as an [online evaluator](/langsmith/online-evaluations-decision-models). To use an LLM as the judge instead, see [How to define an LLM-as-a-judge evaluator](/langsmith/llm-as-judge).
 
@@ -29003,27 +29248,41 @@ This guide shows you how to define a decision model evaluator in the [LangSmith 
 
 ## Step 1. Create the evaluator
 
-1. Add a TypeSafe API key. Generate an API key from your TypeSafe account. In LangSmith, go to **Settings > Integrations > Provider secrets** and click **+ Secret**. Select **TypeSafe** as the provider and paste your key. LangSmith stores it as the workspace secret `TYPESAFE_API_KEY`. To store it under a different name, select **Custom** and enter your own secret name. For more information, see [Add provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+A decision model evaluator offers only decision model providers, and an LLM-as-a-judge evaluator offers only LLM providers. To switch between an LLM judge and a decision model, create a new evaluator.
+
+To create a decision model evaluator:
+
+1. Add an API key for your decision model provider. In LangSmith, go to **Settings > Integrations > Provider secrets** and click **+ Secret**:
+
+   * For OpenAI, select **OpenAI** and paste your OpenAI API key. LangSmith stores it as the workspace secret `OPENAI_API_KEY`.
+   * For TypeSafe, select **TypeSafe** and paste a key from your TypeSafe account. LangSmith stores it as the workspace secret `TYPESAFE_API_KEY`.
+
+   To store a key under a different name, select **Custom** and enter your own secret name. For more information, see [Add provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
 2. In the LangSmith UI, open the **Evaluators** tab of a dataset or tracing project and click **+ Evaluator**.
-3. In the **Configure Evaluator** panel, select **LLM-as-a-Judge Evaluator** under **Create from scratch**.
+3. In the **Configure Evaluator** panel, select **Decision Model Evaluator** under **Create from scratch**.
 4. Name your evaluator.
 
 ## Step 2. Configure the evaluator
 
-Decision model evaluators support TypeSafe models, such as Jev, with bring-your-own-key (BYOK). You define the state and questions in the evaluator itself. Decision model evaluators cannot load a prompt from the [Prompt Hub](/langsmith/prompt-context-hub#prompts) or use a custom output schema. They also do not support [few-shot examples](/langsmith/create-few-shot-evaluators). To reuse a decision model evaluator on another dataset or tracing project, select **Attach an existing evaluator** in the **Configure Evaluator** panel.
+Decision model evaluators support OpenAI and TypeSafe decision models with bring-your-own-key (BYOK). You define the state and questions in the evaluator itself. Decision model evaluators cannot load a prompt from the [Prompt Hub](/langsmith/prompt-context-hub#prompts) or use a custom output schema. They also do not support [few-shot examples](/langsmith/create-few-shot-evaluators). To reuse a decision model evaluator on another dataset or tracing project, select **Attach an existing evaluator** in the **Configure Evaluator** panel.
 
 ### Model
 
 Under **Prompt & Model**, open **Model Configuration** and select a provider and model:
 
-* For Jev, select **TypeSafe** as the provider, then select a Jev model. If you stored your key under a name other than `TYPESAFE_API_KEY`, enter that name in **API Key Name**. Click **Apply**.
-* For a TypeSafe-compatible endpoint, select its saved configuration. See [Use a TypeSafe-compatible endpoint](#use-a-typesafe-compatible-endpoint).
+* For OpenAI, select **OpenAI** as the provider, then select a decision model. If you stored your key under a name other than `OPENAI_API_KEY`, enter that name in **API Key Name**. Click **Apply**.
+* For TypeSafe, select **TypeSafe** as the provider, then select a Jev model. If you stored your key under a name other than `TYPESAFE_API_KEY`, enter that name in **API Key Name**. Click **Apply**.
+* For an OpenAI-Decisions-compatible endpoint or a TypeSafe-compatible endpoint, select its saved configuration. See [Use a compatible endpoint](#use-a-compatible-endpoint).
+
+> [!TIP]
+>
+> If a trace is too large for Jev's context limit, open the Jev model configuration and add the `TypeSafe-Danger-Zone-Long-Context` header with the value `true` under **Extra Headers**. The header raises the context limit for each request. For the limits with and without the header, see [Long context](https://docs.typesafe.ai/models#long-context) in the TypeSafe docs.
 
 For the supported models, see [Supported models](/langsmith/online-evaluations-decision-models#supported-models).
 
-#### Use a TypeSafe-compatible endpoint
+#### Use a compatible endpoint
 
-A TypeSafe-compatible endpoint points the evaluator at any server that implements the [TypeSafe System One API](https://docs.typesafe.ai). Examples include OpenRouter or a decision model you host yourself. An evaluator can use one only after you save it as a model configuration. For the settings, setup steps, and example base URLs, see [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model).
+A compatible endpoint points the evaluator at any server that implements the [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions) or the [TypeSafe System One API](https://docs.typesafe.ai). Examples include OpenRouter or a decision model you host yourself. An evaluator can use one only after you save it as a model configuration. For the settings, setup steps, and example base URLs, see [Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider).
 
 ### State
 
@@ -29034,12 +29293,14 @@ The **State** is the context the decision model evaluates. Map variables from yo
 
 Unlike a prompt for an LLM judge, the state should not include grading instructions. Put grading criteria in the questions instead.
 
+Decision models evaluate text only. If the state includes multimodal content, such as images, the evaluator run fails.
+
 ### Questions
 
 Questions are the scoring criteria your decision model evaluator uses. Each question's name becomes a feedback key on the evaluated run or thread. To define questions:
 
 1. Under **Feedback Configuration**, add one question for each criterion you want to evaluate.
-2. For each question, enter a **Name**, select a **Type**, and write the **Instructions**.
+2. For each question, enter a **Name**, select a **Type**, and write the **Instructions**. The yes or no question type is labeled **Predicate** for OpenAI models and OpenAI-Decisions-compatible endpoints, and **Noul** for TypeSafe models and TypeSafe-compatible endpoints.
 3. Define the true and false meanings, options, or levels for the question type.
 
 To edit the questions as JSON, click **Advanced**.
@@ -29055,8 +29316,8 @@ On a dataset, the evaluator runs on each new experiment. On a tracing project, i
 ## See also
 
 * [Decision models](/langsmith/online-evaluations-decision-models#decision-models): Supported models, question types, and feedback keys.
-* [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model): Base URL format and example endpoints.
-* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call Jev directly from code.
+* [Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider): Base URL format and example endpoints.
+* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call decision models through the LLM Gateway from your own application.
 
 ***
 
@@ -31224,32 +31485,32 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
 ## Prerequisites
 
 1. Use the [LangGraph CLI](/langsmith/cli) to [test your application locally](/langsmith/local-dev-testing).
-2. Use the [LangGraph CLI](/langsmith/cli) to build a Docker image (i.e. `langgraph build`).
+2. Use the [LangGraph CLI](/langsmith/cli) to build a Docker image (i.e. `langgraph build`). To build on a network with no public internet access, see [Set up a build machine on a restricted network](/langsmith/self-host-restricted-network-build).
 3. The following environment variables are needed for a data plane deployment.
-4. `REDIS_URI`: Connection details to a Redis instance. Redis will be used as a pub-sub broker to enable streaming real time output from background runs. The value of `REDIS_URI` must be a valid [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url).
+   * `REDIS_URI`: Connection details to a Redis instance. Redis will be used as a pub-sub broker to enable streaming real time output from background runs. The value of `REDIS_URI` must be a valid [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url).
 
-   > [!NOTE]
-   >
-   > **Shared Redis Instance**
-   > Multiple self-hosted deployments can share the same Redis instance. For example, for `Deployment A`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/1` and for `Deployment B`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/2`.
-   >
-   > `1` and `2` are different database numbers within the same instance, but `<hostname_1>` is shared. **The same database number cannot be used for separate deployments**.
-5. `DATABASE_URI`: Postgres connection details. Postgres will be used to store assistants, threads, runs, persist thread state and long term memory, and to manage the state of the background task queue with 'exactly once' semantics. The value of `DATABASE_URI` must be a valid [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS).
+     > [!NOTE]
+     >
+     > **Shared Redis Instance**
+     > Multiple self-hosted deployments can share the same Redis instance. For example, for `Deployment A`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/1` and for `Deployment B`, `REDIS_URI` can be set to `redis://<hostname_1>:<port>/2`.
+     >
+     > `1` and `2` are different database numbers within the same instance, but `<hostname_1>` is shared. **The same database number cannot be used for separate deployments**.
+   * `DATABASE_URI`: Postgres connection details. Postgres will be used to store assistants, threads, runs, persist thread state and long term memory, and to manage the state of the background task queue with 'exactly once' semantics. The value of `DATABASE_URI` must be a valid [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS).
 
-   > [!NOTE]
-   >
-   > **Shared Postgres Instance**
-   > Multiple self-hosted deployments can share the same Postgres instance. For example, for `Deployment A`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>` and for `Deployment B`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`.
-   >
-   > `<database_name_1>` and `database_name_2` are different databases within the same instance, but `<hostname_1>` is shared. **The same database cannot be used for separate deployments**.
+     > [!NOTE]
+     >
+     > **Shared Postgres Instance**
+     > Multiple self-hosted deployments can share the same Postgres instance. For example, for `Deployment A`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>` and for `Deployment B`, `DATABASE_URI` can be set to `postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`.
+     >
+     > `<database_name_1>` and `database_name_2` are different databases within the same instance, but `<hostname_1>` is shared. **The same database cannot be used for separate deployments**.
 
-   > [!TIP]
-   >
-   > You can optionally store checkpoint data in MongoDB instead of PostgreSQL. PostgreSQL is still required for all other server data. See [Configure checkpointer backend](/langsmith/configure-checkpointer) for details.
-6. `LANGSMITH_API_KEY`: LangSmith API key.
-7. `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
-8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance.
-9. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
+     > [!TIP]
+     >
+     > You can optionally store checkpoint data in MongoDB instead of PostgreSQL. PostgreSQL is still required for all other server data. See [Configure checkpointer backend](/langsmith/configure-checkpointer) for details.
+   * `LANGSMITH_API_KEY`: LangSmith API key.
+   * `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
+   * `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance.
+4. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
 
 > [!NOTE]
 >
@@ -35552,7 +35813,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
 import hmac
 from typing import Optional
@@ -35576,7 +35837,7 @@ def verify_langsmith_signature(
     return hmac.compare_digest(expected, signature_header)
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 export function verifyLangSmithSignature({
@@ -45047,13 +45308,16 @@ Before you begin, make sure you have:
 
 In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets), ensure that your API key is set as a [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings).
 
-1. Navigate to  **Settings** and then move to the **Secrets** tab.
-2. Select **Add secret** and enter the key environment variable (e.g.,`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) and your API key as the **Value**.
-3. Select **Save secret**.
+Adding workspace secrets requires permission to manage secrets in the workspace. If you do not have it, ask a workspace admin to add the secret for you or to grant you access.
 
-> [!NOTE]
->
-> When adding workspace secrets in the LangSmith UI, make sure the secret keys match the environment variable names expected by your model provider.
+To add a workspace secret:
+
+1. Navigate to  **Settings** > **Integrations** > **Provider secrets**.
+2. Select **+ Secret**.
+3. Under **Provider**, select your model provider. LangSmith names the secret with the environment variable the provider expects, such as `OPENAI_API_KEY`. Enter your secret in that field.
+
+   If your provider is not listed, leave **Custom** as the provider. Enter the environment variable name your provider expects as the **Key** and your API key as the **Value**.
+4. Select **Save**.
 
 > [!NOTE]
 >
@@ -45655,7 +45919,7 @@ Configure LLM-as-a-judge evaluators for:
 
 ### Decision model evaluators
 
-Use a decision model, such as Jev, to answer typed questions about outputs. Each question returns a probability, a selected option, or a score, and becomes its own feedback key, so you do not write a prompt or an output schema.
+Use a decision model to answer typed questions about outputs. Each question returns a probability, a selected option, or a score, and becomes its own feedback key, so you do not write a prompt or an output schema.
 
 Configure decision model evaluators for:
 
@@ -45919,7 +46183,7 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators), select **Evaluators** in the left sidebar.
 2. Click **+ Evaluator** to open the new evaluator panel.
 3. The panel lets you:
-   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge) or [Code](/langsmith/online-evaluations-code) evaluator. To use a [decision model](/langsmith/decision-model-evaluator) as the judge, select **LLM-as-a-Judge Evaluator**, then select a decision model.
+   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Decision Model](/langsmith/decision-model-evaluator), or [Code](/langsmith/online-evaluations-code) evaluator.
    * **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
    * **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section surfaces popular templates first, followed by templates organized by the following categories:
 
@@ -52700,17 +52964,16 @@ Fleet uses [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-s
 
 ### Add a secret
 
+Adding workspace secrets requires permission to manage secrets in the workspace. If you do not have it, ask a workspace admin to add the secret for you or to grant you access.
+
 To add a secret:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-workspace-admin), navigate to  **Settings** and then move to the **Secrets** tab.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-workspace-admin), navigate to  **Settings** > **Integrations** > **Provider secrets**.
+2. Select **+ Secret**.
+3. Under **Provider**, select your model provider. LangSmith names the secret with the environment variable the provider expects, such as `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`. Enter your secret in that field.
 
-2. Select **Add secret** and enter the secret **name** (for example, `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) and your key as the **value**.
-
-   > [!NOTE]
-   >
-   > Ensure that the secret keys match the environment variable names expected by your model provider.
-
-3. Select **Save secret**.
+   For tool keys, `FLEET_`-prefixed secrets, or a provider that is not listed, leave **Custom** as the provider. Enter the secret name as the **Key** (for example, `TAVILY_API_KEY` or `FLEET_OPENAI_API_KEY`) and your key as the **Value**.
+4. Select **Save**.
 
 ## Usage and spend limits
 
@@ -64197,7 +64460,7 @@ Create a custom prompt inline for your evaluator.
 
 Select the desired model from the provided options.
 
-To use a decision model, such as Jev, as the judge, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
+To use a decision model as the judge, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
 
 ### Mapping variables
 
@@ -69460,7 +69723,7 @@ Logging traces to an agent names the [agent](/langsmith/agents) and the [environ
 
 > [!NOTE]
 >
-> Sending traces to an agent is in [beta](/langsmith/release-stages) and applies only to agent-based workspaces. The [arguments that take an agent](#using-code) can change without notice. It is supported in:
+> Sending traces to an agent applies only to agent-based workspaces. It is supported in:
 >
 > * The Python SDK from `langsmith>=0.14.9`
 > * The TypeScript SDK from `langsmith>=0.10.9`
@@ -69659,7 +69922,7 @@ Sending traces to an agent and to a project do not combine. What happens depends
 
 ## Troubleshooting
 
-If your workspace does not accept runs sent to an agent, LangSmith rejects them with a `403` and the message `agent addressing is not enabled for this workspace`. It rejects the whole request that carries them, so it records none of the runs in that request. A workspace that accepted such runs can also stop accepting them. First check that your API key still belongs to the agent-based workspace, because LangSmith rejects runs sent to an agent with a key from a project-based workspace. If the key is not the problem, contact support via [support.langchain.com](https://support.langchain.com).
+On self-hosted LangSmith, where agent-based workspaces are not available, LangSmith rejects runs sent to an agent with a `403` and the message `agent addressing is not enabled for this workspace`. It rejects the whole request that carries them, so it records none of the runs in that request. See [Prerequisites](#prerequisites).
 
 ## See also
 
@@ -79327,9 +79590,9 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 # Set up decision model online evaluators
 Source: https://docs.langchain.com/langsmith/online-evaluations-decision-models
 
-Evaluate production traces in LangSmith with Jev as the judge, and record each question's typed answer as its own feedback key.
+Evaluate production traces in LangSmith with a decision model as the judge and record each typed answer as feedback.
 
-[Online evaluations](/langsmith/evaluation-concepts#online-evaluations) provide real-time feedback on your production traces. An online evaluator can use a decision model, such as Jev, as the judge in place of an LLM. To use an LLM as the judge, see [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge).
+[Online evaluations](/langsmith/evaluation-concepts#online-evaluations) provide real-time feedback on your production traces. An online evaluator can use a decision model as the judge in place of an LLM. To use an LLM as the judge, see [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge).
 
 > [!NOTE]
 >
@@ -79341,27 +79604,30 @@ Decision models answer structured questions about text and return typed answers,
 
 ### Supported models
 
-LangSmith supports Jev decision models for evaluators, on both tracing projects and datasets. To call a decision model through another provider or on your own server, use a [TypeSafe-compatible endpoint](/langsmith/typesafe-compatible-model).
+LangSmith supports OpenAI and TypeSafe decision models for evaluators, on both tracing projects and datasets. To call a decision model through another provider or on your own server, use an OpenAI-Decisions-compatible or TypeSafe-compatible endpoint. See [Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider).
 
 | Model | Provider | Setup |
 | - | - | - |
+| [`gpt-6-luna`](/langsmith/llm-gateway-decision-models#use-openai-decision-models) | **OpenAI** | Requires an OpenAI API key stored as a workspace secret. Defaults to `OPENAI_API_KEY`. |
 | [Jev](/langsmith/llm-gateway-decision-models#use-typesafe-jev) | **TypeSafe** | Requires a TypeSafe API key stored as a workspace secret. Defaults to `TYPESAFE_API_KEY`. |
 
 > [!NOTE]
 >
-> You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model directly from code, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
+> You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model through the LLM Gateway from your own application, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
 
 ### Question types
 
-Each question you add to a decision model evaluator has one of three types. For full definitions, see the [TypeSafe primitives documentation](https://docs.typesafe.ai/primitives).
+Each question you add to a decision model evaluator has one of three types. For full definitions, see the [TypeSafe primitives documentation](https://docs.typesafe.ai/primitives) or the [OpenAI Decisions guide](https://developers.openai.com/api/docs/guides/decisions).
 
-* **Noul**: A continuous boolean. Returns the probability, from 0 to 1, that a statement is true. Values near 1 mean yes, values near 0 mean no, and values near 0.5 mean the model is uncertain. Use it for yes or no checks, such as whether the output contains personally identifiable information. Phrase the instructions as a yes or no question, and optionally describe what true and false mean.
+* **Predicate** or **Noul**: A continuous boolean. OpenAI models and OpenAI-Decisions-compatible endpoints label this type **Predicate**, and TypeSafe models and TypeSafe-compatible endpoints label it **Noul**. Returns the probability, from 0 to 1, that a statement is true. Values near 1 mean yes, values near 0 mean no, and values near 0.5 mean the model is uncertain. Use it for yes or no checks, such as whether the output contains personally identifiable information. Phrase the instructions as a yes or no question, and optionally describe what true and false mean.
 * **Choice**: Picks one option from a fixed, unordered list, such as classifying whether the user is asking a `question`, making a `request`, or neither (`other`). Give each option a name and, unless the name is self-explanatory, a description.
 * **Score**: Rates the state along ordered levels, such as how frustrated the user is, from calm to very angry. Define the levels in order, starting at level 0. The score can fall between two levels.
 
-Jev enforces the following limits on questions:
+The OpenAI Decisions API has no field for the true and false descriptions of a predicate. For OpenAI models and OpenAI-Decisions-compatible endpoints, LangSmith appends them to the question's instructions.
 
-| Limit | Jev |
+LangSmith enforces the following limits on decision model questions:
+
+| Limit | Value |
 | - | - |
 | Options per choice question | 2 to 255 |
 | Levels per score question | 2 to 10 |
@@ -79372,13 +79638,13 @@ Each question's name becomes a feedback key on the evaluated run or thread. Lang
 
 | Question type | Feedback field | Value |
 | - | - | - |
-| Noul | `score` | A number from 0 to 1 |
+| Predicate or Noul | `score` | A number from 0 to 1 |
 | Choice | `value` | The name of the selected option |
 | Score | `score` | A number from 0 to the index of the highest level. For example, a question with four levels returns a score from 0 to 3. |
 
-LangSmith also stores the model's full answer on each feedback entry, under `typesafe` in the feedback source metadata. For choice and score questions, the answer includes `probabilities` and `confidence`. Because each answer is standard feedback, you can filter, chart, and alert on it, and trigger [automations](/langsmith/rules) from it, as you would with any other evaluator's feedback.
+Feedback stores only the score or value. The model's full answer, which includes `probabilities` and `confidence` for choice and score questions, appears in the evaluator's trace. LangSmith traces evaluators by default. If tracing is turned off for the evaluator, no trace is recorded. To open the trace on a tracing project, go to the **Evaluators** tab, click the evaluator, and click the **Evaluator traces** tab. In an experiment, hover over the score and click **Evaluator trace**. Because each answer is standard feedback, you can filter, chart, and alert on it, and trigger [automations](/langsmith/rules) from it, as you would with any other evaluator's feedback.
 
-Question names follow the same limits as other feedback keys, and each name must be unique within the evaluator.
+Question names follow the same limits as other feedback keys and must be unique within the evaluator.
 
 ## Add a decision model online evaluator
 
@@ -79387,7 +79653,7 @@ To add a decision model online evaluator:
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models), navigate to the **Tracing** page and select a tracing project.
 2. Click the **Evaluators** tab.
 3. Click **+ Evaluator** to open the **Configure Evaluator** panel.
-4. Under **Create from scratch**, select **LLM-as-a-Judge Evaluator**, then name your evaluator.
+4. Under **Create from scratch**, select **Decision Model Evaluator**, then name your evaluator.
 5. Select a decision model, map run or thread variables into the **State**, and add questions. For each setting, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
 6. (Optional) Apply a [filter](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator), set a [sampling rate](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate), or [apply the rule to past runs or threads](/langsmith/online-evaluations-llm-as-judge#apply-a-rule-to-past-runs-or-threads). These settings work the same way as for LLM-as-a-judge online evaluators.
 7. To save the evaluator, click **Create** or **Save**.
@@ -79397,8 +79663,8 @@ The evaluator checks each new run or thread that matches its filter. Each questi
 ## See also
 
 * [How to define a decision model evaluator](/langsmith/decision-model-evaluator): Configure the model, state, and questions.
-* [Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model): Base URL format and example endpoints.
-* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call Jev directly from code.
+* [Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider): Base URL format and example endpoints.
+* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call decision models through the LLM Gateway from your own application.
 
 ***
 
@@ -79492,7 +79758,7 @@ View [LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates) fo
 
 ## Use a decision model as the judge
 
-You can use a decision model, such as Jev, as the judge in place of an LLM. Each question you define returns a typed answer, such as a probability, a selected option, or a score, and LangSmith records each one under its own feedback key. See [Set up decision model online evaluators](/langsmith/online-evaluations-decision-models).
+You can use a decision model as the judge in place of an LLM. Each question you define returns a typed answer, such as a probability, a selected option, or a score, and LangSmith records each one under its own feedback key. See [Set up decision model online evaluators](/langsmith/online-evaluations-decision-models).
 
 ## Map multimodal content to evaluator
 
@@ -80954,14 +81220,14 @@ For more on `LANGSMITH_PROJECT`, refer to [Log traces to a specific project](/la
 
 > [!NOTE]
 >
-> **Agent-based workspaces.** Sending traces to an agent is in [beta](/langsmith/release-stages). To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
+> **Agent-based workspaces.** To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
 >
 > * **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit. LangSmith creates the agent on first use, which requires the [`projects:create` permission](/langsmith/organization-workspace-operations#projects). An archived agent still holds its identifier, so LangSmith rejects a request sent to it with a `409`.
 > * **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
 >
 > For example, set `OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` when `OTEL_EXPORTER_OTLP_HEADERS` is unset. With the TypeScript SDK or another OpenTelemetry exporter, set the headers yourself.
 >
-> The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. A workspace that does not accept traces sent to an agent rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+> The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. On [self-hosted](/langsmith/self-hosted) LangSmith, where agent-based workspaces are not available, LangSmith rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 ## Configure the collector
 
@@ -81295,11 +81561,12 @@ Alternatively, you can authenticate with AWS access keys (`AWS_ACCESS_KEY_ID` an
 Bedrock API keys authenticate requests with a bearer token instead of AWS credentials. To configure a Bedrock API key:
 
 1. [Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html) in the Amazon Bedrock console.
-2. In LangSmith, go to **Settings** > **Provider Secrets**, add a new secret, and select **Amazon Bedrock** as the provider.
-3. Select **Bearer token** under **Authentication**.
-4. Enter the API key as `AWS_BEARER_TOKEN_BEDROCK`.
-5. (Optional) Set `AWS_BEDROCK_REGION`. The default is `us-east-1`.
-6. Select **Save**.
+2. In LangSmith, navigate to  **Settings** > **Integrations** > **Provider secrets** and select **+ Secret**.
+3. Under **Provider**, select **Amazon Bedrock**.
+4. Under **Authentication**, select **Bearer token**.
+5. Enter the API key as `AWS_BEARER_TOKEN_BEDROCK`.
+6. (Optional) Set `AWS_BEDROCK_REGION`. The default is `us-east-1`.
+7. Select **Save**.
 
 ### Available models
 
@@ -83180,13 +83447,16 @@ Select the tab for UI or SDK workflows:
 
 In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets), ensure that your API key is set as a [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings).
 
-1. Navigate to  **Settings** and then move to the **Secrets** tab.
-2. Select **Add secret** and enter the key environment variable (e.g.,`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`) and your API key as the **Value**.
-3. Select **Save secret**.
+Adding workspace secrets requires permission to manage secrets in the workspace. If you do not have it, ask a workspace admin to add the secret for you or to grant you access.
 
-> [!NOTE]
->
-> When adding workspace secrets in the LangSmith UI, make sure the secret keys match the environment variable names expected by your model provider.
+To add a workspace secret:
+
+1. Navigate to  **Settings** > **Integrations** > **Provider secrets**.
+2. Select **+ Secret**.
+3. Under **Provider**, select your model provider. LangSmith names the secret with the environment variable the provider expects, such as `OPENAI_API_KEY`. Enter your secret in that field.
+
+   If your provider is not listed, leave **Custom** as the provider. Enter the environment variable name your provider expects as the **Key** and your API key as the **Value**.
+4. Select **Save**.
 
 > [!NOTE]
 >
@@ -91943,7 +92213,7 @@ Find the tracing project of an agent, experiment, or evaluator by resolving it t
 
 > [!NOTE]
 >
-> Resolving an agent is in [beta](/langsmith/release-stages). It needs LangSmith 0.18.7rc1 or later, and is not supported on BYOC data planes yet. The examples need the following SDK versions:
+> Resolving an agent needs LangSmith 0.18.7rc1 or later, and is not supported on BYOC data planes yet. The examples need the following SDK versions:
 >
 > * **Python**: `langsmith>=0.14.9`
 > * **TypeScript**: `langsmith@>=0.10.13`
@@ -102400,6 +102670,10 @@ Source: https://docs.langchain.com/langsmith/self-host-mirroring-images
 
 By default, LangSmith will pull images from our public Docker registry. However, if you are running LangSmith in an environment that does not have internet access, or if you would like to use a private Docker registry, you can mirror the images to your own registry and then configure your LangSmith installation to use those images.
 
+> [!TIP]
+>
+> To build Agent Server images on the same network, see [Set up a build machine on a restricted network](/langsmith/self-host-restricted-network-build).
+
 ## Requirements
 
 * Authenticated access to a Docker registry that your Kubernetes cluster/machine has access to.
@@ -102682,6 +102956,42 @@ operator:
 Replace `(your-registry)` with your registry URL. The template variables (`${service_name}`, `${namespace}`, `${max_connections}`, `${storage_gi}`) are replaced by the operator at runtime and must be kept as-is.
 
 Once configured, you will need to update your LangSmith installation. You can follow our upgrade guide here: [Upgrading LangSmith](/langsmith/self-host-upgrades). If your upgrade is successful, your LangSmith instance should now be using the mirrored images from your Docker registry.
+
+## Additional images for Agent Server builds
+
+The [LangGraph CLI](/langsmith/cli) builds each Agent Server image on top of a public base image. When your build machine cannot reach Docker Hub, mirror the base image and point `base_image` in `langgraph.json` at the mirror. For the rest of the build setup, see [Build Agent Server images on a restricted network](/langsmith/self-host-restricted-network-build).
+
+The base image repository depends on the project language:
+
+* **Python**: `langchain/langgraph-api`
+* **JavaScript**: `langchain/langgraphjs-api`
+
+The CLI picks the tag from `langgraph.json`, so mirror the tag that matches your configuration:
+
+| `langgraph.json` settings | Python tag | JavaScript tag |
+| - | - | - |
+| `python_version` or `node_version` only | `3.12` | `20` |
+| With `api_version` | `0.8.1-py3.12` | `0.8.1-node20` |
+| With `image_distro` | Append `-wolfi` or `-bookworm`, for example `3.12-wolfi` | Append `-wolfi` or `-bookworm`, for example `20-wolfi` |
+
+To mirror a base image:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+docker pull langchain/langgraph-api:3.12
+docker tag langchain/langgraph-api:3.12 <your-registry>/langchain/langgraph-api:3.12
+docker push <your-registry>/langchain/langgraph-api:3.12
+```
+
+Then set `base_image` to the mirrored repository without a tag:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "base_image": "<your-registry>/langchain/langgraph-api"
+}
+```
+
+* The CLI appends the tag itself, so a `base_image` value that includes a tag produces an invalid image reference.
+* Set `api_version` to an exact version such as `0.8.1`. A version range makes the CLI query pypi.org at build time to resolve it.
 
 ## Verifying image signatures
 
@@ -103106,6 +103416,338 @@ playground:
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
+# Set up a build machine on a restricted network
+Source: https://docs.langchain.com/langsmith/self-host-restricted-network-build
+
+Configure pip, uv, Python, and the LangGraph CLI to pull every package, interpreter, and image from an internal registry, then build a Python or JavaScript Agent Server image with no public internet access.
+
+A build machine on a restricted network has no route to pypi.org, npmjs.org, GitHub, or Docker Hub. Every package, tool, interpreter, and container image comes from an internal registry, such as Artifactory or Nexus. Configure each tool on that machine to use the internal registry, then build an [Agent Server](/langsmith/agent-server) image with the [LangGraph CLI](/langsmith/cli).
+
+pip, uv, uv's Python downloads, and the image build each read their own setting. Configuring one leaves the others pointed at the public internet. Work through the sections in order, then run the checks in [Verify the setup](#verify-the-setup). The LangGraph CLI is a Python package, so a JavaScript project needs the pip and uv setup too.
+
+> [!TIP]
+>
+> This page covers the build machine. To run the image you build, see [Deploy with control plane](/langsmith/deploy-with-control-plane) or [Self-host standalone servers](/langsmith/deploy-standalone-server). For the egress a running deployment needs, see [Egress for billing and operational telemetry](/langsmith/self-host-egress).
+
+## Prerequisites
+
+Collect the following from your platform team before you start:
+
+* **PyPI repository URL**: The internal index that proxies or hosts Python packages, written as `<PYPI_INDEX_URL>` on this page. For example, `https://pypi.example.internal/simple`.
+* **Container registry**: The registry host, plus the port if it has one, written as `<DOCKER_REGISTRY>`. It must hold a mirror of the Agent Server base image. See [Additional images for Agent Server builds](/langsmith/self-host-mirroring-images#additional-images-for-agent-server-builds).
+* **npm registry URL (JavaScript only)**: The internal registry that proxies or hosts npm packages, written as `<NPM_REGISTRY_URL>`. For example, `https://npm.example.internal`. Leave off the trailing slash, because Corepack appends paths to it.
+* **CA bundle**: The path to the PEM file for your internal certificate authority (CA), written as `<CA_BUNDLE_PATH>`. Internal registries usually serve certificates signed by your organization's own CA, which operating systems and tools do not trust by default.
+* **Root access**: Whether you have `sudo` on the build machine. Without sudo, use the per-user file locations on this page. Ask the platform team to install OS packages and the CA.
+* **Python versions**: Which versions the OS package repositories provide.
+
+## Trust the internal CA
+
+Every later step connects to the internal registry over HTTPS. Until the machine trusts the internal CA, those connections fail with certificate errors, so install the CA first:
+
+1. Add `<CA_BUNDLE_PATH>` to the operating system trust store. The command depends on the OS. For example, on Debian and Ubuntu, copy the file to `/usr/local/share/ca-certificates/` with a `.crt` extension. Then run `sudo update-ca-certificates`.
+2. On Linux, copy the CA to `/etc/docker/certs.d/<DOCKER_REGISTRY>/ca.crt` so Docker trusts the internal registry. For details, see Docker's [Verify repository client with certificates](https://docs.docker.com/engine/security/certificates/).
+
+pip and uv each need their own CA setting, covered in [Configure pip](#configure-pip) and [Configure uv](#configure-uv).
+
+## Configure pip
+
+Set the index once in a pip configuration file. A long URL passed as `--index-url` on each command is easy to get wrong, and a missing space between two flags produces a misleading `404`.
+
+Create `~/.config/pip/pip.conf`. To apply the setting to every user on the machine, create `/etc/pip.conf` instead:
+
+```ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[global]
+index-url = <PYPI_INDEX_URL>
+cert = <CA_BUNDLE_PATH>
+```
+
+* **`index-url`**: Replaces pypi.org as the package index.
+* **`cert`**: The CA bundle pip uses to verify the index. Older pip releases do not read the OS trust store, so set it explicitly.
+
+If the index uses plain HTTP, add `trusted-host = <host>` with the index host name. For the full list of file locations and keys, see pip's [Configuration](https://pip.pypa.io/en/stable/topics/configuration/) docs.
+
+## Install uv from the internal index
+
+Install uv as a Python package from the internal index. The uv install script (`curl ... | sh`) does not work on a restricted network, because it downloads the uv binary from `releases.astral.sh` or GitHub.
+
+PyPI hosts uv as a wheel that contains the binary. On some distributions, `venv` ships as a separate OS package, such as `python3-venv` on Debian and Ubuntu.
+
+Install uv into its own virtual environment so it does not touch the system Python. Then link the binaries onto your `PATH`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+python3 -m venv ~/.local/share/uv-bootstrap
+~/.local/share/uv-bootstrap/bin/pip install uv
+mkdir -p ~/.local/bin
+ln -s ~/.local/share/uv-bootstrap/bin/uv ~/.local/bin/uv
+ln -s ~/.local/share/uv-bootstrap/bin/uvx ~/.local/bin/uvx
+```
+
+The `pip install` reads the `pip.conf` from the previous section, so it resolves against `<PYPI_INDEX_URL>`.
+
+`uv self update` works only for a uv installed by the install script. To upgrade this uv, run `~/.local/share/uv-bootstrap/bin/pip install --upgrade uv`.
+
+## Configure uv
+
+uv does not read `pip.conf` or `PIP_INDEX_URL`. Without its own setting, uv resolves against pypi.org.
+
+Set the following once in your shell profile, such as `~/.bashrc`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export UV_DEFAULT_INDEX="<PYPI_INDEX_URL>"
+export UV_SYSTEM_CERTS=true
+export UV_PYTHON_DOWNLOADS=never
+```
+
+* **`UV_DEFAULT_INDEX`**: Replaces pypi.org as the default index.
+* **`UV_SYSTEM_CERTS`**: Loads certificates from the OS trust store, which holds the internal CA. By default, uv trusts only its bundled roots.
+* **`UV_PYTHON_DOWNLOADS`**: Stops uv from downloading Python. [Provide the Python interpreter](#provide-the-python-interpreter) explains why.
+
+> [!NOTE]
+>
+> `UV_SYSTEM_CERTS` requires uv 0.11.0 or later. Earlier versions use `UV_NATIVE_TLS=true`, which later versions still accept with a deprecation warning.
+
+To trust only the internal CA, set `SSL_CERT_FILE=<CA_BUNDLE_PATH>` in place of `UV_SYSTEM_CERTS`. `SSL_CERT_FILE` replaces both uv's bundled roots and the OS trust store. For every setting, see uv's [environment variable reference](https://docs.astral.sh/uv/reference/environment/).
+
+## Provide the Python interpreter
+
+The Agent Server image ships its own Python. The build machine needs Python 3.10 or later only to run pip, uv, and the LangGraph CLI. Install it from the OS repositories, for example on RHEL-family distributions:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sudo dnf install python3.12
+```
+
+uv finds the interpreter on `PATH`. Keep `UV_PYTHON_DOWNLOADS=never`: without it, uv tries to download a missing interpreter from GitHub and retries with no clear error. If the OS repositories do not provide a supported version, see uv's [Installing Python](https://docs.astral.sh/uv/guides/install-python/) guide.
+
+## Build the Agent Server image
+
+The image build runs inside Docker, so the pip and uv settings and the OS trust store on the build machine do not apply to it. Set the base image, the package registry, and the internal CA in `langgraph.json` instead.
+
+To prepare the build:
+
+1. Install the LangGraph CLI. It resolves against `UV_DEFAULT_INDEX`:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install langgraph-cli
+   ```
+
+2. Log in to the internal registry:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   docker login <DOCKER_REGISTRY>
+   ```
+
+3. Copy the CA bundle into the project directory, next to `langgraph.json`. The build can copy files only from the project directory:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   cp <CA_BUNDLE_PATH> internal-ca.pem
+   ```
+
+Then follow the steps for your project language.
+
+### Build a Python project
+
+> [!WARNING]
+>
+> Do not rely on `pip_config_file` alone. The CLI installs dependencies with `uv pip install` by default (`pip_installer` set to `auto`), and uv does not read the pip configuration file. The build then resolves against pypi.org and fails. Setting `pip_installer` to `pip` does not fix it either: the step that installs the server package still reads the default index. Set the `UV_DEFAULT_INDEX` build argument in `dockerfile_lines` instead.
+
+To build the image:
+
+1. Set `base_image` and `dockerfile_lines` in `langgraph.json`:
+
+   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   {
+     "dependencies": ["."],
+     "graphs": {
+       "agent": "./agent.py:graph"
+     },
+     "python_version": "3.12",
+     "base_image": "<DOCKER_REGISTRY>/langchain/langgraph-api",
+     "dockerfile_lines": [
+       "COPY internal-ca.pem /tmp/internal-ca.pem",
+       "RUN cat /tmp/internal-ca.pem >> /etc/ssl/certs/ca-certificates.crt && rm /tmp/internal-ca.pem",
+       "ARG SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt",
+       "ARG UV_DEFAULT_INDEX=<PYPI_INDEX_URL>"
+     ]
+   }
+   ```
+
+   * **`base_image`**: The mirrored Agent Server image, without a tag. The CLI appends a tag built from `python_version`, plus `api_version` or `image_distro` when you set them. With the configuration above, the build pulls `<DOCKER_REGISTRY>/langchain/langgraph-api:3.12`, so that tag must exist in the registry.
+   * **`dockerfile_lines`**: Lines the CLI inserts after `FROM`. The `COPY` and `RUN` lines append the internal CA to the image's system CA bundle, which keeps the public roots. The two `ARG` lines apply to every install step in the build, including installs from a `uv.lock` file. `SSL_CERT_FILE` points uv at the system bundle, which uv otherwise ignores, and `UV_DEFAULT_INDEX` points uv at the internal index. `ARG` values are visible in `docker history`, so do not put credentials in `<PYPI_INDEX_URL>`.
+
+   If the index uses a certificate from a public CA, leave out the `COPY`, `RUN`, and `SSL_CERT_FILE` lines.
+
+2. Build the image:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph build -t my-agent
+   ```
+
+### Build a JavaScript project
+
+The build installs packages with the package manager that matches the project's lockfile. Node.js does not read the system CA bundle, so the build trusts the internal CA through `NODE_EXTRA_CA_CERTS` instead.
+
+To build the image:
+
+1. Set `base_image` and `dockerfile_lines` in `langgraph.json`:
+
+   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   {
+     "dependencies": ["."],
+     "graphs": {
+       "agent": "./src/agent.ts:graph"
+     },
+     "node_version": "20",
+     "base_image": "<DOCKER_REGISTRY>/langchain/langgraphjs-api",
+     "dockerfile_lines": [
+       "COPY internal-ca.pem /etc/ssl/certs/internal-ca.pem",
+       "ARG NODE_EXTRA_CA_CERTS=/etc/ssl/certs/internal-ca.pem",
+       "ARG NPM_CONFIG_REGISTRY=<NPM_REGISTRY_URL>"
+     ]
+   }
+   ```
+
+   * **`base_image`**: The mirrored JavaScript Agent Server image, without a tag. With the configuration above, the build pulls `<DOCKER_REGISTRY>/langchain/langgraphjs-api:20`, so that tag must exist in the registry.
+   * **`dockerfile_lines`**: The `COPY` line puts the internal CA in the image, and `NODE_EXTRA_CA_CERTS` adds it to the roots Node.js trusts. `NPM_CONFIG_REGISTRY` points npm and pnpm at the internal registry. `ARG` values are visible in `docker history`, so do not put credentials in `<NPM_REGISTRY_URL>`.
+
+   If the registry uses a certificate from a public CA, leave out the `COPY` and `NODE_EXTRA_CA_CERTS` lines.
+
+2. Add the settings for your package manager. The image runs pnpm and Yarn through Corepack, which downloads the package manager itself from the npm registry:
+
+   * **npm** (`package-lock.json`, or no lockfile): No other settings. npm fetches from `NPM_CONFIG_REGISTRY` even when `package-lock.json` records public URLs.
+   * **pnpm** (`pnpm-lock.yaml`): Add `"ARG COREPACK_NPM_REGISTRY=<NPM_REGISTRY_URL>"` to `dockerfile_lines`. Pin pnpm in `package.json`, for example `"packageManager": "pnpm@9.15.9"`.
+   * **Yarn 1** (`yarn.lock`): Add the same `COREPACK_NPM_REGISTRY` line, and pin Yarn, for example `"packageManager": "yarn@1.22.22"`. Yarn 1 downloads from the URLs recorded in `yarn.lock`, so regenerate the lockfile against `<NPM_REGISTRY_URL>`.
+   * **Yarn 2 or later** (`yarn.lock`): Replace the `NPM_CONFIG_REGISTRY` line with `"ARG YARN_NPM_REGISTRY_SERVER=<NPM_REGISTRY_URL>"`, add the `COREPACK_NPM_REGISTRY` line, and pin Yarn, for example `"packageManager": "yarn@4.9.2"`.
+
+   The build copies the whole project directory into the image, including any `.npmrc` file. Do not store registry tokens in a project `.npmrc`.
+
+3. Build the image:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph build -t my-agent
+   ```
+
+For every `langgraph.json` key, see the [LangGraph CLI configuration file](/langsmith/cli#configuration-file) reference.
+
+## Verify the setup
+
+Run these checks after setup and at the start of each working session. Each check confirms one section and shows the expected output.
+
+### Check CA trust
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -sS -o /dev/null -w '%{http_code}\n' <PYPI_INDEX_URL>/
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+200
+```
+
+A certificate error here means the CA is not in the OS trust store.
+
+### Check pip
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+python3 -m pip download --no-deps -d /tmp/pip-check idna
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Looking in indexes: <PYPI_INDEX_URL>
+Collecting idna
+...
+Successfully downloaded idna
+```
+
+The first line must show `<PYPI_INDEX_URL>`. If it is missing, pip is using pypi.org.
+
+### Check the uv installation
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv --version
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv 0.13.0
+```
+
+The output shows the installed version. A `command not found` error means `~/.local/bin` is not on your `PATH`.
+
+### Check the uv configuration
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+echo idna | uv pip compile - --emit-index-url
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# This file was autogenerated by uv via the following command:
+#    uv pip compile - --emit-index-url
+--index-url <PYPI_INDEX_URL>
+
+idna==3.20
+```
+
+The `--index-url` line must show `<PYPI_INDEX_URL>`, and a resolved version confirms TLS works.
+
+### Check the Python interpreter
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv python find 3.12
+```
+
+The output is the path to the interpreter, such as `/usr/bin/python3.12`. To confirm that a missing version fails immediately:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv venv --python 3.99 /tmp/uv-check
+```
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+error: No interpreter found for Python 3.99 in managed installations or search path
+```
+
+### Check the image build
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph dockerfile Dockerfile
+grep -E '^(FROM|COPY|RUN cat|ARG)' Dockerfile
+```
+
+For a Python project:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+FROM <DOCKER_REGISTRY>/langchain/langgraph-api:3.12
+COPY internal-ca.pem /tmp/internal-ca.pem
+RUN cat /tmp/internal-ca.pem >> /etc/ssl/certs/ca-certificates.crt && rm /tmp/internal-ca.pem
+ARG SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ARG UV_DEFAULT_INDEX=<PYPI_INDEX_URL>
+```
+
+For a JavaScript project that uses npm:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+FROM <DOCKER_REGISTRY>/langchain/langgraphjs-api:20
+COPY internal-ca.pem /etc/ssl/certs/internal-ca.pem
+ARG NODE_EXTRA_CA_CERTS=/etc/ssl/certs/internal-ca.pem
+ARG NPM_CONFIG_REGISTRY=<NPM_REGISTRY_URL>
+```
+
+`FROM` must name the internal registry, and every line from `dockerfile_lines` must be present.
+
+## Next steps
+
+`langgraph build` leaves the image on the build machine. To run it:
+
+* **[Push the image](/langsmith/deploy-with-control-plane#step-3-push-to-container-registry)**: Push the image to a registry your cluster or host can pull from.
+* **[Deploy with control plane](/langsmith/deploy-with-control-plane#step-4-deploy-with-the-control-plane-ui)**: Create a deployment from the pushed image in the LangSmith UI.
+* **[Self-host standalone servers](/langsmith/deploy-standalone-server)**: Run the image without a control plane, on Kubernetes, Docker, or Docker Compose.
+* **[Egress for billing and operational telemetry](/langsmith/self-host-egress)**: Allow the egress a running deployment needs, or ask about an offline (air-gapped) license.
+* **[Custom TLS certificates](/langsmith/self-host-custom-tls-certificates)**: Mount the internal CA in your LangSmith installation.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-restricted-network-build.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
 # Self-hosted Sandbox architecture
@@ -106253,11 +106895,11 @@ Each SmithDB component exposes application metrics at the fixed `/metrics` path 
 >
 > On LangSmith 0.16, set the migration annotations under `smithdb.migration.deployment.annotations`.
 >
-> With `smithdb.topology: single`, annotate the single pod and scrape port `8060` only:
+> With `smithdb.topology: unified`, annotate the unified pod and scrape port `8060` only:
 >
 > ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > smithdb:
->   single:
+>   unified:
 >     deployment:
 >       annotations:
 >         prometheus.io/scrape: "true"
@@ -106308,20 +106950,20 @@ Use these tested tiers as starting configurations for SmithDB. Connect SmithDB t
 >
 > `smithdb.topology` requires Helm chart `0.18.0` or later.
 
-Set `smithdb.topology` to `single` or `cluster`, and enable dedicated query services on top of `cluster` when needed:
+Set `smithdb.topology` to `unified` or `cluster`, and enable dedicated query services on top of `cluster` when needed:
 
 | Mode | What runs | Use it for |
 | - | - | - |
-| `single` | One `smithdb all` pod that runs ingestion, query, and compaction | Test environments and low-volume installations |
+| `unified` | One `smithdb all` pod that runs ingestion, query, and compaction | Test environments and low-volume installations |
 | `cluster` (default) | Separate ingestion, query, and compaction workloads, coordinated by a cluster manager | Production installations |
 | `cluster` with [dedicated query services](#dedicated-query-services) | Cluster mode plus separate services for run statistics, run rules, or mutations | Production installations where one kind of query load slows others |
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
-  topology: single
+  topology: unified
 ```
 
-A single-mode pod runs one replica, sized by the [single tiers](#single-tiers). While the pod restarts or recovers from a node failure, queries fail. LangSmith queues incoming traces in Redis and writes them once the pod is running again, so ingestion is delayed rather than dropped. A PodDisruptionBudget keeps node drains from evicting the pod.
+Unified mode runs one `smithdb all` replica, sized by the [unified tiers](#unified-tiers). While the pod restarts or recovers from a node failure, queries fail. LangSmith queues incoming traces in Redis and writes them once the pod is running again, so ingestion is delayed rather than dropped. A PodDisruptionBudget keeps node drains from evicting the pod.
 
 ### Dedicated query services
 
@@ -106383,15 +107025,15 @@ In cluster mode, each tier sets the per-replica resources for each component:
 | Compaction worker | 1 replica 8 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 32 Gi memory 100 Gi cache | 4 replicas 28 CPU 50 Gi memory 300 Gi cache |
 | Cluster manager | 1 replica 250m CPU 256 Mi memory | 1 replica 250m CPU 256 Mi memory | 1 replica 2 CPU 2 Gi memory |
 
-### Single tiers
+### Unified tiers
 
-In single mode, `smithdb.resourceTier` sizes the one SmithDB pod:
+In unified mode, `smithdb.resourceTier` sizes the SmithDB pod:
 
 | Component | Small | Medium | Large |
 | - | - | - | - |
-| Single | 1 replica 4 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 64 Gi memory 300 Gi cache | 1 replica 32 CPU 128 Gi memory 1000 Gi cache |
+| Unified | 1 replica 4 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 64 Gi memory 300 Gi cache | 1 replica 32 CPU 128 Gi memory 1000 Gi cache |
 
-To override the tier's CPU and memory, set `smithdb.single.deployment.resources`. When the workload outgrows the large tier, switch to cluster mode.
+To override the tier's CPU and memory, set `smithdb.unified.deployment.resources`. When the workload outgrows the large tier, switch to cluster mode.
 
 ## Configure resources with Helm
 
@@ -114888,6 +115530,47 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-10-21**
+
+## langsmith-0.17.21
+
+**LangSmith version:** `0.17.48`
+
+* Command-click or Ctrl-click a trace in the traces table to open it in a new tab. Regular clicks continue to open the side panel.
+
+**Download the Helm chart:** [`langsmith-0.17.21.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.21/langsmith-0.17.21.tgz)
+
+**2026-10-21**
+
+## langsmith-0.16.45
+
+**LangSmith version:** `0.16.73`
+
+* Command-click or Ctrl-click a trace in the traces table to open it in a new tab. Regular clicks continue to open the side panel.
+
+**Download the Helm chart:** [`langsmith-0.16.45.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.45/langsmith-0.16.45.tgz)
+
+**2026-10-21**
+
+## langsmith-0.18.0-rc.39
+
+**LangSmith version:** `0.18.14rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.37. Refer to the [langsmith-0.18.0-rc.37](#langsmith-0-18-0-rc-37) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.39.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.39/langsmith-0.18.0-rc.39.tgz)
+
+**2026-10-20**
+
+## langsmith-0.17.20
+
+**LangSmith version:** `0.17.47`
+
+* Fleet records lowercase user emails for new UI and API runs so email casing does not split usage into separate user rows.
+* You can choose which default alert fields to include in webhook bodies or omit all default fields for receivers such as Google Chat that require a specific payload.
+
+**Download the Helm chart:** [`langsmith-0.17.20.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.20/langsmith-0.17.20.tgz)
+
 **2026-10-20**
 
 ## langsmith-0.17.19
@@ -122332,16 +123015,9 @@ For users that are already members of an organization, a workspace admin may add
 
 ### Configure workspace settings
 
-Workspace configuration exists in the [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces) tab. Select the workspace to configure and then the desired configuration sub-tab.
-Configuration options include:
+Workspace settings are on the [**Settings** page](https://smith.langchain.com/settings/workspaces) for the selected workspace. Options include the ability to configure members, [model configurations](/langsmith/model-configurations), [shared URLs](/langsmith/manage-trace), and resource tags for [grouping resources](#set-up-agents-and-applications).
 
-* **Workspace members**
-* **API keys**
-* **Secrets**
-* **Feedback config**
-* **Models**
-* **Rules**
-* **Shared URLs**
+Workspace secrets store the API keys that LangSmith uses to call model providers and tools. Add them under  **Settings** > **Integrations** > **Provider secrets**.
 
 ### Delete a workspace
 
@@ -125611,6 +126287,7 @@ Valid fields:
 - agent_platform_welcome_viewed_at
 - get_started_checklist_dismissed_at
 - agent_trace_viewed_at
+- agent_monitoring_viewed_at
 
 
 
@@ -141504,7 +142181,7 @@ To send Claude SDK spans to LangSmith:
 
 ### Use the LangSmith SDK wrapper
 
-The Anthropic wrapper methods in Python ([`wrap_anthropic`](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) and TypeScript ([`wrapAnthropic`](https://reference.langchain.com/javascript/langsmith/wrappers)) wrap your Anthropic client to log traces automatically. With the wrapper, LangSmith renders messages, including tool calls and multimodal content blocks, in a readable format. The wrapper works alongside the `@traceable` decorator (Python) or `traceable` function (TypeScript), so you can trace your Anthropic calls with the wrapper and trace other parts of your application with the decorator or function.
+The Anthropic wrapper methods in Python ([`wrap_anthropic`](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) and TypeScript ([`wrapAnthropic`](https://reference.langchain.com/javascript/langsmith/wrappers/anthropic/wrapAnthropic)) wrap your Anthropic client to log traces automatically. With the wrapper, LangSmith renders messages, including tool calls and multimodal content blocks, in a readable format. The wrapper works alongside the `@traceable` decorator (Python) or `traceable` function (TypeScript), so you can trace your Anthropic calls with the wrapper and trace other parts of your application with the decorator or function.
 
 > [!NOTE]
 >
@@ -146018,7 +146695,7 @@ To create a Google API key, refer to [Google AI Studio](https://aistudio.google.
 
 ## Configure tracing
 
-To trace Gemini API calls, use LangSmith's [`wrap_gemini`](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini) (Python) or [`wrapGemini`](https://reference.langchain.com/javascript/langsmith/wrappers) (JavaScript) wrapper function. This wrapper intercepts calls to the Gemini client and automatically logs them as traces in LangSmith. The wrapper preserves all of the original client's functionality while adding observability:
+To trace Gemini API calls, use LangSmith's [`wrap_gemini`](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini) (Python) or [`wrapGemini`](https://reference.langchain.com/javascript/langsmith/wrappers/gemini/wrapGemini) (JavaScript) wrapper function. This wrapper intercepts calls to the Gemini client and automatically logs them as traces in LangSmith. The wrapper preserves all of the original client's functionality while adding observability:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from google import genai
@@ -146091,7 +146768,7 @@ These settings apply consistently across all traces from the wrapped client, so 
 
 **JavaScript**
 
-You can customize tracing by passing configuration options to [`wrapGemini`](https://reference.langchain.com/javascript/langsmith/wrappers). These options apply to all subsequent requests you make with that wrapped client, which allows you to attach tags and metadata for filtering and organizing traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini). The configuration accepts:
+You can customize tracing by passing configuration options to [`wrapGemini`](https://reference.langchain.com/javascript/langsmith/wrappers/gemini/wrapGemini). These options apply to all subsequent requests you make with that wrapped client, which allows you to attach tags and metadata for filtering and organizing traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini). The configuration accepts:
 
 * `tags`: An array of strings to categorize traces (for example, `["production", "gemini"]`).
 * `metadata`: An object with key-value pairs for additional context (for example, `{ team: "ml-research", integration: "google-genai" }`).
@@ -148897,14 +149574,14 @@ For non-LangChain applications or custom instrumentation, you can trace your app
 
    > [!NOTE]
    >
-   > **Agent-based workspaces.** Sending traces to an agent is in [beta](/langsmith/release-stages). To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
+   > **Agent-based workspaces.** To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
    >
    > * **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit. LangSmith creates the agent on first use, which requires the [`projects:create` permission](/langsmith/organization-workspace-operations#projects). An archived agent still holds its identifier, so LangSmith rejects a request sent to it with a `409`.
    > * **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
    >
    > For example, set `OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` when `OTEL_EXPORTER_OTLP_HEADERS` is unset. With the TypeScript SDK or another OpenTelemetry exporter, set the headers yourself.
    >
-   > The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. A workspace that does not accept traces sent to an agent rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+   > The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. On [self-hosted](/langsmith/self-hosted) LangSmith, where agent-based workspaces are not available, LangSmith rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 3. Log a trace.
 
@@ -153669,63 +154346,6 @@ To stop LangSmith from reaching your services, disable or delete the tunnel in *
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tunnels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
-# Connect to a TypeSafe-compatible model provider
-Source: https://docs.langchain.com/langsmith/typesafe-compatible-model
-
-Point LangSmith decision model evaluators at any server that implements the TypeSafe System One API, such as OpenRouter or a self-hosted model.
-
-A TypeSafe-compatible endpoint is a saved [model configuration](/langsmith/model-configurations). It sends a decision model evaluator's requests to any server that implements the [TypeSafe System One API](https://docs.typesafe.ai). With a TypeSafe-compatible endpoint, you can call TypeSafe models through another provider, such as OpenRouter, or call a decision model you host yourself. For models that implement the OpenAI API, see [Connect to an OpenAI compliant model provider/proxy](/langsmith/custom-openai-compliant-model).
-
-TypeSafe-compatible endpoints are available in [decision model evaluators](/langsmith/decision-model-evaluator). To use Jev directly from TypeSafe, you do not need a compatible endpoint.
-
-## Configuration
-
-A TypeSafe-compatible endpoint has three settings:
-
-* **Model**: The model ID the server expects. Defaults to `jev-latest`.
-* **API Key Name**: The name of the workspace secret that stores the server's API key. Defaults to `TYPESAFE_API_KEY`.
-* **Base URL**: The root of the server's System One API. See [Base URL format](#base-url-format).
-
-## Use the endpoint in an evaluator
-
-An evaluator can use a TypeSafe-compatible endpoint only after you save the endpoint as a model configuration.
-
-To use a TypeSafe-compatible endpoint in an evaluator:
-
-1. Add the server's API key as a workspace secret. Go to **Settings > Integrations > Provider secrets**, click **+ Secret**, and select **Custom** to enter your own secret name. To use the default name, select **TypeSafe** instead.
-2. In the evaluator, under **Prompt & Model**, open **Model Configuration**.
-3. For **Provider**, select **TypeSafe Compatible Endpoint**. It appears under **Other**.
-4. Enter the **Model**, **API Key Name**, and **Base URL**.
-5. Click **Save as preset** and name the configuration.
-6. Select the saved configuration as the evaluator's model.
-
-When the evaluator runs, it calls the endpoint with the API key stored in the secret you entered in **API Key Name**. Next, add questions and save the evaluator, as described in [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
-
-## Base URL format
-
-The **Base URL** should point to the root of the server's System One API. LangSmith appends `/v1/systemone` automatically. Do not include it in the Base URL.
-
-### Example base URLs
-
-| Provider | Model | Example Base URL |
-| - | - | - |
-| [TypeSafe](https://docs.typesafe.ai) | `jev-latest` | `https://api.typesafe.ai` |
-| [OpenRouter](https://openrouter.ai) | `~typesafe/jev-latest` | `https://openrouter.ai/api` |
-| Self-hosted (remote) | Your model ID | `https://my-model-server.example.com` |
-
-## See also
-
-* [How to define a decision model evaluator](/langsmith/decision-model-evaluator): Set up an evaluator that uses a decision model.
-* [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models): Call Jev directly through the LLM Gateway.
-* [Model configurations](/langsmith/model-configurations): Manage saved model configurations for your workspace.
-
-***
-
-[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/typesafe-compatible-model.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-
-
 # How to upload experiments run outside of LangSmith with the REST API
 Source: https://docs.langchain.com/langsmith/upload-existing-experiments
 
@@ -158042,7 +158662,7 @@ Finally, add the following to the `scripts` field in your `package.json` to run 
 
 You can now define evals as tests using familiar Vitest/Jest syntax, with a few caveats:
 
-* You should import `describe` and `test` from the [`langsmith/jest`](https://reference.langchain.com/javascript/langsmith/jest) or [`langsmith/vitest`](https://reference.langchain.com/javascript/langsmith) entrypoint.
+* You should import `describe` and `test` from the [`langsmith/jest`](https://reference.langchain.com/javascript/langsmith/jest) or [`langsmith/vitest`](https://reference.langchain.com/javascript/langsmith/lib/vitest) entrypoint.
 * You must wrap your test cases in a `describe` block.
 * When declaring tests, the signature is slightly different—there is an extra argument containing example inputs and expected outputs.
 
@@ -158097,14 +158717,14 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-You can think of each [ls.test](https://reference.langchain.com/javascript/langsmith/jest/test) case as corresponding to a dataset example, and [`ls.describe()`](https://reference.langchain.com/javascript/langsmith/jest/describe) as defining a LangSmith dataset. If you have LangSmith [tracing environment variables](#setup) set when you run the test suite, the SDK does the following:
+You can think of each [ls.test](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) case as corresponding to a dataset example, and [`ls.describe()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/describe) as defining a LangSmith dataset. If you have LangSmith [tracing environment variables](#setup) set when you run the test suite, the SDK does the following:
 
 * Creates a [dataset](/langsmith/evaluation-concepts#datasets) with the same name as the name passed to `ls.describe()` in LangSmith if it does not exist.
 * Creates an [example](/langsmith/evaluation-concepts#datasets) in the dataset for each input and expected output passed into a test case if a matching one does not already exist.
 * Creates a new [experiment](/langsmith/evaluation-concepts#experiment) with one result for each test case.
 * Collects the pass/fail rate under the `pass` feedback key for each test case.
 
-When you run this test it will have a default `pass` boolean feedback key based on the test case passing / failing. It will also track any outputs that you log with [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/jest/logOutputs) or return from the test function as "actual" result values from your app for the experiment.
+When you run this test it will have a default `pass` boolean feedback key based on the test case passing / failing. It will also track any outputs that you log with [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs) or return from the test function as "actual" result values from your app for the experiment.
 
 Create a `.env` file with your `OPENAI_API_KEY` and LangSmith credentials if you don't already have one:
 
@@ -158138,7 +158758,7 @@ Here's what an experiment against that test suite looks like:
 
 ## Trace feedback
 
-By default LangSmith collects the pass/fail rate under the `pass` feedback key for each test case. You can add additional feedback with either [`ls.logFeedback()`](https://reference.langchain.com/javascript/langsmith/jest/logFeedback) or [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/jest/wrapEvaluator). To do so, try the following as your `sql.eval.ts` file (or `sql.eval.js` if you are using Jest without TypeScript):
+By default LangSmith collects the pass/fail rate under the `pass` feedback key for each test case. You can add additional feedback with either [`ls.logFeedback()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logFeedback) or [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator). To do so, try the following as your `sql.eval.ts` file (or `sql.eval.js` if you are using Jest without TypeScript):
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -158245,13 +158865,13 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-Note the use of [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/jest/wrapEvaluator) around the `myEvaluator` function. This makes it so that the LLM-as-judge call is traced separately from the rest of the test case to avoid clutter, and conveniently creates feedback if the return value from the wrapped function matches `{ key: string; score: number | boolean }`. In this case, instead of showing up in the main test case run, the evaluator trace will instead show up in a trace associated with the `correctness` feedback key.
+Note the use of [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator) around the `myEvaluator` function. This makes it so that the LLM-as-judge call is traced separately from the rest of the test case to avoid clutter, and conveniently creates feedback if the return value from the wrapped function matches `{ key: string; score: number | boolean }`. In this case, instead of showing up in the main test case run, the evaluator trace will instead show up in a trace associated with the `correctness` feedback key.
 
 You can see the evaluator runs in LangSmith by clicking their corresponding feedback chips in the UI.
 
 ## Running multiple examples against a test case
 
-You can run the same test case over multiple examples and parameterize your tests using [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/jest/test). This is useful when you want to evaluate your app the same way against different inputs:
+You can run the same test case over multiple examples and parameterize your tests using [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/test). This is useful when you want to evaluate your app the same way against different inputs:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -158290,7 +158910,7 @@ Instead of defining [examples](/langsmith/evaluation-concepts#examples) inline, 
 
 * Use [`client.listExamples()`](https://reference.langchain.com/javascript/langsmith/index/Client/listExamples) to fetch examples from a dataset that already exists in LangSmith.
 * Collect the examples into an array (e.g., `testExamples`) by iterating through the async generator.
-* Pass the array to [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/jest/test) to run your test logic against each example from the dataset.
+* Pass the array to [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) to run your test logic against each example from the dataset.
 
 ```typescript {3,30-43,47} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -158353,7 +158973,7 @@ ls.describe(
 
 ## Log outputs
 
-Every time we run a test we're syncing it to a dataset example and tracing it as a run. To trace final outputs for the run, you can use [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/jest/logOutputs) like this:
+Every time we run a test we're syncing it to a dataset example and tracing it as a run. To trace final outputs for the run, you can use [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs) like this:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -201811,6 +202431,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > AI text-to-video, image-to-video, and image generation tools behind one API key.
 
+> **[M91](https://github.com/MSG91/m91-sdk#langchain)**
+>
+> Tools that pause an agent until a human approves on their phone; alerts ring through silent mode and escalate to a voice call.
+
 > **[MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)**
 >
 > Model Context Protocol tools and utilities.
@@ -201894,6 +202518,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > **[Tavily GET Research](/oss/javascript/integrations/tools/tavily_get_research)**
 >
 > Retrieve status and results of a research task using its request ID.
+
+> **[WebExtract](https://webextract.dev/docs/langchain)**
+>
+> Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
 > **[You.com](https://you.com/docs/integrations/langchain)**
 >
@@ -203880,6 +204508,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pipe0/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pipe0/langchain) |
 | [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/precleared?style=flat-square\&label=%20&)](https://www.npmjs.com/package/precleared) |
 | [`InstantExpertToolkit`](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-instant-expert?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-instant-expert) |
+| [`M91`](https://github.com/MSG91/m91-sdk#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@msg91comm/m91?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@msg91comm/m91) |
 | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://img.shields.io/npm/dm/@agentsearchhq/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@agentsearchhq/langchain) |
 | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pushary/langgraph?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pushary/langgraph) |
 | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/satohub-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/satohub-langchain-tools) |
@@ -203913,6 +204542,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |
 | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | N/A |
 | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | N/A |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
 > [!NOTE]
 >
@@ -293177,8 +293807,8 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
 | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mistralai/month)](https://pypi.org/project/langchain-mistralai/) |
 | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
-| [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatXAI`](/oss/python/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xai/month)](https://pypi.org/project/langchain-xai/) |
+| [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/databricks-langchain/month)](https://pypi.org/project/databricks-langchain/) |
 | [`ChatCohere`](/oss/python/integrations/chat/cohere) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cohere/month)](https://pypi.org/project/langchain-cohere/) |
 | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nvidia-ai-endpoints/month)](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
@@ -293221,16 +293851,16 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatBedrock`](/oss/python/integrations/chat/bedrock) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aws/month)](https://pypi.org/project/langchain-aws/) |
 | [`ChatOllama`](/oss/python/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ollama/month)](https://pypi.org/project/langchain-ollama/) |
 | [`ChatGroq`](/oss/python/integrations/chat/groq) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groq/month)](https://pypi.org/project/langchain-groq/) |
-| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
 | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-litellm/month)](https://pypi.org/project/langchain-litellm/) |
+| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
 | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mistralai/month)](https://pypi.org/project/langchain-mistralai/) |
 | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
-| [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatXAI`](/oss/python/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xai/month)](https://pypi.org/project/langchain-xai/) |
+| [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/databricks-langchain/month)](https://pypi.org/project/databricks-langchain/) |
 | [`AzureAIChatCompletionsModel`](/oss/python/integrations/chat/azure_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-ai/month)](https://pypi.org/project/langchain-azure-ai/) |
-| [`ChatCohere`](/oss/python/integrations/chat/cohere) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cohere/month)](https://pypi.org/project/langchain-cohere/) |
 | [`ChatFireworks`](/oss/python/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fireworks/month)](https://pypi.org/project/langchain-fireworks/) |
+| [`ChatCohere`](/oss/python/integrations/chat/cohere) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cohere/month)](https://pypi.org/project/langchain-cohere/) |
 | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nvidia-ai-endpoints/month)](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
 | [`ChatWatsonx`](/oss/python/integrations/chat/ibm_watsonx) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ibm/month)](https://pypi.org/project/langchain-ibm/) |
 | [`ChatPerplexity`](/oss/python/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-perplexity/month)](https://pypi.org/project/langchain-perplexity/) |
@@ -293243,8 +293873,8 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatQwQ`](/oss/python/integrations/chat/qwq) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-qwq/month)](https://pypi.org/project/langchain-qwq/) |
 | [`ChatMoonshot`](https://github.com/ArcadiaLin/langchain-moonshot) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-moonshot/month)](https://pypi.org/project/langchain-moonshot/) |
 | [`ChatParallel`](/oss/python/integrations/chat/parallel) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
-| [`ChatUpstage`](/oss/python/integrations/chat/upstage) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstage/month)](https://pypi.org/project/langchain-upstage/) |
 | [`ChatSambaNova`](/oss/python/integrations/chat/sambanova) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sambanova/month)](https://pypi.org/project/langchain-sambanova/) |
+| [`ChatUpstage`](/oss/python/integrations/chat/upstage) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstage/month)](https://pypi.org/project/langchain-upstage/) |
 | [`ChatCloudflareWorkersAI`](https://github.com/cloudflare/langchain-cloudflare) | ❌ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cloudflare/month)](https://pypi.org/project/langchain-cloudflare/) |
 | [`ChatClovaX`](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-naver/month)](https://pypi.org/project/langchain-naver/) |
 | [`Inferrail`](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/inferrail/month)](https://pypi.org/project/inferrail/) |
@@ -293257,43 +293887,44 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatDiffbot`](https://github.com/diffbot/langchain-diffbot) | ✅ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`ChatCrusoe`](/oss/python/integrations/chat/crusoe) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crusoe/month)](https://pypi.org/project/langchain-crusoe/) |
 | [`ChatAceDataCloud`](https://github.com/AceDataCloud/LangChain) | ✅ | ✅ | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-acedatacloud/month)](https://pypi.org/project/langchain-acedatacloud/) |
-| [`ChatAimlapi`](https://docs.aimlapi.com/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aimlapi/month)](https://pypi.org/project/langchain-aimlapi/) |
 | [`ChatFlexAI`](https://docs.flex.ai/inference-api/agents/langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flexai/month)](https://pypi.org/project/langchain-flexai/) |
+| [`ChatAimlapi`](https://docs.aimlapi.com/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aimlapi/month)](https://pypi.org/project/langchain-aimlapi/) |
 | [`ChatRouter`](https://github.com/danielpolok/langchain-model-router) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-model-router/month)](https://pypi.org/project/langchain-model-router/) |
-| [`ChatDoubleword`](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-doubleword/month)](https://pypi.org/project/langchain-doubleword/) |
 | [`ChatContextual`](https://docs.contextual.ai/) | ❌ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextual/month)](https://pypi.org/project/langchain-contextual/) |
+| [`ChatDoubleword`](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-doubleword/month)](https://pypi.org/project/langchain-doubleword/) |
 | [`ChatTopxAI`](https://ai.topxea.com/docs/use-topxai-with-langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-topxai/month)](https://pypi.org/project/langchain-topxai/) |
+| [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-recall/month)](https://pypi.org/project/langchain-recall/) |
 | [`ChatHubris`](https://hubris.pw/docs/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hubris/month)](https://pypi.org/project/langchain-hubris/) |
 | [`ChatAbso`](https://github.com/lunary-ai/langchain-abso) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-abso/month)](https://pypi.org/project/langchain-abso/) |
-| [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-recall/month)](https://pypi.org/project/langchain-recall/) |
-| [`ChatBrainiall`](https://app.brainiall.com/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brainiall/month)](https://pypi.org/project/langchain-brainiall/) |
 | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kserve/month)](https://pypi.org/project/langchain-kserve/) |
-| [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kinetica/month)](https://pypi.org/project/langchain-kinetica/) |
+| [`ChatBrainiall`](https://app.brainiall.com/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brainiall/month)](https://pypi.org/project/langchain-brainiall/) |
 | [`ChatYutoriNavigator`](https://docs.yutori.com) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
-| [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apple-foundation-models/month)](https://pypi.org/project/langchain-apple-foundation-models/) |
+| [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kinetica/month)](https://pypi.org/project/langchain-kinetica/) |
 | [`ChatSarvam`](https://docs.sarvam.ai/api/integration/langchain) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sarvamcloud/month)](https://pypi.org/project/langchain-sarvamcloud/) |
 | [`ChatFeatherlessAI`](https://github.com/featherless-ai-integrations/langchain-featherless-ai) | ✅ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-featherless-ai/month)](https://pypi.org/project/langchain-featherless-ai/) |
+| [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apple-foundation-models/month)](https://pypi.org/project/langchain-apple-foundation-models/) |
 | [`ChatXinference`](https://github.com/TheSongg/langchain-xinference) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xinference/month)](https://pypi.org/project/langchain-xinference/) |
 | [`Apertis`](https://docs.apertis.ai/api/sdks/langchain/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apertis/month)](https://pypi.org/project/langchain-apertis/) |
+| [`ChatRunPod`](https://docs.runpod.io/overview) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-runpod/month)](https://pypi.org/project/langchain-runpod/) |
 | [`SpendGuardChatModel`](https://agenticspendguard.dev) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/spendguard-sdk/month)](https://pypi.org/project/spendguard-sdk/) |
 | [`ChatPipeshift`](https://github.com/pipeshift-org/langchain-pipeshift) | ✅ | ❌ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pipeshift/month)](https://pypi.org/project/langchain-pipeshift/) |
-| [`ChatRunPod`](https://docs.runpod.io/overview) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-runpod/month)](https://pypi.org/project/langchain-runpod/) |
-| [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modelscope-integration/month)](https://pypi.org/project/langchain-modelscope-integration/) |
-| [`ChatOpenZoo`](https://github.com/staccDOTsol/langchain-openzoo) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openzoo/month)](https://pypi.org/project/langchain-openzoo/) |
 | [`ChatAlephantAI`](https://alephant.io/) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alephantai/month)](https://pypi.org/project/langchain-alephantai/) |
-| [`ChatEmpirioLabs`](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-empiriolabs/month)](https://pypi.org/project/langchain-empiriolabs/) |
+| [`ChatOpenZoo`](https://github.com/staccDOTsol/langchain-openzoo) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openzoo/month)](https://pypi.org/project/langchain-openzoo/) |
+| [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modelscope-integration/month)](https://pypi.org/project/langchain-modelscope-integration/) |
 | [`ChatNeuralwatt`](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-neuralwatt/month)](https://pypi.org/project/langchain-neuralwatt/) |
 | [`ChatTelnyx`](https://developers.telnyx.com/docs/inference/models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-telnyx/month)](https://pypi.org/project/langchain-telnyx/) |
+| [`ChatEmpirioLabs`](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-empiriolabs/month)](https://pypi.org/project/langchain-empiriolabs/) |
 | [`ChatInterfaze`](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/interfaze-langchain/month)](https://pypi.org/project/interfaze-langchain/) |
 | [`ChatThalam`](https://thalam.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thalam/month)](https://pypi.org/project/langchain-thalam/) |
 | [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greennode/month)](https://pypi.org/project/langchain-greennode/) |
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
-| [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-netmind/month)](https://pypi.org/project/langchain-netmind/) |
 | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seekrflow/month)](https://pypi.org/project/langchain-seekrflow/) |
+| [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-netmind/month)](https://pypi.org/project/langchain-netmind/) |
 | [`ChatDuel`](https://duelagents.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-duel/month)](https://pypi.org/project/langchain-duel/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatAISL`](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`Cheaper Inference`](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`DaoXE`](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`FuturMix`](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ | N/A |
@@ -293998,6 +294629,7 @@ Middleware enables context engineering, harness customization, and runtime safet
 | [`CTRLRunMiddleware`](https://docs.ctrlrun.dev/guides/langchain-middleware) | Policy-gated tool calls through wrap\_tool\_call: a refused call never reaches the tool and the model is told which rule refused it; an effect key executes at most once across processes sharing a store; a tool that raises leaves the effect unresolved rather than retried; an approve decision holds the call for a person; a receipt for every decision, refusals included. | [`CTRLRun/ctrlrun`](https://github.com/CTRLRun/ctrlrun/tree/main/adapters/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/ctrlrun-langchain/month)](https://pypi.org/project/ctrlrun-langchain/) |
 | [`DeepKeep middleware`](https://docs.deepkeep.ai) | DeepKeep AI Firewall pre-moderation and post-moderation for LangChain agents. | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepkeep/month)](https://pypi.org/project/langchain-deepkeep/) |
 | [`AxioRank`](https://axiorank.com/docs/integrations/langchain) | Security gateway for AI agents: score tool calls and model turns against policy with allow, deny, and redact. | [`AxioRank/langchain-axiorank`](https://github.com/AxioRank/langchain-axiorank) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-axiorank/month)](https://pypi.org/project/langchain-axiorank/) |
+| [`SubmilliMiddleware`](https://submilli.ai/docs/tutorials/connect-deepagents/) | Code-mode middleware that runs agent-written TypeScript programs on submilli-server under a policy and can call the agent's own tools. | [`submilli/submilli-python`](https://github.com/submilli/submilli-python) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-submilli/month)](https://pypi.org/project/langchain-submilli/) |
 | [`langchain-pop`](https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop) | Portable persona loading, legacy migration, and boundary-aware tool filtering for LangChain agents. | [`joy7758/persona-object-protocol`](https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pop/month)](https://pypi.org/project/langchain-pop/) |
 | [`OWASP Agent Memory Guard`](https://owasp.org/www-project-agent-memory-guard/) | Runtime defense against AI agent memory poisoning (OWASP ASI06). Scans messages, model responses, and tool outputs locally with block, warn, and strip modes. | [`OWASP/www-project-agent-memory-guard`](https://github.com/OWASP/www-project-agent-memory-guard/tree/main/integrations/langchain-agent-memory-guard) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agent-memory-guard/month)](https://pypi.org/project/langchain-agent-memory-guard/) |
 | [`langchain-distil`](https://github.com/dshakes/distil) | Reversible, certified context compression. Digests large tool outputs and message history before the model call (tool and function messages reversibly, human and system losslessly, the model messages never rewritten), with byte-exact recovery of every digest. Decision-equivalence between compressed and full context is certified offline by a statistical non-inferiority gate. | [`dshakes/distil`](https://github.com/dshakes/distil) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-distil/month)](https://pypi.org/project/langchain-distil/) |
@@ -294064,6 +294696,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Aidress](https://aidress.ai)**
 >
 > Discovery and trust registry tools for verifying counterpart AI agents before they transact.
+
+> **[AI Stupid Level](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md)**
+>
+> OpenAI-compatible router that sends each request to the model scoring best for the task on AI Stupid Level's benchmarks, using your own provider keys.
 
 > **[Alephant AI](https://alephant.io/)**
 >
@@ -295873,6 +296509,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Enterprise knowledge graph platform.
 
+> **[SubmilliMiddleware](https://submilli.ai/docs/tutorials/connect-deepagents/)**
+>
+> Code-mode middleware that runs agent-written TypeScript programs on submilli-server under a policy and can call the agent's own tools.
+
 > **[Sulci Cache](https://github.com/sulci-io/sulci-oss)**
 >
 > Context-aware semantic LLM cache that blends conversation history into similarity lookup.
@@ -296193,6 +296833,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Image, video, and catalog model generation tools for the WaveSpeed AI marketplace.
 
+> **[WayzaToolkit](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza)**
+>
+> Tools that give an agent a Wayza address to ask people or other AIs questions, get recorded answers, and answer Wayza chat links.
+
 > **[Weaviate](/oss/python/integrations/providers/weaviate)**
 >
 > Open-source vector database with GraphQL.
@@ -296200,6 +296844,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Web Metadata Extractor](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor)**
 >
 > URL metadata, Markdown, contact discovery, and SEO audit tools for LangChain agents.
+
+> **[WebExtract](https://webextract.dev/docs/langchain)**
+>
+> Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
 > **[Web2MDLoader](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme)**
 >
@@ -299435,6 +300083,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
 | [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
 | [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
 | [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
 | [`Cosmergon`](https://cosmergon.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cosmergon/month)](https://pypi.org/project/langchain-cosmergon/) |
 | [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
@@ -299592,6 +300241,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
 > [!NOTE]
 >

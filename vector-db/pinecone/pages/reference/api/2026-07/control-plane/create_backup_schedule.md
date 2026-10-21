@@ -57,13 +57,44 @@ The number of days after which backups created by this schedule are automaticall
 | 404 | Index not found. |
 | 409 | This index already has an enabled backup schedule. Disable or delete it first. |
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+schedule = pc.backup_schedules.create(
+    index_name="docs-example",
+    name="example-backup-schedule",
+    frequency="daily",
+    retention_days=7,
+)
+print(schedule)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const schedule = await pc.backupSchedules.create('docs-example', {
+  name: 'example-backup-schedule',
+  frequency: 'daily',
+  retentionDays: 7,
+});
+console.log(schedule);
+```
+
 ```bash curl theme={null}
 curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
   -H "api-key: ${PINECONE_API_KEY}" \
   -H "X-Pinecone-Api-Version: 2026-07" \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "my-nightly-backup",
+    "name": "example-backup-schedule",
     "schedule": {
       "type": "time-based",
       "frequency": "daily"

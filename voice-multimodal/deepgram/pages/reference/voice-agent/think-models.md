@@ -31,10 +31,19 @@ List of available think models
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
 ### AgentThinkModelsV1ResponseModelsItems
+
+- AgentThinkModelsV1ResponseModelsItems0
+- AgentThinkModelsV1ResponseModelsItems1
+- AgentThinkModelsV1ResponseModelsItems2
+- AgentThinkModelsV1ResponseModelsItems3
+- AgentThinkModelsV1ResponseModelsItems4
 
 ### ErrorResponseLegacyError
 

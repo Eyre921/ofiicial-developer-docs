@@ -106,7 +106,7 @@ Regional models are priced at a premium over the base serverless price for the s
 The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
 
 * **Training.** Fine-tuning and training jobs are blocked. Support is coming soon.
-* **Model routers.** A `firerouter/...` id can pass a request through to a third-party provider, which Fireworks cannot constrain to a region. See [APIs and SDKs](/nexus/apis-and-sdks).
+* **Nexus Auto.** The `auto` model ID can pass a request through to a third-party provider, which Fireworks cannot constrain to a region. See [Nexus Auto](/nexus/auto#limitations).
 * **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
 
 ## Related

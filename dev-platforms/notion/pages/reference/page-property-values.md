@@ -1324,6 +1324,7 @@ A page write does not create a new status option or set its group. Use [Update d
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",

@@ -75,6 +75,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ResourceAccessInfo
 
 - `is_creator` (boolean, required) — Whether the user making the request is the creator of the agent

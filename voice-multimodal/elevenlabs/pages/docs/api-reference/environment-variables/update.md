@@ -75,7 +75,15 @@ Validation Error
 
 ### UpdateEnvironmentVariableRequestValues
 
+- string
+- EnvironmentVariableSecretValueRequest: EnvironmentVariableSecretValueRequest
+- EnvironmentVariableAuthConnectionValueRequest: EnvironmentVariableAuthConnectionValueRequest
+
 ### EnvironmentVariableResponseValues
+
+- map from string to string
+- map from string to EnvironmentVariableSecretValue
+- map from string to EnvironmentVariableAuthConnectionValue
 
 ### ValidationError
 
@@ -91,7 +99,18 @@ Validation Error
 
 - `auth_connection_id` (string, required)
 
+### EnvironmentVariableSecretValue
+
+- `secret_id` (string, required)
+
+### EnvironmentVariableAuthConnectionValue
+
+- `auth_connection_id` (string, required)
+
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

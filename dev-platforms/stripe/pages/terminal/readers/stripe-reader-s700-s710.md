@@ -77,7 +77,7 @@ The Stripe Reader S700/S710 requires a recommended 12W of power for successful o
 
 For a deeply discharged battery, a slow charging mechanism is applied to safely bring the battery to a safe zone for faster charging. During this phase, the charging LED indicator on the unit is on, however, the display remains off. This phase can take up to 30 minutes for a deeply discharged battery.
 
-If you’re connecting the Stripe Reader S700/S710 to a computer or laptop, make sure the USB-C port can support the recommended 12W of power. The USB-A port standard *does not* support this power level—*do not* use it.
+If you’re connecting the Stripe Reader S700/S710 to a computer or laptop, make sure the USB-C port can support the recommended 12W of power. The USB-A port standard *does not* support this power level—*don’t* use it.
 
 ### The reader can’t connect 
 
@@ -109,17 +109,21 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.45.7.0` | `1.00.07.00` | `szzz_us_v11` | `2.2.24` |
-| CA | `2.45.7.0` | `1.00.07.00` | `szzz_ca_v4` | `2.2.24` |
-| AU | `2.45.7.0` | `1.00.07.00` | `szzz_prod_au_v11` | `2.2.24` |
-| MYNZ | `2.45.7.0` | `1.00.07.00` | `szzz_prod_apac_on_v5` | `2.2.24` |
-| SG | `2.45.7.0` | `1.00.07.00` | `szzz_prod_apac_on_v5` | `2.2.24` |
-| HK | `2.45.7.0` | `1.00.07.00` | `szzz_hk_v1` | `2.1.24` |
-| GBIEFI | `2.45.7.0` | `1.00.07.00` | `szzz_prod_eu_off_v3` | `2.2.24` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.45.7.0` | `1.00.07.00` | `szzz_prod_eu_on_v5` | `2.2.24` |
-| BGHRCYEEHULVLILTMTROSKSI | `2.45.7.0` | `1.00.07.00` | `szzz_prod_roeu_on_v2` | `2.2.24` |
+| US | `2.46.4.0` | `1.00.08.01` | `szzz_us_v11` | `2.2.24` |
+| CA | `2.46.4.0` | `1.00.08.01` | `szzz_ca_v4` | `2.2.24` |
+| AU | `2.46.4.0` | `1.00.08.01` | `szzz_prod_au_v11` | `2.2.24` |
+| MYNZ | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24` |
+| SG | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24` |
+| HK | `2.46.4.0` | `1.00.08.01` | `szzz_hk_v1` | `2.2.24` |
+| GBIEFI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_off_v3` | `2.2.24` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_on_v5` | `2.2.24` |
+| BGHRCYEEHULVLILTMTROSKSI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_roeu_on_v2` | `2.2.24` |
 
 ### Changelog 
+
+#### 2026-10-20 (version 2.46.4.0)
+
+- General bug fixes and improvements.
 
 #### 2026-09-08 (version 2.45.7.0)
 

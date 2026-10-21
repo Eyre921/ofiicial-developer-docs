@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/api-reference/post-systemone
 path: api-reference/post-systemone
 ---
 
-Answer many typed questions about one state in a single call with POST /inference/v1/systemone
+Send a state and a set of typed questions to POST /inference/v1/systemone and get a calibrated probability distribution for every question in one pass.
 
 The System One decisions API takes a **state** (any text or JSON describing the current situation) and a set of typed **questions**, and returns a calibrated probability distribution for every question. The model reads the state once and answers every question from that single pass, so adding questions to a request is much cheaper than making separate calls.
 

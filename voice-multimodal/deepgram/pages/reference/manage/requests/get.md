@@ -42,6 +42,9 @@ A specific request for a specific project
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 

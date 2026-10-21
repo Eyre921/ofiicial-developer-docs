@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1396 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1397 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -774,6 +774,7 @@
 - `docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification` — [SMS OTP verification](pages/docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification.md)
 - `docs/eleven-agents/quickstart` — [Quickstart](pages/docs/eleven-agents/quickstart.md) · [原文](https://elevenlabs.io/docs/eleven-agents/quickstart.md)
 - `docs/eleven-agents/whatsapp` — [WhatsApp](pages/docs/eleven-agents/whatsapp.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp.md)
+- `docs/eleven-agents/whatsapp/getting-started` — [Getting started](pages/docs/eleven-agents/whatsapp/getting-started.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/getting-started.md)
 - `docs/eleven-agents/whatsapp/interactive-messages` — [Interactive messages](pages/docs/eleven-agents/whatsapp/interactive-messages.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/interactive-messages.md)
 - `docs/eleven-agents/whatsapp/outbound` — [Outbound messages & templates](pages/docs/eleven-agents/whatsapp/outbound.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/outbound.md)
 - `docs/eleven-agents/whatsapp/tools` — [WhatsApp tools](pages/docs/eleven-agents/whatsapp/tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/whatsapp/tools.md)

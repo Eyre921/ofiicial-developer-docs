@@ -244,6 +244,10 @@ Validation Error
 
 ### SpeechEngineConfigRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+
 ### SupportedVoice
 
 - `label` (string, required)
@@ -323,6 +327,9 @@ Audio effects applied to generated speech: a filter preset, perceived distance, 
 - `pan` (double, required, default: 0) — Stereo position of the voice, from -1 (hard left) through 0 (center) to 1 (hard right). Only the voice is panned; reverb and background noise stay centered.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### ConvAISecretLocator
 

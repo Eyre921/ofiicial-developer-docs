@@ -16,19 +16,77 @@ The response is this version's index model, with the embedding configuration sur
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index#integrated-embedding).
 
 ```python Python theme={null}
+# pip install --upgrade pinecone
+import os
 from pinecone import Pinecone
 
-pc = Pinecone(api_key="YOUR_API_KEY")
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
-index_model = pc.create_index_for_model(
+index_model = pc.indexes.create_for_model(
     name="docs-example",
     cloud="aws",
     region="us-east-1",
     embed={
         "model": "multilingual-e5-large",
-        "field_map": {"text": "chunk_text"}
-    }
+        "field_map": {"text": "chunk_text"},
+    },
 )
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const indexModel = await pc.indexes.createForModel({
+  name: 'docs-example',
+  cloud: 'aws',
+  region: 'us-east-1',
+  embed: {
+    model: 'multilingual-e5-large',
+    fieldMap: { text: 'chunk_text' },
+  },
+});
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.CreateIndexForModel(ctx, &pinecone.CreateIndexForModelRequest{
+        Name:   "docs-example",
+        Cloud:  pinecone.CloudAWS,
+        Region: "us-east-1",
+        Embed: pinecone.CreateIndexForModelEmbed{
+            Model:    "multilingual-e5-large",
+            FieldMap: map[string]interface{}{"text": "chunk_text"},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to create index: %v", err)
+    }
+    fmt.Println(idx.Name, idx.Host)
+}
 ```
 
 ```shell curl theme={null}

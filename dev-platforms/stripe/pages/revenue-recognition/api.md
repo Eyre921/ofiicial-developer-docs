@@ -158,7 +158,7 @@ API report type: `revenue_recognition.debit_credit_by_invoice.1`
 | accounting_period | ✓ default | The accounting period |
 | open_accounting_period | ✓ default | The open accounting period; entries in open periods are subject to change |
 | currency | ✓ default | Three-letter [ISO code for the currency](https://docs.stripe.com/currencies.md) of the amount. |
-| transaction_model_id | ✓ default | The model in Stripe associated with this change - either an invoice line item, invoice, invoiceitem, charge, or and so on |
+| transaction_model_id | ✓ default | The model in Stripe associated with this change—an invoice line item, invoice, invoice item, charge, and so on |
 | debit | ✓ default | The debited account |
 | credit | ✓ default | The credited account |
 | booked_date | ✓ default | The date that the ledger entry is added to the books. |

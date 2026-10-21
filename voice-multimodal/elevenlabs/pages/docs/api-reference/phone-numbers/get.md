@@ -116,6 +116,9 @@ SIP Trunk configuration details for a phone number
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

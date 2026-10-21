@@ -110,7 +110,7 @@ Register for state sales tax if you sell goods and services to customers in a st
 
 **API value**: `home_rule_tax`
 
-Register for a local home rule sales tax if you sell goods and services to customers in a home rule city (a city that levies a tax that is not administered by the state). You must add a registration for each home rule city where you want to collect tax.
+Register for a local home rule sales tax if you sell goods and services to customers in a home rule city (a city that levies a tax that isn’t administered by the state). You must add a registration for each home rule city where you want to collect tax.
 
 Home rule tax registrations aren’t available for Custom or Express [Connect](https://docs.stripe.com/connect.md) accounts. For these account types, the Colorado and Alaska state registrations include all jurisdictions in that state.
 

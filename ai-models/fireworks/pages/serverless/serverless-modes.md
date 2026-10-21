@@ -11,6 +11,7 @@ Fireworks Serverless offers three modes:
 * **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
+* **Ultrafast** (Private Preview) for workloads requiring extremely fast end-to-end generation speeds.
 
 ## Priority tier
 
@@ -53,6 +54,44 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 ```
 
 Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
+
+## Ultrafast (Private Preview)
+
+Ultrafast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultrafast variants aim for **1500+ tokens per second** of generated throughput for agentic coding tasks. It is not a different model and the quality of the model remains the same.
+
+Ultrafast is in Private Preview and is available for the models listed below. To get access to Ultrafast please reach out to the team [here](https://share-na2.hsforms.com/19_8Sm5zPQ7aUh1W2FuLDygqbom7). Once access is granted, change the `model` ID as listed below.
+
+<table>
+  <colgroup>
+    <col />
+
+    <col />
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>`model` ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>Deepseek V4.1 Flash 1017</td>
+      <td>`accounts/fireworks/models/deepseek-v4p1-flash-ultrafast`</td>
+    </tr>
+  </tbody>
+</table>
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-ultrafast",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+```
 
 ## Related
 

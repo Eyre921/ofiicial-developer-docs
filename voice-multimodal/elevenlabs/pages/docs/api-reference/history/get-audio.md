@@ -54,6 +54,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **SDK Code**

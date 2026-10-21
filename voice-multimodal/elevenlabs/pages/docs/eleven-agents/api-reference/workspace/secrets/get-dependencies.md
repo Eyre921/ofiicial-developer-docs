@@ -56,13 +56,52 @@ Validation Error
 
 ### GetSecretDependenciesResponseModelDependencies
 
+- list of GetSecretDependenciesResponseModelDependenciesZeroItem
+- list of GetSecretDependenciesResponseModelDependenciesOneItem
+- list of DependentPhoneNumberIdentifier
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItem, required)
 - `msg` (string, required)
 - `type` (string, required)
 
+### GetSecretDependenciesResponseModelDependenciesZeroItem
+
+- `type`: `available`
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown`
+  - `id` (string, required)
+
+### GetSecretDependenciesResponseModelDependenciesOneItem
+
+- `type`: `available`
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown`
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### DependentPhoneNumberIdentifier
+
+- `phone_number_id` (string, required)
+- `phone_number` (string, required)
+- `label` (string, required)
+- `provider` (enum, required)
+  - Allowed values: `twilio`, `sip_trunk`, `exotel`
+
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ## Examples
 

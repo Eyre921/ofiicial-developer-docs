@@ -72,10 +72,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -86,6 +86,7 @@ func main() {
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
@@ -127,8 +128,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -139,6 +140,7 @@ func main() {
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
@@ -183,9 +185,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [components.UpdateOrganizationSettingsRequest](../../models/components/updateorganizationsettingsrequest.mdx) | ✅ | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `request` | [components.UpdateOrganizationSettingsRequest](../../models/components/updateorganizationsettingsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -197,6 +199,7 @@ func main() {
 | - | - | - |
 | sdkerrors.BadRequestResponseError | 400 | application/json |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |

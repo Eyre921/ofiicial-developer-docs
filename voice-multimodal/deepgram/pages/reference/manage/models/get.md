@@ -33,6 +33,8 @@ Reference: https://developers.deepgram.com/reference/manage/models/get
 A model object that can be either STT or TTS
 
 - `GetModelV1Response`
+  - GetModelV1Response0
+  - GetModelV1Response1
 
 ## Errors
 
@@ -41,6 +43,9 @@ A model object that can be either STT or TTS
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 

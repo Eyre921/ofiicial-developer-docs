@@ -74,6 +74,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### DubbingTranscriptWord
 
 - `text` (string, optional, default: )

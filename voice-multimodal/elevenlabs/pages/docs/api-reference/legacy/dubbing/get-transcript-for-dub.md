@@ -41,6 +41,8 @@ Reference: https://elevenlabs.io/docs/api-reference/legacy/dubbing/get-transcrip
 Successful Response
 
 - `dubbing_transcript_get_transcript_for_dub_Response_200`
+  - DubbingTranscriptResponseModel: DubbingTranscriptResponseModel
+  - string
 
 ## Errors
 
@@ -72,6 +74,9 @@ Validation Error
 - `words` (list of DubbingTranscriptWord, optional)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### DubbingTranscriptWord
 

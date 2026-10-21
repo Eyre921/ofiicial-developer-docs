@@ -57,6 +57,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

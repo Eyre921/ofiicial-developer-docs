@@ -207,6 +207,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### AgentFailureResponseExample
 
 - `response` (string, required)
@@ -273,6 +276,11 @@ Represents a message from a multi-voice agent.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelOutputToolDetails, optional, nullable)
 
 ### ConversationHistoryTranscriptCommonModelOutputToolResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
 
 ### UserFeedback
 
@@ -702,6 +710,11 @@ A common model for workflow tool responses.
   - `step_latency_secs` (double, required)
 
 ### WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
 
 ## Examples
 

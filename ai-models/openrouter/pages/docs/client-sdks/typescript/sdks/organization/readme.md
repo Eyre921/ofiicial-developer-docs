@@ -85,7 +85,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListOrganizationMembersRequest](../../models/operations/listorganizationmembersrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListOrganizationMembersRequest](../../models/operations/listorganizationmembersrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -99,6 +99,7 @@ run();
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
@@ -162,7 +163,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetOrganizationSettingsRequest](../../models/operations/getorganizationsettingsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetOrganizationSettingsRequest](../../models/operations/getorganizationsettingsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -176,6 +177,7 @@ run();
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
@@ -247,7 +249,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateOrganizationSettingsRequest](../../models/operations/updateorganizationsettingsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UpdateOrganizationSettingsRequest](../../models/operations/updateorganizationsettingsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -262,6 +264,7 @@ run();
 | - | - | - |
 | errors.BadRequestResponseError | 400 | application/json |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |

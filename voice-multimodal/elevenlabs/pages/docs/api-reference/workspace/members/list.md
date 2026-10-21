@@ -60,6 +60,9 @@ Public workspace member fields exposed via GET /v1/workspace/members.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

@@ -34,6 +34,9 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/update
 This endpoint expects a conversational_ai_tests_update_Request.
 
 - `conversational_ai_tests_update_Request`
+  - UpdateResponseUnitTestRequest: UpdateResponseUnitTestRequest
+  - UpdateToolCallUnitTestRequest: UpdateToolCallUnitTestRequest
+  - UpdateSimulationTestRequest: UpdateSimulationTestRequest
 
 ## Response
 
@@ -317,6 +320,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptCommonModelOutputToolResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -376,6 +384,9 @@ Reference to a tool for unit test evaluation.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ConversationHistoryTranscriptToolCallCommonModel-Input
 
 - `request_id` (string, required)
@@ -388,6 +399,11 @@ Reference to a tool for unit test evaluation.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelInputToolDetails, optional, nullable)
 
 ### ConversationHistoryTranscriptCommonModelInputToolResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ### LLMUsage-Input
 
@@ -906,7 +922,17 @@ A common model for workflow tool responses.
 
 ### WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### WorkflowToolResponseModelInputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ## Examples
 

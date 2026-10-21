@@ -47,6 +47,8 @@ Reference: https://developers.deepgram.com/reference/text-intelligence/analyze-t
 This endpoint expects a ReadV1Request.
 
 - `ReadV1Request`
+  - ReadV1RequestUrl: ReadV1RequestUrl
+  - ReadV1RequestText: ReadV1RequestText
 
 ## Response
 
@@ -64,6 +66,9 @@ Successful text analysis
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
@@ -77,11 +82,24 @@ Invalid Request
 
 ### V1ReadPostParametersSummarize
 
+- Listen API Version Option: enum
+  - Allowed values: `v2`
+- boolean
+
 ### V1ReadPostParametersTag
+
+- string
+- list of string
 
 ### V1ReadPostParametersCustomTopic
 
+- string
+- list of string
+
 ### V1ReadPostParametersCustomIntent
+
+- string
+- list of string
 
 ### ReadV1ResponseMetadata
 
@@ -217,7 +235,7 @@ Output whenever `sentiment=true` is used
 
 ```json
 {
-  "url": "https://dpgr.am/spacewalk.txt"
+  "url": "string"
 }
 ```
 
@@ -231,24 +249,24 @@ Output whenever `sentiment=true` is used
       "created": "2024-11-18T23:47:44.674Z",
       "language": "en",
       "summary_info": {
-        "model_uuid": "67875a7f-c7a1-4e6e-a1e4-9a8e3d5f2b1c",
-        "input_tokens": 512,
-        "output_tokens": 64
+        "model_uuid": "string",
+        "input_tokens": 1,
+        "output_tokens": 1
       },
       "sentiment_info": {
-        "model_uuid": "a3c2e1d4-b5f6-4e7a-8c9d-0e1f2a3b4c5d",
-        "input_tokens": 512,
-        "output_tokens": 32
+        "model_uuid": "string",
+        "input_tokens": 1,
+        "output_tokens": 1
       },
       "topics_info": {
-        "model_uuid": "f1e2d3c4-b5a6-4789-abcd-ef0123456789",
-        "input_tokens": 512,
-        "output_tokens": 48
+        "model_uuid": "string",
+        "input_tokens": 1,
+        "output_tokens": 1
       },
       "intents_info": {
-        "model_uuid": "9b8a7c6d-5e4f-3a2b-1c0d-ef9876543210",
-        "input_tokens": 512,
-        "output_tokens": 40
+        "model_uuid": "string",
+        "input_tokens": 1,
+        "output_tokens": 1
       }
     }
   },
@@ -316,7 +334,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/read"
 
-payload = { "url": "https://dpgr.am/spacewalk.txt" }
+payload = { "url": "string" }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -332,7 +350,7 @@ const url = 'https://api.deepgram.com/v1/read';
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"url":"https://dpgr.am/spacewalk.txt"}'
+  body: '{"url":"string"}'
 };
 
 try {
@@ -358,7 +376,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/read"
 
-	payload := strings.NewReader("{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}")
+	payload := strings.NewReader("{\n  \"url\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -388,7 +406,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}"
+request.body = "{\n  \"url\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -401,7 +419,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/read")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}")
+  .body("{\n  \"url\": \"string\"\n}")
   .asString();
 ```
 
@@ -413,7 +431,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/read', [
   'body' => '{
-  "url": "https://dpgr.am/spacewalk.txt"
+  "url": "string"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -431,7 +449,7 @@ var client = new RestClient("https://api.deepgram.com/v1/read");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"url\": \"https://dpgr.am/spacewalk.txt\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"url\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -442,7 +460,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = ["url": "https://dpgr.am/spacewalk.txt"] as [String : Any]
+let parameters = ["url": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

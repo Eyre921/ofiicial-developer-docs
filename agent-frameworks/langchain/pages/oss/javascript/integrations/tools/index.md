@@ -72,6 +72,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pipe0/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pipe0/langchain) |
 | [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/precleared?style=flat-square\&label=%20&)](https://www.npmjs.com/package/precleared) |
 | [`InstantExpertToolkit`](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-instant-expert?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-instant-expert) |
+| [`M91`](https://github.com/MSG91/m91-sdk#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@msg91comm/m91?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@msg91comm/m91) |
 | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://img.shields.io/npm/dm/@agentsearchhq/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@agentsearchhq/langchain) |
 | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pushary/langgraph?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pushary/langgraph) |
 | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/satohub-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/satohub-langchain-tools) |
@@ -105,6 +106,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |
 | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | N/A |
 | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | N/A |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
 > [!NOTE]
 >

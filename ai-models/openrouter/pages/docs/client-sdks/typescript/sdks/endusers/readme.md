@@ -10,19 +10,19 @@ path: docs/client-sdks/typescript/sdks/endusers/readme
 
 # EndUsers
 
-> End Users endpoints
+> Deprecated alias of externalUsers. Use externalUsers instead; scheduled for removal (sunset date TBD).
 
 ## Overview
 
-End Users endpoints
+Deprecated alias of externalUsers. Use externalUsers instead; scheduled for removal (sunset date TBD).
 
 ### Available Operations
 
-* [list](#list) - List registered end users
-* [create](#create) - Register an end user
-* [delete](#delete) - Deactivate a registered end user
-* [get](#get) - Get a registered end user
-* [update](#update) - Update a registered end user
+* [list](#list) - List registered external users
+* [create](#create) - Register an external user
+* [delete](#delete) - Deactivate a registered external user
+* [get](#get) - Get a registered external user
+* [update](#update) - Update a registered external user
 
 ## list
 
@@ -57,7 +57,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endUsersList } from "@openrouter/sdk/funcs/endUsersList.js";
+import { externalUsersList } from "@openrouter/sdk/funcs/externalUsersList.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -69,14 +69,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endUsersList(openRouter);
+  const res = await externalUsersList(openRouter);
   if (res.ok) {
     const { value: result } = res;
     for await (const page of result) {
     console.log(page);
   }
   } else {
-    console.log("endUsersList failed:", res.error);
+    console.log("externalUsersList failed:", res.error);
   }
 }
 
@@ -87,14 +87,14 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListEndUsersRequest](../../models/operations/listendusersrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListExternalUsersRequest](../../models/operations/listexternalusersrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
-**Promise\<[operations.ListEndUsersResponse](../../models/operations/listendusersresponse.mdx)>**
+**Promise\<[operations.ListExternalUsersResponse](../../models/operations/listexternalusersresponse.mdx)>**
 
 ### Errors
 
@@ -124,7 +124,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.endUsers.create({
-    createEndUserRequest: {
+    createExternalUserRequest: {
       user: "employee_123",
     },
   });
@@ -141,7 +141,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endUsersCreate } from "@openrouter/sdk/funcs/endUsersCreate.js";
+import { externalUsersCreate } from "@openrouter/sdk/funcs/externalUsersCreate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -153,8 +153,8 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endUsersCreate(openRouter, {
-    createEndUserRequest: {
+  const res = await externalUsersCreate(openRouter, {
+    createExternalUserRequest: {
       user: "employee_123",
     },
   });
@@ -162,7 +162,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endUsersCreate failed:", res.error);
+    console.log("externalUsersCreate failed:", res.error);
   }
 }
 
@@ -173,14 +173,14 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateEndUserRequest](../../models/operations/createenduserrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.CreateExternalUserRequest](../../models/operations/createexternaluserrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
-**Promise\<[models.EndUserResponse](../../models/enduserresponse.mdx)>**
+**Promise\<[models.ExternalUserResponse](../../models/externaluserresponse.mdx)>**
 
 ### Errors
 
@@ -226,7 +226,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endUsersDelete } from "@openrouter/sdk/funcs/endUsersDelete.js";
+import { externalUsersDelete } from "@openrouter/sdk/funcs/externalUsersDelete.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -238,14 +238,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endUsersDelete(openRouter, {
+  const res = await externalUsersDelete(openRouter, {
     user: "employee_123",
   });
   if (res.ok) {
     const { value: result } = res;
     
   } else {
-    console.log("endUsersDelete failed:", res.error);
+    console.log("externalUsersDelete failed:", res.error);
   }
 }
 
@@ -256,7 +256,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteEndUserRequest](../../models/operations/deleteenduserrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DeleteExternalUserRequest](../../models/operations/deleteexternaluserrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -308,7 +308,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endUsersGet } from "@openrouter/sdk/funcs/endUsersGet.js";
+import { externalUsersGet } from "@openrouter/sdk/funcs/externalUsersGet.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -320,14 +320,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endUsersGet(openRouter, {
+  const res = await externalUsersGet(openRouter, {
     user: "employee_123",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endUsersGet failed:", res.error);
+    console.log("externalUsersGet failed:", res.error);
   }
 }
 
@@ -338,14 +338,14 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetEndUserRequest](../../models/operations/getenduserrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetExternalUserRequest](../../models/operations/getexternaluserrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
-**Promise\<[models.EndUserResponse](../../models/enduserresponse.mdx)>**
+**Promise\<[models.ExternalUserResponse](../../models/externaluserresponse.mdx)>**
 
 ### Errors
 
@@ -376,7 +376,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.endUsers.update({
     user: "employee_123",
-    updateEndUserRequest: {
+    updateExternalUserRequest: {
       isActive: true,
     },
   });
@@ -393,7 +393,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endUsersUpdate } from "@openrouter/sdk/funcs/endUsersUpdate.js";
+import { externalUsersUpdate } from "@openrouter/sdk/funcs/externalUsersUpdate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -405,9 +405,9 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endUsersUpdate(openRouter, {
+  const res = await externalUsersUpdate(openRouter, {
     user: "employee_123",
-    updateEndUserRequest: {
+    updateExternalUserRequest: {
       isActive: true,
     },
   });
@@ -415,7 +415,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endUsersUpdate failed:", res.error);
+    console.log("externalUsersUpdate failed:", res.error);
   }
 }
 
@@ -426,14 +426,14 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateEndUserRequest](../../models/operations/updateenduserrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UpdateExternalUserRequest](../../models/operations/updateexternaluserrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
-**Promise\<[models.EndUserResponse](../../models/enduserresponse.mdx)>**
+**Promise\<[models.ExternalUserResponse](../../models/externaluserresponse.mdx)>**
 
 ### Errors
 

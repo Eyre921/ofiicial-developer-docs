@@ -9,6 +9,26 @@ Delete an existing assistant.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#delete-an-assistant)
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+pc.assistants.delete(name="example-assistant")
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+await pc.assistants.delete('example-assistant');
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

@@ -90,7 +90,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListScimGroupMappingsRequest](../../models/operations/listscimgroupmappingsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListScimGroupMappingsRequest](../../models/operations/listscimgroupmappingsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -179,7 +179,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateScimGroupMappingRequest](../../models/operations/createscimgroupmappingrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.CreateScimGroupMappingRequest](../../models/operations/createscimgroupmappingrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -264,7 +264,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteScimGroupMappingRequest](../../models/operations/deletescimgroupmappingrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DeleteScimGroupMappingRequest](../../models/operations/deletescimgroupmappingrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -346,7 +346,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetScimGroupMappingRequest](../../models/operations/getscimgroupmappingrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetScimGroupMappingRequest](../../models/operations/getscimgroupmappingrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -433,7 +433,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateScimGroupMappingRequest](../../models/operations/updatescimgroupmappingrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UpdateScimGroupMappingRequest](../../models/operations/updatescimgroupmappingrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -515,7 +515,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListScimGroupsRequest](../../models/operations/listscimgroupsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListScimGroupsRequest](../../models/operations/listscimgroupsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -592,7 +592,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateScimSyncJobRequest](../../models/operations/createscimsyncjobrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.CreateScimSyncJobRequest](../../models/operations/createscimsyncjobrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -673,7 +673,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetScimSyncJobRequest](../../models/operations/getscimsyncjobrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetScimSyncJobRequest](../../models/operations/getscimsyncjobrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |

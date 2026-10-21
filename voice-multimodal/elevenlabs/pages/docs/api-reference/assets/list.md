@@ -68,6 +68,9 @@ The public Asset object.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

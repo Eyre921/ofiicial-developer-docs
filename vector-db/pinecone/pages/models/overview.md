@@ -16,6 +16,8 @@ Build end-to-end faster with models hosted by Pinecone.
 
 ## llama-text-embed-v2
 
+NVIDIA
+
 State of the art text embedding model
 
 **Task**
@@ -40,6 +42,8 @@ Try this model
 
 ## multilingual-e5-large
 
+MICROSOFT
+
 Top performing text embedding model from Microsoft research.
 
 **Task**
@@ -63,6 +67,8 @@ Try this model
 ![Cohere Logo](https://cdn.sanity.io/images/vr8gru94/production/33b1cb253308f74fc83248746b7370a89b3c2c05-250x250.svg)
 
 ## cohere-rerank-4-fast
+
+COHERE
 
 Cohere's latest reranker, with multilingual capabilities.
 
@@ -90,6 +96,8 @@ Try this model
 
 Deprecated
 
+COHERE
+
 Cohere's previous-generation reranker. Deprecated; requests are served by cohere-rerank-4-fast.
 
 **Task**
@@ -114,6 +122,8 @@ Try this model
 
 ## pinecone-sparse-english-v0
 
+PINECONE
+
 Sparse-vector encoder for custom lexical retrieval. For general keyword search, use full-text search.
 
 **Task**
@@ -137,6 +147,8 @@ Try this model
 ![BAAI Logo](https://cdn.sanity.io/images/vr8gru94/production/40b1d05ee1325e6d9e4886af4e76ff06d844faff-188x188.jpg)
 
 ## bge-reranker-v2-m3
+
+BAAI
 
 High performance multi-lingual reranker model.
 

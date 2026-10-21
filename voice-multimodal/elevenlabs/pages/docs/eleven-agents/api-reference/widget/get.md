@@ -235,6 +235,9 @@ The avatar of the widget
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ## Examples
 
 **Response**

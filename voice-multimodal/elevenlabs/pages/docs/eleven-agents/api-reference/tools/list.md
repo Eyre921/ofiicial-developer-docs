@@ -168,6 +168,9 @@ The type of tool
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### DynamicVariableAssignment
 
 Configuration for extracting values from tool responses and assigning them to dynamic variables.
@@ -242,6 +245,10 @@ Configuration for extracting values from tool responses and assigning them to dy
 
 ### ObjectJsonSchemaPropertyOutputPropertiesValue
 
+- Literal JSON Schema Property: LiteralJsonSchemaProperty
+- Object JSON Schema Property Output: ObjectJsonSchemaPropertyOutput
+- Array JSON Schema Property Output: ArrayJsonSchemaPropertyOutput
+
 ### RequiredConstraints
 
 Wrapper for anyOf/allOf composition constraints scoped to required fields.
@@ -251,7 +258,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### EndProcedureToolConfigProceduresValue
 
+- Procedure Version Ref: ProcedureVersionRef
+- Procedure Draft Ref: ProcedureDraftRef
+
 ### StartProcedureToolConfigProceduresValue
+
+- Procedure Version Ref: ProcedureVersionRef
+- Procedure Draft Ref: ProcedureDraftRef
 
 ### AgentTransferOutput
 
@@ -279,6 +292,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, deprecated)
 
 ### WebhookToolApiSchemaConfigOutputRequestHeadersValue
+
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -311,6 +329,9 @@ Configuration for filtering tool responses before they are visible to the agent.
 ### WebhookToolApiSchemaConfigOutputAuthConnection
 
 Optional auth connection to use for authentication with this webhook
+
+- Auth Connection Locator: AuthConnectionLocator
+- Environment Auth Connection Locator: EnvironmentAuthConnectionLocator
 
 ### UnitTestToolCallParameterEval
 
@@ -403,6 +424,12 @@ Used to reference an environment variable by label.
 
 ### LiteralJsonSchemaPropertyType
 
+- "boolean"
+- "string"
+- "integer"
+- "number"
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -410,6 +437,11 @@ Used to reference an environment variable by label.
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### AuthConnectionLocator
 
@@ -426,6 +458,10 @@ References an environment variable of type 'auth_connection' by label. At runtim
 ### ArrayJsonSchemaPropertyOutputItems
 
 Schema for array elements.
+
+- Literal JSON Schema Property: LiteralJsonSchemaProperty
+- Object JSON Schema Property Output: ObjectJsonSchemaPropertyOutput
+- Array JSON Schema Property Output: ArrayJsonSchemaPropertyOutput
 
 ## Examples
 

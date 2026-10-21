@@ -79,7 +79,22 @@ Validation Error
 
 ### EnvironmentVariableResponseValues
 
+- map from string to string
+- map from string to EnvironmentVariableSecretValue
+- map from string to EnvironmentVariableAuthConnectionValue
+
 ### ValidationErrorLocItem
+
+- string
+- integer
+
+### EnvironmentVariableSecretValue
+
+- `secret_id` (string, required)
+
+### EnvironmentVariableAuthConnectionValue
+
+- `auth_connection_id` (string, required)
 
 ## Examples
 

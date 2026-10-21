@@ -79,6 +79,9 @@ A published snapshot of a template, and the ports it runs with.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### TemplatePort
 
 One input or output port of a published template version.

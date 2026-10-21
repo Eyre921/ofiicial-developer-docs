@@ -9,6 +9,36 @@ Evaluate the correctness and completeness of a response from an assistant or a R
 
 For guidance and examples, see [Evaluate answers](https://docs.pinecone.io/guides/assistant/evaluate-answers).
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+result = pc.assistants.evaluate_alignment(
+    question="What are the capital cities of France, England and Spain?",
+    answer="Paris is the capital city of France and Barcelona of Spain",
+    ground_truth_answer="Paris is the capital city of France, London of England and Madrid of Spain",
+)
+print(result.scores.correctness, result.scores.completeness, result.scores.alignment)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const result = await pc.assistants.evaluate({
+  question: 'What are the capital cities of France, England and Spain?',
+  answer: 'Paris is the capital city of France and Barcelona of Spain',
+  groundTruth: 'Paris is the capital city of France, London of England and Madrid of Spain',
+});
+console.log(result.metrics.correctness, result.metrics.completeness, result.metrics.alignment);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

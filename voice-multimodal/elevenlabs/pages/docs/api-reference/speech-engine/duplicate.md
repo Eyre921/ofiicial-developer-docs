@@ -187,6 +187,10 @@ Validation Error
 
 ### SpeechEngineConfigRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+
 ### SupportedVoice
 
 - `label` (string, required)
@@ -255,6 +259,9 @@ Configuration for DTMF (keypad) input collection during phone calls.
 - `excluded_data_collection_ids` (list of string, optional) — Data collection item IDs whose extracted values are not redacted. Their rationales are still redacted.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### ConvAISecretLocator
 

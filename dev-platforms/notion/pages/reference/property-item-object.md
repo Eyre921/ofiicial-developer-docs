@@ -70,6 +70,7 @@ Status is a single property item. The response is not wrapped in a property name
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",

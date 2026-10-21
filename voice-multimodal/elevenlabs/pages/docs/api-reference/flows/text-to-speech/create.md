@@ -121,6 +121,9 @@ Overrides for the voice's saved settings, applied to one generation.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

@@ -53,6 +53,9 @@ Agent variable updated
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
@@ -74,18 +77,20 @@ Invalid Request
 **Request**
 
 ```json
-"production-api-key-abc123xyz"
+{
+  "value": null
+}
 ```
 
 **Response**
 
 ```json
 {
-  "variable_id": "v1a2b3c4-d5e6-7890-abcd-ef1234567890",
-  "key": "API_KEY",
-  "value": "production-api-key-abc123xyz",
+  "variable_id": "string",
+  "key": "string",
+  "value": null,
   "created_at": "2024-01-15T09:30:00Z",
-  "updated_at": "2024-03-20T14:45:00Z"
+  "updated_at": "2024-01-15T09:30:00Z"
 }
 ```
 
@@ -96,7 +101,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890"
 
-payload = "production-api-key-abc123xyz"
+payload = { "value": None }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -112,7 +117,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'PATCH',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '"production-api-key-abc123xyz"'
+  body: '{"value":null}'
 };
 
 try {
@@ -138,7 +143,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890"
 
-	payload := strings.NewReader("\"production-api-key-abc123xyz\"")
+	payload := strings.NewReader("{\n  \"value\": null\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -168,7 +173,7 @@ http.use_ssl = true
 request = Net::HTTP::Patch.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "\"production-api-key-abc123xyz\""
+request.body = "{\n  \"value\": null\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -181,7 +186,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.patch("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("\"production-api-key-abc123xyz\"")
+  .body("{\n  \"value\": null\n}")
   .asString();
 ```
 
@@ -192,7 +197,9 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables/v1a2b3c4-d5e6-7890-abcd-ef1234567890', [
-  'body' => '"production-api-key-abc123xyz"',
+  'body' => '{
+  "value": null
+}',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
     'Content-Type' => 'application/json',
@@ -209,7 +216,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "\"production-api-key-abc123xyz\"", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"value\": null\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -220,7 +227,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = "production-api-key-abc123xyz" as [String : Any]
+let parameters = ["value": ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

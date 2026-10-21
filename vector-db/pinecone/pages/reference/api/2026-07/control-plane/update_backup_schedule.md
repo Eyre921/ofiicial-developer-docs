@@ -39,6 +39,37 @@ The retention policy for backups created by this schedule.
 
 The number of days after which backups created by this schedule are automatically deleted.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+schedule = pc.backup_schedules.update(
+    schedule_id="SCHEDULE_ID",
+    enabled=False,
+    frequency="weekly",
+    retention_days=14,
+)
+print(schedule)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const schedule = await pc.backupSchedules.update('SCHEDULE_ID', {
+  enabled: false,
+  frequency: 'weekly',
+  retentionDays: 14,
+});
+console.log(schedule);
+```
+
 ```bash curl theme={null}
 curl -sS -X PATCH "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}" \
   -H "api-key: ${PINECONE_API_KEY}" \

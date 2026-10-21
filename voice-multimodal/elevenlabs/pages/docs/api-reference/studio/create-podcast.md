@@ -71,9 +71,16 @@ Validation Error
 
 The type of podcast to generate. Can be 'conversation', an interaction between two voices, or 'bulletin', a monologue.
 
+- PodcastConversationMode: PodcastConversationMode
+- PodcastBulletinMode: PodcastBulletinMode
+
 ### BodyCreatePodcastV1StudioPodcastsPostSource
 
 The source content for the Podcast.
+
+- PodcastTextSource: PodcastTextSource
+- PodcastURLSource: PodcastURLSource
+- list of BodyCreatePodcastV1StudioPodcastsPostSourceOneOf2Items
 
 ### ProjectResponseModel
 
@@ -147,6 +154,11 @@ The source content for the Podcast.
 - `type` ("url", required) — The type of source to create.
 - `url` (string, required) — The URL to create the podcast from.
 
+### BodyCreatePodcastV1StudioPodcastsPostSourceOneOf2Items
+
+- PodcastTextSource: PodcastTextSource
+- PodcastURLSource: PodcastURLSource
+
 ### ProjectCreationMetaResponseModel
 
 - `creation_progress` (double, required) — The progress of the project creation.
@@ -200,6 +212,9 @@ The source content for the Podcast.
 - `tool_settings` (map from string to StudioAgentToolSettingsModel, optional)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### PodcastConversationModeData
 

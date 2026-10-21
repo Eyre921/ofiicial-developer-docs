@@ -788,7 +788,7 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 * [Remote sessions](/en/copilot/how-tos/copilot-sdk/features/remote-sessions)
 
-  Remote sessions sync to GitHub so users can access locally running Copilot sessions from the agents panel or on mobile. When enabled, the SDK produces a URL to the session log that can be shared as a link or QR code.
+  Remote sessions let users access their Copilot session from GitHub web and mobile via [Mission Control](https://github.com). When enabled, the SDK connects each session to Mission Control, producing a URL that can be shared as a link or QR code.
 
 * [Session limits](/en/copilot/how-tos/copilot-sdk/features/session-limits)
 
@@ -1045,6 +1045,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies)
 
   Control the availability of GitHub Copilot features and models for users granted a license by your organization.
+
+* [Manage GitHub Apps that use your organization's Copilot](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-app-copilot-access)
+
+  Control which GitHub Apps can use your organization's Copilot and attribute their spending.
 
 * [Adding GitHub Copilot cloud agent to your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/add-copilot-cloud-agent)
 

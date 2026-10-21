@@ -49,6 +49,9 @@ Updated the scopes for a specific member
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
@@ -79,7 +82,7 @@ Invalid Request
 
 ```json
 {
-  "message": "Member scopes updated successfully."
+  "message": "string"
 }
 ```
 

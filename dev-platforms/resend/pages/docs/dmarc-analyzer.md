@@ -54,21 +54,7 @@ cd resend-dmarc-analyzer
 
 **2. Install dependencies**
 
-**pnpm**
-
-`bash pnpm install `
-
-**npm**
-
-`bash npm install `
-
-**yarn**
-
-`bash yarn install `
-
-**bun**
-
-`bash bun install `
+`bash pnpm install ``bash npm install ``bash yarn install ``bash bun install `
 
 **3. Configure environment variables**
 
@@ -89,21 +75,7 @@ cp .env.example .env.local
 
 Start the development server:
 
-**pnpm**
-
-`bash pnpm run dev `
-
-**npm**
-
-`bash npm run dev `
-
-**yarn**
-
-`bash yarn run dev `
-
-**bun**
-
-`bash bun run dev `
+`bash pnpm run dev ``bash npm run dev ``bash yarn run dev ``bash bun run dev `
 
 Register your publicly accessible HTTPS URL in the Resend dashboard and enable the `email.received` event.
 

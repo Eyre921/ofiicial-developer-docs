@@ -87,3 +87,6 @@ Validation Error
 - `type` (string, required)
 
 ### ValidationErrorLocItems
+
+- string
+- integer

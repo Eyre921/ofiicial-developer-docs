@@ -41,6 +41,9 @@ A list of agent variables
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
@@ -69,21 +72,15 @@ A template variable for agent configurations
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "variables": [
     {
-      "variable_id": "a3f1c2d4-8b7e-4f9a-b6d2-1e5c3a7f9b0d",
-      "key": "GREETING_MESSAGE",
-      "value": "Hello! How can I assist you today?",
+      "variable_id": "string",
+      "key": "string",
+      "value": null,
       "created_at": "2024-01-15T09:30:00Z",
       "updated_at": "2024-01-15T09:30:00Z"
     }
@@ -98,24 +95,16 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": "Token <apiKey>"}
 
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables';
-const options = {
-  method: 'GET',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -131,7 +120,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -140,12 +128,9 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -169,8 +154,6 @@ http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -182,8 +165,6 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -194,10 +175,8 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables', [
-  'body' => '{}',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -210,28 +189,19 @@ using RestSharp;
 var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+let headers = ["Authorization": "Token <apiKey>"]
 
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

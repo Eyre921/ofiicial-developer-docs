@@ -40,7 +40,7 @@ Use Connect to build a platform, marketplace, fintech, or other business that re
 
 [Work with Connect account balances](https://docs.stripe.com/connect/account-balances.md): Learn about platform and connected account balances.
 
-[Pay out to connected accounts](https://docs.stripe.com/connect/payouts-connected-accounts.md): Manage payouts and external accounts for your connected accounts.
+[Pay out to connected accounts](https://docs.stripe.com/connect/manage-connected-account-payouts.md): Manage payouts and external accounts for your connected accounts.
 
 ## Embedded financial products 
 

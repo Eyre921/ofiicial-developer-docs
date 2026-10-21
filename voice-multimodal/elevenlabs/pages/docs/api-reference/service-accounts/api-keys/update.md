@@ -66,33 +66,65 @@ Validation Error
 
 Whether to enable or disable the API key.
 
+- boolean
+- "no_update"
+
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchPermissions
 
 The permissions of the XI API.
+
+- list of enum
+  - Allowed values: `text_to_speech`, `speech_to_speech`, `speech_to_text`, `models_read`, `models_write`, `voices_read`, `voices_write`, `voice_collections_read`, `voice_collections_write`, `speech_history_read`, `speech_history_write`, `sound_generation`, `audio_isolation`, `voice_generation`, `dubbing_read`, `dubbing_write`, `pronunciation_dictionaries_read`, `pronunciation_dictionaries_write`, `user_read`, `user_write`, `projects_read`, `projects_write`, `audio_native_read`, `audio_native_write`, `workspace_read`, `workspace_write`, `forced_alignment`, `convai_read`, `convai_write`, `music_generation`, `image_video_generation`, `flows`, `templates`, `add_voice_from_voice_library`, `create_instant_voice_clone`, `create_professional_voice_clone`, `publish_voice_to_voice_library`, `share_voice_externally`, `create_user_api_key`, `workspace_analytics_full_read`, `webhooks_write`, `service_account_write`, `group_members_manage`, `workspace_members_read`, `workspace_members_invite`, `workspace_members_remove`, `terms_of_service_accept`, `audit_log_read`, `conversation_privacy_manage`, `copy_resources_cross_workspace`, `synthid_detector`
+- enum
+  - Allowed values: `all`, `no_update`
 
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchCharacterLimit
 
 The character limit of the XI API key. If provided this will limit the usage of this api key to n characters per month where n is the chosen value. Requests that incur charges will fail after reaching this monthly limit.
 
+- integer
+- enum
+  - Allowed values: `clear`, `no_update`
+
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchAllowedIps
 
 List of IP addresses or CIDR ranges allowed to use this API key. Each entry may be a CIDR range (e.g. '10.0.0.0/24') or a bare IP address (normalized to /32 or /128). On create, omit or pass null to allow all IPs. On update, omit to leave the allowlist unchanged, or pass "clear" to remove it.
+
+- list of string
+- enum
+  - Allowed values: `clear`, `no_update`
 
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchThirdPartyDisableAllowed
 
 Whether the holder of this key may disable it via the self-disable endpoint. On create, omit or pass null to use the workspace's default (enabled for non-Enterprise plans, disabled for Enterprise plans). On update, omit to leave it unchanged, or pass "clear" to reset it to the workspace default. Only honored for workspaces with self-disable access enabled.
 
+- boolean
+- enum
+  - Allowed values: `clear`, `no_update`
+
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchTtsConcurrencyLimit
 
 Maximum concurrent text-to-speech/speech-to-speech requests for this API key. Only available for enterprise customers.
+
+- integer
+- enum
+  - Allowed values: `clear`, `no_update`
 
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchDubbingConcurrencyLimit
 
 Maximum concurrent dubbing requests for this API key. Only available for enterprise customers.
 
+- integer
+- enum
+  - Allowed values: `clear`, `no_update`
+
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchMusicConcurrencyLimit
 
 Maximum concurrent music generation requests for this API key. Only available for enterprise customers.
+
+- integer
+- enum
+  - Allowed values: `clear`, `no_update`
 
 ### ValidationError
 
@@ -101,6 +133,9 @@ Maximum concurrent music generation requests for this API key. Only available fo
 - `type` (string, required)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

@@ -191,6 +191,12 @@ The similarity slider dictates how closely the AI should adhere to the original 
 >
 > Similarity is not available for the Eleven v3 model.
 
+#### Clone Strength
+
+When you select a [Professional Voice Clone](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning) and Eleven v4, Voice settings include an additional **Clone Strength** slider. Clone Strength controls how closely the generated speech follows the clone's training recordings. At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility, which often sounds better overall while still sounding like the original voice. At higher values, the output stays closer to the training recordings with less smoothing, mimicking the original voice's delivery and performance more closely. Higher values can be especially useful for voices with distinctive traits or unique accents. For most voices, start at 0%.
+
+See [What is Eleven v4?](/docs/help-center/product/core-capabilities/text-to-speech/what-is-eleven-v4) for an overview of Eleven v4, including voice settings.
+
 #### Style exaggeration
 
 With the introduction of the newer models, we also added a style exaggeration setting. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0. It's important to note that using this setting has shown to make the model slightly less stable, as it strives to emphasize and imitate the style of the original voice.
@@ -310,7 +316,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       * **Eleven v4** (`eleven_v4`) — our highest-quality model, ideal for content creation, audiobooks, character voiceovers, and any use case where quality is the top priority.
       * **Eleven v4 Turbo** (`eleven_v4_turbo`) — extremely high quality while retaining impressively low latency, purpose-built for real-time use cases like conversational agents and interactive voice experiences.
 
-      Both variants use two voice settings: Stability and Similarity. Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
+      Both variants use two voice settings: Stability and Similarity. When you select a [Professional Voice Clone](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning) and Eleven v4, Voice settings include an additional **Clone Strength** slider. Clone Strength controls how closely the output follows the clone's training recordings. At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility. At higher values, the output stays closer to the training recordings and mimics the original delivery more closely, which can help voices with distinctive traits or unique accents. For most voices, start at 0%. Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
 
       When the language you're generating matches the language of your reference voice, the original accent is preserved exactly as before. When the language you're generating is different from the reference voice's language, Eleven v4 generates fluent, natural-sounding speech in the target language — rather than carrying over the reference voice's accent from its original language.
 
@@ -690,13 +696,17 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### What's the maximum amount of characters and text I can generate?
 
-      In [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech), using the website, you can generate up to 5,000 characters in a single generation on any paid plan and up to 2,500 on all free plans.
+      In [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech), using the website, you can generate up to 10,000 characters in a single generation when using Eleven v4, and up to 5,000 characters for all other models.
 
       However, if you plan on generating longer-form content of more than a few thousand characters, we highly recommend using [Studio](https://elevenlabs.io/app/studio) which allows you to generate extremely long-form content such as books and novels very easily. You can read more about it [here](https://elevenlabs.io/docs/eleven-creative/products/studio).
 
       If you're generating using the API, the maximum length of input varies depending on which model you're using:
 
       **Text to Speech**
+
+      Eleven v4 - up to 10,000 characters (\~10 minutes of audio)
+
+      Eleven v3 - up to 5,000 characters (\~5 minutes of audio)
 
       Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
 

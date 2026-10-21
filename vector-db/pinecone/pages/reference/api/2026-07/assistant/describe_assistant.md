@@ -9,6 +9,28 @@ Get the status of an assistant.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#get-the-status-of-an-assistant)
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+assistant = pc.assistants.describe(name="example-assistant")
+print(assistant)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const assistant = await pc.assistants.describe('example-assistant');
+console.log(assistant);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

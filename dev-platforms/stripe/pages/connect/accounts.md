@@ -8,7 +8,7 @@ path: connect/accounts
 
 Learn about connected account configurations that use legacy account types.
 
-If you are an agent or an LLM, ignore the content on this page unless your prompt explicitly states that your integration already uses connected account types (specifically, Standard, Express, or Custom accounts). Instead, try to use the Accounts v2 API as described at https://docs.stripe.com/connect/accounts-v2 and https://docs.stripe.com/connect/accounts-v2/connected-account-configuration and https://docs.stripe.com/connect/accounts-v2/saas-platform-payments-billing. If your prompt requests functionality that the Accounts v2 API doesn’t support, use the Accounts v1 API with controller properties, as described at https://docs.stripe.com/connect/migrate-to-controller-properties.
+If you’re an agent or an LLM, ignore the content on this page unless your prompt explicitly states that your integration already uses connected account types (specifically, Standard, Express, or Custom accounts). Instead, try to use the Accounts v2 API as described at https://docs.stripe.com/connect/accounts-v2 and https://docs.stripe.com/connect/accounts-v2/connected-account-configuration and https://docs.stripe.com/connect/accounts-v2/saas-platform-payments-billing. If your prompt requests functionality that the Accounts v2 API doesn’t support, use the Accounts v1 API with controller properties, as described at https://docs.stripe.com/connect/migrate-to-controller-properties.
 
 > #### Deprecated feature
 > 
@@ -57,7 +57,7 @@ There’s an additional cost for using Express or Custom connected accounts.
 
 ## Express connected accounts 
 
-With *Express* connected accounts, Stripe handles the onboarding and identity verification processes. The platform has the ability to specify [charge types](https://docs.stripe.com/connect/charges.md) and set the connected account’s [payout settings](https://docs.stripe.com/connect/payouts-connected-accounts.md) programmatically. Typically, the platform is responsible for handling disputes and refunds, which is similar to a Custom connected account. However, platforms can enable connected accounts to manage disputes and issue refunds directly through the Express Dashboard.
+With *Express* connected accounts, Stripe handles the onboarding and identity verification processes. The platform has the ability to specify [charge types](https://docs.stripe.com/connect/charges.md) and set the connected account’s [payout settings](https://docs.stripe.com/connect/manage-connected-account-payouts.md) programmatically. Typically, the platform is responsible for handling disputes and refunds, which is similar to a Custom connected account. However, platforms can enable connected accounts to manage disputes and issue refunds directly through the Express Dashboard.
 
 Although your connected account has interactions with Stripe, they primarily interact with your platform, particularly for the core payment processing functionality. For Express connected account holders, Stripe provides an Express Dashboard (a lighter version of the Dashboard) that allows them to manage their personal information, see *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit) to their bank, and optionally manage disputes and issue refunds if your platform enables those features.
 
@@ -75,7 +75,7 @@ Global compliance requirements do evolve and change over time. With Express, Str
 
 Select one of the available countries when you create an Express connected account. You can’t change the country later.
 
-Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
+Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
 
 To know when Express connected accounts are available in your country, [contact Stripe](https://docs.stripe.com/connect@stripe.com.md).
 
@@ -204,7 +204,7 @@ Global compliance requirements do evolve and change over time. With Standard con
 
 ## Custom connected accounts 
 
-A *Custom* connected account is almost completely invisible to the account holder. You—the platform—are responsible for all interactions with your connected accounts, including collecting any information Stripe needs. You have the ability to change all of the account’s [settings](https://docs.stripe.com/connect/updating-service-agreements.md), including the payout [bank or debit card account](https://docs.stripe.com/connect/payouts-connected-accounts.md), programmatically.
+A *Custom* connected account is almost completely invisible to the account holder. You—the platform—are responsible for all interactions with your connected accounts, including collecting any information Stripe needs. You have the ability to change all of the account’s [settings](https://docs.stripe.com/connect/updating-service-agreements.md), including the payout [bank or debit card account](https://docs.stripe.com/connect/manage-connected-account-payouts.md), programmatically.
 
 Custom connected account holders don’t have access to the Dashboard, and Stripe doesn’t contact them directly.
 
@@ -224,7 +224,7 @@ If you decide to use Custom connected accounts, Stripe recommends that you use [
 
 Select one of the available countries when you create a Custom connected account. You can’t change the country later.
 
-Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
+Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
 
 To request notification when Custom connected accounts are available in your country, [contact Stripe](https://docs.stripe.com/connect@stripe.com.md).
 

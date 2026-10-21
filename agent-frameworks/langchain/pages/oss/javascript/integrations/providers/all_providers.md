@@ -458,6 +458,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > AI text-to-video, image-to-video, and image generation tools behind one API key.
 
+> **[M91](https://github.com/MSG91/m91-sdk#langchain)**
+>
+> Tools that pause an agent until a human approves on their phone; alerts ring through silent mode and escalate to a voice call.
+
 > **[MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)**
 >
 > Model Context Protocol tools and utilities.
@@ -541,6 +545,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > **[Tavily GET Research](/oss/javascript/integrations/tools/tavily_get_research)**
 >
 > Retrieve status and results of a research task using its request ID.
+
+> **[WebExtract](https://webextract.dev/docs/langchain)**
+>
+> Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
 > **[You.com](https://you.com/docs/integrations/langchain)**
 >

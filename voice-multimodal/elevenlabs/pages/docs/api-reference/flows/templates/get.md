@@ -79,6 +79,9 @@ One input or output port of a published template version.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ContentSchema
 
 - `type`: `array` (ArraySchema)

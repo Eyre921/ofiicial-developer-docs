@@ -6,19 +6,19 @@ path: nexus/apis-and-sdks
 
 Call Fireworks from custom agents, background runners, services, HTTP APIs, and SDKs
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
-
 Call Fireworks from custom agents, background jobs, or services with curl, the OpenAI SDK, the Anthropic SDK, or the Fireworks SDK. Send requests to `https://api.fireworks.ai/inference` and use the same model ID across each supported API.
 
 ## Compatible APIs
 
 Choose the endpoint your SDK or client already uses:
 
-| API format | Endpoint | Typical clients |
-| - | - | - |
-| **Chat completions** (OpenAI-style) | `POST /v1/chat/completions` | OpenAI SDK, most LLM gateways |
-| **Messages** (Anthropic-style) | `POST /v1/messages` | Anthropic SDK |
-| **Responses** (OpenAI-style) | `POST /v1/responses` | OpenAI Responses API clients |
+| API | Base URL to configure | Full endpoint | Typical clients |
+| - | - | - | - |
+| Anthropic Messages | `https://api.fireworks.ai/inference` | `https://api.fireworks.ai/inference/v1/messages` | Anthropic SDK, Claude Code |
+| OpenAI Chat Completions | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/chat/completions` | OpenAI SDK, Fireworks SDK, most gateways and harnesses |
+| OpenAI Responses | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/responses` | OpenAI SDK, Codex |
+
+Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL stops at `/inference`.
 
 For client setup, see [OpenAI compatibility](/tools-sdks/openai-compatibility), [Anthropic compatibility](/tools-sdks/anthropic-compatibility), or the [Responses API](/guides/response-api).
 
@@ -36,39 +36,39 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-`firerouter` works the same way on all three APIs.
+`auto` works the same way on all three APIs.
 
-> **[FireRouter examples for every API and SDK](/nexus/firerouter/setup#api-and-sdk)**
+> **[Nexus Auto examples for every API and SDK](/nexus/auto#api-and-sdk)**
 >
 > cURL, OpenAI, Anthropic, and Fireworks SDK examples for Chat Completions,
 > Responses, and Messages, with provider-key headers.
 
 ## Read the serving model
 
-For a router request, the response `model` field names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`, not the router ID you sent. See [Verify routing](/nexus/firerouter#verify-routing).
+For a Nexus Auto request, the response `model` field names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`, not the Nexus Auto ID you sent. See [Check which model served a turn](/nexus/auto#check-which-model-served-a-turn).
 
 ## Credentials
 
 | Credential | How to provide it | When |
 | - | - | - |
 | Fireworks API key (`fw_...`) | `Authorization` bearer token or `X-Fireworks-Api-Key` header | Every request; bills open-model traffic to your Fireworks account |
-| Anthropic | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` | You want `firerouter` to use Claude Opus |
-| OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | You want `firerouter` to use GPT Sol |
-| Amazon Bedrock | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key | You want `firerouter` to use a model you mapped there. Usage bills to your AWS account. |
+| Anthropic | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` | You want `auto` to use Claude Opus |
+| OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | You want `auto` to use GPT Sol |
+| Amazon Bedrock | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key | You want `auto` to use a model you mapped there. Usage bills to your AWS account. |
 
 An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
 
-With both credentials, `firerouter` [picks its closed model by API](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model). You can combine an account-level key for one provider with a request header for the other.
+With both credentials, `auto` [picks its closed model by API](/nexus/auto#how-auto-picks-its-closed-model). You can combine an account-level key for one provider with a request header for the other.
 
 Fireworks also accepts Anthropic credentials in `x-api-key` or `Authorization: Bearer`. One `Authorization` header cannot carry both the Fireworks and Anthropic keys. If it carries the Anthropic key, send the Fireworks key in `X-Fireworks-Api-Key`. Prefer `x-anthropic-api-key` for new integrations.
 
-In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra headers, as shown in [FireRouter Setup](/nexus/firerouter/setup#api-and-sdk).
+In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra headers, as shown in [Nexus Auto](/nexus/auto#api-and-sdk).
 
 ## Limitations
 
-* Accounts with data residency enabled must use a residency-compatible pinned serverless model. Other model-router requests are rejected.
-* Model routers are not available through Microsoft Foundry.
-* See [What happens without a closed-model credential](/nexus/firerouter#what-happens-without-a-closed-model-credential).
+* Accounts with data residency enabled must use a residency-compatible pinned serverless model. Nexus Auto requests are rejected.
+* Nexus Auto is not available through Microsoft Foundry.
+* See [What happens without a closed-model credential](/nexus/auto#provide-anthropic-and-openai-credentials).
 
 ## Errors
 
@@ -80,12 +80,12 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 | `400` `no_credential` | The closed model you named has no provider key | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
 | Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions; exact status and message come from that provider |
 
-## Model routers and deployment routers
+## Nexus Auto and deployment routers
 
-`firerouter` is a model router. [Routers](/deployments/routers) load-balance traffic across your own Fireworks deployments.
+`auto` is the Nexus Auto model ID. [Routers](/deployments/routers) load-balance traffic across your own Fireworks deployments.
 
 ## See also
 
-* [FireRouter](/nexus/firerouter)
+* [Nexus Auto](/nexus/auto)
 * [Provider Keys](/nexus/provider-keys)
-* [Routing Preferences](/nexus/routing-preferences)
+* [Effort](/nexus/orchestration-preferences)

@@ -72,6 +72,9 @@ Custom hold audio played on loop to callers waiting in the agent's queue. Set by
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

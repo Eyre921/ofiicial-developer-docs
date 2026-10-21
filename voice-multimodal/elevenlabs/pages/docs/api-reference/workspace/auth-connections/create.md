@@ -30,6 +30,13 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/auth-connections/c
 This endpoint expects a workspace_auth_connections_create_Request.
 
 - `workspace_auth_connections_create_Request`
+  - CreateOAuth2ClientCredsRequest: CreateOAuth2ClientCredsRequest
+  - CreateCustomHeaderAuthRequest: CreateCustomHeaderAuthRequest
+  - CreateBasicAuthRequest: CreateBasicAuthRequest
+  - CreateBearerAuthRequest: CreateBearerAuthRequest
+  - CreateOAuth2JWTRequest: CreateOAuth2JWTRequest
+  - CreatePrivateKeyJWTRequest: CreatePrivateKeyJWTRequest
+  - CreateMTLSAuthRequest: CreateMTLSAuthRequest
 
 ## Response
 
@@ -350,6 +357,9 @@ Identifier for an integration connection that depends on an auth connection
 - `name` (string, required)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

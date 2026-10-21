@@ -4,6 +4,6 @@ source: https://docs.fireworks.ai/getting-started/nexus
 path: getting-started/nexus
 ---
 
-Connect coding tools, agents, applications, and gateways to open models and model routers.
+Connect coding tools, agents, applications, and gateways to open models and Nexus Auto.
 
 Open the [Nexus documentation](/nexus).

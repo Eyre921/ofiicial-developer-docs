@@ -69,6 +69,9 @@ One segment of a target transcript: a source segment plus its translation.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

@@ -357,6 +357,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptResponseModelToolResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -455,6 +460,9 @@ Information about the source of conversation initiation
 - `version` (string, optional, nullable) — The SDK version number
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### LLMCategoryUsage
 
@@ -865,6 +873,10 @@ A common model for workflow tool responses.
 
 ### LiteralJsonSchemaPropertyType
 
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -872,6 +884,11 @@ A common model for workflow tool responses.
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### SoftTimeoutConfigOverride
 
@@ -951,6 +968,11 @@ A locator for other documents to be able to reference a specific dictionary and 
   - Allowed values: `prompt`, `auto`
 
 ### WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
 
 ## Examples
 

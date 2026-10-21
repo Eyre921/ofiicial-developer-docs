@@ -67,6 +67,9 @@ One segment of a source transcript.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

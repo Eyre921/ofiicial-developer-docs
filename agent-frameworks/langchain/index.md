@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1670 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1671 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -202,6 +202,7 @@
 - `langsmith/code-evaluator-ui` — [How to define a code evaluator](pages/langsmith/code-evaluator-ui.md) · [原文](https://docs.langchain.com/langsmith/code-evaluator-ui)
 - `langsmith/coding-agent-metadata-contract` — [Coding agent metadata contract](pages/langsmith/coding-agent-metadata-contract.md) · [原文](https://docs.langchain.com/langsmith/coding-agent-metadata-contract)
 - `langsmith/compare-experiment-results` — [How to compare experiment results](pages/langsmith/compare-experiment-results.md) · [原文](https://docs.langchain.com/langsmith/compare-experiment-results)
+- `langsmith/compatible-decision-model-provider` — [Connect to a compatible decision model provider](pages/langsmith/compatible-decision-model-provider.md) · [原文](https://docs.langchain.com/langsmith/compatible-decision-model-provider)
 - `langsmith/components` — [LangSmith Deployment components](pages/langsmith/components.md) · [原文](https://docs.langchain.com/langsmith/components)
 - `langsmith/composite-evaluators-sdk` — [How to create a composite evaluator](pages/langsmith/composite-evaluators-sdk.md) · [原文](https://docs.langchain.com/langsmith/composite-evaluators-sdk)
 - `langsmith/composite-evaluators-ui` — [How to create a composite evaluator](pages/langsmith/composite-evaluators-ui.md) · [原文](https://docs.langchain.com/langsmith/composite-evaluators-ui)
@@ -560,6 +561,7 @@
 - `langsmith/self-host-observability-dashboards` — [Monitor self-hosted LangSmith with Datadog or Grafana](pages/langsmith/self-host-observability-dashboards.md) · [原文](https://docs.langchain.com/langsmith/self-host-observability-dashboards)
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
+- `langsmith/self-host-restricted-network-build` — [Set up a build machine on a restricted network](pages/langsmith/self-host-restricted-network-build.md) · [原文](https://docs.langchain.com/langsmith/self-host-restricted-network-build)
 - `langsmith/self-host-sandbox-architecture` — [Self-hosted Sandbox architecture](pages/langsmith/self-host-sandbox-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-architecture)
 - `langsmith/self-host-sandbox-egress-proxy` — [Route self-hosted Sandbox egress through a forward proxy](pages/langsmith/self-host-sandbox-egress-proxy.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-egress-proxy)
 - `langsmith/self-host-sandbox-operations` — [Operate self-hosted Sandboxes](pages/langsmith/self-host-sandbox-operations.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-operations)
@@ -1255,7 +1257,6 @@
 - `langsmith/troubleshooting-variable-caching` — [Troubleshoot variable caching](pages/langsmith/troubleshooting-variable-caching.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-variable-caching)
 - `langsmith/tuned-evaluators` — [Set up LangChain Tuned Evaluators](pages/langsmith/tuned-evaluators.md) · [原文](https://docs.langchain.com/langsmith/tuned-evaluators)
 - `langsmith/tunnels` — [Tunnels](pages/langsmith/tunnels.md) · [原文](https://docs.langchain.com/langsmith/tunnels)
-- `langsmith/typesafe-compatible-model` — [Connect to a TypeSafe-compatible model provider](pages/langsmith/typesafe-compatible-model.md) · [原文](https://docs.langchain.com/langsmith/typesafe-compatible-model)
 - `langsmith/upload-existing-experiments` — [How to upload experiments run outside of LangSmith with the REST API](pages/langsmith/upload-existing-experiments.md) · [原文](https://docs.langchain.com/langsmith/upload-existing-experiments)
 - `langsmith/upload-files-with-traces` — [Upload files with traces](pages/langsmith/upload-files-with-traces.md) · [原文](https://docs.langchain.com/langsmith/upload-files-with-traces)
 - `langsmith/usage-and-billing` — [Usage and billing](pages/langsmith/usage-and-billing.md) · [原文](https://docs.langchain.com/langsmith/usage-and-billing)

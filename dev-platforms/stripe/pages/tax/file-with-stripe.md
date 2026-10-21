@@ -89,13 +89,13 @@ Stripe files your sales tax returns based on the amount of tax you actually coll
 
 **Filing discounts**: Many US states offer taxpayers a small discount if you file and pay on time. Stripe automatically applies these discounts when calculating the amount it will file.
 
-**Rounding rules specific to each jurisdiction**: Different tax authorities enforce their own standards for how they round figures on official returns. These rounding differences tend to be more apparent for businesses that process high volumes of lower-priced items, but they are both expected and necessary to stay compliant.
+**Rounding rules specific to each jurisdiction**: Different tax authorities enforce their own standards for how they round figures on official returns. These rounding differences tend to be more apparent for businesses that process high volumes of lower-priced items, but they’re both expected and necessary to stay compliant.
 
 **Refunds**: Stripe deducts refunds and returns from gross sales in the filing period when the refund occurred, regardless of the original transaction date. If refunds exceed sales in a given filing period, creating a negative balance, Stripe automatically carries those refunds forward to the next filing period. These refunds will be utilized once sufficient sales are available to offset these amounts.
 
 ### Common scenarios
 
-**Transactions without automatic tax enabled**: Stripe only includes transactions where automatic tax is enabled. Common examples of transactions that would not be included:
+**Transactions without automatic tax enabled**: Stripe only includes transactions where automatic tax is enabled. Common examples of transactions that wouldn’t be included:
 
 - Manual invoices created in Stripe without Stripe Tax applied
 - Transactions using manual tax rates

@@ -24,7 +24,7 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
 
 > **[Connect your coding tools with Nexus](/nexus)**
 >
-> Connect coding tools with FireConnect, choose Fireworks models directly or through FireRouter, and manage supported serverless usage.
+> Connect coding tools with Nexus CLI, choose Fireworks models directly or through Nexus Auto, and manage supported serverless usage.
 
 > [!TIP]
 >

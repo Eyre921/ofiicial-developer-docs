@@ -63,18 +63,64 @@ Returns the synthesized audio in the requested encoding as a binary stream. When
 Invalid Request. Inline control violations return a structured error whose `err_code` names the rule: `CONTROL_COMBINATION_INVALID` (pronunciation combined with speed or pause, or all three together), `PAUSE_SPEED_CAP_EXCEEDED` (a pause marker with `speed` above `1.15`), `BREAK_OUT_OF_RANGE` (a pause outside 500-3000 ms), `BREAK_INCREMENT_INVALID` (a pause off the 100 ms grid), `BREAKS_LIMIT_EXCEEDED` (more than 8 pause markers, or two pauses with no text between them), `BREAK_SYNTAX_INVALID` (a malformed pause marker, such as a simple marker without backslashes or an escaped structured marker), plus the existing pronunciation and speed codes. A `speed` of `1.0` does not count as a speed control for the combination rules. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls).
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
 ### V2SpeakPostParametersTag
 
+- string
+- list of string
+
 ### V2SpeakPostParametersBitRate
+
+- mp3(default): enum
+  - Allowed values: `8000`, `16000`, `24000`, `32000`, `40000`, `48000`
+- integer
+- integer
 
 ### V2SpeakPostParametersContainer
 
+- none: enum
+  - Allowed values: `none`
+- linear16: enum
+  - Allowed values: `wav`
+- mulaw: enum
+  - Allowed values: `wav`
+- alaw: enum
+  - Allowed values: `wav`
+- opus: enum
+  - Allowed values: `ogg`
+
 ### V2SpeakPostParametersEncoding
 
+- linear16: enum
+  - Allowed values: `linear16`
+- flac: enum
+  - Allowed values: `flac`
+- mulaw: enum
+  - Allowed values: `mulaw`
+- alaw: enum
+  - Allowed values: `alaw`
+- mp3: enum
+  - Allowed values: `mp3`
+- opus: enum
+  - Allowed values: `opus`
+- aac: enum
+  - Allowed values: `aac`
+
 ### V2SpeakPostParametersSampleRate
+
+- linear16: enum
+  - Allowed values: `8000`, `16000`, `24000`, `32000`, `44100`, `48000`
+- mulaw: enum
+  - Allowed values: `8000`, `16000`
+- alaw: enum
+  - Allowed values: `8000`, `16000`
+- flac: enum
+  - Allowed values: `8000`, `16000`, `22050`, `32000`, `48000`
 
 ### ErrorResponseLegacyError
 
@@ -103,7 +149,7 @@ Invalid Request. Inline control violations return a structured error whose `err_
 
 ```json
 {
-  "request_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  "request_id": "string"
 }
 ```
 

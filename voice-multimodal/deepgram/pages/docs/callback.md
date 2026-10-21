@@ -46,23 +46,52 @@ Your callback URLs may reference the following protocols:
 
 ## Authenticating Callback Requests
 
-Authentication ensures the security and integrity of callback requests. There are two main methods for authenticating callback requests: using Basic Auth and utilizing the dg-token request header.
+Authenticate callback requests to confirm that they come from Deepgram. Use Basic Auth where possible. As an alternative, verify a shared secret passed with [Extra Metadata](/docs/extra-metadata).
 
-### Using Basic Auth
+### Using Basic Auth (recommended)
 
-You may embed username-password authentication credentials in the callback URL in the format `https://username:[email protected]`. However, it's important to note that only ports 80, 443, 8080, and 8443 are permitted for callbacks.
+Embed username-password credentials in the callback URL in the format `https://username:password@example.com`. Deepgram includes these credentials when it sends results to your callback server, which can then reject any request without the expected credentials.
 
 > **Warning**
 >
 > Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
 
-### Using the `dg-token` Request Header
+### Using a Secret in Extra Metadata
 
-Alternatively, the callback request may include a header named `dg-token`. When present, this header is set to the API Key Identifier associated with the API Key used to submit the original request, which lets you verify that the callback came from Deepgram.
+Alternatively, use the [`extra`](/docs/extra-metadata) parameter to pass a secret key-value pair with your request. Deepgram returns every `extra` key-value pair in the `metadata.extra` field of the response body it sends to your callback URL.
 
-> **Note**
->
-> The `dg-token` header is not guaranteed on every callback request, so this method is less reliable than Basic Auth or [Extra Metadata](/docs/extra-metadata). Use `dg-token` as a supplementary check rather than your only means of authentication.
+1. Generate a random URL-safe secret, such as a hex string (`openssl rand -hex 32`), and store it where your callback server can access it. A `+` in the value arrives as a space, so avoid base64 secrets.
+
+2. Add the secret as an `extra` key-value pair when you submit your request:
+
+   **`cURL`**
+
+   ```bash cURL
+   curl \
+     --request POST \
+     --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY' \
+     --header 'Content-Type: audio/wav' \
+     --data-binary @youraudio.wav \
+     --url 'https://api.deepgram.com/v1/listen?callback=https://example.com/callback&extra=callback_secret:YOUR_SECRET_VALUE'
+   ```
+
+3. On your callback server, read `metadata.extra.callback_secret` from the response body and confirm it matches the expected secret. Reject any request where the value is missing or does not match.
+
+   **`JSON`**
+
+   ```json JSON
+   {
+     "metadata": {
+       "extra": {
+         "callback_secret": "YOUR_SECRET_VALUE"
+       }
+       ...
+     }
+     ...
+   }
+   ```
+
+This method keeps the secret private. Requests to Deepgram's public endpoints use SSL, which encrypts query parameters, including `extra`. Deepgram returns the secret in the body of the callback request, which is also encrypted in transit when your callback URL uses `https://` or `wss://`.
 
 ## Results
 

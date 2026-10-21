@@ -19,6 +19,28 @@ List all backup schedules configured for a specific index.
 
 The name of the index to list backup schedules for.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+schedules = pc.backup_schedules.list(index_name="docs-example")
+print(schedules)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const schedules = await pc.backupSchedules.list('docs-example');
+console.log(schedules);
+```
+
 ```bash curl theme={null}
 curl -sS "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
   -H "api-key: ${PINECONE_API_KEY}" \

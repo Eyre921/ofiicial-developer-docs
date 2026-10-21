@@ -81,7 +81,7 @@ Funds flow for destination charges with the platform fee deducted from the trans
 
 Funds flow for destination charges with the platform fee paid after transferring the full amount
 
-> Destination charges support cross-region funds flows between platforms and connected accounts only in certain regions. For other regions, the platform and connected account must be in the same region unless using `on_behalf_of`. For more information about cross-region support, see [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
+> Destination charges support cross-region funds flows between platforms and connected accounts only in certain regions. For other regions, the platform and connected account must be in the same region unless using `on_behalf_of`. For more information about cross-region support, see [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
 
 For more information about destination charges, see [Destination charges](https://docs.stripe.com/connect/destination-charges.md).
 
@@ -111,7 +111,7 @@ In some cases, the transfer amount can be greater than the charge amount, or the
 
 Funds flow for separate charges and transfers with multiple connected accounts
 
-> Separate charges and transfers support cross-region funds flows between platforms and connected accounts only in certain regions. For other regions, the platform and connected account must be in the same region unless using `on_behalf_of`. For more information about cross-region support, see [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
+> Separate charges and transfers support cross-region funds flows between platforms and connected accounts only in certain regions. For other regions, the platform and connected account must be in the same region unless using `on_behalf_of`. For more information about cross-region support, see [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
 
 For more information about separate charges and transfers, see [Separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
 

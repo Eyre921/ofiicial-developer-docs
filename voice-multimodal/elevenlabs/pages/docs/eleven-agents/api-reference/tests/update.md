@@ -308,6 +308,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptCommonModelInputToolResultsItem
 
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Input: ConversationHistoryTranscriptSystemToolResultCommonModelInput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Input: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
+- Conversation History Transcript Workflow Tools Result Common Model Input: ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -378,11 +383,19 @@ Reference to a tool for unit test evaluation.
 
 ### ConversationHistoryTranscriptCommonModelOutputToolResultsItem
 
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Output: ConversationHistoryTranscriptSystemToolResultCommonModelOutput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Output: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
+- Conversation History Transcript Workflow Tools Result Common Model Output: ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
+
 ### LlmUsageOutput
 
 - `model_usage` (map from string to LlmInputOutputTokensUsage, optional)
 
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ### ConversationHistoryMultivoiceMessagePartModel
 
@@ -898,7 +911,17 @@ A common model for workflow tool responses.
 
 ### WorkflowToolNestedToolsStepModelInputResultsItem
 
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Input: ConversationHistoryTranscriptSystemToolResultCommonModelInput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Input: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
+- Conversation History Transcript Workflow Tools Result Common Model Input: ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
+
 ### WorkflowToolNestedToolsStepModelOutputResultsItem
+
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Output: ConversationHistoryTranscriptSystemToolResultCommonModelOutput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Output: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
+- Conversation History Transcript Workflow Tools Result Common Model Output: ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
 
 ## Examples
 

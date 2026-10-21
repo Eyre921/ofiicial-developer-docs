@@ -15,18 +15,18 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-index = pc.Index(name="articles")
+index = pc.index(name="articles")
 
 NAMESPACE = "example-namespace"
 
 # List every document ID in the namespace.
 # The SDK returns a paginator, so iterating it walks every page.
 for document in index.documents.list(namespace=NAMESPACE):
-    print(document._id)
+    print(document.id)
 
 # List only the IDs beginning with a prefix.
 for document in index.documents.list(namespace=NAMESPACE, prefix="report-2026#"):
-    print(document._id)
+    print(document.id)
 ```
 
 ```javascript JavaScript theme={null}

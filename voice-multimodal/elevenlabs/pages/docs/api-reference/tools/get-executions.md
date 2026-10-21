@@ -109,6 +109,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ConversationHistoryTranscriptToolCallWebhookDetails
 
 - `method` (string, required)

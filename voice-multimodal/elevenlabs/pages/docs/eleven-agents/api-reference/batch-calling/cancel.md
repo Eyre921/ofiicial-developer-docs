@@ -96,6 +96,9 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### TwilioMachineDetectionRule
 
 Action to take on a live call for the given AMD verdicts.

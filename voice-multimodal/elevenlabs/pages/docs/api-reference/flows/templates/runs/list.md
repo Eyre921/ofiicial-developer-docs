@@ -155,6 +155,9 @@ One output of a template run, discriminated on `type`: the `type` of the port's 
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

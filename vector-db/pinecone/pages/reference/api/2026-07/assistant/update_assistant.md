@@ -9,6 +9,36 @@ Update an existing assistant. You can modify the assistant's instructions.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#add-instructions-to-an-assistant).
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+assistant = pc.assistants.update(
+    name="example-assistant",
+    instructions="Use American English for spelling and grammar.",
+    metadata={"team": "customer-support", "version": "1.1"},
+)
+print(assistant)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const assistant = await pc.assistants.update({
+  name: 'example-assistant',
+  instructions: 'Use American English for spelling and grammar.',
+  metadata: { team: 'customer-support', version: '1.1' },
+});
+console.log(assistant);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

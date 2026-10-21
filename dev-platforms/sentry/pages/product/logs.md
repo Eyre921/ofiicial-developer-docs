@@ -14,7 +14,7 @@ url: https://docs.sentry.io/product/logs/
 
 ## [Overview](https://docs.sentry.io/product/logs.md#overview)
 
-With Structured Logs, you can send text-based log information from your applications, whether frontend or backend, to Sentry.
+With Structured Logs, you can send text-based log information from your applications, whether frontend or backend, to Sentry. Learn more about how to [Explore](https://docs.sentry.io/product/explore.md) and [Query](https://docs.sentry.io/product/logs.md#viewing-and-searching-logs) logs in Sentry.
 
 Sentry's structured logs are searchable, **trace-connected**, and viewable alongside your errors.
 
@@ -45,7 +45,7 @@ If you're using a platform where you can't install the Sentry SDK directly, or i
 Raw text search is case sensitive and allows you to search for specific strings within the *message* attribute of the Log. **Raw text search over the entire log's JSON is not supported.** Learn more about [search syntax](https://docs.sentry.io/concepts/search.md).
 
 **Default Properties Search**\
-You can also search using the default properties (like `severity`) or [additional custom properties](https://docs.sentry.io/concepts/search/searchable-properties.md) that you've added to your log entries.
+You can also search using the default properties (like `severity`) or [additional custom properties](https://docs.sentry.io/concepts/search/searchable-properties/logs.md) that you've added to your log entries.
 
 **Search Examples**\
 Here are some practical examples of log searches you can use:
@@ -92,7 +92,7 @@ To pin or un-pin a log, click the push pin icon that appears when you hover over
 
 ## [Visualizing Log Data](https://docs.sentry.io/product/logs.md#visualizing-log-data)
 
-The Logs Explorer includes a **Visualize** panel under **Advanced** that controls the charts displayed above the log table.
+The **Visualize** panel under **Advanced** controls the charts above the log table.
 
 ### [Configuring Charts](https://docs.sentry.io/product/logs.md#configuring-charts)
 
@@ -114,7 +114,7 @@ Auto-refresh is not available in the aggregates view.
 
 ## [Query Volumes](https://docs.sentry.io/product/logs.md#query-volumes)
 
-When the number of logs returned by a query is too high, there are a couple of changes to the logs explorer functionality. To reduce query volumes, consider [filtering logs](https://docs.sentry.io/concepts/data-management/filtering.md#logs-filtering) or refining your [search query](https://docs.sentry.io/concepts/search.md) with more specific criteria.
+When a query returns too many logs, a few behaviors change in Explore. To reduce the volume, [filter logs](https://docs.sentry.io/concepts/data-management/filtering.md#logs-filtering) or narrow the [search query](https://docs.sentry.io/concepts/search.md).
 
 * Auto-refresh will be disabled.
 * Data shown in the chart will be extrapolated from a sampled amount of the complete dataset.
@@ -142,11 +142,9 @@ Sentry's trace-connected logs enable a seamless debugging workflow that connects
 
 Instead of jumping between different tools and trying to correlate timestamps, trace-connected logs give you a **single flow**: Log search → log entry → trace → root cause.
 
-## [Log-based Alerts and Dashboard widgets](https://docs.sentry.io/product/logs.md#log-based-alerts-and-dashboard-widgets)
+## [Save Log Queries](https://docs.sentry.io/product/logs.md#save-log-queries)
 
-You can create [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) and [dashboard widgets](https://docs.sentry.io/product/dashboards/widget-builder.md) based on your log queries.
-
-Learn more about [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) and [custom dashboards](https://docs.sentry.io/product/dashboards/custom-dashboards.md).
+**Save as** stores the log query, adds a [dashboard widget](https://docs.sentry.io/product/dashboards/widget-builder.md), or creates a [monitor](https://docs.sentry.io/product/monitors-and-alerts/monitors.md). Saved and starred queries are shared across Explore. See [Save a Query](https://docs.sentry.io/product/explore.md#save-a-query).
 
 ## [AI-Powered Log Analysis](https://docs.sentry.io/product/logs.md#ai-powered-log-analysis)
 

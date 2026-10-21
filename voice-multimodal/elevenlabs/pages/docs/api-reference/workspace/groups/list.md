@@ -65,13 +65,28 @@ Validation Error
 
 ### WorkspaceGroupResponseModelGroupUsageLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupPvcLimit
+
+- integer
+- "unlimited"
 
 ### WorkspaceGroupResponseModelGroupConcurrencyLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupMusicConcurrencyLimit
+
+- integer
+- "unlimited"
 
 ### ScimGroupResponseModel
 
@@ -83,6 +98,9 @@ Validation Error
   - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

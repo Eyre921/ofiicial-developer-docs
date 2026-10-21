@@ -195,6 +195,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptCommonModelInputToolResultsItem
 
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Input: ConversationHistoryTranscriptSystemToolResultCommonModelInput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Input: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
+- Conversation History Transcript Workflow Tools Result Common Model Input: ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -253,6 +258,9 @@ Reference to a tool for unit test evaluation.
 - `type` ("node_id", optional)
 
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ### ConversationHistoryMultivoiceMessagePartModel
 
@@ -552,6 +560,11 @@ A common model for workflow tool responses.
   - `step_latency_secs` (double, required)
 
 ### WorkflowToolNestedToolsStepModelInputResultsItem
+
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Input: ConversationHistoryTranscriptSystemToolResultCommonModelInput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Input: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelInput
+- Conversation History Transcript Workflow Tools Result Common Model Input: ConversationHistoryTranscriptWorkflowToolsResultCommonModelInput
 
 ## Examples
 

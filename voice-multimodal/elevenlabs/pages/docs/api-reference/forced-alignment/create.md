@@ -77,6 +77,9 @@ Model representing a single word with its timing information from the aligner.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

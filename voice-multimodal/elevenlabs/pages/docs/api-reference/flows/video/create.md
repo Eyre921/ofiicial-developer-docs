@@ -204,6 +204,9 @@ A reference image guiding a Veo generation, with its role.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

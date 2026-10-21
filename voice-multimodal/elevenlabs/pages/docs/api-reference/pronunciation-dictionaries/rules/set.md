@@ -57,6 +57,9 @@ Validation Error
 
 ### BodySetRulesOnThePronunciationDictionaryV1PronunciationDictionariesPronunciationDictionaryIdSetRulesPostRulesItems
 
+- PronunciationDictionaryAliasRuleRequestModel: PronunciationDictionaryAliasRuleRequestModel
+- PronunciationDictionaryPhonemeRuleRequestModel: PronunciationDictionaryPhonemeRuleRequestModel
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -81,6 +84,9 @@ Validation Error
 - `word_boundaries` (boolean, optional, default: true) — Whether the rule should only match at word boundaries.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

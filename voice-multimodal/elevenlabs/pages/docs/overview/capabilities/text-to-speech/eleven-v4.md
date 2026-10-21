@@ -28,11 +28,6 @@ Instant Voice Clones (IVCs) are more accurate than ever in Eleven v4. They captu
 
 Professional Voice Clones (PVCs) are fully supported in Eleven v4. They build on the same advances in voice accuracy, offering a more faithful reproduction of the source voice for workflows that require the highest level of consistency and control.
 
-> **Warning**
->
-> Professional Voice Clone support for Eleven v4 is currently rolling out to everyone and should be
-> available within the next few days.
-
 Because of this significant leap in accuracy, Eleven v4 may sound substantially different from Eleven v3. Eleven v3 laid the foundation for Eleven v4, with a strong emphasis on delivery and accuracy, while Eleven v4 builds on that foundation with substantially improved voice accuracy. As a result, Eleven v4 is designed to capture the source voice more faithfully, though you may still prefer how a voice sounded in Eleven v3. Accuracy and personal preference are not always the same, so we recommend comparing both versions with your own content to choose the best fit for your use case.
 
 Considering that Eleven v4 more faithfully reproduces the source voice's characteristics, including its accent, delivery, loudness, and other distinctive qualities, the quality of the source recording matters more than ever. Clear, clean training audio helps Eleven v4 capture the voice accurately, without introducing unwanted sounds or characteristics. Background noise, distortion, or other recording issues can affect the result.
@@ -65,6 +60,8 @@ Both variants use two voice settings: Stability and Similarity.
 Stability controls how consistent the delivery stays across generations. Lower values allow more expressive, varied delivery; higher values keep the performance closer to a fixed baseline.
 
 Similarity controls how closely the output adheres to the reference voice. Higher values enforce closer adherence to the reference, which can come at the cost of some naturalness.
+
+When you select a Professional Voice Clone and Eleven v4, Voice settings include an additional **Clone Strength** slider. Clone Strength controls how closely the output follows the clone's training recordings. At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility, which often sounds better overall while still sounding like the original voice. At higher values, the output stays closer to the training recordings with less smoothing, mimicking the original voice's delivery and performance more closely. Higher values can be especially useful for voices with distinctive traits or unique accents. For most voices, start at 0%.
 
 Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
 

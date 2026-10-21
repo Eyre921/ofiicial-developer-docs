@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 120 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 121 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -137,6 +137,7 @@
 - `product/dashboards` — [Dashboards](pages/product/dashboards.md) · [原文](https://docs.sentry.io/product/dashboards.md)
 - `product/drains` — [Log and Trace Drains](pages/product/drains.md) · [原文](https://docs.sentry.io/product/drains.md)
 - `product/errors` — [Errors](pages/product/errors.md) · [原文](https://docs.sentry.io/product/errors.md)
+- `product/explore` — [Explore](pages/product/explore.md) · [原文](https://docs.sentry.io/product/explore.md)
 - `product/issues` — [Issues](pages/product/issues.md) · [原文](https://docs.sentry.io/product/issues.md)
 - `product/logs` — [Logs](pages/product/logs.md) · [原文](https://docs.sentry.io/product/logs.md)
 - `product/mcp-servers` — [MCP Servers](pages/product/mcp-servers.md) · [原文](https://docs.sentry.io/product/mcp-servers.md)

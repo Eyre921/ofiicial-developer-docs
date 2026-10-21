@@ -8,6 +8,47 @@ path: langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-10-21**
+
+## langsmith-0.17.21
+
+**LangSmith version:** `0.17.48`
+
+* Command-click or Ctrl-click a trace in the traces table to open it in a new tab. Regular clicks continue to open the side panel.
+
+**Download the Helm chart:** [`langsmith-0.17.21.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.21/langsmith-0.17.21.tgz)
+
+**2026-10-21**
+
+## langsmith-0.16.45
+
+**LangSmith version:** `0.16.73`
+
+* Command-click or Ctrl-click a trace in the traces table to open it in a new tab. Regular clicks continue to open the side panel.
+
+**Download the Helm chart:** [`langsmith-0.16.45.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.45/langsmith-0.16.45.tgz)
+
+**2026-10-21**
+
+## langsmith-0.18.0-rc.39
+
+**LangSmith version:** `0.18.14rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.37. Refer to the [langsmith-0.18.0-rc.37](#langsmith-0-18-0-rc-37) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.39.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.39/langsmith-0.18.0-rc.39.tgz)
+
+**2026-10-20**
+
+## langsmith-0.17.20
+
+**LangSmith version:** `0.17.47`
+
+* Fleet records lowercase user emails for new UI and API runs so email casing does not split usage into separate user rows.
+* You can choose which default alert fields to include in webhook bodies or omit all default fields for receivers such as Google Chat that require a specific payload.
+
+**Download the Helm chart:** [`langsmith-0.17.20.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.20/langsmith-0.17.20.tgz)
+
 **2026-10-20**
 
 ## langsmith-0.17.19

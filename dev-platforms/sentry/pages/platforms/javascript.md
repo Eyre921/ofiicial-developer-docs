@@ -23,19 +23,6 @@ You need:
 * A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
 * Your application up and running
 
-Choose the features you want to configure, and this guide will show you how:
-
-Error Monitoring\[ ]Tracing\[ ]Session Replay\[ ]User Feedback
-
-Want to learn more about these features?
-
-* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and unhandled rejections. If you have something that looks like an exception, Sentry can capture it.
-* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
-* [**Session Replay**](https://docs.sentry.io/product/session-replay/web.md): Get to the root cause of an issue faster by viewing a video-like reproduction of what was happening in the user's browser before, during, and after the problem.
-* [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
-* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
-* [**User Feedback**](https://docs.sentry.io/product/user-feedback.md): Collect feedback directly from users when they encounter errors, allowing them to describe what happened and provide context that helps you understand and resolve issues faster.
-
 ## [Install](https://docs.sentry.io/platforms/javascript.md#install)
 
 We recommend installing Sentry via a package manager. If that isn't an option for you, you can use the [Loader Script](https://docs.sentry.io/platforms/javascript/install/loader.md) or a CDN bundle.
@@ -52,24 +39,47 @@ npm install @sentry/browser --save
 
 #### [Option 2: Loader Script](https://docs.sentry.io/platforms/javascript.md#option-2-loader-script)
 
-In Sentry, go to **Settings > Projects > (select project) > SDK Setup > [Loader Script](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/loader-script/)**. Enable the features you want (for example, Tracing or Session Replay), copy the script tag, and place it before all other scripts in your app.
+In Sentry, go to **Settings > Projects > (select project) > SDK Setup > [Loader Script](https://sentry.io/orgredirect/organizations/:orgslug/settings/projects/:projectId/loader-script/)**. Enable Tracing, Session Replay, Logs and Metrics, and User Feedback. Then, copy the script tag and place it before all other scripts in your app.
 
 #### [Option 3: CDN Bundle](https://docs.sentry.io/platforms/javascript.md#option-3-cdn-bundle)
 
-Sentry provides different bundles that include specific feature combinations. Go to our list of [available bundles](https://docs.sentry.io/platforms/javascript/install/loader.md#cdn) and copy the one that fits your needs. Next, place the script tag before all other scripts in your app.
+Sentry provides bundles with different feature combinations. In this guide, we'll use the [full bundle with all features](https://docs.sentry.io/platforms/javascript/install/loader.md#full-bundle-with-all-features). Copy the script tag and place it before all other scripts in your app.
 
 If you're updating your Sentry SDK to the latest version, check out our [migration guide](https://docs.sentry.io/platforms/javascript/migration/v10-to-v11.md) to learn more about breaking changes.
 
 ## [Configure](https://docs.sentry.io/platforms/javascript.md#configure)
 
-### [Initialize the Sentry SDK](https://docs.sentry.io/platforms/javascript.md#initialize-the-sentry-sdk)
+**Error Monitoring** starts working as soon as you call `Sentry.init()`. **Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript.md#send-application-metrics-). This guide also enables **Tracing**, **Session Replay**, and **User Feedback**.
 
-Initialize Sentry as early as possible in your application's lifecycle. The setup differs slightly depending on how you installed the Sentry SDK. Be sure to follow the instructions in the related tab (npm, Loader, CDN):
+Want to learn more about these features?
 
-**npm**
+* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and unhandled rejections. If you have something that looks like an exception, Sentry can capture it.
+* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
+* [**Session Replay**](https://docs.sentry.io/product/session-replay/web.md): Get to the root cause of an issue faster by viewing a video-like reproduction of what was happening in the user's browser before, during, and after the problem.
+* [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
+* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
+* [**User Feedback**](https://docs.sentry.io/product/user-feedback.md): Collect feedback directly from users when they encounter errors, allowing them to describe what happened and provide context that helps you understand and resolve issues faster.
+
+### [Initialize the SDK](https://docs.sentry.io/platforms/javascript.md#initialize-the-sdk)
+
+Initialize Sentry as early as possible in your application's lifecycle. Use the tab that matches how you installed the SDK (npm, Loader, or CDN).
+
+The snippet also turns on:
+
+* Tracing: via `browserTracingIntegration()` and [`tracesSampleRate`](https://docs.sentry.io/platforms/javascript/configuration/options.md#tracesSampleRate)
+* Session Replay: via `replayIntegration()`, sampled with [`replaysSessionSampleRate`](https://docs.sentry.io/platforms/javascript/configuration/options.md#replaysSessionSampleRate) and [`replaysOnErrorSampleRate`](https://docs.sentry.io/platforms/javascript/configuration/options.md#replaysOnErrorSampleRate)
+* User Feedback: via [`feedbackIntegration()`](https://docs.sentry.io/platforms/javascript/user-feedback/configuration.md)
+
+Don't need a feature?
+
+Remove its integration and options from the `Sentry.init` snippet. Depending on how you installed the SDK, you may need one more step:
+
+* **npm:** No additional steps.
+* **Loader script:** Also turn off the feature in your Sentry project settings, then replace the loader script in your project with the updated one.
+* **CDN bundle:** Also switch to a bundle that includes only the features you need. See the [list of available bundles](https://docs.sentry.io/platforms/javascript/install/loader.md#cdn).
 
 ```javascript
-import * as Sentry from "<sdk-package-name>";
+import * as Sentry from "@sentry/browser";
 
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
@@ -78,158 +88,36 @@ Sentry.init({
   // if your build tool supports it.
   release: "my-project-name@2.3.12",
   integrations: [
-    // ___PRODUCT_OPTION_START___ performance
+    // enables automatic instrumentation
     Sentry.browserTracingIntegration(),
-    // ___PRODUCT_OPTION_END___ performance
-    // ___PRODUCT_OPTION_START___ session-replay
+    // enables Session Replay
     Sentry.replayIntegration(),
-    // ___PRODUCT_OPTION_END___ session-replay
-    // ___PRODUCT_OPTION_START___ user-feedback
+    // enables User Feedback
     Sentry.feedbackIntegration({
-      // Additional SDK configuration goes in here, for example:
+      // Additional integration configuration goes in here
       colorScheme: "system",
     }),
-    // ___PRODUCT_OPTION_END___ user-feedback
   ],
-  // ___PRODUCT_OPTION_START___ performance
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for tracing.
-  // We recommend adjusting this value in production
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/configuration/options/#traces-sample-rate
+  // Enables Tracing.
+  // Set to 1.0 to capture 100% of spans for tracing.
+  // We recommend reducing this value in production.
   tracesSampleRate: 1.0,
 
-  // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
+  // Set trace propagation targets for your API requests
   tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
-  // ___PRODUCT_OPTION_END___ performance
-  // ___PRODUCT_OPTION_START___ session-replay
 
-  // Capture Replay for 10% of all sessions,
+  // Capture replays for 10% of all sessions,
   // plus for 100% of sessions with an error
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
+  // Requires Sentry.replayIntegration()
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ session-replay
 });
 ```
 
-**Loader**
+*Other available variations of the above snippet: Loader, CDN*
 
-```html
-<script
-  src="https://js.sentry-cdn.com/<your-public-key>.min.js"
-  crossorigin="anonymous"
-></script>
-
-<script>
-  window.sentryOnLoad = function () {
-    Sentry.init({
-      dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-      // Alternatively, use `process.env.npm_package_version` for a dynamic release version
-      // if your build tool supports it.
-      release: "my-project-name@2.3.12",
-      integrations: [
-        // ___PRODUCT_OPTION_START___ performance
-        Sentry.browserTracingIntegration(),
-        // ___PRODUCT_OPTION_END___ performance
-        // ___PRODUCT_OPTION_START___ session-replay
-        Sentry.replayIntegration(),
-        // ___PRODUCT_OPTION_END___ session-replay
-        // ___PRODUCT_OPTION_START___ user-feedback
-        Sentry.feedbackIntegration({
-          // Additional SDK configuration goes in here, for example:
-          colorScheme: "system",
-        }),
-        // ___PRODUCT_OPTION_END___ user-feedback
-      ],
-      // ___PRODUCT_OPTION_START___ performance
-
-      // Set tracesSampleRate to 1.0 to capture 100%
-      // of transactions for tracing.
-      // We recommend adjusting this value in production
-      // Learn more at
-      // https://docs.sentry.io/platforms/javascript/configuration/options/#traces-sample-rate
-      tracesSampleRate: 1.0,
-
-      // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
-      tracePropagationTargets: [
-        "localhost",
-        /^https:\/\/yourserver\.io\/api/,
-      ],
-      // ___PRODUCT_OPTION_END___ performance
-      // ___PRODUCT_OPTION_START___ session-replay
-
-      // Capture Replay for 10% of all sessions,
-      // plus for 100% of sessions with an error
-      // Learn more at
-      // https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
-      // ___PRODUCT_OPTION_END___ session-replay
-    });
-  };
-</script>
-```
-
-**CDN**
-
-```html
-<script
-  src="https://browser.sentry-cdn.com/11.8.0/bundle.tracing.min.js"
-  integrity="sha384-TcQ+so2u3YSV7zeYS1269VM4HMIt1cqWnr2sSDVIefx/xtKfYp06nfVAgMzwqHEn"
-  crossorigin="anonymous"
-></script>
-
-<script>
-  Sentry.init({
-    dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-    // Alternatively, use `process.env.npm_package_version` for a dynamic release version
-    // if your build tool supports it.
-    release: "my-project-name@2.3.12",
-    integrations: [
-      // ___PRODUCT_OPTION_START___ performance
-      Sentry.browserTracingIntegration(),
-      // ___PRODUCT_OPTION_END___ performance
-      // ___PRODUCT_OPTION_START___ session-replay
-      Sentry.replayIntegration(),
-      // ___PRODUCT_OPTION_END___ session-replay
-      // ___PRODUCT_OPTION_START___ user-feedback
-      Sentry.feedbackIntegration({
-        // Additional SDK configuration goes in here, for example:
-        colorScheme: "system",
-      }),
-      // ___PRODUCT_OPTION_END___ user-feedback
-    ],
-    // ___PRODUCT_OPTION_START___ performance
-
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for tracing.
-    // We recommend adjusting this value in production
-    // Learn more at
-    // https://docs.sentry.io/platforms/javascript/configuration/options/#traces-sample-rate
-    tracesSampleRate: 1.0,
-
-    // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
-    tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
-    // ___PRODUCT_OPTION_END___ performance
-    // ___PRODUCT_OPTION_START___ session-replay
-
-    // Capture Replay for 10% of all sessions,
-    // plus for 100% of sessions with an error
-    // Learn more at
-    // https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0,
-    // ___PRODUCT_OPTION_END___ session-replay
-  });
-</script>
-```
-
-### [Add Readable Stack Traces With Source Maps (Optional)](https://docs.sentry.io/platforms/javascript.md#add-readable-stack-traces-with-source-maps-optional)
+### [Add Readable Stack Traces With Source Maps](https://docs.sentry.io/platforms/javascript.md#add-readable-stack-traces-with-source-maps)
 
 The stack traces in your Sentry errors probably won't look like your actual code without unminifying them. To fix this, upload your source maps to Sentry. The easiest way to do this is by using the Sentry Wizard.
 
@@ -239,20 +127,7 @@ Alternatively, take a look at our [Uploading Source Maps](https://docs.sentry.io
 npx @sentry/wizard@latest -i sourcemaps
 ```
 
-### [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript.md#avoid-ad-blockers-with-tunneling-optional)
-
-You can prevent ad blockers from blocking Sentry events using tunneling. Use the `tunnel` option in `Sentry.init` to add an API endpoint in your application that forwards Sentry events to Sentry servers.
-
-This will send all events to the `tunnel` endpoint. However, the events need to be parsed and redirected to Sentry, so you'll need to do additional configuration on the server. You can find a detailed explanation on how to do this on our [Troubleshooting page](https://docs.sentry.io/platforms/javascript/troubleshooting.md#using-the-tunnel-option).
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: "/tunnel",
-});
-```
-
-### [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript.md#control-the-data-you-send-to-sentry-optional)
+### [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -270,19 +145,46 @@ Sentry.init({
 });
 ```
 
+## [Send Logs](https://docs.sentry.io/platforms/javascript.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you're already logging with `console` or [Consola](https://github.com/unjs/consola), you can capture those logs with [our console integrations](https://docs.sentry.io/platforms/javascript/logs.md#console-integration).
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript.md#verify-your-setup)
 
-Let's test your setup and confirm that data reaches your Sentry project.
+Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
 
-### [Issues](https://docs.sentry.io/platforms/javascript.md#issues)
-
-To verify that Sentry captures errors and creates issues in your Sentry project, add a button that throws an error when clicked.
-
-Open the page in a browser and click the button to throw an error.
-
-##### Important
-
-Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
+Add a test button to one of your pages. Open the page in a browser and click the button to trigger an error for Sentry to capture.
 
 ```html
 <script>
@@ -294,64 +196,13 @@ Errors triggered from within your browser's developer tools (like the browser co
 <button onclick="triggerError()">Break the World</button>
 ```
 
-### [Tracing](https://docs.sentry.io/platforms/javascript.md#tracing)
+##### Important
 
-To test your tracing configuration, update the previous code to measure a simulated operation with a span.
-
-Open the page in a browser and click the button. In Sentry, look for the test error on the Issues page and the span in the associated trace.
-
-```html
-<script>
-  async function triggerError() {
-    await Sentry.startSpan(
-      { name: "Example Frontend Span", op: "test" },
-      async () => {
-        await new Promise((resolve) => setTimeout(resolve, 200));
-
-        throw new Error("Sentry Test Error");
-      },
-    );
-  }
-</script>
-
-<button onclick="triggerError()">Break the World</button>
-```
-
-### [Logs](https://docs.sentry.io/platforms/javascript.md#logs)
-
-To verify that Sentry catches your logs, add some log statements to your application:
-
-```javascript
-Sentry.logger.info("User example action completed");
-
-Sentry.logger.warn("Slow operation detected", {
-  operation: "data_fetch",
-  duration: 3500,
-});
-
-Sentry.logger.error("Validation failed", {
-  field: "email",
-  reason: "Invalid email",
-});
-```
-
-### [Application Metrics NEW](https://docs.sentry.io/platforms/javascript.md#application-metrics-)
-
-[Application Metrics](https://docs.sentry.io/platforms/javascript/metrics.md) are enabled by default.
-
-Send test metrics from your app to verify that metrics are arriving in Sentry:
-
-```javascript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
+Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript.md#view-captured-data-in-sentry)
 
-Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
+Now, head over to your project on [Sentry.io](https://sentry.io/) to view the collected data (it takes a couple of moments for the data to appear).
 
 Need help locating captured data in your Sentry project?
 
@@ -364,19 +215,15 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript.md#next-steps)
 
-At this point, you should have integrated Sentry into your JavaScript application and should already be sending data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your JavaScript application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Extend Sentry to your backend using one of our [SDKs](https://docs.sentry.io/.md)
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/usage.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/configuration.md)
-* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers from blocking Sentry events
 
 Are you having problems setting up the SDK?
 
-* Find various support topics in [troubleshooting](https://docs.sentry.io/platforms/javascript/troubleshooting.md)
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
 ## Frameworks

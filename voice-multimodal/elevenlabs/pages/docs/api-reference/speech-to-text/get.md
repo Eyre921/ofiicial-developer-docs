@@ -35,6 +35,10 @@ Reference: https://elevenlabs.io/docs/api-reference/speech-to-text/get
 The transcript data
 
 - `speech_to_text_transcripts_get_Response_200`
+  - SpeechToTextChunkResponseModel: SpeechToTextChunkResponseModel
+  - MultichannelSpeechToTextResponseModel: MultichannelSpeechToTextResponseModel
+  - SpeechToTextChunkResponseModel: SpeechToTextChunkResponseModel
+  - MultichannelSpeechToTextResponseModel: MultichannelSpeechToTextResponseModel
 
 ## Errors
 
@@ -119,6 +123,9 @@ Result of the optional transcript edit: the edited text, or an error if it could
   - `message_type` (string, optional, default: edited_transcript)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### SpeechToTextCharacterResponseModel
 

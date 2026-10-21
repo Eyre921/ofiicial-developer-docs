@@ -94,7 +94,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListWorkspacesRequest](../../models/operations/listworkspacesrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListWorkspacesRequest](../../models/operations/listworkspacesrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -188,7 +188,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateWorkspaceRequest](../../models/operations/createworkspacerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.CreateWorkspaceRequest](../../models/operations/createworkspacerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -270,7 +270,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteWorkspaceRequest](../../models/operations/deleteworkspacerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DeleteWorkspaceRequest](../../models/operations/deleteworkspacerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -353,7 +353,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetWorkspaceRequest](../../models/operations/getworkspacerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetWorkspaceRequest](../../models/operations/getworkspacerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -442,7 +442,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateWorkspaceRequest](../../models/operations/updateworkspacerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UpdateWorkspaceRequest](../../models/operations/updateworkspacerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -529,7 +529,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListWorkspaceMembersRequest](../../models/operations/listworkspacemembersrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListWorkspaceMembersRequest](../../models/operations/listworkspacemembersrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -623,7 +623,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkAddWorkspaceMembersRequest](../../models/operations/bulkaddworkspacemembersrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.BulkAddWorkspaceMembersRequest](../../models/operations/bulkaddworkspacemembersrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -718,7 +718,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkRemoveWorkspaceMembersRequest](../../models/operations/bulkremoveworkspacemembersrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.BulkRemoveWorkspaceMembersRequest](../../models/operations/bulkremoveworkspacemembersrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -801,7 +801,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListWorkspaceBudgetsRequest](../../models/operations/listworkspacebudgetsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListWorkspaceBudgetsRequest](../../models/operations/listworkspacebudgetsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -884,7 +884,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteWorkspaceBudgetRequest](../../models/operations/deleteworkspacebudgetrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DeleteWorkspaceBudgetRequest](../../models/operations/deleteworkspacebudgetrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -968,7 +968,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetWorkspaceBudgetRequest](../../models/operations/getworkspacebudgetrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetWorkspaceBudgetRequest](../../models/operations/getworkspacebudgetrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -1060,7 +1060,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpsertWorkspaceBudgetRequest](../../models/operations/upsertworkspacebudgetrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UpsertWorkspaceBudgetRequest](../../models/operations/upsertworkspacebudgetrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |

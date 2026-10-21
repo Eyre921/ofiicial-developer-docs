@@ -14,7 +14,7 @@ url: https://docs.sentry.io/product/metrics/
 
 ## [Overview](https://docs.sentry.io/product/metrics.md#overview)
 
-With Sentry's Application Metrics, you can send [counters](https://docs.sentry.io/product/metrics.md#counters), [gauges](https://docs.sentry.io/product/metrics.md#gauges), and [distributions](https://docs.sentry.io/product/metrics.md#distributions) from your code to track application health signals like `email.sent`, `checkout.failed`, or `queue.depth`. What makes Sentry's Application Metrics unique is that every metric event is **trace-connected**, meaning you can click directly into the related traces, logs, and errors when something looks off.
+With Sentry's Application Metrics, you can send [counters](https://docs.sentry.io/product/metrics.md#counters), [gauges](https://docs.sentry.io/product/metrics.md#gauges), and [distributions](https://docs.sentry.io/product/metrics.md#distributions) from your code to track application health signals like `email.sent`, `checkout.failed`, or `queue.depth`. What makes Sentry's Application Metrics unique is that every metric event is **trace-connected**, meaning you can click directly into the related traces, logs, and errors when something looks off. Learn more about querying and exploring Application Metrics in [Explore](https://docs.sentry.io/product/explore.md).
 
 Unlike traditional metrics tools that only show *if* something's changed, Sentry's trace-connected metrics let you understand *why* it changed. When a `checkout.failed` counter spikes, you can click into a sample and see the exact trace, spans, logs, and errors that produced that metric event.
 
@@ -71,7 +71,7 @@ Distributions record numeric values to compute statistical aggregates.
 
 ## [Viewing and Exploring Application Metrics](https://docs.sentry.io/product/metrics.md#viewing-and-exploring-application-metrics)
 
-Each metric query in the Explorer is displayed as its own block (labeled **A**, **B**, **C**, etc.) with a chart on the left and a data panel on the right. See [multiple metrics and equations](https://docs.sentry.io/product/metrics.md#multiple-metrics-and-equations) for more. Each block includes:
+Each metric query has its own block (labeled **A**, **B**, **C**, etc.) with a chart on the left and a data panel on the right. See [multiple metrics and equations](https://docs.sentry.io/product/metrics.md#multiple-metrics-and-equations) for more. Each block includes:
 
 * **Metric selector** — choose the metric name (like `cart.add`, `chat.open`)
 * **Agg** — select the aggregation function (examples:`sum`, `avg`, `p95`)
@@ -104,7 +104,7 @@ When you notice a spike or dip in the Aggregates view, switch to Samples to dril
 
 ### [Multiple Metrics and Equations](https://docs.sentry.io/product/metrics.md#multiple-metrics-and-equations)
 
-You can compare several metrics side-by-side in a single Explorer view and derive new values from them without leaving the page:
+Compare several metrics side-by-side in one view and derive new values from them without leaving the page:
 
 * Click **Add Metric** to add another metric query to the page. Each query gets its own panel and a short label (`A`, `B`, `C`, …) so you can reference it elsewhere. You can reorder queries by dragging their panels, and add up to 26 queries at once.
 * Click **Add Equation** to create a calculated series that references existing metric labels — for example, `A / B` to compute a ratio between two counters, or `A - B` to subtract a baseline from a current value. Equations appear alongside your metric queries and can be added to dashboards and monitors alongside the underlying metrics.
@@ -124,9 +124,9 @@ This example demonstrates how threshold filters split one source metric into buc
 
 ## [Turning Metrics Into Monitors](https://docs.sentry.io/product/metrics.md#turning-metrics-into-monitors)
 
-Any metric query you build in the Explorer can be turned into a [Monitor](https://docs.sentry.io/product/monitors-and-alerts/monitors.md) so you get notified when its behavior changes.
+Turn a metric query into a [Monitor](https://docs.sentry.io/product/monitors-and-alerts/monitors.md) so you get notified when its behavior changes. Saved queries themselves are covered in [Explore](https://docs.sentry.io/product/explore.md#save-a-query).
 
-* From the **Metrics Explorer**, open **Save As → Monitor for** and choose the metric/aggregate you want to monitor. Sentry will pre-fill the Monitor with the metric, aggregate, filters, group-by, and time interval from your current query.
+* From [Explore → Metrics](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics/), open **Save As → Monitor for** and choose the metric or aggregate you want to monitor. Sentry pre-fills the monitor with the metric, aggregate, filters, group-by, and time interval from your current query.
 
 When creating a [Monitor](https://docs.sentry.io/product/monitors-and-alerts/monitors.md), **Application Metrics** is available as a dataset alongside Errors, Spans, Logs, and Releases, and there's a dedicated **Application Metrics** template in the Monitor form to get you started quickly. The Monitor detects threshold breaches, percentage changes, or dynamic anomalies on the metric and creates an issue when conditions are met — which you can then route through [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) to Slack, PagerDuty, email, and more.
 
@@ -134,7 +134,7 @@ When creating a [Monitor](https://docs.sentry.io/product/monitors-and-alerts/mon
 
 You can pin any metric query as a widget on a [Dashboard](https://docs.sentry.io/product/dashboards.md) for longer-term tracking:
 
-* From the Metrics Explorer, open **Save As → Dashboard widget** and choose the metric query you want to visualize.
+* From [Explore → Metrics](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics/), open **Save As → Dashboard widget** and choose the metric query you want to visualize.
 * If you have multiple metric queries on the page, you can add them individually or pick **All Metrics** to create a single widget containing all of them.
 
 ## [Saving Queries](https://docs.sentry.io/product/metrics.md#saving-queries)
@@ -165,6 +165,8 @@ Application Metrics are typically sampled at 100% while traces are usually sampl
 [Cross-Event Querying](https://docs.sentry.io/product/trace-explorer.md#cross-event-querying) makes this easier by letting you filter traces based on related spans, logs, and application metrics. The comparable trace gives you the same debugging context as a directly attached one.
 
 ## [Metric Attributes](https://docs.sentry.io/product/metrics.md#metric-attributes)
+
+Search these fields in Explore → Metrics with the keys in [Metric Properties](https://docs.sentry.io/concepts/search/searchable-properties/metrics.md).
 
 Each metric event automatically includes:
 

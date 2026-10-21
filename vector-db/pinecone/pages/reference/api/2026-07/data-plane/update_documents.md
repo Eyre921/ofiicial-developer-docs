@@ -22,7 +22,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-index = pc.Index(name="articles")
+index = pc.index(name="articles")
 
 NAMESPACE = "example-namespace"
 

@@ -139,6 +139,10 @@ Validation Error
 
 ### ProjectExtendedResponseModelAssetsItems
 
+- ProjectVideoResponseModel: ProjectVideoResponseModel
+- ProjectExternalAudioResponseModel: ProjectExternalAudioResponseModel
+- ProjectImageResponseModel: ProjectImageResponseModel
+
 ### ProjectVoiceResponseModel
 
 - `project_voice_ref_id` (string, required)
@@ -632,6 +636,9 @@ Validation Error
 - `explanation` (string, optional, nullable)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### VoiceStatisticsResponseModel
 

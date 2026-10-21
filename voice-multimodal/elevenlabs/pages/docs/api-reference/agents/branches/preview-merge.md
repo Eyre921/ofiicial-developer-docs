@@ -558,6 +558,9 @@ SIP Trunk configuration details for a phone number
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### SoftTimeoutConfig
 
 Configuration for soft timeout functionality during LLM response generation.
@@ -701,6 +704,10 @@ An evaluation using the transcript and a prompt for a yes/no achieved answer
 
 The avatar of the widget
 
+- OrbAvatar: OrbAvatar
+- URLAvatar: URLAvatar
+- ImageAvatar: ImageAvatar
+
 ### WidgetEndFeedbackConfig
 
 - `type` (enum, optional, default: rating) — The type of feedback to collect at the end of the conversation
@@ -806,6 +813,11 @@ The avatar of the widget
 ### AnalysisPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### AgentAnalysisItemsOutputEvaluationCriteriaItems
 
@@ -1267,6 +1279,9 @@ The type of tool
 
 ### ConversationInitiationClientDataWebhookRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+
 ### ContentConfig
 
 - `sexual` (ContentThresholdGuardrail, optional)
@@ -1474,11 +1489,22 @@ A system tool is a tool that is used to call a system method in the server
 
 The API key for authentication. Either a workspace secret reference \{'secret\_id': '...'} or an environment variable reference \{'env\_var\_label': '...'}.
 
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### CustomLlmAuthConnection
 
 Optional workspace auth connection for authentication. Only auth connections that produce an Authorization Bearer token are supported; Basic auth, mTLS, custom header, and URL secret auth connections are not supported.
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### CustomLlmRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### KnowledgeBaseToolInfo
 
@@ -1610,6 +1636,9 @@ Single custom guardrail configuration
 
 Value of this literal.
 
+- double
+- integer
+
 ### SoftTimeoutConfigWorkflowOverride
 
 - `timeout_seconds` (double, optional, nullable) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.
@@ -1670,6 +1699,13 @@ Value of this literal.
 
 The constant value to use
 
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
+
 ### ConvAIEnvVarLocator
 
 Used to reference an environment variable by label.
@@ -1706,7 +1742,14 @@ Used to reference a dynamic variable.
 
 ### ApiIntegrationWebhookOverridesRequestHeaders
 
+- string
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+
 ### ObjectJsonSchemaPropertyOutput
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Output
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Output
 
 ### RequiredConstraints
 
@@ -1717,7 +1760,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingEndProcedureProcedures
 
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
+
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures
+
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
 
 ### AgentTransfer-Output
 
@@ -1745,6 +1794,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, nullable, deprecated)
 
 ### WebhookToolApiSchemaConfigOutputRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -1778,7 +1832,14 @@ Configuration for filtering tool responses before they are visible to the agent.
 
 Optional auth connection to use for authentication with this webhook
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### ContentThresholdGuardrailThreshold
+
+- double
+- enum
+  - Allowed values: `low`, `medium`, `high`
 
 ### CustomGuardrailConfigTriggerAction
 
@@ -1787,6 +1848,10 @@ Optional auth connection to use for authentication with this webhook
   - `feedback` (string, optional, default: Your response was blocked by a guardrail that blocks content that matches this condition/category: '{{trigger_reason}}' During your next turn you must tell the user "I'm sorry but I can't answer that question, would you like to know something else?".) — Custom feedback to inject into the agent when retrying after guardrail trigger.
 
 ### LlmLiteralJsonSchemaPropertyType
+
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
 
 ### BuiltInToolsWorkflowOverride-Output
 
@@ -1813,6 +1878,10 @@ Optional auth connection to use for authentication with this webhook
 ### PromptAgentApiModelWorkflowOverrideOutputBackupLlmConfig
 
 Configuration for backup LLM cascading. Can be disabled, use system defaults, or specify custom order.
+
+- BackupLLMDefault: BackupLLMDefault
+- BackupLLMDisabled: BackupLLMDisabled
+- BackupLLMOverride: BackupLLMOverride
 
 ### PromptAgentApiModelWorkflowOverrideOutputToolsItems
 
@@ -1964,9 +2033,18 @@ DTMF digits to send after call connects (e.g., 'ww1234' for extension). Can be e
 
 ### LiteralJsonSchemaPropertyType
 
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
+
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### BackupLLMDefault
 
@@ -1980,6 +2058,10 @@ A constant value to use for this property. Mutually exclusive with description, 
 ### ArrayJsonSchemaPropertyOutputItems
 
 Schema for array elements.
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Output
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Output
 
 ## Examples
 

@@ -24,7 +24,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > Searches Notion pages and databases, or looks up a workspace user by name or email. It doesn't search connected sources such as Slack or Google Drive. Use `notion-connector-search` for those, when the session lists it. For a question that covers both Notion and connected sources, call both tools in parallel. You don't need to call another tool first.
 >
-> Content searches report `type: "workspace_search"`. Use short, specific keywords or a page title.
+> Content searches report `type: "workspace_search"`. Use short, specific keywords or a page title. When the session lists `notion-connector-search`, a content search result ends with a short note that connected sources weren't searched, except in ChatGPT.
 >
 > `notion-search` supports location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results. In `filters.created_by_user_ids` and `filters.edited_by_user_ids`, pass `"me"` for the connected user. Results may include `path` and `verification` details. Fetch important matches before relying on them.
 >
@@ -51,7 +51,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > `notion-connector-search`
 >
-> Searches the connected sources available to the user, such as Slack, Google Drive, GitHub, Jira, mail, and calendar. It doesn't search Notion pages or databases. Use `notion-search` for those. Hosted Notion MCP sessions list this tool when the user has AI search and the workspace has at least one connected source. Workspace-owned connections don't list it.
+> Searches the connected sources available to the user, such as Slack, Google Drive, GitHub, Jira, mail, and calendar. It doesn't search Notion pages or databases. Use `notion-search` for those. Hosted Notion MCP sessions list this tool when the user has AI search and the workspace has at least one connected source. Workspace-owned connections don't list it. If it doesn't appear in your client, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app.
 >
 > Put the full question in `question`, and distinctive names and terms in `keywords`. `lookback` sets a time window, such as `"7d"`, `"all_time"`, or a date like `"2026-10-01"`. To search only some sources, pass `sources`, such as `["slack"]` or `["google-drive", "github"]`. The names match the ones the response reports in `searchedSources`. Fewer sources return sooner. Omit `sources` to search every connected source.
 >
@@ -344,7 +344,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > `notion-update-page`
 >
-> Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command.
+> Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command. To change only the icon or cover, use `update_properties` and omit `properties`.
 >
 > > [!NOTE]
 > >

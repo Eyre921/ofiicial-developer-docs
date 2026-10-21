@@ -187,7 +187,6 @@ Use conversation analytics to track how users respond to expressive delivery. Re
 
 > **Warning**
 >
-> * Professional Voice Clone support for Eleven v4 is still rolling out. See [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) for current status.
 > * Expressive tag effects last approximately 4-5 words before returning to normal delivery.
 > * Expressiveness may vary across voices and languages.
 
@@ -207,7 +206,7 @@ The system uses real-time signals from Scribe v2 Realtime, including emotional c
 
 #### Can I use expressive mode with my Professional Voice Clone?
 
-Professional Voice Clones are supported in Eleven v4, and support is rolling out to all accounts. To check whether a PVC is available on Eleven v4, open [My Voices](https://elevenlabs.io/app/voice-lab) and hover over the voice to see its available models.
+Professional Voice Clones are supported in Eleven v4. If a PVC is not yet trained on Eleven v4, open [My Voices](https://elevenlabs.io/app/voice-lab), find the voice, and click the plus button next to Eleven v4 to start fine-tuning. See [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) for voice settings, including Clone Strength for Professional Voice Clones.
 
 #### How many languages does Eleven v4 Turbo support?
 

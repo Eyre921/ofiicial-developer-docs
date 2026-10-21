@@ -1244,7 +1244,9 @@ Page values include `id`, `name`, and `color`. Page writes select an option by `
 
 ## Status
 
-The `status` object contains `options` and `groups` arrays. Each page selects one option. The schema groups options by progress.
+The `status` object contains `options` and `groups` arrays and a read-only `default_option`. Each page selects one option. The schema groups options by progress.
+
+`default_option` is the name of the configured default option, or `null` when no default is configured. Use it to find the matching entry in `options`; the default isn't necessarily the first option. It applies when a page has no explicit Status value.
 
 Status options use the same [option fields](#select-options). Each group contains `id`, `name`, `color`, and `option_ids`. The `option_ids` array lists that group’s options in order.
 
@@ -1262,6 +1264,7 @@ To change options or their group membership, see [Status configuration updates](
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",

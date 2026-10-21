@@ -352,6 +352,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptResponseModelToolResultsItem
 
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Output: ConversationHistoryTranscriptSystemToolResultCommonModelOutput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Output: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
+- Conversation History Transcript Workflow Tools Result Common Model Output: ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -450,6 +455,9 @@ Information about the source of conversation initiation
 - `version` (string, optional) — The SDK version number
 
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ### LlmCategoryUsage
 
@@ -861,6 +869,12 @@ A common model for workflow tool responses.
 
 ### LiteralJsonSchemaPropertyType
 
+- "boolean"
+- "string"
+- "integer"
+- "number"
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -868,6 +882,11 @@ A common model for workflow tool responses.
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### SoftTimeoutConfigOverride
 
@@ -946,6 +965,11 @@ A locator for other documents to be able to reference a specific dictionary and 
   - Allowed values: `prompt`, `auto`
 
 ### WorkflowToolNestedToolsStepModelOutputResultsItem
+
+- Conversation History Transcript Other Tools Result Common Model: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- Conversation History Transcript System Tool Result Common Model Output: ConversationHistoryTranscriptSystemToolResultCommonModelOutput
+- Conversation History Transcript API Integration Webhook Tools Result Common Model Output: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModelOutput
+- Conversation History Transcript Workflow Tools Result Common Model Output: ConversationHistoryTranscriptWorkflowToolsResultCommonModelOutput
 
 ## Examples
 

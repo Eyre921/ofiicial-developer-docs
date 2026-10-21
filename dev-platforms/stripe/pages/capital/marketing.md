@@ -39,7 +39,7 @@ Items that must be submitted to Stripe for approval include:
 - In-app or push notifications
 - Customer testimonials
 
-This approval is not a one-time requirement. You must resubmit any update, modification, or addition to marketing materials—no matter how minor—for compliance review before using them.
+This approval isn’t a one-time requirement. You must resubmit any update, modification, or addition to marketing materials (no matter how minor) for compliance review before using them.
 
 Also, approval in one market doesn’t automatically extend to other markets. For example, materials approved for the US require a separate review before use in France, Germany, or Australia due to different regulatory requirements.
 

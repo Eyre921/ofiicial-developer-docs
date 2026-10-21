@@ -8,7 +8,9 @@ path: revenue-recognition/connect
 
 Learn how revenue recognition works with Connect platforms.
 
-To amortize revenue for application fees over the service periods on the direct charges or destination charges, please [create a ticket](https://support.stripe.com/contact/email?topic=financial_reports) on our support page.
+> #### Join our private preview
+> 
+> To amortize revenue for application fees over the service periods on the direct charges or destination charges, [create a ticket](https://support.stripe.com/contact/email?topic=financial_reports) on our support page.
 
 You can collect application fees in three ways: [destination charges](https://docs.stripe.com/connect/destination-charges.md), [direct charges](https://docs.stripe.com/connect/direct-charges.md), and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
 

@@ -104,6 +104,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

@@ -46,6 +46,8 @@ This endpoint expects a Body_Generate_composition_plan_v1_music_plan_post.
 Successful Response
 
 - `music_composition_plan_create_Response_200`
+  - MusicPrompt: MusicPrompt
+  - CompositionPlan: CompositionPlan
 
 ## Errors
 
@@ -60,6 +62,9 @@ Validation Error
 ### BodyGenerateCompositionPlanV1MusicPlanPostSourceCompositionPlan
 
 An optional composition plan to use as a source for the new composition plan.
+
+- MusicPrompt: MusicPrompt
+- CompositionPlan: CompositionPlan
 
 ### MusicPrompt
 
@@ -92,7 +97,13 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 ### CompositionPlanChunksItems
 
+- GenerationChunk: GenerationChunk-Input
+- AudioRefChunk: AudioRefChunk
+
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### SectionSource
 

@@ -14,7 +14,7 @@ url: https://docs.sentry.io/product/releases/
 
 If you're looking for the latest Sentry SDK release details, head on over to [Sentry's GitHub profile](https://github.com/getsentry), find your specific SDK repo, and browse the tags for releases.
 
-A *release* is a version of your code deployed to an environment. When you notify Sentry about a [release](https://sandbox.sentry.io/?scenario=oneRelease\&projectSlug=react\&source=docs), you can easily identify new [issues](https://docs.sentry.io/product/issues.md) and regressions, determine whether an issue was resolved, and monitor the health of your newly deployed app. The **Releases** page provides a visualization of your releases. It presents adoption of releases from the past 24 hours and provides a high-level view of:
+A *release* is a version of your code deployed to an environment. When you notify Sentry about a [release](https://sandbox.sentry.io/?scenario=oneRelease\&projectSlug=react\&source=docs), you can easily identify new [issues](https://docs.sentry.io/product/issues.md) and regressions, determine whether an issue was resolved, and monitor the health of your newly deployed app. Open the **Releases** page from [Explore](https://sentry.io/orgredirect/organizations/:orgslug/explore/releases/). It presents adoption of releases from the past 24 hours and provides a high-level view of:
 
 * Each release version (a short version of the release name without the hash)
 * The associated project

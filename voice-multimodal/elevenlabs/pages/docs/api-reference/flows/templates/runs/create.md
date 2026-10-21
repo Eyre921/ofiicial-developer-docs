@@ -64,6 +64,13 @@ Validation Error
 
 One value bound to a template input port, in the form its `content_schema` calls for. A `string` port takes the text itself; `number`, `integer` and `boolean` ports take a JSON value of that type. Anything stored elsewhere is a reference discriminated on `type`: a prior `generation`, an uploaded `asset`, a `voice`, or media passed `inline_base64`. An `array` port takes a JSON array with one value per element, admissible for the schema's `items`. `object` ports cannot be bound through this API yet. No constraints beyond the wire shape live here: what a port accepts (an `enum`, a length) is stated by its `content_schema`, and the run path validates against that same schema.
 
+- string
+- boolean
+- integer
+- double
+- TemplateInputReference: TemplateInputReference
+- list of TemplateRunInput
+
 ### WebhookTarget
 
 - `type`: `all` (WebhookTargetAll)
@@ -158,7 +165,23 @@ One output of a template run, discriminated on `type`: the `type` of the port's 
 - `msg` (string, required)
 - `type` (string, required)
 
+### TemplateInputReference
+
+- `type`: `asset` (StaticAssetReference)
+  - `asset_id` (string, required) — The ID of an asset uploaded via the assets API (`POST /v1/assets`), as returned in that response's `asset_id`.
+- `type`: `generation` (GenerationReference)
+  - `generation_id` (string, required) — The ID of the generation whose output to use, as returned when the generation was created.
+- `type`: `inline_base64` (InlineBase64Reference)
+  - `content_base64` (string, required) — The media file's bytes, base64-encoded (standard alphabet). Up to 25MB decoded.
+  - `mime_type` (enum, required) — The MIME type of the encoded media.
+    - Allowed values: `image/jpeg`, `image/png`, `image/webp`, `image/heic`, `image/heif`, `audio/mpeg`, `audio/wav`, `video/mp4`, `video/quicktime`, `video/webm`
+- `type`: `voice` (VoiceReference)
+  - `voice_id` (string, required) — The ID of a voice in this workspace.
+
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

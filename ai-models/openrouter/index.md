@@ -1,12 +1,12 @@
 # ai-models/openrouter 文档索引
 
-> 共 204 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 205 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
 
 - `docs/_llms/api-reference.txt` — [API Reference (169 pages)](pages/docs/_llms/api-reference.txt.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.txt)
-- `docs/_llms/docs.txt` — [Docs (153 pages)](pages/docs/_llms/docs.txt.md) · [原文](https://openrouter.ai/docs/_llms/docs.txt)
+- `docs/_llms/docs.txt` — [Docs (154 pages)](pages/docs/_llms/docs.txt.md) · [原文](https://openrouter.ai/docs/_llms/docs.txt)
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
 - `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
 - `docs/agent-sdk/call-model/async-tools` — [Async Tools](pages/docs/agent-sdk/call-model/async-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/async-tools.md)
@@ -123,6 +123,7 @@
 - `docs/client-sdks/typescript/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/typescript/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/embeddings/README.md)
 - `docs/client-sdks/typescript/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/typescript/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/endpoints/README.md)
 - `docs/client-sdks/typescript/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/typescript/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/endusers/README.md)
+- `docs/client-sdks/typescript/sdks/externalusers/readme` — [ExternalUsers](pages/docs/client-sdks/typescript/sdks/externalusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/externalusers/README.md)
 - `docs/client-sdks/typescript/sdks/files/readme` — [Files](pages/docs/client-sdks/typescript/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/files/README.md)
 - `docs/client-sdks/typescript/sdks/generations/readme` — [Generations](pages/docs/client-sdks/typescript/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/generations/README.md)
 - `docs/client-sdks/typescript/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/typescript/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/guardrails/README.md)

@@ -12,7 +12,7 @@ path: page/changelog
 
 ### Separate Notion and connected-source search in Notion MCP
 
-`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. If `notion-connector-search` doesn't appear, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
 
 **October 16, 2026**
 
@@ -27,6 +27,10 @@ When some `update_content` edits match and others don't, [Update page markdown](
 ### Calendar tools in Notion MCP
 
 You can now read schedules and manage Calendar events through user-authorized Notion MCP connections on all Notion plans. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+
+### Icon-only and cover-only page updates in Notion MCP
+
+[`notion-update-page`](/guides/mcp/mcp-supported-tools) now accepts `"command": "update_properties"` with only `icon`, `cover`, or `is_skill`, so you can change a page's icon or cover without sending `properties`. Before, the call returned a `validation_error` that said `properties` was required.
 
 **October 15, 2026**
 

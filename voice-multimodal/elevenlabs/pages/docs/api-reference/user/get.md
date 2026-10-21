@@ -95,6 +95,9 @@ Validation Error
 
 Maximum number of credits that the credit limit can be exceeded by. Managed by the workspace admin. `"unlimited"` means no cap, `0` means usage-based billing is disabled.
 
+- integer
+- "unlimited"
+
 ### Price
 
 Currency/amount pair.
@@ -104,6 +107,9 @@ Currency/amount pair.
   - Allowed values: `usd`, `eur`, `inr`, `pln`, `gbp`
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

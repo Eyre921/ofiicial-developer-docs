@@ -117,7 +117,7 @@ with OpenRouter(
 | `base_url` | *Optional\[str]* | ➖ | HTTPS base URL of your deployment. Required unless the provider derives its URL from the BYOK credential (Azure, Amazon Bedrock, Google Vertex). | [https://contoso.openai.azure.com](https://contoso.openai.azure.com) |
 | `declared_region` | [OptionalNullable\[components.CreatePrivateEndpointRequestDeclaredRegion\]](../../components/createprivateendpointrequestdeclaredregion.mdx) | ➖ | Attest where this deployment processes data. | us |
 | `declared_zdr` | *OptionalNullable\[bool]* | ➖ | Attest that this deployment retains no prompt or completion data. | |
-| `pricing` | [Optional\[components.PrivateEndpointPricing\]](../../components/privateendpointpricing.mdx) | ➖ | Negotiated per-token rates reported for requests routed to this endpoint. | \{ "completion": "0.00001", "prompt": "0.0000025" } |
+| `pricing` | [Optional\[components.PrivateEndpointPricing\]](../../components/privateendpointpricing.mdx) | ➖ | Negotiated per-token rates reported for requests routed to this endpoint. | \{ "cache\_read": "0.00000025", "cache\_write": "0.000003125", "completion": "0.00001", "prompt": "0.0000025" } |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -471,7 +471,7 @@ with OpenRouter(
 
 ## update\_pricing
 
-Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -502,7 +502,7 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `pricing` | [components.PrivateEndpointPricing](../../components/privateendpointpricing.mdx) | ✅ | Negotiated per-token rates reported for requests routed to this endpoint. | \{ "completion": "0.00001", "prompt": "0.0000025" } |
+| `pricing` | [components.PrivateEndpointPricing](../../components/privateendpointpricing.mdx) | ✅ | Negotiated per-token rates reported for requests routed to this endpoint. | \{ "cache\_read": "0.00000025", "cache\_write": "0.000003125", "completion": "0.00001", "prompt": "0.0000025" } |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

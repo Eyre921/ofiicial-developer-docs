@@ -134,6 +134,9 @@ An evaluation using the transcript and a prompt for a yes/no achieved answer
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### BehaviorOverride
 
 - `verbosity` (enum, optional, nullable) — Verbosity override. Underlying default applies when unset.
@@ -194,6 +197,11 @@ Represents a message from a multi-voice agent.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelInputToolDetails, optional, nullable)
 
 ### ConversationHistoryTranscriptCommonModelInputToolResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ### UserFeedback
 
@@ -520,11 +528,22 @@ A system tool is a tool that is used to call a system method in the server
 
 The API key for authentication. Either a workspace secret reference \{'secret\_id': '...'} or an environment variable reference \{'env\_var\_label': '...'}.
 
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### CustomLlmAuthConnection
 
 Optional workspace auth connection for authentication. Only auth connections that produce an Authorization Bearer token are supported; Basic auth, mTLS, custom header, and URL secret auth connections are not supported.
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### CustomLlmRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### KnowledgeBaseToolInfo
 
@@ -791,7 +810,14 @@ Used to reference a dynamic variable.
 
 ### ApiIntegrationWebhookOverridesRequestHeaders
 
+- string
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+
 ### ObjectJsonSchemaPropertyInput
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
 
 ### RequiredConstraints
 
@@ -802,7 +828,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingEndProcedureProcedures
 
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
+
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures
+
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
 
 ### AgentTransfer-Input
 
@@ -830,6 +862,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, nullable, deprecated)
 
 ### WebhookToolApiSchemaConfigInputRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -862,6 +899,9 @@ Configuration for filtering tool responses before they are visible to the agent.
 ### WebhookToolApiSchemaConfigInputAuthConnection
 
 Optional auth connection to use for authentication with this webhook
+
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
 
 ### KnowledgeBaseRagChunkModel
 
@@ -898,6 +938,13 @@ Optional auth connection to use for authentication with this webhook
 ### WorkflowToolLocatorSchemaOverridesDiscriminatorMappingConstantConstantValue
 
 The constant value to use
+
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
 
 ### ArrayJsonSchemaProperty-Input
 
@@ -966,6 +1013,10 @@ DTMF digits to send after call connects (e.g., 'ww1234' for extension). Can be e
 
 ### LiteralJsonSchemaPropertyType
 
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -974,11 +1025,25 @@ DTMF digits to send after call connects (e.g., 'ww1234' for extension). Can be e
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
 
+- string
+- integer
+- double
+- boolean
+
 ### WorkflowToolResponseModelInputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ### ArrayJsonSchemaPropertyInputItems
 
 Schema for array elements.
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
 
 ## Examples
 

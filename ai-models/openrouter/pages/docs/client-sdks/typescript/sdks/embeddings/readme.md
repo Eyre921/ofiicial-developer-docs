@@ -90,7 +90,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateEmbeddingsRequest](../../models/operations/createembeddingsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.CreateEmbeddingsRequest](../../models/operations/createembeddingsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -111,6 +111,7 @@ run();
 | errors.RequestTimeoutResponseError | 408 | application/json |
 | errors.PayloadTooLargeResponseError | 413 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.ClientClosedRequestResponseError | 499 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.BadGatewayResponseError | 502 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
@@ -182,7 +183,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListEmbeddingsModelsRequest](../../models/operations/listembeddingsmodelsrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListEmbeddingsModelsRequest](../../models/operations/listembeddingsmodelsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |

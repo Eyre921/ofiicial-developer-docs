@@ -83,6 +83,9 @@ Unified container for all platform limits. Can be used by: - Billing groups (Wor
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### StoredUsagePlatformLimit
 
 Platform limit with usage stored in Firestore. Example: credit usage tracked in Firestore.

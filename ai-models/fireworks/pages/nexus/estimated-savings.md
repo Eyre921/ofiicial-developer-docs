@@ -6,11 +6,9 @@ path: nexus/estimated-savings
 
 Compare eligible serverless usage at public list prices with what the same tokens would have cost on Claude Opus 5.5.
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+The Savings view estimates how much your account saved by using Fireworks models and Nexus Auto instead of serving the same tokens entirely with the baseline model.
 
-The Savings view estimates how much your account saved by using Fireworks models and FireRouter instead of serving the same tokens entirely with the baseline model.
-
-Savings includes eligible direct Fireworks serverless usage as well as usage routed through FireRouter. It is not limited to requests where FireRouter selected an open model.
+Savings includes eligible direct Fireworks serverless usage as well as usage sent through Nexus Auto. It is not limited to requests where Nexus Auto selected an open model.
 
 To view your savings, go to Analytics → [Savings](https://app.fireworks.ai/account/usage?type=savings).
 
@@ -61,7 +59,7 @@ The Savings view reports **\$5.70** in estimated savings, or **69.9%**. These am
 Savings includes eligible serverless inference usage recorded for the account:
 
 * Fireworks-hosted serverless models
-* Closed models called through FireRouter
+* Closed models called through Nexus Auto
 * Direct eligible Fireworks serverless requests
 * Priced uncached input, cached input, cache-write, and output tokens
 
@@ -86,8 +84,8 @@ Groups with no comparable priced usage are omitted.
 
 ## Related
 
-* [FireRouter](/nexus/firerouter)
-* [Routing Preferences](/nexus/routing-preferences)
+* [Nexus Auto](/nexus/auto)
+* [Effort](/nexus/orchestration-preferences)
 * [Usage and Cost](/nexus/metrics)
 * [Spend Limits](/nexus/usage-limits)
 * [Provider Keys](/nexus/provider-keys)

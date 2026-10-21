@@ -121,6 +121,9 @@ Validation Error
 
 The URL of the MCP server, if this contains a secret please store as a workspace secret, otherwise store as a plain string. Must use https
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+
 ### MCPToolApprovalHash
 
 Model for storing tool approval hashes for per-tool approval.
@@ -134,13 +137,32 @@ Model for storing tool approval hashes for per-tool approval.
 
 The secret token (Authorization header) stored as a workspace secret or in-place secret
 
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIUserSecretDBModel: ConvAIUserSecretDBModel
+
 ### McpServerConfigOutputRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### McpServerConfigOutputRequestMeta
+
+- string
+- integer
+- double
+- boolean
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### McpServerConfigOutputAuthConnection
 
 Optional auth connection to use for authentication with this MCP server
+
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
 
 ### MCPToolConfigOverride-Output
 
@@ -162,6 +184,9 @@ Optional auth connection to use for authentication with this MCP server
 - `disable_interruptions` (boolean, optional, nullable, deprecated) — DEPRECATED: use `interruption_mode` instead. If set, overrides the server's disable_interruptions setting for this tool.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### ConvAISecretLocator
 
@@ -206,6 +231,10 @@ References an environment variable of type 'auth_connection' by label. At runtim
 
 Overrides the server's tool_call_sound setting for this tool. A sound name plays that sound; 'off' overrides to no sound (silence); null means do not override (inherit the server default).
 
+- ToolCallSoundType: enum
+  - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+- "off"
+
 ### DynamicVariableAssignment
 
 Configuration for extracting values from tool responses and assigning them to dynamic variables.
@@ -235,6 +264,13 @@ Configuration for extracting values from tool responses and assigning them to dy
 ### WorkflowToolLocatorSchemaOverridesDiscriminatorMappingConstantConstantValue
 
 The constant value to use
+
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
 
 ### UnitTestToolCallParameter
 

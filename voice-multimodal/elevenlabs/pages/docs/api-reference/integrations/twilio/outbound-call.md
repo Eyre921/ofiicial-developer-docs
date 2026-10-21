@@ -107,6 +107,9 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ASRConversationalConfigOverride
 
 - `keywords` (list of string, optional, nullable) — Keywords to boost prediction probability for

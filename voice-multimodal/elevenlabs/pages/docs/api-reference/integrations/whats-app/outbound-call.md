@@ -92,6 +92,9 @@ Information about the source of conversation initiation
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ASRConversationalConfigOverride
 
 - `keywords` (list of string, optional, nullable) — Keywords to boost prediction probability for

@@ -101,6 +101,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### HistoryAlignmentResponseModel
 
 - `characters` (list of string, required) — The characters in the alignment.

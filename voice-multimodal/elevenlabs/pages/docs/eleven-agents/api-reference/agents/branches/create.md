@@ -143,6 +143,9 @@ Validation Error
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### WorkflowEdgeModelInputForwardCondition
 
 - `type`: `expression`
@@ -411,6 +414,9 @@ Message spoken by this node. Use `literal` for exact text or `prompt` to have th
 
 Value of this literal.
 
+- double
+- integer
+
 ### SoftTimeoutConfigWorkflowOverride
 
 - `timeout_seconds` (double, optional) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.
@@ -536,7 +542,20 @@ Configuration for DTMF (keypad) input collection during phone calls.
 
 The constant value to use
 
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
+
 ### LlmLiteralJsonSchemaPropertyType
+
+- "boolean"
+- "string"
+- "integer"
+- "number"
+- list of string
 
 ### AsrConversationalConfigOverride
 
@@ -605,6 +624,10 @@ The constant value to use
 ### PromptAgentApiModelWorkflowOverrideInputBackupLlmConfig
 
 Configuration for backup LLM cascading. Can be disabled, use system defaults, or specify custom order.
+
+- Backup Llm Default: BackupLlmDefault
+- Backup Llm Disabled: BackupLlmDisabled
+- Backup Llm Override: BackupLlmOverride
 
 ### PromptAgentApiModelWorkflowOverrideInputToolsItem
 
@@ -744,11 +767,22 @@ A system tool is a tool that is used to call a system method in the server
 
 The API key for authentication. Either a workspace secret reference \{'secret\_id': '...'} or an environment variable reference \{'env\_var\_label': '...'}.
 
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
+
 ### CustomLlmAuthConnection
 
 Optional workspace auth connection for authentication. Only auth connections that produce an Authorization Bearer token are supported; Basic auth, mTLS, custom header, and URL secret auth connections are not supported.
 
+- Auth Connection Locator: AuthConnectionLocator
+- Environment Auth Connection Locator: EnvironmentAuthConnectionLocator
+
 ### CustomLlmRequestHeadersValue
+
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
 
 ### KnowledgeBaseToolInfo
 
@@ -888,7 +922,14 @@ Used to reference a dynamic variable.
 
 ### ApiIntegrationWebhookOverridesRequestHeadersValue
 
+- string
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+
 ### ObjectJsonSchemaPropertyInputPropertiesValue
+
+- Literal JSON Schema Property: LiteralJsonSchemaProperty
+- Object JSON Schema Property Input: ObjectJsonSchemaPropertyInput
+- Array JSON Schema Property Input: ArrayJsonSchemaPropertyInput
 
 ### RequiredConstraints
 
@@ -899,7 +940,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### EndProcedureToolConfigProceduresValue
 
+- Procedure Version Ref: ProcedureVersionRef
+- Procedure Draft Ref: ProcedureDraftRef
+
 ### StartProcedureToolConfigProceduresValue
+
+- Procedure Version Ref: ProcedureVersionRef
+- Procedure Draft Ref: ProcedureDraftRef
 
 ### AgentTransferInput
 
@@ -927,6 +974,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, deprecated)
 
 ### WebhookToolApiSchemaConfigInputRequestHeadersValue
+
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -959,6 +1011,9 @@ Configuration for filtering tool responses before they are visible to the agent.
 ### WebhookToolApiSchemaConfigInputAuthConnection
 
 Optional auth connection to use for authentication with this webhook
+
+- Auth Connection Locator: AuthConnectionLocator
+- Environment Auth Connection Locator: EnvironmentAuthConnectionLocator
 
 ### ArrayJsonSchemaPropertyInput
 
@@ -1016,6 +1071,12 @@ A set of fields that must all be present to satisfy this constraint.
 
 ### LiteralJsonSchemaPropertyType
 
+- "boolean"
+- "string"
+- "integer"
+- "number"
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -1024,9 +1085,18 @@ A set of fields that must all be present to satisfy this constraint.
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
 
+- string
+- integer
+- double
+- boolean
+
 ### ArrayJsonSchemaPropertyInputItems
 
 Schema for array elements.
+
+- Literal JSON Schema Property: LiteralJsonSchemaProperty
+- Object JSON Schema Property Input: ObjectJsonSchemaPropertyInput
+- Array JSON Schema Property Input: ArrayJsonSchemaPropertyInput
 
 ## Examples
 

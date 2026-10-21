@@ -1816,7 +1816,7 @@ When available, applicable events include a top-level `team_ids` array containin
 # Agent Skills API
 Source: https://developers.notion.com/guides/agent-skills/overview
 
-Learn how to download AI skills stored in Notion.
+Learn how to download and upload AI skills stored in Notion.
 
 The Agent Skills API exposes skills stored in Notion as directories of files. You can either download individual skills following the [Agent Skills standard](https://agentskills.io/home), or groups of related skills following the [Agent Plugins standard](https://agent-plugins.org).
 
@@ -1840,6 +1840,10 @@ For some examples of how to use the API, see:
 > **[Get a skill](/reference/agent-skills/get-skill-directory)**
 >
 > Download a single skill
+
+> **[Upload a skill](/reference/agent-skills/upload-skill)**
+>
+> Import a skill directory
 
 ## Requirements
 
@@ -7653,6 +7657,49 @@ const response = await fetch("https://api.notion.com/v1/oauth/token", {
 ```
 
 
+# Developer tools
+Source: https://developers.notion.com/guides/get-started/developer-tools
+
+Turn on developer features in Notion and customize the Developer section in your sidebar.
+
+Use developer features in Notion's web or desktop app to copy resource IDs and inspect developer information. Add the **Developer** section to your sidebar for quick access to your development tools.
+
+## Turn on developer features
+
+1. Open **Settings** from your workspace menu.
+2. Select **Developer**.
+3. Turn on **Enable developer features**.
+
+The switch shows the developer toolbar, developer menus, and resource IDs. This preference is saved on your device.
+
+Press **⌘⇧.** on macOS or **Ctrl+Shift+.** on Windows or Linux to turn developer features on or off. The shortcut changes the same setting as the switch.
+
+## Copy resource IDs
+
+With developer features on, use the toolbar at the bottom of the window to copy IDs for your user, workspace, and the page or resource you're viewing. Select an item to copy its ID.
+
+Open a page, block, or database menu and select **Developer** to find IDs for that resource. The available IDs depend on what you're viewing.
+
+To hide only the toolbar, select its **Hide the developer bar** button. Developer menus stay available. Use **Toggle developer bar** in a Developer menu to show it again. Turning developer features off and back on also restores the toolbar.
+
+## Add Developer to your sidebar
+
+In the customizable sidebar, the **Developer** section is separate from the developer features switch. You can keep the section visible with developer features off, or use developer features without adding the section.
+
+1. Select the sidebar tab where you want the section to appear.
+2. Select **Customize sidebar**.
+3. Select **Add section**, then **Developer**.
+4. Select **Done**.
+
+The section includes links to tools available in your workspace, such as Workers, Connections, Personal access tokens, and MCP tokens. To create API credentials, see [Personal access tokens](/guides/get-started/personal-access-tokens).
+
+## Move or remove the section
+
+Open **Customize sidebar** and drag the Developer section to change its position. You can also open the section's menu and use **Move up**, **Move down**, or **Move to tab**.
+
+To hide the section from a tab, select **Remove from sidebar** beside Developer, then **Done**. Add it again through **Add section** whenever you need it. Moving or removing the section doesn't change the developer features switch.
+
+
 # Secure API credentials
 Source: https://developers.notion.com/guides/get-started/handling-api-keys
 
@@ -12128,7 +12175,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > Searches Notion pages and databases, or looks up a workspace user by name or email. It doesn't search connected sources such as Slack or Google Drive. Use `notion-connector-search` for those, when the session lists it. For a question that covers both Notion and connected sources, call both tools in parallel. You don't need to call another tool first.
 >
-> Content searches report `type: "workspace_search"`. Use short, specific keywords or a page title.
+> Content searches report `type: "workspace_search"`. Use short, specific keywords or a page title. When the session lists `notion-connector-search`, a content search result ends with a short note that connected sources weren't searched, except in ChatGPT.
 >
 > `notion-search` supports location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results. In `filters.created_by_user_ids` and `filters.edited_by_user_ids`, pass `"me"` for the connected user. Results may include `path` and `verification` details. Fetch important matches before relying on them.
 >
@@ -12155,7 +12202,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > `notion-connector-search`
 >
-> Searches the connected sources available to the user, such as Slack, Google Drive, GitHub, Jira, mail, and calendar. It doesn't search Notion pages or databases. Use `notion-search` for those. Hosted Notion MCP sessions list this tool when the user has AI search and the workspace has at least one connected source. Workspace-owned connections don't list it.
+> Searches the connected sources available to the user, such as Slack, Google Drive, GitHub, Jira, mail, and calendar. It doesn't search Notion pages or databases. Use `notion-search` for those. Hosted Notion MCP sessions list this tool when the user has AI search and the workspace has at least one connected source. Workspace-owned connections don't list it. If it doesn't appear in your client, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app.
 >
 > Put the full question in `question`, and distinctive names and terms in `keywords`. `lookback` sets a time window, such as `"7d"`, `"all_time"`, or a date like `"2026-10-01"`. To search only some sources, pass `sources`, such as `["slack"]` or `["google-drive", "github"]`. The names match the ones the response reports in `searchedSources`. Fewer sources return sooner. Omit `sources` to search every connected source.
 >
@@ -12448,7 +12495,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > `notion-update-page`
 >
-> Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command.
+> Update a Notion page's properties, content, icon, or cover. You can also [change whether a page is a Skill](/guides/mcp/notion-skills#change-whether-a-page-is-a-skill) or apply [database templates](/guides/data-apis/creating-pages-from-templates) to an existing page. Icon, cover, and `is_skill` can be set alongside any update command. To change only the icon or cover, use `update_properties` and omit `properties`.
 >
 > > [!NOTE]
 > >
@@ -17743,7 +17790,7 @@ Source: https://developers.notion.com/page/changelog
 
 ### Separate Notion and connected-source search in Notion MCP
 
-`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. If `notion-connector-search` doesn't appear, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
 
 **October 16, 2026**
 
@@ -17758,6 +17805,10 @@ When some `update_content` edits match and others don't, [Update page markdown](
 ### Calendar tools in Notion MCP
 
 You can now read schedules and manage Calendar events through user-authorized Notion MCP connections on all Notion plans. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+
+### Icon-only and cover-only page updates in Notion MCP
+
+[`notion-update-page`](/guides/mcp/mcp-supported-tools) now accepts `"command": "update_properties"` with only `icon`, `cover`, or `is_skill`, so you can change a page's icon or cover without sending `properties`. Before, the call returned a `validation_error` that said `properties` was required.
 
 **October 15, 2026**
 
@@ -19194,7 +19245,13 @@ Completed reports include `download_url` and `link_expires_at` when the file is 
 
 Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
 
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
+
+A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
+
+CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
 
 Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
 
@@ -19215,7 +19272,13 @@ Completed reports include `download_url` and `link_expires_at` when the file is 
 
 Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
 
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
+
+A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
+
+CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
 
 Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
 
@@ -19258,7 +19321,13 @@ Completed reports include `download_url` and `link_expires_at` when the file is 
 
 Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
 
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Storage failures and integrity mismatches remain errors.
+Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
+
+Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
+
+A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
+
+CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
 
 Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
 
@@ -19917,6 +19986,33 @@ This endpoint uses [standard cursor pagination](/reference/intro#pagination). Fo
 | :- | :- | :- |
 | 400 | `validation_error` | `start_cursor` is malformed, out of range, or was issued for a different workspace. |
 | 403 | `restricted_resource` | The token lacks the **Read content** capability. |
+
+
+# Upload a skill
+Source: https://developers.notion.com/reference/agent-skills/upload-skill
+
+POST /v1/ai/skills/{id}/upload
+Upload a skill directory archive to a skill page in one request.
+
+Imports a skill directory into an existing page in a Skills database. Pass the page ID in the path, and send a gzipped tar archive of the directory under the `file` key of a `multipart/form-data` body. The archive can be up to 20 MiB.
+
+> [!NOTE]
+>
+> Like [Send a file upload](/reference/upload-file), this endpoint takes multipart form data instead of JSON. Include a `boundary` in the `Content-Type` header.
+
+The archive must contain `SKILL.md` with `name` and `description` frontmatter, either at the root or in one directory named after the skill. Uploading replaces the page's title, **Description**, content, and **Files**. Each file and folder next to `SKILL.md` becomes a file or folder in **Files**.
+
+The response includes the updated page ID and `version_id`. It matches the `version_id` from [Get a skill](/reference/agent-skills/get-skill-directory) until the skill changes again, so you can tell whether a later download returns what you uploaded.
+
+To import a new skill, create a page in a Skills database first.
+
+## Errors
+
+| Status | Code | Cause |
+| :- | :- | :- |
+| 400 | `validation_error` | The ID is malformed, `file` is missing or not sent as form data, the archive is invalid, or the page is not in a Skills database. |
+| 403 | `restricted_resource` | The token lacks the **Read content**, **Insert content**, or **Update content** capability. |
+| 404 | `object_not_found` | No page with that ID is shared with the connection. |
 
 
 # Authentication
@@ -25358,6 +25454,7 @@ A page write does not create a new status option or set its group. Use [Update d
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
@@ -27117,6 +27214,7 @@ Status is a single property item. The response is not wrapped in a property name
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
@@ -28547,7 +28645,9 @@ Page values include `id`, `name`, and `color`. Page writes select an option by `
 
 ## Status
 
-The `status` object contains `options` and `groups` arrays. Each page selects one option. The schema groups options by progress.
+The `status` object contains `options` and `groups` arrays and a read-only `default_option`. Each page selects one option. The schema groups options by progress.
+
+`default_option` is the name of the configured default option, or `null` when no default is configured. Use it to find the matching entry in `options`; the default isn't necessarily the first option. It applies when a page has no explicit Status value.
 
 Status options use the same [option fields](#select-options). Each group contains `id`, `name`, `color`, and `option_ids`. The `option_ids` array lists that group’s options in order.
 
@@ -28565,6 +28665,7 @@ To change options or their group membership, see [Status configuration updates](
     "description": null,
     "type": "status",
     "status": {
+      "default_option": "In progress",
       "options": [
         {
           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
@@ -29322,6 +29423,8 @@ Each connection has a fixed budget of requests per 60-second window, based on th
 
 The budget can be spent at any pace within the window — spread out evenly or in a single burst. When a request exceeds this limit, the `Retry-After` value is the time until the window resets, so it is at most 60 seconds.
 
+[Querying a data source](/reference/query-a-data-source) has a separate limit of about 3 requests per second per connection. A request over this limit returns an HTTP 429 response with a `Retry-After` header. The [JavaScript SDK waits](https://github.com/makenotion/notion-sdk-js#automatic-retries) for `Retry-After` and retries for you. If you call the REST API directly, see [Retry rate-limited requests](#retry-rate-limited-requests).
+
 ### Per-workspace limit
 
 A separate limit is shared across all of the workspace's connections and scaled to the workspace's plan. Because it's shared, requests can be rate limited even when each individual connection is within its per-connection limit. `Retry-After` for this limit can be longer than a minute.
@@ -29336,6 +29439,7 @@ Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 42
 | `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`. |
 | `public_api_endpoint_rate_limit` | This endpoint has its own limit. Wait for `Retry-After`. |
 | `mcp_tool_rate_limit` | An MCP tool reached its own limit. Wait for `Retry-After`, which is usually under 10 seconds. |
+| `collection_router_too_many_requests` | A data source query was throttled. Wait for `Retry-After`. |
 | `collection_router_upstream_429` | A data source query was throttled upstream. Wait for `Retry-After`. |
 | `public_api_request_blocked` | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
 

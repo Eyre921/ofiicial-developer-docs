@@ -356,7 +356,14 @@ Configuration for extracting values from tool responses and assigning them to dy
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ObjectJsonSchemaPropertyInput
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
 
 ### RequiredConstraints
 
@@ -367,7 +374,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingEndProcedureProcedures
 
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
+
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures
+
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
 
 ### AgentTransfer-Input
 
@@ -395,6 +408,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, nullable, deprecated)
 
 ### WebhookToolApiSchemaConfigInputRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -428,6 +446,9 @@ Configuration for filtering tool responses before they are visible to the agent.
 
 Optional auth connection to use for authentication with this webhook
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### UnitTestToolCallParameterEval
 
 - `type`: `anything` (MatchAnythingParameterEvaluationStrategy)
@@ -439,6 +460,10 @@ Optional auth connection to use for authentication with this webhook
   - `pattern` (string, required) — A regex pattern to match the agent's response against.
 
 ### ObjectJsonSchemaPropertyOutput
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Output
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Output
 
 ### AgentTransfer-Output
 
@@ -455,6 +480,11 @@ Optional auth connection to use for authentication with this webhook
 
 ### WebhookToolApiSchemaConfigOutputRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### QueryParamsJsonSchema-Output
 
 - `properties` (map from string to LiteralJsonSchemaProperty, required)
@@ -463,6 +493,9 @@ Optional auth connection to use for authentication with this webhook
 ### WebhookToolApiSchemaConfigOutputAuthConnection
 
 Optional auth connection to use for authentication with this webhook
+
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
 
 ### ArrayJsonSchemaProperty-Input
 
@@ -549,6 +582,10 @@ Used to reference an environment variable by label.
 
 ### LiteralJsonSchemaPropertyType
 
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
+
 ### AllowedValues
 
 - `dynamic_variable` (string, required) — Name of a dynamic variable that must resolve to a JSON array of permitted values, e.g. ["ws_alpha", "ws_beta"]. System variables work only if they resolve to a list.
@@ -556,6 +593,11 @@ Used to reference an environment variable by label.
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### AuthConnectionLocator
 
@@ -582,9 +624,17 @@ References an environment variable of type 'auth_connection' by label. At runtim
 
 Schema for array elements.
 
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
+
 ### ArrayJsonSchemaPropertyOutputItems
 
 Schema for array elements.
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Output
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Output
 
 ## Examples
 

@@ -96,6 +96,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### TwilioMachineDetectionConfig
 
 How to run Twilio's carrier-level answering machine detection (AMD) on a call.

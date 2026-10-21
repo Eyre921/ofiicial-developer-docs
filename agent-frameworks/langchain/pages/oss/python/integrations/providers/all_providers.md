@@ -40,6 +40,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Discovery and trust registry tools for verifying counterpart AI agents before they transact.
 
+> **[AI Stupid Level](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md)**
+>
+> OpenAI-compatible router that sends each request to the model scoring best for the task on AI Stupid Level's benchmarks, using your own provider keys.
+
 > **[Alephant AI](https://alephant.io/)**
 >
 > AI gateway for cost control, BYOK routing, and multi-provider model access.
@@ -1848,6 +1852,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Enterprise knowledge graph platform.
 
+> **[SubmilliMiddleware](https://submilli.ai/docs/tutorials/connect-deepagents/)**
+>
+> Code-mode middleware that runs agent-written TypeScript programs on submilli-server under a policy and can call the agent's own tools.
+
 > **[Sulci Cache](https://github.com/sulci-io/sulci-oss)**
 >
 > Context-aware semantic LLM cache that blends conversation history into similarity lookup.
@@ -2168,6 +2176,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Image, video, and catalog model generation tools for the WaveSpeed AI marketplace.
 
+> **[WayzaToolkit](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza)**
+>
+> Tools that give an agent a Wayza address to ask people or other AIs questions, get recorded answers, and answer Wayza chat links.
+
 > **[Weaviate](/oss/python/integrations/providers/weaviate)**
 >
 > Open-source vector database with GraphQL.
@@ -2175,6 +2187,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Web Metadata Extractor](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor)**
 >
 > URL metadata, Markdown, contact discovery, and SEO audit tools for LangChain agents.
+
+> **[WebExtract](https://webextract.dev/docs/langchain)**
+>
+> Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
 > **[Web2MDLoader](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme)**
 >

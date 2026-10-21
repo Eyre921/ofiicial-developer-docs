@@ -13,6 +13,233 @@ Searching with text (`inputs`) is supported only for [legacy integrated indexes]
 
 For guidance and examples, see [Search](https://docs.pinecone.io/guides/search/search-overview).
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+# To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.index(host="INDEX_HOST")
+
+# Search with a query text and rerank the results
+# Supported only for indexes with integrated embedding
+search_with_text = index.search(
+    namespace="example-namespace",
+    inputs={"text": "Disease prevention"},
+    top_k=4,
+    fields=["category", "chunk_text"],
+    rerank={
+        "model": "bge-reranker-v2-m3",
+        "top_n": 2,
+        "rank_fields": ["chunk_text"],
+    },
+)
+for hit in search_with_text.result.hits:
+    print(hit.id, hit.score, hit.fields)
+
+# Search with a query vector and rerank the results
+search_with_vector = index.search(
+    namespace="example-namespace",
+    vector=[0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
+    top_k=4,
+    fields=["category", "chunk_text"],
+    rerank={
+        "query": "Disease prevention",
+        "model": "bge-reranker-v2-m3",
+        "top_n": 2,
+        "rank_fields": ["chunk_text"],
+    },
+)
+for hit in search_with_vector.result.hits:
+    print(hit.id, hit.score, hit.fields)
+
+# Search with a record ID and rerank the results
+search_with_id = index.search(
+    namespace="example-namespace",
+    id="rec1",
+    top_k=4,
+    fields=["category", "chunk_text"],
+    rerank={
+        "query": "Disease prevention",
+        "model": "bge-reranker-v2-m3",
+        "top_n": 2,
+        "rank_fields": ["chunk_text"],
+    },
+)
+for hit in search_with_id.result.hits:
+    print(hit.id, hit.score, hit.fields)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+// To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index({
+  host: 'INDEX_HOST',
+  namespace: 'example-namespace',
+});
+
+// Search with a query text and rerank the results
+// Supported only for indexes with integrated embedding
+const searchWithText = await index.searchRecords({
+  query: {
+    inputs: { text: 'Disease prevention' },
+    topK: 4,
+  },
+  fields: ['category', 'chunk_text'],
+  rerank: {
+    model: 'bge-reranker-v2-m3',
+    topN: 2,
+    rankFields: ['chunk_text'],
+  },
+});
+console.log(searchWithText.result.hits);
+
+// Search with a query vector and rerank the results
+const searchWithVector = await index.searchRecords({
+  query: {
+    vector: {
+      values: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
+    },
+    topK: 4,
+  },
+  fields: ['category', 'chunk_text'],
+  rerank: {
+    query: 'Disease prevention',
+    model: 'bge-reranker-v2-m3',
+    topN: 2,
+    rankFields: ['chunk_text'],
+  },
+});
+console.log(searchWithVector.result.hits);
+
+// Search with a record ID and rerank the results
+const searchWithId = await index.searchRecords({
+  query: {
+    id: 'rec1',
+    topK: 4,
+  },
+  fields: ['category', 'chunk_text'],
+  rerank: {
+    query: 'Disease prevention',
+    model: 'bge-reranker-v2-m3',
+    topN: 2,
+    rankFields: ['chunk_text'],
+  },
+});
+console.log(searchWithId.result.hits);
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
+        Host:      "INDEX_HOST",
+        Namespace: "example-namespace",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection: %v", err)
+    }
+
+    fields := []string{"category", "chunk_text"}
+    rerankQuery := "Disease prevention"
+    topN := int32(2)
+
+    // Search with a query text and rerank the results
+    // Supported only for indexes with integrated embedding
+    searchWithText, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
+        Query: pinecone.SearchRecordsQuery{
+            Inputs: &map[string]interface{}{
+                "text": "Disease prevention",
+            },
+            TopK: 4,
+        },
+        Fields: &fields,
+        Rerank: &pinecone.SearchRecordsRerank{
+            Model:      "bge-reranker-v2-m3",
+            TopN:       &topN,
+            RankFields: []string{"chunk_text"},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to search with text: %v", err)
+    }
+    for _, hit := range searchWithText.Result.Hits {
+        fmt.Println(hit.Id, hit.Score, hit.Fields["category"])
+    }
+
+    // Search with a query vector and rerank the results
+    searchWithVector, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
+        Query: pinecone.SearchRecordsQuery{
+            Vector: &pinecone.SearchRecordsVector{
+                Values: &[]float32{0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+            },
+            TopK: 4,
+        },
+        Fields: &fields,
+        Rerank: &pinecone.SearchRecordsRerank{
+            Query:      &rerankQuery,
+            Model:      "bge-reranker-v2-m3",
+            TopN:       &topN,
+            RankFields: []string{"chunk_text"},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to search with vector: %v", err)
+    }
+    for _, hit := range searchWithVector.Result.Hits {
+        fmt.Println(hit.Id, hit.Score, hit.Fields["category"])
+    }
+
+    // Search with a record ID and rerank the results
+    recordId := "rec1"
+    searchWithId, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
+        Query: pinecone.SearchRecordsQuery{
+            Id:   &recordId,
+            TopK: 4,
+        },
+        Fields: &fields,
+        Rerank: &pinecone.SearchRecordsRerank{
+            Query:      &rerankQuery,
+            Model:      "bge-reranker-v2-m3",
+            TopN:       &topN,
+            RankFields: []string{"chunk_text"},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to search with ID: %v", err)
+    }
+    for _, hit := range searchWithId.Result.Hits {
+        fmt.Println(hit.Id, hit.Score, hit.Fields["category"])
+    }
+}
+```
+
 ```shell curl theme={null}
 INDEX_HOST="INDEX_HOST"
 NAMESPACE="YOUR_NAMESPACE"
@@ -61,7 +288,6 @@ curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
      }'
 
 # Search with a record ID and rerank the results
-# Supported only for indexes with integrated embedding
 curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \

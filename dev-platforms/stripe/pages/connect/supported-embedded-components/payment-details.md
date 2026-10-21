@@ -12,7 +12,11 @@ This component is a subset of `payments`, which provides the detail overlay of a
 
 Use the `payment-details` component to invoke the payment details overlay without the need to inline the entirety of the `payments` list in your website. This allows you to invoke the payment detail overlay from your existing UI (for example, your payments list) and integrate with our detail view to enable your customers to view payment details, issue refunds, and manage disputed payments.
 
-By default, the embedded components offer limited information for destination charges and separate charges and transfers. They don’t provide access to customer information, payment methods, and some charge amount details. The [destination_on_behalf_of_charge_management](https://docs.stripe.com/connect/supported-embedded-components/payment-details.md#allow-your-connected-accounts-to-manage-destination-charges) feature allows a connected account to perform refunds, manage disputes, and see additional information for destination charges, including customer information, payment methods, and fees.
+The payment-details component shows different information and supports different features for different charge types:
+
+- For direct charges, your connected accounts can view the complete set of information. They can also manage refunds and disputes, and capture payments if you enable the corresponding features when creating an account session.
+- For [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md), your connected accounts can only see the transfer object associated with the selected charge, which contains limited information.
+- For destination charges with the `on_behalf_of` attribute, you can [enable features](https://docs.stripe.com/connect/supported-embedded-components/payment-details.md#allow-your-connected-accounts-to-manage-destination-charges) that allow your connected accounts more control than regular destination charges.
 
 Note: The following is a preview/demo component that behaves differently than live mode usage with real connected accounts. The actual component has more functionality than what might appear in this demo component. For example, for connected accounts without Stripe dashboard access (custom accounts), no user authentication is required in production.
 
@@ -46,38 +50,49 @@ container.appendChild(paymentDetails);
 
 > For [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md), the PaymentIntent doesn’t exist on the connected account. Instead, pass the associated charge ID that belongs to the connected account.
 
-The payment details component shows different information and supports different features for different charge types:
-
-- For direct charges, your connected accounts can view the complete set of information. They can also manage refunds, manage disputes, and capture payments if you enable the corresponding features when creating an account session.
-- For [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md), your connected accounts can only see the transfer object associated with the selected charge, which contains limited information.
-- For destination charges with the [on_behalf_of](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-on_behalf_of) attribute, your connected accounts can view the complete set of information when the `destination_on_behalf_of_charge_management` feature is enabled. When this feature is turned on, you can also enable refund and disputes management by enabling the corresponding features.
-
-Refunds initiated in the component don’t refund application fees, which is consistent with the default behavior on the [Refunds API](https://docs.stripe.com/api/refunds/create.md#create_refund-refund_application_fee).
-
 ### Allow your connected accounts to manage destination charges
 
-When you set the `destination_on_behalf_of_charge_management` feature to `true`, your connected accounts can use the payments component to view and manage [destination charges](https://docs.stripe.com/connect/destination-charges.md) that have the [on_behalf_of](https://docs.stripe.com/api/payment_intents/object.md#payment_intent_object-on_behalf_of) attribute. If you also turn on the `dispute_management` feature, your connected accounts can [participate directly in handling their disputes](https://docs.stripe.com/connect/supported-embedded-components/payments.md#dispute-management-for-destination-charges).
+You can set the `destination_on_behalf_of_charge_management` feature to `true` to present destination charges that have the [on_behalf_of](https://docs.stripe.com/connect/charges.md#on_behalf_of) attribute in the payment details component. You can then enable [dispute and refund management](https://docs.stripe.com/connect/supported-embedded-components/payment-details.md#disputes-and-refunds-for-destination-charges) to allow your connected accounts to handle disputes and issue refunds from within the payment details component.
 
 Enabling the `destination_on_behalf_of_charge_management` feature has the following limitations:
 
-1. You can’t filter by charge status or payment methods.
-2. You can’t export certain data columns.
+- You can’t filter by charge status or payment methods.
+- You can’t export certain data columns.
 
-Any destination charge refunds performed in the embedded component with `destination_on_behalf_of_charge_management` enabled will also [reverse its associated transfer](https://docs.stripe.com/api/refunds/create.md#create_refund-reverse_transfer).
+## Disputes and refunds for destination charges
 
-## Dispute management for destination charges
+When you enable `destination_on_behalf_of_charge_management` feature in the payment details component, you can also enable the `refund_management` and `dispute_management` features to allow your connected accounts to take action on destination charges with the `on_behalf_of` attribute set to the connected account:
 
-When you enable both `dispute_management` and `destination_on_behalf_of_charge_management`, your connected accounts can update and modify dispute evidence, counter disputes, and accept disputes for destination charges with the `on_behalf_of` attribute set to the connected account.
+- Issue refunds
+- Submit and update dispute evidence
+- Counter disputes
+- Accept disputes
 
-For [destination charges](https://docs.stripe.com/connect/destination-charges.md), with or without `on_behalf_of`, Stripe debits dispute amounts and fees from your platform account.
+### Refunds
 
-We recommend setting up [a webhook](https://docs.stripe.com/webhooks.md) to listen to [dispute created events](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created). When that happens, you can attempt to recover funds from the connected account by reversing the transfer through the [Dashboard](https://dashboard.stripe.com/test/transfers) or by [creating a transfer reversal](https://docs.stripe.com/api/transfer_reversals/create.md).
+Refunding a destination charge through the payment details component automatically reverses its associated transfer.
 
-If the connected account has a negative balance, Stripe attempts to [debit its external account](https://docs.stripe.com/connect/account-balances.md#automatically-debit-connected-accounts) if `debit_negative_balances` is set to `true`.
+Refunding any type of charge in the component doesn’t refund application fees, which is consistent with the default behavior on the [Refunds API](https://docs.stripe.com/api/refunds/create.md#create_refund-refund_application_fee).
 
-If you challenge the dispute and win, you can transfer the funds that you previously reversed back to the connected account. If your platform has an insufficient balance, the transfer fails. Prevent insufficient balance errors by [adding funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md).
+### Disputes
 
-> Retransferring a previous reversal is subject to [cross-border transfer restrictions](https://docs.stripe.com/connect/account-capabilities.md#transfers-cross-border), meaning you might have no means to repay your connected account. Instead, wait to recover disputed cross-border payment transfers for destination charges with `on_behalf_of` until after a dispute is lost.
+Stripe debits dispute amounts and fees from your platform account for all [destination charges](https://docs.stripe.com/connect/destination-charges.md), with or without `on_behalf_of`.
+
+Set up [a webhook](https://docs.stripe.com/webhooks.md) to listen for [dispute created events](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created).
+
+You can reverse the transfer to your connected account through the [Dashboard](https://dashboard.stripe.com/test/transfers) or by [creating a transfer reversal](https://docs.stripe.com/api/transfer_reversals/create.md) to recover the dispute chargeback funds. If the connected account has a negative balance, Stripe attempts to debit its external account if [debit_negative_balances](https://docs.stripe.com/connect/account-balances.md#automatically-debit-connected-accounts) is set to `true`.
+
+Time your reversal according to how you choose to handle the dispute:
+
+- If you accept the dispute, you can reverse the transfer immediately.
+- If you challenge the dispute, wait for the dispute outcome before reversing the transfer.
+  - If you win, don’t reverse the transfer.
+  - If you lose, reverse the transfer.
+
+If you reverse the transfer for a disputed payment that you challenge and win, transfering those funds back to a connected account can have unexpected results:
+
+- If your platform has an insufficient balance, the transfer fails. Prevent insufficient balance errors by [adding funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md).
+- [Cross-border transfer restrictions](https://docs.stripe.com/connect/account-capabilities.md#transfers-cross-border) might prevent you from repaying your connected account.
 
 ## Supported parameters
 

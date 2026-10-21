@@ -82,11 +82,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `workspaceID` | `*string` | ➖ | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | :heavy\_minus\_sign: | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -161,9 +161,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [components.CreateGuardrailRequest](../../models/components/createguardrailrequest.mdx) | ✅ | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `request` | [components.CreateGuardrailRequest](../../models/components/createguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -216,9 +216,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail to delete | 550e8400-e29b-41d4-a716-446655440000 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail to delete | 550e8400-e29b-41d4-a716-446655440000 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -270,9 +270,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail to retrieve | 550e8400-e29b-41d4-a716-446655440000 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail to retrieve | 550e8400-e29b-41d4-a716-446655440000 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -331,10 +331,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
-| `updateGuardrailRequest` | [components.UpdateGuardrailRequest](../../models/components/updateguardrailrequest.mdx) | ✅ | N/A | \{ "description": "Updated description", "limit\_usd": 75, "name": "Updated Guardrail Name", "reset\_interval": "weekly" } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
+| `updateGuardrailRequest` | [components.UpdateGuardrailRequest](../../models/components/updateguardrailrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "description": "Updated description", "limit\_usd": 75, "name": "Updated Guardrail Name", "reset\_interval": "weekly" } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -402,11 +402,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -463,10 +463,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkAssignKeysRequest` | [components.BulkAssignKeysRequest](../../models/components/bulkassignkeysrequest.mdx) | ✅ | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `bulkAssignKeysRequest` | [components.BulkAssignKeysRequest](../../models/components/bulkassignkeysrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -525,10 +525,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkUnassignKeysRequest` | [components.BulkUnassignKeysRequest](../../models/components/bulkunassignkeysrequest.mdx) | ✅ | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `bulkUnassignKeysRequest` | [components.BulkUnassignKeysRequest](../../models/components/bulkunassignkeysrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "key\_hashes": \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -594,11 +594,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -656,10 +656,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkAssignMembersRequest` | [components.BulkAssignMembersRequest](../../models/components/bulkassignmembersrequest.mdx) | ✅ | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `bulkAssignMembersRequest` | [components.BulkAssignMembersRequest](../../models/components/bulkassignmembersrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -718,10 +718,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `bulkUnassignMembersRequest` | [components.BulkUnassignMembersRequest](../../models/components/bulkunassignmembersrequest.mdx) | ✅ | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `bulkUnassignMembersRequest` | [components.BulkUnassignMembersRequest](../../models/components/bulkunassignmembersrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "member\_user\_ids": \[ "user\_abc123", "user\_def456" ] } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -787,10 +787,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -856,10 +856,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 

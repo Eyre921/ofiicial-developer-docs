@@ -77,6 +77,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ConvAiStoredSecretDependenciesToolsItems
 
 - `type`: `available` (DependentAvailableToolIdentifier)

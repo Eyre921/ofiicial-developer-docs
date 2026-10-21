@@ -19,6 +19,26 @@ Delete a backup schedule. This does **not** delete any backups that were previou
 
 The ID of the backup schedule to delete.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+pc.backup_schedules.delete(schedule_id="SCHEDULE_ID")
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+await pc.backupSchedules.delete('SCHEDULE_ID');
+```
+
 ```bash curl theme={null}
 curl -sS -o /dev/null -w "%{http_code}\n" -X DELETE \
   "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}" \

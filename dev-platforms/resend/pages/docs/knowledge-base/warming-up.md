@@ -58,25 +58,15 @@ The guide is meant as a general plan, but always pay careful attention to your d
 
 Domain Type
 
-<input type="radio" name="domainType" />
-
 New Domain
-
-<input type="radio" name="domainType" />
 
 Existing Domain
 
 Target Daily Volume
 
-<input type="number" placeholder="e.g., 5000" />
-
 Start Date
 
-<input type="date" />
-
 Target Date (optional)
-
-<input type="date" />
 
 Warm-up Duration
 

@@ -22,7 +22,7 @@ This integration allows you to log hyperparameters, monitor performance regressi
 
 **1. Sign up for Langtrace**
 
-Sign up by visiting [https://langtrace.ai/signup](https://langtrace.ai/signup).
+Sign up by visiting [https://app.langtrace.ai/signup](https://app.langtrace.ai/signup).
 
 **2. Create a project**
 

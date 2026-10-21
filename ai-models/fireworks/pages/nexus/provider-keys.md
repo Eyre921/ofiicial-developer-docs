@@ -4,34 +4,34 @@ source: https://docs.fireworks.ai/nexus/provider-keys
 path: nexus/provider-keys
 ---
 
-Connect an Anthropic, OpenAI, or Amazon Bedrock Provider Key once so FireRouter can call closed models without developers sending the key.
+Connect an Anthropic, OpenAI, or Amazon Bedrock Provider Key once so Nexus Auto can call closed models without developers sending the key.
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
-
-Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [FireRouter](/nexus/firerouter) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When FireRouter selects a closed model, Fireworks sends the request with the stored provider credential.
+Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [Nexus Auto](/nexus/auto) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When Nexus Auto selects a closed model, Fireworks sends the request with the stored provider credential.
 
 > [!NOTE]
 >
 > Provider Keys is not yet available on every account. If **Provider Keys**
 > does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
 > [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
-> Self-serve setup is coming soon. Until then, send a per-request Anthropic or
-> OpenAI header from [APIs and SDKs](/nexus/apis-and-sdks#credentials) or
-> [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). For
-> coding harnesses, review local support in
-> [Harness Compatibility](/nexus/harness-compatibility).
+> Self-serve setup is coming soon.
 
-FireConnect configures the developer's Fireworks credential through `fireconnect login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
+Until then, send a per-request Anthropic or
+OpenAI header from [APIs and SDKs](/nexus/apis-and-sdks#credentials) or
+[LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). For
+coding harnesses, review local support in
+[Which harnesses can send provider keys](/nexus/auto#nexus-cli).
+
+Nexus CLI configures the developer's Fireworks credential through `nexus login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
 
 > [!TIP]
 >
 > **Admin:** connect the provider key once. **Developer:** run
-> `fireconnect login`. **Request:** send only the Fireworks API key.
+> `nexus login`. **Request:** send only the Fireworks API key.
 
 > [!NOTE]
 >
-> Router availability in FireConnect varies by harness. See
-> [Harness Compatibility](/nexus/harness-compatibility) for current support.
+> Nexus Auto support varies by harness. See
+> [Which harnesses can send provider keys](/nexus/auto#nexus-cli) for current support.
 
 > [!NOTE]
 >
@@ -57,7 +57,7 @@ Each provider is always in one of these states:
 
 | State | What it means |
 | - | - |
-| **Connected** | The key is active for router requests to that provider |
+| **Connected** | The key is active for Nexus Auto requests to that provider |
 | **Connecting** | A new binding is propagating |
 | **Disconnecting** | A binding removal is propagating |
 | **Not connected** | No key is set for this provider. |
@@ -100,7 +100,7 @@ Changes typically propagate within 30–60 seconds. The provider may briefly sho
 
 ## Manage keys with `firectl`
 
-You can also connect, replace, remove, and inspect Provider Keys with `firectl`. Use `firectl provider-key` to manage stored keys and `firectl provider-key-binding` to choose which key is active for routing. `firectl firerouter-provider-key` is an alias.
+You can also connect, replace, remove, and inspect Provider Keys with `firectl`. Use `firectl provider-key` to manage stored keys and `firectl provider-key-binding` to choose which key is active for routing. `firectl auto-provider-key` is an alias.
 
 The CLI can also stop using a key for routing without deleting it (`provider-key-binding unbind`). The key remains stored, so you can bind it again without re-uploading it.
 

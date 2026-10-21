@@ -78,7 +78,20 @@ Validation Error
 
 ### McpServerConfigUpdateRequestModelRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### McpServerConfigUpdateRequestModelRequestMeta
+
+- string
+- integer
+- double
+- boolean
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### ConvAISecretLocator
 
@@ -89,6 +102,9 @@ Used to reference a secret from the agent's secret store.
 ### McpServerConfigUpdateRequestModelAuthConnection
 
 Optional auth connection to use for authentication with this MCP server
+
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
 
 ### MCPServerConfig-Output
 
@@ -184,6 +200,9 @@ References an environment variable of type 'auth_connection' by label. At runtim
 
 The URL of the MCP server, if this contains a secret please store as a workspace secret, otherwise store as a plain string. Must use https
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+
 ### MCPToolApprovalHash
 
 Model for storing tool approval hashes for per-tool approval.
@@ -197,13 +216,32 @@ Model for storing tool approval hashes for per-tool approval.
 
 The secret token (Authorization header) stored as a workspace secret or in-place secret
 
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIUserSecretDBModel: ConvAIUserSecretDBModel
+
 ### McpServerConfigOutputRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### McpServerConfigOutputRequestMeta
+
+- string
+- integer
+- double
+- boolean
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### McpServerConfigOutputAuthConnection
 
 Optional auth connection to use for authentication with this MCP server
+
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
 
 ### MCPToolConfigOverride-Output
 
@@ -226,6 +264,9 @@ Optional auth connection to use for authentication with this MCP server
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ConvAIUserSecretDBModel
 
 User-specific secret model that are not shared with other users in a workspace.
@@ -238,6 +279,10 @@ User-specific secret model that are not shared with other users in a workspace.
 ### McpToolConfigOverrideOutputToolCallSound
 
 Overrides the server's tool_call_sound setting for this tool. A sound name plays that sound; 'off' overrides to no sound (silence); null means do not override (inherit the server default).
+
+- ToolCallSoundType: enum
+  - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+- "off"
 
 ### DynamicVariableAssignment
 
@@ -268,6 +313,13 @@ Configuration for extracting values from tool responses and assigning them to dy
 ### WorkflowToolLocatorSchemaOverridesDiscriminatorMappingConstantConstantValue
 
 The constant value to use
+
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
 
 ### UnitTestToolCallParameter
 

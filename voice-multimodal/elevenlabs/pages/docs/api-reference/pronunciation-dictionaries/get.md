@@ -58,6 +58,9 @@ Validation Error
 
 ### GetPronunciationDictionaryWithRulesResponseModelRulesItems
 
+- PronunciationDictionaryAliasRuleResponseModel: PronunciationDictionaryAliasRuleResponseModel
+- PronunciationDictionaryPhonemeRuleResponseModel: PronunciationDictionaryPhonemeRuleResponseModel
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -82,6 +85,9 @@ Validation Error
 - `word_boundaries` (boolean, optional, default: true) — Whether the rule only matches at word boundaries.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

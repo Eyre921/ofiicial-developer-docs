@@ -11,6 +11,29 @@ Both successful and failed operations are retained for 30 days after completion.
 
 Use the `operation_type` and `status` query parameters to filter results.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+for operation in pc.assistants.list_operations(assistant_name="example-assistant"):
+    print(operation.operation_id, operation.operation_type, operation.status)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const { operations } = await assistant.listOperations();
+console.log(operations);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

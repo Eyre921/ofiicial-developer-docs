@@ -4,346 +4,83 @@ source: https://docs.stripe.com/get-started/data-migrations/pan-import.md
 path: get-started/data-migrations/pan-import
 ---
 
-# Request a payments data import
+# Import payment data to Stripe
 
-Securely import sensitive payments data.
+Securely migrate your customers and their saved payment details from your previous processor to Stripe.
 
-Stripe enables you to retain your existing customer and payment data when you migrate to Stripe. We work with your team and current payment provider, as needed, to securely migrate your information.
+We work with your team and your current payment provider, where needed, to move your customer and payment data securely. During the migration, you can start accepting and charging new customers on Stripe while continuing to charge existing customers through your current processor.
 
-This process allows you to accept and charge new customers on Stripe and continue charging your existing customers with your current processor until the migration is complete. Your customers incur no downtime. After the migration process completes, you can process all payments on Stripe.
+Choose the appropriate migration process.
 
-This guide describes how to migrate to Stripe from another payment processor or a custom payment solution. You’ll also build a Stripe integration that you can test in a sandbox before you accept real payments. If you have any questions about the migration process or integrating with Stripe, see [support](https://support.stripe.com/topics/migration). If you haven’t already, [review Stripe pricing](https://stripe.com/pricing).
+| Your situation | What to do |
+| --- | --- |
+| You’re moving payment data from *another processor* (or a custom solution) *to Stripe* | Follow the [steps below](https://docs.stripe.com/get-started/data-migrations/pan-import.md#process-overview) and the Stripe Data Migrations team will execute the import for you. |
+| You need to move data *between two Stripe accounts* | Use our [self-serve copy](https://docs.stripe.com/get-started/data-migrations/pan-copy-self-serve.md) tool, which you can initiate from your Stripe Dashboard. |
+| You need to migrate *subscriptions* | Migrate subscriptions using the [Billing migration toolkit](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) or [the API](https://docs.stripe.com/billing/subscriptions/import-subscriptions.md).
 
-If you have to transfer sensitive payment information, you must complete a [Data migration request](https://support.stripe.com/questions/request-a-data-migration) before you migrate. We can help you do so in a secure and *PCI-compliant* (Any party involved in processing, transmitting, or storing credit card data must comply with the rules specified in the Payment Card Industry (PCI) Data Security Standards. PCI compliance is a shared responsibility and applies to both Stripe and your business) way.
+Cancel your previous subscriptions as soon as your Stripe subscriptions become active or you’ll bill your customers twice. |
 
-## Review Stripe integration features
+## Import process overview 
 
-Stripe simplifies your security requirements so that your customers don’t have to leave your site to complete a payment. We do this through a combination of client-side and server-side steps:
+This guide explains how to migrate to Stripe from another payment processor or a custom payment solution.
 
-1. From your website running in the customer’s browser, Stripe securely collects their payment details.
-2. Stripe responds with a representative token.
-3. The browser submits the token to your server, along with any other form data.
-4. Your server-side code uses that token in an API request (for example, when [creating a PaymentIntent](https://docs.stripe.com/api/payment_intents/create.md)).
+| Step | Task | What happens | Owner |
+| --- | --- | --- | --- |
+| 1 | [Prepare for the migration](https://docs.stripe.com/get-started/data-migrations/pan-import.md#prepare-migration) | Set up your Stripe account according to your business requirements and begin accepting new payments when ready. | You |
+| 2 | [Request the migration](https://docs.stripe.com/get-started/data-migrations/pan-import.md#request-migration) | Request a data export from your previous processor and submit an [import request](https://support.stripe.com/contact/email?topic=migrations) to Stripe. | You |
+| 3 | [Transfer the data](https://docs.stripe.com/get-started/data-migrations/pan-import.md#transfer-data) | Stripe shares SFTP credentials with your previous processor using a PGP key or mobile number. Your previous processor encrypts your data with the Stripe PGP key and uploads it to that server. | Stripe and your previous processor |
+| 4 | [Import execution](https://docs.stripe.com/get-started/data-migrations/pan-import.md#import-execution) | Stripe reviews the uploaded data and sends you a validation summary. You validate and approve the migration. Stripe imports the data and returns a mapping file. | Stripe and you |
+| 5 | [Post import](https://docs.stripe.com/get-started/data-migrations/pan-import.md#post-import) | Update your integration with the mapping file, switch payments to Stripe for existing customers, then monitor payment performance. | You |
 
-This approach simplifies your website’s checkout flow, while sensitive payment information never touches your server. This allows you to operate in accordance with [PCI-compliance](https://docs.stripe.com/security/guide.md#validating-pci-compliance) regulations, which can save you time and provide financial benefits.
-![Stripe payment process flow](https://b.stripecdn.com/docs-statics-srv/assets/charge-workflow.6d5c025c1b1e62a53803f1908104e0a8.png)
+> [Bacs imports](https://docs.stripe.com/get-started/data-migrations/payment-method-imports.md?payment-methods=bacs) involve an additional step of getting sponsor bank approval. After you submit a Bacs import request, our team guides you through the requirements. End-to-end Bacs migrations typically take 4–6 weeks, while other requests complete within 10 business days after we receive all requirements.
 
-The Stripe payment process flow
+## Prepare for the migration
 
-Compared to other payment processors, a Stripe integration can differ in the following ways:
+### Set up your Stripe account 
 
-- Your customer never leaves your website.
-- Token creation isn’t tied to a specific product or amount.
-- It doesn’t require you to create of a client-side key on-demand. You use a set, publishable [API key](https://docs.stripe.com/keys.md) instead.
+You need a Stripe account to initiate the migration process. Follow these instructions to [set up your account](https://docs.stripe.com/get-started/account/set-up.md), and contact [Stripe support](https://support.stripe.com/topics/migration) if you need assistance. Learn more about [testing your integration here](https://docs.stripe.com/testing.md).
 
-## Create a Stripe account
+> Stripe offers optimization features, including card account updater (CAU), network tokens, and Adaptive Acceptance, that can improve authorization rates on migrated cards. See [Authorization Boost](https://stripe.com/authorization-boost) for details.
 
-Before integrating with Stripe, you must create a Stripe account.
+### Decide how to map customers 
 
-1. [Create an account](https://dashboard.stripe.com/register) by entering your email address, full name, country, and creating a password.
-2. Fill out your business profile.
-3. In the Dashboard, click **Verify your email**. Stripe sends a verification email to your email address.
-4. Verify your email address.
+Imported payment methods must be attached to a [Customer](https://docs.stripe.com/api/customers/object.md) object. You have two options:
 
-Coding agents should install the Stripe CLI (`npm i -g @stripe/cli`) and run the command `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. No account registration required.
+- **Create new `Customer` objects**: This is the default process. We recommend it if none of your existing customers already exist in Stripe.
+- **Map to existing customers**: To avoid duplicate objects, provide a CSV [mapping file](https://docs.stripe.com/get-started/data-migrations/map-payment-data.md) of your previous processor’s customer IDs to your Stripe [customer IDs](https://docs.stripe.com/api/customers/object.md#customer_object-id). We attach the payment methods to these customers during the migration.
 
-## Build a Stripe integration
+By default, Stripe imports all customers and payment methods in the data file. If you only want to import a subset, provide a CSV containing only the customer IDs or [payment method](https://docs.stripe.com/api/payment_methods/object.md) IDs you want to include when you submit the [migrations intake form](https://support.stripe.com/contact/email?topic=migrations).
 
-For all new customer tokens (not imported), implement the following:
+## Request the migration
 
-1. Create [PaymentMethod](https://docs.stripe.com/api/payment_methods/object.md) objects and attach them to [Customer](https://docs.stripe.com/api/customers/object.md) objects to save payment information.
+### Request a data export from your previous processor 
 
-2. Collect and tokenize customer card information with one of our recommended [payments integrations](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability). Build your Stripe integration before you ask your payment processor to transfer data to Stripe. For most startups, we recommend building an [Embedded Checkout](https://docs.stripe.com/payments/checkout/how-checkout-works.md) integration, a payment form you embed in your website.
+Processors differ in how they handle export requests—some charge a fee, and some require specific forms. Start by contacting your current processor’s support team. You can send them this [sample message](https://support.stripe.com/questions/request-data-from-a-current-processor-for-a-data-import-to-stripe).
 
-   To set up this integration, see the [Embedded Checkout Quickstart](https://docs.stripe.com/checkout/embedded/quickstart.md) and accept payments for one-time and subscription payments (if applicable).
+> Processors can take anywhere from a few days to several months to produce a final export, so build this into your migration timeline. After Stripe receives valid data, imports typically complete within 10 business days (larger datasets can take longer). Stripe reviews the data, identifies any problems, and works with you and your previous processor to resolve them. You review and approve a summary of the import before it’s finalized.
 
-3. [Create PaymentIntents](https://docs.stripe.com/api/payment_intents/create.md) to charge these new customers.
+### Request a data import from Stripe 
 
-Using this approach, you can accept payments from your new customers on Stripe without impacting your current customers in your existing processor during the migration process.
+After you request the data from your previous processor, submit a migration request to Stripe using our [intake form](https://support.stripe.com/contact/email?topic=migrations). For ownership verification purposes, you must be logged in to your Stripe account to access the form.
 
-### Integration considerations
-
-Designing your integration before you ask your payment processor to transfer data to Stripe is the most efficient way to handle imported data. Some actions you can take before requesting an import include:
-
-- [Remap customer records](https://docs.stripe.com/get-started/data-migrations/pan-import.md#remap-customer-ids)
-- [Protect updates to saved payment methods during the migration](https://docs.stripe.com/get-started/data-migrations/pan-import.md#handle-card-updates).
-- Enable all [optimizations](https://docs.stripe.com/payments/analytics/optimization.md), such as Adaptive Acceptance, card account updater (CAU), and network tokens.
-
-## Optional: Map customers to Stripe IDs
-
-If you prefer, you can configure your integration to [import the payment method data from prior records into existing Stripe Customer objects](https://docs.stripe.com/get-started/data-migrations/map-payment-data.md). Doing so prevents the migration from creating a new (possibly duplicate) customer in your Stripe account for each unique customer ID in the files we receive from your prior processor.
-
-After migrating, you might still have to update some records to correspond with the new Stripe [Customer](https://docs.stripe.com/api/customers.md) identifier, if:
-
-- You created the Stripe `Customer` before migration, then we imported the payment information to update this customer record.
-- We imported the payment information as a new customer record.
-
-For example, customer jenny.rosen@example.com might have ID `42` in your database, corresponding to ID `1893` in your previous processor’s system, but is ID `cus_12345` in your Stripe account. In this case, you must now map your ID `42` to the Stripe ID `cus_12345` in your database. Stripe provides a post-import [mapping file](https://docs.stripe.com/get-started/data-migrations/pan-import.md#update-integration) to help you identify required remapping.
-
-## Optional: Protect updates to saved payment methods
-
-If customers update their payment information with your previous processor in the window between transferring the data and completing the import, those changes are lost.
-
-Update your site’s process for handling updates to saved payments to prevent errors or billing issues for your customers. This includes preparations to perform a self-migration for any customer without a stored Stripe `Customer` ID:
-
-1. Create a new [Customer object](https://docs.stripe.com/api/customers/object.md) in Stripe for your customer.
-2. Attach the payment method to the `Customer` object.
-3. If necessary, [migrate subscriptions](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md).
-
-After migration completes, Stripe [automatically handles card-triggered updates](https://docs.stripe.com/payments/cards/overview.md#automatic-card-updates), such as expiration date changes.
-
-## Test your Stripe integration
-
-To test your embedded payment form integration:
-
-1. Create an embedded Checkout Session and mount the payment form on your page.
-2. Fill out the payment details with a method from the table below.
-   - Enter any future date for card expiration.
-   - Enter any 3-digit number for CVC.
-   - Enter any billing postal code.
-3. Click **Pay**. You’re redirected to your `return_url`.
-4. Go to the Dashboard and look for the payment on the [Transactions page](https://dashboard.stripe.com/test/payments?status%5B0%5D=successful). If your payment succeeded, you’ll see it in that list.
-5. Click your payment to see more details, like a Checkout summary with billing information and the list of purchased items. You can use this information to fulfill the order.
-
-Learn more about [testing your integration](https://docs.stripe.com/testing.md).
-
-#### Cards
-
-| Card number | Scenario | How to test |
-| --- | --- | --- |
-| 4242424242424242 | The card payment succeeds and doesn’t require authentication. | Fill out the credit card form using the credit card number with any expiration, CVC, and postal code. |
-| 4000002500003155 | The card payment requires *authentication* (Strong Customer Authentication (SCA) is a regulatory requirement in effect as of September 14, 2019, that impacts many European online payments. It requires customers to use two-factor authentication like 3D Secure to verify their purchase). | Fill out the credit card form using the credit card number with any expiration, CVC, and postal code. |
-| 4000000000009995 | The card is declined with a decline code like `insufficient_funds`. | Fill out the credit card form using the credit card number with any expiration, CVC, and postal code. |
-| 6205500000000000004 | The UnionPay card has a variable length of 13-19 digits. | Fill out the credit card form using the credit card number with any expiration, CVC, and postal code. |
-
-#### Wallets
-
-| Payment method | Scenario | How to test |
-| --- | --- | --- |
-| Alipay | Your customer successfully pays with a redirect-based and [immediate notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method. | Choose any redirect-based payment method, fill out the required details, and confirm the payment. Then click **Complete test payment** on the redirect page. |
-
-#### Bank redirects
-
-| Payment method | Scenario | How to test |
-| --- | --- | --- |
-| Bancontact, EPS, iDEAL, and Przelewy24 | Your customer fails to authenticate on the redirect page for a redirect-based and immediate notification payment method. | Choose any redirect-based payment method, fill out the required details, and confirm the payment. Then click **Fail test payment** on the redirect page. |
-| Pay by Bank | Your customer successfully pays with a redirect-based and [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method. | Choose the payment method, fill out the required details, and confirm the payment. Then click **Complete test payment** on the redirect page. |
-| Pay by Bank | Your customer fails to authenticate on the redirect page for a redirect-based and delayed notification payment method. | Choose the payment method, fill out the required details, and confirm the payment. Then click **Fail test payment** on the redirect page. |
-| BLIK | BLIK payments fail in a variety of ways—immediate failures (for example, the code is expired or invalid), delayed errors (the bank declines) or timeouts (the customer didn’t respond in time). | Use email patterns to [simulate the different failures.](https://docs.stripe.com/payments/blik/accept-a-payment.md#simulate-failures) |
-
-#### Bank debits
-
-| Payment method | Scenario | How to test |
-| --- | --- | --- |
-| BECS Direct Debit | Your customer successfully pays with BECS Direct Debit. | Fill out the form using the account number `900123456` and BSB `000000`. The confirmed PaymentIntent initially transitions to `processing`, then transitions to the `succeeded` status 3 minutes later. |
-| BECS Direct Debit | Your customer’s payment fails with an `account_closed` error code. | Fill out the form using the account number `111111113` and BSB `000000`. |
-| SEPA Direct Debit | Your customer successfully pays with SEPA Direct Debit. | Fill out the form using the account number `AT321904300235473204`. The confirmed PaymentIntent initially transitions to processing, then transitions to the succeeded status three minutes later. |
-| SEPA Direct Debit | Your customer’s payment intent status transitions from `processing` to `requires_payment_method`. | Fill out the form using the account number `AT861904300235473202`. |
-
-#### Vouchers
-
-| Payment method | Scenario | How to test |
-| --- | --- | --- |
-| Boleto, OXXO | Your customer pays with a Boleto or OXXO voucher. | Select Boleto or OXXO as the payment method and submit the payment. Close the dialog after it appears. |
-
-See [Testing](https://docs.stripe.com/testing.md) for additional information to test your integration.
-
-## Request and confirm the migration details
-
-1. After you complete your integration and are ready to process payments on Stripe, [request your payment data from your previous processor](https://support.stripe.com/questions/request-data-from-a-current-processor-for-a-data-import-to-stripe). Many processors require the account owner to request a data transfer.
-2. Log in to your Stripe account to submit the [migration request form](https://support.stripe.com/questions/request-a-data-migration) to request your import migration.
-3. Engage with Stripe through the authenticated email thread we create upon receipt of your migration request.
+After you submit the form, you receive a confirmation that we received it. Our team follows up by email within 3 business days to answer any questions and provide next steps for your migration. We don’t offer phone or chat support for data migration requests.
 
 > Never send sensitive credit card details or customer information directly to Stripe. If you have this data, let us know in your migration request form so we can help you securely transfer your data.
 
-Stripe can import your customer billing address information and payment details. You can also:
+## Transfer the data
 
-- [Migrate specific payment types](https://docs.stripe.com/get-started/data-migrations/payment-method-imports.md)
-- [Migrate subscriptions](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions.md) or import them using the [Billing Migration Toolkit](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md).
+### SFTP credentials 
 
-Your previous processor might take a few days or several weeks to transfer the final data to Stripe. Allow for this transition time in your migration plan. After your previous processor transfers your data, Stripe reviews the data and identifies any problems with the import. We work with you and your previous processor to correct any issues. We then share a summary of the import for your final review and approval.
+Stripe creates a dedicated SFTP server for each migration request. To securely deliver the SFTP credentials, Stripe requires one of the following:
 
-After your approval, Stripe imports the data into your account. We create a [Customer](https://docs.stripe.com/api.md#customer_object) for each unique customer in the transferred data file, and create and attach the customer’s cards as [Card](https://docs.stripe.com/api.md#card_object) or [PaymentMethod](https://docs.stripe.com/api/payment_methods/object.md) objects. If the transferred data specifies the customer’s default card, we set that as the customer’s [default payment method](https://docs.stripe.com/api.md#customer_object-default_source) for charges and [subscription](https://docs.stripe.com/api/subscriptions/create.md) payments.
+1. **Your previous processor’s public PGP key**: Stripe encrypts the SFTP credentials with this key and sends them directly to your processor.
+2. **A mobile phone number, including the country code**: Stripe texts you the SFTP password and emails you the username in the migration thread.
 
-If your Stripe account has accumulated significant customer records by the time you migrate, consider [mapping import data into existing Stripe Customer objects](https://docs.stripe.com/get-started/data-migrations/map-payment-data.md) instead of creating new `Customer` objects.
+If Stripe doesn’t already have this information on file for your processor, we outline the required steps after you submit your request.
 
-Stripe typically imports data within 10 business days of receiving the correct data from your previous processor, along with any supplementary data files you want to share with our team.
+### Data encryption 
 
-## Update your integration
-
-After completing the import, Stripe sends you a choice of a CSV or JSON file that shows the mapped relationship between your current processor’s IDs and the imported Stripe object IDs. Parse this mapping file and update your database accordingly. Make sure your integration [handled any card updates](https://docs.stripe.com/get-started/data-migrations/pan-import.md#handle-card-updates) that took place during the transition.
-
-### Post import mapping file
-
-After you update your integration with this mapping file, you can begin charging all of your customers on Stripe.
-
-```
-{
-  "1893": {
-    "cards": {
-      "2600": {
-        "id": "card_2222222222",
-        "fingerprint": "x9yW1WE4nLvl6zjg",
-        "last4": "4242",
-        "exp_month": 1,
-        "exp_year": 2020,
-        "brand": "Visa"
-      },
-      "3520": {
-        "id": "card_3333333333",
-        "fingerprint": "nZnMWbJBurX3VHIN",
-        "last4": "0341",
-        "exp_month": 6,
-        "exp_year": 2021,
-        "brand": "Mastercard"
-      }
-    },
-    "id": "cus_abc123def456"
-  }
-}
-```
-
-The example JSON mapping above shows:
-
-- Imported customer ID 1893 as a new Stripe `Customer` with ID `cus_abc123def456`.
-- Imported customer card ID 2600 as a new Stripe `Card` with ID `card_2222222222`.
-- Imported customer card ID 3520 as a new Stripe `Card` with ID `card_3333333333`.
-
-Stripe can import card data as [PaymentMethods](https://docs.stripe.com/api.md#payment_method_object) instead of `Card` objects if you specify it in your migration request. The following examples show the mapping files for different types of payment information imports.
-
-#### Card as card_ CSV
-
-```csv
-old_customer_id,customer_id,old_card_id,card_id,card_fingerprint,card_last4,card_exp_month,card_exp_year,card_brand
-old_cus_100,cus_abc123def456,old_src_100,card_2222222222,x9yW1WE4nLvl6zjg,4242,09,2024,Visa
-```
-
-#### Card as PaymentMethod (pm_) CSV
-
-```
-old_id,source_old_id,created_customer,source_new_id,card_fingerprint,card_last4,card_exp_month,card_exp_year,card_brand
-old_cus_100,old_src_100,cus_abc123def456,pm_2222222222,x9yW1WE4nLvl6zjg,4242,09,2024,Visa
-```
-
-#### ACH as bank account (ba_) CSV
-
-```
-old_customer_id,customer_id,old_bank_account_id,bank_account_id,bank_account_fingerprint,bank_account_last4
-old_cus_100,cus_abc123def456,old_src_100,ba_2222222222,x9yW1WE4nLvl6zjg,4242
-```
-
-#### ACH as PaymentMethod (pm_) CSV
-
-```
-old_customer_id,customer_id,old_bank_account_id,bank_account_id,bank_account_fingerprint,bank_account_last4
-old_cus_100,cus_abc123def456,old_src_100,pm_2222222222,x9yW1WE4nLvl6zjg,4242
-```
-
-#### BACs as PaymentMethod (pm_) CSV
-
-```
-old_id,source_old_id,created_customer,source_new_id,mandate_id
-old_cus_100,old_src_100,cus_abc123def456,pm_2222222222,mandate_1MvojA2eZvKYlo2CvqTABjZs
-```
-
-#### SEPA as PaymentMethod (pm_) CSV
-
-```
-old_customer_id,customer_id,old_source_id,source_id,type,bank_code,branch_code,country,fingerprint,last4,mandate_reference,mandate_url,mandate_id
-old_cus_100,cus_abc123def456,old_src_100,pm_2222222222,sepa_debit,1111,000,DE,x9yW1WE4nLvl6zjg,4242,ref_000,example.com,mandate_1MvojA2eZvKYlo2CvqTABjZs
-```
-
-## Monitor your imported payments
-
-After migrating, monitor your payments performance to make sure the acceptance rate for imported payment data matches your expectations.
-
-Payment acceptance (or issuer authorization rate) is the percentage of transactions that issuers successfully authorize out of all transactions submitted for payment. This metric excludes blocked transactions (for example due to Radar rules) because those are never submitted for authorization.
-
-In both your general approach and post migration, align your [payment authorization optimization](https://stripe.com/guides/optimizing-authorization-rates) goals with your business objectives. For example, a digital goods business with low unit cost might set their risk level to block fewer payments. Consider the potential effects:
-
-- Increased conversion rates due to less friction.
-- Increased exposure to fraud due to riskier payments getting through.
-- Lower raw issuer authorization rates due to fraud model blocks by the issuer.
-
-Make sure you provide accurate data (such as cardholder name, billing address, and email). Reflecting the cardholder’s intent maximizes successful authorization potential.
-
-### Identify cards on file
-
-Payment data migrations involve *cards on file* (cards saved for a future [merchant-initiated or off session](https://support.stripe.com/questions/what-is-the-difference-between-on-session-and-off-session-and-why-is-it-important) payment for the same customer). Make sure you store imported payment data and label payments using those cards on file with the correct `off_session` parameter. If you improperly identify cards on file:
-
-- Issuers who can’t confirm a cardholder’s consent to future or recurring payments might [decline](https://docs.stripe.com/declines.md#issuer-declines) them.
-- The payment data might be ineligible for certain Stripe optimization products such as Card account updater (CAU) and Network tokens (NT).
-
-### Monitor decline reasons for optimization opportunities
-
-Following your migration, your [issuer decline reasons](https://docs.stripe.com/declines/codes.md) can help you identify whether migrated payment data is transacting as expected. Spikes in certain types of declines might benefit from the following optimization products:
-
-- Card account updater: Stripe partnerships with card networks allow us to automatically obtain updates for expired or replaced cards in both real time and the background.
-- **Automatic retries** (Dunning): Use caution because retrying numerous cards (such as after a migration) can appear suspicious to issuers. If you use Stripe [Smart retries](https://stripe.com/guides/optimizing-authorization-rates#smart-retries) for your billing payments, our AI model analyzes decline code, payment method updates, and bank risk threshold activity to retry recurring revenue payments more strategically.
-- [Network tokens](https://stripe.com/guides/optimizing-authorization-rates#network-tokens): Replace a specific payment account number (PAN) with a secure token from the card network to make sure PAN updates (like renewal or replacement) automatically reflect in the token.
-- [Adaptive acceptance](https://stripe.com/guides/optimizing-authorization-rates#adaptive-acceptance): Stripe uses AI to assess the effect of minor adjustments (such as formatting) to an authorization request in real time, then refines the payment retry before returning the original decline to the customer.
-- **Customer outreach**: Asking your customer to log in and re-enter or re-verify their payment details often re-establishes your business’s trustworthiness with the customer and the payment providers. Consider notifying customers through channels other than email, such as text messages or in-app notifications.
-
-The following table shows which optimization products offer improvement for a variety of decline reasons.
-
-| Decline codes might include | Migration effect | Do | Don’t |
-| --- | --- | --- | --- |
-| `incorrect_number`
-
-`invalid_number`
-
-`expired_card` | Updates to card data during the natural migration lag can cause saved card data to be out of date. | - Card account updater
-- Network tokens
-- Adaptive acceptance
-- Contact customer | Retry |
-| `generic_decline`
-
-`do_not_honor` | Changes to your statement descriptor or other identification markers might trigger issuer risk models or confuse your customer. | - Retry
-- Network tokens
-- Adaptive acceptance
-- Contact customer | Card account updater |
-| `transaction_not_allowed`
-
-`try_again_later`
-
-`authentication_required`
-
-`incorrect_cvc` | Some migrated payment data might be missing initial card validation details, such as the network token or original transaction ID. | - Card account updater
-- Retry
-- Adaptive acceptance
-- Contact customer | Network tokens |
-| `lost_card`
-
-`stolen_card`
-
-`invalid_account`
-
-`pickup_card`
-
-`card_not_supported` | Customers might report lost or stolen cards during a migration lag. Look out for a special CONTAC event in conjunction with these declines. | - Network tokens
-- Contact customer | - CAU
-- Retry1
-- Adaptive acceptance |
-
-1 Retrying lost or stolen payment data can appear suspicious to card issuers.
-
-## Optional: Migrate subscriptions
-
-Migrations that involve subscriptions typically involve these stages:
-
-1. Set up your [billing integration](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md).
-
-2. [Migrate your customer and payment processor information](https://docs.stripe.com/get-started/data-migrations/pan-import.md#request-migration).
-
-3. [Import your subscriptions to Stripe Billing](https://docs.stripe.com/billing/subscriptions/migrate-subscriptions.md).
-
-   You can import existing subscriptions by using either the [Subscriptions API](https://docs.stripe.com/billing/subscriptions/import-subscriptions.md) or the Dashboard’s [Billing migration toolkit](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md).
-
-4. After leaving your payment processor, confirm they canceled all automatic billing of your customers.
-
-## Migration PGP key
-
-If you’re unfamiliar with PGP, see [GPG](https://gnupg.org/) and start by [importing a public key](https://www.gnupg.org/gph/en/manual.html#AEN84). After you familiarize yourself with the basics of PGP, use the following PGP key to encrypt sensitive data (such as credit card information) for PCI-compliant migration.
+For security purposes, all data uploaded to Stripe’s SFTP server must be encrypted with the Stripe public PGP key. If you’re unfamiliar with PGP, see [GPG](https://gnupg.org/) and start by [importing a public key](https://www.gnupg.org/gph/en/manual.html#AEN84).
 
 ### PGP migration key
 
@@ -480,21 +217,159 @@ BJk0jHCnxygA+4LXkoqa/VkgZaYsaXE=
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-This creates `FILENAME.gpg` with the following information:
+| Field | Value |
+| --- | --- |
+| Key ID | `9C78B7620C1E99AD` |
+| Key type | `RSA` |
+| Key size | `4096 bits` |
+| Fingerprint | `AEBF 7C48 38C4 4D2F DC99 A3F9 9C78 B762 0C1E 99AD` |
+| User ID | `Stripe Import Key (PCI) <support-migrations@stripe.com>` |
 
-- Key ID: `9C78B7620C1E99AD`
-- Key type: `RSA`
-- Key size: `4096 bits`
-- Fingerprint: `AEBF 7C48 38C4 4D2F DC99 A3F9 9C78 B762 0C1E 99AD`
-- User ID: `Stripe Import Key (PCI) <support-migrations@stripe.com>`
-
-After you import our key, you can encrypt files to send by running this command in your command line prompt:
+After importing the key, you can encrypt your file by running:
 
 ```bash
 gpg --encrypt --recipient 9C78B7620C1E99AD FILENAME
 ```
 
-For more details on providing encrypted data to Stripe, see [Upload supplementary data](https://docs.stripe.com/get-started/data-migrations/supplementary-data.md).
+This outputs `FILENAME.gpg`, which you can upload to the dedicated SFTP server.
+
+### File format requirements 
+
+Use CSV format and preserve identifiers, including leading zeros. Spreadsheet applications can alter these values when they treat them as numbers. See our [complete file format guidelines](https://docs.stripe.com/get-started/data-migrations/payment-method-imports.md) for details.
+
+Stripe can import your customers’ saved payment details and billing address information, including cards, ACH Direct Debit, Bacs Direct Debit, SEPA Direct Debit, and pre-authorized debits (PADs). See [payment method imports](https://docs.stripe.com/get-started/data-migrations/payment-method-imports.md) for the required fields and details for each payment method.
+
+Stripe can’t import:
+
+- **Card security codes (CVC)**: PCI DSS rules prohibit storing the security code after a transaction is authorized, and the CVC isn’t required to charge a saved card.
+- **Data your previous processor never stored**: Stripe can only import the data that’s provided.
+- **Subscriptions, invoices, and other billing data**: You can migrate subscriptions using the [Billing migration toolkit](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md) or [the API](https://docs.stripe.com/billing/subscriptions/import-subscriptions.md). For more information, contact [billing-migrations@stripe.com](mailto:billing-migrations@stripe.com).
+
+## Import execution
+
+After your previous processor uploads the data, Stripe reviews it, works with you to resolve any issues, and shares a validation summary for your approval.
+
+During validation, you might need to confirm the last four digits of the payment method for two of your customer IDs. This verifies that the received data aligns with your expectations.
+
+After your explicit approval, Stripe executes the import, creating `Customer` and payment method objects in your account. Imports typically complete within 10 business days of Stripe receiving correct data. Larger datasets can take longer.
+
+When the import completes, Stripe returns a [mapping file](https://docs.stripe.com/get-started/data-migrations/pan-import.md#update-integration) (CSV or JSON) linking your previous processor’s IDs to your new Stripe IDs.
+
+## Post import
+
+### Update your integration 
+
+Parse the mapping file that Stripe returns after the import and update your database accordingly. After you update your integration with this mapping file, you can begin charging all of your customers on Stripe.
+
+```
+{
+  "1893": {
+    "cards": {
+      "2600": {
+        "id": "card_2222222222",
+        "fingerprint": "x9yW1WE4nLvl6zjg",
+        "last4": "4242",
+        "exp_month": 1,
+        "exp_year": 2020,
+        "brand": "Visa"
+      },
+      "3520": {
+        "id": "card_3333333333",
+        "fingerprint": "nZnMWbJBurX3VHIN",
+        "last4": "0341",
+        "exp_month": 6,
+        "exp_year": 2021,
+        "brand": "Mastercard"
+      }
+    },
+    "id": "cus_abc123def456"
+  }
+}
+```
+
+The example JSON mapping above shows:
+
+- Imported customer ID 1893 as a new Stripe `Customer` with ID `cus_abc123def456`.
+- Imported customer card ID 2600 as a new Stripe `Card` with ID `card_2222222222`.
+- Imported customer card ID 3520 as a new Stripe `Card` with ID `card_3333333333`.
+
+Stripe can import card data as [PaymentMethods](https://docs.stripe.com/api/payment_methods/object.md) instead of `Card` objects if you specify it in your migration request. The following examples show the mapping files for different types of payment information imports.
+
+#### Card as card_ CSV
+
+```csv
+old_customer_id,customer_id,old_card_id,card_id,card_fingerprint,card_last4,card_exp_month,card_exp_year,card_brand
+old_cus_100,cus_abc123def456,old_src_100,card_2222222222,x9yW1WE4nLvl6zjg,4242,09,2024,Visa
+```
+
+#### Card as PaymentMethod (pm_) CSV
+
+```
+old_id,source_old_id,created_customer,source_new_id,card_fingerprint,card_last4,card_exp_month,card_exp_year,card_brand
+old_cus_100,old_src_100,cus_abc123def456,pm_2222222222,x9yW1WE4nLvl6zjg,4242,09,2024,Visa
+```
+
+#### ACH as bank account (ba_) CSV
+
+```
+old_customer_id,customer_id,old_bank_account_id,bank_account_id,bank_account_fingerprint,bank_account_last4
+old_cus_100,cus_abc123def456,old_src_100,ba_2222222222,x9yW1WE4nLvl6zjg,4242
+```
+
+#### ACH as PaymentMethod (pm_) CSV
+
+```
+old_customer_id,customer_id,old_bank_account_id,bank_account_id,bank_account_fingerprint,bank_account_last4
+old_cus_100,cus_abc123def456,old_src_100,pm_2222222222,x9yW1WE4nLvl6zjg,4242
+```
+
+#### Bacs as PaymentMethod (pm_) CSV
+
+```
+old_id,source_old_id,created_customer,source_new_id,mandate_id
+old_cus_100,old_src_100,cus_abc123def456,pm_2222222222,mandate_1MvojA2eZvKYlo2CvqTABjZs
+```
+
+#### SEPA as PaymentMethod (pm_) CSV
+
+```
+old_customer_id,customer_id,old_source_id,source_id,type,bank_code,branch_code,country,fingerprint,last4,mandate_reference,mandate_url,mandate_id
+old_cus_100,cus_abc123def456,old_src_100,pm_2222222222,sepa_debit,1111,000,DE,x9yW1WE4nLvl6zjg,4242,ref_000,example.com,mandate_1MvojA2eZvKYlo2CvqTABjZs
+```
+
+### Maximize authorization rates 
+
+Your Stripe account has its own merchant identifier (MID), which differs from your previous MID. Because issuers might not recognize the new MID when you begin charging customers, you might experience a temporary increase in declined payments, which can appear as `generic_decline`, `do_not_honor`, `transaction_not_allowed`, or `try_again_later`.
+
+To reduce these declines, we recommend ramping up your volume rather than switching everything at once, and sending your highest-quality traffic first: one-time and customer-initiated payments before recurring ones, and domestic before international. Learn more about [maintaining payments performance when adopting Stripe](https://stripe.com/guides/maintaining-payments-performance-when-adopting-stripe#introduction).
+
+For a detailed breakdown of decline codes, causes, and recommended actions, see [Optimizing authorization rates](https://stripe.com/guides/optimizing-authorization-rates).
+
+### Migration timeline 
+
+After Stripe receives all valid data, the standard processing time is 10 business days. Imports exceeding 1M records might take longer, and [Bacs migrations](https://docs.stripe.com/get-started/data-migrations/payment-method-imports.md?payment-methods=bacs) take 4–6 weeks. The primary variable is your previous processor’s export timeline, which can range from days to months. We recommend [requesting the data export](https://docs.stripe.com/get-started/data-migrations/pan-import.md#request-data-export) from your previous processor as early as possible.
+
+### Problems obtaining processor data 
+
+Check your terms and conditions with your previous processor, because they might be contractually obligated to release your data on request. If you’re having difficulty, you can add us to your communication thread with them and we’ll help facilitate the conversation.
+
+### Data Transfer Agreement requests 
+
+The Stripe PCI DSS compliance is sufficient for a secure data transfer, so a your previous processor doesn’t need you to sign a Data Transfer Agreement (DTA) to be compliant. If your processor insists that you sign one, we can review the agreement with our Legal team on a case-by-case basis, though this significantly lengthens the migration timeline.
+
+### Data protection during transfer 
+
+All data must be [encrypted using the Stripe PGP key](https://docs.stripe.com/get-started/data-migrations/pan-import.md#migration-pgp-key) before transfer and delivered using [SFTP](https://docs.stripe.com/get-started/data-migrations/pan-import.md#sftp-credentials). Your previous processor handles the encryption and upload. Stripe provides the PGP key and SFTP credentials to facilitate this.
+
+### Download the Stripe PCI AOC and PGP key 
+
+You can download Stripe’s PCI Attestation of Compliance (AOC) directly from your Dashboard at **Settings** > **Compliance and documents** > [Stripe documents](https://dashboard.stripe.com/settings/compliance/download/pci).
+
+The Stripe PGP migration key is available in the [PGP migration key](https://docs.stripe.com/get-started/data-migrations/pan-import.md#migration-pgp-key) dropdown on this page.
+
+### Will I be able to export my data from Stripe at a later date? 
+
+You can export your data to any PCI-compliant processor. The receiving processor needs to provide a valid PCI AOC document and an RSA 4096 PGP key hosted on their company website. Stripe encrypts the data and delivers it using SFTP.
 
 ## See also
 

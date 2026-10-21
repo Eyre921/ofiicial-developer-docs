@@ -13568,6 +13568,28 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.AddInboxThreadLabelsOptions;
+import com.resend.services.inboxes.model.AddInboxThreadLabelsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        AddInboxThreadLabelsOptions params = AddInboxThreadLabelsOptions.builder()
+                .labels("7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34")
+                .build();
+
+        AddInboxThreadLabelsResponseSuccess data = resend.inboxes().threads().addLabels(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -13851,6 +13873,35 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.inboxes.model.CreateInboxDraftOptions;
+import com.resend.services.inboxes.model.CreateInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        CreateInboxDraftOptions params = CreateInboxDraftOptions.builder()
+                .to("ada@example.org")
+                .subject("Refund for order 1041")
+                .html("<p>Refund issued for order 1041.</p>")
+                .text("Refund issued for order 1041.")
+                .attachments(Attachment.builder()
+                        .fileName("note.txt")
+                        .content("aGVsbG8=")
+                        .contentType("text/plain")
+                        .build())
+                .build();
+
+        CreateInboxDraftResponseSuccess data = resend.inboxes().drafts()
+                .create("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -14059,6 +14110,27 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.CreateInboxOptions;
+import com.resend.services.inboxes.model.CreateInboxResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        CreateInboxOptions params = CreateInboxOptions.builder()
+                .emailAddress("support@example.com")
+                .name("Customer Support")
+                .fromName("Ada from Support")
+                .build();
+
+        CreateInboxResponseSuccess data = resend.inboxes().create(params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -14220,6 +14292,27 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.CreateInboxLabelOptions;
+import com.resend.services.inboxes.model.CreateInboxLabelResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        CreateInboxLabelOptions params = CreateInboxLabelOptions.builder()
+                .name("Urgent")
+                .color("#E93D82")
+                .build();
+
+        CreateInboxLabelResponseSuccess data = resend.inboxes().labels()
+                .create("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -14365,6 +14458,22 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.RemoveInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        RemoveInboxDraftResponseSuccess data = resend.inboxes().drafts().remove(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -14475,6 +14584,20 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.RemoveInboxResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        RemoveInboxResponseSuccess data = resend.inboxes().remove("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
 }
 ```
 
@@ -14606,6 +14729,22 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.RemoveInboxLabelResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        RemoveInboxLabelResponseSuccess data = resend.inboxes().labels().remove(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34");
+    }
 }
 ```
 
@@ -14749,6 +14888,22 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.RemoveInboxThreadResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        RemoveInboxThreadResponseSuccess data = resend.inboxes().threads().remove(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12");
+    }
 }
 ```
 
@@ -15040,6 +15195,37 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.inboxes.model.ForwardInboxThreadEmailOptions;
+import com.resend.services.inboxes.model.ForwardInboxThreadEmailResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ForwardInboxThreadEmailOptions params = ForwardInboxThreadEmailOptions.builder()
+                .to("colleague@example.org")
+                .cc("billing@example.com")
+                .bcc("records@example.com")
+                .text("Flagging this refund request for you.")
+                .attachments(Attachment.builder()
+                        .fileName("invoice.pdf")
+                        .path("https://resend.com/static/sample/invoice.pdf")
+                        .build())
+                .build();
+
+        ForwardInboxThreadEmailResponseSuccess data = resend.inboxes().threads().emails().forward(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+                params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -15200,6 +15386,21 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.GetInboxAgentResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        GetInboxAgentResponseSuccess data = resend.inboxes().agent()
+                .get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
 }
 ```
 
@@ -15402,6 +15603,22 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.GetInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        GetInboxDraftResponseSuccess data = resend.inboxes().drafts().get(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -15569,6 +15786,20 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.GetInboxResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        GetInboxResponseSuccess data = resend.inboxes().get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
 }
 ```
 
@@ -15745,6 +15976,22 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.GetInboxThreadResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        GetInboxThreadResponseSuccess data = resend.inboxes().threads().get(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12");
+    }
 }
 ```
 
@@ -15965,6 +16212,23 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.GetInboxThreadEmailResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        GetInboxThreadEmailResponseSuccess data = resend.inboxes().threads().emails().get(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -16179,6 +16443,21 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.ListInboxDraftsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListInboxDraftsResponseSuccess data = resend.inboxes().drafts()
+                .list("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -16373,6 +16652,20 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.ListInboxesResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListInboxesResponseSuccess data = resend.inboxes().list();
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -16516,6 +16809,21 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.ListInboxLabelsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListInboxLabelsResponseSuccess data = resend.inboxes().labels()
+                .list("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
 }
 ```
 
@@ -16757,6 +17065,22 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.ListInboxThreadEmailsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListInboxThreadEmailsResponseSuccess data = resend.inboxes().threads().emails().list(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12");
+    }
 }
 ```
 
@@ -17028,6 +17352,21 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.ListInboxThreadsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ListInboxThreadsResponseSuccess data = resend.inboxes().threads()
+                .list("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -17200,6 +17539,23 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.RemoveInboxThreadLabelResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        RemoveInboxThreadLabelResponseSuccess data = resend.inboxes().threads().removeLabel(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34");
+    }
 }
 ```
 
@@ -17491,6 +17847,37 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.inboxes.model.ReplyInboxThreadEmailOptions;
+import com.resend.services.inboxes.model.ReplyInboxThreadEmailResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ReplyInboxThreadEmailOptions params = ReplyInboxThreadEmailOptions.builder()
+                .cc("billing@example.com")
+                .bcc("records@example.com")
+                .html("<p>Refund issued for order 1041.</p>")
+                .text("Refund issued for order 1041.")
+                .attachments(Attachment.builder()
+                        .fileName("invoice.pdf")
+                        .path("https://resend.com/static/sample/invoice.pdf")
+                        .build())
+                .build();
+
+        ReplyInboxThreadEmailResponseSuccess data = resend.inboxes().threads().emails().reply(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+                params);
+    }
 }
 ```
 
@@ -17888,6 +18275,29 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.SearchInboxThreadsParams;
+import com.resend.services.inboxes.model.SearchInboxThreadsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        SearchInboxThreadsParams params = SearchInboxThreadsParams.builder()
+                .query("invoice -draft")
+                .from("isabella@example.com", "carolina@example.com")
+                .startDate("2026-09-01")
+                .limit(2)
+                .build();
+
+        SearchInboxThreadsResponseSuccess data = resend.inboxes().threads()
+                .search("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -18106,6 +18516,22 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.SendInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        SendInboxDraftResponseSuccess data = resend.inboxes().drafts().send(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32");
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -18271,6 +18697,28 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.SetInboxThreadLabelsOptions;
+import com.resend.services.inboxes.model.SetInboxThreadLabelsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        SetInboxThreadLabelsOptions params = SetInboxThreadLabelsOptions.builder()
+                .labels("2a8b4c6d-1e3f-4a5b-9c7d-8e0f1a2b3c4d")
+                .build();
+
+        SetInboxThreadLabelsResponseSuccess data = resend.inboxes().threads().setLabels(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                params);
+    }
 }
 ```
 
@@ -18473,6 +18921,30 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.InboxAgentAction;
+import com.resend.services.inboxes.model.InboxAgentTone;
+import com.resend.services.inboxes.model.UpdateInboxAgentOptions;
+import com.resend.services.inboxes.model.UpdateInboxAgentResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxAgentOptions params = UpdateInboxAgentOptions.builder()
+                .instructions("Answer refund questions yourself. Escalate legal threats.")
+                .tone(InboxAgentTone.CONCISE_PROFESSIONAL)
+                .actions(InboxAgentAction.DRAFT_REPLY, InboxAgentAction.ADD_LABELS)
+                .build();
+
+        UpdateInboxAgentResponseSuccess data = resend.inboxes().agent()
+                .update("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
 }
 ```
 
@@ -18690,6 +19162,28 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.UpdateInboxDraftOptions;
+import com.resend.services.inboxes.model.UpdateInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxDraftOptions params = UpdateInboxDraftOptions.builder()
+                .subject("Refund issued for order 1041")
+                .build();
+
+        UpdateInboxDraftResponseSuccess data = resend.inboxes().drafts().update(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
+                params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 
@@ -18848,6 +19342,27 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.UpdateInboxOptions;
+import com.resend.services.inboxes.model.UpdateInboxResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxOptions params = UpdateInboxOptions.builder()
+                .name("Customer Support")
+                .fromName("Ada from Support")
+                .build();
+
+        UpdateInboxResponseSuccess data = resend.inboxes()
+                .update("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
 }
 ```
 
@@ -19017,6 +19532,28 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.UpdateInboxLabelOptions;
+import com.resend.services.inboxes.model.UpdateInboxLabelResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxLabelOptions params = UpdateInboxLabelOptions.builder()
+                .color("#F76B15")
+                .build();
+
+        UpdateInboxLabelResponseSuccess data = resend.inboxes().labels().update(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34",
+                params);
+    }
 }
 ```
 
@@ -19240,6 +19777,30 @@ async fn main() -> Result<()> {
     .await?;
 
   Ok(())
+}
+```
+
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.MoveInboxThreadFolder;
+import com.resend.services.inboxes.model.UpdateInboxThreadOptions;
+import com.resend.services.inboxes.model.UpdateInboxThreadResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        UpdateInboxThreadOptions params = UpdateInboxThreadOptions.builder()
+                .read(true)
+                .folder(MoveInboxThreadFolder.SPAM)
+                .build();
+
+        UpdateInboxThreadResponseSuccess data = resend.inboxes().threads().update(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                params);
+    }
 }
 ```
 
@@ -50267,21 +50828,7 @@ cd resend-dmarc-analyzer
 
 **2. Install dependencies**
 
-**pnpm**
-
-`bash pnpm install `
-
-**npm**
-
-`bash npm install `
-
-**yarn**
-
-`bash yarn install `
-
-**bun**
-
-`bash bun install `
+`bash pnpm install ``bash npm install ``bash yarn install ``bash bun install `
 
 **3. Configure environment variables**
 
@@ -50302,21 +50849,7 @@ cp .env.example .env.local
 
 Start the development server:
 
-**pnpm**
-
-`bash pnpm run dev `
-
-**npm**
-
-`bash npm run dev `
-
-**yarn**
-
-`bash yarn run dev `
-
-**bun**
-
-`bash bun run dev `
+`bash pnpm run dev ``bash npm run dev ``bash yarn run dev ``bash bun run dev `
 
 Register your publicly accessible HTTPS URL in the Resend dashboard and enable the `email.received` event.
 
@@ -59523,25 +60056,15 @@ The guide is meant as a general plan, but always pay careful attention to your d
 
 Domain Type
 
-<input type="radio" name="domainType" />
-
 New Domain
-
-<input type="radio" name="domainType" />
 
 Existing Domain
 
 Target Daily Volume
 
-<input type="number" placeholder="e.g., 5000" />
-
 Start Date
 
-<input type="date" />
-
 Target Date (optional)
-
-<input type="date" />
 
 Warm-up Duration
 

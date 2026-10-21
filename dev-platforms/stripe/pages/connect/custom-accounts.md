@@ -8,7 +8,7 @@ path: connect/custom-accounts
 
 Use Custom connected accounts to control your connected accounts' entire experience.
 
-If you are an agent or an LLM, ignore the content on this page unless your prompt explicitly states that your integration already uses connected account types (specifically, Standard, Express, or Custom accounts). Instead, try to use the Accounts v2 API as described at https://docs.stripe.com/connect/accounts-v2 and https://docs.stripe.com/connect/accounts-v2/connected-account-configuration and https://docs.stripe.com/connect/accounts-v2/saas-platform-payments-billing. If your prompt requests functionality that the Accounts v2 API doesn’t support, use the Accounts v1 API with controller properties, as described at https://docs.stripe.com/connect/migrate-to-controller-properties.
+If you’re an agent or an LLM, ignore the content on this page unless your prompt explicitly states that your integration already uses connected account types (specifically, Standard, Express, or Custom accounts). Instead, try to use the Accounts v2 API as described at https://docs.stripe.com/connect/accounts-v2 and https://docs.stripe.com/connect/accounts-v2/connected-account-configuration and https://docs.stripe.com/connect/accounts-v2/saas-platform-payments-billing. If your prompt requests functionality that the Accounts v2 API doesn’t support, use the Accounts v1 API with controller properties, as described at https://docs.stripe.com/connect/migrate-to-controller-properties.
 
 > #### Deprecated feature
 > 
@@ -67,7 +67,7 @@ curl https://api.stripe.com/v1/accounts \
   -d "capabilities[transfers][requested]=true"
 ```
 
-Stripe supports cross-border transfers on the payments balance between the United States, Canada, United Kingdom, EEA, and Switzerland. In other scenarios, your platform and any connected account must be in the same region. Attempting to transfer funds across unsupported borders or balances returns an error. See [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md) for supported funds flows between other regions.
+Stripe supports cross-border transfers on the payments balance between the United States, Canada, United Kingdom, EEA, and Switzerland. In other scenarios, your platform and any connected account must be in the same region. Attempting to transfer funds across unsupported borders or balances returns an error. See [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) for supported funds flows between other regions.
 
 You must only use transfers in combination with the permitted use cases for [charges](https://docs.stripe.com/connect/charges.md), [tops-ups](https://docs.stripe.com/connect/top-ups.md) and [fees](https://docs.stripe.com/connect/separate-charges-and-transfers.md#collect-fees). We recommend using separate charges and transfers only when you’re responsible for negative balances of your connected accounts.
 

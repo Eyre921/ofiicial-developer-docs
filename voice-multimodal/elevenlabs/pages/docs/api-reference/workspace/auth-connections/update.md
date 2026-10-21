@@ -34,6 +34,10 @@ Reference: https://elevenlabs.io/docs/api-reference/workspace/auth-connections/u
 This endpoint expects a workspace_auth_connections_update_Request.
 
 - `workspace_auth_connections_update_Request`
+  - UpdateOAuth2ClientCredsRequest: UpdateOAuth2ClientCredsRequest
+  - UpdateBasicAuthRequest: UpdateBasicAuthRequest
+  - UpdateBearerAuthRequest: UpdateBearerAuthRequest
+  - UpdateOAuth2JWTRequest: UpdateOAuth2JWTRequest
 
 ## Response
 
@@ -303,6 +307,9 @@ Identifier for an integration connection that depends on an auth connection
 - `name` (string, required)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

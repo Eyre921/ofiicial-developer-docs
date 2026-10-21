@@ -41,7 +41,6 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 ### Known Limitations
 
 * **Whisper models are not supported in the EU region.** Use Flux STT or Nova models instead.
-* **Updating Nova-3 `keyterms` mid-stream with [`Configure`](/docs/configure) isn't available yet.** Set keyterms with the [`keyterm`](/docs/keyterm) query parameter when you open the stream. Sending `keyterms` in a `Configure` message returns an `Error` and the stream keeps its keyterms.
 
 ### WebSocket Connections
 
@@ -154,7 +153,6 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 ### Known Limitations
 
 * **Whisper models are not supported in the AU region.** Use Flux STT or Nova models instead.
-* **Updating Nova-3 `keyterms` mid-stream with [`Configure`](/docs/configure) isn't available yet.** Set keyterms with the [`keyterm`](/docs/keyterm) query parameter when you open the stream. Sending `keyterms` in a `Configure` message returns an `Error` and the stream keeps its keyterms.
 
 ### WebSocket Connections
 
@@ -267,7 +265,6 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 ### Known Limitations
 
 * **Whisper models are not supported in the India region.** Use Flux STT or Nova models instead.
-* **Updating Nova-3 `keyterms` mid-stream with [`Configure`](/docs/configure) isn't available yet.** Set keyterms with the [`keyterm`](/docs/keyterm) query parameter when you open the stream. Sending `keyterms` in a `Configure` message returns an `Error` and the stream keeps its keyterms.
 
 ### WebSocket Connections
 

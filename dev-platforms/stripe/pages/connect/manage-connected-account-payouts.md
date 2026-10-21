@@ -1,12 +1,12 @@
 ---
 title: "Payouts to connected accounts"
-source: https://docs.stripe.com/connect/payouts-connected-accounts.md
-path: connect/payouts-connected-accounts
+source: https://docs.stripe.com/connect/manage-connected-account-payouts.md
+path: connect/manage-connected-account-payouts
 ---
 
-# Payouts to connected accounts
+# Manage connected account payouts
 
-Manage payouts for your platform's connected accounts.
+Learn how to manage payouts for your platform's connected accounts.
 
 > This page is for developers building platforms with Stripe Connect. If you’re a business or individual receiving payouts through a platform, contact that platform directly for help with your payout settings and status.
 
@@ -28,7 +28,7 @@ For connected accounts without access to a Stripe-hosted Dashboard, the platform
 To see which currencies you can use to settle funds in a particular country, select that country from the following dropdown.
 
 > For a list of supported presentment currencies, see the [currencies](https://docs.stripe.com/currencies.md#presentment-currencies) documentation.
-[See table on original page](https://docs.stripe.com/connect/payouts-connected-accounts)
+[See table on original page](https://docs.stripe.com/connect/manage-connected-account-payouts)
 Platforms can also enable their connected accounts to settle funds and pay out to banks in certain non-primary currencies, or pay out to non-domestic bank accounts in the local currency. In some cases, Stripe charges a fee. For more information, see [multi-currency settlement for Connect marketplaces and platforms](https://docs.stripe.com/connect/multi-currency-settlement.md).
 
 ## Payout status 

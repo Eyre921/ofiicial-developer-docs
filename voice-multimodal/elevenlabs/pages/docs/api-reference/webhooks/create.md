@@ -67,6 +67,9 @@ Settings for creating an HMAC-authenticated webhook
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

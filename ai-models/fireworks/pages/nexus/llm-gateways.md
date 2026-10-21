@@ -6,26 +6,24 @@ path: nexus/llm-gateways
 
 Connect Fireworks to LiteLLM, Portkey, Vercel AI Gateway, Helicone, Keywords AI, AISIX, Requesty, OpenRouter, or Cloudflare AI Gateway
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
-
 Gateways integrate with Fireworks in two ways. Some connect to your Fireworks account and preserve Fireworks model IDs. Others expose selected Fireworks models through a gateway-managed catalog.
 
-## Check whether your gateway can use FireRouter
+## Check whether your gateway can use Nexus Auto
 
-To call `firerouter`, your gateway must:
+To call `auto`, your gateway must:
 
 1. Connect to your Fireworks account.
-2. Send the `firerouter` model ID unchanged.
+2. Send the `auto` model ID unchanged.
 3. Send your Fireworks API key.
-4. Provide an Anthropic or OpenAI credential, if you want Claude or GPT.
+4. Provide an Anthropic or OpenAI credential if you want one of those models.
 
-A gateway-managed catalog can use FireRouter only when that catalog lists `firerouter`. Fireworks serving some of the catalog's models does not make `firerouter` available.
+A gateway-managed catalog can use Nexus Auto only when that catalog lists `auto`. Fireworks serving some of the catalog's models does not make `auto` available.
 
 ## Connect your Fireworks account
 
 | Gateway | Fireworks integration | Model naming |
 | - | - | - |
-| [LiteLLM](https://docs.litellm.ai/docs/providers/fireworks_ai) | Native `fireworks_ai` provider | Add `fireworks_ai/` before the full Fireworks path, such as `fireworks_ai/accounts/fireworks/routers/firerouter` |
+| [LiteLLM](https://docs.litellm.ai/docs/providers/fireworks_ai) | Native `fireworks_ai` provider | Add `fireworks_ai/` before the full Fireworks path, such as `fireworks_ai/accounts/fireworks/routers/auto` |
 | [Portkey](https://docs.portkey.ai/docs/integrations/llms/fireworks) | Native Fireworks provider with bring your own key (BYOK) | Use the configured provider name, such as `@fireworks-ai/...` |
 | [Keywords AI](https://keywordsai.mintlify.app/integration/providers/fireworks) | Native Fireworks provider with BYOK | Use Fireworks models through stored or per-request credentials |
 | [AISIX / API7](https://docs.api7.ai/ai-gateway/providers/fireworks-ai) | Native `fireworks-ai` provider with OpenAI adapter | Map a gateway alias to a Fireworks model ID |
@@ -45,7 +43,7 @@ These gateways expose their own model catalogs. Fireworks may serve a request, b
 
 ## LiteLLM Proxy
 
-Use LiteLLM as a shared gateway for Fireworks serverless models, model routers, and deployments. Developers call one OpenAI-compatible **chat completions** API. LiteLLM manages the Fireworks connection and client access. Closed-model credentials can come from Fireworks Provider Keys, when enabled for the account, or from forwarded client headers.
+Use LiteLLM as a shared gateway for Fireworks serverless models, Nexus Auto, and deployments. Developers call one OpenAI-compatible **chat completions** API. LiteLLM manages the Fireworks connection and client access. Closed-model credentials can come from Fireworks Provider Keys, when enabled for the account, or from forwarded client headers.
 
 ### Prerequisites
 
@@ -62,10 +60,10 @@ Add each model you want to expose to `config.yaml`. Keep the client-facing `mode
 
 | Model | `litellm_params.model` |
 | - | - |
-| `firerouter`, `auto`, and `-latest` aliases, such as `glm-latest` | `fireworks_ai/accounts/fireworks/routers/<id>` |
+| `auto`, `auto`, and `-latest` aliases, such as `glm-latest` | `fireworks_ai/accounts/fireworks/routers/<id>` |
 | Pinned models, such as `glm-5p3` | `fireworks_ai/accounts/fireworks/models/<id>` |
 
-Recent LiteLLM versions expand a short ID to `accounts/fireworks/models/<id>`, so a short router ID such as `fireworks_ai/firerouter` returns `404 Model not found`. The full path works on every version.
+Recent LiteLLM versions expand a short ID to `accounts/fireworks/models/<id>`, so a short router ID such as `fireworks_ai/auto` returns `404 Model not found`. The full path works on every version.
 
 ```yaml theme={null}
 model_list:
@@ -105,22 +103,22 @@ curl http://localhost:4000/chat/completions \
 | Fireworks API key (`fw_...`) | LiteLLM server (env or secret store) | Upstream Fireworks inference |
 | LiteLLM virtual key (if configured) | Each developer or service | Proxy authentication and spend tracking |
 
-## Use FireRouter through a gateway
+## Use Nexus Auto through a gateway
 
-The gateway sends the `firerouter` model ID and your Fireworks API key to Fireworks. You do not need FireConnect. For supported models, see [FireRouter](/nexus/firerouter#supported-models).
+The gateway sends the `auto` model ID and your Fireworks API key to Fireworks. You do not need Nexus CLI. For supported models, see [Nexus Auto](/nexus/auto#supported-models).
 
-> **[Set up FireRouter in LiteLLM or Portkey](/nexus/firerouter/setup#llm-gateway)**
+> **[Set up Nexus Auto in LiteLLM or Portkey](/nexus/auto#llm-gateway)**
 >
-> Router entries for LiteLLM, the Portkey model format, and a test request.
+> Nexus Auto entries for LiteLLM, the Portkey model format, and a test request.
 
 ### Provide closed-model credentials
 
-`firerouter` [picks its closed model from your credentials](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model):
+`auto` [picks its closed model from your credentials](/nexus/auto#how-auto-picks-its-closed-model):
 
 * With an Anthropic credential, it uses Claude Opus.
 * With an OpenAI credential, it uses GPT Sol.
 * With both, it uses Claude Opus for Chat Completions and GPT Sol for Responses API requests.
-* With neither, it [uses Kimi K3 and the open-model mix](/nexus/firerouter#what-happens-without-a-closed-model-credential).
+* With neither, it [uses Kimi K3 and the open-model mix](/nexus/auto#how-auto-picks-its-closed-model).
 
 An [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key covers a closed model you mapped there.
 
@@ -139,15 +137,19 @@ once from [Settings](https://app.fireworks.ai/settings/provider-keys). The
 gateway stores only the Fireworks key. No provider credential passes
 through the gateway.
 
-Provider Keys is not yet available on every account. See
-[Provider Keys](/nexus/provider-keys) to request it.
+> [!NOTE]
+>
+> Provider Keys is not yet available on every account. If **Provider Keys**
+> does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+> [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
+> Self-serve setup is coming soon.
 
 ```bash wrap theme={null}
 curl http://localhost:4000/chat/completions \
   -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "firerouter",
+    "model": "auto",
     "messages": [{"role": "user", "content": "Say pong in one word."}]
   }'
 ```
@@ -155,27 +157,27 @@ curl http://localhost:4000/chat/completions \
 **Keys in the gateway config**
 
 Use this option when Provider Keys is not enabled for your account. The
-gateway adds the provider-key headers to every request for a router, so
+gateway adds the provider-key headers to every request for Nexus Auto, so
 clients and harnesses send only their gateway key.
 
-In LiteLLM, add `extra_headers` to the `firerouter` entry. `os.environ/` reads
+In LiteLLM, add `extra_headers` to the `auto` entry. `os.environ/` reads
 the key from the proxy's environment:
 
 ```yaml config.yaml theme={null}
 model_list:
-  - model_name: firerouter
+  - model_name: auto
     litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/firerouter
+      model: fireworks_ai/accounts/fireworks/routers/auto
       api_key: os.environ/FIREWORKS_API_KEY
       api_base: https://api.fireworks.ai/inference/v1
       extra_headers:
         x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
 ```
 
-To give FireRouter an OpenAI key too, add
+To give Nexus Auto an OpenAI key too, add
 `x-openai-api-key: os.environ/OPENAI_API_KEY` under `extra_headers`.
 
-Clients call `firerouter` with only their LiteLLM virtual key. For
+Clients call `auto` with only their LiteLLM virtual key. For
 Portkey and other gateways, set the same headers as custom headers on the
 Fireworks provider or integration.
 
@@ -199,7 +201,7 @@ curl http://localhost:4000/chat/completions \
   -H "Content-Type: application/json" \
   -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
   -d '{
-    "model": "firerouter",
+    "model": "auto",
     "messages": [{"role": "user", "content": "Say pong in one word."}]
   }'
 ```
@@ -216,4 +218,4 @@ A provider-key header sent with a request takes precedence over a Provider Key c
 > redacts them in its logs. Provider Keys keeps provider credentials out of
 > the gateway entirely.
 
-LiteLLM returns your `model_name` in the response `model` field, not the model that served the turn. To confirm that closed models are reachable, send a request directly to Fireworks as shown in [Verify routing](/nexus/firerouter#verify-routing). For direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).
+LiteLLM returns your `model_name` in the response `model` field, not the model that served the turn. To confirm that closed models are reachable, send a request directly to Fireworks as shown in [Check which model served a turn](/nexus/auto#check-which-model-served-a-turn). For direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).

@@ -28,7 +28,7 @@ Prompt tokens served from [prompt caching](/guides/prompt-caching) because they 
 The tokens the model writes back. Also called output tokens or completion tokens.
 
 **Open-weight model**\
-A model whose weights you can run yourself. Fireworks hosts open-weight models such as DeepSeek, GLM, Kimi, and Qwen. A closed model, such as Claude or GPT, stays on that provider's API.
+A model whose weights you can run yourself. Fireworks hosts open-weight models such as DeepSeek, GLM, Kimi, and Qwen. A closed model, such as an Anthropic or OpenAI model, stays on that provider's API.
 
 **Model ID**\
 The string that names a model in a request. A Fireworks base model looks like `accounts/fireworks/models/glm-5p3-flash`. A short ID such as `glm-latest` can point at the current model in a family. See [Which model should I use?](/guides/recommended-models).
@@ -81,17 +81,17 @@ Training that updates all of the model weights, not only a LoRA adapter. This ru
 **Fireworks Nexus**\
 The product for using Fireworks models inside a coding harness, app, or gateway, with usage visibility and spend limits. See [Nexus](/nexus).
 
-**FireConnect**\
-The CLI that points a coding harness at Fireworks. The command is `fireconnect <harness>`. `fireconnect <harness> off` restores the harness settings. See [FireConnect](/nexus/fireconnect).
+**Nexus CLI** (formerly FireConnect)\
+The CLI that points a coding harness at Fireworks. The command is `nexus <harness>`. `nexus <harness> off` restores the harness settings. See [Nexus CLI](/nexus/cli).
 
-**FireRouter**\
-One model ID, `firerouter`, that picks a model for each new user turn. Open-model turns run on Fireworks. Closed-model turns use a Provider Key. See [FireRouter](/nexus/firerouter).
+**Nexus Auto**\
+One model ID, `auto`, that picks a model for each new user turn. Open-model turns run on Fireworks. Closed-model turns use a Provider Key. Formerly called FireRouter (`firerouter`), which is no longer available. See [Nexus Auto](/nexus/auto).
 
 **Provider Key**\
-An Anthropic, OpenAI, or Amazon Bedrock key stored once on the Fireworks account so FireRouter can call a closed model. Developers still send only their Fireworks API key. Provider Keys are not available on every account. See [Provider Keys](/nexus/provider-keys).
+An Anthropic, OpenAI, or Amazon Bedrock key stored once on the Fireworks account so Nexus Auto can call a closed model. Developers still send only their Fireworks API key. Provider Keys are not available on every account. See [Provider Keys](/nexus/provider-keys).
 
 **Session cost**\
-The cost estimate Claude Code shows for the current session, through the FireConnect status line or `fireconnect claude usage`. It is an estimate, not the invoice. Account spend by model is the Cost tab on the usage page.
+The cost estimate Claude Code shows for the current session, through the Nexus CLI status line or `nexus claude usage`. It is an estimate, not the invoice. Account spend by model is the Cost tab on the usage page.
 
 ***
 

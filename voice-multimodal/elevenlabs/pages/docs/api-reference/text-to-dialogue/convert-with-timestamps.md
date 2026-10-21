@@ -120,6 +120,9 @@ Audio effects applied to generated speech: a filter preset, perceived distance, 
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Request**

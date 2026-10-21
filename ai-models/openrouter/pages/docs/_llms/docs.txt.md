@@ -1,5 +1,5 @@
 ---
-title: "Docs (153 pages)"
+title: "Docs (154 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -97,7 +97,6 @@ path: docs/_llms/docs.txt
 - [Message Transforms](https://openrouter.ai/docs/guides/features/message-transforms.md): Transform prompt messages
 - [Zero Completion Insurance](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md): OpenRouter will not charge you for zero token responses
 - [App Attribution](https://openrouter.ai/docs/app-attribution.md): Get your app featured in OpenRouter rankings and analytics
-- [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md): Submit and retrieve asynchronous batches of inference requests
 - [Service Tiers](https://openrouter.ai/docs/guides/features/service-tiers.md): Control cost and latency tradeoffs with service tier selection
 - [Router Metadata](https://openrouter.ai/docs/guides/features/router-metadata.md): Surface routing decisions on every response with a single opt-in header
 
@@ -106,6 +105,11 @@ path: docs/_llms/docs.txt
 - [Workspaces](https://openrouter.ai/docs/guides/features/workspaces.md): Organize your projects, teams, and agents into separate environments
 - [Workspace Budgets](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md): Set spending limits per workspace with automatic enforcement
 - [Switching Workspaces](https://openrouter.ai/docs/guides/features/workspaces/switching.md): Change which workspace your Chat and Fusion requests run in.
+
+#### Batch API
+
+- [Batch API](https://openrouter.ai/docs/guides/features/batch-api.md): Run thousands of requests at about half the sync price, with results within 24 hours
+- [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md): Submit a batch, get notified when it finishes, read the results, and clean up
 
 #### Guardrails
 

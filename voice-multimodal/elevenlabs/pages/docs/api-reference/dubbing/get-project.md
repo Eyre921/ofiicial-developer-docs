@@ -87,6 +87,9 @@ Metadata about the project's source media.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

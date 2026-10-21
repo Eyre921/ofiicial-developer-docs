@@ -4,226 +4,58 @@ source: https://docs.fireworks.ai/nexus/quickstart
 path: nexus/quickstart
 ---
 
-Connect a coding harness, application, or LLM gateway to Fireworks and make your first Nexus request.
+Connect Nexus to Claude Code, ChatGPT, or the AI tools you already use, in a few minutes.
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+Nexus works inside the coding harness or AI workspace you already use. It picks between open and closed models for each turn, for the best balance of performance and cost.
 
-Pick how you work. Each path takes a few minutes and uses the same Fireworks models, routers, and account controls.
+Choose **Nexus Auto** as your model, and it picks the right model for each task.
 
-> **[Coding harness](#connect-a-coding-harness)**
->
-> Claude Code, Codex, OpenCode, Cursor IDE, and more
-
-> **[API or SDK](#call-the-api)**
->
-> OpenAI, Anthropic, or Fireworks SDK
-
-> **[LLM gateway](#use-an-llm-gateway)**
->
-> LiteLLM, Portkey, and other gateways
-
-You need a [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) for the API and gateway paths. FireConnect can create one for you when you sign in.
-
-## Connect a coding harness
-
-**1. Install FireConnect**
+## Install the Nexus CLI
 
 ```bash wrap theme={null}
-curl -fsSL https://fireconnect.fireworks.ai/install.sh | bash
+curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later. On Windows, run it from Git Bash.
-
-**2. Sign in**
+Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
-fireconnect login
+nexus login
 ```
 
-Sign in with your browser, or paste an existing Fireworks key.
+Sign in with your browser, or paste a Fireworks key.
 
-**3. Connect your harness**
+Then pick your tool and follow its setup.
 
-```bash Claude Code theme={null}
-fireconnect claude
-```
+## Featured connections
 
-```bash Codex CLI theme={null}
-fireconnect codex
-```
-
-```bash ChatGPT desktop app theme={null}
-# Quit the ChatGPT desktop app first
-fireconnect chatgpt
-```
-
-```bash OpenCode theme={null}
-fireconnect opencode
-```
-
-```bash Cursor IDE theme={null}
-fireconnect cursor
-```
-
-```bash VS Code theme={null}
-fireconnect vscode
-```
-
-```bash Pi theme={null}
-fireconnect pi
-```
-
-The Codex CLI and the ChatGPT desktop app share one config, so `fireconnect codex` and `fireconnect chatgpt` connect both. For desktop apps, including Cursor IDE and VS Code, quit the app first. See [Coding Harnesses](/nexus/harnesses) for every harness.
-
-**4. Restart and pick a model**
-
-Restart the harness and open its model picker. You will see `auto`, FireRouter, and Fireworks open models.
-
-![Claude Code model picker with FireRouter selected and Auto, DeepSeek, GLM, Kimi, and MiniMax options](https://mintcdn.com/fireworksai/r6jTtNQeedroFKBW/images/fireconnect/claude-model-picker.png?fit=max\&auto=format\&n=r6jTtNQeedroFKBW\&q=85\&s=cab8623549ed73df655ebfb39dd11fb0)
-
-> [!TIP]
+> **[Claude Code CLI](/nexus/harnesses/claude-code)**
 >
-> `fireconnect claude status` shows Fireworks as the provider and the configured model.
+> Nexus Auto sends each turn to an open model or to an Anthropic model, and you pay for the model that answered.
 
-> [!TIP]
+> **[ChatGPT](/nexus/harnesses/chatgpt)**
 >
-> **Prefer not to install anything?** Every harness has a **Manual setup** tab
-> in [Coding Harnesses](/nexus/harnesses) with the exact settings to add
-> yourself.
+> Open models appear next to your OpenAI models, and the same connection sets up the Codex CLI.
 
-## Call the API
+### Code
 
-**1. Export your key**
+> **[Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)**
 
-```bash wrap theme={null}
-export FIREWORKS_API_KEY="fw_..."
-```
+> **[Codex CLI](/nexus/harnesses/codex)**
 
-**2. Send a request**
+> **[OpenCode](/nexus/harnesses/opencode)**
 
-Point the SDK you already use at Fireworks:
+> **[Pi](/nexus/harnesses/pi)**
 
-```bash cURL theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "glm-latest",
-    "messages": [{"role": "user", "content": "Say pong in one word."}]
-  }'
-```
+> **[DeepSeek Harness](/nexus/harnesses/deepseek)**
 
-```python OpenAI SDK theme={null}
-import os
+> **[Cursor IDE](/nexus/harnesses/cursor)**
 
-from openai import OpenAI
+> **[VS Code](/nexus/harnesses/vscode)**
 
-client = OpenAI(
-    api_key=os.environ["FIREWORKS_API_KEY"],
-    base_url="https://api.fireworks.ai/inference/v1",
-)
+> **[Copilot App](/nexus/harnesses/copilot-app)**
 
-response = client.chat.completions.create(
-    model="glm-latest",
-    messages=[{"role": "user", "content": "Say pong in one word."}],
-)
+> **[Copilot CLI](/nexus/harnesses/copilot-cli)**
 
-print(response.choices[0].message.content)
-```
+### Cowork
 
-```python Anthropic SDK theme={null}
-import os
-
-import anthropic
-
-client = anthropic.Anthropic(
-    api_key=os.environ["FIREWORKS_API_KEY"],
-    base_url="https://api.fireworks.ai/inference",
-)
-
-message = client.messages.create(
-    model="glm-latest",
-    max_tokens=1024,
-    messages=[{"role": "user", "content": "Say pong in one word."}],
-)
-
-print(next(block.text for block in message.content if block.type == "text"))
-```
-
-```python Fireworks SDK theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-
-response = client.chat.completions.create(
-    model="glm-latest",
-    messages=[{"role": "user", "content": "Say pong in one word."}],
-)
-
-print(response.choices[0].message.content)
-```
-
-> [!TIP]
->
-> The reply says `pong`.
-
-**3. Try a router**
-
-Change `model` to `firerouter`. FireRouter picks a model for each turn, and the response `model` field shows which one served it. Claude and GPT turns need a [provider credential](/nexus/firerouter#provide-anthropic-and-openai-credentials).
-
-More examples, including the Responses API: [FireRouter Setup](/nexus/firerouter/setup#api-and-sdk).
-
-## Use an LLM gateway
-
-**1. Add a Fireworks model to LiteLLM**
-
-```yaml config.yaml theme={null}
-model_list:
-  - model_name: glm-latest
-    litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/glm-latest
-      api_key: os.environ/FIREWORKS_API_KEY
-      api_base: https://api.fireworks.ai/inference/v1
-```
-
-**2. Start the proxy**
-
-```bash wrap theme={null}
-pip install "litellm[proxy]"
-litellm --config config.yaml
-```
-
-**3. Send a request**
-
-```bash wrap theme={null}
-curl http://localhost:4000/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "glm-latest",
-    "messages": [{"role": "user", "content": "Say pong in one word."}]
-  }'
-```
-
-> [!TIP]
->
-> The reply says `pong`.
-
-Using Portkey, or adding FireRouter to your gateway? See [FireRouter Setup](/nexus/firerouter/setup#llm-gateway) and [LLM Gateways](/nexus/llm-gateways).
-
-## Next steps
-
-> **[Open Models](/nexus/open-models)**
->
-> Use `auto`, follow a model family, choose a fast tier, or pin a version.
-
-> **[FireRouter](/nexus/firerouter)**
->
-> Let one model ID choose a model for each new user turn.
-
-> **[Usage and Cost](/nexus/metrics)**
->
-> See session estimates and Fireworks model usage by model, user, or API key.
-
-> **[Spend Limits](/nexus/usage-limits)**
->
-> Set per-user caps for supported Fireworks serverless models.
+> **[Claude Desktop](/nexus/harnesses/claude-desktop)**

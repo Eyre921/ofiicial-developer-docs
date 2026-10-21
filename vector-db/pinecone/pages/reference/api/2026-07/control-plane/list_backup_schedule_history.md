@@ -29,6 +29,28 @@ The maximum number of results to return.
 
 A token for fetching the next page of results.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+history = pc.backup_schedules.history(schedule_id="SCHEDULE_ID")
+print(history)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const history = await pc.backupSchedules.history('SCHEDULE_ID');
+console.log(history);
+```
+
 ```bash curl theme={null}
 curl -sS "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}/history" \
   -H "api-key: ${PINECONE_API_KEY}" \

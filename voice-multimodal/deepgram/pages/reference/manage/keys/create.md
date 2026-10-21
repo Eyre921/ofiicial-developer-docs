@@ -32,6 +32,8 @@ Reference: https://developers.deepgram.com/reference/manage/keys/create
 This endpoint expects a CreateKeyV1Request.
 
 - `CreateKeyV1Request`
+  - any
+  - any
 
 ## Response
 
@@ -53,6 +55,9 @@ API key created successfully
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 

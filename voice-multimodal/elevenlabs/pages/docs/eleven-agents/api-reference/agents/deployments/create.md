@@ -70,6 +70,9 @@ Validation Error
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### AgentDeploymentPercentageStrategy
 
 - `traffic_percentage` (double, required) — Traffic percentage to deploy

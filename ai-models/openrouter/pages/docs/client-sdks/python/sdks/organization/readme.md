@@ -69,6 +69,7 @@ with OpenRouter(
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
@@ -116,6 +117,7 @@ with OpenRouter(
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
@@ -165,6 +167,7 @@ with OpenRouter(
 | - | - | - |
 | errors.BadRequestResponseError | 400 | application/json |
 | errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |

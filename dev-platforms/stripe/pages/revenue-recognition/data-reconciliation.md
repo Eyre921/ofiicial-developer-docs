@@ -26,7 +26,7 @@ Unpaid invoices that remain in [open status](https://docs.stripe.com/invoicing/o
 
 The [debits and credits report](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md) treats corrections as separate transactions, and the [Balance Sheet](https://docs.stripe.com/revenue-recognition/reports/balance-sheet.md) doesn’t include them.
 
-If corrections exist, they are logged to the period in which they were made — so you must also download the debits and credits report (under the **Statements** tab) for that period using the **Entries** filter set to **Corrections** and include those entries in your reconciliation. You can read about this at [Review corrections](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md#review-corrections).
+If corrections exist, they’re logged to the period in which they were made — so you must also download the debits and credits report (under the **Statements** tab) for that period using the **Entries** filter set to **Corrections** and include those entries in your reconciliation. You can read about this at [Review corrections](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md#review-corrections).
 
 Widen the date range of your corrections export to make sure all relevant corrections are captured for your reconciliation process.
 

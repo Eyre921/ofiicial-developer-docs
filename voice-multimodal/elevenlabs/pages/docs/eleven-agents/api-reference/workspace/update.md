@@ -84,7 +84,13 @@ Validation Error
 
 ### ConversationInitiationClientDataWebhookRequestHeadersValue
 
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
+
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ### ConvAiSecretLocator
 

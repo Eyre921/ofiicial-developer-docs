@@ -19,6 +19,28 @@ Get the details of a specific backup schedule by its ID.
 
 The ID of the backup schedule.
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+schedule = pc.backup_schedules.describe(schedule_id="SCHEDULE_ID")
+print(schedule)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const schedule = await pc.backupSchedules.describe('SCHEDULE_ID');
+console.log(schedule);
+```
+
 ```bash curl theme={null}
 curl -sS "https://api.pinecone.io/backup-schedules/${SCHEDULE_ID}" \
   -H "api-key: ${PINECONE_API_KEY}" \

@@ -23,6 +23,8 @@ Each connection has a fixed budget of requests per 60-second window, based on th
 
 The budget can be spent at any pace within the window — spread out evenly or in a single burst. When a request exceeds this limit, the `Retry-After` value is the time until the window resets, so it is at most 60 seconds.
 
+[Querying a data source](/reference/query-a-data-source) has a separate limit of about 3 requests per second per connection. A request over this limit returns an HTTP 429 response with a `Retry-After` header. The [JavaScript SDK waits](https://github.com/makenotion/notion-sdk-js#automatic-retries) for `Retry-After` and retries for you. If you call the REST API directly, see [Retry rate-limited requests](#retry-rate-limited-requests).
+
 ### Per-workspace limit
 
 A separate limit is shared across all of the workspace's connections and scaled to the workspace's plan. Because it's shared, requests can be rate limited even when each individual connection is within its per-connection limit. `Retry-After` for this limit can be longer than a minute.
@@ -37,6 +39,7 @@ Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 42
 | `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`. |
 | `public_api_endpoint_rate_limit` | This endpoint has its own limit. Wait for `Retry-After`. |
 | `mcp_tool_rate_limit` | An MCP tool reached its own limit. Wait for `Retry-After`, which is usually under 10 seconds. |
+| `collection_router_too_many_requests` | A data source query was throttled. Wait for `Retry-After`. |
 | `collection_router_upstream_429` | A data source query was throttled upstream. Wait for `Retry-After`. |
 | `public_api_request_blocked` | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
 

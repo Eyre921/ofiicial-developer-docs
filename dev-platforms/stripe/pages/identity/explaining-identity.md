@@ -26,7 +26,7 @@ Stripe helps PLATFORM confirm your identity by conducting the following checks:
 
 3. **Stripe collects your name, date of birth, and government ID number, and validates that it’s real.** They’ll check this information against a global set of databases to confirm that it exists.
 
-4. **Stripe verifies your phone number, address, and email address by checking them against trusted third-party data sources and Stripe’s own network data.** This helps confirm that you are associated with the contact information you provided, allowing a risk assessment without requiring you to upload documents or photos.
+4. **Stripe verifies your phone number, address, and email address by checking them against trusted third-party data sources and Stripe’s own network data.** This helps confirm that you’re associated with the contact information you provided, allowing a risk assessment without requiring you to upload documents or photos.
 
 Where Stripe collects biometric information, Stripe asks for your consent before collecting and using it. For verification of your name, phone number, address, and email address, Stripe collects and processes your data for fraud prevention purposes in accordance with its Privacy Policy. Stripe only uses your verification data in accordance with its [Privacy Policy](https://stripe.com/privacy) and, where relevant, in accordance with the [permissions](https://support.stripe.com/questions/common-questions-about-stripe-identity#verification-permissions) you grant before starting a verification process.
 

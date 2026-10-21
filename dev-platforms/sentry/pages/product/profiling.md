@@ -44,7 +44,7 @@ Sentry supports profiling for both backend and frontend use cases with two produ
 
 ## [Profiling Page](https://docs.sentry.io/product/profiling.md#profiling-page)
 
-On the [**Profiling**](https://sentry.io/orgredirect/organizations/:orgslug/profiling/) page, you’ll find high level metrics on the slowest functions in the selected project(s), as well as any functions that have regressed or improved in performance within the selected time range.
+Open [**Profiles**](https://sentry.io/orgredirect/organizations/:orgslug/explore/profiles/) from [Explore](https://docs.sentry.io/product/explore.md). On that page, you’ll find high level metrics on the slowest functions in the selected project(s), as well as any functions that have regressed or improved in performance within the selected time range.
 
 On the **Slowest Functions** widget, you can click on the ellipses button (...) on each function to see a list of example profiles containing that function. On the **Most Regressed/Improved Functions** widget, you can click on the function duration before & after the change to see before & after example profiles containing that function.
 

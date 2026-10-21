@@ -69,6 +69,12 @@ Validation Error
 
 ### WorkspaceAnalyticsQueryResponseModelRowsItemsItems
 
+- string
+- integer
+- double
+- boolean
+- string
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -77,7 +83,16 @@ Validation Error
 
 ### ColumnFilterValuesItems
 
+- string
+- integer
+- double
+- string
+- boolean
+
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ## Examples
 

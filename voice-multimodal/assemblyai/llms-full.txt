@@ -259,7 +259,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Basic Chat Completions](#basic-chat-completions-docs-llm-gateway-chat-completions-mdx)
 - [Multi-turn Conversations](#multi-turn-conversations-docs-llm-gateway-conversations-mdx)
 - [Prompt Engineering for LLM Gateway](#prompt-engineering-for-llm-gateway-docs-llm-gateway-prompt-engineering-mdx)
-- [Rate limits](#rate-limits-docs-llm-gateway-rate-limits-mdx)
+- [Manage rate limits](#manage-rate-limits-docs-llm-gateway-rate-limits-mdx)
 - [Troubleshooting](#troubleshooting-docs-llm-gateway-troubleshooting-mdx)
 - [Apply LLM Gateway to Audio Transcripts](#apply-llm-gateway-to-audio-transcripts-docs-llm-gateway-apply-llms-to-audio-files-mdx)
 - [Setup An AI Coach With LLM Gateway](#setup-an-ai-coach-with-llm-gateway-docs-guides-task-endpoint-ai-coach-mdx)
@@ -9017,6 +9017,15 @@ const run = async () => {
 run();
 ```
 
+## Supported languages
+
+Unformatted output (`format_text: false`) is supported in the following languages:
+
+| Model | Supported languages |
+|-------|---------------------|
+| Universal-3.5 Pro | English, Spanish, German, French, Portuguese, Italian |
+| Universal-2 | English, Spanish, German |
+
 ---
 
 <a id="filler-words-docs-pre-recorded-audio-include-filler-words-mdx"></a>
@@ -9174,6 +9183,15 @@ while (true) {
   }
 }
 ```
+
+## Supported languages
+
+Filler words (`disfluencies: true`) are supported in the following languages:
+
+| Model | Supported languages |
+|-------|---------------------|
+| Universal-3.5 Pro | English, Spanish, German, French, Portuguese, Italian |
+| Universal-2 | English only |
 
 ---
 
@@ -66061,39 +66079,136 @@ For more advanced prompt engineering techniques, see [Awesome Prompt Engineering
 
 ---
 
-<a id="rate-limits-docs-llm-gateway-rate-limits-mdx"></a>
+<a id="manage-rate-limits-docs-llm-gateway-rate-limits-mdx"></a>
 
-# Rate limits
+# Manage rate limits
 
 URL: https://www.assemblyai.com/docs/llm-gateway/rate-limits
 Source: docs/llm-gateway/rate-limits.mdx
 Navigation: LLM Gateway > Core concepts
-Description: Rate limits documentation.
+Description: Understand LLM Gateway request and token rate limits, why you get a 429, how max_tokens affects your allowance, and how to avoid hitting limits.
 
-LLM Gateway is rate limited per model, measured as requests within a 60-second window.
+LLM Gateway applies two rate limits: requests per minute (RPM) and tokens per minute (TPM). Limits are tracked per account and per model, provider, and region, over a rolling 60-second window. Speech Understanding requests (`/v1/understanding`) have an RPM limit only, with no token limit.
 
-| Account type | Rate limit (requests/min, per model) |
-| ------------ | ------------------------------------- |
-| Free         | Not available                          |
-| Paid         | 30                                      |
+## How limits work
+
+Every LLM Gateway chat completion request is checked against both limits. If either one is exceeded, the request is rejected with HTTP `429`.
+
+- **Requests per minute (RPM):** the number of requests you send.
+- **Tokens per minute (TPM):** the number of tokens your requests use.
+
+### Window
+
+Limits apply over a sliding 60-second window, not a fixed one. Usage from the previous minute fades out gradually rather than all at once on the minute boundary.
+
+## Your limits
+
+Limits are assigned per account in tiers. New accounts start at Tier 0 with conservative limits, and your tier increases automatically as your spend grows.
+
+### How you move up tiers
+
+- **Tier 1:** reached once your account has any spend.
+- **Tier 2:** reached once your total spend across all AssemblyAI products passes a modest threshold.
+- **Tiers 3 to 5:** reached through spend on a specific model. Higher spend on a model raises your tier for that model.
+
+  Tiers are re-evaluated once per hour, and recent spend can take two to three hours to be reflected. After a spending milestone, your new limits may not apply right away.
+
+### Requests per minute by tier
+
+| Tier | RPM |
+| --- | --- |
+| 0 | 30 |
+| 1 | 100 |
+| 2 | 300 |
+| 3 | 600 |
+| 4 | 1,500 |
+| 5 | 3,000 |
+
+### Tokens per minute by tier
+
+TPM limits vary by model, because they are set relative to each model's capacity. Each tier grants access to a higher percentage of that capacity, so larger-capacity models get higher TPM limits. To see the specific values for your account, check your dashboard.
+
+AssemblyAI can also set custom limits for individual accounts.
 
   **Need a higher rate limit?**
 
   If you need a higher rate limit, [contact our support team](mailto:support@assemblyai.com).
 
+## How tokens are counted
+
+Token counting is the most common cause of unexpected `429` responses.
+
+1. **On admission:** when a request is admitted, the gateway reserves an estimate against your TPM limit: the estimated prompt tokens plus the request's `max_tokens`. If you don't set `max_tokens`, 8,000 output tokens are reserved.
+2. **While it runs:** the reservation is held for the whole request.
+3. **On completion:** the reservation is replaced by the real usage: input tokens + output tokens + cache-write tokens. Cache-read tokens do not count toward TPM.
+
+Because `max_tokens` is reserved up front, setting it much higher than a request needs uses up TPM headroom while the request runs, even though those tokens are never generated. Concurrent requests with large `max_tokens` values can hit the TPM limit early.
+
+**Example:** a request with a roughly 2,000-token prompt and `max_tokens: 64000` holds about 66,000 tokens of TPM until it finishes, even if the reply is only 300 tokens.
+
+  Set `max_tokens` close to what the response actually needs.
+
+## Handling 429 responses
+
+When you exceed a limit, the API responds with a `429` status code and a JSON body:
+
+```json
+{
+  "request_id": "…",
+  "message": "…",
+  "code": 429
+}
+```
+
+The `message` tells you which limit was hit:
+
+| Limit hit | `message` |
+| --- | --- |
+| RPM (or both RPM and TPM) | `too many requests for this action` |
+| TPM only | `too many tokens per minute for this account - max_tokens is reserved against this limit for the duration of the request, whether or not the tokens are generated` |
+
+Every `429` response includes a `Retry-After` header with the number of seconds to wait before retrying. Wait at least that long, and use exponential backoff if retries keep failing.
+
 ## Response headers
 
-If you exceed the limit, the API responds with a `429` status code. To see your remaining quota, check the following response headers:
+These headers are set on rate-limited endpoints, on both successful and `429` responses.
+
+### Request (RPM) headers
 
 | Header                  | Description                                                                                |
 | ----------------------- | ------------------------------------------------------------------------------------------ |
-| `X-RateLimit-Limit`     | Maximum number of allowed requests in a 60 second window.                                  |
-| `X-RateLimit-Remaining` | Number of remaining requests in the current time window.                                   |
-| `X-RateLimit-Reset`     | Number of seconds until the remaining requests resets to the value of `X-RateLimit-Limit`. |
-| `X-RateLimit-Model`     | The model the rate limit applies to. Same as "model" param in the request.                 |
-| `X-RateLimit-Service`   | Denotes the service used, LLM Gateway or Speech Understanding.                             |
+| `X-RateLimit-Limit` | The RPM limit for this model, provider, and region. |
+| `X-RateLimit-Remaining` | Requests remaining in the current window, counting this one. |
+| `X-RateLimit-Reset` | Seconds until the current window rolls over. |
+| `X-RateLimit-Service` | The product the limit belongs to: `llmgw` for LLM Gateway or `speech-understanding` for Speech Understanding. |
+| `X-RateLimit-Model` | LLM Gateway only. The model the limit applies to, same as the `model` in your request. |
+| `X-RateLimit-Feature` | Speech Understanding only, sent instead of `X-RateLimit-Model`. The feature the limit applies to. |
+
+### Token (TPM) headers
+
+These headers are sent by LLM Gateway only. Speech Understanding doesn't send them.
+
+| Header | Description |
+| --- | --- |
+| `X-RateLimit-Limit-Tokens` | The TPM limit for this model, provider, and region. |
+| `X-RateLimit-Remaining-Tokens` | Tokens remaining in the current window. On a successful response, this counts the request's actual usage. On a rejected request, it counts the reservation estimate. |
+| `X-RateLimit-Reset-Tokens` | Seconds until the current window rolls over. |
+
+### Retry header
+
+| Header | Description |
+| --- | --- |
+| `Retry-After` | Sent on `429` responses only. Seconds to wait before retrying. |
 
 If the response doesn't include `X-RateLimit` headers, the endpoint doesn't have rate limits.
+
+## Avoid 429 responses
+
+- Set `max_tokens` to what you need, so you don't reserve TPM you won't use.
+- Watch `X-RateLimit-Remaining` and `X-RateLimit-Remaining-Tokens` and slow down as they approach zero.
+- Spread bursts of requests across the window instead of sending them all at once.
+- Retry with backoff, waiting at least the `Retry-After` interval.
+- [Contact support](mailto:support@assemblyai.com) if you need higher limits.
 
 ---
 

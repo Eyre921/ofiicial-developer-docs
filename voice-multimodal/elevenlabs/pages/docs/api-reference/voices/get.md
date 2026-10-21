@@ -227,6 +227,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### SpeakerResponseModel
 
 - `speaker_id` (string, required) — The ID of the speaker.

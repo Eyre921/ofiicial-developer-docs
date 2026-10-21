@@ -10,9 +10,9 @@ Learn how to build and test your app using a DevKit.
 
 Access the Apps on Devices sample integration repository on [GitHub](https://github.com/stripe-samples/terminal-apps-on-devices).
 
-Use your SmartPOS DevKit device to test and iterate your application without going through the deployment, app review, or signing process.
+Use your SmartPOS DevKit device to test and iterate your application without going through the deployment, app review, or signing process. If you only have a production reader, you can accept payments with a [server-driven integration](https://docs.stripe.com/terminal/designing-integration.md) or use [standalone mode](https://docs.stripe.com/terminal/payments/ready-made-apps.md) on a supported reader.
 
-If you need a DevKit device, you can [order up to five per user](https://docs.stripe.com/terminal/fleet/order-and-return-readers.md) from the [Readers](https://dashboard.stripe.com/terminal) section in your Dashboard.
+If you need a DevKit device, you can [order up to five per user](https://docs.stripe.com/terminal/fleet/order-and-return-readers.md) from the [Readers](https://dashboard.stripe.com/terminal/shop) page in the Dashboard.
 
 > #### Verifone reader support
 > 

@@ -22,6 +22,7 @@ url: https://docs.sentry.io/integrations/source-code-mgmt/
 
 ## [Features](https://docs.sentry.io/integrations/source-code-mgmt.md#features)
 
+* [Code Mappings](https://docs.sentry.io/integrations/source-code-mgmt/code-mappings.md) — map stack-trace file paths to files in your repository. Required for stack trace linking, suspect commits, SCM source context, and Code Owners.
 * [SCM Source Context](https://docs.sentry.io/integrations/source-code-mgmt/source-context.md) — render source lines around each stack-trace frame on demand from your SCM provider, for events that don't carry inline source context.
 
 ## Pages in this section
@@ -33,5 +34,6 @@ url: https://docs.sentry.io/integrations/source-code-mgmt/
 - [GitHub](https://docs.sentry.io/integrations/source-code-mgmt/github.md)
 - [GitLab](https://docs.sentry.io/integrations/source-code-mgmt/gitlab.md)
 - [Perforce](https://docs.sentry.io/integrations/source-code-mgmt/perforce.md)
+- [Code Mappings](https://docs.sentry.io/integrations/source-code-mgmt/code-mappings.md)
 - [SCM Source Context Fetching](https://docs.sentry.io/integrations/source-code-mgmt/source-context.md)
 

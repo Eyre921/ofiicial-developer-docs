@@ -54,7 +54,7 @@ You can use Agent Runners to make changes to projects you published using the Ne
 Agent Runners support the following AI agents:
    - Claude Code
    - OpenAI Codex 
-   - Google Gemini
+   - Google Antigravity
    - OpenCode
 
 OpenCode gives you a selection of up-to-date coding models, served in partnership with [OpenRouter](https://openrouter.ai/). Netlify only routes these requests to model providers with a [Zero Data Retention (ZDR)](https://openrouter.ai/docs/guides/features/zdr#zero-data-retention) policy. Under this policy, model providers do not store your prompts or model outputs.
@@ -142,7 +142,7 @@ Once your team has credits again, select **Continue** on the cancelled run to re
 
 ## Use Agent Runners
 
-1. Go to your Netlify project dashboard under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, OpenAI Codex, or OpenCode, enter your prompt and optionally add any additional context. Then choose **Run task**.
+1. Go to your Netlify project dashboard under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Antigravity, OpenAI Codex, or OpenCode, enter your prompt and optionally add any additional context. Then choose **Run task**.
   ![Build with an AI agent from project overview](/images/build-with-an-ai-agent-from-project-overview.png)
 
 To check out the fuller process of prompting and reviewing agent run results, check out [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners).

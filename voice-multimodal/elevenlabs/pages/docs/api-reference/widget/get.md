@@ -123,6 +123,10 @@ Validation Error
 
 The avatar of the widget
 
+- OrbAvatar: OrbAvatar
+- URLAvatar: URLAvatar
+- ImageAvatar: ImageAvatar
+
 ### WidgetEndFeedbackConfig
 
 - `type` (enum, optional, default: rating) — The type of feedback to collect at the end of the conversation
@@ -227,6 +231,9 @@ The avatar of the widget
 - `max_files_per_conversation` (integer, optional, default: 10) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### OrbAvatar
 

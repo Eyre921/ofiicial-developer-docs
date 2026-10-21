@@ -93,7 +93,13 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ChapterContentBlockResponseModelNodesItems
+
+- ChapterContentBlockTtsNodeResponseModel: ChapterContentBlockTtsNodeResponseModel
+- ChapterContentBlockExtendableNodeResponseModel: ChapterContentBlockExtendableNodeResponseModel
 
 ### ChapterContentBlockTtsNodeResponseModel
 

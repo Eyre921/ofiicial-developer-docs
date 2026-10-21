@@ -23394,10 +23394,10 @@ Browserbase is a developer platform to reliably run, manage, and monitor headles
 
 Power your AI data retrievals with:
 
-* [Serverless Infrastructure](https://docs.browserbase.com/under-the-hood) providing reliable browsers to extract data from complex UIs
-* [Stealth Mode](https://docs.browserbase.com/features/stealth-mode) with included fingerprinting tactics and automatic captcha solving
-* [Session Debugger](https://docs.browserbase.com/features/sessions) to inspect your Browser Session with networks timeline and logs
-* [Live Debug](https://docs.browserbase.com/guides/session-debug-connection/browser-remote-control) to quickly debug your automation
+* [Serverless Infrastructure](https://docs.browserbase.com/welcome/what-is-browserbase) providing reliable browsers to extract data from complex UIs
+* [Stealth Mode](https://docs.browserbase.com/platform/identity/overview) with included fingerprinting tactics and automatic captcha solving
+* [Session Debugger](https://docs.browserbase.com/platform/browser/observability/observability) to inspect your Browser Session with networks timeline and logs
+* [Live Debug](https://docs.browserbase.com/platform/browser/observability/session-live-view) to quickly debug your automation
 
 ## Installation
 
@@ -24869,7 +24869,7 @@ Web automation tool that integrates Stagehand with CrewAI for browser interactio
 
 # Overview
 
-The `StagehandTool` integrates the [Stagehand](https://docs.stagehand.dev/get_started/introduction) framework with CrewAI, enabling agents to interact with websites and automate browser tasks using natural language instructions.
+The `StagehandTool` integrates the [Stagehand](https://docs.stagehand.dev/v4/first-steps/introduction) framework with CrewAI, enabling agents to interact with websites and automate browser tasks using natural language instructions.
 
 ## Overview
 
@@ -38615,7 +38615,7 @@ This integration allows you to log hyperparameters, monitor performance regressi
 
 **1. Sign up for Langtrace**
 
-Sign up by visiting [https://langtrace.ai/signup](https://langtrace.ai/signup).
+Sign up by visiting [https://app.langtrace.ai/signup](https://app.langtrace.ai/signup).
 
 **2. Create a project**
 
@@ -41357,7 +41357,7 @@ The `AIMindTool` accepts the following parameters:
   * **connection\_data**: A dictionary containing the connection parameters for the datasource.
   * **tables**: A list of tables that the data source will use. This is optional and can be omitted if all tables in the data source are to be used.
 
-A list of supported data sources and their connection parameters can be found [here](https://docs.mdb.ai/docs/data_sources).
+A list of supported data sources and their connection parameters can be found [here](https://docs.mdb.ai/docs/anton_onboarding#connect-data-sources).
 
 ## Agent Integration Example
 
@@ -47132,7 +47132,7 @@ Common response elements include:
 * **Monitoring**: Regular extraction of content for change detection
 * **Data Collection**: Systematic extraction of information from web sources
 
-Refer to the [Tavily API documentation](https://docs.tavily.com/docs/tavily-api/python-sdk#extract) for detailed information about the response structure and available options.
+Refer to the [Tavily API documentation](https://docs.tavily.com/sdk/python/reference#tavily-extract) for detailed information about the response structure and available options.
 
 
 # Tavily Research Tool

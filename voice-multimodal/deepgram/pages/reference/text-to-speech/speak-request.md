@@ -58,18 +58,66 @@ Successful text-to-speech transformation
 Invalid Request
 
 - `ErrorResponse`
+  - ErrorResponseTextError: string
+  - ErrorResponseLegacyError: ErrorResponseLegacyError
+  - ErrorResponseModernError: ErrorResponseModernError
 
 ## Types
 
 ### V1SpeakPostParametersTag
 
+- string
+- list of string
+
 ### V1SpeakPostParametersBitRate
+
+- mp3(default): enum
+  - Allowed values: `32000`, `48000`
+- double
+- double
 
 ### V1SpeakPostParametersContainer
 
+- none: enum
+  - Allowed values: `none`
+- linear16: enum
+  - Allowed values: `wav`
+- mulaw: enum
+  - Allowed values: `wav`
+- alaw: enum
+  - Allowed values: `wav`
+- opus: enum
+  - Allowed values: `ogg`
+
 ### V1SpeakPostParametersEncoding
 
+- linear16: enum
+  - Allowed values: `linear16`
+- flac: enum
+  - Allowed values: `flac`
+- mulaw: enum
+  - Allowed values: `mulaw`
+- alaw: enum
+  - Allowed values: `alaw`
+- mp3: enum
+  - Allowed values: `mp3`
+- opus: enum
+  - Allowed values: `opus`
+- aac: enum
+  - Allowed values: `aac`
+
 ### V1SpeakPostParametersSampleRate
+
+- linear16: enum
+  - Allowed values: `8000`, `16000`, `24000`, `32000`, `48000`
+- mulaw: enum
+  - Allowed values: `8000`, `16000`
+- alaw: enum
+  - Allowed values: `8000`, `16000`
+- mp3: enum
+  - Allowed values: `22050`
+- opus: enum
+  - Allowed values: `48000`
 
 ### ErrorResponseLegacyError
 

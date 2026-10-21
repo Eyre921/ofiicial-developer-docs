@@ -207,6 +207,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptCommonModelOutputToolResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -265,6 +270,9 @@ Reference to a tool for unit test evaluation.
 - `type` ("node_id", optional, default: node_id)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### ConversationHistoryMultivoiceMessagePartModel
 
@@ -563,6 +571,11 @@ A common model for workflow tool responses.
   - `step_latency_secs` (double, required)
 
 ### WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
 
 ## Examples
 

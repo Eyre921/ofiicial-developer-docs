@@ -90,6 +90,17 @@ Audit log entry with Firestore document ID for API responses.
 
 Activity ID
 
+- AccountChangeActivityId: enum
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `99`
+- AuthenticationActivityId: enum
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `99`
+- EntityManagementActivityId: enum
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `99`
+- UserAccessManagementActivityId: enum
+  - Allowed values: `0`, `1`, `2`, `99`
+- GroupManagementActivityId: enum
+  - Allowed values: `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `99`
+
 ### ActorModel
 
 OCSF Actor object - describes the entity that performed the action. Spec: https://schema.ocsf.io/1.6.0/objects/actor
@@ -117,6 +128,9 @@ HTTP request details. Spec: https://schema.ocsf.io/1.6.0/objects/http_request
 - `x_forwarded_for` (list of string, optional, nullable) — X-Forwarded-For header as a list
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### UserModel
 

@@ -12,7 +12,7 @@ url: https://docs.sentry.io/product/trace-explorer/
 
 # Traces and Spans | Sentry Docs
 
-The [**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/traces/) in Sentry is designed to make performance investigation easier and more intuitive. You can now explore span samples, visualize span attributes, and aggregate your data with flexible queries and filters. This guide will walk you through the key concepts and features of the Trace Explorer.
+[**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/traces/) in Sentry is designed to make performance investigation easier and more intuitive. You can explore span samples, visualize span attributes, and aggregate your data with flexible queries and filters. This guide will walk you through the key concepts and features of Trace Explorer. To learn more about Explore as a whole, see [Explore](https://docs.sentry.io/product/explore.md).
 
 ## [Key Concepts](https://docs.sentry.io/product/trace-explorer.md#key-concepts)
 
@@ -43,20 +43,16 @@ You can group span durations by custom span attributes to investigate patterns, 
 * **Finding problematic API calls**: Aggregate by `http.url` and filter where `avg.(span.duration) > 2s` to identify slow external API calls.
 * **Database query analysis**: Aggregate by `db.query` and sort by `avg(span.duration)` to find inefficient queries.
 
-With these tools, the new Trace Explorer gives you powerful ways to understand your application's performance, identify bottlenecks, and make informed optimizations.
-
 ### [Agent Tracing](https://docs.sentry.io/product/trace-explorer.md#agent-tracing)
 
-Set up [Agent Tracing](https://docs.sentry.io/platform-redirect.md?next=%2Fagent-tracing%2F) to capture traces for agents in Trace Explorer. [agent traces](https://docs.sentry.io/product/agents.md) include model calls, tool executions, and token usage, so you can use the same search and aggregation tools when debugging agents.
+Set up [Agent Tracing](https://docs.sentry.io/platform-redirect.md?next=%2Fagent-tracing%2F) to capture traces for agents in Trace Explorer. [Agent traces](https://docs.sentry.io/product/agents.md) include model calls, tool executions, and token usage, so you can use the same search and aggregation tools when debugging agents.
 
 * **Finding slow agent runs**: Search for `span.op:gen_ai.invoke_agent` and visualize `p90(span.duration)` grouped by `gen_ai.agent.name` to compare traces for agents.
 * **Debugging tool calls**: Search for `span.op:gen_ai.execute_tool` and visualize `avg(span.duration)` grouped by `gen_ai.tool.name` to find tools that stall your agent.
 
-You plan type determines your query window: Developer: 7 days | Team: 14 days | Business: 30 days.
-
 ## [Browsing Span and Trace Samples](https://docs.sentry.io/product/trace-explorer.md#browsing-span-and-trace-samples)
 
-Trace Explorer allows you to browse span and trace samples and inspect them. Here's how:
+Browse span and trace samples, then inspect a single span or trace:
 
 1. **Search for Samples**:
 
@@ -72,7 +68,7 @@ Trace Explorer allows you to browse span and trace samples and inspect them. Her
 
 ## [Visualizing Span Attributes](https://docs.sentry.io/product/trace-explorer.md#visualizing-span-attributes)
 
-Trace Explorer makes it easy to visualize metrics aggregated from any span attribute.
+The Visualize section charts an aggregate of any span attribute.
 
 1. **Set Up Visualization**:
 
@@ -90,7 +86,7 @@ The line chart updates dynamically as you apply filters, helping you track trend
 
 ## [Aggregating Span Data](https://docs.sentry.io/product/trace-explorer.md#aggregating-span-data)
 
-Dive deeper into your data with aggregation capabilities in Trace Explorer.
+The Aggregates tab groups span data so you can compare patterns instead of reading individual spans.
 
 1. Click into the **Aggregates** tab.
 
@@ -112,7 +108,7 @@ This helps you quickly identify whether a latency spike, error surge, or other a
 
 ### [How to Use Attribute Comparison](https://docs.sentry.io/product/trace-explorer.md#how-to-use-attribute-comparison)
 
-* On the Trace Explorer page, begin by dragging across a chart's timeline to narrow down to the time range that you want to compare. You will see an option to `Compare Attribute Breakdowns`.
+* On the Traces page, drag across a chart's timeline to narrow down to the time range that you want to compare. You will see an option to `Compare Attribute Breakdowns`.
 
 * When you click on `Compare Attribute Breakdowns`, the attribute comparison charts below will load with the baseline and time range differences. Purple bars on the left are the time range values, and gray bars on the right are the baseline values. **Note:** Clicking anywhere else on the page while in *compare attributes* mode will stop the comparison and reset to baseline.
 
@@ -165,12 +161,12 @@ Spans, logs, and application metrics are supported as join targets.
 
 ### [How to Use Cross-Event Querying](https://docs.sentry.io/product/trace-explorer.md#how-to-use-cross-event-querying)
 
-1. In [Trace Explorer](https://sentry.io/orgredirect/organizations/:orgslug/traces/), click the **Plus (+)** button next to the search bar.
+1. In [Traces](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/), click the **Plus (+)** button next to the search bar.
 2. Choose the event type you want to join on: **Spans**, **Logs**, or **Metrics**.
 3. If you chose **Metrics**, pick the specific metric you want to join on (for example, `checkout.duration`).
 4. Add filters for that event type, such as `severity:error` on a logs join, `db.query:"SELECT *"` on a spans join, or `value > 5000` on a metrics join.
 
-Trace Explorer returns spans whose trace also contains at least one event matching your join filter.
+Traces returns spans whose trace also contains at least one event matching your join filter.
 
 ### [Example: Backend Services That Logged Errors](https://docs.sentry.io/product/trace-explorer.md#example-backend-services-that-logged-errors)
 
@@ -186,16 +182,16 @@ The span results now include only traces that also contain at least one error lo
 
 [Application Metrics](https://docs.sentry.io/product/metrics.md) are typically sampled at 100%, while traces are sampled at a much lower rate, so a specific metric sample often won't have a trace attached to it. Joining on **Application Metrics** lets you search directly for traces that contain a matching metric event, giving you a comparable trace for the pattern you're investigating:
 
-1. In Trace Explorer, click the **Plus (+)** next to the search bar and choose **Application Metrics**.
+1. In Traces, click the **Plus (+)** next to the search bar and choose **Application Metrics**.
 2. Pick the metric you want to trace back (for example, `checkout.duration`).
 3. Add filters that match the pattern you're investigating — for example, `value > 5000` for slow checkouts, or a custom attribute like `region:eu` to scope by segment.
 4. Pick a trace from the results. It contains at least one event of that metric matching your filter, giving you the same debugging context (spans, logs, related errors) as a trace directly attached to the metric sample would.
 
-## [Create Alerts and Dashboard Widgets From Queries or Compare Queries](https://docs.sentry.io/product/trace-explorer.md#create-alerts-and-dashboard-widgets-from-queries-or-compare-queries)
+## [Save As Functionality](https://docs.sentry.io/product/trace-explorer.md#save-as-functionality)
 
-You can create Alerts and Dashboard widgets from your queries by clicking the "Save As" button:
+**Save as** stores the query, adds a dashboard widget, or creates a monitor. Saved and starred queries are shared across Explore. See [Save a Query](https://docs.sentry.io/product/explore.md#save-a-query).
 
-You can also run side-by-side comparisons of different queries to analyze changes or differences in span data.
+Run side-by-side comparisons of different queries to analyze changes in span data. Open compare from **Save as**.
 
 ## [Practical Examples](https://docs.sentry.io/product/trace-explorer.md#practical-examples-1)
 
@@ -240,7 +236,7 @@ Since each span was sampled with different weights, Sentry extrapolates the **co
 10 + 2 = 12 estimated spans
 ```
 
-Trace Explorer will display **Count: 12**.
+Traces displays **Count: 12**.
 
 ### [Sums](https://docs.sentry.io/product/trace-explorer.md#sums)
 
@@ -250,7 +246,7 @@ Similarly, Sentry incorporates the weight into **sum**:
 10 * 100ms + 2 * 200ms = 1.4s
 ```
 
-Trace Explorer will display **Sum: 1.4ms**.
+Traces displays **Sum: 1.4ms**.
 
 ### [Averages and Percentiles](https://docs.sentry.io/product/trace-explorer.md#averages-and-percentiles)
 
@@ -266,13 +262,13 @@ Sentry treats this as a representation of the average across all 12 estimated sp
 
 If your sampling rate is **too low** for an accurate extrapolation (for example, keeping less than 5% of an already low number of spans), Sentry may show a **low sampling rate warning**. This lets you know that extrapolation might be less reliable, especially for more restrictive queries.
 
-Even if you sample your spans, **Trace Explorer's extrapolation gives you reasonably accurate answers** for counts, averages, and percentiles -- without you needing to do anything extra.
+Even if you sample your spans, extrapolation gives you reasonably accurate answers for counts, averages, and percentiles. You don't need to do anything extra.
 
 ### [When to Turn Off Extrapolation](https://docs.sentry.io/product/trace-explorer.md#when-to-turn-off-extrapolation)
 
 While extrapolation is usually helpful, if you are exclusively looking to confirm your sampling usage or look exclusively at sampled data, you can turn off extrapolation.
 
-You can disable extrapolation using the settings icon above charts in tools like Trace Explorer.
+Disable extrapolation with the settings icon above the chart when you want the numbers to reflect only the spans Sentry stored.
 
 ### [How to Tweak Client Side Sampling to Find More Samples](https://docs.sentry.io/product/trace-explorer.md#how-to-tweak-client-side-sampling-to-find-more-samples)
 
@@ -286,9 +282,5 @@ For example, you might sample your checkout flow at 100% to catch any issues, wh
 
 To configure `tracesSampler` for your SDK, see the tracing options in your SDK's [configuration documentation](https://docs.sentry.io/platform-redirect.md?next=/configuration/options/).
 
-## [Ingestion Delay](https://docs.sentry.io/product/trace-explorer.md#ingestion-delay)
-
-Newly sent spans can take a short time to show up in Sentry. Sentry estimates this delay for your organization, so the most recent part of a chart may be marked as incomplete. Hover over an incomplete bucket to see roughly when its data should settle. Counts there may go up as the rest of the data arrives. This also applies to logs and metrics.
-
-This estimate is not a guarantee. Some delays, such as data sent late from your application, can't be measured, so data may still arrive after buckets are marked as settled.
+Recent spans, logs, and metrics can show up as incomplete while ingestion catches up. See [Ingestion Delay](https://docs.sentry.io/product/explore.md#ingestion-delay).
 

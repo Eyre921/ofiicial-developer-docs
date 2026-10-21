@@ -38,7 +38,7 @@ The policy doesn't affect prompt caching, which holds KV caches only in memory, 
 | Responses API with `store: false` | Inference | Allowed |
 | Responses API with `store: true` (default) | Inference | **Rejected** |
 | Responses API with `background: true` | Inference | **Rejected** |
-| FireRouter | Inference | **Rejected** |
+| Nexus Auto | Inference | **Rejected** |
 | Batch inference jobs | Inference | **Rejected** |
 | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs | Training | **Rejected** |
 | Training API: forward and backward passes, optimizer steps, sampling, and checkpoints | Training | **Rejected** |

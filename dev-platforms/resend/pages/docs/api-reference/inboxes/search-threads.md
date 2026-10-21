@@ -333,6 +333,29 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.inboxes.model.SearchInboxThreadsParams;
+import com.resend.services.inboxes.model.SearchInboxThreadsResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        SearchInboxThreadsParams params = SearchInboxThreadsParams.builder()
+                .query("invoice -draft")
+                .from("isabella@example.com", "carolina@example.com")
+                .startDate("2026-09-01")
+                .limit(2)
+                .build();
+
+        SearchInboxThreadsResponseSuccess data = resend.inboxes().threads()
+                .search("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 

@@ -17,7 +17,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-index = pc.Index(name="articles")
+index = pc.index(name="articles")
 
 NAMESPACE = "example-namespace"
 
@@ -29,7 +29,7 @@ response = index.documents.search(
     include_fields=["title", "body", "category", "year"],
 )
 for match in response.matches:
-    print(match._id, match._score, getattr(match, "title", ""))
+    print(match.id, match.score, getattr(match, "title", ""))
 
 # Lucene query string
 response = index.documents.search(

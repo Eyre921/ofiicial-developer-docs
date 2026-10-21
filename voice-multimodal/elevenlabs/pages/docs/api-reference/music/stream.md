@@ -67,6 +67,9 @@ Validation Error
 
 A detailed composition plan to guide music generation. Cannot be used in conjunction with `prompt`.
 
+- MusicPrompt: MusicPrompt
+- CompositionPlan: CompositionPlan
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -89,6 +92,9 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### SongSection
 
 - `section_name` (string, required) — The name of the section. Must be between 1 and 100 characters.
@@ -99,6 +105,9 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 - `source_from` (SectionSource, optional, nullable) — Optional source to extract the section from. Used for inpainting.
 
 ### CompositionPlanChunksItems
+
+- GenerationChunk: GenerationChunk-Input
+- AudioRefChunk: AudioRefChunk
 
 ### SectionSource
 

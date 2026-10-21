@@ -46,13 +46,21 @@ For dispute-related fees, responsibility depends on your connected account optio
 
 For [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md), with or without `on_behalf_of`, Stripe debits dispute amounts and fees from your platform account.
 
-We recommend setting up [a webhook](https://docs.stripe.com/webhooks.md) to listen to [dispute created events](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created). When that happens, you can attempt to recover funds from the connected account by reversing the transfer through the [Dashboard](https://dashboard.stripe.com/test/transfers) or by [creating a transfer reversal](https://docs.stripe.com/api/transfer_reversals/create.md).
+Set up [a webhook](https://docs.stripe.com/webhooks.md) to listen for [dispute created events](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created).
 
-If the connected account has a negative balance, Stripe attempts to [debit its external account](https://docs.stripe.com/connect/account-balances.md#automatically-debit-connected-accounts) if `debit_negative_balances` is set to `true`.
+You can reverse the transfer to your connected account through the [Dashboard](https://dashboard.stripe.com/test/transfers) or by [creating a transfer reversal](https://docs.stripe.com/api/transfer_reversals/create.md) to recover the dispute chargeback funds. If the connected account has a negative balance, Stripe attempts to debit its external account if [debit_negative_balances](https://docs.stripe.com/connect/account-balances.md#automatically-debit-connected-accounts) is set to `true`.
 
-If you challenge the dispute and win, you can transfer the funds that you previously reversed back to the connected account. If your platform has an insufficient balance, the transfer fails. Prevent insufficient balance errors by [adding funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md).
+Time your reversal according to how you choose to handle the dispute:
 
-> Retransferring a previous reversal is subject to [cross-border transfer restrictions](https://docs.stripe.com/connect/account-capabilities.md#transfers-cross-border), meaning you might have no means to repay your connected account. Instead, wait to recover disputed cross-border payment transfers for destination charges with `on_behalf_of` until after a dispute is lost.
+- If you accept the dispute, you can reverse the transfer immediately.
+- If you challenge the dispute, wait for the dispute outcome before reversing the transfer.
+  - If you win, don’t reverse the transfer.
+  - If you lose, reverse the transfer.
+
+If you reverse the transfer for a disputed payment that you challenge and win, transfering those funds back to a connected account can have unexpected results:
+
+- If your platform has an insufficient balance, the transfer fails. Prevent insufficient balance errors by [adding funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md).
+- [Cross-border transfer restrictions](https://docs.stripe.com/connect/account-capabilities.md#transfers-cross-border) might prevent you from repaying your connected account.
 
 If Stripe is responsible for the connected account’s negative balances, a transfer reversal can fail when the account has insufficient available funds. Handle reversal failures by retrying when sufficient funds become available.
 

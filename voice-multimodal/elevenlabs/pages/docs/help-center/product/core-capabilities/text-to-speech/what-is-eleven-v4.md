@@ -25,7 +25,7 @@ Eleven v4 comes in two variants, so you can choose the right balance of quality 
 * **Eleven v4** (`eleven_v4`) — our highest-quality model, ideal for content creation, audiobooks, character voiceovers, and any use case where quality is the top priority.
 * **Eleven v4 Turbo** (`eleven_v4_turbo`) — extremely high quality while retaining impressively low latency, purpose-built for real-time use cases like conversational agents and interactive voice experiences.
 
-Both variants use two voice settings: Stability and Similarity. Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
+Both variants use two voice settings: Stability and Similarity. When you select a [Professional Voice Clone](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning) and Eleven v4, Voice settings include an additional **Clone Strength** slider. Clone Strength controls how closely the output follows the clone's training recordings. At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility. At higher values, the output stays closer to the training recordings and mimics the original delivery more closely, which can help voices with distinctive traits or unique accents. For most voices, start at 0%. Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
 
 When the language you're generating matches the language of your reference voice, the original accent is preserved exactly as before. When the language you're generating is different from the reference voice's language, Eleven v4 generates fluent, natural-sounding speech in the target language — rather than carrying over the reference voice's accent from its original language.
 

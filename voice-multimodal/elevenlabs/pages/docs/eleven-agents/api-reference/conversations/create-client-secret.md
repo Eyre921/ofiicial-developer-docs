@@ -120,13 +120,28 @@ Validation Error
 
 ### OpenAiSessionConfigInputToolChoice
 
+- string
+- Open AI Tool Choice Function: OpenAiToolChoiceFunction
+
 ### OpenAiSessionConfigInputMaxResponseOutputTokens
+
+- integer
+- "inf"
 
 ### OpenAiSessionConfigInputTurnDetection
 
+- Open AI Turn Detection: OpenAiTurnDetection
+- string
+
 ### OpenAiSessionConfigInputTracing
 
+- "auto"
+- Open AI Tracing Configuration: OpenAiTracingConfiguration
+
 ### OpenAiSessionConfigInputTruncation
+
+- string
+- map from string to any
 
 ### OpenAiAudioConfigOutput
 
@@ -149,11 +164,23 @@ Validation Error
 
 ### OpenAiSessionConfigOutputToolChoice
 
+- string
+- Open AI Tool Choice Function: OpenAiToolChoiceFunction
+
 ### OpenAiSessionConfigOutputMaxResponseOutputTokens
+
+- integer
+- "inf"
 
 ### OpenAiSessionConfigOutputTracing
 
+- "auto"
+- Open AI Tracing Configuration: OpenAiTracingConfiguration
+
 ### ValidationErrorLocItem
+
+- string
+- integer
 
 ### OpenAiAudioInputConfigInput
 

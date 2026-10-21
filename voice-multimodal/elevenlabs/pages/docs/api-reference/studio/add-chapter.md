@@ -91,6 +91,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ChapterContentBlockResponseModel
 
 - `block_id` (string, required)
@@ -105,6 +108,9 @@ Validation Error
 - `credits_needed_to_convert` (integer, optional, nullable) — The number of credits needed to convert the remaining audio for this voice.
 
 ### ChapterContentBlockResponseModelNodesItems
+
+- ChapterContentBlockTtsNodeResponseModel: ChapterContentBlockTtsNodeResponseModel
+- ChapterContentBlockExtendableNodeResponseModel: ChapterContentBlockExtendableNodeResponseModel
 
 ### ChapterContentBlockTtsNodeResponseModel
 

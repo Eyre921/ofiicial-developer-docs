@@ -30,6 +30,9 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/create
 This endpoint expects a conversational_ai_tests_create_Request.
 
 - `conversational_ai_tests_create_Request`
+  - CreateResponseUnitTestRequest: CreateResponseUnitTestRequest
+  - CreateToolCallUnitTestRequest: CreateToolCallUnitTestRequest
+  - CreateSimulationTestRequest: CreateSimulationTestRequest
 
 ## Response
 
@@ -180,6 +183,9 @@ Simulation/preview-side config: tools are identified by IDs, resolved to names a
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### AgentMetadata
 
 - `agent_id` (string, required)
@@ -205,6 +211,11 @@ Represents a message from a multi-voice agent.
 - `tool_details` (ConversationHistoryTranscriptToolCallCommonModelInputToolDetails, optional, nullable)
 
 ### ConversationHistoryTranscriptCommonModelInputToolResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ### UserFeedback
 
@@ -560,6 +571,11 @@ A common model for workflow tool responses.
   - `step_latency_secs` (double, required)
 
 ### WorkflowToolResponseModelInputStepsItemsDiscriminatorMappingNestedToolsResultsItems
+
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Input
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Input
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Input
 
 ## Examples
 

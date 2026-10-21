@@ -226,6 +226,9 @@ Dependencies that use an auth connection
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### AuthConnectionDependenciesToolsItems
 
 - `type`: `available` (DependentAvailableToolIdentifier)

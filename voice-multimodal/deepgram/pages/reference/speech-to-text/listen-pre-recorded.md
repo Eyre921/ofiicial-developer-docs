@@ -82,6 +82,8 @@ This endpoint expects a ListenV1RequestUrl.
 Returns either transcription results, or a request_id when using a callback.
 
 - `listen_v1_media_transcribe_Response_200`
+  - ListenV1Response: ListenV1Response
+  - ListenV1AcceptedResponse: ListenV1AcceptedResponse
 
 ## Errors
 
@@ -96,27 +98,67 @@ Invalid Request
 
 ### V1ListenPostParametersExtra
 
+- string
+- list of string
+
 ### V1ListenPostParametersSummarize
+
+- Listen API Version Option: enum
+  - Allowed values: `v2`
+- boolean
 
 ### V1ListenPostParametersTag
 
+- string
+- list of string
+
 ### V1ListenPostParametersCustomTopic
+
+- string
+- list of string
 
 ### V1ListenPostParametersCustomIntent
 
+- string
+- list of string
+
 ### V1ListenPostParametersDetectLanguage
+
+- boolean
+- list of string
 
 ### V1ListenPostParametersKeywords
 
+- string
+- list of string
+
 ### V1ListenPostParametersModel
+
+- enum
+  - Allowed values: `nova-3`, `nova-3-general`, `nova-3-medical`, `nova-2`, `nova-2-general`, `nova-2-meeting`, `nova-2-finance`, `nova-2-conversationalai`, `nova-2-voicemail`, `nova-2-video`, `nova-2-medical`, `nova-2-drivethru`, `nova-2-automotive`, `nova`, `nova-general`, `nova-phonecall`, `nova-medical`, `enhanced`, `enhanced-general`, `enhanced-meeting`, `enhanced-phonecall`, `enhanced-finance`, `base`, `meeting`, `phonecall`, `finance`, `conversationalai`, `voicemail`, `video`
+- string
 
 ### V1ListenPostParametersRedact
 
+- string
+- list of enum
+  - Allowed values: `pci`, `pii`, `numbers`
+
 ### V1ListenPostParametersReplace
+
+- string
+- list of string
 
 ### V1ListenPostParametersSearch
 
+- string
+- list of string
+
 ### V1ListenPostParametersVersion
+
+- enum
+  - Allowed values: `latest`
+- string
 
 ### ListenV1Response
 

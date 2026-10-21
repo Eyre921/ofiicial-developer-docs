@@ -9,6 +9,35 @@ Retrieve context snippets from an assistant to use as part of RAG or any agentic
 
 For guidance and examples, see [Retrieve context snippets](https://docs.pinecone.io/guides/assistant/retrieve-context-snippets).
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+response = pc.assistants.context(
+    assistant_name="example-assistant",
+    query="Who is the CFO of Netflix?",
+)
+for snippet in response.snippets:
+    print(snippet.score, snippet.content)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.context({
+  query: 'Who is the CFO of Netflix?',
+});
+console.log(response.snippets);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

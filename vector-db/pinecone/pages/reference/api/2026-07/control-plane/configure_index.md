@@ -38,6 +38,84 @@ pc.indexes.configure(
 )
 ```
 
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+// Enable deletion protection
+await pc.indexes.configure('articles', {
+  deletionProtection: 'enabled',
+});
+
+// Convert read capacity from OnDemand to Dedicated
+await pc.indexes.configure('articles', {
+  readCapacity: {
+    mode: 'Dedicated',
+    dedicated: {
+      nodeType: 'b1',
+      scaling: 'Manual',
+      manual: { shards: 1, replicas: 1 },
+    },
+  },
+});
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // Enable deletion protection
+    _, err = pc.ConfigureIndex(ctx, "articles", pinecone.ConfigureIndexParams{
+        DeletionProtection: pinecone.DeletionProtectionEnabled,
+    })
+    if err != nil {
+        log.Fatalf("Failed to configure index: %v", err)
+    }
+
+    // Convert read capacity from OnDemand to Dedicated
+    nodeType := "b1"
+    shards := int32(1)
+    replicas := int32(1)
+
+    _, err = pc.ConfigureIndex(ctx, "articles", pinecone.ConfigureIndexParams{
+        ReadCapacity: &pinecone.ReadCapacityParams{
+            Dedicated: &pinecone.ReadCapacityDedicatedConfig{
+                NodeType: &nodeType,
+                Scaling: &pinecone.ReadCapacityScaling{
+                    Manual: &pinecone.ReadCapacityManualScaling{
+                        Shards:   &shards,
+                        Replicas: &replicas,
+                    },
+                },
+            },
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to configure index: %v", err)
+    }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

@@ -36,7 +36,7 @@ Stripe also reformats the payment before authorization based on issuer preferenc
 
 **Data Only 3DS**: Stripe reduces scheme fees by sharing additional transaction data with issuers through [Data Only flows](https://docs.stripe.com/payments/3d-secure/strong-customer-authentication-exemptions.md#data-only), without challenging the cardholder. |
 
-### Card account updater
+### Card account updater 
 
 Card numbers and expiration dates regularly change, and outdated card information is a common source of declines for online businesses. Stripe uses the card account updater services offered by major card networks to improve acceptance by retrieving and updating saved card payment information automatically.
 

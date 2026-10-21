@@ -4,7 +4,7 @@ source: https://docs.stripe.com/billing/billing-apis.md
 path: billing/billing-apis
 ---
 
-# About the Billing APIs
+# How the Billing APIs work
 
 Understand how the Billing API objects work together.
 

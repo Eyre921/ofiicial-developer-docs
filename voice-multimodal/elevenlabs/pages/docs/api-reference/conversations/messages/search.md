@@ -85,6 +85,9 @@ transcript_index: index of the message in the conversation transcript chunk_text
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

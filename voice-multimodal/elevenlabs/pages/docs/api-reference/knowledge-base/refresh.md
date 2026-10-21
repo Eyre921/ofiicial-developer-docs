@@ -201,6 +201,9 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

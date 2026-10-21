@@ -1,12 +1,10 @@
 ---
-title: "Foundry for Coding Harnesses"
+title: "Nexus for Microsoft Foundry"
 source: https://docs.fireworks.ai/nexus/microsoft-foundry
 path: nexus/microsoft-foundry
 ---
 
-Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor, and VS Code via FireConnect, manual setup, or an LLM gateway.
-
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
+Use Fireworks models deployed in Microsoft Foundry from Claude Code, OpenCode, Cursor, and VS Code via Nexus CLI, manual setup, or an LLM gateway.
 
 Use Fireworks models deployed in your Azure subscription from the coding harness you already use. Azure bills this usage, and it counts toward your Microsoft Azure Consumption Commitment where applicable.
 
@@ -20,62 +18,62 @@ Before you start, [enable Fireworks in Microsoft Foundry](/ecosystem/integration
 
 | Path | Best for | Harnesses |
 | - | - | - |
-| [FireConnect](#connect-with-fireconnect) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
+| [Nexus CLI](#connect-with-nexus) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
 | [Manual setup](#configure-a-harness-manually) | Harnesses with a custom OpenAI-compatible provider | Any harness that accepts a base URL, key, and model name |
 | [LLM gateway](#use-an-llm-gateway) | Claude Code, or central key management | Claude Code and any harness your gateway supports |
 
-| Harness | FireConnect | Manual setup | LLM gateway |
+| Harness | Nexus CLI | Manual setup | LLM gateway |
 | - | - | - | - |
 | OpenCode, Pi, Cursor IDE, VS Code | Supported | Supported | Supported |
 | Codex CLI, ChatGPT desktop app | Not supported by current Codex | Not supported by current Codex | Needs a gateway that serves the Responses API |
 | Claude Code | Not supported | Not supported | [Supported, with format translation](#claude-code-through-a-gateway) |
 | DeepSeek Harness, Copilot App, Copilot CLI | Not supported | Depends on the harness | Depends on the harness |
 
-Foundry serves Fireworks models through an OpenAI-compatible Chat Completions API. Claude Code sends Anthropic Messages requests, so it needs a gateway that translates between the two formats. Codex CLI 0.160 and later send only Responses API requests and reject `wire_api = "chat"` in `config.toml`, so FireConnect no longer connects Codex to Foundry.
+Foundry serves Fireworks models through an OpenAI-compatible Chat Completions API. Claude Code sends Anthropic Messages requests, so it needs a gateway that translates between the two formats. Codex CLI 0.160 and later send only Responses API requests and reject `wire_api = "chat"` in `config.toml`, so Nexus CLI no longer connects Codex to Foundry.
 
-If an earlier FireConnect connected Codex to Foundry, move it back to the Fireworks gateway:
+If an earlier Nexus CLI connected Codex to Foundry, move it back to the Fireworks gateway:
 
 ```bash wrap theme={null}
-fireconnect configure --provider fireworks
-fireconnect codex
+nexus configure --provider fireworks
+nexus codex
 ```
 
 The first command makes Fireworks the default provider for every harness, not only Codex.
 
 > [!WARNING]
 >
-> FireRouter is not available on Foundry, including through a gateway. To use
-> `--model firerouter`, switch back to direct Fireworks first with
-> `fireconnect configure --provider fireworks`. See [FireRouter](/nexus/firerouter).
+> Nexus Auto is not available on Foundry, including through a gateway. To use
+> `--model auto`, switch back to direct Fireworks first with
+> `nexus configure --provider fireworks`. See [Nexus Auto](/nexus/auto).
 
-## Connect with FireConnect
+## Connect with Nexus CLI
 
-FireConnect writes the Foundry endpoint, key, and deployment into supported harnesses and restores the original settings with `off`.
+Nexus CLI writes the Foundry endpoint, key, and deployment into supported harnesses and restores the original settings with `off`.
 
 **1. Set Foundry as the default provider**
 
 ```bash wrap theme={null}
 export AZURE_API_KEY="YOUR_AZURE_API_KEY"
 
-fireconnect configure \
+nexus configure \
   --provider azure \
   --base-url "https://YOUR_RESOURCE.services.ai.azure.com"
 ```
 
-If no Azure key is stored, FireConnect saves an `{env:AZURE_API_KEY}` reference. To store the current value, add `--api-key "$AZURE_API_KEY"`.
+If no Azure key is stored, Nexus CLI saves an `{env:AZURE_API_KEY}` reference. To store the current value, add `--api-key "$AZURE_API_KEY"`.
 
 **2. Connect a harness with your deployment name**
 
 ```bash wrap theme={null}
-fireconnect opencode --model FW-GLM-5.2
+nexus opencode --model FW-GLM-5.2
 ```
 
-With Foundry, `--model` is your Azure deployment name, not a Fireworks serverless ID such as `glm-latest`. If you omit `--model`, FireConnect uses `FW-GLM-5.2`.
+With Foundry, `--model` is your Azure deployment name, not a Fireworks serverless ID such as `glm-latest`. If you omit `--model`, Nexus CLI uses `FW-GLM-5.2`.
 
 **3. Verify**
 
 ```bash wrap theme={null}
-fireconnect opencode status
+nexus opencode status
 ```
 
 Confirm that the provider is `azure` and that the endpoint and deployment name are correct. Harness configs show the label **Fireworks on Microsoft Foundry**.
@@ -83,20 +81,20 @@ Confirm that the provider is `azure` and that the endpoint and deployment name a
 To route one harness through Foundry without changing the default provider, add `--azure`:
 
 ```bash wrap theme={null}
-fireconnect opencode \
+nexus opencode \
   --azure \
   --base-url "https://YOUR_RESOURCE.services.ai.azure.com" \
   --api-key "$AZURE_API_KEY" \
   --model FW-MiniMax-M2.5
 ```
 
-If a Foundry endpoint is already configured, `--azure` alone reuses it: `fireconnect cursor --azure --model FW-GLM-5.2`.
+If a Foundry endpoint is already configured, `--azure` alone reuses it: `nexus cursor --azure --model FW-GLM-5.2`.
 
-`fireconnect model list` shows the Fireworks serverless catalog, not your Foundry deployments. Enter the deployment name with `--model`.
+`nexus model list` shows the Fireworks serverless catalog, not your Foundry deployments. Enter the deployment name with `--model`.
 
 ### Accepted endpoint formats
 
-Pass any of these Foundry URLs to `--base-url`. FireConnect converts it to `https://<resource>.services.ai.azure.com/openai/v1`:
+Pass any of these Foundry URLs to `--base-url`. Nexus CLI converts it to `https://<resource>.services.ai.azure.com/openai/v1`:
 
 * Bare resource root (`https://<resource>.services.ai.azure.com`)
 * Portal **project endpoint** (`.../api/projects/<name>`)
@@ -109,9 +107,9 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 
 | Goal | Commands |
 | - | - |
-| Return a harness to direct Fireworks | `fireconnect configure --provider fireworks`, then `fireconnect <harness>` |
-| Remove FireConnect from one harness | `fireconnect <harness> off` |
-| Restore all harnesses and remove FireConnect | `fireconnect uninstall` |
+| Return a harness to direct Fireworks | `nexus configure --provider fireworks`, then `nexus <harness>` |
+| Remove Nexus CLI from one harness | `nexus <harness> off` |
+| Restore all harnesses and remove Nexus CLI | `nexus uninstall` |
 
 `off` does not change the default provider. If it is still `azure`, the next connection uses Foundry again. The saved Azure endpoint and key remain available if you switch back later.
 
@@ -146,7 +144,7 @@ Put a gateway between the harness and Foundry when the harness needs a different
 
 ### Claude Code through a gateway
 
-Claude Code sends Anthropic Messages requests, and Foundry serves Fireworks models over OpenAI Chat Completions. A gateway translates between the two, including streaming, tool calls, and reasoning blocks. Your Claude Code install stays unchanged. FireConnect does not configure this path.
+Claude Code sends Anthropic Messages requests, and Foundry serves Fireworks models over OpenAI Chat Completions. A gateway translates between the two, including streaming, tool calls, and reasoning blocks. Your Claude Code install stays unchanged. Nexus CLI does not configure this path.
 
 **Envoy AI Gateway**
 
@@ -226,5 +224,5 @@ Keep the Azure key in the gateway config. Do not paste it into harness settings 
 ## Related documentation
 
 * [Microsoft Foundry](/ecosystem/integrations/azure-foundry): enable Fireworks and create deployments
-* [Coding Harnesses](/nexus/harnesses): files FireConnect changes and restore behavior
+* [Coding Harnesses](/nexus/harnesses): files Nexus CLI changes and restore behavior
 * [CLI Reference](/nexus/cli-reference)

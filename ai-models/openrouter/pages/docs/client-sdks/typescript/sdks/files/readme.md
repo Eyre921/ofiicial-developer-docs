@@ -87,7 +87,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListFilesRequest](../../models/operations/listfilesrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.ListFilesRequest](../../models/operations/listfilesrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -180,7 +180,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UploadFileRequest](../../models/operations/uploadfilerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.UploadFileRequest](../../models/operations/uploadfilerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -198,6 +198,7 @@ run();
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.PayloadTooLargeResponseError | 413 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.ClientClosedRequestResponseError | 499 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.BadGatewayResponseError | 502 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
@@ -268,7 +269,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteFileRequest](../../models/operations/deletefilerequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DeleteFileRequest](../../models/operations/deletefilerequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -355,7 +356,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetFileMetadataRequest](../../models/operations/getfilemetadatarequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetFileMetadataRequest](../../models/operations/getfilemetadatarequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
@@ -442,7 +443,7 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DownloadFileContentRequest](../../models/operations/downloadfilecontentrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.DownloadFileContentRequest](../../models/operations/downloadfilecontentrequest.mdx) | ✔️ | The request object to use for the request. |
 | `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |

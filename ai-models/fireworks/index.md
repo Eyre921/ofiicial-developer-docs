@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -238,8 +238,6 @@
 ## getting-started
 
 - `getting-started/concepts` — [Concepts](pages/getting-started/concepts.md) · [原文](https://docs.fireworks.ai/getting-started/concepts)
-- `getting-started/fireconnect` — [FireConnect](pages/getting-started/fireconnect.md) · [原文](https://docs.fireworks.ai/getting-started/fireconnect)
-- `getting-started/firerouter` — [FireRouter](pages/getting-started/firerouter.md) · [原文](https://docs.fireworks.ai/getting-started/firerouter)
 - `getting-started/glossary` — [Glossary](pages/getting-started/glossary.md) · [原文](https://docs.fireworks.ai/getting-started/glossary)
 - `getting-started/introduction` — [Build with Fireworks AI](pages/getting-started/introduction.md) · [原文](https://docs.fireworks.ai/getting-started/introduction)
 - `getting-started/nexus` — [Fireworks Nexus](pages/getting-started/nexus.md) · [原文](https://docs.fireworks.ai/getting-started/nexus)
@@ -283,24 +281,31 @@
 ## nexus
 
 - `nexus/apis-and-sdks` — [APIs and SDKs](pages/nexus/apis-and-sdks.md) · [原文](https://docs.fireworks.ai/nexus/apis-and-sdks)
+- `nexus/auto` — [Nexus Auto](pages/nexus/auto.md) · [原文](https://docs.fireworks.ai/nexus/auto)
+- `nexus/cli` — [Nexus CLI](pages/nexus/cli.md) · [原文](https://docs.fireworks.ai/nexus/cli)
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
 - `nexus/estimated-savings` — [Estimated Savings](pages/nexus/estimated-savings.md) · [原文](https://docs.fireworks.ai/nexus/estimated-savings)
-- `nexus/fireconnect` — [FireConnect](pages/nexus/fireconnect.md) · [原文](https://docs.fireworks.ai/nexus/fireconnect)
-- `nexus/firerouter` — [FireRouter](pages/nexus/firerouter.md) · [原文](https://docs.fireworks.ai/nexus/firerouter)
-- `nexus/firerouter/setup` — [FireRouter Setup](pages/nexus/firerouter/setup.md) · [原文](https://docs.fireworks.ai/nexus/firerouter/setup)
-- `nexus/harness-compatibility` — [Harness Compatibility](pages/nexus/harness-compatibility.md) · [原文](https://docs.fireworks.ai/nexus/harness-compatibility)
-- `nexus/harnesses` — [Coding Harnesses](pages/nexus/harnesses.md) · [原文](https://docs.fireworks.ai/nexus/harnesses)
+- `nexus/harnesses/chatgpt` — [ChatGPT desktop app](pages/nexus/harnesses/chatgpt.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/chatgpt)
+- `nexus/harnesses/claude-code` — [Claude Code](pages/nexus/harnesses/claude-code.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/claude-code)
+- `nexus/harnesses/claude-desktop` — [Claude Desktop](pages/nexus/harnesses/claude-desktop.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/claude-desktop)
+- `nexus/harnesses/codex` — [Codex](pages/nexus/harnesses/codex.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/codex)
+- `nexus/harnesses/copilot-app` — [Copilot App](pages/nexus/harnesses/copilot-app.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/copilot-app)
+- `nexus/harnesses/copilot-cli` — [Copilot CLI](pages/nexus/harnesses/copilot-cli.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/copilot-cli)
+- `nexus/harnesses/cursor` — [Cursor IDE](pages/nexus/harnesses/cursor.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/cursor)
+- `nexus/harnesses/deepseek` — [DeepSeek Harness](pages/nexus/harnesses/deepseek.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/deepseek)
+- `nexus/harnesses/opencode` — [OpenCode](pages/nexus/harnesses/opencode.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/opencode)
+- `nexus/harnesses/pi` — [Pi](pages/nexus/harnesses/pi.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/pi)
+- `nexus/harnesses/vscode` — [VS Code](pages/nexus/harnesses/vscode.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/vscode)
 - `nexus/llm-gateways` — [LLM Gateways](pages/nexus/llm-gateways.md) · [原文](https://docs.fireworks.ai/nexus/llm-gateways)
+- `nexus/manual-setup` — [Manual setup (advanced)](pages/nexus/manual-setup.md) · [原文](https://docs.fireworks.ai/nexus/manual-setup)
 - `nexus/metrics` — [Usage and Cost](pages/nexus/metrics.md) · [原文](https://docs.fireworks.ai/nexus/metrics)
-- `nexus/microsoft-foundry` — [Foundry for Coding Harnesses](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
+- `nexus/microsoft-foundry` — [Nexus for Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
 - `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
+- `nexus/orchestration-preferences` — [Effort](pages/nexus/orchestration-preferences.md) · [原文](https://docs.fireworks.ai/nexus/orchestration-preferences)
 - `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
 - `nexus/provider-keys/bedrock` — [Amazon Bedrock Setup](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)
 - `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
-- `nexus/routing-preferences` — [Routing Preferences](pages/nexus/routing-preferences.md) · [原文](https://docs.fireworks.ai/nexus/routing-preferences)
-- `nexus/session-usage` — [Session Cost](pages/nexus/session-usage.md) · [原文](https://docs.fireworks.ai/nexus/session-usage)
 - `nexus/usage-limits` — [Spend Limits](pages/nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits)
-- `nexus/web-search` — [Web Search](pages/nexus/web-search.md) · [原文](https://docs.fireworks.ai/nexus/web-search)
 
 ## serverless
 

@@ -238,6 +238,35 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.inboxes.model.CreateInboxDraftOptions;
+import com.resend.services.inboxes.model.CreateInboxDraftResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        CreateInboxDraftOptions params = CreateInboxDraftOptions.builder()
+                .to("ada@example.org")
+                .subject("Refund for order 1041")
+                .html("<p>Refund issued for order 1041.</p>")
+                .text("Refund issued for order 1041.")
+                .attachments(Attachment.builder()
+                        .fileName("note.txt")
+                        .content("aGVsbG8=")
+                        .contentType("text/plain")
+                        .build())
+                .build();
+
+        CreateInboxDraftResponseSuccess data = resend.inboxes().drafts()
+                .create("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 

@@ -43,19 +43,11 @@ Your callback URLs may reference the `http` or `https` protocols.
 
 ## Authenticating Callback Requests
 
-Authentication ensures the security and integrity of callback requests. There are two main methods for authenticating callback requests: using Basic Auth and utilizing the dg-token request header.
-
-### Using Basic Auth
-
-You may embed username-password authentication credentials in the callback URL in the format `https://username:[email protected]`. However, it's important to note that only ports 80, 443, 8080, and 8443 are permitted for callbacks.
+Authenticate callback requests to confirm that they come from Deepgram. Use Basic Auth: embed username-password credentials in the callback URL in the format `https://username:password@example.com`. Deepgram includes these credentials when it sends results to your callback server, which can then reject any request without the expected credentials.
 
 > **Warning**
 >
 > Only ports 80, 443, 8080, and 8443 are permitted for callbacks.
-
-### Using the `dg-token` Request Header
-
-Alternatively, the callback request itself contains a header named dg-token. This header is automatically set to the API Key Identifier associated with the API Key used to submit the original request. This method provides a secure and straightforward means of authentication.
 
 ## Results
 

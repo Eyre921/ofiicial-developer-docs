@@ -40,7 +40,7 @@ You can make [custom dashboards](https://docs.sentry.io/product/dashboards/custo
 
 ## [Open Dashboard Widgets in Explore and Issues](https://docs.sentry.io/product/dashboards.md#open-dashboard-widgets-in-explore-and-issues)
 
-Each dashboard [widget](https://docs.sentry.io/product/dashboards/widget-builder.md) has an ellipsis that opens a context menu. From here, depending on the type of data the widget shows, you can open the widget in different explorers: [Errors](https://docs.sentry.io/product/errors.md), [Traces](https://docs.sentry.io/product/trace-explorer.md), [Logs](https://docs.sentry.io/product/logs.md), [Session Replays](https://docs.sentry.io/product/session-replay/web.md), and [Metrics](https://docs.sentry.io/product/metrics.md) to get more information.
+Each dashboard [widget](https://docs.sentry.io/product/dashboards/widget-builder.md) has an ellipsis that opens a context menu. From here, depending on the type of data the widget shows, you can open the widget in [Explore](https://docs.sentry.io/product/explore.md): [Errors](https://docs.sentry.io/product/errors.md), [Traces](https://docs.sentry.io/product/trace-explorer.md), [Logs](https://docs.sentry.io/product/logs.md), [Session Replays](https://docs.sentry.io/product/session-replay/web.md), and [Metrics](https://docs.sentry.io/product/metrics.md).
 
 ## [Widget Viewer](https://docs.sentry.io/product/dashboards.md#widget-viewer)
 

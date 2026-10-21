@@ -259,6 +259,37 @@ async fn main() -> Result<()> {
 }
 ```
 
+```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.Attachment;
+import com.resend.services.inboxes.model.ForwardInboxThreadEmailOptions;
+import com.resend.services.inboxes.model.ForwardInboxThreadEmailResponseSuccess;
+
+public class Main {
+    public static void main(String[] args) throws ResendException {
+        Resend resend = new Resend("re_xxxxxxxxx");
+
+        ForwardInboxThreadEmailOptions params = ForwardInboxThreadEmailOptions.builder()
+                .to("colleague@example.org")
+                .cc("billing@example.com")
+                .bcc("records@example.com")
+                .text("Flagging this refund request for you.")
+                .attachments(Attachment.builder()
+                        .fileName("invoice.pdf")
+                        .path("https://resend.com/static/sample/invoice.pdf")
+                        .build())
+                .build();
+
+        ForwardInboxThreadEmailResponseSuccess data = resend.inboxes().threads().emails().forward(
+                "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+                "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+                "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+                params);
+    }
+}
+```
+
 ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
 using Resend;
 

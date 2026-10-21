@@ -85,7 +85,11 @@ The Stripe SmartPOS OS is built for security and PCI-compliance based on the And
 - Notifications are disabled and the device user can’t access the home screen. Either your app or the Stripe reader app persists as the primary.
 - Production devices have a disabled USB port. Additionally, [Android Debug Bridge](https://developer.android.com/studio/command-line/adb) (`adb`) and debugging aren’t available.
 
-You can use a [DevKit device](https://docs.stripe.com/terminal/features/apps-on-devices/build.md) for development purposes.
+You can use a [DevKit device](https://docs.stripe.com/terminal/features/apps-on-devices/build.md) for development purposes. [Order up to five DevKits per user](https://docs.stripe.com/terminal/fleet/order-and-return-readers.md) from the [Readers](https://dashboard.stripe.com/terminal/shop) page in the Dashboard.
+
+> #### DevKit required for app development
+> 
+> You need a DevKit device to develop and test apps with Apps on Devices. If you only have a production reader, you can accept payments with a [server-driven integration](https://docs.stripe.com/terminal/designing-integration.md) or use [standalone mode](https://docs.stripe.com/terminal/payments/ready-made-apps.md) on a supported reader.
 
 ## Stripe Reader T600
 

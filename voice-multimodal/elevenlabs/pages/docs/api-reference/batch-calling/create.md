@@ -134,6 +134,9 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ConversationConfigClientOverride-Input
 
 - `asr` (ASRConversationalConfigOverride, optional, nullable) — Configuration for conversational transcription

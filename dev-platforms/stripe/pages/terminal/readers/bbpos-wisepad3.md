@@ -51,6 +51,7 @@ The software on the BBPOS WisePad 3 consists of a firmware version, configuratio
 
 | Version | Release date | Description |
 | --- | --- | --- |
+| `4.01.08.01` | 10/21/2026 | - General bug fixes and code improvements. |
 | `4.01.07.00` | 9/8/2026 | - General bug fixes and code improvements. |
 | `4.01.06.00` | 8/3/2026 | - General bug fixes and code improvements. |
 | `4.01.05.00` | 6/30/2026 | - General bug fixes and code improvements. |

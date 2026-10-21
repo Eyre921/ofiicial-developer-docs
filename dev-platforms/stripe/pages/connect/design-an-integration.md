@@ -153,7 +153,7 @@ This charge type is best suited for marketplaces such as Airbnb, a home rental m
 
 Destination charges are created on the platform, but as part of the charge operation, funds are immediately transferred to the connected account you specified. You can decide whether some or all of those funds are transferred.
 
-Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md), your platform and the connected account you transfer funds to must be in the same region to create a Destination charge. Attempting to transfer funds across a disallowed border returns an error.
+Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md), your platform and the connected account you transfer funds to must be in the same region to create a Destination charge. Attempting to transfer funds across a disallowed border returns an error.
 
 #### Item 3
 
@@ -163,7 +163,7 @@ This charge type is best suited for marketplaces that need to split payments bet
 
 While separate charges and transfers provide a lot of flexibility, they require a more complex integration to manage account balances between your platform and your users. You must monitor your platform account balance carefully to make sure you have enough available funds to cover the transfer amount.
 
-Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md), your platform and the connected account you transfer funds to must be in the same region to use separate charges and transfers. Attempting to transfer funds across a disallowed border returns an error.
+Unless you’re eligible for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md), your platform and the connected account you transfer funds to must be in the same region to use separate charges and transfers. Attempting to transfer funds across a disallowed border returns an error.
 
 ### Stripe fees
 

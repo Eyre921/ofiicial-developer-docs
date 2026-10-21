@@ -72,6 +72,10 @@ Validation Error
 
 Overrides the server's tool_call_sound setting for this tool. A sound name plays that sound; 'off' overrides to no sound (silence); null means do not override (inherit the server default).
 
+- ToolCallSoundType: enum
+  - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+- "off"
+
 ### DynamicVariableAssignment
 
 Configuration for extracting values from tool responses and assigning them to dynamic variables.
@@ -108,12 +112,22 @@ Configuration for extracting values from tool responses and assigning them to dy
 
 The constant value to use
 
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
+
 ### UnitTestToolCallParameter
 
 - `eval` (UnitTestToolCallParameterEval, required)
 - `path` (string, required)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### UnitTestToolCallParameterEval
 

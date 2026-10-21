@@ -748,7 +748,7 @@ func main() {
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
-curl -X GET "https://$INDEX_HOST/bulk/imports?paginationToken==Tm90aGluZyB0byBzZWUgaGVyZQo" \
+curl -X GET "https://$INDEX_HOST/bulk/imports?paginationToken=Tm90aGluZyB0byBzZWUgaGVyZQo" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H "X-Pinecone-Api-Version: 2026-07"
 ```

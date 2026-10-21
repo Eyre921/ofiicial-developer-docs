@@ -60,6 +60,9 @@ Validation Error
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ## Examples
 
 **Response**

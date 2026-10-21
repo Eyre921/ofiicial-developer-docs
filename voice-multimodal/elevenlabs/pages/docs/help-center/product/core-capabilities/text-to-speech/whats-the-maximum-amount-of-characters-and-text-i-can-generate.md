@@ -8,13 +8,17 @@ path: docs/help-center/product/core-capabilities/text-to-speech/whats-the-maximu
 
 # What's the maximum amount of characters and text I can generate?
 
-In [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech), using the website, you can generate up to 5,000 characters in a single generation on any paid plan and up to 2,500 on all free plans.
+In [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech), using the website, you can generate up to 10,000 characters in a single generation when using Eleven v4, and up to 5,000 characters for all other models.
 
 However, if you plan on generating longer-form content of more than a few thousand characters, we highly recommend using [Studio](https://elevenlabs.io/app/studio) which allows you to generate extremely long-form content such as books and novels very easily. You can read more about it [here](https://elevenlabs.io/docs/eleven-creative/products/studio).
 
 If you're generating using the API, the maximum length of input varies depending on which model you're using:
 
 **Text to Speech**
+
+Eleven v4 - up to 10,000 characters (\~10 minutes of audio)
+
+Eleven v3 - up to 5,000 characters (\~5 minutes of audio)
 
 Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
 

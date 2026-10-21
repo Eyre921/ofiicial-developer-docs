@@ -364,6 +364,7 @@
 - API reference > Traffic Allocations [List traffic allocations](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-find-all-paginated.md)
 - API reference > Traffic Allocations [Create traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-create.md)
 - API reference > Traffic Allocations [Get latest traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-latest-get.md)
+- API reference > Traffic Allocations [Get traffic split metrics](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-metrics-get.md)
 - API reference > Traffic Allocations [Get traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-find-one.md)
 - API reference > Phone Numbers [List Phone Numbers](https://docs.vapi.ai/api-reference/phone-numbers/list.md)
 - API reference > Phone Numbers [Create Phone Number](https://docs.vapi.ai/api-reference/phone-numbers/create.md)

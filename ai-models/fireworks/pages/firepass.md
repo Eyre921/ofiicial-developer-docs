@@ -47,13 +47,13 @@ Fire Pass is designed for personal agentic coding. Configure your tool manually 
 
 > [!WARNING]
 >
-> [FireConnect](/nexus/fireconnect) doesn't accept Fire Pass keys. It rejects
-> an `fpk_...` key and asks you to sign in with `fireconnect login`. To use
-> FireConnect, sign in with a standard Fireworks key (`fw_...`).
+> [Nexus CLI](/nexus/cli) doesn't accept Fire Pass keys. It rejects
+> an `fpk_...` key and asks you to sign in with `nexus login`. To use
+> Nexus CLI, sign in with a standard Fireworks key (`fw_...`).
 
 > [!WARNING]
 >
-> Fire Pass keys cannot use `auto`, `auto-instant`, or FireRouter. Codex and the
+> Fire Pass keys cannot use `auto` or Nexus Auto. Codex and the
 > ChatGPT desktop app use the Responses API, which isn't supported with Fire
 > Pass keys.
 
@@ -236,9 +236,9 @@ Fire Pass is intended for **non-production coding use only**. By activating Fire
 > `accounts/fireworks/routers/kimi-fast-latest`. Check the Fire Pass page for
 > the current set.
 
-> **Can I use FireRouter or Auto?**
+> **Can I use Nexus Auto or Auto?**
 >
-> No. `firerouter`, `auto`, and `auto-instant` require a standard Fireworks
+> No. `auto` requires a standard Fireworks
 > key (`fw_...`). Fire Pass keys can use only Fire Pass-enabled routes.
 
 > **How will this appear on my billing dashboard?**

@@ -30,6 +30,9 @@ Reference: https://elevenlabs.io/docs/api-reference/phone-numbers/create
 This endpoint expects a conversational_ai_phone_numbers_create_Request.
 
 - `conversational_ai_phone_numbers_create_Request`
+  - CreateTwilioPhoneNumberRequest: CreateTwilioPhoneNumberRequest
+  - CreateExotelPhoneNumberRequest: CreateExotelPhoneNumberRequest
+  - CreateSIPTrunkPhoneNumberRequestV2: CreateSIPTrunkPhoneNumberRequestV2
 
 ## Response
 
@@ -128,6 +131,9 @@ Validation Error
   - Allowed values: `G722/8000`, `PCMU/8000`, `PCMA/8000`
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### SIPTrunkCredentialsRequestModel
 

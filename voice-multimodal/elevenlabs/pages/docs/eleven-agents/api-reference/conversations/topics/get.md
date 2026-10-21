@@ -89,6 +89,9 @@ Validation Error
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### TopicSentimentAggregate
 
 - `sentiment` (NumericDistributionAggregate, optional)

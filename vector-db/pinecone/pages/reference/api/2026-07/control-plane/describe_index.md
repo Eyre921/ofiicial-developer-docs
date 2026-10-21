@@ -22,6 +22,57 @@ print(index_model.status, index_model.schema)
 host = index_model.host
 ```
 
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const indexModel = await pc.indexes.describe('articles');
+console.log(indexModel.status, indexModel.schema);
+
+const host = indexModel.host;
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: os.Getenv("PINECONE_API_KEY"),
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.DescribeIndex(ctx, "articles")
+    if err != nil {
+        log.Fatalf("Failed to describe index: %v", err)
+    }
+    schema, err := json.Marshal(idx.Schema)
+    if err != nil {
+        log.Fatalf("Failed to marshal schema: %v", err)
+    }
+    fmt.Println(idx.Status.State, string(schema))
+
+    host := idx.Host
+    fmt.Println(host)
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 curl "https://api.pinecone.io/indexes/articles" \

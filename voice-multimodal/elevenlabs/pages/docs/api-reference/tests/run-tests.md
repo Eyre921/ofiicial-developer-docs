@@ -273,6 +273,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### ASRConversationalConfig
 
 - `quality` (enum, optional, default: high) — The quality of the transcription
@@ -649,6 +652,11 @@ Represents a message from a multi-voice agent.
 
 ### ConversationHistoryTranscriptCommonModelOutputToolResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### UserFeedback
 
 - `score` (enum, required)
@@ -872,6 +880,10 @@ An evaluation using the transcript and a prompt for a yes/no achieved answer
 
 The avatar of the widget
 
+- OrbAvatar: OrbAvatar
+- URLAvatar: URLAvatar
+- ImageAvatar: ImageAvatar
+
 ### WidgetEndFeedbackConfig
 
 - `type` (enum, optional, default: rating) — The type of feedback to collect at the end of the conversation
@@ -977,6 +989,11 @@ The avatar of the widget
 ### AnalysisPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### AgentAnalysisItemsInputEvaluationCriteriaItems
 
@@ -1602,6 +1619,9 @@ The type of tool
 
 ### ConversationInitiationClientDataWebhookRequestHeaders
 
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+
 ### ContentConfig
 
 - `sexual` (ContentThresholdGuardrail, optional)
@@ -1958,11 +1978,22 @@ A system tool is a tool that is used to call a system method in the server
 
 The API key for authentication. Either a workspace secret reference \{'secret\_id': '...'} or an environment variable reference \{'env\_var\_label': '...'}.
 
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
+
 ### CustomLlmAuthConnection
 
 Optional workspace auth connection for authentication. Only auth connections that produce an Authorization Bearer token are supported; Basic auth, mTLS, custom header, and URL secret auth connections are not supported.
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### CustomLlmRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### KnowledgeBaseToolInfo
 
@@ -2090,6 +2121,9 @@ Single custom guardrail configuration
 
 Value of this literal.
 
+- double
+- integer
+
 ### SoftTimeoutConfigWorkflowOverride
 
 - `timeout_seconds` (double, optional, nullable) — Time in seconds before showing the predefined message while waiting for LLM response. Set to -1 to disable.
@@ -2149,6 +2183,13 @@ Value of this literal.
 ### WorkflowToolLocatorSchemaOverridesDiscriminatorMappingConstantConstantValue
 
 The constant value to use
+
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
 
 ### KnowledgeBaseRagChunkModel
 
@@ -2218,7 +2259,14 @@ Used to reference a dynamic variable.
 
 ### ApiIntegrationWebhookOverridesRequestHeaders
 
+- string
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+
 ### ObjectJsonSchemaPropertyInput
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
 
 ### RequiredConstraints
 
@@ -2229,7 +2277,13 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingEndProcedureProcedures
 
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
+
 ### ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures
+
+- ProcedureVersionRef: ProcedureVersionRef
+- ProcedureDraftRef: ProcedureDraftRef
 
 ### AgentTransfer-Input
 
@@ -2257,6 +2311,11 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `phone_number` (string, optional, nullable, deprecated)
 
 ### WebhookToolApiSchemaConfigInputRequestHeaders
+
+- string
+- ConvAISecretLocator: ConvAISecretLocator
+- ConvAIDynamicVariable: ConvAIDynamicVariable
+- ConvAIEnvVarLocator: ConvAIEnvVarLocator
 
 ### LiteralJsonSchemaProperty
 
@@ -2290,7 +2349,14 @@ Configuration for filtering tool responses before they are visible to the agent.
 
 Optional auth connection to use for authentication with this webhook
 
+- AuthConnectionLocator: AuthConnectionLocator
+- EnvironmentAuthConnectionLocator: EnvironmentAuthConnectionLocator
+
 ### ContentThresholdGuardrailThreshold
+
+- double
+- enum
+  - Allowed values: `low`, `medium`, `high`
 
 ### CustomGuardrailConfigTriggerAction
 
@@ -2323,6 +2389,10 @@ Optional auth connection to use for authentication with this webhook
 ### PromptAgentApiModelWorkflowOverrideInputBackupLlmConfig
 
 Configuration for backup LLM cascading. Can be disabled, use system defaults, or specify custom order.
+
+- BackupLLMDefault: BackupLLMDefault
+- BackupLLMDisabled: BackupLLMDisabled
+- BackupLLMOverride: BackupLLMOverride
 
 ### PromptAgentApiModelWorkflowOverrideInputToolsItems
 
@@ -2420,6 +2490,11 @@ The type of tool
 
 ### WorkflowToolResponseModelOutputStepsItemsDiscriminatorMappingNestedToolsResultsItems
 
+- ConversationHistoryTranscriptOtherToolsResultCommonModel: ConversationHistoryTranscriptOtherToolsResultCommonModel
+- ConversationHistoryTranscriptSystemToolResultCommonModel: ConversationHistoryTranscriptSystemToolResultCommonModel-Output
+- ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel: ConversationHistoryTranscriptApiIntegrationWebhookToolsResultCommonModel-Output
+- ConversationHistoryTranscriptWorkflowToolsResultCommonModel: ConversationHistoryTranscriptWorkflowToolsResultCommonModel-Output
+
 ### ArrayJsonSchemaProperty-Input
 
 - `property_kind` (enum, optional, default: array)
@@ -2478,9 +2553,18 @@ DTMF digits to send after call connects (e.g., 'ww1234' for extension). Can be e
 
 ### LiteralJsonSchemaPropertyType
 
+- enum
+  - Allowed values: `boolean`, `string`, `integer`, `number`
+- list of string
+
 ### LiteralJsonSchemaPropertyConstantValue
 
 A constant value to use for this property. Mutually exclusive with description, dynamic_variable, is_system_provided, and is_omitted.
+
+- string
+- integer
+- double
+- boolean
 
 ### BackupLLMDefault
 
@@ -2494,6 +2578,10 @@ A constant value to use for this property. Mutually exclusive with description, 
 ### ArrayJsonSchemaPropertyInputItems
 
 Schema for array elements.
+
+- LiteralJsonSchemaProperty: LiteralJsonSchemaProperty
+- ObjectJsonSchemaProperty: ObjectJsonSchemaProperty-Input
+- ArrayJsonSchemaProperty: ArrayJsonSchemaProperty-Input
 
 ## Examples
 

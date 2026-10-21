@@ -62,9 +62,10 @@ from sentry_sdk import metrics
 sentry_sdk.init(
     dsn="https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
 
-    # Add request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
+    # Check https://docs.sentry.io/platforms/python/data-management/data-collected/ to configure what data is collected
+    data_collection={
+        "user_info": True,
+    },
     # ___PRODUCT_OPTION_START___ performance
 
     # Set traces_sample_rate to 1.0 to capture 100%

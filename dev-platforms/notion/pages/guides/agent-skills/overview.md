@@ -4,7 +4,7 @@ source: https://developers.notion.com/guides/agent-skills/overview
 path: guides/agent-skills/overview
 ---
 
-Learn how to download AI skills stored in Notion.
+Learn how to download and upload AI skills stored in Notion.
 
 The Agent Skills API exposes skills stored in Notion as directories of files. You can either download individual skills following the [Agent Skills standard](https://agentskills.io/home), or groups of related skills following the [Agent Plugins standard](https://agent-plugins.org).
 
@@ -28,6 +28,10 @@ For some examples of how to use the API, see:
 > **[Get a skill](/reference/agent-skills/get-skill-directory)**
 >
 > Download a single skill
+
+> **[Upload a skill](/reference/agent-skills/upload-skill)**
+>
+> Import a skill directory
 
 ## Requirements
 

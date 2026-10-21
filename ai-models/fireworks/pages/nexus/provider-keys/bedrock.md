@@ -4,11 +4,9 @@ source: https://docs.fireworks.ai/nexus/provider-keys/bedrock
 path: nexus/provider-keys/bedrock
 ---
 
-Connect a Bedrock IAM role or API key so FireRouter can call supported models through your AWS account.
+Connect a Bedrock IAM role or API key so Nexus Auto can call supported models through your AWS account.
 
-Coding agents start at [Nexus](/nexus). Use the [Quickstart](/nexus/quickstart) for harnesses, custom agents, APIs, SDKs, and LLM gateways. Use [FireRouter](/nexus/firerouter) for model routers, the supported model list, composition, closed-model credentials, and pricing. Prefer short model IDs such as `firerouter/opus`. In LiteLLM `litellm_params.model`, use `fireworks_ai/accounts/fireworks/routers/firerouter/opus`. Family names such as `opus` track the latest evaluated family version.
-
-An Amazon Bedrock Provider Key lets FireRouter use an IAM role or API key from your AWS account for supported models. Fireworks stores the credential securely. Bedrock usage and charges remain in your AWS account.
+An Amazon Bedrock Provider Key lets Nexus Auto use an IAM role or API key from your AWS account for supported models. Fireworks stores the credential securely. Bedrock usage and charges remain in your AWS account.
 
 Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each model also needs a Bedrock model ID and region. See [Provider Keys](/nexus/provider-keys) for shared states, rotation, and security.
 
@@ -29,7 +27,7 @@ Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each m
 Where each column is used:
 
 * **Model:** the name shown in the dashboard model picker. You select it; you never type an ID.
-* **Served model ID:** the ID in the response `model` field, such as `claude-opus-5-5`. Your application still sends a router slug such as `firerouter/claude-opus-5-5`. `firectl` uses the served ID as `routes[].firerouter_model_id`. You do not type it in the dashboard.
+* **Served model ID:** the ID in the response `model` field, such as `claude-opus-5-5`. Your application still sends `auto`, or the model ID itself to pin that model. `firectl` uses the served ID as `routes[].firerouter_model_id`. You do not type it in the dashboard.
 * **Bedrock model ID:** the AWS identifier. Copy it exactly from AWS. Paste it into each route's **Model ID** field, or set `routes[].bedrock.model_id`. Any geo/global profile or ARN that AWS lists for the model also works, as long as your region can invoke it.
 * **Region:** the AWS source region. In Fireworks, select it in each route's **Region** field, or set `routes[].bedrock.aws_region`. The supported regions are `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2`.
 
@@ -69,7 +67,7 @@ In **AWS IAM → Roles → Create role**, choose **Custom trust policy** and pas
 }
 ```
 
-![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=Vlf8OtCu4-U4nVi7\&q=85\&s=12c56e5424c42e4441a2f95f3d1f1848)
+![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=08e52085e1a92a0ec3f143b3a4b7fd70)
 
 **2. Add Bedrock permissions**
 
@@ -99,11 +97,11 @@ In **Step 2: Add permissions**, select **Create inline policy** and paste:
 
 In **Step 3**, name the role `FireworksBedrockBYOK` or use another name that begins with `FireworksBedrock`. Use the default IAM path; custom role paths are not supported. Review the trust policy and permissions, then create the role.
 
-![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=Vlf8OtCu4-U4nVi7\&q=85\&s=1543996697c843b90b413579c8c57850)
+![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=4a77b9b1241d85310c383163ee0919ba)
 
 Copy the role ARN from the role summary.
 
-![AWS IAM role summary showing the FireworksBedrockBYOK role ARN and inline policy](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/iam-role-summary.png?fit=max\&auto=format\&n=Vlf8OtCu4-U4nVi7\&q=85\&s=feef4acd8d29eff263d91af5689e967e)
+![AWS IAM role summary showing the FireworksBedrockBYOK role ARN and inline policy](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-summary.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=82e0dbc8c85917cc761c7d17048b4b40)
 
 > **Create the role with AWS CLI**
 >
@@ -281,7 +279,7 @@ Save the returned key ID as `KEY_ID`. `upload` only stores the credential; it do
 
 ### Write the routes file
 
-Create `routes.json`. Each entry maps one FireRouter model to one Bedrock region and model ID. The file holds only model and region values, not the key.
+Create `routes.json`. Each entry maps one Nexus Auto model to one Bedrock region and model ID. The file holds only model and region values, not the key.
 
 ```json theme={null}
 {

@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 256 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -39,6 +39,7 @@
 - `guides/data-apis/working-with-page-content` — [Working with page content](pages/guides/data-apis/working-with-page-content.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-page-content)
 - `guides/data-apis/working-with-views` — [Working with views](pages/guides/data-apis/working-with-views.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-views)
 - `guides/get-started/authorization` — [Authorization](pages/guides/get-started/authorization.md) · [原文](https://developers.notion.com/guides/get-started/authorization)
+- `guides/get-started/developer-tools` — [Developer tools](pages/guides/get-started/developer-tools.md) · [原文](https://developers.notion.com/guides/get-started/developer-tools)
 - `guides/get-started/handling-api-keys` — [Secure API credentials](pages/guides/get-started/handling-api-keys.md) · [原文](https://developers.notion.com/guides/get-started/handling-api-keys)
 - `guides/get-started/internal-connections` — [Internal connections](pages/guides/get-started/internal-connections.md) · [原文](https://developers.notion.com/guides/get-started/internal-connections)
 - `guides/get-started/marketplace-listing` — [List on the Marketplace](pages/guides/get-started/marketplace-listing.md) · [原文](https://developers.notion.com/guides/get-started/marketplace-listing)
@@ -128,6 +129,7 @@
 - `reference/agent-skills/get-plugin-directory` — [Get plugin](pages/reference/agent-skills/get-plugin-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-plugin-directory)
 - `reference/agent-skills/get-skill-directory` — [Get skill](pages/reference/agent-skills/get-skill-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-skill-directory)
 - `reference/agent-skills/list-skills-plugins` — [List plugins](pages/reference/agent-skills/list-skills-plugins.md) · [原文](https://developers.notion.com/reference/agent-skills/list-skills-plugins)
+- `reference/agent-skills/upload-skill` — [Upload a skill](pages/reference/agent-skills/upload-skill.md) · [原文](https://developers.notion.com/reference/agent-skills/upload-skill)
 - `reference/authentication` — [Authentication](pages/reference/authentication.md) · [原文](https://developers.notion.com/reference/authentication)
 - `reference/block` — [Block](pages/reference/block.md) · [原文](https://developers.notion.com/reference/block)
 - `reference/capabilities` — [Connection capabilities](pages/reference/capabilities.md) · [原文](https://developers.notion.com/reference/capabilities)

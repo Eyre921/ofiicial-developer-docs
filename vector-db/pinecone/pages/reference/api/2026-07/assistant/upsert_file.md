@@ -11,6 +11,37 @@ This operation is asynchronous. The file processing will occur in the background
 
 For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/assistant/manage-files#upload-a-local-file).
 
+```python Python theme={null}
+# pip install --upgrade pinecone
+import os
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+# Passing file_id creates or replaces the file with that ID
+file = pc.assistants.upload_file(
+    assistant_name="example-assistant",
+    file_path="/Users/jdoe/Downloads/example_file.txt",
+    file_id="my-custom-file-id",
+)
+print(file.id, file.status)
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_API_KEY from the environment
+const pc = new Pinecone();
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const operation = await assistant.upsertFile({
+  assistantFileId: 'my-custom-file-id',
+  path: '/Users/jdoe/Downloads/example_file.txt',
+});
+console.log(operation);
+```
+
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 ASSISTANT_NAME="example-assistant"

@@ -69,6 +69,9 @@ This endpoint expects a multipart form containing an optional file.
 Synchronous transcription result
 
 - `speech_to_text_convert_Response_200`
+  - SpeechToTextChunkResponseModel: SpeechToTextChunkResponseModel
+  - MultichannelSpeechToTextResponseModel: MultichannelSpeechToTextResponseModel
+  - SpeechToTextWebhookResponseModel: SpeechToTextWebhookResponseModel
 
 ### 202
 
@@ -163,6 +166,9 @@ Result of the optional transcript edit: the edited text, or an error if it could
   - `message_type` (string, optional, default: edited_transcript)
 
 ### ValidationErrorLocItems
+
+- string
+- integer
 
 ### SpeechToTextCharacterResponseModel
 

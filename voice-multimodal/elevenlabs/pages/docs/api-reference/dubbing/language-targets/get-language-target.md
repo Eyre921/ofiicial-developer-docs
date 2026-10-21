@@ -90,6 +90,9 @@ Signed, time-limited download URLs for a language target's outputs.
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ## Examples
 
 **Response**

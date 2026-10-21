@@ -118,9 +118,15 @@ Response model representing an MCP Server configuration.
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### McpServerConfigOutputUrl
 
 The URL of the MCP server, if this contains a secret please store as a workspace secret, otherwise store as a plain string. Must use https
+
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
 
 ### McpToolApprovalHash
 
@@ -135,13 +141,32 @@ Model for storing tool approval hashes for per-tool approval.
 
 The secret token (Authorization header) stored as a workspace secret or in-place secret
 
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI User Secret DB Model: ConvAiUserSecretDbModel
+
 ### McpServerConfigOutputRequestHeadersValue
 
+- string
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
+
 ### McpServerConfigOutputRequestMetaValue
+
+- string
+- integer
+- double
+- boolean
+- Conv AI Secret Locator: ConvAiSecretLocator
+- Conv AI Dynamic Variable: ConvAiDynamicVariable
+- Conv AI Env Var Locator: ConvAiEnvVarLocator
 
 ### McpServerConfigOutputAuthConnection
 
 Optional auth connection to use for authentication with this MCP server
+
+- Auth Connection Locator: AuthConnectionLocator
+- Environment Auth Connection Locator: EnvironmentAuthConnectionLocator
 
 ### McpToolConfigOverrideOutput
 
@@ -205,6 +230,10 @@ References an environment variable of type 'auth_connection' by label. At runtim
 
 Overrides the server's tool_call_sound setting for this tool. A sound name plays that sound; 'off' overrides to no sound (silence); null means do not override (inherit the server default).
 
+- Tool Call Sound Type: enum
+  - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
+- "off"
+
 ### DynamicVariableAssignment
 
 Configuration for extracting values from tool responses and assigning them to dynamic variables.
@@ -234,6 +263,13 @@ Configuration for extracting values from tool responses and assigning them to dy
 ### ConstantSchemaOverrideConstantValue
 
 The constant value to use
+
+- string
+- integer
+- double
+- boolean
+- list of any
+- map from string to any
 
 ### UnitTestToolCallParameter
 

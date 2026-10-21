@@ -20,7 +20,7 @@ These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If y
 
 Code mappings link stack trace paths to source code paths in your repository. They enable features like [source context](https://docs.sentry.io/platforms/java/source-context.md), [suspect commits](https://docs.sentry.io/product/issues/suspect-commits.md), [stack trace linking](https://docs.sentry.io/integrations/source-code-mgmt/github.md#stack-trace-linking), and [code owners](https://docs.sentry.io/product/issues/ownership-rules.md).
 
-You can [manage code mappings through the Sentry web UI](https://docs.sentry.io/product/issues/suspect-commits.md#set-up-code-mappings), or upload them in bulk using Sentry CLI. It is also possible to upload code mappings automatically in your CI process to keep them in sync with your repository structure.
+You can [manage code mappings through the Sentry web UI](https://docs.sentry.io/integrations/source-code-mgmt/code-mappings.md), or upload them in bulk using Sentry CLI. It is also possible to upload code mappings automatically in your CI process to keep them in sync with your repository structure.
 
 ## [Permissions](https://docs.sentry.io/cli/code-mappings.md#permissions)
 

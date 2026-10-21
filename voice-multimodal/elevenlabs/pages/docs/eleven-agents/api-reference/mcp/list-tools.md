@@ -120,6 +120,9 @@ Snapshot of the MCP tool definition that was approved.
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ## Examples
 
 **Response**

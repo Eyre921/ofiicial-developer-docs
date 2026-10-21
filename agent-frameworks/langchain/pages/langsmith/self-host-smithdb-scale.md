@@ -18,20 +18,20 @@ Use these tested tiers as starting configurations for SmithDB. Connect SmithDB t
 >
 > `smithdb.topology` requires Helm chart `0.18.0` or later.
 
-Set `smithdb.topology` to `single` or `cluster`, and enable dedicated query services on top of `cluster` when needed:
+Set `smithdb.topology` to `unified` or `cluster`, and enable dedicated query services on top of `cluster` when needed:
 
 | Mode | What runs | Use it for |
 | - | - | - |
-| `single` | One `smithdb all` pod that runs ingestion, query, and compaction | Test environments and low-volume installations |
+| `unified` | One `smithdb all` pod that runs ingestion, query, and compaction | Test environments and low-volume installations |
 | `cluster` (default) | Separate ingestion, query, and compaction workloads, coordinated by a cluster manager | Production installations |
 | `cluster` with [dedicated query services](#dedicated-query-services) | Cluster mode plus separate services for run statistics, run rules, or mutations | Production installations where one kind of query load slows others |
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
-  topology: single
+  topology: unified
 ```
 
-A single-mode pod runs one replica, sized by the [single tiers](#single-tiers). While the pod restarts or recovers from a node failure, queries fail. LangSmith queues incoming traces in Redis and writes them once the pod is running again, so ingestion is delayed rather than dropped. A PodDisruptionBudget keeps node drains from evicting the pod.
+Unified mode runs one `smithdb all` replica, sized by the [unified tiers](#unified-tiers). While the pod restarts or recovers from a node failure, queries fail. LangSmith queues incoming traces in Redis and writes them once the pod is running again, so ingestion is delayed rather than dropped. A PodDisruptionBudget keeps node drains from evicting the pod.
 
 ### Dedicated query services
 
@@ -93,15 +93,15 @@ In cluster mode, each tier sets the per-replica resources for each component:
 | Compaction worker | 1 replica 8 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 32 Gi memory 100 Gi cache | 4 replicas 28 CPU 50 Gi memory 300 Gi cache |
 | Cluster manager | 1 replica 250m CPU 256 Mi memory | 1 replica 250m CPU 256 Mi memory | 1 replica 2 CPU 2 Gi memory |
 
-### Single tiers
+### Unified tiers
 
-In single mode, `smithdb.resourceTier` sizes the one SmithDB pod:
+In unified mode, `smithdb.resourceTier` sizes the SmithDB pod:
 
 | Component | Small | Medium | Large |
 | - | - | - | - |
-| Single | 1 replica 4 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 64 Gi memory 300 Gi cache | 1 replica 32 CPU 128 Gi memory 1000 Gi cache |
+| Unified | 1 replica 4 CPU 16 Gi memory 100 Gi cache | 1 replica 16 CPU 64 Gi memory 300 Gi cache | 1 replica 32 CPU 128 Gi memory 1000 Gi cache |
 
-To override the tier's CPU and memory, set `smithdb.single.deployment.resources`. When the workload outgrows the large tier, switch to cluster mode.
+To override the tier's CPU and memory, set `smithdb.unified.deployment.resources`. When the workload outgrows the large tier, switch to cluster mode.
 
 ## Configure resources with Helm
 

@@ -185,6 +185,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### SpeakerSeparationResponseModel
 
 - `voice_id` (string, required) — The ID of the voice.

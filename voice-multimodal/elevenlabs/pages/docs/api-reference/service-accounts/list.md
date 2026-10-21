@@ -81,6 +81,9 @@ Validation Error
 
 ### ValidationErrorLocItems
 
+- string
+- integer
+
 ### PlatformLimits
 
 Unified container for all platform limits. Can be used by: - Billing groups (WorkspaceGroupDBModel.platform_limits) - Child workspaces (SubscriptionDBModel.platform_limits) - API keys (XiApiKeyMetadataDBModel.platform_limits) All fields are required when platform_limits exists. Use limit=None for unlimited.
@@ -123,13 +126,28 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 
 ### WorkspaceGroupResponseModelGroupUsageLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupPvcLimit
+
+- integer
+- "unlimited"
 
 ### WorkspaceGroupResponseModelGroupConcurrencyLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupDubbingConcurrencyLimit
 
+- integer
+- "unlimited"
+
 ### WorkspaceGroupResponseModelGroupMusicConcurrencyLimit
+
+- integer
+- "unlimited"
 
 ### ScimGroupResponseModel
 

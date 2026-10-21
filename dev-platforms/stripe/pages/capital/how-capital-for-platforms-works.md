@@ -10,7 +10,7 @@ Offer financing to your connected accounts.
 
 Stripe Capital for platforms lets you offer financing to your connected accounts through your existing *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) integration. Stripe and its financial partners manage eligibility, underwriting, pricing, funding, servicing, and collections.
 
-To see see what connected accounts see, try the interactive demo.
+To see what connected accounts see, try the interactive demo.
 
 [Capital for platforms demo](https://dashboard.stripe.com/capital/demo)
 

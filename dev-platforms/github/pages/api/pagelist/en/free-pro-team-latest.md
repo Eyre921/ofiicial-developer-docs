@@ -1987,6 +1987,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-access/revoke-access
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-access/manage-network-access
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies
+/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-app-copilot-access
 /en/copilot/how-tos/administer-copilot/manage-for-organization/add-copilot-cloud-agent
 /en/copilot/how-tos/administer-copilot/manage-for-organization/configure-runner-for-coding-agent
 /en/copilot/how-tos/administer-copilot/manage-for-organization/prepare-for-custom-agents
@@ -2897,6 +2898,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/github-cli/github-cli
 /en/github-cli/github-cli/about-github-cli
 /en/github-cli/github-cli/quickstart
+/en/github-cli/github-cli/authenticating-with-github-cli
 /en/github-cli/github-cli/attaching-files-with-github-cli
 /en/github-cli/github-cli/using-multiple-accounts
 /en/github-cli/github-cli/creating-github-cli-extensions

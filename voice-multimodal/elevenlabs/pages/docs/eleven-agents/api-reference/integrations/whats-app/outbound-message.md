@@ -120,6 +120,9 @@ Information about the source of conversation initiation
 
 ### ValidationErrorLocItem
 
+- string
+- integer
+
 ### WhatsAppTemplateDocumentParamDetails
 
 - `link` (string, required)
