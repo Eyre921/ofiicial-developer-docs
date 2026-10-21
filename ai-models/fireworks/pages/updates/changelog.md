@@ -8,8 +8,6 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
-<input type="search" placeholder="Search updates, e.g. GLM, deprecation, rate limits" aria-label="Search the changelog" />
-
 **2026-10-19**
 
 Inference
@@ -476,11 +474,7 @@ We are continuing to invest in faster, more capable models and appreciate your s
 
 **2026-02-05**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
 
@@ -537,9 +531,7 @@ See the [SSO documentation](/accounts/sso) for setup instructions.
 
 **2026-01-20**
 
-Training
-
-Platform
+TrainingPlatform
 
 # Warm-Start Training and Azure Model Uploads
 
@@ -578,11 +570,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 **2025-12-22**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
 
@@ -618,7 +606,7 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
 * **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
-* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), [Execute Reinforcement Fine-Tuning Step](/api-reference/execute-reinforcement-fine-tuning-step), and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
+* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
 * **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
 
 > **Bug Fixes & Minor Improvements**
@@ -642,11 +630,7 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 **2025-12-15**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
 
@@ -710,11 +694,7 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
 **2025-12-08**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
 
@@ -773,11 +753,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 
 **2025-12-01**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
 
@@ -829,11 +805,7 @@ See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning
 
 **2025-11-24**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
 
@@ -965,9 +937,7 @@ We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GP
 
 **2025-07-29**
 
-Training
-
-Platform
+TrainingPlatform
 
 ## 🎨 Vision-Language Model Fine-Tuning
 
@@ -1084,9 +1054,7 @@ command.
 
 **2025-06-30**
 
-Inference
-
-Platform
+InferencePlatform
 
 ## Support for GitHub authentication
 
@@ -1114,9 +1082,7 @@ For assistance with migration, please contact our support team or visit our [Dis
 
 **2025-06-24**
 
-Inference
-
-Training
+InferenceTraining
 
 ## 🎯 Build SDK: Reward-kit integration for evaluator development
 

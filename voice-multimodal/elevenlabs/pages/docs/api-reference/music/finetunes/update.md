@@ -103,21 +103,19 @@ Validation Error
 
 ```json
 {
-  "id": "ft_3a8b2c1d4e5f6g7h8i9j0k",
-  "name": "Indie Folk Guitar Style",
+  "id": "string",
+  "name": "string",
   "tags": [
-    "acoustic",
-    "indie",
-    "folk"
+    "string"
   ],
-  "model_id": "music_v2_5",
-  "created_at": "2024-03-12T10:45:00Z",
-  "visibility": "workspace",
+  "model_id": "music_v1",
+  "created_at": "2024-01-15T09:30:00Z",
+  "visibility": "private",
   "created_by": "self",
-  "status": "completed",
-  "training_progress": 1,
-  "primary_genre": "Folk",
-  "failure_reason": null
+  "status": "pending",
+  "training_progress": 1.1,
+  "primary_genre": "string",
+  "failure_reason": "audio_processing_failed"
 }
 ```
 

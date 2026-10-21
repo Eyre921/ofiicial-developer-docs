@@ -10,10 +10,10 @@ Replay tasks from the latest crew.kickoff(...)
 
 CrewAI provides the ability to replay from a task specified from the latest crew kickoff. This feature is particularly useful when you've finished a kickoff and may want to retry certain tasks or don't need to refetch data over and your agents already have the context saved from the kickoff execution so you just need to replay the tasks you want to.
 
-<Note>
-  You must run `crew.kickoff()` before you can replay a task.
-  Currently, only the latest kickoff is supported, so if you use `kickoff_for_each`, it will only allow you to replay from the most recent crew run.
-</Note>
+> [!NOTE]
+>
+> You must run `crew.kickoff()` before you can replay a task.
+> Currently, only the latest kickoff is supported, so if you use `kickoff_for_each`, it will only allow you to replay from the most recent crew run.
 
 Here's an example of how to replay from a task:
 
@@ -21,62 +21,56 @@ Here's an example of how to replay from a task:
 
 To use the replay feature, follow these steps:
 
-<Steps>
-  <Step title="Open your terminal or command prompt." />
+**1. Open your terminal or command prompt.**
 
-  <Step title="Navigate to the directory where your CrewAI project is located." />
+**2. Navigate to the directory where your CrewAI project is located.**
 
-  <Step title="Run the following commands:">
-    To view the latest kickoff task\_ids use:
+**3. Run the following commands:**
 
-    ```shell theme={null}
-    crewai log-tasks-outputs
-    ```
+To view the latest kickoff task\_ids use:
 
-    Once you have your `task_id` to replay, use:
+```shell theme={null}
+crewai log-tasks-outputs
+```
 
-    ```shell theme={null}
-    crewai replay -t <task_id>
-    ```
-  </Step>
-</Steps>
+Once you have your `task_id` to replay, use:
 
-<Note>
-  Ensure `crewai` is installed and configured correctly in your development environment.
-</Note>
+```shell theme={null}
+crewai replay -t <task_id>
+```
+
+> [!NOTE]
+>
+> Ensure `crewai` is installed and configured correctly in your development environment.
 
 ### Replaying from a Task Programmatically
 
 To replay from a task programmatically, use the following steps:
 
-<Steps>
-  <Step title="Specify the `task_id` and input parameters for the replay process.">
-    Specify the `task_id` and input parameters for the replay process.
-  </Step>
+**1. Specify the `task_id` and input parameters for the replay process.**
 
-  <Step title="Execute the replay command within a try-except block to handle potential errors.">
-    Execute the replay command within a try-except block to handle potential errors.
+Specify the `task_id` and input parameters for the replay process.
 
-    <CodeGroup>
-      ```python Code theme={null}
-        def replay():
-        """
-        Replay the crew execution from a specific task.
-        """
-        task_id = '<task_id>'
-        inputs = {"topic": "CrewAI Training"}  # This is optional; you can pass in the inputs you want to replay; otherwise, it uses the previous kickoff's inputs.
-        try:
-            YourCrewName_Crew().crew().replay(task_id=task_id, inputs=inputs)
+**2. Execute the replay command within a try-except block to handle potential errors.**
 
-        except subprocess.CalledProcessError as e:
-            raise Exception(f"An error occurred while replaying the crew: {e}")
+Execute the replay command within a try-except block to handle potential errors.
 
-        except Exception as e:
-            raise Exception(f"An unexpected error occurred: {e}")
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+```python Code theme={null}
+  def replay():
+  """
+  Replay the crew execution from a specific task.
+  """
+  task_id = '<task_id>'
+  inputs = {"topic": "CrewAI Training"}  # This is optional; you can pass in the inputs you want to replay; otherwise, it uses the previous kickoff's inputs.
+  try:
+      YourCrewName_Crew().crew().replay(task_id=task_id, inputs=inputs)
+
+  except subprocess.CalledProcessError as e:
+      raise Exception(f"An error occurred while replaying the crew: {e}")
+
+  except Exception as e:
+      raise Exception(f"An unexpected error occurred: {e}")
+```
 
 ## Conclusion
 

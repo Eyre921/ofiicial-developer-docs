@@ -8,9 +8,9 @@ The `DirectorySearchTool` is a powerful RAG (Retrieval-Augmented Generation) too
 
 # `DirectorySearchTool`
 
-<Note>
-  **Experimental**: The DirectorySearchTool is under continuous development. Features and functionalities might evolve, and unexpected behavior may occur as we refine the tool.
-</Note>
+> [!NOTE]
+>
+> **Experimental**: The DirectorySearchTool is under continuous development. Features and functionalities might evolve, and unexpected behavior may occur as we refine the tool.
 
 ## Description
 

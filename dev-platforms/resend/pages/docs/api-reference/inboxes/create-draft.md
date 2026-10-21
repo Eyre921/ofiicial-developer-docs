@@ -143,6 +143,128 @@ $resend->inboxes->drafts->create('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1', [
 ]);
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.Drafts.CreateParams = {
+    "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    "to": ["ada@example.org"],
+    "subject": "Refund for order 1041",
+    "html": "<p>Refund issued for order 1041.</p>",
+    "text": "Refund issued for order 1041.",
+    "attachments": [
+        {
+            "filename": "note.txt",
+            "content": "aGVsbG8=",
+            "content_type": "text/plain",
+        }
+    ],
+}
+
+resend.Inboxes.Drafts.create(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  to: ["ada@example.org"],
+  subject: "Refund for order 1041",
+  html: "<p>Refund issued for order 1041.</p>",
+  text: "Refund issued for order 1041.",
+  attachments: [{ filename: "note.txt", content: "aGVsbG8=", content_type: "text/plain" }]
+}
+
+Resend::Inboxes::Drafts.create(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	params := &resend.CreateInboxDraftRequest{
+		To:      []string{"ada@example.org"},
+		Subject: "Refund for order 1041",
+		Html:    "<p>Refund issued for order 1041.</p>",
+		Text:    "Refund issued for order 1041.",
+		Attachments: []*resend.InboxDraftAttachmentInput{
+			{
+				Content:     []byte("hello"),
+				Filename:    "note.txt",
+				ContentType: "text/plain",
+			},
+		},
+	}
+
+	client.Inboxes.Drafts.Create("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  types::{CreateInboxDraftAttachment, CreateInboxDraftOptions},
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let opts = CreateInboxDraftOptions::new()
+    .with_to(["ada@example.org"])
+    .with_subject("Refund for order 1041")
+    .with_html("<p>Refund issued for order 1041.</p>")
+    .with_text("Refund issued for order 1041.")
+    .with_attachment(CreateInboxDraftAttachment::new(
+      b"hello".to_vec(),
+      "note.txt",
+      "text/plain",
+    ));
+
+  let _draft = resend
+    .inboxes
+    .create_draft("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", opts)
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxDraftCreateAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new InboxDraftCreateData()
+    {
+        To = "ada@example.org",
+        Subject = "Refund for order 1041",
+        HtmlBody = "<p>Refund issued for order 1041.</p>",
+        TextBody = "Refund issued for order 1041.",
+        Attachments =
+        [
+            new EmailAttachment()
+            {
+                Filename = "note.txt",
+                Content = System.Text.Encoding.UTF8.GetBytes( "hello" ),
+                ContentType = "text/plain",
+            },
+        ],
+    }
+);
+Console.WriteLine( "Draft Id={0}", resp.Content );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/drafts' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

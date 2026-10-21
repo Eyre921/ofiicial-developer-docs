@@ -65,7 +65,7 @@ Validation Error
 
 ```json
 {
-  "name": "Customer Support Tests"
+  "name": "string"
 }
 ```
 
@@ -73,8 +73,8 @@ Validation Error
 
 ```json
 {
-  "id": "folder_9f3a2b1c8d7e4f56",
-  "name": "Customer Support Tests"
+  "id": "string",
+  "name": "string"
 }
 ```
 
@@ -85,7 +85,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agent-testing/folders"
 
-payload = { "name": "Customer Support Tests" }
+payload = { "name": "string" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -98,7 +98,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agent-testing/folders';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"name":"Customer Support Tests"}'
+  body: '{"name":"string"}'
 };
 
 try {
@@ -124,7 +124,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders"
 
-	payload := strings.NewReader("{\n  \"name\": \"Customer Support Tests\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -152,7 +152,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Customer Support Tests\"\n}"
+request.body = "{\n  \"name\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -164,7 +164,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agent-testing/folders")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Customer Support Tests\"\n}")
+  .body("{\n  \"name\": \"string\"\n}")
   .asString();
 ```
 
@@ -176,7 +176,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders', [
   'body' => '{
-  "name": "Customer Support Tests"
+  "name": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -192,7 +192,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Customer Support Tests\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -200,7 +200,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Customer Support Tests"] as [String : Any]
+let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

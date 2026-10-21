@@ -8,12 +8,12 @@ The `JSONSearchTool` is designed to search JSON files and return the most releva
 
 # `JSONSearchTool`
 
-<Note>
-  The JSONSearchTool is currently in an experimental phase. This means the tool
-  is under active development, and users might encounter unexpected behavior or
-  changes. We highly encourage feedback on any issues or suggestions for
-  improvements.
-</Note>
+> [!NOTE]
+>
+> The JSONSearchTool is currently in an experimental phase. This means the tool
+> is under active development, and users might encounter unexpected behavior or
+> changes. We highly encourage feedback on any issues or suggestions for
+> improvements.
 
 ## Description
 

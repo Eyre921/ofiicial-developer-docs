@@ -15,9 +15,9 @@ CrewAI supports two paths for connecting to LLM providers:
 
 This guide explains how to use CrewAI exclusively with native provider integrations, removing any dependency on LiteLLM.
 
-<Warning>
-  The `litellm` package was quarantined on PyPI due to a security/reliability incident. If you rely on LiteLLM-dependent providers, you should migrate to native integrations. CrewAI's native integrations give you full functionality without LiteLLM.
-</Warning>
+> [!WARNING]
+>
+> The `litellm` package was quarantined on PyPI due to a security/reliability incident. If you rely on LiteLLM-dependent providers, you should migrate to native integrations. CrewAI's native integrations give you full functionality without LiteLLM.
 
 ## Why Remove LiteLLM?
 
@@ -30,51 +30,49 @@ This guide explains how to use CrewAI exclusively with native provider integrati
 
 These providers use their own SDKs and work without LiteLLM installed:
 
-<CardGroup>
-  <Card title="OpenAI" icon="bolt">
-    GPT-4o, GPT-4o-mini, o1, o3-mini, and more.
+> **OpenAI**
+>
+> GPT-4o, GPT-4o-mini, o1, o3-mini, and more.
+>
+> ```bash theme={null}
+> uv add "crewai[openai]"
+> ```
 
-    ```bash theme={null}
-    uv add "crewai[openai]"
-    ```
-  </Card>
+> **Anthropic**
+>
+> Claude Sonnet, Claude Haiku, and more.
+>
+> ```bash theme={null}
+> uv add "crewai[anthropic]"
+> ```
 
-  <Card title="Anthropic" icon="a">
-    Claude Sonnet, Claude Haiku, and more.
+> **Google Gemini**
+>
+> Gemini 2.0 Flash, Gemini 2.0 Pro, and more.
+>
+> ```bash theme={null}
+> uv add "crewai[gemini]"
+> ```
 
-    ```bash theme={null}
-    uv add "crewai[anthropic]"
-    ```
-  </Card>
+> **Azure OpenAI**
+>
+> Azure-hosted OpenAI models.
+>
+> ```bash theme={null}
+> uv add "crewai[azure]"
+> ```
 
-  <Card title="Google Gemini" icon="google">
-    Gemini 2.0 Flash, Gemini 2.0 Pro, and more.
+> **AWS Bedrock**
+>
+> Claude, Llama, Titan, and more via AWS.
+>
+> ```bash theme={null}
+> uv add "crewai[bedrock]"
+> ```
 
-    ```bash theme={null}
-    uv add "crewai[gemini]"
-    ```
-  </Card>
-
-  <Card title="Azure OpenAI" icon="microsoft">
-    Azure-hosted OpenAI models.
-
-    ```bash theme={null}
-    uv add "crewai[azure]"
-    ```
-  </Card>
-
-  <Card title="AWS Bedrock" icon="aws">
-    Claude, Llama, Titan, and more via AWS.
-
-    ```bash theme={null}
-    uv add "crewai[bedrock]"
-    ```
-  </Card>
-</CardGroup>
-
-<Info>
-  If you only use native providers, you **never** need to install `crewai[litellm]`. The base `crewai` package plus your chosen provider extra is all you need.
-</Info>
+> [!NOTE]
+>
+> If you only use native providers, you **never** need to install `crewai[litellm]`. The base `crewai` package plus your chosen provider extra is all you need.
 
 ## How to Check If You're Using LiteLLM
 
@@ -139,108 +137,106 @@ grep -r "llm:" --include="*.yaml" .
 
 ### Step 2: Switch to a native provider
 
-<Tabs>
-  <Tab title="Switch to OpenAI">
-    ```python theme={null}
-    from crewai import LLM
+**Switch to OpenAI**
 
-    # Before (LiteLLM):
-    # llm = LLM(model="groq/llama-3.1-70b")
+```python theme={null}
+from crewai import LLM
 
-    # After (Native):
-    llm = LLM(model="openai/gpt-4o")
-    ```
+# Before (LiteLLM):
+# llm = LLM(model="groq/llama-3.1-70b")
 
-    ```bash theme={null}
-    # Install
-    uv add "crewai[openai]"
+# After (Native):
+llm = LLM(model="openai/gpt-4o")
+```
 
-    # Set your API key
-    export OPENAI_API_KEY="sk-..."
-    ```
-  </Tab>
+```bash theme={null}
+# Install
+uv add "crewai[openai]"
 
-  <Tab title="Switch to Anthropic">
-    ```python theme={null}
-    from crewai import LLM
+# Set your API key
+export OPENAI_API_KEY="sk-..."
+```
 
-    # Before (LiteLLM):
-    # llm = LLM(model="together_ai/meta-llama/Meta-Llama-3.1-70B")
+**Switch to Anthropic**
 
-    # After (Native):
-    llm = LLM(model="anthropic/claude-sonnet-4-20250514")
-    ```
+```python theme={null}
+from crewai import LLM
 
-    ```bash theme={null}
-    # Install
-    uv add "crewai[anthropic]"
+# Before (LiteLLM):
+# llm = LLM(model="together_ai/meta-llama/Meta-Llama-3.1-70B")
 
-    # Set your API key
-    export ANTHROPIC_API_KEY="sk-ant-..."
-    ```
-  </Tab>
+# After (Native):
+llm = LLM(model="anthropic/claude-sonnet-4-20250514")
+```
 
-  <Tab title="Switch to Gemini">
-    ```python theme={null}
-    from crewai import LLM
+```bash theme={null}
+# Install
+uv add "crewai[anthropic]"
 
-    # Before (LiteLLM):
-    # llm = LLM(model="mistral/mistral-large-latest")
+# Set your API key
+export ANTHROPIC_API_KEY="sk-ant-..."
+```
 
-    # After (Native):
-    llm = LLM(model="gemini/gemini-3.7-flash")
-    ```
+**Switch to Gemini**
 
-    ```bash theme={null}
-    # Install
-    uv add "crewai[gemini]"
+```python theme={null}
+from crewai import LLM
 
-    # Set your API key
-    export GEMINI_API_KEY="..."
-    ```
-  </Tab>
+# Before (LiteLLM):
+# llm = LLM(model="mistral/mistral-large-latest")
 
-  <Tab title="Switch to Azure OpenAI">
-    ```python theme={null}
-    from crewai import LLM
+# After (Native):
+llm = LLM(model="gemini/gemini-3.7-flash")
+```
 
-    # After (Native):
-    llm = LLM(
-        model="azure/your-deployment-name",
-        api_key="your-azure-api-key",
-        base_url="https://your-resource.openai.azure.com",
-        api_version="2024-06-01"
-    )
-    ```
+```bash theme={null}
+# Install
+uv add "crewai[gemini]"
 
-    ```bash theme={null}
-    # Install
-    uv add "crewai[azure]"
-    ```
-  </Tab>
+# Set your API key
+export GEMINI_API_KEY="..."
+```
 
-  <Tab title="Switch to AWS Bedrock">
-    ```python theme={null}
-    from crewai import LLM
+**Switch to Azure OpenAI**
 
-    # After (Native):
-    llm = LLM(
-        model="bedrock/anthropic.claude-3-5-sonnet-20241022-v2:0",
-        aws_region_name="us-east-1"
-    )
-    ```
+```python theme={null}
+from crewai import LLM
 
-    ```bash theme={null}
-    # Install
-    uv add "crewai[bedrock]"
+# After (Native):
+llm = LLM(
+    model="azure/your-deployment-name",
+    api_key="your-azure-api-key",
+    base_url="https://your-resource.openai.azure.com",
+    api_version="2024-06-01"
+)
+```
 
-    # Configure AWS credentials
-    export AWS_ACCESS_KEY_ID="..."
-    export AWS_SECRET_ACCESS_KEY="..."
-    export AWS_DEFAULT_REGION="us-east-1"
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+# Install
+uv add "crewai[azure]"
+```
+
+**Switch to AWS Bedrock**
+
+```python theme={null}
+from crewai import LLM
+
+# After (Native):
+llm = LLM(
+    model="bedrock/anthropic.claude-3-5-sonnet-20241022-v2:0",
+    aws_region_name="us-east-1"
+)
+```
+
+```bash theme={null}
+# Install
+uv add "crewai[bedrock]"
+
+# Configure AWS credentials
+export AWS_ACCESS_KEY_ID="..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_DEFAULT_REGION="us-east-1"
+```
 
 ### Step 3: Keep Ollama without LiteLLM
 
@@ -261,9 +257,9 @@ llm = LLM(
 )
 ```
 
-<Tip>
-  Many local inference servers (Ollama, vLLM, LM Studio, llama.cpp) expose an OpenAI-compatible API. You can use `custom_openai=True` with a custom `base_url` to connect to any of them natively while keeping the model ID your gateway expects.
-</Tip>
+> [!TIP]
+>
+> Many local inference servers (Ollama, vLLM, LM Studio, llama.cpp) expose an OpenAI-compatible API. You can use `custom_openai=True` with a custom `base_url` to connect to any of them natively while keeping the model ID your gateway expects.
 
 ### Step 4: Update your YAML configs
 
@@ -342,64 +338,62 @@ llm = LLM(
 
 ### Connect to common servers
 
-<Tabs>
-  <Tab title="Ollama">
-    ```python theme={null}
-    from crewai import LLM
+**Ollama**
 
-    llm = LLM(
-        model="llama3.2:latest",
-        custom_openai=True,
-        base_url="http://localhost:11434/v1",
-        api_key="ollama",  # Ollama ignores it, but the client requires a value
-    )
-    ```
-  </Tab>
+```python theme={null}
+from crewai import LLM
 
-  <Tab title="vLLM">
-    ```python theme={null}
-    from crewai import LLM
+llm = LLM(
+    model="llama3.2:latest",
+    custom_openai=True,
+    base_url="http://localhost:11434/v1",
+    api_key="ollama",  # Ollama ignores it, but the client requires a value
+)
+```
 
-    llm = LLM(
-        model="meta-llama/Meta-Llama-3.1-8B-Instruct",
-        custom_openai=True,
-        base_url="http://localhost:8000/v1",
-        api_key="not-needed",
-    )
-    ```
-  </Tab>
+**vLLM**
 
-  <Tab title="LM Studio">
-    ```python theme={null}
-    from crewai import LLM
+```python theme={null}
+from crewai import LLM
 
-    llm = LLM(
-        model="your-loaded-model",
-        custom_openai=True,
-        base_url="http://localhost:1234/v1",
-        api_key="lm-studio",
-    )
-    ```
-  </Tab>
+llm = LLM(
+    model="meta-llama/Meta-Llama-3.1-8B-Instruct",
+    custom_openai=True,
+    base_url="http://localhost:8000/v1",
+    api_key="not-needed",
+)
+```
 
-  <Tab title="Env vars">
-    ```bash theme={null}
-    export OPENAI_BASE_URL="https://your-gateway.example/v1"
-    export OPENAI_API_KEY="your-key"
-    ```
+**LM Studio**
 
-    ```python theme={null}
-    from crewai import LLM
+```python theme={null}
+from crewai import LLM
 
-    # base_url is picked up from OPENAI_BASE_URL / OPENAI_API_BASE
-    llm = LLM(model="anthropic/claude-sonnet-4-6", custom_openai=True)
-    ```
-  </Tab>
-</Tabs>
+llm = LLM(
+    model="your-loaded-model",
+    custom_openai=True,
+    base_url="http://localhost:1234/v1",
+    api_key="lm-studio",
+)
+```
 
-<Tip>
-  If you use the `openai/` prefix with a model that isn't a known OpenAI model and pass `base_url` or `api_base` directly, CrewAI automatically treats it as a custom OpenAI-compatible endpoint. Environment variables alone do not enable automatic routing for unknown models; set `custom_openai=True` when configuring the endpoint through `OPENAI_BASE_URL` or `OPENAI_API_BASE`.
-</Tip>
+**Env vars**
+
+```bash theme={null}
+export OPENAI_BASE_URL="https://your-gateway.example/v1"
+export OPENAI_API_KEY="your-key"
+```
+
+```python theme={null}
+from crewai import LLM
+
+# base_url is picked up from OPENAI_BASE_URL / OPENAI_API_BASE
+llm = LLM(model="anthropic/claude-sonnet-4-6", custom_openai=True)
+```
+
+> [!TIP]
+>
+> If you use the `openai/` prefix with a model that isn't a known OpenAI model and pass `base_url` or `api_base` directly, CrewAI automatically treats it as a custom OpenAI-compatible endpoint. Environment variables alone do not enable automatic routing for unknown models; set `custom_openai=True` when configuring the endpoint through `OPENAI_BASE_URL` or `OPENAI_API_BASE`.
 
 ## Quick Reference: Model String Mapping
 
@@ -436,36 +430,34 @@ llm = LLM(
 
 ## FAQ
 
-<AccordionGroup>
-  <Accordion title="Do I lose any functionality by removing LiteLLM?">
-    No, if you use one of the five natively supported providers (OpenAI, Anthropic, Gemini, Azure, Bedrock). These native integrations support all CrewAI features including streaming, tool calling, structured output, and more. You only lose access to providers that are exclusively available through LiteLLM (like Groq, Together AI, Mistral as first-class providers).
-  </Accordion>
+> **Do I lose any functionality by removing LiteLLM?**
+>
+> No, if you use one of the five natively supported providers (OpenAI, Anthropic, Gemini, Azure, Bedrock). These native integrations support all CrewAI features including streaming, tool calling, structured output, and more. You only lose access to providers that are exclusively available through LiteLLM (like Groq, Together AI, Mistral as first-class providers).
 
-  <Accordion title="Can I use multiple native providers at the same time?">
-    Yes. Install multiple extras and use different providers for different agents:
+> **Can I use multiple native providers at the same time?**
+>
+> Yes. Install multiple extras and use different providers for different agents:
+>
+> ```bash theme={null}
+> uv add "crewai[openai,anthropic,gemini]"
+> ```
+>
+> ```python theme={null}
+> researcher = Agent(llm="openai/gpt-4o", ...)
+> writer = Agent(llm="anthropic/claude-sonnet-4-20250514", ...)
+> ```
 
-    ```bash theme={null}
-    uv add "crewai[openai,anthropic,gemini]"
-    ```
+> **Is LiteLLM safe to use now?**
+>
+> Regardless of quarantine status, reducing your dependency surface is good security practice. If you only need providers that CrewAI supports natively, there's no reason to keep LiteLLM installed.
 
-    ```python theme={null}
-    researcher = Agent(llm="openai/gpt-4o", ...)
-    writer = Agent(llm="anthropic/claude-sonnet-4-20250514", ...)
-    ```
-  </Accordion>
+> **What about environment variables like OPENAI\_API\_KEY?**
+>
+> Native providers use the same environment variables you're already familiar with. No changes needed for `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, etc.
 
-  <Accordion title="Is LiteLLM safe to use now?">
-    Regardless of quarantine status, reducing your dependency surface is good security practice. If you only need providers that CrewAI supports natively, there's no reason to keep LiteLLM installed.
-  </Accordion>
-
-  <Accordion title="What about environment variables like OPENAI_API_KEY?">
-    Native providers use the same environment variables you're already familiar with. No changes needed for `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, etc.
-  </Accordion>
-
-  <Accordion title="How do I connect to Groq, Together AI, or other OpenAI-compatible providers without LiteLLM?">
-    Most of these providers expose an OpenAI-compatible API. Use `custom_openai=True` with their base URL and API key — see [Custom OpenAI-Compatible Endpoints](#custom-openai-compatible-endpoints). For example, Groq: `LLM(model="llama-3.1-70b-versatile", custom_openai=True, base_url="https://api.groq.com/openai/v1", api_key="...")`. The model ID is passed through untouched, so use whatever ID the provider expects.
-  </Accordion>
-</AccordionGroup>
+> **How do I connect to Groq, Together AI, or other OpenAI-compatible providers without LiteLLM?**
+>
+> Most of these providers expose an OpenAI-compatible API. Use `custom_openai=True` with their base URL and API key — see [Custom OpenAI-Compatible Endpoints](#custom-openai-compatible-endpoints). For example, Groq: `LLM(model="llama-3.1-70b-versatile", custom_openai=True, base_url="https://api.groq.com/openai/v1", api_key="...")`. The model ID is passed through untouched, so use whatever ID the provider expects.
 
 ## Related Resources
 

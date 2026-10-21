@@ -115,63 +115,55 @@ Action to take on a live call for the given AMD verdicts.
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "batch_calls": [
     {
-      "id": "batch_7f3a2c1d9e4b5f6a",
-      "phone_number_id": "pn_4d8e2f1a3c7b9d5e",
+      "id": "string",
+      "phone_number_id": "string",
       "phone_provider": "twilio",
       "whatsapp_params": {
-        "whatsapp_call_permission_request_template_name": "call_permission_request_v1",
-        "whatsapp_call_permission_request_template_language_code": "en_US",
-        "whatsapp_phone_number_id": "wa_1234567890abcdef"
+        "whatsapp_call_permission_request_template_name": "string",
+        "whatsapp_call_permission_request_template_language_code": "string",
+        "whatsapp_phone_number_id": "string"
       },
-      "name": "Q4 Customer Outreach Campaign",
-      "agent_id": "agent_9b3f2e1d4c7a8b5f",
-      "branch_id": "branch_2c4e6f8a1b3d5e7f",
-      "environment": "production",
-      "created_at_unix": 1711900800,
-      "scheduled_time_unix": 1711987200,
-      "timezone": "America/New_York",
-      "total_calls_dispatched": 320,
-      "total_calls_scheduled": 500,
-      "total_calls_finished": 298,
-      "last_updated_at_unix": 1711990400,
-      "status": "in_progress",
-      "retry_count": 2,
+      "name": "string",
+      "agent_id": "string",
+      "branch_id": "string",
+      "environment": "string",
+      "created_at_unix": 1,
+      "scheduled_time_unix": 1,
+      "timezone": "string",
+      "total_calls_dispatched": 0,
+      "total_calls_scheduled": 0,
+      "total_calls_finished": 0,
+      "last_updated_at_unix": 1,
+      "status": "pending",
+      "retry_count": 0,
       "telephony_call_config": {
-        "ringing_timeout_secs": 30,
+        "ringing_timeout_secs": 60,
         "twilio_call_recording_enabled": false,
         "twilio_machine_detection": {
-          "mode": "detect_message_end",
+          "mode": "enable",
           "actions": [
             {
               "action": "hang_up",
               "answered_by": [
-                "machine_start",
-                "machine_end_beep",
-                "machine_end_silence"
+                "human"
               ]
             }
           ]
         }
       },
-      "target_concurrency_limit": 25,
-      "agent_name": "Customer Support Agent",
-      "branch_name": "North America Sales"
+      "target_concurrency_limit": 1,
+      "agent_name": "string",
+      "branch_name": "string"
     }
   ],
-  "next_doc": "batch_3a1b2c4d5e6f7a8b",
-  "has_more": true
+  "next_doc": "string",
+  "has_more": false
 }
 ```
 
@@ -182,17 +174,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/batch-calling/workspace"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/batch-calling/workspace';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -208,7 +197,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -217,11 +205,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/workspace"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -244,8 +228,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -256,8 +238,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/workspace")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -267,12 +247,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/workspace', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/workspace');
 
 echo $response->getBody();
 ```
@@ -282,25 +257,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/workspace");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/workspace")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

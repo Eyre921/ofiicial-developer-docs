@@ -20,20 +20,20 @@ CrewAI uses an event bus architecture to emit events throughout the execution li
 
 When specific actions occur in CrewAI (like a Crew starting execution, an Agent completing a task, or a tool being used), the system emits corresponding events. You can register handlers for these events to execute custom code when they occur.
 
-<Note type="info" title="Enterprise Enhancement: Prompt Tracing">
-  CrewAI AMP provides a built-in Prompt Tracing feature that leverages the event system to track, store, and visualize all prompts, completions, and associated metadata. This provides powerful debugging capabilities and transparency into your agent operations.
-
-  <img alt="Prompt Tracing Dashboard" />
-
-  With Prompt Tracing you can:
-
-  * View the complete history of all prompts sent to your LLM
-  * Track token usage and costs
-  * Debug agent reasoning failures
-  * Share prompt sequences with your team
-  * Compare different prompt strategies
-  * Export traces for compliance and auditing
-</Note>
+> [!NOTE]
+>
+> CrewAI AMP provides a built-in Prompt Tracing feature that leverages the event system to track, store, and visualize all prompts, completions, and associated metadata. This provides powerful debugging capabilities and transparency into your agent operations.
+>
+> ![Prompt Tracing Dashboard](https://mintcdn.com/crewai/Tp3HEbbp9mp-dy3H/images/enterprise/traces-overview.png?fit=max\&auto=format\&n=Tp3HEbbp9mp-dy3H\&q=85\&s=9c02d5b7306bf7adaeadd77a018f8fea)
+>
+> With Prompt Tracing you can:
+>
+> * View the complete history of all prompts sent to your LLM
+> * Track token usage and costs
+> * Debug agent reasoning failures
+> * Share prompt sequences with your team
+> * Compare different prompt strategies
+> * Export traces for compliance and auditing
 
 ## Creating a Custom Event Listener
 

@@ -94,11 +94,11 @@ def normalize_output(ctx):
     ctx.payload.raw = ctx.payload.raw.strip()
 ```
 
-<Note>
-  `POST_STEP` runs before the task's output is stored, so rewrites propagate
-  everywhere the output is used: downstream task context, callbacks, the final
-  crew output, and the task's `output_file` on disk.
-</Note>
+> [!NOTE]
+>
+> `POST_STEP` runs before the task's output is stored, so rewrites propagate
+> everywhere the output is used: downstream task context, callbacks, the final
+> crew output, and the task's `output_file` on disk.
 
 ### Guarding Flow Methods
 

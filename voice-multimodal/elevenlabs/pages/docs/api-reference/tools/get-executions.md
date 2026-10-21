@@ -1,0 +1,270 @@
+---
+title: "Get tool executions"
+source: https://elevenlabs.io/docs/api-reference/tools/get-executions.md
+path: docs/api-reference/tools/get-executions
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Get tool executions
+
+GET https://api.elevenlabs.io/v1/convai/tools/{tool_id}/executions
+
+Get paginated list of tool executions for a specific tool.
+
+Reference: https://elevenlabs.io/docs/api-reference/tools/get-executions
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `tool_id` (string, required) — ID of the requested tool.
+
+### Query parameters
+
+- `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
+- `page_size` (integer, optional, default: 30) — How many documents to return at maximum. Can not exceed 100, defaults to 30.
+- `is_error` (boolean, optional, nullable) — Filter by error status. If not provided, returns all executions.
+- `agent_id` (string, optional, nullable) — Filter by agent ID.
+- `branch_id` (string, optional, nullable) — Filter by agent branch ID.
+- `start_time` (double, optional, nullable) — Filter executions from this Unix timestamp (inclusive).
+- `end_time` (double, optional, nullable) — Filter executions until this Unix timestamp (inclusive).
+
+## Response
+
+### 200
+
+Successful Response
+
+- `executions` (list of ToolExecutionResponseModel, required)
+- `has_more` (boolean, required)
+- `next_cursor` (string, optional, nullable)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ToolExecutionResponseModel
+
+- `tool_id` (string, required) — The ID of the tool that was executed
+- `tool_request_id` (string, required) — The request/call ID associated with this tool execution
+- `conversation_id` (string, required) — The ID of the conversation where the tool was executed
+- `agent_id` (string, required) — The ID of the agent that ran the tool
+- `timestamp` (double, required) — Unix timestamp when the tool was executed
+- `latency_secs` (double, required) — How long the tool execution took
+- `id` (string, required)
+- `branch_id` (string, optional, nullable) — The branch ID if the agent has branches
+- `is_error` (boolean, optional, default: false) — Whether the tool execution failed
+- `request_payload` (string, optional, nullable) — LLM-extracted parameters sent to the tool (JSON string)
+- `response_payload` (string, optional, nullable) — Response returned by the tool
+- `error_message` (string, optional, nullable) — Error message if the tool execution failed
+- `error_type` (string, optional, nullable) — Error category (internal, customer_config, customer_auth, external_server, external_client, client_timeout, unknown)
+- `tool_call_details` (ToolExecutionResponseModelToolCallDetails, optional, nullable)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ToolExecutionResponseModelToolCallDetails
+
+- `type`: `api_integration_webhook` (ConversationHistoryTranscriptToolCallApiIntegrationWebhookDetails)
+  - `credential_id` (string, required, default: )
+  - `integration_connection_id` (string, required, default: )
+  - `integration_id` (string, required, default: )
+  - `webhook_details` (ConversationHistoryTranscriptToolCallWebhookDetails, required)
+- `type`: `client` (ConversationHistoryTranscriptToolCallClientDetails)
+  - `parameters` (string, required)
+- `type`: `mcp` (ConversationHistoryTranscriptToolCallMCPDetails)
+  - `approval_policy` (string, required)
+  - `integration_type` (string, required)
+  - `mcp_server_id` (string, required)
+  - `mcp_server_name` (string, required)
+  - `mcp_tool_description` (string, optional, default: )
+  - `mcp_tool_name` (string, optional, default: )
+  - `parameters` (map from string to string, optional)
+  - `requires_approval` (boolean, optional, default: false)
+- `type`: `webhook` (ConversationHistoryTranscriptToolCallWebhookDetails)
+  - `method` (string, required)
+  - `url` (string, required)
+  - `body` (string, optional, nullable)
+  - `headers` (map from string to string, optional)
+  - `path_params` (map from string to string, optional)
+  - `query_params` (map from string to string, optional)
+
+### ValidationErrorLocItems
+
+### ConversationHistoryTranscriptToolCallWebhookDetails
+
+- `method` (string, required)
+- `url` (string, required)
+- `headers` (map from string to string, optional)
+- `path_params` (map from string to string, optional)
+- `query_params` (map from string to string, optional)
+- `body` (string, optional, nullable)
+
+## Examples
+
+**Response**
+
+```json
+{
+  "executions": [
+    {
+      "tool_id": "string",
+      "tool_request_id": "string",
+      "conversation_id": "string",
+      "agent_id": "string",
+      "timestamp": 1.1,
+      "latency_secs": 1.1,
+      "id": "string",
+      "branch_id": "string",
+      "is_error": false,
+      "request_payload": "string",
+      "response_payload": "string",
+      "error_message": "string",
+      "error_type": "string",
+      "tool_call_details": {
+        "type": "webhook",
+        "method": "string",
+        "url": "string",
+        "body": "string",
+        "headers": {},
+        "path_params": {},
+        "query_params": {}
+      }
+    }
+  ],
+  "has_more": true,
+  "next_cursor": "string"
+}
+```
+
+**SDK Code**
+
+```python
+import requests
+
+url = "https://api.elevenlabs.io/v1/convai/tools/tool_id/executions"
+
+response = requests.get(url)
+
+print(response.json())
+```
+
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools/tool_id/executions';
+const options = {method: 'GET'};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io"
+)
+
+func main() {
+
+	url := "https://api.elevenlabs.io/v1/convai/tools/tool_id/executions"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.elevenlabs.io/v1/convai/tools/tool_id/executions")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+
+request = Net::HTTP::Get.new(url)
+
+response = http.request(request)
+puts response.read_body
+```
+
+```java
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/tools/tool_id/executions")
+  .asString();
+```
+
+```php
+<?php
+require_once('vendor/autoload.php');
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/tools/tool_id/executions');
+
+echo $response->getBody();
+```
+
+```csharp
+using RestSharp;
+
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/tools/tool_id/executions");
+var request = new RestRequest(Method.GET);
+IRestResponse response = client.Execute(request);
+```
+
+```swift
+import Foundation
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/tools/tool_id/executions")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```

@@ -73,9 +73,9 @@ except Exception as e:
 
 For scenarios requiring more explicit control, you can manage the `MCPServerAdapter` connection manually.
 
-<Info>
-  It is **critical** to call `mcp_server_adapter.stop()` when you are done to close the connection and free up resources. A `try...finally` block is the safest way to ensure this.
-</Info>
+> [!NOTE]
+>
+> It is **critical** to call `mcp_server_adapter.stop()` when you are done to close the connection and free up resources. A `try...finally` block is the safest way to ensure this.
 
 ```python theme={null}
 from crewai import Agent, Task, Crew, Process

@@ -8,9 +8,9 @@ The `TXTSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation
 
 ## Overview
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 This tool is used to perform a RAG (Retrieval-Augmented Generation) search within the content of a text file.
 It allows for semantic searching of a query within a specified text file's content,

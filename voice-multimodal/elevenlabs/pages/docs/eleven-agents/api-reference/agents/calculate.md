@@ -85,8 +85,8 @@ Validation Error
   "llm_prices": [
     {
       "llm": "gpt-4o-mini",
-      "price_per_minute": 0.015,
-      "price_per_message": 0.002
+      "price_per_minute": 1.1,
+      "price_per_message": 1.1
     }
   ]
 }

@@ -18,7 +18,7 @@ If you have an existing SSH key, you can use the key to authenticate Git operati
 
 Before you generate a new SSH key, you should check your local machine for existing keys.
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub improved security by dropping older, insecure key types on March 15, 2022.
 >
 > As of that date, DSA keys (`ssh-dss`) are no longer supported. You cannot add new DSA keys to your personal account on GitHub.
@@ -40,7 +40,7 @@ Before you generate a new SSH key, you should check your local machine for exist
    * *id\_ecdsa.pub*
 
    * *id\_ed25519.pub*
-   > \[!TIP]
+   > [!TIP]
    > If you receive an error that *\~/.ssh* doesn't exist, you do not have an existing SSH key pair in the default location. You can create a new SSH key pair in the next step.
 
 4. Either generate a new SSH key or upload an existing key.

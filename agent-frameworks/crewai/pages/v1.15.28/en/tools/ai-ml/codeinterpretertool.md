@@ -8,9 +8,9 @@ The `CodeInterpreterTool` is a powerful tool designed for executing Python 3 cod
 
 # `CodeInterpreterTool`
 
-<Warning>
-  **Deprecated:** `CodeInterpreterTool` has been removed from `crewai-tools`. The `allow_code_execution` and `code_execution_mode` parameters on `Agent` are also deprecated. Use a dedicated sandbox service — [E2B](https://e2b.dev) or [Modal](https://modal.com) — for secure, isolated code execution.
-</Warning>
+> [!WARNING]
+>
+> **Deprecated:** `CodeInterpreterTool` has been removed from `crewai-tools`. The `allow_code_execution` and `code_execution_mode` parameters on `Agent` are also deprecated. Use a dedicated sandbox service — [E2B](https://e2b.dev) or [Modal](https://modal.com) — for secure, isolated code execution.
 
 ## Description
 

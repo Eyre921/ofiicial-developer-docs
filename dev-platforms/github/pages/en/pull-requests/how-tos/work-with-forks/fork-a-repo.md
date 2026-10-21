@@ -34,14 +34,14 @@ You might fork a project to propose changes to the upstream repository. In this 
    For many forking scenarios, such as contributing to open-source projects, you only need to copy the default branch. If you do not select this option, all branches will be copied into the new fork.
 7. Click **Create fork**.
 
-> \[!NOTE]
+> [!NOTE]
 > If you want to copy additional branches from the upstream repository, you can do so from the **Branches** page. See [Managing branches within your repository](/en/pull-requests/how-tos/commit-changes/managing-branches-within-your-repository).
 
 </div>
 
 <div class="ghd-tool cli">
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 To create a fork of a repository, use the `gh repo fork` subcommand.
@@ -153,7 +153,7 @@ You now have a fork of the Spoon-Knife repository, but you do not have the files
 
 You now have a fork of the Spoon-Knife repository, but you do not have the files from that repository on your computer.
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 To create a clone of your fork, use the `--clone` flag.
@@ -222,7 +222,7 @@ You can now keep your fork synced with the upstream repository with a few Git co
 
 <div class="ghd-tool cli">
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 To configure a remote repository for the forked repository, use the `--remote` flag.

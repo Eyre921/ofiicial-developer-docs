@@ -22,7 +22,7 @@ If you want to use a hardware security key to authenticate to GitHub, you must g
 
 You can generate a new SSH key on your local machine. After you generate the key, you can add the public key to your account on GitHub.com to enable authentication for Git operations over SSH.
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub improved security by dropping older, insecure key types on March 15, 2022.
 >
 > As of that date, DSA keys (`ssh-dss`) are no longer supported. You cannot add new DSA keys to your personal account on GitHub.
@@ -37,7 +37,7 @@ You can generate a new SSH key on your local machine. After you generate the key
    ssh-keygen -t ed25519 -C "your_email@example.com"
    ```
 
-   > \[!NOTE]
+   > [!NOTE]
    > If you are using a legacy system that doesn't support the Ed25519 algorithm, use:
    >
    > ```shell
@@ -122,7 +122,7 @@ Before adding a new SSH key to the ssh-agent to manage your keys, you should hav
        IdentityFile ~/.ssh/id_ed25519
      ```
 
-     > \[!NOTE]
+     > [!NOTE]
      >
      > * If you chose not to add a passphrase to your key, you should omit the `UseKeychain` line.
      > * If you see a `Bad configuration option: usekeychain` error, add an additional line to the configuration's' `Host *.github.com` section.
@@ -138,7 +138,7 @@ Before adding a new SSH key to the ssh-agent to manage your keys, you should hav
    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
    ```
 
-   > \[!NOTE]
+   > [!NOTE]
    > The `--apple-use-keychain` option stores the passphrase in your keychain for you when you add an SSH key to the ssh-agent. If you chose not to add a passphrase to your key, run the command without the `--apple-use-keychain` option.
    >
    > The `--apple-use-keychain` option is in Apple's standard version of `ssh-add`. In macOS versions prior to Monterey (12.0), the `--apple-use-keychain` and `--apple-load-keychain` flags used the syntax `-K` and `-A`, respectively.
@@ -251,7 +251,7 @@ If you are using macOS or Linux, you may need to update your SSH client or insta
 
    </div>
 
-   > \[!NOTE]
+   > [!NOTE]
    > If the command fails and you receive the error `invalid format` or `feature not supported,` you may be using a hardware security key that does not support the Ed25519 algorithm. Enter the following command instead.
    >
    > ```shell

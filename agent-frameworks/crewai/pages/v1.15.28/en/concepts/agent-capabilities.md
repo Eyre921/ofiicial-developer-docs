@@ -10,27 +10,25 @@ Understand the five ways to extend CrewAI agents: Tools, MCPs, Apps, Skills, and
 
 CrewAI agents can be extended with **five distinct capability types**, each serving a different purpose. Understanding when to use each one — and how they work together — is key to building effective agents.
 
-<CardGroup>
-  <Card title="Tools" icon="wrench" href="/en/concepts/tools">
-    **Callable functions** — give agents the ability to take action. Web searches, file operations, API calls, code execution.
-  </Card>
+> **[Tools](/en/concepts/tools)**
+>
+> **Callable functions** — give agents the ability to take action. Web searches, file operations, API calls, code execution.
 
-  <Card title="MCP Servers" icon="plug" href="/en/mcp/overview">
-    **Remote tool servers** — connect agents to external tool servers via the Model Context Protocol. Same effect as tools, but hosted externally.
-  </Card>
+> **[MCP Servers](/en/mcp/overview)**
+>
+> **Remote tool servers** — connect agents to external tool servers via the Model Context Protocol. Same effect as tools, but hosted externally.
 
-  <Card title="Apps" icon="grid-2">
-    **Platform integrations** — connect agents to SaaS apps (Gmail, Slack, Jira, Salesforce) via CrewAI's platform. Runs locally with a platform integration token.
-  </Card>
+> **Apps**
+>
+> **Platform integrations** — connect agents to SaaS apps (Gmail, Slack, Jira, Salesforce) via CrewAI's platform. Runs locally with a platform integration token.
 
-  <Card title="Skills" icon="bolt" href="/en/concepts/skills">
-    **Domain expertise** — inject instructions, guidelines, and reference material into agent prompts. Skills tell agents *how to think*.
-  </Card>
+> **[Skills](/en/concepts/skills)**
+>
+> **Domain expertise** — inject instructions, guidelines, and reference material into agent prompts. Skills tell agents *how to think*.
 
-  <Card title="Knowledge" icon="book" href="/en/concepts/knowledge">
-    **Retrieved facts** — provide agents with data from documents, files, and URLs via semantic search (RAG). Knowledge gives agents *what to know*.
-  </Card>
-</CardGroup>
+> **[Knowledge](/en/concepts/knowledge)**
+>
+> **Retrieved facts** — provide agents with data from documents, files, and URLs via semantic search (RAG). Knowledge gives agents *what to know*.
 
 ***
 
@@ -136,20 +134,18 @@ researcher = Agent(
 
 Ready to learn more about each capability type?
 
-<CardGroup>
-  <Card title="Tools" icon="wrench" href="/en/concepts/tools">
-    Create custom tools, use the 75+ OSS catalog, configure caching and async execution.
-  </Card>
+> **[Tools](/en/concepts/tools)**
+>
+> Create custom tools, use the 75+ OSS catalog, configure caching and async execution.
 
-  <Card title="MCP Integration" icon="plug" href="/en/mcp/overview">
-    Connect to MCP servers via stdio, SSE, or HTTP. Filter tools, configure auth.
-  </Card>
+> **[MCP Integration](/en/mcp/overview)**
+>
+> Connect to MCP servers via stdio, SSE, or HTTP. Filter tools, configure auth.
 
-  <Card title="Skills" icon="bolt" href="/en/concepts/skills">
-    Build skill packages with SKILL.md, inject domain expertise, use progressive disclosure.
-  </Card>
+> **[Skills](/en/concepts/skills)**
+>
+> Build skill packages with SKILL.md, inject domain expertise, use progressive disclosure.
 
-  <Card title="Knowledge" icon="book" href="/en/concepts/knowledge">
-    Add knowledge from PDFs, CSVs, URLs, and more. Configure embedders and retrieval.
-  </Card>
-</CardGroup>
+> **[Knowledge](/en/concepts/knowledge)**
+>
+> Add knowledge from PDFs, CSVs, URLs, and more. Configure embedders and retrieval.

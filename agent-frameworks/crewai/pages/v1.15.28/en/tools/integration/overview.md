@@ -10,19 +10,17 @@ Integration tools let your agents hand off work to other automation platforms an
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="Merge Agent Handler Tool" icon="diagram-project" href="/en/tools/integration/mergeagenthandlertool">
-    Securely access hundreds of third-party tools like Linear, GitHub, Slack, and more through Merge's unified API.
-  </Card>
+> **[Merge Agent Handler Tool](/en/tools/integration/mergeagenthandlertool)**
+>
+> Securely access hundreds of third-party tools like Linear, GitHub, Slack, and more through Merge's unified API.
 
-  <Card title="CrewAI Run Automation Tool" icon="robot" href="/en/tools/integration/crewaiautomationtool">
-    Invoke live CrewAI Platform automations, pass custom inputs, and poll for results directly from your agent.
-  </Card>
+> **[CrewAI Run Automation Tool](/en/tools/integration/crewaiautomationtool)**
+>
+> Invoke live CrewAI Platform automations, pass custom inputs, and poll for results directly from your agent.
 
-  <Card title="Bedrock Invoke Agent Tool" icon="aws" href="/en/tools/integration/bedrockinvokeagenttool">
-    Call Amazon Bedrock Agents from your crews, reuse AWS guardrails, and stream responses back into the workflow.
-  </Card>
-</CardGroup>
+> **[Bedrock Invoke Agent Tool](/en/tools/integration/bedrockinvokeagenttool)**
+>
+> Call Amazon Bedrock Agents from your crews, reuse AWS guardrails, and stream responses back into the workflow.
 
 ## **Common Use Cases**
 

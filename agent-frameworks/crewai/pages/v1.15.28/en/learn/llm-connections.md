@@ -10,10 +10,10 @@ Comprehensive guide on integrating CrewAI with various Large Language Models (LL
 
 CrewAI connects to LLMs through native SDK integrations for the most popular providers (OpenAI, Anthropic, Google Gemini, Azure, and AWS Bedrock), and uses LiteLLM as a flexible fallback for all other providers.
 
-<Note>
-  By default, CrewAI uses the `gpt-4o-mini` model. This is determined by the `OPENAI_MODEL_NAME` environment variable, which defaults to "gpt-4o-mini" if not set.
-  You can easily configure your agents to use a different model or provider as described in this guide.
-</Note>
+> [!NOTE]
+>
+> By default, CrewAI uses the `gpt-4o-mini` model. This is determined by the `OPENAI_MODEL_NAME` environment variable, which defaults to "gpt-4o-mini" if not set.
+> You can easily configure your agents to use a different model or provider as described in this guide.
 
 ## Supported Providers
 
@@ -42,71 +42,65 @@ LiteLLM supports a wide range of providers, including but not limited to:
 
 For a complete and up-to-date list of supported providers, please refer to the [LiteLLM Providers documentation](https://docs.litellm.ai/docs/providers).
 
-<Info>
-  To use any provider not covered by a native integration, add LiteLLM as a dependency to your project:
-
-  ```bash theme={null}
-  uv add 'crewai[litellm]'
-  ```
-
-  Native providers (OpenAI, Anthropic, Google Gemini, Azure, AWS Bedrock) use their own SDK extras — see the [Provider Configuration Examples](/en/concepts/llms#provider-configuration-examples).
-</Info>
+> [!NOTE]
+>
+> To use any provider not covered by a native integration, add LiteLLM as a dependency to your project:
+>
+> ```bash theme={null}
+> uv add 'crewai[litellm]'
+> ```
+>
+> Native providers (OpenAI, Anthropic, Google Gemini, Azure, AWS Bedrock) use their own SDK extras — see the [Provider Configuration Examples](/en/concepts/llms#provider-configuration-examples).
 
 ## Changing the LLM
 
 To use a different LLM with your CrewAI agents, you have several options:
 
-<Tabs>
-  <Tab title="Using a String Identifier">
-    Pass the model name as a string when initializing the agent:
+**Using a String Identifier**
 
-    <CodeGroup>
-      ```python Code theme={null}
-      from crewai import Agent
+Pass the model name as a string when initializing the agent:
 
-      # Using OpenAI's GPT-4
-      openai_agent = Agent(
-          role='OpenAI Expert',
-          goal='Provide insights using GPT-4',
-          backstory="An AI assistant powered by OpenAI's latest model.",
-          llm='gpt-4'
-      )
+```python Code theme={null}
+from crewai import Agent
 
-      # Using Anthropic's Claude
-      claude_agent = Agent(
-          role='Anthropic Expert',
-          goal='Analyze data using Claude',
-          backstory="An AI assistant leveraging Anthropic's language model.",
-          llm='claude-2'
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+# Using OpenAI's GPT-4
+openai_agent = Agent(
+    role='OpenAI Expert',
+    goal='Provide insights using GPT-4',
+    backstory="An AI assistant powered by OpenAI's latest model.",
+    llm='gpt-4'
+)
 
-  <Tab title="Using the LLM Class">
-    For more detailed configuration, use the LLM class:
+# Using Anthropic's Claude
+claude_agent = Agent(
+    role='Anthropic Expert',
+    goal='Analyze data using Claude',
+    backstory="An AI assistant leveraging Anthropic's language model.",
+    llm='claude-2'
+)
+```
 
-    <CodeGroup>
-      ```python Code theme={null}
-      from crewai import Agent, LLM
+**Using the LLM Class**
 
-      llm = LLM(
-          model="gpt-4",
-          temperature=0.7,
-          base_url="https://api.openai.com/v1",
-          api_key="your-api-key-here"
-      )
+For more detailed configuration, use the LLM class:
 
-      agent = Agent(
-          role='Customized LLM Expert',
-          goal='Provide tailored responses',
-          backstory="An AI assistant with custom LLM settings.",
-          llm=llm
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```python Code theme={null}
+from crewai import Agent, LLM
+
+llm = LLM(
+    model="gpt-4",
+    temperature=0.7,
+    base_url="https://api.openai.com/v1",
+    api_key="your-api-key-here"
+)
+
+agent = Agent(
+    role='Customized LLM Expert',
+    goal='Provide tailored responses',
+    backstory="An AI assistant with custom LLM settings.",
+    llm=llm
+)
+```
 
 ## Configuration Options
 
@@ -130,78 +124,68 @@ For a complete list of parameters and their descriptions, refer to the LLM class
 
 You can connect to OpenAI-compatible LLMs using either environment variables or by setting specific attributes on the LLM class:
 
-<Tabs>
-  <Tab title="Using Environment Variables">
-    <CodeGroup>
-      ```python Generic theme={null}
-      import os
+**Using Environment Variables**
 
-      os.environ["OPENAI_API_KEY"] = "your-api-key"
-      os.environ["OPENAI_API_BASE"] = "https://api.your-provider.com/v1"
-      os.environ["OPENAI_MODEL_NAME"] = "your-model-name"
-      ```
+```python Generic theme={null}
+import os
 
-      ```python Google theme={null}
-      import os
+os.environ["OPENAI_API_KEY"] = "your-api-key"
+os.environ["OPENAI_API_BASE"] = "https://api.your-provider.com/v1"
+os.environ["OPENAI_MODEL_NAME"] = "your-model-name"
+```
 
-      # Example using Gemini's OpenAI-compatible API.
-      os.environ["OPENAI_API_KEY"] = "your-gemini-key"  # Should start with AIza...
-      os.environ["OPENAI_API_BASE"] = "https://generativelanguage.googleapis.com/v1beta/openai/"
-      os.environ["OPENAI_MODEL_NAME"] = "openai/gemini-3.7-flash"  # Add your Gemini model here, under openai/
-      ```
-    </CodeGroup>
-  </Tab>
+```python Google theme={null}
+import os
 
-  <Tab title="Using LLM Class Attributes">
-    <CodeGroup>
-      ```python Generic theme={null}
-      llm = LLM(
-          model="custom-model-name",
-          api_key="your-api-key",
-          base_url="https://api.your-provider.com/v1"
-      )
-      agent = Agent(llm=llm, ...)
-      ```
+# Example using Gemini's OpenAI-compatible API.
+os.environ["OPENAI_API_KEY"] = "your-gemini-key"  # Should start with AIza...
+os.environ["OPENAI_API_BASE"] = "https://generativelanguage.googleapis.com/v1beta/openai/"
+os.environ["OPENAI_MODEL_NAME"] = "openai/gemini-3.7-flash"  # Add your Gemini model here, under openai/
+```
 
-      ```python Google theme={null}
-      # Example using Gemini's OpenAI-compatible API
-      llm = LLM(
-          model="openai/gemini-3.7-flash",
-          base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-          api_key="your-gemini-key",  # Should start with AIza...
-      )
-      agent = Agent(llm=llm, ...)
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+**Using LLM Class Attributes**
+
+```python Generic theme={null}
+llm = LLM(
+    model="custom-model-name",
+    api_key="your-api-key",
+    base_url="https://api.your-provider.com/v1"
+)
+agent = Agent(llm=llm, ...)
+```
+
+```python Google theme={null}
+# Example using Gemini's OpenAI-compatible API
+llm = LLM(
+    model="openai/gemini-3.7-flash",
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    api_key="your-gemini-key",  # Should start with AIza...
+)
+agent = Agent(llm=llm, ...)
+```
 
 ## Using Local Models with Ollama
 
 For local models like those provided by Ollama:
 
-<Steps>
-  <Step title="Download and install Ollama">
-    [Click here to download and install Ollama](https://ollama.com/download)
-  </Step>
+**1. Download and install Ollama**
 
-  <Step title="Pull the desired model">
-    For example, run `ollama pull llama3.2` to download the model.
-  </Step>
+[Click here to download and install Ollama](https://ollama.com/download)
 
-  <Step title="Configure your agent">
-    <CodeGroup>
-      ```python Code theme={null}
-          agent = Agent(
-              role='Local AI Expert',
-              goal='Process information using a local model',
-              backstory="An AI assistant running on local hardware.",
-              llm=LLM(model="ollama/llama3.2", base_url="http://localhost:11434")
-          )
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+**2. Pull the desired model**
+
+For example, run `ollama pull llama3.2` to download the model.
+
+**3. Configure your agent**
+
+```python Code theme={null}
+    agent = Agent(
+        role='Local AI Expert',
+        goal='Process information using a local model',
+        backstory="An AI assistant running on local hardware.",
+        llm=LLM(model="ollama/llama3.2", base_url="http://localhost:11434")
+    )
+```
 
 ## Changing the Base API URL
 

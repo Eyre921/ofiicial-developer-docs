@@ -102,9 +102,9 @@ nl2sql = NL2SQLTool(
 )
 ```
 
-<Warning>
-  Enabling DML gives the agent the ability to modify or destroy data. Only enable this when your use case explicitly requires write access, and ensure the database credentials are scoped to the minimum required privileges.
-</Warning>
+> [!WARNING]
+>
+> Enabling DML gives the agent the ability to modify or destroy data. Only enable this when your use case explicitly requires write access, and ensure the database credentials are scoped to the minimum required privileges.
 
 ## Requirements
 

@@ -211,7 +211,7 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ```json
 {
-  "file": "<file: <file1>>"
+  "file": "<file: [object Object]>"
 }
 ```
 
@@ -264,7 +264,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-files = { "file": "open('<file1>', 'rb')" }
+files = { "file": "open('[object Object]', 'rb')" }
 
 response = requests.patch(url, files=files)
 
@@ -274,7 +274,7 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file';
 const form = new FormData();
-form.append('file', '<file1>');
+form.append('file', '[object Object]');
 
 const options = {method: 'PATCH'};
 
@@ -303,7 +303,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -328,7 +328,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -339,7 +339,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -353,7 +353,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => '<file1>',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -367,7 +367,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -376,7 +376,7 @@ import Foundation
 let parameters = [
   [
     "name": "file",
-    "fileName": "<file1>"
+    "fileName": "[object Object]"
   ]
 ]
 

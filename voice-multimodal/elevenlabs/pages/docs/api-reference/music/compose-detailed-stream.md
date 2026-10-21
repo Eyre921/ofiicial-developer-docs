@@ -142,7 +142,7 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 ```json
 [
-  "data: {\"type\":\"audio_chunk\",\"audio\":\"SGVsbG8gV29ybGQ=\",\"words_timestamps\":[],\"waveform_visual\":[]}"
+  "string"
 ]
 ```
 

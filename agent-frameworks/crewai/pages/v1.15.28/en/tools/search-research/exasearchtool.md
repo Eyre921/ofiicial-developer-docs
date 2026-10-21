@@ -143,9 +143,9 @@ Get your API key from the [Exa dashboard](https://dashboard.exa.ai/api-keys). Fo
 * **Date Filtering**: Limit results to specific time periods with published date filters
 * **Domain Filtering**: Restrict searches to specific domains
 
-<Note>
-  `EXASearchTool` is a deprecated alias for `ExaSearchTool`. Existing imports continue to work but will emit a deprecation warning; please migrate to `ExaSearchTool`.
-</Note>
+> [!NOTE]
+>
+> `EXASearchTool` is a deprecated alias for `ExaSearchTool`. Existing imports continue to work but will emit a deprecation warning; please migrate to `ExaSearchTool`.
 
 ## Resources
 

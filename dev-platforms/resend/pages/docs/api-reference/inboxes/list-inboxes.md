@@ -107,6 +107,55 @@ $resend = Resend::client('re_xxxxxxxxx');
 $resend->inboxes->list();
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+resend.Inboxes.list()
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+Resend::Inboxes.list
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	client.Inboxes.List(nil)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _inboxes = resend.inboxes.list(ListOptions::default()).await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxListAsync();
+Console.WriteLine( "Nr Inboxes={0}", resp.Content.Data.Count );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X GET 'https://api.resend.com/inboxes' \
      -H 'Authorization: Bearer re_xxxxxxxxx'

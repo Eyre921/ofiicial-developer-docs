@@ -8,9 +8,9 @@ The `MDXSearchTool` is designed to search MDX files and return the most relevant
 
 # `MDXSearchTool`
 
-<Note>
-  The MDXSearchTool is in continuous development. Features may be added or removed, and functionality could change unpredictably as we refine the tool.
-</Note>
+> [!NOTE]
+>
+> The MDXSearchTool is in continuous development. Features may be added or removed, and functionality could change unpredictably as we refine the tool.
 
 ## Description
 

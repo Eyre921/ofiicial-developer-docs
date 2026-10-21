@@ -8,9 +8,9 @@ The `GithubSearchTool` is designed to search websites and convert them into clea
 
 # `GithubSearchTool`
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 

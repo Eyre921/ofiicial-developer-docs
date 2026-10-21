@@ -28,28 +28,26 @@ That pulls the official skill pack into your agent workflow so it can apply Crew
 
 ## Learn more on this site
 
-<CardGroup>
-  <Card title="Coding tools & AGENTS.md" icon="terminal" href="/en/guides/coding-tools/agents-md">
-    How to use `AGENTS.md` and coding-agent workflows with CrewAI.
-  </Card>
+> **[Coding tools & AGENTS.md](/en/guides/coding-tools/agents-md)**
+>
+> How to use `AGENTS.md` and coding-agent workflows with CrewAI.
 
-  <Card title="Quickstart" icon="rocket" href="/en/quickstart">
-    Build your first Flow and crew end-to-end.
-  </Card>
+> **[Quickstart](/en/quickstart)**
+>
+> Build your first Flow and crew end-to-end.
 
-  <Card title="Installation" icon="download" href="/en/installation">
-    Install the CrewAI CLI and Python package.
-  </Card>
+> **[Installation](/en/installation)**
+>
+> Install the CrewAI CLI and Python package.
 
-  <Card title="Skills registry (skills.sh)" icon="globe" href="https://skills.sh/crewaiinc/skills">
-    Official listing for `crewaiinc/skills`—skills, installs, and audits.
-  </Card>
+> **[Skills registry (skills.sh)](https://skills.sh/crewaiinc/skills)**
+>
+> Official listing for `crewaiinc/skills`—skills, installs, and audits.
 
-  <Card title="GitHub source" icon="code-branch" href="https://github.com/crewAIInc/skills">
-    Source, updates, and issues for the skill pack.
-  </Card>
-</CardGroup>
+> **[GitHub source](https://github.com/crewAIInc/skills)**
+>
+> Source, updates, and issues for the skill pack.
 
 ### Video: CrewAI with coding agent skills
 
-<iframe />
+[https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af](https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af)

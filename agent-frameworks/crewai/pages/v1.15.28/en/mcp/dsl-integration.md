@@ -10,11 +10,11 @@ Learn how to use CrewAI's simple DSL syntax to integrate MCP servers directly wi
 
 CrewAI's MCP DSL (Domain Specific Language) integration provides the **simplest way** to connect your agents to MCP (Model Context Protocol) servers. Just add an `mcps` field to your agent and CrewAI handles all the complexity automatically.
 
-<Info>
-  This is the **recommended approach** for most MCP use cases. For advanced
-  scenarios requiring manual connection management, see
-  [MCPServerAdapter](/en/mcp/overview#advanced-mcpserveradapter).
-</Info>
+> [!NOTE]
+>
+> This is the **recommended approach** for most MCP use cases. For advanced
+> scenarios requiring manual connection management, see
+> [MCPServerAdapter](/en/mcp/overview#advanced-mcpserveradapter).
 
 ## Basic Usage
 

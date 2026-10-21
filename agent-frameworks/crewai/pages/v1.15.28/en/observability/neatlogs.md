@@ -28,17 +28,17 @@ All in one place.
 
 Manage your traces effortlessly
 
-<img alt="Traces" />
+![Traces](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/neatlogs-1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=d01a5ce64066c6c7387b238068e71369)
 
-<img alt="Trace Response" />
+![Trace Response](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/neatlogs-2.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=5b737699468781be25098c33040d2125)
 
 The best UX to view a CrewAI trace. Post comments anywhere you want. Use AI to debug.
 
-<img alt="Trace Details" />
+![Trace Details](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/neatlogs-3.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=43cda9bcd83376dda4523ff0596b2043)
 
-<img alt="Ai Chat Bot With A Trace" />
+![Ai Chat Bot With A Trace](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/neatlogs-4.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=c9e7ad0653cae7bfaad2dd448d90eda0)
 
-<img alt="Comments Drawer" />
+![Comments Drawer](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/neatlogs-5.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=a977655abb8cd26d9ed4cef5fdd7d859)
 
 ## Core Features
 
@@ -52,30 +52,28 @@ The best UX to view a CrewAI trace. Post comments anywhere you want. Use AI to d
 
 ## Quick Setup with CrewAI
 
-<Steps>
-  <Step title="Sign Up & Get API Key">
-    Visit [neatlogs.com](https://neatlogs.com/?utm_source=crewAI-docs), create a project, copy the API key.
-  </Step>
+**1. Sign Up & Get API Key**
 
-  <Step title="Install SDK">
-    ```bash theme={null}
-    pip install neatlogs
-    ```
+Visit [neatlogs.com](https://neatlogs.com/?utm_source=crewAI-docs), create a project, copy the API key.
 
-    (Latest version 0.8.0, Python 3.8+; MIT license)
-  </Step>
+**2. Install SDK**
 
-  <Step title="Initialize Neatlogs">
-    Before starting Crew agents, add:
+```bash theme={null}
+pip install neatlogs
+```
 
-    ```python theme={null}
-    import neatlogs
-    neatlogs.init("YOUR_PROJECT_API_KEY")
-    ```
+(Latest version 0.8.0, Python 3.8+; MIT license)
 
-    Agents run as usual. Neatlogs captures everything automatically.
-  </Step>
-</Steps>
+**3. Initialize Neatlogs**
+
+Before starting Crew agents, add:
+
+```python theme={null}
+import neatlogs
+neatlogs.init("YOUR_PROJECT_API_KEY")
+```
+
+Agents run as usual. Neatlogs captures everything automatically.
 
 ## Under the Hood
 
@@ -90,11 +88,11 @@ All with just two lines of code.
 
 ### 🔍 Full Demo (4 min)
 
-<iframe title="NeatLogs overview" />
+[NeatLogs overview](https://www.youtube.com/embed/8KDme9T2I7Q?si=b8oHteaBwFNs_Duk)
 
 ### ⚙️ CrewAI Integration (30 s)
 
-<iframe title="Loom video player" />
+[Loom video player](https://www.loom.com/embed/9c78b552af43452bb3e4783cb8d91230?sid=e9d7d370-a91a-49b0-809e-2f375d9e801d)
 
 ## Links & Support
 

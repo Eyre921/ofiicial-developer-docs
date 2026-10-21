@@ -10,77 +10,73 @@ CrewAI provides an extensive library of pre-built tools to enhance your agents' 
 
 ## **Tool Categories**
 
-<CardGroup>
-  <Card title="File & Document" icon="folder-open" href="/en/tools/file-document/overview">
-    Read, write, and search through various file formats including PDF, DOCX, JSON, CSV, and more. Perfect for document processing workflows.
-  </Card>
+> **[File & Document](/en/tools/file-document/overview)**
+>
+> Read, write, and search through various file formats including PDF, DOCX, JSON, CSV, and more. Perfect for document processing workflows.
 
-  <Card title="Web Scraping & Browsing" icon="globe" href="/en/tools/web-scraping/overview">
-    Extract data from websites, automate browser interactions, and scrape content at scale with tools like Firecrawl, Selenium, and more.
-  </Card>
+> **[Web Scraping & Browsing](/en/tools/web-scraping/overview)**
+>
+> Extract data from websites, automate browser interactions, and scrape content at scale with tools like Firecrawl, Selenium, and more.
 
-  <Card title="Search & Research" icon="magnifying-glass" href="/en/tools/search-research/overview">
-    Perform web searches, find code repositories, research YouTube content, and discover information across the internet.
-  </Card>
+> **[Search & Research](/en/tools/search-research/overview)**
+>
+> Perform web searches, find code repositories, research YouTube content, and discover information across the internet.
 
-  <Card title="Database & Data" icon="database" href="/en/tools/database-data/overview">
-    Connect to databases, vector stores, and data warehouses. Query MySQL, PostgreSQL, MongoDB, Snowflake, Qdrant, and Weaviate.
-  </Card>
+> **[Database & Data](/en/tools/database-data/overview)**
+>
+> Connect to databases, vector stores, and data warehouses. Query MySQL, PostgreSQL, MongoDB, Snowflake, Qdrant, and Weaviate.
 
-  <Card title="AI & Machine Learning" icon="brain" href="/en/tools/ai-ml/overview">
-    Generate images with DALL-E, process vision tasks, integrate with LangChain, build RAG systems, and leverage code interpreters.
-  </Card>
+> **[AI & Machine Learning](/en/tools/ai-ml/overview)**
+>
+> Generate images with DALL-E, process vision tasks, integrate with LangChain, build RAG systems, and leverage code interpreters.
 
-  <Card title="Cloud & Storage" icon="cloud" href="/en/tools/cloud-storage/overview">
-    Interact with cloud services including AWS S3, Amazon Bedrock, and other cloud storage and AI services.
-  </Card>
+> **[Cloud & Storage](/en/tools/cloud-storage/overview)**
+>
+> Interact with cloud services including AWS S3, Amazon Bedrock, and other cloud storage and AI services.
 
-  <Card title="Automation" icon="bolt" href="/en/tools/automation/overview">
-    Automate workflows with Apify, Composio, and other platforms to connect your agents with external services.
-  </Card>
+> **[Automation](/en/tools/automation/overview)**
+>
+> Automate workflows with Apify, Composio, and other platforms to connect your agents with external services.
 
-  <Card title="Integrations" icon="plug" href="/en/tools/tool-integrations/overview">
-    Integrate CrewAI with external systems like Amazon Bedrock and the CrewAI Automation toolkit.
-  </Card>
-</CardGroup>
+> **[Integrations](/en/tools/tool-integrations/overview)**
+>
+> Integrate CrewAI with external systems like Amazon Bedrock and the CrewAI Automation toolkit.
 
 ## **Quick Access**
 
 Need a specific tool? Here are some popular choices:
 
-<CardGroup>
-  <Card title="RAG Tool" icon="image" href="/en/tools/ai-ml/ragtool">
-    Implement Retrieval-Augmented Generation
-  </Card>
+> **[RAG Tool](/en/tools/ai-ml/ragtool)**
+>
+> Implement Retrieval-Augmented Generation
 
-  <Card title="Serper Dev" icon="book-atlas" href="/en/tools/search-research/serperdevtool">
-    Google search API
-  </Card>
+> **[Serper Dev](/en/tools/search-research/serperdevtool)**
+>
+> Google search API
 
-  <Card title="File Read" icon="file" href="/en/tools/file-document/filereadtool">
-    Read any file type
-  </Card>
+> **[File Read](/en/tools/file-document/filereadtool)**
+>
+> Read any file type
 
-  <Card title="Directory Read" icon="folder-open" href="/en/tools/file-document/directoryreadtool">
-    List and read directory contents
-  </Card>
+> **[Directory Read](/en/tools/file-document/directoryreadtool)**
+>
+> List and read directory contents
 
-  <Card title="Scrape Website" icon="globe" href="/en/tools/web-scraping/scrapewebsitetool">
-    Extract web content
-  </Card>
+> **[Scrape Website](/en/tools/web-scraping/scrapewebsitetool)**
+>
+> Extract web content
 
-  <Card title="Code Interpreter" icon="code" href="/en/tools/ai-ml/codeinterpretertool">
-    Execute Python code
-  </Card>
+> **[Code Interpreter](/en/tools/ai-ml/codeinterpretertool)**
+>
+> Execute Python code
 
-  <Card title="S3 Reader" icon="cloud" href="/en/tools/cloud-storage/s3readertool">
-    Access AWS S3 files
-  </Card>
+> **[S3 Reader](/en/tools/cloud-storage/s3readertool)**
+>
+> Access AWS S3 files
 
-  <Card title="MongoDB Vector Search" icon="database" href="/en/tools/database-data/mongodbvectorsearchtool">
-    Run vector similarity queries on MongoDB
-  </Card>
-</CardGroup>
+> **[MongoDB Vector Search](/en/tools/database-data/mongodbvectorsearchtool)**
+>
+> Run vector similarity queries on MongoDB
 
 ## **Getting Started**
 

@@ -74,7 +74,7 @@ Validation Error
 
 ```json
 [
-  "audio_stream_binary_data"
+  "string"
 ]
 ```
 

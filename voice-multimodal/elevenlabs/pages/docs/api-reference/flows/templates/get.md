@@ -119,12 +119,6 @@ One input or output port of a published template version.
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -134,34 +128,38 @@ One input or output port of a published template version.
   "versions": [
     {
       "version_id": "ver_01hxyz",
-      "published_at_unix": 1716825600,
+      "published_at_unix": 1,
       "is_latest": true,
       "inputs": [
         {
           "id": "prompt",
           "content_schema": {
             "type": "string",
-            "description": "Describe the background, lighting, and mood for the product shot (e.g. 'minimalist white studio with soft shadows').",
-            "enum": null,
-            "title": "Scene Description"
+            "description": "string",
+            "enum": [
+              "string"
+            ],
+            "title": "string"
           }
         }
       ],
       "outputs": [
         {
-          "id": "result_image",
+          "id": "prompt",
           "content_schema": {
-            "type": "image",
-            "description": "The final rendered product shot with the requested background and lighting applied.",
-            "title": "Generated Product Image",
-            "enum": null
+            "type": "string",
+            "description": "string",
+            "enum": [
+              "string"
+            ],
+            "title": "string"
           }
         }
       ]
     }
   ],
-  "has_more_versions": false,
-  "description": "Generate a professional product shot from a plain photo and a text prompt describing the desired background and lighting."
+  "has_more_versions": true,
+  "description": "string"
 }
 ```
 
@@ -172,17 +170,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/flows/templates/template_id"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/flows/templates/template_id';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -198,7 +193,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -207,11 +201,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/flows/templates/template_id"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -234,8 +224,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -246,8 +234,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/flows/templates/template_id")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -257,12 +243,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/flows/templates/template_id', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/flows/templates/template_id');
 
 echo $response->getBody();
 ```
@@ -272,25 +253,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/flows/templates/template_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/flows/templates/template_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

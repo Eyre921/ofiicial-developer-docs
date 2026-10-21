@@ -26,13 +26,13 @@ To use the training feature, follow these steps:
 crewai train -n <n_iterations> -f <filename.pkl>
 ```
 
-<Tip>
-  Replace `<n_iterations>` with the desired number of training iterations and `<filename>` with the appropriate filename ending with `.pkl`.
-</Tip>
+> [!TIP]
+>
+> Replace `<n_iterations>` with the desired number of training iterations and `<filename>` with the appropriate filename ending with `.pkl`.
 
-<Note>
-  If you omit `-f`, the output defaults to `trained_agents_data.pkl` in the current working directory. You can pass an absolute path to control where the file is written.
-</Note>
+> [!NOTE]
+>
+> If you omit `-f`, the output defaults to `trained_agents_data.pkl` in the current working directory. You can pass an absolute path to control where the file is written.
 
 ### Training your Crew programmatically
 
@@ -120,72 +120,68 @@ flowchart TD
 
 ## Small Language Model Considerations
 
-<Warning>
-  When using smaller language models (≤7B parameters) for training data evaluation, be aware that they may face challenges with generating structured outputs and following complex instructions.
-</Warning>
+> [!WARNING]
+>
+> When using smaller language models (≤7B parameters) for training data evaluation, be aware that they may face challenges with generating structured outputs and following complex instructions.
 
 ### Limitations of Small Models in Training Evaluation
 
-<CardGroup>
-  <Card title="JSON Output Accuracy" icon="triangle-exclamation">
-    Smaller models often struggle with producing valid JSON responses needed for structured training evaluations, leading to parsing errors and incomplete data.
-  </Card>
+> **JSON Output Accuracy**
+>
+> Smaller models often struggle with producing valid JSON responses needed for structured training evaluations, leading to parsing errors and incomplete data.
 
-  <Card title="Evaluation Quality" icon="chart-line">
-    Models under 7B parameters may provide less nuanced evaluations with limited reasoning depth compared to larger models.
-  </Card>
+> **Evaluation Quality**
+>
+> Models under 7B parameters may provide less nuanced evaluations with limited reasoning depth compared to larger models.
 
-  <Card title="Instruction Following" icon="list-check">
-    Complex training evaluation criteria may not be fully followed or considered by smaller models.
-  </Card>
+> **Instruction Following**
+>
+> Complex training evaluation criteria may not be fully followed or considered by smaller models.
 
-  <Card title="Consistency" icon="rotate">
-    Evaluations across multiple training iterations may lack consistency with smaller models.
-  </Card>
-</CardGroup>
+> **Consistency**
+>
+> Evaluations across multiple training iterations may lack consistency with smaller models.
 
 ### Recommendations for Training
 
-<Tabs>
-  <Tab title="Best Practice">
-    For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
+**Best Practice**
 
-    ```python theme={null}
-    from crewai import Agent, Crew, Task, LLM
+For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
 
-    # Recommended minimum for training evaluation
-    llm = LLM(model="mistral/open-mistral-7b")
+```python theme={null}
+from crewai import Agent, Crew, Task, LLM
 
-    # Better options for reliable training evaluation
-    llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
-    llm = LLM(model="gpt-4o")
+# Recommended minimum for training evaluation
+llm = LLM(model="mistral/open-mistral-7b")
 
-    # Use this LLM with your agents
-    agent = Agent(
-        role="Training Evaluator",
-        goal="Provide accurate training feedback",
-        llm=llm
-    )
-    ```
+# Better options for reliable training evaluation
+llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
+llm = LLM(model="gpt-4o")
 
-    <Tip>
-      More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
-    </Tip>
-  </Tab>
+# Use this LLM with your agents
+agent = Agent(
+    role="Training Evaluator",
+    goal="Provide accurate training feedback",
+    llm=llm
+)
+```
 
-  <Tab title="Small Model Usage">
-    If you must use smaller models for training evaluation, be aware of these constraints:
+> [!TIP]
+>
+> More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
 
-    ```python theme={null}
-    # Using a smaller model (expect some limitations)
-    llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
-    ```
+**Small Model Usage**
 
-    <Warning>
-      While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
-    </Warning>
-  </Tab>
-</Tabs>
+If you must use smaller models for training evaluation, be aware of these constraints:
+
+```python theme={null}
+# Using a smaller model (expect some limitations)
+llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
+```
+
+> [!WARNING]
+>
+> While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
 
 ### Key Points to Note
 

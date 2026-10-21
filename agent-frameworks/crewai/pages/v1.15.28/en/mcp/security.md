@@ -8,9 +8,9 @@ Learn about important security best practices when integrating MCP servers with 
 
 ## Overview
 
-<Warning>
-  The most critical aspect of MCP security is **trust**. You should **only** connect your CrewAI agents to MCP servers that you fully trust.
-</Warning>
+> [!WARNING]
+>
+> The most critical aspect of MCP security is **trust**. You should **only** connect your CrewAI agents to MCP servers that you fully trust.
 
 When integrating external services like MCP (Model Context Protocol) servers into your CrewAI agents, security is paramount.
 MCP servers can execute code, access data, or interact with other systems based on the tools they expose.
@@ -25,9 +25,9 @@ It's crucial to understand the implications and follow best practices to protect
 
 ### 1. Trusting MCP Servers
 
-<Warning>
-  **Only connect to MCP servers that you trust.**
-</Warning>
+> [!WARNING]
+>
+> **Only connect to MCP servers that you trust.**
 
 Before configuring `MCPServerAdapter` to connect to an MCP server, ensure you know:
 
@@ -90,9 +90,7 @@ When connecting to remote MCP servers via Server-Sent Events (SSE) or Streamable
 
 ### a. DNS Rebinding Attacks (Especially for SSE)
 
-<Critical>
-  **Protect against DNS Rebinding Attacks.**
-</Critical>
+**Protect against DNS Rebinding Attacks.**
 
 DNS rebinding allows an attacker-controlled website to bypass the same-origin policy and make requests to servers on the user's local network (e.g., `localhost`) or intranet. This is particularly risky if you run an MCP server locally (e.g., for development) and an agent in a browser-like environment (though less common for typical CrewAI backend setups) or if the MCP server is on an internal network.
 

@@ -85,8 +85,8 @@ Validation Error
 
 ```json
 {
-  "start_time": 1735689600000,
-  "end_time": 1738368000000
+  "start_time": 1,
+  "end_time": 1
 }
 ```
 
@@ -95,18 +95,18 @@ Validation Error
 ```json
 {
   "columns": [
-    "time"
+    "string"
   ],
   "column_types": [
-    "DateTime"
+    "String"
   ],
   "rows": [
     [
-      "2025-01-01T00:00:00Z"
+      "string"
     ]
   ],
   "column_units": [
-    "credits"
+    "ms"
   ]
 }
 ```
@@ -119,8 +119,8 @@ import requests
 url = "https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time"
 
 payload = {
-    "start_time": 1735689600000,
-    "end_time": 1738368000000
+    "start_time": 1,
+    "end_time": 1
 }
 headers = {"Content-Type": "application/json"}
 
@@ -134,7 +134,7 @@ const url = 'https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-pro
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"start_time":1735689600000,"end_time":1738368000000}'
+  body: '{"start_time":1,"end_time":1}'
 };
 
 try {
@@ -160,7 +160,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time"
 
-	payload := strings.NewReader("{\n  \"start_time\": 1735689600000,\n  \"end_time\": 1738368000000\n}")
+	payload := strings.NewReader("{\n  \"start_time\": 1,\n  \"end_time\": 1\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -188,7 +188,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"start_time\": 1735689600000,\n  \"end_time\": 1738368000000\n}"
+request.body = "{\n  \"start_time\": 1,\n  \"end_time\": 1\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -200,7 +200,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time")
   .header("Content-Type", "application/json")
-  .body("{\n  \"start_time\": 1735689600000,\n  \"end_time\": 1738368000000\n}")
+  .body("{\n  \"start_time\": 1,\n  \"end_time\": 1\n}")
   .asString();
 ```
 
@@ -212,8 +212,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time', [
   'body' => '{
-  "start_time": 1735689600000,
-  "end_time": 1738368000000
+  "start_time": 1,
+  "end_time": 1
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -229,7 +229,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"start_time\": 1735689600000,\n  \"end_time\": 1738368000000\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"start_time\": 1,\n  \"end_time\": 1\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -238,8 +238,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "start_time": 1735689600000,
-  "end_time": 1738368000000
+  "start_time": 1,
+  "end_time": 1
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

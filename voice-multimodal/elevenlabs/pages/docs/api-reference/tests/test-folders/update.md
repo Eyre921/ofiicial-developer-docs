@@ -75,7 +75,7 @@ Validation Error
 
 ```json
 {
-  "name": "Customer Support Regression Tests"
+  "name": "string"
 }
 ```
 
@@ -83,15 +83,15 @@ Validation Error
 
 ```json
 {
-  "id": "tfld_7301khxdkycse5f88fzjdtrterzm",
-  "name": "Customer Support Regression Tests",
+  "id": "string",
+  "name": "string",
   "folder_path": [
     {
-      "id": "tfld_4892abxmkycse5f88fzjdtrtabcd",
-      "name": "Agent Test Suites"
+      "id": "string",
+      "name": ""
     }
   ],
-  "children_count": 12
+  "children_count": 0
 }
 ```
 
@@ -102,7 +102,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm"
 
-payload = { "name": "Customer Support Regression Tests" }
+payload = { "name": "string" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.patch(url, json=payload, headers=headers)
@@ -115,7 +115,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301
 const options = {
   method: 'PATCH',
   headers: {'Content-Type': 'application/json'},
-  body: '{"name":"Customer Support Regression Tests"}'
+  body: '{"name":"string"}'
 };
 
 try {
@@ -141,7 +141,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm"
 
-	payload := strings.NewReader("{\n  \"name\": \"Customer Support Regression Tests\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -169,7 +169,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Customer Support Regression Tests\"\n}"
+request.body = "{\n  \"name\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -181,7 +181,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Customer Support Regression Tests\"\n}")
+  .body("{\n  \"name\": \"string\"\n}")
   .asString();
 ```
 
@@ -193,7 +193,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm', [
   'body' => '{
-  "name": "Customer Support Regression Tests"
+  "name": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -209,7 +209,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/folders/tfld_7301khxdkycse5f88fzjdtrterzm");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Customer Support Regression Tests\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -217,7 +217,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Customer Support Regression Tests"] as [String : Any]
+let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

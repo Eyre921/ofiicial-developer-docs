@@ -90,9 +90,9 @@ Validation Error
 {
   "rules": [
     {
-      "alias": "tie-land",
-      "string_to_replace": "Thailand",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }
@@ -117,9 +117,9 @@ url = "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ik
 
 payload = { "rules": [
         {
-            "alias": "tie-land",
-            "string_to_replace": "Thailand",
-            "type": "alias"
+            "alias": "string",
+            "string_to_replace": "string",
+            "type": "string"
         }
     ] }
 headers = {"Content-Type": "application/json"}
@@ -134,7 +134,7 @@ const url = 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4Tl
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"rules":[{"alias":"tie-land","string_to_replace":"Thailand","type":"alias"}]}'
+  body: '{"rules":[{"alias":"string","string_to_replace":"string","type":"string"}]}'
 };
 
 try {
@@ -160,7 +160,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules"
 
-	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"tie-land\",\n      \"string_to_replace\": \"Thailand\",\n      \"type\": \"alias\"\n    }\n  ]\n}")
+	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -188,7 +188,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"tie-land\",\n      \"string_to_replace\": \"Thailand\",\n      \"type\": \"alias\"\n    }\n  ]\n}"
+request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -200,7 +200,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules")
   .header("Content-Type", "application/json")
-  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"tie-land\",\n      \"string_to_replace\": \"Thailand\",\n      \"type\": \"alias\"\n    }\n  ]\n}")
+  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
   .asString();
 ```
 
@@ -214,9 +214,9 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation
   'body' => '{
   "rules": [
     {
-      "alias": "tie-land",
-      "string_to_replace": "Thailand",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }',
@@ -234,7 +234,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/set-rules");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"tie-land\",\n      \"string_to_replace\": \"Thailand\",\n      \"type\": \"alias\"\n    }\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -244,9 +244,9 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = ["rules": [
     [
-      "alias": "tie-land",
-      "string_to_replace": "Thailand",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     ]
   ]] as [String : Any]
 

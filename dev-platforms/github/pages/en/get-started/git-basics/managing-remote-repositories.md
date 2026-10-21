@@ -50,7 +50,7 @@ To fix this, you can:
 
 The `git remote set-url` command changes an existing remote repository URL.
 
-> \[!TIP]
+> [!TIP]
 > For information on the difference between HTTPS and SSH URLs, see [About remote repositories](/en/get-started/git-basics/about-remote-repositories).
 
 The `git remote set-url` command takes two arguments:
@@ -218,7 +218,7 @@ $ git remote -v
 > origin  https://github.com/OWNER/REPOSITORY.git (push)
 ```
 
-> \[!NOTE]
+> [!NOTE]
 > `git remote rm` does not delete the remote repository from the server. It simply removes the remote and its references from your local repository.
 
 ### Troubleshooting: Could not remove config section 'remote.\[name]'

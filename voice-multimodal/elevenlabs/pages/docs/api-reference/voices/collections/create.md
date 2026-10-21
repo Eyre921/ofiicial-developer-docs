@@ -68,8 +68,8 @@ Validation Error
 
 ```json
 {
-  "title": "My Favorite Narration Voices",
-  "icon": "microphone"
+  "title": "string",
+  "icon": "string"
 }
 ```
 
@@ -77,9 +77,9 @@ Validation Error
 
 ```json
 {
-  "collection_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "My Favorite Narration Voices",
-  "icon": "microphone",
+  "collection_id": "string",
+  "title": "string",
+  "icon": "string",
   "permission_on_resource": "admin"
 }
 ```
@@ -92,8 +92,8 @@ import requests
 url = "https://api.elevenlabs.io/v1/voices/collections"
 
 payload = {
-    "title": "My Favorite Narration Voices",
-    "icon": "microphone"
+    "title": "string",
+    "icon": "string"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -107,7 +107,7 @@ const url = 'https://api.elevenlabs.io/v1/voices/collections';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"title":"My Favorite Narration Voices","icon":"microphone"}'
+  body: '{"title":"string","icon":"string"}'
 };
 
 try {
@@ -133,7 +133,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/collections"
 
-	payload := strings.NewReader("{\n  \"title\": \"My Favorite Narration Voices\",\n  \"icon\": \"microphone\"\n}")
+	payload := strings.NewReader("{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -161,7 +161,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"title\": \"My Favorite Narration Voices\",\n  \"icon\": \"microphone\"\n}"
+request.body = "{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -173,7 +173,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/collections")
   .header("Content-Type", "application/json")
-  .body("{\n  \"title\": \"My Favorite Narration Voices\",\n  \"icon\": \"microphone\"\n}")
+  .body("{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}")
   .asString();
 ```
 
@@ -185,8 +185,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/collections', [
   'body' => '{
-  "title": "My Favorite Narration Voices",
-  "icon": "microphone"
+  "title": "string",
+  "icon": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -202,7 +202,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/collections");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"title\": \"My Favorite Narration Voices\",\n  \"icon\": \"microphone\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"title\": \"string\",\n  \"icon\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -211,8 +211,8 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "title": "My Favorite Narration Voices",
-  "icon": "microphone"
+  "title": "string",
+  "icon": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

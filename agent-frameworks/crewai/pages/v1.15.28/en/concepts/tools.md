@@ -11,9 +11,9 @@ Understanding and leveraging tools within the CrewAI framework for agent collabo
 CrewAI tools empower agents with capabilities ranging from web searching and data analysis to collaboration and delegating tasks among coworkers.
 This documentation outlines how to create, integrate, and leverage these tools within the CrewAI framework, including a new focus on collaboration tools.
 
-<Note type="info" title="Tools are one of five agent capability types">
-  Tools give agents **callable functions** to take action. They work alongside [MCPs](/en/mcp/overview) (remote tool servers), [Apps](/en/concepts/agent-capabilities) (platform integrations), [Skills](/en/concepts/skills) (domain expertise), and [Knowledge](/en/concepts/knowledge) (retrieved facts). See the [Agent Capabilities](/en/concepts/agent-capabilities) overview to understand when to use each.
-</Note>
+> [!NOTE]
+>
+> Tools give agents **callable functions** to take action. They work alongside [MCPs](/en/mcp/overview) (remote tool servers), [Apps](/en/concepts/agent-capabilities) (platform integrations), [Skills](/en/concepts/skills) (domain expertise), and [Knowledge](/en/concepts/knowledge) (retrieved facts). See the [Agent Capabilities](/en/concepts/agent-capabilities) overview to understand when to use each.
 
 ## What is a Tool?
 
@@ -21,16 +21,16 @@ A tool in CrewAI is a skill or function that agents can utilize to perform vario
 This includes tools from the [CrewAI Toolkit](https://github.com/joaomdmoura/crewai-tools) and [LangChain Tools](https://python.langchain.com/docs/integrations/tools),
 enabling everything from simple searches to complex interactions and effective teamwork among agents.
 
-<Note type="info" title="Enterprise Enhancement: Tools Repository">
-  CrewAI AMP provides a comprehensive Tools Repository with pre-built integrations for common business systems and APIs. Deploy agents with enterprise tools in minutes instead of days.
-
-  The Enterprise Tools Repository includes:
-
-  * Pre-built connectors for popular enterprise systems
-  * Custom tool creation interface
-  * Version control and sharing capabilities
-  * Security and compliance features
-</Note>
+> [!NOTE]
+>
+> CrewAI AMP provides a comprehensive Tools Repository with pre-built integrations for common business systems and APIs. Deploy agents with enterprise tools in minutes instead of days.
+>
+> The Enterprise Tools Repository includes:
+>
+> * Pre-built connectors for popular enterprise systems
+> * Custom tool creation interface
+> * Version control and sharing capabilities
+> * Security and compliance features
 
 ## Key Characteristics of Tools
 
@@ -160,10 +160,10 @@ Here is a list of the available tools and their descriptions:
 
 ## Creating your own Tools
 
-<Tip>
-  Developers can craft `custom tools` tailored for their agent's needs or
-  utilize pre-built options.
-</Tip>
+> [!TIP]
+>
+> Developers can craft `custom tools` tailored for their agent's needs or
+> utilize pre-built options.
 
 There are two main ways for one to create a CrewAI tool:
 
@@ -305,11 +305,11 @@ def my_tool(question: str) -> str:
 
 ### Custom Caching Mechanism
 
-<Tip>
-  Tools can optionally implement a `cache_function` to fine-tune caching
-  behavior. This function determines when to cache results based on specific
-  conditions, offering granular control over caching logic.
-</Tip>
+> [!TIP]
+>
+> Tools can optionally implement a `cache_function` to fine-tune caching
+> behavior. This function determines when to cache results based on specific
+> conditions, offering granular control over caching logic.
 
 ```python Code theme={null}
 from crewai.tools import tool

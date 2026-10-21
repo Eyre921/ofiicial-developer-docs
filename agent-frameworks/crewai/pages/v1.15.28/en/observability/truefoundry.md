@@ -16,44 +16,42 @@ TrueFoundry provides an enterprise-ready [AI Gateway](https://www.truefoundry.co
 
 ### Installation & Setup
 
-<Steps>
-  <Step title="Install CrewAI">
-    ```bash theme={null}
-    pip install crewai
-    ```
-  </Step>
+**1. Install CrewAI**
 
-  <Step title="Get TrueFoundry Access Token">
-    1. Sign up for a [TrueFoundry account](https://www.truefoundry.com/register)
-    2. Follow the steps here in [Quick start](https://docs.truefoundry.com/gateway/quick-start)
-  </Step>
+```bash theme={null}
+pip install crewai
+```
 
-  <Step title="Configure CrewAI with TrueFoundry">
-    <img alt="TrueFoundry Code Configuration" />
+**2. Get TrueFoundry Access Token**
 
-    ```python theme={null}
-    from crewai import LLM
+1. Sign up for a [TrueFoundry account](https://www.truefoundry.com/register)
+2. Follow the steps here in [Quick start](https://docs.truefoundry.com/gateway/quick-start)
 
-    # Create an LLM instance with TrueFoundry AI Gateway
-    truefoundry_llm = LLM(
-        model="openai-main/gpt-4o",  # Similarly, you can call any model from any provider
-        base_url="your_truefoundry_gateway_base_url",
-        api_key="your_truefoundry_api_key"
+**3. Configure CrewAI with TrueFoundry**
+
+![TrueFoundry Code Configuration](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/new-code-snippet.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=746c0bd23a77535f35b0b2bcf3320bf5)
+
+```python theme={null}
+from crewai import LLM
+
+# Create an LLM instance with TrueFoundry AI Gateway
+truefoundry_llm = LLM(
+    model="openai-main/gpt-4o",  # Similarly, you can call any model from any provider
+    base_url="your_truefoundry_gateway_base_url",
+    api_key="your_truefoundry_api_key"
+)
+
+# Use in your CrewAI agents
+from crewai import Agent
+
+@agent
+def researcher(self) -> Agent:
+    return Agent(
+        config=self.agents_config['researcher'],
+        llm=truefoundry_llm,
+        verbose=True
     )
-
-    # Use in your CrewAI agents
-    from crewai import Agent
-
-    @agent
-    def researcher(self) -> Agent:
-        return Agent(
-            config=self.agents_config['researcher'],
-            llm=truefoundry_llm,
-            verbose=True
-        )
-    ```
-  </Step>
-</Steps>
+```
 
 ### Complete CrewAI Example
 
@@ -112,7 +110,7 @@ result = crew.kickoff()
 
 Monitor your CrewAI agents through TrueFoundry's metrics tab:
 
-<img alt="TrueFoundry metrics" />
+![TrueFoundry metrics](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/gateway-metrics.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=33755ff848cb457e162e806c20c98216)
 
 With Truefoundry's AI gateway, you can monitor and analyze:
 
@@ -145,4 +143,4 @@ Traceloop.init(
 
 This provides additional trace correlation across your entire CrewAI workflow.
 
-<img alt="TrueFoundry CrewAI Tracing" />
+![TrueFoundry CrewAI Tracing](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/tracing_crewai.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=90623834e0ba9f4ccb09890f6824912d)

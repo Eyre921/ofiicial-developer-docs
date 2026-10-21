@@ -10,39 +10,37 @@ These tools enable your agents to interact with various database systems, from t
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="MySQL Tool" icon="database" href="/en/tools/database-data/mysqltool">
-    Connect to and query MySQL databases with SQL operations.
-  </Card>
+> **[MySQL Tool](/en/tools/database-data/mysqltool)**
+>
+> Connect to and query MySQL databases with SQL operations.
 
-  <Card title="PostgreSQL Search" icon="elephant" href="/en/tools/database-data/pgsearchtool">
-    Search and query PostgreSQL databases efficiently.
-  </Card>
+> **[PostgreSQL Search](/en/tools/database-data/pgsearchtool)**
+>
+> Search and query PostgreSQL databases efficiently.
 
-  <Card title="Snowflake Search" icon="snowflake" href="/en/tools/database-data/snowflakesearchtool">
-    Access Snowflake data warehouse for analytics and reporting.
-  </Card>
+> **[Snowflake Search](/en/tools/database-data/snowflakesearchtool)**
+>
+> Access Snowflake data warehouse for analytics and reporting.
 
-  <Card title="NL2SQL Tool" icon="language" href="/en/tools/database-data/nl2sqltool">
-    Convert natural language queries to SQL statements automatically.
-  </Card>
+> **[NL2SQL Tool](/en/tools/database-data/nl2sqltool)**
+>
+> Convert natural language queries to SQL statements automatically.
 
-  <Card title="Qdrant Vector Search" icon="vector-square" href="/en/tools/database-data/qdrantvectorsearchtool">
-    Search vector embeddings using Qdrant vector database.
-  </Card>
+> **[Qdrant Vector Search](/en/tools/database-data/qdrantvectorsearchtool)**
+>
+> Search vector embeddings using Qdrant vector database.
 
-  <Card title="Weaviate Vector Search" icon="network-wired" href="/en/tools/database-data/weaviatevectorsearchtool">
-    Perform semantic search with Weaviate vector database.
-  </Card>
+> **[Weaviate Vector Search](/en/tools/database-data/weaviatevectorsearchtool)**
+>
+> Perform semantic search with Weaviate vector database.
 
-  <Card title="MongoDB Vector Search" icon="leaf" href="/en/tools/database-data/mongodbvectorsearchtool">
-    Vector similarity search on MongoDB Atlas with indexing helpers.
-  </Card>
+> **[MongoDB Vector Search](/en/tools/database-data/mongodbvectorsearchtool)**
+>
+> Vector similarity search on MongoDB Atlas with indexing helpers.
 
-  <Card title="SingleStore Search" icon="database" href="/en/tools/database-data/singlestoresearchtool">
-    Safe SELECT/SHOW queries on SingleStore with pooling and validation.
-  </Card>
-</CardGroup>
+> **[SingleStore Search](/en/tools/database-data/singlestoresearchtool)**
+>
+> Safe SELECT/SHOW queries on SingleStore with pooling and validation.
 
 ## **Common Use Cases**
 

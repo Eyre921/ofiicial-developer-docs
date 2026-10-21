@@ -10,17 +10,17 @@ Pass images, PDFs, audio, video, and text files to your agents for multimodal pr
 
 CrewAI supports native multimodal file inputs, allowing you to pass images, PDFs, audio, video, and text files directly to your agents. Files are automatically formatted for each LLM provider's API requirements.
 
-<Note type="info" title="Optional Dependency">
-  File support requires the optional `crewai-files` package. Install it with:
+> [!NOTE]
+>
+> File support requires the optional `crewai-files` package. Install it with:
+>
+> ```bash theme={null}
+> uv add 'crewai[file-processing]'
+> ```
 
-  ```bash theme={null}
-  uv add 'crewai[file-processing]'
-  ```
-</Note>
-
-<Note type="warning" title="Early Access">
-  The file processing API is currently in early access.
-</Note>
+> [!NOTE]
+>
+> The file processing API is currently in early access.
 
 ## File Types
 
@@ -180,13 +180,13 @@ Different providers support different file types. CrewAI automatically formats f
 | **AWS Bedrock** (claude-3) | ✓ | ✓ | | | |
 | **Azure OpenAI** (gpt-4o) | ✓ | | ✓ | | |
 
-<Note type="info" title="Gemini for Maximum File Support">
-  Google Gemini models support all file types including video (up to 1 hour, 2GB). Use Gemini when you need to process video content.
-</Note>
+> [!NOTE]
+>
+> Google Gemini models support all file types including video (up to 1 hour, 2GB). Use Gemini when you need to process video content.
 
-<Note type="warning" title="Unsupported File Types">
-  If you pass a file type that the provider doesn't support (e.g., video to OpenAI), you'll receive an `UnsupportedFileTypeError`. Choose your provider based on the file types you need to process.
-</Note>
+> [!NOTE]
+>
+> If you pass a file type that the provider doesn't support (e.g., video to OpenAI), you'll receive an `UnsupportedFileTypeError`. Choose your provider based on the file types you need to process.
 
 ## How Files Are Sent
 
@@ -208,9 +208,9 @@ CrewAI automatically chooses the optimal method to send files to each provider:
 | **AWS Bedrock** | ✓ | | ✓ (S3 URIs) |
 | **Azure OpenAI** | ✓ | | ✓ |
 
-<Note type="info" title="Automatic Optimization">
-  You don't need to manage this yourself. CrewAI automatically uses the most efficient method based on file size and provider capabilities. Providers without file upload APIs use inline base64 for all files.
-</Note>
+> [!NOTE]
+>
+> You don't need to manage this yourself. CrewAI automatically uses the most efficient method based on file size and provider capabilities. Providers without file upload APIs use inline base64 for all files.
 
 ## File Handling Modes
 

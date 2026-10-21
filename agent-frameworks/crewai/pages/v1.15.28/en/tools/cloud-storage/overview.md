@@ -10,23 +10,21 @@ These tools enable your agents to interact with cloud services, access cloud sto
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="S3 Reader Tool" icon="cloud" href="/en/tools/cloud-storage/s3readertool">
-    Read files and data from Amazon S3 buckets.
-  </Card>
+> **[S3 Reader Tool](/en/tools/cloud-storage/s3readertool)**
+>
+> Read files and data from Amazon S3 buckets.
 
-  <Card title="S3 Writer Tool" icon="cloud-arrow-up" href="/en/tools/cloud-storage/s3writertool">
-    Write and upload files to Amazon S3 storage.
-  </Card>
+> **[S3 Writer Tool](/en/tools/cloud-storage/s3writertool)**
+>
+> Write and upload files to Amazon S3 storage.
 
-  <Card title="Bedrock Invoke Agent" icon="aws" href="/en/tools/integration/bedrockinvokeagenttool">
-    Invoke Amazon Bedrock agents for AI-powered tasks.
-  </Card>
+> **[Bedrock Invoke Agent](/en/tools/integration/bedrockinvokeagenttool)**
+>
+> Invoke Amazon Bedrock agents for AI-powered tasks.
 
-  <Card title="Bedrock KB Retriever" icon="database" href="/en/tools/cloud-storage/bedrockkbretriever">
-    Retrieve information from Amazon Bedrock knowledge bases.
-  </Card>
-</CardGroup>
+> **[Bedrock KB Retriever](/en/tools/cloud-storage/bedrockkbretriever)**
+>
+> Retrieve information from Amazon Bedrock knowledge bases.
 
 ## **Common Use Cases**
 

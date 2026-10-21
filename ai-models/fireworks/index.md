@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 390 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -56,7 +56,6 @@
 - `api-reference/delete-router` — [Delete Router](pages/api-reference/delete-router.md) · [原文](https://docs.fireworks.ai/api-reference/delete-router)
 - `api-reference/delete-secret` — [Delete secret](pages/api-reference/delete-secret.md) · [原文](https://docs.fireworks.ai/api-reference/delete-secret)
 - `api-reference/delete-supervised-fine-tuning-job` — [Delete Supervised Fine-tuning Job](pages/api-reference/delete-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/delete-supervised-fine-tuning-job)
-- `api-reference/execute-reinforcement-fine-tuning-step` — [Execute reinforcement fine tuning step](pages/api-reference/execute-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/execute-reinforcement-fine-tuning-step)
 - `api-reference/get-account` — [Get Account](pages/api-reference/get-account.md) · [原文](https://docs.fireworks.ai/api-reference/get-account)
 - `api-reference/get-batch-inference-job` — [Get Batch Inference Job](pages/api-reference/get-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-batch-inference-job)
 - `api-reference/get-billing-summary` — [Get billing summary information for an account](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)

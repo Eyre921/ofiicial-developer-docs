@@ -78,10 +78,10 @@ Validation Error
 
 ```json
 {
-  "collection_id": "a1b2c3d4e5f6789012345678",
-  "title": "My Favorite Narrators",
-  "icon": "microphone",
-  "permission_on_resource": "editor"
+  "collection_id": "string",
+  "title": "string",
+  "icon": "string",
+  "permission_on_resource": "admin"
 }
 ```
 

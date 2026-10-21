@@ -106,14 +106,14 @@ Validation Error
 {
   "previews": [
     {
-      "audio_base_64": "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhAC",
-      "generated_voice_id": "9F4C8IG7cm4T1EAKqnVn",
-      "media_type": "audio/mpeg",
-      "duration_secs": 5.4,
-      "language": "en"
+      "audio_base_64": "string",
+      "generated_voice_id": "string",
+      "media_type": "string",
+      "duration_secs": 1.1,
+      "language": "string"
     }
   ],
-  "text": "Every act of kindness, no matter how small, carries value and can make a difference, as no gesture of goodwill is ever wasted."
+  "text": "string"
 }
 ```
 

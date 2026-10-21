@@ -8,7 +8,7 @@ path: en/authentication/securing-your-account-with-two-factor-authentication-2fa
 
 You can choose among multiple options to add a second source of authentication to your account.
 
-> \[!NOTE]
+> [!NOTE]
 > As of March 2023, GitHub required all users who contribute code on GitHub.com to enable one or more forms of two-factor authentication (2FA). If you were in an eligible group, you would have received a notification email when that group was selected for enrollment, marking the beginning of a 45-day 2FA enrollment period, and you would have seen banners asking you to enroll in 2FA on GitHub.com. If you didn't receive a notification, then you were not part of a group required to enable 2FA, though we strongly recommend it.
 >
 > For more information about the 2FA enrollment rollout, see [this blog post](https://github.blog/2023-03-09-raising-the-bar-for-software-security-github-2fa-begins-march-13).
@@ -21,20 +21,20 @@ After you configure 2FA, your account will enter a 28-day check up period. You c
 
 If you're a member of an enterprise with managed users, you cannot configure 2FA for your managed user account account unless you're signed in as the setup user. For users other than the setup user, an administrator must configure 2FA on your identity provider (IdP).
 
-> \[!WARNING]
+> [!WARNING]
 >
 > * If you're an outside collaborator to a private repository of an organization that requires 2FA, you must leave the organization before you can disable 2FA.
 > * If you're a member or billing manager of an organization that requires 2FA, you will be unable to access that organization's resources while you have 2FA disabled.
 > * If you disable 2FA, you will automatically lose access to the organization. To regain access to the organization, if you're a member or billing manager, you must re-enable 2FA. If you're an outside collaborator, you will also lose access to any private forks you have of the organization's private repositories after disabling 2FA, and must re-enable 2FA and contact an organization owner to have access restored.
 
-> \[!NOTE]
+> [!NOTE]
 > You can reconfigure your 2FA settings without disabling 2FA entirely, allowing you to keep both your recovery codes and your membership in organizations that require 2FA. See [Changing your two-factor authentication method](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/changing-your-two-factor-authentication-method).
 
 ## Configuring two-factor authentication using a TOTP app
 
 A time-based one-time password (TOTP) application automatically generates an authentication code that changes after a certain period of time. These apps can be downloaded to your phone or desktop. We recommend using cloud-based TOTP apps. GitHub is app-agnostic when it comes to TOTP apps, so you have the freedom to choose any TOTP app you prefer. Just search for `TOTP app` in your browser to find various options. You can also refine your search by adding keywords like `free` or `open source` to match your preferences.
 
-> \[!TIP]
+> [!TIP]
 > To configure authentication via TOTP on multiple devices, during setup, scan the QR code using each device at the same time or save the "setup key," which is the TOTP secret. If 2FA is already enabled and you want to add another device, you must re-configure your TOTP app from your security settings.
 
 1. Download a TOTP app of your choice to your phone or desktop.
@@ -78,7 +78,7 @@ If you're unable to configure a TOTP app, you can also register your phone numbe
 
 Before using this method, be sure that you can receive text messages. Carrier rates may apply.
 
-> \[!WARNING]
+> [!WARNING]
 > We **strongly recommend** using a TOTP application for two-factor authentication instead of SMS, and using security keys as backup methods instead of SMS. SMS is susceptible to interception, does not provide resistance against phishing attacks, has unreliable deliverability, and is not supported in all countries. Before configuring authentication via text message, review the list of countries where GitHub supports authentication via SMS. For more information, see [Countries where SMS authentication is supported](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/countries-where-sms-authentication-is-supported).
 > \[!NOTE]
 > Organizations and enterprises have the ability to prevent content access to members who have SMS 2FA configured. If you are a member of any organization or enterprise that has made this decision, you should enable TOTP application-configured 2FA instead. Outside collaborators may not enable SMS 2FA if their organization or enterprise has disallowed it. To continue working on content within an organization, enable 2FA with a TOTP application and disable SMS 2FA.
@@ -101,7 +101,7 @@ Passkeys allow you to sign in securely to GitHub in your browser, without having
 
 If you use two-factor authentication (2FA), passkeys satisfy both password and 2FA requirements, so you can complete your sign in with a single step. If you don't use 2FA, using a passkey will skip the requirement to verify a new device via email. You can also use passkeys for sudo mode and resetting your password. See [About passkeys](/en/authentication/authenticating-with-a-passkey/about-passkeys).
 
-> \[!NOTE]
+> [!NOTE]
 > Platform authenticators like Windows Hello, Face ID, or Touch ID can be registered as a passkey instead.
 
 1. You must have already configured 2FA via a TOTP mobile app or via SMS.

@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 415 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 423 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -218,6 +218,13 @@
 - `docs/dashboard/emails/schedule-email` — [Schedule Email](pages/docs/dashboard/emails/schedule-email.md) · [原文](https://resend.com/docs/dashboard/emails/schedule-email)
 - `docs/dashboard/emails/send-test-emails` — [Send Test Emails](pages/docs/dashboard/emails/send-test-emails.md) · [原文](https://resend.com/docs/dashboard/emails/send-test-emails)
 - `docs/dashboard/emails/tags` — [Managing Tags](pages/docs/dashboard/emails/tags.md) · [原文](https://resend.com/docs/dashboard/emails/tags)
+- `docs/dashboard/inboxes/agent` — [Inbox Agent](pages/docs/dashboard/inboxes/agent.md) · [原文](https://resend.com/docs/dashboard/inboxes/agent)
+- `docs/dashboard/inboxes/create-inboxes` — [Creating Inboxes](pages/docs/dashboard/inboxes/create-inboxes.md) · [原文](https://resend.com/docs/dashboard/inboxes/create-inboxes)
+- `docs/dashboard/inboxes/drafts` — [Inbox Drafts](pages/docs/dashboard/inboxes/drafts.md) · [原文](https://resend.com/docs/dashboard/inboxes/drafts)
+- `docs/dashboard/inboxes/introduction` — [Inboxes](pages/docs/dashboard/inboxes/introduction.md) · [原文](https://resend.com/docs/dashboard/inboxes/introduction)
+- `docs/dashboard/inboxes/labels` — [Manage Labels](pages/docs/dashboard/inboxes/labels.md) · [原文](https://resend.com/docs/dashboard/inboxes/labels)
+- `docs/dashboard/inboxes/manage-inboxes` — [Managing Inboxes](pages/docs/dashboard/inboxes/manage-inboxes.md) · [原文](https://resend.com/docs/dashboard/inboxes/manage-inboxes)
+- `docs/dashboard/inboxes/threads` — [Managing Threads](pages/docs/dashboard/inboxes/threads.md) · [原文](https://resend.com/docs/dashboard/inboxes/threads)
 - `docs/dashboard/logs/introduction` — [Introduction](pages/docs/dashboard/logs/introduction.md) · [原文](https://resend.com/docs/dashboard/logs/introduction)
 - `docs/dashboard/receiving/attachments` — [Process Receiving Attachments](pages/docs/dashboard/receiving/attachments.md) · [原文](https://resend.com/docs/dashboard/receiving/attachments)
 - `docs/dashboard/receiving/create-receiving-webhook` — [Create a receiving Webhook](pages/docs/dashboard/receiving/create-receiving-webhook.md) · [原文](https://resend.com/docs/dashboard/receiving/create-receiving-webhook)
@@ -240,6 +247,7 @@
 - `docs/email-best-practices-skill` — [Email Best Practices Skill](pages/docs/email-best-practices-skill.md) · [原文](https://resend.com/docs/email-best-practices-skill)
 - `docs/email-types` — [Sending emails with Resend](pages/docs/email-types.md) · [原文](https://resend.com/docs/email-types)
 - `docs/examples` — [Examples](pages/docs/examples.md) · [原文](https://resend.com/docs/examples)
+- `docs/forge` — [Resend Forge](pages/docs/forge.md) · [原文](https://resend.com/docs/forge)
 - `docs/guides/account/can-i-merge-accounts-or-teams` — [Can I merge accounts or teams?](pages/docs/guides/account/can-i-merge-accounts-or-teams.md) · [原文](https://resend.com/docs/guides/account/can-i-merge-accounts-or-teams)
 - `docs/guides/account/how-to-recover-access-to-a-team` — [How to recover access to a team you can no longer sign in to](pages/docs/guides/account/how-to-recover-access-to-a-team.md) · [原文](https://resend.com/docs/guides/account/how-to-recover-access-to-a-team)
 - `docs/guides/account/locked-out-by-mfa` — [Locked out by MFA](pages/docs/guides/account/locked-out-by-mfa.md) · [原文](https://resend.com/docs/guides/account/locked-out-by-mfa)

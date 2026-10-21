@@ -10,63 +10,61 @@ These tools enable your agents to interact with the web, extract data from websi
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="Scrape Website Tool" icon="globe" href="/en/tools/web-scraping/scrapewebsitetool">
-    General-purpose web scraping tool for extracting content from any website.
-  </Card>
+> **[Scrape Website Tool](/en/tools/web-scraping/scrapewebsitetool)**
+>
+> General-purpose web scraping tool for extracting content from any website.
 
-  <Card title="Scrape Element Tool" icon="crosshairs" href="/en/tools/web-scraping/scrapeelementfromwebsitetool">
-    Target specific elements on web pages with precision scraping capabilities.
-  </Card>
+> **[Scrape Element Tool](/en/tools/web-scraping/scrapeelementfromwebsitetool)**
+>
+> Target specific elements on web pages with precision scraping capabilities.
 
-  <Card title="Firecrawl Crawl Tool" icon="spider" href="/en/tools/web-scraping/firecrawlcrawlwebsitetool">
-    Crawl entire websites systematically with Firecrawl's powerful engine.
-  </Card>
+> **[Firecrawl Crawl Tool](/en/tools/web-scraping/firecrawlcrawlwebsitetool)**
+>
+> Crawl entire websites systematically with Firecrawl's powerful engine.
 
-  <Card title="Firecrawl Scrape Tool" icon="fire" href="/en/tools/web-scraping/firecrawlscrapewebsitetool">
-    High-performance web scraping with Firecrawl's advanced capabilities.
-  </Card>
+> **[Firecrawl Scrape Tool](/en/tools/web-scraping/firecrawlscrapewebsitetool)**
+>
+> High-performance web scraping with Firecrawl's advanced capabilities.
 
-  <Card title="Firecrawl Search Tool" icon="magnifying-glass" href="/en/tools/web-scraping/firecrawlsearchtool">
-    Search and extract specific content using Firecrawl's search features.
-  </Card>
+> **[Firecrawl Search Tool](/en/tools/web-scraping/firecrawlsearchtool)**
+>
+> Search and extract specific content using Firecrawl's search features.
 
-  <Card title="Selenium Scraping Tool" icon="robot" href="/en/tools/web-scraping/seleniumscrapingtool">
-    Browser automation and scraping with Selenium WebDriver capabilities.
-  </Card>
+> **[Selenium Scraping Tool](/en/tools/web-scraping/seleniumscrapingtool)**
+>
+> Browser automation and scraping with Selenium WebDriver capabilities.
 
-  <Card title="ScrapFly Tool" icon="plane" href="/en/tools/web-scraping/scrapflyscrapetool">
-    Professional web scraping with ScrapFly's premium scraping service.
-  </Card>
+> **[ScrapFly Tool](/en/tools/web-scraping/scrapflyscrapetool)**
+>
+> Professional web scraping with ScrapFly's premium scraping service.
 
-  <Card title="ScrapGraph Tool" icon="network-wired" href="/en/tools/web-scraping/scrapegraphscrapetool">
-    Graph-based web scraping for complex data relationships.
-  </Card>
+> **[ScrapGraph Tool](/en/tools/web-scraping/scrapegraphscrapetool)**
+>
+> Graph-based web scraping for complex data relationships.
 
-  <Card title="Spider Tool" icon="spider" href="/en/tools/web-scraping/spidertool">
-    Comprehensive web crawling and data extraction capabilities.
-  </Card>
+> **[Spider Tool](/en/tools/web-scraping/spidertool)**
+>
+> Comprehensive web crawling and data extraction capabilities.
 
-  <Card title="BrowserBase Tool" icon="browser" href="/en/tools/web-scraping/browserbaseloadtool">
-    Cloud-based browser automation with BrowserBase infrastructure.
-  </Card>
+> **[BrowserBase Tool](/en/tools/web-scraping/browserbaseloadtool)**
+>
+> Cloud-based browser automation with BrowserBase infrastructure.
 
-  <Card title="HyperBrowser Tool" icon="window-maximize" href="/en/tools/web-scraping/hyperbrowserloadtool">
-    Fast browser interactions with HyperBrowser's optimized engine.
-  </Card>
+> **[HyperBrowser Tool](/en/tools/web-scraping/hyperbrowserloadtool)**
+>
+> Fast browser interactions with HyperBrowser's optimized engine.
 
-  <Card title="Stagehand Tool" icon="hand" href="/en/tools/web-scraping/stagehandtool">
-    Intelligent browser automation with natural language commands.
-  </Card>
+> **[Stagehand Tool](/en/tools/web-scraping/stagehandtool)**
+>
+> Intelligent browser automation with natural language commands.
 
-  <Card title="Oxylabs Scraper Tool" icon="globe" href="/en/tools/web-scraping/oxylabsscraperstool">
-    Access web data at scale with Oxylabs.
-  </Card>
+> **[Oxylabs Scraper Tool](/en/tools/web-scraping/oxylabsscraperstool)**
+>
+> Access web data at scale with Oxylabs.
 
-  <Card title="Bright Data Tools" icon="spider" href="/en/tools/web-scraping/brightdata-tools">
-    SERP search, Web Unlocker, and Dataset API integrations.
-  </Card>
-</CardGroup>
+> **[Bright Data Tools](/en/tools/web-scraping/brightdata-tools)**
+>
+> SERP search, Web Unlocker, and Dataset API integrations.
 
 ## **Common Use Cases**
 

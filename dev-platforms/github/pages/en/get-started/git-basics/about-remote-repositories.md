@@ -48,7 +48,7 @@ When you `git clone`, `git fetch`, `git pull`, or `git push` to a private remote
 
 If you are accessing an organization that uses SAML SSO and you are using a personal access token (classic), you must also authorize your personal access token to access the organization before you authenticate. For more information, see [About authentication with single sign-on](/en/authentication/authenticating-with-single-sign-on/about-authentication-with-single-sign-on) and [Authorizing a personal access token for use with single sign-on](/en/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on).
 
-> \[!TIP]
+> [!TIP]
 >
 > * You can use a credential helper so Git will remember your GitHub credentials every time it talks to GitHub. For more information, see [Caching your GitHub credentials in Git](/en/get-started/git-basics/caching-your-github-credentials-in-git).
 > * To clone a repository without authenticating to GitHub on the command line, you can use GitHub Desktop to clone instead. For more information, see [Cloning a repository from GitHub to GitHub Desktop](/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop).
@@ -63,7 +63,7 @@ When you `git clone`, `git fetch`, `git pull`, or `git push` to a remote reposit
 
 If you are accessing an organization that uses SAML single sign-on (SSO), you must authorize your SSH key to access the organization before you authenticate. For more information, see [About authentication with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/about-authentication-with-single-sign-on) and [Authorizing an SSH key for use with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-an-ssh-key-for-use-with-single-sign-on)" in the GitHub Enterprise Cloud documentation.
 
-> \[!TIP]
+> [!TIP]
 > You can use an SSH URL to clone a repository to your computer, or as a secure way of deploying your code to production servers. You can also use SSH agent forwarding with your deploy script to avoid managing keys on the server. For more information, see [Using SSH agent forwarding](/en/authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding).
 
 ## Cloning with GitHub CLI

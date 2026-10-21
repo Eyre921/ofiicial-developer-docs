@@ -833,9 +833,9 @@ Whether you choose unstructured or structured state, implementing proper state m
 
 As you develop more complex flows, remember that good state management is about finding the right balance between flexibility and structure, making your code both powerful and easy to understand.
 
-<Check>
-  You've now mastered the concepts and practices of state management in CrewAI Flows! With this knowledge, you can create robust AI workflows that effectively maintain context, share data between steps, and build sophisticated application logic.
-</Check>
+> [!TIP]
+>
+> You've now mastered the concepts and practices of state management in CrewAI Flows! With this knowledge, you can create robust AI workflows that effectively maintain context, share data between steps, and build sophisticated application logic.
 
 ## Next Steps
 

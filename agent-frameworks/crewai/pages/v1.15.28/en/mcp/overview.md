@@ -91,7 +91,7 @@ We currently support the following transport mechanisms:
 
 Watch this video tutorial for a comprehensive guide on MCP integration with CrewAI:
 
-<iframe title="CrewAI MCP Integration Guide" />
+[CrewAI MCP Integration Guide](https://www.youtube.com/embed/TpQ45lAZh48)
 
 ## Installation
 
@@ -563,15 +563,15 @@ class CrewWithMCP:
     # ... rest of your crew setup ...
 ```
 
-<Tip>
-  When a crew class is decorated with `@CrewBase`, the adapter lifecycle is managed for you:
-
-  * The first call to `get_mcp_tools()` lazily creates a shared `MCPServerAdapter` that is reused by every agent in the crew.
-  * The adapter automatically shuts down after `.kickoff()` completes thanks to an implicit after-kickoff hook injected by `@CrewBase`, so no manual cleanup is required.
-  * If `mcp_server_params` is not defined, `get_mcp_tools()` simply returns an empty list, allowing the same code paths to run with or without MCP configured.
-
-  This makes it safe to call `get_mcp_tools()` from multiple agent methods or selectively enable MCP per environment.
-</Tip>
+> [!TIP]
+>
+> When a crew class is decorated with `@CrewBase`, the adapter lifecycle is managed for you:
+>
+> * The first call to `get_mcp_tools()` lazily creates a shared `MCPServerAdapter` that is reused by every agent in the crew.
+> * The adapter automatically shuts down after `.kickoff()` completes thanks to an implicit after-kickoff hook injected by `@CrewBase`, so no manual cleanup is required.
+> * If `mcp_server_params` is not defined, `get_mcp_tools()` simply returns an empty list, allowing the same code paths to run with or without MCP configured.
+>
+> This makes it safe to call `get_mcp_tools()` from multiple agent methods or selectively enable MCP per environment.
 
 ### Connection Timeout Configuration
 
@@ -630,47 +630,47 @@ class CrewWithCustomTimeout:
 
 ## Explore MCP Integrations
 
-<CardGroup>
-  <Card title="Simple DSL Integration" icon="code" href="/en/mcp/dsl-integration">
-    **Recommended**: Use the simple `mcps=[]` field syntax for effortless MCP
-    integration.
-  </Card>
+> **[Simple DSL Integration](/en/mcp/dsl-integration)**
+>
+> **Recommended**: Use the simple `mcps=[]` field syntax for effortless MCP
+> integration.
 
-  <Card title="Stdio Transport" icon="server" href="/en/mcp/stdio">
-    Connect to local MCP servers via standard input/output. Ideal for scripts
-    and local executables.
-  </Card>
+> **[Stdio Transport](/en/mcp/stdio)**
+>
+> Connect to local MCP servers via standard input/output. Ideal for scripts
+> and local executables.
 
-  <Card title="SSE Transport" icon="wifi" href="/en/mcp/sse">
-    Integrate with remote MCP servers using Server-Sent Events for real-time
-    data streaming.
-  </Card>
+> **[SSE Transport](/en/mcp/sse)**
+>
+> Integrate with remote MCP servers using Server-Sent Events for real-time
+> data streaming.
 
-  <Card title="Streamable HTTP Transport" icon="globe" href="/en/mcp/streamable-http">
-    Utilize flexible Streamable HTTP for robust communication with remote MCP
-    servers.
-  </Card>
+> **[Streamable HTTP Transport](/en/mcp/streamable-http)**
+>
+> Utilize flexible Streamable HTTP for robust communication with remote MCP
+> servers.
 
-  <Card title="Connecting to Multiple Servers" icon="layer-group" href="/en/mcp/multiple-servers">
-    Aggregate tools from several MCP servers simultaneously using a single
-    adapter.
-  </Card>
+> **[Connecting to Multiple Servers](/en/mcp/multiple-servers)**
+>
+> Aggregate tools from several MCP servers simultaneously using a single
+> adapter.
 
-  <Card title="Security Considerations" icon="lock" href="/en/mcp/security">
-    Review important security best practices for MCP integration to keep your
-    agents safe.
-  </Card>
-</CardGroup>
+> **[Security Considerations](/en/mcp/security)**
+>
+> Review important security best practices for MCP integration to keep your
+> agents safe.
 
 Checkout this repository for full demos and examples of MCP integration with CrewAI! 👇
 
-<Card title="GitHub Repository" icon="github" href="https://github.com/tonykipkemboi/crewai-mcp-demo">
-  CrewAI MCP Demo
-</Card>
+> **[GitHub Repository](https://github.com/tonykipkemboi/crewai-mcp-demo)**
+>
+> CrewAI MCP Demo
 
 ## Staying Safe with MCP
 
-<Warning>Always ensure that you trust an MCP Server before using it.</Warning>
+> [!WARNING]
+>
+> Always ensure that you trust an MCP Server before using it.
 
 #### Security Warning: DNS Rebinding Attacks
 

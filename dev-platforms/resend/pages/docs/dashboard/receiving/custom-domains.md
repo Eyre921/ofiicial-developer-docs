@@ -49,6 +49,13 @@ If you already have a verified domain, you can enable receiving by using the tog
 
 After enabling receiving, you'll see a modal showing the MX record that you need to add to your DNS provider to start receiving emails.
 
+> [!NOTE]
+>
+> Always copy the MX record value shown on your domain's page in Resend. The
+> values in this guide are examples. Depending on your domain you will see
+> `receive.forge.rmta.net`, a regional variant such as
+> `receive-euw1.forge.rmta.net`, or `inbound-smtp.<region>.amazonaws.com`.
+
 Once you add the MX record, confirm by clicking the **I've added the record** button and wait for the receiving record to show as "verified".
 
 ## FAQ

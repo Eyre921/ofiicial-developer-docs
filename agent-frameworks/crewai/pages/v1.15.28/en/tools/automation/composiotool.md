@@ -42,17 +42,15 @@ composio = Composio(provider=ComposioProvider())
 
 2. Create a new Composio Session and retrieve the tools
 
-<CodeGroup>
-  ```python theme={null}
-  session = composio.create(
-      user_id="your-user-id",
-      toolkits=["gmail", "github"] # optional, default is all toolkits
-  )
-  tools = session.tools()
-  ```
+```python theme={null}
+session = composio.create(
+    user_id="your-user-id",
+    toolkits=["gmail", "github"] # optional, default is all toolkits
+)
+tools = session.tools()
+```
 
-  Read more about sessions and user management [here](https://docs.composio.dev/docs/configuring-sessions)
-</CodeGroup>
+Read more about sessions and user management [here](https://docs.composio.dev/docs/configuring-sessions)
 
 3. Authenticating users manually
 

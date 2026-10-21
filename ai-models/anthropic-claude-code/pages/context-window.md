@@ -8,8 +8,6 @@ An interactive simulation of how Claude Code's context window fills during a ses
 
 Claude Code's context window holds everything Claude knows about your session: your instructions, the files it reads, its own responses, and content that never appears in your terminal. The timeline below plays a full session from startup to compaction: what loads before you type, what each file read, rule, and hook adds as Claude works, and how a subagent keeps large reads out of your context. See [the written breakdown](#what-the-timeline-shows) for the same content as a list.
 
-<ContextWindow />
-
 ## What the timeline shows
 
 The session walks through a realistic flow with representative token counts:

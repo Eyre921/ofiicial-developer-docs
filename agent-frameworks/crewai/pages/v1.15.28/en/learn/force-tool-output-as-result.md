@@ -36,20 +36,18 @@ task_result = coding_agent.execute_task(task)
 
 ## Workflow in Action
 
-<Steps>
-  <Step title="Task Execution">
-    The agent executes the task using the tool provided.
-  </Step>
+**1. Task Execution**
 
-  <Step title="Tool Output">
-    The tool generates the output, which is captured as the task result.
-  </Step>
+The agent executes the task using the tool provided.
 
-  <Step title="Agent Interaction">
-    The agent may reflect and take learnings from the tool but the output is not modified.
-  </Step>
+**2. Tool Output**
 
-  <Step title="Result Return">
-    The tool output is returned as the task result without any modifications.
-  </Step>
-</Steps>
+The tool generates the output, which is captured as the task result.
+
+**3. Agent Interaction**
+
+The agent may reflect and take learnings from the tool but the output is not modified.
+
+**4. Result Return**
+
+The tool output is returned as the task result without any modifications.

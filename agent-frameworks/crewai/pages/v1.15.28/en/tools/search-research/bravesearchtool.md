@@ -25,13 +25,13 @@ Rather than a single catch-all tool, you can pick exactly the tool that matches 
 
 All tools share a common base class (`BraveSearchToolBase`) that provides consistent behavior — rate limiting, automatic retries on `429` responses, header and parameter validation, and optional file saving.
 
-<Note>
-  The older `BraveSearchTool` class is still available for backwards compatibility, but it is considered **legacy** and will not receive the same level of attention going forward. We recommend migrating to the specific tools listed above, which offer richer configuration and a more focused interface.
-</Note>
+> [!NOTE]
+>
+> The older `BraveSearchTool` class is still available for backwards compatibility, but it is considered **legacy** and will not receive the same level of attention going forward. We recommend migrating to the specific tools listed above, which offer richer configuration and a more focused interface.
 
-<Note>
-  While many tools (e.g., *BraveWebSearchTool*, *BraveNewsSearchTool*, *BraveImageSearchTool*, and *BraveVideoSearchTool*) can be used with a free Brave Search API subscription/plan, some parameters (e.g., `enable_snippets`) and tools (e.g., *BraveLocalPOIsTool* and *BraveLocalPOIsDescriptionTool*) require a paid plan. Consult your subscription plan's capabilities for clarification.
-</Note>
+> [!NOTE]
+>
+> While many tools (e.g., *BraveWebSearchTool*, *BraveNewsSearchTool*, *BraveImageSearchTool*, and *BraveVideoSearchTool*) can be used with a free Brave Search API subscription/plan, some parameters (e.g., `enable_snippets`) and tools (e.g., *BraveLocalPOIsTool* and *BraveLocalPOIsDescriptionTool*) require a paid plan. Consult your subscription plan's capabilities for clarification.
 
 ## Installation
 
@@ -122,9 +122,9 @@ Every Brave Search tool accepts the following parameters at initialization:
 | `country` | `str \| None` | `None` | Legacy shorthand for geo-targeting (e.g., `"US"`). Prefer using the `country` query parameter directly. |
 | `n_results` | `int` | `10` | Legacy shorthand for result count. Prefer using the `count` query parameter directly. |
 
-<Warning>
-  The `country` and `n_results` constructor parameters exist for backwards compatibility. They are applied as defaults when the corresponding query parameters (`country`, `count`) are not provided at call time. For new code, we recommend passing `country` and `count` directly as query parameters instead.
-</Warning>
+> [!WARNING]
+>
+> The `country` and `n_results` constructor parameters exist for backwards compatibility. They are applied as defaults when the corresponding query parameters (`country`, `count`) are not provided at call time. For new code, we recommend passing `country` and `count` directly as query parameters instead.
 
 ## Query Parameters
 

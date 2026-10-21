@@ -8,9 +8,9 @@ The `ScrapeWebsiteTool` is designed to extract and read the content of a specifi
 
 # `ScrapeWebsiteTool`
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 

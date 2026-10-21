@@ -25,9 +25,9 @@ crewai create flow my_flow
 crewai create tool my_tool
 ```
 
-<Note>
-  `crewai tool create` is deprecated and still works with a warning. Use `crewai create tool` instead.
-</Note>
+> [!NOTE]
+>
+> `crewai tool create` is deprecated and still works with a warning. Use `crewai create tool` instead.
 
 ## Tool Setup: Point Assistants to AGENTS.md
 

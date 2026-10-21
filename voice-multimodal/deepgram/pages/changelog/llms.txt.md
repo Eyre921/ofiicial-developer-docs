@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [October 20, 2026](https://developers.deepgram.com/changelog/2026/10/20.md): Deepgram Self-Hosted release 261020 moves Flux STT to a new Engine runtime that requires new Flux model files, adds mid-stream keyterm updates for Nova-3, makes Flux Force End Turn always available, and improves formatting and media handling.
 - [October 19, 2026](https://developers.deepgram.com/changelog/2026/10/19.md)
 - [Update Nova-3 Keyterms Mid-Stream from the SDKs, Play Audio from the CLI, and Deepgram Skills v1.7.0](https://developers.deepgram.com/changelog/2026/10/12.md)
 - [October 8, 2026](https://developers.deepgram.com/changelog/2026/10/8.md)

@@ -8,9 +8,9 @@ The `PDFSearchTool` is designed to search PDF files and return the most relevant
 
 # `PDFSearchTool`
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 

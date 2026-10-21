@@ -12,24 +12,22 @@ Welcome to the CrewAI AMP API reference. This API allows you to programmatically
 
 ## Quick Start
 
-<Steps>
-  <Step title="Get Your API Credentials">
-    Navigate to your crew's detail page in the CrewAI AMP dashboard and copy your Bearer Token from the Status tab.
-  </Step>
+**1. Get Your API Credentials**
 
-  <Step title="Discover Required Inputs">
-    Use the `GET /inputs` endpoint to see what parameters your crew expects.
-  </Step>
+Navigate to your crew's detail page in the CrewAI AMP dashboard and copy your Bearer Token from the Status tab.
 
-  <Step title="Start a Crew Execution">
-    Call `POST /kickoff` with your inputs to start the crew execution and receive
-    a `kickoff_id`.
-  </Step>
+**2. Discover Required Inputs**
 
-  <Step title="Monitor Progress">
-    Use `GET /status/{kickoff_id}` to check execution status and retrieve results.
-  </Step>
-</Steps>
+Use the `GET /inputs` endpoint to see what parameters your crew expects.
+
+**3. Start a Crew Execution**
+
+Call `POST /kickoff` with your inputs to start the crew execution and receive
+a `kickoff_id`.
+
+**4. Monitor Progress**
+
+Use `GET /status/{kickoff_id}` to check execution status and retrieve results.
 
 ## Authentication
 
@@ -47,10 +45,10 @@ curl -H "Authorization: Bearer YOUR_CREW_TOKEN" \
 | **Bearer Token** | Organization-level access | Full crew operations, ideal for server-to-server integration |
 | **User Bearer Token** | User-scoped access | Limited permissions, suitable for user-specific operations |
 
-<Tip>
-  You can find both token types in the Status tab of your crew's detail page in
-  the CrewAI AMP dashboard.
-</Tip>
+> [!TIP]
+>
+> You can find both token types in the Status tab of your crew's detail page in
+> the CrewAI AMP dashboard.
 
 ## Base URL
 
@@ -84,12 +82,12 @@ The API uses standard HTTP status codes:
 
 ## Interactive Testing
 
-<Info>
-  **Why no "Send" button?** Since each CrewAI AMP user has their own unique crew
-  URL, we use **reference mode** instead of an interactive playground to avoid
-  confusion. This shows you exactly what the requests should look like without
-  non-functional send buttons.
-</Info>
+> [!NOTE]
+>
+> **Why no "Send" button?** Since each CrewAI AMP user has their own unique crew
+> URL, we use **reference mode** instead of an interactive playground to avoid
+> confusion. This shows you exactly what the requests should look like without
+> non-functional send buttons.
 
 Each endpoint page shows you:
 
@@ -100,15 +98,13 @@ Each endpoint page shows you:
 
 ### **To Test Your Actual API:**
 
-<CardGroup>
-  <Card title="Copy cURL Examples" icon="terminal">
-    Copy the cURL examples and replace the URL + token with your real values
-  </Card>
+> **Copy cURL Examples**
+>
+> Copy the cURL examples and replace the URL + token with your real values
 
-  <Card title="Use Postman/Insomnia" icon="play">
-    Import the examples into your preferred API testing tool
-  </Card>
-</CardGroup>
+> **Use Postman/Insomnia**
+>
+> Import the examples into your preferred API testing tool
 
 **Example workflow:**
 
@@ -119,12 +115,10 @@ Each endpoint page shows you:
 
 ## Need Help?
 
-<CardGroup>
-  <Card title="Enterprise Support" icon="headset" href="mailto:support@crewai.com">
-    Get help with API integration and troubleshooting
-  </Card>
+> **[Enterprise Support](mailto:support@crewai.com)**
+>
+> Get help with API integration and troubleshooting
 
-  <Card title="Enterprise Dashboard" icon="chart-line" href="https://app.crewai.com">
-    Manage your crews and view execution logs
-  </Card>
-</CardGroup>
+> **[Enterprise Dashboard](https://app.crewai.com)**
+>
+> Manage your crews and view execution logs

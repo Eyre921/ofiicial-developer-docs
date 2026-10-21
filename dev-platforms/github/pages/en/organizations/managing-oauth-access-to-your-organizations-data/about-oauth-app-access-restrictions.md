@@ -18,7 +18,7 @@ Even if you restrict OAuth apps access in your organization, users can still aut
 
 When you create a new organization, OAuth app access restrictions are enabled by default. Organization owners can [disable OAuth app access restrictions](/en/organizations/managing-oauth-access-to-your-organizations-data/disabling-oauth-app-access-restrictions-for-your-organization) at any time.
 
-> \[!WARNING]
+> [!WARNING]
 > When an organization has not set up OAuth app access restrictions, any OAuth app authorized by an organization member can also access the organization's private resources.
 
 To further protect your organization's resources, you can upgrade to GitHub Enterprise Cloud, which includes security features like SAML single sign-on. For more information about how you can try GitHub Enterprise Cloud for free, see [Setting up a trial of GitHub Enterprise Cloud](/en/enterprise-cloud@latest/admin/overview/setting-up-a-trial-of-github-enterprise-cloud).

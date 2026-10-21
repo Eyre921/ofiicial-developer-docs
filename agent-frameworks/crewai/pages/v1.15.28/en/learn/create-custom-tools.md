@@ -12,9 +12,9 @@ This guide provides detailed instructions on creating custom tools for the CrewA
 incorporating the latest functionalities such as tool delegation, error handling, and dynamic tool calling. It also highlights the importance of collaboration tools,
 enabling agents to perform a wide range of actions.
 
-<Tip>
-  **Want to publish your tool for the community?** If you're building a tool that others could benefit from, check out the [Publish Custom Tools](/en/guides/tools/publish-custom-tools) guide to learn how to package and distribute your tool on PyPI.
-</Tip>
+> [!TIP]
+>
+> **Want to publish your tool for the community?** If you're building a tool that others could benefit from, check out the [Publish Custom Tools](/en/guides/tools/publish-custom-tools) guide to learn how to package and distribute your tool on PyPI.
 
 ### Subclassing `BaseTool`
 

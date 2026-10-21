@@ -65,12 +65,6 @@ Validation Error
 {}
 ```
 
-**Response**
-
-```json
-{}
-```
-
 **SDK Code**
 
 ```python

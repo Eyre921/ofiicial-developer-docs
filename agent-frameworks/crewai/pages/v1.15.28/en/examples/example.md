@@ -8,96 +8,88 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
 ## Crews
 
-<CardGroup>
-  <Card title="Marketing Strategy" icon="bullhorn" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/marketing_strategy">
-    Multi‑agent marketing campaign planning.
-  </Card>
+> **[Marketing Strategy](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/marketing_strategy)**
+>
+> Multi‑agent marketing campaign planning.
 
-  <Card title="Surprise Trip" icon="plane" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/surprise_trip">
-    Personalized surprise travel planning.
-  </Card>
+> **[Surprise Trip](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/surprise_trip)**
+>
+> Personalized surprise travel planning.
 
-  <Card title="Match Profile to Positions" icon="id-card" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/match_profile_to_positions">
-    CV‑to‑job matching with vector search.
-  </Card>
+> **[Match Profile to Positions](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/match_profile_to_positions)**
+>
+> CV‑to‑job matching with vector search.
 
-  <Card title="Job Posting" icon="newspaper" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/job-posting">
-    Automated job description creation.
-  </Card>
+> **[Job Posting](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/job-posting)**
+>
+> Automated job description creation.
 
-  <Card title="Game Builder Crew" icon="gamepad" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/game-builder-crew">
-    Multi‑agent team that designs and builds Python games.
-  </Card>
+> **[Game Builder Crew](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/game-builder-crew)**
+>
+> Multi‑agent team that designs and builds Python games.
 
-  <Card title="Recruitment" icon="user-group" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews/recruitment">
-    Candidate sourcing and evaluation.
-  </Card>
+> **[Recruitment](https://github.com/crewAIInc/crewAI-examples/tree/main/crews/recruitment)**
+>
+> Candidate sourcing and evaluation.
 
-  <Card title="Browse all Crews" icon="users" href="https://github.com/crewAIInc/crewAI-examples/tree/main/crews">
-    See the full list of crew examples.
-  </Card>
-</CardGroup>
+> **[Browse all Crews](https://github.com/crewAIInc/crewAI-examples/tree/main/crews)**
+>
+> See the full list of crew examples.
 
 ## Flows
 
-<CardGroup>
-  <Card title="Content Creator Flow" icon="pen" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/content_creator_flow">
-    Multi‑crew content generation with routing.
-  </Card>
+> **[Content Creator Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/content_creator_flow)**
+>
+> Multi‑crew content generation with routing.
 
-  <Card title="Email Auto Responder" icon="envelope" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/email_auto_responder_flow">
-    Automated email monitoring and replies.
-  </Card>
+> **[Email Auto Responder](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/email_auto_responder_flow)**
+>
+> Automated email monitoring and replies.
 
-  <Card title="Lead Score Flow" icon="chart-line" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/lead_score_flow">
-    Lead qualification with human‑in‑the‑loop.
-  </Card>
+> **[Lead Score Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/lead_score_flow)**
+>
+> Lead qualification with human‑in‑the‑loop.
 
-  <Card title="Meeting Assistant Flow" icon="calendar" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/meeting_assistant_flow">
-    Notes processing with integrations.
-  </Card>
+> **[Meeting Assistant Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/meeting_assistant_flow)**
+>
+> Notes processing with integrations.
 
-  <Card title="Self Evaluation Loop" icon="rotate" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/self_evaluation_loop_flow">
-    Iterative self‑improvement workflows.
-  </Card>
+> **[Self Evaluation Loop](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/self_evaluation_loop_flow)**
+>
+> Iterative self‑improvement workflows.
 
-  <Card title="Write a Book (Flows)" icon="book" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows/write_a_book_with_flows">
-    Parallel chapter generation.
-  </Card>
+> **[Write a Book (Flows)](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/write_a_book_with_flows)**
+>
+> Parallel chapter generation.
 
-  <Card title="Browse all Flows" icon="diagram-project" href="https://github.com/crewAIInc/crewAI-examples/tree/main/flows">
-    See the full list of flow examples.
-  </Card>
-</CardGroup>
+> **[Browse all Flows](https://github.com/crewAIInc/crewAI-examples/tree/main/flows)**
+>
+> See the full list of flow examples.
 
 ## Integrations
 
-<CardGroup>
-  <Card title="CrewAI ↔ LangGraph" icon="link" href="https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/crewai-langgraph">
-    Integration with LangGraph framework.
-  </Card>
+> **[CrewAI ↔ LangGraph](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/crewai-langgraph)**
+>
+> Integration with LangGraph framework.
 
-  <Card title="Azure OpenAI" icon="cloud" href="https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/azure_model">
-    Using CrewAI with Azure OpenAI.
-  </Card>
+> **[Azure OpenAI](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/azure_model)**
+>
+> Using CrewAI with Azure OpenAI.
 
-  <Card title="NVIDIA Models" icon="microchip" href="https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/nvidia_models">
-    NVIDIA ecosystem integrations.
-  </Card>
+> **[NVIDIA Models](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/nvidia_models)**
+>
+> NVIDIA ecosystem integrations.
 
-  <Card title="Browse Integrations" icon="puzzle-piece" href="https://github.com/crewAIInc/crewAI-examples/tree/main/integrations">
-    See all integration examples.
-  </Card>
-</CardGroup>
+> **[Browse Integrations](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations)**
+>
+> See all integration examples.
 
 ## Notebooks
 
-<CardGroup>
-  <Card title="Simple QA Crew + Flow" icon="book" href="https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks/Simple%20QA%20Crew%20%2B%20Flow">
-    Simple QA Crew + Flow.
-  </Card>
+> **[Simple QA Crew + Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks/Simple%20QA%20Crew%20%2B%20Flow)**
+>
+> Simple QA Crew + Flow.
 
-  <Card title="All Notebooks" icon="book" href="https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks">
-    Interactive examples for learning and experimentation.
-  </Card>
-</CardGroup>
+> **[All Notebooks](https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks)**
+>
+> Interactive examples for learning and experimentation.

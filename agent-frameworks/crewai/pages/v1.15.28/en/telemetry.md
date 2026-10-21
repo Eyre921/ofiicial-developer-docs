@@ -8,13 +8,13 @@ Understanding the telemetry data collected by CrewAI and how it contributes to t
 
 ## Telemetry
 
-<Note>
-  By default, we collect no data that would be considered personal information under GDPR and other privacy regulations.
-  We do collect Tool's names and Agent's roles, so be advised not to include any personal information in the tool's names or the Agent's roles.
-  Because no personal information is collected, it's not necessary to worry about data residency.
-  When `share_crew` is enabled, additional data is collected which may contain personal information if included by the user.
-  Users should exercise caution when enabling this feature to ensure compliance with privacy regulations.
-</Note>
+> [!NOTE]
+>
+> By default, we collect no data that would be considered personal information under GDPR and other privacy regulations.
+> We do collect Tool's names and Agent's roles, so be advised not to include any personal information in the tool's names or the Agent's roles.
+> Because no personal information is collected, it's not necessary to worry about data residency.
+> When `share_crew` is enabled, additional data is collected which may contain personal information if included by the user.
+> Users should exercise caution when enabling this feature to ensure compliance with privacy regulations.
 
 CrewAI utilizes anonymous telemetry to gather usage statistics with the primary goal of enhancing the library.
 Our focus is on improving and developing the features, integrations, and tools most utilized by our users.
@@ -76,9 +76,9 @@ own tracer provider, which is independent of the one described here.
 | No | Crew and Task Inputs and Outputs | Includes: input parameters and output results as non-identifiable data. Users should ensure no personal info is included. |
 | No | Comprehensive Crew Execution Data | Includes: detailed logs of crew operations, all agents and tasks data, final output. All non-personal and technical in nature. |
 
-<Note>
-  "No" in the "Defaulted" column indicates that this data is only collected when `share_crew` is set to `true`.
-</Note>
+> [!NOTE]
+>
+> "No" in the "Defaulted" column indicates that this data is only collected when `share_crew` is set to `true`.
 
 ### Opt-In Further Telemetry Sharing
 
@@ -86,7 +86,7 @@ Users can choose to share their complete telemetry data by enabling the `share_c
 Enabling `share_crew` results in the collection of detailed crew and task execution data, including `goal`, `backstory`, `context`, and `output` of tasks.
 This enables a deeper insight into usage patterns.
 
-<Warning>
-  If you enable `share_crew`, the collected data may include personal information if it has been incorporated into crew configurations, task descriptions, or outputs.
-  Users should carefully review their data and ensure compliance with GDPR and other applicable privacy regulations before enabling this feature.
-</Warning>
+> [!WARNING]
+>
+> If you enable `share_crew`, the collected data may include personal information if it has been incorporated into crew configurations, task descriptions, or outputs.
+> Users should carefully review their data and ensure compliance with GDPR and other applicable privacy regulations before enabling this feature.

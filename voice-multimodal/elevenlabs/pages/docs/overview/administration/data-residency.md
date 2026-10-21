@@ -124,7 +124,7 @@ For more details on the React SDK, see the [React SDK documentation](/docs/eleve
 Currently, ElevenLabs provides limited support for migrating your resources from non-isolated to isolated environments. However, you can enable professional voice clone link sharing from a non-isolated environment and add it to your isolated environment; please refer to the FAQ below for instructions.
 Reach out to us if you intend to move instant voice clones. For other resources, such as agents in the Agents Platform, we recommend recreation via the API where possible.
 
-Dubbing is not currently available in isolated environments.
+Dubbing is currently only available in the EU isolated environment.
 
 Different regions have different LLMs available depending on model provider availability. Custom LLMs and self-hosted LLMs are always supported. If you intend to use Zero Retention Mode (ZRM), which comes with stricter requirements, reach out to your account team to confirm exactly which models are available in your region.
 

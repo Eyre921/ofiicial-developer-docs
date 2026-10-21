@@ -19,7 +19,7 @@ Please familiarize yourself with these general requirements before attempting to
 * Your Deepgram API and Engine TOML files must explicitly enable Flux
 * Flux doesn't require and is not compatible with any other models (e.g. diarizer, entity detector)
 * You must use Deepgram container images from October 2025 or later (`release-251015`)
-* The Flux model file must be added to your `engine` models directory
+* The Flux model file must be added to your `engine` models directory. Starting with `release-261020`, Engine loads only `.dgv2` Flux model files; see [Flux Model Files](#flux-model-files)
 
 > **Warning**
 >
@@ -109,10 +109,14 @@ See the [Metrics Guide](/docs/metrics-guide) for more information on accessing E
 
 Each Flux variant has its own model file:
 
-* **Flux English**: `flux-general-en.*.dg`
-* **Flux Multilingual**: `flux-general-multi.*.dg`
+* **Flux English**: `flux-general-en.*.dgv2`
+* **Flux Multilingual**: `flux-general-multi.*.dgv2`
 
 You only need the model file for the variant you intend to deploy. If both models are present, only the model specified in `model_name` will be loaded. Contact your Deepgram account representative or Deepgram Support to obtain the model file.
+
+> **Warn**
+>
+> Starting with `release-261020`, Engine runs Flux on a new runtime that loads only `.dgv2` Flux model files. The new runtime does not use Flux model files delivered for earlier releases (`.dg`). With only a `.dg` Flux model file present, Engine exits at startup with `[flux]` enabled; see [Flux Model File Missing](#flux-model-file-missing). Request the new file before upgrading. To keep the previous Flux runtime and its `.dg` model files, stay on an Engine image from `release-261001` or earlier.
 
 ## Enable Flux in Deepgram Self-Hosted Deployment
 
@@ -128,10 +132,9 @@ Earlier Deepgram Speech-to-Text (STT) models (including Nova-3 and Nova-2) are s
 ```toml Deepgram API Configuration
 [features]
 listen_v2 = true
-listen_v2_force_end_turn = true
 ```
 
-`listen_v2_force_end_turn` is optional and enables the [`ForceEndTurn`](/docs/flux/force-end-turn) control message, which lets your client end the current turn immediately rather than waiting for Flux to detect the end of speech. Omit it if you only need model-detected turn ends.
+Starting with `release-261020`, the [`ForceEndTurn`](/docs/flux/force-end-turn) control message is available on every `/v2/listen` stream, and lets your client end the current turn immediately rather than waiting for Flux to detect the end of speech. On `release-260915` and `release-261001`, enable it by also setting `listen_v2_force_end_turn = true` under `[features]`. Later releases ignore that setting.
 
 ## Deepgram Self-Hosted Logs
 
@@ -158,10 +161,12 @@ kubectl --namespace dg-self-hosted logs engine-12345
 During the startup of the `engine` container, to indicate a successful model load, look for the log entry similar to the following.
 
 ```text
-INFO impeller::charmer::output_processor: flux-subprocess/21 sttreaming.inference_process [<string>:62]: Model loaded successfully, ready to accept requests.
-INFO impeller::flux::prewarm: Finished prewarming Flux model
-INFO impeller: Starting instance. instance=55c02da4-e79f-4bf4-bf73-cd9dbfb21a18
+INFO load_model{model_uuid=a829ddf0-fd14-49ec-9bde-0b54c7132063 source="autoloader"}: flux: loading Flux package manifest=Manifest { variant: Original }
+INFO impeller::flux::prewarm: Finished prewarming native Flux model
+INFO impeller: Starting instance. instance=45f42467-bb0e-41f9-8bb9-3a7108ea8e85
 ```
+
+On releases earlier than `release-261020`, the prewarm entry reads `Finished prewarming Flux model`.
 
 ## Potential Issues
 
@@ -171,13 +176,29 @@ If you have the Flux model file in your engine `models` directory, but the featu
 you will still see this message appear in your `engine` logs, provided you're running a container image that supports Flux.
 
 ```text
-INFO load_model{path=/models/flux-general-en.caf79279.dg}: impeller::model_suppliers::autoload: Inserting model key=AsrKey { name: "flux-general-en", version: "2025-12-02.74258", languages: List([Language("en"), Language("en-au"), Language("en-ca"), Language("en-gb"), Language("en-in"), Language("en-nz"), Language("en-us")]), aliases: {}, tags: [], uuid: caf79279-3e00-460b-9d2f-ce7d2764a79a, formatted: false, mode: TurnTaking, architecture: Some(Flux) }
+INFO load_model{path=/models/flux-general-en.a829ddf0.dgv2}: impeller::model_suppliers::autoload: Inserting model key=FluxKey { name: "flux-general-en", languages: List([Language("en"), Language("en-au"), Language("en-ca"), Language("en-gb"), Language("en-in"), Language("en-nz"), Language("en-us")]), uuid: a829ddf0-fd14-49ec-9bde-0b54c7132063, version: "2025-12-02.74258" }
+```
+
+### Unused `runtime` Key
+
+If your Engine configuration still sets `runtime` under `[flux]`, Engine logs a warning similar to the following at startup. Starting with `release-261020`, Engine has a single Flux runtime and ignores the key. Remove it to clear the warning.
+
+```text
+WARN impeller::config: Unused keys were found in the config file unused={"flux.runtime"}
 ```
 
 ### Flux Model File Missing
 
 If you see the errors below, that indicates the Flux model file is missing from your `models` directory.
 Please ask your Deepgram account representative or support team for assistance in obtaining the Flux model file.
+
+Starting with `release-261020`, Engine exits with the following error. It also appears when the `models` directory holds only a `.dg` Flux model file from an earlier release: Engine still logs `Inserting model` for the `.dg` file, but the new Flux runtime cannot use it.
+
+```text
+Error: Can't find Flux model with name=flux-general-en, language=en published as 'flux-stt'
+```
+
+On earlier releases, the error reads:
 
 ```text maxLines=6 highlight={1,3,5}
 ERROR impeller: Engine was configured to run the Flux model, but we failed to load it. err=Failure(Can't find flux-general-en model)

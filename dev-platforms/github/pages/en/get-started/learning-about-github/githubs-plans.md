@@ -58,14 +58,14 @@ In addition to the features available with GitHub Free for personal accounts, Gi
 
   * GitHub Pages
 
-    > \[!NOTE]
+    > [!NOTE]
     > To publish a GitHub Pages site privately, you need to have an organization account. Additionally, your organization must use GitHub Enterprise Cloud.
 
   * Wikis
 
   * Repository insights graphs: Pulse, contributors, traffic, commits, code frequency, network, and forks
 
-    > \[!NOTE]
+    > [!NOTE]
     > Certain contributor, commit, and code frequency insights are only available for repositories that have fewer than 10,000 commits.
 
 ## Organization and enterprise plans
@@ -114,7 +114,7 @@ In addition to the features available with GitHub Free for organizations, GitHub
 
   * GitHub Pages
 
-    > \[!NOTE]
+    > [!NOTE]
     > To publish a GitHub Pages site privately, you need to have an organization account. Additionally, your organization must use GitHub Enterprise Cloud.
 
   * Wikis
@@ -123,7 +123,7 @@ In addition to the features available with GitHub Free for organizations, GitHub
 
   * Repository insights graphs: Pulse, contributors, traffic, commits, code frequency, network, and forks
 
-    > \[!NOTE]
+    > [!NOTE]
     > Certain contributor, commit, and code frequency insights are only available for repositories that have fewer than 10,000 commits.
 
 * The option to enable or disable GitHub Codespaces

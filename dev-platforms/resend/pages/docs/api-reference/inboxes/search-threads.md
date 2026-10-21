@@ -254,6 +254,103 @@ $resend->inboxes->threads->search('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1', [
 ]);
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.Threads.SearchParams = {
+    "query": "invoice -draft",
+    "from": ["isabella@example.com", "carolina@example.com"],
+    "start_date": "2026-09-01",
+    "limit": 2,
+}
+
+resend.Inboxes.Threads.search("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  query: "invoice -draft",
+  from: ["isabella@example.com", "carolina@example.com"],
+  start_date: "2026-09-01",
+  limit: 2
+}
+
+Resend::Inboxes::Threads.search(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	limit := 2
+	options := &resend.SearchInboxThreadsOptions{
+		Query:     "invoice -draft",
+		From:      []string{"isabella@example.com", "carolina@example.com"},
+		StartDate: "2026-09-01",
+		Limit:     &limit,
+	}
+
+	client.Inboxes.Threads.Search("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", options)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  list_opts::ListOptions,
+  types::SearchInboxThreadsOptions,
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let search = SearchInboxThreadsOptions::new()
+    .with_query("invoice -draft")
+    .with_from(["isabella@example.com", "carolina@example.com"])
+    .with_start_date("2026-09-01");
+
+  let _threads = resend
+    .inboxes
+    .search_threads(
+      "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+      search,
+      ListOptions::default().with_limit(2),
+    )
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxThreadSearchAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new InboxThreadSearchQuery()
+    {
+        Query = "invoice -draft",
+        From = [ "isabella@example.com", "carolina@example.com" ],
+        StartDate = "2026-09-01",
+        Limit = 2,
+    }
+);
+Console.WriteLine( "Nr Threads={0}", resp.Content.Data.Count );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl --get 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/search' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

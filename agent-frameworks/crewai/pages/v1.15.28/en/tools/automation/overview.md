@@ -10,27 +10,25 @@ These tools enable your agents to automate workflows, integrate with external pl
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="Apify Actor Tool" icon="spider" href="/en/tools/automation/apifyactorstool">
-    Run Apify actors for web scraping and automation tasks.
-  </Card>
+> **[Apify Actor Tool](/en/tools/automation/apifyactorstool)**
+>
+> Run Apify actors for web scraping and automation tasks.
 
-  <Card title="Composio Tool" icon="puzzle-piece" href="/en/tools/automation/composiotool">
-    Integrate with hundreds of apps and services through Composio.
-  </Card>
+> **[Composio Tool](/en/tools/automation/composiotool)**
+>
+> Integrate with hundreds of apps and services through Composio.
 
-  <Card title="Multion Tool" icon="window-restore" href="/en/tools/automation/multiontool">
-    Automate browser interactions and web-based workflows.
-  </Card>
+> **[Multion Tool](/en/tools/automation/multiontool)**
+>
+> Automate browser interactions and web-based workflows.
 
-  <Card title="Wait Tool" icon="hourglass-half" href="/edge/en/tools/automation/waittool">
-    Pause before re-checking a long-running job such as a build or deployment.
-  </Card>
+> **[Wait Tool](/edge/en/tools/automation/waittool)**
+>
+> Pause before re-checking a long-running job such as a build or deployment.
 
-  <Card title="Zapier Actions Adapter" icon="bolt" href="/en/tools/automation/zapieractionstool">
-    Expose Zapier Actions as CrewAI tools for automation across thousands of apps.
-  </Card>
-</CardGroup>
+> **[Zapier Actions Adapter](/en/tools/automation/zapieractionstool)**
+>
+> Expose Zapier Actions as CrewAI tools for automation across thousands of apps.
 
 ## **Common Use Cases**
 

@@ -69,9 +69,9 @@ To let an agent write outside the working directory, point `base_dir` at the tar
 file_writer_tool = FileWriterTool(base_dir='/var/output')
 ```
 
-<Note>
-  Previously an absolute `directory` could write anywhere the process had permission to. If you relied on that, set `base_dir` to the tree you want to allow. Setting `CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true` restores the old behavior, but it applies process-wide to every crewai-tools tool, including the SSRF protections on URL-fetching tools, so prefer `base_dir`.
-</Note>
+> [!NOTE]
+>
+> Previously an absolute `directory` could write anywhere the process had permission to. If you relied on that, set `base_dir` to the tree you want to allow. Setting `CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true` restores the old behavior, but it applies process-wide to every crewai-tools tool, including the SSRF protections on URL-fetching tools, so prefer `base_dir`.
 
 ## Conclusion
 

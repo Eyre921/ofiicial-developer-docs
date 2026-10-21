@@ -44,7 +44,7 @@ Obtain your Voice Agent model links from your Deepgram Account Representative. T
 #### STT
 
 * If using Flux:
-  * **Flux** model (e.g. `flux-general-en.*.dg`)
+  * **Flux** model (e.g. `flux-general-en.*.dgv2`)
 * If using Nova-3:
   * **Nova-3** model (e.g. `nova-3-general.en.streaming.*.dg`)
   * **End-of-turn** model (e.g. `end-of-turn.*.dg`)

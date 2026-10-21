@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/deployments/regions
 path: deployments/regions
 ---
 
-Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators.
+Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators. Training is available in five regions.
 
 Fireworks runs a global fleet so you can deploy models close to users, meet data-residency needs, and scale across clouds. This page covers **multi-region** (default behavior and quota groupings), **single-region** availability and hardware, how to **use and change** regions, and **quotas**.
 
@@ -26,36 +26,37 @@ Supported multi-regions: `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
-Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, [contact us](https://fireworks.ai/contact) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
+Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, [contact us](https://fireworks.ai/contact) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each. In the Training column, Available means training runs in that region. `--` means it does not.
 
-| **Region** | **Accelerator Type(s)** |
-| - | - |
-| `AP_MALAYSIA_2` | `NVIDIA_B300_288GB` |
-| `AP_NEWSOUTHWALES_1` | `NVIDIA_B200_180GB` |
-| `AP_TOKYO_1` | `NVIDIA_H100_80GB` |
-| `AP_TOKYO_2` | `NVIDIA_H200_141GB` |
-| `EU_FRANKFURT_1` | `NVIDIA_H100_80GB` |
-| `EU_ICELAND_1` | `NVIDIA_H200_141GB` |
-| `EU_ICELAND_2` | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB` |
-| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB` |
-| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB` |
-| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB` |
-| `US_ARIZONA_1` | `NVIDIA_H100_80GB` |
-| `US_ARIZONA_3` | `AMD_MI325X_256GB` |
-| `US_CALIFORNIA_1` | `NVIDIA_H200_141GB` |
-| `US_CALIFORNIA_2` | `AMD_MI325X_256GB` |
-| `US_GEORGIA_2` | `NVIDIA_B200_180GB` |
-| `US_GEORGIA_3` | `NVIDIA_H200_141GB` |
-| `US_ILLINOIS_1` | `NVIDIA_H100_80GB` |
-| `US_ILLINOIS_2` | `NVIDIA_A100_80GB` |
-| `US_IOWA_1` | `NVIDIA_H100_80GB` |
-| `US_MINNESOTA_1` | `NVIDIA_B300_288GB` |
-| `US_NEWYORK_1` | `AMD_MI325X_256GB` |
-| `US_OHIO_1` | `NVIDIA_B200_180GB` |
-| `US_VIRGINIA_1` | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` |
-| `US_WASHINGTON_3` | `NVIDIA_B200_180GB` |
-| `US_WASHINGTON_4` | `NVIDIA_B200_180GB` |
-| `US_WASHINGTON_5` | `NVIDIA_B200_180GB` |
+| **Region** | **Accelerator Type(s)** | **Training** |
+| - | - | - |
+| `AP_MALAYSIA_2` | `NVIDIA_B300_288GB` | Available |
+| `AP_NEWSOUTHWALES_1` | `NVIDIA_B200_180GB` | -- |
+| `AP_TAIWAN_1` | `NVIDIA_GB300` | Available |
+| `AP_TOKYO_1` | `NVIDIA_H100_80GB` | -- |
+| `AP_TOKYO_2` | `NVIDIA_H200_141GB` | -- |
+| `EU_FRANKFURT_1` | `NVIDIA_H100_80GB` | -- |
+| `EU_ICELAND_1` | `NVIDIA_H200_141GB` | -- |
+| `EU_ICELAND_2` | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB` | -- |
+| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB` | -- |
+| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB` | -- |
+| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB` | -- |
+| `US_ARIZONA_1` | `NVIDIA_H100_80GB` | -- |
+| `US_ARIZONA_3` | `AMD_MI325X_256GB` | -- |
+| `US_CALIFORNIA_1` | `NVIDIA_H200_141GB` | -- |
+| `US_CALIFORNIA_2` | `AMD_MI325X_256GB` | -- |
+| `US_GEORGIA_2` | `NVIDIA_B200_180GB` | -- |
+| `US_GEORGIA_3` | `NVIDIA_H200_141GB` | -- |
+| `US_ILLINOIS_1` | `NVIDIA_H100_80GB` | -- |
+| `US_ILLINOIS_2` | `NVIDIA_A100_80GB` | -- |
+| `US_IOWA_1` | `NVIDIA_H100_80GB` | -- |
+| `US_MINNESOTA_1` | `NVIDIA_B300_288GB` | Available |
+| `US_NEWYORK_1` | `AMD_MI325X_256GB` | -- |
+| `US_OHIO_1` | `NVIDIA_B200_180GB` | Available |
+| `US_VIRGINIA_1` | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` | Available |
+| `US_WASHINGTON_3` | `NVIDIA_B200_180GB` | -- |
+| `US_WASHINGTON_4` | `NVIDIA_B200_180GB` | -- |
+| `US_WASHINGTON_5` | `NVIDIA_B200_180GB` | -- |
 
 ## Using a region
 

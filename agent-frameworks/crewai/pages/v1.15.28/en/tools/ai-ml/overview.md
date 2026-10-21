@@ -10,35 +10,33 @@ These tools integrate with AI and machine learning services to enhance your agen
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="DALL-E Tool" icon="image" href="/en/tools/ai-ml/dalletool">
-    Generate AI images using OpenAI's DALL-E model.
-  </Card>
+> **[DALL-E Tool](/en/tools/ai-ml/dalletool)**
+>
+> Generate AI images using OpenAI's DALL-E model.
 
-  <Card title="Vision Tool" icon="eye" href="/en/tools/ai-ml/visiontool">
-    Process and analyze images with computer vision capabilities.
-  </Card>
+> **[Vision Tool](/en/tools/ai-ml/visiontool)**
+>
+> Process and analyze images with computer vision capabilities.
 
-  <Card title="AI Mind Tool" icon="brain" href="/en/tools/ai-ml/aimindtool">
-    Advanced AI reasoning and decision-making capabilities.
-  </Card>
+> **[AI Mind Tool](/en/tools/ai-ml/aimindtool)**
+>
+> Advanced AI reasoning and decision-making capabilities.
 
-  <Card title="LlamaIndex Tool" icon="llama" href="/en/tools/ai-ml/llamaindextool">
-    Build knowledge bases and retrieval systems with LlamaIndex.
-  </Card>
+> **[LlamaIndex Tool](/en/tools/ai-ml/llamaindextool)**
+>
+> Build knowledge bases and retrieval systems with LlamaIndex.
 
-  <Card title="LangChain Tool" icon="link" href="/en/tools/ai-ml/langchaintool">
-    Integrate with LangChain for complex AI workflows.
-  </Card>
+> **[LangChain Tool](/en/tools/ai-ml/langchaintool)**
+>
+> Integrate with LangChain for complex AI workflows.
 
-  <Card title="RAG Tool" icon="database" href="/en/tools/ai-ml/ragtool">
-    Implement Retrieval-Augmented Generation systems.
-  </Card>
+> **[RAG Tool](/en/tools/ai-ml/ragtool)**
+>
+> Implement Retrieval-Augmented Generation systems.
 
-  <Card title="Code Interpreter Tool" icon="code" href="/en/tools/ai-ml/codeinterpretertool">
-    Execute Python code and perform data analysis.
-  </Card>
-</CardGroup>
+> **[Code Interpreter Tool](/en/tools/ai-ml/codeinterpretertool)**
+>
+> Execute Python code and perform data analysis.
 
 ## **Common Use Cases**
 

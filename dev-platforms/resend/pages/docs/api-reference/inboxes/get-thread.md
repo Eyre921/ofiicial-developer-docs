@@ -84,6 +84,75 @@ $resend->inboxes->threads->get(
 );
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+resend.Inboxes.Threads.get(
+    inbox_id="b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    thread_id="4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  thread_id: "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12"
+}
+
+Resend::Inboxes::Threads.get(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	client.Inboxes.Threads.Get(
+		"b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+		"4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+	)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _thread = resend
+    .inboxes
+    .get_thread(
+      "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+      "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+    )
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxThreadRetrieveAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new Guid( "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12" )
+);
+Console.WriteLine( "Thread folder={0}", resp.Content.Folder );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12' \
      -H 'Authorization: Bearer re_xxxxxxxxx'

@@ -8,9 +8,9 @@ The `LangChainTool` is a wrapper for LangChain tools and query engines.
 
 ## `LangChainTool`
 
-<Info>
-  CrewAI seamlessly integrates with LangChain's comprehensive [list of tools](https://python.langchain.com/docs/integrations/tools/), all of which can be used with CrewAI.
-</Info>
+> [!NOTE]
+>
+> CrewAI seamlessly integrates with LangChain's comprehensive [list of tools](https://python.langchain.com/docs/integrations/tools/), all of which can be used with CrewAI.
 
 ```python Code theme={null}
 import os

@@ -12,9 +12,9 @@ The CrewAI agent you built in the [Overview](/edge/en/guides/frontend/overview) 
 
 CopilotKit's [Channels SDK](https://docs.copilotkit.ai/slack) provides that channel. You declare a `createChannel` in a small runtime, point it at your CrewAI agent, and CopilotKit's managed **Intelligence** platform brokers the connection to the messaging provider.
 
-<Note>
-  Unlike the rest of this section, Channels is **not self-hosted**. It runs through **CopilotKit Intelligence** — a required surface for Channels, by design (a free tier is available). Intelligence holds the platform connection and credentials, receives each platform event, and delivers the turn to your channel process; your process runs the agent and streams the reply back. You configure Slack once in the Intelligence dashboard, and platform credentials never enter your process. Your agent, tools, and state stay yours.
-</Note>
+> [!NOTE]
+>
+> Unlike the rest of this section, Channels is **not self-hosted**. It runs through **CopilotKit Intelligence** — a required surface for Channels, by design (a free tier is available). Intelligence holds the platform connection and credentials, receives each platform event, and delivers the turn to your channel process; your process runs the agent and streams the reply back. You configure Slack once in the Intelligence dashboard, and platform credentials never enter your process. Your agent, tools, and state stay yours.
 
 ## How it fits together
 
@@ -28,96 +28,94 @@ The channel process holds a persistent connection to the Intelligence gateway, s
 
 ## Integration guide
 
-<Steps>
-  <Step title="Install the Channels packages">
-    The Channels SDK is batteries-included — every platform ships in the one package, with no per-platform adapter to install. Add it alongside the runtime that hosts the channel and the CrewAI AG-UI client:
+**1. Install the Channels packages**
 
-    ```bash theme={null}
-    npm install @copilotkit/channels @copilotkit/runtime @ag-ui/crewai
-    ```
-  </Step>
+The Channels SDK is batteries-included — every platform ships in the one package, with no per-platform adapter to install. Add it alongside the runtime that hosts the channel and the CrewAI AG-UI client:
 
-  <Step title="Create a Channel in Intelligence">
-    In the [CopilotKit dashboard](https://docs.copilotkit.ai/slack), create a Channel and connect Slack — Intelligence walks you through creating the Slack app and holds its credentials. That leaves two environment variables for your process, both from the dashboard:
+```bash theme={null}
+npm install @copilotkit/channels @copilotkit/runtime @ag-ui/crewai
+```
 
-    ```bash theme={null}
-    export INTELLIGENCE_API_KEY=...      # authenticates the runtime with Intelligence (free tier available)
-    export INTELLIGENCE_CHANNEL_ID=...   # the Channel ID, matched by createChannel({ name })
-    ```
-  </Step>
+**2. Create a Channel in Intelligence**
 
-  <Step title="Define the channel">
-    `createChannel` declares the channel and attaches your agent. Build the agent as a per-thread factory so each conversation gets its own session, using the same `CrewAIAgent` the Overview uses in the web runtime, pointed at your AG-UI endpoint. `identifyUser: "platform"` lets Intelligence map each platform user to a stable identity.
+In the [CopilotKit dashboard](https://docs.copilotkit.ai/slack), create a Channel and connect Slack — Intelligence walks you through creating the Slack app and holds its credentials. That leaves two environment variables for your process, both from the dashboard:
 
-    ```ts theme={null}
-    // channel.ts
-    import { createChannel } from "@copilotkit/channels";
-    import { CrewAIAgent } from "@ag-ui/crewai";
+```bash theme={null}
+export INTELLIGENCE_API_KEY=...      # authenticates the runtime with Intelligence (free tier available)
+export INTELLIGENCE_CHANNEL_ID=...   # the Channel ID, matched by createChannel({ name })
+```
 
-    const channel = createChannel({
-      name: process.env.INTELLIGENCE_CHANNEL_ID!, // must match the Channel ID in Intelligence
-      identifyUser: "platform",
-      // A fresh agent per conversation, pointed at your CrewAI AG-UI endpoint.
-      agent: (threadId) => {
-        const agent = new CrewAIAgent({ url: "http://localhost:8000/recipe" });
-        agent.threadId = threadId;
-        return agent;
-      },
-    });
+**3. Define the channel**
 
-    // A mention subscribes the thread and runs the agent; afterwards every message
-    // in a subscribed thread runs it without needing another mention.
-    channel.onMention(async ({ thread }) => {
-      await thread.subscribe();
-      await thread.runAgent();
-    });
+`createChannel` declares the channel and attaches your agent. Build the agent as a per-thread factory so each conversation gets its own session, using the same `CrewAIAgent` the Overview uses in the web runtime, pointed at your AG-UI endpoint. `identifyUser: "platform"` lets Intelligence map each platform user to a stable identity.
 
-    channel.onMessage(async ({ thread }) => {
-      if (await thread.isSubscribed()) await thread.runAgent();
-    });
+```ts theme={null}
+// channel.ts
+import { createChannel } from "@copilotkit/channels";
+import { CrewAIAgent } from "@ag-ui/crewai";
 
-    export { channel };
-    ```
-  </Step>
+const channel = createChannel({
+  name: process.env.INTELLIGENCE_CHANNEL_ID!, // must match the Channel ID in Intelligence
+  identifyUser: "platform",
+  // A fresh agent per conversation, pointed at your CrewAI AG-UI endpoint.
+  agent: (threadId) => {
+    const agent = new CrewAIAgent({ url: "http://localhost:8000/recipe" });
+    agent.threadId = threadId;
+    return agent;
+  },
+});
 
-  <Step title="Register the channel on the runtime">
-    Create a `CopilotRuntime` with the Intelligence gateway and your channel, then serve it with `createCopilotNodeListener`. The `agents` map stays empty — the channel supplies its own agent. Wait for the channel to be ready so a broken config fails startup loudly.
+// A mention subscribes the thread and runs the agent; afterwards every message
+// in a subscribed thread runs it without needing another mention.
+channel.onMention(async ({ thread }) => {
+  await thread.subscribe();
+  await thread.runAgent();
+});
 
-    ```ts theme={null}
-    // server.ts
-    import { createServer } from "node:http";
-    import { CopilotRuntime, CopilotKitIntelligence } from "@copilotkit/runtime/v2";
-    import { createCopilotNodeListener } from "@copilotkit/runtime/v2/node";
-    import { channel } from "./channel";
+channel.onMessage(async ({ thread }) => {
+  if (await thread.isSubscribed()) await thread.runAgent();
+});
 
-    const runtime = new CopilotRuntime({
-      agents: {}, // the channel supplies its own agent; no web-facing agents needed
-      intelligence: new CopilotKitIntelligence({
-        apiKey: process.env.INTELLIGENCE_API_KEY!, // free tier available
-      }),
-      channels: [channel],
-    });
+export { channel };
+```
 
-    const listener = createCopilotNodeListener({ runtime });
-    await listener.channels?.ready({ timeoutMs: 15_000 });
+**4. Register the channel on the runtime**
 
-    createServer(listener).listen(3123, () => {
-      console.log("Channels runtime listening on port 3123");
-    });
-    ```
-  </Step>
+Create a `CopilotRuntime` with the Intelligence gateway and your channel, then serve it with `createCopilotNodeListener`. The `agents` map stays empty — the channel supplies its own agent. Wait for the channel to be ready so a broken config fails startup loudly.
 
-  <Step title="Run the channel runtime">
-    Start it alongside your CrewAI agent server:
+```ts theme={null}
+// server.ts
+import { createServer } from "node:http";
+import { CopilotRuntime, CopilotKitIntelligence } from "@copilotkit/runtime/v2";
+import { createCopilotNodeListener } from "@copilotkit/runtime/v2/node";
+import { channel } from "./channel";
 
-    ```bash theme={null}
-    uvicorn server:app --port 8000   # terminal 1 — CrewAI agent server
-    npx tsx server.ts                 # terminal 2 — Channels runtime
-    ```
+const runtime = new CopilotRuntime({
+  agents: {}, // the channel supplies its own agent; no web-facing agents needed
+  intelligence: new CopilotKitIntelligence({
+    apiKey: process.env.INTELLIGENCE_API_KEY!, // free tier available
+  }),
+  channels: [channel],
+});
 
-    Mention the bot in Slack or Teams and it runs your Crew or Flow, streaming the reply back into the thread. The thread stays subscribed, so follow-up messages run without another mention.
-  </Step>
-</Steps>
+const listener = createCopilotNodeListener({ runtime });
+await listener.channels?.ready({ timeoutMs: 15_000 });
+
+createServer(listener).listen(3123, () => {
+  console.log("Channels runtime listening on port 3123");
+});
+```
+
+**5. Run the channel runtime**
+
+Start it alongside your CrewAI agent server:
+
+```bash theme={null}
+uvicorn server:app --port 8000   # terminal 1 — CrewAI agent server
+npx tsx server.ts                 # terminal 2 — Channels runtime
+```
+
+Mention the bot in Slack or Teams and it runs your Crew or Flow, streaming the reply back into the thread. The thread stays subscribed, so follow-up messages run without another mention.
 
 ## The event model
 
@@ -135,12 +133,10 @@ The managed Intelligence path covers **Slack** and **Microsoft Teams** today —
 
 ## Related
 
-<CardGroup>
-  <Card title="Frontend Overview" icon="browser" href="/edge/en/guides/frontend/overview">
-    Serve your Crew or Flow over AG-UI — the foundation every channel builds on.
-  </Card>
+> **[Frontend Overview](/edge/en/guides/frontend/overview)**
+>
+> Serve your Crew or Flow over AG-UI — the foundation every channel builds on.
 
-  <Card title="Human-in-the-Loop" icon="user-check" href="/edge/en/guides/frontend/human-in-the-loop">
-    Pause the agent to collect user approval or input mid-run.
-  </Card>
-</CardGroup>
+> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+>
+> Pause the agent to collect user approval or input mid-run.

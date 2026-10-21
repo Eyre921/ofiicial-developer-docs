@@ -74,9 +74,9 @@ result = crew.kickoff()
 print(result)
 ```
 
-<Note>
-  The free tier only exposes `you-search`. For `you-research` and `you-contents`, use an API key or OAuth.
-</Note>
+> [!NOTE]
+>
+> The free tier only exposes `you-search`. For `you-research` and `you-contents`, use an API key or OAuth.
 
 ## Authenticated Example — DSL
 
@@ -112,9 +112,9 @@ researcher = Agent(
 )
 ```
 
-<Warning>
-  `you-research` may encounter Pydantic v2 schema compatibility issues in crewAI's DSL path. If you see a `BadRequestError` from OpenAI, fall back to `create_static_tool_filter(allowed_tool_names=["you-search"])` or use `MCPServerAdapter`.
-</Warning>
+> [!WARNING]
+>
+> `you-research` may encounter Pydantic v2 schema compatibility issues in crewAI's DSL path. If you see a `BadRequestError` from OpenAI, fall back to `create_static_tool_filter(allowed_tool_names=["you-search"])` or use `MCPServerAdapter`.
 
 ## you-search Parameters
 

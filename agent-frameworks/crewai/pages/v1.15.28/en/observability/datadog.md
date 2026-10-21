@@ -94,15 +94,11 @@ After running the application, you can view the traces in [Datadog LLM Observabi
 
 Clicking on a trace will show you the details of the trace, including total tokens used, number of LLM calls, models used, and estimated cost. Clicking into a specific span will narrow down these details, and show related input, output, and metadata.
 
-<Frame>
-  <img alt="Datadog LLM Observability Trace View" />
-</Frame>
+![Datadog LLM Observability Trace View](https://mintcdn.com/crewai/YHPIyIjbLg-0Yd_V/images/datadog-llm-observability-1.png?fit=max\&auto=format\&n=YHPIyIjbLg-0Yd_V\&q=85\&s=12b76bf2631c8b24ed6828053b125074)
 
 Additionally, you can view the execution graph view of the trace, which shows the control and data flow of the trace, which will scale with larger agents to show handoffs and relationships between LLM calls, tool calls, and agent interactions.
 
-<Frame>
-  <img alt="Datadog LLM Observability Agent Execution Flow View" />
-</Frame>
+![Datadog LLM Observability Agent Execution Flow View](https://mintcdn.com/crewai/YHPIyIjbLg-0Yd_V/images/datadog-llm-observability-2.png?fit=max\&auto=format\&n=YHPIyIjbLg-0Yd_V\&q=85\&s=01a94c3f9f162ce0b918fa6039f6fa8e)
 
 ## References
 

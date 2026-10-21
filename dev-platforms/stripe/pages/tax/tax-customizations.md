@@ -123,6 +123,7 @@ Tax customizations can’t override the following:
 - **Tiers, thresholds, and taxable basis**: These apply in some jurisdictions:
   - **Taxable basis**: In certain locations, tax applies to a portion of the price. For example, in Texas, 80% of the cost of software-as-a-service is subject to tax.
   - **Treatment based on price**: Products can be treated differently based on their price. For example, in New York, clothing is exempt from tax if it costs under 110 USD, but taxable if it exceeds that amount. Even if you create a rule for New York City with a custom rate, sales of clothing in New York under 110 USD are still considered exempt.
+- **Tax on ticket sales**: You can’t apply customizations in Stripe Tax to ticket sales.
 
 > Tax customizations in Stripe don’t transfer to TaxJar. When using TaxJar for filing, these customizations aren’t taken into account when TaxJar recalculates the tax you’re expected to file. As a result, tax customizations might not be suitable for your specific use case.
 

@@ -14,168 +14,166 @@ Because CopilotKit streams the tool call to the frontend as the model generates 
 
 This guide builds a haiku generator: the agent calls a `generate_haiku` tool, and the frontend renders each haiku as a card. It assumes you already have a Crew or Flow talking to a Next.js app. If not, start with the [Frontend Overview](/edge/en/guides/frontend/overview) for the full server, runtime, and provider setup.
 
-<Note>
-  Tool rendering works with both Crews and Flows. The example below uses a Flow, but the frontend wiring is identical either way.
-</Note>
+> [!NOTE]
+>
+> Tool rendering works with both Crews and Flows. The example below uses a Flow, but the frontend wiring is identical either way.
 
 ## Walkthrough
 
-<Steps>
-  <Step title="Define the tool on the backend">
-    Declare the tool with a JSON schema and pass it to the model. The `copilotkit_stream` wrapper together with `stream=True` is what streams the tool call to the frontend as it is generated, one argument chunk at a time.
+**1. Define the tool on the backend**
 
-    ```python theme={null}
-    # haiku_flow.py
-    from crewai.flow.flow import Flow, start
-    from litellm import acompletion
-    from ag_ui_crewai.sdk import copilotkit_stream, CopilotKitState
+Declare the tool with a JSON schema and pass it to the model. The `copilotkit_stream` wrapper together with `stream=True` is what streams the tool call to the frontend as it is generated, one argument chunk at a time.
 
-    GENERATE_HAIKU_TOOL = {
-        "type": "function",
-        "function": {
-            "name": "generate_haiku",
-            "description": "Generate a haiku in Japanese and its English translation",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "japanese": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "Three lines in Japanese",
-                    },
-                    "english": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "Three lines in English",
-                    },
+```python theme={null}
+# haiku_flow.py
+from crewai.flow.flow import Flow, start
+from litellm import acompletion
+from ag_ui_crewai.sdk import copilotkit_stream, CopilotKitState
+
+GENERATE_HAIKU_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "generate_haiku",
+        "description": "Generate a haiku in Japanese and its English translation",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "japanese": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Three lines in Japanese",
                 },
-                "required": ["japanese", "english"],
+                "english": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Three lines in English",
+                },
             },
+            "required": ["japanese", "english"],
         },
-    }
+    },
+}
 
 
-    class HaikuFlow(Flow[CopilotKitState]):
-        @start()
-        async def chat(self):
-            system_prompt = "You help the user write haikus. Use the generate_haiku tool."
+class HaikuFlow(Flow[CopilotKitState]):
+    @start()
+    async def chat(self):
+        system_prompt = "You help the user write haikus. Use the generate_haiku tool."
 
-            response = await copilotkit_stream(
-                await acompletion(
-                    model="openai/gpt-4o",
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *self.state.messages,
-                    ],
-                    tools=[GENERATE_HAIKU_TOOL],
-                    parallel_tool_calls=False,
-                    stream=True,
-                )
+        response = await copilotkit_stream(
+            await acompletion(
+                model="openai/gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    *self.state.messages,
+                ],
+                tools=[GENERATE_HAIKU_TOOL],
+                parallel_tool_calls=False,
+                stream=True,
             )
+        )
 
-            message = response.choices[0].message
-            self.state.messages.append(message)
+        message = response.choices[0].message
+        self.state.messages.append(message)
 
-            if message.tool_calls:
-                self.state.messages.append({
-                    "tool_call_id": message.tool_calls[0].id,
-                    "role": "tool",
-                    "content": "Haiku generated.",
-                })
-    ```
+        if message.tool_calls:
+            self.state.messages.append({
+                "tool_call_id": message.tool_calls[0].id,
+                "role": "tool",
+                "content": "Haiku generated.",
+            })
+```
 
-    The tool has no Python implementation. It exists only so the model emits a structured call the frontend can render. After the call, append a short tool result so the conversation stays well-formed for the next turn.
-  </Step>
+The tool has no Python implementation. It exists only so the model emits a structured call the frontend can render. After the call, append a short tool result so the conversation stays well-formed for the next turn.
 
-  <Step title="Serve the Flow over AG-UI">
-    Expose the Flow from your FastAPI app on its own path:
+**2. Serve the Flow over AG-UI**
 
-    ```python theme={null}
-    # server.py
-    from fastapi import FastAPI
-    from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
-    from haiku_flow import HaikuFlow
+Expose the Flow from your FastAPI app on its own path:
 
-    app = FastAPI(title="CrewAI Agent Server")
+```python theme={null}
+# server.py
+from fastapi import FastAPI
+from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
+from haiku_flow import HaikuFlow
 
-    add_crewai_flow_fastapi_endpoint(
-        app=app,
-        flow=HaikuFlow(),
-        path="/haiku",
-    )
-    ```
+app = FastAPI(title="CrewAI Agent Server")
 
-    Register the agent with the CopilotKit runtime and point `<CopilotKit>` at it exactly as shown in the [Frontend Overview](/edge/en/guides/frontend/overview). The rest of this guide assumes the agent is registered under the id `haiku`.
-  </Step>
+add_crewai_flow_fastapi_endpoint(
+    app=app,
+    flow=HaikuFlow(),
+    path="/haiku",
+)
+```
 
-  <Step title="Register the rendering component">
-    On the frontend, call `useRenderTool` with the same `name` the backend declared. `useRenderTool` is the hook for *rendering* a tool call: it takes a `render` function and nothing to execute, because this tool is pure display.
+Register the agent with the CopilotKit runtime and point `<CopilotKit>` at it exactly as shown in the [Frontend Overview](/edge/en/guides/frontend/overview). The rest of this guide assumes the agent is registered under the id `haiku`.
 
-    <Note>
-      Use `useRenderTool` when the tool only draws UI. If the tool also needs to *run* something in the browser, use [`useFrontendTool`](/edge/en/guides/frontend/frontend-actions) instead, which pairs a `handler` with an optional `render`.
-    </Note>
+**3. Register the rendering component**
 
-    ```tsx theme={null}
-    "use client";
-    import { useRenderTool } from "@copilotkit/react-core/v2";
-    import { z } from "zod";
+On the frontend, call `useRenderTool` with the same `name` the backend declared. `useRenderTool` is the hook for *rendering* a tool call: it takes a `render` function and nothing to execute, because this tool is pure display.
 
-    useRenderTool({
-      name: "generate_haiku",
-      parameters: z.object({
-        japanese: z.array(z.string()),
-        english: z.array(z.string()),
-      }),
-      render: ({ args, status }) => {
-        if (!args.japanese) return <></>; // still streaming
-        return <HaikuCard japanese={args.japanese} english={args.english} />;
-      },
-    });
-    ```
+> [!NOTE]
+>
+> Use `useRenderTool` when the tool only draws UI. If the tool also needs to *run* something in the browser, use [`useFrontendTool`](/edge/en/guides/frontend/frontend-actions) instead, which pairs a `handler` with an optional `render`.
 
-    The tool is scoped to the active agent by the `<CopilotKit agent="haiku">` provider, so no `agentId` is needed here. A few things to note:
+```tsx theme={null}
+"use client";
+import { useRenderTool } from "@copilotkit/react-core/v2";
+import { z } from "zod";
 
-    * **`name` must match the backend tool name** exactly (`generate_haiku`). That match is how CopilotKit routes the call to this component.
-    * **`render` receives `{ args, status }`.** `args` fills in progressively as the model streams the call; early on it may be empty or partial. `status` moves through `"inProgress"` / `"executing"` to `"complete"` if you want to show a loading state while arguments stream.
-    * **Guard against partial args.** Return an empty fragment until the fields you need exist. Here we wait for `args.japanese` before rendering the card.
-  </Step>
+useRenderTool({
+  name: "generate_haiku",
+  parameters: z.object({
+    japanese: z.array(z.string()),
+    english: z.array(z.string()),
+  }),
+  render: ({ args, status }) => {
+    if (!args.japanese) return <></>; // still streaming
+    return <HaikuCard japanese={args.japanese} english={args.english} />;
+  },
+});
+```
 
-  <Step title="Render the haiku">
-    The `render` function delegates to an ordinary React component. Nothing about it is CopilotKit-specific: it takes props and returns markup.
+The tool is scoped to the active agent by the `<CopilotKit agent="haiku">` provider, so no `agentId` is needed here. A few things to note:
 
-    ```tsx theme={null}
-    function HaikuCard({
-      japanese,
-      english,
-    }: {
-      japanese: string[];
-      english: string[];
-    }) {
-      return (
-        <div className="haiku-card">
-          {japanese.map((line, i) => (
-            <div key={i} className="haiku-line">
-              <span className="jp">{line}</span>
-              <span className="en">{english?.[i]}</span>
-            </div>
-          ))}
+* **`name` must match the backend tool name** exactly (`generate_haiku`). That match is how CopilotKit routes the call to this component.
+* **`render` receives `{ args, status }`.** `args` fills in progressively as the model streams the call; early on it may be empty or partial. `status` moves through `"inProgress"` / `"executing"` to `"complete"` if you want to show a loading state while arguments stream.
+* **Guard against partial args.** Return an empty fragment until the fields you need exist. Here we wait for `args.japanese` before rendering the card.
+
+**4. Render the haiku**
+
+The `render` function delegates to an ordinary React component. Nothing about it is CopilotKit-specific: it takes props and returns markup.
+
+```tsx theme={null}
+function HaikuCard({
+  japanese,
+  english,
+}: {
+  japanese: string[];
+  english: string[];
+}) {
+  return (
+    <div className="haiku-card">
+      {japanese.map((line, i) => (
+        <div key={i} className="haiku-line">
+          <span className="jp">{line}</span>
+          <span className="en">{english?.[i]}</span>
         </div>
-      );
-    }
-    ```
+      ))}
+    </div>
+  );
+}
+```
 
-    Because `english` streams in alongside `japanese`, use optional access (`english?.[i]`) so the card renders cleanly while the translation is still arriving.
-  </Step>
+Because `english` streams in alongside `japanese`, use optional access (`english?.[i]`) so the card renders cleanly while the translation is still arriving.
 
-  <Step title="Run it">
-    Start both processes and ask the assistant for a haiku. The card renders as the arguments stream in, filling out line by line.
+**5. Run it**
 
-    ```bash theme={null}
-    uvicorn server:app --port 8000   # terminal 1
-    npm run dev                       # terminal 2
-    ```
-  </Step>
-</Steps>
+Start both processes and ask the assistant for a haiku. The card renders as the arguments stream in, filling out line by line.
+
+```bash theme={null}
+uvicorn server:app --port 8000   # terminal 1
+npm run dev                       # terminal 2
+```
 
 ## How progressive rendering works
 
@@ -205,22 +203,20 @@ useRenderTool({
 });
 ```
 
-<Note>
-  A backend tool must return a **JSON string**, not a Python dict. The bridge stringifies tool output, so a raw dict arrives as a Python repr the browser cannot `JSON.parse`. Return `json.dumps(...)` from the tool.
-</Note>
+> [!NOTE]
+>
+> A backend tool must return a **JSON string**, not a Python dict. The bridge stringifies tool output, so a raw dict arrives as a Python repr the browser cannot `JSON.parse`. Return `json.dumps(...)` from the tool.
 
 ## Related
 
-<CardGroup>
-  <Card title="Agentic Generative UI" icon="list-check" href="/edge/en/guides/frontend/agentic-generative-ui">
-    Render live agent state as it changes across a multi-step run.
-  </Card>
+> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+>
+> Render live agent state as it changes across a multi-step run.
 
-  <Card title="Human-in-the-Loop" icon="user-check" href="/edge/en/guides/frontend/human-in-the-loop">
-    Pause the agent to collect user approval or input mid-run.
-  </Card>
+> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+>
+> Pause the agent to collect user approval or input mid-run.
 
-  <Card title="Frontend Actions" icon="bolt" href="/edge/en/guides/frontend/frontend-actions">
-    Let the agent call functions that run in the browser.
-  </Card>
-</CardGroup>
+> **[Frontend Actions](/edge/en/guides/frontend/frontend-actions)**
+>
+> Let the agent call functions that run in the browser.

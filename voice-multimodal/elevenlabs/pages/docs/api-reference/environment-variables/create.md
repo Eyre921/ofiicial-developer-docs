@@ -103,7 +103,7 @@ Validation Error
 ```json
 {
   "type": "string",
-  "label": "API_BASE_URL"
+  "label": "string"
 }
 ```
 
@@ -111,14 +111,14 @@ Validation Error
 
 ```json
 {
-  "label": "API_BASE_URL",
-  "created_at_unix_secs": 1718035200,
-  "updated_at_unix_secs": 1718035200,
+  "label": "string",
+  "created_at_unix_secs": 1,
+  "updated_at_unix_secs": 1,
   "type": "string",
-  "id": "env_var_3c7d2e1a9b4f8c5d",
-  "workspace_id": "workspace_1a2b3c4d5e6f7890",
+  "id": "string",
+  "workspace_id": "string",
   "values": {},
-  "created_by_user_id": "user_4f8a2b1c9e3d7f6a"
+  "created_by_user_id": "string"
 }
 ```
 
@@ -131,7 +131,7 @@ url = "https://api.elevenlabs.io/v1/convai/environment-variables"
 
 payload = {
     "type": "string",
-    "label": "API_BASE_URL"
+    "label": "string"
 }
 headers = {"Content-Type": "application/json"}
 
@@ -145,7 +145,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/environment-variables';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"type":"string","label":"API_BASE_URL"}'
+  body: '{"type":"string","label":"string"}'
 };
 
 try {
@@ -171,7 +171,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/environment-variables"
 
-	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}")
+	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"label\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -199,7 +199,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}"
+request.body = "{\n  \"type\": \"string\",\n  \"label\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -211,7 +211,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/environment-variables")
   .header("Content-Type", "application/json")
-  .body("{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}")
+  .body("{\n  \"type\": \"string\",\n  \"label\": \"string\"\n}")
   .asString();
 ```
 
@@ -224,7 +224,7 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/environment-variables', [
   'body' => '{
   "type": "string",
-  "label": "API_BASE_URL"
+  "label": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -240,7 +240,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/environment-variables");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"label\": \"API_BASE_URL\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"label\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -250,7 +250,7 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = [
   "type": "string",
-  "label": "API_BASE_URL"
+  "label": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

@@ -23,12 +23,12 @@ def guard_deletes(ctx):
     raise HookAborted(reason="file deletion is not allowed", source="policy")
 ```
 
-<Note>
-  The point-specific decorators (`@before_llm_call`, `@after_tool_call`, ...) keep
-  working unchanged — they are adapters over the same engine. See
-  [Point-specific decorators (legacy)](#point-specific-decorators-legacy) at the
-  end of this page.
-</Note>
+> [!NOTE]
+>
+> The point-specific decorators (`@before_llm_call`, `@after_tool_call`, ...) keep
+> working unchanged — they are adapters over the same engine. See
+> [Point-specific decorators (legacy)](#point-specific-decorators-legacy) at the
+> end of this page.
 
 ## The contract
 

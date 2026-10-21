@@ -75,7 +75,7 @@ You can clone your existing repository or clone another person's existing reposi
 
 <div class="ghd-tool cli">
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 To clone a repository locally, use the `repo clone` subcommand. Replace the `repository` parameter with the repository name. For example, `octo-org/octo-repo`, `monalisa/octo-repo`, or `octo-repo`. If the `OWNER/` portion of the `OWNER/REPO` repository argument is omitted, it defaults to the name of the authenticating user.

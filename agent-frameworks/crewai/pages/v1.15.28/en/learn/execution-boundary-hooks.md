@@ -75,12 +75,12 @@ class ExecutionEndContext(InterceptionContext):
     error: BaseException | None    # The exception when status == "failed"
 ```
 
-<Note>
-  `ctx.inputs` aliases the **original** inputs dict, so in-place edits through
-  either name are equivalent. If an earlier hook *replaced* the payload by
-  returning a new dict, only `ctx.payload` is rebound — always read and write
-  `ctx.payload` when hooks might chain.
-</Note>
+> [!NOTE]
+>
+> `ctx.inputs` aliases the **original** inputs dict, so in-place edits through
+> either name are equivalent. If an earlier hook *replaced* the payload by
+> returning a new dict, only `ctx.payload` is rebound — always read and write
+> `ctx.payload` when hooks might chain.
 
 ## Crew Runs vs. Flow Runs
 

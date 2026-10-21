@@ -31,7 +31,7 @@ Congratulations! You've successfully created your first repository, and initiali
 
 <div class="ghd-tool cli">
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 1. In the command line, navigate to the directory where you would like to create a local clone of your new project.

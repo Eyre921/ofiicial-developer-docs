@@ -12,9 +12,7 @@ When building AI applications with CrewAI, one of the most important decisions y
 
 At the heart of this decision is understanding the relationship between **complexity** and **precision** in your application:
 
-<Frame>
-  <img alt="Complexity vs. Precision Matrix" />
-</Frame>
+![Complexity vs. Precision Matrix](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/complexity_precision.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=ba6f265da6ac72075285b5008735be82)
 
 This matrix helps visualize how different approaches align with varying requirements for complexity and precision. Let's explore what each quadrant means and how it guides your architectural choices.
 
@@ -501,9 +499,9 @@ Choosing between Crews and Flows—or combining them—is a critical architectur
 
 Remember that the best approach often evolves as your application matures. Start with the simplest solution that meets your needs, and be prepared to refine your architecture as you gain experience and your requirements become clearer.
 
-<Check>
-  You now have a framework for evaluating CrewAI use cases and choosing the right approach based on complexity and precision requirements. This will help you build more effective, maintainable, and scalable AI applications.
-</Check>
+> [!TIP]
+>
+> You now have a framework for evaluating CrewAI use cases and choosing the right approach based on complexity and precision requirements. This will help you build more effective, maintainable, and scalable AI applications.
 
 ## Next Steps
 

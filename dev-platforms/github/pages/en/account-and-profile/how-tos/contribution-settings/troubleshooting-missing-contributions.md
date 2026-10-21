@@ -33,7 +33,7 @@ If the email address used for the commit is not connected to your account on Git
 
 If you remove an email address that was used to author older commits, or move that email to a different account, those historical contributions will no longer appear on your contributions graph. To restore attribution, add the exact historical commit email address back to your account. You do not need access to that mailbox. After adding or moving the email address, the contribution graph may take up to 24 hours to refresh. If qualifying contributions still have not returned after that time, confirm the commit author email using the `.patch` view described earlier in this article, then contact [GitHub Support](https://support.github.com) with that information.
 
-> \[!NOTE]
+> [!NOTE]
 > If you use a managed user account, you cannot add additional email addresses to the account, even if multiple email addresses are registered with your identity provider (IdP). Therefore, only commits that are authored by the primary email address registered with your IdP can be associated with your managed user account.
 
 Generic email addresses, such as `jane@computer.local`, cannot be added to GitHub accounts and linked to commits. If you've authored any commits using a generic email address, the commits will not be linked to your GitHub profile and will not show up in your contribution graph.
@@ -47,7 +47,7 @@ If your commits are in a non-default or non-`gh-pages` branch and you'd like the
 * [Open a pull request](/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request) to have your changes merged into the default branch or the `gh-pages` branch.
 * [Change the default branch](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch) of the repository.
 
-> \[!WARNING]
+> [!WARNING]
 > Changing the default branch of the repository will change it for all repository collaborators. Only do this if you want the new branch to become the base against which all future pull requests and commits will be made.
 
 ## Commit was made in a fork

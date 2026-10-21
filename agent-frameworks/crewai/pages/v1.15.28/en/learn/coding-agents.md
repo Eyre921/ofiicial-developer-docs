@@ -27,9 +27,9 @@ coding_agent = Agent(
 )
 ```
 
-<Note>
-  Note that `allow_code_execution` parameter defaults to `False`.
-</Note>
+> [!NOTE]
+>
+> Note that `allow_code_execution` parameter defaults to `False`.
 
 ## Important Considerations
 
@@ -46,23 +46,21 @@ coding_agent = Agent(
 
 When an agent with code execution enabled encounters a task requiring programming:
 
-<Steps>
-  <Step title="Task Analysis">
-    The agent analyzes the task and determines that code execution is necessary.
-  </Step>
+**1. Task Analysis**
 
-  <Step title="Code Formulation">
-    It formulates the Python code needed to solve the problem.
-  </Step>
+The agent analyzes the task and determines that code execution is necessary.
 
-  <Step title="Code Execution">
-    The code is sent to the internal code execution tool (`CodeInterpreterTool`).
-  </Step>
+**2. Code Formulation**
 
-  <Step title="Result Interpretation">
-    The agent interprets the result and incorporates it into its response or uses it for further problem-solving.
-  </Step>
-</Steps>
+It formulates the Python code needed to solve the problem.
+
+**3. Code Execution**
+
+The code is sent to the internal code execution tool (`CodeInterpreterTool`).
+
+**4. Result Interpretation**
+
+The agent interprets the result and incorporates it into its response or uses it for further problem-solving.
 
 ## Example Usage
 

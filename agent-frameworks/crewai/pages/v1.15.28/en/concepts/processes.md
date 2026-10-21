@@ -8,10 +8,10 @@ Detailed guide on workflow management through processes in CrewAI, with updated 
 
 ## Overview
 
-<Tip>
-  Processes orchestrate the execution of tasks by agents, akin to project management in human teams.
-  These processes ensure tasks are distributed and executed efficiently, in alignment with a predefined strategy.
-</Tip>
+> [!TIP]
+>
+> Processes orchestrate the execution of tasks by agents, akin to project management in human teams.
+> These processes ensure tasks are distributed and executed efficiently, in alignment with a predefined strategy.
 
 ## Process Implementations
 

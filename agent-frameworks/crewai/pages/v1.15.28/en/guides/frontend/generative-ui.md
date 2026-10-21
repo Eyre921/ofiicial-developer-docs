@@ -43,9 +43,9 @@ useRenderTool({
 });
 ```
 
-<Note>
-  `useRenderTool` renders a tool call. When a tool also needs to *run* code in the browser, use [`useFrontendTool`](/edge/en/guides/frontend/frontend-actions) (a `handler`, with optional `render`).
-</Note>
+> [!NOTE]
+>
+> `useRenderTool` renders a tool call. When a tool also needs to *run* code in the browser, use [`useFrontendTool`](/edge/en/guides/frontend/frontend-actions) (a `handler`, with optional `render`).
 
 See [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui) for the full walkthrough, including progressive rendering as arguments stream, and [Backend Tool Rendering](/edge/en/guides/frontend/tool-based-generative-ui#backend-tools) for tools your Crew or Flow executes server-side.
 
@@ -92,20 +92,18 @@ MCP tool calls surface as standard tool-call UI — render them with `useRenderT
 
 ## Related
 
-<CardGroup>
-  <Card title="Tool-Based Generative UI" icon="puzzle-piece" href="/edge/en/guides/frontend/tool-based-generative-ui">
-    Map agent tool calls to components (controlled).
-  </Card>
+> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+>
+> Map agent tool calls to components (controlled).
 
-  <Card title="Agentic Generative UI" icon="list-check" href="/edge/en/guides/frontend/agentic-generative-ui">
-    Render live agent state (controlled).
-  </Card>
+> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+>
+> Render live agent state (controlled).
 
-  <Card title="A2UI" icon="table-cells" href="/edge/en/guides/frontend/a2ui">
-    Let the agent assemble surfaces from your catalog (declarative).
-  </Card>
+> **[A2UI](/edge/en/guides/frontend/a2ui)**
+>
+> Let the agent assemble surfaces from your catalog (declarative).
 
-  <Card title="Reasoning" icon="brain" href="/edge/en/guides/frontend/reasoning">
-    Render the agent's thinking.
-  </Card>
-</CardGroup>
+> **[Reasoning](/edge/en/guides/frontend/reasoning)**
+>
+> Render the agent's thinking.

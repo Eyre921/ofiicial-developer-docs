@@ -245,12 +245,6 @@ Metadata for a KB folder that mirrors an external source folder.
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
@@ -258,69 +252,61 @@ Metadata for a KB folder that mirrors an external source folder.
   "results": [
     {
       "document": {
-        "type": "url",
         "access_info": {
-          "is_creator": true,
-          "creator_name": "John Doe",
+          "access_source": "creator",
           "creator_email": "john.doe@example.com",
-          "role": "admin",
-          "access_source": "creator"
+          "creator_name": "John Doe",
+          "is_creator": true,
+          "role": "admin"
         },
-        "id": "kb_doc_3f8a2c1e9b4d7e6f",
+        "auto_sync_info": {
+          "auto_discover": false,
+          "auto_remove": false,
+          "consec_failures": 0,
+          "minimum_frequency_days": 7,
+          "next_refresh_by": 1
+        },
+        "dependent_agents": [
+          {
+            "access_level": "admin",
+            "created_at_unix_secs": 1,
+            "id": "string",
+            "name": "string",
+            "referenced_resource_ids": [
+              "string"
+            ],
+            "type": "available"
+          }
+        ],
+        "folder_parent_id": "string",
+        "folder_path": [
+          {
+            "id": "string"
+          }
+        ],
+        "id": "string",
         "metadata": {
-          "created_at_unix_secs": 1710000000,
-          "last_updated_at_unix_secs": 1712500000,
-          "size_bytes": 204800
+          "created_at_unix_secs": 1,
+          "last_updated_at_unix_secs": 1,
+          "size_bytes": 1
         },
-        "name": "ElevenLabs API Voice Cloning Guide",
+        "name": "string",
         "supported_usages": [
           "auto"
         ],
-        "url": "https://elevenlabs.io/docs/api-reference/voice-cloning",
-        "dependent_agents": [
-          {
-            "type": "available",
-            "access_level": "admin",
-            "created_at_unix_secs": 1709500000,
-            "id": "agent_7c9e2f4a1b8d3e5f",
-            "name": "Customer Support Agent",
-            "referenced_resource_ids": [
-              "kb_doc_3f8a2c1e9b4d7e6f"
-            ]
-          }
-        ],
-        "auto_sync_info": {
-          "minimum_frequency_days": 7,
-          "auto_remove": false,
-          "consec_failures": 0,
-          "next_refresh_by": 1713100000,
-          "auto_discover": false
-        },
-        "folder_parent_id": "folder_a1b2c3d4e5f6",
-        "folder_path": [
-          {
-            "id": "folder_a1b2c3d4e5f6"
-          }
-        ]
+        "type": "string",
+        "url": "string"
       },
-      "score": 0.92,
+      "score": 1.1,
       "search_snippet": [
         {
-          "value": "To clone a voice using the ElevenLabs API, you must first upload at least one audio sample. ",
-          "is_hit": false
-        },
-        {
-          "value": "voice cloning",
+          "value": "string",
           "is_hit": true
-        },
-        {
-          "value": " requires a minimum of 1 minute of clear audio for best results.",
-          "is_hit": false
         }
       ]
     }
   ],
-  "next_cursor": "eyJwYWdlIjoyLCJsaW1pdCI6MzB9"
+  "next_cursor": "string"
 }
 ```
 
@@ -333,17 +319,14 @@ url = "https://api.elevenlabs.io/v1/convai/knowledge-base/search"
 
 querystring = {"query":"query"}
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers, params=querystring)
+response = requests.get(url, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -359,7 +342,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -368,11 +350,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -395,8 +373,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -407,8 +383,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -418,12 +392,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query');
 
 echo $response->getBody();
 ```
@@ -433,25 +402,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/search?query=query")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

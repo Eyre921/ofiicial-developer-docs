@@ -39,13 +39,13 @@ This process helps the agent break down complex tasks into manageable steps and 
 
 ## Configuration Options
 
-<ParamField type="bool">
-  Enable or disable reasoning
-</ParamField>
+**reasoning** `bool` (default: False)
 
-<ParamField type="int">
-  Maximum number of attempts to refine the plan before proceeding with execution. If None (default), the agent will continue refining until it's ready.
-</ParamField>
+Enable or disable reasoning
+
+**max\_reasoning\_attempts** `int` (default: None)
+
+Maximum number of attempts to refine the plan before proceeding with execution. If None (default), the agent will continue refining until it's ready.
 
 ## Example
 

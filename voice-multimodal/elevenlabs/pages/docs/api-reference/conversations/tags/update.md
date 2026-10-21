@@ -79,12 +79,12 @@ Validation Error
 
 ```json
 {
-  "tag_id": "tag_9f3a2b1c8e7d4f6a",
-  "workspace_id": "wsp_4c2e8f1a3b7d9e5c",
-  "owner_user_id": "usr_7b3d1e9f2a4c6b8e",
-  "title": "Customer Support Escalations",
-  "description": "Conversations that were escalated to a human agent due to unresolved issues or customer frustration.",
-  "created_at_unix_secs": 1711900800
+  "tag_id": "string",
+  "workspace_id": "string",
+  "owner_user_id": "string",
+  "title": "string",
+  "description": "string",
+  "created_at_unix_secs": 1
 }
 ```
 

@@ -70,6 +70,85 @@ $resend->inboxes->create([
 ]);
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.CreateParams = {
+    "email_address": "support@example.com",
+    "name": "Customer Support",
+    "from_name": "Ada from Support",
+}
+
+resend.Inboxes.create(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  email_address: "support@example.com",
+  name: "Customer Support",
+  from_name: "Ada from Support"
+}
+
+Resend::Inboxes.create(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	params := &resend.CreateInboxRequest{
+		EmailAddress: "support@example.com",
+		Name:         "Customer Support",
+		FromName:     "Ada from Support",
+	}
+
+	client.Inboxes.Create(params)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  types::{CreateInboxOptions},
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let opts = CreateInboxOptions::new("support@example.com")
+    .with_name("Customer Support")
+    .with_from_name("Ada from Support");
+
+  let _inbox = resend.inboxes.create(opts).await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxCreateAsync( new InboxCreateData()
+{
+    EmailAddress = "support@example.com",
+    Name = "Customer Support",
+    FromName = "Ada from Support",
+} );
+Console.WriteLine( "Inbox Id={0}", resp.Content );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/inboxes' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

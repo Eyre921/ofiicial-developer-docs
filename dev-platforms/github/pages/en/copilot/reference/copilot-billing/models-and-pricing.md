@@ -21,7 +21,7 @@ How Copilot usage is tracked and billed depends on your plan type:
 
 When usage exceeds the included allowances for any Copilot plan, additional usage is billed in GitHub AI Credits at the per-token rates shown in the pricing tables below (1 AI credit = $0.01 USD).
 
-> \[!NOTE] The option to purchase additional AI credits is not available if you subscribe, or have subscribed, to a Copilot plan through GitHub Mobile on iOS or Android.
+> [!NOTE] The option to purchase additional AI credits is not available if you subscribe, or have subscribed, to a Copilot plan through GitHub Mobile on iOS or Android.
 
 ## Pricing tables
 
@@ -29,7 +29,7 @@ All prices are **per 1 million tokens**.
 
 ### OpenAI
 
-> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+> [!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
 GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, GPT-6 Sol, and GPT-6.1 Sol include a cache write cost in addition to cached input. Earlier OpenAI models have no cache write cost.
 
@@ -71,7 +71,7 @@ GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, GPT-6 Sol, an
 
 ### Anthropic
 
-> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+> [!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
 Anthropic models include a cache write cost in addition to cached input.
 
@@ -107,7 +107,7 @@ Anthropic models include a cache write cost in addition to cached input.
 
 ### Google
 
-> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+> [!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
 | Model                                 | Release status | Category  | Tier    | Threshold (input tokens) | Input | Cached input | Output |
 | ------------------------------------- | -------------- | --------- | ------- | ------------------------ | ----: | -----------: | -----: |
@@ -133,7 +133,7 @@ Anthropic models include a cache write cost in addition to cached input.
 
 ### xAI
 
-> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+> [!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
 | Model    | Release status | Category  | Tier         | Threshold (input tokens) | Input | Cached input | Output |
 | -------- | -------------- | --------- | ------------ | ------------------------ | ----: | -----------: | -----: |

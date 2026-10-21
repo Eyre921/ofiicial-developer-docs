@@ -24,19 +24,9 @@ You can use these instructions to run Sentry in an app running on:
 
 If you're using a framework, such as ASP.NET Core or MAUI, please select the framework on the drop down on the top left.
 
-## [Features](https://docs.sentry.io/platforms/dotnet.md#features)
-
-In addition to capturing errors, you can monitor interactions between multiple services or applications by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md). You can also collect and analyze performance profiles from real users with [profiling](https://docs.sentry.io/product/profiling.md).
-
-Select which Sentry features you'd like to install in addition to Error Monitoring to get the corresponding installation and configuration instructions below.
-
 ## [Install](https://docs.sentry.io/platforms/dotnet.md#install)
 
-Error Monitoring\[ ]Tracing\[ ]Profiling
-
-Sentry captures data by using an SDK within your application's runtime. These are platform-specific and allow Sentry to have a deep understanding of how your application works.
-
-Install the **NuGet** package to add the Sentry dependency:
+Install the `Sentry` NuGet package to add the SDK:
 
 ```shell
 dotnet add package Sentry -v 6.12.1
@@ -44,15 +34,19 @@ dotnet add package Sentry -v 6.12.1
 
 *Other available variations of the above snippet: Package Manager*
 
-```shell
-dotnet add package Sentry.Profiling -v 6.12.1
-```
-
-*Other available variations of the above snippet: Package Manager*
-
 ## [Configure](https://docs.sentry.io/platforms/dotnet.md#configure)
 
+**Error Monitoring** starts working as soon as you call `SentrySdk.Init()`. **Logs** sent through `SentrySdk.Logger` and **Application Metrics** need no extra configuration. You'll learn how to send them in [Send Logs](https://docs.sentry.io/platforms/dotnet.md#send-logs) and [Send Application Metrics](https://docs.sentry.io/platforms/dotnet.md#send-application-metrics-).
+
+This guide also enables **Tracing**. **Profiling** is in Alpha and needs .NET 8 or later, so it's a separate step: see [Enable Profiling on .NET 8 and Later](https://docs.sentry.io/platforms/dotnet.md#enable-profiling-on-net-8-and-later).
+
 To capture all errors, even the one during the startup of your application, you should initialize the Sentry .NET SDK as soon as possible.
+
+The snippet also turns on:
+
+* Tracing: via [`TracesSampleRate`](https://docs.sentry.io/platforms/dotnet/configuration/options.md#TracesSampleRate)
+
+Don't need a feature? Remove its options from the snippet.
 
 ```csharp
 SentrySdk.Init(options =>
@@ -61,20 +55,64 @@ SentrySdk.Init(options =>
     options.Debug = true;
     // Adds request URL and headers, IP and name for users, etc.
     options.SendDefaultPii = true;
-    // ___PRODUCT_OPTION_START___ performance
-    // A fixed sample rate of 1.0 - 100% of all transactions are getting sent
+    // Enables Tracing.
+    // Set to 1.0 to capture 100% of spans for tracing.
+    // We recommend reducing this value in production.
     options.TracesSampleRate = 1.0f;
-    // ___PRODUCT_OPTION_END___ performance
-    // ___PRODUCT_OPTION_START___ profiling
-    // A sample rate for profiling - this is relative to TracesSampleRate
-    options.ProfilesSampleRate = 1.0f;
-    // ___PRODUCT_OPTION_END___ profiling
 });
 ```
 
-## [Verify](https://docs.sentry.io/platforms/dotnet.md#verify)
+### [Enable Profiling on .NET 8 and Later](https://docs.sentry.io/platforms/dotnet.md#enable-profiling-on-net-8-and-later)
 
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+Profiling for .NET is in Alpha and needs .NET 8 or later. On .NET Framework, `Sentry.Profiling` installs without a warning, but `AddProfilingIntegration()` doesn't compile.
+
+To profile your app, install the `Sentry.Profiling` package:
+
+```shell
+dotnet add package Sentry.Profiling -v 6.12.1
+```
+
+*Other available variations of the above snippet: Package Manager*
+
+Then add these options to `SentrySdk.Init()`:
+
+```csharp
+// Enables Profiling for 100% of sampled transactions.
+options.ProfilesSampleRate = 1.0f;
+options.AddProfilingIntegration();
+```
+
+See [Set Up Profiling](https://docs.sentry.io/platforms/dotnet/profiling.md) for supported platforms and options.
+
+## [Send Logs](https://docs.sentry.io/platforms/dotnet.md#send-logs)
+
+Use `SentrySdk.Logger` to send logs at different levels. These logs are sent without an additional option.
+
+See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/logs.md) for all available logging methods and formatting options.
+
+```csharp
+SentrySdk.Logger.LogInfo("Order processed");
+SentrySdk.Logger.LogWarning("Rate limit reached for /api/orders");
+```
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/dotnet.md#send-application-metrics-)
+
+Metrics are enabled by default in Sentry .NET SDK 6.1.0 and later. Use `SentrySdk.Metrics` to send counters, gauges, and distributions from your app.
+
+See [Set Up Metrics](https://docs.sentry.io/platforms/dotnet/metrics.md) for all available metric types and configuration options.
+
+```csharp
+SentrySdk.Metrics.EmitCounter("button_click", 5,
+    new Dictionary<string, object> { ["browser"] = "Firefox" });
+SentrySdk.Metrics.EmitGauge("page_load", 15.0, MeasurementUnit.Duration.Millisecond,
+    new Dictionary<string, object> { ["page"] = "/home" });
+SentrySdk.Metrics.EmitDistribution("api_latency", 187, MeasurementUnit.Duration.Millisecond,
+    new Dictionary<string, object> { ["endpoint"] = "/api/orders" });
+```
+
+## [Verify Your Setup](https://docs.sentry.io/platforms/dotnet.md#verify-your-setup)
+
+Let's test your setup and confirm that data reaches your Sentry project.
 
 ```csharp
 try
@@ -89,9 +127,17 @@ catch (Exception ex)
 
 *Other available variations of the above snippet: fsharp*
 
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet.md#view-captured-data-in-sentry)
+
+Open your Sentry project to view the captured event.
+
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet.md#next-steps)
 
+At this point, you should have integrated Sentry into your .NET application. Here's what to explore next:
+
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
+* Learn how to [manually capture errors](https://docs.sentry.io/platforms/dotnet/usage.md)
+* Explore [Tracing](https://docs.sentry.io/platforms/dotnet/tracing.md)
 
 ## Frameworks
 

@@ -23,7 +23,7 @@ curl --request GET \
 --header "X-GitHub-Api-Version: 2026-03-10"
 ```
 
-> \[!NOTE]
+> [!NOTE]
 > In most cases, you can use `Authorization: Bearer` or `Authorization: token` to pass a token. However, if you are passing a JSON web token (JWT), you must use `Authorization: Bearer`.
 
 ### Failed login limit

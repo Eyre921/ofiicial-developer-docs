@@ -86,12 +86,12 @@ Validation Error
 
 ```json
 {
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "id": "string",
   "model": "e5_mistral_7b_instruct",
-  "status": "processing",
-  "progress_percentage": 47.5,
+  "status": "new",
+  "progress_percentage": 1.1,
   "document_model_index_usage": {
-    "used_bytes": 204800
+    "used_bytes": 1
   }
 }
 ```

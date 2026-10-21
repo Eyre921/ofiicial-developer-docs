@@ -36,7 +36,7 @@ Protected branches help maintainers enforce rules on important branches. A prote
 
 These protections help teams keep important branches stable and make expectations clear before a pull request is merged. To see whether your pull request can be merged, check the merge box at the bottom of the pull request's **Conversation** tab. See [About protected branches](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
 
-> \[!NOTE]
+> [!NOTE]
 > If you're a repository administrator, you can merge pull requests on branches with branch protections enabled even if the pull request does not meet the requirements, unless branch protections have been set to "Include administrators."
 
 ## Comparing branches in pull requests

@@ -84,7 +84,7 @@ result = flow.kickoff()
 print(f"Generated fun fact: {result}")
 ```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-1.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=18b381277b7b017abf7cb19bc5e03923)
 
 In the above example, we have created a simple Flow that generates a random city using OpenAI and then generates a fun fact about that city. The Flow consists of two tasks: `generate_city` and `generate_fun_fact`. The `generate_city` task is the starting point of the Flow, and the `generate_fun_fact` task listens for the output of the `generate_city` task.
 
@@ -144,35 +144,33 @@ When you run a Flow, the final output is determined by the last method that comp
 
 Here's how you can access the final output:
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai.flow.flow import Flow, listen, start
+```python Code theme={null}
+from crewai.flow.flow import Flow, listen, start
 
-  class OutputExampleFlow(Flow):
-      @start()
-      def first_method(self):
-          return "Output from first_method"
+class OutputExampleFlow(Flow):
+    @start()
+    def first_method(self):
+        return "Output from first_method"
 
-      @listen(first_method)
-      def second_method(self, first_output):
-          return f"Second method received: {first_output}"
+    @listen(first_method)
+    def second_method(self, first_output):
+        return f"Second method received: {first_output}"
 
 
-  flow = OutputExampleFlow()
-  flow.plot("my_flow_plot")
-  final_output = flow.kickoff()
+flow = OutputExampleFlow()
+flow.plot("my_flow_plot")
+final_output = flow.kickoff()
 
-  print("---- Final Output ----")
-  print(final_output)
-  ```
+print("---- Final Output ----")
+print(final_output)
+```
 
-  ```text Output theme={null}
-  ---- Final Output ----
-  Second method received: Output from first_method
-  ```
-</CodeGroup>
+```text Output theme={null}
+---- Final Output ----
+Second method received: Output from first_method
+```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-2.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=3d987994d2c99a06a3cf149c71831fd5)
 
 In this example, the `second_method` is the last method to complete, so its output will be the final output of the Flow.
 The `kickoff()` method will return the final output, which is then printed to the console. The `plot()` method will generate the HTML file, which will help you understand the flow.
@@ -183,44 +181,42 @@ In addition to retrieving the final output, you can also access and update the s
 
 Here's an example of how to update and access the state:
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai.flow.flow import Flow, listen, start
-  from pydantic import BaseModel
+```python Code theme={null}
+from crewai.flow.flow import Flow, listen, start
+from pydantic import BaseModel
 
-  class ExampleState(BaseModel):
-      counter: int = 0
-      message: str = ""
+class ExampleState(BaseModel):
+    counter: int = 0
+    message: str = ""
 
-  class StateExampleFlow(Flow[ExampleState]):
+class StateExampleFlow(Flow[ExampleState]):
 
-      @start()
-      def first_method(self):
-          self.state.message = "Hello from first_method"
-          self.state.counter += 1
+    @start()
+    def first_method(self):
+        self.state.message = "Hello from first_method"
+        self.state.counter += 1
 
-      @listen(first_method)
-      def second_method(self):
-          self.state.message += " - updated by second_method"
-          self.state.counter += 1
-          return self.state.message
+    @listen(first_method)
+    def second_method(self):
+        self.state.message += " - updated by second_method"
+        self.state.counter += 1
+        return self.state.message
 
-  flow = StateExampleFlow()
-  flow.plot("my_flow_plot")
-  final_output = flow.kickoff()
-  print(f"Final Output: {final_output}")
-  print("Final State:")
-  print(flow.state)
-  ```
+flow = StateExampleFlow()
+flow.plot("my_flow_plot")
+final_output = flow.kickoff()
+print(f"Final Output: {final_output}")
+print("Final State:")
+print(flow.state)
+```
 
-  ```text Output theme={null}
-  Final Output: Hello from first_method - updated by second_method
-  Final State:
-  counter=2 message='Hello from first_method - updated by second_method'
-  ```
-</CodeGroup>
+```text Output theme={null}
+Final Output: Hello from first_method - updated by second_method
+Final State:
+counter=2 message='Hello from first_method - updated by second_method'
+```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-2.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=3d987994d2c99a06a3cf149c71831fd5)
 
 In this example, the state is updated by both `first_method` and `second_method`.
 After the Flow has run, you can access the final state to see the updates made by these methods.
@@ -260,14 +256,14 @@ print(flow.usage_metrics)
 #              cache_creation_tokens=0, successful_requests=5)
 ```
 
-<Note>
-  `flow.usage_metrics` is **not** the same as `flow.kickoff().token_usage`. The
-  latter returns the `CrewOutput.token_usage` of the **last** `@listen` method
-  that returned a `CrewOutput`, which means it only reflects the final Crew and
-  ignores prior Crews and bare `LLM.call(...)` invocations entirely. Use
-  `flow.usage_metrics` whenever you need the **full** token rollup for the Flow
-  execution.
-</Note>
+> [!NOTE]
+>
+> `flow.usage_metrics` is **not** the same as `flow.kickoff().token_usage`. The
+> latter returns the `CrewOutput.token_usage` of the **last** `@listen` method
+> that returned a `CrewOutput`, which means it only reflects the final Crew and
+> ignores prior Crews and bare `LLM.call(...)` invocations entirely. Use
+> `flow.usage_metrics` whenever you need the **full** token rollup for the Flow
+> execution.
 
 ### UsageMetrics field semantics
 
@@ -332,7 +328,7 @@ flow.plot("my_flow_plot")
 flow.kickoff()
 ```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-3.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=1d64a80a490430f29b7fa1085a3062c4)
 
 **Note:** The `id` field is automatically generated and preserved throughout the flow's execution. You don't need to manage or set it manually, and it will be maintained even when updating the state with new data.
 
@@ -384,7 +380,7 @@ flow = StructuredExampleFlow()
 flow.kickoff()
 ```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-3.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=1d64a80a490430f29b7fa1085a3062c4)
 
 **Key Points:**
 
@@ -534,38 +530,36 @@ The persistence system's architecture emphasizes technical precision and customi
 
 The `or_` function in Flows allows you to listen to multiple methods and trigger the listener method when any of the specified methods emit an output.
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai.flow.flow import Flow, listen, or_, start
+```python Code theme={null}
+from crewai.flow.flow import Flow, listen, or_, start
 
-  class OrExampleFlow(Flow):
+class OrExampleFlow(Flow):
 
-      @start()
-      def start_method(self):
-          return "Hello from the start method"
+    @start()
+    def start_method(self):
+        return "Hello from the start method"
 
-      @listen(start_method)
-      def second_method(self):
-          return "Hello from the second method"
+    @listen(start_method)
+    def second_method(self):
+        return "Hello from the second method"
 
-      @listen(or_(start_method, second_method))
-      def logger(self, result):
-          print(f"Logger: {result}")
-
+    @listen(or_(start_method, second_method))
+    def logger(self, result):
+        print(f"Logger: {result}")
 
 
-  flow = OrExampleFlow()
-  flow.plot("my_flow_plot")
-  flow.kickoff()
-  ```
 
-  ```text Output theme={null}
-  Logger: Hello from the start method
-  Logger: Hello from the second method
-  ```
-</CodeGroup>
+flow = OrExampleFlow()
+flow.plot("my_flow_plot")
+flow.kickoff()
+```
 
-<img alt="Flow Visual image" />
+```text Output theme={null}
+Logger: Hello from the start method
+Logger: Hello from the second method
+```
+
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-4.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=88ce9c9f10781b835f170847bc541a13)
 
 When you run this Flow, the `logger` method will be triggered by the output of either the `start_method` or the `second_method`.
 The `or_` function is used to listen to multiple methods and trigger the listener method when any of the specified methods emit an output.
@@ -574,37 +568,35 @@ The `or_` function is used to listen to multiple methods and trigger the listene
 
 The `and_` function in Flows allows you to listen to multiple methods and trigger the listener method only when all the specified methods emit an output.
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai.flow.flow import Flow, and_, listen, start
+```python Code theme={null}
+from crewai.flow.flow import Flow, and_, listen, start
 
-  class AndExampleFlow(Flow):
+class AndExampleFlow(Flow):
 
-      @start()
-      def start_method(self):
-          self.state["greeting"] = "Hello from the start method"
+    @start()
+    def start_method(self):
+        self.state["greeting"] = "Hello from the start method"
 
-      @listen(start_method)
-      def second_method(self):
-          self.state["joke"] = "What do computers eat? Microchips."
+    @listen(start_method)
+    def second_method(self):
+        self.state["joke"] = "What do computers eat? Microchips."
 
-      @listen(and_(start_method, second_method))
-      def logger(self):
-          print("---- Logger ----")
-          print(self.state)
+    @listen(and_(start_method, second_method))
+    def logger(self):
+        print("---- Logger ----")
+        print(self.state)
 
-  flow = AndExampleFlow()
-  flow.plot()
-  flow.kickoff()
-  ```
+flow = AndExampleFlow()
+flow.plot()
+flow.kickoff()
+```
 
-  ```text Output theme={null}
-  ---- Logger ----
-  {'greeting': 'Hello from the start method', 'joke': 'What do computers eat? Microchips.'}
-  ```
-</CodeGroup>
+```text Output theme={null}
+---- Logger ----
+{'greeting': 'Hello from the start method', 'joke': 'What do computers eat? Microchips.'}
+```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-5.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=104318219be9d3502ac57ebb513aded7)
 
 When you run this Flow, the `logger` method will be triggered only when both the `start_method` and the `second_method` emit an output.
 The `and_` function is used to listen to multiple methods and trigger the listener method only when all the specified methods emit an output.
@@ -614,54 +606,52 @@ The `and_` function is used to listen to multiple methods and trigger the listen
 The `@router()` decorator in Flows allows you to define conditional routing logic based on the output of a method.
 You can specify different routes based on the output of the method, allowing you to control the flow of execution dynamically.
 
-<CodeGroup>
-  ```python Code theme={null}
-  import random
-  from typing import Literal
+```python Code theme={null}
+import random
+from typing import Literal
 
-  from crewai.flow.flow import Flow, listen, router, start
-  from pydantic import BaseModel
+from crewai.flow.flow import Flow, listen, router, start
+from pydantic import BaseModel
 
-  class ExampleState(BaseModel):
-      success_flag: bool = False
+class ExampleState(BaseModel):
+    success_flag: bool = False
 
-  class RouterFlow(Flow[ExampleState]):
+class RouterFlow(Flow[ExampleState]):
 
-      @start()
-      def start_method(self):
-          print("Starting the structured flow")
-          random_boolean = random.choice([True, False])
-          self.state.success_flag = random_boolean
+    @start()
+    def start_method(self):
+        print("Starting the structured flow")
+        random_boolean = random.choice([True, False])
+        self.state.success_flag = random_boolean
 
-      @router(start_method)
-      def second_method(self) -> Literal["success", "failed"]:
-          if self.state.success_flag:
-              return "success"
-          else:
-              return "failed"
+    @router(start_method)
+    def second_method(self) -> Literal["success", "failed"]:
+        if self.state.success_flag:
+            return "success"
+        else:
+            return "failed"
 
-      @listen("success")
-      def third_method(self):
-          print("Third method running")
+    @listen("success")
+    def third_method(self):
+        print("Third method running")
 
-      @listen("failed")
-      def fourth_method(self):
-          print("Fourth method running")
+    @listen("failed")
+    def fourth_method(self):
+        print("Fourth method running")
 
 
-  flow = RouterFlow()
-  flow.plot("my_flow_plot")
-  flow.kickoff()
-  ```
+flow = RouterFlow()
+flow.plot("my_flow_plot")
+flow.kickoff()
+```
 
-  ```text Output theme={null}
-  Starting the structured flow
-  Third method running
-  Fourth method running
-  ```
-</CodeGroup>
+```text Output theme={null}
+Starting the structured flow
+Third method running
+Fourth method running
+```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-6.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=f8cad73f073b4e936ef68d88545f1777)
 
 In the above example, the `start_method` generates a random boolean value and sets it in the state.
 The `second_method` uses the `@router()` decorator to define conditional routing logic based on the value of the boolean.
@@ -674,9 +664,9 @@ Declare a router's labels so tools can see its branches: annotate the return typ
 
 ### Human in the Loop (human feedback)
 
-<Note>
-  The `@human_feedback` decorator requires **CrewAI version 1.8.0 or higher**.
-</Note>
+> [!NOTE]
+>
+> The `@human_feedback` decorator requires **CrewAI version 1.8.0 or higher**.
 
 The `@human_feedback` decorator enables human-in-the-loop workflows by pausing flow execution to collect feedback from a human. This is useful for approval gates, quality review, and decision points that require human judgment.
 
@@ -831,7 +821,7 @@ if __name__ == "__main__":
     asyncio.run(run_flow())
 ```
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-7.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=6c60457e1a2b9bc0ef957c373a88359b)
 
 This example demonstrates several key features of using Agents in flows:
 
@@ -960,7 +950,7 @@ if __name__ == "__main__":
 
 In this example, the `PoemFlow` class defines a flow that generates a sentence count, uses the `PoemCrew` to generate a poem, and then saves the poem to a file. The flow is kicked off by calling the `kickoff()` method. The PoemFlowPlot will be generated by `plot()` method.
 
-<img alt="Flow Visual image" />
+![Flow Visual image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crewai-flow-8.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=5321ca5d1f3c662dc7cff6950ba46000)
 
 ### Running the Flow
 
@@ -1049,7 +1039,7 @@ By exploring these examples, you can gain insights into how to leverage CrewAI F
 
 Also, check out our YouTube video on how to use flows in CrewAI below!
 
-<iframe title="CrewAI Flows overview" />
+[CrewAI Flows overview](https://www.youtube.com/embed/MTb5my6VOT8)
 
 ## Running Flows
 

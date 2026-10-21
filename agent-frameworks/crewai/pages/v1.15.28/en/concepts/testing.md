@@ -30,16 +30,16 @@ or using the short forms:
 crewai test -n 5 -m gpt-4o
 ```
 
-<Note>
-  The older `--n_iterations` flag still works but is deprecated and hidden from
-  `--help`. Use `--n-iterations` (or `-n`) instead.
-</Note>
+> [!NOTE]
+>
+> The older `--n_iterations` flag still works but is deprecated and hidden from
+> `--help`. Use `--n-iterations` (or `-n`) instead.
 
 When you run the `crewai test` command, the crew will be executed for the specified number of iterations, and the performance metrics will be displayed at the end of the run.
 
 A table of scores at the end will show the performance of the crew in terms of the following metrics:
 
-<center>**Tasks Scores (1-10 Higher is better)**</center>
+**Tasks Scores (1-10 Higher is better)**
 
 | Tasks/Crew/Agents | Run 1 | Run 2 | Avg. Total | Agents | Additional Info |
 | :- | :-: | :-: | :-: | :-: | :- |

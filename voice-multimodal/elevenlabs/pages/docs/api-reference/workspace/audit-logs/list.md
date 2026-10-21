@@ -144,72 +144,66 @@ OCSF URL object. Spec: https://schema.ocsf.io/1.6.0/objects/url
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "entries": [
     {
-      "activity_id": 1,
-      "activity_name": "Create",
-      "status_id": 1,
+      "activity_id": 0,
+      "activity_name": "string",
+      "status_id": 0,
       "actor": {
         "user": {
-          "name": "jane.doe",
-          "uid": "usr_4f8a2b1c9e3d7f6a",
-          "type_id": 1,
-          "type": "User",
-          "email_addr": "jane.doe@acme-corp.com",
-          "full_name": "Jane Doe",
-          "domain": "acme-corp.com"
+          "name": "string",
+          "uid": "string",
+          "type_id": 0,
+          "type": "string",
+          "email_addr": "string",
+          "full_name": "string",
+          "domain": "string"
         },
-        "app_name": "ElevenLabs Web App",
-        "app_uid": "app_9c3e1d7b2f4a8e5c",
+        "app_name": "string",
+        "app_uid": "string",
         "session": {}
       },
-      "message": "User jane.doe invited john.smith@acme-corp.com to the workspace.",
-      "id": "auditlog_7d3f1a2b4c8e9f0d",
-      "time_dt": "2024-06-10T12:00:00Z",
-      "type_uid": 300101,
-      "type_name": "Account Change: Create",
+      "message": "string",
+      "id": "string",
+      "time_dt": "string",
+      "type_uid": 1,
+      "type_name": "string",
       "metadata": {},
-      "time": 1718035200000,
+      "time": 1,
       "category_name": "Identity & Access Management",
       "category_uid": 3,
-      "class_name": "Account Change",
-      "class_uid": 3001,
-      "severity_id": 1,
+      "class_name": "",
+      "class_uid": 0,
+      "severity_id": 0,
       "device": {
-        "ip": "203.0.113.42",
-        "hostname": "macbook-jane.acme-corp.com",
+        "ip": "string",
+        "hostname": "string",
         "type_id": 99
       },
       "http_request": {
-        "http_method": "POST",
+        "http_method": "string",
         "url": {
-          "url_string": "https://api.elevenlabs.io/v1/workspace/members/invite",
-          "scheme": "https",
-          "hostname": "api.elevenlabs.io",
-          "port": 443,
-          "path": "/v1/workspace/members/invite",
-          "query_string": null
+          "url_string": "string",
+          "scheme": "string",
+          "hostname": "string",
+          "port": 1,
+          "path": "string",
+          "query_string": "string"
         },
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "user_agent": "string",
         "x_forwarded_for": [
-          "203.0.113.42"
+          "string"
         ]
       },
       "unmapped": {}
     }
   ],
   "has_more": true,
-  "next_cursor": "eyJsYXN0X2lkIjoiYXVkaXRsb2dfN2QzZjFhMmI0YzhlOWYwZCIsInRpbWUiOjE3MTgwMzUyMDAwMDB9"
+  "next_cursor": "string"
 }
 ```
 
@@ -220,17 +214,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/workspace/audit-logs"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/workspace/audit-logs';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -246,7 +237,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -255,11 +245,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/audit-logs"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -282,8 +268,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -294,8 +278,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/workspace/audit-logs")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -305,12 +287,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/audit-logs', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/workspace/audit-logs');
 
 echo $response->getBody();
 ```
@@ -320,25 +297,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/audit-logs");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/workspace/audit-logs")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

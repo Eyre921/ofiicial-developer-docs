@@ -14,12 +14,12 @@ This page is for the person who deploys managed settings for Claude Code, whethe
 * **See what your users get when you change nothing**: [Know what happens by default](#know-what-happens-by-default)
 * **Leave mods on with other limits**: [Choose how much to allow](#choose-how-much-to-allow)
 
-<Note>
-  These cases are covered on other pages:
-
-  * **You haven't deployed managed settings before**: start with [Deploy managed settings](/docs/en/managed-settings)
-  * **You want to control which plugins users can install**: see [Manage plugins for your organization](/docs/en/plugins/org)
-</Note>
+> [!NOTE]
+>
+> These cases are covered on other pages:
+>
+> * **You haven't deployed managed settings before**: start with [Deploy managed settings](/docs/en/managed-settings)
+> * **You want to control which plugins users can install**: see [Manage plugins for your organization](/docs/en/plugins/org)
 
 ## Stop user-installed mods from loading
 

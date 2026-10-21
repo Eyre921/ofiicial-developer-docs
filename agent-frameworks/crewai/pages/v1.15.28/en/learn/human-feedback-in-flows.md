@@ -8,9 +8,9 @@ Learn how to integrate human feedback directly into your CrewAI Flows using the 
 
 ## Overview
 
-<Note>
-  The `@human_feedback` decorator requires **CrewAI version 1.8.0 or higher**. Make sure to update your installation before using this feature.
-</Note>
+> [!NOTE]
+>
+> The `@human_feedback` decorator requires **CrewAI version 1.8.0 or higher**. Make sure to update your installation before using this feature.
 
 The `@human_feedback` decorator enables human-in-the-loop (HITL) workflows directly within CrewAI Flows. It allows you to pause flow execution, present output to a human for review, collect their feedback, and optionally route to different listeners based on the feedback outcome.
 
@@ -130,13 +130,13 @@ class ReviewFlow(Flow):
 
 When the human says something like "needs more detail", the LLM collapses that to `"needs_revision"`, which triggers `review_content` again via `or_()` — creating a revision loop. The loop continues until the outcome is `"approved"` or `"rejected"`.
 
-<Tip>
-  The LLM uses structured outputs (function calling) when available to guarantee the response is one of your specified outcomes. This makes routing reliable and predictable.
-</Tip>
+> [!TIP]
+>
+> The LLM uses structured outputs (function calling) when available to guarantee the response is one of your specified outcomes. This makes routing reliable and predictable.
 
-<Warning>
-  A `@start()` method only runs once at the beginning of the flow. If you need a revision loop, separate the start method from the review method and use `@listen(or_("trigger", "revision_outcome"))` on the review method to enable the self-loop.
-</Warning>
+> [!WARNING]
+>
+> A `@start()` method only runs once at the beginning of the flow. If you need a revision loop, separate the start method from the review method and use `@listen(or_("trigger", "revision_outcome"))` on the review method to enable the self-loop.
 
 ## HumanFeedbackResult
 
@@ -195,96 +195,94 @@ def summarize(self):
         print(f"{i+1}. {fb.method_name}: {fb.outcome or 'no routing'}")
 ```
 
-<Warning>
-  Each `HumanFeedbackResult` is appended to `human_feedback_history`, so multiple feedback steps won't overwrite each other. Use this list to access all feedback collected during the flow.
-</Warning>
+> [!WARNING]
+>
+> Each `HumanFeedbackResult` is appended to `human_feedback_history`, so multiple feedback steps won't overwrite each other. Use this list to access all feedback collected during the flow.
 
 ## Complete Example: Content Approval Workflow
 
 Here's a full example implementing a content review and approval workflow with a revision loop:
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai.flow.flow import Flow, start, listen, or_
-  from crewai.flow.human_feedback import human_feedback, HumanFeedbackResult
-  from pydantic import BaseModel
+```python Code theme={null}
+from crewai.flow.flow import Flow, start, listen, or_
+from crewai.flow.human_feedback import human_feedback, HumanFeedbackResult
+from pydantic import BaseModel
 
 
-  class ContentState(BaseModel):
-      draft: str = ""
-      revision_count: int = 0
-      status: str = "pending"
+class ContentState(BaseModel):
+    draft: str = ""
+    revision_count: int = 0
+    status: str = "pending"
 
 
-  class ContentApprovalFlow(Flow[ContentState]):
-      """A flow that generates content and loops until the human approves."""
+class ContentApprovalFlow(Flow[ContentState]):
+    """A flow that generates content and loops until the human approves."""
 
-      @start()
-      def generate_draft(self):
-          self.state.draft = "# AI Safety\n\nThis is a draft about AI Safety..."
-          return self.state.draft
+    @start()
+    def generate_draft(self):
+        self.state.draft = "# AI Safety\n\nThis is a draft about AI Safety..."
+        return self.state.draft
 
-      @human_feedback(
-          message="Please review this draft. Approve, reject, or describe what needs changing:",
-          emit=["approved", "rejected", "needs_revision"],
-          llm="gpt-4o-mini",
-          default_outcome="needs_revision",
-      )
-      @listen(or_("generate_draft", "needs_revision"))
-      def review_draft(self):
-          self.state.revision_count += 1
-          return f"{self.state.draft} (v{self.state.revision_count})"
+    @human_feedback(
+        message="Please review this draft. Approve, reject, or describe what needs changing:",
+        emit=["approved", "rejected", "needs_revision"],
+        llm="gpt-4o-mini",
+        default_outcome="needs_revision",
+    )
+    @listen(or_("generate_draft", "needs_revision"))
+    def review_draft(self):
+        self.state.revision_count += 1
+        return f"{self.state.draft} (v{self.state.revision_count})"
 
-      @listen("approved")
-      def publish_content(self, result: HumanFeedbackResult):
-          self.state.status = "published"
-          print(f"Content approved and published! Reviewer said: {result.feedback}")
-          return "published"
+    @listen("approved")
+    def publish_content(self, result: HumanFeedbackResult):
+        self.state.status = "published"
+        print(f"Content approved and published! Reviewer said: {result.feedback}")
+        return "published"
 
-      @listen("rejected")
-      def handle_rejection(self, result: HumanFeedbackResult):
-          self.state.status = "rejected"
-          print(f"Content rejected. Reason: {result.feedback}")
-          return "rejected"
+    @listen("rejected")
+    def handle_rejection(self, result: HumanFeedbackResult):
+        self.state.status = "rejected"
+        print(f"Content rejected. Reason: {result.feedback}")
+        return "rejected"
 
 
-  flow = ContentApprovalFlow()
-  result = flow.kickoff()
-  print(f"\nFlow completed. Status: {flow.state.status}, Reviews: {flow.state.revision_count}")
-  ```
+flow = ContentApprovalFlow()
+result = flow.kickoff()
+print(f"\nFlow completed. Status: {flow.state.status}, Reviews: {flow.state.revision_count}")
+```
 
-  ```text Output theme={null}
-  ==================================================
-  OUTPUT FOR REVIEW:
-  ==================================================
-  # AI Safety
+```text Output theme={null}
+==================================================
+OUTPUT FOR REVIEW:
+==================================================
+# AI Safety
 
-  This is a draft about AI Safety... (v1)
-  ==================================================
+This is a draft about AI Safety... (v1)
+==================================================
 
-  Please review this draft. Approve, reject, or describe what needs changing:
-  (Press Enter to skip, or type your feedback)
+Please review this draft. Approve, reject, or describe what needs changing:
+(Press Enter to skip, or type your feedback)
 
-  Your feedback: Needs more detail on alignment research
+Your feedback: Needs more detail on alignment research
 
-  ==================================================
-  OUTPUT FOR REVIEW:
-  ==================================================
-  # AI Safety
+==================================================
+OUTPUT FOR REVIEW:
+==================================================
+# AI Safety
 
-  This is a draft about AI Safety... (v2)
-  ==================================================
+This is a draft about AI Safety... (v2)
+==================================================
 
-  Please review this draft. Approve, reject, or describe what needs changing:
-  (Press Enter to skip, or type your feedback)
+Please review this draft. Approve, reject, or describe what needs changing:
+(Press Enter to skip, or type your feedback)
 
-  Your feedback: Looks good, approved!
+Your feedback: Looks good, approved!
 
-  Content approved and published! Reviewer said: Looks good, approved!
+Content approved and published! Reviewer said: Looks good, approved!
 
-  Flow completed. Status: published, Reviews: 2
-  ```
-</CodeGroup>
+Flow completed. Status: published, Reviews: 2
+```
 
 The key pattern is `@listen(or_("generate_draft", "needs_revision"))` — the review method listens to both the initial trigger and its own revision outcome, creating a self-loop that repeats until the human approves or rejects.
 
@@ -482,9 +480,9 @@ class ReviewFlow(Flow):
         return "Published!"
 ```
 
-<Tip>
-  The flow framework **automatically persists state** when `HumanFeedbackPending` is raised. Your provider only needs to notify the external system and raise the exception—no manual persistence calls required.
-</Tip>
+> [!TIP]
+>
+> The flow framework **automatically persists state** when `HumanFeedbackPending` is raised. Your provider only needs to notify the external system and raise the exception—no manual persistence calls required.
 
 ### Handling Paused Flows
 
@@ -627,9 +625,9 @@ async def on_slack_feedback_async(flow_id: str, slack_message: str):
     return result
 ```
 
-<Warning>
-  If you're using an async web framework (FastAPI, aiohttp, Slack Bolt async mode), use `await flow.resume_async()` instead of `flow.resume()`. Calling `resume()` from within a running event loop will raise a `RuntimeError`.
-</Warning>
+> [!WARNING]
+>
+> If you're using an async web framework (FastAPI, aiohttp, Slack Bolt async mode), use `await flow.resume_async()` instead of `flow.resume()`. Calling `resume()` from within a running event loop will raise a `RuntimeError`.
 
 ### Best Practices for Async Feedback
 
@@ -651,9 +649,9 @@ The `learn=True` parameter enables a feedback loop between human reviewers and t
 
 Over time, the human sees progressively better pre-reviewed output because each correction informs future reviews.
 
-<Note>
-  The human approves the reviewed version, which can differ from what the method returned. Downstream, read it from `self.last_human_feedback.output` (or the listener's argument). State the method set before the review still holds the original. If the flow paused for async feedback, the output is restored from JSON on resume, so a Pydantic model arrives as a `dict`.
-</Note>
+> [!NOTE]
+>
+> The human approves the reviewed version, which can differ from what the method returned. Downstream, read it from `self.last_human_feedback.output` (or the listener's argument). State the method set before the review still holds the original. If the flow paused for async feedback, the output is restored from JSON on resume, so a Pydantic model arrives as a `dict`.
 
 ### Example
 
@@ -698,9 +696,9 @@ class ArticleReviewFlow(Flow):
 * **Graceful degradation**: If the LLM fails during distillation, nothing is stored. If it fails during pre-review, the raw output is shown. Neither failure blocks the flow unless `learn_strict=True`, which raises instead.
 * **No scope/categories needed**: When storing lessons, only `source` is passed. The encoding pipeline infers scope, categories, and importance automatically.
 
-<Note>
-  `learn=True` requires the Flow to have memory available. Flows get memory automatically by default, but if you've disabled it with `_skip_auto_memory`, HITL learning will be silently skipped.
-</Note>
+> [!NOTE]
+>
+> `learn=True` requires the Flow to have memory available. Flows get memory automatically by default, but if you've disabled it with `_skip_auto_memory`, HITL learning will be silently skipped.
 
 ## Related Documentation
 

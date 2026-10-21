@@ -13,13 +13,11 @@ Quickly start monitoring your Agents in just a single line of code with OpenTele
 It provides OpenTelemetry-native tracing and metrics to track important parameters like cost, latency, interactions and task sequences.
 This setup enables you to track hyperparameters and monitor for performance issues, helping you find ways to enhance and fine-tune your agents over time.
 
-<Frame>
-  <img alt="Overview Agent usage including cost and tokens" />
+![Overview Agent usage including cost and tokens](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/openlit1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=2b7fe9d84e9ec2b33c5eae6fa5668bee)
 
-  <img alt="Overview of agent otel traces and metrics" />
+![Overview of agent otel traces and metrics](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/openlit2.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=74bb57f622b6eeb67fd33d93d682df26)
 
-  <img alt="Overview of agent traces in details" />
-</Frame>
+![Overview of agent traces in details](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/openlit3.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=734cbc0c8fee538986d74b063c20cef6)
 
 ### Features
 
@@ -35,160 +33,152 @@ This setup enables you to track hyperparameters and monitor for performance issu
 
 ## Setup Instructions
 
-<Steps>
-  <Step title="Deploy OpenLIT">
-    <Steps>
-      <Step title="Git Clone OpenLIT Repository">
-        ```shell theme={null}
-        git clone git@github.com:openlit/openlit.git
-        ```
-      </Step>
+**1. Deploy OpenLIT**
 
-      <Step title="Start Docker Compose">
-        From the root directory of the [OpenLIT Repo](https://github.com/openlit/openlit), Run the below command:
+**1. Git Clone OpenLIT Repository**
 
-        ```shell theme={null}
-        docker compose up -d
-        ```
-      </Step>
-    </Steps>
-  </Step>
+```shell theme={null}
+git clone git@github.com:openlit/openlit.git
+```
 
-  <Step title="Install OpenLIT SDK">
-    ```shell theme={null}
-    pip install openlit
-    ```
-  </Step>
+**2. Start Docker Compose**
 
-  <Step title="Initialize OpenLIT in Your Application">
-    Add the following two lines to your application code:
+From the root directory of the [OpenLIT Repo](https://github.com/openlit/openlit), Run the below command:
 
-    <Tabs>
-      <Tab title="Setup using function arguments">
-        ```python theme={null}
-        import openlit
-        openlit.init(otlp_endpoint="http://127.0.0.1:4318")
-        ```
+```shell theme={null}
+docker compose up -d
+```
 
-        Example Usage for monitoring a CrewAI Agent:
+**2. Install OpenLIT SDK**
 
-        ```python theme={null}
-        from crewai import Agent, Task, Crew, Process
-        import openlit
+```shell theme={null}
+pip install openlit
+```
 
-        openlit.init(disable_metrics=True)
-        # Define your agents
-        researcher = Agent(
-            role="Researcher",
-            goal="Conduct thorough research and analysis on AI and AI agents",
-            backstory="You're an expert researcher, specialized in technology, software engineering, AI, and startups. You work as a freelancer and are currently researching for a new client.",
-            allow_delegation=False,
-            llm='command-r'
-        )
+**3. Initialize OpenLIT in Your Application**
+
+Add the following two lines to your application code:
+
+**Setup using function arguments**
+
+```python theme={null}
+import openlit
+openlit.init(otlp_endpoint="http://127.0.0.1:4318")
+```
+
+Example Usage for monitoring a CrewAI Agent:
+
+```python theme={null}
+from crewai import Agent, Task, Crew, Process
+import openlit
+
+openlit.init(disable_metrics=True)
+# Define your agents
+researcher = Agent(
+    role="Researcher",
+    goal="Conduct thorough research and analysis on AI and AI agents",
+    backstory="You're an expert researcher, specialized in technology, software engineering, AI, and startups. You work as a freelancer and are currently researching for a new client.",
+    allow_delegation=False,
+    llm='command-r'
+)
 
 
-        # Define your task
-        task = Task(
-            description="Generate a list of 5 interesting ideas for an article, then write one captivating paragraph for each idea that showcases the potential of a full article on this topic. Return the list of ideas with their paragraphs and your notes.",
-            expected_output="5 bullet points, each with a paragraph and accompanying notes.",
-        )
+# Define your task
+task = Task(
+    description="Generate a list of 5 interesting ideas for an article, then write one captivating paragraph for each idea that showcases the potential of a full article on this topic. Return the list of ideas with their paragraphs and your notes.",
+    expected_output="5 bullet points, each with a paragraph and accompanying notes.",
+)
 
-        # Define the manager agent
-        manager = Agent(
-            role="Project Manager",
-            goal="Efficiently manage the crew and ensure high-quality task completion",
-            backstory="You're an experienced project manager, skilled in overseeing complex projects and guiding teams to success. Your role is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard.",
-            allow_delegation=True,
-            llm='command-r'
-        )
+# Define the manager agent
+manager = Agent(
+    role="Project Manager",
+    goal="Efficiently manage the crew and ensure high-quality task completion",
+    backstory="You're an experienced project manager, skilled in overseeing complex projects and guiding teams to success. Your role is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard.",
+    allow_delegation=True,
+    llm='command-r'
+)
 
-        # Instantiate your crew with a custom manager
-        crew = Crew(
-            agents=[researcher],
-            tasks=[task],
-            manager_agent=manager,
-            process=Process.hierarchical,
-        )
+# Instantiate your crew with a custom manager
+crew = Crew(
+    agents=[researcher],
+    tasks=[task],
+    manager_agent=manager,
+    process=Process.hierarchical,
+)
 
-        # Start the crew's work
-        result = crew.kickoff()
+# Start the crew's work
+result = crew.kickoff()
 
-        print(result)
-        ```
-      </Tab>
+print(result)
+```
 
-      <Tab title="Setup using Environment Variables">
-        Add the following two lines to your application code:
+**Setup using Environment Variables**
 
-        ```python theme={null}
-        import openlit
+Add the following two lines to your application code:
 
-        openlit.init()
-        ```
+```python theme={null}
+import openlit
 
-        Run the following command to configure the OTEL export endpoint:
+openlit.init()
+```
 
-        ```shell theme={null}
-        export OTEL_EXPORTER_OTLP_ENDPOINT = "http://127.0.0.1:4318"
-        ```
+Run the following command to configure the OTEL export endpoint:
 
-        Example Usage for monitoring a CrewAI Async Agent:
+```shell theme={null}
+export OTEL_EXPORTER_OTLP_ENDPOINT = "http://127.0.0.1:4318"
+```
 
-        ```python theme={null}
-        import asyncio
-        from crewai import Crew, Agent, Task
-        import openlit
+Example Usage for monitoring a CrewAI Async Agent:
 
-        openlit.init(otlp_endpoint="http://127.0.0.1:4318")
+```python theme={null}
+import asyncio
+from crewai import Crew, Agent, Task
+import openlit
 
-        # Create an agent with code execution enabled
-        coding_agent = Agent(
-          role="Python Data Analyst",
-          goal="Analyze data and provide insights using Python",
-          backstory="You are an experienced data analyst with strong Python skills.",
-          allow_code_execution=True,
-          llm="command-r"
-        )
+openlit.init(otlp_endpoint="http://127.0.0.1:4318")
 
-        # Create a task that requires code execution
-        data_analysis_task = Task(
-          description="Analyze the given dataset and calculate the average age of participants. Ages: {ages}",
-          agent=coding_agent,
-          expected_output="5 bullet points, each with a paragraph and accompanying notes.",
-        )
+# Create an agent with code execution enabled
+coding_agent = Agent(
+  role="Python Data Analyst",
+  goal="Analyze data and provide insights using Python",
+  backstory="You are an experienced data analyst with strong Python skills.",
+  allow_code_execution=True,
+  llm="command-r"
+)
 
-        # Create a crew and add the task
-        analysis_crew = Crew(
-          agents=[coding_agent],
-          tasks=[data_analysis_task]
-        )
+# Create a task that requires code execution
+data_analysis_task = Task(
+  description="Analyze the given dataset and calculate the average age of participants. Ages: {ages}",
+  agent=coding_agent,
+  expected_output="5 bullet points, each with a paragraph and accompanying notes.",
+)
 
-        # Async function to kickoff the crew asynchronously
-        async def async_crew_execution():
-            result = await analysis_crew.kickoff_async(inputs={"ages": [25, 30, 35, 40, 45]})
-            print("Crew Result:", result)
+# Create a crew and add the task
+analysis_crew = Crew(
+  agents=[coding_agent],
+  tasks=[data_analysis_task]
+)
 
-        # Run the async function
-        asyncio.run(async_crew_execution())
-        ```
-      </Tab>
-    </Tabs>
+# Async function to kickoff the crew asynchronously
+async def async_crew_execution():
+    result = await analysis_crew.kickoff_async(inputs={"ages": [25, 30, 35, 40, 45]})
+    print("Crew Result:", result)
 
-    Refer to OpenLIT [Python SDK repository](https://github.com/openlit/openlit/tree/main/sdk/python) for more advanced configurations and use cases.
-  </Step>
+# Run the async function
+asyncio.run(async_crew_execution())
+```
 
-  <Step title="Visualize and Analyze">
-    With the Agent Observability data now being collected and sent to OpenLIT, the next step is to visualize and analyze this data to get insights into your Agent's performance, behavior, and identify areas of improvement.
+Refer to OpenLIT [Python SDK repository](https://github.com/openlit/openlit/tree/main/sdk/python) for more advanced configurations and use cases.
 
-    Just head over to OpenLIT at `127.0.0.1:3000` on your browser to start exploring. You can login using the default credentials
+**4. Visualize and Analyze**
 
-    * **Email**: `user@openlit.io`
-    * **Password**: `openlituser`
+With the Agent Observability data now being collected and sent to OpenLIT, the next step is to visualize and analyze this data to get insights into your Agent's performance, behavior, and identify areas of improvement.
 
-    <Frame>
-      <img alt="Overview Agent usage including cost and tokens" />
+Just head over to OpenLIT at `127.0.0.1:3000` on your browser to start exploring. You can login using the default credentials
 
-      <img alt="Overview of agent otel traces and metrics" />
-    </Frame>
-  </Step>
-</Steps>
+* **Email**: `user@openlit.io`
+* **Password**: `openlituser`
+
+![Overview Agent usage including cost and tokens](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/openlit1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=2b7fe9d84e9ec2b33c5eae6fa5668bee)
+
+![Overview of agent otel traces and metrics](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/openlit2.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=74bb57f622b6eeb67fd33d93d682df26)

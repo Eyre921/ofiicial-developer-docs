@@ -12,9 +12,9 @@ The declarative tier of generative UI — the agent assembles a surface from a c
 
 You still own the components. The agent can only use what is in your catalog, so it can never render something you did not ship. What the agent decides is the **layout and the data** — how those building blocks come together into a panel, and what goes in them.
 
-<Note>
-  A2UI works with [Flows](/en/concepts/flows). Both modes below — dynamic and fixed-schema — run as Flows served over AG-UI, exactly like the rest of this section.
-</Note>
+> [!NOTE]
+>
+> A2UI works with [Flows](/en/concepts/flows). Both modes below — dynamic and fixed-schema — run as Flows served over AG-UI, exactly like the rest of this section.
 
 ## The catalog (same for every mode)
 
@@ -31,9 +31,9 @@ import { catalog } from "@/a2ui-catalog";
 
 The catalog is your set of React components keyed by a catalog id — a `FlightCard`, a `HotelCard`, a `Chart`, whatever your app needs. The agent references catalog ids; CopilotKit paints your components with the data the agent supplies.
 
-<Note>
-  Authoring the catalog itself — the id schema, prop mapping, and composition rules — is deeper than this page covers. See the [CopilotKit A2UI docs](https://docs.copilotkit.ai) for the full authoring reference. Here we focus on the two backend modes and when to reach for each.
-</Note>
+> [!NOTE]
+>
+> Authoring the catalog itself — the id schema, prop mapping, and composition rules — is deeper than this page covers. See the [CopilotKit A2UI docs](https://docs.copilotkit.ai) for the full authoring reference. Here we focus on the two backend modes and when to reach for each.
 
 ## Two backend modes
 
@@ -48,25 +48,23 @@ A2UI backends come in two shapes. In **dynamic** mode the agent designs the surf
 
 The Flow wires **no** A2UI tool. Enable A2UI on the runtime for this agent and it gains a `generate_a2ui` tool automatically. A sub-agent designs a surface from the conversation against your catalog, streams it to the frontend progressively, and self-heals invalid output through a validate-then-retry recovery pass. You write a normal agentic-chat Flow; the tool is injected for you.
 
-<Steps>
-  <Step title="Register the catalog on the provider">
-    Same as above — pass your catalog through the `a2ui` prop:
+**1. Register the catalog on the provider**
 
-    ```tsx theme={null}
-    <CopilotKit runtimeUrl="/api/copilotkit" agent="assistant" a2ui={{ catalog }}>
-      {/* ... */}
-    </CopilotKit>
-    ```
-  </Step>
+Same as above — pass your catalog through the `a2ui` prop:
 
-  <Step title="Serve a normal Flow">
-    Your backend is a plain agentic-chat Flow. You do not define an A2UI tool — the runtime injects `generate_a2ui` when A2UI is enabled for the agent, and the sub-agent invents the layout from the conversation.
-  </Step>
+```tsx theme={null}
+<CopilotKit runtimeUrl="/api/copilotkit" agent="assistant" a2ui={{ catalog }}>
+  {/* ... */}
+</CopilotKit>
+```
 
-  <Step title="Let the agent compose">
-    When a turn calls for UI, the agent assembles a surface from your catalog, streams the components in as it designs them, and repairs any invalid output before it reaches the screen. Your registered components render in the layout the agent chose.
-  </Step>
-</Steps>
+**2. Serve a normal Flow**
+
+Your backend is a plain agentic-chat Flow. You do not define an A2UI tool — the runtime injects `generate_a2ui` when A2UI is enabled for the agent, and the sub-agent invents the layout from the conversation.
+
+**3. Let the agent compose**
+
+When a turn calls for UI, the agent assembles a surface from your catalog, streams the components in as it designs them, and repairs any invalid output before it reaches the screen. Your registered components render in the layout the agent chose.
 
 ### Fixed-schema
 
@@ -94,30 +92,26 @@ The tool assembles the `createSurface` -> `updateComponents` -> `updateDataModel
 
 ## When to use which
 
-<CardGroup>
-  <Card title="Dynamic" icon="wand-magic-sparkles">
-    The layout is not known ahead of time and you want the agent to compose novel surfaces from your primitives. You gain flexibility and pay for an LLM layout step.
-  </Card>
+> **Dynamic**
+>
+> The layout is not known ahead of time and you want the agent to compose novel surfaces from your primitives. You gain flexibility and pay for an LLM layout step.
 
-  <Card title="Fixed-schema" icon="table-cells">
-    The layout is known and only the data varies. More predictable and deterministic — no generation, no recovery, no LLM in the layout path.
-  </Card>
-</CardGroup>
+> **Fixed-schema**
+>
+> The layout is known and only the data varies. More predictable and deterministic — no generation, no recovery, no LLM in the layout path.
 
 Both modes share the same frontend: one catalog, registered once on the provider. Start with fixed-schema when your surfaces are stable, and reach for dynamic when you want the agent to design layouts you did not anticipate.
 
 ## Related
 
-<CardGroup>
-  <Card title="Generative UI" icon="wand-magic-sparkles" href="/edge/en/guides/frontend/generative-ui">
-    The full spectrum — A2UI is its declarative tier.
-  </Card>
+> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+>
+> The full spectrum — A2UI is its declarative tier.
 
-  <Card title="Tool-Based Generative UI" icon="puzzle-piece" href="/edge/en/guides/frontend/tool-based-generative-ui">
-    Map one tool to one component (controlled).
-  </Card>
+> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+>
+> Map one tool to one component (controlled).
 
-  <Card title="Agentic Generative UI" icon="list-check" href="/edge/en/guides/frontend/agentic-generative-ui">
-    Render live agent state (controlled).
-  </Card>
-</CardGroup>
+> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+>
+> Render live agent state (controlled).

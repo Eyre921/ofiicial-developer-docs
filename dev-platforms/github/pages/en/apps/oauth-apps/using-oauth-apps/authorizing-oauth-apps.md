@@ -10,7 +10,7 @@ You can connect your GitHub identity to third-party applications using OAuth. Wh
 
 When an OAuth app wants to identify you by your account on GitHub, you'll see a page with the app's developer contact information and a list of the specific data that's being requested.
 
-> \[!TIP]
+> [!TIP]
 > You must [verify your email address](/en/account-and-profile/how-tos/email-preferences/verifying-your-email-address) before you can authorize an OAuth app.
 
 ## OAuth app access
@@ -20,7 +20,7 @@ OAuth apps can have *read* or *write* access to your GitHub data.
 * **Read access** only allows an app to *look at* your data.
 * **Write access** allows an app to *change* your data.
 
-> \[!TIP]
+> [!TIP]
 > We recommend that you regularly review your authorized integrations. Remove any applications and tokens that haven't been used in a while. For more information, see [Reviewing your authorized OAuth apps](/en/apps/oauth-apps/using-oauth-apps/reviewing-your-authorized-oauth-apps).
 
 ### About OAuth scopes
@@ -29,7 +29,7 @@ OAuth apps can have *read* or *write* access to your GitHub data.
 
 When you want to use an OAuth app that integrates with GitHub, that app lets you know what type of access to your data will be required. If you grant access to the app, then the app will be able to perform actions on your behalf, such as reading or modifying data. For example, if you want to use an app that requests `user:email` scope, the app will have read-only access to your private email addresses. For more information, see [Scopes for OAuth apps](/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps).
 
-> \[!NOTE]
+> [!NOTE]
 > Currently, you can't scope source code access to read-only.
 
 A token has the same capabilities to access resources and perform actions on those resources that the owner of the token has, and is further limited by any scopes or permissions granted to the token. A token cannot grant additional access capabilities to a user. For example, an application can create an access token that is configured with an `admin:org` scope, but if the user of the application is not an organization owner, the application will not be granted administrative access to the organization.
@@ -75,7 +75,7 @@ When you authorize an OAuth app for your personal account, you'll also see how t
 
 If you belong to any organizations with SAML single sign-on (SSO) enabled, and you have created a linked identity for that organization by authenticating via SAML in the past, you must have an active SAML session for each organization each time you authorize an OAuth app.
 
-> \[!NOTE]
+> [!NOTE]
 > If you're encountering issues with an authorized OAuth app or GitHub App accessing an organization that is protected by SAML, you may need to revoke the app from your [Authorized GitHub Apps](https://github.com/settings/applications) or [Authorized OAuth apps](https://github.com/settings/apps/authorizations) page, visit the organization to authenticate and establish an active SAML session, and then attempt to reauthorize the app by accessing it.
 
 ## Further reading

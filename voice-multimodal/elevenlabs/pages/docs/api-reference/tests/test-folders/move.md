@@ -65,16 +65,9 @@ Validation Error
 ```json
 {
   "entity_ids": [
-    "test_abc123def456",
-    "folder_xyz789ghi012"
+    "string"
   ]
 }
-```
-
-**Response**
-
-```json
-{}
 ```
 
 **SDK Code**
@@ -84,7 +77,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move"
 
-payload = { "entity_ids": ["test_abc123def456", "folder_xyz789ghi012"] }
+payload = { "entity_ids": ["string"] }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -97,7 +90,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"entity_ids":["test_abc123def456","folder_xyz789ghi012"]}'
+  body: '{"entity_ids":["string"]}'
 };
 
 try {
@@ -123,7 +116,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move"
 
-	payload := strings.NewReader("{\n  \"entity_ids\": [\n    \"test_abc123def456\",\n    \"folder_xyz789ghi012\"\n  ]\n}")
+	payload := strings.NewReader("{\n  \"entity_ids\": [\n    \"string\"\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -151,7 +144,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"entity_ids\": [\n    \"test_abc123def456\",\n    \"folder_xyz789ghi012\"\n  ]\n}"
+request.body = "{\n  \"entity_ids\": [\n    \"string\"\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -163,7 +156,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move")
   .header("Content-Type", "application/json")
-  .body("{\n  \"entity_ids\": [\n    \"test_abc123def456\",\n    \"folder_xyz789ghi012\"\n  ]\n}")
+  .body("{\n  \"entity_ids\": [\n    \"string\"\n  ]\n}")
   .asString();
 ```
 
@@ -176,8 +169,7 @@ $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move', [
   'body' => '{
   "entity_ids": [
-    "test_abc123def456",
-    "folder_xyz789ghi012"
+    "string"
   ]
 }',
   'headers' => [
@@ -194,7 +186,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing/bulk-move");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"entity_ids\": [\n    \"test_abc123def456\",\n    \"folder_xyz789ghi012\"\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"entity_ids\": [\n    \"string\"\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -202,7 +194,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["entity_ids": ["test_abc123def456", "folder_xyz789ghi012"]] as [String : Any]
+let parameters = ["entity_ids": ["string"]] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

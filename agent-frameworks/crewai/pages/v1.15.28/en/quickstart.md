@@ -12,7 +12,7 @@ Install our coding agent skills (Claude Code, Codex, ...) to quickly get your co
 
 You can install it with `npx skills add crewaiinc/skills`
 
-<iframe />
+[https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af](https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af)
 
 In this guide you will **create a Flow** that sets a research topic, runs a **crew with one agent** (a researcher using web search), and ends with a **markdown report** on disk. Flows are the recommended way to structure production apps: they own **state** and **execution order**, while **agents** do the work inside a crew step.
 
@@ -26,169 +26,161 @@ If you have not installed CrewAI yet, follow the [installation guide](/en/instal
 
 ## Build your first Flow
 
-<Steps>
-  <Step title="Create a Flow project">
-    From your terminal, scaffold a Flow project (the folder name uses underscores, e.g. `latest_ai_flow`):
+**1. Create a Flow project**
 
-    <CodeGroup>
-      ```shell Terminal theme={null}
-      crewai create flow latest-ai-flow
-      cd latest_ai_flow
-      ```
-    </CodeGroup>
+From your terminal, scaffold a Flow project (the folder name uses underscores, e.g. `latest_ai_flow`):
 
-    This creates a Flow app under `src/latest_ai_flow/`, including a starter crew under `crews/content_crew/` that you will replace with a minimal **single-agent** research crew in the next steps.
-  </Step>
+```shell Terminal theme={null}
+crewai create flow latest-ai-flow
+cd latest_ai_flow
+```
 
-  <Step title="Configure one agent in JSONC">
-    Create `src/latest_ai_flow/crews/content_crew/agents/researcher.jsonc` (create the `agents/` directory if needed). Variables like `{topic}` are filled from `crew.kickoff(inputs=...)`.
+This creates a Flow app under `src/latest_ai_flow/`, including a starter crew under `crews/content_crew/` that you will replace with a minimal **single-agent** research crew in the next steps.
 
-    ```jsonc agents/researcher.jsonc theme={null}
+**2. Configure one agent in JSONC**
+
+Create `src/latest_ai_flow/crews/content_crew/agents/researcher.jsonc` (create the `agents/` directory if needed). Variables like `{topic}` are filled from `crew.kickoff(inputs=...)`.
+
+```jsonc agents/researcher.jsonc theme={null}
+{
+  "role": "{topic} Senior Data Researcher",
+  "goal": "Uncover cutting-edge developments in {topic}",
+  "backstory": "You're a seasoned researcher who finds relevant information and presents it clearly.",
+  "tools": ["SerperDevTool"],
+  "settings": {
+    "verbose": true
+  }
+}
+```
+
+**3. Configure the crew in `crew.jsonc`**
+
+Create `src/latest_ai_flow/crews/content_crew/crew.jsonc`:
+
+```jsonc crew.jsonc theme={null}
+{
+  "name": "Research Crew",
+  "agents": ["researcher"],
+  "tasks": [
     {
-      "role": "{topic} Senior Data Researcher",
-      "goal": "Uncover cutting-edge developments in {topic}",
-      "backstory": "You're a seasoned researcher who finds relevant information and presents it clearly.",
-      "tools": ["SerperDevTool"],
-      "settings": {
-        "verbose": true
-      }
+      "name": "research_task",
+      "description": "Conduct thorough research about {topic}. Use web search to find recent, credible information.",
+      "expected_output": "A markdown report with clear sections: key trends, notable tools or companies, and implications. Aim for 800-1200 words. No fenced code blocks around the whole document.",
+      "agent": "researcher",
+      "output_file": "output/report.md",
+      "markdown": true
     }
-    ```
-  </Step>
+  ],
+  "process": "sequential",
+  "verbose": true
+}
+```
 
-  <Step title="Configure the crew in `crew.jsonc`">
-    Create `src/latest_ai_flow/crews/content_crew/crew.jsonc`:
+**4. Load the JSON crew (`content_crew.py`)**
 
-    ```jsonc crew.jsonc theme={null}
-    {
-      "name": "Research Crew",
-      "agents": ["researcher"],
-      "tasks": [
-        {
-          "name": "research_task",
-          "description": "Conduct thorough research about {topic}. Use web search to find recent, credible information.",
-          "expected_output": "A markdown report with clear sections: key trends, notable tools or companies, and implications. Aim for 800-1200 words. No fenced code blocks around the whole document.",
-          "agent": "researcher",
-          "output_file": "output/report.md",
-          "markdown": true
-        }
-      ],
-      "process": "sequential",
-      "verbose": true
-    }
-    ```
-  </Step>
+Replace the generated `content_crew.py` with a small loader that turns `crew.jsonc` into a `Crew`.
 
-  <Step title="Load the JSON crew (`content_crew.py`)">
-    Replace the generated `content_crew.py` with a small loader that turns `crew.jsonc` into a `Crew`.
+```python content_crew.py theme={null}
+# src/latest_ai_flow/crews/content_crew/content_crew.py
+from pathlib import Path
 
-    ```python content_crew.py theme={null}
-    # src/latest_ai_flow/crews/content_crew/content_crew.py
-    from pathlib import Path
-
-    from crewai.project import load_crew
+from crewai.project import load_crew
 
 
-    def kickoff_content_crew(inputs: dict):
-      crew, default_inputs = load_crew(Path(__file__).with_name("crew.jsonc"))
-      return crew.kickoff(inputs={**default_inputs, **inputs})
-    ```
-  </Step>
+def kickoff_content_crew(inputs: dict):
+  crew, default_inputs = load_crew(Path(__file__).with_name("crew.jsonc"))
+  return crew.kickoff(inputs={**default_inputs, **inputs})
+```
 
-  <Step title="Define the Flow in `main.py`">
-    Connect the crew to a Flow: a `@start()` step sets the topic in **state**, and a `@listen` step runs the crew. The task’s `output_file` still writes `output/report.md`.
+**5. Define the Flow in `main.py`**
 
-    ```python main.py theme={null}
-    # src/latest_ai_flow/main.py
-    from pydantic import BaseModel
+Connect the crew to a Flow: a `@start()` step sets the topic in **state**, and a `@listen` step runs the crew. The task’s `output_file` still writes `output/report.md`.
 
-    from crewai.flow import Flow, listen, start
+```python main.py theme={null}
+# src/latest_ai_flow/main.py
+from pydantic import BaseModel
 
-    from latest_ai_flow.crews.content_crew.content_crew import kickoff_content_crew
+from crewai.flow import Flow, listen, start
 
-
-    class ResearchFlowState(BaseModel):
-      topic: str = ""
-      report: str = ""
+from latest_ai_flow.crews.content_crew.content_crew import kickoff_content_crew
 
 
-    class LatestAiFlow(Flow[ResearchFlowState]):
-      @start()
-      def prepare_topic(self, crewai_trigger_payload: dict | None = None):
-        if crewai_trigger_payload:
-          self.state.topic = crewai_trigger_payload.get("topic", "AI Agents")
-        else:
-          self.state.topic = "AI Agents"
-        print(f"Topic: {self.state.topic}")
-
-      @listen(prepare_topic)
-      def run_research(self):
-        result = kickoff_content_crew(inputs={"topic": self.state.topic})
-        self.state.report = result.raw
-        print("Research crew finished.")
-
-      @listen(run_research)
-      def summarize(self):
-        print("Report path: output/report.md")
+class ResearchFlowState(BaseModel):
+  topic: str = ""
+  report: str = ""
 
 
-    def kickoff():
-      LatestAiFlow().kickoff()
+class LatestAiFlow(Flow[ResearchFlowState]):
+  @start()
+  def prepare_topic(self, crewai_trigger_payload: dict | None = None):
+    if crewai_trigger_payload:
+      self.state.topic = crewai_trigger_payload.get("topic", "AI Agents")
+    else:
+      self.state.topic = "AI Agents"
+    print(f"Topic: {self.state.topic}")
+
+  @listen(prepare_topic)
+  def run_research(self):
+    result = kickoff_content_crew(inputs={"topic": self.state.topic})
+    self.state.report = result.raw
+    print("Research crew finished.")
+
+  @listen(run_research)
+  def summarize(self):
+    print("Report path: output/report.md")
 
 
-    def plot():
-      LatestAiFlow().plot()
+def kickoff():
+  LatestAiFlow().kickoff()
 
 
-    if __name__ == "__main__":
-      kickoff()
-    ```
+def plot():
+  LatestAiFlow().plot()
 
-    <Tip>
-      If your package name differs from `latest_ai_flow`, change the `kickoff_content_crew` import to match your project’s module path.
-    </Tip>
-  </Step>
 
-  <Step title="Set environment variables">
-    In `.env` at the project root, set:
+if __name__ == "__main__":
+  kickoff()
+```
 
-    * `SERPER_API_KEY` — from [Serper.dev](https://serper.dev/)
-    * Your model provider keys as required — see [LLM setup](/en/concepts/llms#setting-up-your-llm)
-  </Step>
+> [!TIP]
+>
+> If your package name differs from `latest_ai_flow`, change the `kickoff_content_crew` import to match your project’s module path.
 
-  <Step title="Install and run">
-    <CodeGroup>
-      ```shell Terminal theme={null}
-      crewai install
-      crewai run
-      ```
-    </CodeGroup>
+**6. Set environment variables**
 
-    `crewai run` executes the Flow entrypoint defined in your project (same command as for crews; project type is `"flow"` in `pyproject.toml`).
-  </Step>
+In `.env` at the project root, set:
 
-  <Step title="Check the output">
-    You should see logs from the Flow and the crew. Open **`output/report.md`** for the generated report (excerpt):
+* `SERPER_API_KEY` — from [Serper.dev](https://serper.dev/)
+* Your model provider keys as required — see [LLM setup](/en/concepts/llms#setting-up-your-llm)
 
-    <CodeGroup>
-      ```markdown output/report.md theme={null}
-      # AI Agents: Recent Landscape and Trends
+**7. Install and run**
 
-      ## Executive summary
-      …
+```shell Terminal theme={null}
+crewai install
+crewai run
+```
 
-      ## Key trends
-      - **Tool use and orchestration** — …
-      - **Enterprise adoption** — …
+`crewai run` executes the Flow entrypoint defined in your project (same command as for crews; project type is `"flow"` in `pyproject.toml`).
 
-      ## Implications
-      …
-      ```
-    </CodeGroup>
+**8. Check the output**
 
-    Your actual file will be longer and reflect live search results.
-  </Step>
-</Steps>
+You should see logs from the Flow and the crew. Open **`output/report.md`** for the generated report (excerpt):
+
+```markdown output/report.md theme={null}
+# AI Agents: Recent Landscape and Trends
+
+## Executive summary
+…
+
+## Key trends
+- **Tool use and orchestration** — …
+- **Enterprise adoption** — …
+
+## Implications
+…
+```
+
+Your actual file will be longer and reflect live search results.
 
 ## How this run fits together
 
@@ -198,9 +190,9 @@ If you have not installed CrewAI yet, follow the [installation guide](/en/instal
 
 To go deeper on Flow patterns (routing, persistence, human-in-the-loop), see [Build your first Flow](/en/guides/flows/first-flow) and [Flows](/en/concepts/flows). For crews without a Flow, see [Crews](/en/concepts/crews). For a single `Agent` and `kickoff()` without tasks, see [Agents](/en/concepts/agents#direct-agent-interaction-with-kickoff).
 
-<Check>
-  You now have an end-to-end Flow with an agent crew and a saved report — a solid base to add more steps, crews, or tools.
-</Check>
+> [!TIP]
+>
+> You now have an end-to-end Flow with an agent crew and a saved report — a solid base to add more steps, crews, or tools.
 
 ### Naming consistency
 
@@ -213,40 +205,36 @@ The names in `crew.jsonc` must match the files and task references you use:
 
 Push your Flow to **[CrewAI AMP](https://app.crewai.com)** once it runs locally. If the project has a git `origin`, AMP deploys from that repository (on **GitHub**, AMP's GitHub integration must be able to access it); with no `origin`, `crewai deploy create` uploads the project as a ZIP. From the project root:
 
-<CodeGroup>
-  ```bash Authenticate theme={null}
-  crewai login
-  ```
+```bash Authenticate theme={null}
+crewai login
+```
 
-  ```bash Create deployment theme={null}
-  crewai deploy create
-  ```
+```bash Create deployment theme={null}
+crewai deploy create
+```
 
-  ```bash Check status & logs theme={null}
-  crewai deploy status
-  crewai deploy logs
-  ```
+```bash Check status & logs theme={null}
+crewai deploy status
+crewai deploy logs
+```
 
-  ```bash Ship updates after you change code theme={null}
-  crewai deploy push
-  ```
+```bash Ship updates after you change code theme={null}
+crewai deploy push
+```
 
-  ```bash List or remove deployments theme={null}
-  crewai deploy list
-  crewai deploy remove -u <deployment_uuid>
-  ```
-</CodeGroup>
+```bash List or remove deployments theme={null}
+crewai deploy list
+crewai deploy remove -u <deployment_uuid>
+```
 
-<Tip>
-  The first deploy usually takes **around 1 minute**. Full prerequisites and the web UI flow are in [Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp).
-</Tip>
+> [!TIP]
+>
+> The first deploy usually takes **around 1 minute**. Full prerequisites and the web UI flow are in [Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp).
 
-<CardGroup>
-  <Card title="Deploy guide" icon="book" href="https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp">
-    Step-by-step AMP deployment (CLI and dashboard).
-  </Card>
+> **[Deploy guide](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp)**
+>
+> Step-by-step AMP deployment (CLI and dashboard).
 
-  <Card title="Join the Community" icon="comments" href="https://community.crewai.com">
-    Discuss ideas, share projects, and connect with other CrewAI developers.
-  </Card>
-</CardGroup>
+> **[Join the Community](https://community.crewai.com)**
+>
+> Discuss ideas, share projects, and connect with other CrewAI developers.

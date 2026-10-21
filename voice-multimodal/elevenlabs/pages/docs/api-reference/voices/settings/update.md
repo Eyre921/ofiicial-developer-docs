@@ -71,10 +71,10 @@ Validation Error
 
 ```json
 {
-  "stability": 0.5,
+  "stability": 1,
   "use_speaker_boost": true,
-  "similarity_boost": 0.75,
-  "style": 0.2,
+  "similarity_boost": 1,
+  "style": 0,
   "speed": 1
 }
 ```
@@ -95,10 +95,10 @@ import requests
 url = "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit"
 
 payload = {
-    "stability": 0.5,
+    "stability": 1,
     "use_speaker_boost": True,
-    "similarity_boost": 0.75,
-    "style": 0.2,
+    "similarity_boost": 1,
+    "style": 0,
     "speed": 1
 }
 headers = {"Content-Type": "application/json"}
@@ -113,7 +113,7 @@ const url = 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/e
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"stability":0.5,"use_speaker_boost":true,"similarity_boost":0.75,"style":0.2,"speed":1}'
+  body: '{"stability":1,"use_speaker_boost":true,"similarity_boost":1,"style":0,"speed":1}'
 };
 
 try {
@@ -139,7 +139,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit"
 
-	payload := strings.NewReader("{\n  \"stability\": 0.5,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 0.75,\n  \"style\": 0.2,\n  \"speed\": 1\n}")
+	payload := strings.NewReader("{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -167,7 +167,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"stability\": 0.5,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 0.75,\n  \"style\": 0.2,\n  \"speed\": 1\n}"
+request.body = "{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -179,7 +179,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit")
   .header("Content-Type", "application/json")
-  .body("{\n  \"stability\": 0.5,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 0.75,\n  \"style\": 0.2,\n  \"speed\": 1\n}")
+  .body("{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}")
   .asString();
 ```
 
@@ -191,10 +191,10 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit', [
   'body' => '{
-  "stability": 0.5,
+  "stability": 1,
   "use_speaker_boost": true,
-  "similarity_boost": 0.75,
-  "style": 0.2,
+  "similarity_boost": 1,
+  "style": 0,
   "speed": 1
 }',
   'headers' => [
@@ -211,7 +211,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"stability\": 0.5,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 0.75,\n  \"style\": 0.2,\n  \"speed\": 1\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"stability\": 1,\n  \"use_speaker_boost\": true,\n  \"similarity_boost\": 1,\n  \"style\": 0,\n  \"speed\": 1\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -220,10 +220,10 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "stability": 0.5,
+  "stability": 1,
   "use_speaker_boost": true,
-  "similarity_boost": 0.75,
-  "style": 0.2,
+  "similarity_boost": 1,
+  "style": 0,
   "speed": 1
 ] as [String : Any]
 

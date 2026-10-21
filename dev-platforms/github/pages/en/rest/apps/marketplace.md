@@ -22,7 +22,7 @@ To test with stubbed data, use a stubbed endpoint in place of its production cou
 
 Make sure to replace stubbed endpoints with production endpoints before deploying your GitHub App.
 
-> \[!NOTE]
+> [!NOTE]
 > Most endpoints use `Authorization: Bearer <YOUR-TOKEN>` and `Accept: application/vnd.github+json` headers, plus `X-GitHub-Api-Version: 2026-03-10`. Curl examples below omit these standard headers for brevity.
 
 ## Get a subscription plan for an account

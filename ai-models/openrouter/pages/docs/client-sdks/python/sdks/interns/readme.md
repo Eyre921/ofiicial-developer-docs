@@ -23,6 +23,7 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [delete\_intern](#delete_intern) - Delete an intern
 * [get\_intern](#get_intern) - Get an intern
 * [update\_intern](#update_intern) - Update an intern
+* [get\_intern\_connections](#get_intern_connections) - List an intern's connections
 * [get\_intern\_daemon](#get_intern_daemon) - Get an intern's daemon access
 * [~~get\_intern\_daemon\_access~~](#get_intern_daemon_access) - Get an intern's daemon access (deprecated alias) ⚠️ **Deprecated**
 * [~~sign\_intern\_daemon\_access\_request~~](#sign_intern_daemon_access_request) - Sign a daemon request with the caller's identity (deprecated alias) ⚠️ **Deprecated**
@@ -282,6 +283,53 @@ with OpenRouter(
 | errors.InternLifecycleError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
+## get\_intern\_connections
+
+Returns the Slack, GitHub, Google Workspace and MCP connections one visible intern can reach, and the shared ones switched off for it or disabled for the workspace. An OAuth grant needs `vault:read`, because the list names members' personal accounts; without it the route answers 403 `insufficient_scope`. The response is sent with `Cache-Control: no-store`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.interns.get_intern_connections(intern_id="7c9e6679-7425-40de-944b-e07fc1f90ae7")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | ✅ | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
+
+### Response
+
+**[components.InternConnectionList](../../components/internconnectionlist.mdx)**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
 ## get\_intern\_daemon
 
 Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: only an OAuth-token caller (`ori login --oidc`) may read it, the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. API keys get 403 `personal_identity_required`. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
@@ -518,7 +566,7 @@ with OpenRouter(
 
 ### Response
 
-**[operations.GetInternIconResponse](../../operations/getinterniconresponse.mdx)**
+**[httpx.Response](../../models/.mdx)**
 
 ### Errors
 

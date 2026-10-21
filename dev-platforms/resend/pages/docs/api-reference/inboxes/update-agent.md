@@ -77,6 +77,99 @@ $resend->inboxes->agent->update('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1', [
 ]);
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.Agent.UpdateParams = {
+    "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    "instructions": "Answer refund questions yourself. Escalate legal threats.",
+    "tone": "concise_professional",
+    "actions": ["draft_reply", "add_labels"],
+}
+
+resend.Inboxes.Agent.update(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  instructions: "Answer refund questions yourself. Escalate legal threats.",
+  tone: "concise_professional",
+  actions: ["draft_reply", "add_labels"]
+}
+
+Resend::Inboxes::Agent.update(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	instructions := "Answer refund questions yourself. Escalate legal threats."
+	tone := resend.InboxAgentToneConciseProfessional
+	params := &resend.UpdateInboxAgentRequest{
+		Instructions: &instructions,
+		Tone:         &tone,
+		Actions: []resend.InboxAgentAction{
+			resend.InboxAgentActionDraftReply,
+			resend.InboxAgentActionAddLabels,
+		},
+	}
+
+	client.Inboxes.Agent.Update("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", params)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  types::{InboxAgentAction, InboxAgentTone, UpdateInboxAgentOptions},
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let opts = UpdateInboxAgentOptions::new()
+    .with_instructions("Answer refund questions yourself. Escalate legal threats.")
+    .with_tone(InboxAgentTone::ConciseProfessional)
+    .with_actions([InboxAgentAction::DraftReply, InboxAgentAction::AddLabels]);
+
+  let _agent = resend
+    .inboxes
+    .update_agent("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", opts)
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxAgentUpdateAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new InboxAgentUpdateData()
+    {
+        Instructions = "Answer refund questions yourself. Escalate legal threats.",
+        Tone = InboxAgentTone.ConciseProfessional,
+        Actions = [ InboxAgentAction.DraftReply, InboxAgentAction.AddLabels ],
+    }
+);
+Console.WriteLine( "Agent Id={0}", resp.Content );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X PATCH 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/agent' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

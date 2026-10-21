@@ -6,12 +6,12 @@ path: v1.15.28/en/guides/flows/inputs-id-deprecation
 
 Move @persist flows off the deprecated inputs.id hydration onto the supported restore_from_state_id field
 
-<Warning>
-  Passing `id` inside `inputs` to hydrate a `@persist` flow is **deprecated** and
-  scheduled for removal in a future release. The replacement, `restore_from_state_id`,
-  is available in CrewAI **v1.14.5 and later** — the steps below apply once you
-  upgrade.
-</Warning>
+> [!WARNING]
+>
+> Passing `id` inside `inputs` to hydrate a `@persist` flow is **deprecated** and
+> scheduled for removal in a future release. The replacement, `restore_from_state_id`,
+> is available in CrewAI **v1.14.5 and later** — the steps below apply once you
+> upgrade.
 
 ## Overview
 
@@ -139,7 +139,7 @@ Migrating to `restoreFromStateId` keeps every kickoff as its own execution — w
 its own status, traces, and row in the list — while still hydrating state from a
 previous run.
 
-<Card title="Need Help?" icon="headset" href="mailto:support@crewai.com">
-  Contact our support team if you're unsure which mode your flow needs or hit issues
-  during the migration.
-</Card>
+> **[Need Help?](mailto:support@crewai.com)**
+>
+> Contact our support team if you're unsure which mode your flow needs or hit issues
+> during the migration.

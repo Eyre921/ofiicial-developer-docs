@@ -150,6 +150,140 @@ $resend->inboxes->threads->emails->reply(
 );
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.Threads.Emails.ReplyParams = {
+    "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    "thread_id": "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+    "email_id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+    "cc": ["billing@example.com"],
+    "bcc": ["records@example.com"],
+    "html": "<p>Refund issued for order 1041.</p>",
+    "text": "Refund issued for order 1041.",
+    "attachments": [
+        {
+            "path": "https://resend.com/static/sample/invoice.pdf",
+            "filename": "invoice.pdf",
+        }
+    ],
+}
+
+resend.Inboxes.Threads.Emails.reply(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  thread_id: "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+  email_id: "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+  cc: ["billing@example.com"],
+  bcc: ["records@example.com"],
+  html: "<p>Refund issued for order 1041.</p>",
+  text: "Refund issued for order 1041.",
+  attachments: [{ path: "https://resend.com/static/sample/invoice.pdf", filename: "invoice.pdf" }]
+}
+
+Resend::Inboxes::Threads::Emails.reply(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	params := &resend.ReplyInboxThreadEmailRequest{
+		Cc:   []string{"billing@example.com"},
+		Bcc:  []string{"records@example.com"},
+		Html: "<p>Refund issued for order 1041.</p>",
+		Text: "Refund issued for order 1041.",
+		Attachments: []*resend.Attachment{
+			{
+				Path:     "https://resend.com/static/sample/invoice.pdf",
+				Filename: "invoice.pdf",
+			},
+		},
+	}
+
+	client.Inboxes.Threads.Emails.Reply(
+		"b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+		"4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+		"5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+		params,
+	)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  types::{CreateAttachment, ReplyInboxThreadEmailOptions},
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let opts = ReplyInboxThreadEmailOptions::new()
+    .with_cc(["billing@example.com"])
+    .with_bcc(["records@example.com"])
+    .with_html("<p>Refund issued for order 1041.</p>")
+    .with_text("Refund issued for order 1041.")
+    .with_attachment(
+      CreateAttachment::from_path("https://resend.com/static/sample/invoice.pdf")
+        .with_filename("invoice.pdf"),
+    );
+
+  let _reply = resend
+    .inboxes
+    .reply_thread_email(
+      "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+      "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
+      "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+      opts,
+    )
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxThreadEmailReplyAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new Guid( "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12" ),
+    new Guid( "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60" ),
+    new InboxThreadEmailReplyData()
+    {
+        Cc = "billing@example.com",
+        Bcc = "records@example.com",
+        HtmlBody = "<p>Refund issued for order 1041.</p>",
+        TextBody = "Refund issued for order 1041.",
+        Attachments =
+        [
+            new EmailAttachment()
+            {
+                Filename = "invoice.pdf",
+                Path = "https://resend.com/static/sample/invoice.pdf",
+            },
+        ],
+    }
+);
+Console.WriteLine( "Email Id={0}", resp.Content );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/threads/4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12/emails/5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60/reply' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

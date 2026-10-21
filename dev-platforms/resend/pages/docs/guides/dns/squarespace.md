@@ -137,6 +137,13 @@ If you want to receive emails at your domain, toggle the "Receiving" switch on t
 > your existing MX
 > records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
 
+> [!NOTE]
+>
+> Always copy the MX record value shown on your domain's page in Resend. The
+> values in this guide are examples. Depending on your domain you will see
+> `receive.forge.rmta.net`, a regional variant such as
+> `receive-euw1.forge.rmta.net`, or `inbound-smtp.<region>.amazonaws.com`.
+
 Scroll down to the **Custom records** section and select `Add record` on Squarespace:
 
 1. Type `inbound` (or whatever your subdomain is) for the `Host` of the record.

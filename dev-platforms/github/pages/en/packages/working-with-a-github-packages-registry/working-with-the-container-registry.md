@@ -23,7 +23,7 @@ When installing or publishing a Docker image, the Container registry supports fo
 
 ## Authenticating to the Container registry
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 You need an access token to publish, install, and delete private, internal, and public packages.
@@ -39,7 +39,7 @@ To authenticate to a GitHub Packages registry within a GitHub Actions workflow, 
 
 This registry supports granular permissions. For registries that support granular permissions, if your GitHub Actions workflow is using a personal access token to authenticate to a registry, we highly recommend you update your workflow to use the `GITHUB_TOKEN`. For guidance on updating your workflows that authenticate to a registry with a personal access token, see [Publishing and installing a package with GitHub Actions](/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-a-registry-using-a-personal-access-token).
 
-> \[!NOTE]
+> [!NOTE]
 > The ability for GitHub Actions workflows to delete and restore packages using the REST API is currently in public preview and subject to change.
 
 You can use a `GITHUB_TOKEN` in a GitHub Actions workflow to delete or restore a package using the REST API, if the token has `admin` permission to the package. Repositories that publish packages using a workflow, and repositories that you have explicitly connected to packages, are automatically granted `admin` permission to packages in the repository.
@@ -50,12 +50,12 @@ You can also choose to give access permissions to packages independently for Git
 
 ### Authenticating with a personal access token (classic)
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 1. Create a new personal access token (classic) with the appropriate scopes for the tasks you want to accomplish. If your organization requires SSO, you must enable SSO for your new token.
 
-   > \[!NOTE]
+   > [!NOTE]
    > By default, when you select the `write:packages` scope for your personal access token (classic) in the user interface, the `repo` scope will also be selected. The `repo` scope offers unnecessary and broad access, which we recommend you avoid using for GitHub Actions workflows in particular. For more information, see [Compromised runners](/en/actions/concepts/security/compromised-runners#cross-repository-access). As a workaround, you can select just the `write:packages` scope for your personal access token (classic) in the user interface with this url: `https://github.com/settings/tokens/new?scopes=write:packages`.
 
    * Select the `read:packages` scope to download container images and read their metadata.
@@ -215,7 +215,7 @@ LABEL org.opencontainers.image.description="My container image"
 LABEL org.opencontainers.image.licenses=MIT
 ```
 
-> \[!NOTE]
+> [!NOTE]
 > If you publish a package that is linked to a repository, the package automatically inherits the access permissions of the linked repository, and GitHub Actions workflows in the linked repository automatically get access to the package, unless your organization has disabled automatic inheritance of access permissions. For more information, see [Configuring a package's access control and visibility](/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#about-inheritance-of-access-permissions).
 
 Alternatively, you can add labels to an image at buildtime with the `docker build` command.

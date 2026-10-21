@@ -8,9 +8,9 @@ The `CSVSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool desi
 
 # `CSVSearchTool`
 
-<Note>
-  **Experimental**: We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> **Experimental**: We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 

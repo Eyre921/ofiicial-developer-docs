@@ -55,9 +55,9 @@ uv pip show crewai
 
 Replace `[tools]` with whatever extras your project uses (e.g. `[tools,anthropic]`). Check your `pyproject.toml` `dependencies` list if you're unsure.
 
-<Note>
-  `uv add` updates both `pyproject.toml` **and** `uv.lock` atomically. If you edit `pyproject.toml` manually, you still need to run `uv lock --upgrade-package crewai` to re-solve the lock file before `crewai install` will pick up the new version.
-</Note>
+> [!NOTE]
+>
+> `uv add` updates both `pyproject.toml` **and** `uv.lock` atomically. If you edit `pyproject.toml` manually, you still need to run `uv lock --upgrade-package crewai` to re-solve the lock file before `crewai install` will pick up the new version.
 
 ## Upgrading the Global CLI
 
@@ -87,9 +87,9 @@ uv pip show crewai | grep Version
 
 They don't need to match — but your project venv version is what matters for runtime behavior.
 
-<Note>
-  CrewAI requires `Python >=3.10, <3.14`. If `uv` was installed against an older interpreter, recreate the project venv with a supported Python before running `crewai install`.
-</Note>
+> [!NOTE]
+>
+> CrewAI requires `Python >=3.10, <3.14`. If `uv` was installed against an older interpreter, recreate the project venv with a supported Python before running `crewai install`.
 
 ***
 

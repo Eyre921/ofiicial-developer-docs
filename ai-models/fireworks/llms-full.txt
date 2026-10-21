@@ -1868,13 +1868,6 @@ delete /v1/accounts/{account_id}/supervisedFineTuningJobs/{supervised_fine_tunin
 
 
 
-# Execute reinforcement fine tuning step
-Source: https://docs.fireworks.ai/api-reference/execute-reinforcement-fine-tuning-step
-
-post /v1/accounts/{account_id}/rlorTrainerJobs/{rlor_trainer_job_id}:executeTrainStep
-
-
-
 # Get Account
 Source: https://docs.fireworks.ai/api-reference/get-account
 
@@ -3665,7 +3658,7 @@ These gauge metrics show average resource usage:
 # Regions
 Source: https://docs.fireworks.ai/deployments/regions
 
-Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators.
+Fireworks runs a global fleet of GPU hardware you can deploy models on, spanning US, EU, and APAC regions with H100, H200, and B200 accelerators. Training is available in five regions.
 
 Fireworks runs a global fleet so you can deploy models close to users, meet data-residency needs, and scale across clouds. This page covers **multi-region** (default behavior and quota groupings), **single-region** availability and hardware, how to **use and change** regions, and **quotas**.
 
@@ -3687,36 +3680,37 @@ Supported multi-regions: `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
-Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, [contact us](https://fireworks.ai/contact) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
+Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, [contact us](https://fireworks.ai/contact) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each. In the Training column, Available means training runs in that region. `--` means it does not.
 
-| **Region** | **Accelerator Type(s)** |
-| - | - |
-| `AP_MALAYSIA_2` | `NVIDIA_B300_288GB` |
-| `AP_NEWSOUTHWALES_1` | `NVIDIA_B200_180GB` |
-| `AP_TOKYO_1` | `NVIDIA_H100_80GB` |
-| `AP_TOKYO_2` | `NVIDIA_H200_141GB` |
-| `EU_FRANKFURT_1` | `NVIDIA_H100_80GB` |
-| `EU_ICELAND_1` | `NVIDIA_H200_141GB` |
-| `EU_ICELAND_2` | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB` |
-| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB` |
-| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB` |
-| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB` |
-| `US_ARIZONA_1` | `NVIDIA_H100_80GB` |
-| `US_ARIZONA_3` | `AMD_MI325X_256GB` |
-| `US_CALIFORNIA_1` | `NVIDIA_H200_141GB` |
-| `US_CALIFORNIA_2` | `AMD_MI325X_256GB` |
-| `US_GEORGIA_2` | `NVIDIA_B200_180GB` |
-| `US_GEORGIA_3` | `NVIDIA_H200_141GB` |
-| `US_ILLINOIS_1` | `NVIDIA_H100_80GB` |
-| `US_ILLINOIS_2` | `NVIDIA_A100_80GB` |
-| `US_IOWA_1` | `NVIDIA_H100_80GB` |
-| `US_MINNESOTA_1` | `NVIDIA_B300_288GB` |
-| `US_NEWYORK_1` | `AMD_MI325X_256GB` |
-| `US_OHIO_1` | `NVIDIA_B200_180GB` |
-| `US_VIRGINIA_1` | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` |
-| `US_WASHINGTON_3` | `NVIDIA_B200_180GB` |
-| `US_WASHINGTON_4` | `NVIDIA_B200_180GB` |
-| `US_WASHINGTON_5` | `NVIDIA_B200_180GB` |
+| **Region** | **Accelerator Type(s)** | **Training** |
+| - | - | - |
+| `AP_MALAYSIA_2` | `NVIDIA_B300_288GB` | Available |
+| `AP_NEWSOUTHWALES_1` | `NVIDIA_B200_180GB` | -- |
+| `AP_TAIWAN_1` | `NVIDIA_GB300` | Available |
+| `AP_TOKYO_1` | `NVIDIA_H100_80GB` | -- |
+| `AP_TOKYO_2` | `NVIDIA_H200_141GB` | -- |
+| `EU_FRANKFURT_1` | `NVIDIA_H100_80GB` | -- |
+| `EU_ICELAND_1` | `NVIDIA_H200_141GB` | -- |
+| `EU_ICELAND_2` | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB` | -- |
+| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB` | -- |
+| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB` | -- |
+| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB` | -- |
+| `US_ARIZONA_1` | `NVIDIA_H100_80GB` | -- |
+| `US_ARIZONA_3` | `AMD_MI325X_256GB` | -- |
+| `US_CALIFORNIA_1` | `NVIDIA_H200_141GB` | -- |
+| `US_CALIFORNIA_2` | `AMD_MI325X_256GB` | -- |
+| `US_GEORGIA_2` | `NVIDIA_B200_180GB` | -- |
+| `US_GEORGIA_3` | `NVIDIA_H200_141GB` | -- |
+| `US_ILLINOIS_1` | `NVIDIA_H100_80GB` | -- |
+| `US_ILLINOIS_2` | `NVIDIA_A100_80GB` | -- |
+| `US_IOWA_1` | `NVIDIA_H100_80GB` | -- |
+| `US_MINNESOTA_1` | `NVIDIA_B300_288GB` | Available |
+| `US_NEWYORK_1` | `AMD_MI325X_256GB` | -- |
+| `US_OHIO_1` | `NVIDIA_B200_180GB` | Available |
+| `US_VIRGINIA_1` | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` | Available |
+| `US_WASHINGTON_3` | `NVIDIA_B200_180GB` | -- |
+| `US_WASHINGTON_4` | `NVIDIA_B200_180GB` | -- |
+| `US_WASHINGTON_5` | `NVIDIA_B200_180GB` | -- |
 
 ## Using a region
 
@@ -7286,27 +7280,15 @@ The calculator below makes that difference concrete. Set your episode shape
 
 Model
 
-<select />
-
 Episodes
-
-<input type="number" />
 
 Turns per episode
 
-<input type="number" />
-
 Initial prompt (tokens)
-
-<input type="number" />
 
 Tokens added per turn (gen + tool result)
 
-<input type="number" />
-
 Generation tokens per turn
-
-<input type="number" />
 
 <details>
   <summary>Advanced — dedicated cluster sizing & throughput (defaults are saturated estimates)</summary>
@@ -7314,17 +7296,11 @@ Generation tokens per turn
   Dedicated GPUs ()
   · max  (at-par with Tinker)
 
-  <input type="number" />
-
   Prompt tokens/sec (cluster)
   · min  (at-par)
 
-  <input type="number" />
-
   Decode tokens/sec (cluster)
   · min  (at-par)
-
-  <input type="number" />
 </details>
 
 **Per-episode token math:**
@@ -17905,6 +17881,14 @@ Vision-language models support [prompt caching](/guides/prompt-caching) to impro
 * **Structure prompts for caching** – Place static instructions at the beginning, variable content at the end
 * **Include metadata in prompts** – Add context about the image directly in your text prompt
 
+### Images that require authentication
+
+Fireworks downloads image URLs on your behalf, so anything in the URL, including credentials in its query string, travels with the request. If an image isn't public:
+
+* **Use a short-lived signed URL.** Generate a pre-signed URL (S3, GCS, Azure Blob, OSS) that grants read-only access to that one object and expires within minutes.
+* **Never put long-lived credentials in an image URL**, such as API keys, session tokens or permanent access keys.
+* **Send private images as base64** when you'd rather not share a URL at all. Base64 images must total less than 10MB per request, so downsize large images first. See [Using base64-encoded images](#using-base64-encoded-images) and [Known limitations](#known-limitations).
+
 ## Working with PDFs and Word documents
 
 VLMs do not natively accept PDF or Word (`.docx`) files as input. Convert them on your side before sending the request:
@@ -23529,11 +23513,7 @@ Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, o
 
 ## Claude Code
 
-Anthropic Messages
-
-FireRouter
-
-Native web search
+Anthropic MessagesFireRouterNative web search
 
 **FireConnect**
 
@@ -23666,9 +23646,7 @@ In the SDK query options, include `settingSources: ["user"]`. The SDK then reads
 
 ## Claude Desktop
 
-Anthropic Messages
-
-macOS only
+Anthropic MessagesmacOS only
 
 FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It requires macOS and a stored credential from `fireconnect login`. **Quit and reopen Claude Desktop after `on` or `off`.**
 
@@ -23753,11 +23731,7 @@ Anthropic lists these limits in its [third-party feature matrix](https://claude.
 
 ## Codex
 
-OpenAI Responses
-
-FireRouter
-
-Native web search
+OpenAI ResponsesFireRouterNative web search
 
 The Codex CLI reads `~/.codex/config.toml`. The [ChatGPT desktop app](#chatgpt-desktop-app) reads the same file, so connecting one connects the other. **Close open Codex sessions and quit the ChatGPT desktop app** before connecting or running `off`. In a terminal, FireConnect waits for them to close; in a script, it exits with an error. `--force` writes anyway, which isn't recommended.
 
@@ -23870,11 +23844,7 @@ codex resume <id> -c model_provider="fireworks-ai"
 
 ## ChatGPT desktop app
 
-OpenAI Responses
-
-FireRouter
-
-Native web search
+OpenAI ResponsesFireRouterNative web search
 
 The ChatGPT desktop app reads the same `~/.codex/config.toml` as the [Codex CLI](#codex), so connecting one connects the other. **Quit the ChatGPT desktop app and close open Codex sessions before connecting or running `off`.** The app loads its model list only at startup. FireConnect waits for both to close, or use `--force` to write anyway.
 
@@ -23915,9 +23885,7 @@ Quit the app, then follow the [Codex manual setup](#codex). The app reads the sa
 
 ## OpenCode
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 **FireConnect**
 
@@ -23979,9 +23947,7 @@ Restart OpenCode. The default model is `auto`, stored as `fireworks-ai/auto`. Sh
 
 ## Pi
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 **FireConnect**
 
@@ -24033,9 +23999,7 @@ Pi has a built-in `fireworks` provider that reads `FIREWORKS_API_KEY`. Set it as
 
 ## Cursor IDE
 
-OpenAI Chat Completions
-
-FireRouter with Provider Keys
+OpenAI Chat CompletionsFireRouter with Provider Keys
 
 `fireconnect cursor` configures Cursor IDE. Cursor CLI (`agent` or `cursor-agent`) is not supported. **Fully quit Cursor IDE before connecting or running `off`.**
 
@@ -24089,9 +24053,7 @@ Add a custom model with a Fireworks ID, such as `glm-latest`, then select it in 
 
 ## VS Code
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 FireConnect adds a **Fireworks** provider to GitHub Copilot Chat's custom endpoints. This requires Copilot **Pro or Enterprise**. **Quit VS Code before connecting or running `off`.**
 
@@ -24146,9 +24108,7 @@ Follow the step-by-step screenshots in [GitHub Copilot](/ecosystem/integrations/
 
 ## Copilot App
 
-OpenAI Chat Completions
-
-FireRouter with Provider Keys
+OpenAI Chat CompletionsFireRouter with Provider Keys
 
 The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks alongside them. **Quit the app before connecting or running `off`.**
 
@@ -24186,9 +24146,7 @@ The app's bring-your-own-key path does not support image input, the hover-card C
 
 ## Copilot CLI
 
-OpenAI Chat Completions
-
-FireRouter with manual setup
+OpenAI Chat CompletionsFireRouter with manual setup
 
 The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`, separate from the desktop app.
 
@@ -24245,9 +24203,7 @@ To use FireRouter with Claude or GPT turns, add a `headers` map to the provider,
 
 ## DeepSeek Harness
 
-OpenAI Chat Completions
-
-FireRouter with manual setup
+OpenAI Chat CompletionsFireRouter with manual setup
 
 DeepSeek's coding agent (`dsh`) runs named profiles, such as `tui`, `web`, and `headless`, under `$DSH_HOME`, which defaults to `~/.dsh`. Restart `dsh` after changing a profile.
 
@@ -32105,8 +32061,6 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
-<input type="search" placeholder="Search updates, e.g. GLM, deprecation, rate limits" aria-label="Search the changelog" />
-
 **2026-10-19**
 
 Inference
@@ -32573,11 +32527,7 @@ We are continuing to invest in faster, more capable models and appreciate your s
 
 **2026-02-05**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
 
@@ -32634,9 +32584,7 @@ See the [SSO documentation](/accounts/sso) for setup instructions.
 
 **2026-01-20**
 
-Training
-
-Platform
+TrainingPlatform
 
 # Warm-Start Training and Azure Model Uploads
 
@@ -32675,11 +32623,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 **2025-12-22**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
 
@@ -32715,7 +32659,7 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
 * **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
-* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), [Execute Reinforcement Fine-Tuning Step](/api-reference/execute-reinforcement-fine-tuning-step), and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
+* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
 * **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
 
 > **Bug Fixes & Minor Improvements**
@@ -32739,11 +32683,7 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 **2025-12-15**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
 
@@ -32807,11 +32747,7 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
 **2025-12-08**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
 
@@ -32870,11 +32806,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 
 **2025-12-01**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
 
@@ -32926,11 +32858,7 @@ See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning
 
 **2025-11-24**
 
-Inference
-
-Training
-
-Platform
+InferenceTrainingPlatform
 
 # Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
 
@@ -33062,9 +32990,7 @@ We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GP
 
 **2025-07-29**
 
-Training
-
-Platform
+TrainingPlatform
 
 ## 🎨 Vision-Language Model Fine-Tuning
 
@@ -33181,9 +33107,7 @@ command.
 
 **2025-06-30**
 
-Inference
-
-Platform
+InferencePlatform
 
 ## Support for GitHub authentication
 
@@ -33211,9 +33135,7 @@ For assistance with migration, please contact our support team or visit our [Dis
 
 **2025-06-24**
 
-Inference
-
-Training
+InferenceTraining
 
 ## 🎯 Build SDK: Reward-kit integration for evaluator development
 

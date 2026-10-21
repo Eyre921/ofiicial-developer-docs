@@ -106,29 +106,23 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "results": [
     {
-      "id": "inv_3f8a2b1c9d4e5f6a7b8c9d0e",
-      "created_at_unix_secs": 1718035200,
-      "test_run_count": 12,
-      "passed_count": 9,
-      "failed_count": 2,
+      "id": "string",
+      "created_at_unix_secs": 1,
+      "test_run_count": 1,
+      "passed_count": 1,
+      "failed_count": 1,
       "pending_count": 1,
-      "cancelled_count": 0,
-      "title": "Customer Support Suite",
-      "agent_id": "agt_7c2d4e6f8a1b3c5d7e9f0a2b",
-      "branch_id": "brn_1a2b3c4d5e6f7a8b9c0d1e2f",
-      "version_id": "ver_9e8d7c6b5a4f3e2d1c0b9a8f",
+      "cancelled_count": 1,
+      "title": "string",
+      "agent_id": "string",
+      "branch_id": "string",
+      "version_id": "string",
       "ran_against_draft": false,
       "runs_diverged_from_version": false,
       "access_info": {
@@ -138,19 +132,19 @@ Validation Error
         "role": "admin",
         "access_source": "creator"
       },
-      "repeat_count": 3,
+      "repeat_count": 1,
       "cancelled": false,
-      "credits_used": 1450,
-      "total_price": 0.29
+      "credits_used": 1,
+      "total_price": 1.1
     }
   ],
   "has_more": true,
   "meta": {
-    "total": 47,
+    "total": 1,
     "page": 1,
-    "page_size": 30
+    "page_size": 1
   },
-  "next_cursor": "eyJpZCI6Imludl8zZjhhMmIxYzlkNGU1ZjZhN2I4YzlkMGUiLCJjcmVhdGVkX2F0IjoxNzE4MDM1MjAwfQ=="
+  "next_cursor": "string"
 }
 ```
 
@@ -161,17 +155,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/test-invocations"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/test-invocations';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -187,7 +178,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -196,11 +186,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/test-invocations"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -223,8 +209,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -235,8 +219,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/test-invocations")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -246,12 +228,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations');
 
 echo $response->getBody();
 ```
@@ -261,25 +238,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/test-invocations");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/test-invocations")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -12,9 +12,9 @@ CrewAI's tool system is designed to be extended. If you've built a tool that cou
 
 This guide walks through the full process: implementing the tools contract, structuring your package, and publishing to PyPI.
 
-<Note type="info" title="Not looking to publish?">
-  If you just need a custom tool for your own project, see the [Create Custom Tools](/en/learn/create-custom-tools) guide instead.
-</Note>
+> [!NOTE]
+>
+> If you just need a custom tool for your own project, see the [Create Custom Tools](/en/learn/create-custom-tools) guide instead.
 
 ## The Tools Contract
 

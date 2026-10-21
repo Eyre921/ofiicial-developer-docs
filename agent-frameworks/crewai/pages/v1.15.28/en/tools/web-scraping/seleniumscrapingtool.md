@@ -8,10 +8,10 @@ The `SeleniumScrapingTool` is designed to extract and read the content of a spec
 
 # `SeleniumScrapingTool`
 
-<Note>
-  This tool is currently in development. As we refine its capabilities, users may encounter unexpected behavior.
-  Your feedback is invaluable to us for making improvements.
-</Note>
+> [!NOTE]
+>
+> This tool is currently in development. As we refine its capabilities, users may encounter unexpected behavior.
+> Your feedback is invaluable to us for making improvements.
 
 ## Description
 

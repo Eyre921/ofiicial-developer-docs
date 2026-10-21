@@ -55,12 +55,12 @@ You'll need to authenticate this action using your password, which is the SSH ke
 
    </div>
 
-   > \[!NOTE]
+   > [!NOTE]
    > The remote command should exit with code 1.
 
 4. Verify that the resulting message contains your username. If you receive a "permission denied" message, see [Error: Permission denied (publickey)](/en/authentication/troubleshooting-ssh/error-permission-denied-publickey).
 
-> \[!TIP] If you are accessing GitHub at a different domain such as `octocorp.ghe.com`, then you need to replace `git@github.com` with `octocorp@octocorp.ghe.com`.
+> [!TIP] If you are accessing GitHub at a different domain such as `octocorp.ghe.com`, then you need to replace `git@github.com` with `octocorp@octocorp.ghe.com`.
 >
 > ```shell
 > ssh -T octocorp@octocorp.ghe.com

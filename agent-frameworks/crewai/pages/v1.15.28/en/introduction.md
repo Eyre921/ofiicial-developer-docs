@@ -23,7 +23,7 @@ Install our coding agent skills (Claude Code, Codex, ...) to quickly get your co
 
 You can install it with `npx skills add crewaiinc/skills`
 
-<iframe />
+[https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af](https://www.loom.com/embed/befb9f68b81f42ad8112bfdd95a780af)
 
 ## The CrewAI Architecture
 
@@ -31,13 +31,11 @@ CrewAI's architecture is designed to balance autonomy with control.
 
 ### 1. Flows: The Backbone
 
-<Note>
-  Think of a Flow as the "manager" or the "process definition" of your application. It defines the steps, the logic, and how data moves through your system.
-</Note>
+> [!NOTE]
+>
+> Think of a Flow as the "manager" or the "process definition" of your application. It defines the steps, the logic, and how data moves through your system.
 
-<Frame>
-  <img alt="CrewAI Framework Overview" />
-</Frame>
+![CrewAI Framework Overview](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/flows.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=82ea168de2f004553dcea21410cd7d8a)
 
 Flows provide:
 
@@ -47,13 +45,11 @@ Flows provide:
 
 ### 2. Crews: The Intelligence
 
-<Note>
-  Crews are the "teams" that do the heavy lifting. Within a Flow, you can trigger a Crew to tackle a complex problem requiring creativity and collaboration.
-</Note>
+> [!NOTE]
+>
+> Crews are the "teams" that do the heavy lifting. Within a Flow, you can trigger a Crew to tackle a complex problem requiring creativity and collaboration.
 
-<Frame>
-  <img alt="CrewAI Framework Overview" />
-</Frame>
+![CrewAI Framework Overview](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crews.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=514fd0b06e4128e62f10728d44601975)
 
 Crews provide:
 
@@ -72,23 +68,21 @@ Crews provide:
 
 ## Key Features
 
-<CardGroup>
-  <Card title="Production-Grade Flows" icon="arrow-progress">
-    Build reliable, stateful workflows that can handle long-running processes and complex logic.
-  </Card>
+> **Production-Grade Flows**
+>
+> Build reliable, stateful workflows that can handle long-running processes and complex logic.
 
-  <Card title="Autonomous Crews" icon="users">
-    Deploy teams of agents that can plan, execute, and collaborate to achieve high-level goals.
-  </Card>
+> **Autonomous Crews**
+>
+> Deploy teams of agents that can plan, execute, and collaborate to achieve high-level goals.
 
-  <Card title="Flexible Tools" icon="screwdriver-wrench">
-    Connect your agents to any API, database, or local tool.
-  </Card>
+> **Flexible Tools**
+>
+> Connect your agents to any API, database, or local tool.
 
-  <Card title="Enterprise Security" icon="lock">
-    Designed with security and compliance in mind for enterprise deployments.
-  </Card>
-</CardGroup>
+> **Enterprise Security**
+>
+> Designed with security and compliance in mind for enterprise deployments.
 
 ## When to Use Crews vs. Flows
 
@@ -116,26 +110,22 @@ For any production-ready application, **start with a Flow**.
 
 ## Ready to Start Building?
 
-<CardGroup>
-  <Card title="Build Your First Flow" icon="diagram-project" href="/en/guides/flows/first-flow">
-    Learn how to create structured, event-driven workflows with precise control over execution.
-  </Card>
+> **[Build Your First Flow](/en/guides/flows/first-flow)**
+>
+> Learn how to create structured, event-driven workflows with precise control over execution.
 
-  <Card title="Build Your First Crew" icon="users-gear" href="/en/guides/crews/first-crew">
-    Step-by-step tutorial to create a collaborative AI team that works together to solve complex problems.
-  </Card>
-</CardGroup>
+> **[Build Your First Crew](/en/guides/crews/first-crew)**
+>
+> Step-by-step tutorial to create a collaborative AI team that works together to solve complex problems.
 
-<CardGroup>
-  <Card title="Install CrewAI" icon="wrench" href="/en/installation">
-    Get started with CrewAI in your development environment.
-  </Card>
+> **[Install CrewAI](/en/installation)**
+>
+> Get started with CrewAI in your development environment.
 
-  <Card title="Quick Start" icon="bolt" href="en/quickstart">
-    Scaffold a Flow, run a crew with one agent, and generate a report end to end.
-  </Card>
+> **[Quick Start](en/quickstart)**
+>
+> Scaffold a Flow, run a crew with one agent, and generate a report end to end.
 
-  <Card title="Join the Community" icon="comments" href="https://community.crewai.com">
-    Connect with other developers, get help, and share your CrewAI experiences.
-  </Card>
-</CardGroup>
+> **[Join the Community](https://community.crewai.com)**
+>
+> Connect with other developers, get help, and share your CrewAI experiences.

@@ -12,7 +12,7 @@ When you create a new organization, OAuth app access restrictions are enabled by
 
 Even if you restrict OAuth apps access in your organization, users can still authorize privileged OAuth apps and use them to access data from the organization. For more information, see [Privileged OAuth apps](/en/apps/oauth-apps/using-oauth-apps/privileged-oauth-apps).
 
-> \[!WARNING]
+> [!WARNING]
 >
 > * Enabling OAuth app access restrictions will revoke organization access for all previously authorized OAuth apps and SSH keys. For more information, see [About OAuth app access restrictions](/en/organizations/managing-oauth-access-to-your-organizations-data/about-oauth-app-access-restrictions).
 > * Once you've set up OAuth app access restrictions, make sure to reauthorize any OAuth app that require access to the organization's private data on an ongoing basis. All organization members will need to create new SSH keys, and the organization will need to create new deploy keys as needed.

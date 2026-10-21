@@ -12,172 +12,170 @@ Shared state is a single state object that the agent and the UI both read and wr
 
 The classic example is a recipe: the agent drafts it, the user tweaks an ingredient or an instruction, and the agent picks up from the edited version. Neither side owns the state; they share it.
 
-<Note>
-  Shared state relies on a Flow with custom state. Define an `AgentState` that subclasses `CopilotKitState` and type your Flow as `Flow[AgentState]`. Crews do not carry custom state, so this pattern is Flow-only.
-</Note>
+> [!NOTE]
+>
+> Shared state relies on a Flow with custom state. Define an `AgentState` that subclasses `CopilotKitState` and type your Flow as `Flow[AgentState]`. Crews do not carry custom state, so this pattern is Flow-only.
 
 ## How it works
 
-<Steps>
-  <Step title="Define the shared state on your Flow">
-    Subclass `CopilotKitState` so the agent keeps CopilotKit's message plumbing, then add your own fields. Here the shared field is `recipe`.
+**1. Define the shared state on your Flow**
 
-    ```python theme={null}
-    # recipe_flow.py
-    import json
-    from typing import List, Optional
-    from pydantic import BaseModel, Field
-    from crewai.flow.flow import Flow, start, router, listen
-    from litellm import acompletion
-    from ag_ui_crewai.sdk import copilotkit_stream, CopilotKitState
+Subclass `CopilotKitState` so the agent keeps CopilotKit's message plumbing, then add your own fields. Here the shared field is `recipe`.
 
-
-    class Ingredient(BaseModel):
-        name: str
-        amount: str
+```python theme={null}
+# recipe_flow.py
+import json
+from typing import List, Optional
+from pydantic import BaseModel, Field
+from crewai.flow.flow import Flow, start, router, listen
+from litellm import acompletion
+from ag_ui_crewai.sdk import copilotkit_stream, CopilotKitState
 
 
-    class Recipe(BaseModel):
-        title: str
-        ingredients: List[Ingredient] = Field(default_factory=list)
-        instructions: List[str] = Field(default_factory=list)
+class Ingredient(BaseModel):
+    name: str
+    amount: str
 
 
-    class AgentState(CopilotKitState):
-        recipe: Optional[Recipe] = None
-    ```
-  </Step>
+class Recipe(BaseModel):
+    title: str
+    ingredients: List[Ingredient] = Field(default_factory=list)
+    instructions: List[str] = Field(default_factory=list)
 
-  <Step title="Read and write the state from the agent">
-    The agent reads the current state by dumping it into the system prompt, and writes it back by assigning to `self.state.recipe`. A `generate_recipe` tool lets the model return the updated recipe as structured arguments.
 
-    ```python theme={null}
-    GENERATE_RECIPE_TOOL = {
-        "type": "function",
-        "function": {
-            "name": "generate_recipe",
-            "description": "Generate or modify the recipe.",
-            "parameters": {
-                "type": "object",
-                "properties": {"recipe": {"type": "object"}},
-                "required": ["recipe"],
-            },
+class AgentState(CopilotKitState):
+    recipe: Optional[Recipe] = None
+```
+
+**2. Read and write the state from the agent**
+
+The agent reads the current state by dumping it into the system prompt, and writes it back by assigning to `self.state.recipe`. A `generate_recipe` tool lets the model return the updated recipe as structured arguments.
+
+```python theme={null}
+GENERATE_RECIPE_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "generate_recipe",
+        "description": "Generate or modify the recipe.",
+        "parameters": {
+            "type": "object",
+            "properties": {"recipe": {"type": "object"}},
+            "required": ["recipe"],
         },
-    }
+    },
+}
 
 
-    class SharedStateFlow(Flow[AgentState]):
-        @start()
-        @listen("route_follow_up")
-        async def start_flow(self):
-            pass
+class SharedStateFlow(Flow[AgentState]):
+    @start()
+    @listen("route_follow_up")
+    async def start_flow(self):
+        pass
 
-        @router(start_flow)
-        async def chat(self):
-            # The current shared state is visible to the model.
-            system_prompt = f"""You help the user build a recipe.
-            Current recipe: {self.state.model_dump_json(indent=2)}
-            Modify it by calling generate_recipe."""
+    @router(start_flow)
+    async def chat(self):
+        # The current shared state is visible to the model.
+        system_prompt = f"""You help the user build a recipe.
+        Current recipe: {self.state.model_dump_json(indent=2)}
+        Modify it by calling generate_recipe."""
 
-            response = await copilotkit_stream(
-                await acompletion(
-                    model="openai/gpt-4o",
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *self.state.messages,
-                    ],
-                    tools=[*self.state.copilotkit.actions, GENERATE_RECIPE_TOOL],
-                    parallel_tool_calls=False,
-                    stream=True,
-                )
+        response = await copilotkit_stream(
+            await acompletion(
+                model="openai/gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    *self.state.messages,
+                ],
+                tools=[*self.state.copilotkit.actions, GENERATE_RECIPE_TOOL],
+                parallel_tool_calls=False,
+                stream=True,
             )
-            message = response.choices[0].message
-            self.state.messages.append(message)
+        )
+        message = response.choices[0].message
+        self.state.messages.append(message)
 
-            if message.tool_calls:
-                call = message.tool_calls[0]
-                if call.function.name == "generate_recipe":
-                    args = json.loads(call.function.arguments)
-                    self.state.recipe = Recipe(**args["recipe"])  # write to shared state
-                    self.state.messages.append({
-                        "role": "tool",
-                        "content": "Recipe updated.",
-                        "tool_call_id": call.id,
-                    })
-                    return "route_follow_up"
-            return "route_end"
+        if message.tool_calls:
+            call = message.tool_calls[0]
+            if call.function.name == "generate_recipe":
+                args = json.loads(call.function.arguments)
+                self.state.recipe = Recipe(**args["recipe"])  # write to shared state
+                self.state.messages.append({
+                    "role": "tool",
+                    "content": "Recipe updated.",
+                    "tool_call_id": call.id,
+                })
+                return "route_follow_up"
+        return "route_end"
 
-        @listen("route_end")
-        async def end(self):
-            pass
-    ```
+    @listen("route_end")
+    async def end(self):
+        pass
+```
 
-    Two things make this shared rather than one-way: dumping `self.state` into the prompt means the agent always works from the latest recipe (including edits the user made in the UI), and assigning `self.state.recipe` puts the new value into the state snapshot sent to connected clients at the end of the step. For updates during a long step, emit explicitly with `copilotkit_emit_state` (see [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)).
-  </Step>
+Two things make this shared rather than one-way: dumping `self.state` into the prompt means the agent always works from the latest recipe (including edits the user made in the UI), and assigning `self.state.recipe` puts the new value into the state snapshot sent to connected clients at the end of the step. For updates during a long step, emit explicitly with `copilotkit_emit_state` (see [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)).
 
-  <Step title="Serve the Flow over AG-UI">
-    Expose the Flow from your FastAPI app with `add_crewai_flow_fastapi_endpoint`, then register it in the CopilotKit runtime. See the [Frontend Overview](/edge/en/guides/frontend/overview) for the full server and runtime setup.
+**3. Serve the Flow over AG-UI**
 
-    ```python theme={null}
-    # server.py
-    from fastapi import FastAPI
-    from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
-    from recipe_flow import SharedStateFlow
+Expose the Flow from your FastAPI app with `add_crewai_flow_fastapi_endpoint`, then register it in the CopilotKit runtime. See the [Frontend Overview](/edge/en/guides/frontend/overview) for the full server and runtime setup.
 
-    app = FastAPI(title="CrewAI Agent Server")
+```python theme={null}
+# server.py
+from fastapi import FastAPI
+from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
+from recipe_flow import SharedStateFlow
 
-    add_crewai_flow_fastapi_endpoint(
-        app=app,
-        flow=SharedStateFlow(),
-        path="/shared_state",
-    )
-    ```
-  </Step>
+app = FastAPI(title="CrewAI Agent Server")
 
-  <Step title="Read and write the state from the UI">
-    `useAgent` gives you both directions in one hook. Read the shared state off `agent.state`, and write it back with `agent.setState(...)`. Subscribe to `OnStateChanged` so your component re-renders whenever the agent updates the state.
+add_crewai_flow_fastapi_endpoint(
+    app=app,
+    flow=SharedStateFlow(),
+    path="/shared_state",
+)
+```
 
-    ```tsx theme={null}
-    "use client";
-    import { useAgent, UseAgentUpdate } from "@copilotkit/react-core/v2";
+**4. Read and write the state from the UI**
 
-    function RecipeEditor() {
-      const { agent } = useAgent({
-        agentId: "shared_state",
-        updates: [UseAgentUpdate.OnStateChanged],
-      });
+`useAgent` gives you both directions in one hook. Read the shared state off `agent.state`, and write it back with `agent.setState(...)`. Subscribe to `OnStateChanged` so your component re-renders whenever the agent updates the state.
 
-      const state = agent?.state as { recipe?: Recipe } | undefined;
-      const isLoading = agent?.isRunning;
+```tsx theme={null}
+"use client";
+import { useAgent, UseAgentUpdate } from "@copilotkit/react-core/v2";
 
-      const recipe = state?.recipe;
+function RecipeEditor() {
+  const { agent } = useAgent({
+    agentId: "shared_state",
+    updates: [UseAgentUpdate.OnStateChanged],
+  });
 
-      // setState replaces the whole state object, so spread the current
-      // state and override only the field you changed. Passing just
-      // `{ recipe }` would drop messages and other runtime fields.
-      const updateRecipe = (patch: Partial<Recipe>) =>
-        agent?.setState({ ...(agent.state ?? {}), recipe: { ...(recipe ?? {}), ...patch } });
+  const state = agent?.state as { recipe?: Recipe } | undefined;
+  const isLoading = agent?.isRunning;
 
-      return (
-        <div>
-          <input
-            value={recipe?.title ?? ""}
-            disabled={isLoading}
-            onChange={(e) => updateRecipe({ title: e.target.value })}
-          />
-          {/* render inputs for ingredients and instructions the same way */}
-        </div>
-      );
-    }
-    ```
+  const recipe = state?.recipe;
 
-    `agent.state` reads the shared state, `agent.setState(...)` writes it back so the agent sees the change on its next turn, and `agent.isRunning` reflects whether the agent is currently working.
+  // setState replaces the whole state object, so spread the current
+  // state and override only the field you changed. Passing just
+  // `{ recipe }` would drop messages and other runtime fields.
+  const updateRecipe = (patch: Partial<Recipe>) =>
+    agent?.setState({ ...(agent.state ?? {}), recipe: { ...(recipe ?? {}), ...patch } });
 
-    <Note>
-      `setState` **replaces** the entire state object rather than merging. Always spread the current state (`{ ...agent.state, ... }`) and override only the fields you are changing, or you will drop the conversation and other runtime fields the agent depends on.
-    </Note>
-  </Step>
-</Steps>
+  return (
+    <div>
+      <input
+        value={recipe?.title ?? ""}
+        disabled={isLoading}
+        onChange={(e) => updateRecipe({ title: e.target.value })}
+      />
+      {/* render inputs for ingredients and instructions the same way */}
+    </div>
+  );
+}
+```
+
+`agent.state` reads the shared state, `agent.setState(...)` writes it back so the agent sees the change on its next turn, and `agent.isRunning` reflects whether the agent is currently working.
+
+> [!NOTE]
+>
+> `setState` **replaces** the entire state object rather than merging. Always spread the current state (`{ ...agent.state, ... }`) and override only the fields you are changing, or you will drop the conversation and other runtime fields the agent depends on.
 
 ## The two-way loop
 
@@ -188,16 +186,14 @@ Putting the pieces together, a single recipe object is kept in sync in both dire
 
 ## Related
 
-<CardGroup>
-  <Card title="Agentic Generative UI" icon="list-check" href="/edge/en/guides/frontend/agentic-generative-ui">
-    Render live agent state as it changes.
-  </Card>
+> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+>
+> Render live agent state as it changes.
 
-  <Card title="Predictive State" icon="gauge-high" href="/edge/en/guides/frontend/predictive-state-updates">
-    Stream in-progress state to the UI as the agent works.
-  </Card>
+> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+>
+> Stream in-progress state to the UI as the agent works.
 
-  <Card title="Human-in-the-Loop" icon="user-check" href="/edge/en/guides/frontend/human-in-the-loop">
-    Pause the agent to collect user approval or input mid-run.
-  </Card>
-</CardGroup>
+> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+>
+> Pause the agent to collect user approval or input mid-run.

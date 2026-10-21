@@ -10,7 +10,7 @@ Learn how to use Weights & Biases (W&B) Weave to track, experiment with, evaluat
 
 [Weights & Biases (W\&B) Weave](https://weave-docs.wandb.ai/) is a framework for tracking, experimenting with, evaluating, deploying, and improving LLM-based applications.
 
-<img alt="Overview of W&B Weave CrewAI tracing usage" />
+![Overview of W\&B Weave CrewAI tracing usage](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/weave-tracing.gif?s=4a933830e3e3cf146c4c87cb44d46475)
 
 Weave provides comprehensive support for every stage of your CrewAI application development:
 
@@ -23,96 +23,92 @@ Weave automatically captures traces for your CrewAI applications, enabling you t
 
 ## Setup Instructions
 
-<Steps>
-  <Step title="Install required packages">
-    ```shell theme={null}
-    pip install crewai weave
-    ```
-  </Step>
+**1. Install required packages**
 
-  <Step title="Set up W&B Account">
-    Sign up for a [Weights & Biases account](https://wandb.ai) if you haven't already. You'll need this to view your traces and metrics.
-  </Step>
+```shell theme={null}
+pip install crewai weave
+```
 
-  <Step title="Initialize Weave in Your Application">
-    Add the following code to your application:
+**2. Set up W\&B Account**
 
-    ```python theme={null}
-    import weave
+Sign up for a [Weights & Biases account](https://wandb.ai) if you haven't already. You'll need this to view your traces and metrics.
 
-    # Initialize Weave with your project name
-    weave.init(project_name="crewai_demo")
-    ```
+**3. Initialize Weave in Your Application**
 
-    After initialization, Weave will provide a URL where you can view your traces and metrics.
-  </Step>
+Add the following code to your application:
 
-  <Step title="Create your Crews/Flows">
-    ```python theme={null}
-    from crewai import Agent, Task, Crew, LLM, Process
+```python theme={null}
+import weave
 
-    # Create an LLM with a temperature of 0 to ensure deterministic outputs
-    llm = LLM(model="gpt-4o", temperature=0)
+# Initialize Weave with your project name
+weave.init(project_name="crewai_demo")
+```
 
-    # Create agents
-    researcher = Agent(
-        role='Research Analyst',
-        goal='Find and analyze the best investment opportunities',
-        backstory='Expert in financial analysis and market research',
-        llm=llm,
-        verbose=True,
-        allow_delegation=False,
-    )
+After initialization, Weave will provide a URL where you can view your traces and metrics.
 
-    writer = Agent(
-        role='Report Writer',
-        goal='Write clear and concise investment reports',
-        backstory='Experienced in creating detailed financial reports',
-        llm=llm,
-        verbose=True,
-        allow_delegation=False,
-    )
+**4. Create your Crews/Flows**
 
-    # Create tasks
-    research_task = Task(
-        description='Deep research on the {topic}',
-        expected_output='Comprehensive market data including key players, market size, and growth trends.',
-        agent=researcher
-    )
+```python theme={null}
+from crewai import Agent, Task, Crew, LLM, Process
 
-    writing_task = Task(
-        description='Write a detailed report based on the research',
-        expected_output='The report should be easy to read and understand. Use bullet points where applicable.',
-        agent=writer
-    )
+# Create an LLM with a temperature of 0 to ensure deterministic outputs
+llm = LLM(model="gpt-4o", temperature=0)
 
-    # Create a crew
-    crew = Crew(
-        agents=[researcher, writer],
-        tasks=[research_task, writing_task],
-        verbose=True,
-        process=Process.sequential,
-    )
+# Create agents
+researcher = Agent(
+    role='Research Analyst',
+    goal='Find and analyze the best investment opportunities',
+    backstory='Expert in financial analysis and market research',
+    llm=llm,
+    verbose=True,
+    allow_delegation=False,
+)
 
-    # Run the crew
-    result = crew.kickoff(inputs={"topic": "AI in material science"})
-    print(result)
-    ```
-  </Step>
+writer = Agent(
+    role='Report Writer',
+    goal='Write clear and concise investment reports',
+    backstory='Experienced in creating detailed financial reports',
+    llm=llm,
+    verbose=True,
+    allow_delegation=False,
+)
 
-  <Step title="View Traces in Weave">
-    After running your CrewAI application, visit the Weave URL provided during initialization to view:
+# Create tasks
+research_task = Task(
+    description='Deep research on the {topic}',
+    expected_output='Comprehensive market data including key players, market size, and growth trends.',
+    agent=researcher
+)
 
-    * LLM calls and their metadata
-    * Agent interactions and task execution flow
-    * Performance metrics like latency and token usage
-    * Any errors or issues that occurred during execution
+writing_task = Task(
+    description='Write a detailed report based on the research',
+    expected_output='The report should be easy to read and understand. Use bullet points where applicable.',
+    agent=writer
+)
 
-    <Frame>
-      <img alt="Weave tracing example with CrewAI" />
-    </Frame>
-  </Step>
-</Steps>
+# Create a crew
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[research_task, writing_task],
+    verbose=True,
+    process=Process.sequential,
+)
+
+# Run the crew
+result = crew.kickoff(inputs={"topic": "AI in material science"})
+print(result)
+```
+
+**5. View Traces in Weave**
+
+After running your CrewAI application, visit the Weave URL provided during initialization to view:
+
+* LLM calls and their metadata
+* Agent interactions and task execution flow
+* Performance metrics like latency and token usage
+* Any errors or issues that occurred during execution
+
+![Weave tracing example with CrewAI](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/weave-tracing.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=f59e556fcc0ac8fcca8eaeef4c0551ae)
 
 ## Features
 

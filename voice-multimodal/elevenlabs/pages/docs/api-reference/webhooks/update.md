@@ -72,7 +72,7 @@ Validation Error
 
 ```json
 {
-  "is_disabled": false,
+  "is_disabled": true,
   "name": "My Callback Webhook"
 }
 ```
@@ -93,7 +93,7 @@ import requests
 url = "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K"
 
 payload = {
-    "is_disabled": False,
+    "is_disabled": True,
     "name": "My Callback Webhook"
 }
 headers = {"Content-Type": "application/json"}
@@ -108,7 +108,7 @@ const url = 'https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9z
 const options = {
   method: 'PATCH',
   headers: {'Content-Type': 'application/json'},
-  body: '{"is_disabled":false,"name":"My Callback Webhook"}'
+  body: '{"is_disabled":true,"name":"My Callback Webhook"}'
 };
 
 try {
@@ -134,7 +134,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K"
 
-	payload := strings.NewReader("{\n  \"is_disabled\": false,\n  \"name\": \"My Callback Webhook\"\n}")
+	payload := strings.NewReader("{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -162,7 +162,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"is_disabled\": false,\n  \"name\": \"My Callback Webhook\"\n}"
+request.body = "{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -174,7 +174,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K")
   .header("Content-Type", "application/json")
-  .body("{\n  \"is_disabled\": false,\n  \"name\": \"My Callback Webhook\"\n}")
+  .body("{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}")
   .asString();
 ```
 
@@ -186,7 +186,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K', [
   'body' => '{
-  "is_disabled": false,
+  "is_disabled": true,
   "name": "My Callback Webhook"
 }',
   'headers' => [
@@ -203,7 +203,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"is_disabled\": false,\n  \"name\": \"My Callback Webhook\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"is_disabled\": true,\n  \"name\": \"My Callback Webhook\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -212,7 +212,7 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "is_disabled": false,
+  "is_disabled": true,
   "name": "My Callback Webhook"
 ] as [String : Any]
 

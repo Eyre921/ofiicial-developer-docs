@@ -42,7 +42,7 @@ You can install GitHub Desktop on macOS 12.0 or later.
 
 You can install GitHub Desktop on Windows 10 64-bit or later.
 
-> \[!WARNING]
+> [!WARNING]
 > You must have a 64-bit operating system to run GitHub Desktop.
 
 1. Visit the [download page for GitHub Desktop](https://desktop.github.com/).

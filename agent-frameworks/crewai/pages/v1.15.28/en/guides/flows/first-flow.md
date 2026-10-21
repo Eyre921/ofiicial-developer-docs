@@ -60,9 +60,7 @@ cd guide_creator_flow
 
 This will generate a project with the basic structure needed for your flow.
 
-<Frame>
-  <img alt="CrewAI Framework Overview" />
-</Frame>
+![CrewAI Framework Overview](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/flows.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=82ea168de2f004553dcea21410cd7d8a)
 
 ## Step 2: Understanding the Project Structure
 
@@ -555,6 +553,6 @@ Now that you've built your first flow, you can:
 5. Combine multiple specialized crews in a single flow
 6. Build multi-turn chat apps with [Conversational Flows](/en/guides/flows/conversational-flows) (`kickoff` per message, `ChatSession`, deferred tracing)
 
-<Check>
-  Congratulations! You've successfully built your first CrewAI Flow that combines regular code, direct LLM calls, and crew-based processing to create a comprehensive guide. These foundational skills enable you to create increasingly sophisticated AI applications that can tackle complex, multi-stage problems through a combination of procedural control and collaborative intelligence.
-</Check>
+> [!TIP]
+>
+> Congratulations! You've successfully built your first CrewAI Flow that combines regular code, direct LLM calls, and crew-based processing to create a comprehensive guide. These foundational skills enable you to create increasingly sophisticated AI applications that can tackle complex, multi-stage problems through a combination of procedural control and collaborative intelligence.

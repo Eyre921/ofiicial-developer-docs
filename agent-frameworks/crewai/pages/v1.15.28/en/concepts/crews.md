@@ -43,9 +43,9 @@ A crew in crewAI represents a collaborative group of agents working together to 
 | **Security Config** *(optional)* | `security_config` | A `SecurityConfig` instance managing crew fingerprinting and identity. Defaults to `SecurityConfig()`. | |
 | **Checkpoint** *(optional)* | `checkpoint` | Enables automatic checkpointing. Pass `True` for sensible defaults, a `CheckpointConfig` for full control, `False` to opt out, or `None` to inherit. See the [Checkpointing](#checkpointing) section below. Defaults to `None`. | |
 
-<Tip>
-  **Crew Max RPM**: The `max_rpm` attribute sets the maximum number of requests per minute the crew can perform to avoid rate limits and will override individual agents' `max_rpm` settings if you set it.
-</Tip>
+> [!TIP]
+>
+> **Crew Max RPM**: The `max_rpm` attribute sets the maximum number of requests per minute the crew can perform to avoid rate limits and will override individual agents' `max_rpm` settings if you set it.
 
 ## Creating Crews
 
@@ -100,9 +100,9 @@ Each string in `agents` resolves to `agents/<name>.jsonc` first, then `agents/<n
 }
 ```
 
-<Note>
-  Tasks run in the order they appear in `tasks` when `process` is `"sequential"`.
-</Note>
+> [!NOTE]
+>
+> Tasks run in the order they appear in `tasks` when `process` is `"sequential"`.
 
 For hierarchical crews, set `"process": "hierarchical"` and provide either `manager_llm` or `manager_agent`. A `manager_agent` can reference an `agents/<name>.jsonc` file that is not included in the top-level `agents` list.
 
@@ -110,9 +110,9 @@ JSON crew definitions support crew-level fields such as `process`, `verbose`, `m
 
 Python callbacks and custom classes use `{"python": "module.attribute"}`. Custom tools use `"custom:<name>"` and load `tools/<name>.py` at runtime.
 
-<Warning>
-  Only run JSON crew projects from sources you trust. `custom:<name>` tools and `{"python": "module.attribute"}` references execute local Python code when the crew loads.
-</Warning>
+> [!WARNING]
+>
+> Only run JSON crew projects from sources you trust. `custom:<name>` tools and `{"python": "module.attribute"}` references execute local Python code when the crew loads.
 
 ### Classic Python/YAML Configuration
 
@@ -297,9 +297,9 @@ crew = Crew.from_checkpoint(".checkpoints/latest.json")
 crew.kickoff()
 ```
 
-<Note>
-  When restoring from a checkpoint, `checkpoint_inputs`, `checkpoint_train`, and `checkpoint_kickoff_event_id` are automatically reconstructed — you do not need to set these manually.
-</Note>
+> [!NOTE]
+>
+> When restoring from a checkpoint, `checkpoint_inputs`, `checkpoint_train`, and `checkpoint_kickoff_event_id` are automatically reconstructed — you do not need to set these manually.
 
 ### `CheckpointConfig` Attributes
 
@@ -366,9 +366,9 @@ CrewAI offers two approaches for async execution:
 | `kickoff_async()` | Thread-based | Wraps synchronous execution in `asyncio.to_thread` |
 | `kickoff_for_each_async()` | Thread-based | Thread-based async for each input in a list |
 
-<Note>
-  For high-concurrency workloads, `akickoff()` and `akickoff_for_each()` are recommended as they use native async for task execution, memory operations, and knowledge retrieval.
-</Note>
+> [!NOTE]
+>
+> For high-concurrency workloads, `akickoff()` and `akickoff_for_each()` are recommended as they use native async for task execution, memory operations, and knowledge retrieval.
 
 ```python Code theme={null}
 # Start the crew's task execution

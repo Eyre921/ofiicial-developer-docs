@@ -18,9 +18,9 @@ CrewAI offers two approaches for async execution:
 | `akickoff()` | Native async | True async/await throughout the entire execution chain |
 | `kickoff_async()` | Thread-based | Wraps synchronous execution in `asyncio.to_thread` |
 
-<Note>
-  For high-concurrency workloads, `akickoff()` is recommended as it uses native async for task execution, memory operations, and knowledge retrieval.
-</Note>
+> [!NOTE]
+>
+> For high-concurrency workloads, `akickoff()` is recommended as it uses native async for task execution, memory operations, and knowledge retrieval.
 
 ## Native Async Execution with `akickoff()`
 

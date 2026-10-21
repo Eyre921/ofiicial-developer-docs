@@ -513,9 +513,9 @@ memory = Memory(
 
 Memory needs an embedding model to convert text into vectors for semantic search. By default, `Memory()` uses OpenAI `text-embedding-3-large` embeddings, which produce 3072-dimensional vectors. Set `OPENAI_API_KEY` for the default path, or configure a custom embedder in one of three ways.
 
-<Warning>
-  Existing local memory stores created with 1536-dimensional embeddings, such as `text-embedding-3-small` or `text-embedding-ada-002`, may not be compatible with the `text-embedding-3-large` default. This applies to both the OpenAI and Azure OpenAI providers — Azure's default embedding model also changed from `text-embedding-ada-002` to `text-embedding-3-large`. If local testing fails with an embedding dimension mismatch, reset memory with `crewai reset-memories -m`, delete the local memory storage directory, or explicitly configure the older embedder model until you migrate.
-</Warning>
+> [!WARNING]
+>
+> Existing local memory stores created with 1536-dimensional embeddings, such as `text-embedding-3-small` or `text-embedding-ada-002`, may not be compatible with the `text-embedding-3-large` default. This applies to both the OpenAI and Azure OpenAI providers — Azure's default embedding model also changed from `text-embedding-ada-002` to `text-embedding-3-large`. If local testing fails with an embedding dimension mismatch, reset memory with `crewai reset-memories -m`, delete the local memory storage directory, or explicitly configure the older embedder model until you migrate.
 
 ### Passing to Memory Directly
 
@@ -548,154 +548,152 @@ crew = Crew(
 
 ### Provider Examples
 
-<AccordionGroup>
-  <Accordion title="OpenAI (default)">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "openai",
-        "config": {
-            "model_name": "text-embedding-3-large",
-            # "api_key": "sk-...",  # or set OPENAI_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
+> **OpenAI (default)**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "openai",
+>     "config": {
+>         "model_name": "text-embedding-3-large",
+>         # "api_key": "sk-...",  # or set OPENAI_API_KEY env var
+>     },
+> })
+> ```
 
-  <Accordion title="Ollama (local, private)">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "ollama",
-        "config": {
-            "model_name": "mxbai-embed-large",
-            "url": "http://localhost:11434/api/embeddings",
-        },
-    })
-    ```
-  </Accordion>
+> **Ollama (local, private)**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "ollama",
+>     "config": {
+>         "model_name": "mxbai-embed-large",
+>         "url": "http://localhost:11434/api/embeddings",
+>     },
+> })
+> ```
 
-  <Accordion title="Azure OpenAI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "azure",
-        "config": {
-            "deployment_id": "your-embedding-deployment",
-            "api_key": "your-azure-api-key",
-            "api_base": "https://your-resource.openai.azure.com",
-            "api_version": "2024-02-01",
-        },
-    })
-    ```
-  </Accordion>
+> **Azure OpenAI**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "azure",
+>     "config": {
+>         "deployment_id": "your-embedding-deployment",
+>         "api_key": "your-azure-api-key",
+>         "api_base": "https://your-resource.openai.azure.com",
+>         "api_version": "2024-02-01",
+>     },
+> })
+> ```
 
-  <Accordion title="Google AI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "google-generativeai",
-        "config": {
-            "model_name": "gemini-embedding-001",
-            # "api_key": "...",  # or set GOOGLE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
+> **Google AI**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "google-generativeai",
+>     "config": {
+>         "model_name": "gemini-embedding-001",
+>         # "api_key": "...",  # or set GOOGLE_API_KEY env var
+>     },
+> })
+> ```
 
-  <Accordion title="Google Vertex AI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "google-vertex",
-        "config": {
-            "model_name": "gemini-embedding-001",
-            "project_id": "your-gcp-project-id",
-            "location": "us-central1",
-        },
-    })
-    ```
-  </Accordion>
+> **Google Vertex AI**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "google-vertex",
+>     "config": {
+>         "model_name": "gemini-embedding-001",
+>         "project_id": "your-gcp-project-id",
+>         "location": "us-central1",
+>     },
+> })
+> ```
 
-  <Accordion title="Cohere">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "cohere",
-        "config": {
-            "model_name": "embed-english-v3.0",
-            # "api_key": "...",  # or set COHERE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
+> **Cohere**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "cohere",
+>     "config": {
+>         "model_name": "embed-english-v3.0",
+>         # "api_key": "...",  # or set COHERE_API_KEY env var
+>     },
+> })
+> ```
 
-  <Accordion title="VoyageAI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "voyageai",
-        "config": {
-            "model": "voyage-3",
-            # "api_key": "...",  # or set VOYAGE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
+> **VoyageAI**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "voyageai",
+>     "config": {
+>         "model": "voyage-3",
+>         # "api_key": "...",  # or set VOYAGE_API_KEY env var
+>     },
+> })
+> ```
 
-  <Accordion title="AWS Bedrock">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "amazon-bedrock",
-        "config": {
-            "model_name": "amazon.titan-embed-text-v1",
-            # Uses default AWS credentials (boto3 session)
-        },
-    })
-    ```
-  </Accordion>
+> **AWS Bedrock**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "amazon-bedrock",
+>     "config": {
+>         "model_name": "amazon.titan-embed-text-v1",
+>         # Uses default AWS credentials (boto3 session)
+>     },
+> })
+> ```
 
-  <Accordion title="Hugging Face">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "huggingface",
-        "config": {
-            "model_name": "sentence-transformers/all-MiniLM-L6-v2",
-        },
-    })
-    ```
-  </Accordion>
+> **Hugging Face**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "huggingface",
+>     "config": {
+>         "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+>     },
+> })
+> ```
 
-  <Accordion title="Jina">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "jina",
-        "config": {
-            "model_name": "jina-embeddings-v2-base-en",
-            # "api_key": "...",  # or set JINA_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
+> **Jina**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "jina",
+>     "config": {
+>         "model_name": "jina-embeddings-v2-base-en",
+>         # "api_key": "...",  # or set JINA_API_KEY env var
+>     },
+> })
+> ```
 
-  <Accordion title="IBM WatsonX">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "watsonx",
-        "config": {
-            "model_id": "ibm/slate-30m-english-rtrvr",
-            "api_key": "your-watsonx-api-key",
-            "project_id": "your-project-id",
-            "url": "https://us-south.ml.cloud.ibm.com",
-        },
-    })
-    ```
-  </Accordion>
+> **IBM WatsonX**
+>
+> ```python theme={null}
+> memory = Memory(embedder={
+>     "provider": "watsonx",
+>     "config": {
+>         "model_id": "ibm/slate-30m-english-rtrvr",
+>         "api_key": "your-watsonx-api-key",
+>         "project_id": "your-project-id",
+>         "url": "https://us-south.ml.cloud.ibm.com",
+>     },
+> })
+> ```
 
-  <Accordion title="Custom Embedder">
-    ```python theme={null}
-    # Pass any callable that takes a list of strings and returns a list of vectors
-    def my_embedder(texts: list[str]) -> list[list[float]]:
-        # Your embedding logic here
-        return [[0.1, 0.2, ...] for _ in texts]
-
-    memory = Memory(embedder=my_embedder)
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Custom Embedder**
+>
+> ```python theme={null}
+> # Pass any callable that takes a list of strings and returns a list of vectors
+> def my_embedder(texts: list[str]) -> list[list[float]]:
+>     # Your embedding logic here
+>     return [[0.1, 0.2, ...] for _ in texts]
+>
+> memory = Memory(embedder=my_embedder)
+> ```
 
 ### Provider Reference
 

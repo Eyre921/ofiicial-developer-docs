@@ -54,7 +54,7 @@ In the fork and pull model, anyone can fork an existing ("upstream") repository 
 
 You do not need permission from the upstream repository to push to a fork you created. You can optionally allow anyone with push access to the upstream repository to make changes to your pull request branch. This model is popular with open-source projects because it reduces friction for new contributors and lets people work independently without upfront coordination.
 
-> \[!TIP]
+> [!TIP]
 > For more information on open source, specifically how to create and grow an open source project, we've created [Open Source Guides](https://opensource.guide/) that will help you foster a healthy open source community. You can also take a free [GitHub Skills](https://skills.github.com/) course on maintaining open source communities.
 
 ### Shared repository model

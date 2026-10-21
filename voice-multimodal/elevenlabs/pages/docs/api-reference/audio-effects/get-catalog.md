@@ -70,35 +70,29 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "filter_presets": [
     {
-      "filter_preset_id": "telephone_old",
-      "name": "Old Telephone",
-      "description": "Narrow bandpass filter that mimics the tinny, lo-fi quality of a vintage telephone call."
+      "filter_preset_id": "string",
+      "name": "string",
+      "description": "string"
     }
   ],
   "environments": [
     {
-      "environment_id": "large_concert_hall",
-      "name": "Large Concert Hall",
-      "description": "Spacious reverb with long decay times that replicates the acoustics of a large concert hall."
+      "environment_id": "string",
+      "name": "string",
+      "description": "string"
     }
   ],
   "background_noises": [
     {
-      "background_noise_id": "coffee_shop_ambience",
-      "name": "Coffee Shop",
-      "description": "Soft background chatter, clinking cups, and light music typical of a busy coffee shop environment."
+      "background_noise_id": "string",
+      "name": "string",
+      "description": "string"
     }
   ]
 }
@@ -111,17 +105,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/audio-effects/catalog"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/audio-effects/catalog';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -137,7 +128,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -146,11 +136,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/audio-effects/catalog"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -173,8 +159,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -185,8 +169,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/audio-effects/catalog")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -196,12 +178,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/audio-effects/catalog', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/audio-effects/catalog');
 
 echo $response->getBody();
 ```
@@ -211,25 +188,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/audio-effects/catalog");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/audio-effects/catalog")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

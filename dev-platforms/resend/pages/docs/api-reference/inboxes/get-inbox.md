@@ -79,6 +79,58 @@ $resend = Resend::client('re_xxxxxxxxx');
 $resend->inboxes->get('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1');
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+resend.Inboxes.get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1")
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+Resend::Inboxes.get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1")
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	client.Inboxes.Get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1")
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _inbox = resend
+    .inboxes
+    .get("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1")
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxRetrieveAsync( new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ) );
+Console.WriteLine( "Inbox address={0}", resp.Content.EmailAddress );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1' \
      -H 'Authorization: Bearer re_xxxxxxxxx'

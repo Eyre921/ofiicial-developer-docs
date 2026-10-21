@@ -10,59 +10,57 @@ These tools enable your agents to work with various file formats and document ty
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="File Read Tool" icon="folders" href="/en/tools/file-document/filereadtool">
-    Read content from any file type including text, markdown, and more.
-  </Card>
+> **[File Read Tool](/en/tools/file-document/filereadtool)**
+>
+> Read content from any file type including text, markdown, and more.
 
-  <Card title="File Write Tool" icon="file-pen" href="/en/tools/file-document/filewritetool">
-    Write content to files, create new documents, and save processed data.
-  </Card>
+> **[File Write Tool](/en/tools/file-document/filewritetool)**
+>
+> Write content to files, create new documents, and save processed data.
 
-  <Card title="PDF Search Tool" icon="file-pdf" href="/en/tools/file-document/pdfsearchtool">
-    Search and extract text content from PDF documents efficiently.
-  </Card>
+> **[PDF Search Tool](/en/tools/file-document/pdfsearchtool)**
+>
+> Search and extract text content from PDF documents efficiently.
 
-  <Card title="DOCX Search Tool" icon="file-word" href="/en/tools/file-document/docxsearchtool">
-    Search through Microsoft Word documents and extract relevant content.
-  </Card>
+> **[DOCX Search Tool](/en/tools/file-document/docxsearchtool)**
+>
+> Search through Microsoft Word documents and extract relevant content.
 
-  <Card title="JSON Search Tool" icon="brackets-curly" href="/en/tools/file-document/jsonsearchtool">
-    Parse and search through JSON files with advanced query capabilities.
-  </Card>
+> **[JSON Search Tool](/en/tools/file-document/jsonsearchtool)**
+>
+> Parse and search through JSON files with advanced query capabilities.
 
-  <Card title="CSV Search Tool" icon="table" href="/en/tools/file-document/csvsearchtool">
-    Process and search through CSV files, extract specific rows and columns.
-  </Card>
+> **[CSV Search Tool](/en/tools/file-document/csvsearchtool)**
+>
+> Process and search through CSV files, extract specific rows and columns.
 
-  <Card title="XML Search Tool" icon="code" href="/en/tools/file-document/xmlsearchtool">
-    Parse XML files and search for specific elements and attributes.
-  </Card>
+> **[XML Search Tool](/en/tools/file-document/xmlsearchtool)**
+>
+> Parse XML files and search for specific elements and attributes.
 
-  <Card title="MDX Search Tool" icon="markdown" href="/en/tools/file-document/mdxsearchtool">
-    Search through MDX files and extract content from documentation.
-  </Card>
+> **[MDX Search Tool](/en/tools/file-document/mdxsearchtool)**
+>
+> Search through MDX files and extract content from documentation.
 
-  <Card title="TXT Search Tool" icon="file-lines" href="/en/tools/file-document/txtsearchtool">
-    Search through plain text files with pattern matching capabilities.
-  </Card>
+> **[TXT Search Tool](/en/tools/file-document/txtsearchtool)**
+>
+> Search through plain text files with pattern matching capabilities.
 
-  <Card title="Directory Search Tool" icon="folder-open" href="/en/tools/file-document/directorysearchtool">
-    Search for files and folders within directory structures.
-  </Card>
+> **[Directory Search Tool](/en/tools/file-document/directorysearchtool)**
+>
+> Search for files and folders within directory structures.
 
-  <Card title="Directory Read Tool" icon="folder" href="/en/tools/file-document/directoryreadtool">
-    Read and list directory contents, file structures, and metadata.
-  </Card>
+> **[Directory Read Tool](/en/tools/file-document/directoryreadtool)**
+>
+> Read and list directory contents, file structures, and metadata.
 
-  <Card title="OCR Tool" icon="image" href="/en/tools/file-document/ocrtool">
-    Extract text from images (local files or URLs) using a vision‑capable LLM.
-  </Card>
+> **[OCR Tool](/en/tools/file-document/ocrtool)**
+>
+> Extract text from images (local files or URLs) using a vision‑capable LLM.
 
-  <Card title="PDF Text Writing Tool" icon="file-pdf" href="/en/tools/file-document/pdf-text-writing-tool">
-    Write text at specific coordinates in PDFs, with optional custom fonts.
-  </Card>
-</CardGroup>
+> **[PDF Text Writing Tool](/en/tools/file-document/pdf-text-writing-tool)**
+>
+> Write text at specific coordinates in PDFs, with optional custom fonts.
 
 ## **Common Use Cases**
 

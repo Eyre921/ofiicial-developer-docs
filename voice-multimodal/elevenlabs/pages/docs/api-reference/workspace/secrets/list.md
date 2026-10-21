@@ -122,40 +122,34 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "secrets": [
     {
-      "type": "stored",
-      "secret_id": "sec_a1b2c3d4e5f6789012345678",
-      "name": "OPENAI_API_KEY",
+      "type": "string",
+      "secret_id": "string",
+      "name": "string",
       "used_by": {
         "tools": [
           {
             "type": "available",
-            "access_level": "editor",
-            "created_at_unix_secs": 1718035200,
-            "id": "tool_9f8e7d6c5b4a321098765432",
-            "name": "Web Search Tool"
+            "access_level": "admin",
+            "created_at_unix_secs": 1,
+            "id": "string",
+            "name": "string"
           }
         ],
         "agents": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1718121600,
-            "id": "agent_3c2b1a0f9e8d7c6b5a4f3e2d",
-            "name": "Customer Support Agent",
+            "created_at_unix_secs": 1,
+            "id": "string",
+            "name": "string",
             "referenced_resource_ids": [
-              "tool_9f8e7d6c5b4a321098765432"
+              "string"
             ]
           }
         ],
@@ -166,9 +160,9 @@ Validation Error
         "agents_has_more": false,
         "phone_numbers": [
           {
-            "phone_number_id": "pn_7d6e5f4a3b2c1d0e9f8a7b6c",
-            "phone_number": "+14155552671",
-            "label": "US Support Line",
+            "phone_number_id": "string",
+            "phone_number": "string",
+            "label": "string",
             "provider": "twilio"
           }
         ],
@@ -176,16 +170,16 @@ Validation Error
         "mcp_servers": [
           {
             "type": "available",
-            "access_level": "viewer",
-            "created_at_unix_secs": 1718208000,
-            "id": "mcp_2e3f4a5b6c7d8e9f0a1b2c3d",
-            "name": "Internal Data MCP Server"
+            "access_level": "admin",
+            "created_at_unix_secs": 1,
+            "id": "string",
+            "name": "string"
           }
         ]
       }
     }
   ],
-  "next_cursor": "eyJsYXN0X2lkIjoic2VjX2ExYjJjM2Q0ZTVmNjc4OTAxMjM0NTY3OCJ9"
+  "next_cursor": "string"
 }
 ```
 
@@ -196,17 +190,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/secrets"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/secrets';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -222,7 +213,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -231,11 +221,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/secrets"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -258,8 +244,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -270,8 +254,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/secrets")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -281,12 +263,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/secrets', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/secrets');
 
 echo $response->getBody();
 ```
@@ -296,25 +273,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/secrets");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/secrets")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

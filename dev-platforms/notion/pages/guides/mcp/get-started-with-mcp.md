@@ -371,7 +371,7 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 >
 > * **MCP tokens**: Business and Enterprise. Only workspace owners can create them.
 > * **Enterprise-managed authorization**: Enterprise, with SAML SSO.
-> * **AI search** in `notion-search`, including connected apps: Business or Enterprise with Notion AI. Without it, `notion-search` runs a keyword search of Notion.
+> * **Connected-source search** with `notion-connector-search`: Business or Enterprise with Notion AI. `notion-search` searches Notion on every plan.
 > * **Database queries** with `notion-query-data-sources`: querying a saved view works on every plan. SQL queries are unlimited on Business or Enterprise with Notion AI. Other plans get a limited number of SQL queries on one data source at a time.
 > * **Some search filters**, such as last edited by and last edited date: Business and Enterprise. On other plans these filters are dropped, and the result says so.
 > * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/mcp-supported-tools#rate-limits).

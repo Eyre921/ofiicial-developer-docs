@@ -8,9 +8,9 @@ Learn how to use classic Python annotations to structure agents, tasks, and comp
 
 This guide explains how to use annotations to properly reference **agents**, **tasks**, and other components in a classic `crew.py` file.
 
-<Note>
-  New crew projects created with `crewai create crew <name>` are JSON-first and use `crew.jsonc` plus `agents/*.jsonc`. Use this annotations guide when you are working in a classic project created with `crewai create crew <name> --classic`, migrating an existing Python/YAML project, or need decorator-based Python control.
-</Note>
+> [!NOTE]
+>
+> New crew projects created with `crewai create crew <name>` are JSON-first and use `crew.jsonc` plus `agents/*.jsonc`. Use this annotations guide when you are working in a classic project created with `crewai create crew <name> --classic`, migrating an existing Python/YAML project, or need decorator-based Python control.
 
 ## Introduction
 
@@ -47,14 +47,14 @@ class LinkedinProfileCrew():
 
 The `@CrewBase` annotation is used to decorate the main crew class. This class typically contains configurations and methods for creating agents, tasks, and the crew itself.
 
-<Tip>
-  `@CrewBase` does more than register the class:
-
-  * **Configuration bootstrapping:** looks for `agents_config` and `tasks_config` (defaulting to `config/agents.yaml` and `config/tasks.yaml`) beside the class file, loads them at instantiation, and safely falls back to empty dicts if files are missing.
-  * **Decorator orchestration:** keeps memoized references to every method marked with `@agent`, `@task`, `@before_kickoff`, or `@after_kickoff` so they are instantiated once per crew and executed in declaration order.
-  * **Hook wiring:** automatically attaches the preserved kickoff hooks to the `Crew` object returned by the `@crew` method, making them run before and after `.kickoff()`.
-  * **MCP integration:** when the class defines `mcp_server_params`, `get_mcp_tools()` lazily starts an MCP server adapter, hydrates the declared tools, and an internal after-kickoff hook stops the adapter. See [MCP overview](/en/mcp/overview) for adapter configuration details.
-</Tip>
+> [!TIP]
+>
+> `@CrewBase` does more than register the class:
+>
+> * **Configuration bootstrapping:** looks for `agents_config` and `tasks_config` (defaulting to `config/agents.yaml` and `config/tasks.yaml`) beside the class file, loads them at instantiation, and safely falls back to empty dicts if files are missing.
+> * **Decorator orchestration:** keeps memoized references to every method marked with `@agent`, `@task`, `@before_kickoff`, or `@after_kickoff` so they are instantiated once per crew and executed in declaration order.
+> * **Hook wiring:** automatically attaches the preserved kickoff hooks to the `Crew` object returned by the `@crew` method, making them run before and after `.kickoff()`.
+> * **MCP integration:** when the class defines `mcp_server_params`, `get_mcp_tools()` lazily starts an MCP server adapter, hydrates the declared tools, and an internal after-kickoff hook stops the adapter. See [MCP overview](/en/mcp/overview) for adapter configuration details.
 
 ### 2. Tool Definition
 

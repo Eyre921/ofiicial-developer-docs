@@ -359,9 +359,9 @@ ElevenAgents without porting them.
 
 #### What SIP trunk providers are compatible with ElevenLabs?
 
-ElevenLabs is compatible with most standard SIP trunk providers including Twilio, Vonage,
-RingCentral, Sinch, Infobip, Telnyx, Exotel, Plivo, Bandwidth, and others that support SIP
-protocol standards. TLS transport and SRTP media encryption are supported for enhanced security.
+ElevenLabs is compatible with most standard SIP trunk providers including Twilio, Vonage, Sinch,
+Infobip, Telnyx, Exotel, Plivo, Bandwidth, and others that support SIP protocol standards. TLS
+transport and SRTP media encryption are supported for enhanced security.
 
 #### Should I use TLS transport for better security?
 

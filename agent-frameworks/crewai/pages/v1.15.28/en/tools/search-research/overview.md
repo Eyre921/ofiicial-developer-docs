@@ -10,71 +10,69 @@ These tools enable your agents to search the web, research topics, and find info
 
 ## **Available Tools**
 
-<CardGroup>
-  <Card title="Serper Dev Tool" icon="google" href="/en/tools/search-research/serperdevtool">
-    Google search API integration for comprehensive web search capabilities.
-  </Card>
+> **[Serper Dev Tool](/en/tools/search-research/serperdevtool)**
+>
+> Google search API integration for comprehensive web search capabilities.
 
-  <Card title="Brave Search Tool" icon="shield" href="/en/tools/search-research/bravesearchtool">
-    Privacy-focused search with Brave's independent search index.
-  </Card>
+> **[Brave Search Tool](/en/tools/search-research/bravesearchtool)**
+>
+> Privacy-focused search with Brave's independent search index.
 
-  <Card title="Exa Search Tool" icon="magnifying-glass" href="/en/tools/search-research/exasearchtool">
-    AI-powered search for finding specific and relevant content.
-  </Card>
+> **[Exa Search Tool](/en/tools/search-research/exasearchtool)**
+>
+> AI-powered search for finding specific and relevant content.
 
-  <Card title="LinkUp Search Tool" icon="link" href="/en/tools/search-research/linkupsearchtool">
-    Real-time web search with fresh content indexing.
-  </Card>
+> **[LinkUp Search Tool](/en/tools/search-research/linkupsearchtool)**
+>
+> Real-time web search with fresh content indexing.
 
-  <Card title="GitHub Search Tool" icon="github" href="/en/tools/search-research/githubsearchtool">
-    Search GitHub repositories, code, issues, and documentation.
-  </Card>
+> **[GitHub Search Tool](/en/tools/search-research/githubsearchtool)**
+>
+> Search GitHub repositories, code, issues, and documentation.
 
-  <Card title="Website Search Tool" icon="globe" href="/en/tools/search-research/websitesearchtool">
-    Search within specific websites and domains.
-  </Card>
+> **[Website Search Tool](/en/tools/search-research/websitesearchtool)**
+>
+> Search within specific websites and domains.
 
-  <Card title="Code Docs Search Tool" icon="code" href="/en/tools/search-research/codedocssearchtool">
-    Search through code documentation and technical resources.
-  </Card>
+> **[Code Docs Search Tool](/en/tools/search-research/codedocssearchtool)**
+>
+> Search through code documentation and technical resources.
 
-  <Card title="YouTube Channel Search" icon="youtube" href="/en/tools/search-research/youtubechannelsearchtool">
-    Search YouTube channels for specific content and creators.
-  </Card>
+> **[YouTube Channel Search](/en/tools/search-research/youtubechannelsearchtool)**
+>
+> Search YouTube channels for specific content and creators.
 
-  <Card title="YouTube Video Search" icon="play" href="/en/tools/search-research/youtubevideosearchtool">
-    Find and analyze YouTube videos by topic, keyword, or criteria.
-  </Card>
+> **[YouTube Video Search](/en/tools/search-research/youtubevideosearchtool)**
+>
+> Find and analyze YouTube videos by topic, keyword, or criteria.
 
-  <Card title="Tavily Search Tool" icon="magnifying-glass" href="/en/tools/search-research/tavilysearchtool">
-    Comprehensive web search using Tavily's AI-powered search API.
-  </Card>
+> **[Tavily Search Tool](/en/tools/search-research/tavilysearchtool)**
+>
+> Comprehensive web search using Tavily's AI-powered search API.
 
-  <Card title="Tavily Extractor Tool" icon="file-text" href="/en/tools/search-research/tavilyextractortool">
-    Extract structured content from web pages using the Tavily API.
-  </Card>
+> **[Tavily Extractor Tool](/en/tools/search-research/tavilyextractortool)**
+>
+> Extract structured content from web pages using the Tavily API.
 
-  <Card title="Tavily Research Tool" icon="flask" href="/en/tools/search-research/tavilyresearchtool">
-    Run multi-step research tasks and get cited reports using the Tavily Research API.
-  </Card>
+> **[Tavily Research Tool](/en/tools/search-research/tavilyresearchtool)**
+>
+> Run multi-step research tasks and get cited reports using the Tavily Research API.
 
-  <Card title="Tavily Get Research Tool" icon="clipboard-list" href="/en/tools/search-research/tavilygetresearchtool">
-    Retrieve the status and results of an existing Tavily research task.
-  </Card>
+> **[Tavily Get Research Tool](/en/tools/search-research/tavilygetresearchtool)**
+>
+> Retrieve the status and results of an existing Tavily research task.
 
-  <Card title="Arxiv Paper Tool" icon="box-archive" href="/en/tools/search-research/arxivpapertool">
-    Search arXiv and optionally download PDFs.
-  </Card>
+> **[Arxiv Paper Tool](/en/tools/search-research/arxivpapertool)**
+>
+> Search arXiv and optionally download PDFs.
 
-  <Card title="SerpApi Google Search" icon="search" href="/en/tools/search-research/serpapi-googlesearchtool">
-    Google search via SerpApi with structured results.
-  </Card>
+> **[SerpApi Google Search](/en/tools/search-research/serpapi-googlesearchtool)**
+>
+> Google search via SerpApi with structured results.
 
-  <Card title="SerpApi Google Shopping" icon="cart-shopping" href="/en/tools/search-research/serpapi-googleshoppingtool">
-    Google Shopping queries via SerpApi.
-  </Card>
-</CardGroup>
+> **[SerpApi Google Shopping](/en/tools/search-research/serpapi-googleshoppingtool)**
+>
+> Google Shopping queries via SerpApi.
 
 ## **Common Use Cases**
 

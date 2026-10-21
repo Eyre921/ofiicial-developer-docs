@@ -17,163 +17,161 @@ The pattern has two halves:
 
 The Flow's state reaches the frontend over AG-UI without you wiring up any transport. A state snapshot is emitted automatically at each step (method) boundary of the Flow, and you can push intermediate updates during a long-running step by calling `copilotkit_emit_state` explicitly. You subclass the state to add your own fields, update them in the Flow, and read them in React.
 
-<Note>
-  State-driven rendering requires a **Flow** with custom state (`Flow[AgentState]`). Crews are chat-oriented and do not expose custom state this way, so with a Crew use [tool rendering](/edge/en/guides/frontend/tool-based-generative-ui) instead.
-</Note>
+> [!NOTE]
+>
+> State-driven rendering requires a **Flow** with custom state (`Flow[AgentState]`). Crews are chat-oriented and do not expose custom state this way, so with a Crew use [tool rendering](/edge/en/guides/frontend/tool-based-generative-ui) instead.
 
 ## Build a live task planner
 
 This example builds a planner that breaks a request into about ten steps and streams them to the UI as a checklist. It assumes you already have a CrewAI server and a CopilotKit frontend wired up. If you do not, start with the [Frontend Overview](/edge/en/guides/frontend/overview).
 
-<Steps>
-  <Step title="Add your own fields to the agent state">
-    Subclass `CopilotKitState` to declare the state your UI needs. `CopilotKitState` already carries the conversation (`messages`); you add whatever else you want to render, here a list of task steps.
+**1. Add your own fields to the agent state**
 
-    ```python theme={null}
-    from typing import List, Literal
-    from pydantic import BaseModel, Field
-    from ag_ui_crewai.sdk import CopilotKitState
+Subclass `CopilotKitState` to declare the state your UI needs. `CopilotKitState` already carries the conversation (`messages`); you add whatever else you want to render, here a list of task steps.
 
-
-    class TaskStep(BaseModel):
-        description: str
-        status: Literal["enabled", "disabled"]
+```python theme={null}
+from typing import List, Literal
+from pydantic import BaseModel, Field
+from ag_ui_crewai.sdk import CopilotKitState
 
 
-    class AgentState(CopilotKitState):
-        steps: List[TaskStep] = Field(default_factory=list)
-    ```
+class TaskStep(BaseModel):
+    description: str
+    status: Literal["enabled", "disabled"]
 
-    Everything on `AgentState` is included in the state snapshot the frontend receives. A snapshot is emitted automatically at each step boundary, so writing to `self.state` is enough for the UI to pick it up between steps. To update the UI *during* a long step, emit explicitly (shown below).
-  </Step>
 
-  <Step title="Write progress into state from the Flow">
-    Type your Flow with the custom state (`Flow[AgentState]`) and let the model fill it in. Here the LLM calls a `generate_task_steps` tool; the streamed tool call lands in the conversation and the steps become visible in state.
+class AgentState(CopilotKitState):
+    steps: List[TaskStep] = Field(default_factory=list)
+```
 
-    ```python theme={null}
-    from crewai.flow.flow import Flow, start
-    from litellm import acompletion
-    from ag_ui_crewai.sdk import copilotkit_stream
+Everything on `AgentState` is included in the state snapshot the frontend receives. A snapshot is emitted automatically at each step boundary, so writing to `self.state` is enough for the UI to pick it up between steps. To update the UI *during* a long step, emit explicitly (shown below).
 
-    GENERATE_TASK_STEPS_TOOL = {
-        "type": "function",
-        "function": {
-            "name": "generate_task_steps",
-            "description": "Break a task into about 10 short imperative steps.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "steps": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "description": {"type": "string"},
-                                "status": {"type": "string", "enum": ["enabled"]},
-                            },
-                            "required": ["description", "status"],
+**2. Write progress into state from the Flow**
+
+Type your Flow with the custom state (`Flow[AgentState]`) and let the model fill it in. Here the LLM calls a `generate_task_steps` tool; the streamed tool call lands in the conversation and the steps become visible in state.
+
+```python theme={null}
+from crewai.flow.flow import Flow, start
+from litellm import acompletion
+from ag_ui_crewai.sdk import copilotkit_stream
+
+GENERATE_TASK_STEPS_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "generate_task_steps",
+        "description": "Break a task into about 10 short imperative steps.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "steps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "description": {"type": "string"},
+                            "status": {"type": "string", "enum": ["enabled"]},
                         },
+                        "required": ["description", "status"],
                     },
                 },
-                "required": ["steps"],
             },
+            "required": ["steps"],
         },
-    }
+    },
+}
 
 
-    class TaskPlannerFlow(Flow[AgentState]):
-        @start()
-        async def chat(self):
-            response = await copilotkit_stream(
-                await acompletion(
-                    model="openai/gpt-4o",
-                    messages=[
-                        {"role": "system", "content": "Plan the task the user asks for."},
-                        *self.state.messages,
-                    ],
-                    tools=[GENERATE_TASK_STEPS_TOOL],
-                    parallel_tool_calls=False,
-                    stream=True,
-                )
+class TaskPlannerFlow(Flow[AgentState]):
+    @start()
+    async def chat(self):
+        response = await copilotkit_stream(
+            await acompletion(
+                model="openai/gpt-4o",
+                messages=[
+                    {"role": "system", "content": "Plan the task the user asks for."},
+                    *self.state.messages,
+                ],
+                tools=[GENERATE_TASK_STEPS_TOOL],
+                parallel_tool_calls=False,
+                stream=True,
             )
-            message = response.choices[0].message
-            self.state.messages.append(message)
-    ```
+        )
+        message = response.choices[0].message
+        self.state.messages.append(message)
+```
 
-    Wrapping the LLM call in `copilotkit_stream` streams the assistant's tokens and tool call to the frontend as they are produced. The `steps` you write to `self.state` are sent in the state snapshot emitted at the end of this step.
-  </Step>
+Wrapping the LLM call in `copilotkit_stream` streams the assistant's tokens and tool call to the frontend as they are produced. The `steps` you write to `self.state` are sent in the state snapshot emitted at the end of this step.
 
-  <Step title="Stream progress during a long step (optional)">
-    The automatic snapshot fires at step boundaries. If a single step does substantial work and you want the checklist to fill in *as it happens*, emit intermediate state yourself with `copilotkit_emit_state`. Each call pushes the current state to the frontend immediately.
+**3. Stream progress during a long step (optional)**
 
-    ```python theme={null}
-    from ag_ui_crewai.sdk import copilotkit_emit_state
+The automatic snapshot fires at step boundaries. If a single step does substantial work and you want the checklist to fill in *as it happens*, emit intermediate state yourself with `copilotkit_emit_state`. Each call pushes the current state to the frontend immediately.
 
-    class TaskPlannerFlow(Flow[AgentState]):
-        @start()
-        async def execute(self):
-            for step in self.state.steps:
-                step.status = "disabled"          # mark done as you go
-                await copilotkit_emit_state(self.state)   # push update now
-                await do_work(step)
-    ```
+```python theme={null}
+from ag_ui_crewai.sdk import copilotkit_emit_state
 
-    Import `copilotkit_emit_state` from `ag_ui_crewai.sdk`. It requires the CopilotKit SDK (`pip install "copilotkit[crewai]"`). Reach for it only when a step is long enough that waiting for its boundary snapshot would feel unresponsive.
-  </Step>
+class TaskPlannerFlow(Flow[AgentState]):
+    @start()
+    async def execute(self):
+        for step in self.state.steps:
+            step.status = "disabled"          # mark done as you go
+            await copilotkit_emit_state(self.state)   # push update now
+            await do_work(step)
+```
 
-  <Step title="Serve the Flow over AG-UI">
-    Register the Flow exactly as any other, on its own path:
+Import `copilotkit_emit_state` from `ag_ui_crewai.sdk`. It requires the CopilotKit SDK (`pip install "copilotkit[crewai]"`). Reach for it only when a step is long enough that waiting for its boundary snapshot would feel unresponsive.
 
-    ```python theme={null}
-    # server.py
-    from fastapi import FastAPI
-    from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
-    from my_agents.task_planner import TaskPlannerFlow
+**4. Serve the Flow over AG-UI**
 
-    app = FastAPI(title="CrewAI Agent Server")
+Register the Flow exactly as any other, on its own path:
 
-    add_crewai_flow_fastapi_endpoint(
-        app=app,
-        flow=TaskPlannerFlow(),
-        path="/task_planner",
-    )
-    ```
+```python theme={null}
+# server.py
+from fastapi import FastAPI
+from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
+from my_agents.task_planner import TaskPlannerFlow
 
-    See the [Frontend Overview](/edge/en/guides/frontend/overview) for the full server, runtime, and provider setup, and remember to register the agent (here `task_planner`) in your CopilotKit runtime route.
-  </Step>
+app = FastAPI(title="CrewAI Agent Server")
 
-  <Step title="Read the live state in React">
-    On the frontend, `useAgent` gives you the agent's live state. Subscribe to state changes so your component re-renders every time the Flow writes an update.
+add_crewai_flow_fastapi_endpoint(
+    app=app,
+    flow=TaskPlannerFlow(),
+    path="/task_planner",
+)
+```
 
-    ```tsx theme={null}
-    "use client";
-    import { useAgent, UseAgentUpdate } from "@copilotkit/react-core/v2";
+See the [Frontend Overview](/edge/en/guides/frontend/overview) for the full server, runtime, and provider setup, and remember to register the agent (here `task_planner`) in your CopilotKit runtime route.
 
-    function TaskPlan() {
-      const { agent } = useAgent({
-        agentId: "task_planner",
-        updates: [UseAgentUpdate.OnStateChanged],
-      });
+**5. Read the live state in React**
 
-      const steps = agent?.state?.steps ?? [];
+On the frontend, `useAgent` gives you the agent's live state. Subscribe to state changes so your component re-renders every time the Flow writes an update.
 
-      return (
-        <ul>
-          {steps.map((s, i) => (
-            <li key={i}>{s.description}</li>
-          ))}
-        </ul>
-      );
-    }
-    ```
+```tsx theme={null}
+"use client";
+import { useAgent, UseAgentUpdate } from "@copilotkit/react-core/v2";
 
-    `useAgent` returns `{ agent }`. A few things to know:
+function TaskPlan() {
+  const { agent } = useAgent({
+    agentId: "task_planner",
+    updates: [UseAgentUpdate.OnStateChanged],
+  });
 
-    * `agent.state` is the live Flow state. Its shape matches the fields you added to `AgentState`, so `agent.state.steps` is your list of task steps.
-    * `agent.isRunning` tells you when the agent is actively working, useful for showing a spinner or disabling input.
-    * `updates: [UseAgentUpdate.OnStateChanged]` re-renders the component whenever state changes, so the checklist fills in as the Flow streams its steps.
-  </Step>
-</Steps>
+  const steps = agent?.state?.steps ?? [];
+
+  return (
+    <ul>
+      {steps.map((s, i) => (
+        <li key={i}>{s.description}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+`useAgent` returns `{ agent }`. A few things to know:
+
+* `agent.state` is the live Flow state. Its shape matches the fields you added to `AgentState`, so `agent.state.steps` is your list of task steps.
+* `agent.isRunning` tells you when the agent is actively working, useful for showing a spinner or disabling input.
+* `updates: [UseAgentUpdate.OnStateChanged]` re-renders the component whenever state changes, so the checklist fills in as the Flow streams its steps.
 
 ## Where this goes next
 
@@ -184,16 +182,14 @@ Reading state is the foundation. Two guides build directly on it:
 
 ## Related
 
-<CardGroup>
-  <Card title="Shared State" icon="arrows-rotate" href="/edge/en/guides/frontend/shared-state">
-    Sync agent state and app UI in both directions.
-  </Card>
+> **[Shared State](/edge/en/guides/frontend/shared-state)**
+>
+> Sync agent state and app UI in both directions.
 
-  <Card title="Predictive State" icon="gauge-high" href="/edge/en/guides/frontend/predictive-state-updates">
-    Stream in-progress tool arguments into state.
-  </Card>
+> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+>
+> Stream in-progress tool arguments into state.
 
-  <Card title="Tool-Based Generative UI" icon="puzzle-piece" href="/edge/en/guides/frontend/tool-based-generative-ui">
-    Map agent tool calls to components.
-  </Card>
-</CardGroup>
+> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+>
+> Map agent tool calls to components.

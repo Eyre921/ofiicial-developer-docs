@@ -12,43 +12,41 @@ Langtrace is an open-source, external tool that helps you set up observability a
 While not built directly into CrewAI, Langtrace can be used alongside CrewAI to gain deep visibility into the cost, latency, and performance of your CrewAI Agents.
 This integration allows you to log hyperparameters, monitor performance regressions, and establish a process for continuous improvement of your Agents.
 
-<img alt="Overview of a select series of agent session runs" />
+![Overview of a select series of agent session runs](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/langtrace1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=85b67e42028ca9383087737279f8931f)
 
-<img alt="Overview of agent traces" />
+![Overview of agent traces](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/langtrace2.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=24f08e5c56b6200e386d305a7bee347c)
 
-<img alt="Overview of llm traces in details" />
+![Overview of llm traces in details](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/langtrace3.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=f1a8624e0c05d59deded640e4751a986)
 
 ## Setup Instructions
 
-<Steps>
-  <Step title="Sign up for Langtrace">
-    Sign up by visiting [https://langtrace.ai/signup](https://langtrace.ai/signup).
-  </Step>
+**1. Sign up for Langtrace**
 
-  <Step title="Create a project">
-    Set the project type to `CrewAI` and generate an API key.
-  </Step>
+Sign up by visiting [https://langtrace.ai/signup](https://langtrace.ai/signup).
 
-  <Step title="Install Langtrace in your CrewAI project">
-    Use the following command:
+**2. Create a project**
 
-    ```bash theme={null}
-    pip install langtrace-python-sdk
-    ```
-  </Step>
+Set the project type to `CrewAI` and generate an API key.
 
-  <Step title="Import Langtrace">
-    Import and initialize Langtrace at the beginning of your script, before any CrewAI imports:
+**3. Install Langtrace in your CrewAI project**
 
-    ```python theme={null}
-    from langtrace_python_sdk import langtrace
-    langtrace.init(api_key='<LANGTRACE_API_KEY>')
+Use the following command:
 
-    # Now import CrewAI modules
-    from crewai import Agent, Task, Crew
-    ```
-  </Step>
-</Steps>
+```bash theme={null}
+pip install langtrace-python-sdk
+```
+
+**4. Import Langtrace**
+
+Import and initialize Langtrace at the beginning of your script, before any CrewAI imports:
+
+```python theme={null}
+from langtrace_python_sdk import langtrace
+langtrace.init(api_key='<LANGTRACE_API_KEY>')
+
+# Now import CrewAI modules
+from crewai import Agent, Task, Crew
+```
 
 ### Features and Their Application to CrewAI
 

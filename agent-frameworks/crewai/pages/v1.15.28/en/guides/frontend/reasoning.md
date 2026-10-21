@@ -50,22 +50,20 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 <CopilotChat agentId="recipe" />
 ```
 
-<Note>
-  There is no `useReasoning` hook and no reasoning component to write. Reasoning is not something you wire up on the frontend; it renders automatically as long as the model emits it.
-</Note>
+> [!NOTE]
+>
+> There is no `useReasoning` hook and no reasoning component to write. Reasoning is not something you wire up on the frontend; it renders automatically as long as the model emits it.
 
 ## Related
 
-<CardGroup>
-  <Card title="Generative UI" icon="wand-magic-sparkles" href="/edge/en/guides/frontend/generative-ui">
-    The full spectrum, from author-controlled to agent-invented UI.
-  </Card>
+> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+>
+> The full spectrum, from author-controlled to agent-invented UI.
 
-  <Card title="Agentic Generative UI" icon="list-check" href="/edge/en/guides/frontend/agentic-generative-ui">
-    Render live agent state as the Flow works.
-  </Card>
+> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+>
+> Render live agent state as the Flow works.
 
-  <Card title="Frontend Overview" icon="browser" href="/edge/en/guides/frontend/overview">
-    Set up the chat surface and runtime.
-  </Card>
-</CardGroup>
+> **[Frontend Overview](/edge/en/guides/frontend/overview)**
+>
+> Set up the chat surface and runtime.

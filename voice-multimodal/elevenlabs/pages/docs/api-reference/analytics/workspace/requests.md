@@ -92,45 +92,17 @@ Validation Error
 ```json
 {
   "columns": [
-    "timestamp",
-    "endpoint",
-    "status_code",
-    "latency",
-    "credits_used",
-    "success"
+    "string"
   ],
   "column_types": [
-    "DateTime",
-    "String",
-    "Int",
-    "Float",
-    "Float",
-    "Bool"
+    "String"
   ],
   "rows": [
     [
-      "2024-03-15T14:30:00Z",
-      "/v1/text-to-speech",
-      "200",
-      "342.5",
-      "1250",
-      "true"
-    ],
-    [
-      "2024-03-15T14:28:45Z",
-      "/v1/speech-to-speech",
-      "200",
-      "518.3",
-      "980",
-      "true"
+      "string"
     ]
   ],
   "column_units": [
-    "ms",
-    "ms",
-    "ms",
-    "ms",
-    "credits",
     "ms"
   ]
 }

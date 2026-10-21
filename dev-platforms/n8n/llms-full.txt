@@ -1,4 +1,4 @@
-> This is part 1 of 14 of the full documentation (pages 1–100 of 1367).
+> This is part 1 of 14 of the full documentation (pages 1–100 of 1372).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -633,20 +633,20 @@ Requires Docker on Linux or macOS (or WSL on Windows). Sets up n8n locally in on
 
 # Use n8n Cloud
 
-Manage your n8n Cloud trial, plan, and instance, including the admin dashboard and updates.
+Manage your n8n Cloud trial, plan, and instance, including the n8n Cloud console and updates.
 
 Manage your n8n Cloud trial, plan, and instance.
 
 ## In this section
 
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial): start a free trial, then compare the Starter, Pro, and Enterprise plans.
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard): access the Cloud admin dashboard.
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console): open the n8n Cloud console, where you manage your instance, plan, billing, and credits.
 * [Update your version](/deploy/use-n8n-cloud/update-your-version): update your n8n version on Cloud.
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud): set your timezone, find your IP addresses, and manage your data.
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits): use AI models and third-party services without provider accounts or API keys.
 * [Assistant credits](/deploy/use-n8n-cloud/assistant-credits): understand the monthly n8n Assistant allowance in your plan and buy extra credits.
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency): how n8n Cloud handles concurrent executions.
-* [Download workflows](/deploy/use-n8n-cloud/download-workflows): download workflows from n8n Cloud with the admin dashboard.
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows): download workflows from an n8n Cloud backup in the Cloud console.
 
 ## Related resources
 
@@ -692,16 +692,19 @@ Exact features, usage limits, and prices for each plan can change. For the curre
 
 ## Upgrade to a paid plan <a href="#upgrade-to-a-paid-account" id="upgrade-to-a-paid-account"></a>
 
-You can upgrade to a paid n8n account at any time. To upgrade:
+You can upgrade to a paid plan at any time during your trial. To upgrade from the n8n Cloud console:
 
-1. Log in to your account.
-2. Select the **Upgrade** button in the upper-right corner.
-3. Select your plan and whether to pay annually or by the month.
-4. Select a payment method.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console).
+2. Select **Upgrade plan** in the trial banner at the top of the page. You can also go to **Billing** and select **Upgrade plan**. n8n opens the **Choose a plan** page.
+3. Choose **Monthly** or **Annual** billing.
+4. Select **Select plan** on the plan you want.
+5. Enter your payment details and complete the checkout.
+
+In the n8n editor, the upgrade button in the trial banner at the top of the page opens the same **Choose a plan** page in the Cloud console.
 
 ## When your trial ends <a href="#trial-expiration" id="trial-expiration"></a>
 
-If you don't upgrade by the end of your trial, the trial automatically expires and n8n deletes your workspace.
+If you don't upgrade by the end of your trial, the trial automatically expires and n8n deletes your instance.
 
 {% hint style="info" %}
 **Download your workflows**
@@ -728,7 +731,7 @@ Select the **Contact** button on the [n8n website](https://n8n.io/pricing/).
 ## Related resources
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
@@ -737,20 +740,54 @@ Select the **Contact** button on the [n8n website](https://n8n.io/pricing/).
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
 
-# Use the admin dashboard
+# Use the Cloud console
 
-How to access the Cloud admin dashboard.
+How to open and find your way around the n8n Cloud console, where instance owners manage their n8n Cloud instance, plan, and credits.
 
-Instance owners can access the admin dashboard to manage their Cloud instance. This is where you can upgrade your n8n version and set the timezone.
+The n8n Cloud console at [app.n8n.cloud](https://app.n8n.cloud) is where the instance owner manages their n8n Cloud instance, plan, billing, and credits.
 
-## Access the dashboard from the app <a href="#access-the-dashboard-from-the-app" id="access-the-dashboard-from-the-app"></a>
+Only the instance owner can open the Cloud console. Other users on the instance work in the n8n editor and don't have access to it.
 
-1. [Log in to n8n](https://app.n8n.cloud/magic-link)
-2. Select **Admin Dashboard**. n8n opens the dashboard.
+## Pages in the Cloud console
 
-## Access the dashboard if the app is offline <a href="#access-the-dashboard-if-the-app-is-offline" id="access-the-dashboard-if-the-app-is-offline"></a>
+The left sidebar of the Cloud console has these pages:
 
-If your instance is down, you can still access the admin dashboard. When you log in to the app, n8n will ask you if you want a magic link to access your dashboard. Select **Send magic link**, then check your email for the link.
+* **Overview**: your instance's status, with **Open instance** to go to the editor. It also shows your plan, execution usage, credit balances, n8n version, latest backup, and recent activity.
+* **Instance settings**: change your n8n version, release track, update cadence, and maintenance window. Set the time zone and which executions to save, and turn Gateway credits and verified community nodes on or off. You can also restart your instance and delete your account here.
+* **Assistant credits**: check and top up the [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) that pay for n8n Assistant.
+* **Gateway credits**: check and top up the [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) that pay for AI models and services in your workflows.
+* **Billing**: see your current plan, change or cancel it, change your payment method, and view your transaction history.
+* **Export**: [download your workflows](/deploy/use-n8n-cloud/download-workflows) from a backup.
+
+The **Assistant credits** and **Gateway credits** pages only appear if those features are available for your instance.
+
+Select **Help & resources** at the bottom of the sidebar for links to the help center, documentation, community forum, and workflow templates.
+
+## Open the Cloud console from n8n
+
+1. Log in to your n8n instance as the instance owner.
+2. In the left menu, select **Admin Panel**. n8n opens the Cloud console.
+
+## Open the Cloud console with a magic link
+
+You can sign in to the Cloud console with a magic link sent to your email. This works even if your instance is offline, for example because it can't start.
+
+1. Go to [app.n8n.cloud/magic-link](https://app.n8n.cloud/magic-link).
+2. In **Instance owner email**, enter the email address of the instance owner account.
+3. Select **Send magic link**.
+4. Open the email from n8n and select the link to sign in.
+
+On the [app.n8n.cloud](https://app.n8n.cloud) sign-in page, you can also select **Don't know your instance name?**, then **Sign in to the Cloud console**, to reach the same page.
+
+## Restart your instance
+
+If your instance is offline or not responding, restart it from the Cloud console:
+
+1. Open the Cloud console and select **Instance settings**.
+2. Select **Restart** next to the instance status at the top of the page.
+3. Select **Restart instance** to confirm.
+
+Your instance is offline until the restart completes, and any running executions stop.
 
 ## Related resources
 
@@ -768,7 +805,7 @@ If your instance is down, you can still access the admin dashboard. When you log
 
 How to update your n8n version on Cloud.
 
-n8n recommends keeping your Cloud version up to date. From the **Updates & maintenance** settings you choose which n8n version your workspace runs, and control when and how automatic updates happen. Check the [Release notes](https://docs.n8n.io/changelog/) to learn about changes in each version.
+n8n recommends keeping your Cloud version up to date. In the **Updates** section of **Instance settings** in the n8n Cloud console, you choose which n8n version your instance runs, and control when and how automatic updates happen. Check the [Release notes](https://docs.n8n.io/changelog/) to learn about changes in each version.
 
 {% hint style="info" %}
 Only instance owners can change these settings. Contact your instance owner if you don't have permission to update n8n Cloud.
@@ -776,19 +813,29 @@ Only instance owners can change these settings. Contact your instance owner if y
 
 To open the settings:
 
-1. [Log in to the n8n Cloud dashboard](https://app.n8n.cloud/manage).
-2. Select **Manage**.
-3. Select **Workspace** to open the **Updates & maintenance** section.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console).
+2. In the sidebar, select **Instance settings**. The **Updates** section is at the top of the page.
 
-Changing the version triggers a 1 to 2 minute restart. The other maintenance settings apply without a restart. Select **Save changes** to apply your changes.
+When you change a setting, a bar appears at the bottom of the page with the number of unsaved changes:
+
+* If you changed the n8n version, select **Save and restart**. Your instance restarts and is unavailable for one to two minutes.
+* If you only changed the release track, update cadence, or maintenance window, select **Save**. These settings apply without a restart.
+
+Select **Discard all** to undo your unsaved changes.
 
 ## n8n version
 
-The **n8n version** dropdown sets the version your workspace runs. Choose a version, then select **Change version** to apply it. To compare versions before you change, select **Open changelog**.
+The **n8n version** dropdown sets the version your instance runs. To compare versions before you change, select **Open changelog**.
+
+To change the version:
+
+1. Choose a version from the **n8n version** dropdown.
+2. Select **Save and restart**.
+3. If the new version is a major version or runs a database migration, n8n asks you to confirm. Read the warning, then select **Update and restart**. You can't roll back these updates to the previous version.
 
 ## Release track
 
-The release track sets which n8n release stream your workspace follows. n8n tests both tracks. They differ in how soon new releases reach your workspace, and how long each release has run in production before it does:
+The release track sets which n8n release stream your instance follows. n8n tests both tracks. They differ in how soon new releases reach your instance, and how long each release has run in production before it does:
 
 * **Beta**: new releases delivered as soon as they're ready. Choose Beta to try the latest features first.
 * **Stable**: a later, more proven patch of a release, cut after it's spent time on the Beta track. n8n recommends Stable for all mission-critical workloads.
@@ -797,23 +844,23 @@ You can switch between tracks at any time.
 
 ## Update cadence
 
-The update cadence sets how often n8n upgrades your workspace to a newer build. n8n always applies security and stability updates automatically, whichever cadence you choose:
+The update cadence sets how often n8n upgrades your instance to a newer build. n8n upgrades every instance at least every two weeks, so security fixes reach everyone, whichever cadence you choose:
 
-* **Security & stability**: upgrades about every two weeks. Recommended for most workspaces.
+* **Every 2 weeks**: n8n upgrades your instance about every two weeks. Recommended for most instances.
 * **Every new release**: upgrades to each new release as it ships, on average one release per day. Great for trying out new features.
 
 ## Maintenance window
 
-The maintenance window sets when n8n can apply upgrades, so you can reduce disruption. Times use the timezone shown above the setting.
+The maintenance window sets when n8n can apply upgrades, so you can reduce disruption. Each upgrade takes one to two minutes of downtime. Times use your instance's time zone, shown in the setting's description.
 
-* **Upgrade anytime**: n8n applies upgrades as soon as they're available.
-* **Pick a window**: n8n only applies upgrades during the time range you set.
+* **Anytime**: n8n applies upgrades as soon as they're available.
+* **Pick a window**: n8n only applies upgrades between the **Start time** and **End time** you set.
 
 ## Related resources
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
 * [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
@@ -836,7 +883,7 @@ Configure timezone, IP addresses, data management, and ownership settings for yo
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
 * [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
@@ -850,8 +897,11 @@ How to set your timezone on n8n Cloud.
 
 You can change the timezone for your n8n instance. This affects the [Schedule Trigger](/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger) and [Date & Time node](/integrations/builtin/core-nodes/n8n-nodes-base.datetime). Users can configure the timezone for individual workflows in [Workflow settings](/build/manage-workflows/configure-workflow-settings).
 
-1. On your dashboard, select **Manage**.
-2. Change the **Timezone** dropdown to the timezone you want.
+To change the instance timezone:
+
+1. Open the [n8n Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Instance settings**.
+2. In the **Runtime** section, select the timezone you want from the **Time zone** dropdown. You can type to search the list.
+3. Select **Save and restart** in the bar at the bottom of the page. Your instance restarts to apply the change, and is offline until the restart completes.
 
 ## Related resources
 
@@ -983,11 +1033,11 @@ If a workflow consumes a large amounts of data and is past testing stage, it's a
 
 There are two ways you can control how much execution data n8n stores in the database:
 
-In the admin dashboard:
+In the n8n Cloud console:
 
-1. From your workspace or editor, navigate to **Admin Panel**.
-2. Select **Manage**.
-3. In **Executions to Save** deselect the executions you don't want to log.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Instance settings**.
+2. In the **Runtime** section, under **Executions to save**, deselect the execution types you don't want to log: **Manual**, **Failed**, or **Successful**.
+3. Select **Save and restart** in the bar at the bottom of the page. Your instance restarts to apply the change.
 
 In your workflow settings:
 
@@ -1032,7 +1082,7 @@ You can change the ownership of an instance by navigating to the **Settings > Pe
 
 Changing emails will change the owner of the instance, the email you log in with, and the email your invoices and general communication gets sent to.
 
-If the workspace is deactivated, there will be no **Settings** page and no possibility to change the email address or the owner info.
+If the instance is deactivated, there will be no **Settings** page and no possibility to change the email address or the owner info.
 
 ### Change instance username <a href="#change-instance-username" id="change-instance-username"></a>
 
@@ -1089,7 +1139,7 @@ Concurrency in queue mode is a separate mechanism from concurrency in regular mo
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
@@ -1143,7 +1193,7 @@ Services that aren't in the catalogue still work in n8n the usual way: create a 
 
 ## Your credit balance
 
-Each Cloud instance has one credit balance, shared by everyone who uses Gateway credits on that instance. You can see the balance in the editor next to the Gateway credits option on a node, and on the **Gateway credits** tab in the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard), which also shows your spend over time. Refer to [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend) for details.
+Each Cloud instance has one credit balance, shared by everyone who uses Gateway credits on that instance. You can see the balance in the editor next to the Gateway credits option on a node, and on the **Gateway credits** page in the [n8n Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console), which also shows your spend over time. Refer to [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend) for details.
 
 New Cloud users receive a small amount of free credit at sign-up, so you can try supported services before you buy credits. Free trials include Gateway credits too: you can use them from your first workflow.
 
@@ -1161,11 +1211,11 @@ When your balance reaches zero, nodes using Gateway credits stop working until y
 
 n8n has more than one kind of credit. They have separate balances and pay for different things:
 
-| Credit type                                                  | What it pays for                                                                                                               | Where you see it                                                                                            |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| Gateway credits                                              | AI models and tool services used by nodes in your workflows                                                                    | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard                         |
-| [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) | Your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant), from a monthly allowance included in your plan | In the n8n Assistant panel in the editor, and on the **Assistant credits** tab in the Cloud admin dashboard |
-| Free OpenAI API credits                                      | A legacy one-time OpenAI allowance for new Cloud users                                                                         | Only on instances without Gateway credits                                                                   |
+| Credit type                                                  | What it pays for                                                                                                               | Where you see it                                                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| Gateway credits                                              | AI models and tool services used by nodes in your workflows                                                                    | On supported nodes, and on the **Gateway credits** page in the Cloud console                         |
+| [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) | Your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant), from a monthly allowance included in your plan | In the n8n Assistant panel in the editor, and on the **Assistant credits** page in the Cloud console |
+| Free OpenAI API credits                                      | A legacy one-time OpenAI allowance for new Cloud users                                                                         | Only on instances without Gateway credits                                                            |
 
 Topping up Gateway credits doesn't add Assistant credits, and using n8n Assistant doesn't spend your Gateway credit balance.
 
@@ -1177,7 +1227,7 @@ When a node runs on Gateway credits, n8n sends the request through its gateway t
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
@@ -1189,9 +1239,9 @@ When a node runs on Gateway credits, n8n sends the request through its gateway t
 
 # Top up Gateway credits
 
-Add credit to your Gateway credits balance manually or with auto top-up in the n8n Cloud admin dashboard.
+Add credit to your Gateway credits balance manually or with auto top-up in the n8n Cloud console.
 
-When your [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) balance runs low, top it up from the Cloud admin dashboard. You can add credit manually whenever you need it, or turn on auto top-up so n8n refills your balance for you.
+When your [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) balance runs low, top it up from the n8n Cloud console. You can add credit manually whenever you need it, or turn on auto top-up so n8n refills your balance for you.
 
 Only the instance owner can top up, and topping up requires an active paid subscription. Free trials include Gateway credits, but not top-ups: if you use up your free credit during a trial, upgrade to a paid plan to add more.
 
@@ -1203,9 +1253,11 @@ Gateway credits only pay for AI models and services that nodes use in your workf
 
 ## Top up manually
 
-1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
-2. Select **Top up**.
-3. Choose an amount and complete the checkout. You can pay with the payment method saved on your subscription or with a different one. n8n emails you an invoice.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Gateway credits** in the sidebar.
+2. On the **Balance** card, select **Top up**.
+3. Choose an amount.
+4. Read the credit terms and select the checkbox to accept them.
+5. Select **Continue to checkout** and complete the payment. You can pay with the payment method saved on your subscription or with a different one. Taxes may apply depending on your billing country. n8n emails you an invoice.
 
 Your new balance appears on the page once the payment completes.
 
@@ -1213,11 +1265,11 @@ Your new balance appears on the page once the payment completes.
 
 Auto top-up refills your balance whenever it drops below a threshold you set, keeping it above zero so workflows that rely on Gateway credits keep running. Unlike manual top-ups, auto top-up always charges the payment method saved on your subscription.
 
-1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
-2. Turn on **Auto top-up**.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Gateway credits** in the sidebar.
+2. On the **Auto top-up** card, turn on auto top-up.
 3. Set **When balance drops to** (the balance that triggers a top-up) and **Top up to** (the balance to refill to).
 4. Optionally, turn on **Monthly auto top-up limit** to cap how much auto top-up can add per month.
-5. Select **Save changes**.
+5. Select **Save changes**, then select **Turn on auto top-up** to confirm.
 
 {% hint style="info" %}
 If your balance is already below the threshold when you save, n8n triggers a one-time top-up straight away to reach your target balance. The page shows the estimated cost before you save.
@@ -1246,9 +1298,9 @@ Top-ups are final. n8n doesn't refund unused credits except where required by la
 
 # Track Gateway credit spend
 
-Monitor your Gateway credits balance, spend by model or workflow, and top-up history in the n8n Cloud admin dashboard.
+Monitor your Gateway credits balance, spend by model or workflow, and top-up history in the n8n Cloud console.
 
-The **Gateway credits** tab in the Cloud admin dashboard shows your balance, your spend over time, and your top-up history. To open it, go to the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Gateway credits** tab.
+The **Gateway credits** page in the n8n Cloud console shows your balance, your spend over time, and your top-up history. To open it, go to the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Gateway credits** in the sidebar. You can also select **Manage** next to your Gateway balance on the **Overview** page.
 
 You can also see your current balance in the editor, next to the Gateway credits option on supported nodes.
 
@@ -1365,14 +1417,14 @@ You can buy extra credits manually or set up auto top-up so n8n buys them for yo
 
 Each Cloud instance has one Assistant credit balance, shared by everyone who uses n8n Assistant on that instance. Included and extra credits both come from this shared balance.
 
-You can see the balance in the editor, in the credits menu of the n8n Assistant panel, and on the **Assistant credits** tab in the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard). The dashboard also shows your spend over time and which users use the most credits. Refer to [Track Assistant credit spend](/deploy/use-n8n-cloud/assistant-credits/track-assistant-credit-spend) for details.
+You can see the balance in the editor, in the credits menu of the n8n Assistant panel, and on the **Assistant credits** page in the [n8n Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console). That page also shows your spend over time and which users use the most credits. Refer to [Track Assistant credit spend](/deploy/use-n8n-cloud/assistant-credits/track-assistant-credit-spend) for details.
 
 ## When your Assistant credits run out
 
 When your included credits and your extra credits are both used up, n8n Assistant pauses for everyone on the instance:
 
 * In the editor, n8n Assistant shows **You've run out of AI credits**, and you can't send new messages.
-* On the **Assistant credits** tab in the Cloud admin dashboard, a banner shows **The Assistant is paused for your workspace**.
+* On the **Assistant credits** page in the Cloud console, a banner shows **The Assistant is paused for your instance**.
 
 If your credits run out in the middle of a message, n8n lets that message finish rather than stopping it partway through. Your usage can go slightly past your balance as a result.
 
@@ -1404,7 +1456,7 @@ Assistant credits and Gateway credits are separate balances that pay for differe
 | What they don't pay for | AI model calls that your workflows or agents make when they run                             | n8n Assistant                                               |
 | What your plan includes | A monthly allowance that resets on the first day of every month                             | A small one-time amount of free credit at sign-up           |
 | Buying more             | Extra credits, used only after your included credits run out                                | Top-ups that add to your balance                            |
-| Where you manage them   | The **Assistant credits** tab in the Cloud admin dashboard                                  | The **Gateway credits** tab in the Cloud admin dashboard    |
+| Where you manage them   | The **Assistant credits** page in the Cloud console                                         | The **Gateway credits** page in the Cloud console           |
 
 Topping up one doesn't add to the other. If n8n Assistant builds a workflow with a node that uses Gateway credits, running that node spends Gateway credits, not Assistant credits.
 
@@ -1416,7 +1468,7 @@ Self-hosted n8n doesn't use Assistant credits. On a self-hosted instance, n8n As
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
@@ -1428,7 +1480,7 @@ Self-hosted n8n doesn't use Assistant credits. On a self-hosted instance, n8n As
 
 # Top up Assistant credits
 
-Buy extra Assistant credits manually or with auto top-up in the n8n Cloud admin dashboard, so you can keep using n8n Assistant after your monthly allowance runs out.
+Buy extra Assistant credits manually or with auto top-up in the n8n Cloud console, so you can keep using n8n Assistant after your monthly allowance runs out.
 
 Your n8n Cloud plan includes a monthly allowance of [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) that resets on the first day of every month. If you use up your included credits before the reset, top up with extra credits so you can keep using n8n Assistant. n8n Assistant only draws from extra credits after your included credits run out, and uses them at the same rate.
 
@@ -1444,8 +1496,8 @@ Extra Assistant credits only pay for your conversations with n8n Assistant. They
 
 ## Top up manually
 
-1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
-2. Select **Top up**.
+1. Open the [n8n Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Assistant credits** in the sidebar.
+2. On the **Balance** card, select **Top up**.
 3. Choose a credit package.
 4. Read the credit terms and select the checkbox to accept them.
 5. Select **Continue to checkout** and complete the payment. Taxes may apply depending on your billing country.
@@ -1456,11 +1508,11 @@ Your new extra credits appear on the page once the payment completes. They expir
 
 Auto top-up buys extra credits whenever your extra credit balance drops below a threshold you set. Use it if you rely on n8n Assistant every day and don't want it to pause when your included credits run out. Auto top-up always charges the payment method saved on your subscription.
 
-1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Assistant credits** in the sidebar.
 2. In the **Auto top-up extra credits** card, turn on auto top-up.
-3. Set **When extra credits drop to** (the extra credit balance that triggers a top-up) and **Top up extra credits to** (the extra credit balance to refill to). The dashboard shows the minimum values you can set.
+3. Set **When extra credits drop to** (the extra credit balance that triggers a top-up) and **Top up extra credits to** (the extra credit balance to refill to). The Cloud console shows the minimum values you can set.
 4. Optionally, set a **Monthly auto top-up limit** to cap how much auto top-up can charge per month. The limit is on by default.
-5. Select **Save changes**, then confirm.
+5. Select **Save changes**, then select **Turn on auto top-up** to confirm.
 
 {% hint style="info" %}
 Auto top-up only looks at your extra credits. Your included credits don't count toward the threshold, so auto top-up keeps a reserve of extra credits ready for when your included credits run out.
@@ -1484,9 +1536,9 @@ Top-ups are final. n8n doesn't refund unused credits except where required by la
 
 # Track Assistant credit spend
 
-Monitor your Assistant credit balance, spend, top users, and top-up history in the n8n Cloud admin dashboard and the n8n Assistant panel.
+Monitor your Assistant credit balance, spend, top users, and top-up history in the n8n Cloud console and the n8n Assistant panel.
 
-The **Assistant credits** tab in the Cloud admin dashboard shows your [Assistant credit](/deploy/use-n8n-cloud/assistant-credits) balance, spend over time, top users, and top-up history. To open it, go to the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
+The **Assistant credits** page in the n8n Cloud console shows your [Assistant credit](/deploy/use-n8n-cloud/assistant-credits) balance, spend over time, top users, and top-up history. To open it, go to the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console) and select **Assistant credits** in the sidebar. You can also select **Manage** next to your Assistant balance on the **Overview** page.
 
 You can also check your balance in the editor, from the n8n Assistant panel.
 
@@ -1541,18 +1593,22 @@ When your balance runs out, n8n Assistant shows **You've run out of AI credits**
 
 # Download workflows
 
-How to download workflows from n8n Cloud with the admin dashboard.
+How to download workflows from an n8n Cloud backup in the n8n Cloud console.
 
-n8n Cloud instance owners can download workflows from the most recent backup.
-
-You can do this with the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard).
+n8n Cloud instance owners can download their workflows from an n8n Cloud backup in the [n8n Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console). n8n creates backups automatically. They contain workflows only, never credentials.
 
 ## How to download workflows <a href="#how-to-download-workflows" id="how-to-download-workflows"></a>
 
-1. [Log in to n8n](https://app.n8n.cloud/magic-link).
-2. Select **Admin Dashboard** to open the dashboard.
-3. In the **Manage** section, select the **Export** tab.
-4. Select **Download Workflows**.
+1. Open the [Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console).
+2. In the sidebar, select **Export**. n8n opens the **Data export** page.
+3. In **Workflow backups**, use the **Backup** dropdown to choose which backup to export. If only one backup exists, n8n shows it instead of a dropdown.
+4. Select **Download workflows**. The export opens in a new tab.
+
+The **Latest backup** card on the **Overview** page shows when n8n created your most recent backup. Select **Download** on that card to go to the **Export** page.
+
+If your instance is new or has been offline for a long time, it might not have any backups yet. In that case, the **Export** page shows **No backups available yet**.
+
+Workflow export isn't available yet for instances that n8n hosts on PostgreSQL. For these instances, the **Export** page shows **Export is unavailable for this instance**, with a link to create a support ticket so n8n support can export your workflows.
 
 ## Accessing workflows after your free trial <a href="#accessing-workflows-after-your-free-trial" id="accessing-workflows-after-your-free-trial"></a>
 
@@ -1562,7 +1618,7 @@ You have **90 days** to download your workflows after your free trial ends. Afte
 
 * [Use n8n Cloud](/deploy/use-n8n-cloud)
 * [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
-* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
@@ -2179,6 +2235,8 @@ To install the `next` version:
 npm install -g n8n@next
 ```
 
+### n8n with tunnel <a href="#n8n-with-tunnel" id="n8n-with-tunnel"></a>
+
 {% hint style="danger" %}
 Use this for local development and testing. It isn't safe to use it in production.
 {% endhint %}
@@ -2286,7 +2344,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2409,6 +2467,8 @@ docker compose down
 # Start the container <a href="#start-the-container" id="start-the-container"></a>
 docker compose up -d
 ```
+
+### n8n with tunnel <a href="#n8n-with-tunnel" id="n8n-with-tunnel"></a>
 
 {% hint style="danger" %}
 Use this for local development and testing. It isn't safe to use it in production.
@@ -2541,7 +2601,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2913,7 +2973,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3015,7 +3075,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3379,7 +3439,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3594,7 +3654,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3810,7 +3870,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4093,7 +4153,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -5387,7 +5447,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.44.4 Current `beta`: 2.45.0
+Current `stable`: 2.44.5 Current `beta`: 2.45.0
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -9453,7 +9513,7 @@ This variable expects a pre-hashed bcrypt value. Setting a plaintext password br
 
 You can now invite other people to your n8n instance.
 
-1. Sign into your workspace with your owner account. (If you are in the Admin Panel open your **Workspace** from the Dashboard)
+1. Sign in to your n8n instance with your owner account. On n8n Cloud, if you're in the n8n Cloud console, select **Open instance** on the **Overview** page.
 2. Click the three dots next to your user icon at the bottom left and click **Settings**. n8n opens your **Personal settings** page.
 3. Click **Users** to go to the **Users** page.
 4. Click **Invite**.

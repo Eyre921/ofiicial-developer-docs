@@ -11,21 +11,21 @@ What is knowledge in CrewAI and how to use it.
 Knowledge in CrewAI is a powerful system that allows AI agents to access and utilize external information sources during their tasks.
 Think of it as giving your agents a reference library they can consult while working.
 
-<Info>
-  Key benefits of using Knowledge:
-
-  * Enhance agents with domain-specific information
-  * Support decisions with real-world data
-  * Maintain context across conversations
-  * Ground responses in factual information
-</Info>
+> [!NOTE]
+>
+> Key benefits of using Knowledge:
+>
+> * Enhance agents with domain-specific information
+> * Support decisions with real-world data
+> * Maintain context across conversations
+> * Ground responses in factual information
 
 ## Quickstart Examples
 
-<Tip>
-  For file-based Knowledge Sources, make sure to place your files in a `knowledge` directory at the root of your project.
-  Also, use relative paths from the `knowledge` directory when creating the source.
-</Tip>
+> [!TIP]
+>
+> For file-based Knowledge Sources, make sure to place your files in a `knowledge` directory at the root of your project.
+> Also, use relative paths from the `knowledge` directory when creating the source.
 
 ### Vector store (RAG) client configuration
 
@@ -105,9 +105,9 @@ result = crew.kickoff(inputs={"question": "What city does John live in and how o
 
 ### Web Content Knowledge Example
 
-<Note>
-  You need to install `docling` for the following example to work: `uv add docling`
-</Note>
+> [!NOTE]
+>
+> You need to install `docling` for the following example to work: `uv add docling`
 
 ```python Code theme={null}
 from crewai import LLM, Agent, Crew, Process, Task
@@ -157,19 +157,17 @@ result = crew.kickoff(
 
 CrewAI supports various types of knowledge sources out of the box:
 
-<CardGroup>
-  <Card title="Text Sources" icon="text">
-    * Raw strings
-    * Text files (.txt)
-    * PDF documents
-  </Card>
+> **Text Sources**
+>
+> * Raw strings
+> * Text files (.txt)
+> * PDF documents
 
-  <Card title="Structured Data" icon="table">
-    * CSV files
-    * Excel spreadsheets
-    * JSON documents
-  </Card>
-</CardGroup>
+> **Structured Data**
+>
+> * CSV files
+> * Excel spreadsheets
+> * JSON documents
 
 ### Text File Knowledge Source
 
@@ -221,15 +219,15 @@ json_source = JSONKnowledgeSource(
 )
 ```
 
-<Note>
-  Please ensure that you create the ./knowledge folder. All source files (e.g., .txt, .pdf, .xlsx, .json) should be placed in this folder for centralized management.
-</Note>
+> [!NOTE]
+>
+> Please ensure that you create the ./knowledge folder. All source files (e.g., .txt, .pdf, .xlsx, .json) should be placed in this folder for centralized management.
 
 ## Agent vs Crew Knowledge: Complete Guide
 
-<Info>
-  **Understanding Knowledge Levels**: CrewAI supports knowledge at both agent and crew levels. This section clarifies exactly how each works, when they're initialized, and addresses common misconceptions about dependencies.
-</Info>
+> [!NOTE]
+>
+> **Understanding Knowledge Levels**: CrewAI supports knowledge at both agent and crew levels. This section clarifies exactly how each works, when they're initialized, and addresses common misconceptions about dependencies.
 
 ### How Knowledge Initialization Actually Works
 
@@ -410,14 +408,14 @@ crew = Crew(
 # Each can use different embedding providers
 ```
 
-<Tip>
-  Unlike retrieval from a vector database using a tool, agents preloaded with knowledge will not need a retrieval persona or task.
-  Simply add the relevant knowledge sources your agent or crew needs to function.
-
-  Knowledge sources can be added at the agent or crew level.
-  Crew level knowledge sources will be used by **all agents** in the crew.
-  Agent level knowledge sources will be used by the **specific agent** that is preloaded with the knowledge.
-</Tip>
+> [!TIP]
+>
+> Unlike retrieval from a vector database using a tool, agents preloaded with knowledge will not need a retrieval persona or task.
+> Simply add the relevant knowledge sources your agent or crew needs to function.
+>
+> Knowledge sources can be added at the agent or crew level.
+> Crew level knowledge sources will be used by **all agents** in the crew.
+> Agent level knowledge sources will be used by the **specific agent** that is preloaded with the knowledge.
 
 ## Knowledge Configuration
 
@@ -434,30 +432,30 @@ agent = Agent(
 )
 ```
 
-<Tip>
-  `results_limit`: is the number of relevant documents to return. Default is 3.
-  `score_threshold`: is the minimum score for a document to be considered relevant. Default is 0.35.
-</Tip>
+> [!TIP]
+>
+> `results_limit`: is the number of relevant documents to return. Default is 3.
+> `score_threshold`: is the minimum score for a document to be considered relevant. Default is 0.35.
 
 ## Supported Knowledge Parameters
 
-<ParamField type="List[BaseKnowledgeSource]">
-  List of knowledge sources that provide content to be stored and queried. Can include PDF, CSV, Excel, JSON, text files, or string content.
-</ParamField>
+**sources** `List[BaseKnowledgeSource]` *required*
 
-<ParamField type="str">
-  Name of the collection where the knowledge will be stored. Used to identify different sets of knowledge. Defaults to "knowledge" if not provided.
-</ParamField>
+List of knowledge sources that provide content to be stored and queried. Can include PDF, CSV, Excel, JSON, text files, or string content.
 
-<ParamField type="Optional[KnowledgeStorage]">
-  Custom storage configuration for managing how the knowledge is stored and retrieved. If not provided, a default storage will be created.
-</ParamField>
+**collection\_name** `str`
+
+Name of the collection where the knowledge will be stored. Used to identify different sets of knowledge. Defaults to "knowledge" if not provided.
+
+**storage** `Optional[KnowledgeStorage]`
+
+Custom storage configuration for managing how the knowledge is stored and retrieved. If not provided, a default storage will be created.
 
 ## Knowledge Storage Transparency
 
-<Info>
-  **Understanding Knowledge Storage**: CrewAI automatically stores knowledge sources in platform-specific directories using ChromaDB for vector storage. Understanding these locations and defaults helps with production deployments, debugging, and storage management.
-</Info>
+> [!NOTE]
+>
+> **Understanding Knowledge Storage**: CrewAI automatically stores knowledge sources in platform-specific directories using ChromaDB for vector storage. Understanding these locations and defaults helps with production deployments, debugging, and storage management.
 
 ### Where CrewAI Stores Knowledge Files
 
@@ -584,9 +582,9 @@ os.environ["CREWAI_STORAGE_DIR"] = str(knowledge_dir)
 
 ### Default Embedding Provider Behavior
 
-<Info>
-  **Default Embedding Provider**: CrewAI defaults to OpenAI embeddings (`text-embedding-3-small`) for knowledge storage, even when using different LLM providers. You can easily customize this to match your setup.
-</Info>
+> [!NOTE]
+>
+> **Default Embedding Provider**: CrewAI defaults to OpenAI embeddings (`text-embedding-3-small`) for knowledge storage, even when using different LLM providers. You can easily customize this to match your setup.
 
 #### Understanding Default Behavior
 
@@ -715,15 +713,13 @@ CrewAI implements an intelligent query rewriting mechanism to optimize knowledge
 
 #### Benefits of Query Rewriting
 
-<CardGroup>
-  <Card title="Improved Retrieval Accuracy" icon="bullseye-arrow">
-    By focusing on key concepts and removing irrelevant content, query rewriting helps retrieve more relevant information.
-  </Card>
+> **Improved Retrieval Accuracy**
+>
+> By focusing on key concepts and removing irrelevant content, query rewriting helps retrieve more relevant information.
 
-  <Card title="Context Awareness" icon="brain">
-    The rewritten queries are designed to be more specific and context-aware for vector database retrieval.
-  </Card>
-</CardGroup>
+> **Context Awareness**
+>
+> The rewritten queries are designed to be more specific and context-aware for vector database retrieval.
 
 #### Example
 
@@ -737,9 +733,9 @@ rewritten_query = "What movies did John watch last week?"
 
 The rewritten query is more focused on the core information need and removes irrelevant instructions about output formatting.
 
-<Tip>
-  This mechanism is fully automatic and requires no configuration from users. The agent's LLM is used to perform the query rewriting, so using a more capable LLM can improve the quality of rewritten queries.
-</Tip>
+> [!TIP]
+>
+> This mechanism is fully automatic and requires no configuration from users. The agent's LLM is used to perform the query rewriting, so using a more capable LLM can improve the quality of rewritten queries.
 
 ### Knowledge Events
 
@@ -787,121 +783,119 @@ CrewAI allows you to create custom knowledge sources for any type of data by ext
 
 #### Space News Knowledge Source Example
 
-<CodeGroup>
-  ```python Code theme={null}
-  from crewai import Agent, Task, Crew, Process, LLM
-  from crewai.knowledge.source.base_knowledge_source import BaseKnowledgeSource
-  import requests
-  from datetime import datetime
-  from typing import Dict, Any
-  from pydantic import BaseModel, Field
+```python Code theme={null}
+from crewai import Agent, Task, Crew, Process, LLM
+from crewai.knowledge.source.base_knowledge_source import BaseKnowledgeSource
+import requests
+from datetime import datetime
+from typing import Dict, Any
+from pydantic import BaseModel, Field
 
-  class SpaceNewsKnowledgeSource(BaseKnowledgeSource):
-      """Knowledge source that fetches data from Space News API."""
+class SpaceNewsKnowledgeSource(BaseKnowledgeSource):
+    """Knowledge source that fetches data from Space News API."""
 
-      api_endpoint: str = Field(description="API endpoint URL")
-      limit: int = Field(default=10, description="Number of articles to fetch")
+    api_endpoint: str = Field(description="API endpoint URL")
+    limit: int = Field(default=10, description="Number of articles to fetch")
 
-      def load_content(self) -> Dict[Any, str]:
-          """Fetch and format space news articles."""
-          try:
-              response = requests.get(
-                  f"{self.api_endpoint}?limit={self.limit}"
-              )
-              response.raise_for_status()
+    def load_content(self) -> Dict[Any, str]:
+        """Fetch and format space news articles."""
+        try:
+            response = requests.get(
+                f"{self.api_endpoint}?limit={self.limit}"
+            )
+            response.raise_for_status()
 
-              data = response.json()
-              articles = data.get('results', [])
+            data = response.json()
+            articles = data.get('results', [])
 
-              formatted_data = self.validate_content(articles)
-              return {self.api_endpoint: formatted_data}
-          except Exception as e:
-              raise ValueError(f"Failed to fetch space news: {str(e)}")
+            formatted_data = self.validate_content(articles)
+            return {self.api_endpoint: formatted_data}
+        except Exception as e:
+            raise ValueError(f"Failed to fetch space news: {str(e)}")
 
-      def validate_content(self, articles: list) -> str:
-          """Format articles into readable text."""
-          formatted = "Space News Articles:\n\n"
-          for article in articles:
-              formatted += f"""
-                  Title: {article['title']}
-                  Published: {article['published_at']}
-                  Summary: {article['summary']}
-                  News Site: {article['news_site']}
-                  URL: {article['url']}
-                  -------------------"""
-          return formatted
+    def validate_content(self, articles: list) -> str:
+        """Format articles into readable text."""
+        formatted = "Space News Articles:\n\n"
+        for article in articles:
+            formatted += f"""
+                Title: {article['title']}
+                Published: {article['published_at']}
+                Summary: {article['summary']}
+                News Site: {article['news_site']}
+                URL: {article['url']}
+                -------------------"""
+        return formatted
 
-      def add(self) -> None:
-          """Process and store the articles."""
-          content = self.load_content()
-          for _, text in content.items():
-              chunks = self._chunk_text(text)
-              self.chunks.extend(chunks)
+    def add(self) -> None:
+        """Process and store the articles."""
+        content = self.load_content()
+        for _, text in content.items():
+            chunks = self._chunk_text(text)
+            self.chunks.extend(chunks)
 
-          self._save_documents()
+        self._save_documents()
 
-  # Create knowledge source
-  recent_news = SpaceNewsKnowledgeSource(
-      api_endpoint="https://api.spaceflightnewsapi.net/v4/articles",
-      limit=10,
-  )
+# Create knowledge source
+recent_news = SpaceNewsKnowledgeSource(
+    api_endpoint="https://api.spaceflightnewsapi.net/v4/articles",
+    limit=10,
+)
 
-  # Create specialized agent
-  space_analyst = Agent(
-      role="Space News Analyst",
-      goal="Answer questions about space news accurately and comprehensively",
-      backstory="""You are a space industry analyst with expertise in space exploration,
-      satellite technology, and space industry trends. You excel at answering questions
-      about space news and providing detailed, accurate information.""",
-      knowledge_sources=[recent_news],
-      llm=LLM(model="gpt-4", temperature=0.0)
-  )
+# Create specialized agent
+space_analyst = Agent(
+    role="Space News Analyst",
+    goal="Answer questions about space news accurately and comprehensively",
+    backstory="""You are a space industry analyst with expertise in space exploration,
+    satellite technology, and space industry trends. You excel at answering questions
+    about space news and providing detailed, accurate information.""",
+    knowledge_sources=[recent_news],
+    llm=LLM(model="gpt-4", temperature=0.0)
+)
 
-  # Create task that handles user questions
-  analysis_task = Task(
-      description="Answer this question about space news: {user_question}",
-      expected_output="A detailed answer based on the recent space news articles",
-      agent=space_analyst
-  )
+# Create task that handles user questions
+analysis_task = Task(
+    description="Answer this question about space news: {user_question}",
+    expected_output="A detailed answer based on the recent space news articles",
+    agent=space_analyst
+)
 
-  # Create and run the crew
-  crew = Crew(
-      agents=[space_analyst],
-      tasks=[analysis_task],
-      verbose=True,
-      process=Process.sequential
-  )
+# Create and run the crew
+crew = Crew(
+    agents=[space_analyst],
+    tasks=[analysis_task],
+    verbose=True,
+    process=Process.sequential
+)
 
-  # Example usage
-  result = crew.kickoff(
-      inputs={"user_question": "What are the latest developments in space exploration?"}
-  )
-  ```
+# Example usage
+result = crew.kickoff(
+    inputs={"user_question": "What are the latest developments in space exploration?"}
+)
+```
 
-  ```output Output theme={null}
-  # Agent: Space News Analyst
-  ## Task: Answer this question about space news: What are the latest developments in space exploration?
+```output Output theme={null}
+# Agent: Space News Analyst
+## Task: Answer this question about space news: What are the latest developments in space exploration?
 
 
-  # Agent: Space News Analyst
-  ## Final Answer:
-  The latest developments in space exploration, based on recent space news articles, include the following:
+# Agent: Space News Analyst
+## Final Answer:
+The latest developments in space exploration, based on recent space news articles, include the following:
 
-  1. SpaceX has received the final regulatory approvals to proceed with the second integrated Starship/Super Heavy launch, scheduled for as soon as the morning of Nov. 17, 2023. This is a significant step in SpaceX's ambitious plans for space exploration and colonization. [Source: SpaceNews](https://spacenews.com/starship-cleared-for-nov-17-launch/)
+1. SpaceX has received the final regulatory approvals to proceed with the second integrated Starship/Super Heavy launch, scheduled for as soon as the morning of Nov. 17, 2023. This is a significant step in SpaceX's ambitious plans for space exploration and colonization. [Source: SpaceNews](https://spacenews.com/starship-cleared-for-nov-17-launch/)
 
-  2. SpaceX has also informed the US Federal Communications Commission (FCC) that it plans to begin launching its first next-generation Starlink Gen2 satellites. This represents a major upgrade to the Starlink satellite internet service, which aims to provide high-speed internet access worldwide. [Source: Teslarati](https://www.teslarati.com/spacex-first-starlink-gen2-satellite-launch-2022/)
+2. SpaceX has also informed the US Federal Communications Commission (FCC) that it plans to begin launching its first next-generation Starlink Gen2 satellites. This represents a major upgrade to the Starlink satellite internet service, which aims to provide high-speed internet access worldwide. [Source: Teslarati](https://www.teslarati.com/spacex-first-starlink-gen2-satellite-launch-2022/)
 
-  3. AI startup Synthetaic has raised $15 million in Series B funding. The company uses artificial intelligence to analyze data from space and air sensors, which could have significant applications in space exploration and satellite technology. [Source: SpaceNews](https://spacenews.com/ai-startup-synthetaic-raises-15-million-in-series-b-funding/)
+3. AI startup Synthetaic has raised $15 million in Series B funding. The company uses artificial intelligence to analyze data from space and air sensors, which could have significant applications in space exploration and satellite technology. [Source: SpaceNews](https://spacenews.com/ai-startup-synthetaic-raises-15-million-in-series-b-funding/)
 
-  4. The Space Force has formally established a unit within the U.S. Indo-Pacific Command, marking a permanent presence in the Indo-Pacific region. This could have significant implications for space security and geopolitics. [Source: SpaceNews](https://spacenews.com/space-force-establishes-permanent-presence-in-indo-pacific-region/)
+4. The Space Force has formally established a unit within the U.S. Indo-Pacific Command, marking a permanent presence in the Indo-Pacific region. This could have significant implications for space security and geopolitics. [Source: SpaceNews](https://spacenews.com/space-force-establishes-permanent-presence-in-indo-pacific-region/)
 
-  5. Slingshot Aerospace, a space tracking and data analytics company, is expanding its network of ground-based optical telescopes to increase coverage of low Earth orbit. This could improve our ability to track and analyze objects in low Earth orbit, including satellites and space debris. [Source: SpaceNews](https://spacenews.com/slingshots-space-tracking-network-to-extend-coverage-of-low-earth-orbit/)
+5. Slingshot Aerospace, a space tracking and data analytics company, is expanding its network of ground-based optical telescopes to increase coverage of low Earth orbit. This could improve our ability to track and analyze objects in low Earth orbit, including satellites and space debris. [Source: SpaceNews](https://spacenews.com/slingshots-space-tracking-network-to-extend-coverage-of-low-earth-orbit/)
 
-  6. The National Natural Science Foundation of China has outlined a five-year project for researchers to study the assembly of ultra-large spacecraft. This could lead to significant advancements in spacecraft technology and space exploration capabilities. [Source: SpaceNews](https://spacenews.com/china-researching-challenges-of-kilometer-scale-ultra-large-spacecraft/)
+6. The National Natural Science Foundation of China has outlined a five-year project for researchers to study the assembly of ultra-large spacecraft. This could lead to significant advancements in spacecraft technology and space exploration capabilities. [Source: SpaceNews](https://spacenews.com/china-researching-challenges-of-kilometer-scale-ultra-large-spacecraft/)
 
-  7. The Center for AEroSpace Autonomy Research (CAESAR) at Stanford University is focusing on spacecraft autonomy. The center held a kickoff event on May 22, 2024, to highlight the industry, academia, and government collaboration it seeks to foster. This could lead to significant advancements in autonomous spacecraft technology. [Source: SpaceNews](https://spacenews.com/stanford-center-focuses-on-spacecraft-autonomy/)
-  ```
-</CodeGroup>
+7. The Center for AEroSpace Autonomy Research (CAESAR) at Stanford University is focusing on spacecraft autonomy. The center held a kickoff event on May 22, 2024, to highlight the industry, academia, and government collaboration it seeks to foster. This could lead to significant advancements in autonomous spacecraft technology. [Source: SpaceNews](https://spacenews.com/stanford-center-focuses-on-spacecraft-autonomy/)
+```
 
 ## Debugging and Troubleshooting
 
@@ -1100,43 +1094,41 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 
 ## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Content Organization">
-    * Keep chunk sizes appropriate for your content type
-    * Consider content overlap for context preservation
-    * Organize related information into separate knowledge sources
-  </Accordion>
+> **Content Organization**
+>
+> * Keep chunk sizes appropriate for your content type
+> * Consider content overlap for context preservation
+> * Organize related information into separate knowledge sources
 
-  <Accordion title="Performance Tips">
-    * Adjust chunk sizes based on content complexity
-    * Configure appropriate embedding models
-    * Consider using local embedding providers for faster processing
-  </Accordion>
+> **Performance Tips**
+>
+> * Adjust chunk sizes based on content complexity
+> * Configure appropriate embedding models
+> * Consider using local embedding providers for faster processing
 
-  <Accordion title="One Time Knowledge">
-    * With the typical file structure provided by CrewAI, knowledge sources are embedded every time the kickoff is triggered.
-    * If the knowledge sources are large, this leads to inefficiency and increased latency, as the same data is embedded each time.
-    * To resolve this, directly initialize the knowledge parameter instead of the knowledge\_sources parameter.
-    * Link to the issue to get complete idea [Github Issue](https://github.com/crewAIInc/crewAI/issues/2755)
-  </Accordion>
+> **One Time Knowledge**
+>
+> * With the typical file structure provided by CrewAI, knowledge sources are embedded every time the kickoff is triggered.
+> * If the knowledge sources are large, this leads to inefficiency and increased latency, as the same data is embedded each time.
+> * To resolve this, directly initialize the knowledge parameter instead of the knowledge\_sources parameter.
+> * Link to the issue to get complete idea [Github Issue](https://github.com/crewAIInc/crewAI/issues/2755)
 
-  <Accordion title="Knowledge Management">
-    * Use agent-level knowledge for role-specific information
-    * Use crew-level knowledge for shared information all agents need
-    * Set embedders at agent level if you need different embedding strategies
-    * Use consistent collection naming by keeping agent roles descriptive
-    * Test knowledge initialization by checking agent.knowledge after kickoff
-    * Monitor storage locations to understand where knowledge is stored
-    * Reset knowledge appropriately using the correct command types
-  </Accordion>
+> **Knowledge Management**
+>
+> * Use agent-level knowledge for role-specific information
+> * Use crew-level knowledge for shared information all agents need
+> * Set embedders at agent level if you need different embedding strategies
+> * Use consistent collection naming by keeping agent roles descriptive
+> * Test knowledge initialization by checking agent.knowledge after kickoff
+> * Monitor storage locations to understand where knowledge is stored
+> * Reset knowledge appropriately using the correct command types
 
-  <Accordion title="Production Best Practices">
-    * Set `CREWAI_STORAGE_DIR` to a known location in production
-    * Choose explicit embedding providers to match your LLM setup and avoid API key conflicts
-    * Monitor knowledge storage size as it grows with document additions
-    * Organize knowledge sources by domain or purpose using collection names
-    * Include knowledge directories in your backup and deployment strategies
-    * Set appropriate file permissions for knowledge files and storage directories
-    * Use environment variables for API keys and sensitive configuration
-  </Accordion>
-</AccordionGroup>
+> **Production Best Practices**
+>
+> * Set `CREWAI_STORAGE_DIR` to a known location in production
+> * Choose explicit embedding providers to match your LLM setup and avoid API key conflicts
+> * Monitor knowledge storage size as it grows with document additions
+> * Organize knowledge sources by domain or purpose using collection names
+> * Include knowledge directories in your backup and deployment strategies
+> * Set appropriate file permissions for knowledge files and storage directories
+> * Use environment variables for API keys and sensitive configuration

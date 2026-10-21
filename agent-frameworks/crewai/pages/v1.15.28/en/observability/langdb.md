@@ -10,9 +10,7 @@ Govern, secure, and optimize your CrewAI workflows with LangDB AI Gateway—acce
 
 [LangDB AI Gateway](https://langdb.ai) provides OpenAI-compatible APIs to connect with multiple Large Language Models and serves as an observability platform that makes it effortless to trace CrewAI workflows end-to-end while providing access to 350+ language models. With a single `init()` call, all agent interactions, task executions, and LLM calls are captured, providing comprehensive observability and production-ready AI infrastructure for your applications.
 
-<Frame>
-  <img alt="LangDB CrewAI trace example" />
-</Frame>
+![LangDB CrewAI trace example](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/langdb-1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=6303d15055c19a7a6ec9d0c664f15c9f)
 
 **Checkout:** [View the live trace example](https://app.langdb.ai/sharing/threads/3becbfed-a1be-ae84-ea3c-4942867a3e22)
 
@@ -37,52 +35,50 @@ Govern, secure, and optimize your CrewAI workflows with LangDB AI Gateway—acce
 
 ## Setup Instructions
 
-<Steps>
-  <Step title="Install LangDB">
-    Install the LangDB client with CrewAI feature flag:
+**1. Install LangDB**
 
-    ```bash theme={null}
-    pip install 'pylangdb[crewai]'
-    ```
-  </Step>
+Install the LangDB client with CrewAI feature flag:
 
-  <Step title="Set Environment Variables">
-    Configure your LangDB credentials:
+```bash theme={null}
+pip install 'pylangdb[crewai]'
+```
 
-    ```bash theme={null}
-    export LANGDB_API_KEY="<your_langdb_api_key>"
-    export LANGDB_PROJECT_ID="<your_langdb_project_id>"
-    export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
-    ```
-  </Step>
+**2. Set Environment Variables**
 
-  <Step title="Initialize Tracing">
-    Import and initialize LangDB before configuring your CrewAI code:
+Configure your LangDB credentials:
 
-    ```python theme={null}
-    from pylangdb.crewai import init
-    # Initialize LangDB
-    init()
-    ```
-  </Step>
+```bash theme={null}
+export LANGDB_API_KEY="<your_langdb_api_key>"
+export LANGDB_PROJECT_ID="<your_langdb_project_id>"
+export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
+```
 
-  <Step title="Configure CrewAI with LangDB">
-    Set up your LLM with LangDB headers:
+**3. Initialize Tracing**
 
-    ```python theme={null}
-    from crewai import Agent, Task, Crew, LLM
-    import os
+Import and initialize LangDB before configuring your CrewAI code:
 
-    # Configure LLM with LangDB headers
-    llm = LLM(
-        model="openai/gpt-4o", # Replace with the model you want to use
-        api_key=os.getenv("LANGDB_API_KEY"),
-        base_url=os.getenv("LANGDB_API_BASE_URL"),
-        extra_headers={"x-project-id": os.getenv("LANGDB_PROJECT_ID")}
-    )
-    ```
-  </Step>
-</Steps>
+```python theme={null}
+from pylangdb.crewai import init
+# Initialize LangDB
+init()
+```
+
+**4. Configure CrewAI with LangDB**
+
+Set up your LLM with LangDB headers:
+
+```python theme={null}
+from crewai import Agent, Task, Crew, LLM
+import os
+
+# Configure LLM with LangDB headers
+llm = LLM(
+    model="openai/gpt-4o", # Replace with the model you want to use
+    api_key=os.getenv("LANGDB_API_KEY"),
+    base_url=os.getenv("LANGDB_API_BASE_URL"),
+    extra_headers={"x-project-id": os.getenv("LANGDB_PROJECT_ID")}
+)
+```
 
 ## Quick Start Example
 
@@ -242,9 +238,7 @@ python main.py "Sustainable Energy Solutions"
 
 After running your CrewAI application, you can view detailed traces in the LangDB dashboard:
 
-<Frame>
-  <img alt="LangDB trace dashboard showing CrewAI workflow" />
-</Frame>
+![LangDB trace dashboard showing CrewAI workflow](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/langdb-2.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=74a88afefce3f84fb6f9482a1790b413)
 
 ### What You'll See
 
@@ -263,31 +257,29 @@ After running your CrewAI application, you can view detailed traces in the LangD
 
 ## Resources
 
-<CardGroup>
-  <Card title="LangDB Documentation" icon="book" href="https://docs.langdb.ai">
-    Official LangDB documentation and guides
-  </Card>
+> **[LangDB Documentation](https://docs.langdb.ai)**
+>
+> Official LangDB documentation and guides
 
-  <Card title="LangDB Guides" icon="graduation-cap" href="https://docs.langdb.ai/guides">
-    Step-by-step tutorials for building AI agents
-  </Card>
+> **[LangDB Guides](https://docs.langdb.ai/guides)**
+>
+> Step-by-step tutorials for building AI agents
 
-  <Card title="GitHub Examples" icon="github" href="https://github.com/langdb/langdb-samples/tree/main/examples/crewai">
-    Complete CrewAI integration examples
-  </Card>
+> **[GitHub Examples](https://github.com/langdb/langdb-samples/tree/main/examples/crewai)**
+>
+> Complete CrewAI integration examples
 
-  <Card title="LangDB Dashboard" icon="chart-line" href="https://app.langdb.ai">
-    Access your traces and analytics
-  </Card>
+> **[LangDB Dashboard](https://app.langdb.ai)**
+>
+> Access your traces and analytics
 
-  <Card title="Model Catalog" icon="list" href="https://app.langdb.ai/models">
-    Browse 350+ available language models
-  </Card>
+> **[Model Catalog](https://app.langdb.ai/models)**
+>
+> Browse 350+ available language models
 
-  <Card title="Enterprise Features" icon="building" href="https://docs.langdb.ai/enterprise">
-    Self-hosted options and enterprise capabilities
-  </Card>
-</CardGroup>
+> **[Enterprise Features](https://docs.langdb.ai/enterprise)**
+>
+> Self-hosted options and enterprise capabilities
 
 ## Next Steps
 

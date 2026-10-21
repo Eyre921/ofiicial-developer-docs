@@ -41,9 +41,9 @@ research_crew/
 └── tools/
 ```
 
-<Tip>
-  Need the older `crew.py`, `config/agents.yaml`, and `config/tasks.yaml` layout? Create it with `crewai create crew research_crew --classic`.
-</Tip>
+> [!TIP]
+>
+> Need the older `crew.py`, `config/agents.yaml`, and `config/tasks.yaml` layout? Create it with `crewai create crew research_crew --classic`.
 
 ## Step 2: Define Your Agents
 
@@ -154,10 +154,10 @@ You can add:
 * Custom tools with `"custom:<name>"`, which loads `tools/<name>.py`
 * Hierarchical execution with `"process": "hierarchical"` and a `manager_llm` or `manager_agent`
 
-<Warning>
-  Only run JSON crew projects from sources you trust. `custom:<name>` tools and `{"python": "module.attribute"}` references execute local Python code when the crew loads.
-</Warning>
+> [!WARNING]
+>
+> Only run JSON crew projects from sources you trust. `custom:<name>` tools and `{"python": "module.attribute"}` references execute local Python code when the crew loads.
 
-<Check>
-  You now have a working JSON-first crew that researches a topic and writes a report.
-</Check>
+> [!TIP]
+>
+> You now have a working JSON-first crew that researches a topic and writes a report.

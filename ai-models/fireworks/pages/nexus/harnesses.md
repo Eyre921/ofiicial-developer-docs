@@ -88,11 +88,7 @@ Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, o
 
 ## Claude Code
 
-Anthropic Messages
-
-FireRouter
-
-Native web search
+Anthropic MessagesFireRouterNative web search
 
 **FireConnect**
 
@@ -225,9 +221,7 @@ In the SDK query options, include `settingSources: ["user"]`. The SDK then reads
 
 ## Claude Desktop
 
-Anthropic Messages
-
-macOS only
+Anthropic MessagesmacOS only
 
 FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It requires macOS and a stored credential from `fireconnect login`. **Quit and reopen Claude Desktop after `on` or `off`.**
 
@@ -312,11 +306,7 @@ Anthropic lists these limits in its [third-party feature matrix](https://claude.
 
 ## Codex
 
-OpenAI Responses
-
-FireRouter
-
-Native web search
+OpenAI ResponsesFireRouterNative web search
 
 The Codex CLI reads `~/.codex/config.toml`. The [ChatGPT desktop app](#chatgpt-desktop-app) reads the same file, so connecting one connects the other. **Close open Codex sessions and quit the ChatGPT desktop app** before connecting or running `off`. In a terminal, FireConnect waits for them to close; in a script, it exits with an error. `--force` writes anyway, which isn't recommended.
 
@@ -429,11 +419,7 @@ codex resume <id> -c model_provider="fireworks-ai"
 
 ## ChatGPT desktop app
 
-OpenAI Responses
-
-FireRouter
-
-Native web search
+OpenAI ResponsesFireRouterNative web search
 
 The ChatGPT desktop app reads the same `~/.codex/config.toml` as the [Codex CLI](#codex), so connecting one connects the other. **Quit the ChatGPT desktop app and close open Codex sessions before connecting or running `off`.** The app loads its model list only at startup. FireConnect waits for both to close, or use `--force` to write anyway.
 
@@ -474,9 +460,7 @@ Quit the app, then follow the [Codex manual setup](#codex). The app reads the sa
 
 ## OpenCode
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 **FireConnect**
 
@@ -538,9 +522,7 @@ Restart OpenCode. The default model is `auto`, stored as `fireworks-ai/auto`. Sh
 
 ## Pi
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 **FireConnect**
 
@@ -592,9 +574,7 @@ Pi has a built-in `fireworks` provider that reads `FIREWORKS_API_KEY`. Set it as
 
 ## Cursor IDE
 
-OpenAI Chat Completions
-
-FireRouter with Provider Keys
+OpenAI Chat CompletionsFireRouter with Provider Keys
 
 `fireconnect cursor` configures Cursor IDE. Cursor CLI (`agent` or `cursor-agent`) is not supported. **Fully quit Cursor IDE before connecting or running `off`.**
 
@@ -648,9 +628,7 @@ Add a custom model with a Fireworks ID, such as `glm-latest`, then select it in 
 
 ## VS Code
 
-OpenAI Chat Completions
-
-FireRouter
+OpenAI Chat CompletionsFireRouter
 
 FireConnect adds a **Fireworks** provider to GitHub Copilot Chat's custom endpoints. This requires Copilot **Pro or Enterprise**. **Quit VS Code before connecting or running `off`.**
 
@@ -705,9 +683,7 @@ Follow the step-by-step screenshots in [GitHub Copilot](/ecosystem/integrations/
 
 ## Copilot App
 
-OpenAI Chat Completions
-
-FireRouter with Provider Keys
+OpenAI Chat CompletionsFireRouter with Provider Keys
 
 The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks alongside them. **Quit the app before connecting or running `off`.**
 
@@ -745,9 +721,7 @@ The app's bring-your-own-key path does not support image input, the hover-card C
 
 ## Copilot CLI
 
-OpenAI Chat Completions
-
-FireRouter with manual setup
+OpenAI Chat CompletionsFireRouter with manual setup
 
 The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`, separate from the desktop app.
 
@@ -804,9 +778,7 @@ To use FireRouter with Claude or GPT turns, add a `headers` map to the provider,
 
 ## DeepSeek Harness
 
-OpenAI Chat Completions
-
-FireRouter with manual setup
+OpenAI Chat CompletionsFireRouter with manual setup
 
 DeepSeek's coding agent (`dsh`) runs named profiles, such as `tui`, `web`, and `headless`, under `$DSH_HOME`, which defaults to `~/.dsh`. Restart `dsh` after changing a profile.
 

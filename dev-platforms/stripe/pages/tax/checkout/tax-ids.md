@@ -175,6 +175,7 @@ Checkout collects the following tax ID types in the given regions:
 | BH | bh_vat | Bahraini VAT Number | 123456789012345 | Yes |
 | BJ | bj_ifu | Benin Tax Identification Number (Identifiant Fiscal Unique) | 1234567890123 | Yes |
 | BS | bs_tin | Bahamas Tax Identification Number | 123.456.789 | No |
+| BW | bw_vat | Botswana Value Added Tax number | BW12345678901004567 | No |
 | BY | by_tin | Belarus TIN Number | 123456789 | Yes |
 | CA | ca_bn | Canadian BN | 123456789 | No |
 | CA | ca_gst_hst | Canadian GST/HST number | 123456789RT0002 | Yes |
@@ -184,6 +185,7 @@ Checkout collects the following tax ID types in the given regions:
 | CA | ca_qst | Canadian QST number (Québec) | 1234567890TQ1234 | Yes |
 | CD | cd_nif | Congo (DR) Tax Identification Number (Número de Identificação Fiscal) | A0123456M | No |
 | CH | ch_vat | Switzerland VAT number | CHE-123.456.789 MWST | Yes |
+| CI | ci_vat | Ivory Coast Value Added Tax number | 2100000 L | No |
 | CL | cl_tin | Chilean TIN | 12.345.678-K | Yes |
 | CM | cm_niu | Cameroon Tax Identification Number (Numéro d'Identifiant fiscal Unique) | M123456789000L | No |
 | CR | cr_tin | Costa Rican tax ID | 1-234-567890 | No |
@@ -203,6 +205,7 @@ Checkout collects the following tax ID types in the given regions:
 | GB | eu_vat | Northern Ireland VAT number | XI123456789 | Yes |
 | GB | gb_vat | United Kingdom VAT number | GB123456789 | Yes |
 | GE | ge_vat | Georgian VAT | 123456789 | Yes |
+| GH | gh_tin | Ghanaian Tax Identification Number | C0001234567 | No |
 | GN | gn_nif | Guinea Tax Identification Number (Número de Identificação Fiscal) | 123456789 | Yes |
 | GR | eu_vat | European VAT number | EL123456789 | Yes |
 | HR | eu_vat | European VAT number | HR12345678912 | Yes |
@@ -230,6 +233,7 @@ Checkout collects the following tax ID types in the given regions:
 | MK | mk_vat | North Macedonia VAT Number | MK1234567890123 | Yes |
 | MR | mr_nif | Mauritania Tax Identification Number (Número de Identificação Fiscal) | 12345678 | No |
 | MT | eu_vat | European VAT number | MT12345678 | Yes |
+| MU | mu_vat | Mauritius Value Added Tax number | VAT12345678 | No |
 | MX | mx_rfc | Mexican RFC number | ABC010203AB9 | No |
 | NG | ng_tin | Nigerian Tax Identification Number | 1234567890123 | No |
 | NL | eu_vat | European VAT number | NL123456789B12 | Yes |

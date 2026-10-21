@@ -186,6 +186,14 @@ Vision-language models support [prompt caching](/guides/prompt-caching) to impro
 * **Structure prompts for caching** – Place static instructions at the beginning, variable content at the end
 * **Include metadata in prompts** – Add context about the image directly in your text prompt
 
+### Images that require authentication
+
+Fireworks downloads image URLs on your behalf, so anything in the URL, including credentials in its query string, travels with the request. If an image isn't public:
+
+* **Use a short-lived signed URL.** Generate a pre-signed URL (S3, GCS, Azure Blob, OSS) that grants read-only access to that one object and expires within minutes.
+* **Never put long-lived credentials in an image URL**, such as API keys, session tokens or permanent access keys.
+* **Send private images as base64** when you'd rather not share a URL at all. Base64 images must total less than 10MB per request, so downsize large images first. See [Using base64-encoded images](#using-base64-encoded-images) and [Known limitations](#known-limitations).
+
 ## Working with PDFs and Word documents
 
 VLMs do not natively accept PDF or Word (`.docx`) files as input. Convert them on your side before sending the request:

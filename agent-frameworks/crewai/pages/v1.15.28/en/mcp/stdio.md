@@ -72,9 +72,9 @@ with MCPServerAdapter(server_params) as tools:
 
 If you need finer-grained control over when the Stdio MCP server process is started and stopped, you can manage the `MCPServerAdapter` lifecycle manually.
 
-<Info>
-  You **MUST** call `mcp_server_adapter.stop()` to ensure the server process is terminated and resources are released. Using a `try...finally` block is highly recommended.
-</Info>
+> [!NOTE]
+>
+> You **MUST** call `mcp_server_adapter.stop()` to ensure the server process is terminated and resources are released. Using a `try...finally` block is highly recommended.
 
 ```python theme={null}
 from crewai import Agent, Task, Crew, Process

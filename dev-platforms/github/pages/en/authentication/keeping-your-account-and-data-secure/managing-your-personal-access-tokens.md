@@ -8,7 +8,7 @@ path: en/authentication/keeping-your-account-and-data-secure/managing-your-perso
 
 You can use a personal access token in place of a password when authenticating to GitHub in the command line or with the API.
 
-> \[!WARNING]
+> [!WARNING]
 > Treat your access tokens like passwords. For more information, see [Keeping your personal access tokens secure](#keeping-your-personal-access-tokens-secure).
 
 ## About personal access tokens
@@ -23,7 +23,7 @@ A token has the same capabilities to access resources and perform actions on tho
 
 GitHub currently supports two types of personal access tokens: fine-grained personal access tokens and personal access tokens (classic). GitHub recommends that you use fine-grained personal access tokens instead of personal access tokens (classic) whenever possible.
 
-> \[!NOTE]
+> [!NOTE]
 > Fine-grained personal access tokens, while more secure and controllable, cannot accomplish every task that a personal access token (classic) can. See the section on [Fine-grained personal access tokens limitations](#fine-grained-personal-access-tokens-limitations) below to learn more.
 
 Both fine-grained personal access tokens and personal access tokens (classic) are tied to the user who generated them and will become inactive if the user loses access to the resource.
@@ -83,7 +83,7 @@ For more information about best practices, see [Keeping your API credentials sec
 
 ## Creating a fine-grained personal access token
 
-> \[!NOTE]
+> [!NOTE]
 > There is a limit of 50 fine-grained personal access tokens you can create. If you require more tokens or are building automations, consider using a GitHub App for better scalability and management. For more information, see [Deciding when to build a GitHub App](/en/apps/creating-github-apps/about-creating-github-apps/deciding-when-to-build-a-github-app#choosing-between-a-github-app-or-a-personal-access-token).
 
 1. [Verify your email address](/en/account-and-profile/how-tos/email-preferences/verifying-your-email-address), if it hasn't been verified yet.
@@ -163,12 +163,12 @@ To set a permission, use its name as a query parameter, with the value specifyin
 
 Combine multiple permissions in the form `&contents=read&pull_requests=write&...`, using as many as needed.
 
-> \[!TIP]
+> [!TIP]
 > You do not need to include both `read` and `write` for a permission in your URL — `write` always includes `read`, and `admin` always includes `write`.
 
 #### Account permissions
 
-> \[!IMPORTANT]
+> [!IMPORTANT]
 > Account permissions can only be used when the current user is the resource owner.
 
 | Parameter name                   | Display name                   | Access levels   |
@@ -194,7 +194,7 @@ Combine multiple permissions in the form `&contents=read&pull_requests=write&...
 | `starring`                       | Starring                       | `read`, `write` |
 | `watching`                       | Watching                       | `read`, `write` |
 
-> \[!NOTE]
+> [!NOTE]
 > The `copilot_requests` permission enables making Copilot requests for the given user. These requests count towards the user's premium request allowance. Additional requests beyond the allowance incur overage billing. For more information about Copilot requests and billing, see [Requests in GitHub Copilot (legacy)](/en/copilot/reference/copilot-billing/request-based-billing-legacy/copilot-requests).
 
 #### Repository permissions
@@ -239,7 +239,7 @@ Repository permissions work for both user and organization resource owners.
 
 #### Organization permissions
 
-> \[!IMPORTANT]
+> [!IMPORTANT]
 > Organization permissions can only be used if the resource owner is an organization.
 
 | Parameter name                                  | Display name                                      | Access levels            |
@@ -275,10 +275,10 @@ Repository permissions work for both user and organization resource owners.
 
 ## Creating a personal access token (classic)
 
-> \[!NOTE]
+> [!NOTE]
 > Organization owners can restrict the access of personal access token (classic) to their organization. If you try to use a personal access token (classic) to access resources in an organization that has disabled personal access token (classic) access, your request will fail with a 403 response. Instead, you must use a GitHub App, OAuth app, or fine-grained personal access token.
 
-> \[!WARNING]
+> [!WARNING]
 > Your personal access token (classic) can access every repository that you can access. GitHub recommends that you use fine-grained personal access tokens instead, which you can restrict to specific repositories. Fine-grained personal access tokens also enable you to specify fine-grained permissions instead of broad scopes.
 
 1. [Verify your email address](/en/account-and-profile/how-tos/email-preferences/verifying-your-email-address), if it hasn't been verified yet.
@@ -304,7 +304,7 @@ You should delete a personal access token if it is no longer needed. If you dele
 3. In the left sidebar, under **<svg version="1.1" width="16" height="16" viewBox="0 0 16 16" class="octicon octicon-key" aria-label="key" role="img"><path d="M10.5 0a5.499 5.499 0 1 1-1.288 10.848l-.932.932a.749.749 0 0 1-.53.22H7v.75a.749.749 0 0 1-.22.53l-.5.5a.749.749 0 0 1-.53.22H5v.75a.749.749 0 0 1-.22.53l-.5.5a.749.749 0 0 1-.53.22h-2A1.75 1.75 0 0 1 0 14.25v-2c0-.199.079-.389.22-.53l4.932-4.932A5.5 5.5 0 0 1 10.5 0Zm-4 5.5c-.001.431.069.86.205 1.269a.75.75 0 0 1-.181.768L1.5 12.56v1.69c0 .138.112.25.25.25h1.69l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l1.023-1.025a.75.75 0 0 1 .768-.18A4 4 0 1 0 6.5 5.5ZM11 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg> Personal access tokens**, click either **Fine-grained tokens** or **Tokens (classic)**, depending on which type of personal access token you'd like to delete.
 4. To the right of the personal access token you want to delete, click **Delete**.
 
-> \[!NOTE]
+> [!NOTE]
 > If you find a leaked personal access token belonging to someone else, you can submit a revocation request through the REST API. See [Best practices for preventing data leaks in your organization](/en/code-security/tutorials/secure-your-organization/prevent-data-leaks#mitigate-data-leaks).
 
 ## Using a personal access token on the command line

@@ -8,13 +8,13 @@ Extract full page content from URLs in markdown, HTML, or metadata format via Yo
 
 `you-contents` extracts full page content from URLs via You.com's remote MCP server. It supports markdown, HTML, and metadata formats and handles multiple URLs in a single request.
 
-<Warning>
-  **`you-contents` cannot be used via the DSL path** (`mcps=[]`). crewAI's `_json_type_to_python` maps all `"array"` types to bare `list`, which Pydantic v2 generates as `{"items": {}}` — a schema that OpenAI rejects. You must use `MCPServerAdapter` with the schema patching helpers below.
-</Warning>
+> [!WARNING]
+>
+> **`you-contents` cannot be used via the DSL path** (`mcps=[]`). crewAI's `_json_type_to_python` maps all `"array"` types to bare `list`, which Pydantic v2 generates as `{"items": {}}` — a schema that OpenAI rejects. You must use `MCPServerAdapter` with the schema patching helpers below.
 
-<Note>
-  `you-contents` is not available on the free tier (`?profile=free`). An API key is required.
-</Note>
+> [!NOTE]
+>
+> `you-contents` is not available on the free tier (`?profile=free`). An API key is required.
 
 ## Installation
 

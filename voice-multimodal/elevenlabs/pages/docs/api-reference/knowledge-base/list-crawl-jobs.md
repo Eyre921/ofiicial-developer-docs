@@ -78,35 +78,29 @@ Validation Error
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "crawl_jobs": [
     {
-      "seed_url": "https://docs.elevenlabs.io",
-      "max_pages": 50,
-      "root_folder_id": "folder_9a3f2c1e8b7d4e6a",
-      "updated_at": 1711900800,
-      "id": "crawl_4d7e2a1b9c3f5e8d",
-      "created_at": 1711897200,
+      "seed_url": "string",
+      "max_pages": 1,
+      "root_folder_id": "string",
+      "updated_at": 1,
+      "id": "string",
+      "created_at": 1,
       "type": "discovery",
-      "pattern": "https://docs.elevenlabs.io/.*",
-      "auto_discover": true,
-      "status": "succeeded",
-      "pages_identified": 48,
-      "pages_scraped": 45,
-      "pages_skipped": 2,
-      "pages_failed": 1
+      "pattern": "string",
+      "auto_discover": false,
+      "status": "queued",
+      "pages_identified": 0,
+      "pages_scraped": 0,
+      "pages_skipped": 0,
+      "pages_failed": 0
     }
   ],
-  "next_cursor": "eyJjcmF3bF9qb2JfaWQiOiAiY3Jhd2xfNGQ3ZTJhMWI5YzNmNWU4ZCJ9"
+  "next_cursor": "string"
 }
 ```
 
@@ -117,17 +111,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -143,7 +134,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -152,11 +142,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -179,8 +165,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -191,8 +175,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -202,12 +184,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl');
 
 echo $response->getBody();
 ```
@@ -217,25 +194,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/crawl");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

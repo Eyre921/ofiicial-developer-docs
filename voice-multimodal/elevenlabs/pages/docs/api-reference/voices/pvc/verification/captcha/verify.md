@@ -67,7 +67,7 @@ Validation Error
 
 ```json
 {
-  "recording": "<file: captcha_recording.mp3>"
+  "recording": "<file: [object Object]>"
 }
 ```
 
@@ -86,7 +86,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/captcha"
 
-files = { "recording": "open('captcha_recording.mp3', 'rb')" }
+files = { "recording": "open('[object Object]', 'rb')" }
 
 response = requests.post(url, files=files)
 
@@ -96,7 +96,7 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/captcha';
 const form = new FormData();
-form.append('recording', 'captcha_recording.mp3');
+form.append('recording', '[object Object]');
 
 const options = {method: 'POST'};
 
@@ -125,7 +125,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/captcha"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"captcha_recording.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -150,7 +150,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"captcha_recording.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -161,7 +161,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/captcha")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"captcha_recording.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -175,7 +175,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/voices/pvc/21
   'multipart' => [
     [
         'name' => 'recording',
-        'filename' => 'captcha_recording.mp3',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -189,7 +189,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/captcha");
 var request = new RestRequest(Method.POST);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"captcha_recording.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"recording\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -198,7 +198,7 @@ import Foundation
 let parameters = [
   [
     "name": "recording",
-    "fileName": "captcha_recording.mp3"
+    "fileName": "[object Object]"
   ]
 ]
 

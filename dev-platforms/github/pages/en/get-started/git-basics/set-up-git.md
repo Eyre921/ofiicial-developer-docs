@@ -24,7 +24,7 @@ If you do not need to work with files locally, GitHub lets you complete many Git
 
 1. [Download and install the latest version of Git](https://git-scm.com/downloads).
 
-   > \[!NOTE]
+   > [!NOTE]
    > Most Chrome OS devices from 2020 onwards now have a built-in Linux environment, which includes Git. To enable it, go to the Launcher, search for Linux, and click **Turn on**.
    >
    > If you are using an older Chrome OS device, another method is required:
@@ -40,7 +40,7 @@ If you do not need to work with files locally, GitHub lets you complete many Git
 
 When you connect to a GitHub repository from Git, you need to authenticate with GitHub using either HTTPS or SSH.
 
-> \[!NOTE]
+> [!NOTE]
 > You can authenticate to GitHub using GitHub CLI, for either HTTPS or SSH. For more information, see [`gh auth login`](https://cli.github.com/manual/gh_auth_login).
 
 ### Connecting over HTTPS (recommended)

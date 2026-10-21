@@ -6,7 +6,10 @@ path: microsoft-foundry
 
 Learn about configuring Claude Code through Microsoft Foundry, including setup, configuration, and troubleshooting.
 
-<ContactSalesCard />
+**Deploying Claude Code across your organization?** Talk to sales about enterprise plans, SSO, and centralized billing.
+
+View plans
+Contact sales
 
 ## Prerequisites
 
@@ -16,9 +19,9 @@ Before configuring Claude Code with Microsoft Foundry, ensure you have:
 * RBAC permissions to create Microsoft Foundry resources and deployments
 * Azure CLI installed and configured (optional - only needed if you don't have another mechanism for getting credentials)
 
-<Note>
-  If you are deploying Claude Code to multiple users, [pin your model versions](#4-pin-model-versions) before rolling out.
-</Note>
+> [!NOTE]
+>
+> If you are deploying Claude Code to multiple users, [pin your model versions](#4-pin-model-versions) before rolling out.
 
 ## Setup
 
@@ -44,9 +47,9 @@ Claude Code supports three authentication methods for Microsoft Foundry. Choose 
 * [Microsoft Entra ID](#use-microsoft-entra-id): Claude Code gets tokens through the Azure SDK default credential chain, for example from an `az login` session, so there's no API key to store
 * [Bearer token](#use-a-bearer-token): another process obtains a Microsoft Entra ID access token and you pass it in `ANTHROPIC_FOUNDRY_AUTH_TOKEN`
 
-<Note>
-  When using Microsoft Foundry, the `/logout` command is unavailable since authentication is handled through Azure credentials.
-</Note>
+> [!NOTE]
+>
+> When using Microsoft Foundry, the `/logout` command is unavailable since authentication is handled through Azure credentials.
 
 #### Use an API key
 
@@ -104,9 +107,9 @@ Set `ANTHROPIC_FOUNDRY_RESOURCE` to the resource name alone, such as `my-resourc
 
 ### 4. Pin model versions
 
-<Warning>
-  Pin specific model versions for every deployment. Without pinning, model aliases such as `sonnet` and `opus` resolve to Claude Code's built-in default for Microsoft Foundry, which can lag the newest release and may not yet be available in your account. Microsoft Foundry has no startup model check, so requests fail when the default is unavailable. When you create Azure deployments, select a specific model version rather than "auto-update to latest."
-</Warning>
+> [!WARNING]
+>
+> Pin specific model versions for every deployment. Without pinning, model aliases such as `sonnet` and `opus` resolve to Claude Code's built-in default for Microsoft Foundry, which can lag the newest release and may not yet be available in your account. Microsoft Foundry has no startup model check, so requests fail when the default is unavailable. When you create Azure deployments, select a specific model version rather than "auto-update to latest."
 
 Set the model variables to match the deployment names you created in step 1.
 

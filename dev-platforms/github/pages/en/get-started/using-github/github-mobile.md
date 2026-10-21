@@ -48,7 +48,7 @@ GitHub Mobile may not work with your enterprise if you're required to access you
 
 ### Signing in with social login
 
-> \[!NOTE]
+> [!NOTE]
 > Social login is only available for GitHub Free and GitHub Enterprise Cloud users
 
 You can sign in to GitHub Mobile using a supported social login provider. Currently, both Google and Apple are supported for social login on the GitHub Mobile for Android and iOS users. To use this option, make sure you originally created your GitHub account using the respective social login provider - Google or Apple.

@@ -8,31 +8,31 @@ path: en/authentication/securing-your-account-with-two-factor-authentication-2fa
 
 If you lose access to your two-factor authentication credentials, you can use your recovery codes, or another recovery option, to regain access to your account.
 
-> \[!WARNING]
+> [!WARNING]
 > For security reasons, GitHub Support [will not be able to restore access to accounts](/en/site-policy/other-site-policies/github-account-recovery-policy) with two-factor authentication enabled if you lose your two-factor authentication credentials or lose access to your account recovery methods.
 
-> \[!NOTE]
+> [!NOTE]
 > If you cannot use any recovery methods, you have permanently lost access to your account. However, you can unlink an email address tied to the locked account. The unlinked email address can then be linked to a new or existing account. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/how-tos/account-management/unlinking-your-email-address-from-a-locked-account).
 
 ## Using a two-factor authentication recovery code
 
 Use one of your recovery codes to automatically regain entry into your account. You may have saved your recovery codes to a password manager or your computer's downloads folder. The default filename for recovery codes is `github-recovery-codes.txt`. For more information about recovery codes, see [Configuring two-factor authentication recovery methods](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication-recovery-methods#downloading-your-two-factor-authentication-recovery-codes).
 
-> \[!NOTE]
+> [!NOTE]
 > If you do not know your password, you can use a recovery code after requesting a new password. See [Updating your GitHub access credentials](/en/authentication/keeping-your-account-and-data-secure/updating-your-github-access-credentials#requesting-a-new-password).
 
 1. Navigate to  [`https://github.com/login`](https://github.com/login).
 
 2. To prompt two-factor authentication, type your username and password, then click **Sign in**.
 
-   > \[!NOTE]
+   > [!NOTE]
    > If you have linked a social account to your GitHub account, you can sign-in with your social login instead of using your password.
 
 3. Under "More options", click **2FA recovery code**.
 
 4. Type one of your recovery codes, then click **Verify**.
 
-> \[!NOTE]
+> [!NOTE]
 > If you are receiving a "Recovery code authentication failed" error when using a recovery code, the code you are entering is invalid. You can try troubleshooting your recovery codes. See [Troubleshooting two-factor authentication issues](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/troubleshooting-two-factor-authentication-issues).
 
 ## Authenticating with a passkey
@@ -45,7 +45,7 @@ If you configured two-factor authentication using a security key, you can use yo
 
 ## Authenticating with a fallback number
 
-> \[!NOTE]
+> [!NOTE]
 > Configuring a fallback SMS number in addition to your primary SMS number is no longer supported. Instead, we strongly recommend registering multiple authentication methods.
 
 If you lose access to your preferred TOTP app or phone number, you can provide a two-factor authentication code sent to your fallback number to automatically regain access to your account.
@@ -54,19 +54,19 @@ If you lose access to your preferred TOTP app or phone number, you can provide a
 
 If you know your password for GitHub but don't have the two-factor authentication credentials or your two-factor authentication recovery codes, you can have a one-time password sent to your verified email address to begin the verification process. You'll need to verify your identity using a recovery authentication factor, such as an SSH key or previously verified device.
 
-> \[!NOTE]
+> [!NOTE]
 > For security reasons, regaining access to your account by authenticating with a one-time password can take up to three business days. GitHub will not review additional requests submitted during this time.
 
 You can use your two-factor authentication credentials or two-factor authentication recovery codes to regain access to your account anytime during the 3-5 day waiting period.
 
-> \[!WARNING]
+> [!WARNING]
 > If you protect your personal account with two-factor authentication but do not know your password,  you will need to begin with a password reset request. For more information, see [Recovering without your password](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials#recovering-without-your-password).
 
 1. Navigate to  [`https://github.com/login`](https://github.com/login).
 
 2. To prompt two-factor authentication, type your username and password, then click **Sign in**.
 
-   > \[!NOTE]
+   > [!NOTE]
    > If you have linked a social account to your GitHub account, you can sign-in with your social login instead of using your password.
 
 3. Under "More options", click **2FA recovery code**.
@@ -76,7 +76,7 @@ You can use your two-factor authentication credentials or two-factor authenticat
 5. In the modal that appears, click **I understand, get started**.
 
 6. You may be required to verify an email address. To send an email containing a one-time password to each email address associated with your account, click **Send one-time password**.
-   > \[!NOTE]
+   > [!NOTE]
    > The one-time password will be sent to your primary and backup email addresses. Unless you have previously chosen a specific backup email address, all verified emails are considered backup email addresses.
 
 7. Type the one-time password from your email in the "One-time password" text field, then click **Verify email address**.
@@ -89,7 +89,7 @@ You can use your two-factor authentication credentials or two-factor authenticat
 
    * If you've previously set up a personal access token and would like to use the personal access token for verification, click **Personal access token**.
 
-   > \[!NOTE]
+   > [!NOTE]
    > For security reasons, an authentication factor may not be available for recovery, even if you've used that authentication method with the account before. For example, SSH keys are removed from accounts after a period of inactivity.
 
 A member of GitHub Support will review your request and email you within three business days. If your request is approved, you'll receive a link to complete your account recovery process. If your request is denied, the email will include a way to contact support.
@@ -109,7 +109,7 @@ If you have lost access to your two-factor authentication credentials and your r
 1. To request a new password, visit <https://github.com/password_reset>.
 
 2. Enter the email address associated with your account, then click **Send password reset email.**
-   > \[!NOTE]
+   > [!NOTE]
    > Only primary and backup email addresses can be used to request a new password. Unless you have previously chosen a specific backup email address, all verified emails are considered backup email addresses.
 
 3. GitHub will email you a link that will allow you to reset your password. You must click on this link within 3 hours of receiving the email. If you didn't receive an email from us, make sure to check your spam folder.
@@ -126,7 +126,7 @@ If you have lost access to your two-factor authentication credentials and your r
 
    * If you've previously set up a personal access token and would like to use the personal access token for verification, click **Personal access token**.
 
-   > \[!NOTE]
+   > [!NOTE]
    > For security reasons, an authentication factor may not be available for recovery, even if you've used that authentication method with the account before. For example, SSH keys are removed from accounts after a period of inactivity.
 
 A member of GitHub Support will review your request and email you within three business days. If your request is approved, you'll receive a link to complete your account recovery process. If your request is denied, the email will include a way to contact support.

@@ -130,15 +130,15 @@ Validation Error
 
 ```json
 {
-  "id": "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-  "name": "feature/improved-greeting-flow",
-  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-  "description": "Branch for testing improved greeting and onboarding conversation flow",
-  "created_at": 1718000000,
-  "last_committed_at": 1718086400,
-  "is_archived": false,
+  "id": "string",
+  "name": "string",
+  "agent_id": "string",
+  "description": "string",
+  "created_at": 1,
+  "last_committed_at": 1,
+  "is_archived": true,
   "protection_status": "writer_perms_required",
-  "auto_rebase": true,
+  "auto_rebase": false,
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",
@@ -146,26 +146,26 @@ Validation Error
     "role": "admin",
     "access_source": "creator"
   },
-  "current_live_percentage": 15.5,
+  "current_live_percentage": 0,
   "parent_branch": {
-    "id": "agtbranch_main01k4aafjxxfxt93gd841r7tv5t",
-    "name": "main"
+    "id": "string",
+    "name": "string"
   },
   "most_recent_versions": [
     {
-      "id": "agtver_1201k4aafjxxfxt93gd841r7tv5t",
-      "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "branch_id": "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-      "version_description": "Updated greeting prompt and added fallback responses for unrecognized intents",
-      "seq_no_in_branch": 3,
-      "time_committed_secs": 1718086400,
+      "id": "string",
+      "agent_id": "string",
+      "branch_id": "string",
+      "version_description": "string",
+      "seq_no_in_branch": 1,
+      "time_committed_secs": 1,
       "parents": {
-        "in_branch_parent_id": "agtver_1101k4aafjxxfxt93gd841r7tv5t",
-        "out_of_branch_parent_id": "agtver_main01k4aafjxxfxt93gd841r7tv5t",
-        "merged_into_branch_id": null,
-        "merged_from_branch_id": null,
-        "merged_from_version_id": null,
-        "rebased_from_version_id": "agtver_main01k4aafjxxfxt93gd841r7tv5t"
+        "in_branch_parent_id": "string",
+        "out_of_branch_parent_id": "string",
+        "merged_into_branch_id": "string",
+        "merged_from_branch_id": "string",
+        "merged_from_version_id": "string",
+        "rebased_from_version_id": "string"
       },
       "access_info": {
         "is_creator": true,
@@ -176,12 +176,12 @@ Validation Error
       },
       "merged_authors": [
         {
-          "is_creator": false,
-          "creator_name": "Jane Smith",
-          "creator_email": "jane.smith@example.com",
-          "role": "editor",
-          "anonymous_access_level_override": null,
-          "access_source": "explicit"
+          "is_creator": true,
+          "creator_name": "string",
+          "creator_email": "string",
+          "role": "admin",
+          "anonymous_access_level_override": "admin",
+          "access_source": "creator"
         }
       ]
     }

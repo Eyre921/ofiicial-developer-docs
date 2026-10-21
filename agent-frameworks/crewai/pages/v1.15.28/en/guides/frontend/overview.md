@@ -12,23 +12,21 @@ CrewAI runs your agents. [CopilotKit](https://copilotkit.ai) gives them a fronte
 
 The two connect through the [AG-UI protocol](https://docs.ag-ui.com). The `ag-ui-crewai` package exposes any Crew or Flow as an AG-UI endpoint. CopilotKit's React hooks and components consume that endpoint. This unlocks experiences that go well beyond a chat box:
 
-<CardGroup>
-  <Card title="Generative UI" icon="wand-magic-sparkles" href="/edge/en/guides/frontend/generative-ui">
-    Render agent tool calls and state as your own React components.
-  </Card>
+> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+>
+> Render agent tool calls and state as your own React components.
 
-  <Card title="Human-in-the-Loop" icon="user-check" href="/edge/en/guides/frontend/human-in-the-loop">
-    Pause the agent to collect user approval or input mid-run.
-  </Card>
+> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+>
+> Pause the agent to collect user approval or input mid-run.
 
-  <Card title="Shared State" icon="arrows-rotate" href="/edge/en/guides/frontend/shared-state">
-    Keep agent state and your app UI in two-way sync.
-  </Card>
+> **[Shared State](/edge/en/guides/frontend/shared-state)**
+>
+> Keep agent state and your app UI in two-way sync.
 
-  <Card title="Channels" icon="messages" href="/edge/en/guides/frontend/channels">
-    Run the same agent as a Slack, Discord, or Teams bot.
-  </Card>
-</CardGroup>
+> **[Channels](/edge/en/guides/frontend/channels)**
+>
+> Run the same agent as a Slack, Discord, or Teams bot.
 
 This guide gets a Crew or Flow talking to a Next.js frontend end to end. The rest of the section builds on the app you set up here.
 
@@ -44,186 +42,178 @@ There are three pieces:
 React app  ──►  CopilotKit runtime (/api/copilotkit)  ──►  CrewAI server (AG-UI)  ──►  Crew / Flow
 ```
 
-<Note>
-  This guide covers the **self-hosted** path: you run the CrewAI agent server yourself with `ag-ui-crewai`, and it works locally with no managed service. CopilotKit also offers a **managed** path (CopilotKit Cloud / Enterprise Intelligence) with hosted threads and an inspector — see the [CopilotKit CrewAI quickstart](https://docs.copilotkit.ai/crewai-crews/quickstart) if you want that instead. The frontend code in this section is the same either way; only how the agent is hosted and registered differs.
-</Note>
+> [!NOTE]
+>
+> This guide covers the **self-hosted** path: you run the CrewAI agent server yourself with `ag-ui-crewai`, and it works locally with no managed service. CopilotKit also offers a **managed** path (CopilotKit Cloud / Enterprise Intelligence) with hosted threads and an inspector — see the [CopilotKit CrewAI quickstart](https://docs.copilotkit.ai/crewai-crews/quickstart) if you want that instead. The frontend code in this section is the same either way; only how the agent is hosted and registered differs.
 
-<Note>
-  CrewAI runs behind AG-UI in three shapes: regular **Flows** (used throughout these guides), **[Conversational Flows](/edge/en/guides/frontend/conversational-flows)** (native, session-aware, turn-based, at full feature parity), and **Crews** (basic chat). The frontend in this section is identical across them — only the backend authoring and registration differ.
-</Note>
+> [!NOTE]
+>
+> CrewAI runs behind AG-UI in three shapes: regular **Flows** (used throughout these guides), **[Conversational Flows](/edge/en/guides/frontend/conversational-flows)** (native, session-aware, turn-based, at full feature parity), and **Crews** (basic chat). The frontend in this section is identical across them — only the backend authoring and registration differ.
 
 ## Integration guide
 
-<Steps>
-  <Step title="Serve your agent over AG-UI">
-    Install the integration package into your CrewAI project:
+**1. Serve your agent over AG-UI**
 
-    ```bash theme={null}
-    pip install ag-ui-crewai
-    ```
+Install the integration package into your CrewAI project:
 
-    Expose your agent from a FastAPI app. Flows use `add_crewai_flow_fastapi_endpoint`; Crews use `add_crewai_crew_fastapi_endpoint`. You can register as many as you want, each on its own path.
+```bash theme={null}
+pip install ag-ui-crewai
+```
 
-    <CodeGroup>
-      ```python Flow theme={null}
-      # server.py
-      from fastapi import FastAPI
-      from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
-      from my_agents.recipe_flow import RecipeFlow
+Expose your agent from a FastAPI app. Flows use `add_crewai_flow_fastapi_endpoint`; Crews use `add_crewai_crew_fastapi_endpoint`. You can register as many as you want, each on its own path.
 
-      app = FastAPI(title="CrewAI Agent Server")
+```python Flow theme={null}
+# server.py
+from fastapi import FastAPI
+from ag_ui_crewai.endpoint import add_crewai_flow_fastapi_endpoint
+from my_agents.recipe_flow import RecipeFlow
 
-      add_crewai_flow_fastapi_endpoint(
-          app=app,
-          flow=RecipeFlow(),
-          path="/recipe",
-      )
-      ```
+app = FastAPI(title="CrewAI Agent Server")
 
-      ```python Crew theme={null}
-      # server.py
-      from fastapi import FastAPI
-      from ag_ui_crewai.endpoint import add_crewai_crew_fastapi_endpoint
-      from my_agents.research_crew import ResearchCrew
+add_crewai_flow_fastapi_endpoint(
+    app=app,
+    flow=RecipeFlow(),
+    path="/recipe",
+)
+```
 
-      app = FastAPI(title="CrewAI Agent Server")
+```python Crew theme={null}
+# server.py
+from fastapi import FastAPI
+from ag_ui_crewai.endpoint import add_crewai_crew_fastapi_endpoint
+from my_agents.research_crew import ResearchCrew
 
-      add_crewai_crew_fastapi_endpoint(
-          app=app,
-          crew=ResearchCrew().crew(),
-          path="/research",
-      )
-      ```
-    </CodeGroup>
+app = FastAPI(title="CrewAI Agent Server")
 
-    Run it:
+add_crewai_crew_fastapi_endpoint(
+    app=app,
+    crew=ResearchCrew().crew(),
+    path="/research",
+)
+```
 
-    ```bash theme={null}
-    uvicorn server:app --port 8000
-    ```
+Run it:
 
-    <Note>
-      Set the environment variables for your LLM provider (for example `OPENAI_API_KEY`) before starting the server.
-    </Note>
-  </Step>
+```bash theme={null}
+uvicorn server:app --port 8000
+```
 
-  <Step title="Create a Next.js app">
-    If you do not have a frontend yet, scaffold one:
+> [!NOTE]
+>
+> Set the environment variables for your LLM provider (for example `OPENAI_API_KEY`) before starting the server.
 
-    ```bash theme={null}
-    npx create-next-app@latest my-app
-    cd my-app
-    ```
+**2. Create a Next.js app**
 
-    Install CopilotKit and the CrewAI AG-UI client:
+If you do not have a frontend yet, scaffold one:
 
-    ```bash theme={null}
-    npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime @ag-ui/crewai
-    ```
-  </Step>
+```bash theme={null}
+npx create-next-app@latest my-app
+cd my-app
+```
 
-  <Step title="Add the CopilotKit runtime">
-    Create a route that registers your CrewAI agent(s) with the CopilotKit runtime. Each agent points at a path on your Python server via `CrewAIAgent`.
+Install CopilotKit and the CrewAI AG-UI client:
 
-    ```ts theme={null}
-    // app/api/copilotkit/route.ts
-    import {
-      CopilotRuntime,
-      InMemoryAgentRunner,
-      createCopilotEndpoint,
-    } from "@copilotkit/runtime/v2";
-    import { CrewAIAgent } from "@ag-ui/crewai";
-    import { handle } from "hono/vercel";
+```bash theme={null}
+npm install @copilotkit/react-core @copilotkit/react-ui @copilotkit/runtime @ag-ui/crewai
+```
 
-    const runtime = new CopilotRuntime({
-      agents: {
-        recipe: new CrewAIAgent({ url: "http://localhost:8000/recipe" }),
-      },
-      runner: new InMemoryAgentRunner(),
-    });
+**3. Add the CopilotKit runtime**
 
-    const app = createCopilotEndpoint({
-      runtime,
-      basePath: "/api/copilotkit",
-    });
+Create a route that registers your CrewAI agent(s) with the CopilotKit runtime. Each agent points at a path on your Python server via `CrewAIAgent`.
 
-    const handler = handle(app);
-    export const GET = handler;
-    export const POST = handler;
-    ```
-  </Step>
+```ts theme={null}
+// app/api/copilotkit/route.ts
+import {
+  CopilotRuntime,
+  InMemoryAgentRunner,
+  createCopilotEndpoint,
+} from "@copilotkit/runtime/v2";
+import { CrewAIAgent } from "@ag-ui/crewai";
+import { handle } from "hono/vercel";
 
-  <Step title="Wrap your app with the provider">
-    Point `<CopilotKit>` at the runtime route and name the agent you registered.
+const runtime = new CopilotRuntime({
+  agents: {
+    recipe: new CrewAIAgent({ url: "http://localhost:8000/recipe" }),
+  },
+  runner: new InMemoryAgentRunner(),
+});
 
-    ```tsx theme={null}
-    // app/page.tsx
-    "use client";
-    import { CopilotKit } from "@copilotkit/react-core";
-    import { CopilotSidebar } from "@copilotkit/react-core/v2";
-    import "@copilotkit/react-core/v2/styles.css";
+const app = createCopilotEndpoint({
+  runtime,
+  basePath: "/api/copilotkit",
+});
 
-    export default function Page() {
-      return (
-        <CopilotKit runtimeUrl="/api/copilotkit" agent="recipe">
-          <YourApp />
-          <CopilotSidebar agentId="recipe" labels={{ modalHeaderTitle: "Assistant" }} />
-        </CopilotKit>
-      );
-    }
-    ```
-  </Step>
+const handler = handle(app);
+export const GET = handler;
+export const POST = handler;
+```
 
-  <Step title="Run it">
-    Start both processes and open the app. Chatting in the sidebar now runs your Crew or Flow.
+**4. Wrap your app with the provider**
 
-    ```bash theme={null}
-    uvicorn server:app --port 8000   # terminal 1
-    npm run dev                       # terminal 2
-    ```
-  </Step>
-</Steps>
+Point `<CopilotKit>` at the runtime route and name the agent you registered.
+
+```tsx theme={null}
+// app/page.tsx
+"use client";
+import { CopilotKit } from "@copilotkit/react-core";
+import { CopilotSidebar } from "@copilotkit/react-core/v2";
+import "@copilotkit/react-core/v2/styles.css";
+
+export default function Page() {
+  return (
+    <CopilotKit runtimeUrl="/api/copilotkit" agent="recipe">
+      <YourApp />
+      <CopilotSidebar agentId="recipe" labels={{ modalHeaderTitle: "Assistant" }} />
+    </CopilotKit>
+  );
+}
+```
+
+**5. Run it**
+
+Start both processes and open the app. Chatting in the sidebar now runs your Crew or Flow.
+
+```bash theme={null}
+uvicorn server:app --port 8000   # terminal 1
+npm run dev                       # terminal 2
+```
 
 ## Chat UI options
 
 CopilotKit ships three interchangeable chat surfaces. Swap the component; the wiring is identical.
 
-<CodeGroup>
-  ```tsx Sidebar theme={null}
-  import { CopilotSidebar } from "@copilotkit/react-core/v2";
+```tsx Sidebar theme={null}
+import { CopilotSidebar } from "@copilotkit/react-core/v2";
 
-  <CopilotSidebar agentId="recipe" />
-  ```
+<CopilotSidebar agentId="recipe" />
+```
 
-  ```tsx Popup theme={null}
-  import { CopilotPopup } from "@copilotkit/react-core/v2";
+```tsx Popup theme={null}
+import { CopilotPopup } from "@copilotkit/react-core/v2";
 
-  <CopilotPopup agentId="recipe" />
-  ```
+<CopilotPopup agentId="recipe" />
+```
 
-  ```tsx Inline theme={null}
-  import { CopilotChat } from "@copilotkit/react-core/v2";
+```tsx Inline theme={null}
+import { CopilotChat } from "@copilotkit/react-core/v2";
 
-  <CopilotChat agentId="recipe" />
-  ```
-</CodeGroup>
+<CopilotChat agentId="recipe" />
+```
 
 ## Where to go next
 
-<CardGroup>
-  <Card title="Generative UI" icon="wand-magic-sparkles" href="/edge/en/guides/frontend/generative-ui">
-    Render tool calls and agent state as custom components.
-  </Card>
+> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+>
+> Render tool calls and agent state as custom components.
 
-  <Card title="Frontend Actions" icon="bolt" href="/edge/en/guides/frontend/frontend-actions">
-    Let the agent call functions that run in the browser.
-  </Card>
+> **[Frontend Actions](/edge/en/guides/frontend/frontend-actions)**
+>
+> Let the agent call functions that run in the browser.
 
-  <Card title="Human-in-the-Loop" icon="user-check" href="/edge/en/guides/frontend/human-in-the-loop">
-    Gate agent actions behind user approval.
-  </Card>
+> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+>
+> Gate agent actions behind user approval.
 
-  <Card title="Predictive State" icon="gauge-high" href="/edge/en/guides/frontend/predictive-state-updates">
-    Stream in-progress state to the UI as the agent works.
-  </Card>
-</CardGroup>
+> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+>
+> Stream in-progress state to the UI as the agent works.

@@ -6,12 +6,12 @@ path: v1.15.28/en/concepts/cli
 
 Learn how to use the CrewAI CLI to interact with CrewAI.
 
-<Warning>
-  Since release 0.140.0, CrewAI AMP started a process of migrating their login
-  provider. As such, the authentication flow via CLI was updated. Users that use
-  Google to login, or that created their account after July 3rd, 2025 will be
-  unable to log in with older versions of the `crewai` library.
-</Warning>
+> [!WARNING]
+>
+> Since release 0.140.0, CrewAI AMP started a process of migrating their login
+> provider. As such, the authentication flow via CLI was updated. Users that use
+> Google to login, or that created their account after July 3rd, 2025 will be
+> unable to log in with older versions of the `crewai` library.
 
 ## Overview
 
@@ -220,18 +220,18 @@ Run the crew or flow.
 crewai run
 ```
 
-<Note>
-  Starting from version 0.103.0, the `crewai run` command can be used to run
-  both standard crews and flows. For flows, it automatically detects the type
-  from pyproject.toml and runs the appropriate command. This is now the
-  recommended way to run both crews and flows.
-</Note>
+> [!NOTE]
+>
+> Starting from version 0.103.0, the `crewai run` command can be used to run
+> both standard crews and flows. For flows, it automatically detects the type
+> from pyproject.toml and runs the appropriate command. This is now the
+> recommended way to run both crews and flows.
 
-<Note>
-  Make sure to run these commands from the directory where your CrewAI project
-  is set up. Some commands may require additional configuration or setup within
-  your project structure.
-</Note>
+> [!NOTE]
+>
+> Make sure to run these commands from the directory where your CrewAI project
+> is set up. Some commands may require additional configuration or setup within
+> your project structure.
 
 ### 9. Chat
 
@@ -243,38 +243,38 @@ After receiving the results, you can continue interacting with the assistant for
 crewai chat
 ```
 
-<Note>
-  Ensure you execute these commands from your CrewAI project's root directory.
-</Note>
+> [!NOTE]
+>
+> Ensure you execute these commands from your CrewAI project's root directory.
 
-<Note>
-  IMPORTANT: Set the `chat_llm` property in your crew definition to enable this command.
-
-  For JSON-first crews, add it to `crew.jsonc`:
-
-  ```jsonc theme={null}
-  {
-    "name": "My Crew",
-    "agents": ["researcher"],
-    "tasks": [],
-    "chat_llm": "openai/gpt-4o"
-  }
-  ```
-
-  For classic Python/YAML crews, set it in `crew.py`:
-
-  ```python theme={null}
-  @crew
-  def crew(self) -> Crew:
-      return Crew(
-          agents=self.agents,
-          tasks=self.tasks,
-          process=Process.sequential,
-          verbose=True,
-          chat_llm="gpt-4o",  # LLM for chat orchestration
-      )
-  ```
-</Note>
+> [!NOTE]
+>
+> IMPORTANT: Set the `chat_llm` property in your crew definition to enable this command.
+>
+> For JSON-first crews, add it to `crew.jsonc`:
+>
+> ```jsonc theme={null}
+> {
+>   "name": "My Crew",
+>   "agents": ["researcher"],
+>   "tasks": [],
+>   "chat_llm": "openai/gpt-4o"
+> }
+> ```
+>
+> For classic Python/YAML crews, set it in `crew.py`:
+>
+> ```python theme={null}
+> @crew
+> def crew(self) -> Crew:
+>     return Crew(
+>         agents=self.agents,
+>         tasks=self.tasks,
+>         process=Process.sequential,
+>         verbose=True,
+>         chat_llm="gpt-4o",  # LLM for chat orchestration
+>     )
+> ```
 
 ### 10. Deploy
 
@@ -322,10 +322,10 @@ crewai org current
 crewai org switch <organization_id>
 ```
 
-<Note>
-  You must be authenticated to CrewAI AMP to use these organization management
-  commands.
-</Note>
+> [!NOTE]
+>
+> You must be authenticated to CrewAI AMP to use these organization management
+> commands.
 
 * **Create a deployment** (continued):
 
@@ -381,7 +381,7 @@ crewai org switch <organization_id>
 
 Watch this video tutorial for a step-by-step demonstration of deploying your crew to [CrewAI AMP](http://app.crewai.com) using the CLI.
 
-<iframe title="CrewAI Deployment Guide" />
+[CrewAI Deployment Guide](https://www.youtube.com/embed/3EqSV-CYDZA)
 
 ### 11. Login
 
@@ -511,9 +511,9 @@ Reset all configuration to defaults:
 crewai config reset
 ```
 
-<Tip>
-  After resetting configuration, re-run `crewai login` to authenticate again.
-</Tip>
+> [!TIP]
+>
+> After resetting configuration, re-run `crewai login` to authenticate again.
 
 ### 14. Trace Management
 
@@ -576,37 +576,37 @@ Trace collection is controlled by checking three settings in priority order:
    * Running `crewai traces enable` is sufficient to enable tracing by itself
    * The first-run prompt (`Would you like to view your execution traces?`) also updates this preference
 
-<Note>
-  **To enable tracing**, use any one of these methods:
+> [!NOTE]
+>
+> **To enable tracing**, use any one of these methods:
+>
+> * Set `tracing=True` in your Crew/Flow code, OR
+> * Add `CREWAI_TRACING_ENABLED=true` to your `.env` file, OR
+> * Run `crewai traces enable`
+>
+> **To disable tracing**, use any ONE of these methods:
+>
+> * Set `tracing=False` in your Crew/Flow code (overrides everything), OR
+> * Remove or set to `false` the `CREWAI_TRACING_ENABLED` env var, OR
+> * Run `crewai traces disable`
+>
+> Higher priority settings override lower ones.
 
-  * Set `tracing=True` in your Crew/Flow code, OR
-  * Add `CREWAI_TRACING_ENABLED=true` to your `.env` file, OR
-  * Run `crewai traces enable`
+> [!TIP]
+>
+> For more information about tracing, see the [Tracing
+> documentation](/observability/tracing).
 
-  **To disable tracing**, use any ONE of these methods:
+> [!TIP]
+>
+> CrewAI CLI handles authentication to the Tool Repository automatically when
+> adding packages to your project. Just append `crewai` before any `uv` command
+> to use it. E.g. `crewai uv add requests`. For more information, see [Tool
+> Repository](https://docs-platform.crewai.com/platform/en/guides/tool-repository) docs.
 
-  * Set `tracing=False` in your Crew/Flow code (overrides everything), OR
-  * Remove or set to `false` the `CREWAI_TRACING_ENABLED` env var, OR
-  * Run `crewai traces disable`
-
-  Higher priority settings override lower ones.
-</Note>
-
-<Tip>
-  For more information about tracing, see the [Tracing
-  documentation](/observability/tracing).
-</Tip>
-
-<Tip>
-  CrewAI CLI handles authentication to the Tool Repository automatically when
-  adding packages to your project. Just append `crewai` before any `uv` command
-  to use it. E.g. `crewai uv add requests`. For more information, see [Tool
-  Repository](https://docs-platform.crewai.com/platform/en/guides/tool-repository) docs.
-</Tip>
-
-<Note>
-  Configuration settings are stored in `~/.config/crewai/settings.json`. Some
-  settings like organization name and UUID are read-only and managed through
-  authentication and organization commands. Tool repository related settings are
-  hidden and cannot be set directly by users.
-</Note>
+> [!NOTE]
+>
+> Configuration settings are stored in `~/.config/crewai/settings.json`. Some
+> settings like organization name and UUID are read-only and managed through
+> authentication and organization commands. Tool repository related settings are
+> hidden and cannot be set directly by users.

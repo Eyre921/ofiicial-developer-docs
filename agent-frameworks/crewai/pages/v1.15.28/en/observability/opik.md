@@ -10,9 +10,7 @@ Learn how to use Comet Opik to debug, evaluate, and monitor your CrewAI applicat
 
 With [Comet Opik](https://www.comet.com/docs/opik/), debug, evaluate, and monitor your LLM applications, RAG systems, and agentic workflows with comprehensive tracing, automated evaluations, and production-ready dashboards.
 
-<Frame>
-  <img alt="Opik agent monitoring example with CrewAI" />
-</Frame>
+![Opik agent monitoring example with CrewAI](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/opik-crewai-dashboard.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=6b313c7d767211f2287d7dd074f9dfeb)
 
 Opik provides comprehensive support for every stage of your CrewAI application development:
 
@@ -31,103 +29,101 @@ To run the Opik platform locally, see our [installation guide](https://www.comet
 
 For this guide we will use CrewAI’s quickstart example.
 
-<Steps>
-  <Step title="Install required packages">
-    ```shell theme={null}
-    pip install crewai crewai-tools opik --upgrade
-    ```
-  </Step>
+**1. Install required packages**
 
-  <Step title="Configure Opik">
-    ```python theme={null}
-    import opik
-    opik.configure(use_local=False)
-    ```
-  </Step>
+```shell theme={null}
+pip install crewai crewai-tools opik --upgrade
+```
 
-  <Step title="Prepare environment">
-    First, we set up our API keys for our LLM-provider as environment variables:
+**2. Configure Opik**
 
-    ```python theme={null}
-    import os
-    import getpass
+```python theme={null}
+import opik
+opik.configure(use_local=False)
+```
 
-    if "OPENAI_API_KEY" not in os.environ:
-    os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
-    ```
-  </Step>
+**3. Prepare environment**
 
-  <Step title="Using CrewAI">
-    The first step is to create our project. We will use an example from CrewAI’s documentation:
+First, we set up our API keys for our LLM-provider as environment variables:
 
-    ```python theme={null}
-    from crewai import Agent, Crew, Task, Process
+```python theme={null}
+import os
+import getpass
+
+if "OPENAI_API_KEY" not in os.environ:
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
+```
+
+**4. Using CrewAI**
+
+The first step is to create our project. We will use an example from CrewAI’s documentation:
+
+```python theme={null}
+from crewai import Agent, Crew, Task, Process
 
 
-    class YourCrewName:
-        def agent_one(self) -> Agent:
-            return Agent(
-                role="Data Analyst",
-                goal="Analyze data trends in the market",
-                backstory="An experienced data analyst with a background in economics",
-                verbose=True,
-            )
+class YourCrewName:
+    def agent_one(self) -> Agent:
+        return Agent(
+            role="Data Analyst",
+            goal="Analyze data trends in the market",
+            backstory="An experienced data analyst with a background in economics",
+            verbose=True,
+        )
 
-        def agent_two(self) -> Agent:
-            return Agent(
-                role="Market Researcher",
-                goal="Gather information on market dynamics",
-                backstory="A diligent researcher with a keen eye for detail",
-                verbose=True,
-            )
+    def agent_two(self) -> Agent:
+        return Agent(
+            role="Market Researcher",
+            goal="Gather information on market dynamics",
+            backstory="A diligent researcher with a keen eye for detail",
+            verbose=True,
+        )
 
-        def task_one(self) -> Task:
-            return Task(
-                name="Collect Data Task",
-                description="Collect recent market data and identify trends.",
-                expected_output="A report summarizing key trends in the market.",
-                agent=self.agent_one(),
-            )
+    def task_one(self) -> Task:
+        return Task(
+            name="Collect Data Task",
+            description="Collect recent market data and identify trends.",
+            expected_output="A report summarizing key trends in the market.",
+            agent=self.agent_one(),
+        )
 
-        def task_two(self) -> Task:
-            return Task(
-                name="Market Research Task",
-                description="Research factors affecting market dynamics.",
-                expected_output="An analysis of factors influencing the market.",
-                agent=self.agent_two(),
-            )
+    def task_two(self) -> Task:
+        return Task(
+            name="Market Research Task",
+            description="Research factors affecting market dynamics.",
+            expected_output="An analysis of factors influencing the market.",
+            agent=self.agent_two(),
+        )
 
-        def crew(self) -> Crew:
-            return Crew(
-                agents=[self.agent_one(), self.agent_two()],
-                tasks=[self.task_one(), self.task_two()],
-                process=Process.sequential,
-                verbose=True,
-            )
+    def crew(self) -> Crew:
+        return Crew(
+            agents=[self.agent_one(), self.agent_two()],
+            tasks=[self.task_one(), self.task_two()],
+            process=Process.sequential,
+            verbose=True,
+        )
 
-    ```
+```
 
-    Now we can import Opik’s tracker and run our crew:
+Now we can import Opik’s tracker and run our crew:
 
-    ```python theme={null}
-    from opik.integrations.crewai import track_crewai
+```python theme={null}
+from opik.integrations.crewai import track_crewai
 
-    track_crewai(project_name="crewai-integration-demo")
+track_crewai(project_name="crewai-integration-demo")
 
-    my_crew = YourCrewName().crew()
-    result = my_crew.kickoff()
+my_crew = YourCrewName().crew()
+result = my_crew.kickoff()
 
-    print(result)
-    ```
+print(result)
+```
 
-    After running your CrewAI application, visit the Opik app to view:
+After running your CrewAI application, visit the Opik app to view:
 
-    * LLM traces, spans, and their metadata
-    * Agent interactions and task execution flow
-    * Performance metrics like latency and token usage
-    * Evaluation metrics (built-in or custom)
-  </Step>
-</Steps>
+* LLM traces, spans, and their metadata
+* Agent interactions and task execution flow
+* Performance metrics like latency and token usage
+* Evaluation metrics (built-in or custom)
 
 ## Resources
 

@@ -29,7 +29,7 @@ You can add an SSH key and use it for authentication, or commit signing, or both
 
 After adding a new SSH authentication key to your account on GitHub.com, you can reconfigure any local repositories to use SSH. For more information, see [Managing remote repositories](/en/get-started/git-basics/managing-remote-repositories#switching-remote-urls-from-https-to-ssh).
 
-> \[!NOTE]
+> [!NOTE]
 > GitHub improved security by dropping older, insecure key types on March 15, 2022.
 >
 > As of that date, DSA keys (`ssh-dss`) are no longer supported. You cannot add new DSA keys to your personal account on GitHub.
@@ -49,7 +49,7 @@ After adding a new SSH authentication key to your account on GitHub.com, you can
    # Copies the contents of the id_ed25519.pub file to your clipboard
    ```
 
-   > \[!TIP]
+   > [!TIP]
    > If `pbcopy` isn't working, you can locate the hidden `.ssh` folder, open the file in your favorite text editor, and copy it to your clipboard.
 
    </div>
@@ -61,7 +61,7 @@ After adding a new SSH authentication key to your account on GitHub.com, you can
    # Copies the contents of the id_ed25519.pub file to your clipboard
    ```
 
-   > \[!NOTE]
+   > [!NOTE]
    >
    > * With Windows Subsystem for Linux (WSL), you can use `clip.exe`. Otherwise if `clip` isn't working, you can locate the hidden `.ssh` folder, open the file in your favorite text editor, and copy it to your clipboard.
    > * On newer versions of Windows that use the Windows Terminal, or anywhere else that uses the PowerShell command line, you may receive a `ParseError` stating that `The '&lt;' operator is reserved for future use.` In this case, the following alternative `clip` command should be used:
@@ -81,7 +81,7 @@ After adding a new SSH authentication key to your account on GitHub.com, you can
    # displayed in the terminal to your clipboard
    ```
 
-   > \[!TIP]
+   > [!TIP]
    > Alternatively, you can locate the hidden `.ssh` folder, open the file in your favorite text editor, and copy it to your clipboard.
 
    </div>
@@ -106,7 +106,7 @@ After adding a new SSH authentication key to your account on GitHub.com, you can
 
 <div class="ghd-tool cli">
 
-> \[!NOTE]
+> [!NOTE]
 > To learn more about GitHub CLI, see [About GitHub CLI](/en/github-cli/github-cli/about-github-cli).
 
 Before you can use the GitHub CLI to add an SSH key to your account, you must authenticate to the GitHub CLI. For more information, see [`gh auth login`](https://cli.github.com/manual/gh_auth_login) in the GitHub CLI documentation.

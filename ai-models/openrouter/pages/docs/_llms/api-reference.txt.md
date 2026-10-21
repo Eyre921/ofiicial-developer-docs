@@ -1,5 +1,5 @@
 ---
-title: "API Reference (168 pages)"
+title: "API Reference (169 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -109,18 +109,18 @@ path: docs/_llms/api-reference.txt
 - [Submit an embedding request](https://openrouter.ai/docs/api/api-reference/embeddings/submit-an-embedding-request.md): Submits an embedding request to the embeddings router
 - [List all embeddings models](https://openrouter.ai/docs/api/api-reference/embeddings/list-all-embeddings-models.md): Returns a list of all available embeddings models and their properties
 
-#### End Users
-
-- [List registered end users](https://openrouter.ai/docs/api/api-reference/end-users/list-registered-end-users.md): List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-- [Register an end user](https://openrouter.ai/docs/api/api-reference/end-users/register-an-end-user.md): Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-- [Get a registered end user](https://openrouter.ai/docs/api/api-reference/end-users/get-a-registered-end-user.md): Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-- [Deactivate a registered end user](https://openrouter.ai/docs/api/api-reference/end-users/deactivate-a-registered-end-user.md): Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-- [Update a registered end user](https://openrouter.ai/docs/api/api-reference/end-users/update-a-registered-end-user.md): Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-
 #### Endpoints
 
 - [Preview the impact of ZDR on the available endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints.md)
 - [List all endpoints for a model](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model.md)
+
+#### External Users
+
+- [List registered external users](https://openrouter.ai/docs/api/api-reference/external-users/list-registered-external-users.md): List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Register an external user](https://openrouter.ai/docs/api/api-reference/external-users/register-an-external-user.md): Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get a registered external user](https://openrouter.ai/docs/api/api-reference/external-users/get-a-registered-external-user.md): Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Deactivate a registered external user](https://openrouter.ai/docs/api/api-reference/external-users/deactivate-a-registered-external-user.md): Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Update a registered external user](https://openrouter.ai/docs/api/api-reference/external-users/update-a-registered-external-user.md): Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 #### Files
 
@@ -166,6 +166,7 @@ path: docs/_llms/api-reference.txt
 - [Delete an intern](https://openrouter.ai/docs/api/api-reference/interns/delete-an-intern.md): Starts safe teardown of the intern, its runtime and its private vault. The body is optional. Send `{"acknowledge_workspace_loss": true}` to delete a `destroy_failed` intern whose `last_failure_message` names `workspace_archive_failed`, accepting that its workspace is not backed up. The request body…
 - [Update an intern](https://openrouter.ai/docs/api/api-reference/interns/update-an-intern.md): Changes the intern name, description, instructions or model. Omitted fields stay unchanged. The request body is capped at 1048576 bytes and a larger body is refused with 413. A non-empty body must declare `Content-Type: application/json` or it is refused with 415. The API key selects the caller, wor…
 - [Stream a chat completion with an intern](https://openrouter.ai/docs/api/api-reference/interns/stream-a-chat-completion-with-an-intern.md): Sends a prompt to one of your interns and streams the reply as OpenAI-compatible server-sent events ending with `[DONE]`. The run executes on the intern, which may pause to ask you something. It then streams one `openrouter.provide_input` tool call and finishes with `finish_reason: "tool_calls"`, an…
+- [List an intern's connections](https://openrouter.ai/docs/api/api-reference/interns/list-an-interns-connections.md): Returns the Slack, GitHub, Google Workspace and MCP connections one visible intern can reach, and the shared ones switched off for it or disabled for the workspace. An OAuth grant needs `vault:read`, because the list names members' personal accounts; without it the route answers 403 `insufficient_sc…
 - [Get an intern's daemon access](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access.md): Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: only an OAuth-token caller (`ori login --oidc`) may read it, the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. API keys get 4…
 - [Get an intern's daemon access (deprecated alias)](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access-deprecated-alias.md): Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallba…
 - [Sign a daemon request with the caller's identity (deprecated alias)](https://openrouter.ai/docs/api/api-reference/interns/sign-a-daemon-request-with-the-callers-identity-deprecated-alias.md): Deprecated alias of `POST /interns/{internId}/daemon/sign` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace…

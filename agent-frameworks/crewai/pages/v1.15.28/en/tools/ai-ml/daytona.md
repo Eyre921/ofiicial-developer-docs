@@ -78,9 +78,9 @@ file_tool.run(
 exec_tool.run(command="python workspace/script.py")
 ```
 
-<Note>
-  By default, each tool with `persistent=True` lazily creates its **own** sandbox on first use. The pattern above shares a single sandbox across multiple tools by reading the first tool's `active_sandbox_id` after a `.run()` call and passing it to the others via `sandbox_id=...`. With `persistent=False` (the default), every `.run()` call gets a fresh sandbox that's deleted at the end of that call.
-</Note>
+> [!NOTE]
+>
+> By default, each tool with `persistent=True` lazily creates its **own** sandbox on first use. The pattern above shares a single sandbox across multiple tools by reading the first tool's `active_sandbox_id` after a `.run()` call and passing it to the others via `sandbox_id=...`. With `persistent=False` (the default), every `.run()` call gets a fresh sandbox that's deleted at the end of that call.
 
 ### Attach to an existing sandbox
 
@@ -222,10 +222,10 @@ All three tools accept these parameters at initialization:
 | `owner` | `str \| None` | | For `chmod`: new file owner. |
 | `group` | `str \| None` | | For `chmod`: new file group. |
 
-<Note>
-  For `chmod`, pass at least one of `mode`, `owner`, or `group` — any field left as `None` is left unchanged on the target.
-</Note>
+> [!NOTE]
+>
+> For `chmod`, pass at least one of `mode`, `owner`, or `group` — any field left as `None` is left unchanged on the target.
 
-<Tip>
-  For files larger than a few KB, create the file first with `action="write"` and empty content, then send the body via multiple `action="append"` calls of \~4 KB each to stay within tool-call payload limits.
-</Tip>
+> [!TIP]
+>
+> For files larger than a few KB, create the file first with `action="write"` and empty content, then send the body via multiple `action="append"` calls of \~4 KB each to stay within tool-call payload limits.

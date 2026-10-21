@@ -49,9 +49,9 @@ The StagehandTool can be implemented in two ways:
 
 #### 1. Using Context Manager (Recommended)
 
-<Tip>
-  The context manager approach is recommended as it ensures proper cleanup of resources even if exceptions occur.
-</Tip>
+> [!TIP]
+>
+> The context manager approach is recommended as it ensures proper cleanup of resources even if exceptions occur.
 
 ```python theme={null}
 from crewai import Agent, Task, Crew

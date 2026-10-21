@@ -14,18 +14,18 @@ Tasks provide all necessary details for execution, such as a description, the ag
 
 Tasks within CrewAI can be collaborative, requiring multiple agents to work together. This is managed through the task properties and orchestrated by the Crew's process, enhancing teamwork and efficiency.
 
-<Note type="info" title="Enterprise Enhancement: Visual Task Builder">
-  CrewAI AMP includes a Visual Task Builder in Crew Studio that simplifies complex task creation and chaining. Design your task flows visually and test them in real-time without writing code.
-
-  <img alt="Task Builder Screenshot" />
-
-  The Visual Task Builder enables:
-
-  * Drag-and-drop task creation
-  * Visual task dependencies and flow
-  * Real-time testing and validation
-  * Easy sharing and collaboration
-</Note>
+> [!NOTE]
+>
+> CrewAI AMP includes a Visual Task Builder in Crew Studio that simplifies complex task creation and chaining. Design your task flows visually and test them in real-time without writing code.
+>
+> ![Task Builder Screenshot](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/enterprise/crew-studio-interface.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=c4f5428b111816273b3b53d9cef14fad)
+>
+> The Visual Task Builder enables:
+>
+> * Drag-and-drop task creation
+> * Visual task dependencies and flow
+> * Real-time testing and validation
+> * Easy sharing and collaboration
 
 ### Task Execution Flow
 
@@ -67,11 +67,11 @@ crew = Crew(
 | **Guardrails** *(optional)* | `guardrails` | `Optional[List[Callable]]` | List of guardrails to validate task output before proceeding to next task. |
 | **Guardrail Max Retries** *(optional)* | `guardrail_max_retries` | `Optional[int]` | Maximum number of retries when guardrail validation fails. Defaults to 3. |
 
-<Note type="warning" title="Deprecated: max_retries">
-  The task attribute `max_retries` is deprecated and will be removed in v1.0.0.
-  Use `guardrail_max_retries` instead to control retry attempts when a guardrail
-  fails.
-</Note>
+> [!NOTE]
+>
+> The task attribute `max_retries` is deprecated and will be removed in v1.0.0.
+> Use `guardrail_max_retries` instead to control retry attempts when a guardrail
+> fails.
 
 ## Creating Tasks
 
@@ -83,9 +83,9 @@ New projects created with `crewai create crew <name>` define tasks in `crew.json
 
 After creating your CrewAI project as outlined in the [Installation](/en/installation) section, edit the generated `crew.jsonc`.
 
-<Note>
-  Use `{placeholder}` values in task `description`, `expected_output`, and `output_file`. Put defaults in the top-level `inputs` object; `crewai run` prompts for any missing values.
-</Note>
+> [!NOTE]
+>
+> Use `{placeholder}` values in task `description`, `expected_output`, and `output_file`. Put defaults in the top-level `inputs` object; `crewai run` prompts for any missing values.
 
 Here's an example `crew.jsonc` with two ordered tasks:
 
@@ -157,10 +157,10 @@ reporting_task = Task(
 )
 ```
 
-<Tip>
-  Directly specify an `agent` for assignment or let the `hierarchical` CrewAI's
-  process decide based on roles, availability, etc.
-</Tip>
+> [!TIP]
+>
+> Directly specify an `agent` for assignment or let the `hierarchical` CrewAI's
+> process decide based on roles, availability, etc.
 
 ## Task Output
 
@@ -272,11 +272,11 @@ analysis_task:
 * **Documentation Ready**: Output can be directly used in documentation systems
 * **Cross-Platform Compatibility**: Markdown is universally supported
 
-<Note>
-  The markdown formatting instructions are automatically added to the task
-  prompt when `markdown=True`, so you don't need to specify formatting
-  requirements in your task description.
-</Note>
+> [!NOTE]
+>
+> The markdown formatting instructions are automatically added to the task
+> prompt when `markdown=True`, so you don't need to specify formatting
+> requirements in your task description.
 
 ## Task Dependencies and Context
 
@@ -581,10 +581,10 @@ task = Task(
 
 ## Getting Structured Consistent Outputs from Tasks
 
-<Note>
-  It's also important to note that the output of the final task of a crew
-  becomes the final output of the actual crew itself.
-</Note>
+> [!NOTE]
+>
+> It's also important to note that the output of the final task of a crew
+> becomes the final output of the actual crew itself.
 
 ### Using `output_pydantic`
 
@@ -1019,7 +1019,7 @@ except RuntimeError as e:
 
 Check out the video below to see how to use structured outputs in CrewAI:
 
-<iframe title="Structured outputs in CrewAI" />
+[Structured outputs in CrewAI](https://www.youtube.com/embed/dNpKQk5uxHw)
 
 ## Conclusion
 

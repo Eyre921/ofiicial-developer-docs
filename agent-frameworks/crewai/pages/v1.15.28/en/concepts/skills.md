@@ -15,14 +15,14 @@ description applies to the current request, the agent loads that skill's full
 instructions for that execution. This keeps unrelated instructions out of the
 context while giving the agent the relevant expertise without code changes.
 
-<Note type="info" title="Skills vs Tools — The Key Distinction">
-  **Skills are NOT tools.** This is the most common point of confusion.
-
-  * **Skills** inject *instructions and context* into the agent's prompt. They tell the agent *how to think* about a problem.
-  * **Tools** give the agent *callable functions* to take action (search, read files, call APIs).
-
-  You often need **both**: skills for expertise, tools for action. They are configured independently and complement each other.
-</Note>
+> [!NOTE]
+>
+> **Skills are NOT tools.** This is the most common point of confusion.
+>
+> * **Skills** inject *instructions and context* into the agent's prompt. They tell the agent *how to think* about a problem.
+> * **Tools** give the agent *callable functions* to take action (search, read files, call APIs).
+>
+> You often need **both**: skills for expertise, tools for action. They are configured independently and complement each other.
 
 ***
 
@@ -181,9 +181,9 @@ agent = Agent(
 
 Skills have a full lifecycle managed by the CLI: **create them with `crewai create skill`, publish them with `crewai skill publish`** — hand-rolling directories works for local experiments, but the CLI is the intended workflow and keeps your skill layout and frontmatter valid.
 
-<Note>
-  `crewai skill create` is deprecated and still works with a warning. Use `crewai create skill` instead.
-</Note>
+> [!NOTE]
+>
+> `crewai skill create` is deprecated and still works with a warning. Use `crewai create skill` instead.
 
 ### Create
 
@@ -217,9 +217,9 @@ Install a published skill by its `@org-uuid/name` reference:
 crewai skill install @your-org-uuid/code-review
 ```
 
-<Note>
-  Use your organization's **UUID**, not its name — organization names are not unique, so a name can resolve to the wrong organization and the install fails with a "not found" error. Run `crewai org list` to see the UUID (the `ID` column) of every organization you belong to.
-</Note>
+> [!NOTE]
+>
+> Use your organization's **UUID**, not its name — organization names are not unique, so a name can resolve to the wrong organization and the install fails with a "not found" error. Run `crewai org list` to see the UUID (the `ID` column) of every organization you belong to.
 
 Inside a crew project the skill lands in `./skills/{name}/`; outside a project it goes to the shared cache at `~/.crewai/skills/{org-uuid}/{name}/`.
 
@@ -256,11 +256,11 @@ its frontmatter; a project-local copy under `skills/` has no such record, so it
 is matched on `metadata.version` in its `SKILL.md` frontmatter. Pinning an
 unpublished version fails rather than falling back to the latest.
 
-<Note>
-  Agents from the **Agent Repository** are pinned automatically: the repository
-  records a version alongside each skill it assigns, and the runtime applies those
-  pins when it loads the agent.
-</Note>
+> [!NOTE]
+>
+> Agents from the **Agent Repository** are pinned automatically: the repository
+> records a version alongside each skill it assigns, and the runtime applies those
+> pins when it loads the agent.
 
 ### List
 
@@ -401,24 +401,22 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 
 ## Common Questions
 
-<AccordionGroup>
-  <Accordion title="Do I need to set skills AND tools?">
-    It depends on your use case. Skills and tools are **independent** — you can use either, both, or neither.
+> **Do I need to set skills AND tools?**
+>
+> It depends on your use case. Skills and tools are **independent** — you can use either, both, or neither.
+>
+> * **Skills alone**: When the agent needs expertise but no external actions (e.g., writing with style guidelines)
+> * **Tools alone**: When the agent needs actions but no special methodology (e.g., simple web search)
+> * **Both**: When the agent needs expertise AND actions (e.g., security audit with specific checklists AND ability to scan code)
 
-    * **Skills alone**: When the agent needs expertise but no external actions (e.g., writing with style guidelines)
-    * **Tools alone**: When the agent needs actions but no special methodology (e.g., simple web search)
-    * **Both**: When the agent needs expertise AND actions (e.g., security audit with specific checklists AND ability to scan code)
-  </Accordion>
+> **Do skills automatically provide tools?**
+>
+> **No.** The `allowed-tools` field in SKILL.md is experimental metadata only — it does not provision or inject any tools. You must always set tools separately via `tools=[]`, `mcps=[]`, or `apps=[]`.
 
-  <Accordion title="Do skills automatically provide tools?">
-    **No.** The `allowed-tools` field in SKILL.md is experimental metadata only — it does not provision or inject any tools. You must always set tools separately via `tools=[]`, `mcps=[]`, or `apps=[]`.
-  </Accordion>
+> **What happens if I set the same skill on both an agent and its crew?**
+>
+> The agent-level skill takes priority. Skills are deduplicated by name — the agent's skills are processed first, so if the same skill name appears at both levels, the agent's version is used.
 
-  <Accordion title="What happens if I set the same skill on both an agent and its crew?">
-    The agent-level skill takes priority. Skills are deduplicated by name — the agent's skills are processed first, so if the same skill name appears at both levels, the agent's version is used.
-  </Accordion>
-
-  <Accordion title="How large can a SKILL.md body be?">
-    There's a soft warning at 50,000 characters, but no hard limit. Keep skills focused and concise for best results — large prompt injections can dilute the agent's attention.
-  </Accordion>
-</AccordionGroup>
+> **How large can a SKILL.md body be?**
+>
+> There's a soft warning at 50,000 characters, but no hard limit. Keep skills focused and concise for best results — large prompt injections can dilute the agent's attention.

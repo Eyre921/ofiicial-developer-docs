@@ -87,6 +87,6 @@ crew = Crew(
 )
 ```
 
-<Note>
-  Either `manager_agent` or `manager_llm` must be set when using the hierarchical process.
-</Note>
+> [!NOTE]
+>
+> Either `manager_agent` or `manager_llm` must be set when using the hierarchical process.

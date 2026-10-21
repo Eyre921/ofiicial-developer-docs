@@ -138,65 +138,64 @@ Please refer to the [Speech-to-text API](/docs/api-reference/speech-to-text/v-1-
 
 If the request included a [`transcript_edit`](/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing) instruction, the `transcription` object also contains an `edited_transcript` field with the edited text.
 
+If the transcription fails, your endpoint receives a `webhook_error` event instead. It has no `data` object: it carries a top-level `request_id` (the same id returned when the request was accepted), an `error_message` and the request's `webhook_metadata`.
+
 ## Implementing your webhook endpoint
 
 Here's an example of how to implement a webhook endpoint to handle incoming notifications:
 
 ```javascript
-import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
-import 'dotenv/config';
-import express from 'express';
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import "dotenv/config";
+import express from "express";
 
 const elevenlabs = new ElevenLabsClient();
 
 const app = express();
-app.use(express.json());
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
-app.post('/webhook/speech-to-text', (req, res) => {
+// The raw body is required: verification runs over the exact bytes sent.
+app.post("/webhook/speech-to-text", express.raw({ type: "application/json" }), async (req, res) => {
+  const signature = req.headers["elevenlabs-signature"];
+
+  let event;
   try {
-    const signature = req.headers['elevenlabs-signature'];
-    const payload = JSON.stringify(req.body);
-    let event;
-
-    try {
-      // Verify the webhook signature.
-      event = await elevenlabs.webhooks.constructEvent(payload, signature, WEBHOOK_SECRET);
-    } catch (error) {
-      return res.status(401).json({ error: 'Invalid signature' });
-    }
-
-    if (event.type === 'speech_to_text.completed') {
-      const { requestId, status, text, language_code } = event.data;
-
-      console.log(`Transcription ${requestId} completed`);
-      console.log(`Language: ${language_code}`);
-      console.log(`Text: ${text}`);
-
-      processTranscription(requestId, text, language_code);
-    } else if (status === 'failed') {
-      console.error(`Transcription ${requestId} failed`);
-      handleTranscriptionError(requestId);
-    }
-
-    res.status(200).json({ received: true });
+    event = await elevenlabs.webhooks.constructEvent(
+      req.body.toString(),
+      signature,
+      WEBHOOK_SECRET
+    );
   } catch (error) {
-    console.error('Webhook error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(401).json({ error: "Invalid signature" });
   }
+
+  if (event.type === "speech_to_text_transcription") {
+    const { request_id, transcription } = event.data;
+
+    console.log(`Transcription ${request_id} completed`);
+    console.log(`Language: ${transcription.language_code}`);
+    console.log(`Text: ${transcription.text}`);
+
+    processTranscription(request_id, transcription);
+  } else if (event.type === "webhook_error") {
+    console.error(`Transcription ${event.request_id} failed: ${event.error_message}`);
+    handleTranscriptionError(event.request_id, event.webhook_metadata, event.error_message);
+  }
+
+  res.status(200).json({ received: true });
 });
 
-async function processTranscription(requestId, text, language) {
-  console.log('Processing completed transcription...');
+async function processTranscription(requestId, transcription) {
+  console.log("Processing completed transcription...");
 }
 
-async function handleTranscriptionError(requestId) {
-  console.log('Handling transcription error...');
+async function handleTranscriptionError(requestId, webhookMetadata, errorMessage) {
+  console.log("Handling transcription error...");
 }
 
 app.listen(3000, () => {
-  console.log('Webhook server listening on port 3000');
+  console.log("Webhook server listening on port 3000");
 });
 ```
 
@@ -228,11 +227,15 @@ app.use("/webhook", webhookLimiter);
 
 ### Failure responses
 
-Return appropriate HTTP status codes:
+Return a `2xx` status code to acknowledge the webhook.
 
-* `200-299`: Success - webhook processed successfully
-* `400-499`: Client error - webhook will not be retried
-* `500-599`: Server error - webhook will be retried
+By default, Speech to Text transcription webhooks are delivered once. Every non-`2xx` response counts as a failed delivery, and repeated failures [auto-disable the webhook](/docs/eleven-api/resources/webhooks#auto-disable-behavior).
+
+If you turn on retries for the webhook, failed deliveries (`5xx`, `408`, `429` or connection errors) are retried up to 5 more times, roughly 30 seconds, 2 minutes, 8 minutes, 30 minutes and 30 minutes after the previous attempt. Other `4xx` responses are not retried. Every attempt for the same event carries the same `ElevenLabs-Webhook-Delivery-Id` header, so your handler can ignore duplicates.
+
+Requests made with `enable_logging` set to `false` (zero retention mode) get up to 2 quick retries, 5 seconds and 30 seconds after the previous attempt, when retries are turned on. The transcript is never stored.
+
+If a delivery still fails, fetch the result with [Get transcript](/docs/api-reference/speech-to-text/get) using the `transcription_id` returned when the request was accepted. Transcripts are not stored for requests made with `enable_logging` set to `false`.
 
 ## Testing webhooks
 

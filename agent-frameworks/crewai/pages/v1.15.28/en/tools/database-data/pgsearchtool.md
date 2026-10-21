@@ -8,10 +8,10 @@ The `PGSearchTool` is designed to search PostgreSQL databases and return the mos
 
 ## Overview
 
-<Note>
-  The PGSearchTool is currently under development. This document outlines the intended functionality and interface.
-  As development progresses, please be aware that some features may not be available or could change.
-</Note>
+> [!NOTE]
+>
+> The PGSearchTool is currently under development. This document outlines the intended functionality and interface.
+> As development progresses, please be aware that some features may not be available or could change.
 
 ## Description
 
@@ -28,9 +28,9 @@ The `crewai_tools` package, which will include the PGSearchTool upon its release
 pip install 'crewai[tools]'
 ```
 
-<Note>
-  The PGSearchTool is not yet available in the current version of the `crewai_tools` package. This installation command will be updated once the tool is released.
-</Note>
+> [!NOTE]
+>
+> The PGSearchTool is not yet available in the current version of the `crewai_tools` package. This installation command will be updated once the tool is released.
 
 ## Example Usage
 

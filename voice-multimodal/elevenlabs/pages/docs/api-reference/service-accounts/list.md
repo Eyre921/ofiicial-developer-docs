@@ -142,95 +142,82 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 
 ## Examples
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "service-accounts": [
     {
-      "service_account_user_id": "sa_3f8a2b1c9d4e5f6a7b8c9d0e",
-      "name": "Production TTS Service Account",
+      "service_account_user_id": "string",
+      "name": "string",
       "api-keys": [
         {
-          "name": "Production API Key",
-          "hint": "sk_...a3f2",
-          "key_id": "key_7c4d2e1f8a9b3c5d6e7f8a9b",
-          "service_account_user_id": "sa_3f8a2b1c9d4e5f6a7b8c9d0e",
-          "hashed_xi_api_key": "a3f2c1d4e5b6a7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
-          "created_at_unix": 1710505200,
+          "name": "string",
+          "hint": "string",
+          "key_id": "string",
+          "service_account_user_id": "string",
+          "hashed_xi_api_key": "string",
+          "created_at_unix": 1,
           "is_disabled": false,
           "permissions": [
-            "text_to_speech",
-            "voices_read",
-            "speech_history_read"
+            "text_to_speech"
           ],
-          "disable_reason": null,
-          "character_limit": 500000,
-          "character_count": 124350,
+          "disable_reason": "trial_ended",
+          "character_limit": 1,
+          "character_count": 1,
           "allowed_ips": [
-            "203.0.113.42",
-            "198.51.100.15"
+            "string"
           ],
-          "third_party_disable_allowed": false,
+          "third_party_disable_allowed": true,
           "platform_limits": {
             "credits": {
-              "limit": 500000,
-              "usage": 124350
+              "limit": 1,
+              "usage": 0
             },
             "pvc": {
-              "limit": 5
+              "limit": 1
             },
             "concurrency": {
-              "limit": 10
+              "limit": 1
             },
             "dubbing_concurrency": {
-              "limit": 3
+              "limit": 1
             },
             "music_concurrency": {
-              "limit": 2
+              "limit": 1
             }
           }
         }
       ],
-      "created_at_unix": 1710505200,
+      "created_at_unix": 1,
       "default_sharing_groups": [
         {
           "group": {
-            "name": "Engineering Team",
-            "id": "grp_1a2b3c4d5e6f7a8b9c0d1e2f",
+            "name": "string",
+            "id": "string",
             "members": [
-              "user_4a5b6c7d8e9f0a1b2c3d4e5f",
-              "user_9f8e7d6c5b4a3f2e1d0c9b8a"
+              "string"
             ],
             "permissions": [
-              "text_to_speech",
-              "voices_read",
-              "speech_history_read",
-              "projects_read"
+              "text_to_speech"
             ],
-            "group_usage_limit": 1000000,
-            "group_pvc_limit": 10,
-            "group_concurrency_limit": 20,
-            "group_dubbing_concurrency_limit": 5,
-            "group_music_concurrency_limit": 4,
-            "character_count": 348200,
+            "group_usage_limit": 1,
+            "group_pvc_limit": 1,
+            "group_concurrency_limit": 1,
+            "group_dubbing_concurrency_limit": 1,
+            "group_music_concurrency_limit": 1,
+            "character_count": 1,
             "is_scim_synced": false,
             "scim_group": {
-              "scim_external_id": "scim_ext_7f3a2b1c9d4e5f6a",
-              "display_name": "Engineering Team",
-              "created_at_unix": 1709200000,
-              "updated_at_unix": 1710505200,
-              "seat_type": "workspace_member"
+              "scim_external_id": "string",
+              "display_name": "string",
+              "created_at_unix": 1,
+              "updated_at_unix": 1,
+              "seat_type": "workspace_admin"
             },
             "scim_frozen": false
           },
-          "permission_level": "editor"
+          "permission_level": "admin"
         }
       ]
     }
@@ -245,17 +232,14 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/service-accounts"
 
-payload = {}
-headers = {"Content-Type": "application/json"}
-
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/service-accounts';
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: '{}'};
+const options = {method: 'GET'};
 
 try {
   const response = await fetch(url, options);
@@ -271,7 +255,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -280,11 +263,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/service-accounts"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
-
-	req.Header.Add("Content-Type", "application/json")
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -307,8 +286,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -319,8 +296,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/service-accounts")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -330,12 +305,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts', [
-  'body' => '{}',
-  'headers' => [
-    'Content-Type' => 'application/json',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/service-accounts');
 
 echo $response->getBody();
 ```
@@ -345,25 +315,16 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/service-accounts");
 var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["Content-Type": "application/json"]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/service-accounts")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

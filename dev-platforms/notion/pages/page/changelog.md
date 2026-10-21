@@ -10,6 +10,10 @@ path: page/changelog
 
 [Create a database](/reference/create-database), [Update a database](/reference/update-database), and `create_database` on [Create a view](/reference/create-view) now accept `show_data_source_title`. It controls the **Show data source title** setting in the Notion app, which shows or hides the title above a database's views. Database objects now include the current value. The `notion-create-view` MCP tool also accepts `show_data_source_title` when it adds a linked view to a page. See [Creating a linked database view](/guides/data-apis/working-with-views#creating-a-linked-database-view).
 
+### Separate Notion and connected-source search in Notion MCP
+
+`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+
 **October 16, 2026**
 
 ### Partial `update_content` edits return warnings

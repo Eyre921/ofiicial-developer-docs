@@ -17,25 +17,25 @@ In the CrewAI framework, an `Agent` is an autonomous unit that can:
 * Maintain memory of interactions
 * Delegate tasks when allowed
 
-<Tip>
-  Think of an agent as a specialized team member with specific skills,
-  expertise, and responsibilities. For example, a `Researcher` agent might excel
-  at gathering and analyzing information, while a `Writer` agent might be better
-  at creating content.
-</Tip>
+> [!TIP]
+>
+> Think of an agent as a specialized team member with specific skills,
+> expertise, and responsibilities. For example, a `Researcher` agent might excel
+> at gathering and analyzing information, while a `Writer` agent might be better
+> at creating content.
 
-<Note type="info" title="Enterprise Enhancement: Visual Agent Builder">
-  CrewAI AMP includes a Visual Agent Builder that simplifies agent creation and configuration without writing code. Design your agents visually and test them in real-time.
-
-  <img alt="Visual Agent Builder Screenshot" />
-
-  The Visual Agent Builder enables:
-
-  * Intuitive agent configuration with form-based interfaces
-  * Real-time testing and validation
-  * Template library with pre-configured agent types
-  * Easy customization of agent attributes and behaviors
-</Note>
+> [!NOTE]
+>
+> CrewAI AMP includes a Visual Agent Builder that simplifies agent creation and configuration without writing code. Design your agents visually and test them in real-time.
+>
+> ![Visual Agent Builder Screenshot](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/enterprise/crew-studio-interface.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=c4f5428b111816273b3b53d9cef14fad)
+>
+> The Visual Agent Builder enables:
+>
+> * Intuitive agent configuration with form-based interfaces
+> * Real-time testing and validation
+> * Template library with pre-configured agent types
+> * Easy customization of agent attributes and behaviors
 
 ## Agent Attributes
 
@@ -80,9 +80,9 @@ New projects created with `crewai create crew <name>` use JSON-first configurati
 
 After creating your CrewAI project as outlined in the [Installation](/en/installation) section, edit the generated files in `agents/`.
 
-<Note>
-  Use `{placeholder}` values in `role`, `goal`, or `backstory`. Put defaults in `crew.jsonc` under `inputs`; `crewai run` prompts for any missing values.
-</Note>
+> [!NOTE]
+>
+> Use `{placeholder}` values in `role`, `goal`, or `backstory`. Put defaults in `crew.jsonc` under `inputs`; `crewai run` prompts for any missing values.
 
 Here's an example `agents/researcher.jsonc` file:
 
@@ -123,9 +123,9 @@ Then include that agent from `crew.jsonc`:
 
 Agent files support any public `Agent` field. Common fields include `role`, `goal`, `backstory`, `llm`, `tools`, `function_calling_llm`, `guardrail`, `step_callback`, and `settings`. Behavior options such as `verbose`, `allow_delegation`, `max_iter`, `max_rpm`, `memory`, `cache`, `planning_config`, and `use_system_prompt` can be placed at the top level or under `settings`; values in `settings` take precedence.
 
-<Note>
-  JSONC supports comments and trailing commas. If both `agents/<name>.jsonc` and `agents/<name>.json` exist, CrewAI uses the JSONC file.
-</Note>
+> [!NOTE]
+>
+> JSONC supports comments and trailing commas. If both `agents/<name>.jsonc` and `agents/<name>.json` exist, CrewAI uses the JSONC file.
 
 ### Classic YAML Configuration
 
@@ -293,9 +293,9 @@ multimodal_agent = Agent(
 
 #### Code Execution
 
-<Warning>
-  `allow_code_execution` and `code_execution_mode` are deprecated. `CodeInterpreterTool` has been removed from `crewai-tools`. Use a dedicated sandbox service such as [E2B](https://e2b.dev) or [Modal](https://modal.com) for secure code execution.
-</Warning>
+> [!WARNING]
+>
+> `allow_code_execution` and `code_execution_mode` are deprecated. `CodeInterpreterTool` has been removed from `crewai-tools`. Use a dedicated sandbox service such as [E2B](https://e2b.dev) or [Modal](https://modal.com) for secure code execution.
 
 * `allow_code_execution` *(deprecated)*: Previously enabled built-in code execution via `CodeInterpreterTool`.
 * `code_execution_mode` *(deprecated)*: Previously controlled execution mode (`"safe"` for Docker, `"unsafe"` for direct execution).
@@ -312,17 +312,17 @@ multimodal_agent = Agent(
 * `prompt_template`: Structures input format
 * `response_template`: Formats agent responses
 
-<Note>
-  When using custom templates, ensure that both `system_template` and
-  `prompt_template` are defined. The `response_template` is optional but
-  recommended for consistent output formatting.
-</Note>
+> [!NOTE]
+>
+> When using custom templates, ensure that both `system_template` and
+> `prompt_template` are defined. The `response_template` is optional but
+> recommended for consistent output formatting.
 
-<Note>
-  When using custom templates, you can use variables like `{role}`, `{goal}`,
-  and `{backstory}` in your templates. These will be automatically populated
-  during execution.
-</Note>
+> [!NOTE]
+>
+> When using custom templates, you can use variables like `{role}`, `{goal}`,
+> and `{backstory}` in your templates. These will be automatically populated
+> during execution.
 
 ## Agent Tools
 
@@ -365,10 +365,10 @@ analyst = Agent(
 )
 ```
 
-<Note>
-  When `memory` is enabled, the agent will maintain context across multiple
-  interactions, improving its ability to handle complex, multi-step tasks.
-</Note>
+> [!NOTE]
+>
+> When `memory` is enabled, the agent will maintain context across multiple
+> interactions, improving its ability to handle complex, multi-step tasks.
 
 ## Context Window Management
 
@@ -538,12 +538,12 @@ agent = Agent(
 )
 ```
 
-<Note>
-  The context window management feature works automatically in the background.
-  You don't need to call any special functions - just set
-  `respect_context_window` to your preferred behavior and CrewAI handles the
-  rest!
-</Note>
+> [!NOTE]
+>
+> The context window management feature works automatically in the background.
+> You don't need to call any special functions - just set
+> `respect_context_window` to your preferred behavior and CrewAI handles the
+> rest!
 
 ## Direct Agent Interaction with `kickoff()`
 
@@ -644,19 +644,19 @@ async def main():
 asyncio.run(main())
 ```
 
-<Note>
-  The `kickoff()` method uses a `LiteAgent` internally, which provides a simpler
-  execution flow while preserving all of the agent's configuration (role, goal,
-  backstory, tools, etc.).
-</Note>
+> [!NOTE]
+>
+> The `kickoff()` method uses a `LiteAgent` internally, which provides a simpler
+> execution flow while preserving all of the agent's configuration (role, goal,
+> backstory, tools, etc.).
 
 ## Important Considerations and Best Practices
 
 ### Security and Code Execution
 
-<Warning>
-  `allow_code_execution` and `code_execution_mode` are deprecated and `CodeInterpreterTool` has been removed. Use a dedicated sandbox service such as [E2B](https://e2b.dev) or [Modal](https://modal.com) for secure code execution.
-</Warning>
+> [!WARNING]
+>
+> `allow_code_execution` and `code_execution_mode` are deprecated and `CodeInterpreterTool` has been removed. Use a dedicated sandbox service such as [E2B](https://e2b.dev) or [Modal](https://modal.com) for secure code execution.
 
 ### Performance Optimization
 

@@ -74,17 +74,17 @@ except Exception as e:
 
 ```
 
-<Note>
-  Replace `"http://localhost:8000/sse"` with the actual URL of your SSE MCP server.
-</Note>
+> [!NOTE]
+>
+> Replace `"http://localhost:8000/sse"` with the actual URL of your SSE MCP server.
 
 ### 2. Manual Connection Lifecycle
 
 If you need finer-grained control, you can manage the `MCPServerAdapter` connection lifecycle manually.
 
-<Info>
-  You **MUST** call `mcp_server_adapter.stop()` to ensure the connection is closed and resources are released. Using a `try...finally` block is highly recommended.
-</Info>
+> [!NOTE]
+>
+> You **MUST** call `mcp_server_adapter.stop()` to ensure the connection is closed and resources are released. Using a `try...finally` block is highly recommended.
 
 ```python theme={null}
 from crewai import Agent, Task, Crew, Process
@@ -140,9 +140,9 @@ finally:
 
 ## Security Considerations for SSE
 
-<Warning>
-  **DNS Rebinding Attacks**: SSE transports can be vulnerable to DNS rebinding attacks if the MCP server is not properly secured. This could allow malicious websites to interact with local or intranet-based MCP servers.
-</Warning>
+> [!WARNING]
+>
+> **DNS Rebinding Attacks**: SSE transports can be vulnerable to DNS rebinding attacks if the MCP server is not properly secured. This could allow malicious websites to interact with local or intranet-based MCP servers.
 
 To mitigate this risk:
 

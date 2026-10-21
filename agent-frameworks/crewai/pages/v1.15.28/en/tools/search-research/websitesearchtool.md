@@ -8,9 +8,9 @@ The `WebsiteSearchTool` is designed to perform a RAG (Retrieval-Augmented Genera
 
 # `WebsiteSearchTool`
 
-<Note>
-  The WebsiteSearchTool is currently in an experimental phase. We are actively working on incorporating this tool into our suite of offerings and will update the documentation accordingly.
-</Note>
+> [!NOTE]
+>
+> The WebsiteSearchTool is currently in an experimental phase. We are actively working on incorporating this tool into our suite of offerings and will update the documentation accordingly.
 
 ## Description
 

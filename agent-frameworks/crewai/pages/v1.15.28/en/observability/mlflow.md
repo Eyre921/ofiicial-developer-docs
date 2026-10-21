@@ -13,7 +13,7 @@ Quickly start monitoring your Agents with MLflow.
 It provides a tracing feature that enhances LLM observability in your Generative AI applications by capturing detailed information about the execution of your application’s services.
 Tracing provides a way to record the inputs, outputs, and metadata associated with each intermediate step of a request, enabling you to easily pinpoint the source of bugs and unexpected behaviors.
 
-<img alt="Overview of MLflow crewAI tracing usage" />
+![Overview of MLflow crewAI tracing usage](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/mlflow-tracing.gif?s=be88ff36aec776c005102164d804322a)
 
 ### Features
 
@@ -27,186 +27,182 @@ Tracing provides a way to record the inputs, outputs, and metadata associated wi
 
 ## Setup Instructions
 
-<Steps>
-  <Step title="Install MLflow package">
-    ```shell theme={null}
-    # The crewAI integration is available in mlflow>=2.19.0
-    pip install mlflow
-    ```
-  </Step>
+**1. Install MLflow package**
 
-  <Step title="Start MFflow tracking server">
-    ```shell theme={null}
-    # This process is optional, but it is recommended to use MLflow tracking server for better visualization and broader features.
-    mlflow server
-    ```
-  </Step>
+```shell theme={null}
+# The crewAI integration is available in mlflow>=2.19.0
+pip install mlflow
+```
 
-  <Step title="Initialize MLflow in Your Application">
-    Add the following two lines to your application code:
+**2. Start MFflow tracking server**
 
-    ```python theme={null}
-    import mlflow
+```shell theme={null}
+# This process is optional, but it is recommended to use MLflow tracking server for better visualization and broader features.
+mlflow server
+```
 
-    mlflow.crewai.autolog()
+**3. Initialize MLflow in Your Application**
 
-    # Optional: Set a tracking URI and an experiment name if you have a tracking server
-    mlflow.set_tracking_uri("http://localhost:5000")
-    mlflow.set_experiment("CrewAI")
-    ```
+Add the following two lines to your application code:
 
-    Example Usage for tracing CrewAI Agents:
+```python theme={null}
+import mlflow
 
-    ```python theme={null}
-    from crewai import Agent, Crew, Task
-    from crewai.knowledge.source.string_knowledge_source import StringKnowledgeSource
-    from crewai_tools import SerperDevTool, WebsiteSearchTool
+mlflow.crewai.autolog()
 
-    from textwrap import dedent
+# Optional: Set a tracking URI and an experiment name if you have a tracking server
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("CrewAI")
+```
 
-    content = "Users name is John. He is 30 years old and lives in San Francisco."
-    string_source = StringKnowledgeSource(
-        content=content, metadata={"preference": "personal"}
-    )
+Example Usage for tracing CrewAI Agents:
 
-    search_tool = WebsiteSearchTool()
+```python theme={null}
+from crewai import Agent, Crew, Task
+from crewai.knowledge.source.string_knowledge_source import StringKnowledgeSource
+from crewai_tools import SerperDevTool, WebsiteSearchTool
 
+from textwrap import dedent
 
-    class TripAgents:
-        def city_selection_agent(self):
-            return Agent(
-                role="City Selection Expert",
-                goal="Select the best city based on weather, season, and prices",
-                backstory="An expert in analyzing travel data to pick ideal destinations",
-                tools=[
-                    search_tool,
-                ],
-                verbose=True,
-            )
+content = "Users name is John. He is 30 years old and lives in San Francisco."
+string_source = StringKnowledgeSource(
+    content=content, metadata={"preference": "personal"}
+)
 
-        def local_expert(self):
-            return Agent(
-                role="Local Expert at this city",
-                goal="Provide the BEST insights about the selected city",
-                backstory="""A knowledgeable local guide with extensive information
-            about the city, it's attractions and customs""",
-                tools=[search_tool],
-                verbose=True,
-            )
+search_tool = WebsiteSearchTool()
 
 
-    class TripTasks:
-        def identify_task(self, agent, origin, cities, interests, range):
-            return Task(
-                description=dedent(
-                    f"""
-                    Analyze and select the best city for the trip based
-                    on specific criteria such as weather patterns, seasonal
-                    events, and travel costs. This task involves comparing
-                    multiple cities, considering factors like current weather
-                    conditions, upcoming cultural or seasonal events, and
-                    overall travel expenses.
-                    Your final answer must be a detailed
-                    report on the chosen city, and everything you found out
-                    about it, including the actual flight costs, weather
-                    forecast and attractions.
+class TripAgents:
+    def city_selection_agent(self):
+        return Agent(
+            role="City Selection Expert",
+            goal="Select the best city based on weather, season, and prices",
+            backstory="An expert in analyzing travel data to pick ideal destinations",
+            tools=[
+                search_tool,
+            ],
+            verbose=True,
+        )
 
-                    Traveling from: {origin}
-                    City Options: {cities}
-                    Trip Date: {range}
-                    Traveler Interests: {interests}
-                """
-                ),
-                agent=agent,
-                expected_output="Detailed report on the chosen city including flight costs, weather forecast, and attractions",
-            )
-
-        def gather_task(self, agent, origin, interests, range):
-            return Task(
-                description=dedent(
-                    f"""
-                    As a local expert on this city you must compile an
-                    in-depth guide for someone traveling there and wanting
-                    to have THE BEST trip ever!
-                    Gather information about key attractions, local customs,
-                    special events, and daily activity recommendations.
-                    Find the best spots to go to, the kind of place only a
-                    local would know.
-                    This guide should provide a thorough overview of what
-                    the city has to offer, including hidden gems, cultural
-                    hotspots, must-visit landmarks, weather forecasts, and
-                    high level costs.
-                    The final answer must be a comprehensive city guide,
-                    rich in cultural insights and practical tips,
-                    tailored to enhance the travel experience.
-
-                    Trip Date: {range}
-                    Traveling from: {origin}
-                    Traveler Interests: {interests}
-                """
-                ),
-                agent=agent,
-                expected_output="Comprehensive city guide including hidden gems, cultural hotspots, and practical travel tips",
-            )
+    def local_expert(self):
+        return Agent(
+            role="Local Expert at this city",
+            goal="Provide the BEST insights about the selected city",
+            backstory="""A knowledgeable local guide with extensive information
+        about the city, it's attractions and customs""",
+            tools=[search_tool],
+            verbose=True,
+        )
 
 
-    class TripCrew:
-        def __init__(self, origin, cities, date_range, interests):
-            self.cities = cities
-            self.origin = origin
-            self.interests = interests
-            self.date_range = date_range
+class TripTasks:
+    def identify_task(self, agent, origin, cities, interests, range):
+        return Task(
+            description=dedent(
+                f"""
+                Analyze and select the best city for the trip based
+                on specific criteria such as weather patterns, seasonal
+                events, and travel costs. This task involves comparing
+                multiple cities, considering factors like current weather
+                conditions, upcoming cultural or seasonal events, and
+                overall travel expenses.
+                Your final answer must be a detailed
+                report on the chosen city, and everything you found out
+                about it, including the actual flight costs, weather
+                forecast and attractions.
 
-        def run(self):
-            agents = TripAgents()
-            tasks = TripTasks()
+                Traveling from: {origin}
+                City Options: {cities}
+                Trip Date: {range}
+                Traveler Interests: {interests}
+            """
+            ),
+            agent=agent,
+            expected_output="Detailed report on the chosen city including flight costs, weather forecast, and attractions",
+        )
 
-            city_selector_agent = agents.city_selection_agent()
-            local_expert_agent = agents.local_expert()
+    def gather_task(self, agent, origin, interests, range):
+        return Task(
+            description=dedent(
+                f"""
+                As a local expert on this city you must compile an
+                in-depth guide for someone traveling there and wanting
+                to have THE BEST trip ever!
+                Gather information about key attractions, local customs,
+                special events, and daily activity recommendations.
+                Find the best spots to go to, the kind of place only a
+                local would know.
+                This guide should provide a thorough overview of what
+                the city has to offer, including hidden gems, cultural
+                hotspots, must-visit landmarks, weather forecasts, and
+                high level costs.
+                The final answer must be a comprehensive city guide,
+                rich in cultural insights and practical tips,
+                tailored to enhance the travel experience.
 
-            identify_task = tasks.identify_task(
-                city_selector_agent,
-                self.origin,
-                self.cities,
-                self.interests,
-                self.date_range,
-            )
-            gather_task = tasks.gather_task(
-                local_expert_agent, self.origin, self.interests, self.date_range
-            )
-
-            crew = Crew(
-                agents=[city_selector_agent, local_expert_agent],
-                tasks=[identify_task, gather_task],
-                verbose=True,
-                memory=True,
-                knowledge={
-                    "sources": [string_source],
-                    "metadata": {"preference": "personal"},
-                },
-            )
-
-            result = crew.kickoff()
-            return result
+                Trip Date: {range}
+                Traveling from: {origin}
+                Traveler Interests: {interests}
+            """
+            ),
+            agent=agent,
+            expected_output="Comprehensive city guide including hidden gems, cultural hotspots, and practical travel tips",
+        )
 
 
-    trip_crew = TripCrew("California", "Tokyo", "Dec 12 - Dec 20", "sports")
-    result = trip_crew.run()
+class TripCrew:
+    def __init__(self, origin, cities, date_range, interests):
+        self.cities = cities
+        self.origin = origin
+        self.interests = interests
+        self.date_range = date_range
 
-    print(result)
-    ```
+    def run(self):
+        agents = TripAgents()
+        tasks = TripTasks()
 
-    Refer to [MLflow Tracing Documentation](https://mlflow.org/docs/latest/llms/tracing/index.html) for more configurations and use cases.
-  </Step>
+        city_selector_agent = agents.city_selection_agent()
+        local_expert_agent = agents.local_expert()
 
-  <Step title="Visualize Activities of Agents">
-    Now traces for your crewAI agents are captured by MLflow.
-    Let's visit MLflow tracking server to view the traces and get insights into your Agents.
+        identify_task = tasks.identify_task(
+            city_selector_agent,
+            self.origin,
+            self.cities,
+            self.interests,
+            self.date_range,
+        )
+        gather_task = tasks.gather_task(
+            local_expert_agent, self.origin, self.interests, self.date_range
+        )
 
-    Open `127.0.0.1:5000` on your browser to visit MLflow tracking server.
+        crew = Crew(
+            agents=[city_selector_agent, local_expert_agent],
+            tasks=[identify_task, gather_task],
+            verbose=True,
+            memory=True,
+            knowledge={
+                "sources": [string_source],
+                "metadata": {"preference": "personal"},
+            },
+        )
 
-    <Frame>
-      <img alt="MLflow tracing example with crewai" />
-    </Frame>
-  </Step>
-</Steps>
+        result = crew.kickoff()
+        return result
+
+
+trip_crew = TripCrew("California", "Tokyo", "Dec 12 - Dec 20", "sports")
+result = trip_crew.run()
+
+print(result)
+```
+
+Refer to [MLflow Tracing Documentation](https://mlflow.org/docs/latest/llms/tracing/index.html) for more configurations and use cases.
+
+**4. Visualize Activities of Agents**
+
+Now traces for your crewAI agents are captured by MLflow.
+Let's visit MLflow tracking server to view the traces and get insights into your Agents.
+
+Open `127.0.0.1:5000` on your browser to visit MLflow tracking server.
+
+![MLflow tracing example with crewai](https://mintcdn.com/crewai/qVjgZHKAyEOgSSUS/images/mlflow1.png?fit=max\&auto=format\&n=qVjgZHKAyEOgSSUS\&q=85\&s=0685aeb79319ad21ff842053ce5303c9)

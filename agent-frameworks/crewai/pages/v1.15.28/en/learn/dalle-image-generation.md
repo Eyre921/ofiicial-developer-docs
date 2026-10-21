@@ -15,26 +15,24 @@ CrewAI supports integration with OpenAI's DALL-E, allowing your AI agents to gen
 
 ## Setting Up the DALL-E Tool
 
-<Steps>
-  <Step title="Import the DALL-E tool">
-    ```python theme={null}
-    from crewai_tools import DallETool
-    ```
-  </Step>
+**1. Import the DALL-E tool**
 
-  <Step title="Add the DALL-E tool to your agent configuration">
-    ```python theme={null}
-    @agent
-    def researcher(self) -> Agent:
-        return Agent(
-            config=self.agents_config['researcher'],
-            tools=[SerperDevTool(), DallETool()],  # Add DallETool to the list of tools
-            allow_delegation=False,
-            verbose=True
-        )
-    ```
-  </Step>
-</Steps>
+```python theme={null}
+from crewai_tools import DallETool
+```
+
+**2. Add the DALL-E tool to your agent configuration**
+
+```python theme={null}
+@agent
+def researcher(self) -> Agent:
+    return Agent(
+        config=self.agents_config['researcher'],
+        tools=[SerperDevTool(), DallETool()],  # Add DallETool to the list of tools
+        allow_delegation=False,
+        verbose=True
+    )
+```
 
 ## Using the DALL-E Tool
 
@@ -58,9 +56,7 @@ backstory: >
 
 The agent with the DALL-E tool will be able to generate the image and provide a URL in its response. You can then download the image.
 
-<Frame>
-  <img alt="DALL-E Image" />
-</Frame>
+![DALL-E Image](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/enterprise/dall-e-image.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=7b6378a1ee0aad5d3941193c6802312c)
 
 ## Best Practices
 

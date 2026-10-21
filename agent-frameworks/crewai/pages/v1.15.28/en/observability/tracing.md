@@ -12,7 +12,7 @@ CrewAI provides built-in tracing capabilities that allow you to monitor and debu
 
 > **What is CrewAI Tracing?** CrewAI's built-in tracing provides comprehensive observability for your AI agents, including agent decisions, task execution timelines, tool usage, and LLM calls - all accessible through the [CrewAI AMP platform](https://app.crewai.com). Tracing is managed independently from [telemetry](/en/telemetry).
 
-<img alt="CrewAI Tracing Interface" />
+![CrewAI Tracing Interface](https://mintcdn.com/crewai/xsUWvx-8zGU3Skk0/images/crewai-tracing.png?fit=max\&auto=format\&n=xsUWvx-8zGU3Skk0\&q=85\&s=b7e95a8f56ed3c459699acf641b4ae5a)
 
 ## Prerequisites
 
@@ -154,7 +154,7 @@ result = flow.kickoff()
 Traces are uploaded only after a successful authenticated export or an explicitly approved anonymous upload. A run whose local buffer is discarded has no uploaded trace.
 For traces associated with your account, open the [Traces tab in the CrewAI AMP dashboard](https://app.crewai.com/crewai_plus/trace_batches) to view agent interactions, tool usage, and LLM calls.
 
-<img alt="CrewAI Tracing Interface" />
+![CrewAI Tracing Interface](https://mintcdn.com/crewai/iG0g1htk7RWkFuad/images/view-traces.png?fit=max\&auto=format\&n=iG0g1htk7RWkFuad\&q=85\&s=72981ddafcda030270c059f08b98db03)
 
 ### Alternative: Environment Variable Configuration
 

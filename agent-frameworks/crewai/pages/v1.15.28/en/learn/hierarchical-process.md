@@ -11,9 +11,9 @@ A comprehensive guide to understanding and applying the hierarchical process wit
 The hierarchical process in CrewAI introduces a structured approach to task management, simulating traditional organizational hierarchies for efficient task delegation and execution.
 This systematic workflow enhances project outcomes by ensuring tasks are handled with optimal efficiency and accuracy.
 
-<Tip>
-  The hierarchical process is designed to leverage advanced models like GPT-4, optimizing token usage while handling complex tasks with greater efficiency.
-</Tip>
+> [!TIP]
+>
+> The hierarchical process is designed to leverage advanced models like GPT-4, optimizing token usage while handling complex tasks with greater efficiency.
 
 ## Hierarchical Process Overview
 
@@ -38,15 +38,15 @@ automatically created by CrewAI or explicitly set by the user.
 To utilize the hierarchical process, it's essential to explicitly set the process attribute to `Process.hierarchical`, as the default behavior is `Process.sequential`.
 Define a crew with a designated manager and establish a clear chain of command.
 
-<Tip>
-  Assign tools at the agent level to facilitate task delegation and execution by the designated agents under the manager's guidance.
-  Tools can also be specified at the task level for precise control over tool availability during task execution.
-</Tip>
+> [!TIP]
+>
+> Assign tools at the agent level to facilitate task delegation and execution by the designated agents under the manager's guidance.
+> Tools can also be specified at the task level for precise control over tool availability during task execution.
 
-<Tip>
-  Configuring the `manager_llm` parameter is crucial for the hierarchical process.
-  The system requires a manager LLM to be set up for proper function, ensuring tailored decision-making.
-</Tip>
+> [!TIP]
+>
+> Configuring the `manager_llm` parameter is crucial for the hierarchical process.
+> The system requires a manager LLM to be set up for proper function, ensuring tailored decision-making.
 
 ```python Code theme={null}
 from crewai import Crew, Process, Agent
@@ -96,9 +96,9 @@ project_crew = Crew(
 )
 ```
 
-<Tip>
-  For more details on creating and customizing a manager agent, check out the [Custom Manager Agent documentation](/en/learn/custom-manager-agent).
-</Tip>
+> [!TIP]
+>
+> For more details on creating and customizing a manager agent, check out the [Custom Manager Agent documentation](/en/learn/custom-manager-agent).
 
 ### Workflow in Action
 

@@ -31,9 +31,9 @@ Check out the [original prompt templates in CrewAI's repository](https://github.
 
 ## Understanding Default System Instructions
 
-<Warning>
-  **Production Transparency Issue**: CrewAI automatically injects default instructions into your prompts that you might not be aware of. This section explains what's happening under the hood and how to gain full control.
-</Warning>
+> [!WARNING]
+>
+> **Production Transparency Issue**: CrewAI automatically injects default instructions into your prompts that you might not be aware of. This section explains what's happening under the hood and how to gain full control.
 
 When you define an agent with `role`, `goal`, and `backstory`, CrewAI automatically adds additional system instructions that control formatting and behavior. Understanding these default injections is crucial for production systems where you need full prompt transparency.
 
@@ -167,9 +167,9 @@ crew = Crew(
 )
 ```
 
-<Note>
-  `agent.i18n` is maintained only for backward compatibility and is deprecated. For runtime prompt customization, pass `prompt_file` to `Crew`. For programmatic access to prompt slices, use the i18n utility directly:
-</Note>
+> [!NOTE]
+>
+> `agent.i18n` is maintained only for backward compatibility and is deprecated. For runtime prompt customization, pass `prompt_file` to `Crew`. For programmatic access to prompt slices, use the i18n utility directly:
 
 ```python theme={null}
 from crewai.utilities.i18n import get_i18n
@@ -204,9 +204,9 @@ See our [Observability documentation](/en/observability/overview) for detailed i
 4. **Test with different LLMs** as default instructions may work differently across models
 5. **Document your prompt customizations** for team transparency
 
-<Tip>
-  The default instructions exist to ensure consistent agent behavior, but they can interfere with domain-specific requirements. Use the customization options above to maintain full control over your agent's behavior in production systems.
-</Tip>
+> [!TIP]
+>
+> The default instructions exist to ensure consistent agent behavior, but they can interfere with domain-specific requirements. Use the customization options above to maintain full control over your agent's behavior in production systems.
 
 ## Best Practices for Managing Prompt Files
 
@@ -333,6 +333,6 @@ Through this deeper configuration, you can exercise comprehensive, low-level con
 
 Low-level prompt customization in CrewAI opens the door to super custom, complex use cases. By establishing well-organized prompt files (or direct inline templates), you can accommodate various models, languages, and specialized domains. This level of flexibility ensures you can craft precisely the AI behavior you need, all while knowing CrewAI still provides reliable defaults when you don't override them.
 
-<Check>
-  You now have the foundation for advanced prompt customizations in CrewAI. Whether you're adapting for model-specific structures or domain-specific constraints, this low-level approach lets you shape agent interactions in highly specialized ways.
-</Check>
+> [!TIP]
+>
+> You now have the foundation for advanced prompt customizations in CrewAI. Whether you're adapting for model-specific structures or domain-specific constraints, this low-level approach lets you shape agent interactions in highly specialized ways.

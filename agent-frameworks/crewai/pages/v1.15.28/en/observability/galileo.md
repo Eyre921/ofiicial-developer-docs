@@ -32,7 +32,7 @@ how-to guide.
 
 > **Note** This tutorial assumes you have completed the [CrewAI quickstart](/en/quickstart).
 > If you want a completed comprehensive example, see the Galileo
-> [CrewAI sdk-example repo](https://github.com/rungalileo/sdk-examples/tree/main/python/agent/crew-ai).
+> [CrewAI sdk-example repo](https://github.com/rungalileo/sdk-examples/tree/main/python/agent/crewAI).
 
 ### Step 1: Install dependencies
 
@@ -92,7 +92,7 @@ crewai run
 
 Once your crew has finished, the traces will be flushed and appear in Galileo.
 
-<img alt="Galileo trace view" />
+![Galileo trace view](https://mintcdn.com/crewai/YIhP5X96D9ogvRZx/images/galileo-trace-veiw.png?fit=max\&auto=format\&n=YIhP5X96D9ogvRZx\&q=85\&s=2e787a9b1c503c5cbba9d0065514181e)
 
 ## Understanding the Galileo Integration
 

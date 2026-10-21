@@ -16,7 +16,7 @@ If you do not need any control over the build process for your site, we recommen
 
 If you want to use a build process other than Jekyll or you do not want a dedicated branch to hold your compiled static files, we recommend that you write a GitHub Actions workflow to publish your site. GitHub provides workflow templates for common publishing scenarios to help you write your workflow.
 
-> \[!WARNING]
+> [!WARNING]
 > GitHub Pages sites are publicly available on the internet, even if the repository for the site is private (if your plan or organization allows it). If you have sensitive data in your site's repository, you may want to remove the data before publishing. For more information, see [About repositories](/en/repositories/creating-and-managing-repositories/about-repositories#about-repository-visibility).
 
 ## Publishing from a branch
@@ -36,10 +36,10 @@ If you want to use a build process other than Jekyll or you do not want a dedica
 
 ### Troubleshooting publishing from a branch
 
-> \[!NOTE]
+> [!NOTE]
 > If your repository contains symbolic links, you will need to publish your site using a GitHub Actions workflow. For more information about GitHub Actions, see [GitHub Actions documentation](/en/actions).
 
-> \[!NOTE]
+> [!NOTE]
 >
 > * If you are publishing from a branch and your site has not published automatically, make sure someone with admin permissions and a verified email address has pushed to the publishing source.
 > * Commits pushed by a GitHub Actions workflow that uses the `GITHUB_TOKEN` do not trigger a GitHub Pages build.
@@ -78,7 +78,7 @@ When you configure your site to publish with GitHub Actions, GitHub will suggest
 
 The workflow templates use a deployment environment called `github-pages`. If your repository does not already include an environment called `github-pages`, the environment will be created automatically. We recommend that you add a deployment protection rule so that only the default branch can deploy to this environment. For more information, see [Managing environments for deployment](/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
-> \[!NOTE]
+> [!NOTE]
 > A `CNAME` file in your repository file does not automatically add or remove a custom domain. Instead, you must configure the custom domain through your repository settings or through the API. For more information, see [Managing a custom domain for your GitHub Pages site](/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain) and [REST API endpoints for GitHub Pages](/en/rest/pages#update-information-about-a-github-pages-site).
 
 ### Troubleshooting publishing with a custom GitHub Actions workflow

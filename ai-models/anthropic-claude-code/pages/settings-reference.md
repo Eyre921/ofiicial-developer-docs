@@ -6,21 +6,13 @@ path: settings-reference
 
 Complete reference for every Claude Code settings.json key: where each one goes, its type and default, and a paste-ready example, with an index of every key.
 
-<BackToIndex href="#all-settings" label="Back to index" />
+[Back to index](#all-settings)
 
 This reference page lists each key Claude Code reads from a settings file, plus the [short group of keys](#global-config-settings) it keeps in `~/.claude.json` instead. To pick a file, or check precedence, start with [Settings files and precedence](/docs/en/settings).
-
-<span />
-
-<span />
-
-<span />
 
 ## Settings index
 
 Every key below links to its entry. Scope lists the [files](/docs/en/settings#settings-files-and-who-they-affect) it can go in: `User` is `~/.claude/settings.json`, `Project` is `.claude/settings.json`, `Local` is `.claude/settings.local.json`, and `Managed` is [what your organization deploys](/docs/en/managed-settings). `Any file` means all four, and `Global config` means [`~/.claude.json`](#global-config-settings).
-
-<ReferenceFilter placeholder="Filter settings by key or purpose" />
 
 | Key | Description | Topic | Scope |
 | :- | :- | :- | :- |
@@ -586,10 +578,6 @@ This example adds two Bedrock deployments after the built-in lineup, under names
 }
 ```
 
-<span />
-
-<span />
-
 #### Fields for `modelPicker`
 
 The key takes two fields, one for the rows themselves and one for whether they replace the built-in lineup or add to it.
@@ -642,10 +630,6 @@ This example sets contracted rates for Sonnet 4.6 and then reduces every figure,
 Set `multiplier` above 1, up to 10, to mark every figure up. A markup requires Claude Code v2.1.271 or later. Earlier versions ignore a `multiplier` above 1 with a warning and keep the rest of the setting.
 
 For the steps, including how to confirm the rates are in effect, see [Report spend at your contracted rates](/docs/en/costs#report-spend-at-your-contracted-rates).
-
-<span />
-
-<span />
 
 #### Fields for `modelPricing`
 
@@ -741,7 +725,7 @@ For what each lifetime costs, see [Cache lifetime](/docs/en/prompt-caching#cache
 
 ### `showThinkingSummaries`
 
-See summaries of Claude's [extended thinking](/docs/en/model-config#extended-thinking) in interactive sessions. Set it if you want the full summaries when you expand thinking with `Ctrl+O`. When unset or `false`, the Anthropic API redacts thinking blocks and Claude Code shows a collapsed stub; third-party providers don't redact.
+See summaries of Claude's [extended thinking](/docs/en/model-config#extended-thinking) in interactive sessions. Set it if you want the full summaries when you expand thinking with `Ctrl+O`. When unset or `false`, the Anthropic API redacts thinking blocks and Claude Code shows a collapsed stub.
 
 * **Scope**: [`Any file`](#scopes)
 * **Type**: Boolean
@@ -996,8 +980,6 @@ List the tool uses that prompt you for confirmation even in a permission mode th
   }
 }
 ```
-
-<span />
 
 ### `permissions.deny`
 
@@ -1388,6 +1370,8 @@ Claude Code also removes a trailing `/**`, so `~/build/**` and `~/build` cover t
 * **`allowWrite` and `denyWrite`**: on macOS, wildcards work. On Linux and WSL2, the sandbox mounts concrete paths, so Claude Code skips an entry that contains `*`, `?`, or `[` once the trailing `/**` is removed, and that entry has no effect. Claude Code adds the paths from your `Edit` permission rules to these lists, so the same limit applies to them, and the **Config** tab of `/sandbox` warns about `Edit` and `Read` permission rules that contain wildcards.
 * **`denyRead` and `allowRead`**: wildcards work on every platform. On Linux and WSL2, Claude Code expands a read entry to the concrete paths it matches, which it doesn't do for the write lists.
 
+Braces match as ordinary characters in a name, so `~/data/{keys,tokens}` covers a directory literally named `{keys,tokens}`, not two alternatives. To cover `~/data/keys` and `~/data/tokens`, add each as its own entry.
+
 ### `sandbox.filesystem.allowWrite`
 
 Add paths where sandboxed commands can write, beyond the working directory, the per-user temp directory, and the directories you've added with `--add-dir`, `/add-dir`, or `permissions.additionalDirectories`. Use it when a subprocess such as `kubectl` or a build tool needs to write outside the project.
@@ -1726,18 +1710,6 @@ Paths use the same [prefixes](#sandbox-path-prefixes) as the `sandbox.filesystem
 
 `mask` substitution runs only through the sandbox proxy, so set [`sandbox.network.tlsTerminate`](#sandbox-network-tlsterminate), or [`allowPlaintextInject`](#sandbox-credentials-allowplaintextinject) for plain-HTTP test networks. `mask` applies to a single file, so list each credential file individually. Claude Code accepts but ignores the `mask` fields on a `deny` entry. [Mask credentials](/docs/en/sandboxing#mask-credentials) covers which settings sources are honored, and [Mask credential files](/docs/en/sandboxing#mask-credential-files) covers when an entry falls back to `deny`.
 
-<span />
-
-<span />
-
-<span />
-
-<span />
-
-<span />
-
-<span />
-
 #### Mask fields for files
 
 A `mask` entry accepts these optional fields. Without `extract` or `decode`, Claude Code replaces the entire file content with one sentinel. On macOS with filesystem isolation on, Claude Code applies a `mask` entry as `deny` before `extract` or `decode` runs; see [Mask credential files](/docs/en/sandboxing#mask-credential-files).
@@ -1798,16 +1770,6 @@ This removes `NPM_TOKEN` from sandboxed commands and masks `GITHUB_TOKEN`, subst
 The `name` must start with a letter or underscore and contain only letters, digits, and underscores. Claude Code merges the arrays from every settings scope the session loads, and applies `deny` when the same variable appears with both modes. [Protect credentials](/docs/en/sandboxing#protect-credentials) covers what still applies from sources you exclude with `--setting-sources`.
 
 `mask` substitution runs only through the sandbox proxy, so set [`sandbox.network.tlsTerminate`](#sandbox-network-tlsterminate), or [`allowPlaintextInject`](#sandbox-credentials-allowplaintextinject) for plain-HTTP test networks; see [Mask credentials](/docs/en/sandboxing#mask-credentials). Claude Code accepts but ignores the `mask` fields on a `deny` entry.
-
-<span />
-
-<span />
-
-<span />
-
-<span />
-
-<span />
 
 #### Mask fields for environment variables
 
@@ -2183,8 +2145,6 @@ Make the sandbox proxy terminate TLS so it can read the contents of HTTPS reques
 
 When more than one honored source sets it, Claude Code uses the value from the highest-precedence source: managed settings, then the `--settings` flag, then user settings.
 
-<span />
-
 ## Memory and context
 
 Control what Claude Code loads into context, how it compacts, and where it keeps memory and plans. See [Manage context](/docs/en/context-window) and [Memory](/docs/en/memory).
@@ -2308,8 +2268,6 @@ Skip specific `CLAUDE.md` files when Claude Code loads [memory](/docs/en/memory#
 
 Exclusions apply only to user, project, and local memory files; managed policy CLAUDE.md files can't be excluded.
 
-<span />
-
 ### `env`
 
 Set environment variables for every session and for the subprocesses Claude Code starts from it. Most variables in the [environment variables reference](/docs/en/env-vars) can go here, which is how you apply one to every session or roll it out to your team. Project and local settings can't set [some of them](#variables-claude-code-ignores-in-env).
@@ -2365,7 +2323,7 @@ This example turns off automatic compaction and routes API requests through a pr
 
     Ignoring this group in project and local settings requires Claude Code v2.1.282 or later.
   * Variables that change how Claude Code starts or syncs, such as `CLAUDE_CODE_PROCESS_WRAPPER`, `CLAUDE_CODE_SYNC_SKILLS`, `CLAUDE_CODE_SYNC_PLUGINS`, `CLAUDE_CODE_PLUGIN_CACHE_DIR`, and `CLAUDE_CODE_PLUGIN_SEED_DIR`.
-  * Variables that set the timers on an unanswered dialog: [`CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS`, `CLAUDE_AFK_TIMEOUT_MS`, and `CLAUDE_AFK_COUNTDOWN_MS`](/docs/en/env-vars#variables).
+  * [`CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS`](/docs/en/env-vars#variables), which sets the timer on an unanswered dialog.
   * [`CLAUDE_CODE_DISABLE_ATTACHMENTS`](/docs/en/env-vars#variables), which turns off attachment processing.
   * [`CLAUDE_CODE_DISABLE_FILE_MENTIONS`](/docs/en/env-vars#variables), which stops Claude Code from expanding `@` mentions of files and directories.
 
@@ -2398,7 +2356,7 @@ In a `-p` run or an Agent SDK session, Claude Code ignores this key. The SDK tur
 
 ### `idleCompaction`
 
-Idle compaction [compacts](/docs/en/context-window#what-survives-compaction) a long conversation that you've stepped away from, shortly before its prompt cache expires. Your next message then sends a summary instead of the whole conversation. When you come back, the conversation shows `Compacted while idle, before the prompt cache expired`.
+Idle compaction [compacts](/docs/en/context-window#what-survives-compaction) a long conversation that you've stepped away from, shortly before its prompt cache expires. Your next message then sends a summary instead of the whole conversation. When you come back, the conversation shows a line that starts with `Compacted while idle, before the prompt cache expired`.
 
 Idle compaction is on by default for conversations that meet all of these conditions:
 
@@ -2422,6 +2380,11 @@ To turn idle compaction off, set this key to `false`.
   "idleCompaction": false
 }
 ```
+
+To turn idle compaction off or on from inside a session, run `/config` and change the **Idle compaction** row. Your choice is saved to your user settings and applies right away. The row requires Claude Code v2.1.302 or later. If you run one of those versions and `/config` doesn't show the row, check for these causes:
+
+* **Another settings source sets the key**: a value in managed settings, the `--settings` flag, or a project or local settings file overrides your user settings. Change the key in that source instead
+* **Feature flags are unavailable**: where Claude Code can't [fetch feature flags from Anthropic](/docs/en/env-vars#features-that-need-feature-flag-fetching), idle compaction doesn't run, so there is nothing to turn off
 
 The key requires Claude Code v2.1.290 or later. On an earlier version, which ignores this key, turn off [`autoCompactEnabled`](#autocompactenabled) to stop idle compaction.
 
@@ -2492,9 +2455,9 @@ Raise it to keep long descriptions intact at the cost of more context per turn; 
 
 ### `taskOutputMaxChars`
 
-<Warning>
-  Removed in v2.1.277, together with the `TaskOutput` tool it sized. Setting it has no effect on current versions. Claude reads a background task's [output file](/docs/en/tools-reference#background-commands) with `Read` instead.
-</Warning>
+> [!WARNING]
+>
+> Removed in v2.1.277, together with the `TaskOutput` tool it sized. Setting it has no effect on current versions. Claude reads a background task's [output file](/docs/en/tools-reference#background-commands) with `Read` instead.
 
 Through v2.1.276, you set this key to the number of characters of a [background task's](/docs/en/tools-reference#background-commands) output that Claude received inline when it read the task with the `TaskOutput` tool.
 
@@ -2509,7 +2472,6 @@ Let an unanswered [`AskUserQuestion`](/docs/en/tools-reference) dialog auto-cont
 * **Scope**: [`User or managed`](#scopes)
 * **Type**: string, one of `"60s"`, `"5m"`, `"10m"`, or `"never"`
 * **Default**: `"never"`
-* **Per-session overrides**: [`CLAUDE_AFK_TIMEOUT_MS`](/docs/en/env-vars) takes precedence over this key for one session
 
 ```json settings.json theme={null}
 {
@@ -2680,8 +2642,6 @@ Show emoji suggestions when you type `:` plus a shortcode in the prompt input, a
 
 See [Emoji shortcodes](/docs/en/interactive-mode#emoji-shortcodes). Requires Claude Code v2.1.217 or later.
 
-<span />
-
 ### `fileSuggestion`
 
 Run your own command to supply `@` file path autocomplete instead of the built-in file suggestion. The built-in suggestion uses fast filesystem traversal; a large monorepo may do better with project-specific indexing such as a pre-built file index.
@@ -2726,8 +2686,6 @@ query=$(cat | jq -r '.query')
 your-repo-file-index --query "$query" | head -20
 ```
 
-<span />
-
 ### `footerLinksRegexes`
 
 Render extra clickable badges in the footer below the input box when a regex matches turn output: tool results, including file contents and fetched pages, and Claude's own responses. Use it to turn IDs printed by project CLIs, such as review tools and issue trackers, into session links.
@@ -2771,9 +2729,9 @@ Footer badges render alongside a [custom status line](/docs/en/statusline) when 
 
 ### `keybindingFlavor`
 
-<Warning>
-  Deprecated since v2.1.261 and has no effect. The prompt's word-editing keys always [follow readline conventions](/docs/en/interactive-mode#make-ctrl-w-delete-back-to-whitespace), as in Bash. Claude Code still accepts `keybindingFlavor`, so a settings file that sets it stays valid.
-</Warning>
+> [!WARNING]
+>
+> Deprecated since v2.1.261 and has no effect. The prompt's word-editing keys always [follow readline conventions](/docs/en/interactive-mode#make-ctrl-w-delete-back-to-whitespace), as in Bash. Claude Code still accepts `keybindingFlavor`, so a settings file that sets it stays valid.
 
 In v2.1.238 through v2.1.260, setting it to `"readline"` made `Ctrl+W` delete back to the previous whitespace instead of only the previous word.
 
@@ -3278,9 +3236,9 @@ This example turns dictation on and makes the key tap once to start recording an
 
 ### `voiceEnabled`
 
-<Warning>
-  Deprecated since v2.1.92, when the [`voice`](#voice) object replaced it. Claude Code still reads it so older settings files keep working, but new configurations should set `voice.enabled`.
-</Warning>
+> [!WARNING]
+>
+> Deprecated since v2.1.92, when the [`voice`](#voice) object replaced it. Claude Code still reads it so older settings files keep working, but new configurations should set `voice.enabled`.
 
 Turn voice dictation on with the single Boolean form that predates the `voice` object. When both are set, `voice.enabled` applies.
 
@@ -3316,8 +3274,6 @@ Accelerate mouse-wheel scroll speed during fast scrolls in [fullscreen rendering
 
 Control the attribution Claude Code adds to commits and pull requests and how it works with git.
 
-<span />
-
 ### `attribution`
 
 Customize the attribution Claude Code adds to git commits and pull requests. Commits get a [git trailer](https://git-scm.com/docs/git-interpret-trailers) such as `Co-Authored-By` by default; pull request descriptions get plain text. Set each part separately with the sub-keys below.
@@ -3346,9 +3302,9 @@ Claude Code tells Claude that your own instructions about attribution, such as a
 
 ### `includeCoAuthoredBy`
 
-<Warning>
-  Deprecated since v2.0.62, when [`attribution`](#attribution) replaced it. Claude Code still reads it, but new configurations should set `attribution`.
-</Warning>
+> [!WARNING]
+>
+> Deprecated since v2.0.62, when [`attribution`](#attribution) replaced it. Claude Code still reads it, but new configurations should set `attribution`.
 
 Use [`attribution`](#attribution) instead, which replaces this key and lets you change or hide the commit trailer, the pull request text, and the session link separately. Claude Code still honors `includeCoAuthoredBy: false` from settings files that predate `attribution`, but ignores it once you set `attribution.commit` or `attribution.pr`.
 
@@ -3459,10 +3415,6 @@ Choose whether Claude Code appends the claude.ai session link when it commits or
   }
 }
 ```
-
-<span />
-
-<span />
 
 ## Hooks and automation
 
@@ -3674,12 +3626,6 @@ Set the [agent count Claude aims for](/docs/en/workflows#set-a-size-guideline) i
 ```
 
 Requires Claude Code v2.1.219 or later; on v2.1.202 through v2.1.218, set the guideline in `/config` instead.
-
-<span />
-
-<span />
-
-<span />
 
 ## Plugins and skills
 
@@ -4087,7 +4033,14 @@ Lock the `agents` surface. Claude Code stops loading agents from `~/.claude/agen
 
 ### `strictPluginOnlyCustomization.hooks`
 
-Lock the `hooks` surface. Claude Code stops running hooks from user, project, and local `settings.json`, and keeps running plugin hooks and hooks in managed settings.
+Lock the `hooks` surface:
+
+* **Stops running**:
+  * Hooks from user, project, and local `settings.json`
+  * Frontmatter hooks in skills, custom commands, and agents, from the sources that a [`skills`](#strictpluginonlycustomization-skills) or [`agents`](#strictpluginonlycustomization-agents) lock would block
+* **Keeps running**: plugin hooks and hooks in managed settings
+
+Skills, custom commands, and agents whose frontmatter hooks stop running still load while their own surface isn't locked.
 
 * **Scope**: [`Managed`](#scopes)
 * **Type**: the string `"hooks"` in the [`strictPluginOnlyCustomization`](#strictpluginonlycustomization) array
@@ -4624,8 +4577,6 @@ Choose where Claude Code shows [agent team](/docs/en/agent-teams) teammates: ins
 }
 ```
 
-<span />
-
 ### `worktree`
 
 Configure how Claude Code creates and manages [git worktrees](/docs/en/worktrees) for `--worktree`, the `EnterWorktree` tool, and isolated subagents and background sessions.
@@ -4788,9 +4739,9 @@ Claude Code never shows the recap in non-interactive mode.
 
 ### `disableArtifact`
 
-<Warning>
-  Deprecated, and replaced by [`enableArtifact`](#enableartifact). Claude Code still honors `disableArtifact: true` as equivalent to `enableArtifact: false`, and ignores `disableArtifact: false`.
-</Warning>
+> [!WARNING]
+>
+> Deprecated, and replaced by [`enableArtifact`](#enableartifact). Claude Code still honors `disableArtifact: true` as equivalent to `enableArtifact: false`, and ignores `disableArtifact: false`.
 
 Use [`enableArtifact`](#enableartifact) instead to turn off the [Artifact](/docs/en/artifacts) tool, which publishes session output as a private web page on claude.ai. When you turn the **Artifacts** row off in `/config`, Claude Code writes `enableArtifact` to your user settings and clears this key.
 
@@ -4904,7 +4855,7 @@ See [Mobile push notifications](/docs/en/remote-control#mobile-push-notification
 
 ### `preferredNotifChannel`
 
-Choose how Claude Code notifies you when a task completes or a permission prompt is waiting. Appears in `/config` as **Local notifications**.
+Choose how Claude Code notifies you when a task completes or a permission prompt is waiting. A [mod's notifications](/docs/en/plugins/mods/api#show-something-without-starting-a-turn) use the same setting. Appears in `/config` as **Local notifications**.
 
 * **Scope**: [`Any file`](#scopes). Claude Code also reads a value left in `~/.claude.json` by older versions.
 * **Type**: string, one of:
@@ -5004,8 +4955,6 @@ This example allows `devboxes.example.com` and its subdomains, plus the exact ho
 A value that Desktop can't read as a list of hosts, such as `true` or an object, counts as an empty array until you correct it, except `null`, which counts as unset. Requires Claude Desktop v2.26454.0 or later.
 
 If you set [`managedSourcesBehavior`](#managedsourcesbehavior) to `"merge"` in your highest-ranked source, Desktop combines the lists from every [admin source](/docs/en/managed-settings#how-claude-code-combines-managed-sources) and allows a host that matches any of them. If you set an empty array in one source, SSH sessions stay on for the hosts another source lists.
-
-<span />
 
 ## Authentication and providers
 
@@ -5352,8 +5301,6 @@ Block Claude's tools for the desktop app's [iOS Simulator pane](/docs/en/desktop
 
 The desktop app ignores any other value, and a value that isn't a Boolean, such as the string `"true"` or `1`, also logs a warning.
 
-<span />
-
 ## Privacy and telemetry
 
 Control how long Claude Code keeps session data and what it sends. The switches that turn off usage metrics and error reports are environment variables, not settings keys: set `DISABLE_TELEMETRY`, `DISABLE_ERROR_REPORTING`, or `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` in the [`env`](#env) key or in the shell. [Telemetry services](/docs/en/data-usage#telemetry-services) says what each one stops. Two exceptions turn off from a settings file: [`feedbackDrafts`](#feedbackdrafts) below for Claude-drafted feedback, and [`feedbackSurveyRate`](#feedbacksurveyrate) below for the session survey.
@@ -5442,8 +5389,6 @@ Skip the [WebFetch domain safety check](/docs/en/data-usage#webfetch-domain-safe
 ```
 
 With the check skipped, WebFetch attempts any URL without consulting the blocklist, so pair it with [`WebFetch` permission rules](/docs/en/permissions#webfetch) if you need to restrict which domains Claude can reach.
-
-<span />
 
 ## Enterprise and managed settings
 
@@ -5557,8 +5502,6 @@ Choose whether Claude Code applies managed settings supplied by an embedding hos
 ```
 
 This key has no effect when no admin-deployed managed tier exists: the host's settings then apply as the only managed tier, still filtered to restrictive values. For the filter's limits and how the managed sources interact, see [Parent settings from embedding hosts](/docs/en/managed-settings#parent-settings-from-embedding-hosts) and [Restrict parent settings](/docs/en/claude-apps-gateway#restrict-parent-settings).
-
-<span />
 
 ### `policyHelper`
 
@@ -5883,9 +5826,9 @@ Claude Code ignores this key in `settings.json`.
 
 ### `permissionExplainerEnabled`
 
-<Warning>
-  Removed in v2.1.257, together with the `Ctrl+E` command explanation on Bash and PowerShell permission prompts. Setting it has no effect on current versions.
-</Warning>
+> [!WARNING]
+>
+> Removed in v2.1.257, together with the `Ctrl+E` command explanation on Bash and PowerShell permission prompts. Setting it has no effect on current versions.
 
 Through v2.1.256, you could press `Ctrl+E` on a Bash or PowerShell permission prompt to see a model-generated explanation of the command, and set this key to `false` to turn that shortcut off.
 
@@ -5913,9 +5856,9 @@ Claude Code ignores this key in `settings.json`.
 
 ### `teammateDefaultModel`
 
-<Warning>
-  Removed in v2.1.234, together with its `/config` row **Default teammate model**. Setting it has no effect on current versions.
-</Warning>
+> [!WARNING]
+>
+> Removed in v2.1.234, together with its `/config` row **Default teammate model**. Setting it has no effect on current versions.
 
 Through v2.1.233, you set this key to the model for [agent team](/docs/en/agent-teams#specify-teammates-and-models) teammates your prompt didn't name a model for: an alias such as `"sonnet"`, or `null` to follow the lead's model. For the model Claude Code picks for such teammates now, see [specify teammates and models](/docs/en/agent-teams#specify-teammates-and-models).
 

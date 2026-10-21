@@ -794,10 +794,11 @@ token, or a token issued to another client, returns only `{ "active": false }`.
 ### Check tool availability
 
 You don't need to check tool access before you call tools. Each tool enforces
-its own access limits when you call it. Use `notion-search` for every content
-search. It runs AI search when the user has it, and keyword search otherwise.
-Workspace-owned connections keep the earlier tool list: use the search tool the
-connection lists, which can be `notion-ai-search`. See
+its own access limits when you call it. Use `notion-search` to search Notion,
+and `notion-connector-search`, when the session lists it, to search connected
+sources such as Slack and Google Drive. Workspace-owned connections keep the
+earlier tool list: use the search tool the connection lists, which can be
+`notion-ai-search`. See
 [Supported tools](/guides/mcp/mcp-supported-tools) for that case.
 
 If your client wants plan or parameter details up front, call
@@ -819,10 +820,11 @@ console.log(current_tool_access)
 // { [toolName]: { status, restricted_parameters?, upgrade_url?, ... } }
 ```
 
-The map includes only tools the server exposes to this connection. In sessions
-that list one search tool, it still reports AI search access under `ai_search`.
-When that status is `available`, the map leaves out `search`, so request both
-keys if you narrow it with `tool_names`. Keep calling `notion-search`.
+The map includes only tools the server exposes to this connection. It reports
+AI search access under `connector_search`. In workspace-owned connections, it
+reports that access under `ai_search` instead, and leaves out `search` when
+`ai_search` is `available`, so request both keys there if you narrow it with
+`tool_names`.
 
 A user lookup (`query_type: "user"`) on the listed search tool has separate
 requirements: it needs user information capabilities, and workspace-owned MCP

@@ -12,7 +12,7 @@ People with admin permissions for a repository can configure a custom domain for
 
 ## About custom domain configuration
 
-> \[!TIP]
+> [!TIP]
 > We recommend verifying your custom domain prior to adding it to your repository, in order to improve security and avoid takeover attacks. For more information, see [Verifying your custom domain for GitHub Pages](/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
 
 Make sure you add your custom domain to your GitHub Pages site before configuring your custom domain with your DNS provider. Configuring your custom domain with your DNS provider without adding your custom domain to GitHub could result in someone else being able to host a site on one of your subdomains.
@@ -23,7 +23,7 @@ The `dig` command, which can be used to verify correct configuration of DNS reco
 
 </div>
 
-> \[!NOTE]
+> [!NOTE]
 > DNS changes can take up to 24 hours to propagate.
 
 ## Configuring an apex domain
@@ -57,10 +57,10 @@ To set up an apex domain, such as `example.com`, you must configure a custom dom
      2606:50c0:8003::153
      ```
 
-> \[!NOTE]
+> [!NOTE]
 > If your DNS provider automatically sets a default record, remove it before continuing.
 
-> \[!WARNING]
+> [!WARNING]
 > We strongly recommend that you do not use wildcard DNS records, such as `*.example.com`. These records put you at an immediate risk of domain takeovers, even if you verify the domain. For example, if you verify `example.com` this prevents someone from using `a.example.com` but they could still take over `b.a.example.com` (which is covered by the wildcard DNS record).
 
 1. Open <span class="platform-mac">Terminal</span><span class="platform-linux">Terminal</span><span class="platform-windows">Git Bash</span>.
@@ -92,7 +92,7 @@ To set up an apex domain, such as `example.com`, you must configure a custom dom
 
 ### Configuring an apex domain and the `www` subdomain variant
 
-> \[!NOTE]
+> [!NOTE]
 > Setting up a `www` subdomain alongside an apex domain is recommended for HTTPS secured websites.
 
 If you are using an apex domain as your custom domain, we recommend also setting up a `www` subdomain. If you configure the correct records for each domain type through your DNS provider, GitHub Pages will automatically create redirects between the domains. For example, if you configure `www.example.com` as the custom domain for your site, and you have GitHub Pages DNS records set up for the apex and `www` domains, then `example.com` will redirect to `www.example.com`. If you instead configure `example.com` as the custom domain, then `www.example.com` will redirect to `example.com`. Automatic redirects also apply to other subdomains, as `www.blog.example.com` will redirect to `blog.example.com` or vice versa. It is not possible to configure a domain that starts with `www.www.`. For more information, see [Configuring a subdomain](#configuring-a-subdomain).
@@ -117,7 +117,7 @@ To set up a `www` or custom subdomain, such as `www.example.com` or `blog.exampl
 
 4. Under "Custom domain", type your custom domain, then click **Save**. If you are publishing your site from a branch, this will create a commit that adds a `CNAME` file directly to the root of your source branch. If you are publishing from a custom GitHub Actions workflow, no `CNAME` file is created, and any existing `CNAME` file is ignored and is not required. For more information about your publishing source, see [Configuring a publishing source for your GitHub Pages site](/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-   > \[!NOTE]
+   > [!NOTE]
    > If your custom domain is an internationalized domain name, you must enter the Punycode encoded version.
    >
    > For more information on Punycodes, see [Internationalized domain name](https://en.wikipedia.org/wiki/Internationalized_domain_name).
@@ -126,7 +126,7 @@ To set up a `www` or custom subdomain, such as `www.example.com` or `blog.exampl
 
    These `CNAME` record values are the same for both publicly and privately published GitHub Pages sites. Do not point the `CNAME` record to the unique `*.pages.github.io` subdomain shown in your repository's GitHub Pages settings. Privately published sites are available with GitHub Enterprise Cloud. For more information, see [Changing the visibility of your GitHub Pages site](/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site) in the GitHub Enterprise Cloud documentation.
 
-   > \[!WARNING]
+   > [!WARNING]
    > We strongly recommend that you do not use wildcard DNS records, such as `*.example.com`. These records put you at an immediate risk of domain takeovers, even if you verify the domain. For example, if you verify `example.com` this prevents someone from using `a.example.com` but they could still take over `b.a.example.com` (which is covered by the wildcard DNS record).
 
 6. Open <span class="platform-mac">Terminal</span><span class="platform-linux">Terminal</span><span class="platform-windows">Git Bash</span>.
@@ -145,7 +145,7 @@ To set up a `www` or custom subdomain, such as `www.example.com` or `blog.exampl
 
 9. Optionally, to enforce HTTPS encryption for your site, select **Enforce HTTPS**. It can take up to 24 hours before this option is available. For more information, see [Securing your GitHub Pages site with HTTPS](/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
 
-   > \[!NOTE]
+   > [!NOTE]
    > If you point your custom subdomain to your apex domain, you will encounter issues with enforcing HTTPS to your website, and you may encounter issues where your subdomain does not reach your GitHub Pages site at all.
 
 ## DNS records for your custom domain
@@ -154,7 +154,7 @@ If you are familiar with the process of configuring your domain for a GitHub Pag
 
 To configure an apex domain, add all of the `A` and `AAAA` records from the table below, or alternatively add only the `ALIAS`/`ANAME` record from the table. To configure an apex domain and `www` subdomain (for example, `example.com` and `www.example.com`), configure the apex domain and then the subdomain. For more information, see [Configuring an apex domain and the `www` subdomain variant](#configuring-an-apex-domain-and-the-www-subdomain-variant).
 
-> \[!WARNING]
+> [!WARNING]
 > We strongly recommend that you do not use wildcard DNS records, such as `*.example.com`. These records put you at an immediate risk of domain takeovers, even if you verify the domain. For example, if you verify `example.com` this prevents someone from using `a.example.com` but they could still take over `b.a.example.com` (which is covered by the wildcard DNS record).
 
 | Scenario                                                     | DNS record type    | DNS record name          | DNS record value(s)                                                                                    |

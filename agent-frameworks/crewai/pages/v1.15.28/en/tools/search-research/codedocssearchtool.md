@@ -8,9 +8,9 @@ The `CodeDocsSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool
 
 # `CodeDocsSearchTool`
 
-<Note>
-  **Experimental**: We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> **Experimental**: We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 
@@ -45,10 +45,10 @@ tool = CodeDocsSearchTool()
 tool = CodeDocsSearchTool(docs_url='https://docs.example.com/reference')
 ```
 
-<Note>
-  Substitute '[https://docs.example.com/reference](https://docs.example.com/reference)' with your target documentation URL
-  and 'How to use search tool' with the search query relevant to your needs.
-</Note>
+> [!NOTE]
+>
+> Substitute '[https://docs.example.com/reference](https://docs.example.com/reference)' with your target documentation URL
+> and 'How to use search tool' with the search query relevant to your needs.
 
 ## Arguments
 

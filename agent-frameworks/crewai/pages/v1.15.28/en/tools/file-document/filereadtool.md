@@ -8,9 +8,9 @@ The `FileReadTool` is designed to read files from the local file system.
 
 ## Overview
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 The `FileReadTool` reads the contents of a file from the local file system and returns it as text.
 It is useful for batch text file processing, reading runtime configuration files, and importing data for analytics.

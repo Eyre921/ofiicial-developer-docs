@@ -156,25 +156,17 @@ if __name__ == "__main__":
 
 After running your crew, you can view comprehensive traces in Braintrust through different perspectives:
 
-<Tabs>
-  <Tab title="Trace">
-    <Frame>
-      <img alt="Braintrust Trace View" />
-    </Frame>
-  </Tab>
+**Trace**
 
-  <Tab title="Timeline">
-    <Frame>
-      <img alt="Braintrust Timeline View" />
-    </Frame>
-  </Tab>
+![Braintrust Trace View](https://mintcdn.com/crewai/sTI-JqU6hicMPzD1/images/braintrust-trace-view.png?fit=max\&auto=format\&n=sTI-JqU6hicMPzD1\&q=85\&s=311f727eeadf1c39380c08e992278dd0)
 
-  <Tab title="Thread">
-    <Frame>
-      <img alt="Braintrust Thread View" />
-    </Frame>
-  </Tab>
-</Tabs>
+**Timeline**
+
+![Braintrust Timeline View](https://mintcdn.com/crewai/sTI-JqU6hicMPzD1/images/braintrust-timeline-view.png?fit=max\&auto=format\&n=sTI-JqU6hicMPzD1\&q=85\&s=03090206aecd3a7b2f21a24af2514b08)
+
+**Thread**
+
+![Braintrust Thread View](https://mintcdn.com/crewai/sTI-JqU6hicMPzD1/images/braintrust-thread-view.png?fit=max\&auto=format\&n=sTI-JqU6hicMPzD1\&q=85\&s=1bc0a6842a5dd9e6d7c2dd742417e79b)
 
 ### Step 6: Evaluate via SDK (Experiments)
 

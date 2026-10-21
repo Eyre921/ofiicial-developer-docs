@@ -154,6 +154,13 @@ If you want to receive emails at your domain, toggle the "Receiving" switch on t
 > your existing MX
 > records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
 
+> [!NOTE]
+>
+> Always copy the MX record value shown on your domain's page in Resend. The
+> values in this guide are examples. Depending on your domain you will see
+> `receive.forge.rmta.net`, a regional variant such as
+> `receive-euw1.forge.rmta.net`, or `inbound-smtp.<region>.amazonaws.com`.
+
 In the `Add Record` section on Hetzner:
 
 1. For the `Type` field, choose `MX`.

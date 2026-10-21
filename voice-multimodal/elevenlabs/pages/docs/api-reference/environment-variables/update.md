@@ -105,14 +105,14 @@ Validation Error
 
 ```json
 {
-  "label": "OPENAI_API_KEY",
-  "created_at_unix_secs": 1710510600,
-  "updated_at_unix_secs": 1710597000,
-  "type": "secret",
-  "id": "env_var_4hJkM5nPqR8sT1uV",
-  "workspace_id": "ws_9aB2cD3eF4gH5iJ6",
+  "label": "string",
+  "created_at_unix_secs": 1,
+  "updated_at_unix_secs": 1,
+  "type": "string",
+  "id": "string",
+  "workspace_id": "string",
   "values": {},
-  "created_by_user_id": "user_3kQp9mNxR7vL2wYtZ8dF"
+  "created_by_user_id": "string"
 }
 ```
 

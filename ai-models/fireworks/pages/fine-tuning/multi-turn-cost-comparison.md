@@ -25,27 +25,15 @@ The calculator below makes that difference concrete. Set your episode shape
 
 Model
 
-<select />
-
 Episodes
-
-<input type="number" />
 
 Turns per episode
 
-<input type="number" />
-
 Initial prompt (tokens)
-
-<input type="number" />
 
 Tokens added per turn (gen + tool result)
 
-<input type="number" />
-
 Generation tokens per turn
-
-<input type="number" />
 
 <details>
   <summary>Advanced — dedicated cluster sizing & throughput (defaults are saturated estimates)</summary>
@@ -53,17 +41,11 @@ Generation tokens per turn
   Dedicated GPUs ()
   · max  (at-par with Tinker)
 
-  <input type="number" />
-
   Prompt tokens/sec (cluster)
   · min  (at-par)
 
-  <input type="number" />
-
   Decode tokens/sec (cluster)
   · min  (at-par)
-
-  <input type="number" />
 </details>
 
 **Per-episode token math:**

@@ -73,7 +73,7 @@ Validation Error
 
 ```json
 {
-  "name": "Product Documentation"
+  "name": "string"
 }
 ```
 
@@ -81,11 +81,11 @@ Validation Error
 
 ```json
 {
-  "id": "kb_folder_3f8a2c1d9e4b7a6f",
-  "name": "Product Documentation",
+  "id": "string",
+  "name": "string",
   "folder_path": [
     {
-      "id": "kb_folder_1a2b3c4d5e6f7890"
+      "id": "string"
     }
   ]
 }
@@ -98,7 +98,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/knowledge-base/folder"
 
-payload = { "name": "Product Documentation" }
+payload = { "name": "string" }
 headers = {"Content-Type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
@@ -111,7 +111,7 @@ const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/folder';
 const options = {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
-  body: '{"name":"Product Documentation"}'
+  body: '{"name":"string"}'
 };
 
 try {
@@ -137,7 +137,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/folder"
 
-	payload := strings.NewReader("{\n  \"name\": \"Product Documentation\"\n}")
+	payload := strings.NewReader("{\n  \"name\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -165,7 +165,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"name\": \"Product Documentation\"\n}"
+request.body = "{\n  \"name\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -177,7 +177,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/knowledge-base/folder")
   .header("Content-Type", "application/json")
-  .body("{\n  \"name\": \"Product Documentation\"\n}")
+  .body("{\n  \"name\": \"string\"\n}")
   .asString();
 ```
 
@@ -189,7 +189,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/knowledge-base/folder', [
   'body' => '{
-  "name": "Product Documentation"
+  "name": "string"
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -205,7 +205,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/folder");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"name\": \"Product Documentation\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"name\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -213,7 +213,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = ["Content-Type": "application/json"]
-let parameters = ["name": "Product Documentation"] as [String : Any]
+let parameters = ["name": "string"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

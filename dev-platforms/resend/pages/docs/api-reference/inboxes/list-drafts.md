@@ -124,6 +124,58 @@ $resend = Resend::client('re_xxxxxxxxx');
 $resend->inboxes->drafts->list('b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1');
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+resend.Inboxes.Drafts.list("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1")
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+Resend::Inboxes::Drafts.list({ inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" })
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	client.Inboxes.Drafts.List("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", nil)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let _drafts = resend
+    .inboxes
+    .list_drafts("b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1", ListOptions::default())
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxDraftListAsync( new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ) );
+Console.WriteLine( "Nr Drafts={0}", resp.Content.Data.Count );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X GET 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/drafts' \
      -H 'Authorization: Bearer re_xxxxxxxxx'

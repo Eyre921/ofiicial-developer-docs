@@ -14,107 +14,95 @@ This section provides comprehensive guides and tutorials to help you master Crew
 
 ### Core Concepts
 
-<CardGroup>
-  <Card title="Sequential Process" icon="list-ol" href="/en/learn/sequential-process">
-    Learn how to execute tasks in a sequential order for structured workflows.
-  </Card>
+> **[Sequential Process](/en/learn/sequential-process)**
+>
+> Learn how to execute tasks in a sequential order for structured workflows.
 
-  <Card title="Hierarchical Process" icon="sitemap" href="/en/learn/hierarchical-process">
-    Implement hierarchical task execution with manager agents overseeing workflows.
-  </Card>
+> **[Hierarchical Process](/en/learn/hierarchical-process)**
+>
+> Implement hierarchical task execution with manager agents overseeing workflows.
 
-  <Card title="Conditional Tasks" icon="code-branch" href="/en/learn/conditional-tasks">
-    Create dynamic workflows with conditional task execution based on outcomes.
-  </Card>
+> **[Conditional Tasks](/en/learn/conditional-tasks)**
+>
+> Create dynamic workflows with conditional task execution based on outcomes.
 
-  <Card title="Async Kickoff" icon="bolt" href="/en/learn/kickoff-async">
-    Execute crews asynchronously for improved performance and concurrency.
-  </Card>
-</CardGroup>
+> **[Async Kickoff](/en/learn/kickoff-async)**
+>
+> Execute crews asynchronously for improved performance and concurrency.
 
 ### Agent Development
 
-<CardGroup>
-  <Card title="Customizing Agents" icon="user-gear" href="/en/learn/customizing-agents">
-    Learn how to customize agent behavior, roles, and capabilities.
-  </Card>
+> **[Customizing Agents](/en/learn/customizing-agents)**
+>
+> Learn how to customize agent behavior, roles, and capabilities.
 
-  <Card title="Coding Agents" icon="code" href="/en/learn/coding-agents">
-    Build agents that can write, execute, and debug code automatically.
-  </Card>
+> **[Coding Agents](/en/learn/coding-agents)**
+>
+> Build agents that can write, execute, and debug code automatically.
 
-  <Card title="Multimodal Agents" icon="images" href="/en/learn/multimodal-agents">
-    Create agents that can process text, images, and other media types.
-  </Card>
+> **[Multimodal Agents](/en/learn/multimodal-agents)**
+>
+> Create agents that can process text, images, and other media types.
 
-  <Card title="Custom Manager Agent" icon="user-tie" href="/en/learn/custom-manager-agent">
-    Implement custom manager agents for complex hierarchical workflows.
-  </Card>
-</CardGroup>
+> **[Custom Manager Agent](/en/learn/custom-manager-agent)**
+>
+> Implement custom manager agents for complex hierarchical workflows.
 
 ## Advanced Features
 
 ### Workflow Control
 
-<CardGroup>
-  <Card title="Human in the Loop" icon="user-check" href="/en/learn/human-in-the-loop">
-    Integrate human oversight and intervention into agent workflows.
-  </Card>
+> **[Human in the Loop](/en/learn/human-in-the-loop)**
+>
+> Integrate human oversight and intervention into agent workflows.
 
-  <Card title="Human Input on Execution" icon="hand-paper" href="/en/learn/human-input-on-execution">
-    Allow human input during task execution for dynamic decision making.
-  </Card>
+> **[Human Input on Execution](/en/learn/human-input-on-execution)**
+>
+> Allow human input during task execution for dynamic decision making.
 
-  <Card title="Replay Tasks" icon="rotate-left" href="/en/learn/replay-tasks-from-latest-crew-kickoff">
-    Replay and resume tasks from previous crew executions.
-  </Card>
+> **[Replay Tasks](/en/learn/replay-tasks-from-latest-crew-kickoff)**
+>
+> Replay and resume tasks from previous crew executions.
 
-  <Card title="Kickoff for Each" icon="repeat" href="/en/learn/kickoff-for-each">
-    Execute crews multiple times with different inputs efficiently.
-  </Card>
-</CardGroup>
+> **[Kickoff for Each](/en/learn/kickoff-for-each)**
+>
+> Execute crews multiple times with different inputs efficiently.
 
 ### Customization & Integration
 
-<CardGroup>
-  <Card title="Custom LLM" icon="brain" href="/en/learn/custom-llm">
-    Integrate custom language models and providers with CrewAI.
-  </Card>
+> **[Custom LLM](/en/learn/custom-llm)**
+>
+> Integrate custom language models and providers with CrewAI.
 
-  <Card title="LLM Connections" icon="link" href="/en/learn/llm-connections">
-    Configure and manage connections to various LLM providers.
-  </Card>
+> **[LLM Connections](/en/learn/llm-connections)**
+>
+> Configure and manage connections to various LLM providers.
 
-  <Card title="Create Custom Tools" icon="wrench" href="/en/learn/create-custom-tools">
-    Build custom tools to extend agent capabilities.
-  </Card>
+> **[Create Custom Tools](/en/learn/create-custom-tools)**
+>
+> Build custom tools to extend agent capabilities.
 
-  <Card title="Using Annotations" icon="at" href="/en/learn/using-annotations">
-    Use Python annotations for cleaner, more maintainable code.
-  </Card>
-</CardGroup>
+> **[Using Annotations](/en/learn/using-annotations)**
+>
+> Use Python annotations for cleaner, more maintainable code.
 
 ## Specialized Applications
 
 ### Content & Media
 
-<CardGroup>
-  <Card title="DALL-E Image Generation" icon="image" href="/en/learn/dalle-image-generation">
-    Generate images using DALL-E integration with your agents.
-  </Card>
+> **[DALL-E Image Generation](/en/learn/dalle-image-generation)**
+>
+> Generate images using DALL-E integration with your agents.
 
-  <Card title="Bring Your Own Agent" icon="user-plus" href="/en/learn/bring-your-own-agent">
-    Integrate existing agents and models into CrewAI workflows.
-  </Card>
-</CardGroup>
+> **[Bring Your Own Agent](/en/learn/bring-your-own-agent)**
+>
+> Integrate existing agents and models into CrewAI workflows.
 
 ### Tool Management
 
-<CardGroup>
-  <Card title="Force Tool Output as Result" icon="hammer" href="/en/learn/force-tool-output-as-result">
-    Configure tools to return their output directly as task results.
-  </Card>
-</CardGroup>
+> **[Force Tool Output as Result](/en/learn/force-tool-output-as-result)**
+>
+> Configure tools to return their output directly as task results.
 
 ## Learning Path Recommendations
 

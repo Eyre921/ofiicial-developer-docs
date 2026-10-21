@@ -35444,6 +35444,21 @@ Each Slack message includes the issue title, description, and severity, a **View
 
 Slack destinations use the configured Slack app to post messages. They do not send the [webhook payload](#webhook-payload-reference), so webhook signing secrets and custom headers do not apply.
 
+### Mention a coding agent
+
+A Slack destination can mention a coding agent's Slack bot, such as [Open SWE](https://github.com/langchain-ai/open-swe), in the thread of an Engine notification. The mention gives the agent Engine's fix prompt for the issue, so it can work on a fix from Slack.
+
+To mention a coding agent:
+
+1. In Slack, add the agent's bot to the destination's channel.
+2. In the Slack destination's settings, select the bot under **Mention agent on new issues**. To use a bot that is not listed, enter its Slack user ID. To stop mentioning the agent, select **None**.
+3. (Optional) Under **Message to the agent**, enter an instruction of up to 1,000 characters. When empty, the mention uses `Investigate this issue and open a fix if needed.`
+4. Save the destination.
+
+The agent is mentioned in the thread of each **Issue created** message. If the destination notifies on **Fix PR ready**, the mention appears under the **Fix PR ready** message instead, once per issue.
+
+The mention includes an issue marker, `<!-- langsmith-issue {"id":"<issue-id>"} -->`. When the agent opens a pull request with that marker in its body, in a repository [connected to Engine](/langsmith/engine-repositories), Engine links the pull request to the issue. The marker must be in the body when the pull request is opened.
+
 ## Create Jira work items
 
 The **Jira** destination sends Engine events to a Jira Automation incoming webhook. Configure a Jira rule to turn new Engine issues into Jira work items. LangSmith sends the [webhook payload](#webhook-payload-reference) with the `X-Automation-Webhook-Token` header. Jira destinations use this token for authentication and do not have an HMAC signing secret.
@@ -35537,7 +35552,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
 import hmac
 from typing import Optional
@@ -35561,7 +35576,7 @@ def verify_langsmith_signature(
     return hmac.compare_digest(expected, signature_header)
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 export function verifyLangSmithSignature({
@@ -97739,6 +97754,10 @@ AWS IAM role authentication avoids storing an expiring ECR authorization token i
 >
 > The **AWS IAM role** authentication method appears only when your LangSmith deployment supports it. If the option is unavailable, use username and password authentication.
 
+> [!NOTE]
+>
+> **BYOC deployments:** AWS IAM role authentication works on [BYOC](/langsmith/byoc) AWS data planes with no extra setup. Follow the steps below. If your data plane uses [bring your own IAM](/langsmith/byoc-byoiam), apply the latest version of the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) first. It grants the workload role permission to assume your ECR role.
+
 To register an ECR role:
 
 1. In LangSmith, open **Sandboxes > Registries**, select **Register Private Registry**, and enter your registry URL in the form `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com`.
@@ -97764,6 +97783,20 @@ To register an ECR role:
   ]
 }
 ```
+
+> [!NOTE]
+>
+> **BYOC deployments:** BYOC data planes pass session tags when they assume the role, so the trust policy must also allow `sts:TagSession`. Add it as a separate statement without the `sts:ExternalId` condition. Otherwise AWS denies the role assumption:
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "Effect": "Allow",
+>   "Principal": {
+>     "AWS": "<principal-arn-shown-in-langsmith>"
+>   },
+>   "Action": "sts:TagSession"
+> }
+> ```
 
 4. Give the role permission to discover and pull the required ECR images. The following policy grants access to every repository in one AWS account and region. Replace the placeholders, or narrow the repository resource to the repositories LangSmith can use:
 
@@ -97793,7 +97826,7 @@ To register an ECR role:
 }
 ```
 
-5. For hosted LangSmith, add the `LangSmithSandboxECR=true` tag to the IAM role.
+5. For hosted LangSmith and BYOC, add the `LangSmithSandboxECR=true` tag to the IAM role.
 6. Return to LangSmith, enter the role ARN in **AWS role ARN**, then register the private registry.
 
 LangSmith assumes the role separately for repository discovery, tag discovery, and each snapshot build attempt. It obtains a fresh ECR authorization token for delayed jobs and retries, and does not persist temporary AWS credentials or generated ECR tokens.

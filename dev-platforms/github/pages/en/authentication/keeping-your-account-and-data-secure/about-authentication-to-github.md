@@ -24,7 +24,7 @@ If you're a member of an enterprise with managed users, you will authenticate to
 
 If you're not a member of an enterprise with managed users, you will authenticate using your GitHub username and password, or a passkey. You may also use two-factor authentication and SAML single sign-on, which can be required by organization and enterprise owners.
 
-> \[!NOTE]
+> [!NOTE]
 > As of March 2023, GitHub required all users who contribute code on GitHub.com to enable one or more forms of two-factor authentication (2FA). If you were in an eligible group, you would have received a notification email when that group was selected for enrollment, marking the beginning of a 45-day 2FA enrollment period, and you would have seen banners asking you to enroll in 2FA on GitHub.com. If you didn't receive a notification, then you were not part of a group required to enable 2FA, though we strongly recommend it.
 >
 > For more information about the 2FA enrollment rollout, see [this blog post](https://github.blog/2023-03-09-raising-the-bar-for-software-security-github-2fa-begins-march-13).
@@ -49,7 +49,7 @@ If you need to use multiple accounts on GitHub.com, such as a personal account a
 
   * In addition to authentication with a TOTP application or a text message, you can optionally add an alternative method of authentication with GitHub Mobile or a security key using WebAuthn. See [Configuring two-factor authentication using GitHub Mobile](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication#configuring-two-factor-authentication-using-github-mobile) or [Configuring two-factor authentication using a security key](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication#configuring-two-factor-authentication-using-a-security-key).
 
-    > \[!NOTE]
+    > [!NOTE]
     > If you cannot use any recovery methods, you have permanently lost access to your account. However, you can unlink an email address tied to the locked account. The unlinked email address can then be linked to a new or existing account. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/how-tos/account-management/unlinking-your-email-address-from-a-locked-account).
 
 * **Passkey**
@@ -120,7 +120,7 @@ To use a personal access token or SSH key to access resources owned by an organi
 
 GitHub issues tokens that begin with a prefix to indicate the token's type.
 
-> \[!NOTE]
+> [!NOTE]
 > Starting April 27, 2026, GitHub began a staged rollout of a stateless format (`ghs_APPID_JWT`) to all newly minted GitHub App installation tokens, making them more performant and improving the reliability of our API surface. If your application expects or relies on installation tokens being exactly 40 characters long, it may not handle this new token format correctly. You can now validate your apps and workflows using a temporary request header that lets you enable the token format on demand. For more information about the temporary header, see [the GitHub blog](https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header).
 
 | Token type                                 | Prefix        | More information                                                                                                                                                                   |

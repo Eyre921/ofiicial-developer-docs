@@ -306,13 +306,13 @@ Class decorator that attaches per-class chat defaults.
 | `visible_agent_outputs` | `None` | `"all"`, or a list of agent names whose `append_agent_result()` calls should be promoted to public assistant messages. |
 | `defer_trace_finalization` | `True` | Keep one trace batch open across `handle_turn()` calls. |
 
-<Warning>
-  `answer_from_history_prompt`, `answer_from_history_llm`, and the
-  `answer_from_history` route are deprecated and will be removed in a future
-  release. They duplicate `converse`, add an eligibility LLM call, and are
-  bypassed when the normal auto-router returns a route. Existing configurations
-  continue to work and emit `DeprecationWarning`.
-</Warning>
+> [!WARNING]
+>
+> `answer_from_history_prompt`, `answer_from_history_llm`, and the
+> `answer_from_history` route are deprecated and will be removed in a future
+> release. They duplicate `converse`, add an eligibility LLM call, and are
+> bypassed when the normal auto-router returns a route. Existing configurations
+> continue to work and emit `DeprecationWarning`.
 
 With no custom routes, turns fall through to `converse`. With custom routes and a conversation/router LLM, the framework synthesizes a default `RouterConfig`; provide one explicitly only to customize its prompt, route list, descriptions, or fallback behavior. Setting `default_intents` uses the legacy pre-classification path instead.
 

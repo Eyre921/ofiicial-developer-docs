@@ -5,7 +5,7 @@
 
 ## docs
 
-- `docs/_llms/api-reference.txt` — [API Reference (168 pages)](pages/docs/_llms/api-reference.txt.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.txt)
+- `docs/_llms/api-reference.txt` — [API Reference (169 pages)](pages/docs/_llms/api-reference.txt.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.txt)
 - `docs/_llms/docs.txt` — [Docs (153 pages)](pages/docs/_llms/docs.txt.md) · [原文](https://openrouter.ai/docs/_llms/docs.txt)
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
 - `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
@@ -45,7 +45,7 @@
 - `docs/client-sdks/go/sdks/decisions/readme` — [Alpha.Decisions](pages/docs/client-sdks/go/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/decisions/README.md)
 - `docs/client-sdks/go/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/go/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/embeddings/README.md)
 - `docs/client-sdks/go/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/go/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/endpoints/README.md)
-- `docs/client-sdks/go/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/go/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/endusers/README.md)
+- `docs/client-sdks/go/sdks/externalusers/readme` — [ExternalUsers](pages/docs/client-sdks/go/sdks/externalusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/externalusers/README.md)
 - `docs/client-sdks/go/sdks/files/readme` — [Files](pages/docs/client-sdks/go/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/files/README.md)
 - `docs/client-sdks/go/sdks/generations/readme` — [Generations](pages/docs/client-sdks/go/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/generations/README.md)
 - `docs/client-sdks/go/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/go/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/guardrails/README.md)
@@ -84,7 +84,7 @@
 - `docs/client-sdks/python/sdks/decisions/readme` — [Alpha.Decisions](pages/docs/client-sdks/python/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/decisions/README.md)
 - `docs/client-sdks/python/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/python/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/embeddings/README.md)
 - `docs/client-sdks/python/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/python/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endpoints/README.md)
-- `docs/client-sdks/python/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/python/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endusers/README.md)
+- `docs/client-sdks/python/sdks/externalusers/readme` — [ExternalUsers](pages/docs/client-sdks/python/sdks/externalusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/externalusers/README.md)
 - `docs/client-sdks/python/sdks/files/readme` — [Files](pages/docs/client-sdks/python/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/files/README.md)
 - `docs/client-sdks/python/sdks/generations/readme` — [Generations](pages/docs/client-sdks/python/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/generations/README.md)
 - `docs/client-sdks/python/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/python/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrails/README.md)

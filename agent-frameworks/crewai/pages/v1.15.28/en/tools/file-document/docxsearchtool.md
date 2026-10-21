@@ -8,9 +8,9 @@ The `DOCXSearchTool` is a RAG tool designed for semantic searching within DOCX d
 
 # `DOCXSearchTool`
 
-<Note>
-  We are still working on improving tools, so there might be unexpected behavior or changes in the future.
-</Note>
+> [!NOTE]
+>
+> We are still working on improving tools, so there might be unexpected behavior or changes in the future.
 
 ## Description
 

@@ -99,6 +99,95 @@ $resend->inboxes->drafts->update(
 );
 ```
 
+```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+import resend
+
+resend.api_key = "re_xxxxxxxxx"
+
+params: resend.Inboxes.Drafts.UpdateParams = {
+    "inbox_id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+    "id": "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
+    "subject": "Refund issued for order 1041",
+}
+
+resend.Inboxes.Drafts.update(params)
+```
+
+```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+require "resend"
+
+Resend.api_key = "re_xxxxxxxxx"
+
+params = {
+  inbox_id: "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+  draft_id: "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
+  subject: "Refund issued for order 1041"
+}
+
+Resend::Inboxes::Drafts.update(params)
+```
+
+```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+package main
+
+import "github.com/resend/resend-go/v4"
+
+func main() {
+	client := resend.NewClient("re_xxxxxxxxx")
+
+	subject := "Refund issued for order 1041"
+	params := &resend.UpdateInboxDraftRequest{
+		Subject: &subject,
+	}
+
+	client.Inboxes.Drafts.Update(
+		"b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+		"c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
+		params,
+	)
+```
+
+```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+use resend_rs::{
+  types::{UpdateInboxDraftOptions},
+  Resend, Result,
+};
+
+#[tokio::main]
+async fn main() -> Result<()> {
+  let resend = Resend::new("re_xxxxxxxxx");
+
+  let opts = UpdateInboxDraftOptions::new().with_subject("Refund issued for order 1041");
+
+  let _draft = resend
+    .inboxes
+    .update_draft(
+      "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
+      "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32",
+      opts,
+    )
+    .await?;
+
+  Ok(())
+}
+```
+
+```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+using Resend;
+
+IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+var resp = await resend.InboxDraftUpdateAsync(
+    new Guid( "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1" ),
+    new Guid( "c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32" ),
+    new InboxDraftUpdateData()
+    {
+        Subject = "Refund issued for order 1041",
+    }
+);
+Console.WriteLine( "Draft Id={0}", resp.Content );
+```
+
 ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X PATCH 'https://api.resend.com/inboxes/b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1/drafts/c3a1e8b4-2d5f-4a7c-9e10-6b8d7f5a4c32' \
      -H 'Authorization: Bearer re_xxxxxxxxx' \

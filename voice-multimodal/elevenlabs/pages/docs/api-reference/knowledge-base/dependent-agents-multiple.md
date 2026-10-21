@@ -109,25 +109,25 @@ Validation Error
     {
       "type": "available",
       "access_level": "admin",
-      "created_at_unix_secs": 1711900800,
-      "id": "pNInz6obpgDQGcFmaJgB",
-      "name": "Customer Support Agent",
+      "created_at_unix_secs": 1,
+      "id": "string",
+      "name": "string",
       "referenced_resource_ids": [
-        "21m00Tcm4TlvDq8ikWAM"
+        "string"
       ]
     }
   ],
-  "has_more": false,
+  "has_more": true,
   "branches": [
     {
-      "agent_id": "pNInz6obpgDQGcFmaJgB",
-      "agent_name": "Customer Support Agent",
-      "branch_id": "kY3mLp9qRtWvDx2nHsAe",
-      "branch_name": "main",
+      "agent_id": "string",
+      "agent_name": "string",
+      "branch_id": "string",
+      "branch_name": "string",
       "is_main": true
     }
   ],
-  "next_cursor": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+  "next_cursor": "string"
 }
 ```
 

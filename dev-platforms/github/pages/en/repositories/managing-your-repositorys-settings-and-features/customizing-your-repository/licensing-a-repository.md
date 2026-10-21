@@ -14,7 +14,7 @@ We created [choosealicense.com](https://choosealicense.com), to help you underst
 
 You're under no obligation to choose a license. However, without a license, the default copyright laws apply, meaning that you retain all rights to your source code and no one may reproduce, distribute, or create derivative works from your work. If you're creating an open source project, we strongly encourage you to include an open source license. The [Open Source Guide](https://opensource.guide/legal/#which-open-source-license-is-appropriate-for-my-project) provides additional guidance on choosing the correct license for your project.
 
-> \[!NOTE]
+> [!NOTE]
 > If you publish your source code in a public repository on GitHub, according to the [Terms of Service](/en/site-policy/github-terms/github-terms-of-service), other users of GitHub.com have the right to view and fork your repository. If you have already created a repository and no longer want users to have access to the repository, you can make the repository private. When you change the visibility of a repository to private, existing forks or local copies created by other users will still exist. For more information, see [Setting repository visibility](/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility).
 
 ## Determining the location of your license

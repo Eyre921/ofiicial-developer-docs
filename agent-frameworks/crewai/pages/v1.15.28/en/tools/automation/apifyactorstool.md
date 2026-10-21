@@ -19,19 +19,17 @@ For details, see the [Apify CrewAI integration](https://docs.apify.com/platform/
 
 ## Steps to get started
 
-<Steps>
-  <Step title="Install dependencies">
-    Install `crewai[tools]` and `langchain-apify` using pip: `pip install 'crewai[tools]' langchain-apify`.
-  </Step>
+**1. Install dependencies**
 
-  <Step title="Obtain an Apify API token">
-    Sign up to [Apify Console](https://console.apify.com/) and get your [Apify API token](https://console.apify.com/settings/integrations)..
-  </Step>
+Install `crewai[tools]` and `langchain-apify` using pip: `pip install 'crewai[tools]' langchain-apify`.
 
-  <Step title="Configure environment">
-    Set your Apify API token as the `APIFY_API_TOKEN` environment variable to enable the tool's functionality.
-  </Step>
-</Steps>
+**2. Obtain an Apify API token**
+
+Sign up to [Apify Console](https://console.apify.com/) and get your [Apify API token](https://console.apify.com/settings/integrations)..
+
+**3. Configure environment**
+
+Set your Apify API token as the `APIFY_API_TOKEN` environment variable to enable the tool's functionality.
 
 ## Usage example
 

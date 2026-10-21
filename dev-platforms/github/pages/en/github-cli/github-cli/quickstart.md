@@ -33,7 +33,7 @@ GitHub CLI is an open source tool for using GitHub from your computer's command 
 
 ## Some useful commands
 
-> \[!NOTE]
+> [!NOTE]
 > When you use some commands for the first time - for example, `gh codespace SUBCOMMAND` - you'll be prompted to add extra scopes to your authentication token. Follow the onscreen instructions.
 
 ### Viewing your status

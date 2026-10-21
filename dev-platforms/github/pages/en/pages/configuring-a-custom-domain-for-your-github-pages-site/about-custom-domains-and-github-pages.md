@@ -10,7 +10,7 @@ GitHub Pages supports using custom domains, or changing the root of your site's 
 
 ## Supported custom domains
 
-> \[!TIP]
+> [!TIP]
 > We recommend verifying your custom domain prior to adding it to your repository, in order to improve security and avoid takeover attacks. For more information, see [Verifying your custom domain for GitHub Pages](/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
 
 GitHub Pages works with two types of domains: subdomains and apex domains. For a list of unsupported custom domains, see [Troubleshooting custom domains and GitHub Pages](/en/pages/configuring-a-custom-domain-for-your-github-pages-site/troubleshooting-custom-domains-and-github-pages#custom-domain-names-that-are-unsupported).
@@ -33,7 +33,7 @@ For example, if the custom domain for your user site is `www.octocat.com`, and y
 
 You can override the default custom domain by adding a custom domain to the individual repository.
 
-> \[!NOTE]
+> [!NOTE]
 > The URLs for project sites that are privately published are not affected by the custom domain for your user or organization site. For more information about privately published sites, see [Changing the visibility of your GitHub Pages site](/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site) in the GitHub Enterprise Cloud documentation.
 
 To remove the default custom domain, you must remove the custom domain from your user or organization site.
