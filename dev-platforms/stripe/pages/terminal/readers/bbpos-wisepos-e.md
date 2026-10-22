@@ -172,7 +172,7 @@ The BBPOS WisePOS E software consists of four components: the reader application
 #### 2026-02-24 (version 2.39.3.0)
 
 - General bug fixes and improvements.
-- Fixed Reader UI: If a PIN attempt fails, the Reader UI displays “Wrong PIN, try again.” and then clearly prompts you to “Enter PIN."
+- Fixed Reader UI: If a PIN attempt fails, the Reader UI displays “Wrong PIN, try again.” and then clearly prompts you to “Enter PIN.”
 
 #### 2026-01-13 (version 2.38.5.0)
 
@@ -189,7 +189,7 @@ The BBPOS WisePOS E software consists of four components: the reader application
 
 #### 2025-09-10 (version 2.35.2.0)
 
-- Renamed “PIN” to “passcode" on the admin menu access screen.
+- Renamed “PIN” to “passcode” on the admin menu access screen.
 - General bug fixes and improvements.
 
 #### 2025-08-06 (version 2.34.4.0)

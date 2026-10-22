@@ -388,7 +388,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 
 ## Expo tutorial
 
-- [Tutorial: Using React Native and Expo](https://docs.expo.dev/tutorial/introduction.md): An introduction to a React Native tutorial on how to build a universal app that runs on Android, iOS and the web using Expo.
+- [Tutorial: Using React Native and Expo](https://docs.expo.dev/tutorial/introduction.md): An introduction to a React Native tutorial on how to build a universal app with Expo, Expo Router, and Expo UI that runs on Android, iOS, and web.
 - [Create your first app](https://docs.expo.dev/tutorial/create-your-first-app.md)
 - [Add navigation](https://docs.expo.dev/tutorial/add-navigation.md)
 - [Build a screen](https://docs.expo.dev/tutorial/build-a-screen.md)
@@ -396,7 +396,6 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Create a modal](https://docs.expo.dev/tutorial/create-a-modal.md)
 - [Add gestures](https://docs.expo.dev/tutorial/gestures.md)
 - [Take a screenshot](https://docs.expo.dev/tutorial/screenshot.md)
-- [Handle platform differences](https://docs.expo.dev/tutorial/platform-differences.md)
 - [Configure status bar, splash screen and app icon](https://docs.expo.dev/tutorial/configuration.md)
 - [Learning resources](https://docs.expo.dev/tutorial/follow-up.md)
 

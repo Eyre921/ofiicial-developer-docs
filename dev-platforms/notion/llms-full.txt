@@ -17782,6 +17782,14 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+**October 22, 2026**
+
+### Status properties show their default option
+
+[Status](/reference/property-object#status) property schemas now include a read-only `default_option`. It is the name of the option a page shows when it has no explicit Status value, or `null` when no default is configured. Look it up in `options` rather than assuming the first option is the default. It appears wherever the API returns a data source's properties, such as [Retrieve a data source](/reference/retrieve-a-data-source). In Notion MCP, [`notion-fetch`](/guides/mcp/mcp-supported-tools#fetch-notion-content) also shows the default in each data source's schema.
+
+**SDK support**: `@notionhq/client` [`v5.28.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.28.0) adds `default_option` to the Status property response type.
+
 **October 20, 2026**
 
 ### Show or hide a database's data source title

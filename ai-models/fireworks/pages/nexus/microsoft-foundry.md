@@ -18,7 +18,7 @@ Before you start, [enable Fireworks in Microsoft Foundry](/ecosystem/integration
 
 | Path | Best for | Harnesses |
 | - | - | - |
-| [Nexus CLI](#connect-with-nexus) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
+| [Nexus CLI](#connect-with-nexus-cli) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
 | [Manual setup](#configure-a-harness-manually) | Harnesses with a custom OpenAI-compatible provider | Any harness that accepts a base URL, key, and model name |
 | [LLM gateway](#use-an-llm-gateway) | Claude Code, or central key management | Claude Code and any harness your gateway supports |
 

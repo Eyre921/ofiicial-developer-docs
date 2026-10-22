@@ -764,6 +764,7 @@ try {
   http_response_code(500);
   echo json_encode(['error' => $e->getMessage()]);
 }
+// Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
           // This is a public sample test API key.

@@ -18,6 +18,8 @@ Use this guide when you need to know where something is in an image, not only wh
 
 ![A workshop bench with purple boxes around three screwdrivers and purple dots on two hammers](https://mintcdn.com/openrouter-d02e98a0/ij25mP7SkzsfeYUD/assets/cookbook/image-understanding/find-objects-in-images/find-objects-in-images.webp?fit=max\&auto=format\&n=ij25mP7SkzsfeYUD\&q=85\&s=1fc473493092d034ccb97ff595439666)
 
+Boxes around every screwdriver and a point on each hammer, from two requests to Moondream 3.1. Each request took under two seconds.
+
 Moondream models answer two slash commands in an ordinary chat completions request. Start the text of a user message with `/detect {"object":"screwdriver"}` and the model returns a bounding box for every match. Start it with `/point {"object":"hammer"}` and it returns one point per match. Both come back as JSON in `message.content`, with coordinates from 0 to 1 relative to the image, so you need no detection API, schema, or prompt engineering.
 
 By the end, you will have a script that:
@@ -39,7 +41,7 @@ You need:
 * `sharp` to load and draw on the image: `npm install sharp`
 * A JPEG, PNG, WebP, or GIF photo. To follow along exactly, download the [workbench photo](/docs/assets/cookbook/image-understanding/find-objects-in-images/workbench.jpg) used on this page and save it as `workbench.jpg`.
 
-This guide uses `moondream/moondream3.1-9b-a2b`. `moondream/moondream3-preview` takes the same commands. See the [Moondream 3.1](https://openrouter.ai/moondream/moondream3.1-9b-a2b) model page for pricing, and [Image Understanding](/docs/guides/overview/multimodal/image-understanding) for the ways to send images.
+This guide uses `moondream/moondream3.1-9b-a2b`. `moondream/moondream3-preview` takes the same commands. See the [Moondream 3.1](https://openrouter.ai/moondream/moondream3.1-9b-a2b) model page for pricing, and [Image Understanding](/docs/guides/overview/multimodal/image-understanding.md) for the ways to send images.
 
 ## Step 1: Find every match with /detect
 

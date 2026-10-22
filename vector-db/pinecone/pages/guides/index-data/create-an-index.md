@@ -8,9 +8,9 @@ Create a Pinecone serverless index for full-text (BM25), semantic (dense vector)
 
 A Pinecone index lets you store and search your data. What an index holds determines the search it supports, so you pick the index type when you create it:
 
-* **Documents**: JSON records whose fields you declare in a schema at creation. A document index is the default, and it can combine dense vector, sparse vector, and full-text (`string`) fields in one record, so a single index serves [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/lexical-search).
+* **Documents**: JSON records whose fields you declare in a schema at creation. A document index is the default, and it can combine dense vector, sparse vector, and full-text (`string`) fields in one record, so a single index serves [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search).
 * **Dense vectors**: Numerical representations of the meaning of text, images, or other data. A vector index of dense vectors serves [semantic search](/guides/search/semantic-search), or [hybrid search](/guides/search/hybrid-search) together with sparse vectors.
-* **Sparse vectors**: High-dimensional vectors with mostly zero values that capture keyword signals, produced by a sparse embedding model such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0). A vector index of sparse vectors serves [sparse-vector search](/guides/search/lexical-search), or [hybrid search](/guides/search/hybrid-search) together with dense vectors.
+* **Sparse vectors**: High-dimensional vectors with mostly zero values that capture keyword signals, produced by a sparse embedding model such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0). A vector index of sparse vectors serves [sparse-vector search](/guides/search/sparse-vector-search), or [hybrid search](/guides/search/hybrid-search) together with dense vectors.
 
 > [!TIP]
 >

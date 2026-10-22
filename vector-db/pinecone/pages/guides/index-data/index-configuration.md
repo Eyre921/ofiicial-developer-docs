@@ -120,7 +120,7 @@ The `llama-text-embed-v2` model supports the following parameters:
 
 ### pinecone-sparse-english-v0
 
-[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/lexical-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
+[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/sparse-vector-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
 
 **Details**
 

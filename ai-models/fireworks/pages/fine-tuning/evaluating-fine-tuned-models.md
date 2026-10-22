@@ -4,9 +4,9 @@ source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---
 
-Evaluate a trained Fireworks model with in-session sampling during a serverless training run or a preemptible deployment for a promoted model.
+Evaluate a trained Fireworks model by sampling its serverless checkpoints with the Training SDK, or with a preemptible deployment for a promoted model.
 
-After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have and whether the training session is still active.
+After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have.
 
 > [!WARNING]
 >
@@ -16,21 +16,21 @@ After training, evaluate your model before you hold dedicated capacity for produ
 
 Use the path that matches your current training stage:
 
-* **Your serverless training session is still active:** use in-session sampling.
+* **You have a serverless sampler checkpoint:** sample it with the Training SDK, during or after the run.
 * **You have a promoted model ID:** use a preemptible deployment. This works regardless of whether the LoRA was trained with serverless, dedicated, or managed training, or imported.
 * **Your dedicated training run is still active:** use its inference deployment and refresh it from sampler snapshots. See [Dedicated training and sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
-| | **In-session sampling** | **Preemptible deployment** |
+| | **Serverless checkpoint sampling** | **Preemptible deployment** |
 | - | - | - |
-| **Best for** | Quick checks during an active serverless training session | Evaluating a promoted model without reserving dedicated GPUs |
+| **Best for** | Quick checks of serverless checkpoints, during or after the run | Evaluating a promoted model without reserving dedicated GPUs |
 | **Training path** | Serverless Training API only | Any training path |
 | **Artifact** | Sampler checkpoint from `save_weights_for_sampler` | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
 | **API** | Training SDK `sampler.sample()` | Chat Completions or Fireworks SDK |
-| **Session bound?** | Yes | No |
+| **Needs an active training session?** | No | No |
 
-## In-session sampling (serverless training)
+## Serverless checkpoint sampling
 
-In-session sampling is available only during an active [serverless training](/fine-tuning/training-api/serverless) session, and the base model must be available in the [serverless pool](/fine-tuning/models). It does not evaluate an adapter produced by dedicated training after that run ends.
+Sample a sampler checkpoint from [serverless training](/fine-tuning/training-api/serverless) while its base model is available in the [serverless pool](/fine-tuning/models). The training session does not need to be active: any process can open a sampler for a checkpoint your account saved. This does not apply to an adapter produced by dedicated training.
 
 There is no serverless chat endpoint for your adapter. Open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you score with your own metric.
 
@@ -59,9 +59,13 @@ finally:
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 
+### After the run ends
+
+You do not need a training client to sample a checkpoint: open a sampler from a fresh service client with the checkpoint path that `save_weights_for_sampler` returned. See [Sampling without a training client](/fine-tuning/training-api/serverless#sampling-without-a-training-client) on the serverless training page, which also covers running evaluation across worker processes.
+
 > [!NOTE]
 >
-> Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
+> Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
 
 ## Preemptible deployment
 

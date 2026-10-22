@@ -57,7 +57,7 @@ Creates a response using the OpenResponses API with multiple consumption pattern
 | `context` | `ContextInput<ToolContextMap>` | No | Tool context keyed by tool name |
 | `hooks` | `InlineHookConfig \| HooksManager` | No | Agent lifecycle hooks |
 
-See [Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks) for hook payloads, results, and manager APIs.
+See [Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks.md) for hook payloads, results, and manager APIs.
 
 \*Either `model` or `models` is required.
 
@@ -477,7 +477,7 @@ type McpBranded<T extends Tool = Tool> = T & { readonly _mcp: true };
 
 ## Conversation State
 
-See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state) for a walkthrough of the state accessor pattern, resumption, and status values.
+See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md) for a walkthrough of the state accessor pattern, resumption, and status values.
 
 ### ConversationState
 
@@ -514,7 +514,7 @@ type ConversationStatus =
   | 'interrupted';
 ```
 
-`'awaiting_client_tools'` was added in `@openrouter/agent` 0.8.0 for unresolved manual (`execute: false`) tool calls. See [Status Values](/docs/agent-sdk/call-model/tool-approval-state#status-values).
+`'awaiting_client_tools'` was added in `@openrouter/agent` 0.8.0 for unresolved manual (`execute: false`) tool calls. See [Status Values](/docs/agent-sdk/call-model/tool-approval-state.md#status-values).
 
 ### StateAccessor
 

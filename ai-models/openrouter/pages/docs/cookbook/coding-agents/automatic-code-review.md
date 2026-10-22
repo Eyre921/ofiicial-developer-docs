@@ -71,7 +71,7 @@ export ANTHROPIC_API_KEY=""
 >
 > The base URL is `https://openrouter.ai/api` — **no `/v1` suffix**. This is OpenRouter's Anthropic Skin, which speaks the native Anthropic protocol. Using `/v1` causes model-not-found errors. `ANTHROPIC_API_KEY` must be explicitly empty to prevent Claude Code from authenticating directly with Anthropic.
 
-Verify by running `/status` in a Claude Code session. See the full [Claude Code integration guide](/docs/cookbook/coding-agents/claude-code-integration) for details.
+Verify by running `/status` in a Claude Code session. See the full [Claude Code integration guide](/docs/cookbook/coding-agents/claude-code-integration.md) for details.
 
 ### Codex CLI
 
@@ -100,7 +100,7 @@ At runtime, pass `-c 'model_provider="openrouter"'` to select the OpenRouter pro
 > * The TOML section is `[model_providers.openrouter]`, **not** `[provider.openrouter]`
 > * Codex uses `https://openrouter.ai/api/v1` (with `/v1`), while Claude uses `https://openrouter.ai/api` (without `/v1`) — they use different protocol skins
 
-See the full [Codex CLI integration guide](/docs/cookbook/coding-agents/codex-cli) for details.
+See the full [Codex CLI integration guide](/docs/cookbook/coding-agents/codex-cli.md) for details.
 
 ## Understanding the Stop Hook
 
@@ -628,7 +628,7 @@ The review covers everything uncommitted — all staged, unstaged, and untracked
 ## Resources
 
 * [Reference implementation (redline)](https://github.com/alexanderatallah/redline)
-* [Claude Code integration](/docs/cookbook/coding-agents/claude-code-integration)
-* [Codex CLI integration](/docs/cookbook/coding-agents/codex-cli)
+* [Claude Code integration](/docs/cookbook/coding-agents/claude-code-integration.md)
+* [Codex CLI integration](/docs/cookbook/coding-agents/codex-cli.md)
 * [OpenRouter Activity Dashboard](https://openrouter.ai/activity)
 

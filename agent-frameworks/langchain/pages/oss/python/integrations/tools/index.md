@@ -517,8 +517,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | N/A |
+| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | N/A |
+| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 

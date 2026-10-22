@@ -15,7 +15,7 @@ In Pinecone, you store data in an index, typically one per use case. Every index
 You define a `schema` with `pc.indexes.create` (or `POST /indexes`).
 
 * One schema can combine `dense_vector`, `sparse_vector`, and `full_text_search`-enabled `string` fields.
-* A single index can serve [full-text search](/guides/search/full-text-search) (BM25 with Lucene queries), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/lexical-search) together, often covering what previously required two indexes.
+* A single index can serve [full-text search](/guides/search/full-text-search) (BM25 with Lucene queries), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search) together, often covering what previously required two indexes.
 * Holds [documents](/guides/core-concepts/key-terms#document), read and written through the Documents API. Pick the ranking signal per query with `score_by`.
 
 ### Vector index
@@ -23,7 +23,7 @@ You define a `schema` with `pc.indexes.create` (or `POST /indexes`).
 Created with `pc.create_index(dimension=..., metric=..., vector_type=...)`. You don't declare fields yourself; the SDK builds the schema from the dimension, metric, and vector type you provide.
 
 * Holds [records](/guides/core-concepts/key-terms#record), read and written through the Vectors API.
-* Serves [semantic search](/guides/search/semantic-search) and [sparse-vector search](/guides/search/lexical-search).
+* Serves [semantic search](/guides/search/semantic-search) and [sparse-vector search](/guides/search/sparse-vector-search).
 
 > [!NOTE]
 >
@@ -76,7 +76,7 @@ Learn more:
 
 * [Create an index for sparse vectors](/guides/index-data/create-an-index#sparse-vectors)
 * [Upsert sparse vectors](/guides/index-data/upsert-data#upsert-sparse-vectors)
-* [Sparse-vector search](/guides/search/lexical-search)
+* [Sparse-vector search](/guides/search/sparse-vector-search)
 
 #### Limitations
 

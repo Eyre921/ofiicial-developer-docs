@@ -10,7 +10,9 @@ Learn how to set up and deploy a webhook to listen to events from Stripe.
 
 # Interactive webhook endpoint builder 
 
-Learn how to set up and deploy a webhook endpoint to listen to events from Stripe. Use a webhook endpoint for post-payment commerce events such as sending custom email receipts, fulfilling orders, or updating your database. Do these steps in a sandbox before doing them in live mode.
+Learn how to set up and deploy a webhook endpoint to listen to events from Stripe. Use a webhook endpoint for post-payment commerce events such as sending custom email receipts, fulfilling orders, or updating your database. Your webhook endpoint is the app you build and host. Stripe notifies it with a [thin event](https://docs.stripe.com/events/how-events-work.md#thin-events) when something happens, and if you need more information, you fetch the full event or the associated object.
+
+Test these steps in a sandbox before implementing them in live mode.
 
 1. Build the server
 
@@ -62,7 +64,7 @@ composer install
 2. Run the server
 
 ~~~
-php -S 127.0.0.1:4242 --docroot=public
+php -S 127.0.0.1:4242
 ~~~
 1. Build the server
 
@@ -88,11 +90,11 @@ java -cp target/sample-jar-with-dependencies.jar com.stripe.sample.Server
 ~~~
 
 ~~~
-stripe listen --forward-to localhost:4242/webhook.php
+stripe listen --forward-thin-to localhost:4242/public/webhook.php --thin-events "*"
 ~~~
 
 ~~~
-stripe listen --forward-to localhost:4242/webhook
+stripe listen --forward-thin-to localhost:4242/webhook --thin-events "*"
 ~~~
 ### Install the Stripe Node library
 
@@ -240,27 +242,33 @@ Install the libraries:
 npm install --save stripe @stripe/stripe-js next
 ```
 
-### Create a new endpoint
+### Create a webhook endpoint to receive event notifications
 
-A [webhook endpoint](https://docs.stripe.com/webhooks.md) is a destination on your server that receives requests from Stripe, notifying you about events that happen on your account such as a customer disputing a charge or a successful recurring payment. Add a new endpoint to your server and make sure it’s publicly accessible so we can send unauthenticated POST requests.
+[Event destinations](https://docs.stripe.com/event-destinations/overview.md) are Stripe objects that send events to your webhook endpoint. Add a route to your app that accepts unauthenticated POST requests. Make sure your app’s publicly accessible, then register it with Stripe. Event types for API v1 resources start with `v1.`, such as `v1.payment_intent.succeeded` and `v1.payment_method.attached`. To receive  [API v2](https://docs.stripe.com/api-v2-overview.md) notifications, set `event_payload` to `thin` when you [create an event destination](https://docs.stripe.com/api/v2/core/event-destinations.md).
 
-### Read the event data
+### Read the event notification
 
-Stripe sends the event data in the request body. Each event is structured as an [Event object](https://docs.stripe.com/api/events.md) with a `type`, `id`, and related Stripe resource nested under `data`.
+Stripe sends an [event notification](https://docs.stripe.com/events/how-events-work.md#thin-events) in the request body. Thin event notifications contain references to the resource that changed (such as `id`, `type`, and `related_object`), not the resource itself. This means that thin event payloads stay the same size and shape no matter which API version you use. Use a [Stripe SDK](https://docs.stripe.com/sdks.md) to parse the request body and verify the request signature.
 
 ### Handle the event
 
-As soon as you have the event object, check the [type](https://docs.stripe.com/api/events/types.md) to know what kind of event happened. You can use one webhook to handle several different event types at once, or set up individual endpoints for specific events.
+Check the [event_type](https://docs.stripe.com/api/v2/core/events/event-types.md) to understand what happened. Set up event destinations to handle logically related groups of events single events if some actions require special handling.
+
+### Fetch the related object
+
+A notification tells you which object changed, not what it contains. Call `fetchRelatedObject` to retrieve the current version of the object from the Stripe API using the API version configured for your client, which defaults to the version pinned by your SDK. Learn how to [set the API version](https://docs.stripe.com/sdks/set-version.md). You can also retrieve the object yourself with the `related_object.id` value and the API v1 resource method, such as `retrieve` on PaymentIntent. Because you fetch the object after the event happens, you always read its latest state. In both sandbox and live mode, use a [restricted API key](https://docs.stripe.com/keys.md#create-restricted-api-key) with **Payment Intents: Read**, **Payment Methods: Read**, and **Events: Read** permissions.
+
+### Retrieve the full event
+
+This step is optional. You only need to retrieve the full event if you need data that the notification and the related object don’t provide, such as `changes`, which lists the attributes that changed. Set `FETCH_FULL_EVENT=true`, then call `fetchEvent` to retrieve the complete [event](https://docs.stripe.com/api/v2/core/events.md) from the Events v2 API. Each retrieval is an additional API call.
 
 ### Return a 200 response
 
-[Send a successful 200 response](https://docs.stripe.com/webhooks.md#handle-events-asynchronously) to Stripe as quickly as possible because Stripe retries the event if a response isn’t sent within a reasonable time. Write any long-running processes as code that can run asynchronously outside the webhook endpoint.
+[Send a successful 200 response](https://docs.stripe.com/webhooks.md#handle-events-asynchronously) to Stripe as quickly as possible because Stripe retries the event if a response isn’t sent within a reasonable time. Write any long-running processes as code that can run asynchronously outside the webhook endpoint. Fetching the related object and the full event adds API calls to your handler. If those calls make your handler slow, queue the notification and process it outside the request.
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
 
 ```bash
 npm start
@@ -268,9 +276,7 @@ npm start
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
 
 ```bash
 ruby server.rb
@@ -278,9 +284,7 @@ ruby server.rb
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
 
 ```bash
 python3 -m flask --app server run --port=4242
@@ -288,9 +292,7 @@ python3 -m flask --app server run --port=4242
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/public/webhook.php`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/public/webhook.php`.
 
 ```bash
 php -S 127.0.0.1:4242
@@ -298,9 +300,7 @@ php -S 127.0.0.1:4242
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
 
 ```bash
 dotnet run
@@ -308,9 +308,7 @@ dotnet run
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at `http://localhost:4242/webhook`.
 
 ```bash
 go run server.go
@@ -318,9 +316,7 @@ go run server.go
 
 ### Run the server
 
-Set the `STRIPE_WEBHOOK_SECRET` environment variable to your webhook signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`.
-
-Build and run your server to test the endpoint at http://localhost:4242/webhook.
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your event destination’s signing secret. Find this secret in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench, or from the CLI output when you run `stripe listen`. Build and run your server to test the endpoint at http://localhost:4242/webhook.
 
 ```bash
 java -cp target/sample-jar-with-dependencies.jar com.stripe.sample.Server
@@ -328,7 +324,7 @@ java -cp target/sample-jar-with-dependencies.jar com.stripe.sample.Server
 
 ### Download the CLI
 
-Use the Stripe CLI to test your webhook locally. [Download the CLI](https://docs.stripe.com/cli.md) and log in with your Stripe account. Alternatively, use a service like ngrok to make your local endpoint publicly accessible.
+Use the Stripe CLI to test your webhook locally. [Download the CLI](https://docs.stripe.com/cli.md) and log in to the same Stripe account as the restricted sandbox API key configured in your server. Alternatively, use a service like ngrok to make your local endpoint publicly accessible.
 
 ```bash
 stripe login
@@ -336,23 +332,35 @@ stripe login
 
 ### Forward events to your webhook
 
-Set up [event forwarding](https://docs.stripe.com/webhooks.md#test-webhook) with the CLI to send all Stripe events in a sandbox to your local webhook endpoint.
+Set up [event forwarding](https://docs.stripe.com/webhooks.md#local-listener) with the CLI to send thin events in a sandbox to your local webhook endpoint. Use `--forward-thin-to` for thin events, and `--thin-events` to select which event types to forward.
 
 ```bash
-stripe listen --forward-to localhost:4242/webhook
+stripe listen --forward-thin-to localhost:4242/webhook --thin-events "*"
+```
+
+The listener prints a `whsec_` signing secret. In the terminal where you run the server, export that value as `STRIPE_WEBHOOK_SECRET`, then restart the server before triggering an event.
+
+```bash
+export STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
 ### Forward events to your webhook
 
-Set up [event forwarding](https://docs.stripe.com/webhooks.md#test-webhook) with the CLI to send all Stripe events in testmode to your local webhook endpoint.
+Set up [event forwarding](https://docs.stripe.com/webhooks.md#local-listener) with the CLI to send thin events in a sandbox to your local webhook endpoint. Use `--forward-thin-to` for thin events, and `--thin-events` to select which event types to forward.
 
 ```bash
-stripe listen --forward-to localhost:4242/public/webhook.php
+stripe listen --forward-thin-to localhost:4242/public/webhook.php --thin-events "*"
+```
+
+The listener prints a `whsec_` signing secret. In the terminal where you run the server, export that value as `STRIPE_WEBHOOK_SECRET`, then restart the server before triggering an event.
+
+```bash
+export STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
 ### Simulate events
 
-Use the CLI to [simulate specific events](https://docs.stripe.com/cli/trigger) that test your webhook application logic by sending a POST request to your webhook endpoint with a mocked Stripe event object.
+Use the CLI to [simulate specific events](https://docs.stripe.com/cli/trigger) that test your webhook application logic. Trigger the API v1 event, and Stripe delivers the matching `v1.` thin event to your thin event destination.
 
 ```bash
 stripe trigger payment_intent.succeeded
@@ -360,15 +368,11 @@ stripe trigger payment_intent.succeeded
 
 ### Secure your webhook
 
-Verify the source of a webhook request to prevent bad actors from sending fake payloads or injecting SQL that modify your backend systems. Secure your webhook with a client signature to validate that Stripe generated a webhook request and that it didn’t come from a server acting like Stripe.
+Verify every request to prevent fake payloads from triggering work in your backend, and use Stripe’s [public IP addresses](https://docs.stripe.com/ips.md) to configure network access.
 
 ### Add the endpoint signing secret
 
-Each webhook endpoint has a unique signing secret, which you can find in the [Webhooks](https://dashboard.stripe.com/workbench/webhooks) tab in Workbench. If you’re testing locally with the Stripe CLI, you can also get the signing secret from the CLI output using the command `stripe listen`.
-
-### Verify the event
-
-Use the Stripe library to verify and construct the event from Stripe. You need the endpoint secret, the request headers, and the raw request body to properly verify the event. Alternatively, you can [manually verify](https://docs.stripe.com/webhooks.md?verify=verify-manually#verify-manually) the signature without having to use the Stripe library.
+Each event destination has a unique signing secret, which you can find in the [Webhooks](https://dashboard.stripe.com/webhooks) tab in Workbench. If you’re testing locally with the Stripe CLI, you can also get the signing secret from the CLI output using the command `stripe listen`.
 
 ### Read the request signature
 
@@ -376,11 +380,11 @@ Each request from Stripe contains a `Stripe-Signature` header. Store a reference
 
 ### Verify the request
 
-Use the Stripe library to verify that the request came from Stripe. Pass the raw request body, `Stripe-Signature` header, and endpoint secret to construct an [Event](https://docs.stripe.com/api/events/object.md).
+Pass the raw request body, the `Stripe-Signature` header, and the signing secret to the Stripe library to verify the request and parse it into an event notification. Alternatively, you can [manually verify](https://docs.stripe.com/webhooks.md?verify=verify-manually#verify-manually) the signature without using the Stripe library.
 
 ### Handle errors
 
-Checking for errors helps catch improperly configured webhooks or malformed requests from non-Stripe services. Common errors include using the wrong endpoint secret, passing a parsed representation (for example, JSON) of the request body, or reading the wrong request header.
+Checking for errors helps catch improperly configured webhooks or malformed requests from non-Stripe services. Common errors include using the signing secret of a different event destination, passing a parsed representation (for example, JSON) of the request body, or reading the wrong request header.
 
 ### Test the endpoint
 
@@ -389,56 +393,68 @@ Test your secured endpoint by using the Stripe CLI, which sends the proper signa
 // This is a public sample test API key.
 // Don't submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
+// Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
-
 // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-// your endpoint's unique secret.
+// your thin event destination's unique secret.
 //
 // If you are testing with the CLI, find the secret by running 'stripe listen'.
-// If you are using an endpoint defined with the API or dashboard, look in
+// If you're using a destination defined with the API or Dashboard, look in
 // your webhook settings at https://dashboard.stripe.com/webhooks.
 //
 // Don't include webhook secrets in code.
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
 const express = require('express');
 const app = express();
-
-app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
-  let event = request.body;
-  // Only verify the event if you have an endpoint secret defined.
-  // Otherwise use the basic event deserialized with JSON.parse
-  if (endpointSecret) {
-    // Get the signature sent by Stripe
-    const signature = request.headers['stripe-signature'];
-    try {
-      event = stripe.webhooks.constructEvent(
-        request.body,
-        signature,
-        endpointSecret
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`, err.message);
-      return response.sendStatus(400);
-    }
+app.post('/webhook', express.raw({type: 'application/json'}), async (request, response) => {
+  let notification;
+  // Get the signature sent by Stripe
+  const signature = request.headers['stripe-signature'];
+  try {
+    // Verify the signature and parse the thin event notification
+    notification = stripe.parseEventNotification(
+      request.body,
+      signature,
+      endpointSecret
+    );
+  } catch (err) {
+    console.log(`Webhook signature verification failed.`, err.message);
+    return response.sendStatus(400);
   }
-  // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntent = event.data.object;
-      console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-      // Then define and call a method to handle the successful payment intent.
-      // handlePaymentIntentSucceeded(paymentIntent);
-      break;
-    case 'payment_method.attached':
-      const paymentMethod = event.data.object;
-      // Then define and call a method to handle the successful attachment of a PaymentMethod.
-      // handlePaymentMethodAttached(paymentMethod);
-      break;
-    default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`);
+  try {
+    // Handle the event notification by matching its type property.
+    // The notification identifies the related object, but doesn't contain it.
+    // Matching on type also identifies events that are represented by
+    // UnknownEventNotification because this SDK version doesn't include their class.
+    switch (notification.type) {
+      case 'v1.payment_intent.succeeded': {
+        // Fetch the current version of the related object
+        const paymentIntent = await notification.fetchRelatedObject();
+        console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
+        // Then define and call a method to handle the successful payment intent.
+        // handlePaymentIntentSucceeded(paymentIntent);
+        // Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+        // need data that the notification and related object don't provide.
+        if (process.env.FETCH_FULL_EVENT === 'true') {
+          const event = await notification.fetchEvent();
+          console.log(`Retrieved event ${event.id}.`);
+        }
+        break;
+      }
+      case 'v1.payment_method.attached': {
+        const paymentMethod = await notification.fetchRelatedObject();
+        // Then define and call a method to handle the successful attachment of a PaymentMethod.
+        // handlePaymentMethodAttached(paymentMethod);
+        break;
+      }
+      default:
+        // Unexpected event type
+        console.log(`Unhandled event type ${notification.type}.`);
+    }
+  } catch (err) {
+    console.log(`Webhook handler failed.`, err.message);
+    return response.sendStatus(500);
   }
   // Return a 200 response to acknowledge receipt of the event
   response.send();
@@ -503,111 +519,106 @@ require 'stripe'
 \# This is a public sample test API key.
 # Don't submit any personally identifiable information in requests made with this key.
 # Sign in to see your own test API key embedded in code samples.
-\# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
+\# Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
+# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
-
 \# To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-# your endpoint's unique secret.
+# your thin event destination's unique secret.
 #
 # If you are testing with the CLI, find the secret by running 'stripe listen'.
-# If you are using an endpoint defined with the API or dashboard, look in
+# If you're using a destination defined with the API or Dashboard, look in
 # your webhook settings at https://dashboard.stripe.com/webhooks.
 #
 # Don't include webhook secrets in code.
 endpoint_secret = ENV['STRIPE_WEBHOOK_SECRET']
-
 post '/webhook' do
   payload = request.body.read
-  event = nil
-
+  notification = nil
+  signature = request.env['HTTP_STRIPE_SIGNATURE']
   begin
-    event = Stripe::Event.construct_from(
-      JSON.parse(payload, symbolize_names: true)
+    \# Verify the signature and parse the thin event notification
+    notification = client.parse_event_notification(
+      payload, signature, endpoint_secret
     )
-  rescue JSON::ParserError => e
-    \# Invalid payload
-    puts "⚠️  Webhook error while parsing basic request. #{e.message}"
+  rescue Stripe::SignatureVerificationError => e
+    puts "Webhook signature verification failed. #{e.message}"
     status 400
     return
   end
-  \# Check if webhook signing is configured.
-  if endpoint_secret
-    # Retrieve the event by verifying the signature using the raw body and secret.
-    signature = request.env['HTTP_STRIPE_SIGNATURE'];
-    begin
-      event = Stripe::Webhook.construct_event(
-        payload, signature, endpoint_secret
-      )
-    rescue Stripe::SignatureVerificationError => e
-      puts "⚠️  Webhook signature verification failed. #{e.message}"
-      status 400
-      return
-    end
-  end
-  \# Handle the event
-  case event.type
-  when 'payment_intent.succeeded'
-    payment_intent = event.data.object # contains a Stripe::PaymentIntent
-    puts "Payment for #{payment_intent['amount']} succeeded."
+  \# Handle the event notification by matching its type attribute.
+  # The notification identifies the related object, but doesn't contain it.
+  # Matching on type also identifies events that are represented by
+  # UnknownEventNotification because this SDK version has no class for them.
+  case notification.type
+  when 'v1.payment_intent.succeeded'
+    \# Fetch the current version of the related object
+    payment_intent = notification.fetch_related_object
+    puts "Payment for #{payment_intent.amount} succeeded."
     # Then define and call a method to handle the successful payment intent.
     # handle_payment_intent_succeeded(payment_intent)
-  when 'payment_method.attached'
-    payment_method = event.data.object # contains a Stripe::PaymentMethod
-    # Then define and call a method to handle the successful attachment of a PaymentMethod.
+    \# Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+    # need data that the notification and related object don't provide.
+    if ENV['FETCH_FULL_EVENT'] == 'true'
+      event = notification.fetch_event
+      puts "Retrieved event #{event.id}."
+    end
+  when 'v1.payment_method.attached'
+    payment_method = notification.fetch_related_object
+    \# Then define and call a method to handle the successful attachment of a PaymentMethod.
     # handle_payment_method_attached(payment_method)
   else
-    puts "Unhandled event type: #{event.type}"
+    puts "Unhandled event type: #{notification.type}"
   end
   status 200
 import stripe
 \# This is a public sample test API key.
 # Don't submit any personally identifiable information in requests made with this key.
 # Sign in to see your own test API key embedded in code samples.
-\# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
+\# Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
+# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
-
 \# To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-# your endpoint's unique secret.
+# your thin event destination's unique secret.
 #
 # If you are testing with the CLI, find the secret by running 'stripe listen'.
-# If you are using an endpoint defined with the API or dashboard, look in
+# If you're using a destination defined with the API or Dashboard, look in
 # your webhook settings at https://dashboard.stripe.com/webhooks.
 #
 # Don't include webhook secrets in code.
 endpoint_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
-
 app = Flask(__name__)
-
 @app.route('/webhook', methods=['POST'])
+    sig_header = request.headers.get('stripe-signature')
     try:
-        event = json.loads(payload)
-    except json.decoder.JSONDecodeError as e:
-        print('⚠️  Webhook error while parsing basic request.' + str(e))
-        return jsonify(success=False)
-    if endpoint_secret:
-        \# Only verify the event if there is an endpoint secret defined
-        # Otherwise use the basic event deserialized with json
-        sig_header = request.headers.get('stripe-signature')
-        try:
-            event = client.construct_event(
-                payload, sig_header, endpoint_secret
-            )
-        except stripe.error.SignatureVerificationError as e:
-            print('⚠️  Webhook signature verification failed.' + str(e))
-            return jsonify(success=False)
-    \# Handle the event
-    if event and event['type'] == 'payment_intent.succeeded':
-        payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
-        print('Payment for {} succeeded'.format(payment_intent['amount']))
+        \# Verify the signature and parse the thin event notification
+        notification = client.parse_event_notification(
+            payload, sig_header, endpoint_secret
+        )
+    except stripe.SignatureVerificationError as e:
+        print('Webhook signature verification failed.' + str(e))
+        return jsonify(success=False), 400
+    \# Handle the event notification by matching its type attribute.
+    # The notification identifies the related object, but doesn't contain it.
+    # Matching on type also identifies events that are represented by
+    # UnknownEventNotification because this SDK version has no class for them.
+    if notification.type == 'v1.payment_intent.succeeded':
+        \# Fetch the current version of the related object
+        payment_intent = notification.fetch_related_object()
+        print('Payment for {} succeeded'.format(payment_intent.amount))
         # Then define and call a method to handle the successful payment intent.
         # handle_payment_intent_succeeded(payment_intent)
-    elif event['type'] == 'payment_method.attached':
-        payment_method = event['data']['object']  # contains a stripe.PaymentMethod
-        # Then define and call a method to handle the successful attachment of a PaymentMethod.
+        \# Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+        # need data that the notification and related object don't provide.
+        if os.environ.get('FETCH_FULL_EVENT') == 'true':
+            event = notification.fetch_event()
+            print('Retrieved event {}'.format(event.id))
+    elif notification.type == 'v1.payment_method.attached':
+        payment_method = notification.fetch_related_object()
+        \# Then define and call a method to handle the successful attachment of a PaymentMethod.
         # handle_payment_method_attached(payment_method)
     else:
         # Unexpected event type
-        print('Unhandled event type {}'.format(event['type']))
+        print('Unhandled event type {}'.format(notification.type))
     return jsonify(success=True)
 certifi==2026.1.4
 chardet==5.2.0
@@ -622,105 +633,111 @@ stripe==16.0.0
 toml==0.10.2
 Werkzeug==3.1.5
 $stripe = new \Stripe\StripeClient($stripeSecretKey);
-
 // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-// your endpoint's unique secret.
+// your thin event destination's unique secret.
 //
 // If you are testing with the CLI, find the secret by running 'stripe listen'.
-// If you are using an endpoint defined with the API or dashboard, look in
+// If you're using a destination defined with the API or Dashboard, look in
 // your webhook settings at https://dashboard.stripe.com/webhooks.
 //
 // Don't include webhook secrets in code.
 $endpoint_secret = getenv('STRIPE_WEBHOOK_SECRET');
-
 $payload = @file_get_contents('php://input');
-$event = null;
-
+$notification = null;
+$sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 try {
-  $event = \Stripe\Event::constructFrom(
-    json_decode($payload, true)
+  // Verify the signature and parse the thin event notification
+  $notification = $stripe->parseEventNotification(
+    $payload, $sig_header, $endpoint_secret
   );
-} catch(\UnexpectedValueException $e) {
-  // Invalid payload
-  echo '⚠️  Webhook error while parsing basic request.';
+} catch(\Stripe\Exception\SignatureVerificationException $e) {
+  // Invalid signature
+  echo 'Webhook error while validating signature.';
   http_response_code(400);
   exit();
 }
-if ($endpoint_secret) {
-  // Only verify the event if there is an endpoint secret defined
-  // Otherwise use the basic decoded event
-  $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-  try {
-    $event = \Stripe\Webhook::constructEvent(
-      $payload, $sig_header, $endpoint_secret
-    );
-  } catch(\Stripe\Exception\SignatureVerificationException $e) {
-    // Invalid signature
-    echo '⚠️  Webhook error while validating signature.';
-    http_response_code(400);
-    exit();
-  }
-}
-// Handle the event
-switch ($event->type) {
-  case 'payment_intent.succeeded':
-    $paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
+  // Handle the event notification by matching its type property.
+  // The notification identifies the related object, but doesn't contain it.
+  // Matching on type also identifies events that are represented by
+  // UnknownEventNotification because this SDK version doesn't include their class.
+switch ($notification->type) {
+  case 'v1.payment_intent.succeeded':
+    // Fetch the current version of the related object
+    $paymentIntent = $notification->fetchRelatedObject();
     // Then define and call a method to handle the successful payment intent.
     // handlePaymentIntentSucceeded($paymentIntent);
+    // Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+    // need data that the notification and related object don't provide.
+    if (getenv('FETCH_FULL_EVENT') === 'true') {
+      $event = $notification->fetchEvent();
+      error_log('Retrieved event ' . $event->id);
+    }
     break;
-  case 'payment_method.attached':
-    $paymentMethod = $event->data->object; // contains a \Stripe\PaymentMethod
+  case 'v1.payment_method.attached':
+    $paymentMethod = $notification->fetchRelatedObject();
     // Then define and call a method to handle the successful attachment of a PaymentMethod.
     // handlePaymentMethodAttached($paymentMethod);
     break;
   default:
     // Unexpected event type
-    error_log('Received unknown event type');
+    error_log('Received unknown event type ' . $notification->type);
 }
 http_response_code(200);
+// Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
       // This is a public sample test API key.
       // Don't submit any personally identifiable information in requests made with this key.
       // Sign in to see your own test API key embedded in code samples.
+      // Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
       // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
       services.AddSingleton(new StripeClient("<<YOUR_SECRET_KEY>>"));
   [Route("webhook")]
   [ApiController]
   public class WebhookController : Controller
-
         // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-        // your endpoint's unique secret.
+        // your thin event destination's unique secret.
         //
         // If you are testing with the CLI, find the secret by running 'stripe listen'.
-        // If you are using an endpoint defined with the API or dashboard, look in
+        // If you're using a destination defined with the API or Dashboard, look in
         // your webhook settings at https://dashboard.stripe.com/webhooks.
         //
         // Don't include webhook secrets in code.
         var endpointSecret = Environment.GetEnvironmentVariable("STRIPE_WEBHOOK_SECRET");
-
-            var stripeEvent = EventUtility.ParseEvent(json);
             var signatureHeader = Request.Headers["Stripe-Signature"];
-
-            stripeEvent = EventUtility.ConstructEvent(json,
-                    signatureHeader, endpointSecret);
-            // If on SDK version < 46, use class Events instead of EventTypes
-            if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
+            // Verify the signature and parse the thin event notification
+            var notification = client.ParseEventNotification(
+                    json, signatureHeader, endpointSecret);
+            // Handle the event notification by matching its class.
+            // The notification identifies the related object, but doesn't contain it.
+            // Events without a generated class in this SDK version are represented by
+            // UnknownEventNotification. To handle them, add a branch that checks
+            // the event-name string in the Type property.
+            if (notification is V1PaymentIntentSucceededEventNotification paymentIntentNotification)
             {
-                var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+                // Fetch the current version of the related object
+                var paymentIntent = await paymentIntentNotification.FetchRelatedObjectAsync();
                 Console.WriteLine("A successful payment for {0} was made.", paymentIntent.Amount);
                 // Then define and call a method to handle the successful payment intent.
                 // handlePaymentIntentSucceeded(paymentIntent);
+                // Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+                // need data that the notification and related object don't provide.
+                if (Environment.GetEnvironmentVariable("FETCH_FULL_EVENT") == "true")
+                {
+                    var stripeEvent = await paymentIntentNotification.FetchEventAsync();
+                    Console.WriteLine("Retrieved event {0}.", stripeEvent.Id);
+                }
             }
-            else if (stripeEvent.Type == EventTypes.PaymentMethodAttached)
+            else if (notification is V1PaymentMethodAttachedEventNotification paymentMethodNotification)
             {
-                var paymentMethod = stripeEvent.Data.Object as PaymentMethod;
+                var paymentMethod = await paymentMethodNotification.FetchRelatedObjectAsync();
                 // Then define and call a method to handle the successful attachment of a PaymentMethod.
                 // handlePaymentMethodAttached(paymentMethod);
             }
             else
             {
-                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                // Unexpected event type
+                Console.WriteLine("Unhandled event type: {0}", notification.Type);
             }
             return Ok();
         catch (StripeException e)
@@ -729,125 +746,129 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
             return BadRequest();
         }
   "github.com/stripe/stripe-go/v87"
-  "github.com/stripe/stripe-go/v87/webhook"
   // This is a public sample test API key.
   // Don't submit any personally identifiable information in requests made with this key.
   // Sign in to see your own test API key embedded in code samples.
+  // Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
   // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
   sc = stripe.NewClient("<<YOUR_SECRET_KEY>>")
   http.HandleFunc("/webhook", handleWebhook)
-  event := stripe.Event{}
-
-  if err := json.Unmarshal(payload, &event); err != nil {
-    fmt.Fprintf(os.Stderr, "⚠️  Webhook error while parsing basic request. %v\n", err.Error())
-    w.WriteHeader(http.StatusBadRequest)
-    return
-  }
-
   // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-  // your endpoint's unique secret.
+  // your thin event destination's unique secret.
   //
   // If you are testing with the CLI, find the secret by running 'stripe listen'.
-  // If you are using an endpoint defined with the API or dashboard, look in
+  // If you're using a destination defined with the API or Dashboard, look in
   // your webhook settings at https://dashboard.stripe.com/webhooks.
   //
   // Don't include webhook secrets in code.
   endpointSecret := os.Getenv("STRIPE_WEBHOOK_SECRET")
-
   signatureHeader := req.Header.Get("Stripe-Signature")
-  event, err = sc.ConstructEvent(payload, signatureHeader, endpointSecret)
+  // Verify the signature and parse the thin event notification
+  notification, err := sc.ParseEventNotification(payload, signatureHeader, endpointSecret)
   if err != nil {
-    fmt.Fprintf(os.Stderr, "⚠️  Webhook signature verification failed. %v\n", err)
+    fmt.Fprintf(os.Stderr, "Webhook signature verification failed. %v\n", err)
     w.WriteHeader(http.StatusBadRequest) // Return a 400 error on a bad signature
     return
   }
-  // Unmarshal the event data into an appropriate struct depending on its Type
-  switch event.Type {
-  case "payment_intent.succeeded":
-    var paymentIntent stripe.PaymentIntent
-    err := json.Unmarshal(event.Data.Raw, &paymentIntent)
+  // Handle the event notification by switching on its concrete Go type.
+  // The notification identifies the related object, but doesn't contain it.
+  // Events without a generated type in this SDK version are represented by
+  // *stripe.UnknownEventNotification. To handle them, add a case that checks
+  // the event-name string returned by GetEventNotification().Type.
+  switch evt := notification.(type) {
+  case *stripe.V1PaymentIntentSucceededEventNotification:
+    // Fetch the current version of the related object
+    paymentIntent, err := evt.FetchRelatedObject(context.TODO())
     if err != nil {
-      fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-      w.WriteHeader(http.StatusBadRequest)
+      fmt.Fprintf(os.Stderr, "Error fetching related object: %v\n", err)
+      w.WriteHeader(http.StatusInternalServerError)
       return
     }
     log.Printf("Successful payment for %d.", paymentIntent.Amount)
     // Then define and call a func to handle the successful payment intent.
     // handlePaymentIntentSucceeded(paymentIntent)
-  case "payment_method.attached":
-    var paymentMethod stripe.PaymentMethod
-    err := json.Unmarshal(event.Data.Raw, &paymentMethod)
+    // Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+    // need data that the notification and related object don't provide.
+    if os.Getenv("FETCH_FULL_EVENT") == "true" {
+      event, err := evt.FetchEvent(context.TODO())
+      if err != nil {
+        fmt.Fprintf(os.Stderr, "Error fetching event: %v\n", err)
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+      }
+      log.Printf("Retrieved event %s.", event.ID)
+    }
+  case *stripe.V1PaymentMethodAttachedEventNotification:
+    paymentMethod, err := evt.FetchRelatedObject(context.TODO())
     if err != nil {
-      fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-      w.WriteHeader(http.StatusBadRequest)
+      fmt.Fprintf(os.Stderr, "Error fetching related object: %v\n", err)
+      w.WriteHeader(http.StatusInternalServerError)
       return
     }
+    _ = paymentMethod
     // Then define and call a func to handle the successful attachment of a PaymentMethod.
     // handlePaymentMethodAttached(paymentMethod)
   default:
-    fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
+    fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", evt.GetEventNotification().Type)
   }
   w.WriteHeader(http.StatusOK)
 require github.com/stripe/stripe-go/v87 v87.0.0
         // This is a public sample test API key.
         // Don't submit any personally identifiable information in requests made with this key.
         // Sign in to see your own test API key embedded in code samples.
+        // Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
         // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
         StripeClient client = new StripeClient("<<YOUR_SECRET_KEY>>");
-
         // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
-        // your endpoint's unique secret.
+        // your thin event destination's unique secret.
         //
         // If you are testing with the CLI, find the secret by running 'stripe listen'.
-        // If you are using an endpoint defined with the API or dashboard, look in
+        // If you're using a destination defined with the API or Dashboard, look in
         // your webhook settings at https://dashboard.stripe.com/webhooks.
         //
         // Don't include webhook secrets in code.
         String endpointSecret = System.getenv("STRIPE_WEBHOOK_SECRET");
-
         post("/webhook", (request, response) -> {
             String payload = request.body();
-            Event event = null;
-
+            EventNotification notification = null;
+            String sigHeader = request.headers("Stripe-Signature");
             try {
-                event = ApiResource.GSON.fromJson(payload, Event.class);
-            } catch (JsonSyntaxException e) {
-                // Invalid payload
-                System.out.println("⚠️  Webhook error while parsing basic request.");
+                // Verify the signature and parse the thin event notification
+                notification = client.parseEventNotification(
+                    payload, sigHeader, endpointSecret
+                );
+            } catch (StripeException e) {
+                // Invalid signature
+                System.out.println("Webhook error while validating signature.");
                 response.status(400);
                 return "";
             }
-            String sigHeader = request.headers("Stripe-Signature");
-            if(endpointSecret != null && sigHeader != null) {
-                // Only verify the event if you have an endpoint secret defined.
-                // Otherwise use the basic event deserialized with GSON.
-                try {
-                    event = client.constructEvent(
-                        payload, sigHeader, endpointSecret
-                    );
-                } catch (SignatureVerificationException e) {
-                    // Invalid signature
-                    System.out.println("⚠️  Webhook error while validating signature.");
-                    response.status(400);
-                    return "";
+            // Handle the event notification by matching its class.
+            // The notification identifies the related object, but doesn't contain it.
+            // Events without a generated class in this SDK version are represented by
+            // UnknownEventNotification. To handle them, add a branch that checks
+            // the event-name string returned by getType().
+            if (notification instanceof V1PaymentIntentSucceededEventNotification) {
+                V1PaymentIntentSucceededEventNotification paymentIntentNotification =
+                    (V1PaymentIntentSucceededEventNotification) notification;
+                // Fetch the current version of the related object
+                PaymentIntent paymentIntent = paymentIntentNotification.fetchRelatedObject();
+                System.out.println("Payment for " + paymentIntent.getAmount() + " succeeded.");
+                // Then define and call a method to handle the successful payment intent.
+                // handlePaymentIntentSucceeded(paymentIntent);
+                // Optional: set FETCH_FULL_EVENT=true to retrieve the full event when you
+                // need data that the notification and related object don't provide.
+                if ("true".equals(System.getenv("FETCH_FULL_EVENT"))) {
+                    V1PaymentIntentSucceededEvent event = paymentIntentNotification.fetchEvent();
+                    System.out.println("Retrieved event " + event.getId());
                 }
-            }
-            // Handle the event
-            switch (event.getType()) {
-                case "payment_intent.succeeded":
-                    PaymentIntent paymentIntent = (PaymentIntent) stripeObject;
-                    System.out.println("Payment for " + paymentIntent.getAmount() + " succeeded.");
-                    // Then define and call a method to handle the successful payment intent.
-                    // handlePaymentIntentSucceeded(paymentIntent);
-                    break;
-                case "payment_method.attached":
-                    PaymentMethod paymentMethod = (PaymentMethod) stripeObject;
-                    // Then define and call a method to handle the successful attachment of a PaymentMethod.
-                    // handlePaymentMethodAttached(paymentMethod);
-                    break;
-                default:
-                    System.out.println("Unhandled event type: " + event.getType());
-                break;
+            } else if (notification instanceof V1PaymentMethodAttachedEventNotification) {
+                PaymentMethod paymentMethod =
+                    ((V1PaymentMethodAttachedEventNotification) notification).fetchRelatedObject();
+                // Then define and call a method to handle the successful attachment of a PaymentMethod.
+                // handlePaymentMethodAttached(paymentMethod);
+            } else {
+                System.out.println("Unhandled event type: " + notification.getType());
             }
             response.status(200);
             return "";
@@ -860,6 +881,10 @@ Secure your webhook endpoint by allowing only verified events from Stripe.
 #### [Going live](https://docs.stripe.com/events/set-up-events.md#deploy-event-handler)
 
 Learn how to deploy your webhook endpoint to production and handle events at scale by only sending the specific events you need.
+
+#### [Thin event types](https://docs.stripe.com/api/v2/core/events/event-types.md)
+
+See every event type you can subscribe to with a thin event destination.
 
 #### [Best practices](https://docs.stripe.com/events/manage-webhook-endpoints.md#best-practices)
 

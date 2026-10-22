@@ -125,8 +125,8 @@ Browse available models for each step:
 
 ## Related Resources
 
-* [Embeddings API](/docs/api_reference/embeddings) — full API reference for generating embeddings
-* [Provider Routing](/docs/guides/routing/provider-selection) — control which providers serve your requests
-* [Prompt Caching](/docs/guides/best-practices/prompt-caching) — reduce costs for repeated prompt prefixes
-* [Structured Outputs](/docs/guides/features/structured-outputs) — enforce JSON schema on LLM responses for structured RAG output
+* [Embeddings API](/docs/api_reference/embeddings.md) — full API reference for generating embeddings
+* [Provider Routing](/docs/guides/routing/provider-selection.md) — control which providers serve your requests
+* [Prompt Caching](/docs/guides/best-practices/prompt-caching.md) — reduce costs for repeated prompt prefixes
+* [Structured Outputs](/docs/guides/features/structured-outputs.md) — enforce JSON schema on LLM responses for structured RAG output
 

@@ -63,7 +63,7 @@ You need full-parameter training, a model outside the serverless pool, explicit 
 | Models | Current serverless model list | Models with an enabled dedicated training shape |
 | Capacity | Shared pool and per-account limits | Resources allocated to the run, subject to account quota and platform availability |
 | Checkpoint resume | In-run snapshots; cross-run resume is limited | Explicit checkpoint, reconnect, promotion, and deployment lifecycle |
-| Sampling | In-session sampler, no deployment to create | SDK-managed rollout or evaluation deployment |
+| Sampling | Sampler on the shared pool, no deployment to create; no training client needed | SDK-managed rollout or evaluation deployment |
 | Teardown | Session lifecycle is managed by the service | You must close trainers and delete or scale down deployments |
 | Best fit | LoRA workloads on supported models without provisioning | Full-parameter work, models outside the serverless pool, sustained workloads, and explicit lifecycle control |
 
@@ -165,7 +165,7 @@ The SDK selects base versus delta automatically unless the recipe overrides it.
 
 Checkpoint-to-sampler behavior depends on the infrastructure:
 
-* **Serverless:** save a snapshot and bind an in-session sampling client to that snapshot. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
+* **Serverless:** save a snapshot and bind a sampling client to that snapshot, from the training process or any other. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
 * **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
 For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).

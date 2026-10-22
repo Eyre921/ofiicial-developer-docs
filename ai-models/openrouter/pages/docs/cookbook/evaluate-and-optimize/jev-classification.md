@@ -28,8 +28,8 @@ The following steps will help you build the question set up front, run the whole
 >
 > * Your existing TypeScript app runs on Node.js or Bun as an ES module (step 3 uses top-level `await`), has `@types/node` or `@types/bun` for `process` and `fetch`, and keeps the items to classify in an array of strings named `posts`.
 > * You've configured `OPENROUTER_API_KEY` and have `zod` 4 installed, since this page imports it directly.
-> * You've followed the [Jev tutorial](/docs/guides/community/jev-tutorial) or read the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) once, so the `state` and `questions` request shape is familiar.
-> * Keep the [rate limits page](/docs/api_reference/limits) open for the status codes that step 3 retries.
+> * You've followed the [Jev tutorial](/docs/guides/community/jev-tutorial.md) or read the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md) once, so the `state` and `questions` request shape is familiar.
+> * Keep the [rate limits page](/docs/api_reference/limits.md) open for the status codes that step 3 retries.
 
 ## 1. Build the label set as Jev questions
 
@@ -80,7 +80,7 @@ const questions = {
 
 A per-item classification calls the Decisions endpoint, passes it the post and the questions, checks that its response looks right before trusting it, and returns the category, its confidence, the tag probabilities, and the usage figures. Rate limit, server error, or dropped connection throws a `RetryableError` so step 3 can back off and try again. Anything else throws a plain error so the item fails instead of repeating.
 
-The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) marks `confidence` and `usage.cost` as optional. Missing `confidence` stays `undefined`, and step 4 will route those items to review. If there's no `usage.cost`, then the response is rejected rather than being counted as free.
+The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md) marks `confidence` and `usage.cost` as optional. Missing `confidence` stays `undefined`, and step 4 will route those items to review. If there's no `usage.cost`, then the response is rejected rather than being counted as free.
 
 ```typescript lines theme={null}
 import { z } from 'zod';
@@ -163,7 +163,7 @@ async function classifyPost(post: string): Promise<Classified> {
 
 > [!WARNING]
 >
-> Every call to `classifyPost` is a paid request. At the time of writing, Jev on OpenRouter costs \$0.042 per million input tokens with no output-token charge, and the current price is on the [model page](https://openrouter.ai/typesafe/jev-1.13). One kind of `402` is transient: when your running requests fill the [in-flight spending budget](/docs/api_reference/limits#in-flight-spending-budget), the body includes `limit_source: "openrouter_in_flight_budget"` and the code retries after `Retry-After`. Any other `402` means your credits or key limit ran out, so the item fails and `runBatch` stops the batch.
+> Every call to `classifyPost` is a paid request. At the time of writing, Jev on OpenRouter costs \$0.042 per million input tokens with no output-token charge, and the current price is on the [model page](https://openrouter.ai/typesafe/jev-1.13). One kind of `402` is transient: when your running requests fill the [in-flight spending budget](/docs/api_reference/limits.md#in-flight-spending-budget), the body includes `limit_source: "openrouter_in_flight_budget"` and the code retries after `Retry-After`. Any other `402` means your credits or key limit ran out, so the item fails and `runBatch` stops the batch.
 
 ## 3. Run the Jev batch concurrently within rate limits
 
@@ -372,11 +372,11 @@ The following are things to check about the behavior you've implemented.
 
 Here are a few things you can try next:
 
-* [Classify Reddit and YouTube Comments with Jev and ScrapeCreators](/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev) to point the same `choice` and `noul` questions at scraped comments and re-tune thresholds on stored judgments
-* [Gate Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) to apply the same `noul` thresholds to agent actions
-* [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade) to verify generated answers with a `choice` question
-* [Jev documentation hub](/docs/guides/community/jev) for every Jev page on OpenRouter and the TypeSafe docs on writing questions and choosing thresholds
-* [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe JS or Python SDK instead of raw `fetch`
-* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request)
+* [Classify Reddit and YouTube Comments with Jev and ScrapeCreators](/docs/cookbook/evaluate-and-optimize/classify-reddit-comments-with-jev.md) to point the same `choice` and `noul` questions at scraped comments and re-tune thresholds on stored judgments
+* [Gate Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) to apply the same `noul` thresholds to agent actions
+* [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) to verify generated answers with a `choice` question
+* [Jev documentation hub](/docs/guides/community/jev.md) for every Jev page on OpenRouter and the TypeSafe docs on writing questions and choosing thresholds
+* [TypeSafe SDK guide](/docs/guides/community/typesafe-sdk.md) to call Jev through the TypeSafe JS or Python SDK instead of raw `fetch`
+* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md)
 * [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
 

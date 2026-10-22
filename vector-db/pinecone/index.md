@@ -226,11 +226,11 @@
 - `guides/search/hybrid-search/separate-indexes` — [Run hybrid search on separate indexes](pages/guides/search/hybrid-search/separate-indexes.md) · [原文](https://docs.pinecone.io/guides/search/hybrid-search/separate-indexes)
 - `guides/search/hybrid-search/single-index` — [Run hybrid search on a single index](pages/guides/search/hybrid-search/single-index.md) · [原文](https://docs.pinecone.io/guides/search/hybrid-search/single-index)
 - `guides/search/integrated-embedding` — [Integrated embedding](pages/guides/search/integrated-embedding.md) · [原文](https://docs.pinecone.io/guides/search/integrated-embedding)
-- `guides/search/lexical-search` — [Sparse-vector search](pages/guides/search/lexical-search.md) · [原文](https://docs.pinecone.io/guides/search/lexical-search)
 - `guides/search/reciprocal-rank-fusion` — [Reciprocal rank fusion](pages/guides/search/reciprocal-rank-fusion.md) · [原文](https://docs.pinecone.io/guides/search/reciprocal-rank-fusion)
 - `guides/search/rerank-results` — [Rerank results](pages/guides/search/rerank-results.md) · [原文](https://docs.pinecone.io/guides/search/rerank-results)
 - `guides/search/search-overview` — [Search overview](pages/guides/search/search-overview.md) · [原文](https://docs.pinecone.io/guides/search/search-overview)
 - `guides/search/semantic-search` — [Semantic search](pages/guides/search/semantic-search.md) · [原文](https://docs.pinecone.io/guides/search/semantic-search)
+- `guides/search/sparse-vector-search` — [Sparse-vector search](pages/guides/search/sparse-vector-search.md) · [原文](https://docs.pinecone.io/guides/search/sparse-vector-search)
 
 ## integrations
 

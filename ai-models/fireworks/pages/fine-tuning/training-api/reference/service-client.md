@@ -144,9 +144,11 @@ ref = reference_client.forward(datums, "cross_entropy").result()
 
 The SDK chooses the backing automatically. LoRA policies without an explicit reference shape reuse the policy trainer with the adapter disabled. Full-parameter policies, explicit `reference_training_shape_id`, or explicit `reference_trainer_job_id` use a separate reference trainer owned by the service, backed by the model's LoRA shape with the adapter disabled.
 
-### `create_sampling_client(model_path=None, ...)`
+### `create_sampling_client(model_path=None, base_model=None, ..., tokenizer=None)`
 
-Return a Tinker-shaped sampling client backed by the SDK-managed deployment. When `model_path` is provided, the SDK first syncs that sampler snapshot to the deployment:
+Return a Tinker-shaped `FiretitanSamplingClient`.
+
+**Dedicated.** The client is backed by the SDK-managed deployment. When `model_path` is provided, the SDK first syncs that sampler snapshot to the deployment:
 
 ```python theme={null}
 saved = training_client.save_weights_for_sampler("step-100").result()
@@ -154,6 +156,8 @@ sampler = service.create_sampling_client(model_path=saved.path)
 ```
 
 This is the replacement for calling a standalone weight-sync helper in user code. The SDK tracks the base/delta chain and builds the weight-sync metadata internally.
+
+**Serverless.** The client samples on the shared pool and does not need a training client: pass `base_model=` or a saved checkpoint path. The returned `FiretitanSamplingClient` can be pickled or passed as a sampler handle to other processes. See [Sampling without a training client](/fine-tuning/training-api/serverless#sampling-without-a-training-client).
 
 ### `create_deployment_sampler(model_path=None, tokenizer=None, concurrency_controller=None)`
 

@@ -12,7 +12,7 @@ path: docs/cookbook/building-agents/detect-agent-loops-with-scaledown
 
 > Add a supervisor to your agent loop. Every few steps it asks ScaleDown Classify whether the run is stuck or looping, then nudges or stops the agent based on the answer.
 
-An agent that re-runs the same failing command forty times pays for every attempt, and nobody reads every transcript to catch it. This recipe adds a supervisor to your loop. Every few steps, it sends the transcript to [ScaleDown Classify](https://openrouter.ai/scaledown/classify-1) through the OpenRouter [Decisions API](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) and asks three questions. Is the run making progress, stuck, or looping? Is the agent repeating itself? How close is it to done? Fixed thresholds on the answers decide whether the loop continues, gets a nudge, or stops.
+An agent that re-runs the same failing command forty times pays for every attempt, and nobody reads every transcript to catch it. This recipe adds a supervisor to your loop. Every few steps, it sends the transcript to [ScaleDown Classify](https://openrouter.ai/scaledown/classify-1) through the OpenRouter [Decisions API](/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md) and asks three questions. Is the run making progress, stuck, or looping? Is the agent repeating itself? How close is it to done? Fixed thresholds on the answers decide whether the loop continues, gets a nudge, or stops.
 
 Classify answers questions. It doesn't write text. For each question you get back a typed answer instead of prose: a `choice` picks one of your labels and gives a probability for each, a `noul` gives the probability that the answer is yes, and a `score` places the answer on a scale you define. The supervisor compares those numbers directly, with nothing to parse.
 
@@ -26,7 +26,7 @@ Classify answers questions. It doesn't write text. For each question you get bac
 >
 > * Your existing TypeScript agent loop runs on Node.js 20+ or Bun as an ES module, with `@types/node` or `@types/bun` installed, and can turn its message history into a string.
 > * You've configured `OPENROUTER_API_KEY` and installed `zod` 4.
-> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request) open for the request format.
+> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md) open for the request format.
 
 ## 1. Define the questions
 
@@ -143,7 +143,7 @@ Probabilities are rounded to four places. `score` is the weighted average of the
 
 Decide on the probabilities, not just the label: `choice` says `looping` whether the model is 41% sure or 95% sure. Stopping the run takes two signals agreeing, `run_state` and `is_repeating`, which cuts false stops. One strong signal on its own only earns a nudge.
 
-If a check itself fails, the supervisor lets the run continue: `supervise` logs the error and returns `'continue'`, so a Decisions outage or a schema change never kills a healthy run. A [tool-call gate](/docs/cookbook/building-agents/gate-tool-calls-with-jev) does the opposite and blocks on error, because a wrongly approved tool call can do harm. Here, a missed check costs at most a few more steps of a run that may already be wasted.
+If a check itself fails, the supervisor lets the run continue: `supervise` logs the error and returns `'continue'`, so a Decisions outage or a schema change never kills a healthy run. A [tool-call gate](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) does the opposite and blocks on error, because a wrongly approved tool call can do harm. Here, a missed check costs at most a few more steps of a run that may already be wasted.
 
 ```typescript lines theme={null}
 type Action = 'continue' | 'nudge' | 'halt';
@@ -315,9 +315,9 @@ Change the questions and the same request classifies other text: the outcome of 
 
 ## Next steps
 
-* [Compact Long Agent Sessions with ScaleDown Summarize](/docs/cookbook/building-agents/compact-agent-sessions-with-scaledown) to keep the transcript the supervisor reads inside the context window
-* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) for a Decisions check on single tool calls that blocks on error
-* [Build a Long-Horizon Agent](/docs/cookbook/building-agents/long-horizon-agents) for the cost and step limits this supervisor sits beside
-* [Jev documentation hub](/docs/guides/community/jev) for more on `choice`, `noul`, and `score`
-* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request)
+* [Compact Long Agent Sessions with ScaleDown Summarize](/docs/cookbook/building-agents/compact-agent-sessions-with-scaledown.md) to keep the transcript the supervisor reads inside the context window
+* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) for a Decisions check on single tool calls that blocks on error
+* [Build a Long-Horizon Agent](/docs/cookbook/building-agents/long-horizon-agents.md) for the cost and step limits this supervisor sits beside
+* [Jev documentation hub](/docs/guides/community/jev.md) for more on `choice`, `noul`, and `score`
+* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md)
 

@@ -40,11 +40,11 @@ If you're starting a new TypeScript agent, use the [Agent SDK `callModel` API](/
 
 Use these references for exact schemas:
 
-* [Subagent server tool](/docs/guides/features/server-tools/subagent)
+* [Subagent server tool](/docs/guides/features/server-tools/subagent.md)
 * [Agent SDK `callModel` overview](/docs/sdks/typescript/call-model/overview)
-* [Create a chat completion](/docs/api/api-reference/chat/create-a-chat-completion)
-* [Create a response](/docs/api/api-reference/responses/create-a-response)
-* [TypeScript SDK Chat reference](/docs/client-sdks/typescript/sdks/chat/README)
+* [Create a chat completion](/docs/api/api-reference/chat/create-a-chat-completion.md)
+* [Create a response](/docs/api/api-reference/responses/create-a-response.md)
+* [TypeScript SDK Chat reference](/docs/client-sdks/typescript/sdks/chat/README.md)
 
 ## What you're building
 
@@ -218,7 +218,7 @@ curl -s https://openrouter.ai/api/v1/chat/completions \
   }'
 ```
 
-The response follows the standard [Chat Completions format](/docs/api/api-reference/chat/create-a-chat-completion). Server tools resolve server-side: the orchestrator's subagent calls happen inside OpenRouter's agentic loop, so the client response contains only the final integrated answer in `message.content`. The `usage` object reflects the combined token spend per [Server tools: Usage Tracking](/docs/guides/features/server-tools#usage-tracking).
+The response follows the standard [Chat Completions format](/docs/api/api-reference/chat/create-a-chat-completion.md). Server tools resolve server-side: the orchestrator's subagent calls happen inside OpenRouter's agentic loop, so the client response contains only the final integrated answer in `message.content`. The `usage` object reflects the combined token spend per [Server tools: Usage Tracking](/docs/guides/features/server-tools.md#usage-tracking).
 
 The orchestrator decides whether and when to delegate. Each delegation passes two arguments:
 
@@ -250,7 +250,7 @@ On failure:
 }
 ```
 
-The orchestrator receives the result as a tool response and continues generating. It can delegate more tasks, integrate outcomes it already has, or finish the response. Subagent calls are capped per request (see the [reference page](/docs/guides/features/server-tools/subagent) for current limits).
+The orchestrator receives the result as a tool response and continues generating. It can delegate more tasks, integrate outcomes it already has, or finish the response. Subagent calls are capped per request (see the [reference page](/docs/guides/features/server-tools/subagent.md) for current limits).
 
 ## 3. Give the worker its own tools
 
@@ -287,7 +287,7 @@ The worker's tool use happens inside the subagent call. Only its final text is r
 
 Two constraints on nested tools:
 
-* Only OpenRouter server tools work (e.g. `openrouter:web_search`, `openrouter:web_fetch`, `openrouter:datetime`). Function tools placed in the nested `tools` array are rejected with a `400`. On the Responses API, the subagent can additionally inherit top-level function tools (experimental). See [Inheriting Client Function Tools](/docs/guides/features/server-tools/subagent#inheriting-client-function-tools).
+* Only OpenRouter server tools work (e.g. `openrouter:web_search`, `openrouter:web_fetch`, `openrouter:datetime`). Function tools placed in the nested `tools` array are rejected with a `400`. On the Responses API, the subagent can additionally inherit top-level function tools (experimental). See [Inheriting Client Function Tools](/docs/guides/features/server-tools/subagent.md#inheriting-client-function-tools).
 * The subagent tool can't list itself. Recursion guards prevent the worker from re-entering the subagent.
 
 ## 4. Tune the worker for cost and quality
@@ -319,11 +319,11 @@ const tools = [
 | `instructions` | System prompt for the worker. Shape its output format and behavior. |
 | `max_tool_calls` | Range 1 to 25. Ceiling on the worker's own tool-calling loop. |
 
-The full parameter reference is at [Subagent server tool](/docs/guides/features/server-tools/subagent).
+The full parameter reference is at [Subagent server tool](/docs/guides/features/server-tools/subagent.md).
 
 > [!NOTE]
 >
-> Subagent works with both non-streaming and streaming requests. With streaming (`stream: true`), the server sends `: OPENROUTER PROCESSING` SSE comments as heartbeats while workers execute. Content chunks resume once the orchestrator continues generating. The final chunk includes the aggregated `usage` object. See [Server tools overview](/docs/guides/features/server-tools) for how server tool usage appears in the response.
+> Subagent works with both non-streaming and streaming requests. With streaming (`stream: true`), the server sends `: OPENROUTER PROCESSING` SSE comments as heartbeats while workers execute. Content chunks resume once the orchestrator continues generating. The final chunk includes the aggregated `usage` object. See [Server tools overview](/docs/guides/features/server-tools.md) for how server tool usage appears in the response.
 
 With `stream: true`, expect this pattern in the SSE stream:
 
@@ -404,7 +404,7 @@ Do not log:
 * full worker outcomes
 * user content (unless your product already has an explicit retention policy)
 
-The `usage` object in the response reflects the combined token spend of the orchestrator plus all worker calls, per [Server tools: Usage Tracking](/docs/guides/features/server-tools#usage-tracking). You don't need to track inner costs separately.
+The `usage` object in the response reflects the combined token spend of the orchestrator plus all worker calls, per [Server tools: Usage Tracking](/docs/guides/features/server-tools.md#usage-tracking). You don't need to track inner costs separately.
 
 ```js lines theme={null}
 const logDelegation = (response, context) => {
@@ -428,11 +428,11 @@ const logDelegation = (response, context) => {
 
 ## Next steps
 
-* Read the [Subagent reference](/docs/guides/features/server-tools/subagent) for exact parameters, recursion guards, worker tool constraints, and invocation caps.
-* Pair subagent with [Advisor](/docs/cookbook/building-agents/advisor-server-tool) for a two-tier pattern: cheap worker for routine tasks, strong advisor for uncertain decisions.
-* Give the worker [Web Search](/docs/guides/features/server-tools/web-search) when subtasks need current data.
-* Add [Response Caching](/docs/guides/features/response-caching) for repeated orchestrator prefixes across similar tasks.
-* Use [Fusion](/docs/guides/features/server-tools/fusion) when subtasks need multi-model deliberation instead of single-worker execution.
+* Read the [Subagent reference](/docs/guides/features/server-tools/subagent.md) for exact parameters, recursion guards, worker tool constraints, and invocation caps.
+* Pair subagent with [Advisor](/docs/cookbook/building-agents/advisor-server-tool.md) for a two-tier pattern: cheap worker for routine tasks, strong advisor for uncertain decisions.
+* Give the worker [Web Search](/docs/guides/features/server-tools/web-search.md) when subtasks need current data.
+* Add [Response Caching](/docs/guides/features/response-caching.md) for repeated orchestrator prefixes across similar tasks.
+* Use [Fusion](/docs/guides/features/server-tools/fusion.md) when subtasks need multi-model deliberation instead of single-worker execution.
 * Browse the [Model list](https://openrouter.ai/models) to compare worker model pricing and find the cheapest model that meets your subtask quality bar.
-* Add [Structured Outputs](/docs/structured-outputs) to the orchestrator request when you need the final answer in a specific JSON schema.
+* Add [Structured Outputs](/docs/structured-outputs.md) to the orchestrator request when you need the final answer in a specific JSON schema.
 

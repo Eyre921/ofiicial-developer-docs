@@ -131,21 +131,21 @@ const result3 = openrouter.callModel({
 
 Explore the guides to learn more about specific features:
 
-* **[Working with Items](/docs/agent-sdk/call-model/items)** - Understand the items-based streaming paradigm
-* **[Text Generation](/docs/agent-sdk/call-model/text-generation)** - Input formats, model selection, and response handling
-* **[Streaming](/docs/agent-sdk/call-model/streaming)** - All streaming methods and patterns
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Creating typed tools with Zod schemas and multi-turn orchestration
-* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks)** - Observe and control tools, prompts, approvals, sessions, and model calls
-* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params)** - Tool-driven context injection for skills and plugins
-* **[Message Formats](/docs/agent-sdk/call-model/message-formats)** - Converting to/from OpenAI and Claude formats
-* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters)** - Async functions for adaptive behavior
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Intelligent execution control
-* **[API Reference](/docs/agent-sdk/call-model/api-reference)** - Complete type definitions and method signatures
+* **[Working with Items](/docs/agent-sdk/call-model/items.md)** - Understand the items-based streaming paradigm
+* **[Text Generation](/docs/agent-sdk/call-model/text-generation.md)** - Input formats, model selection, and response handling
+* **[Streaming](/docs/agent-sdk/call-model/streaming.md)** - All streaming methods and patterns
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Creating typed tools with Zod schemas and multi-turn orchestration
+* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks.md)** - Observe and control tools, prompts, approvals, sessions, and model calls
+* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params.md)** - Tool-driven context injection for skills and plugins
+* **[Message Formats](/docs/agent-sdk/call-model/message-formats.md)** - Converting to/from OpenAI and Claude formats
+* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters.md)** - Async functions for adaptive behavior
+* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Intelligent execution control
+* **[API Reference](/docs/agent-sdk/call-model/api-reference.md)** - Complete type definitions and method signatures
 
 ### Example Tools
 
 Ready-to-use tool implementations:
 
-* **[Weather Tool](/docs/agent-sdk/call-model/examples/weather-tool)** - Basic API integration
-* **[Skills Loader](/docs/agent-sdk/call-model/examples/skills-loader)** - Claude Code skills pattern
+* **[Weather Tool](/docs/agent-sdk/call-model/examples/weather-tool.md)** - Basic API integration
+* **[Skills Loader](/docs/agent-sdk/call-model/examples/skills-loader.md)** - Claude Code skills pattern
 

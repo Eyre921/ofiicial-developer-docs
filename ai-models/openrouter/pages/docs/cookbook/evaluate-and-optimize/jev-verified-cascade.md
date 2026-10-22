@@ -31,7 +31,7 @@ On the 50-question benchmark in the worked example below, the cascade shipped th
 > * You've configured `OPENROUTER_API_KEY`.
 > * You have `@openrouter/sdk` installed.
 > * You've typed `process.env` through your runtime's type definitions.
-> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) open for the verification endpoint.
+> * Keep the [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md) open for the verification endpoint.
 
 ## 1. Draft with the cheap model
 
@@ -125,7 +125,7 @@ async function verifyAnswer(question: string, excerpts: string[], answer: string
 
 > [!NOTE]
 >
-> **Confidence.** Confidence is Jev's probability that the chosen label is correct. It ranges from 0 to 1 and appears only with `choice` and `score` answers. `probabilities` has one value per label. The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) marks both optional, so the code above defaults a missing confidence to `0`, which fails acceptance in step 3, and a missing probabilities object to `{}`.
+> **Confidence.** Confidence is Jev's probability that the chosen label is correct. It ranges from 0 to 1 and appears only with `choice` and `score` answers. `probabilities` has one value per label. The [Decisions schema](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md) marks both optional, so the code above defaults a missing confidence to `0`, which fails acceptance in step 3, and a missing probabilities object to `{}`.
 
 ## 3. Route on the verdict
 
@@ -278,13 +278,13 @@ The following are things to check about the behavior you've implemented.
 
 Here are a few things you can try next:
 
-* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request)
-* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev) to apply the same approve, block, or review pattern to agent tool calls
-* [Classify and Tag Text at Scale with Jev](/docs/cookbook/evaluate-and-optimize/jev-classification) to run `choice` and `noul` questions over a batch and pick thresholds from labeled data
-* [Jev SDK for TypeScript and Python](/docs/guides/community/typesafe-sdk) to call Jev through the TypeSafe SDK
-* [Jev documentation hub](/docs/guides/community/jev) for the [Jev tutorial](/docs/guides/community/jev-tutorial), the other cookbooks, and the TypeSafe docs on writing questions
+* [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request.md)
+* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) to apply the same approve, block, or review pattern to agent tool calls
+* [Classify and Tag Text at Scale with Jev](/docs/cookbook/evaluate-and-optimize/jev-classification.md) to run `choice` and `noul` questions over a batch and pick thresholds from labeled data
+* [Jev SDK for TypeScript and Python](/docs/guides/community/typesafe-sdk.md) to call Jev through the TypeSafe SDK
+* [Jev documentation hub](/docs/guides/community/jev.md) for the [Jev tutorial](/docs/guides/community/jev-tutorial.md), the other cookbooks, and the TypeSafe docs on writing questions
 * [Jev model page](https://openrouter.ai/typesafe/jev-1.13) and [Jev Lab](https://openrouter.ai/labs/jev) for pricing and interactive demos
 * [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
-* [RAG with Embeddings & Rerank](/docs/cookbook/evaluate-and-optimize/rag)
-* [Add Human-in-the-Loop Controls to an Agent SDK Agent](/docs/cookbook/building-agents/hitl-tools)
+* [RAG with Embeddings & Rerank](/docs/cookbook/evaluate-and-optimize/rag.md)
+* [Add Human-in-the-Loop Controls to an Agent SDK Agent](/docs/cookbook/building-agents/hitl-tools.md)
 

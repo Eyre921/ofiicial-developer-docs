@@ -12,11 +12,11 @@ path: docs/cookbook/administration/api-key-audit
 
 > Find API keys without spend limits, without expirations, or with no recent use
 
-The [Security settings page](/docs/guides/overview/auth/security-settings) shows which API keys lack a spend limit or an expiration, and which haven't been used recently. To run the same checks on a schedule, or to feed them into your own tooling, call the [List API keys](/docs/api/api-reference/api-keys/list-api-keys) endpoint with a [Management API key](/docs/guides/overview/auth/management-api-keys).
+The [Security settings page](/docs/guides/overview/auth/security-settings.md) shows which API keys lack a spend limit or an expiration, and which haven't been used recently. To run the same checks on a schedule, or to feed them into your own tooling, call the [List API keys](/docs/api/api-reference/api-keys/list-api-keys.md) endpoint with a [Management API key](/docs/guides/overview/auth/management-api-keys.md).
 
 ## Prerequisites
 
-* A [Management API key](/docs/guides/overview/auth/management-api-keys). For organizations, only organization admins can create one.
+* A [Management API key](/docs/guides/overview/auth/management-api-keys.md). For organizations, only organization admins can create one.
 * Python 3 with the `requests` package, or any HTTP client.
 
 ## Fields to check
@@ -31,7 +31,7 @@ Each key returned by `GET /api/v1/keys` includes these fields:
 
 OpenRouter has recorded last-use times since the end of 2025. A key whose `last_used_at` is `null` but whose `usage` or `byok_usage` is greater than 0 was last used before then. Treat it as idle, not as never used.
 
-The endpoint lists the keys in one workspace: the `workspace_id` you pass, or your default workspace if you omit it. To audit every workspace, list them with [List workspaces](/docs/api/api-reference/workspaces/list-workspaces) and call the endpoint once per `workspace_id`. It returns up to 100 keys per page. Pass `offset` to read the next page, and stop when a page has fewer than 100 keys. Disabled keys are excluded unless you pass `include_disabled=true`, and expired keys are excluded unless you pass `include_expired=true`.
+The endpoint lists the keys in one workspace: the `workspace_id` you pass, or your default workspace if you omit it. To audit every workspace, list them with [List workspaces](/docs/api/api-reference/workspaces/list-workspaces.md) and call the endpoint once per `workspace_id`. It returns up to 100 keys per page. Pass `offset` to read the next page, and stop when a page has fewer than 100 keys. Disabled keys are excluded unless you pass `include_disabled=true`, and expired keys are excluded unless you pass `include_expired=true`.
 
 The endpoint returns standard API keys only. Management API keys and keys created through OAuth aren't included, so review those on the Security settings page.
 
@@ -137,7 +137,7 @@ To audit one workspace, list keys for that `workspace_id` only. To build a list 
 
 The API returns raw key data, not the risk or **Safe to remove** labels shown in the dashboard. Decide what counts as safe to remove for your organization. For example, keys that were never used, or that have been idle for 90 days with little lifetime `usage`.
 
-Confirm with each key's owner before you change it. Then use [Update an API key](/docs/api/api-reference/api-keys/update-an-api-key) to set a `limit` or set `disabled` to `true`, or [Delete an API key](/docs/api/api-reference/api-keys/delete-an-api-key) to remove it. Disabling is reversible; deleting is not. An expiration can't be added to an existing key, so replace keys that never expire with new expiring keys, following the [API key rotation](/docs/cookbook/administration/api-key-rotation) guide.
+Confirm with each key's owner before you change it. Then use [Update an API key](/docs/api/api-reference/api-keys/update-an-api-key.md) to set a `limit` or set `disabled` to `true`, or [Delete an API key](/docs/api/api-reference/api-keys/delete-an-api-key.md) to remove it. Disabling is reversible; deleting is not. An expiration can't be added to an existing key, so replace keys that never expire with new expiring keys, following the [API key rotation](/docs/cookbook/administration/api-key-rotation.md) guide.
 
 ## Check your work
 

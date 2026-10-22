@@ -14,7 +14,7 @@ path: docs/client-sdks/typescript/sdks/systemone/readme
 
 ## Overview
 
-System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See [https://openrouter.ai/docs/guides/community/typesafe-sdk](https://openrouter.ai/docs/guides/community/typesafe-sdk).
+System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See [https://openrouter.ai/docs/guides/community/typesafe-sdk](https://openrouter.ai/docs/guides/community/typesafe-sdk.md).
 
 ### Available Operations
 

@@ -318,6 +318,6 @@ describe('weatherTool', () => {
 
 ## See Also
 
-* **[Tools Guide](/docs/agent-sdk/call-model/tools)** - Tool creation fundamentals
-* **[API Reference](/docs/agent-sdk/call-model/api-reference)** - Complete type definitions
+* **[Tools Guide](/docs/agent-sdk/call-model/tools.md)** - Tool creation fundamentals
+* **[API Reference](/docs/agent-sdk/call-model/api-reference.md)** - Complete type definitions
 

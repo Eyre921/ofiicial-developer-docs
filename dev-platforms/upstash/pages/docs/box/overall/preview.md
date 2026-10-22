@@ -21,9 +21,9 @@ import { Agent, Box } from "@upstash/box"
 const box = await Box.create({ runtime: "node" })
 
 // Start a web server on port 3000
-await box.exec.command("cd /work && npm install express")
+await box.exec.command("npm install express")
 await box.files.write({
-  path: "/work/server.js",
+  path: "server.js",
   content: `
     const express = require('express')
     const app = express()
@@ -31,7 +31,7 @@ await box.files.write({
     app.listen(3000)
   `,
 })
-await box.exec.command("node /work/server.js &")
+await box.exec.command("nohup node server.js > server.log 2>&1 &")
 
 // Create a public URL
 const publicUrl = await box.getPublicURL(3000)
@@ -46,9 +46,9 @@ from upstash_box import Box
 box = Box.create(runtime="node")
 
 # Start a web server on port 3000
-box.exec.command("cd /work && npm install express")
+box.exec.command("npm install express")
 box.files.write(
-    path="/work/server.js",
+    path="server.js",
     content="""
     const express = require('express')
     const app = express()
@@ -56,7 +56,7 @@ box.files.write(
     app.listen(3000)
   """,
 )
-box.exec.command("node /work/server.js &")
+box.exec.command("nohup node server.js > server.log 2>&1 &")
 
 # Create a public URL
 public_url = box.get_public_url(3000)
@@ -222,8 +222,10 @@ result = box.list_public_urls()
 
 print(result["public_urls"])
 # [
-#   PublicURL(url="https://{BOX_ID}-3000.preview.box.upstash.com", port=3000),
-#   PublicURL(url="https://{BOX_ID}-8080.preview.box.upstash.com", port=8080),
+#   PublicURLListItem(id="{BOX_ID}-3000", port=3000, url="https://{BOX_ID}-3000.preview.box.upstash.com",
+#                     created_at=1789990404, basic_auth=False, bearer_token=False),
+#   PublicURLListItem(id="{BOX_ID}-8080", port=8080, url="https://{BOX_ID}-8080.preview.box.upstash.com",
+#                     created_at=1789990512, basic_auth=False, bearer_token=True),
 # ]
 ```
 </CodeGroup>
@@ -419,7 +421,7 @@ const box = await Box.create({ runtime: "python" })
 
 // Set up a Flask app
 await box.files.write({
-  path: "/work/app.py",
+  path: "app.py",
   content: `
 from flask import Flask
 app = Flask(__name__)
@@ -433,7 +435,7 @@ if __name__ == '__main__':
   `,
 })
 
-await box.exec.command("pip install flask && python /work/app.py &")
+await box.exec.command("pip install flask && nohup python app.py > app.log 2>&1 &")
 
 // Create authenticated public URL
 const publicUrl = await box.getPublicURL(8080, { basicAuth: true })
@@ -453,7 +455,7 @@ box = Box.create(runtime="python")
 
 # Set up a Flask app
 box.files.write(
-    path="/work/app.py",
+    path="app.py",
     content="""
 from flask import Flask
 app = Flask(__name__)
@@ -467,7 +469,7 @@ if __name__ == '__main__':
   """,
 )
 
-box.exec.command("pip install flask && python /work/app.py &")
+box.exec.command("pip install flask && nohup python app.py > app.log 2>&1 &")
 
 # Create authenticated public URL
 public_url = box.get_public_url(8080, basic_auth=True)
@@ -492,7 +494,7 @@ const box = await Box.create({ runtime: "node" })
 
 // Start frontend on port 3000
 await box.files.write({
-  path: "/work/frontend.js",
+  path: "frontend.js",
   content: `
 const express = require('express')
 const app = express()
@@ -503,7 +505,7 @@ app.listen(3000)
 
 // Start API on port 8080
 await box.files.write({
-  path: "/work/api.js",
+  path: "api.js",
   content: `
 const express = require('express')
 const app = express()
@@ -513,7 +515,7 @@ app.listen(8080)
 })
 
 await box.exec.command("npm install express")
-await box.exec.command("node /work/frontend.js & node /work/api.js &")
+await box.exec.command("nohup node frontend.js > frontend.log 2>&1 & nohup node api.js > api.log 2>&1 &")
 
 // Create a public URL for each service
 const frontendPublicUrl = await box.getPublicURL(3000)
@@ -530,7 +532,7 @@ box = Box.create(runtime="node")
 
 # Start frontend on port 3000
 box.files.write(
-    path="/work/frontend.js",
+    path="frontend.js",
     content="""
 const express = require('express')
 const app = express()
@@ -541,7 +543,7 @@ app.listen(3000)
 
 # Start API on port 8080
 box.files.write(
-    path="/work/api.js",
+    path="api.js",
     content="""
 const express = require('express')
 const app = express()
@@ -551,7 +553,7 @@ app.listen(8080)
 )
 
 box.exec.command("npm install express")
-box.exec.command("node /work/frontend.js & node /work/api.js &")
+box.exec.command("nohup node frontend.js > frontend.log 2>&1 & nohup node api.js > api.log 2>&1 &")
 
 # Create a public URL for each service
 frontend_public_url = box.get_public_url(3000)
@@ -573,7 +575,7 @@ import { Agent, Box } from "@upstash/box"
 const box = await Box.create({ runtime: "node" })
 
 // Start test server
-await box.exec.command("npx http-server /work -p 3000 &")
+await box.exec.command("nohup npx http-server . -p 3000 > http.log 2>&1 &")
 
 // Create a public URL for testing
 const publicUrl = await box.getPublicURL(3000)
@@ -594,7 +596,7 @@ from upstash_box import Box
 box = Box.create(runtime="node")
 
 # Start test server
-box.exec.command("npx http-server /work -p 3000 &")
+box.exec.command("nohup npx http-server . -p 3000 > http.log 2>&1 &")
 
 # Create a public URL for testing
 public_url = box.get_public_url(3000)
@@ -609,4 +611,4 @@ box.delete()
 ```
 </CodeGroup>
 
-<Note>The SDK still supports `getPreviewUrl`, `listPreviews`, and `deletePreview`, but they are deprecated aliases for `getPublicURL`, `listPublicURLs`, and `deletePublicURL`.</Note>
+<Note>The TypeScript SDK still supports `getPreviewUrl`, `listPreviews`, and `deletePreview`, but they are deprecated aliases for `getPublicURL`, `listPublicURLs`, and `deletePublicURL`.</Note>

@@ -10,13 +10,9 @@ This guide hosts [Hermes](https://github.com/NousResearch/hermes-agent) in an Up
 
 ## 1. Create a Box
 
-Create a box with the **Fixed (keep-alive)** plan and the **Medium** size. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
+Create a box with the **Fixed (keep-alive)** plan and the **Small** size. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
 
-<Note>
-  Hermes is resource-intensive, so we recommend starting with a Medium box to ensure a smooth installation.
-</Note>
-
-<img alt="Creating a Fixed (keep-alive) Medium box in the Upstash Console" />
+<img alt="Choosing the Small box size in the Upstash Console" />
 
 ***
 
@@ -61,6 +57,18 @@ In Hermes Desktop, go to **Settings → Gateways → This window** and choose **
 Leave **Port** and **Hermes path** blank, then click **Save and reconnect**.
 
 <img alt="Connect via SSH settings in Hermes Desktop" />
+
+To add the box under **Saved connections** instead, which has no identity file field, first add it to `~/.ssh/config`:
+
+```
+Host hermes-box
+  HostName us-east-1.box.upstash.com
+  User <box-id>
+  IdentityFile ~/.ssh/upstash_box
+  IdentitiesOnly yes
+```
+
+Then use `hermes-box` as the host.
 
 ***
 

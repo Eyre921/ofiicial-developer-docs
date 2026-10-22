@@ -144,10 +144,10 @@ Make sure that marketing materials use clear messaging that fully explains produ
 
 | Do | Don’t |
 | --- | --- |
-| Only use statements about products that are true, accurate, and aligned with how users engage with the products. | Don’t leave out key information from marketing content. If the information is likely to affect whether someone uses the product, then it’s “key." |
+| Only use statements about products that are true, accurate, and aligned with how users engage with the products. | Don’t leave out key information from marketing content. If the information is likely to affect whether someone uses the product, then it’s “key.” |
 | If you make claims that require additional data to support them, or if an end user needs to know more details to know how a certain claim is true, you must:
 - Provide documented evidence.
-- Disclose that information. | Make exaggerated claims that are hard to prove. Don’t make absolute statements that are disproved by a single exception. For example, “number 1," “every," “only," “all," “never," “always." |
+- Disclose that information. | Make exaggerated claims that are hard to prove. Don’t make absolute statements that are disproved by a single exception. For example, “number 1,” “every,” “only,” “all,” “never,” “always.” |
 | Clearly explain all qualifying limitations and requirements needed by end users to get the product or features that you’ve advertised. | Don’t advertise features or programs that only a few applicants actually qualify for. |
 | All disclosures must meet a “clear and conspicuous” standard:
 - Font size must be large enough to read.

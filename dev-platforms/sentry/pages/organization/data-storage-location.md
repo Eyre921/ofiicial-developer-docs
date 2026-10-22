@@ -94,6 +94,15 @@ For [data stored in the US](https://docs.sentry.io/organization/data-storage-loc
 
 At this time, your data storage location can’t be changed if you have an existing SaaS organization. The only way to switch it is by creating a new organization.
 
+Sentry doesn't move data or settings between SaaS organizations. Historical data, like issues, events, replays, and source maps, stays in your existing organization.
+
+Planning a switch
+
+* **Setup:** Recreate teams, projects, members, [SSO](https://docs.sentry.io/organization/authentication/sso.md), [integrations](https://docs.sentry.io/integrations.md), [alerts](https://docs.sentry.io/product/monitors-and-alerts.md), and [dashboards](https://docs.sentry.io/product/dashboards.md) in the new organization.
+* **SDKs and tooling:** Update [DSNs](https://docs.sentry.io/concepts/key-terms/dsn-explainer.md), auth tokens, org slugs, and [API domains](https://docs.sentry.io/organization/data-storage-location.md#using-data-storage-location-apis) in your apps and CI.
+* **Cutover:** Keep the old organization until new events and alerts work, and until you no longer need its history.
+* **Billing:** Each organization has its own subscription. [Cancellations](https://docs.sentry.io/pricing.md#plans-and-free-trials) take effect at the end of the current contract cycle and aren't refunded, so plan the cutover around your renewal date.
+
 ### [Self-hosted](https://docs.sentry.io/organization/data-storage-location.md#self-hosted)
 
 If you have a self-hosted Sentry account, you can [follow these instructions](https://docs.sentry.io/concepts/migration.md) to migrate your data.

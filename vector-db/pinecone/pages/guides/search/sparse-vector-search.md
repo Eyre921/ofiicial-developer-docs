@@ -1,7 +1,7 @@
 ---
 title: "Sparse-vector search"
-source: https://docs.pinecone.io/guides/search/lexical-search
-path: guides/search/lexical-search
+source: https://docs.pinecone.io/guides/search/sparse-vector-search
+path: guides/search/sparse-vector-search
 ---
 
 Run sparse-vector search in Pinecone with custom sparse encoders like pinecone-sparse-english-v0 for token-weighted keyword retrieval.

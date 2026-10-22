@@ -14,6 +14,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | - | - |
 | Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
+| DeepSeek V4.1 Flash 1017 | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-us` |
 | GLM 5.3 | `accounts/fireworks/routers/glm-5p3-us` |
 | GLM 5.3 Flash | `accounts/fireworks/routers/glm-5p3-flash-us` |
 | Muse Spark Open | `accounts/fireworks/models/muse-spark-open` |

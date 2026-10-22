@@ -135,6 +135,7 @@ For details on territories where Stripe Tax applies the parent country tax treat
 - Saint Pierre and Miquelon
 - Wallis and Futuna |
 | Greece | - Mount Athos |
+| Isle of Man | - Isle of Man |
 | Italy | - Campione d’Italia
 - Livigno
 - Vatican City |
@@ -154,8 +155,7 @@ For details on territories where Stripe Tax applies the parent country tax treat
 | United Kingdom | - British Virgin Islands
 - Channel Islands (Guernsey and Jersey)
 - Falkland Islands
-- Gibraltar
-- Isle of Man |
+- Gibraltar |
 
 ## See also
 

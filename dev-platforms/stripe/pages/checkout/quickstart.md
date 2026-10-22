@@ -493,6 +493,7 @@ $checkout_session = $stripe->checkout->sessions->create([
 
 header("HTTP/1.1 303 See Other");
 header("Location: " . $checkout_session->url);
+// Before testing, use a sandbox secret key from the Stripe account used by the Stripe CLI.
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
         // This test secret API key is a placeholder. Don't include personal details in requests with this key.

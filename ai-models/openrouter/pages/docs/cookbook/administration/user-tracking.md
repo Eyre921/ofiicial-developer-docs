@@ -32,7 +32,7 @@ Include a `user` parameter in chat-completions or image-generation requests with
 
 ## Register External Users with the Management API
 
-Organizations can explicitly register the same caller-supplied tracking identifiers through the Management API. Registration requires an organization [management key](/docs/guides/overview/auth/management-api-keys) and does not create a login, organization member, credential, or generated OpenRouter end-user ID.
+Organizations can explicitly register the same caller-supplied tracking identifiers through the Management API. Registration requires an organization [management key](/docs/guides/overview/auth/management-api-keys.md) and does not create a login, organization member, credential, or generated OpenRouter end-user ID.
 
 ```bash theme={null}
 curl https://openrouter.ai/api/v1/external-users \

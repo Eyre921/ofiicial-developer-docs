@@ -232,13 +232,13 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 
 > **Epochs**
 >
-> Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Non-integer values are supported.
+> Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Epochs must be a whole number.
 >
 > **Note: we set a max value of 3 million dataset examples × epochs**
 >
 > ```shell theme={null}
 > firectl sftj create \
->   --epochs 2.0 \
+>   --epochs 2 \
 >   --base-model MY_BASE_MODEL \
 >   --dataset cancerset \
 >   --output-model my-tuned-model

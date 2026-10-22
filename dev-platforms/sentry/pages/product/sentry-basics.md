@@ -50,8 +50,6 @@ After basic error monitoring, these features add the debugging context that will
 | **[Application Metrics](https://docs.sentry.io/product/metrics.md)**   | Custom counters, gauges, distributions                      | Add metric calls to your code                                                                                   |
 | **[User Feedback](https://docs.sentry.io/product/user-feedback.md)**   | Collect bug reports from users, linked to errors            | Add the feedback widget                                                                                         |
 
-Check out Sentry's [cookbooks](https://docs.sentry.io/get-started/cookbook.md) to learn more about how others use Sentry, and how to go deeper with each of Sentry's tools.
-
 ## [Step 4: Explore Your Data](https://docs.sentry.io/get-started.md#step-4-explore-your-data)
 
 Once data is flowing, use these tools to understand your application's health:
@@ -72,6 +70,7 @@ Our **[Guides](https://docs.sentry.io/get-started/guides.md)** cover real-world 
 * [Querying Traces](https://docs.sentry.io/get-started/guides/querying-traces.md) — finding slow pages and bottlenecks
 * [Adding Custom Spans](https://docs.sentry.io/get-started/guides/custom-spans.md) — instrumenting your own code
 * [Using Session Replay](https://docs.sentry.io/get-started/guides/session-replay.md) — debugging workflows with replays
+* [Getting Started Tutorial](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial.md) — follow a sample full-stack JavaScript app end-to-end
 
 ### [Cookbook](https://docs.sentry.io/get-started.md#cookbook)
 

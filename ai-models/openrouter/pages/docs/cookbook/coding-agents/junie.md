@@ -165,6 +165,6 @@ After starting a session, check the [OpenRouter Activity Dashboard](https://open
 
 * **Junie CLI Documentation**: [junie.jetbrains.com/docs](https://junie.jetbrains.com/docs/junie-cli.html)
 * **Junie Environment Variables**: [Environment Variables Reference](https://junie.jetbrains.com/docs/environment-variables.html)
-* **OpenRouter Quick Start**: [Getting Started with OpenRouter](https://openrouter.ai/docs/quickstart)
+* **OpenRouter Quick Start**: [Getting Started with OpenRouter](https://openrouter.ai/docs/quickstart.md)
 * **Available Models**: [Browse OpenRouter Models](https://openrouter.ai/models)
 

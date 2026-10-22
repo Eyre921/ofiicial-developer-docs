@@ -408,7 +408,7 @@ const testResult = openrouter.callModel({
 
 ## See Also
 
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Multi-turn orchestration
-* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters)** - Adaptive behavior
-* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params)** - Tool-driven modifications
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Multi-turn orchestration
+* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters.md)** - Adaptive behavior
+* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params.md)** - Tool-driven modifications
 

@@ -293,7 +293,7 @@ To activate a capability, you must first request it by setting its requested pro
 
 | Capability | Description | Configuration |
 | --- | --- | --- |
-| `card_payments` | Allows the merchant to accept card payments. | `merchant` |
+| `card_payments` | Allows the user to accept card payments. | `merchant` |
 | `received_credits.bank_accounts` | Allows you to create a [Financial Address](https://docs.stripe.com/api/v2/money-management/financial-addresses.md?api-version=preview) for financial accounts to receive inbound credits. | `money_manager` |
 | `business_storage.inbound.{currency}` / `business_storage.outbound.{currency}` | List of the currencies which can be held in the financial accounts of the connected account. You must request both inbound and outbound for each currency. | `money_manager` |
 | `outbound_payments.bank_accounts` | Send funds from a financial account to a bank account owned by a different entity. | `money_manager` |

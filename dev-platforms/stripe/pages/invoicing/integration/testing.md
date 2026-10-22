@@ -44,7 +44,7 @@ Use the [**4000 0027 6000 3184**](https://docs.stripe.com/testing.md#regulatory-
 
 To test manual payments on invoices through bank transfers:
 
-1. Create a testmode invoice with the collection method set to `send_invoice` and `payment_settings[payment_method_types]` array set to `[customer_balance]`.
+1. In a sandbox, create an invoice with the collection method set to `send_invoice` and `payment_settings[payment_method_types]` array set to `[customer_balance]`.
 
 2. Find the invoice in the Dashboard and click **Send**. This generates a unique virtual bank account number for your customer.
 

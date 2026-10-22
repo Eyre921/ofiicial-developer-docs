@@ -164,7 +164,7 @@ Stripe Capital loans have a minimum amount due each payment period. If the amoun
 
 ### Name your Capital program 
 
-Keep the name of your Capital program simple. If you already have a payments program such as “Rocket Rides Payments," you can call it “Rocket Rides Capital” or “Rocket Rides Business Financing." If you want to include Stripe in the name, we recommend something like “Rocket Rides + Stripe Capital."
+Keep the name of your Capital program simple. If you already have a payments program such as “Rocket Rides Payments,” you can call it “Rocket Rides Capital” or “Rocket Rides Business Financing.” If you want to include Stripe in the name, we recommend something like “Rocket Rides + Stripe Capital.”
 
 ### Design your Capital Logo 
 

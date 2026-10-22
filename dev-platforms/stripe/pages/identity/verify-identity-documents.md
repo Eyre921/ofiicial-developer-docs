@@ -4,7 +4,7 @@ source: https://docs.stripe.com/identity/verify-identity-documents.md
 path: identity/verify-identity-documents
 ---
 
-# Verify your users’ identity documents
+# Verify your users' identity documents
 
 Create sessions and collect identity documents.
 

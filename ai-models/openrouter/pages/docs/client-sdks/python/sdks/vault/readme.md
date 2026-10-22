@@ -14,7 +14,7 @@ path: docs/client-sdks/python/sdks/vault/readme
 
 ## Overview
 
-Store host-bound secrets for a workspace or for one intern. Scope is selected by the API key. Responses return metadata only, never secret values. See [https://openrouter.ai/docs/guides/ori/vault](https://openrouter.ai/docs/guides/ori/vault).
+Store host-bound secrets for a workspace or for one intern. Scope is selected by the API key. Responses return metadata only, never secret values. See [https://openrouter.ai/docs/guides/ori/vault](https://openrouter.ai/docs/guides/ori/vault.md).
 
 ### Available Operations
 

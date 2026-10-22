@@ -17,7 +17,7 @@ Pinecone has two ways to model your data, and the choice is made when you create
 
 ## Documents
 
-A document is the unit of data in an index with a document schema, a JSON object with a required `_id` field, the ranking fields declared in the index's schema, and any number of metadata fields. Documents support multiple field types in a single record: a `dense_vector` field (for [semantic search](/guides/search/semantic-search)), a `sparse_vector` field (for [sparse-vector search](/guides/search/lexical-search)), one or more `string` fields with `full_text_search` enabled (for [full-text search](/guides/search/full-text-search) with BM25 and Lucene queries), plus any metadata you upsert alongside them.
+A document is the unit of data in an index with a document schema, a JSON object with a required `_id` field, the ranking fields declared in the index's schema, and any number of metadata fields. Documents support multiple field types in a single record: a `dense_vector` field (for [semantic search](/guides/search/semantic-search)), a `sparse_vector` field (for [sparse-vector search](/guides/search/sparse-vector-search)), one or more `string` fields with `full_text_search` enabled (for [full-text search](/guides/search/full-text-search) with BM25 and Lucene queries), plus any metadata you upsert alongside them.
 
 The schema, declared at index creation, tells Pinecone how to rank each ranking field. Schema field types:
 
@@ -341,7 +341,7 @@ Records are how you model data for [indexes with dense vectors](/guides/core-con
 When you upsert pre-generated vectors, each record consists of the following:
 
 * **ID**: A unique string identifier for the record.
-* **Vector**: A dense vector for [semantic search](/guides/search/semantic-search), a sparse vector for [sparse-vector search](/guides/search/lexical-search), or both for single-index [hybrid search](/guides/search/hybrid-search) (Vectors API).
+* **Vector**: A dense vector for [semantic search](/guides/search/semantic-search), a sparse vector for [sparse-vector search](/guides/search/sparse-vector-search), or both for single-index [hybrid search](/guides/search/hybrid-search) (Vectors API).
 * **Metadata** (optional): A flat JSON document containing key-value pairs with additional information (nested objects aren't supported). You can filter by metadata when searching or deleting records.
 
 > [!NOTE]
@@ -410,7 +410,7 @@ Example:
 When you upsert raw text for Pinecone to convert to vectors automatically, each record consists of the following:
 
 * **ID**: A unique string identifier for the record.
-* **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/lexical-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
+* **Text**: The raw text for Pinecone to convert to a dense vector for [semantic search](/guides/search/semantic-search) or a sparse vector for [sparse-vector search](/guides/search/sparse-vector-search), depending on the [embedding model](/guides/index-data/index-configuration#embedding-models) integrated with the index. This field name must match the `embed.field_map` defined in the index.
 * **Metadata** (optional): All additional fields are stored as record metadata. You can filter by metadata when searching or deleting records.
 
 > [!NOTE]

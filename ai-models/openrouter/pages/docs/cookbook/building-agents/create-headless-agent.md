@@ -14,11 +14,11 @@ path: docs/cookbook/building-agents/create-headless-agent
 
 > [!NOTE]
 >
-> Looking to build an interactive terminal agent with a customizable UI instead? See the [Build Your Own Agent TUI](/docs/cookbook/building-agents/create-agent-harness-tui) guide.
+> Looking to build an interactive terminal agent with a customizable UI instead? See the [Build Your Own Agent TUI](/docs/cookbook/building-agents/create-agent-harness-tui.md) guide.
 
 The [create-headless-agent](https://github.com/OpenRouterTeam/skills/tree/main/skills/create-headless-agent) skill scaffolds a headless agent in TypeScript + Bun — no terminal UI, just structured input and output. It's designed for CLI tools, API servers, queue workers, and automation pipelines where you need an agent that runs programmatically.
 
-Under the hood, the generated project uses [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) for the inner loop (model calls, tool execution, stop conditions) — the same SDK that powers the [Agent TUI](/docs/cookbook/building-agents/create-agent-harness-tui), with a non-interactive outer layer.
+Under the hood, the generated project uses [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) for the inner loop (model calls, tool execution, stop conditions) — the same SDK that powers the [Agent TUI](/docs/cookbook/building-agents/create-agent-harness-tui.md), with a non-interactive outer layer.
 
 ## When to build your own
 
@@ -31,7 +31,7 @@ Building a headless agent makes sense when:
 * **You want structured output** — NDJSON event streams, exit codes, or schema-validated responses for programmatic consumption
 * **You want to learn** — understanding how agents work at the tool-execution level makes you better at using and debugging them
 
-If you need an interactive terminal experience, use the [Agent TUI skill](/docs/cookbook/building-agents/create-agent-harness-tui) instead.
+If you need an interactive terminal experience, use the [Agent TUI skill](/docs/cookbook/building-agents/create-agent-harness-tui.md) instead.
 
 ## Install the skill
 
@@ -225,6 +225,6 @@ The skill generates a CLI entry point by default, but you can also ask for:
 * [OpenRouter Skills repository](https://github.com/OpenRouterTeam/skills)
 * [`@openrouter/agent` on npm](https://www.npmjs.com/package/@openrouter/agent)
 * [OpenRouter TypeScript SDK](/docs/client-sdks/typescript)
-* [Server Tools documentation](/docs/guides/features/server-tools)
+* [Server Tools documentation](/docs/guides/features/server-tools.md)
 * [OpenRouter API keys](https://openrouter.ai/settings/keys)
 

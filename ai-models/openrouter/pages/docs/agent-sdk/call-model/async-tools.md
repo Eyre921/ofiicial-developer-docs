@@ -131,7 +131,7 @@ const legalReview = tool({
 });
 ```
 
-Deferred tools require a `StateAccessor` (see [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)) so the paused conversation can be found and resumed from another process.
+Deferred tools require a `StateAccessor` (see [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md)) so the paused conversation can be found and resumed from another process.
 
 ### Typed Completion from Any Process
 
@@ -340,8 +340,8 @@ Per-tool configuration on `tool()` / `tool.agent()`:
 
 ## Next Steps
 
-* **[Tools](/docs/agent-sdk/call-model/tools)** - The `tool()` helper, schemas, and tool types
-* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)** - `StateAccessor` setup for deferred tools and cross-process resume
-* **[Streaming](/docs/agent-sdk/call-model/streaming)** - Consuming the full event stream
-* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks)** - Observing tool execution
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - The `tool()` helper, schemas, and tool types
+* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md)** - `StateAccessor` setup for deferred tools and cross-process resume
+* **[Streaming](/docs/agent-sdk/call-model/streaming.md)** - Consuming the full event stream
+* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks.md)** - Observing tool execution
 

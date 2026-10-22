@@ -62,7 +62,7 @@ You set a threshold for each action you want. When the streak reaches a threshol
 
 The SDK checks your thresholds make sense and warns about combinations that can't work. For example, `block` without `stop` means a stubborn model can keep retrying the blocked call forever (bounded only by `stopWhen`), and a weaker action set at a higher threshold than a stronger one can never fire.
 
-Want different behavior for one tool? The `DoomLoopDetected` [lifecycle hook](/docs/agent-sdk/call-model/lifecycle-hooks) sees every verdict and can override the action per event (`overrideAction`, last handler wins). Downgrade a block to observe for a tool you know repeats harmlessly, or jump straight to stop.
+Want different behavior for one tool? The `DoomLoopDetected` [lifecycle hook](/docs/agent-sdk/call-model/lifecycle-hooks.md) sees every verdict and can override the action per event (`overrideAction`, last handler wins). Downgrade a block to observe for a tool you know repeats harmlessly, or jump straight to stop.
 
 ## Getting unstuck with a stronger model
 
@@ -125,7 +125,7 @@ tool({
 
 A function-form `loopKey` can return `null` to skip one specific call. If it fails in any way (returns `undefined`, throws, or returns something that can't be hashed), the SDK falls back to comparing all the inputs and logs a warning. Detection never crashes a run.
 
-A field-name array (`loopKey: ['command', 'cwd']`) also works. Because it's plain data rather than code, it survives caching and can travel over the wire via `_meta['openrouter/loopKey']`. [MCP-wrapped tools](/docs/agent-sdk/call-model/mcp-tools) accept a `loopKey` via `markMcp(tool, { loopKey })` or the `loopKeys` map on `createMCPTools`.
+A field-name array (`loopKey: ['command', 'cwd']`) also works. Because it's plain data rather than code, it survives caching and can travel over the wire via `_meta['openrouter/loopKey']`. [MCP-wrapped tools](/docs/agent-sdk/call-model/mcp-tools.md) accept a `loopKey` via `markMcp(tool, { loopKey })` or the `loopKeys` map on `createMCPTools`.
 
 ## Pausing and resuming
 
@@ -135,7 +135,7 @@ The detector's memory lives inside the conversation state, so streaks survive wh
 
 > [!NOTE]
 >
-> The SDK treats built-in `task`-tool calls as internal: they're exempt from doom-loop detection. See [Async Tools](/docs/agent-sdk/call-model/async-tools).
+> The SDK treats built-in `task`-tool calls as internal: they're exempt from doom-loop detection. See [Async Tools](/docs/agent-sdk/call-model/async-tools.md).
 
 ## What this doesn't catch
 

@@ -64,7 +64,7 @@ For pure exact-match retrieval, a [sparse index](/guides/index-data/indexing-ove
 
 ## Use hybrid search
 
-When you have both dense and sparse vectors for the same records and want to combine semantic and keyword signals at query time, you can use hybrid search. [Semantic search](/guides/search/semantic-search) can miss results based on exact keyword matches, especially in scenarios involving domain-specific terminology, while [sparse-vector search](/guides/search/lexical-search) can miss results based on relationships, such as synonyms and paraphrases. Hybrid search combines the two.
+When you have both dense and sparse vectors for the same records and want to combine semantic and keyword signals at query time, you can use hybrid search. [Semantic search](/guides/search/semantic-search) can miss results based on exact keyword matches, especially in scenarios involving domain-specific terminology, while [sparse-vector search](/guides/search/sparse-vector-search) can miss results based on relationships, such as synonyms and paraphrases. Hybrid search combines the two.
 
 There are two ways to do this:
 

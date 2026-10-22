@@ -354,6 +354,78 @@ Customize your public widget landing page (shareable link).
 
 * **Description**: Provide a short paragraph explaining the purpose of the call.
 
+## Rich content
+
+Rich content lets the agent reply with interactive components alongside its messages. Configure it in the dashboard under **Channels** → **Widget** → **Rich content**.
+
+![Widget rich content settings](/docs/_fern-img/f6396cd0fb21e6d431ff4b09d609b1ce9b6b88e64960e82ee97027bb28d3d8df.webp)
+
+Rich content is shown in text conversations, and in voice conversations when **Realtime transcript of the conversation** is enabled under **Interface**. It is only available in the embedded widget.
+
+#### Quick replies
+
+Quick replies are buttons users can tap instead of typing. When a user taps one, its label is sent as the user's next message.
+
+![Quick replies](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/44cd80eba55869c350416f5265d3fa37097370618fa705796fb082bed89636eb/assets/images/conversational-ai/rich-content-quick-replies.gif)
+
+**Suggested by the agent**
+
+The agent suggests up to three replies during the conversation, for example to confirm a choice or offer next steps.
+
+**First message replies**
+
+Add up to three replies under **First message replies** to show them with the agent's first message, so users can start the conversation with a tap. Drag them to change the order.
+
+These replies are fixed: they appear with every first message, and the agent does not choose them. They are translated along with your other [language presets](/docs/eleven-agents/customization/voice/customization/language).
+
+#### Carousel
+
+The agent shows up to five items as scrollable cards, for example search results or product recommendations.
+
+![Carousel](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/f0d00c476d5725625f86321983e2231a999f430293f4abc95b4d804c4fabfe22/assets/images/conversational-ai/rich-content-carousel.gif)
+
+**Card contents**
+
+Each card has a title, and can have a subtitle, an image, a description and up to three buttons. When a user taps a card button, its label is sent together with the item's title as the user's next message.
+
+**Prompting the carousel**
+
+The carousel only works when the agent has real items to show. It builds cards from what a [tool](/docs/eleven-agents/customization/tools) returns or what the [knowledge base](/docs/eleven-agents/customization/knowledge-base) provides, and it does not make up items, prices or images. An agent without a tool or knowledge base that returns items will rarely show a carousel.
+
+In your prompt, tell the agent:
+
+* **When to show a carousel**, for example when the user asks to browse or compare products.
+* **What goes in each field**, for example the product name as the title and the price as the subtitle.
+* **Which buttons to add, and what to do when one is tapped.** Only ask for buttons the agent can act on. An **Add to cart** button needs a tool that adds to the cart, or tapping it leads nowhere.
+
+Add instructions like these to the system prompt, and replace the bracketed tool names with your own tools:
+
+**`Example prompt`**
+
+```markdown title="Example prompt"
+# Product carousel
+
+When the user asks to browse, search or compare products, call [your product search tool] and show the results as a carousel.
+
+- Title: the product name
+- Subtitle: the price
+- Description: a one-sentence summary
+- Image: the product image URL from the search results
+
+Give each card "View product" and "Add to cart" buttons. When the user picks "Add to cart" on a card, call [your add to cart tool] with that product.
+```
+
+**Troubleshooting**
+
+* **No carousel appears**: check that a tool or the knowledge base returned items the agent can show, and that your prompt says when to use a carousel.
+* **A card has no image**: card images are only shown if the image URL appeared earlier in the conversation, for example in a tool result, and is served over HTTPS. Make sure your tool returns image URLs.
+
+### How the agent uses rich content
+
+Apart from first message replies, the agent decides on each turn whether to show quick replies or a carousel. A reply that does not need a component stays plain text. To shape when and how they appear, describe it in the agent's [system prompt](/docs/eleven-agents/best-practices/prompting-guide).
+
+Quick replies and carousel are on by default for new agents. For agents created before rich content was available, turn them on in the widget settings.
+
 ---
 
 ## Advanced implementation

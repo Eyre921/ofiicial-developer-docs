@@ -79,7 +79,7 @@ The following states charge a fee to all remote sellers who register to collect 
 - **Indiana**: 25 USD
 - **Nevada**: 15 USD plus a security deposit, which depends on your estimated sales volume and is held by the state for a minimum of 3 years
 - **South Carolina**: 50 USD
-- **Washington**: 50 USD plus 5 USD per DBA (“doing business as," or trade name)
+- **Washington**: 50 USD plus 5 USD per DBA (“doing business as,” or trade name)
 - **West Virginia**: 30 USD
 - **Wisconsin**: 20 USD
 - **Wyoming**: 60 USD

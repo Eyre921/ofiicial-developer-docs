@@ -99,7 +99,7 @@ Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full
 
 **Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights. See [Saving and loading checkpoints](#saving-and-loading-checkpoints) for the full save / resume / promote surface.
 
-**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). The snapshot selects the weights to serve; it is not a prompt-cache affinity key. The sampler runs in the same session, so there's no deployment to create or hot-load. Serverless and dedicated sampling share the [`DeploymentSampler` request contract](/fine-tuning/training-api/reference/deployment-sampler).
+**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). The snapshot selects the weights to serve; it is not a prompt-cache affinity key. Sampling runs on the shared pool, so there's no deployment to create or hot-load, and it does not need a training client: any process can sample a base model or a saved checkpoint. See [Sampling without a training client](#sampling-without-a-training-client). Serverless and dedicated sampling share the [`DeploymentSampler` request contract](/fine-tuning/training-api/reference/deployment-sampler).
 
 ### Sampling with prompt caching
 
@@ -209,11 +209,95 @@ Track reward over time; improvement depends on the task, data, reward function, 
 
 ## Evaluating serverless checkpoints
 
-While the serverless training session is active, evaluate a sampler checkpoint with `sampler.sample()`. The sampler is bound to the session and is not a serverless chat endpoint for the adapter.
+Evaluate a sampler checkpoint with `sampler.sample()`, during the run or after it ends. After the run, open the sampler from a fresh service client with the checkpoint path (see [Sampling without a training client](#sampling-without-a-training-client)). The sampler is not a serverless chat endpoint for the adapter.
 
-If the session has ended, promote the sampler checkpoint first, then evaluate the promoted model with a preemptible deployment. In-session sampling does not apply to an adapter produced by dedicated training after its run ends.
+To evaluate through the chat completions API, promote the sampler checkpoint and evaluate the promoted model with a preemptible deployment. Serverless sampling does not apply to an adapter produced by dedicated training.
 
 See [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models) for both workflows and the dedicated training alternative.
+
+## Sampling without a training client
+
+Sampling does not need `create_lora_training_client`. A fresh `FiretitanServiceClient` can sample a base model in the serverless pool, or any sampler checkpoint your account saved with `save_weights_for_sampler`, including checkpoints from a run that has already ended. These samplers create no training run and do not use a [concurrent-run](#capacity-and-rate-limits) slot, so evaluation workers can open and close them freely. Sampled tokens are billed per token like other serverless training sampling.
+
+> [!NOTE]
+>
+> Requires SDK version 1.2.29 or later: `pip install --upgrade "fireworks-ai[training]>=1.2.29"`.
+
+### Sample a base model
+
+```python theme={null}
+import os
+from fireworks.training.sdk import FiretitanServiceClient, types
+
+service = FiretitanServiceClient(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/training/v1/serverless",
+)
+sampler = service.create_sampling_client(
+    base_model="accounts/fireworks/models/qwen3p8-27b",
+    tokenizer=tokenizer,
+)
+result = sampler.sample(
+    prompt=types.ModelInput.from_ints(tokenizer.encode("The weather today is")),
+    num_samples=1,
+    sampling_params=types.SamplingParams(max_tokens=20, temperature=0.7),
+).result()
+sampler.close()
+```
+
+### Sample a saved checkpoint
+
+Pass the path that `save_weights_for_sampler` returned, `<account>/<run-id>/<checkpoint-name>`. The process that saved it can be gone:
+
+```python theme={null}
+# In the training process
+path = training_client.save_weights_for_sampler("step-0100").result().path
+
+# Later, in any process with an API key for the same account
+service = FiretitanServiceClient(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/training/v1/serverless",
+)
+sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
+```
+
+* You can only sample checkpoints that belong to your own account. A path for another account fails before any request is sent.
+* To keep a checkpoint as a deployable model, [promote it](#promote-a-sampler-checkpoint-to-a-model).
+* On a service that has already created a training client, `create_sampling_client(model_path=...)` for that run's checkpoints, and `base_model=...` for the session's base weights, sample through the training session as before.
+
+### Share a sampler across processes
+
+`FiretitanSamplingClient` works with Python multiprocessing. Create it once in the main process and pass it to workers; the same instance can be shared by several processes.
+
+**Pickle the client.** The pickle carries the connection state, including the API key and headers, so workers need no environment of their own. Each worker gets its own event loop, HTTP connections, and concurrency controller; a fixed concurrency limit carries over.
+
+```python theme={null}
+from concurrent.futures import ProcessPoolExecutor
+
+def evaluate(sampler, prompt):
+    return sampler.sample(prompt=prompt, num_samples=1, sampling_params=params).result()
+
+with ProcessPoolExecutor(max_workers=8) as pool:
+    results = list(pool.map(evaluate, [sampler] * len(prompts), prompts))
+```
+
+**Pass a sampler handle.** To avoid putting credentials in a pickle, pass a string handle instead. It carries no API key or credential headers; the receiving process authenticates with `api_key=` or its own `FIREWORKS_API_KEY`.
+
+```python theme={null}
+handle = sampler.get_sampler_handle()  # str: store it, queue it, send it anywhere
+
+# In the worker
+from fireworks.training.sdk import FiretitanSamplingClient
+sampler = FiretitanSamplingClient.from_sampler_handle(handle, tokenizer=tokenizer)
+```
+
+| Method | Description |
+| - | - |
+| Pickling | Carries the connection state, API key, headers, and tokenizer. Each unpickled copy gets its own event loop, HTTP connections, and concurrency controller; a fixed concurrency limit carries over. |
+| `get_sampler_handle() -> str` | A pickle-free string handle to the same sampler, with no API key or credential headers. |
+| `FiretitanSamplingClient.from_sampler_handle(handle, *, api_key=None, tokenizer=None)` | Creates a client for the sampler behind `handle`, in any process and any number of times. Authenticates with `api_key`, or `FIREWORKS_API_KEY` from the environment. |
+
+Keep `FiretitanServiceClient` and training clients in the main process; only sampling clients are meant to cross process boundaries.
 
 ## Saving and loading checkpoints
 
@@ -391,7 +475,7 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 ### Capacity and rate limits
 
-* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires.
+* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires. [Sampling without a training client](#sampling-without-a-training-client) uses no slot.
 * **Free a slot now:** Closing the client does not end the session right away. To release its slot, promote any checkpoint you need, then delete the session (`service.training_session_id`, which starts with `ts-`):
 
   ```bash theme={null}
@@ -406,11 +490,11 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
 * **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
+* **Serving your trained adapter.** Sample its sampler checkpoints with a sampling client, during or after the run. To serve it through an API endpoint, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 
-This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, checkpoint evaluation, and the before-and-after comparison.
 
 > [!WARNING]
 >
@@ -420,7 +504,7 @@ This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route 
 
 > **[Open the current prompt-router serverless notebook](https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb)**
 >
-> Follow the current Serverless Training example for dataset preparation, LoRA SFT, in-session sampling, and evaluation.
+> Follow the current Serverless Training example for dataset preparation, LoRA SFT, checkpoint sampling, and evaluation.
 
 ## Next steps
 

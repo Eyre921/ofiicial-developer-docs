@@ -31,13 +31,13 @@ You need:
 
 > [!TIP]
 >
-> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
-* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request)
-* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models)
-* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README)
+* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
+* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
+* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README.md)
 
 > [!WARNING]
 >
@@ -84,7 +84,7 @@ For first-frame and last-frame control, look for `supported_frame_images` contai
 
 ## Step 2: Submit the image-to-video job
 
-Build the video request with `frame_images` when the image should anchor an exact frame. This example uses a first frame. Put the same request shape in whatever server route, queue, or worker owns video generation in your app. Validate `duration`, `resolution`, and `aspect_ratio` against the selected model's supported fields from the [video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models) before submitting. Unsupported values return a 400 with the supported values.
+Build the video request with `frame_images` when the image should anchor an exact frame. This example uses a first frame. Put the same request shape in whatever server route, queue, or worker owns video generation in your app. Validate `duration`, `resolution`, and `aspect_ratio` against the selected model's supported fields from the [video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models.md) before submitting. Unsupported values return a 400 with the supported values.
 
 ```js expandable lines theme={null}
 const apiKey = process.env.OPENROUTER_API_KEY;

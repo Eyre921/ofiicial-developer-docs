@@ -162,9 +162,9 @@ The state object tracks everything needed to resume a conversation:
 | - | - |
 | `'in_progress'` | Conversation is actively processing |
 | `'awaiting_approval'` | Paused, waiting for tool call approval/rejection |
-| `'awaiting_hitl'` | Paused by a [HITL tool](/docs/agent-sdk/call-model/tools#human-in-the-loop-hitl-tools) whose `onToolCalled` hook returned `null`; resume by supplying a `function_call_output` for each paused call |
-| `'awaiting_client_tools'` | Paused because one or more [manual tools](/docs/agent-sdk/call-model/tools#manual-tools) (`execute: false` / no execute fn) were called but not resolved. The unresolved calls are stored in `pendingToolCalls`. Resume by calling `callModel` again with new `input`; this clears the stale pendings and continues as a normal turn. Unlike `awaiting_approval` and `awaiting_hitl`, manual tools are not resumed via call IDs |
-| `'awaiting_async_tools'` | Paused by a [deferred tool](/docs/agent-sdk/call-model/async-tools) whose `run` called `ctx.defer(taskId)`. Any process can settle the task via `.resolve()` / `.fail()` / `.cancel()` (or `resumeToolResults`). To continue the conversation immediately, pass `run` when settling; omitting `run` only records the result and delivers it on the next `callModel({ state })` call. See [Async Tools](/docs/agent-sdk/call-model/async-tools) |
+| `'awaiting_hitl'` | Paused by a [HITL tool](/docs/agent-sdk/call-model/tools.md#human-in-the-loop-hitl-tools) whose `onToolCalled` hook returned `null`; resume by supplying a `function_call_output` for each paused call |
+| `'awaiting_client_tools'` | Paused because one or more [manual tools](/docs/agent-sdk/call-model/tools.md#manual-tools) (`execute: false` / no execute fn) were called but not resolved. The unresolved calls are stored in `pendingToolCalls`. Resume by calling `callModel` again with new `input`; this clears the stale pendings and continues as a normal turn. Unlike `awaiting_approval` and `awaiting_hitl`, manual tools are not resumed via call IDs |
+| `'awaiting_async_tools'` | Paused by a [deferred tool](/docs/agent-sdk/call-model/async-tools.md) whose `run` called `ctx.defer(taskId)`. Any process can settle the task via `.resolve()` / `.fail()` / `.cancel()` (or `resumeToolResults`). To continue the conversation immediately, pass `run` when settling; omitting `run` only records the result and delivers it on the next `callModel({ state })` call. See [Async Tools](/docs/agent-sdk/call-model/async-tools.md) |
 | `'complete'` | Conversation finished normally |
 | `'interrupted'` | Conversation was interrupted and can be resumed |
 
@@ -387,9 +387,9 @@ console.log(await r3.getText());
 
 ## Next Steps
 
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Tool definitions and the `tool()` helper
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Control when tool execution loops terminate
-* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters)** - Adjust parameters between turns
-* **[Examples](/docs/agent-sdk/call-model/examples/weather-tool)** - Complete tool implementations
-* **[Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev)** - Decide `approve`, `block`, or `review` per call with a decision model instead of a static `requireApproval` flag
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Tool definitions and the `tool()` helper
+* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Control when tool execution loops terminate
+* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters.md)** - Adjust parameters between turns
+* **[Examples](/docs/agent-sdk/call-model/examples/weather-tool.md)** - Complete tool implementations
+* **[Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md)** - Decide `approve`, `block`, or `review` per call with a decision model instead of a static `requireApproval` flag
 

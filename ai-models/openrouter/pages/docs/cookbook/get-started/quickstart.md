@@ -23,7 +23,7 @@ path: docs/cookbook/get-started/quickstart
 ## Prerequisites
 
 * **Node.js 18+** installed
-* An **OpenRouter API key**. Create one at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) or set up a new [Stripe project](/docs/guides/overview/stripe-projects)
+* An **OpenRouter API key**. Create one at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) or set up a new [Stripe project](/docs/guides/overview/stripe-projects.md)
 
 ## 1. Create a project and install the SDK
 
@@ -70,7 +70,7 @@ Run it with your API key:
 OPENROUTER_API_KEY=sk-or-v1-... npx tsx chat.ts
 ```
 
-You should see a single text response printed to the console. The SDK returns token usage in camelCase fields such as `promptTokens` and `completionTokens`. The `completion.choices` array follows the same shape as the [Chat Completions response](/docs/api/api-reference/chat/create-a-chat-completion).
+You should see a single text response printed to the console. The SDK returns token usage in camelCase fields such as `promptTokens` and `completionTokens`. The `completion.choices` array follows the same shape as the [Chat Completions response](/docs/api/api-reference/chat/create-a-chat-completion.md).
 
 ## 3. Stream the response
 
@@ -100,7 +100,7 @@ for await (const chunk of stream) {
 console.log();
 ```
 
-Text now prints incrementally. See the [Streaming reference](/docs/api_reference/streaming) for the full SSE event format.
+Text now prints incrementally. See the [Streaming reference](/docs/api_reference/streaming.md) for the full SSE event format.
 
 ## 4. Add multi-turn conversation
 
@@ -174,7 +174,7 @@ model: '~anthropic/claude-sonnet-latest',
 model: 'openrouter/free',
 ```
 
-Browse all available models at [openrouter.ai/models](https://openrouter.ai/models) or query the [Models API](/docs/api/api-reference/models/list-all-models-and-their-properties) programmatically.
+Browse all available models at [openrouter.ai/models](https://openrouter.ai/models) or query the [Models API](/docs/api/api-reference/models/list-all-models-and-their-properties.md) programmatically.
 
 ## Check your work
 
@@ -185,6 +185,6 @@ Browse all available models at [openrouter.ai/models](https://openrouter.ai/mode
 
 ## Next steps
 
-* Connect a [coding agent](/docs/cookbook/coding-agents/claude-code-integration) to OpenRouter
-* Explore the [Agent SDK](/docs/agent-sdk/overview) for built-in multi-turn loops and tool execution
+* Connect a [coding agent](/docs/cookbook/coding-agents/claude-code-integration.md) to OpenRouter
+* Explore the [Agent SDK](/docs/agent-sdk/overview.md) for built-in multi-turn loops and tool execution
 

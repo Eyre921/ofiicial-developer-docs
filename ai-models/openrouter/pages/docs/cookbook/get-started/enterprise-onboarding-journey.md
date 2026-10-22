@@ -30,7 +30,7 @@ Each account has two customer-facing roles assigned to it. The **Forward Deploye
 >
 > OpenRouter provisions your account, credits, and invoicing from its side, but cannot access or configure anything inside your organization: workspaces, API keys, guardrails, members, or settings. Your team retains access and performs all configuration. During working sessions, your FDE works side by side with your team to get everything set up.
 
-If you want to set up your organization self-serve, follow the [Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart).
+If you want to set up your organization self-serve, follow the [Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart.md).
 
 After go-live, the cadence is the monthly and quarterly reviews described under Optimization.
 
@@ -90,20 +90,20 @@ Your team creates and holds its own API keys throughout. OpenRouter never create
 
 OpenRouter provisions your account, credits, and invoicing. Your team confirms admin access through [Settings > Preferences](https://openrouter.ai/settings/preferences), and the shared channel opens.
 
-Once your organization is live, your team can create its own API keys independently through the [Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart), without waiting for the activation call. The call is where your FDE pairs with you on key creation and the rest of the configuration.
+Once your organization is live, your team can create its own API keys independently through the [Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart.md), without waiting for the activation call. The call is where your FDE pairs with you on key creation and the rest of the configuration.
 
 ### Day 1: activation working session
 
 During the 60-minute activation call, your team will:
 
-1. Create your [workspaces](/docs/guides/features/workspaces)
-2. Set your [guardrails](/docs/guides/features/guardrails) and [Zero Data Retention](/docs/guides/features/zdr) policy
-3. Set [workspace budgets](/docs/guides/features/workspaces/workspace-budgets)
+1. Create your [workspaces](/docs/guides/features/workspaces.md)
+2. Set your [guardrails](/docs/guides/features/guardrails.md) and [Zero Data Retention](/docs/guides/features/zdr.md) policy
+3. Set [workspace budgets](/docs/guides/features/workspaces/workspace-budgets.md)
 4. Start SSO domain verification
-5. Create a [management key](/docs/guides/overview/auth/management-api-keys) and your first [API key](/docs/api_reference/authentication)
+5. Create a [management key](/docs/guides/overview/auth/management-api-keys.md) and your first [API key](/docs/api_reference/authentication.md)
 6. Make a first test API call to confirm the key works
 
-Create the management key from [Management API Keys](https://openrouter.ai/settings/management-keys). If your organization uses provider credentials, review [BYOK](/docs/guides/overview/auth/byok) and [API Key Rotation](/docs/cookbook/administration/api-key-rotation).
+Create the management key from [Management API Keys](https://openrouter.ai/settings/management-keys). If your organization uses provider credentials, review [BYOK](/docs/guides/overview/auth/byok.md) and [API Key Rotation](/docs/cookbook/administration/api-key-rotation.md).
 
 ### Day 2: first production inference
 
@@ -124,25 +124,25 @@ Milestone: production traffic at your committed pace, signed off in writing by d
 
 ### Day 3: workspaces and budgets
 
-Your team maps workspaces and sets budgets. The FDE walks your team through the structure. Start from your [home dashboard](https://openrouter.ai/workspaces), use [Create Workspace](https://openrouter.ai/workspaces/new), or automate setup with the [Workspaces API](/docs/api/api-reference/workspaces/list-workspaces). For budget and guardrail patterns, see the [Spend Controls best practices guide](/docs/guides/best-practices/spend-controls).
+Your team maps workspaces and sets budgets. The FDE walks your team through the structure. Start from your [home dashboard](https://openrouter.ai/workspaces), use [Create Workspace](https://openrouter.ai/workspaces/new), or automate setup with the [Workspaces API](/docs/api/api-reference/workspaces/list-workspaces.md). For budget and guardrail patterns, see the [Spend Controls best practices guide](/docs/guides/best-practices/spend-controls.md).
 
 ### Day 5: governance
 
-Your team completes [SSO](/docs/guides/features/sso), [SCIM group mappings](/docs/guides/features/scim-mappings), guardrails, and data-retention policy. The FDE provides the DNS record and IdP guide. Review [privacy settings](https://openrouter.ai/settings/privacy), [Data Collection](/docs/guides/privacy/data-collection), [Provider Logging](/docs/guides/privacy/provider-logging), and the [Guardrails API](/docs/api/api-reference/guardrails/list-guardrails) as needed.
+Your team completes [SSO](/docs/guides/features/sso.md), [SCIM group mappings](/docs/guides/features/scim-mappings.md), guardrails, and data-retention policy. The FDE provides the DNS record and IdP guide. Review [privacy settings](https://openrouter.ai/settings/privacy), [Data Collection](/docs/guides/privacy/data-collection.md), [Provider Logging](/docs/guides/privacy/provider-logging.md), and the [Guardrails API](/docs/api/api-reference/guardrails/list-guardrails.md) as needed.
 
 ### Day 5 to 7: inference strategy and observability session
 
-The second and final required meeting. It covers [provider routing](/docs/guides/routing/provider-selection), [model fallbacks](/docs/guides/routing/model-fallbacks), [prompt caching](/docs/guides/best-practices/prompt-caching), [presets](/docs/guides/features/presets) so your application code names use cases rather than model versions, [Broadcast](/docs/guides/features/broadcast) into your own observability stack, [user attribution](/docs/cookbook/administration/user-tracking), and access to the [Analytics API](/docs/api/api-reference/analytics/query-analytics-data) for your own reporting. Create presets from the [Presets](https://openrouter.ai/workspaces/default/presets) page.
+The second and final required meeting. It covers [provider routing](/docs/guides/routing/provider-selection.md), [model fallbacks](/docs/guides/routing/model-fallbacks.md), [prompt caching](/docs/guides/best-practices/prompt-caching.md), [presets](/docs/guides/features/presets.md) so your application code names use cases rather than model versions, [Broadcast](/docs/guides/features/broadcast) into your own observability stack, [user attribution](/docs/cookbook/administration/user-tracking.md), and access to the [Analytics API](/docs/api/api-reference/analytics/query-analytics-data.md) for your own reporting. Create presets from the [Presets](https://openrouter.ai/workspaces/default/presets) page.
 
 You leave the session with at least one preset in use and traces flowing to your platform.
 
 ### Day 7: observability
 
-Your team configures Broadcast with the FDE pairing. Start from [Settings > Observability](https://openrouter.ai/settings/observability), review traces in [Logs](https://openrouter.ai/logs) or your workspace's [Observability settings](https://openrouter.ai/workspaces/default/observability), and compare Broadcast with [Input & Output Logging](/docs/guides/features/input-output-logging).
+Your team configures Broadcast with the FDE pairing. Start from [Settings > Observability](https://openrouter.ai/settings/observability), review traces in [Logs](https://openrouter.ai/logs) or your workspace's [Observability settings](https://openrouter.ai/workspaces/default/observability), and compare Broadcast with [Input & Output Logging](/docs/guides/features/input-output-logging.md).
 
 ### Day 10: rollout
 
-Your team rolls out beyond the first team. The FDE supplies SCIM group mappings and developer-ready setup material. Coding-agent teams can use [Ori Harness](/docs/guides/ori/harness) for the rollout.
+Your team rolls out beyond the first team. The FDE supplies SCIM group mappings and developer-ready setup material. Coding-agent teams can use [Ori Harness](/docs/guides/ori/harness.md) for the rollout.
 
 ### Day 14: go-live sign-off
 
@@ -168,7 +168,7 @@ The written expansion review proposes a second workload drawn from your usage da
 
 ### Day 30: month-one review
 
-The month-one report covers pace against commitment, spend by team and model, reliability, savings against direct provider access, and recommendations. Use [Usage Accounting](/docs/cookbook/administration/usage-accounting), [Activity Export](/docs/cookbook/administration/activity-export), and the [Activity page](https://openrouter.ai/activity) for reporting.
+The month-one report covers pace against commitment, spend by team and model, reliability, savings against direct provider access, and recommendations. Use [Usage Accounting](/docs/cookbook/administration/usage-accounting.md), [Activity Export](/docs/cookbook/administration/activity-export.md), and the [Activity page](https://openrouter.ai/activity) for reporting.
 
 ## Optimization: Ongoing
 
@@ -179,7 +179,7 @@ The month-one report covers pace against commitment, spend by team and model, re
 
 ### Monthly optimization cadence
 
-Your team tunes [provider routing](/docs/guides/routing/provider-selection), [prompt caching](/docs/guides/best-practices/prompt-caching), and [presets](/docs/guides/features/presets) during office hours and through the usage and optimization report. Review [Uptime Optimization](/docs/guides/best-practices/uptime-optimization) when tuning reliability and latency.
+Your team tunes [provider routing](/docs/guides/routing/provider-selection.md), [prompt caching](/docs/guides/best-practices/prompt-caching.md), and [presets](/docs/guides/features/presets.md) during office hours and through the usage and optimization report. Review [Uptime Optimization](/docs/guides/best-practices/uptime-optimization.md) when tuning reliability and latency.
 
 The shared channel remains open between quarterly reviews.
 
@@ -187,15 +187,15 @@ The shared channel remains open between quarterly reviews.
 
 Two documents cover the configuration decisions that are cheapest to get right early and most expensive to correct once your developers are active:
 
-> **[Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart)**
+> **[Enterprise Quickstart](/docs/cookbook/get-started/enterprise-quickstart.md)**
 >
 > Organization, workspaces, key management, security controls, presets, and observability, step by step.
 
-> **[Organization Management](/docs/cookbook/administration/organization-management)**
+> **[Organization Management](/docs/cookbook/administration/organization-management.md)**
 >
 > Roles, shared credits, member management, and centralized usage tracking.
 
-For application teams expanding beyond the first workload, see the [Quickstart](/docs/cookbook/get-started/quickstart), [Structured Outputs](/docs/guides/features/structured-outputs), [Tool Calling](/docs/guides/features/tool-calling), and [Latency and Performance](/docs/guides/best-practices/latency-and-performance).
+For application teams expanding beyond the first workload, see the [Quickstart](/docs/cookbook/get-started/quickstart.md), [Structured Outputs](/docs/guides/features/structured-outputs.md), [Tool Calling](/docs/guides/features/tool-calling.md), and [Latency and Performance](/docs/guides/best-practices/latency-and-performance.md).
 
 For enterprise sales inquiries or custom requirements, contact our team at [openrouter.ai/enterprise](https://openrouter.ai/enterprise).
 

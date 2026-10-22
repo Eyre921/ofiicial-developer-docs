@@ -14,7 +14,7 @@ path: docs/cookbook/building-agents/gate-tool-calls-with-jev
 
 > [!TIP]
 >
-> This recipe assumes you already have an Agent SDK agent with a tool that pauses for human review, built the way [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools) describes. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the agent model and the check run on the same API key.
+> This recipe assumes you already have an Agent SDK agent with a tool that pauses for human review, built the way [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools.md) describes. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the agent model and the check run on the same API key.
 
 **Goal:** Replace a blanket rule that pauses every call to this tool for human approval with a per-call check against the evidence in the conversation, so the human only sees the calls that are genuinely unclear.
 
@@ -358,7 +358,7 @@ The third case is the one a human should see. The policy covers damaged items an
 
 ## 4. Gate the tool
 
-Replace the body of your tool's `onToolCalled` with the gate. `approve` runs the real side effect and returns the result. `block` returns a refusal with the gate's reason in the note. The note goes to the model, which writes the reply to the customer, so if you don't want check names like `right_order=0.01` in the model's context, send a fixed message and keep `reason` in your log. `review` returns `null`, which pauses the loop exactly as it did under the static rule. The ticket reaches both hooks through the tool's `contextSchema`, which the [tools reference](/docs/agent-sdk/call-model/tools#tool-context) documents.
+Replace the body of your tool's `onToolCalled` with the gate. `approve` runs the real side effect and returns the result. `block` returns a refusal with the gate's reason in the note. The note goes to the model, which writes the reply to the customer, so if you don't want check names like `right_order=0.01` in the model's context, send a fixed message and keep `reason` in your log. `review` returns `null`, which pauses the loop exactly as it did under the static rule. The ticket reaches both hooks through the tool's `contextSchema`, which the [tools reference](/docs/agent-sdk/call-model/tools.md#tool-context) documents.
 
 A human resolves a paused call by returning a decision, not a payment result. The review surface returns `approve` or `deny`. `resolveReview` in step 5 copies the refund from the pending call in your conversation state into the `function_call_output`, and `onResponseReceived` runs the same arithmetic and the same `issueRefund` as an automatic approval. The SDK passes `onResponseReceived` only the output it receives and doesn't expose the original call's arguments, so `resolveReview` must be the only code that writes a `function_call_output` for this tool. A review surface that wrote its own could submit a refund Jev never evaluated, and only the arithmetic check would limit it.
 
@@ -427,9 +427,9 @@ Both hooks start by parsing the ticket out of the context. When that parse throw
 
 ## 5. Pass the ticket and handle the pause
 
-Pass the ticket to the tool through `context`, keyed by tool name, alongside the `tools` and `state` you already pass to `callModel`. After the run, check the state. `awaiting_hitl` means the gate returned `review`, and the pending call goes to your review surface as before. The other status values are listed in the [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state) reference.
+Pass the ticket to the tool through `context`, keyed by tool name, alongside the `tools` and `state` you already pass to `callModel`. After the run, check the state. `awaiting_hitl` means the gate returned `review`, and the pending call goes to your review surface as before. The other status values are listed in the [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md) reference.
 
-Resuming follows the [HITL recipe, step 4](/docs/cookbook/building-agents/hitl-tools#4-resume-with-human-input) with two differences. The `function_call_output` includes a `ReviewDecision` whose `refund` is copied from the pending call in the saved state, so the reviewer only provides a decision and a note. The resumed call passes the same `context`, because `onResponseReceived` reads the ticket from it.
+Resuming follows the [HITL recipe, step 4](/docs/cookbook/building-agents/hitl-tools.md#4-resume-with-human-input) with two differences. The `function_call_output` includes a `ReviewDecision` whose `refund` is copied from the pending call in the saved state, so the reviewer only provides a decision and a note. The resumed call passes the same `context`, because `onResponseReceived` reads the ticket from it.
 
 ```typescript expandable lines theme={null}
 const openrouter = new OpenRouter({
@@ -539,13 +539,13 @@ The probabilities differ from step 3 because `refund.reason` is part of the stat
 
 ## Next steps
 
-* [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools) for the review surface and the resume flow that receives this gate's paused calls
-* [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state) for `requireApproval` when a consent gate before execution is the right mechanism
+* [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools.md) for the review surface and the resume flow that receives this gate's paused calls
+* [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md) for `requireApproval` when a consent gate before execution is the right mechanism
 * [Jev documentation](https://docs.typesafe.ai/introduction) for `score` and `choice` questions, when a tool has more than one legitimate disposition
-* [Jev SDK for TypeScript and Python](/docs/guides/community/typesafe-sdk) to make the same request with the TypeSafe SDK instead of `fetch`
-* [Auto-Approve Coding Agent Permission Prompts with Jev](/docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev) for the same gate as a permission hook in Claude Code, Codex, Cursor, or OpenCode
-* [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade) for using Jev to verify model answers rather than tool calls
-* [Jev documentation hub](/docs/guides/community/jev) for the [Jev tutorial](/docs/guides/community/jev-tutorial), the other cookbooks, and the TypeSafe docs on choosing thresholds
+* [Jev SDK for TypeScript and Python](/docs/guides/community/typesafe-sdk.md) to make the same request with the TypeSafe SDK instead of `fetch`
+* [Auto-Approve Coding Agent Permission Prompts with Jev](/docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev.md) for the same gate as a permission hook in Claude Code, Codex, Cursor, or OpenCode
+* [Cut LLM Cost with a Jev-Verified Cascade](/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) for using Jev to verify model answers rather than tool calls
+* [Jev documentation hub](/docs/guides/community/jev.md) for the [Jev tutorial](/docs/guides/community/jev-tutorial.md), the other cookbooks, and the TypeSafe docs on choosing thresholds
 * [Jev model page](https://openrouter.ai/typesafe/jev-1.13) and [Jev Lab](https://openrouter.ai/labs/jev) for pricing and interactive demos
 * [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
 

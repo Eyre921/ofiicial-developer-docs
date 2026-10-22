@@ -8,7 +8,7 @@ path: treasury/connect/marketing
 
 Create precise messaging for your users that complies with regulations.
 
-Many states have statutory prohibitions on references to “banking," “banks," and “bank accounts” when the entities making these references aren’t state- or federally-chartered banks or credit unions. Imprecise terminology of Stripe Treasury for platforms might draw scrutiny from regulators.
+Many states have statutory prohibitions on references to “banking,” “banks,” and “bank accounts” when the entities making these references aren’t state- or federally-chartered banks or credit unions. Imprecise terminology of Stripe Treasury for platforms might draw scrutiny from regulators.
 
 ## Recommended Terms
 
@@ -76,7 +76,7 @@ We understand that FDIC pass-through insurance eligibility can be a valuable fea
 | The following terms that incorporate the term “eligible” are approved: | Don’t use the following terms: |
 | - “FDIC pass-through insurance-eligible accounts”
 - “Eligible for FDIC pass-through insurance”
-- “Eligible for FDIC pass-through insurance up to the standard maximum deposit insurance per depositor in the same category"
+- “Eligible for FDIC pass-through insurance up to the standard maximum deposit insurance per depositor in the same category”
 - “Eligible for FDIC pass-through insurance up to 250K USD” | - “FDIC insured”
 - “FDIC insured accounts”
 - “FDIC pass-through insurance guaranteed” |

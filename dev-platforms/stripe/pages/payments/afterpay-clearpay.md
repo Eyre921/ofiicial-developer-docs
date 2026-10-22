@@ -201,11 +201,11 @@ Afterpay refunds are never processed as reversals. When you issue a refund, Afte
 
 To check a refund’s status, open the payment in the [Dashboard](https://dashboard.stripe.com/payments) and click **View details** on the refund entry. You can also [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field.
 
-Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
+Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. [Verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) to confirm that events came from Stripe. You can also use Stripe’s [public IP addresses](https://docs.stripe.com/ips.md) for network allowlisting. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
 
 ### Disputes 
 
-Customers have up to 120 calendar days from the date of purchase to file Afterpay disputes.
+Customers have up to 120 calendar days from the date of purchase to file Afterpay disputes. Afterpay payments can only be disputed once.
 
 #### Dispute process 
 
@@ -220,7 +220,7 @@ When Afterpay disputes are opened, Stripe notifies you through:
 - The [Stripe Dashboard](https://dashboard.stripe.com/disputes)
 - A [charge.dispute.created](https://docs.stripe.com/api/events/types.md#event_types-charge.dispute.created) event
 
-The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_due_by` field of the Dispute object.
+The dispute reason is available in the Dashboard and in the `reason` field of the [Dispute object](https://docs.stripe.com/api/disputes/object.md). The evidence submission deadline is available in the Dashboard and in the `evidence_details.due_by` field of the Dispute object.
 
 #### Responding to disputes 
 

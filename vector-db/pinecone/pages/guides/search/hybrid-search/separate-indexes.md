@@ -427,7 +427,7 @@ print(dense_results)
 
 **4. Search by sparse vectors**
 
-Perform a [sparse-vector search](/guides/search/lexical-search) against the index that stores sparse vectors.
+Perform a [sparse-vector search](/guides/search/sparse-vector-search) against the index that stores sparse vectors.
 
 For example, the following code searches that index for 40 records that most exactly match the words in the query. Again, because the index is integrated with an embedding model, you provide the query as text and Pinecone converts the text to a sparse vector automatically.
 

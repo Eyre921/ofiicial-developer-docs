@@ -71,7 +71,7 @@ If you use any of the models below on serverless, migrate to a recommended repla
 ## **New models on Serverless**
 
 * **DeepSeek V4.1 Flash 1017:** `accounts/fireworks/models/deepseek-v4p1-flash-1017`
-* **DeepSeek V4.1 Flash 1017 (US endpoint):** `accounts/fireworks/models/deepseek-v4p1-flash-1017-us`
+* **DeepSeek V4.1 Flash 1017 (US endpoint):** `accounts/fireworks/routers/deepseek-v4p1-flash-1017-us` ([US-only Serverless](/serverless/us-only-serverless))
 * **Muse Spark Open** (US endpoint, 50% US regional premium waived): `accounts/fireworks/models/muse-spark-open`
 * **MiniMax M3.1:** coming to serverless after its open-source release, expected Friday, October 23
 

@@ -14,7 +14,7 @@ path: docs/cookbook/coding-agents/claude-code-integration
 
 > [!WARNING]
 >
-> Claude Code with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection) when using Claude Code.
+> Claude Code with OpenRouter is only guaranteed to work with the Anthropic first-party provider. For maximum compatibility, we recommend setting [Anthropic 1P as top priority provider](/docs/guides/routing/provider-selection.md) when using Claude Code.
 
 ## Why Use OpenRouter with Claude Code?
 
@@ -228,7 +228,7 @@ Gateway model discovery is opt-in. Set `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVE
 
 Anthropic's fast mode provides up to 2.5x faster output at premium pricing. **Fast mode is only available on Claude Opus 4.6, Claude Opus 4.7, Claude Opus 4.8, and Claude Opus 5** — no other Anthropic models support it.
 
-On OpenRouter, fast mode is a [`fast` service tier endpoint](/docs/guides/features/service-tiers#fast-mode) on the regular model, like any other provider's priority tier. With [`anthropic/claude-opus-5`](https://openrouter.ai/anthropic/claude-opus-5), [`anthropic/claude-opus-4.8`](https://openrouter.ai/anthropic/claude-opus-4.8), [`anthropic/claude-opus-4.7`](https://openrouter.ai/anthropic/claude-opus-4.7), or [`anthropic/claude-opus-4.6`](https://openrouter.ai/anthropic/claude-opus-4.6), there are three ways to request it (see [How Routing Works](/docs/guides/features/service-tiers#how-routing-works) for the full semantics):
+On OpenRouter, fast mode is a [`fast` service tier endpoint](/docs/guides/features/service-tiers#fast-mode) on the regular model, like any other provider's priority tier. With [`anthropic/claude-opus-5`](https://openrouter.ai/anthropic/claude-opus-5), [`anthropic/claude-opus-4.8`](https://openrouter.ai/anthropic/claude-opus-4.8), [`anthropic/claude-opus-4.7`](https://openrouter.ai/anthropic/claude-opus-4.7), or [`anthropic/claude-opus-4.6`](https://openrouter.ai/anthropic/claude-opus-4.6), there are three ways to request it (see [How Routing Works](/docs/guides/features/service-tiers.md#how-routing-works) for the full semantics):
 
 1. Send `speed: "fast"`, `service_tier: "fast"`, or `service_tier: "priority"` — the three spellings are fully interchangeable on all APIs. The fast tier endpoint is tried first, with fallback to standard endpoints (billed at their standard rates).
 2. Use the [`:nitro`](/docs/guides/routing/model-variants/nitro) variant (e.g. `anthropic/claude-opus-5:nitro`) — the fast tier endpoint becomes eligible and serves when it wins the throughput sort.
@@ -262,7 +262,7 @@ Fast mode is priced at a premium over the underlying Claude Opus model's standar
 
 > [!NOTE]
 >
-> If `speed: "fast"` is sent for a model that does not support fast mode, it still requests the [priority service tier](/docs/guides/features/service-tiers#fast-mode) where a provider offers one (at priority pricing); otherwise the request proceeds at standard speed with standard pricing. **Claude Fable has no fast tier** — toggling `/fast` while on a Fable model does not speed Fable up. Instead, Claude Code switches your session to your configured Opus model, so subsequent requests run (and bill) on Opus rather than Fable.
+> If `speed: "fast"` is sent for a model that does not support fast mode, it still requests the [priority service tier](/docs/guides/features/service-tiers.md#fast-mode) where a provider offers one (at priority pricing); otherwise the request proceeds at standard speed with standard pricing. **Claude Fable has no fast tier** — toggling `/fast` while on a Fable model does not speed Fable up. Instead, Claude Code switches your session to your configured Opus model, so subsequent requests run (and bill) on Opus rather than Fable.
 
 ### Routing behavior
 
@@ -272,7 +272,7 @@ Fast mode is only served by the Anthropic first-party provider, since other prov
 
 The [Anthropic Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) lets you build AI agents programmatically using Python or TypeScript. Since the Agent SDK uses Claude Code as its runtime, you can connect it to OpenRouter using the same environment variables described above.
 
-For complete setup instructions and code examples, see our [Anthropic Agent SDK integration guide](/docs/guides/community/anthropic-agent-sdk).
+For complete setup instructions and code examples, see our [Anthropic Agent SDK integration guide](/docs/guides/community/anthropic-agent-sdk.md).
 
 ## GitHub Action
 
@@ -316,7 +316,7 @@ A few practical notes:
 
 * **Prerequisites:** `statusline.sh` is a thin wrapper that runs `npx tsx statusline.ts`, so it requires Node.js and network access on first render (npx downloads `tsx` on first use, which can make the first refresh slow). Download **both** files and keep them in the same directory.
 * **Only one statusline:** `settings.json` supports a single `statusLine` entry. If you already use another statusline (e.g. ccusage or a tool-provided one), adding this one **replaces** it — they cannot be combined without writing a wrapper script that merges their output.
-* **API usage:** Each refresh makes one request to the [generation endpoint](/docs/api/api-reference/generations/get-generation) per new generation in the session. Long sessions catch up incrementally; costs shown are cumulative for the current session.
+* **API usage:** Each refresh makes one request to the [generation endpoint](/docs/api/api-reference/generations/get-generation.md) per new generation in the session. Long sessions catch up incrementally; costs shown are cumulative for the current session.
 * **State files:** Per-session state accumulates at `/tmp/claude-openrouter-cost-<session-id>.json`. These are small and cleared on OS reboot on most systems, but you can delete them at any time.
 
 ## Troubleshooting

@@ -320,7 +320,7 @@ result = openrouter.callModel({
 
 ## Next Steps
 
-* **[Text Generation](/docs/agent-sdk/call-model/text-generation)** - Input formats and parameters
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Add tool capabilities
-* **[Streaming](/docs/agent-sdk/call-model/streaming)** - Stream format-converted responses
+* **[Text Generation](/docs/agent-sdk/call-model/text-generation.md)** - Input formats and parameters
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Add tool capabilities
+* **[Streaming](/docs/agent-sdk/call-model/streaming.md)** - Stream format-converted responses
 

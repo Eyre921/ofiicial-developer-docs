@@ -14,7 +14,7 @@ path: docs/client-sdks/go/sdks/systemone/readme
 
 ## Overview
 
-System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See [https://openrouter.ai/docs/guides/community/typesafe-sdk](https://openrouter.ai/docs/guides/community/typesafe-sdk).
+System One endpoints for models such as Jev, compatible with the TypeSafe SDKs. See [https://openrouter.ai/docs/guides/community/typesafe-sdk](https://openrouter.ai/docs/guides/community/typesafe-sdk.md).
 
 ### Available Operations
 
@@ -122,9 +122,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.DecisionsRequest](../../models/components/decisionsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.DecisionsRequest](../../models/components/decisionsrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 

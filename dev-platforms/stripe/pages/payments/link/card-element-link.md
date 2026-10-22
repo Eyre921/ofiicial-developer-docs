@@ -105,7 +105,7 @@ To manage your platform account settings:
 
 - If your platform lets you customize your Link settings for platform payments, then you can manage your Link in Card Element settings within [Payment Method settings](https://dashboard.stripe.com/settings/payment_methods) by selecting your platform from the dropdown menu at the top of the page.
 
-- If your platform can’t offer you settings customization, then the platform determines Link’s availability for all payments processed through the platform, and you won’t have settings control for platform payments in your Dashboard.
+- If your platform can’t offer you settings customization, then the platform determines Link's availability for all payments processed through the platform, and you won’t have settings control for platform payments in your Dashboard.
 
 - For payments you process without a platform, you can manage Link in your [Payment Method settings](https://dashboard.stripe.com/settings/payment_methods) by selecting “no platform” from the dropdown menu at the top of the page.
 
@@ -128,7 +128,7 @@ Link is available in both production and in a sandbox. You can create sandbox Li
 | 000002 | Error, code expired |
 | 000003 | Error, max attempts exceeded |
 
-Enabling Link in a sandbox presents Link on all Card Element sandbox sessions that meet the [enablement requirements](https://docs.stripe.com/payments/link/card-element-link.md#enable-link). In production, Link’s visibility might vary to maximize Link’s conversion benefits in each checkout session.
+Enabling Link in a sandbox presents Link on all Card Element sandbox sessions that meet the [enablement requirements](https://docs.stripe.com/payments/link/card-element-link.md#enable-link). In production, Link's visibility might vary to maximize Link's conversion benefits in each checkout session.
 
 ## See also
 

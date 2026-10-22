@@ -711,7 +711,7 @@ To simulate winning or losing the dispute, respond with one of the evidence valu
 
 ### Dispute prevention 
 
-[Dispute prevention](https://docs.stripe.com/disputes/prevention.md) helps resolve or block disputes before they become chargebacks. To simulate prevented disputes in test mode, use the test cards in this section. If your account has [Dispute Resolution or Dispute Deflection](https://dashboard.stripe.com/settings/disputes) enabled, the dispute on the transaction is either blocked or resolved. Otherwise, the transaction is successfully disputed.
+[Dispute prevention](https://docs.stripe.com/disputes/prevention.md) helps resolve or block disputes before they become chargebacks. To simulate prevented disputes in a sandbox, use the test cards in this section. If your account has [Dispute Resolution or Dispute Deflection](https://dashboard.stripe.com/settings/disputes) enabled, the dispute on the transaction is either blocked or resolved. Otherwise, the transaction is successfully disputed.
 
 #### Card numbers
 
@@ -1371,7 +1371,7 @@ The test values for each method are in the [Test a non-card payment method](http
 
 ### Review bank debit webhook sequence
 
-All bank debit methods follow the `processing` to `succeeded` or `payment_failed` pattern. In test mode, transitions happen after about 3 minutes for account numbers that simulate a delay. These use a `9` prefix or suffix. See the test values for each method in the referenced section.
+All bank debit methods follow the `processing` to `succeeded` or `payment_failed` pattern. In a sandbox, transitions happen after about 3 minutes for account numbers that simulate a delay. These use a `9` prefix or suffix. See the test values for each method in the referenced section.
 
 | Method | Test values | Expected webhooks for success | Expected webhooks for failure |
 | --- | --- | --- | --- |

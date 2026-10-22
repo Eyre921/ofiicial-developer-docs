@@ -45,7 +45,7 @@ If we detect a duplicate selfie, we’ll share a list of verification sessions w
 
 ## Blocklist 
 
-To prevent Stripe Identity from using a document or selfie in programmatic verifications, add it to the blocklist. When a verification includes data that matches a blocklist entry, Stripe automatically sets that verification’s status to ‘unverified‘ until you review it in the Dashboard.
+To prevent Stripe Identity from using a document or selfie in programmatic verifications, add it to the blocklist. When a verification includes data that matches a blocklist entry, Stripe automatically sets that verification’s status to ‘unverified’ until you review it in the Dashboard.
 
 We support adding blocklist entries of the following types:
 

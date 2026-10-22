@@ -12,10 +12,16 @@ Snapshots let you capture and duplicate box state. Use **snapshots** to save a p
 
 A snapshot captures:
 
-* **Filesystem**: the full disk state of the box at the time of the snapshot.
-* **Agent configuration**: the agent harness, model, and API key settings.
+* **Filesystem**: the disk state of the box at the time of the snapshot, including cloned repos and installed packages.
+* **Box configuration**: the agent model, runtime, and browser setting. The agent harness is taken from the source box.
 
-A snapshot does not carry active schedules over to the new box.
+A restored box does not inherit:
+
+* **Agent API key**: a key passed directly as `apiKey` is not stored in the snapshot. The restored box uses your stored key for that provider or the Upstash-managed key. Pass `agent` again to use your own key.
+* **Network policy**: pass `networkPolicy` again on restore.
+* **Attach headers**: pass `attachHeaders` again on restore.
+* **Lifecycle settings**: init command, keep-alive, and size use the values passed on restore.
+* **Schedules**: active schedules are not carried over.
 
 <Note>
 Snapshots are the best way to preserve cloned repositories, installed dependencies, and prepared workspaces. If your box already has a repo checked out, restoring from a snapshot is usually faster than cloning it again.
@@ -35,11 +41,12 @@ const snapshot = await box.snapshot({ name: "after-setup" })
 
 console.log(snapshot)
 // {
-//   id: "snap_x7f...",
+//   id: "3f9c2a1e-7b4d-4c8e-9a51-2d6f0b8e4c17",
 //   name: "after-setup",
-//   boxId: "box_abc123",
-//   sizeBytes: 52428800,
-//   createdAt: "2026-02-23T..."
+//   box_id: "sweet-shark-26021",
+//   size_bytes: 52428800,
+//   status: "ready",
+//   created_at: 1771845600,
 // }
 ```
 
@@ -48,9 +55,9 @@ snapshot = box.snapshot(name="after-setup")
 
 print(snapshot)
 # Snapshot(
-#   id="snap_x7f...",
+#   id="3f9c2a1e-7b4d-4c8e-9a51-2d6f0b8e4c17",
 #   name="after-setup",
-#   box_id="box_abc123",
+#   box_id="sweet-shark-26021",
 #   size_bytes=52428800,
 #   status="ready",
 #   created_at=1771845600,
@@ -74,8 +81,8 @@ const snapshots = await box.listSnapshots()
 
 console.log(snapshots)
 // [
-//   { id: "snap_x7f...", name: "after-setup", status: "ready", ... },
-//   { id: "snap_a3b...", name: "pre-refactor", status: "ready", ... },
+//   { id: "3f9c2a1e-...", name: "after-setup", status: "ready", ... },
+//   { id: "8b2e6d40-...", name: "pre-refactor", status: "ready", ... },
 // ]
 ```
 
@@ -84,8 +91,8 @@ snapshots = box.list_snapshots()
 
 print(snapshots)
 # [
-#   Snapshot(id="snap_x7f...", name="after-setup", status="ready", ...),
-#   Snapshot(id="snap_a3b...", name="pre-refactor", status="ready", ...),
+#   Snapshot(id="3f9c2a1e-...", name="after-setup", status="ready", ...),
+#   Snapshot(id="8b2e6d40-...", name="pre-refactor", status="ready", ...),
 # ]
 ```
 </CodeGroup>
@@ -98,11 +105,11 @@ Remove a snapshot by ID.
 
 <CodeGroup>
 ```typescript box.ts
-await box.deleteSnapshot("snap_x7f...")
+await box.deleteSnapshot(snapshot.id)
 ```
 
 ```python box.py
-box.delete_snapshot("snap_x7f...")
+box.delete_snapshot(snapshot.id)
 ```
 </CodeGroup>
 
@@ -110,7 +117,7 @@ box.delete_snapshot("snap_x7f...")
 
 ### Restore from a snapshot
 
-`Box.fromSnapshot()` provisions a new box with the exact state from the snapshot. The original box is unaffected. You can branch into multiple boxes from the same checkpoint.
+`Box.fromSnapshot()` provisions a new box from the snapshot's filesystem and agent model. The original box is unaffected. You can branch into multiple boxes from the same checkpoint.
 
 <CodeGroup>
 ```typescript box.ts
@@ -119,7 +126,7 @@ const restored = await Box.fromSnapshot(snapshot.id)
 // Box.fromSnapshot accepts creation options such as name:
 const named = await Box.fromSnapshot(snapshot.id, { name: "restored-worker" })
 
-const files = await restored.files.list("/work")
+const files = await restored.files.list("/workspace/home")
 console.log(files)
 ```
 
@@ -129,12 +136,12 @@ restored = Box.from_snapshot(snapshot.id)
 # Box.from_snapshot accepts creation options such as name:
 named = Box.from_snapshot(snapshot.id, name="restored-worker")
 
-files = restored.files.list("/work")
+files = restored.files.list("/workspace/home")
 print(files)
 ```
 </CodeGroup>
 
-The restored box starts with the same workspace state from the snapshot. You can also configure lifecycle settings such as keep-alive and init commands on the restored box.
+The restored box starts with the same workspace state from the snapshot. Settings that are not inherited, such as `agent.apiKey`, `networkPolicy`, `attachHeaders`, `initCommand`, and `keepAlive`, can be passed to `fromSnapshot()`. Env vars from the source box carry over.
 
 ***
 
@@ -154,7 +161,7 @@ const box = await Box.create({
   git: { token: process.env.GITHUB_TOKEN },
 })
 
-await box.git.clone({ repo: "github.com/my-org/my-repo" })
+await box.git.clone({ repo: "https://github.com/my-org/my-repo" })
 const checkpoint = await box.snapshot({ name: "pre-refactor" })
 
 const run = await box.agent.run({
@@ -163,7 +170,10 @@ const run = await box.agent.run({
 })
 
 if (run.status === "failed") {
-  const fallback = await Box.fromSnapshot(checkpoint.id)
+  // 👇 the API key is not stored in the snapshot, so pass the agent again
+  const fallback = await Box.fromSnapshot(checkpoint.id, {
+    agent: { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY },
+  })
   await fallback.agent.run({
     prompt: "Add connection pooling to the existing database layer without rewriting it",
   })
@@ -180,7 +190,7 @@ box = Box.create(
     git={"token": os.environ["GITHUB_TOKEN"]},
 )
 
-box.git.clone(repo="github.com/my-org/my-repo")
+box.git.clone(repo="https://github.com/my-org/my-repo")
 checkpoint = box.snapshot(name="pre-refactor")
 
 run = box.agent.run(
@@ -189,7 +199,11 @@ run = box.agent.run(
 )
 
 if run.status == "failed":
-    fallback = Box.from_snapshot(checkpoint.id)
+    # 👇 the API key is not stored in the snapshot, so pass the agent again
+    fallback = Box.from_snapshot(
+        checkpoint.id,
+        agent={"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]},
+    )
     fallback.agent.run(
         prompt="Add connection pooling to the existing database layer without rewriting it",
     )
@@ -211,7 +225,10 @@ await base.delete()
 
 const boxes = await Promise.all(
   tasks.map(async (task) => {
-    const box = await Box.fromSnapshot(baseSnap.id)
+    // 👇 the base box has no agent, so configure one on restore
+    const box = await Box.fromSnapshot(baseSnap.id, {
+      agent: { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY },
+    })
     await box.agent.run({ prompt: task })
     return box
   })
@@ -220,7 +237,10 @@ const boxes = await Promise.all(
 
 ```python box.py
 import asyncio
-from upstash_box import AsyncBox
+import os
+from upstash_box import Agent, AsyncBox
+
+agent = {"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]}
 
 async def main() -> None:
     base = await AsyncBox.create(runtime="node")
@@ -229,7 +249,8 @@ async def main() -> None:
     await base.delete()
 
     async def run_task(task: str) -> AsyncBox:
-        box = await AsyncBox.from_snapshot(base_snap.id)
+        # 👇 the base box has no agent, so configure one on restore
+        box = await AsyncBox.from_snapshot(base_snap.id, agent=agent)
         await box.agent.run(prompt=task)
         return box
 
@@ -252,14 +273,17 @@ const seed = await Box.create({
   runtime: "node",
   git: { token: process.env.GITHUB_TOKEN },
 })
-await seed.git.clone({ repo: "github.com/your-org/monorepo" })
+await seed.git.clone({ repo: "https://github.com/your-org/monorepo" })
 const snap = await seed.snapshot({ name: "repo-cloned" })
 await seed.delete()
 
+// 👇 the seed box has no agent, so configure one on restore
+const agent = { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY }
+
 const [security, performance, docs] = await Promise.all([
-  Box.fromSnapshot(snap.id),
-  Box.fromSnapshot(snap.id),
-  Box.fromSnapshot(snap.id),
+  Box.fromSnapshot(snap.id, { agent }),
+  Box.fromSnapshot(snap.id, { agent }),
+  Box.fromSnapshot(snap.id, { agent }),
 ])
 
 await Promise.all([
@@ -272,21 +296,24 @@ await Promise.all([
 ```python box.py
 import asyncio
 import os
-from upstash_box import AsyncBox
+from upstash_box import Agent, AsyncBox
+
+# the seed box has no agent, so configure one on restore
+agent = {"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]}
 
 async def main() -> None:
     seed = await AsyncBox.create(
         runtime="node",
         git={"token": os.environ["GITHUB_TOKEN"]},
     )
-    await seed.git.clone(repo="github.com/your-org/monorepo")
+    await seed.git.clone(repo="https://github.com/your-org/monorepo")
     snap = await seed.snapshot(name="repo-cloned")
     await seed.delete()
 
     security, performance, docs = await asyncio.gather(
-        AsyncBox.from_snapshot(snap.id),
-        AsyncBox.from_snapshot(snap.id),
-        AsyncBox.from_snapshot(snap.id),
+        AsyncBox.from_snapshot(snap.id, agent=agent),
+        AsyncBox.from_snapshot(snap.id, agent=agent),
+        AsyncBox.from_snapshot(snap.id, agent=agent),
     )
 
     await asyncio.gather(

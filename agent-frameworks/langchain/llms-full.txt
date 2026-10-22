@@ -18914,7 +18914,7 @@ See the [LangGraph CLI build documentation](/langsmith/cli#build) for more detai
 
 ### Connect to your deployed Agent
 
-* &#x20;**[LangGraph SDK](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph-sdk-python)**: Use the LangGraph SDK for programmatic integration.
+* &#x20;**[LangGraph SDK](/langsmith/langgraph-python-sdk)**: Use the LangGraph SDK for programmatic integration.
 * &#x20;**[RemoteGraph](/langsmith/use-remote-graph)**: Connect using RemoteGraph for remote graph connections (to use your graph in other graphs).
 * &#x20;**[REST API](/langsmith/server-api-ref)**: Use HTTP-based interactions with your deployed agent.
 * &#x20;**[Studio](/langsmith/studio)**: Access the visual interface for testing and debugging.
@@ -23686,7 +23686,7 @@ From the control plane UI, you can:
 * View deployment metrics such as CPU and memory usage.
 * Delete a deployment.
 
-The Control plane UI is embedded in [LangSmith](https://docs.smith.langchain.com).
+The Control plane UI is embedded in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-control-plane).
 
 ## Control plane API
 
@@ -25413,7 +25413,7 @@ LangSmith Deployment supports cron jobs, which run on a user-defined schedule. T
 
 Note that this sends the same input to the thread every time.
 
-The LangSmith Deployment API provides several endpoints for creating and managing cron jobs. See the [API reference](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref/) for more details.
+The LangSmith Deployment API provides several endpoints for creating and managing cron jobs. See the [API reference](/langsmith/server-api-ref) for more details.
 
 Sometimes you don't want to run your graph based on user interaction, but rather you would like to schedule your graph to run on a schedule - for example if you wish for your graph to compose and send out a weekly email of to-dos for your team. LangSmith Deployment allows you to do this without having to write your own script by using the `Crons` client. To schedule a graph job, you need to pass a [cron expression](https://crontab.cronhub.io/) to inform the client when you want to run the graph. `Cron` jobs are run in the background and do not interfere with normal invocations of the graph.
 
@@ -26005,7 +26005,7 @@ def my_node(state, config):
 
 ### Authorizing a user for Studio
 
-By default, if you add custom authorization on your resources, this will also apply to interactions made from [Studio](/langsmith/studio). If you want, you can handle logged-in Studio users differently by checking [is\_studio\_user()](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph_sdk.auth.types.StudioUser).
+By default, if you add custom authorization on your resources, this will also apply to interactions made from [Studio](/langsmith/studio). If you want, you can handle logged-in Studio users differently by checking [is\_studio\_user()](https://reference.langchain.com/python/langgraph-sdk/auth/types/StudioUser).
 
 > [!NOTE]
 >
@@ -37230,7 +37230,9 @@ An Anthropic API key.
 
 An AWS access key ID and secret access key, with an optional session token, or a Bedrock API key (bearer token). Optionally, an AWS region.
 
-Engine uses the Bedrock Mantle API. Enable access to the required models in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions. See [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
+Engine uses the Bedrock Mantle API. To use Bedrock Runtime instead, see [Use Bedrock Runtime](#use-bedrock-runtime).
+
+Enable access to the required models in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions. See [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
 
 If no region is saved, Engine uses `us-east-1`, including with workload identity. It does not inherit the EKS cluster's region.
 
@@ -37273,6 +37275,34 @@ If Engine runs fail after you save:
 * **No provider selected:** Engine does not start runs until at least one provider is selected and saved.
 * **Rejected credentials:** **Test connection** reports which provider rejected them. Update the credentials and test again.
 * **Model not available:** enable the model in your provider account, then test again.
+
+## Use Bedrock Runtime
+
+To have Engine call Amazon Bedrock Runtime instead of Mantle, set two environment variables on both Engine workloads:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+engineInsightsAgent:
+  apiServer:
+    deployment:
+      extraEnv:
+        - name: ENGINE_BEDROCK_API
+          value: "runtime"
+        - name: ENGINE_BEDROCK_INFERENCE_PROFILE
+          value: "<system-inference-profile-id>"
+  queue:
+    deployment:
+      extraEnv:
+        - name: ENGINE_BEDROCK_API
+          value: "runtime"
+        - name: ENGINE_BEDROCK_INFERENCE_PROFILE
+          value: "<system-inference-profile-id>"
+```
+
+Set `ENGINE_BEDROCK_INFERENCE_PROFILE` to a system inference profile ID for Engine's Claude model, such as `us.anthropic.<model-id>`. Supported prefixes are `us.`, `eu.`, `apac.`, and `global.`. Profile ARNs and application inference profiles are not supported.
+
+Grant the calling identity Bedrock Runtime access to that profile. Then apply the Helm values, restart both deployments, and run [**Test connection**](#test-a-provider). If an Engine upgrade changes its Claude model, update the profile ID.
+
+On BYOC, contact LangChain to make this change.
 
 ## Use cloud identity for your model providers
 
@@ -37454,7 +37484,8 @@ Engine calls each provider's standard API hostname from the `standalone-insights
 
 | **Provider** | **Hostname Engine calls** | **Private connection** |
 | - | - | - |
-| Amazon Bedrock | `bedrock-mantle.<region>.api.aws` | An interface VPC endpoint for `com.amazonaws.<region>.bedrock-mantle`, with private DNS enabled or a Route 53 private hosted zone for the hostname |
+| Amazon Bedrock (Mantle) | `bedrock-mantle.<region>.api.aws` | An interface VPC endpoint for `com.amazonaws.<region>.bedrock-mantle`, with private DNS enabled or a Route 53 private hosted zone for the hostname |
+| Amazon Bedrock (Runtime) | `bedrock-runtime.<region>.amazonaws.com` | An interface VPC endpoint for `com.amazonaws.<region>.bedrock-runtime`, with private DNS enabled |
 | Google Vertex AI | `<region>-aiplatform.googleapis.com`, or `aiplatform.googleapis.com` for the global region | Private Service Connect for Google APIs, with private DNS for `googleapis.com` |
 | Azure AI Foundry | `<resource>.openai.azure.com` and `<resource>.services.ai.azure.com` | A private endpoint for the Foundry resource, with its private DNS zones |
 | Anthropic, OpenAI | `api.anthropic.com`, `api.openai.com` | Not available. These providers need public egress. |
@@ -39093,7 +39124,7 @@ And here's the database schema (image from [https://github.com/lerocha/chinook-d
 
 ### Define the customer support agent
 
-We'll create a [LangGraph](https://langchain-ai.github.io/langgraph/) agent with limited access to our database. For demo purposes, our agent will support two basic types of requests:
+We'll create a [LangGraph](/oss/python/langgraph/overview) agent with limited access to our database. For demo purposes, our agent will support two basic types of requests:
 
 * Lookup: The customer can look up song titles, artist names, and albums based on other identifying information. For example: "What songs do you have by Jimi Hendrix?"
 * Refund: The customer can request a refund on their past purchases. For example: "My name is Claude Shannon and I'd like a refund on a purchase I made last week, could you help me?"
@@ -40674,7 +40705,7 @@ Source: https://docs.langchain.com/langsmith/evaluate-graph
 
 > [!NOTE]
 >
-> [langgraph](https://langchain-ai.github.io/langgraph/)
+> [langgraph](/oss/python/langgraph/overview)
 
 `langgraph` is a library for building stateful, multi-actor applications with LLMs, used to create agent and multi-agent workflows. Evaluating `langgraph` graphs can be challenging because a single invocation can involve many LLM calls, and which LLM calls are made may depend on the outputs of preceding calls. In this guide we will focus on the mechanics of how to pass graphs and graph nodes to `evaluate()` / `aevaluate()`. For evaluation techniques and best practices when building agents head to the [LangSmith evaluation docs](/langsmith/evaluation).
 
@@ -41128,11 +41159,11 @@ This guide shows you how to run an evaluation on an agent using the LangSmith SD
 >
 > [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets)
 
-In this guide we'll go over how to evaluate an application using the [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) method in the LangSmith SDK.
+In this guide we'll go over how to evaluate an application using the [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) method in the LangSmith SDK.
 
 > [!TIP]
 >
-> For larger evaluation jobs in Python we recommend using [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate), the asynchronous version of [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate). It is still worthwhile to read this guide first, as the two have identical interfaces, before reading the how-to guide on [running an evaluation asynchronously](/langsmith/evaluation-async).
+> For larger evaluation jobs in Python we recommend using [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate), the asynchronous version of [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate). It is still worthwhile to read this guide first, as the two have identical interfaces, before reading the how-to guide on [running an evaluation asynchronously](/langsmith/evaluation-async).
 >
 > In JS/TS evaluate() is already asynchronous so no separate method is needed.
 >
@@ -41315,7 +41346,7 @@ You can also define an evaluator in the [LangSmith UI](https://smith.langchain.c
 
 ## Run the evaluation
 
-We'll use the [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) methods to run the evaluation.
+We'll use the [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) / [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate) methods to run the evaluation.
 
 The key arguments are:
 
@@ -42085,7 +42116,7 @@ Source: https://docs.langchain.com/langsmith/evaluate-pairwise
 >
 > Concept: [Pairwise evaluations](/langsmith/evaluation-concepts#pairwise)
 
-LangSmith supports evaluating **existing** experiments in a comparative manner. Instead of evaluating one output at a time, you can score the output from multiple experiments against each other. In this guide, you'll use [`evaluate()`](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) with two existing experiments to [define an evaluator](#define-a-pairwise-evaluator) and [run a pairwise evaluation](#run-a-pairwise-evaluation). Finally, you'll use the LangSmith UI to [view the pairwise experiments](#view-pairwise-experiments).
+LangSmith supports evaluating **existing** experiments in a comparative manner. Instead of evaluating one output at a time, you can score the output from multiple experiments against each other. In this guide, you'll use [`evaluate()`](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) with two existing experiments to [define an evaluator](#define-a-pairwise-evaluator) and [run a pairwise evaluation](#run-a-pairwise-evaluation). Finally, you'll use the LangSmith UI to [view the pairwise experiments](#view-pairwise-experiments).
 
 ## Prerequisites
 
@@ -42094,7 +42125,7 @@ LangSmith supports evaluating **existing** experiments in a comparative manner. 
 
 > [!NOTE]
 >
-> You can also use [`evaluate_comparative()`](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate_comparative) with more than two existing experiments.
+> You can also use [`evaluate_comparative()`](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate_comparative) with more than two existing experiments.
 
 ## `evaluate()` comparative args
 
@@ -43739,7 +43770,7 @@ Changes are not saved until you click submit.
 
 ## 1. Create examples with attachments
 
-To upload examples with attachments using the SDK, use the [create\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.create_examples) / [update\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.update_examples) Python methods or the [uploadExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#uploadexamplesmultipart) / [updateExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#updateexamplesmultipart) TypeScript methods.
+To upload examples with attachments using the SDK, use the [create\_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update\_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python methods or the [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript methods.
 
 #### Python
 
@@ -44712,7 +44743,7 @@ Below, we will discuss evaluation of a few popular types of LLM applications.
 
 ![Tool use](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-use.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a1c10f940f40ad89c90de8fae3607c1f)
 
-Below is a tool-calling agent in [LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/). The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. The `tool condition` sees if a tool was selected by the `assistant node` and, if so, routes to the `tool node`. The `tool node` executes the tool and returns the output as a tool message to the `assistant node`. This loop continues as long as the `assistant node` selects a tool. If no tool is selected, then the agent directly returns the LLM response.
+Below is a tool-calling agent in [LangGraph](/oss/python/langgraph/quickstart). The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. The `tool condition` sees if a tool was selected by the `assistant node` and, if so, routes to the `tool node`. The `tool node` executes the tool and returns the output as a tool message to the `assistant node`. This loop continues as long as the `assistant node` selects a tool. If no tool is selected, then the agent directly returns the LLM response.
 
 ![Agent](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langgraph-agent.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=37f3c09958c1e2543f633c59cc89df36)
 
@@ -44850,7 +44881,7 @@ Source: https://docs.langchain.com/langsmith/evaluation-async
 >
 > [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets) | [Experiments](/langsmith/evaluation-concepts#experiment)
 
-We can run evaluations asynchronously via the SDK using [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate), which accepts all of the same arguments as [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) but expects the application function to be asynchronous. To learn more, see [how to use the `evaluate()` function](/langsmith/evaluate-llm-application).
+We can run evaluations asynchronously via the SDK using [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate), which accepts all of the same arguments as [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) but expects the application function to be asynchronous. To learn more, see [how to use the `evaluate()` function](/langsmith/evaluate-llm-application).
 
 > [!NOTE]
 >
@@ -45079,7 +45110,7 @@ Run evaluators using any of the following:
 
 * The [Evaluators](/langsmith/evaluators) page, to attach them to tracing projects, agent environments, or datasets
 * The [Playground](/langsmith/prompt-engineering-concepts#playground)
-* The LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) and [TypeScript](https://docs.smith.langchain.com/reference/js))
+* The LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith) and [TypeScript](https://reference.langchain.com/javascript/langsmith))
 * [Rules](/langsmith/rules), to run them automatically on tracing projects, agent environments, or datasets
 
 ### Attaching an evaluator to a tracing project or dataset
@@ -45813,7 +45844,7 @@ Here are some topics you might want to explore next:
 * [Evaluation concepts](/langsmith/evaluation-concepts) provides descriptions of the key terminology for evaluations in LangSmith.
 * [OpenEvals README](https://github.com/langchain-ai/openevals) to see all available prebuilt evaluators and how to customize them.
 * [Define custom evaluators](/langsmith/code-evaluator-ui).
-* [Python](https://docs.smith.langchain.com/reference/python/reference) or [TypeScript](https://docs.smith.langchain.com/reference/js) SDK references for comprehensive descriptions of every class and function.
+* [Python](https://reference.langchain.com/python/langsmith) or [TypeScript](https://reference.langchain.com/javascript/langsmith) SDK references for comprehensive descriptions of every class and function.
 
 ***
 
@@ -46185,17 +46216,7 @@ You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?ut
 3. The panel lets you:
    * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Decision Model](/langsmith/decision-model-evaluator), or [Code](/langsmith/online-evaluations-code) evaluator.
    * **Add a LangChain Tuned Evaluator**: Attach a [specialized judge managed by LangChain](/langsmith/tuned-evaluators) to a compatible tracing project without configuring a prompt, model, or API key.
-   * **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section surfaces popular templates first, followed by templates organized by the following categories:
-
-     | Category | Description |
-     | - | - |
-     | Security | Detect leaks, injections, and adversarial inputs. |
-     | Safety | Evaluate content safety and moderation. |
-     | Quality | Measure output quality and accuracy. |
-     | Conversation | Evaluate conversational quality and user experience. |
-     | Trajectory | Evaluate agent tool use and decision paths. |
-     | Image Evaluations | Evaluate image content quality and safety. |
-     | Voice Evaluation | Evaluate voice and audio interaction quality. |
+   * **Create from a template**: Start from a ready-made evaluator (also known as a prebuilt evaluator) for common evaluation patterns. A **Recommended** section lists popular templates first. The rest are grouped by category: Security, Safety, Quality, Conversation, Trajectory, Image Evaluations, and Voice Evaluation. For what each template scores, see [Prebuilt evaluator templates](#prebuilt-evaluator-templates).
 
 You can also add an evaluator directly from a [tracing project](/langsmith/observability-concepts#tracing-projects), an agent environment, or a [dataset](/langsmith/evaluation-concepts#datasets). In that flow, you can additionally **attach an existing evaluator** from your workspace, or create a [Composite](/langsmith/composite-evaluators-ui) evaluator. Refer to [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge) and [Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset).
 
@@ -46249,6 +46270,100 @@ console.log("Created evaluator:", created.evaluator?.id);
 ```
 
 To create an LLM-as-a-judge evaluator and to retrieve, update, list, or delete evaluators, refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+
+## Prebuilt evaluator templates
+
+Prebuilt evaluator templates are ready-made evaluators for common checks, such as hallucination, prompt injection, and task completion. Each template is a starting point. You can edit its prompt and scoring schema before you save it to your workspace.
+
+Most templates are [LLM-as-a-judge](/langsmith/llm-as-judge) evaluators whose prompts come from the open-source [openevals](https://github.com/langchain-ai/openevals) package. Two are exceptions: Assertions uses a prompt defined in LangSmith, and Exact Match is a [code evaluator](/langsmith/online-evaluations-code).
+
+Each LLM-as-a-judge template writes a score under its feedback key and a `comment` with the judge's reasoning. Language and Support Intent return a label without a `comment`.
+
+A `true` score does not always mean a pass. Templates that detect a problem return `true` when they find it: the Security and Safety templates, Hallucination, Perceived Error, the Image templates, and Audio Quality. The rest return `true` when the output passes. The **Score** column in each table states what `true` means.
+
+Templates differ in the data they read:
+
+* **Whole threads**: Conversation and Trajectory templates read every message in a thread. When you add one to a tracing project, LangSmith configures it as a thread-level evaluator. For more information, see [Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn).
+* **Reference outputs**: Correctness, Assertions, and Exact Match compare the output against a reference output, which comes from a [dataset](/langsmith/evaluation-concepts#datasets) example.
+* **Plan**: Plan Adherence reads a `plan` variable in addition to the thread messages.
+* **Attachments**: Image and Voice templates read the run's attachments. For more information, see [Evaluate with attachments](/langsmith/evaluate-with-attachments).
+
+### Security
+
+Security templates detect leaks, injections, and adversarial inputs.
+
+| Template | What it scores | Score |
+| - | - | - |
+| PII Leakage | Whether the input or output contains personal information that could identify or harm an individual. | `pii_leakage` (boolean): `true` when PII is found. |
+| Prompt Injection | Whether the input contains embedded instructions that target the AI system. Reads the input only. | `prompt_injection` (boolean): `true` when an injection attempt is found. |
+| Code Injection | Whether the input contains executable code embedded in data. Reads the input only. | `code_injection` (boolean): `true` when an injection attempt is found. |
+
+### Safety
+
+Safety templates evaluate content safety and moderation.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Toxicity | Whether the content contains toxic elements, such as personal attacks or hate speech. | `toxicity` (boolean): `true` when toxic content is found. |
+| Bias & Fairness | Whether the content contains stereotyping, exclusionary language, or discriminatory framing. | `fairness` (boolean): `true` when bias or a fairness violation is found. |
+
+### Quality
+
+Quality templates measure output quality and accuracy.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Hallucination | Whether the output contains claims the input context does not support, such as contradictions, speculative details, or inaccurate facts. | `hallucination` (boolean): `true` when the output contains a hallucination. |
+| Correctness | Whether the output is factually accurate, complete, and consistent with the reference output. | `correctness` (boolean): `true` when the output is correct. |
+| Assertions | Whether the output satisfies each assertion in the reference output. The judge reads an `assertions` list from the reference output, where each entry has a `key` and a `comment`. A missing or empty list scores `false`. | `assertions_passed` (boolean): `true` only when every assertion passes. |
+| Conciseness | How efficiently the output conveys the requested information, penalizing hedging, pleasantries, meta-commentary, and redundancy. | `conciseness` (number, 0 to 10): `10` when the output contains only essential information. |
+| Code Checker | Whether the code solves every requirement in the input, handles edge cases, and would run without errors. | `code_checker` (boolean): `true` when the code is complete and correct. |
+| Answer Relevance | Whether the output directly addresses the input question without off-topic tangents. | `answer_relevance` (boolean): `true` when the output is relevant. |
+| Exact Match | Whether the run's outputs exactly equal the reference outputs. This template runs as code and makes no LLM call. | `exact_match` (boolean): `true` when the outputs match. |
+
+### Conversation
+
+Conversation templates evaluate conversational quality and user experience across a whole thread.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Perceived Error | Whether user signals, such as frustration or repeated corrections, show the user perceived the agent making an error. | `perceived_error` (boolean): `true` when the user perceived an error that caused significant frustration. |
+| Language | The primary language of the conversation. | `language` (string): a language name in English, such as `Spanish`. |
+| Support Intent | The primary intent of a support conversation. | `intent` (category): one of `Account & Billing`, `Order Management`, `Technical Support`, `Product Inquiry`, `Policy Inquiry`, `Status Check`, `Complaint & Feedback`, `Escalation`, or `Other`. |
+| User Satisfaction | Whether the user's tone and satisfaction indicators show the user was satisfied. | `user_satisfaction` (boolean): `true` when the user appears satisfied. |
+| Tone | Whether the agent's tone was appropriate for the context and consistent. | `agent_tone` (boolean): `true` when the tone was appropriate. |
+| Task Completion | Whether the agent fully completed every user request in the conversation. | `task_completion` (boolean): `true` when every request was completed. |
+| Knowledge Retention | Whether the agent retained and applied facts from earlier in the conversation, without contradictions or ignored context. | `knowledge_retention` (boolean): `true` when the agent retained earlier facts. |
+
+### Trajectory
+
+Trajectory templates evaluate agent tool use and decision paths across a whole thread.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Plan Adherence | Whether the agent's steps followed its declared plan. | `plan_adherence` (boolean): `true` when the agent followed the plan. |
+| Tool Selection | Whether the agent chose the right tools, in a sensible order, without unnecessary calls. | `tool_selection` (boolean): `true` when tool selection was accurate and efficient. |
+| Trajectory Accuracy | Whether the agent's path was logical, showed clear progress, and was reasonably efficient. | `trajectory_accuracy` (boolean): `true` when the trajectory was accurate and efficient. |
+
+### Image Evaluations
+
+Image templates evaluate image content quality and safety.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Explicit Content | Whether an image contains nudity, sexual content, or graphic violence. | `explicit_content` (boolean): `true` when explicit content is found. |
+| Sensitive Imagery | Whether an image contains harmful, offensive, or inappropriate symbols or depictions. | `sensitive_imagery` (boolean): `true` when sensitive imagery is found. |
+
+### Voice Evaluation
+
+Voice templates evaluate voice and audio interaction quality.
+
+| Template | What it scores | Score |
+| - | - | - |
+| Audio Quality | Whether the audio contains clipping, distortion, or glitches that degrade the listening experience. | `audio_quality` (boolean): `true` when quality issues are found. |
+| Transcription Accuracy | Whether a speech-to-text transcription accurately reflects the spoken content. | `transcription_accuracy` (boolean): `true` when the transcription is accurate. |
+| User Interrupts | Whether the agent handled user interruptions gracefully. | `user_interrupts` (boolean): `true` when interruptions were handled gracefully. |
+| Vocal Affect | Whether the agent's vocal warmth, prosody, and emotional tone were appropriate and natural. | `vocal_affect` (boolean): `true` when vocal affect was appropriate. |
 
 ## View evaluator details
 
@@ -48427,7 +48542,7 @@ AI search finds threads, traces, and runs by what happens in their conversations
 
 > [!NOTE]
 >
-> AI search is in [beta](/langsmith/release-stages) and available on [LangSmith Cloud](/langsmith/cloud) in the GCP US, EU, and APAC regions. It works in the **Threads**, **Traces**, and **Runs** selections once an organization admin enables it. Refer to [Enable AI search](#enable-ai-search).
+> AI search is in [beta](/langsmith/release-stages) and available on all [LangSmith Cloud](/langsmith/cloud) SaaS instances. It works in the **Threads**, **Traces**, and **Runs** selections once an organization admin enables it. Refer to [Enable AI search](#enable-ai-search).
 
 To search with AI:
 
@@ -48564,7 +48679,7 @@ This page covers:
 * [Filtering within the Details view](#filter-runs-in-the-details-view)
 * [Advanced filters](#advanced-filters) for filtering on root or child run properties
 
-If you are programmatically exporting data for analysis via the [API](/langsmith/smith-api/run/query-runs) or [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs), refer to the [exporting traces guide](/langsmith/export-traces) instead.
+If you are programmatically exporting data for analysis via the [API](/langsmith/smith-api/run/query-runs) or [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs), refer to the [exporting traces guide](/langsmith/export-traces) instead.
 
 ## Create and apply filters
 
@@ -48777,7 +48892,7 @@ Click the  icon next to the saved filter in the dropdown, and delete the filter 
 
 ## Copy a filter
 
-You can copy a constructed filter to share it with colleagues, reuse it later, or query runs programmatically in the [API](/langsmith/smith-api/run/query-runs) or [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs).
+You can copy a constructed filter to share it with colleagues, reuse it later, or query runs programmatically in the [API](/langsmith/smith-api/run/query-runs) or [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs).
 
 To copy the filter:
 
@@ -54409,7 +54524,7 @@ If you're not using `langchain` you can use other libraries like `tenacity` (Pyt
 
 ## Limiting `max_concurrency`
 
-Limiting the number of concurrent calls you're making to your application and evaluators is another way to decrease the frequency of model calls you're making, and in that way avoid rate limit errors. `max_concurrency` can be set directly on the [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) functions. This parallelizes evaluation by effectively splitting the dataset across threads.
+Limiting the number of concurrent calls you're making to your application and evaluators is another way to decrease the frequency of model calls you're making, and in that way avoid rate limit errors. `max_concurrency` can be set directly on the [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) / [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate) functions. This parallelizes evaluation by effectively splitting the dataset across threads.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import aevaluate
@@ -56809,6 +56924,8 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 >
 > Start runs from any service that can send a JSON webhook.
 
+An HTTP adapter can also live in a community-maintained package. See [Share a channel adapter as a package](/langsmith/javascript/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) to publish reusable provider code that users import into their channel declarations.
+
 ## See also
 
 * [Identity](/langsmith/javascript/managed-deep-agents-identity): authenticate callers and scope channel runs to the resolved user.
@@ -57083,6 +57200,59 @@ bunx mda deploy
 ```
 
 Put the signing key and any reply credentials in the project `.env` so `mda deploy` forwards them as deployment secrets. Then register `https://<deployment-url>/channels/<name>/events` with the external service as its webhook target.
+
+## Share a channel adapter as a package
+
+A reusable channel adapter is a package that creates an HTTP channel. Publish the provider-specific code separately so other projects can install it without copying callbacks or changing the Managed Deep Agents SDK.
+
+The package owns request verification, event parsing, and optional reply delivery. Managed Deep Agents still owns the agent run and trusted handoff.
+
+### Package the adapter
+
+To package the orders adapter from this guide, move `verify`, `parse`, `post`, and their helpers into the package. Keep secrets in environment variables, not in the published source. Export a factory that returns the HTTP channel declaration:
+
+Declare `managed-deepagents` as a `peerDependencies` entry in `package.json` so the application supplies the SDK. Import only from the public `managed-deepagents` entry point. The factory returns `HttpChannel`. Use `HttpChannelAdapter` and the request, parse-result, and post-input types when typing `verify`, `parse`, and `post`.
+
+Put the callbacks in `src/orders.ts` and export the factory from your package entry point:
+
+```ts src/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { channels, type HttpChannel } from "managed-deepagents";
+
+import { parse, post, verify } from "./orders.js";
+
+export function ordersChannel(): HttpChannel {
+  return channels.http({
+    provider: "orders",
+    verify,
+    parse,
+    post,
+  });
+}
+```
+
+Publish compiled JavaScript and TypeScript declarations, and point the package entry points at those files. Do not bundle a separate copy of `managed-deepagents` into the adapter.
+
+Declare the supported `managed-deepagents` versions in your package metadata. Test against those versions before publishing.
+
+### Use the package in a project
+
+`mda-orders` is an example package name, not a published integration. To install it as an application dependency and declare a channel under `channels/`:
+
+```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ordersChannel } from "mda-orders";
+
+export const channel = ordersChannel();
+```
+
+The channel file name, `channels/orders.ts`, determines the endpoint: `/channels/orders/events`.
+
+Keep the `provider` value, `"orders"`, stable across releases because it namespaces caller identities.
+
+### Before you publish
+
+Test valid and invalid signatures, ignored events, conversation-to-thread mapping, and reply delivery. Document required environment variables, supported event types, and any provider limitations. Publishing an adapter does not add managed provider provisioning. Document how to create the provider app, configure credentials, and register the webhook.
+
+For deployment secrets and webhook registration, see [Deploy the agent](#deploy-the-agent).
 
 ## See also
 
@@ -64526,7 +64696,7 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 
 ## Create your own LLM-as-a-judge evaluator
 
-For complete control of evaluator logic, create your own LLM-as-a-judge evaluator and run it using the LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) / [TypeScript](https://docs.smith.langchain.com/reference/js)).
+For complete control of evaluator logic, create your own LLM-as-a-judge evaluator and run it using the LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith) / [TypeScript](https://reference.langchain.com/javascript/langsmith)).
 
 Requires `langsmith>=0.2.0`
 
@@ -68902,7 +69072,7 @@ For more details, refer to the [Platform setup comparison](/langsmith/platform-s
 **Explore features:**
 
 * **[Studio](/langsmith/studio)**: Visualize, interact with, and debug your application with the Studio UI. Try the [Studio quickstart](/langsmith/quick-start-studio).
-* **API References**: [LangSmith Deployment API](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref/), [Python SDK](/langsmith/langgraph-python-sdk), [JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
+* **API References**: [LangSmith Deployment API](/langsmith/server-api-ref), [Python SDK](/langsmith/langgraph-python-sdk), [JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
 
 ## Related resources
 
@@ -69293,7 +69463,7 @@ output = {
 
 ## Convert custom I/O formats into LangSmith compatible formats
 
-If you're using a custom input or output format, you can convert it to a LangSmith compatible format using `process_inputs`/`processInputs` and `process_outputs`/`processOutputs` functions on the [`@traceable` decorator](https://docs.smith.langchain.com/reference/python/run_helpers/langsmith.run_helpers.traceable) (Python) or [`traceable` function](https://docs.smith.langchain.com/reference/js/functions/traceable.traceable) (TS).
+If you're using a custom input or output format, you can convert it to a LangSmith compatible format using `process_inputs`/`processInputs` and `process_outputs`/`processOutputs` functions on the [`@traceable` decorator](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) or [`traceable` function](https://reference.langchain.com/javascript/langsmith/traceable/traceable) (TS).
 
 `process_inputs`/`processInputs` and `process_outputs`/`processOutputs` accept functions that allow you to transform the inputs and outputs of a specific trace before they are logged to LangSmith. They have access to the trace's inputs and outputs, and can return a new dictionary with the processed data.
 
@@ -71142,7 +71312,7 @@ Once you've added `ls_` metadata parameters to your traces, you can use them to 
 
 ### Use the API
 
-Use the [`Client`](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client) class with the [`list_runs()`](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) method (Python) or [`listRuns()`](https://docs.smith.langchain.com/reference/js/classes/client.Client#listruns) method (TypeScript) to query traces based on metadata values. The [filter syntax](/langsmith/trace-query-syntax) supports equality checks, comparisons, and logical operators.
+Use the [`Client`](https://reference.langchain.com/python/langsmith/client/Client) class with the [`list_runs()`](https://reference.langchain.com/python/langsmith/client/Client/list_runs) method (Python) or [`listRuns()`](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) method (TypeScript) to query traces based on metadata values. The [filter syntax](/langsmith/trace-query-syntax) supports equality checks, comparisons, and logical operators.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -71682,7 +71852,7 @@ You can tag a version of your dataset in the UI by clicking on **+ Tag this vers
 
 ![Tagging Datasets](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tag-this-version.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=c3f7a97c92eb645f7b0888f4e35ffd48)
 
-You can also tag versions of your dataset using the SDK. Here's an example of how to tag a version of a dataset using the [Python SDK](https://docs.smith.langchain.com/reference/python/reference):
+You can also tag versions of your dataset using the SDK. Here's an example of how to tag a version of a dataset using the [Python SDK](https://reference.langchain.com/python/langsmith):
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -76992,8 +77162,8 @@ You can use the results of multi-turn simulations as part of a LangSmith experim
 >
 > See the following guides to learn how to set up evals using LangSmith's integrations with test frameworks:
 >
-> * [`pytest`](https://docs.smith.langchain.com/langsmith/pytest)
-> * [`Vitest` or `Jest`](https://docs.smith.langchain.com/langsmith/vitest-jest)
+> * [`pytest`](/langsmith/pytest)
+> * [`Vitest` or `Jest`](/langsmith/vitest-jest)
 
 If you are using one of the [LangSmith test framework integrations](/langsmith/pytest), you can pass in an array of OpenEvals evaluators as a `trajectory_evaluators` param when running the simulation. These evaluators will run at the end of the simulation, taking the final list of chat messages as an `outputs` kwarg. Your passed `trajectory_evaluator` must therefore accept this kwarg.
 
@@ -80106,7 +80276,7 @@ You'll also need to set your OpenAI API key as an environment variable, though y
 export OPENAI_API_KEY="your_openai_api_key"
 ```
 
-We'll also use LangSmith's [pytest](/langsmith/pytest) integration for Python and [Vitest/Jest](/langsmith/vitest-jest) for TypeScript to run our evals. `openevals` also integrates seamlessly with the [`evaluate`](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) method. See the [appropriate guides](/langsmith/pytest) for setup instructions.
+We'll also use LangSmith's [pytest](/langsmith/pytest) integration for Python and [Vitest/Jest](/langsmith/vitest-jest) for TypeScript to run our evals. `openevals` also integrates seamlessly with the [`evaluate`](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) method. See the [appropriate guides](/langsmith/pytest) for setup instructions.
 
 ## Running an evaluator
 
@@ -83533,7 +83703,7 @@ To create a prompt, you'll define a list of messages that you want in your promp
 
 Use the language-specific constructor and push method:
 
-* Python: [`ChatPromptTemplate`](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [`client.push_prompt(...)`](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.push_prompt)
+* Python: [`ChatPromptTemplate`](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [`client.push_prompt(...)`](https://reference.langchain.com/python/langsmith/client/Client/push_prompt)
 * TypeScript: [`ChatPromptTemplate.fromMessages(...)`](https://reference.langchain.com/javascript/langchain-core/prompts/ChatPromptTemplate) → [`client.pushPrompt(...)`](https://reference.langchain.com/javascript/langsmith/client/Client/pushPrompt)
 
 1. Add the following code to a `create_prompt` file:
@@ -85363,6 +85533,8 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 >
 > Start runs from any service that can send a JSON webhook.
 
+An HTTP adapter can also live in a community-maintained package. See [Share a channel adapter as a package](/langsmith/python/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) to publish reusable provider code that users import into their channel declarations.
+
 ## See also
 
 * [Identity](/langsmith/python/managed-deep-agents-identity): authenticate callers and scope channel runs to the resolved user.
@@ -85614,6 +85786,55 @@ uv run mda deploy
 ```
 
 Put the signing key and any reply credentials in the project `.env` so `mda deploy` forwards them as deployment secrets. Then register `https://<deployment-url>/channels/<name>/events` with the external service as its webhook target.
+
+## Share a channel adapter as a package
+
+A reusable channel adapter is a package that creates an HTTP channel. Publish the provider-specific code separately so other projects can install it without copying callbacks or changing the Managed Deep Agents SDK.
+
+The package owns request verification, event parsing, and optional reply delivery. Managed Deep Agents still owns the agent run and trusted handoff.
+
+### Package the adapter
+
+To package the orders adapter from this guide, move `verify`, `parse`, `post`, and their helpers into the package. Keep secrets in environment variables, not in the published source. Export a factory that returns the HTTP channel declaration:
+
+Declare a normal Python dependency on `managed-deepagents` in `pyproject.toml`. Put the callbacks in `mda_orders/orders.py` and export the factory:
+
+```python mda_orders/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import HttpChannel, channels
+
+from .orders import parse, post, verify
+
+
+def orders_channel() -> HttpChannel:
+    return channels.http(
+        provider="orders",
+        verify=verify,
+        parse=parse,
+        post=post,
+    )
+```
+
+Declare the supported `managed-deepagents` versions in your package metadata. Test against those versions before publishing.
+
+### Use the package in a project
+
+`mda-orders` is an example package name, not a published integration. To install it as an application dependency and declare a channel under `channels/`:
+
+```python channels/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from mda_orders import orders_channel
+
+channel = orders_channel()
+```
+
+The channel file name, `channels/orders.py`, determines the endpoint: `/channels/orders/events`.
+
+Keep the `provider` value, `"orders"`, stable across releases because it namespaces caller identities.
+
+### Before you publish
+
+Test valid and invalid signatures, ignored events, conversation-to-thread mapping, and reply delivery. Document required environment variables, supported event types, and any provider limitations. Publishing an adapter does not add managed provider provisioning. Document how to create the provider app, configure credentials, and register the webhook.
+
+For deployment secrets and webhook registration, see [Deploy the agent](#deploy-the-agent).
 
 ## See also
 
@@ -92163,7 +92384,7 @@ Running multiple repetitions can give a more accurate estimate of the performanc
 
 ## Configuring repetitions on an experiment
 
-Add the optional `num_repetitions` param to the `evaluate` / `aevaluate` function ([Python](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate), [TypeScript](https://docs.smith.langchain.com/reference/js/interfaces/evaluation.EvaluateOptions#numrepetitions)) to specify how many times to evaluate over each example in your dataset. For instance, if you have 5 examples in the dataset and set `num_repetitions=5`, each example will be run 5 times, for a total of 25 runs.
+Add the optional `num_repetitions` param to the `evaluate` / `aevaluate` function ([Python](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate), [TypeScript](https://reference.langchain.com/javascript/langsmith/evaluation/EvaluateOptions)) to specify how many times to evaluate over each example in your dataset. For instance, if you have 5 examples in the dataset and set `num_repetitions=5`, each example will be run 5 times, for a total of 25 runs.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import evaluate
@@ -105260,7 +105481,7 @@ Before enabling SmithDB, provide:
 * A **dedicated object-storage bucket** for SmithDB durable data.
 * **Cache storage** for query, ingestion, and compaction worker: network-attached disks, or local SSD for the best cache performance.
 * Private network connectivity to the database and object store, plus credentials or workload identity for both.
-* If LangSmith uses an HTTP proxy, `NO_PROXY` entries for the IP range assigned to SmithDB pods and the cluster's internal service domain.
+* Network access from LangSmith to SmithDB pod IPs. If LangSmith uses an HTTP proxy or runs in a service mesh, see [Pod network access](#pod-network-access).
 
 ## PostgreSQL metastore
 
@@ -106341,6 +106562,68 @@ Mount each cache as an ephemeral PVC on `local-csi` instead of an `emptyDir`. Th
 >                     storage: 100Gi
 > ```
 
+## Pod network access
+
+The SmithDB cluster manager tells clients which ingestion or query pod holds the data they need, and clients connect to that pod by its IP. These connections bypass Kubernetes Services, so the cluster network must allow connections to SmithDB pod IPs.
+
+The following table shows how clients reach each SmithDB component:
+
+| SmithDB component (port) | Clients connect by | Clients |
+| - | - | - |
+| Ingestion (`8082`) | Pod IP | `ingest-queue`, `queue`, and SmithDB query |
+| Query (`8080`) | Pod IP | `platform-backend`, `ingest-queue`, and `queue` |
+| Cluster manager (`8091`) | Service name | LangSmith and SmithDB components |
+| Compaction (`8071`) | Service name | SmithDB compaction worker |
+
+The optional mutations, run rules, and stats query deployments also listen on port `8080`, and clients connect to them by pod IP. Connections by Service name need no extra configuration.
+
+### HTTP proxy
+
+If LangSmith uses an HTTP proxy, add the IP range assigned to SmithDB pods and the cluster's internal service domain to `NO_PROXY`.
+
+### Service mesh
+
+If LangSmith runs in a service mesh, the mesh must forward connections addressed to SmithDB pod IPs on ports `8082` and `8080`. A mesh drops these connections in two cases:
+
+* The mesh only allows traffic to destinations in its service registry, and the SmithDB pods are not registered.
+* The mesh routes the ports by hostname. A connection addressed to a pod IP matches no hostname. Handling the ports as TCP avoids routing by hostname.
+
+> **Example: Register SmithDB pods with headless Services**
+>
+> Meshes that build their service registry from Kubernetes Services register every pod IP behind a [headless Service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services). The following manifest creates a headless Service for SmithDB ingestion and query. The names assume the Helm release is named `langsmith`.
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: v1
+> kind: Service
+> metadata:
+>   name: langsmith-smithdb-ingestion-headless
+> spec:
+>   clusterIP: None
+>   selector:
+>     app.kubernetes.io/component: langsmith-smithdb-ingestion
+>   ports:
+>     - name: tcp-grpc
+>       port: 8082
+>       targetPort: grpc
+> ---
+> apiVersion: v1
+> kind: Service
+> metadata:
+>   name: langsmith-smithdb-query-headless
+> spec:
+>   clusterIP: None
+>   selector:
+>     app.kubernetes.io/component: langsmith-smithdb-query
+>   ports:
+>     - name: tcp-grpc
+>       port: 8080
+>       targetPort: grpc
+> ```
+>
+> The `tcp-` prefix in each port name marks the port as TCP for meshes that select the protocol from the port name.
+>
+> If you enable the mutations, run rules, or stats query deployments, add a Service for each one on port `8080` that selects `langsmith-smithdb-mutations`, `langsmith-smithdb-run-rules`, or `langsmith-smithdb-stats-query`.
+
 ***
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
@@ -107157,6 +107440,8 @@ kubectl get pod -n NAMESPACE POD_NAME -o jsonpath='{.spec.serviceAccountName}{"\
 With `create: false`, `name` is required. Otherwise pods fall back to the `default` ServiceAccount and the binding never applies.
 
 **The metastore refuses connections.** Check that the database is reachable from the cluster, that `useSsl` matches what the server requires, and that the Secret keys named in `smithdb.config.metastore` match the keys actually present in the Secret.
+
+**Ingestion or queries fail with `Unavailable` errors.** An HTTP proxy or service mesh blocks connections to SmithDB pod IPs. The `ingest-queue` logs show errors such as `closing SmithDB ingestion stream failed: rpc error: code = Unavailable`. Allow the connections described in [Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access). Then restart `platform-backend`, `ingest-queue`, `queue`, and SmithDB query, because connections opened before the change keep failing.
 
 **Cache I/O is slow.** On local SSD, the `emptyDir` is backed by the boot disk rather than the SSD. On a network-attached disk, the volume is under-provisioned: confirm the StorageClass sets at least 7000 IOPS and 1000 MiB/s. Check which device backs the cache filesystem inside a running pod:
 
@@ -115046,7 +115331,7 @@ langsmith_client = langsmith.Client(
 )
 ```
 
-After setting the above, you should be able to run your code and see the results in your self-hosted instance. We recommend running through the [*quickstart guide*](https://docs.smith.langchain.com/#quick-start) to get a feel for how to use LangSmith.
+After setting the above, you should be able to run your code and see the results in your self-hosted instance. We recommend running through the [*quickstart guide*](/langsmith/observability-quickstart) to get a feel for how to use LangSmith.
 
 ### Self-Signed certificates
 
@@ -115552,6 +115837,37 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/langsmith/self-hosted-changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
+
+**2026-10-22**
+
+## langsmith-0.16.46
+
+**LangSmith version:** `0.16.74`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.16.46.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.46/langsmith-0.16.46.tgz)
+
+**2026-10-21**
+
+## langsmith-0.18.0-rc.40
+
+**LangSmith version:** `0.18.14rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.37. Refer to the [langsmith-0.18.0-rc.37](#langsmith-0-18-0-rc-37) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.40.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.40/langsmith-0.18.0-rc.40.tgz)
+
+**2026-10-21**
+
+## langsmith-0.17.22
+
+**LangSmith version:** `0.17.49`
+
+* When `GO_INGESTION_CONCURRENCY_PER_CPU` is unset, each ingest-queue pod runs 8 tasks per CPU in its CPU limit, capped at the node's CPU count. If your ingest-queue pods have less than 1 CPU, raise their CPU limit to the chart's 2-CPU limit or set `GO_INGESTION_CONCURRENCY_PER_CPU=1`.
+* Engine runs that use your own model providers no longer stop partway through with an `Invalid signature in thinking block` error. Engine also keeps more of a run's history before summarizing it.
+
+**Download the Helm chart:** [`langsmith-0.17.22.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.22/langsmith-0.17.22.tgz)
 
 **2026-10-21**
 
@@ -122616,14 +122932,14 @@ Source: https://docs.langchain.com/langsmith/serverless-environments
 
 > [!NOTE]
 >
-> This section is relevant for those using the LangSmith JS SDK version 0.2.0 and higher. If you are tracing using LangChain.js or LangGraph.js in serverless environments, see [this guide](https://js.langchain.com/docs/how_to/callbacks_serverless).
+> This section is relevant for those using the LangSmith JS SDK version 0.2.0 and higher. If you are tracing using LangChain.js or LangGraph.js in serverless environments, see [this guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting).
 
 When tracing JavaScript functions, LangSmith will trace runs in the background by default to avoid adding latency. In serverless environments where the execution context may be terminated abruptly, it's important to ensure that all tracing data is properly flushed before the function completes.
 
 To make sure this occurs, you can either:
 
 * Set an environment variable named `LANGSMITH_TRACING_BACKGROUND` to `"false"`. This will cause your traced functions to wait for tracing to complete before returning.
-  * Note that this is named differently from the [environment variable](https://js.langchain.com/docs/how_to/callbacks_serverless) in LangChain.js because LangSmith can be used without LangChain.
+  * Note that this is named differently from the [environment variable](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting) in LangChain.js because LangSmith can be used without LangChain.
 * Pass a custom client into your traced runs and `await` the `client.awaitPendingTraceBatches();` method.
 
 Here's an example of using `awaitPendingTraceBatches` alongside the [`traceable`](/langsmith/annotate-code) method:
@@ -123666,7 +123982,7 @@ function routeModelOutput(state: typeof MessagesAnnotation.State) {
 }
 
 // Define a new graph.
-// See https://langchain-ai.github.io/langgraphjs/how-tos/define-state/#getting-started for
+// See https://docs.langchain.com/oss/javascript/langgraph/graph-api#state for
 // more on defining custom graph states.
 const workflow = new StateGraph(MessagesAnnotation)
   // Define the two nodes we will cycle between
@@ -127810,7 +128126,7 @@ Create a snapshot from a Docker image (async build). Names use lowercase registr
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/links
-Beta: mint a view link and an act link for one window, as every attachment response does, with a chosen lifetime and the origins allowed to embed the window's pages in an iframe. Without embed_origins no page may frame them. An embedded page sends its parent window messages when control changes and when it connects or disconnects (see the browser guide). Either link opens the window to anyone who holds it until it expires; detaching the window ends it early. Minting takes being the browser's creator or a role with sandboxes:exec.
+Beta: mint a view link and an act link for one window, as every attachment response does, with a chosen lifetime and the origins allowed to embed the window's pages in an iframe. Without embed_origins no page may frame them. An embedded page sends its parent window messages when control changes and when it connects or disconnects (see the browser guide). Either link opens the window to anyone who holds it until it expires; detaching the window ends it early. A stopped browser starts when links are minted and when a link is opened, and resumes with its windows. Minting takes being the browser's creator or a role with sandboxes:exec.
 
 
 
@@ -127890,7 +128206,7 @@ Generate a tokenized link that downloads a single file from a sandbox with no fu
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/generate-a-service-access-token
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/boxes/{name}/service-url
-Create a short-lived JWT for accessing an HTTP service running on a specific port inside a sandbox. Returns a browser_url (sets auth cookie via redirect), a service_url (for use with the X-Langsmith-Sandbox-Service-Token header), the raw token, and its expiry. Set access=restricted|workspace to instead enable durable LangSmith login (no token; users authenticate with their normal LangSmith session), or access=off to disable it. LangSmith login and token access are mutually exclusive per service URL.
+Create a short-lived JWT for accessing an HTTP service running on a specific port inside a sandbox. Returns a browser_url (sets auth cookie via redirect), a service_url (for use with the X-Langsmith-Sandbox-Service-Token header), the raw token, and its expiry. Set access=restricted|workspace to instead enable durable LangSmith login (no token; users authenticate with their normal LangSmith session), or access=off to disable it. With LangSmith login, embed_origins names the pages that may show the URL in an iframe; a viewer signs in from inside the frame through a LangSmith popup. LangSmith login and token access are mutually exclusive per service URL.
 
 
 
@@ -127988,6 +128304,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/list-registries
 
 /langsmith/langsmith-platform-openapi.json get /api/v2/sandboxes/registries
 List sandbox registries for pulling private images.
+Page with page_size and cursor, replaying next_cursor until it is null. Results are ordered newest first, with stable ordering for equal creation times. Keep filters unchanged between pages.
+Requests without page_size or cursor retain the legacy default of 50 results. Cursor requests default to 20 results, with a maximum of 100.
 
 
 
@@ -140374,7 +140692,7 @@ This tutorial will show you how to use LangSmith's integrations with popular tes
 
 ## Setup
 
-This tutorial uses [LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/) for agent orchestration, [OpenAI's GPT-4o](https://platform.openai.com/docs/models#gpt-4o), [Tavily](https://tavily.com/) for search, [E2B's](https://e2b.dev/) code interpreter, and [Polygon](https://polygon.io/stocks) to retrieve stock data but it can be adapted for other frameworks, models and tools with minor modifications. Tavily, E2B and Polygon are free to sign up for.
+This tutorial uses [LangGraph](/oss/python/langgraph/quickstart) for agent orchestration, [OpenAI's GPT-4o](https://platform.openai.com/docs/models#gpt-4o), [Tavily](https://tavily.com/) for search, [E2B's](https://e2b.dev/) code interpreter, and [Polygon](https://polygon.io/stocks) to retrieve stock data but it can be adapted for other frameworks, models and tools with minor modifications. Tavily, E2B and Polygon are free to sign up for.
 
 ### Installation
 
@@ -147740,7 +148058,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 >
 > `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 >
-> See [this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless) for more information.
+> See [this LangChain.js guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting) for more information.
 
 ### 3. Log a trace
 
@@ -147978,7 +148296,7 @@ export OPENAI_API_KEY=<your-openai-api-key>
 >
 > `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 >
-> See [this LangChain.js guide](https://js.langchain.com/docs/how_to/callbacks_serverless) for more information.
+> See [this LangChain.js guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting) for more information.
 
 ### 3. Log a trace
 
@@ -152035,7 +152353,7 @@ When tracing in serverless environments, wait for all runs to flush before your 
 
 **AI SDK v7**
 
-Pass a LangSmith [`Client`](https://docs.smith.langchain.com/reference/js/classes/client.Client) instance to `LangSmithTelemetry`, then call `await client.awaitPendingTraceBatches()`. Make sure to also pass it into any `traceable` wrappers you create:
+Pass a LangSmith [`Client`](https://reference.langchain.com/javascript/langsmith/client/Client) instance to `LangSmithTelemetry`, then call `await client.awaitPendingTraceBatches()`. Make sure to also pass it into any `traceable` wrappers you create:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { openai } from "@ai-sdk/openai";
@@ -152090,7 +152408,7 @@ try {
 
 **AI SDK v5 and v6**
 
-Pass a LangSmith [`Client`](https://docs.smith.langchain.com/reference/js/classes/client.Client) instance to `wrapAISDK` and any `traceable` wrappers you create, then call `await client.awaitPendingTraceBatches()`:
+Pass a LangSmith [`Client`](https://reference.langchain.com/javascript/langsmith/client/Client) instance to `wrapAISDK` and any `traceable` wrappers you create, then call `await client.awaitPendingTraceBatches()`:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { openai } from "@ai-sdk/openai";
@@ -159107,7 +159425,7 @@ ls.describe("test suite name", () => {
 
 The test suite will also automatically extract environment variables from `process.env.ENVIRONMENT`, `process.env.NODE_ENV` and `process.env.LANGSMITH_ENVIRONMENT` and set them as metadata on created experiments. You can then filter experiments by metadata in LangSmith's UI.
 
-See [the API refs](https://docs.smith.langchain.com/reference/js/functions/vitest.describe) for a full list of configuration options.
+See [the API refs](https://reference.langchain.com/javascript/langsmith/lib/vitest/describe) for a full list of configuration options.
 
 ## Dry-run mode
 
@@ -159774,7 +160092,7 @@ When you do not configure an Auto classifier, Deep Agents Code selects a lower-l
 
 | Main model provider | Default classifier |
 | - | - |
-| Anthropic | `anthropic:claude-sonnet-5` |
+| Anthropic | `anthropic:claude-sonnet-5-5` |
 | Google AI | `google_genai:gemini-3.8-flash` |
 | Google Vertex AI | `google_vertexai:gemini-3.8-flash` |
 | OpenAI | `openai:gpt-5.6-luna` |
@@ -165993,7 +166311,7 @@ Source: https://docs.langchain.com/oss/javascript/concepts/memory
 This conceptual guide covers two types of memory, based on their recall scope:
 
 * [Short-term memory](#short-term-memory), or [thread](/oss/javascript/langgraph/checkpointers#threads)-scoped memory, tracks the ongoing conversation by maintaining message history within a session. LangGraph manages short-term memory as a part of your agent's [state](/oss/javascript/langgraph/graph-api#state). State is persisted to a database using a [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) so the thread can be resumed at any time. Short-term memory updates when the graph is invoked or a step is completed, and the State is read at the start of each step.
-* [Long-term memory](#long-term-memory) stores user-specific or application-level data across sessions and is shared *across* conversational threads. It can be recalled *at any time* and *in any thread*. Memories are scoped to any custom namespace, not just within a single thread ID. LangGraph provides [stores](/oss/javascript/langgraph/stores) ([reference doc](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.BaseStore)) to let you save and recall long-term memories.
+* [Long-term memory](#long-term-memory) stores user-specific or application-level data across sessions and is shared *across* conversational threads. It can be recalled *at any time* and *in any thread*. Memories are scoped to any custom namespace, not just within a single thread ID. LangGraph provides [stores](/oss/javascript/langgraph/stores) ([reference doc](https://reference.langchain.com/python/langgraph.store/base/BaseStore)) to let you save and recall long-term memories.
 
 ![Short vs long](https://mintcdn.com/langchain-5e9cc07a/dL5Sn6Cmy9pwtY0V/oss/images/short-vs-long.png?fit=max\&auto=format\&n=dL5Sn6Cmy9pwtY0V\&q=85\&s=62665893848db800383dffda7367438a)
 
@@ -166054,7 +166372,7 @@ Alternatively, memories can be a collection of documents that are continuously u
 
 However, this shifts some complexity memory updating. The model must now *delete* or *update* existing items in the list, which can be tricky. In addition, some models may default to over-inserting and others may default to over-updating. See the [Trustcall](https://github.com/hinthornw/trustcall) package for one way to manage this and consider evaluation (e.g., with a tool like [LangSmith](/langsmith/evaluation)) to help you tune the behavior.
 
-Working with document collections also shifts complexity to memory **search** over the list. The `Store` currently supports both [semantic search](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.SearchOp.query) and [filtering by content](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.SearchOp.filter).
+Working with document collections also shifts complexity to memory **search** over the list. The `Store` currently supports both [semantic search](https://reference.langchain.com/python/langgraph.store/base/SearchOp/query) and [filtering by content](https://reference.langchain.com/python/langgraph.store/base/SearchOp/filter).
 
 Finally, using a collection of memories can make it challenging to provide comprehensive context to the model. While individual memories may follow a specific schema, this structure might not capture the full context or relationships between memories. As a result, when using these memories to generate responses, the model may lack important contextual information that would be more readily available in a unified profile approach.
 
@@ -167932,7 +168250,7 @@ If you do not meet either criterion, the automation adds an **external listing**
 
 > **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
 >
-> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description.
+> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description (max 160 characters).
 
 The automation fills [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) and related listing surfaces from your issue.
 
@@ -176068,10 +176386,11 @@ const agent = await createDeepAgent({
 Deep Agents support [structured output](/oss/javascript/langchain/structured-output).
 
 You can set a desired structured output schema by passing it as the `responseFormat` argument to the call to `createDeepAgent()`.
+Wrap the schema in a strategy such as `toolStrategy()` or `providerStrategy()` from `langchain`.
 When the model generates the structured data, it's captured, validated, and returned in the 'structuredResponse' key of the agent's state.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "langchain";
+import { tool, toolStrategy } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
 import { z } from "zod";
@@ -176123,7 +176442,7 @@ const weatherReportSchema = z.object({
 });
 
 const agent = await createDeepAgent({
-  responseFormat: weatherReportSchema,
+  responseFormat: toolStrategy(weatherReportSchema),
   tools: [internetSearch],
 });
 
@@ -186810,8 +187129,8 @@ This example implements an **Agentic RAG system** to assist users in querying La
 import { tool, createAgent, HumanMessage } from "langchain";
 import * as z from "zod";
 
-const ALLOWED_DOMAINS = ["https://langchain-ai.github.io/"];
-const LLMS_TXT = "https://langchain-ai.github.io/langgraph/llms.txt";
+const ALLOWED_DOMAINS = ["https://docs.langchain.com/"];
+const LLMS_TXT = "https://docs.langchain.com/llms.txt";
 
 const fetchDocumentation = tool(
   async (input) => {  // [!code highlight]
@@ -192541,7 +192860,7 @@ graph TD
 
 ### Configure a forked subagent
 
-Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) (the default is `mode: "isolated"`). All [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) fields are available:
+Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) (the default is `mode: "isolated"`). You can configure these [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) fields:
 `name`, `description`, `tools`, `model`, `middleware`, `interruptOn`, `permissions`, and `responseFormat`.
 
 The fork inherits the parent's skills; setting `skills` is not supported.
@@ -194852,7 +195171,7 @@ Source: https://docs.langchain.com/oss/javascript/deepagents/tools
 
 Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 
-Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
+Deep Agents can call any tool you define, any [LangChain tool](/oss/javascript/langchain/tools), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for file management and subagent spawning.
 
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -195529,7 +195848,7 @@ This will help you getting started with `ChatAnthropic` [chat models](/oss/javas
 
 ### Integration details
 
-| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) | Downloads | Version |
+| Class | Package | Serializable | [PY support](/oss/python/integrations/chat/anthropic) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`ChatAnthropic`](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [`@langchain/anthropic`](https://www.npmjs.com/package/@langchain/anthropic) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
 
@@ -196455,7 +196774,7 @@ console.log(JSON.stringify(result.content, null, 2));
 
 ```
 
-Learn more about [how RAG works in LangChain](https://js.langchain.com/docs/concepts/rag/)
+Learn more about [how RAG works in LangChain](/oss/javascript/langchain/retrieval)
 
 [Learn more about tool calling](/oss/javascript/langchain/tools)
 
@@ -196497,7 +196816,7 @@ const messageWithSplitDocuments = {
   role: "user",
   content: [
     formatToAnthropicDocuments(documents),
-    { type: "text", text: "Give me a link to LangChain's tutorials. Cite your sources" },
+    { type: "text", text: "Give me a link to LangChain's getting started guide. Cite your sources" },
   ],
 };
 
@@ -196514,15 +196833,15 @@ console.log(JSON.stringify(resWithSplits.content, null, 2));
 [
   {
     "type": "text",
-    "text": "Based on the documentation, I can provide you with a link to LangChain's tutorials:\n\n"
+    "text": "Based on the documentation, I can provide you with a link to LangChain's getting started guide:\n\n"
   },
   {
     "type": "text",
-    "text": "The tutorials can be found at: https://js.langchain.com/docs/tutorials/",
+    "text": "The getting started guide can be found at: https://docs.langchain.com/oss/javascript/langchain/overview",
     "citations": [
       {
         "type": "content_block_location",
-        "cited_text": "[Tutorial](https://js.langchain.com/docs/tutorials/) walkthroughs",
+        "cited_text": "[Getting started](https://docs.langchain.com/oss/javascript/langchain/overview): Installation, setting up the environment, simple examples",
         "document_index": 0,
         "document_title": null,
         "start_block_index": 191,
@@ -196712,7 +197031,7 @@ This will help you getting started with `AzureChatOpenAI` [chat models](/oss/jav
 
 ### Integration details
 
-| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/azure_chat_openai) | Downloads | Version |
+| Class | Package | Serializable | [PY support](/oss/python/integrations/chat/azure_chat_openai) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`AzureChatOpenAI`](https://reference.langchain.com/javascript/langchain-openai/AzureChatOpenAI) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
@@ -196974,7 +197293,7 @@ This will help you getting started with `ChatBedrockConverse` [chat models](/oss
 
 ### Integration details
 
-| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/bedrock/#beta-bedrock-converse-api) | Downloads | Version |
+| Class | Package | Serializable | [PY support](/oss/python/integrations/chat/bedrock) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`ChatBedrockConverse`](https://reference.langchain.com/javascript/langchain-aws/ChatBedrockConverse) | [`@langchain/aws`](https://npmjs.com/@langchain/aws) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
 
@@ -197545,7 +197864,7 @@ const llm = new ChatGoogle("gemini-3.7-flash")
     },
   ]);
 
-const prompt = "Summarize this page: https://js.langchain.com/";
+const prompt = "Summarize this page: https://docs.langchain.com/";
 const res = await llm.invoke(prompt);
 console.log(res.text);
 ```
@@ -197894,7 +198213,7 @@ This will help you getting started with `ChatGoogleGenerativeAI` [chat models](/
 
 ### Integration details
 
-| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/google_generative_ai) | Downloads | Version |
+| Class | Package | Serializable | [PY support](/oss/python/integrations/chat/google_generative_ai) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`ChatGoogleGenerativeAI`](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI) | [`@langchain/google-genai`](https://www.npmjs.com/package/@langchain/google-genai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-genai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-genai?style=flat-square\&label=%20&) |
 
@@ -199103,7 +199422,7 @@ This guide will help you getting started with OpenAI [chat models](/oss/javascri
 
 ### Integration details
 
-| Class | Package | Serializable | [PY support](https://python.langchain.com/docs/integrations/chat/openai) | Downloads | Version |
+| Class | Package | Serializable | [PY support](/oss/python/integrations/chat/openai) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`ChatOpenAI`](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
@@ -199559,7 +199878,7 @@ weatherToolResult.tool_calls;
 
 ## Structured output
 
-We can also pass `strict: true` to the [`.withStructuredOutput()`](https://js.langchain.com/docs/how_to/structured_output/#the-.withstructuredoutput-method). Here's an example:
+We can also pass `strict: true` to the [`.withStructuredOutput()`](/oss/javascript/langchain/structured-output). Here's an example:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -200642,7 +200961,7 @@ This will help you get started with AzureOpenAIEmbeddings [embedding models](/os
 
 ### Integration details
 
-| Class | Package | Local | [Py support](https://python.langchain.com/docs/integrations/embeddings/azure_openai/) | Downloads | Version |
+| Class | Package | Local | [Py support](/oss/python/integrations/embeddings/azure_openai) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`AzureOpenAIEmbeddings`](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
@@ -200972,7 +201291,7 @@ This will help you get started with Amazon Bedrock [embedding models](/oss/javas
 
 ### Integration details
 
-| Class | Package | Local | [Py support](https://python.langchain.com/docs/integrations/embeddings/bedrock/) | Downloads | Version |
+| Class | Package | Local | [Py support](/oss/python/integrations/embeddings/bedrock) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`Bedrock`](https://reference.langchain.com/javascript/langchain-aws/BedrockEmbeddings) | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
 
@@ -201609,7 +201928,7 @@ This will help you get started with OpenAIEmbeddings [embedding models](/oss/jav
 
 ### Integration details
 
-| Class | Package | Local | [Py support](https://python.langchain.com/docs/integrations/embeddings/openai/) | Downloads | Version |
+| Class | Package | Local | [Py support](/oss/python/integrations/embeddings/openai) | Downloads | Version |
 | :- | :- | :-: | :-: | :-: | :-: |
 | [`OpenAIEmbeddings`](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings) | [`@langchain/openai`](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
@@ -202392,7 +202711,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)**
 >
-> Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
+> Paid data tools from aiworker's OpenAPI catalogue; each call settles itself in USDC over x402 from the agent's wallet, with no API key.
 
 > **[Atomic Mail](https://docs.atomicmail.ai/langchain)**
 >
@@ -202408,7 +202727,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[Corsair](https://docs.corsair.dev/mcp-adapters/langchain)**
 >
-> Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and others) to LangChain agents as tools. OAuth runs server-side and credentials stay in the developer's own database.
+> Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and more) to LangChain agents as tools with OAuth.
 
 > **[DALL-E](/oss/javascript/integrations/tools/dalle)**
 >
@@ -202484,7 +202803,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[Pexafy](https://docs.pexafy.com/langchain)**
 >
-> Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
+> Semantic search over free stock photos from Unsplash, Pexels, Pixabay, and more, returning each photo with license and credit.
 
 > **[pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)**
 >
@@ -202496,7 +202815,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)**
 >
-> Phone approvals for LangGraph.js agents. An approval node built on pusharyInterrupt() asks your user on their phone, and the graph routes to the protected node only on Approve; with no answer it returns null, so the action does not run. createAskHumanTool() adds an optional ask\_human tool.
+> Phone approvals for LangGraph.js agents: ask on the user's phone and route only on Approve; no answer means no action.
 
 > **[Serpex](https://serpex.dev/docs)**
 >
@@ -202508,7 +202827,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)**
 >
-> Four keyless tools over Sato Hub's daily-rebuilt index of onchain-agent building blocks: search listings, run a Preflight lookup on a repo, package, MCP endpoint or token, get a swap-venue recommendation with the fee stated, and turn a goal into a build plan of listed projects.
+> Keyless tools over Sato Hub's index of onchain-agent building blocks: search listings, Preflight lookups, swap venues, and build plans.
 
 > **[Steward](https://github.com/brianbooms/plugin-steward)**
 >
@@ -202596,7 +202915,7 @@ Connect LangGraph agents to front ends and observability platforms.
 
 > **[AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)**
 >
-> A LangGraph `BaseStore` for long-term memory on a local SQLite file, no API key. Every put records which agent wrote it; putting a key again retires the old value instead of overwriting it, and a delete closes a fact rather than erasing it, so the history of what was believed is kept.
+> LangGraph BaseStore on local SQLite: puts record the writer, version instead of overwrite, and keep belief history.
 
 > **[File System](/oss/javascript/integrations/stores/file_system)**
 >
@@ -204297,7 +204616,7 @@ const llm = new ChatGoogle("gemini-2.5-flash")
     },
   ]);
 
-const res = await llm.invoke("Summarize this page: https://js.langchain.com/");
+const res = await llm.invoke("Summarize this page: https://docs.langchain.com/");
 console.log(res.text);
 ```
 
@@ -240894,7 +241213,7 @@ This allows the agent to keep track of the conversation without exceeding the LL
 
 Most LLMs have a maximum supported context window (denominated in tokens). One way to decide when to truncate messages is to count the tokens in the message history and truncate whenever it approaches that limit. If you're using LangChain, you can use the trim messages utility and specify the number of tokens to keep from the list, as well as the `strategy` (e.g., keep the last `maxTokens`) to use for handling the boundary.
 
-To trim message history, use the [`trimMessages`](https://js.langchain.com/docs/how_to/trim_messages/) function:
+To trim message history, use the [`trimMessages`](https://reference.langchain.com/javascript/langchain-core/messages/trimMessages) function:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { trimMessages } from "@langchain/core/messages";
@@ -241537,7 +241856,7 @@ A normal edge always sends the graph to the same next node. A [conditional edge]
 
 **1. Add document grading**
 
-Add a `gradeDocuments` node that uses a model with structured output (Zod), and falls back to a plain yes or no response if structured parsing fails. Route with a conditional edge according to the result (`generate` or `rewrite`):
+Add a `gradeDocuments` routing function that uses a model with structured output (Zod), and falls back to a plain yes or no response if structured parsing fails. It returns the name of the next node based on the grading decision (`generate` or `rewrite`), so use it in a conditional edge rather than adding it as a node:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -241814,12 +242133,14 @@ const shouldRetrieve = (state: typeof State.State) => {
 const graph = new StateGraph(State)
   .addNode("generateQueryOrRespond", generateQueryOrRespond)
   .addNode("retrieve", toolNode)
-  .addNode("gradeDocuments", gradeDocuments)
   .addNode("rewrite", rewrite)
   .addNode("generate", generate)
   .addEdge(START, "generateQueryOrRespond")
-  .addConditionalEdges("generateQueryOrRespond", shouldRetrieve)
-  .addConditionalEdges("retrieve", gradeDocuments)
+  .addConditionalEdges("generateQueryOrRespond", shouldRetrieve, [
+    "retrieve",
+    END,
+  ])
+  .addConditionalEdges("retrieve", gradeDocuments, ["generate", "rewrite"])
   .addEdge("generate", END)
   .addEdge("rewrite", "generateQueryOrRespond")
   .compile();
@@ -247615,9 +247936,10 @@ This approach is useful when you want the approval logic to live with the tool i
 >   StateGraph,
 >   StateSchema,
 >   MessagesValue,
->   GraphNode,
 >   interrupt,
 > } from "@langchain/langgraph";
+> import { ToolNode } from "@langchain/langgraph/prebuilt";
+> import { AIMessage } from "@langchain/core/messages";
 > import * as z from "zod";
 >
 > const sendEmailTool = tool(
@@ -247652,6 +247974,7 @@ This approach is useful when you want the approval logic to live with the tool i
 > );
 >
 > const model = new ChatAnthropic({ model: "claude-sonnet-4-6" }).bindTools([sendEmailTool]);
+> const toolNode = new ToolNode([sendEmailTool]);
 >
 > const State = new StateSchema({
 >   messages: MessagesValue,
@@ -247663,10 +247986,21 @@ This approach is useful when you want the approval logic to live with the tool i
 >   return { messages: [response] };
 > };
 >
+> const shouldContinue = (state: typeof State.State) => {
+>   // Route to the tools node if the LLM made a tool call
+>   const lastMessage = state.messages.at(-1);
+>   if (AIMessage.isInstance(lastMessage) && lastMessage.tool_calls?.length) {
+>     return "tools";
+>   }
+>   return END;
+> };
+>
 > const graphBuilder = new StateGraph(State)
 >   .addNode("agent", agent)
+>   .addNode("tools", toolNode)
 >   .addEdge(START, "agent")
->   .addEdge("agent", END);
+>   .addConditionalEdges("agent", shouldContinue, ["tools", END])
+>   .addEdge("tools", "agent"); // Loop back after tools
 >
 > const checkpointer = new MemorySaver();
 > const graph = graphBuilder.compile({ checkpointer });
@@ -253128,7 +253462,7 @@ const State = new StateSchema({
 });
 ```
 
-This state tracks a list of [message](https://js.langchain.com/docs/concepts/messages/) objects, as well as an extra integer field.
+This state tracks a list of [message](/oss/javascript/langchain/messages) objects, as well as an extra integer field.
 
 ### Update state
 
@@ -253192,7 +253526,7 @@ Note that:
 * We kicked off invocation by updating a single key of the state.
 * We receive the entire state in the invocation result.
 
-For convenience, we frequently inspect the content of [message objects](https://js.langchain.com/docs/concepts/messages/) via logging:
+For convenience, we frequently inspect the content of [message objects](/oss/javascript/langchain/messages) via logging:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for (const message of result.messages) {
@@ -253260,7 +253594,7 @@ ai: Hello!
 In practice, there are additional considerations for updating lists of messages:
 
 * We may wish to update an existing message in the state.
-* We may want to accept short-hands for [message formats](/oss/javascript/langgraph/graph-api#using-messages-in-your-graph), such as [OpenAI format](https://python.langchain.com/docs/concepts/messages/#openai-format).
+* We may want to accept short-hands for [message formats](/oss/javascript/langgraph/graph-api#using-messages-in-your-graph), such as [OpenAI format](/oss/javascript/langchain/messages#message-content).
 
 LangGraph includes the built-in `MessagesValue` that handles these considerations:
 
@@ -253299,7 +253633,7 @@ human: Hi
 ai: Hello!
 ```
 
-This is a versatile representation of state for applications involving [chat models](https://js.langchain.com/docs/concepts/chat_models/). LangGraph includes the prebuilt `MessagesValue` for convenience, so that we can have:
+This is a versatile representation of state for applications involving [chat models](/oss/javascript/langchain/models). LangGraph includes the prebuilt `MessagesValue` for convenience, so that we can have:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema, MessagesValue } from "@langchain/langgraph";
@@ -261384,7 +261718,7 @@ Source: https://docs.langchain.com/oss/python/concepts/memory
 This conceptual guide covers two types of memory, based on their recall scope:
 
 * [Short-term memory](#short-term-memory), or [thread](/oss/python/langgraph/checkpointers#threads)-scoped memory, tracks the ongoing conversation by maintaining message history within a session. LangGraph manages short-term memory as a part of your agent's [state](/oss/python/langgraph/graph-api#state). State is persisted to a database using a [checkpointer](/oss/python/langgraph/checkpointers#checkpoints) so the thread can be resumed at any time. Short-term memory updates when the graph is invoked or a step is completed, and the State is read at the start of each step.
-* [Long-term memory](#long-term-memory) stores user-specific or application-level data across sessions and is shared *across* conversational threads. It can be recalled *at any time* and *in any thread*. Memories are scoped to any custom namespace, not just within a single thread ID. LangGraph provides [stores](/oss/python/langgraph/stores) ([reference doc](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.BaseStore)) to let you save and recall long-term memories.
+* [Long-term memory](#long-term-memory) stores user-specific or application-level data across sessions and is shared *across* conversational threads. It can be recalled *at any time* and *in any thread*. Memories are scoped to any custom namespace, not just within a single thread ID. LangGraph provides [stores](/oss/python/langgraph/stores) ([reference doc](https://reference.langchain.com/python/langgraph.store/base/BaseStore)) to let you save and recall long-term memories.
 
 ![Short vs long](https://mintcdn.com/langchain-5e9cc07a/dL5Sn6Cmy9pwtY0V/oss/images/short-vs-long.png?fit=max\&auto=format\&n=dL5Sn6Cmy9pwtY0V\&q=85\&s=62665893848db800383dffda7367438a)
 
@@ -261445,7 +261779,7 @@ Alternatively, memories can be a collection of documents that are continuously u
 
 However, this shifts some complexity memory updating. The model must now *delete* or *update* existing items in the list, which can be tricky. In addition, some models may default to over-inserting and others may default to over-updating. See the [Trustcall](https://github.com/hinthornw/trustcall) package for one way to manage this and consider evaluation (e.g., with a tool like [LangSmith](/langsmith/evaluation)) to help you tune the behavior.
 
-Working with document collections also shifts complexity to memory **search** over the list. The `Store` currently supports both [semantic search](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.SearchOp.query) and [filtering by content](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.SearchOp.filter).
+Working with document collections also shifts complexity to memory **search** over the list. The `Store` currently supports both [semantic search](https://reference.langchain.com/python/langgraph.store/base/SearchOp/query) and [filtering by content](https://reference.langchain.com/python/langgraph.store/base/SearchOp/filter).
 
 Finally, using a collection of memories can make it challenging to provide comprehensive context to the model. While individual memories may follow a specific schema, this structure might not capture the full context or relationships between memories. As a result, when using these memories to generate responses, the model may lack important contextual information that would be more readily available in a unified profile approach.
 
@@ -263601,7 +263935,7 @@ If you do not meet either criterion, the automation adds an **external listing**
 
 > **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
 >
-> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description.
+> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description (max 160 characters).
 
 The automation fills [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) and related listing surfaces from your issue.
 
@@ -283872,8 +284206,8 @@ from langchain.tools import tool
 from markdownify import markdownify
 
 
-ALLOWED_DOMAINS = ["https://langchain-ai.github.io/"]
-LLMS_TXT = 'https://langchain-ai.github.io/langgraph/llms.txt'
+ALLOWED_DOMAINS = ["https://docs.langchain.com/"]
+LLMS_TXT = 'https://docs.langchain.com/llms.txt'
 
 
 @tool
@@ -290355,7 +290689,7 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
 | `tools` | `list[Callable]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
 | `model` | `str` \| `BaseChatModel` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-5.5'` (using the `'provider:model'` format) or a LangChain chat model object (`init_chat_model("gpt-5.5")` or `ChatOpenAI(model="gpt-5.5")`). |
-| `middleware` | `list[Middleware]` | Optional. Additional middleware for custom behavior, logging, or rate limiting. Does not inherit from the main agent. Merged into the [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack): an instance whose `.name` matches a default replaces it in place, anything else lands after the last core middleware entry and before profile, prompt-caching, and memory. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance). For example, include a [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance with a `tools` allowlist here to restrict the subagent's filesystem tools independently of the main agent. For more information, see the "Restricting filesystem tools" section under [Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access). |
+| `middleware` | `list[Middleware]` | Optional. Additional middleware for custom behavior, logging, or rate limiting. Isolated subagents do not inherit the main agent's custom middleware. For inheritance and overrides in fork mode, see [Configure a forked subagent](#configure-a-forked-subagent). Merged into the [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack): an instance whose `.name` matches a default replaces it in place, anything else lands after the last core middleware entry and before profile, prompt-caching, and memory. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance). For example, include a [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance with a `tools` allowlist here to restrict the subagent's filesystem tools independently of the main agent. For more information, see the "Restricting filesystem tools" section under [Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access). |
 | `interrupt_on` | `dict[str, bool \| InterruptOnConfig]` | Optional. Configure [human-in-the-loop](/oss/python/deepagents/human-in-the-loop) for specific tools. Options:`True`, `False`, or an `InterruptOnConfig` with `allowed_decisions`. Requires checkpointer. Inherits from main agent by default. Subagent value overrides the default. |
 | `skills` | `list[str]` | Optional. [Skills](/oss/python/deepagents/skills) source paths. When specified, the subagent loads skills from these directories (for example, `["/skills/researcher/"]`, a container whose subdirectories are skills). This allows subagents to have different skill sets than the main agent. Does not inherit from main agent. Only the general-purpose subagent inherits the main agent's skills. When a subagent has skills, it runs its own independent [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) instance. Skill state is fully isolated—a subagent's loaded skills are not visible to the parent, and vice versa. |
 | `response_format` | `ResponseFormat` | Optional. [Structured output](/oss/python/langchain/structured-output) schema for the subagent. When set, the parent receives the subagent's result as JSON instead of free-form text. Accepts Pydantic models, `ToolStrategy(...)`, `ProviderStrategy(...)`, or a raw schema type. See [Structured output](#structured-output). |
@@ -290724,14 +291058,30 @@ graph TD
 
 ### Configure a forked subagent
 
-Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) (the default is `mode: "isolated"`). All [`SubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) fields are available:
+Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) (the default is `mode: "isolated"`). You can configure these [`SubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) fields:
 `name`, `description`, `tools`, `model`, `middleware`, `interrupt_on`, `permissions`, and `response_format`.
 
-The fork inherits the parent's skills; setting `skills` is not supported.
-
-Leave `system_prompt` unset to use the parent's prompt. If set, its instructions are appended to the parent's prompt, shortening the shared prefix available for prompt caching across providers. Consequently, setting a fork-specific system prompt is not recommended unless the fork needs additional instructions.
+Forks inherit the custom middleware passed to the parent's `create_deep_agent`. Middleware in the subagent's `middleware` list replaces an inherited instance with the same `.name`. Other instances are added to the subagent's default middleware stack.
 
 By default, the fork inherits all tools passed to the parent. Set `tools` to replace those tools, not add to them. For example, a list containing one tool replaces the inherited list with that one tool. Filesystem and other middleware-provided tools are added separately.
+
+`skills` is rejected if provided. `system_prompt` is appended to the parent's inherited prompt as an addendum. Leave it unset unless you need fork-only instructions.
+
+A `wrap_model_call` hook receives the fork's inherited prompt through `request.system_message`. It can rewrite the fork's outgoing request with `request.override(system_message=...)` without changing the parent's prompt. This differs from `system_prompt`, which appends instructions.
+
+Avoid rewriting the shared inherited prefix or changing tool definitions unless you accept reduced cache reuse and potentially higher model costs. For example, this hook fragment prepends text before the inherited prefix, preventing reuse of that prefix:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import SystemMessage
+
+rewritten = SystemMessage(content=[
+    {"type": "text", "text": "You are a security auditor.\n"},
+    *request.system_message.content_blocks,
+])
+return handler(request.override(system_message=rewritten))
+```
+
+Additional middleware or appended instructions do not necessarily prevent reuse of an unchanged prefix.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -293229,7 +293579,7 @@ Source: https://docs.langchain.com/oss/python/deepagents/tools
 
 Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 
-Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
+Deep Agents can call any tool you define, any [LangChain tool](/oss/python/langchain/tools), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/python/deepagents/overview#execution-environment) for file management and subagent spawning.
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -294101,10 +294451,10 @@ Partner and community loaders for PDF files. Hosted partner guides are listed fi
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) | Uses Unstructured's open source library to load PDFs | Package |
 | [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage) | Load PDF files using UpstageDocumentParseLoader | Package |
 | [Docling](/oss/python/integrations/document_loaders/docling) | Load PDF files using Docling | Package |
-| [`PyPDFLoader`](https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.pdf.PyPDFLoader.html) | Load PDF files with `pypdf` (`langchain-community`) | Community |
-| [`PyMuPDFLoader`](https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.pdf.PyMuPDFLoader.html) | Load PDF files with PyMuPDF (`langchain-community`) | Community |
-| [`PDFMinerLoader`](https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.pdf.PDFMinerLoader.html) | Load PDF files with PDFMiner (`langchain-community`) | Community |
-| [`PDFPlumberLoader`](https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.pdf.PDFPlumberLoader.html) | Load PDF files with pdfplumber (`langchain-community`) | Community |
+| `PyPDFLoader` | Load PDF files with `pypdf` (`langchain-community`) | Community |
+| `PyMuPDFLoader` | Load PDF files with PyMuPDF (`langchain-community`) | Community |
+| `PDFMinerLoader` | Load PDF files with PDFMiner (`langchain-community`) | Community |
+| `PDFPlumberLoader` | Load PDF files with pdfplumber (`langchain-community`) | Community |
 | [MinerU](https://mineru.net) | Load PDF and other documents using MinerU | Package |
 | [UnDatasIO](https://undatas.io) | Load PDF files using UnDatasIO | Package |
 | [OpenDataLoader PDF](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | Load PDF files using OpenDataLoader PDF | Package |
@@ -294731,11 +295081,11 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AlexEvidenceVerifier](https://pypi.org/project/langchain-alex/)**
 >
-> Verify signed ALEX Evidence Packages inside LangChain and LangGraph workflows against an external trust anchor. The integration exposes a structured LangChain tool and a LangGraph node that fail closed on unsupported schemas, signature failures, incomplete evidence, or inconsistent outcomes.
+> Verify signed ALEX Evidence Packages in LangChain and LangGraph workflows against an external trust anchor, failing closed on errors.
 
 > **[Algenta](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme)**
 >
-> Governed tool execution for LangChain agents: `create_algenta_tools` exposes a self-hosted Algenta decision engine's MCP tool surface as `BaseTool`s with profile-based filtering (`observe`/`govern`/`execute`/`full`), typed execution receipts, and synchronous policy-gate denials on real-world execution.
+> Governed tool execution for LangChain agents: exposes a self-hosted Algenta decision engine as BaseTools with policy-gated execution.
 
 > **[AlphaAI](https://alphai.io/developers)**
 >
@@ -294811,7 +295161,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AgentSearch](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26)**
 >
-> Live web search for agents, free by default with no API key (daily allowance), plus pay-per-call Extract (URL to markdown) and Render (headless browser for JS pages).
+> Live web search for agents, free by default with no API key, plus pay-per-call Extract and Render for full pages and JS sites.
 
 > **[AgentGuardTool](https://github.com/datumline/datumline-agent-guard#langchain)**
 >
@@ -294855,7 +295205,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AMUVectorStore](https://github.com/sangaraju1988/amu-pgvector#readme)**
 >
-> Vector store backed by PostgreSQL + pgvector where Postgres row-level security gates retrieval on a cached result's derivation lineage, not just its content or access tags.
+> PostgreSQL + pgvector store where row-level security gates retrieval on a cached result's derivation lineage, not only content tags.
 
 > **[Ampersend](https://docs.ampersend.ai)**
 >
@@ -294947,7 +295297,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Asyntai](https://asyntai.com/documentation/integrations/langchain/)**
 >
-> Asyntai is a hosted AI chat agent for websites; langchain-asyntai provides tools to query a site's indexed pages and product feed, to add pages and notes to its knowledge base, and to read its leads and chat transcripts.
+> Tools for a hosted website chat agent: query indexed pages and product feeds, update the knowledge base, and read leads and chats.
 
 > **[Atomic Mail](https://docs.atomicmail.ai/langchain)**
 >
@@ -295015,7 +295365,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[BowmarkToolkit](https://bowmark.ai/docs/langchain)**
 >
-> Two tools for live websites: one reads Bowmark's typed function library for a task or site, the other runs a short script against it and returns structured data.
+> Tools for live websites: read Bowmark's typed function library for a task or site, or run a short script for structured data.
 
 > **[Box](/oss/python/integrations/providers/box)**
 >
@@ -295075,7 +295425,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Clearsigned](https://clearsigned.com/integrations#langchain)**
 >
-> Tool that verifies a factual claim against live web evidence and returns SUPPORTED, REFUTED or UNVERIFIABLE with a calibrated confidence, per-source stances, and an Ed25519-signed receipt verified offline; paid per call over x402.
+> Verifies a factual claim against live web evidence and returns a stance, confidence, and an offline-verifiable signed receipt.
 
 > **[cloro](https://cloro.dev/docs)**
 >
@@ -295087,7 +295437,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[CTRLRun](https://docs.ctrlrun.dev/guides/langchain-middleware)**
 >
-> Execution safety for AI agents. Middleware that checks every tool call against a policy before it runs, holds the consequential ones for a human, and leaves a receipt.
+> Execution-safety middleware that checks each tool call against a policy, holds consequential ones for a human, and leaves a receipt.
 
 > **[Cloudflare](https://developers.cloudflare.com/workers-ai/)**
 >
@@ -295195,7 +295545,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[DDG Agent Services](https://pypi.org/project/ddg-langchain/)**
 >
-> Pay-per-call x402 APIs for AI agents (web search, price feeds, and site audits) settled in USDC on Base with no account or API key; the ddg-langchain package wraps them as LangChain tools.
+> Pay-per-call x402 APIs for agents (web search, price feeds, site audits) settled in USDC on Base, wrapped as LangChain tools.
 
 > **[Databricks](/oss/python/integrations/providers/databricks)**
 >
@@ -295287,7 +295637,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[DynamicToolSelectorMiddleware](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware)**
 >
-> Drop-in agent middleware providing sub-100ms hybrid dense and sparse vector tool retrieval over zvec. Eliminates prompt token overhead by >80% and outperforms LLM-based tool selection on Berkeley Function Calling Leaderboard (BFCL) benchmarks.
+> Agent middleware for sub-100ms hybrid dense and sparse vector tool retrieval over zvec, cutting prompt token overhead from tool lists.
 
 > **[E2B](https://e2b.dev/docs)**
 >
@@ -295327,7 +295677,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004)**
 >
-> Verify an ERC-8004 agent's on-chain identity against the registration file it publishes, read reputation feedback attributed to named reviewers, and prepare registry writes as execution plans.
+> Verify an ERC-8004 agent's on-chain identity and reputation feedback, and prepare registry writes as execution plans.
 
 > **[Exa Search](/oss/python/integrations/providers/exa_search)**
 >
@@ -295355,7 +295705,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[FeedMyAgent](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain)**
 >
-> Technology intelligence feed for AI agents: security advisories, tech-stack changes and compliance deadlines, classified hourly; anonymous reads, optional API key for posting.
+> Technology intelligence feed for AI agents: security advisories, tech-stack changes, and compliance deadlines, classified hourly.
 
 > **[FiGuard](https://docs.figuard.io)**
 >
@@ -295363,7 +295713,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Fizzl](https://fizzl.eu/agents/python/)**
 >
-> Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
+> Safety checks for agents that pay: review transactions, tokens, wallet approvals, and paid APIs before signing or buying.
 
 > **[FlashDataToolkit](https://github.com/rocosen/langchain-flashdata#readme)**
 >
@@ -295387,7 +295737,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Foliant](https://github.com/gazoy/langchain-foliant#readme)**
 >
-> Payment tool and budget middleware for agents that pay x402 endpoints through Foliant payment channels and pools, with one on-chain settlement per session and a delegated spending budget per agent and per crew.
+> Payment tool and budget middleware for agents paying x402 endpoints through Foliant channels, with per-agent spending budgets.
 
 > **[Football Charts](https://www.football-charts.com/developers)**
 >
@@ -295399,7 +295749,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GAIP](https://pypi.org/project/langchain-gaip/)**
 >
-> GAIP's free tools for LangChain: check whether an AI agent, MCP server or API works or has changed, explain a failed call and its fix, follow a server for dated changes, and check that cited pages contain the quoted text. No API key.
+> Free LangChain tools to check whether an agent, MCP server, or API works, explain failures, follow changes, and verify cited quotes.
 
 > **[Galaxia](https://smabbler.gitbook.io/smabbler/api-rag/smabblers-api-rag)**
 >
@@ -295416,6 +295766,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Gel](https://github.com/geldata/langchain-gel)**
 >
 > Knowledge extraction and NLP platform.
+
+> **[Geekflare](https://docs.geekflare.com/integrations/langchain)**
+>
+> Web search with Google SERP results, page scraping, screenshots, URL-to-PDF, brand data, and website diagnostics via the Geekflare API.
 
 > **[GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)**
 >
@@ -295439,7 +295793,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GoAT](https://pypi.org/project/langgraph-goat/)**
 >
-> langgraph-goat records candidate plans, scores, and why each was chosen or rejected as a LangGraph agent plans, then renders a natural-language explanation for debugging and end-user transparency.
+> Records candidate plans, scores, and rejection reasons as a LangGraph agent plans, then explains the decision in plain language.
 
 > **[GPT Image by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image)**
 >
@@ -295471,7 +295825,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GreenCalculus](https://greencalculus.com/guides/emission-factors-langchain/)**
 >
-> Greenhouse-gas emission factors from public publishers (DEFRA, US EPA, ADEME, IPCC and others), returned with the publisher's exact source cell, licence and data version.
+> Greenhouse-gas emission factors from public publishers (DEFRA, US EPA, ADEME, IPCC), with exact source cell, licence, and data version.
 
 > **[GreenNode](https://greennode.ai/)**
 >
@@ -295547,7 +295901,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[HirePulse](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030)**
 >
-> StructuredTools for public company hiring signals, website technologies, company jobs, Google Ads transparency, company profiles and bulk lookup quotes from the HirePulse gateway.
+> StructuredTools for public hiring signals, website technologies, jobs, Google Ads transparency, profiles, and bulk lookup quotes.
 
 > **[Hubris](https://hubris.pw/docs/integrations/langchain)**
 >
@@ -295599,7 +295953,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Inferrail](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain)**
 >
-> Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
+> Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run, refusing over-budget calls with HTTP 402.
 
 > **[Infinispan](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md)**
 >
@@ -295823,7 +296177,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[MemoryRouter](https://docs.memoryrouter.ai/langchain)**
 >
-> Persistent, user-scoped memory for LangChain and LangGraph agents: retain and recall tools, recall/retain graph nodes, and a BaseStore backed by MemoryRouter vaults.
+> Persistent, user-scoped memory for LangChain and LangGraph agents with retain/recall tools, graph nodes, and a BaseStore.
 
 > **[Memstate AI](https://memstate.ai/docs/integrations/langchain)**
 >
@@ -295871,7 +296225,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[mnki (Agent Trust)](https://mnki.com/docs/integrations#frameworks)**
 >
-> mnki (Agent Trust) verifies each LangChain or LangGraph tool call against the agent's delegated authority before it runs and records a signed evidence list per decision.
+> Verifies each LangChain or LangGraph tool call against the agent's delegated authority and records a signed evidence list per decision.
 
 > **[MLflow Tracking](/oss/python/integrations/providers/mlflow_tracking)**
 >
@@ -295927,7 +296281,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Ned Watch](https://ned.watch/integrations/langgraph)**
 >
-> Callback handler for Ned Watch: a LangGraph or LangChain run checks in when it finishes and reports a failure if it raises, so a signed webhook fires when runs stop happening or overrun.
+> Callback handler that checks in when a LangGraph or LangChain run finishes so a signed webhook fires on missing or overrun runs.
 
 > **[Neo4j](/oss/python/integrations/providers/neo4j)**
 >
@@ -296023,7 +296377,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[OpenAlexSearch](https://github.com/ourresearch/langchain-openalex#readme)**
 >
-> OpenAlex is a free, open index of scholarly works (papers, books, datasets, preprints) with their authors, sources and citations; the package provides a search tool, a lookup-by-DOI tool and a retriever.
+> Search and lookup tools over OpenAlex, a free index of scholarly works, authors, sources, and citations, plus a retriever.
 
 > **[OpenBox](https://docs.openbox.ai/getting-started/langgraph)**
 >
@@ -296123,7 +296477,11 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Pexafy](https://docs.pexafy.com/langchain)**
 >
-> Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
+> Semantic search over free stock photos from Unsplash, Pexels, Pixabay, and more, returning each photo with license and credit.
+
+> **[Pidgeon Toolkit](https://pidgeon.ai/docs/langchain)**
+>
+> Pidgeon Toolkit gives agents mail inbox tools to create addresses, read and search messages, wait for verification codes, send, reply, and hand off threads.
 
 > **[PIIGhost](https://athroniaeth.github.io/piighost/getting-started/langchain/)**
 >
@@ -296247,7 +296605,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py)**
 >
-> Phone approvals for LangGraph and LangChain agents. The ask\_human tool or pushary\_interrupt() asks your user on their phone, and the graph resumes with their Approve or Deny. If nobody answers, the action does not run.
+> Phone approvals for LangGraph and LangChain agents: ask on the user's phone and resume on Approve or Deny; no answer means no action.
 
 > **[PyMuPDF4LLM](https://github.com/lakinduboteju/langchain-pymupdf4llm)**
 >
@@ -296383,7 +296741,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Scavio](https://scavio.dev/docs/langchain)**
 >
-> Real-time search API for AI agents across the web, commerce, video, social, jobs, real estate, travel, app stores, ad libraries, and public filings, plus clean text extraction from any URL.
+> Real-time search for AI agents across the web, commerce, video, social, jobs, and more, plus clean text extraction from any URL.
 
 > **[ScaleDown](https://github.com/scaledown-team/langchain-scaledown/blob/main/README.md)**
 >
@@ -296391,7 +296749,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[SchemagateRetriever](https://ashishsinha1602.github.io/schemagate/langchain/)**
 >
-> Retriever that selects schema objects for a SQL agent and returns only the tables the calling principal is permitted to read, for Postgres, Oracle, MySQL and SQL Server
+> Retriever that returns only SQL schema tables the calling principal may read, for Postgres, Oracle, MySQL, and SQL Server.
 
 > **[ScrapeGraph](https://github.com/ScrapeGraphAI/langchain-scrapegraph)**
 >
@@ -296611,7 +296969,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[TanodToolkit](https://github.com/tanod-labs/integrations/tree/main/langchain)**
 >
-> Pay-per-call tools for agents (x402, USDC on Base) for smart-contract scans, address risk and sanctions checks, on-chain reads, web, DNS and data utilities, with a small free daily tier.
+> Pay-per-call tools (x402, USDC on Base) for contract scans, address risk, on-chain reads, and web or DNS utilities.
 
 > **[TanvoToolkit](https://github.com/tanvoai/langchain-tanvo#readme)**
 >
@@ -296635,7 +296993,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Tenuo](https://tenuo.ai/langchain)**
 >
-> Task-scoped authorization for LangChain agents that limits each task to the tools, argument values and time it needs, enforced before execution, with delegated agents receiving a subset of the parent's permissions.
+> Task-scoped authorization for LangChain agents that limits tools, arguments, and time before execution, including delegated subsets.
 
 > **[TensorLake](/oss/python/integrations/providers/tensorlake)**
 >
@@ -296715,7 +297073,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[TracekitMiddleware](https://github.com/Cygnux-Labs/Tracekit/blob/main/docs/integrations/langchain.md)**
 >
-> Tracekit asks a separate signer to allow, deny or hold each agent tool call for a person before it runs, and records every call and result in a signed, hash-chained log that can be verified offline.
+> Asks a signer to allow, deny, or hold each tool call before it runs, and records a signed, offline-verifiable hash-chained log.
 
 > **[TrueFoundry](/oss/python/integrations/providers/truefoundry)**
 >
@@ -296955,7 +297313,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[ZeroGPU](https://docs.zerogpu.ai)**
 >
-> Ultra-fast, compute-efficient inference provider for apps and agents: purpose-built small and nano models on an edge network, with zero GPU infrastructure, serverless, and auto-scaling built in.
+> Inference provider for apps and agents: purpose-built small and nano models on an edge network, serverless, with no GPU infrastructure.
 
 > **[ZeusDB](https://docs.zeusdb.com)**
 >
@@ -297346,8 +297704,6 @@ pip install boto3 nltk
 ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add boto3 nltk
 ```
-
-See a [usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/).
 
 > [!WARNING]
 >
@@ -299343,7 +299699,7 @@ This page covers all LangChain integrations with [OpenAI](https://en.wikipedia.o
 >
 > Wrapper for (legacy) OpenAI text completion models hosted on Azure.
 
-> **[OpenAIModerationChain](https://python.langchain.com/v0.1/docs/guides/productionization/safety/moderation)**
+> **[OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)**
 >
 > Detect text that could be hateful, violent, etc.
 
@@ -300270,8 +300626,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | N/A |
+| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | N/A |
+| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
@@ -315901,6 +316259,8 @@ async def make_graph():
 >
 > In a `langgraph dev` graph factory, the annotated parameter types and the return type must be importable at runtime, not only under `TYPE_CHECKING`. `langgraph-api` classifies the factory with `typing.get_type_hints()`; if an annotation cannot resolve, it injects a config dict instead of the runtime.
 
+On [Agent Server](/langsmith/agent-server-overview), register that factory in `langgraph.json` instead of exporting a static compiled graph. Tools from `list_tools()` stay callable after the adapter context exits, so returning the agent after discovery is enough for most MCP setups. Use a [context manager factory](/langsmith/graph-rebuild#context-manager-factory) when you need teardown around the run, or when you skip expensive MCP work on schema and state reads with `execution_runtime`.
+
 For a fully worked deployment example, including per-user authentication that mints a token for each caller, see [Authentication](/oss/python/langchain/mcp/auth#per-user-authentication).
 
 ### Shared connection pool
@@ -315997,6 +316357,8 @@ For the full negotiation rules, see [Protocol negotiation](https://gofastmcp.com
 * [Authentication](/oss/python/langchain/mcp/auth): Bearer, OAuth, and per-user credentials.
 
 * [Deploy a LangGraph server](/oss/python/langgraph/local-server): Graph factories for long-lived deployments.
+
+* [Rebuild a graph at runtime](/langsmith/graph-rebuild): Factory forms for Agent Server, including the context manager pattern.
 
 * [FastMCP connection lifecycle](https://gofastmcp.com/clients/client#connection-lifecycle)
 
@@ -342415,7 +342777,7 @@ When declaring an `entrypoint`, you can request access to additional parameters 
 | **previous** | Access the state associated with the previous `checkpoint` for the given thread. See [short-term-memory](#short-term-memory). |
 | **store** | An instance of \[BaseStore]\[langgraph.store.base.BaseStore]. Useful for [long-term memory](/oss/python/langgraph/use-functional-api#long-term-memory). |
 | **writer** | Use to access the StreamWriter when working with Async Python \< 3.11. See [streaming with functional API for details](/oss/python/langgraph/use-functional-api#streaming). |
-| **config** | For accessing run time configuration. See [RunnableConfig](https://python.langchain.com/docs/concepts/runnables/#runnableconfig) for information. |
+| **config** | For accessing run time configuration. See [RunnableConfig](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) for information. |
 
 > [!WARNING]
 >
@@ -347867,7 +348229,7 @@ memories[-1].dict()
  'updated_at': '2024-10-02T17:22:31.590605+00:00'}
 ```
 
-Each memory type is a Python class ([`Item`](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.Item)) with certain attributes. We can access it as a dictionary by converting with `.dict`.
+Each memory type is a Python class ([`Item`](https://reference.langchain.com/python/langgraph.store/base/Item)) with certain attributes. We can access it as a dictionary by converting with `.dict`.
 
 The attributes it has are:
 
@@ -349299,7 +349661,7 @@ for chunk in graph.stream(
 In Python versions \< 3.11, [asyncio tasks](https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task) do not support the `context` parameter.
 This limits LangGraph ability to automatically propagate context, and affects LangGraph's streaming mechanisms in two key ways:
 
-1. You **must** explicitly pass [`RunnableConfig`](https://python.langchain.com/docs/concepts/runnables/#runnableconfig) into async LLM calls (e.g., `ainvoke()`), as callbacks are not automatically propagated.
+1. You **must** explicitly pass [`RunnableConfig`](https://reference.langchain.com/python/langchain-core/runnables/config/RunnableConfig) into async LLM calls (e.g., `ainvoke()`), as callbacks are not automatically propagated.
 2. You **cannot** use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/config/get_stream_writer) in async nodes or tools—you must pass a `writer` argument directly.
 
 > **Extended example: async LLM call with manual config**
@@ -351388,7 +351750,7 @@ class State(TypedDict):
     extra_field: int
 ```
 
-This state tracks a list of [message](https://python.langchain.com/docs/concepts/messages/) objects, as well as an extra integer field.
+This state tracks a list of [message](/oss/python/langchain/messages) objects, as well as an extra integer field.
 
 ### Update state
 
@@ -351448,7 +351810,7 @@ Note that:
 * We kicked off invocation by updating a single key of the state.
 * We receive the entire state in the invocation result.
 
-For convenience, we frequently inspect the content of [message objects](https://python.langchain.com/docs/concepts/messages/) via pretty-print:
+For convenience, we frequently inspect the content of [message objects](/oss/python/langchain/messages) via pretty-print:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for message in result["messages"]:
@@ -351517,7 +351879,7 @@ Hello!
 In practice, there are additional considerations for updating lists of messages:
 
 * We may wish to update an existing message in the state.
-* We may want to accept short-hands for [message formats](/oss/python/langgraph/graph-api#using-messages-in-your-graph), such as [OpenAI format](https://python.langchain.com/docs/concepts/messages/#openai-format).
+* We may want to accept short-hands for [message formats](/oss/python/langgraph/graph-api#using-messages-in-your-graph), such as [OpenAI format](/oss/python/langchain/messages#message-content).
 
 LangGraph includes a built-in reducer [`add_messages`](https://reference.langchain.com/python/langgraph/graph/message/add_messages) that handles these considerations:
 
@@ -351553,7 +351915,7 @@ Hi
 Hello!
 ```
 
-This is a versatile representation of state for applications involving [chat models](https://python.langchain.com/docs/concepts/chat_models/). LangGraph includes a prebuilt `MessagesState` for convenience, so that we can have:
+This is a versatile representation of state for applications involving [chat models](/oss/python/langchain/models). LangGraph includes a prebuilt `MessagesState` for convenience, so that we can have:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import MessagesState
@@ -353202,7 +353564,7 @@ To convert a `sync` implementation of the graph to an `async` implementation, yo
 2. Update the code inside to use `await` appropriately.
 3. Invoke the graph with `.ainvoke` or `.astream` as desired.
 
-Because many LangChain objects implement the [Runnable Protocol](https://python.langchain.com/docs/expression_language/interface/) which has `async` variants of all the `sync` methods it's typically fairly quick to upgrade a `sync` graph to an `async` graph.
+Because many LangChain objects implement the [Runnable Protocol](https://reference.langchain.com/python/langchain-core/runnables/base/Runnable) which has `async` variants of all the `sync` methods it's typically fairly quick to upgrade a `sync` graph to an `async` graph.
 
 See example below. To demonstrate async invocations of underlying LLMs, we will include a chat model:
 
@@ -357453,7 +357815,7 @@ Existing functionality outside the focus of standard interfaces and agents has b
 
 ### Removal of deprecated APIs
 
-Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted. Check the [deprecation notices](https://python.langchain.com/docs/versions/migrating_chains) from previous versions for replacement APIs.
+Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted.
 
 ### Text property
 

@@ -296,7 +296,7 @@ model: (ctx) => {
 
 ## See Also
 
-* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params)** - Tool-driven parameter modification
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Dynamic execution control
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Multi-turn orchestration
+* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params.md)** - Tool-driven parameter modification
+* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Dynamic execution control
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Multi-turn orchestration
 

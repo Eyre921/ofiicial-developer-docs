@@ -278,7 +278,7 @@ Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 ## Related guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client) — create SDK-managed deployment samplers
-* [Serverless Training](/fine-tuning/training-api/serverless) — create an in-session sampler from a serverless checkpoint
+* [Serverless Training](/fine-tuning/training-api/serverless) — create a sampler for a serverless checkpoint or base model
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 * [Cookbook RL recipe](/fine-tuning/training-api/cookbook/rl) — GRPO with sampling pipeline
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — TITO sidecars, harnesses, and multi-turn trajectories

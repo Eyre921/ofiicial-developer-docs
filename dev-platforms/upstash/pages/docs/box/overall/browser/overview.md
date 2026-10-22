@@ -4,9 +4,9 @@ source: https://upstash.com/docs/box/overall/browser/overview
 path: docs/box/overall/browser/overview
 ---
 
-**Every box can come with its own browser.** Create a box with `browser: true` to get a managed, headless Chromium that you control through the SDK. You can open tabs, read pages, take screenshots, extract structured data, act on the live DOM with AI, record sessions, and connect Playwright directly over CDP.
+**Every box can come with its own browser.** Create a box with `browser: true` to get a managed Chromium that you control through the SDK. You can open tabs, read pages, take screenshots, extract structured data, act on the live DOM with AI, record sessions, and connect Playwright directly over CDP.
 
-Everything works headless. There is no desktop, no VNC, and nothing to install. Chromium is provisioned with the box and boots on first use.
+Chromium runs on a virtual display inside the box. There is no desktop, no VNC, and nothing to install. Chromium is provisioned with the box and boots on first use.
 
 ## Create a box with a browser
 
@@ -83,8 +83,10 @@ print(page.title)
   The AI-powered operations use an LLM and are metered:
   [`extract`](/docs/box/overall/browser/reading-pages) and [`observe`,
   `act`](/docs/box/overall/browser/ai-actions). They need an API key for the model's
-  provider (Anthropic, OpenAI, OpenRouter, Vercel, or OpenCode) on the box or
-  your account. The exception is replaying a resolved action with
+  provider (Anthropic, OpenAI, OpenRouter, Vercel, OpenCode, Bedrock, or Neon)
+  on the box or your account. Boxes on the Upstash-managed key need no key of
+  your own for Anthropic, OpenAI, OpenRouter, or OpenCode models. Cursor models
+  are not supported. The exception is replaying a resolved action with
   [`act(action)`](/docs/box/overall/browser/ai-actions#replay-an-action-without-an-llm),
   which uses no LLM and needs no key.
 </Note>

@@ -684,6 +684,244 @@ All other customers may be subject to additional retention upon advance notice.
 
 For Anthropic's Fable 5 and future Mythos-class models, all customers are subject to data retention for safety purposes, as described in [Anthropic's data retention practices](https://support.claude.com/en/articles/15425996-data-retention-practices-for-mythos-class-models).
 
+--- [Document source](https://neon.com/docs/ai-gateway/decisions.md) ---
+
+> Summary: Neon AI Gateway serves TypeSafe's System One decision models, Jev 1.14 and OpenJev, on the /typesafe/v1/systemone endpoint. Ask yes/no, choice, and score questions about text or JSON and get back probabilities instead of generated text, with the same Neon credential you use for chat completions.
+
+# Decisions
+
+Answer questions about text with System One decision models
+
+Decision models don't generate text. You send a piece of text or JSON, called the state, and a set of named questions about it. The model answers each one with numbers: the probability of a yes, the option it picked and how sure it is, or where the input falls on a scale you define. Use them to classify, route, or score input without prompting a chat model and parsing its reply.
+
+The Neon AI Gateway serves TypeSafe's [System One](https://docs.typesafe.ai/) decision models, using the same Neon credential as the other AI Gateway endpoints. You can call them with the TypeSafe SDKs, the [Vercel AI SDK](https://neon.com/docs/ai-gateway/decisions#use-with-the-vercel-ai-sdk), or plain HTTP.
+
+**Endpoint:** `POST https://<branch-host>/typesafe/v1/systemone`
+
+Decision models aren't available on any other endpoint, and this one doesn't serve chat models.
+
+## Models
+
+| Model ID                | Name                  | Context window | Notes                         |
+| ----------------------- | --------------------- | -------------- | ----------------------------- |
+| `typesafeai-jev-1-14-0` | Jev 1.14              | 65,536 tokens  | TypeSafe's proprietary model. |
+| `openjev-qwen35-4b`     | OpenJev (Qwen 3.5 4B) | 131,072 tokens | Open weights.                 |
+
+Both are billed on **input tokens only**. See the [model catalog](https://neon.com/docs/ai-gateway/overview#available-models) for rates.
+
+## Setup
+
+The examples use two environment variables:
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-...
+```
+
+Run `neon env pull --file .env` to write both to your `.env` for the current branch. You can also copy them from the Neon Console's **Connect** panel, on the **AI Gateway** tab. Inside Neon Functions they're injected automatically. See [Authentication](https://neon.com/docs/ai-gateway/authentication) for details.
+
+Install the TypeSafe SDK with `npm install @typesafe-ai/sdk` or `pip install typesafe-sdk`. The SDKs take `${NEON_AI_GATEWAY_BASE_URL}/typesafe` as their base URL and add `/v1/systemone` themselves.
+
+The TypeSafe SDKs are built for TypeSafe's own API, where the default model is `jev-latest`. The gateway uses its own model IDs, so set one when you create the client (`defaultModel` in TypeScript, `model` in Python), as the examples below do.
+
+## Basic request
+
+This request asks three questions about a support message, one of each type:
+
+**TypeScript (TypeSafe SDK)**
+
+```typescript
+import { choice, noul, score, TypeSafeClient } from '@typesafe-ai/sdk';
+
+const client = new TypeSafeClient({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/typesafe`,
+  defaultModel: 'typesafeai-jev-1-14-0',
+});
+
+const { answers } = await client.systemOne({
+  state: 'I was charged twice this month and need the extra charge refunded.',
+  questions: {
+    department: choice('Which team should handle this?', {
+      billing: 'Payments and refunds',
+      support: 'Other requests',
+    }),
+    severity: score('How severe is the issue?', [
+      'Cosmetic',
+      'Workaround exists',
+      'Blocking; no workaround',
+    ]),
+    refund: noul('Is the customer asking for money back?'),
+  },
+});
+
+console.log(answers.department.choice); // billing
+console.log(answers.refund.noul); // 0.98
+```
+
+**Python (TypeSafe SDK)**
+
+```python
+import os
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+
+with TypeSafeClient(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/typesafe",
+    model="typesafeai-jev-1-14-0",
+) as client:
+    response = client.system_one(
+        state="I was charged twice this month and need the extra charge refunded.",
+        questions={
+            "department": Choice(
+                instructions="Which team should handle this?",
+                criteria={"billing": "Payments and refunds", "support": "Other requests"},
+            ),
+            "severity": Score(
+                instructions="How severe is the issue?",
+                criteria=["Cosmetic", "Workaround exists", "Blocking; no workaround"],
+            ),
+            "refund": Noul(instructions="Is the customer asking for money back?"),
+        },
+    )
+
+print(response.answers["department"].choice)  # billing
+print(response.answers["refund"].noul)  # 0.98
+```
+
+**cURL**
+
+```bash
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/typesafe/v1/systemone" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafeai-jev-1-14-0",
+    "state": "I was charged twice this month and need the extra charge refunded.",
+    "questions": {
+      "department": {
+        "type": "choice",
+        "instructions": "Which team should handle this?",
+        "criteria": {"billing": "Payments and refunds", "support": "Other requests"}
+      },
+      "severity": {
+        "type": "score",
+        "instructions": "How severe is the issue?",
+        "criteria": ["Cosmetic", "Workaround exists", "Blocking; no workaround"]
+      },
+      "refund": {
+        "type": "noul",
+        "instructions": "Is the customer asking for money back?"
+      }
+    }
+  }'
+```
+
+The model answers each question on its own, so you can ask several in one request. The state can be a string, as here, or a JSON object such as `{ "message": "...", "plan": "Launch" }`.
+
+## Question types
+
+| Type            | Criteria                                                                                 | Answer                                                                                                                       |
+| --------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `noul` (yes/no) | Optional `true` and `false` descriptions                                                 | `noul`: the probability of a yes, from 0 to 1                                                                                |
+| `choice`        | A map of option names to descriptions                                                    | `choice`: the option picked, plus a `confidence` and per-option `probabilities`                                              |
+| `score`         | Level descriptions, indexed from 0. Use at least two: with one, the answer is always `0` | `score`: the expected level, which can fall between levels, plus `confidence`, `probabilities`, and a `legend` of the levels |
+
+A `score` of `1.02` with the rubric above means "about `Workaround exists`"; read `probabilities` when you need the full distribution.
+
+## Response shape
+
+A response for the request above. Values can vary slightly from run to run:
+
+```json
+{
+  "model": "jev-1.14.0",
+  "answers": {
+    "department": {
+      "type": "choice",
+      "choice": "billing",
+      "confidence": 1.0,
+      "probabilities": { "billing": 1.0, "support": 0.0 }
+    },
+    "severity": {
+      "type": "score",
+      "score": 1.02,
+      "confidence": 0.52,
+      "legend": { "0": "Cosmetic", "1": "Workaround exists", "2": "Blocking; no workaround" },
+      "probabilities": { "0": 0.15, "1": 0.68, "2": 0.17 }
+    },
+    "refund": { "type": "noul", "noul": 0.98 }
+  },
+  "usage": { "input_tokens": 383, "output_tokens": 61 }
+}
+```
+
+`model` reports the name that served the request (`jev-1.14.0` here, `databricks-openjev-qwen35-4b` for OpenJev). Keep sending the model IDs from [Models](https://neon.com/docs/ai-gateway/decisions#models).
+
+## Use with the Vercel AI SDK
+
+[`@neon/ai-sdk-provider`](https://www.npmjs.com/package/@neon/ai-sdk-provider) exposes the decision models to the AI SDK's `experimental_decide`. The AI SDK marks this API as experimental, so it may change in patch releases. It reads `NEON_AI_GATEWAY_BASE_URL` and `NEON_AI_GATEWAY_TOKEN` from [Setup](https://neon.com/docs/ai-gateway/decisions#setup) and needs `ai@7.0.133` or later. Install it with `npm install @neon/ai-sdk-provider ai@7`; a plain `npm install ai` installs AI SDK 6.
+
+```typescript
+import { neon } from '@neon/ai-sdk-provider';
+import { experimental_decide as decide } from 'ai';
+
+const { answers } = await decide({
+  model: neon.decisionModel('typesafeai-jev-1-14-0'),
+  state: 'I was charged twice this month and need the extra charge refunded.',
+  questions: {
+    department: {
+      type: 'choice',
+      instructions: 'Which team should handle this?',
+      criteria: { billing: 'Payments and refunds', support: 'Other requests' },
+    },
+    refund: {
+      type: 'boolean',
+      instructions: 'Is the customer asking for money back?',
+    },
+  },
+});
+
+console.log(answers.department.choice); // billing
+console.log(answers.refund.probability); // 0.98
+```
+
+The AI SDK calls the yes/no type `boolean` and returns its answer as `probability`; the provider sends it as `noul`. `choice` and `score` answers leave out `confidence`, which is in `providerMetadata.neon.confidence` instead. The provider accepts text and JSON state and throws `UnsupportedFunctionalityError` for file parts.
+
+## List the models
+
+`GET /typesafe/v1/models` lists the decision models your branch can call:
+
+```bash
+curl "$NEON_AI_GATEWAY_BASE_URL/typesafe/v1/models" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN"
+```
+
+They also appear in `GET /v1/models` with `"dialects": ["systemone"]`.
+
+## Not supported
+
+- **Streaming.** A request with `stream: true` returns `400 systemone does not support streaming`.
+- **`box` questions.** The TypeSafe SDKs document `box` for the `jev-preview` model, which the gateway doesn't serve. A `box` question returns `400`.
+- **Other endpoints.** A decision model on `/v1/chat/completions`, or a chat model on this endpoint, returns `400` with `is not available on the ... endpoint`.
+
+## Error handling
+
+| Status                  | Meaning               | Common cause                                                                                                     |
+| ----------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `400 Bad Request`       | Invalid request       | Missing or unknown model (including `jev-latest`), no questions, `stream: true`, or a `box` question             |
+| `401 Unauthorized`      | Authentication failed | Missing or invalid `NEON_AI_GATEWAY_TOKEN`                                                                       |
+| `403 Forbidden`         | Access denied         | Credential lacks `ai_gateway:invoke` scope, or branch not in credential lineage                                  |
+| `429 Too Many Requests` | Quota or rate limited | Account quota or per-minute token limit. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits). |
+
+For exact error messages and fixes, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
+
+## Next steps
+
+- [Models](https://neon.com/docs/ai-gateway/models): full model catalog, rate limits, and pricing
+- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): the OpenAI-compatible chat endpoint
+- [TypeSafe docs](https://docs.typesafe.ai/): System One concepts and the full SDK reference
+
 --- [Document source](https://neon.com/docs/ai-gateway/embeddings.md) ---
 
 > Summary: Neon AI Gateway serves text-embedding models on an OpenAI-compatible /v1/embeddings endpoint. Use short model IDs like qwen3-embedding-0-6b or gte-large-en, both 1024-dimensional, with the same Neon credential you use for chat completions.
@@ -1302,7 +1540,13 @@ For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.
 
 How to call models through AI Gateway, with the endpoints, limits, and rules that apply
 
-This page covers how to call models through Neon AI Gateway and the rules that apply. The full model catalog, with every model and copy-paste quickstart, is on the [AI Gateway overview](https://neon.com/docs/ai-gateway/overview#available-models).
+This page covers how to call models through Neon AI Gateway and the rules that apply. For the full list of models you can call, see the [model catalog](https://neon.com/ai-gateway#models).
+
+> **See every model on Neon AI Gateway**
+>
+> Compare every available model by provider, inputs, context window, and pricing.
+>
+> [Browse all models](https://neon.com/ai-gateway#models)
 
 Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `gpt-5-mini` or `gemini-3-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
 
@@ -1358,16 +1602,17 @@ Most models work with the [Chat completions](https://neon.com/docs/ai-gateway/ch
 
 All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GATEWAY_BASE_URL`).
 
-| Provider                                       | Recommended endpoint   | Notes                                                                                        |
-| ---------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------- |
-| OpenAI (most models)                           | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                        |
-| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)        | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions                  |
-| Anthropic Claude                               | `/v1/chat/completions` | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching |
-| Google Gemini                                  | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK                |
-| Google Gemma 3 12B                             | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                               |
-| Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions` | Chat completions only                                                                        |
-| Alibaba (chat models)                          | `/v1/chat/completions` | Chat completions only                                                                        |
-| Alibaba (embedding models)                     | `/v1/embeddings`       | No chat completions — returns a vector, not text                                             |
+| Provider                                       | Recommended endpoint     | Notes                                                                                                                    |
+| ---------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| OpenAI (most models)                           | `/v1/chat/completions`   | Use `/openai/v1/responses` for Responses API features                                                                    |
+| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)        | `/openai/v1/responses`   | These models require the Responses API and don't work with chat/completions                                              |
+| Anthropic Claude                               | `/v1/chat/completions`   | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching                             |
+| Google Gemini                                  | `/v1/chat/completions`   | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK                                            |
+| Google Gemma 3 12B                             | `/v1/chat/completions`   | Chat completions only. Doesn't support the Gemini SDK endpoint                                                           |
+| Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions`   | Chat completions only                                                                                                    |
+| Alibaba (chat models)                          | `/v1/chat/completions`   | Chat completions only                                                                                                    |
+| Alibaba (embedding models)                     | `/v1/embeddings`         | No chat completions. Returns a vector, not text                                                                          |
+| TypeSafe (decision models)                     | `/typesafe/v1/systemone` | No chat completions. Returns answers to questions, not text. See [Decisions](https://neon.com/docs/ai-gateway/decisions) |
 
 **Warning: Content shape varies by model**
 
@@ -1390,6 +1635,8 @@ Each inference dialect is reachable at two equivalent paths: a shorter top-level
 
 The shorter form isn't a uniform `/v1/<dialect>` rule. The unified chat completions endpoint is a bare `/v1/chat/completions`, matching the OpenAI and OpenRouter convention. The native dialects are prefixed by provider instead, and each keeps its own upstream version segment so the path matches what that provider's SDK expects: `/openai/v1/...`, `/anthropic/v1/...`, and `/gemini/v1beta/...`.
 
+Decisions are the exception: they're served only at `/typesafe/v1/systemone`.
+
 Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
 
 | Shorter path                                         | Equivalent to                                              |
@@ -1401,7 +1648,7 @@ Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-g
 
 ### List available models
 
-`GET /v1/models` lists the model catalog in an OpenRouter-shaped response, authenticated the same way as the endpoints above. Unlike the inference dialects, the model list has only this `/v1/models` path, with no `/ai-gateway/...` form.
+`GET /v1/models` lists the model catalog in an OpenRouter-shaped response, authenticated the same way as the endpoints above. Unlike the inference dialects, the model list has only this `/v1/models` path, with no `/ai-gateway/...` form. Decision models are also listed at `GET /typesafe/v1/models`; see [Decisions](https://neon.com/docs/ai-gateway/decisions#list-the-models).
 
 ```bash
 curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
@@ -1556,6 +1803,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/embeddings" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -1705,6 +1953,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -1862,6 +2111,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2019,6 +2269,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2131,6 +2382,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2288,6 +2540,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2445,6 +2698,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2602,6 +2856,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2759,6 +3014,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -2916,6 +3172,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3028,6 +3285,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3185,6 +3443,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3342,6 +3601,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3499,6 +3759,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3656,6 +3917,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3813,6 +4075,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -3970,6 +4233,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4127,6 +4391,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4284,6 +4549,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4441,6 +4707,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4598,6 +4865,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4755,6 +5023,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4867,6 +5136,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-7-flash:generate
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -4979,6 +5249,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-3-8-flash:generate
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -5136,6 +5407,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -5293,6 +5565,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -5450,6 +5723,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -5607,6 +5881,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -5764,6 +6039,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -6039,6 +6315,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -6314,6 +6591,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -6590,6 +6868,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -6865,6 +7144,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -7140,6 +7420,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -7415,6 +7696,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -7691,6 +7973,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -7966,6 +8249,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -8241,6 +8525,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -8516,6 +8801,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -8791,6 +9077,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -9066,6 +9353,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -9341,6 +9629,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -9616,6 +9905,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -9891,6 +10181,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -10166,6 +10457,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -10441,6 +10733,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -10716,6 +11009,7 @@ print(sizes)
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -10873,6 +11167,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11030,6 +11325,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11187,6 +11483,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11344,6 +11641,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11462,6 +11760,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/embeddings" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11611,6 +11910,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11768,6 +12068,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -11925,6 +12226,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12082,6 +12384,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12239,6 +12542,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12272,6 +12576,154 @@ $0.50
 ## Output /M
 
 $1.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/openjev-qwen35-4b.md) ---
+
+# OpenJev (Qwen 3.5 4B)
+
+## About
+
+Neon AI Gateway provides OpenJev (Qwen 3.5 4B) by TypeSafe, a System One decision model. It answers questions about a given state with a choice, a probability, or a score; it does not generate text.
+
+## Command
+
+### Decisions
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai@7 @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { experimental_decide as decide } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { answers, usage } = await decide({
+  model: neon.decisionModel("openjev-qwen35-4b"),
+  state: "I was charged twice this month.",
+  questions: {
+    billing: {
+      type: "boolean",
+      instructions: "Is the user asking about billing?",
+      criteria: { true: "Billing related", false: "Not billing" },
+    },
+  },
+});
+console.log(answers, usage);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i @typesafe-ai/sdk
+```
+
+```typescript
+import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+
+const client = new TypeSafeClient({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/typesafe`,
+  defaultModel: "openjev-qwen35-4b",
+});
+
+const { answers, usage } = await client.systemOne({
+  state: "I was charged twice this month.",
+  questions: {
+    billing: noul("Is the user asking about billing?", {
+      true: "Billing related",
+      false: "Not billing",
+    }),
+  },
+});
+console.log(answers, usage);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install typesafe-sdk
+```
+
+```python
+import os
+from typesafe_sdk import Noul, TypeSafeClient
+
+with TypeSafeClient(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/typesafe",
+    model="openjev-qwen35-4b",
+) as client:
+    response = client.system_one(
+        state="I was charged twice this month.",
+        questions={
+            "billing": Noul(
+                instructions="Is the user asking about billing?",
+                criteria={"true": "Billing related", "false": "Not billing"},
+            ),
+        },
+    )
+print(response.answers, response.usage)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/typesafe/v1/systemone" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openjev-qwen35-4b",
+    "state": "I was charged twice this month.",
+    "questions": {
+      "billing": {
+        "type": "noul",
+        "instructions": "Is the user asking about billing?",
+        "criteria": {"true": "Billing related", "false": "Not billing"}
+      }
+    }
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+openjev-qwen35-4b
+
+## Provider
+
+TypeSafe provides OpenJev (Qwen 3.5 4B), a System One decision model. It answers questions about a given state with a choice, a probability, or a score; it does not generate text.
+
+## Released
+
+Oct 2026
+
+## Input /M
+
+$0.04
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/qwen3-embedding-0-6b.md) ---
 
@@ -12357,6 +12809,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/embeddings" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12506,6 +12959,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12663,6 +13117,7 @@ curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
 # NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
 #   - `/v1`        - unified Chat Completions and `/v1/embeddings`
 #   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
 # @neondatabase/ai-sdk-provider and Mastra route requests automatically.
 
 NEON_AI_GATEWAY_TOKEN=nt_live_...
@@ -12696,6 +13151,154 @@ $0.22
 ## Output /M
 
 $2.20
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/typesafeai-jev-1-14-0.md) ---
+
+# Jev 1.14
+
+## About
+
+Neon AI Gateway provides Jev 1.14 by TypeSafe, a System One decision model. It answers questions about a given state with a choice, a probability, or a score; it does not generate text.
+
+## Command
+
+### Decisions
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai@7 @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { experimental_decide as decide } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { answers, usage } = await decide({
+  model: neon.decisionModel("typesafeai-jev-1-14-0"),
+  state: "I was charged twice this month.",
+  questions: {
+    billing: {
+      type: "boolean",
+      instructions: "Is the user asking about billing?",
+      criteria: { true: "Billing related", false: "Not billing" },
+    },
+  },
+});
+console.log(answers, usage);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i @typesafe-ai/sdk
+```
+
+```typescript
+import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+
+const client = new TypeSafeClient({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/typesafe`,
+  defaultModel: "typesafeai-jev-1-14-0",
+});
+
+const { answers, usage } = await client.systemOne({
+  state: "I was charged twice this month.",
+  questions: {
+    billing: noul("Is the user asking about billing?", {
+      true: "Billing related",
+      false: "Not billing",
+    }),
+  },
+});
+console.log(answers, usage);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install typesafe-sdk
+```
+
+```python
+import os
+from typesafe_sdk import Noul, TypeSafeClient
+
+with TypeSafeClient(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/typesafe",
+    model="typesafeai-jev-1-14-0",
+) as client:
+    response = client.system_one(
+        state="I was charged twice this month.",
+        questions={
+            "billing": Noul(
+                instructions="Is the user asking about billing?",
+                criteria={"true": "Billing related", "false": "Not billing"},
+            ),
+        },
+    )
+print(response.answers, response.usage)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/typesafe/v1/systemone" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafeai-jev-1-14-0",
+    "state": "I was charged twice this month.",
+    "questions": {
+      "billing": {
+        "type": "noul",
+        "instructions": "Is the user asking about billing?",
+        "criteria": {"true": "Billing related", "false": "Not billing"}
+      }
+    }
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+typesafeai-jev-1-14-0
+
+## Provider
+
+TypeSafe provides Jev 1.14, a System One decision model. It answers questions about a given state with a choice, a probability, or a score; it does not generate text.
+
+## Released
+
+Oct 2026
+
+## Input /M
+
+$0.04
 
 --- [Document source](https://neon.com/docs/ai-gateway/openai-responses.md) ---
 
@@ -12899,7 +13502,7 @@ Before you start: AI Gateway needs a paid Neon plan ([Launch or Scale](https://n
 
 ## Available models
 
-Browse the full catalog below. Switch between the **Text**, **Image**, and **Embeddings** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart. Chat and image models get AI SDK, Mastra, Python, TypeScript, and cURL; embedding models get Python, TypeScript, and cURL. The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions and embeddings, `/openai/v1` for the Responses API (image generation).
+Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddings**, and **Decisions** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart. Chat and image models get AI SDK, Mastra, Python, TypeScript, and cURL; embedding models get Python, TypeScript, and cURL; System One decision models get AI SDK, TypeScript, Python, and cURL. The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions and embeddings, `/openai/v1` for the Responses API (image generation), `/typesafe/v1/systemone` for decisions.
 
 ### Text models
 
@@ -13053,9 +13656,18 @@ These models return a fixed-length vector on `POST /v1/embeddings` rather than g
 
 Select a linked model for embeddings-specific code examples.
 
+### Decision models
+
+These System One models answer questions about a given state with a choice, a probability, or a score rather than generating text:
+
+| Model                                                                                 | Model ID                | Released | Input /M | License      |
+| ------------------------------------------------------------------------------------- | ----------------------- | -------- | -------- | ------------ |
+| [Jev 1.14](https://neon.com/docs/ai-gateway/models/typesafeai-jev-1-14-0.md)          | `typesafeai-jev-1-14-0` | Oct 2026 | $0.04    | —            |
+| [OpenJev (Qwen 3.5 4B)](https://neon.com/docs/ai-gateway/models/openjev-qwen35-4b.md) | `openjev-qwen35-4b`     | Oct 2026 | $0.04    | Open weights |
+
 Prices are provider list prices per million tokens. Inference is free during the private preview. Click a model for a copy-paste quickstart.
 
-For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use). For embedding models (dimensions, normalization, and choosing a distance operator), see [Embeddings](https://neon.com/docs/ai-gateway/embeddings).
+For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use). For embedding models (dimensions, normalization, and choosing a distance operator), see [Embeddings](https://neon.com/docs/ai-gateway/embeddings). For decision models (question types and answer shapes), see [Decisions](https://neon.com/docs/ai-gateway/decisions).
 
 ## Get started
 
@@ -13063,6 +13675,7 @@ For full request paths and when to prefer each endpoint, see [Which endpoint to 
 - [Model reference](https://neon.com/docs/ai-gateway/models): Endpoints, model IDs, rate limits, pricing, and provider terms.
 - [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): Use the OpenAI-compatible endpoint with any model in the catalog.
 - [Embeddings](https://neon.com/docs/ai-gateway/embeddings): Turn text into vectors for search with the OpenAI-compatible embeddings endpoint.
+- [Decisions](https://neon.com/docs/ai-gateway/decisions): Ask yes/no, choice, and score questions about text and get back probabilities.
 - [Authentication](https://neon.com/docs/ai-gateway/authentication): Understand how Neon credentials work with AI Gateway.
 
 ## Starter templates
@@ -24549,6 +25162,8 @@ Manage Neon Functions.
 | `neon functions domains register <domain>` | Point a domain you already own at a function on the branch |
 | `neon functions get <slug>`                | Show a function's details                                  |
 | `neon functions list`                      | List functions on the branch                               |
+| `neon functions new [template]`            | Create a function from a Function Registry template        |
+| `neon functions templates list`            | List function templates                                    |
 
 ### git
 
@@ -24833,7 +25448,7 @@ More about global options:
 - **Output:** table output may omit fields. Use `--output json` or `--output yaml` to see all data.
 - **Authentication:** the CLI checks credentials in this order: the `--api-key` option, the `NEON_API_KEY` environment variable (`export NEON_API_KEY=<neon_api_key>`), the `credentials.json` file that `neon login` creates in the config directory (override its location with `--config-dir`), then interactive web authentication. To get a key, see [Create an API key](https://neon.com/docs/manage/api-keys#creating-api-keys).
 - **Context file:** sets a default organization, project, or branch so you don't repeat IDs in every command. Create one with [`neon link`](https://neon.com/docs/cli/link) (preferred) or [`set-context`](https://neon.com/docs/cli/set-context).
-- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. If the CLI crashes on an internal bug, it also sends an error report with the error type and a sanitized stack trace, without your arguments, environment variables, or file contents. Opt out of both with `--no-analytics`.
+- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. If the CLI crashes on an internal bug, it also sends an error report with the error type and a sanitized stack trace, without your arguments, environment variables, or file contents. Opt out of both with `--no-analytics`, which also asks the docs search service not to record your `neon docs search` and `neon ask` queries.
 - **Help:** `--help` works at every level: `neon --help`, `neon branches --help`, `neon branches create --help`.
 
 ## GitHub repository
@@ -25174,7 +25789,7 @@ neon ask --prompt "What is a Neon project?" --output json
 
 Scaffold a new project from a Neon starter template
 
-The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, install agent tooling, and link the directory to a Neon project).
+The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, install agent tooling, and link the directory to a Neon project). To add a single function to an existing project from a template, use [`neon functions new`](https://neon.com/docs/cli/functions#new) instead.
 
 ## Usage
 
@@ -26539,7 +27154,7 @@ Next: `neon config plan` to preview, `neon config apply` to provision.
 
 ### neon config add function
 
-Declares a [Neon Function](https://neon.com/docs/cli/functions) and creates its handler file. The handler defaults to `functions/<slug>.ts` (`.js` for a JavaScript config). A slug is 1 to 20 lowercase letters and digits, with no hyphens. Pass `--name` to set a display name (it defaults to the slug), or `--source` to register an existing handler relative to `neon.ts` without overwriting it.
+Declares a [Neon Function](https://neon.com/docs/cli/functions) and creates its handler file. The handler defaults to `functions/<slug>.ts` (`.js` for a JavaScript config). A slug is 1 to 20 lowercase letters and digits, with no hyphens. Pass `--name` to set a display name (it defaults to the slug), or `--source` to register an existing handler relative to `neon.ts` without overwriting it. To start from a Function Registry template instead of the starter handler, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
 
 ```bash
 neon config add function <slug> [options]
@@ -27404,7 +28019,7 @@ neon docs search <query> [options]
 | `--category` | Only return pages in these categories (repeatable) Possible values: `docs`, `api`, `postgresql`, `guides`, `faqs`, `blog`, `changelog` | array  | —       |    No    |
 | `--limit`    | Maximum number of results (1-40)                                                                                                       | number | `10`    |    No    |
 
-The default table shows each result's page title, the section that matched, and the page URL. The section is blank when the matching heading is the page title. `--output json` and `--output yaml` also include each result's `category`, `breadcrumb`, and a short `excerpt` of the matching text.
+By default, each result shows the page title and matching section, with the URL on the next line. Long title lines are cut to fit your terminal; URLs never are. `--output json` and `--output yaml` also include each result's `category`, `breadcrumb`, and a short `excerpt` of the matching text.
 
 To search more than one category, repeat `--category`.
 
@@ -27421,10 +28036,14 @@ neon docs search "create branch" --category api --category docs --limit 3
 ```
 
 ```text
-Title                       Heading                                                     URL
-Manage branches             Branching with the Neon API > Create a branch with the API  https://neon.com/docs/manage/branches
-Neon CLI command: branches  neon branches create                                        https://neon.com/docs/cli/branches
-Neon CLI quickstart         Common operations > Create a branch                         https://neon.com/docs/cli/quickstart
+Manage branches ' Branching with the Neon API ' Create a branch with the API
+  https://neon.com/docs/manage/branches
+
+Neon CLI command: branches ' neon branches create
+  https://neon.com/docs/cli/branches
+
+Neon CLI quickstart ' Common operations ' Create a branch
+  https://neon.com/docs/cli/quickstart
 ```
 
 Get results as JSON so you can process them in a script:
@@ -27565,15 +28184,113 @@ Feedback received. Thank you!
 
 --- [Document source](https://neon.com/docs/cli/functions.md) ---
 
-> Summary: The Neon CLI `neon functions` command manages Neon Functions on a branch: deploy, list, get, and delete functions, and register and manage their custom domains with the `domains` subcommands.
+> Summary: The Neon CLI `neon functions` command manages Neon Functions on a branch: create functions from Function Registry templates, deploy, list, get, and delete functions, and register and manage their custom domains with the `domains` subcommands.
 
 # Neon CLI command: functions
 
-Deploy, list, inspect, and delete Neon Functions, and manage their custom domains
+Create, deploy, list, inspect, and delete Neon Functions, and manage their custom domains
 
 The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev).
 
-Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [domains](https://neon.com/docs/cli/functions#domains), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list)
+Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [domains](https://neon.com/docs/cli/functions#domains), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list), [new](https://neon.com/docs/cli/functions#new), [templates](https://neon.com/docs/cli/functions#templates)
+
+## neon functions new
+
+Creates a function from a Neon Function Registry template. It writes the template's files to `functions/<slug>/` and declares the function in `neon.ts`, creating the file if needed. It doesn't need a project or a signed-in session.
+
+```bash
+neon functions new [template] [options]
+```
+
+| Option                     | Description                                                                                                                                                                                  | Type    | Default | Required |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--add-to-config`          | Declare the function in neon.ts, creating it when missing. On by default; use --no-add-to-config to skip.                                                                                    | boolean | —       |    No    |
+| `--all-operations`         | Include every operation. Conflicts with --operation.                                                                                                                                         | boolean | —       |    No    |
+| `--config`                 | Path to the neon.ts to edit (defaults to the neon.ts next to .neon, or in cwd without one; created there when missing)                                                                       | string  | —       |    No    |
+| `--dir`                    | Destination directory (defaults to functions/\<slug> next to neon.ts)                                                                                                                        | string  | —       |    No    |
+| `--force`                  | Overwrite differing files and keep an existing neon.ts declaration                                                                                                                           | boolean | —       |    No    |
+| `--install`                | Install the template's dependencies, plus @neon/config and @neon/env when neon.ts is created. A TTY asks when omitted, --yes installs, and anything else leaves the install command in Next. | boolean | —       |    No    |
+| `--operation`              | Operation to include (repeatable). Without it, a TTY asks and anything else uses the recommended operations.                                                                                 | array   | —       |    No    |
+| `--slug`                   | Function slug, also used as the directory name. A separate template keeps its own slugs and uses this only for the directory. Defaults to the template ID                                    | string  | —       |    No    |
+| `--yes`, `-y`, `--default` | Skip prompts: use the recommended operations and install dependencies                                                                                                                        | boolean | —       |    No    |
+| `--branch`                 | Branch ID or name                                                                                                                                                                            | string  | —       |    No    |
+| `--project-id`             | Project ID                                                                                                                                                                                   | string  | —       |    No    |
+
+A `router` template becomes one function, with a generated `index.ts` that routes each URL path to an operation. A `separate` template declares one function per operation under slugs the template sets, so `--slug` only renames the directory.
+
+If the template needs environment variables, the command declares them in `neon.ts` and adds their names, without values, to `.env.example`. Set the values in your env file and pass it to `neon config apply --env`; the `Next:` list prints the exact command. For `neon dev`, export them in your shell.
+
+Create a function from the `basic` template:
+
+```bash
+neon functions new basic --no-install
+```
+
+```text filename="Output"
+Function created.
+-----------------
+
+  Template      Basic function (Neon)
+  Function      basic
+  Directory     functions/basic
+  Config        neon.ts created: added functions.basic
+  Dependencies  not installed
+
+Next:
+  npm install @neon/config @neon/env
+  neon dev
+  neon config apply
+```
+
+Use your own slug and skip `neon.ts`:
+
+```bash
+neon functions new basic --slug hello --no-add-to-config
+```
+
+```text filename="Output"
+Function created.
+-----------------
+
+  Template   Basic function (Neon)
+  Function   hello
+  Directory  functions/hello
+  Config     not added
+
+Next:
+  neon dev --source functions/hello/index.ts
+  neon functions deploy hello --src functions/hello/index.ts
+```
+
+Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To try an unmerged template, set `NEON_FUNCTION_REGISTRY_DIR` to a local copy of that directory.
+
+## neon functions templates
+
+Browse the templates in the Neon Function Registry.
+
+Subcommands: [list](https://neon.com/docs/cli/functions#templates-list)
+
+### neon functions templates list
+
+Lists the templates you can pass to [`neon functions new`](https://neon.com/docs/cli/functions#new).
+
+```bash
+neon functions templates list [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon functions templates list
+```
+
+```text filename="Output"
+ID     Title           Provider  Description
+basic  Basic function  Neon      A minimal Neon Function with a JSON response.
+```
 
 ## neon functions deploy
 
@@ -36712,7 +37429,7 @@ export default defineConfig({
 
 The slug is permanent: it can't be renamed after the first deploy. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts) for all options.
 
-As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add).
+As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add). To start from a Function Registry template instead, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
 
 Install dependencies:
 
@@ -37011,7 +37728,7 @@ Functions are backend primitives, not full-stack app hosting. Host your app on V
 
 ## Starter templates
 
-Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/).
+Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/). To add one function to an existing project from a template, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
 
 | Example                  | `--template`        | Source                                                                                                                  | Neon services                                   | Stack                 |
 | ------------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------- |
@@ -47884,8 +48601,8 @@ Browse supported Postgres extensions by category.
 
 ## Procedural languages
 
-- [plcoffee](https://coffeescript.org/): Enables writing functions in CoffeeScript, a Javascript dialect with a syntax similar to Ruby
-- [plls](https://livescript.net/): Enables writing functions in LiveScript, a Javascript dialect that serves as a more powerful successor to CoffeeScript
+- [plcoffee](https://neon.com/docs/extensions/plv8): Deprecated on Neon. Was a CoffeeScript procedural language that ships with plv8; use plpgsql or app-side logic instead
+- [plls](https://neon.com/docs/extensions/plv8): Deprecated on Neon. Was a LiveScript procedural language that ships with plv8; use plpgsql or app-side logic instead
 - [plv8](https://neon.com/docs/extensions/plv8): Deprecated on Neon. Was a Postgres procedural language powered by V8 for JavaScript callable from SQL; use plpgsql or app-side logic instead
 - [plpgsql](https://www.postgresql.org/docs/16/plpgsql.html): The default procedural language for Postgres, enabling the creation of complex functions and triggers
 
@@ -53646,8 +54363,8 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [pgvector](https://neon.com/docs/extensions/pgvector)                                                          |  0.8.0 |  0.8.0 |  0.8.0 |  0.8.0 |  0.8.6 | Install with `CREATE EXTENSION vector;`                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | [pg\_search](https://neon.com/docs/extensions/pg_search)                                                       |      - |      - |      - |      - |      - | **Unavailable.** For full text search, see [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                        |
 | [pgx\_ulid](https://github.com/pksunkara/pgx_ulid)                                                             |  0.1.5 |  0.1.5 |  0.1.5 |  0.2.0 |  0.2.2 | Install with `CREATE EXTENSION ulid;` on Postgres 14, 15, 16. Install with `CREATE EXTENSION pgx_ulid;` on Postgres 17 and 18.                                                                                                                                                                                                                                                                                                                                 |
-| [plcoffee](https://coffeescript.org/)                                                                          | 3.1.10 | 3.1.10 | 3.1.10 |      - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| [plls](https://livescript.net/)                                                                                | 3.1.10 | 3.1.10 | 3.1.10 |      - |      - |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [plcoffee](https://coffeescript.org/)                                                                          | 3.1.10 | 3.1.10 | 3.1.10 |      - |      - | **Deprecated.** Ships with plv8. See [The plv8 extension](https://neon.com/docs/extensions/plv8).                                                                                                                                                                                                                                                                                                                                                              |
+| [plls](https://livescript.net/)                                                                                | 3.1.10 | 3.1.10 | 3.1.10 |      - |      - | **Deprecated.** Ships with plv8. See [The plv8 extension](https://neon.com/docs/extensions/plv8).                                                                                                                                                                                                                                                                                                                                                              |
 | [plpgsql](https://www.postgresql.org/docs/16/plpgsql.html)                                                     |    1.0 |    1.0 |    1.0 |    1.0 |    1.0 | Pre-installed with Postgres.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | [plpgsql\_check](https://pgxn.org/dist/plpgsql_check/)                                                         |  2.8.2 |  2.8.2 |  2.8.2 |  2.8.2 |  2.8.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [plv8](https://neon.com/docs/extensions/plv8)                                                                  | 3.1.10 | 3.1.10 | 3.1.10 |  3.2.3 |      - | **Deprecated.** New installs are blocked for security reasons. See [The plv8 extension](https://neon.com/docs/extensions/plv8).                                                                                                                                                                                                                                                                                                                                |
@@ -53879,7 +54596,7 @@ When running a `Create project` or `Update project` API call to enable libraries
 - If you do not use one of the libraries enabled by default, you can exclude it from your API call.
 - The `pgrag` libraries (`"rag_bge_small_en_v15,rag_jina_reranker_v1_tiny_en"`) are **deprecated**; leave them out of your API call. For search and RAG, see [Lakebase Search](https://neon.com/docs/ai/lakebase-search).
 - The `pg_search` library is **deprecated**; do not add it for new projects. Existing projects that still preload it should plan migration; see [The pg_search extension](https://neon.com/docs/extensions/pg_search).
-- The **`plv8`** extension is **deprecated**; **`CREATE EXTENSION plv8`** is rejected. See [The plv8 extension](https://neon.com/docs/extensions/plv8).
+- The **`plv8`** extension and its companion **`plcoffee`** and **`plls`** extensions are **deprecated**; **`CREATE EXTENSION`** is rejected for each. See [The plv8 extension](https://neon.com/docs/extensions/plv8).
 
 ## Extension notes
 
@@ -55333,6 +56050,8 @@ JavaScript procedural language for Postgres — no longer available on Neon
 **Warning: The plv8 extension is deprecated on Neon.**
 
 **plv8** is deprecated because of **security risks** tied to embedding the V8 JavaScript engine inside Postgres. Neon blocks **`CREATE EXTENSION plv8`** with an explicit deprecation message (same mechanism as other deprecated extensions).
+
+The **`plcoffee`** (CoffeeScript) and **`plls`** (LiveScript) extensions ship with plv8 on Postgres 14, 15, and 16 and run on the same V8 engine, so they're deprecated too. Neon also blocks **`CREATE EXTENSION plcoffee`** and **`CREATE EXTENSION plls`**. Databases that already have them keep working until you drop them.
 
 **If you use plv8 today:** move business logic out of JavaScript-in-SQL—for example rewrite functions in **[plpgsql](https://www.postgresql.org/docs/current/plpgsql.html)** or run JavaScript in your **application** or **worker** layer—and then drop **`plv8`** from databases that still have it. See also [Supported Postgres extensions](https://neon.com/docs/extensions/pg-extensions).
 

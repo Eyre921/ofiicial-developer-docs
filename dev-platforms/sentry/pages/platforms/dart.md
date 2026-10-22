@@ -29,7 +29,7 @@ Add the Sentry Dart SDK to your `pubspec.yaml`:
 
 ```yml
 dependencies:
-  sentry: ^10.1.0
+  sentry: ^10.2.0
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/dart.md#configure)

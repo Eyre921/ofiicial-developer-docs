@@ -1413,7 +1413,7 @@ To check which flow a creation tool uses, ask your client to list the available 
 
 Your MCP client controls how the confirmation is collected. Some clients support hooks or rules that answer elicitations automatically, so treat cost confirmation as a guardrail rather than proof that a person approved each action.
 
-Troubleshooting: If you expect a dialog and don't see one, see [Cost confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/cost-confirmations-do-not-appear-in-your-mcp-client-mVq3Lp).
+Troubleshooting: If you expect a dialog and don't see one, see [Cost confirmations do not appear in your MCP client](https://supabase.com/kb/troubleshooting/cost-confirmations-do-not-appear-in-your-mcp-client-mVq3Lp).
 
 ### Destructive SQL confirmations
 
@@ -1421,7 +1421,7 @@ When SQL elicitation is available and your client supports forms, `execute_sql` 
 
 If SQL elicitation is unavailable, unsupported by your client, or skipped with [`skip_elicitations`](#skip-form-confirmations), SQL follows the existing execution path without an additional MCP confirmation. Read-only restrictions and permissions still apply. Keep the [security recommendations](#recommendations) in place.
 
-Troubleshooting: If you expect a dialog and don't see one, see [SQL confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/sql-confirmations-do-not-appear-in-your-mcp-client-sQf7Kp).
+Troubleshooting: If you expect a dialog and don't see one, see [SQL confirmations do not appear in your MCP client](https://supabase.com/kb/troubleshooting/sql-confirmations-do-not-appear-in-your-mcp-client-sQf7Kp).
 
 ### Edge Function secrets
 
@@ -1436,7 +1436,7 @@ Enter secret values only in the Supabase Dashboard, never in chat, model input, 
 
 Save the secret in the Dashboard before confirming in your MCP client. If you cancel the request, this does not undo a secret you already saved in the Dashboard.
 
-Troubleshooting: If the tool is unavailable or the Dashboard flow is incomplete, see [Edge Function secret collection is unavailable or incomplete](https://supabase.com/docs/guides/troubleshooting/edge-function-secret-collection-is-unavailable-or-incomplete-eFs4Nx).
+Troubleshooting: If the tool is unavailable or the Dashboard flow is incomplete, see [Edge Function secret collection is unavailable or incomplete](https://supabase.com/kb/troubleshooting/edge-function-secret-collection-is-unavailable-or-incomplete-eFs4Nx).
 
 ## Configuration options
 
@@ -9454,7 +9454,7 @@ If a required grant is missing, PostgREST returns a `42501` error with a hint th
 }
 ```
 
-See [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors) for the full troubleshooting flow.
+See [Database API 42501 errors](https://supabase.com/kb/troubleshooting/database-api-42501-errors) for the full troubleshooting flow.
 
 **Migration:** Bundle grants with your RLS setup in the same migration. The `grant` command controls role access. The `enable row level security` command and policies control row access.
 
@@ -9929,7 +9929,7 @@ Use Supabase to authenticate and authorize your users.
 
 Supabase Auth makes it easy to implement authentication and authorization in your app. We provide client SDKs and API endpoints to help you create and manage users.
 
-Your users can use many popular Auth methods, including password, magic link, one-time password (OTP), social login, and single sign-on (SSO).
+Your users can use many popular Auth methods, including [password](https://supabase.com/docs/guides/auth/passwords), [magic link](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-magic-link), [one-time password (OTP)](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp), [social sign-in](https://supabase.com/docs/guides/auth/social-sign-in), and [single sign-on (SSO)](https://supabase.com/docs/guides/auth/enterprise-sso).
 
 ## About authentication and authorization
 
@@ -9959,33 +9959,33 @@ Start here if you're new to Supabase Auth:
 
 ## Providers
 
-Supabase Auth works with many popular Auth methods, including Social and Phone Auth using third-party providers. See the following sections for a list of supported third-party providers.
+Supabase Auth works with many popular Auth methods, including social sign-in and phone sign-in with third-party providers. See the following sections for a list of supported third-party providers.
 
-### Social Auth
+### Social sign-in
 
-- [Apple](/docs/guides/auth/social-login/auth-apple)
-- [Azure (Microsoft)](/docs/guides/auth/social-login/auth-azure)
-- [Bitbucket](/docs/guides/auth/social-login/auth-bitbucket)
-- [Discord](/docs/guides/auth/social-login/auth-discord)
-- [Facebook](/docs/guides/auth/social-login/auth-facebook)
-- [Figma](/docs/guides/auth/social-login/auth-figma)
-- [GitHub](/docs/guides/auth/social-login/auth-github)
-- [GitLab](/docs/guides/auth/social-login/auth-gitlab)
-- [Google](/docs/guides/auth/social-login/auth-google)
-- [Kakao](/docs/guides/auth/social-login/auth-kakao)
-- [Keycloak](/docs/guides/auth/social-login/auth-keycloak)
-- [LinkedIn](/docs/guides/auth/social-login/auth-linkedin)
-- [Notion](/docs/guides/auth/social-login/auth-notion)
-- [Slack](/docs/guides/auth/social-login/auth-slack)
-- [Spotify](/docs/guides/auth/social-login/auth-spotify)
-- [Twitter](/docs/guides/auth/social-login/auth-twitter)
-- [Twitch](/docs/guides/auth/social-login/auth-twitch)
-- [WorkOS](/docs/guides/auth/social-login/auth-workos)
-- [Zoom](/docs/guides/auth/social-login/auth-zoom)
+- [Apple](/docs/guides/auth/social-sign-in/auth-apple)
+- [Azure (Microsoft)](/docs/guides/auth/social-sign-in/auth-azure)
+- [Bitbucket](/docs/guides/auth/social-sign-in/auth-bitbucket)
+- [Discord](/docs/guides/auth/social-sign-in/auth-discord)
+- [Facebook](/docs/guides/auth/social-sign-in/auth-facebook)
+- [Figma](/docs/guides/auth/social-sign-in/auth-figma)
+- [GitHub](/docs/guides/auth/social-sign-in/auth-github)
+- [GitLab](/docs/guides/auth/social-sign-in/auth-gitlab)
+- [Google](/docs/guides/auth/social-sign-in/auth-google)
+- [Kakao](/docs/guides/auth/social-sign-in/auth-kakao)
+- [Keycloak](/docs/guides/auth/social-sign-in/auth-keycloak)
+- [LinkedIn](/docs/guides/auth/social-sign-in/auth-linkedin)
+- [Notion](/docs/guides/auth/social-sign-in/auth-notion)
+- [Slack](/docs/guides/auth/social-sign-in/auth-slack)
+- [Spotify](/docs/guides/auth/social-sign-in/auth-spotify)
+- [Twitter](/docs/guides/auth/social-sign-in/auth-twitter)
+- [Twitch](/docs/guides/auth/social-sign-in/auth-twitch)
+- [WorkOS](/docs/guides/auth/social-sign-in/auth-workos)
+- [Zoom](/docs/guides/auth/social-sign-in/auth-zoom)
 
-Note: You can also add any OAuth2 or OIDC-compatible identity provider using [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers).
+Note: To add a provider that isn't listed, use [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers). It works with any OAuth2 or OIDC-compatible identity provider.
 
-### Phone Auth
+### Phone sign-in
 
 - [MessageBird](/docs/guides/auth/phone-login?showSmsProvider=MessageBird)
 - [Twilio](/docs/guides/auth/phone-login?showSmsProvider=Twilio)
@@ -10063,7 +10063,7 @@ The Auth service is responsible for:
 
 - Validating, issuing, and refreshing JWTs
 - Serving as the intermediary between your app and Auth information in the database
-- Communicating with external providers for social login and SSO
+- Communicating with external providers for social sign-in and SSO
 
 ## Postgres
 
@@ -14574,7 +14574,7 @@ In the example above, the user will be redirected to Google to complete the OAut
 
 **JavaScript**
 
-For native mobile applications, you can link an identity using an ID token obtained from a third-party OAuth provider. This is useful when you want to use native OAuth flows (like Google Sign-In or [Sign in with Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple)) rather than web-based OAuth redirects.
+For native mobile applications, you can link an identity using an ID token obtained from a third-party OAuth provider. This is useful when you want to use native OAuth flows (like Google Sign-In or [Sign in with Apple](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple)) rather than web-based OAuth redirects.
 
 ```js
 // Example with Google Sign-In (using a native Google Sign-In library)
@@ -14738,10 +14738,10 @@ Multi-factor authentication (MFA), sometimes called two-factor authentication (2
 
 It is considered a best practice to use MFA for your applications.
 
-Users with weak passwords or compromised social login accounts are prone to malicious account takeovers. These can be prevented with MFA because they require the user to provide proof of both of these:
+Users with weak passwords or compromised social sign-in accounts are prone to malicious account takeovers. These can be prevented with MFA because they require the user to provide proof of both of these:
 
 - Something they know.
-  Password, or access to a social login account.
+  Password, or access to a social sign-in account.
 - Something they have.
   Access to an authenticator app (a.k.a. TOTP) or a mobile phone.
 
@@ -15056,7 +15056,7 @@ Once you have extracted the most recent entry in the array, you can compare the 
 
 Currently recognized authentication methods are:
 
-- `oauth` - any OAuth-based sign-in (social login).
+- `oauth` - any OAuth-based sign-in (social sign-in).
 - `password` - any password based sign in.
 - `otp` - any one-time password based sign in (email code, SMS code, magic
   link).
@@ -15237,7 +15237,7 @@ export function EnrollMFA({
 
 ### Add a challenge step to sign in
 
-Once a user has signed in via their first factor (email+password, magic link, one-time password, social login etc.) you need to perform a check if any additional factors need to be verified.
+Once a user has signed in via their first factor (email+password, magic link, one-time password, social sign-in etc.) you need to perform a check if any additional factors need to be verified.
 
 This can be done by using the `supabase.auth.mfa.getAuthenticatorAssuranceLevel()` API. When the user signs in and is redirected back to your app, you should call this method to extract the user's current and next authenticator assurance level (AAL).
 
@@ -15583,7 +15583,7 @@ export function EnrollMFA({
 
 ### Add a challenge step to sign in
 
-Once a user has signed in via their first factor (email+password, magic link, one-time password, social login etc.) you need to perform a check if any additional factors need to be verified.
+Once a user has signed in via their first factor (email+password, magic link, one-time password, social sign-in etc.) you need to perform a check if any additional factors need to be verified.
 
 This can be done by using the `supabase.auth.mfa.getAuthenticatorAssuranceLevel()` API. When the user signs in and is redirected back to your app, you should call this method to extract the user's current and next authenticator assurance level (AAL).
 
@@ -15739,7 +15739,7 @@ If you're using Supabase Auth with the following configuration:
 - Email and password accounts
 - Passwordless accounts using one-time passwords or links sent over email (OTP, magic link, invites)
 - Email-based user invitations from the [Users page](https://supabase.com/dashboard/project/_/auth/users) or from the Auth admin APIs
-- Social login with email confirmation
+- Social sign-in with email confirmation
 
 You will need to set up a custom SMTP server to handle the delivery of messages to your users.
 
@@ -15823,7 +15823,7 @@ Usually the goal for this behavior is:
 Mitigation strategies:
 
 - [Configure CAPTCHA protection](https://supabase.com/docs/guides/auth/auth-captcha) for your project, which is the most effective way to control bots in this scenario. You can use CAPTCHA services which provide invisible challenges where real users won't be asked to solve puzzles most of the time.
-- Prefer social login (OAuth) or SSO with SAML instead of email-based authentication flows in your apps.
+- Prefer social sign-in (OAuth) or SSO with SAML instead of email-based authentication flows in your apps.
 - Prefer passwordless authentication (one-time password) as this limits the attacker's value to gain from this behavior.
 - Do not disable email confirmations under pressure.
 
@@ -15873,7 +15873,7 @@ If you are planning on having a large surge of users coming at a specific time, 
 Consider implementing additional protections for such events:
 
 - Build a queuing or waitlist system instead of allowing direct sign-up, which will help you control the number of messages being sent from the email sending service.
-- Disable email-based sign-ups for the event and use social login only. Alternatively you can deprioritize the email-based sign-up flows for the event by hiding them in the UI or making them harder to reach.
+- Disable email-based sign-ups for the event and use social sign-in only. Alternatively you can deprioritize the email-based sign-up flows for the event by hiding them in the UI or making them harder to reach.
 
 **Use the Send Email Auth Hook for more control.**
 
@@ -16128,11 +16128,11 @@ function App() {
 
 ## Frequently asked questions
 
-### How to associate an email address, phone number or social login to a user signing in with Web3?
+### How to associate an email address, phone number or social sign-in to a user signing in with Web3?
 
 Web3 wallets don't expose any identifying information about the user other than their wallet address (public key). This is why accounts that were created using Sign in with Web3 don't have any email address or phone number associated.
 
-To associate an email address, phone number or other social login with their account you can use the `supabase.auth.updateUser()` or `supabase.auth.linkIdentity()` APIs.
+To associate an email address, phone number or other social sign-in with their account you can use the `supabase.auth.updateUser()` or `supabase.auth.linkIdentity()` APIs.
 
 
 ---
@@ -16756,7 +16756,7 @@ Alternatively, you can use the `supabase sso info --project-ref <your-project>` 
 
 ### User accounts and identities
 
-User accounts and identities created via SSO differ from regular (email, phone, password, social login...) accounts in these ways:
+User accounts and identities created via SSO differ from regular (email, phone, password, social sign-in...) accounts in these ways:
 
 - **No identity linking.**
   Each user account verified using an SSO identity provider are not eligible for [identity linking](https://supabase.com/docs/guides/auth/auth-identity-linking) to existing user accounts for security reasons. That is, if a user `valid.email@supabase.io` had signed up with a password, and then uses their company SSO sign-in with your project, there will be two `valid.email@supabase.io` user accounts in the system.
@@ -22428,7 +22428,7 @@ Phone sign-in is a method of authentication that allows users to sign in to a we
 
 Note: At this time, `WhatsApp` is only supported as a channel for the Twilio and Twilio Verify Providers.
 
-Users can also sign in with their phones using Native Mobile Login with the built-in identity provider. For Native Mobile Login with Android and iOS, see the [social login guides](https://supabase.com/docs/guides/auth/social-login).
+Users can also sign in with their phones using Native Mobile Login with the built-in identity provider. For Native Mobile Login with Android and iOS, see the [social sign-in guides](https://supabase.com/docs/guides/auth/social-sign-in).
 
 Phone OTP sign-in can:
 
@@ -23428,16 +23428,16 @@ npm run dev
 
 ---
 
-# Build a Social Auth App with Expo React Native
+# Build a Social Sign-in App with Expo React Native
 
-Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.
+Learn how to implement social sign-in in an app with Expo React Native and Supabase Database and Auth functionality.
 
-This tutorial demonstrates how to build a React Native app with [Expo](https://expo.dev) that implements social authentication. The app showcases a complete authentication flow with protected navigation using:
+This tutorial demonstrates how to build a React Native app with [Expo](https://expo.dev) that implements social sign-in. The app showcases a complete authentication flow with protected navigation using:
 
 - [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data with [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) to ensure data is protected and users can only access their own information.
-- [Supabase Auth](https://supabase.com/docs/guides/auth) - enables users to sign in through social authentication providers (Apple and Google).
+- [Supabase Auth](https://supabase.com/docs/guides/auth) - enables users to sign in through social sign-in providers (Apple and Google).
 
-![Supabase Social Auth example](/docs/img/supabase-expo-social-auth-login.png)
+![The app's login screen in a web browser, an Android emulator, and an iPhone simulator. Each screen shows the Supabase logo, a Login heading, and buttons to sign in with Apple and Google.](/docs/img/supabase-expo-social-auth-login.png)
 
 Note: If you get stuck while working through this guide, refer to the [full example on GitHub](https://github.com/supabase/supabase/tree/master/examples/auth/expo-social-auth).
 
@@ -23661,9 +23661,9 @@ Note: By default Supabase Auth requires email verification before a session is c
 
 While testing, you can disable email confirmation in your [project's email auth provider settings](https://supabase.com/dashboard/project/_/auth/providers).
 
-## Integrate social authentication
+## Integrate social sign-in
 
-Now integrate social authentication with Supabase Auth, starting with Apple authentication.
+Now integrate social sign-in with Supabase Auth, starting with Apple authentication.
 If you only need to implement Google authentication, you can skip to the [Google authentication](#google-authentication) section.
 
 ### Apple authentication
@@ -23695,7 +23695,7 @@ For Apple authentication, you can choose between:
 - [react-apple-signin-auth](https://react-apple-signin-auth.ahmedtokyo.com/) - that supports Web, also suggested by Invertase
 - [Expo's AppleAuthentication library](https://docs.expo.dev/versions/latest/sdk/apple-authentication/) - that supports iOS only
 
-For either option, you need to obtain a Service ID from the [Apple Developer Console](https://supabase.com/docs/guides/auth/social-login/auth-apple?queryGroups=framework\&framework=nextjs\&queryGroups=platform\&platform=web#configuration-web).
+For either option, you need to obtain a Service ID from the [Apple Developer Console](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple?queryGroups=framework\&framework=nextjs\&queryGroups=platform\&platform=web#configuration-web).
 
 Note: To enable Apple sign-up on Android and Web, you also need to register the tunnelled URL (e.g., `https://arnrer1-anonymous-8081.exp.direct`) obtained by running:
 
@@ -23705,7 +23705,7 @@ npx expo start --tunnel
 
 And add it to the **Redirect URLs** field in [your Supabase dashboard Authentication configuration](https://supabase.com/dashboard/project/_/auth/url-configuration).
 
-For more information, follow the [Supabase Sign in with Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple) guide.
+For more information, follow the [Supabase Sign in with Apple](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple) guide.
 
 **Invertase**
 
@@ -23902,7 +23902,7 @@ For Google authentication, you can choose between the following options:
 
 Note: The [GN Google Sign In Free](https://react-native-google-signin.github.io/docs/install#public-version-free) doesn't support iOS or Android, as [it doesn't allow to pass a custom nonce](https://github.com/react-native-google-signin/google-signin/issues/1176) to the sign-in request.
 
-For either option, you need to obtain a Web Client ID from the Google Cloud Engine, as explained in the [Google Sign In](https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=platform\&platform=react-native#react-native) guide.
+For either option, you need to obtain a Web Client ID from the Google Cloud Engine, as explained in the [Google Sign In](https://supabase.com/docs/guides/auth/social-sign-in/auth-google?queryGroups=platform\&platform=react-native#react-native) guide.
 
 This guide only uses the [@react-oauth/google@latest](https://github.com/MomenSherif/react-oauth#googlelogin) option for the Web, and the [`signInWithOAuth`](https://supabase.com/docs/reference/javascript/auth-signinwithoauth) for the mobile platforms.
 
@@ -23932,7 +23932,7 @@ npx expo run:ios && npx expo run:android
 
 You should see the sign-in screen with the Google authentication button.
 
-![Supabase Social Auth example](/docs/img/supabase-expo-social-auth-tabs.png)
+![The app's home screen after sign-in in a web browser, an Android emulator, and an iPhone simulator. Each screen shows a Welcome heading, the username and full name, a sign-out button, and Home and Explore tabs.](/docs/img/supabase-expo-social-auth-tabs.png)
 
 **Web**
 
@@ -25157,7 +25157,7 @@ See the [advanced Auth server-side rendering guide](https://supabase.com/docs/gu
 ## Next steps
 
 - Implement [Authentication using Email and Password](https://supabase.com/docs/guides/auth/passwords)
-- Implement [Authentication using OAuth](https://supabase.com/docs/guides/auth/social-login)
+- Implement [Authentication using OAuth](https://supabase.com/docs/guides/auth/social-sign-in)
 - [Learn more about SSR](https://supabase.com/docs/guides/auth/server-side/advanced-guide)
 
 
@@ -25197,12 +25197,12 @@ npm install @supabase/ssr
 
 The new `ssr` package exports two functions for creating a Supabase client. The `createBrowserClient` function is used in the client, and the `createServerClient` function is used in the server.
 
-Read the [Creating a client](https://supabase.com/docs/guides/auth/server-side/creating-a-client) page for examples of creating a client in your framework [and our migration guide](https://supabase.com/docs/guides/troubleshooting/how-to-migrate-from-supabase-auth-helpers-to-ssr-package-5NRunM).
+Read the [Creating a client](https://supabase.com/docs/guides/auth/server-side/creating-a-client) page for examples of creating a client in your framework [and our migration guide](https://supabase.com/kb/troubleshooting/how-to-migrate-from-supabase-auth-helpers-to-ssr-package-5NRunM).
 
 ## Next steps
 
 - Implement [Authentication using Email and Password](https://supabase.com/docs/guides/auth/passwords)
-- Implement [Authentication using OAuth](https://supabase.com/docs/guides/auth/social-login)
+- Implement [Authentication using OAuth](https://supabase.com/docs/guides/auth/social-sign-in)
 - [Learn more about SSR](https://supabase.com/docs/guides/auth/server-side/advanced-guide)
 
 
@@ -25897,48 +25897,48 @@ Caution: Access Tokens of revoked sessions remain valid until their expiry time,
 
 ---
 
-# Social login
+# Social sign-in
 
 Signing in with social accounts
 
-Social login (OAuth) is an open standard for authentication that allows users to sign in to one website or application using their credentials from another website or application. OAuth allows users to grant third-party applications access to their online accounts without sharing their passwords.
+Social sign-in (OAuth) is an open standard for authentication that allows users to sign in to one website or application using their credentials from another website or application. OAuth allows users to grant third-party applications access to their online accounts without sharing their passwords.
 OAuth is commonly used for things like signing in to a social media account from a third-party app. It is a secure and convenient way to authenticate users and share information between applications.
 
 ## Benefits
 
-There are several reasons why you might want to add social login to your applications:
+There are several reasons why you might want to add social sign-in to your applications:
 
 - **Improved user experience**: Users can register and sign in to your application using their existing social media accounts, which can be faster and more convenient than creating a new account from scratch. This makes it easier for users to access your application, improving their overall experience.
 
 - **Better user engagement**: You can access additional data and insights about your users, such as their interests, demographics, and social connections. This can help you tailor your content and marketing efforts to better engage with your users and provide a more personalized experience.
 
-- **Increased security**: Social login can improve the security of your application by leveraging the security measures and authentication protocols of the social media platforms that your users are signing in with. This can help protect against unauthorized access and account takeovers.
+- **Increased security**: Social sign-in can improve the security of your application by leveraging the security measures and authentication protocols of the social media platforms that your users are signing in with. This can help protect against unauthorized access and account takeovers.
 
 ## Set up a social provider with Supabase Auth
 
 Supabase supports a suite of social providers. Follow these guides to configure a social provider for your platform.
 
-- [Apple](/docs/guides/auth/social-login/auth-apple)
-- [Azure (Microsoft)](/docs/guides/auth/social-login/auth-azure)
-- [Bitbucket](/docs/guides/auth/social-login/auth-bitbucket)
-- [Discord](/docs/guides/auth/social-login/auth-discord)
-- [Facebook](/docs/guides/auth/social-login/auth-facebook)
-- [Figma](/docs/guides/auth/social-login/auth-figma)
-- [GitHub](/docs/guides/auth/social-login/auth-github)
-- [GitLab](/docs/guides/auth/social-login/auth-gitlab)
-- [Google](/docs/guides/auth/social-login/auth-google)
-- [Kakao](/docs/guides/auth/social-login/auth-kakao)
-- [Keycloak](/docs/guides/auth/social-login/auth-keycloak)
-- [LinkedIn](/docs/guides/auth/social-login/auth-linkedin)
-- [Notion](/docs/guides/auth/social-login/auth-notion)
-- [Slack](/docs/guides/auth/social-login/auth-slack)
-- [Spotify](/docs/guides/auth/social-login/auth-spotify)
-- [Twitter](/docs/guides/auth/social-login/auth-twitter)
-- [Twitch](/docs/guides/auth/social-login/auth-twitch)
-- [WorkOS](/docs/guides/auth/social-login/auth-workos)
-- [Zoom](/docs/guides/auth/social-login/auth-zoom)
+- [Apple](/docs/guides/auth/social-sign-in/auth-apple)
+- [Azure (Microsoft)](/docs/guides/auth/social-sign-in/auth-azure)
+- [Bitbucket](/docs/guides/auth/social-sign-in/auth-bitbucket)
+- [Discord](/docs/guides/auth/social-sign-in/auth-discord)
+- [Facebook](/docs/guides/auth/social-sign-in/auth-facebook)
+- [Figma](/docs/guides/auth/social-sign-in/auth-figma)
+- [GitHub](/docs/guides/auth/social-sign-in/auth-github)
+- [GitLab](/docs/guides/auth/social-sign-in/auth-gitlab)
+- [Google](/docs/guides/auth/social-sign-in/auth-google)
+- [Kakao](/docs/guides/auth/social-sign-in/auth-kakao)
+- [Keycloak](/docs/guides/auth/social-sign-in/auth-keycloak)
+- [LinkedIn](/docs/guides/auth/social-sign-in/auth-linkedin)
+- [Notion](/docs/guides/auth/social-sign-in/auth-notion)
+- [Slack](/docs/guides/auth/social-sign-in/auth-slack)
+- [Spotify](/docs/guides/auth/social-sign-in/auth-spotify)
+- [Twitter](/docs/guides/auth/social-sign-in/auth-twitter)
+- [Twitch](/docs/guides/auth/social-sign-in/auth-twitch)
+- [WorkOS](/docs/guides/auth/social-sign-in/auth-workos)
+- [Zoom](/docs/guides/auth/social-sign-in/auth-zoom)
 
-Note: Need to integrate with a provider not listed here? You can add any OAuth2 or OIDC-compatible provider using [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers).
+Note: To add a provider that isn't listed, use [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers). It works with any OAuth2 or OIDC-compatible identity provider.
 
 ## Provider tokens
 
@@ -32800,7 +32800,7 @@ await supabase.Auth.SignOut();
 
 ## LinkedIn Open ID Connect (OIDC)
 
-We are replacing the *LinkedIn* provider with a new *LinkedIn (OIDC)* provider to support recent changes to the LinkedIn [OAuth APIs](https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?context=linkedin%2Fcontext\&tabs=HTTPS1). The new provider uses the [Open ID Connect standard](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2#validating-id-tokens). In view of this change, we have disabled edits on the *LinkedIn* provider and will be removing it effective 4th January 2024. Developers with LinkedIn OAuth Applications created before 1st August 2023 should create a new OAuth application [via the steps outlined above](https://supabase.com/docs/guides/auth/social-login/auth-linkedin#create-a-linkedin-oauth-app) and migrate their credentials from the *LinkedIn* provider to the *LinkedIn (OIDC)* provider. Alternatively, you can also head to the `Products` section and add the newly release`Sign In with LinkedIn using OpenID Connect` to your existing OAuth application.
+We are replacing the *LinkedIn* provider with a new *LinkedIn (OIDC)* provider to support recent changes to the LinkedIn [OAuth APIs](https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?context=linkedin%2Fcontext\&tabs=HTTPS1). The new provider uses the [Open ID Connect standard](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2#validating-id-tokens). In view of this change, we have disabled edits on the *LinkedIn* provider and will be removing it effective 4th January 2024. Developers with LinkedIn OAuth Applications created before 1st August 2023 should create a new OAuth application [via the steps outlined above](https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin#create-a-linkedin-oauth-app) and migrate their credentials from the *LinkedIn* provider to the *LinkedIn (OIDC)* provider. Alternatively, you can also head to the `Products` section and add the newly release`Sign In with LinkedIn using OpenID Connect` to your existing OAuth application.
 
 Developers using the Supabase CLI to test their LinkedIn OAuth application should also update their `config.toml` to make use of the new provider:
 
@@ -35163,9 +35163,9 @@ await supabase.Auth.SignOut();
 
 ---
 
-# SSO and social login with WorkOS
+# SSO and social sign-in with WorkOS
 
-## Use social login with WorkOS
+## Use social sign-in with WorkOS
 
 ### Step 1. Create a WorkOS organization
 
@@ -37519,7 +37519,7 @@ Library defaults are too high for serverless. [Postgres.js](https://github.com/p
 
 Raise the pool above 1 only when you have evidence that concurrent invocations on one instance are queuing for the connection.
 
-For more on sizing an application-side pool, see the [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI). If you use Prisma, [Prisma troubleshooting](https://supabase.com/docs/guides/database/prisma/prisma-troubleshooting) covers the equivalent `connection_limit` setting.
+For more on sizing an application-side pool, see the [Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI). If you use Prisma, [Prisma troubleshooting](https://supabase.com/docs/guides/database/prisma/prisma-troubleshooting) covers the equivalent `connection_limit` setting.
 
 ### Transaction mode limitations
 
@@ -37534,7 +37534,7 @@ For more on sizing an application-side pool, see the [Supavisor FAQ](https://sup
 | asyncpg              | `statement_cache_size=0`                  |
 | JDBC                 | `prepareThreshold=0`                      |
 
-For node-postgres, Psycopg, and Rust drivers, see [Disabling prepared statements](https://supabase.com/docs/guides/troubleshooting/disabling-prepared-statements-qL8lEL).
+For node-postgres, Psycopg, and Rust drivers, see [Disabling prepared statements](https://supabase.com/kb/troubleshooting/disabling-prepared-statements-qL8lEL).
 
 **Cursors** work inside a single transaction only. A `with hold` cursor is meant to outlive its transaction, and it doesn't survive the connection returning to the pool.
 
@@ -37558,7 +37558,7 @@ Set SSL to `require` so the driver refuses to connect without encryption. Most d
 
 ### Stale connections
 
-Serverless runtimes freeze a function between requests, which can leave a pooled TCP socket stale. If you see `CONNECT_TIMEOUT` errors or queries that hang until the execution limit, see [Troubleshooting `CONNECT_TIMEOUT` or hanging queries in Serverless Functions](https://supabase.com/docs/guides/troubleshooting/troubleshooting-connect_timeout-or-hanging-queries-in-vercel-serverless-functions-775f92).
+Serverless runtimes freeze a function between requests, which can leave a pooled TCP socket stale. If you see `CONNECT_TIMEOUT` errors or queries that hang until the execution limit, see [Troubleshooting `CONNECT_TIMEOUT` or hanging queries in Serverless Functions](https://supabase.com/kb/troubleshooting/troubleshooting-connect_timeout-or-hanging-queries-in-vercel-serverless-functions).
 
 ## Quickstarts \[#quickstarts]
 
@@ -37584,10 +37584,10 @@ Each quickstart connects one ORM or database GUI to your Supabase database.
 
 ### Troubleshooting
 
-- [Tenant or user not found](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found), when the pooler can't match your host and username to a project.
-- [FATAL: Password authentication failed](https://supabase.com/docs/guides/troubleshooting/fatal-password-authentication-failed)
-- [Connection refused](https://supabase.com/docs/guides/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr), which is usually an IP ban rather than an outage.
-- [Too many connections](https://supabase.com/docs/guides/troubleshooting/too-many-connections-for-database-postgres)
+- [Tenant or user not found](https://supabase.com/kb/troubleshooting/tenant-or-user-not-found), when the pooler can't match your host and username to a project.
+- [FATAL: Password authentication failed](https://supabase.com/kb/troubleshooting/fatal-password-authentication-failed)
+- [Connection refused](https://supabase.com/kb/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr), which is usually an IP ban rather than an outage.
+- [Too many connections](https://supabase.com/kb/troubleshooting/too-many-connections-for-database-postgres)
 
 
 ---
@@ -37618,7 +37618,7 @@ There are two kinds, and they work together.
 
 **Server-side poolers**, such as Supavisor in transaction mode, run in front of the database and serve many clients. Use one when connections come from serverless or edge functions, or from anything that scales horizontally. These environments open many short-lived connections, which is the case an application-side pooler can't cover.
 
-For more on when each is needed and how to size them, see the [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI).
+For more on when each is needed and how to size them, see the [Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI).
 
 ### Shared and dedicated poolers \[#shared-pooler]
 
@@ -37636,7 +37636,7 @@ Pool size sets how many connections a pooler is allowed to open to Postgres. You
 
 Supavisor and PgBouncer read the same setting but apply it independently, so raising it raises the ceiling for both.
 
-For what the setting counts, and how it interacts with the user, database, and mode combinations connecting to your project, see [the Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI).
+For what the setting counts, and how it interacts with the user, database, and mode combinations connecting to your project, see [the Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI).
 
 ### Client connections and backend connections \[#client-connections-and-backend-connections]
 
@@ -37658,7 +37658,7 @@ Direct connections +
 
 Stay below the maximum rather than at it. Supabase services hold their own connections, including Auth, Storage, PostgREST, and the health checker, and those come out of the same total. [Managing connections](https://supabase.com/docs/guides/database/connection-management) covers how much headroom to leave.
 
-For the connection counts that come with each compute size, see [compute and disk](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections). For the terminology, see [Supavisor and connection terminology explained](https://supabase.com/docs/guides/troubleshooting/supavisor-and-connection-terminology-explained-9pr_ZO).
+For the connection counts that come with each compute size, see [compute and disk](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections). For the terminology, see [Supavisor and connection terminology explained](https://supabase.com/kb/troubleshooting/supavisor-and-connection-terminology-explained-9pr_ZO).
 
 ### Monitor connection usage \[#monitor-connection-usage]
 
@@ -37689,7 +37689,7 @@ To list every connection with its state and query, and to read which Supabase se
 
 - [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres)
 - [Managing connections](https://supabase.com/docs/guides/database/connection-management)
-- [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI)
+- [Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI)
 
 
 ---
@@ -37980,7 +37980,7 @@ Which one to use depends on the session's state:
 - For a session that's `idle in transaction`, cancelling does nothing - there's no running query to cancel, and the open transaction stays open regardless. Terminating the session is the only way to force the transaction closed and release its locks.
 - For a session that's `idle in transaction (aborted)`, its ordinary locks were already released when the transaction aborted. The correct fix is for the client to issue `rollback`, which closes the transaction cleanly. Reserve `pg_terminate_backend` for a client that's unresponsive or a connection that needs to close regardless - it won't release anything further in this case, aside from a session-level advisory lock, which persists until the session ends.
 
-Both functions require you to either be a superuser, hold the `pg_signal_backend` role, or be signalling your own session - and even `pg_signal_backend` can't be used to stop a session belonging to an actual superuser role. If you hit a permission error while terminating a session, see [this troubleshooting guide](https://supabase.com/docs/guides/troubleshooting/high-cpu-and-slow-queries-with-error-must-be-a-superuser-to-terminate-superuser-process).
+Both functions require you to either be a superuser, hold the `pg_signal_backend` role, or be signalling your own session - and even `pg_signal_backend` can't be used to stop a session belonging to an actual superuser role. If you hit a permission error while terminating a session, see [this troubleshooting guide](https://supabase.com/kb/troubleshooting/high-cpu-and-slow-queries-with-error-must-be-a-superuser-to-terminate-superuser-process).
 
 ***
 
@@ -38090,45 +38090,45 @@ Note: Parameters marked with **Restart: Yes** cause the CLI to automatically res
 
 Use the examples below with `supabase postgres-config update --project-ref <project-ref> --experimental`:
 
-| Parameter                                                                                                                                                                                                                                           | Type      | Restart | Example                                         |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- | ----------------------------------------------- |
-| [cron.log\_statement](https://github.com/citusdata/pg_cron#extension-settings)                                                                                                                                                                      | CLI only  | Yes     | `--config cron.log_statement=false`             |
-| [checkpoint\_timeout](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT)                                                                                                                                       | CLI only  | No      | `--config checkpoint_timeout=15min`             |
-| [effective\_cache\_size](https://www.postgresql.org/docs/current/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE)                                                                                                                                | CLI + SQL | No      | `--config effective_cache_size=8GB`             |
-| [hot\_standby\_feedback](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK)                                                                                                                          | CLI only  | No      | `--config hot_standby_feedback=true`            |
-| [logical\_decoding\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM)                                                                                                                  | CLI + SQL | No      | `--config logical_decoding_work_mem=128MB`      |
-| [log\_autovacuum\_min\_duration](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-AUTOVACUUM-MIN-DURATION)                                                                                                               | CLI only  | No      | `--config log_autovacuum_min_duration=10s`      |
-| [log\_checkpoints](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CHECKPOINTS)                                                                                                                                         | CLI only  | No      | `--config log_checkpoints=true`                 |
-| [log\_connections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CONNECTIONS)                                                                                                                                         | CLI only  | No      | `--config log_connections=true`                 |
-| [log\_disconnections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-DISCONNECTIONS)                                                                                                                                   | CLI only  | No      | `--config log_disconnections=true`              |
-| [log\_lock\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LOCK-WAITS)                                                                                                                                          | CLI + SQL | No      | `--config log_lock_waits=true`                  |
-| [log\_recovery\_conflict\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-RECOVERY-CONFLICT-WAITS)                                                                                                               | CLI only  | No      | `--config log_recovery_conflict_waits=true`     |
-| [log\_replication\_commands](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-REPLICATION-COMMANDS)                                                                                                                      | CLI + SQL | No      | `--config log_replication_commands=true`        |
-| [log\_startup\_progress\_interval](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-STARTUP-PROGRESS-INTERVAL)                                                                                                           | CLI only  | No      | `--config log_startup_progress_interval=10s`    |
-| [log\_temp\_files](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-TEMP-FILES)                                                                                                                                          | CLI + SQL | No      | `--config log_temp_files=10MB`                  |
-| [maintenance\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM)                                                                                                                             | CLI + SQL | No      | `--config maintenance_work_mem=512MB`           |
-| [max\_connections](https://www.postgresql.org/docs/current/runtime-config-connection.html#GUC-MAX-CONNECTIONS) (Be aware of [these considerations](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5)) | CLI only  | Yes     | `--config max_connections=200`                  |
-| [max\_locks\_per\_transaction](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-MAX-LOCKS-PER-TRANSACTION)                                                                                                                     | CLI only  | Yes     | `--config max_locks_per_transaction=128`        |
-| [max\_logical\_replication\_workers](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-LOGICAL-REPLICATION-WORKERS)                                                                                                   | CLI only  | Yes     | `--config max_logical_replication_workers=10`   |
-| [max\_parallel\_maintenance\_workers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-MAINTENANCE-WORKERS)                                                                                                    | CLI + SQL | No      | `--config max_parallel_maintenance_workers=2`   |
-| [max\_parallel\_workers\_per\_gather](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER)                                                                                                     | CLI + SQL | No      | `--config max_parallel_workers_per_gather=2`    |
-| [max\_parallel\_workers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS)                                                                                                                             | CLI + SQL | No      | `--config max_parallel_workers=4`               |
-| [max\_replication\_slots](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS)                                                                                                                        | CLI only  | Yes     | `--config max_replication_slots=10`             |
-| [max\_slot\_wal\_keep\_size](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE)                                                                                                                    | CLI only  | No      | `--config max_slot_wal_keep_size=4GB`           |
-| [max\_standby\_archive\_delay](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY)                                                                                                               | CLI only  | No      | `--config max_standby_archive_delay=30s`        |
-| [max\_standby\_streaming\_delay](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY)                                                                                                           | CLI only  | No      | `--config max_standby_streaming_delay=30s`      |
-| [max\_sync\_workers\_per\_subscription](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-SYNC-WORKERS-PER-SUBSCRIPTION)                                                                                              | CLI only  | No      | `--config max_sync_workers_per_subscription=10` |
-| [max\_wal\_size](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MAX-WAL-SIZE)                                                                                                                                                  | CLI only  | No      | `--config max_wal_size=2GB`                     |
-| [max\_wal\_senders](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-WAL-SENDERS)                                                                                                                                    | CLI only  | Yes     | `--config max_wal_senders=10`                   |
-| [max\_worker\_processes](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES)                                                                                                                             | CLI only  | Yes     | `--config max_worker_processes=8`               |
-| [session\_replication\_role](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-SESSION-REPLICATION-ROLE)                                                                                                                       | CLI only  | No      | `--config session_replication_role=replica`     |
-| [shared\_buffers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-SHARED-BUFFERS)                                                                                                                                          | CLI only  | Yes     | `--config shared_buffers=256MB`                 |
-| [statement\_timeout](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-STATEMENT-TIMEOUT)                                                                                                                                      | CLI + SQL | No      | `--config statement_timeout=60s`                |
-| [track\_activity\_query\_size](https://www.postgresql.org/docs/current/runtime-config-statistics.html#GUC-TRACK-ACTIVITY-QUERY-SIZE)                                                                                                                | CLI only  | Yes     | `--config track_activity_query_size=2048B`      |
-| [track\_commit\_timestamp](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-TRACK-COMMIT-TIMESTAMP)                                                                                                                      | CLI only  | Yes     | `--config track_commit_timestamp=true`          |
-| [wal\_keep\_size](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE)                                                                                                                                        | CLI only  | No      | `--config wal_keep_size=1GB`                    |
-| [wal\_sender\_timeout](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-SENDER-TIMEOUT)                                                                                                                              | CLI only  | No      | `--config wal_sender_timeout=60s`               |
-| [work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-WORK-MEM)                                                                                                                                                      | CLI + SQL | No      | `--config work_mem=64MB`                        |
+| Parameter                                                                                                                                                                                                                                  | Type      | Restart | Example                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------- | ----------------------------------------------- |
+| [cron.log\_statement](https://github.com/citusdata/pg_cron#extension-settings)                                                                                                                                                             | CLI only  | Yes     | `--config cron.log_statement=false`             |
+| [checkpoint\_timeout](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT)                                                                                                                              | CLI only  | No      | `--config checkpoint_timeout=15min`             |
+| [effective\_cache\_size](https://www.postgresql.org/docs/current/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE)                                                                                                                       | CLI + SQL | No      | `--config effective_cache_size=8GB`             |
+| [hot\_standby\_feedback](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK)                                                                                                                 | CLI only  | No      | `--config hot_standby_feedback=true`            |
+| [logical\_decoding\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM)                                                                                                         | CLI + SQL | No      | `--config logical_decoding_work_mem=128MB`      |
+| [log\_autovacuum\_min\_duration](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-AUTOVACUUM-MIN-DURATION)                                                                                                      | CLI only  | No      | `--config log_autovacuum_min_duration=10s`      |
+| [log\_checkpoints](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CHECKPOINTS)                                                                                                                                | CLI only  | No      | `--config log_checkpoints=true`                 |
+| [log\_connections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CONNECTIONS)                                                                                                                                | CLI only  | No      | `--config log_connections=true`                 |
+| [log\_disconnections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-DISCONNECTIONS)                                                                                                                          | CLI only  | No      | `--config log_disconnections=true`              |
+| [log\_lock\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LOCK-WAITS)                                                                                                                                 | CLI + SQL | No      | `--config log_lock_waits=true`                  |
+| [log\_recovery\_conflict\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-RECOVERY-CONFLICT-WAITS)                                                                                                      | CLI only  | No      | `--config log_recovery_conflict_waits=true`     |
+| [log\_replication\_commands](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-REPLICATION-COMMANDS)                                                                                                             | CLI + SQL | No      | `--config log_replication_commands=true`        |
+| [log\_startup\_progress\_interval](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-STARTUP-PROGRESS-INTERVAL)                                                                                                  | CLI only  | No      | `--config log_startup_progress_interval=10s`    |
+| [log\_temp\_files](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-TEMP-FILES)                                                                                                                                 | CLI + SQL | No      | `--config log_temp_files=10MB`                  |
+| [maintenance\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM)                                                                                                                    | CLI + SQL | No      | `--config maintenance_work_mem=512MB`           |
+| [max\_connections](https://www.postgresql.org/docs/current/runtime-config-connection.html#GUC-MAX-CONNECTIONS) (Be aware of [these considerations](https://supabase.com/kb/troubleshooting/how-to-change-max-database-connections-_BQ8P5)) | CLI only  | Yes     | `--config max_connections=200`                  |
+| [max\_locks\_per\_transaction](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-MAX-LOCKS-PER-TRANSACTION)                                                                                                            | CLI only  | Yes     | `--config max_locks_per_transaction=128`        |
+| [max\_logical\_replication\_workers](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-LOGICAL-REPLICATION-WORKERS)                                                                                          | CLI only  | Yes     | `--config max_logical_replication_workers=10`   |
+| [max\_parallel\_maintenance\_workers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-MAINTENANCE-WORKERS)                                                                                           | CLI + SQL | No      | `--config max_parallel_maintenance_workers=2`   |
+| [max\_parallel\_workers\_per\_gather](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER)                                                                                            | CLI + SQL | No      | `--config max_parallel_workers_per_gather=2`    |
+| [max\_parallel\_workers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS)                                                                                                                    | CLI + SQL | No      | `--config max_parallel_workers=4`               |
+| [max\_replication\_slots](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS)                                                                                                               | CLI only  | Yes     | `--config max_replication_slots=10`             |
+| [max\_slot\_wal\_keep\_size](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE)                                                                                                           | CLI only  | No      | `--config max_slot_wal_keep_size=4GB`           |
+| [max\_standby\_archive\_delay](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY)                                                                                                      | CLI only  | No      | `--config max_standby_archive_delay=30s`        |
+| [max\_standby\_streaming\_delay](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY)                                                                                                  | CLI only  | No      | `--config max_standby_streaming_delay=30s`      |
+| [max\_sync\_workers\_per\_subscription](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-SYNC-WORKERS-PER-SUBSCRIPTION)                                                                                     | CLI only  | No      | `--config max_sync_workers_per_subscription=10` |
+| [max\_wal\_size](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MAX-WAL-SIZE)                                                                                                                                         | CLI only  | No      | `--config max_wal_size=2GB`                     |
+| [max\_wal\_senders](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-WAL-SENDERS)                                                                                                                           | CLI only  | Yes     | `--config max_wal_senders=10`                   |
+| [max\_worker\_processes](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES)                                                                                                                    | CLI only  | Yes     | `--config max_worker_processes=8`               |
+| [session\_replication\_role](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-SESSION-REPLICATION-ROLE)                                                                                                              | CLI only  | No      | `--config session_replication_role=replica`     |
+| [shared\_buffers](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-SHARED-BUFFERS)                                                                                                                                 | CLI only  | Yes     | `--config shared_buffers=256MB`                 |
+| [statement\_timeout](https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-STATEMENT-TIMEOUT)                                                                                                                             | CLI + SQL | No      | `--config statement_timeout=60s`                |
+| [track\_activity\_query\_size](https://www.postgresql.org/docs/current/runtime-config-statistics.html#GUC-TRACK-ACTIVITY-QUERY-SIZE)                                                                                                       | CLI only  | Yes     | `--config track_activity_query_size=2048B`      |
+| [track\_commit\_timestamp](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-TRACK-COMMIT-TIMESTAMP)                                                                                                             | CLI only  | Yes     | `--config track_commit_timestamp=true`          |
+| [wal\_keep\_size](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE)                                                                                                                               | CLI only  | No      | `--config wal_keep_size=1GB`                    |
+| [wal\_sender\_timeout](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-SENDER-TIMEOUT)                                                                                                                     | CLI only  | No      | `--config wal_sender_timeout=60s`               |
+| [work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-WORK-MEM)                                                                                                                                             | CLI + SQL | No      | `--config work_mem=64MB`                        |
 
 #### Managing Postgres configuration with the CLI
 
@@ -63929,7 +63929,7 @@ This role:
 
 ### `dashboard_user`
 
-The Supabase Dashboard doesn't connect as this role. Queries you run in the Dashboard execute as `postgres` and include a `-- source: dashboard` comment, which you can use to [find them in the Postgres logs](https://supabase.com/docs/guides/troubleshooting/how-to-interpret-and-explore-the-postgres-logs-OuCIOj).
+The Supabase Dashboard doesn't connect as this role. Queries you run in the Dashboard execute as `postgres` and include a `-- source: dashboard` comment, which you can use to [find them in the Postgres logs](https://supabase.com/kb/troubleshooting/how-to-interpret-and-explore-the-postgres-logs-OuCIOj).
 
 ### `supabase_admin`
 
@@ -69007,6 +69007,66 @@ execute function "supabase_functions"."http_request"(
 
 We currently support HTTP webhooks. These can be sent as `POST` or `GET` requests with a JSON payload.
 
+## Call an Edge Function
+
+A webhook can call an [Edge Function](https://supabase.com/docs/guides/functions) on each table event, and the function receives the [payload](#payload) as its request body. Call the function with your project's secret key, and accept it in the function with `auth: 'secret'` and `verify_jwt = false`. For more information, see [Service-to-service calls](https://supabase.com/docs/guides/functions/auth#service-to-service-calls).
+
+### From the Supabase Dashboard
+
+1. Create a [Database Webhook](https://supabase.com/dashboard/project/_/integrations/webhooks/overview) in the Supabase Dashboard.
+2. In **Type of webhook**, select **Supabase Edge Functions**, then select your function.
+3. Under **HTTP Headers**, select **Add secret key**.
+
+The webhook saves the key in its trigger definition, so the key appears anywhere the trigger's SQL does, such as a database dump.
+
+### From a migration
+
+To keep the secret key out of your migration files, store it in [Supabase Vault](https://supabase.com/docs/guides/database/vault) and read it from a trigger function.
+
+1. In the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), store your project URL and secret key in Vault. Run these statements once for each project, outside your migrations:
+
+   ```sql
+   select vault.create_secret('https://project-ref.supabase.co', 'project_url');
+   select vault.create_secret('YOUR_SUPABASE_SECRET_KEY', 'secret_key');
+   ```
+
+2. In a migration, create a trigger function that reads both values from Vault and calls the Edge Function with [`pg_net`](https://supabase.com/docs/guides/database/extensions/pg_net). Then attach it to the table:
+
+   ```sql
+   create function public.call_function_name()
+   returns trigger
+   language plpgsql
+   security definer
+   set search_path = ''
+   as $$
+   begin
+     perform net.http_post(
+       url := (select decrypted_secret from vault.decrypted_secrets where name = 'project_url') || '/functions/v1/function-name',
+       headers := jsonb_build_object(
+         'Content-Type', 'application/json',
+         'apikey', (select decrypted_secret from vault.decrypted_secrets where name = 'secret_key')
+       ),
+       body := jsonb_build_object(
+         'type', tg_op,
+         'table', tg_table_name,
+         'schema', tg_table_schema,
+         'record', to_jsonb(new),
+         'old_record', null
+       )
+     );
+     return new;
+   end;
+   $$;
+
+   create trigger call_function_name
+   after insert on public.my_table
+   for each row execute function public.call_function_name();
+   ```
+
+   The trigger function is `security definer` because the roles that insert rows, such as `authenticated`, can't read Vault. Without it, their inserts fail with a permission error.
+
+Caution: Any role that can log in to your database can read the secret key while the request waits. `pg_net` [writes the decrypted key to `net.http_request_queue`](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357) until it sends the request.
+
 ## Payload
 
 The payload is automatically generated from the underlying table record:
@@ -72402,7 +72462,7 @@ Set the flag per function in `supabase/config.toml`:
 verify_jwt = false
 ```
 
-For 401 failure modes and how to diagnose them, see [Edge Function 401 error response](https://supabase.com/docs/guides/troubleshooting/edge-function-401-error-response).
+For 401 failure modes and how to diagnose them, see [Edge Function 401 error response](https://supabase.com/kb/troubleshooting/edge-function-401-error-response).
 
 
 ---
@@ -72554,18 +72614,29 @@ Danger: A handler that queries a shared table through `ctx.supabaseAdmin` withou
 
 ### Service-to-service calls
 
-Cron jobs, workers, `pg_net`, and other Edge Functions make calls with a secret key on the `apikey` header rather than a user JWT. Disable `verify_jwt` and use `auth: 'secret'`. The wrapper validates the key against the secret key named `default` in your [project's API keys](https://supabase.com/dashboard/project/_/settings/api-keys), and gives your handler `ctx.supabaseAdmin` for privileged work.
+Cron jobs, workers, `pg_net`, and other Edge Functions make calls with a secret key on the `apikey` header rather than a user JWT. To accept the key:
 
-```ts
-import { withSupabase } from 'npm:@supabase/server@1'
+1. In `supabase/config.toml`, disable the [`verify_jwt` check](https://supabase.com/docs/guides/functions/auth-headers) for the function:
 
-export default {
-  fetch: withSupabase({ auth: 'secret' }, async (_req, ctx) => {
-    // your business logic. ctx.supabaseAdmin bypasses RLS
-    return Response.json({ ok: true })
-  }),
-}
-```
+   ```toml
+   [functions.your-function]
+   verify_jwt = false
+   ```
+
+2. In the function, use `auth: 'secret'`. The wrapper validates the key against the secret key named `default` in your [project's API keys](https://supabase.com/dashboard/project/_/settings/api-keys), and gives your handler `ctx.supabaseAdmin` for privileged work:
+
+   ```ts
+   import { withSupabase } from 'npm:@supabase/server@1'
+
+   export default {
+     fetch: withSupabase({ auth: 'secret' }, async (_req, ctx) => {
+       // your business logic. ctx.supabaseAdmin bypasses RLS
+       return Response.json({ ok: true })
+     }),
+   }
+   ```
+
+To call a function from Postgres with the secret key, see [Call an Edge Function](https://supabase.com/docs/guides/database/webhooks#call-an-edge-function) for Database Webhooks and [Scheduling Edge Functions](https://supabase.com/docs/guides/functions/schedule-functions) for `pg_cron`.
 
 Note: `auth: 'secret'` accepts only the key named `default`. To accept a different key, use `auth: 'secret:<name>'`. For example, `auth: 'secret:automations'` accepts only the secret key named `automations`. To accept any secret key on the project, use `auth: 'secret:*'`. Every project starts with a secret key named `default`, and you can add more. To name a new key, open [**Settings > API keys**](https://supabase.com/dashboard/project/_/settings/api-keys) in the Supabase Dashboard. The same syntax works for publishable keys: `auth: 'publishable:<name>'` and `auth: 'publishable:*'`.
 
@@ -74134,7 +74205,7 @@ These errors indicate issues with function loading, execution, or the underlying
 
 ### NOT\_FOUND\_FUNCTION\_BLOB
 
-**Cause:** Your Edge Function metadata resolved, but its deployment bundle was missing from storage and could not be loaded (the metadata points at a different version than the stored bundle). This returns the same `Requested function was not found` message as `NOT_FOUND`, so the `sb-error-code` header is what distinguishes them — see [Edge Function 404 error response](https://supabase.com/docs/guides/troubleshooting/edge-function-404-error-response).
+**Cause:** Your Edge Function metadata resolved, but its deployment bundle was missing from storage and could not be loaded (the metadata points at a different version than the stored bundle). This returns the same `Requested function was not found` message as `NOT_FOUND`, so the `sb-error-code` header is what distinguishes them — see [Edge Function 404 error response](https://supabase.com/kb/troubleshooting/edge-function-404-error-response).
 
 **Common causes:**
 
@@ -77430,7 +77501,7 @@ Limits applied Edge Functions in Supabase's hosted platform.
 - Secret name length: up to **256** characters
 - Maximum secret size: **48 KiB** (**24,576** characters)
 - Names must NOT start with the prefix `SUPABASE_` (this prefix is reserved).
-- Need more than 100 secrets? [Bundle secrets into a JSON value](https://supabase.com/docs/guides/troubleshooting/working-around-the-edge-function-secrets-limit).
+- Need more than 100 secrets? [Bundle secrets into a JSON value](https://supabase.com/kb/troubleshooting/working-around-the-edge-function-secrets-limit).
 
 ## Other limits & restrictions
 
@@ -78769,11 +78840,11 @@ Caution: To access the auth token securely for your Edge Function call, we recom
 
 ### Invoke an Edge Function every minute
 
-Store `project_url` and `publishable_key` in Supabase Vault:
+Call the function with your secret key. Don't use your publishable key, because it's public and anyone who has it can call a function that accepts it. Store your project URL and secret key in Supabase Vault:
 
 ```sql
 select vault.create_secret('https://project-ref.supabase.co', 'project_url');
-select vault.create_secret('YOUR_SUPABASE_PUBLISHABLE_KEY', 'publishable_key');
+select vault.create_secret('YOUR_SUPABASE_SECRET_KEY', 'secret_key');
 ```
 
 Make a POST request to a Supabase Edge Function every minute:
@@ -78789,13 +78860,17 @@ select
           url:= (select decrypted_secret from vault.decrypted_secrets where name = 'project_url') || '/functions/v1/function-name',
           headers:=jsonb_build_object(
             'Content-type', 'application/json',
-            'apikey', (select decrypted_secret from vault.decrypted_secrets where name = 'publishable_key')
+            'apikey', (select decrypted_secret from vault.decrypted_secrets where name = 'secret_key')
           ),
           body:=concat('{"time": "', now(), '"}')::jsonb
       ) as request_id;
     $$
   );
 ```
+
+The function receives the secret key on the `apikey` header. To accept it, disable `verify_jwt` and use `auth: 'secret'`. For more information, see [Service-to-service calls](https://supabase.com/docs/guides/functions/auth#service-to-service-calls).
+
+Caution: Any role that can log in to your database can read the secret key while the request waits. `pg_net` [writes the decrypted key to `net.http_request_queue`](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357) until it sends the request.
 
 ## Resources
 
@@ -79838,7 +79913,7 @@ Resources for getting started with Supabase.
 
 - **[Flutter](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter):** Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.
 - **[Expo React Native](https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native):** Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.
-- **[Expo React Native Social Auth](https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-auth):** Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.
+- **[Expo React Native Social Sign-in](https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-sign-in):** Learn how to implement social sign-in in an app with Expo React Native and Supabase Database and Auth functionality.
 - **[Android Kotlin](https://supabase.com/docs/guides/getting-started/tutorials/with-kotlin):** Learn how to build a product management app with Android and Supabase Database, Auth, and Storage functionality.
 - **[iOS Swift](https://supabase.com/docs/guides/getting-started/tutorials/with-swift):** Learn how to build a user management app with iOS and Supabase Database, Auth, and Storage functionality.
 - **[Ionic React](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-react):** Learn how to build a user management app with Ionic React and Supabase Database, Auth, and Storage functionality.
@@ -80445,9 +80520,9 @@ Synchronize shared state across your users, including online status and typing i
 
 Build email sign-in for your application or website. [Docs](https://supabase.com/docs/guides/auth/passwords).
 
-### Social login
+### Social sign-in
 
-Provide social login - everything from Apple, to GitHub, to Slack. [Docs](https://supabase.com/docs/guides/auth/social-login).
+Provide social sign-in - everything from Apple, to GitHub, to Slack. [Docs](https://supabase.com/docs/guides/auth/social-sign-in).
 
 ### Phone sign-in
 
@@ -80587,7 +80662,7 @@ In addition to the Beta requirements, features in GA are covered by the [uptime 
 | Edge Functions | NPM compatibility          | `GA`            | ✅                                           |
 | Auth           |                            | `GA`            | ✅                                           |
 | Auth           | Email sign-in              | `GA`            | ✅                                           |
-| Auth           | Social login               | `GA`            | ✅                                           |
+| Auth           | Social sign-in             | `GA`            | ✅                                           |
 | Auth           | Phone sign-in              | `GA`            | ✅                                           |
 | Auth           | Passwordless sign-in       | `GA`            | ✅                                           |
 | Auth           | SSO with SAML              | `GA`            | ✅                                           |
@@ -82387,7 +82462,7 @@ Pass a stack name such as `blade`, `react`, or `vue` when prompted. The example 
 
 1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/kb/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
 2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
@@ -83786,7 +83861,7 @@ The Supabase MCP server connects AI assistants to Supabase, so they can inspect 
 
 1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/kb/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
 2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
@@ -84117,7 +84192,7 @@ The Supabase MCP server connects AI assistants to Supabase, so they can inspect 
 
 1. Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+   Caution: Don't use the Transaction pooler (port `6543`) as your app's main data source. Most ORMs rely on server-side prepared statements, which the Transaction pooler doesn't support. Use the Session pooler (port `5432`), or the direct connection string if you're in an [IPv6 environment](https://supabase.com/kb/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
 2. Look for the **Session pooler** connection string and copy it. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. If you don't have your database password, you can reset it in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
@@ -87201,7 +87276,7 @@ From the [Google Console](https://console.developers.google.com/apis/library), c
 
 ![Create Google OAuth credentials](/docs/img/guides/kotlin/google-cloud-oauth-credentials-create.png)
 
-In your [Supabase Auth settings](https://app.supabase.com/project/_/auth/providers) enable Google as a provider and set the required credentials as outlined in the [auth docs](https://supabase.com/docs/guides/auth/social-login/auth-google).
+In your [Supabase Auth settings](https://app.supabase.com/project/_/auth/providers) enable Google as a provider and set the required credentials as outlined in the [auth docs](https://supabase.com/docs/guides/auth/social-sign-in/auth-google).
 
 ## Building the app
 
@@ -102468,7 +102543,7 @@ Some findings may be intentional, so check them against your intended schema and
 
 ### How to Resolve
 
-Pull up to five recent 5xx responses on `/rest/v1` paths from `edge_logs` with their IDs, timestamps, and status. You can use [Logs](/dashboard/project/_/logs/edge-logs) in Studio, the MCP [`query_logs`](/docs/guides/observability/advanced-log-filtering#mcp) tool, or the [Management API](/docs/guides/observability/advanced-log-filtering#api). Then follow [API error troubleshooting](/docs/guides/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9).
+Pull up to five recent 5xx responses on `/rest/v1` paths from `edge_logs` with their IDs, timestamps, and status. You can use [Logs](/dashboard/project/_/logs/edge-logs) in Studio, the MCP [`query_logs`](/docs/guides/observability/advanced-log-filtering#mcp) tool, or the [Management API](/docs/guides/observability/advanced-log-filtering#api). Then follow [API error troubleshooting](/kb/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9).
 
 ### log_auth_error_rate_high
   
@@ -105515,7 +105590,7 @@ limit 2;
 
 Rates use valid statuses only. Report `unknown_status` separately; no valid statuses makes the check unable to assess. Auth events without response statuses are not successful requests. A missing source row requires a capture/traffic check, not an assumed zero error rate.
 
-**Next:** narrow to the source and hour. Collect at most five event IDs with timestamps and status, then follow [API error troubleshooting](https://supabase.com/docs/guides/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9). Redact paths and messages. After a fix, rerun on a comparable window.
+**Next:** narrow to the source and hour. Collect at most five event IDs with timestamps and status, then follow [API error troubleshooting](https://supabase.com/kb/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9). Redact paths and messages. After a fix, rerun on a comparable window.
 
 ### Check connection pressure
 
@@ -108255,7 +108330,7 @@ The Fair Use Policy is applied through service restrictions. This could mean:
 - Pausing projects
 - Switching databases to read-only mode
 - Disabling new project launches/transfers
-- Responding with a [402 status code](https://supabase.com/docs/guides/troubleshooting/http-status-codes#402-service-restriction) for all API requests
+- Responding with a [402 status code](https://supabase.com/kb/troubleshooting/http-status-codes#402-service-restriction) for all API requests
 
 The Fair Use Policy is generally applied to all projects of the restricted organization.
 
@@ -108588,7 +108663,7 @@ Note: In paid organizations, Nano Compute are billed at the same price as Micro 
 | 16XL         | $5.12            | \~$3,730                                                                                                                     | Dedicated · 64 vCPUs | 256 GB       | 10 TB                         |
 | >16XL        | -                | [Contact Us](https://supabase.com/dashboard/support/new?category=sales\&subject=Enquiry%20about%20larger%20instance%20sizes) | Custom               | Custom       | Custom                        |
 
-[^1]: Database max connections are recommended values and can be [customized via `max_connections`](https://supabase.com/docs/guides/database/custom-postgres-config) depending on your use case. Be aware of [these considerations](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5) before modifying.
+[^1]: Database max connections are recommended values and can be [customized via `max_connections`](https://supabase.com/docs/guides/database/custom-postgres-config) depending on your use case. Be aware of [these considerations](https://supabase.com/kb/troubleshooting/how-to-change-max-database-connections-_BQ8P5) before modifying.
 
 [^2]: Database size for each compute instance is the default recommendation but the actual performance of your database has many contributing factors, including resources available to it and the size of the data contained within it. See the [shared responsibility model](https://supabase.com/docs/guides/deployment/shared-responsibility-model) for more information.
 
@@ -108860,7 +108935,7 @@ You can choose either a custom domain or vanity subdomain for each project.
 
 Custom domains change the way your project's URLs appear to your users. This is useful when:
 
-- You are using [OAuth (social login)](https://supabase.com/docs/guides/auth/social-login) with Supabase Auth and the project's URL is shown on the OAuth consent screen.
+- You are using [OAuth (social sign-in)](https://supabase.com/docs/guides/auth/social-sign-in) with Supabase Auth and the project's URL is shown on the OAuth consent screen.
 - You are creating APIs for third-party systems, for example, implementing webhooks or external API calls to your project via [Edge Functions](https://supabase.com/docs/guides/functions).
 - You are storing URLs in a database or encoding them in QR codes.
 
@@ -108952,7 +109027,7 @@ To prevent issues for your users, follow these steps:
    - In the provider's developer console (not in the Supabase dashboard), find the OAuth application and add the custom domain Supabase Auth callback URL **in addition to the Supabase project URL.** Example:
      - `https://abcdefghijklmnopqrst.supabase.co/auth/v1/callback` **and**
      - `https://api.example.com/auth/v1/callback`
-   - [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-login/auth-twitter) uses cookies bound to the project's domain. Make sure your frontend code uses the custom domain instead of the default project's domain.
+   - [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-sign-in/auth-twitter) uses cookies bound to the project's domain. Make sure your frontend code uses the custom domain instead of the default project's domain.
 2. For each of your SAML identity providers:
    - Contact your provider and ask them to update the metadata for the SAML application. They should use `https://api.example.com/auth/v1/...` instead of `https://abcdefghijklmnopqrst.supabase.co/auth/v1/sso/saml/{metadata,acs,slo}`.
    - Once these changes are made, SAML Single Sign-On will likely stop working until the domain is activated. Plan for this ahead of time.
@@ -109032,7 +109107,7 @@ To prevent issues for your users, make sure you have gone through these steps:
    - In the provider's developer console (not in the Supabase dashboard!), find the OAuth application and add the subdomain Supabase Auth callback URL **in addition to the Supabase project URL.** Example:
      - `https://abcdefghijklmnopqrst.supabase.co/auth/v1/callback` **and**
      - `https://my-example-brand.supabase.co/auth/v1/callback`
-   - [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-login/auth-twitter) uses cookies bound to the project's domain. In this case make sure your frontend code uses the subdomain instead of the default project's domain.
+   - [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-sign-in/auth-twitter) uses cookies bound to the project's domain. In this case make sure your frontend code uses the subdomain instead of the default project's domain.
 2. Go through all of your SAML identity providers:
    - You will need to reach out via email to all of your existing identity providers and ask them to update the metadata for the SAML application (your project). Use `https://example-brand.supabase.co/auth/v1/...` instead of `https://abcdefghijklmnopqrst.supabase.co/auth/v1/sso/saml/{metadata,acs,slo}`.
    - Once these changes are made, SAML Single Sign-On will likely stop working until the domain is activated. Plan for this ahead of time.
@@ -109056,7 +109131,7 @@ import { createClient } from '@supabase/supabase-js'
 const supabase = createClient('https://my-example-brand.supabase.co', 'sb_publishable_...')
 ```
 
-When using [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-login/auth-twitter) make sure your frontend code is using the subdomain only.
+When using [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-sign-in/auth-twitter) make sure your frontend code is using the subdomain only.
 
 ### Remove a vanity subdomain
 
@@ -111263,7 +111338,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 ## What you are charged for
 
-You are charged for the number of distinct users who sign in or refresh their token during the billing cycle (including [social login](https://supabase.com/docs/guides/auth/social-login) with e.g. Google, Facebook, GitHub). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "MAUs".
+You are charged for the number of distinct users who sign in or refresh their token during the billing cycle (including [social sign-in](https://supabase.com/docs/guides/auth/social-sign-in) with e.g. Google, Facebook, GitHub). Each unique user is counted only once per billing cycle, regardless of how many times they authenticate. These users are referred to as "MAUs".
 
 ### Example
 
@@ -112406,7 +112481,7 @@ Once you have imported your users, you can sign them in using the [`signInWithOt
 
 #### OAuth
 
-Configure your OAuth providers in Supabase by following the [Social login guides](https://supabase.com/docs/guides/auth/social-login).
+Configure your OAuth providers in Supabase by following the [Social sign-in guides](https://supabase.com/docs/guides/auth/social-sign-in).
 
 For both new and existing users, sign in the user using the [`signInWithOAuth`](https://supabase.com/docs/reference/javascript/auth-signinwithoauth) method. This works without pre-migrating existing users, since the user always needs to sign in through the OAuth provider before being redirected to your service.
 
@@ -116774,7 +116849,7 @@ Do users need to start login at supabase.com?
 **Your situation:**
 
 - Some users authenticate via SSO (employees)
-- Some users use password/social auth (contractors, external partners)
+- Some users use passwords or social sign-in (contractors, external partners)
 - Single organization with mixed membership
 
 **Recommended configuration:** Both flows with careful planning ⚠️
@@ -116782,7 +116857,7 @@ Do users need to start login at supabase.com?
 **Why:**
 
 - SSO users can use either flow
-- Non-SSO users use password/social login
+- Non-SSO users use passwords or social sign-in
 - Separate invitation types for each group
 
 **How to configure:**
@@ -117312,7 +117387,7 @@ For **SP-initiated flow:** Same configuration, but also ensure your IdP accepts 
 
 ### What happens if a user tries SP-initiated with no matching domain?
 
-They receive an error message indicating no SSO provider found for their email domain. They can still sign in using password or social auth (if they have a non-SSO account).
+They receive an error message indicating no SSO provider found for their email domain. They can still sign in using a password or social sign-in (if they have a non-SSO account).
 
 ### Can you disable SP-initiated flow after enabling it?
 
@@ -118276,7 +118351,7 @@ Caution: **Recent improvement:** You can now explicitly choose whether an invita
    - Create a new invitation
    - Select **"Non-SSO"** option
    - Send invitation
-   - Recipient can use password or social login to accept
+   - Recipient can use password or social sign-in to accept
 
 3. **Test SSO mismatch scenario**:
    - Create an SSO-required invitation
@@ -118335,7 +118410,7 @@ Caution: **Safety mechanism:** SSO accounts cannot delete SSO providers. This pr
 ### Testing with non-SSO owner account
 
 1. **Sign in with non-SSO owner:**
-   - Use password or social auth account
+   - Use a password or social sign-in account
    - Must be organization owner
    - Navigate to [SSO settings](https://supabase.com/dashboard/org/_/sso)
 
@@ -118440,7 +118515,7 @@ This behavior prevents "orphaned" SSO accounts that can no longer authenticate.
 
 - Organization with only SSO accounts
 - All owners authenticate via SSO
-- No password or social auth owners exist
+- No password or social sign-in owners exist
 
 **Test procedure:**
 
@@ -118469,7 +118544,7 @@ Caution: **Warning:** This test WILL remove all SSO members. Only perform in tes
 **Setup:**
 
 1. **Add non-SSO owner:**
-   - Create or invite a non-SSO user (password or social login)
+   - Create or invite a non-SSO user (password or social sign-in)
    - Promote to owner role
    - **Critical:** Verify non-SSO owner can sign in BEFORE deletion
    - Store credentials securely
@@ -121406,7 +121481,7 @@ Remove the `ALTER TABLE` line and the rest of the migration passes. If a migrati
 select relrowsecurity from pg_class where oid = 'realtime.messages'::regclass;
 ```
 
-If you hit that error, see [must be owner of table messages](https://supabase.com/docs/guides/troubleshooting/realtime-must-be-owner-of-table-messages).
+If you hit that error, see [must be owner of table messages](https://supabase.com/kb/troubleshooting/realtime-must-be-owner-of-table-messages).
 
 The validation is done when the user connects. When their WebSocket connection is established and a Channel topic is joined, their permissions are calculated based on:
 
@@ -122790,7 +122865,7 @@ Broadcast Changes allows you to trigger messages from your database. To achieve 
 
 It uses partitioned tables per day, which allows performant deletion of your previous messages by dropping the physical tables of this partitioned table. Tables older than 3 days are deleted.
 
-A client connecting over WebSocket creates those daily partitions. `realtime.send` does not. With no partition for today, the insert fails and Postgres logs a `WarnSendingBroadcastMessage` warning, so connect a client before you broadcast from the database. See [Realtime: `WarnSendingBroadcastMessage`](https://supabase.com/docs/guides/troubleshooting/realtime-warn-sending-broadcast-message) if you hit that warning.
+A client connecting over WebSocket creates those daily partitions. `realtime.send` does not. With no partition for today, the insert fails and Postgres logs a `WarnSendingBroadcastMessage` warning, so connect a client before you broadcast from the database. See [Realtime: `WarnSendingBroadcastMessage`](https://supabase.com/kb/troubleshooting/realtime-warn-sending-broadcast-message) if you hit that warning.
 
 Broadcasting from the database works like a client-side broadcast, using WebSockets to send JSON payloads. [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization) is required and enabled by default to protect your data.
 
@@ -123155,7 +123230,7 @@ List of operational codes to help understand your deployment and usage.
 | `ChannelShutdown` | The channel was shut down and an error system message was pushed to the client. |  |
 | `CheckOidsError` | Error when fetching the publication tables (OIDs) during the periodic check; the existing OIDs, replication slot and subscribers are left untouched. |  |
 | `ClientJoinRateLimitReached` | The rate of joins per second from your clients has reached the channel limits. |  |
-| `ClientPresenceRateLimitReached` | A single client sent Presence updates too frequently and had its channel closed. This usually means Presence is being used for high-frequency updates it is not designed for. Learn more: [Troubleshooting guide for the ClientPresenceRateLimitReached error](/docs/guides/troubleshooting/realtime-client-presence-rate-limit-reached) | Reserve Presence for slow-changing state and use Broadcast for high-frequency updates such as live cursors, or throttle your track() calls. |
+| `ClientPresenceRateLimitReached` | A single client sent Presence updates too frequently and had its channel closed. This usually means Presence is being used for high-frequency updates it is not designed for. Learn more: [Troubleshooting guide for the ClientPresenceRateLimitReached error](/kb/troubleshooting/realtime-client-presence-rate-limit-reached) | Reserve Presence for slow-changing state and use Broadcast for high-frequency updates such as live cursors, or throttle your track() calls. |
 | `ConnectionRateLimitReached` | The number of connected clients has reached its limit. |  |
 | `DatabaseConnectionRateLimitReached` | The rate of attempts to connect to the database has reached the limit. |  |
 | `DatabaseLackOfConnections` | Realtime was not able to connect to the tenant's database due to not having enough available connections. Learn more: [Connection management guide](/docs/guides/database/connection-management) | Verify your database connection limits. |
@@ -123192,7 +123267,7 @@ List of operational codes to help understand your deployment and usage.
 | `PrivateOnly` | The connection was rejected because this project only allows private channels. |  |
 | `QueryCanceled` | A database query was canceled, usually due to a statement timeout. |  |
 | `RealtimeDisabledForConfiguration` | The configuration provided to Realtime on connect will not be able to provide you any Postgres Changes. | Verify your configuration on channel startup as you might not have your tables properly registered. |
-| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
+| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](/kb/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
 | `RealtimeNodeDisconnected` | Realtime is a distributed application and this means that one the system is unable to communicate with one of the distributed nodes. |  |
 | `RealtimeRestarting` | Realtime is currently restarting. |  |
 | `ReconnectSubscribeToPostgres` | Postgres changes still waiting to be subscribed. |  |
@@ -128381,15 +128456,15 @@ The report displays the total number of connected Realtime clients, showing how 
 
 ### Actions you can take
 
-| Action                      | Description                                                                                                                                                  | More information                                                                                                                                                                  |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Configure connection limit  | Adjust the "Max concurrent connections" setting to increase or decrease the connection limit for your project                                                | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                                                                     |
-| Upgrade plan                | Increase available client connections. Connection limits vary by plan: Free (200), Pro (500), Pro no spend cap (10,000), Team (10,000), Enterprise (10,000+) | [Pricing and Plans](https://supabase.com/pricing)                                                                                                                                 |
-| Review quotas               | Understand connection limits and other Realtime quotas for your plan                                                                                         | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                                                                     |
-| Understand connection quota | Learn how the concurrent connections quota works and how to configure it for your plan                                                                       | [Concurrent Peak Connections Quota Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp)                           |
-| Fix silent disconnections   | Fix connection issues in background applications using heartbeat callbacks and Web Workers                                                                   | [Handling Silent Disconnections in Background Apps](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794) |
-| Check logs                  | Investigate connection errors and quota errors in your project dashboard                                                                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                                                                        |
-| Contact support             | Request custom quota increases for Enterprise plans or discuss connection requirements                                                                       | [Support Portal](https://supabase.com/dashboard/support/new)                                                                                                                      |
+| Action                      | Description                                                                                                                                                  | More information                                                                                                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Configure connection limit  | Adjust the "Max concurrent connections" setting to increase or decrease the connection limit for your project                                                | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                                                     |
+| Upgrade plan                | Increase available client connections. Connection limits vary by plan: Free (200), Pro (500), Pro no spend cap (10,000), Team (10,000), Enterprise (10,000+) | [Pricing and Plans](https://supabase.com/pricing)                                                                                                                 |
+| Review quotas               | Understand connection limits and other Realtime quotas for your plan                                                                                         | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                                                     |
+| Understand connection quota | Learn how the concurrent connections quota works and how to configure it for your plan                                                                       | [Concurrent Peak Connections Quota Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp)                    |
+| Fix silent disconnections   | Fix connection issues in background applications using heartbeat callbacks and Web Workers                                                                   | [Handling Silent Disconnections in Background Apps](https://supabase.com/kb/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications) |
+| Check logs                  | Investigate connection errors and quota errors in your project dashboard                                                                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                                                        |
+| Contact support             | Request custom quota increases for Enterprise plans or discuss connection requirements                                                                       | [Support Portal](https://supabase.com/dashboard/support/new)                                                                                                      |
 
 ## Broadcast Events
 
@@ -128401,14 +128476,14 @@ The report displays the total number of broadcast events sent by clients, showin
 
 ### Actions you can take
 
-| Action                 | Description                                                                                                                                                          | More information                                                                                                  |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Configure event limits | Adjust "Max events per second" and "Max payload size in KB" settings to optimize broadcast throughput and message size limits                                        | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                     |
-| Review quotas          | Understand message per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and broadcast payload size limits (Free: 256 KB, Pro+: 3,000 KB) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                     |
-| Check logs             | Investigate broadcast errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                        |
-| Debug with logger      | Enable logging to track messages sent and received, and diagnose broadcast delivery issues                                                                           | [Debugging Realtime with Logger](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger) |
-| Learn broadcast basics | Understand how to implement and optimize broadcast messaging in your application                                                                                     | [Broadcast Guide](https://supabase.com/docs/guides/realtime/broadcast)                                            |
-| Contact support        | Request custom quota increases for Enterprise plans or discuss messaging requirements                                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                                      |
+| Action                 | Description                                                                                                                                                          | More information                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Configure event limits | Adjust "Max events per second" and "Max payload size in KB" settings to optimize broadcast throughput and message size limits                                        | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                            |
+| Review quotas          | Understand message per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and broadcast payload size limits (Free: 256 KB, Pro+: 3,000 KB) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                            |
+| Check logs             | Investigate broadcast errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)               |
+| Debug with logger      | Enable logging to track messages sent and received, and diagnose broadcast delivery issues                                                                           | [Debugging Realtime with Logger](https://supabase.com/kb/troubleshooting/realtime-debugging-with-logger) |
+| Learn broadcast basics | Understand how to implement and optimize broadcast messaging in your application                                                                                     | [Broadcast Guide](https://supabase.com/docs/guides/realtime/broadcast)                                   |
+| Contact support        | Request custom quota increases for Enterprise plans or discuss messaging requirements                                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                             |
 
 ## Presence Events
 
@@ -128420,14 +128495,14 @@ The report displays the total number of presence events sent by clients, showing
 
 ### Actions you can take
 
-| Action                    | Description                                                                                                                                                         | More information                                                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Configure presence limits | Adjust the "Max presence events per second" setting to optimize presence state update throughput                                                                    | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                     |
-| Review quotas             | Understand presence messages per second limits (Free: 20, Pro: 50, Pro no spend cap/Team/Enterprise: 1,000) and presence keys per object limits (10 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                     |
-| Check logs                | Investigate presence errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                        |
-| Debug with logger         | Enable logging to track presence events and diagnose state synchronization issues                                                                                   | [Debugging Realtime with Logger](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger) |
-| Learn presence basics     | Understand how to implement and optimize presence state tracking in your application                                                                                | [Presence Guide](https://supabase.com/docs/guides/realtime/presence)                                              |
-| Contact support           | Request custom quota increases for Enterprise plans or discuss presence requirements                                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                                      |
+| Action                    | Description                                                                                                                                                         | More information                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Configure presence limits | Adjust the "Max presence events per second" setting to optimize presence state update throughput                                                                    | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                            |
+| Review quotas             | Understand presence messages per second limits (Free: 20, Pro: 50, Pro no spend cap/Team/Enterprise: 1,000) and presence keys per object limits (10 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                            |
+| Check logs                | Investigate presence errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)               |
+| Debug with logger         | Enable logging to track presence events and diagnose state synchronization issues                                                                                   | [Debugging Realtime with Logger](https://supabase.com/kb/troubleshooting/realtime-debugging-with-logger) |
+| Learn presence basics     | Understand how to implement and optimize presence state tracking in your application                                                                                | [Presence Guide](https://supabase.com/docs/guides/realtime/presence)                                     |
+| Contact support           | Request custom quota increases for Enterprise plans or discuss presence requirements                                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                             |
 
 ## Postgres Changes Events
 
@@ -128459,13 +128534,13 @@ The report displays the rate of channel joins per second, showing how frequently
 
 ### Actions you can take
 
-| Action               | Description                                                                                                                                                       | More information                                                                                                           |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Review quotas        | Understand channel joins per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and channels per connection limits (100 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                              |
-| Check logs           | Investigate `too_many_joins` errors or channel join failures in your project dashboard                                                                            | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                 |
-| Fix channel errors   | Learn how to properly manage channel lifecycle and prevent channel leaks in your application                                                                      | [TooManyChannels Error Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error) |
-| Learn channel basics | Understand how Realtime channels work and best practices for channel management                                                                                   | [Realtime Channels Concepts](https://supabase.com/docs/guides/realtime/concepts#channels)                                  |
-| Contact support      | Request custom quota increases for Enterprise plans or discuss high-volume channel join requirements                                                              | [Support Portal](https://supabase.com/dashboard/support/new)                                                               |
+| Action               | Description                                                                                                                                                       | More information                                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Review quotas        | Understand channel joins per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and channels per connection limits (100 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                     |
+| Check logs           | Investigate `too_many_joins` errors or channel join failures in your project dashboard                                                                            | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                        |
+| Fix channel errors   | Learn how to properly manage channel lifecycle and prevent channel leaks in your application                                                                      | [TooManyChannels Error Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-too-many-channels-error) |
+| Learn channel basics | Understand how Realtime channels work and best practices for channel management                                                                                   | [Realtime Channels Concepts](https://supabase.com/docs/guides/realtime/concepts#channels)                         |
+| Contact support      | Request custom quota increases for Enterprise plans or discuss high-volume channel join requirements                                                              | [Support Portal](https://supabase.com/dashboard/support/new)                                                      |
 
 ## Message Payload Size
 
@@ -128518,17 +128593,17 @@ The report displays the median RLS execution time in milliseconds, showing how l
 
 ### Actions you can take
 
-| Action                     | Description                                                                                                                                                                                          | More information                                                                                                             |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Configure connection pool  | Adjust the "Database connection pool size" setting to increase the number of connections available for RLS authorization checks, which can improve performance for high-volume channel subscriptions | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                |
-| Optimize RLS policies      | Learn how to optimize RLS policies with indexes, function wrapping, and query optimization techniques                                                                                                | [RLS Performance Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
-| Check logs                 | Investigate RLS authorization errors or timeout issues in your project dashboard                                                                                                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                   |
-| Learn authorization basics | Understand how RLS policies work with private channels and best practices for implementation                                                                                                         | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                                      |
-| Create indexes             | Add indexes on columns frequently used in RLS policy conditions to speed up authorization checks                                                                                                     | [Database Indexes Guide](https://supabase.com/docs/guides/database/postgres/indexes)                                         |
-| Use index advisor          | Automatically detect missing indexes that could improve RLS policy performance                                                                                                                       | [Index Advisor Extension Guide](https://supabase.com/docs/guides/database/extensions/index_advisor)                          |
-| Optimize queries           | Learn techniques for optimizing queries including partial indexes and composite indexes for RLS conditions                                                                                           | [Query Optimization Guide](https://supabase.com/docs/guides/database/query-optimization)                                     |
-| Monitor database           | Review database query performance and identify slow queries that may be affecting RLS execution                                                                                                      | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                          |
-| Contact support            | Discuss RLS optimization strategies or get assistance with complex authorization requirements                                                                                                        | [Support Portal](https://supabase.com/dashboard/support/new)                                                                 |
+| Action                     | Description                                                                                                                                                                                          | More information                                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Configure connection pool  | Adjust the "Database connection pool size" setting to increase the number of connections available for RLS authorization checks, which can improve performance for high-volume channel subscriptions | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                       |
+| Optimize RLS policies      | Learn how to optimize RLS policies with indexes, function wrapping, and query optimization techniques                                                                                                | [RLS Performance Best Practices](https://supabase.com/kb/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
+| Check logs                 | Investigate RLS authorization errors or timeout issues in your project dashboard                                                                                                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                          |
+| Learn authorization basics | Understand how RLS policies work with private channels and best practices for implementation                                                                                                         | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                             |
+| Create indexes             | Add indexes on columns frequently used in RLS policy conditions to speed up authorization checks                                                                                                     | [Database Indexes Guide](https://supabase.com/docs/guides/database/postgres/indexes)                                |
+| Use index advisor          | Automatically detect missing indexes that could improve RLS policy performance                                                                                                                       | [Index Advisor Extension Guide](https://supabase.com/docs/guides/database/extensions/index_advisor)                 |
+| Optimize queries           | Learn techniques for optimizing queries including partial indexes and composite indexes for RLS conditions                                                                                           | [Query Optimization Guide](https://supabase.com/docs/guides/database/query-optimization)                            |
+| Monitor database           | Review database query performance and identify slow queries that may be affecting RLS execution                                                                                                      | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                 |
+| Contact support            | Discuss RLS optimization strategies or get assistance with complex authorization requirements                                                                                                        | [Support Portal](https://supabase.com/dashboard/support/new)                                                        |
 
 ## (Write) Private Channel Subscription RLS Execution Time
 
@@ -128540,17 +128615,17 @@ The report displays the median RLS execution time in milliseconds, showing how l
 
 ### Actions you can take
 
-| Action                     | Description                                                                                                                                                                                          | More information                                                                                                             |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Configure connection pool  | Adjust the "Database connection pool size" setting to increase the number of connections available for RLS authorization checks, which can improve performance for high-frequency message publishing | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                |
-| Optimize RLS policies      | Learn how to optimize RLS policies with indexes, function wrapping, and query optimization techniques                                                                                                | [RLS Performance Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
-| Check logs                 | Investigate RLS authorization errors or timeout issues when publishing messages in your project dashboard                                                                                            | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                   |
-| Learn authorization basics | Understand how RLS policies work with private channels for write operations and best practices for implementation                                                                                    | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                                      |
-| Create indexes             | Add indexes on columns used in INSERT policies to speed up write authorization checks                                                                                                                | [Database Indexes Guide](https://supabase.com/docs/guides/database/postgres/indexes)                                         |
-| Use index advisor          | Automatically detect missing indexes that could improve write RLS policy performance                                                                                                                 | [Index Advisor Extension Guide](https://supabase.com/docs/guides/database/extensions/index_advisor)                          |
-| Optimize queries           | Learn techniques for optimizing INSERT policy queries including partial indexes for specific conditions                                                                                              | [Query Optimization Guide](https://supabase.com/docs/guides/database/query-optimization)                                     |
-| Monitor database           | Review database query performance and identify slow queries that may be affecting write RLS execution                                                                                                | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                          |
-| Contact support            | Discuss RLS optimization strategies or get assistance with complex authorization requirements for high-frequency messaging                                                                           | [Support Portal](https://supabase.com/dashboard/support/new)                                                                 |
+| Action                     | Description                                                                                                                                                                                          | More information                                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Configure connection pool  | Adjust the "Database connection pool size" setting to increase the number of connections available for RLS authorization checks, which can improve performance for high-frequency message publishing | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                       |
+| Optimize RLS policies      | Learn how to optimize RLS policies with indexes, function wrapping, and query optimization techniques                                                                                                | [RLS Performance Best Practices](https://supabase.com/kb/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
+| Check logs                 | Investigate RLS authorization errors or timeout issues when publishing messages in your project dashboard                                                                                            | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                          |
+| Learn authorization basics | Understand how RLS policies work with private channels for write operations and best practices for implementation                                                                                    | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                             |
+| Create indexes             | Add indexes on columns used in INSERT policies to speed up write authorization checks                                                                                                                | [Database Indexes Guide](https://supabase.com/docs/guides/database/postgres/indexes)                                |
+| Use index advisor          | Automatically detect missing indexes that could improve write RLS policy performance                                                                                                                 | [Index Advisor Extension Guide](https://supabase.com/docs/guides/database/extensions/index_advisor)                 |
+| Optimize queries           | Learn techniques for optimizing INSERT policy queries including partial indexes for specific conditions                                                                                              | [Query Optimization Guide](https://supabase.com/docs/guides/database/query-optimization)                            |
+| Monitor database           | Review database query performance and identify slow queries that may be affecting write RLS execution                                                                                                | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                 |
+| Contact support            | Discuss RLS optimization strategies or get assistance with complex authorization requirements for high-frequency messaging                                                                           | [Support Portal](https://supabase.com/dashboard/support/new)                                                        |
 
 ## Total Requests
 
@@ -128581,18 +128656,18 @@ The report displays the total number of response errors from the Realtime API, s
 
 ### Actions you can take
 
-| Action                  | Description                                                                                                                 | More information                                                                                                                       |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Configure limits        | Adjust "Max concurrent connections" or "Max events per second" settings if errors are related to quota limits being reached | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                          |
-| Check logs              | Investigate specific error messages, error codes, and request details in your project dashboard                             | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                             |
-| Review request volume   | Compare error rates with total request volume to calculate error percentages and identify trends                            | [Total Requests Report](#total-requests)                                                                                               |
-| Understand error codes  | Understand specific error codes and their resolutions                                                                       | [Realtime Error Codes Reference](https://supabase.com/docs/guides/realtime/error_codes)                                                |
-| Learn HTTP status codes | Learn about HTTP status codes including 4XX client errors and 5XX server errors                                             | [HTTP Status Codes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/http-status-codes)                                |
-| Fix timeout errors      | Resolve WebSocket timeout errors caused by Node.js version incompatibility                                                  | [TIMED\_OUT Connection Errors Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-connections-timed_out-status) |
-| Understand heartbeats   | Monitor heartbeat status to detect connection issues and handle timeouts                                                    | [Realtime Heartbeats Guide](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)                              |
-| Review quotas           | Check if errors are related to quota limits (e.g., `too_many_connections`, `too_many_joins`)                                | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                          |
-| Learn authorization     | Troubleshoot authorization-related errors for private channels                                                              | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                                                |
-| Contact support         | Get assistance with persistent errors or investigate service-level issues                                                   | [Support Portal](https://supabase.com/dashboard/support/new)                                                                           |
+| Action                  | Description                                                                                                                 | More information                                                                                                              |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Configure limits        | Adjust "Max concurrent connections" or "Max events per second" settings if errors are related to quota limits being reached | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                 |
+| Check logs              | Investigate specific error messages, error codes, and request details in your project dashboard                             | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                    |
+| Review request volume   | Compare error rates with total request volume to calculate error percentages and identify trends                            | [Total Requests Report](#total-requests)                                                                                      |
+| Understand error codes  | Understand specific error codes and their resolutions                                                                       | [Realtime Error Codes Reference](https://supabase.com/docs/guides/realtime/error_codes)                                       |
+| Learn HTTP status codes | Learn about HTTP status codes including 4XX client errors and 5XX server errors                                             | [HTTP Status Codes Troubleshooting](https://supabase.com/kb/troubleshooting/http-status-codes)                                |
+| Fix timeout errors      | Resolve WebSocket timeout errors caused by Node.js version incompatibility                                                  | [TIMED\_OUT Connection Errors Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-connections-timed_out-status) |
+| Understand heartbeats   | Monitor heartbeat status to detect connection issues and handle timeouts                                                    | [Realtime Heartbeats Guide](https://supabase.com/kb/troubleshooting/realtime-heartbeat-messages)                              |
+| Review quotas           | Check if errors are related to quota limits (e.g., `too_many_connections`, `too_many_joins`)                                | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                 |
+| Learn authorization     | Troubleshoot authorization-related errors for private channels                                                              | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                                       |
+| Contact support         | Get assistance with persistent errors or investigate service-level issues                                                   | [Support Portal](https://supabase.com/dashboard/support/new)                                                                  |
 
 ## Response Speed
 
@@ -128604,16 +128679,16 @@ The report displays the average response time in milliseconds, showing how fast 
 
 ### Actions you can take
 
-| Action                    | Description                                                                                                                                         | More information                                                                                                             |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Configure connection pool | Adjust the "Database connection pool size" setting to optimize database connection usage, which can improve response times for authorization checks | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                |
-| Check logs                | Investigate slow requests and identify specific endpoints or operations causing delays                                                              | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                   |
-| Review request volume     | Correlate response times with request volume to identify performance degradation under load                                                         | [Total Requests Report](#total-requests)                                                                                     |
-| Monitor database          | Review database resource utilization, connection counts, and query performance that may affect response times                                       | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                          |
-| Review benchmarks         | Understand expected latency and throughput for different Realtime operations                                                                        | [Realtime Performance Benchmarks](https://supabase.com/docs/guides/realtime/benchmarks)                                      |
-| Understand heartbeats     | Monitor heartbeat status and customize intervals to balance detection speed with network overhead                                                   | [Realtime Heartbeats Guide](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)                    |
-| Optimize RLS policies     | If using private channels, optimize RLS policies that may be slowing down authorization checks                                                      | [RLS Performance Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
-| Contact support           | Discuss performance optimization strategies or investigate persistent latency issues                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                                                 |
+| Action                    | Description                                                                                                                                         | More information                                                                                                    |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Configure connection pool | Adjust the "Database connection pool size" setting to optimize database connection usage, which can improve response times for authorization checks | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                       |
+| Check logs                | Investigate slow requests and identify specific endpoints or operations causing delays                                                              | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                          |
+| Review request volume     | Correlate response times with request volume to identify performance degradation under load                                                         | [Total Requests Report](#total-requests)                                                                            |
+| Monitor database          | Review database resource utilization, connection counts, and query performance that may affect response times                                       | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)                 |
+| Review benchmarks         | Understand expected latency and throughput for different Realtime operations                                                                        | [Realtime Performance Benchmarks](https://supabase.com/docs/guides/realtime/benchmarks)                             |
+| Understand heartbeats     | Monitor heartbeat status and customize intervals to balance detection speed with network overhead                                                   | [Realtime Heartbeats Guide](https://supabase.com/kb/troubleshooting/realtime-heartbeat-messages)                    |
+| Optimize RLS policies     | If using private channels, optimize RLS policies that may be slowing down authorization checks                                                      | [RLS Performance Best Practices](https://supabase.com/kb/troubleshooting/rls-performance-and-best-practices-Z5Jjwv) |
+| Contact support           | Discuss performance optimization strategies or investigate persistent latency issues                                                                | [Support Portal](https://supabase.com/dashboard/support/new)                                                        |
 
 
 ---
@@ -128933,9 +129008,9 @@ Authorization (often abbreviated `authz.`) is the process of verifying if a cert
 
 ## Identity provider
 
-An identity provider is software or service that allows third-party applications to identify users without the exchange of passwords. [Social login](https://supabase.com/docs/guides/auth/social-login) and enterprise single-sign on won't be possible without identity providers.
+An identity provider is software or service that allows third-party applications to identify users without the exchange of passwords. [Social sign-in](https://supabase.com/docs/guides/auth/social-sign-in) and enterprise single-sign on won't be possible without identity providers.
 
-Social login platforms typically use the OAuth protocol, while enterprise single-sign on is based on the OIDC or SAML protocols.
+Social sign-in platforms typically use the OAuth protocol, while enterprise single-sign on is based on the OIDC or SAML protocols.
 
 ## JSON Web Token (JWT)
 
@@ -128957,7 +129032,7 @@ Nonce means number used once. In reality though, it is a unique and difficult to
 
 ## OAuth
 
-OAuth is a protocol allowing third-party applications to request and receive authorization from their users. It is typically used to implement social login, and serves as a base for enterprise single-sign on in the OIDC protocol. Applications can request different levels of access, including basic user identification information such as name, email address, and user ID.
+OAuth is a protocol allowing third-party applications to request and receive authorization from their users. It is typically used to implement social sign-in, and serves as a base for enterprise single-sign on in the OIDC protocol. Applications can request different levels of access, including basic user identification information such as name, email address, and user ID.
 
 ## OIDC
 
@@ -128987,7 +129062,7 @@ A provider refresh token is a refresh token issued by a third-party identity pro
 
 ## Provider tokens
 
-A provider token is a long-lived token issued by a third-party identity provider. These are issued by social login services (e.g., Google, Twitter, Apple, Microsoft) and uniquely identify a user on those platforms.
+A provider token is a long-lived token issued by a third-party identity provider. These are issued by social sign-in services (e.g., Google, Twitter, Apple, Microsoft) and uniquely identify a user on those platforms.
 
 ## Refresh token
 
@@ -131030,9 +131105,9 @@ services:
 JWT_SECRET=${JWT_SECRET}
 ```
 
-### Configuring social login (OAuth) providers
+### Configuring social sign-in (OAuth) providers
 
-See the [Configure social login (OAuth) Providers](https://supabase.com/docs/guides/self-hosting/self-hosted-oauth) guide for setup instructions.
+See the [Configure social sign-in (OAuth) Providers](https://supabase.com/docs/guides/self-hosting/self-hosted-oauth) guide for setup instructions.
 
 ### Configuring phone sign-in, SMS, and MFA
 
@@ -131773,7 +131848,7 @@ The database dump includes your schema, data, roles, RLS policies, database func
 Your `auth.users` table and related data are included in the database dump, so user accounts are preserved. However:
 
 - **JWT secrets differ** between your platform and self-hosted instances. Existing tokens issued by the platform project will not be valid. Users will need to re-authenticate.
-- **Social auth providers** (Apple, Google, GitHub, etc.) need to be configured in your self-hosted `.env` file. Set the relevant `GOTRUE_EXTERNAL_*` variables. See the Auth repository [README](https://github.com/supabase/auth) for all available options.
+- **Social sign-in providers**, such as Apple, Google, and GitHub, need to be configured in your self-hosted `.env` file. Set the relevant `GOTRUE_EXTERNAL_*` variables. See the Auth repository [README](https://github.com/supabase/auth) for all available options.
 - **Redirect URLs** in your OAuth provider consoles (Apple Developer, Google Cloud Console, etc.) must be updated to point to your self-hosted hostname instead of `*.supabase.co`.
 
 ## Postgres version compatibility
@@ -132752,7 +132827,7 @@ For PKCE, authorization parameters, and OIDC-specific options, see [Advanced con
 ## Additional resources
 
 - [Custom OAuth/OIDC Providers](https://supabase.com/docs/guides/auth/custom-oauth-providers)
-- [Configure Social Login (OAuth) Providers](https://supabase.com/docs/guides/self-hosting/self-hosted-oauth)
+- [Configure Social Sign-in (OAuth) Providers](https://supabase.com/docs/guides/self-hosting/self-hosted-oauth)
 
 
 ---
@@ -133312,11 +133387,11 @@ If you use the optional Kong gateway, `read_timeout` in `volumes/api/kong.yml` i
 
 ---
 
-# Configure Social Login (OAuth) Providers
+# Configure Social Sign-in (OAuth) Providers
 
-Set up social login (OAuth/OIDC) providers for self-hosted Supabase with Docker.
+Set up social sign-in (OAuth/OIDC) providers for self-hosted Supabase with Docker.
 
-This guide covers the **server-side configuration** required to enable social login providers on a self-hosted Supabase instance running with Docker Compose. This applies to all OAuth and OIDC-based providers, including third-party identity providers like Keycloak.
+This guide covers the **server-side configuration** required to enable social sign-in providers on a self-hosted Supabase instance running with Docker Compose. This applies to all OAuth and OIDC-based providers, including third-party identity providers like Keycloak.
 
 ## Before you begin
 
@@ -133573,28 +133648,28 @@ Danger: `KEYCLOAK_URL` is **required**. It must be the full realm URL (e.g., `ht
 
 Supabase Auth supports the following OAuth providers:
 
-| Provider          | Env prefix       | Additional variables            | Docs                                                                                        |
-| ----------------- | ---------------- | ------------------------------- | ------------------------------------------------------------------------------------------- |
-| Apple             | `APPLE_`         | -                               | [Sign in with Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple)         |
-| Azure (Microsoft) | `AZURE_`         | `URL` (tenant URL)              | [Sign in with Azure](https://supabase.com/docs/guides/auth/social-login/auth-azure)         |
-| Bitbucket         | `BITBUCKET_`     | -                               | [Sign in with Bitbucket](https://supabase.com/docs/guides/auth/social-login/auth-bitbucket) |
-| Discord           | `DISCORD_`       | -                               | [Sign in with Discord](https://supabase.com/docs/guides/auth/social-login/auth-discord)     |
-| Facebook          | `FACEBOOK_`      | -                               | [Sign in with Facebook](https://supabase.com/docs/guides/auth/social-login/auth-facebook)   |
-| Figma             | `FIGMA_`         | -                               | [Sign in with Figma](https://supabase.com/docs/guides/auth/social-login/auth-figma)         |
-| GitHub            | `GITHUB_`        | `URL` (for GitHub Enterprise)   | [Sign in with GitHub](https://supabase.com/docs/guides/auth/social-login/auth-github)       |
-| GitLab            | `GITLAB_`        | `URL` (for self-hosted GitLab)  | [Sign in with GitLab](https://supabase.com/docs/guides/auth/social-login/auth-gitlab)       |
-| Google            | `GOOGLE_`        | -                               | [Sign in with Google](https://supabase.com/docs/guides/auth/social-login/auth-google)       |
-| Kakao             | `KAKAO_`         | -                               | [Sign in with Kakao](https://supabase.com/docs/guides/auth/social-login/auth-kakao)         |
-| Keycloak (OIDC)   | `KEYCLOAK_`      | `URL` (realm URL, **required**) | [Sign in with Keycloak](https://supabase.com/docs/guides/auth/social-login/auth-keycloak)   |
-| LinkedIn (OIDC)   | `LINKEDIN_OIDC_` | -                               | [Sign in with LinkedIn](https://supabase.com/docs/guides/auth/social-login/auth-linkedin)   |
-| Notion            | `NOTION_`        | -                               | [Sign in with Notion](https://supabase.com/docs/guides/auth/social-login/auth-notion)       |
-| Slack (OIDC)      | `SLACK_OIDC_`    | -                               | [Sign in with Slack](https://supabase.com/docs/guides/auth/social-login/auth-slack)         |
-| Snapchat          | `SNAPCHAT_`      | -                               | -                                                                                           |
-| Spotify           | `SPOTIFY_`       | -                               | [Sign in with Spotify](https://supabase.com/docs/guides/auth/social-login/auth-spotify)     |
-| Twitch            | `TWITCH_`        | -                               | [Sign in with Twitch](https://supabase.com/docs/guides/auth/social-login/auth-twitch)       |
-| Twitter           | `TWITTER_`       | -                               | [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-login/auth-twitter)     |
-| WorkOS            | `WORKOS_`        | -                               | [Sign in with WorkOS](https://supabase.com/docs/guides/auth/social-login/auth-workos)       |
-| Zoom              | `ZOOM_`          | -                               | [Sign in with Zoom](https://supabase.com/docs/guides/auth/social-login/auth-zoom)           |
+| Provider          | Env prefix       | Additional variables            | Docs                                                                                          |
+| ----------------- | ---------------- | ------------------------------- | --------------------------------------------------------------------------------------------- |
+| Apple             | `APPLE_`         | -                               | [Sign in with Apple](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple)         |
+| Azure (Microsoft) | `AZURE_`         | `URL` (tenant URL)              | [Sign in with Azure](https://supabase.com/docs/guides/auth/social-sign-in/auth-azure)         |
+| Bitbucket         | `BITBUCKET_`     | -                               | [Sign in with Bitbucket](https://supabase.com/docs/guides/auth/social-sign-in/auth-bitbucket) |
+| Discord           | `DISCORD_`       | -                               | [Sign in with Discord](https://supabase.com/docs/guides/auth/social-sign-in/auth-discord)     |
+| Facebook          | `FACEBOOK_`      | -                               | [Sign in with Facebook](https://supabase.com/docs/guides/auth/social-sign-in/auth-facebook)   |
+| Figma             | `FIGMA_`         | -                               | [Sign in with Figma](https://supabase.com/docs/guides/auth/social-sign-in/auth-figma)         |
+| GitHub            | `GITHUB_`        | `URL` (for GitHub Enterprise)   | [Sign in with GitHub](https://supabase.com/docs/guides/auth/social-sign-in/auth-github)       |
+| GitLab            | `GITLAB_`        | `URL` (for self-hosted GitLab)  | [Sign in with GitLab](https://supabase.com/docs/guides/auth/social-sign-in/auth-gitlab)       |
+| Google            | `GOOGLE_`        | -                               | [Sign in with Google](https://supabase.com/docs/guides/auth/social-sign-in/auth-google)       |
+| Kakao             | `KAKAO_`         | -                               | [Sign in with Kakao](https://supabase.com/docs/guides/auth/social-sign-in/auth-kakao)         |
+| Keycloak (OIDC)   | `KEYCLOAK_`      | `URL` (realm URL, **required**) | [Sign in with Keycloak](https://supabase.com/docs/guides/auth/social-sign-in/auth-keycloak)   |
+| LinkedIn (OIDC)   | `LINKEDIN_OIDC_` | -                               | [Sign in with LinkedIn](https://supabase.com/docs/guides/auth/social-sign-in/auth-linkedin)   |
+| Notion            | `NOTION_`        | -                               | [Sign in with Notion](https://supabase.com/docs/guides/auth/social-sign-in/auth-notion)       |
+| Slack (OIDC)      | `SLACK_OIDC_`    | -                               | [Sign in with Slack](https://supabase.com/docs/guides/auth/social-sign-in/auth-slack)         |
+| Snapchat          | `SNAPCHAT_`      | -                               | -                                                                                             |
+| Spotify           | `SPOTIFY_`       | -                               | [Sign in with Spotify](https://supabase.com/docs/guides/auth/social-sign-in/auth-spotify)     |
+| Twitch            | `TWITCH_`        | -                               | [Sign in with Twitch](https://supabase.com/docs/guides/auth/social-sign-in/auth-twitch)       |
+| Twitter           | `TWITTER_`       | -                               | [Sign in with Twitter](https://supabase.com/docs/guides/auth/social-sign-in/auth-twitter)     |
+| WorkOS            | `WORKOS_`        | -                               | [Sign in with WorkOS](https://supabase.com/docs/guides/auth/social-sign-in/auth-workos)       |
+| Zoom              | `ZOOM_`          | -                               | [Sign in with Zoom](https://supabase.com/docs/guides/auth/social-sign-in/auth-zoom)           |
 
 For each provider, you need at minimum `ENABLED`, `CLIENT_ID`, `SECRET`, and `REDIRECT_URI` in `.env` and `docker-compose.yml`.
 
@@ -133649,7 +133724,7 @@ You can test OAuth with the following minimal HTML page:
 </html>
 ```
 
-For detailed client-side integration, see [social login](https://supabase.com/docs/guides/auth/social-login).
+For detailed client-side integration, see [social sign-in](https://supabase.com/docs/guides/auth/social-sign-in).
 
 ## Troubleshooting
 
@@ -141874,7 +141949,7 @@ Note: Branch creation can fail more than once because more than one migration is
 
 If issues persist after repairing migration history, such as schema drift or repeated mismatches, review the [branching troubleshooting documentation](https://supabase.com/docs/guides/deployment/branching/troubleshooting#migration-issues) and consider further manual repair with [`supabase migration repair`](https://supabase.com/docs/reference/cli/supabase-migration-repair).
 
-If your migration history has drifted too far out of sync for repairing individual migrations to be practical, consider creating a single baseline migration that encapsulates your production project's current schema instead. The [new branch doesn't copy database troubleshooting guide](https://supabase.com/docs/guides/troubleshooting/new-branch-doesnt-copy-database) walks through the commands for setting this up.
+If your migration history has drifted too far out of sync for repairing individual migrations to be practical, consider creating a single baseline migration that encapsulates your production project's current schema instead. The [new branch doesn't copy database troubleshooting guide](https://supabase.com/kb/troubleshooting/new-branch-doesnt-copy-database) walks through the commands for setting this up.
 
 
 ---
@@ -142056,7 +142131,7 @@ Each Supabase project is provisioned on hardware in the chosen region, so it is 
 
 Therefore, the process to change the region of a Supabase Project is to create a new project in the desired region and migrate your existing project using the [migrations guide](https://supabase.com/docs/guides/platform/migrating-within-supabase).
 
-If you are using [third-party auth](https://supabase.com/docs/guides/auth/social-login)(Facebook, Google, etc.), you need to manually copy over your client id/secret pairs in the dashboard. Also, you'd need to change your API URL/Anon or Service Keys, which is usually done via ENV vars on your web host.
+If you are using [third-party auth](https://supabase.com/docs/guides/auth/social-sign-in)(Facebook, Google, etc.), you need to manually copy over your client id/secret pairs in the dashboard. Also, you'd need to change your API URL/Anon or Service Keys, which is usually done via ENV vars on your web host.
 
 
 ---
@@ -142208,7 +142283,7 @@ The following table lists what `PUBLIC` holds and whether the `postgres` role ca
 | Large-object functions such as `lo_create`       | `execute`. A role can create large objects in the database.                                                                                | No                       |
 | System catalogs such as `pg_class` and `pg_proc` | Read access to the names and definitions of database objects                                                                               | No                       |
 
-The `postgres` role owns the `postgres` database, and through it the `public` schema, so it can revoke the `PUBLIC` grants on those. Supabase roles own the other objects, so a revoke on them prints the `no privileges could be revoked` warning. For the pg\_net grants, see [Revoking access to pg\_net objects has no effect](https://supabase.com/docs/guides/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect-0bbc16).
+The `postgres` role owns the `postgres` database, and through it the `public` schema, so it can revoke the `PUBLIC` grants on those. Supabase roles own the other objects, so a revoke on them prints the `no privileges could be revoked` warning. For the pg\_net grants, see [Revoking access to pg\_net objects has no effect](https://supabase.com/kb/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect).
 
 Extensions you enable can grant more privileges to `PUBLIC`. After you enable an extension, check the role again.
 
@@ -142384,13 +142459,13 @@ These error are normal a side effect of issues in your custom user management lo
 
 Use the hints provided in the error message to fix issues in your custom user management logic.
 
-**Trigger/trigger function related error messages** - [Solution for trigger related issues](https://supabase.com/docs/guides/troubleshooting/dashboard-errors-when-managing-users-N1ls4A#solution-for-trigger-related-issues)
+**Trigger/trigger function related error messages** - [Solution for trigger related issues](https://supabase.com/kb/troubleshooting/dashboard-errors-when-managing-users-N1ls4A#solution-for-trigger-related-issues)
 
 ```
 "error":"error update user`s last_sign_in field: ERROR: permission denied for table profiles (SQLSTATE 42501)"
 ```
 
-**Constraint related error message** - [Solution for constraint related issues](https://supabase.com/docs/guides/troubleshooting/dashboard-errors-when-managing-users-N1ls4A#solution-for-constraint-related-issues)
+**Constraint related error message** - [Solution for constraint related issues](https://supabase.com/kb/troubleshooting/dashboard-errors-when-managing-users-N1ls4A#solution-for-constraint-related-issues)
 
 ```
 ERROR:  23503: update or delete on table "users" violates foreign key constraint "profiles_id_fkey" on table "profiles"
@@ -142403,7 +142478,7 @@ DETAIL:  Key (id)=(7428a53c-75b7-4531-9ae9-1567d9c4ac0a) is still referenced fro
 ERROR: column \"updated_at\" of relation \"profiles\" does not exist (SQLSTATE 42703)
 ```
 
-**Broken search path / incorrect name** - [42P01 related solution](https://supabase.com/docs/guides/troubleshooting/resolving-42p01-relation-does-not-exist-error-W4_9-V)
+**Broken search path / incorrect name** - [42P01 related solution](https://supabase.com/kb/troubleshooting/resolving-42p01-relation-does-not-exist-error-W4_9-V)
 
 ```
 failed to close prepared statement: ERROR: current transaction is aborted, commands ignored until end of transaction block (SQLSTATE 25P02): ERROR: relation \"public.profiles\" does not exist (SQLSTATE 42P01)
@@ -142648,7 +142723,7 @@ A trigger on `auth.users` is calling a function (in this case `handle_new_user`)
 
 # Database roles can read request headers queued by pg_net
 
-When you call `net.http_get`, `net.http_post`, or `net.http_delete`, pg\_net stores the request as a row in `net.http_request_queue`. The row holds the URL, headers, and body until the pg\_net worker sends the request. Any role that can use pg\_net can read the row while it waits, including an `Authorization` or `apikey` header. For which roles can use pg\_net, see [Revoking access to pg\_net objects has no effect](https://supabase.com/docs/guides/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect-0bbc16#which-roles-can-use-pg_net).
+When you call `net.http_get`, `net.http_post`, or `net.http_delete`, pg\_net stores the request as a row in `net.http_request_queue`. The row holds the URL, headers, and body until the pg\_net worker sends the request. Any role that can use pg\_net can read the row while it waits, including an `Authorization` or `apikey` header. For which roles can use pg\_net, see [Revoking access to pg\_net objects has no effect](https://supabase.com/kb/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect#which-roles-can-use-pg_net).
 
 ## Check what your requests expose
 
@@ -145520,7 +145595,7 @@ It is also possible to monitor your resources and set up alerts using Prometheus
 Everything you do with your Supabase project requires memory in some form. Hence, there can be many reasons for high RAM usage. Here are some common ones:
 
 - **Query performance:** Queries that take a long time to complete (>1 second) could be using your RAM inefficiently. Check our guide on [examining query performance](https://supabase.com/docs/guides/platform/performance#examining-query-performance).
-- **Too many connections:** Every connection to your database consumes memory. You can check the number of active connections under [Database Roles](https://supabase.com/dashboard/project/_/database/roles) after you select your project. Read our guide on [too many open connections](https://supabase.com/docs/guides/troubleshooting/http-api-issues#too-many-open-connections).
+- **Too many connections:** Every connection to your database consumes memory. You can check the number of active connections under [Database Roles](https://supabase.com/dashboard/project/_/database/roles) after you select your project. Read our guide on [too many open connections](https://supabase.com/kb/troubleshooting/http-api-issues#too-many-open-connections).
 - **Extensions:** Some extensions such as `timescaledb` or `pg_cron` can use a lot of memory. It can also add up when you have too many extensions running. You can manage your database extensions in the dashboard under [Extensions](https://supabase.com/dashboard/project/_/database/extensions).
 
 ## How to fix your memory issues
@@ -145682,10 +145757,10 @@ This error typically happens when the database is overloaded and causing an outa
 
 Review the appropriate guides based on your scenario:
 
-- [High CPU usage](https://supabase.com/docs/guides/troubleshooting/high-cpu-usage)
-- [High RAM usage](https://supabase.com/docs/guides/troubleshooting/exhaust-ram)
-- [High Swap usage](https://supabase.com/docs/guides/troubleshooting/exhaust-swap)
-- [High Disk I/O](https://supabase.com/docs/guides/troubleshooting/exhaust-disk-io)
+- [High CPU usage](https://supabase.com/kb/troubleshooting/high-cpu-usage)
+- [High RAM usage](https://supabase.com/kb/troubleshooting/exhaust-ram)
+- [High Swap usage](https://supabase.com/kb/troubleshooting/exhaust-swap)
+- [High Disk I/O](https://supabase.com/kb/troubleshooting/exhaust-disk-io)
 - [Query optimization](https://supabase.com/docs/guides/database/query-optimization)
 
 You can also set up alerts using a [Prometheus endpoint / Grafana charts](https://supabase.com/docs/guides/observability/metrics) to monitor vital resources.
@@ -145704,17 +145779,17 @@ The username depends on how you connect:
 - Direct connections and the dedicated pooler use `postgres`.
 - Shared pooler connections use `postgres.[PROJECT-REF]`.
 
-Supplying the wrong one usually produces [Tenant or user not found](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found) rather than this error, but a valid username with the wrong password lands here.
+Supplying the wrong one usually produces [Tenant or user not found](https://supabase.com/kb/troubleshooting/tenant-or-user-not-found) rather than this error, but a valid username with the wrong password lands here.
 
 ## Check the password
 
 Reserved characters in a password have to be [percent-encoded](https://en.wikipedia.org/wiki/Percent-encoding) when they appear in a connection string. This covers `&`, `#`, `?`, and spaces, among others. A password that works in a GUI field can fail in a URI for this reason alone.
 
-If you don't have the password, [reset it](https://supabase.com/docs/guides/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB) in [Database settings](https://supabase.com/dashboard/project/_/database/settings).
+If you don't have the password, [reset it](https://supabase.com/kb/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB) in [Database settings](https://supabase.com/dashboard/project/_/database/settings).
 
 ## Rotated the password?
 
-If you're connecting through the shared pooler and this started right after resetting the role's password — with the username and password otherwise correct — see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
+If you're connecting through the shared pooler and this started right after resetting the role's password — with the username and password otherwise correct — see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/kb/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
 
 ## Using a custom role
 
@@ -145722,15 +145797,15 @@ If you're connecting through the shared pooler and this started right after rese
 
 If you reset the password of a custom role while using the shared pooler (Supavisor), a pooled connection can still fail with `FATAL: password authentication failed` (SQLSTATE `28P01`) even when the new password is correct. The pooler may still use cached credentials briefly. Confirm the new password with a direct connection, then retry through Supavisor with bounded retries. Direct connections and the dedicated pooler are not affected by this cache behavior.
 
-For the full rotation flow, see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
+For the full rotation flow, see [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/kb/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation).
 
 ## Repeated failures cause a different error
 
-Repeated authentication failures from the same address get that address banned. Once banned, connections stop failing with this error and start failing with [connection refused](https://supabase.com/docs/guides/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr) instead.
+Repeated authentication failures from the same address get that address banned. Once banned, connections stop failing with this error and start failing with [connection refused](https://supabase.com/kb/troubleshooting/error-connection-refused-when-trying-to-connect-to-supabase-database-hwG0Dr) instead.
 
 If your error changes from authentication failed to connection refused while you're testing credentials, you're banned rather than locked out. That page has the unban procedure.
 
-This applies to direct connections and the dedicated pooler. The shared pooler has its own separate mechanism for repeated failures: instead of a banned IP, you'll see `FATAL: Circuit breaker open`. See [Supavisor error: "Circuit breaker open" after password rotation](https://supabase.com/docs/guides/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation-0fdb72).
+This applies to direct connections and the dedicated pooler. The shared pooler has its own separate mechanism for repeated failures: instead of a banned IP, you'll see `FATAL: Circuit breaker open`. See [Supavisor error: "Circuit breaker open" after password rotation](https://supabase.com/kb/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation).
 
 
 ---
@@ -146336,7 +146411,7 @@ This is not necessary. Both the access token and refresh token are designed to b
 
 You can reset your database password from the [**Database > Settings**](https://supabase.com/dashboard/project/_/database/settings) section of the Dashboard.
 
-If connections through the [Shared Pooler (Supavisor)](https://supabase.com/docs/guides/database/connecting-to-postgres) start failing right after you reset it — including for the built-in `postgres` role — this `28P01` error is expected, and retrying with the new password usually succeeds. See [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation) for more detail.
+If connections through the [Shared Pooler (Supavisor)](https://supabase.com/docs/guides/database/connecting-to-postgres) start failing right after you reset it — including for the built-in `postgres` role — this `28P01` error is expected, and retrying with the new password usually succeeds. See [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/kb/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation) for more detail.
 
 
 ---
@@ -147795,13 +147870,13 @@ There's no automated way to transfer your backend from Lovable Cloud to your own
 
 You can create a new Supabase project and migrate your data manually.
 
-See [Can't Access Your Supabase Project When Using Lovable Cloud](https://supabase.com/docs/guides/troubleshooting/cant-access-supabase-project-lovable-cloud) for more details.
+See [Can't Access Your Supabase Project When Using Lovable Cloud](https://supabase.com/kb/troubleshooting/cant-access-supabase-project-lovable-cloud) for more details.
 
 **My project uses Lovable Cloud, but I can't see my Supabase project.**
 
 That's expected — Lovable Cloud backend is managed by Lovable and doesn't appear in your Supabase Dashboard.
 
-Learn more in [Can't Access Your Supabase Project When Using Lovable Cloud](https://supabase.com/docs/guides/troubleshooting/cant-access-supabase-project-lovable-cloud).
+Learn more in [Can't Access Your Supabase Project When Using Lovable Cloud](https://supabase.com/kb/troubleshooting/cant-access-supabase-project-lovable-cloud).
 
 
 ---
@@ -149202,7 +149277,7 @@ A session as `backup_reader` can still write in these ways:
 - If the pg\_net extension is enabled, the session can add rows to `net.http_request_queue`, which pg\_net sends as HTTP requests. The role receives this privilege from `PUBLIC`.
 - The session can create large objects with functions such as `lo_create`, which `PUBLIC` can run.
 
-For the full list of privileges every role receives, see [Custom role inherits privileges that were not explicitly granted](https://supabase.com/docs/guides/troubleshooting/custom-role-inherits-privileges-that-were-not-explicitly-granted-ddaa1c#what-every-role-receives-from-public).
+For the full list of privileges every role receives, see [Custom role inherits privileges that were not explicitly granted](https://supabase.com/kb/troubleshooting/custom-role-inherits-privileges-that-were-not-explicitly-granted#what-every-role-receives-from-public).
 
 ## Rotate the password
 
@@ -149833,7 +149908,7 @@ If the project was recently restored, it can take up a couple minutes to become 
 
 Services rely on the backend database. Unhealthy services can indicate a database being overloaded due to being undersized or not tuned appropriately.
 
-- Review this [troubleshooting doc](https://supabase.com/docs/guides/troubleshooting/failed-to-run-sql-query-connection-terminated-due-to-connection-timeout) to determine if it could be a resource issue.
+- Review this [troubleshooting doc](https://supabase.com/kb/troubleshooting/failed-to-run-sql-query-connection-terminated-due-to-connection-timeout) to determine if it could be a resource issue.
 - If services recover and become unhealthy again, there is likely a repeated issue overloading the database.
 
 Possible resolutions:
@@ -150513,12 +150588,12 @@ For `broadcast`, you can trigger the message directly from Inspector. For `prese
 
 **If the test fails as `postgres`:**
 
-- For `postgres_changes`, see [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting#step-1-is-the-table-in-the-realtime-publication). It covers publication membership and other server-side configuration.
+- For `postgres_changes`, see [Realtime: Postgres Changes Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-postgres-changes-troubleshooting#step-1-is-the-table-in-the-realtime-publication). It covers publication membership and other server-side configuration.
 - For `broadcast` or `presence`, the failure occurs before authorization. Verify that the trigger or send call is firing.
 
 **If the test succeeds as `postgres` but fails as the authenticated user:**
 
-- For `postgres_changes`, the issue is likely related to RLS. See [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting#step-2-is-rls-quietly-blocking-the-row) for guidance on testing and fixing policies.
+- For `postgres_changes`, the issue is likely related to RLS. See [Realtime: Postgres Changes Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-postgres-changes-troubleshooting#step-2-is-rls-quietly-blocking-the-row) for guidance on testing and fixing policies.
 - For `broadcast` or `presence`, the issue is likely related to channel authorization on `realtime.messages` for that role. Review the [policy examples in the Realtime Authorization docs](https://supabase.com/docs/guides/realtime/authorization?queryGroups=language\&language=js#examples). Also check whether a complex policy is causing authorization checks to run slowly or time out.
 
 **If both tests succeed:** The Realtime server and Postgres are working as expected. The issue is likely in the client or network path. Continue to Step 2.
@@ -150527,7 +150602,7 @@ For `broadcast`, you can trigger the message directly from Inspector. For `prese
 
 Check for these common configuration issues:
 
-- **`postgres_changes`:** Confirm that the filter, schema, table, and event type match. See the "Check the subscription code itself" section of [Realtime: Postgres Changes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-postgres-changes-troubleshooting#step-4-check-the-subscription-code-itself) for common mismatches.
+- **`postgres_changes`:** Confirm that the filter, schema, table, and event type match. See the "Check the subscription code itself" section of [Realtime: Postgres Changes Troubleshooting](https://supabase.com/kb/troubleshooting/realtime-postgres-changes-troubleshooting#step-4-check-the-subscription-code-itself) for common mismatches.
 - **`broadcast`:** Confirm that the sender and receiver use the same topic and event name.
 - **`presence`:** Confirm that `track()` is called after the channel reaches `SUBSCRIBED` and that all clients use the same channel name.
 
@@ -150951,7 +151026,7 @@ Suspension is not automatic and is applied after review. The goal is to protect 
 In most cases, quota overages are accidental rather than intentional:
 
 - **Reconnection loops**: A client that fails to authenticate or subscribe may retry rapidly, creating thousands of short-lived connections
-- **Uncontrolled channels**: Creating channels without cleaning them up leads to resource exhaustion (see [Fixing the TooManyChannels Error](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error))
+- **Uncontrolled channels**: Creating channels without cleaning them up leads to resource exhaustion (see [Fixing the TooManyChannels Error](https://supabase.com/kb/troubleshooting/realtime-too-many-channels-error))
 - **Missing cleanup on component tear down**: Single-page applications that don't unsubscribe when components are removed can accumulate connections over time
 - **Unexpected traffic spikes**: A viral event or bot traffic can push usage well beyond normal levels
 - **Development or testing misconfiguration**: Load tests or staging environments accidentally pointed at a production project
@@ -150978,18 +151053,18 @@ The Supabase team will review your case to understand whether the usage was acci
 
 - Monitor your usage regularly through the [Realtime reports](https://supabase.com/dashboard/project/_/database/realtime-logs) page
 - Set up alerts if your connections or messages approach your plan limits
-- Follow the [channel management best practices](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error#best-practices-for-channel-management) to avoid resource leaks
+- Follow the [channel management best practices](https://supabase.com/kb/troubleshooting/realtime-too-many-channels-error#best-practices-for-channel-management) to avoid resource leaks
 - Review the [Realtime limits](https://supabase.com/docs/guides/realtime/limits) for your plan and upgrade before you outgrow them
 - Use the [Realtime Inspector](https://realtime.supabase.com/inspector/new) to test and debug connections before deploying
 
 ## Related troubleshooting guides
 
-- [Fixing the TooManyChannels Error](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error) — channel lifecycle management and cleanup best practices
-- [Concurrent Peak Connections quota](https://supabase.com/docs/guides/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp) — understanding the concurrent connections quota and how to adjust it
-- [Handling Silent Disconnections in Background Applications](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794) — fixing WebSocket drops caused by browser or OS background mode
-- [TIMED\_OUT connection errors](https://supabase.com/docs/guides/troubleshooting/realtime-connections-timed_out-status) — resolving Node.js version incompatibilities
-- [Debug Realtime with Logger and Log Levels](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger) — enabling client-side logging to diagnose connection and message issues
-- [Realtime Heartbeat Messages](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages) — monitoring connection health with heartbeat callbacks
+- [Fixing the TooManyChannels Error](https://supabase.com/kb/troubleshooting/realtime-too-many-channels-error) — channel lifecycle management and cleanup best practices
+- [Concurrent Peak Connections quota](https://supabase.com/kb/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp) — understanding the concurrent connections quota and how to adjust it
+- [Handling Silent Disconnections in Background Applications](https://supabase.com/kb/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications) — fixing WebSocket drops caused by browser or OS background mode
+- [TIMED\_OUT connection errors](https://supabase.com/kb/troubleshooting/realtime-connections-timed_out-status) — resolving Node.js version incompatibilities
+- [Debug Realtime with Logger and Log Levels](https://supabase.com/kb/troubleshooting/realtime-debugging-with-logger) — enabling client-side logging to diagnose connection and message issues
+- [Realtime Heartbeat Messages](https://supabase.com/kb/troubleshooting/realtime-heartbeat-messages) — monitoring connection health with heartbeat callbacks
 
 
 ---
@@ -151730,7 +151805,7 @@ Replace `example_role` with the name of the role being assumed during the migrat
 
 ## Related
 
-If this happened via a REST/GraphQL request instead of a direct connection or migration script, see [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors) instead — that guide covers a different set of causes specific to the Data API.
+If this happened via a REST/GraphQL request instead of a direct connection or migration script, see [Database API 42501 errors](https://supabase.com/kb/troubleshooting/database-api-42501-errors) instead — that guide covers a different set of causes specific to the Data API.
 
 
 ---
@@ -152067,7 +152142,7 @@ The following table shows how each kind of role can reach the `net` schema.
 
 On some projects, only `postgres`, `anon`, `authenticated`, `service_role`, and `supabase_functions_admin` can call `net.http_get` and `net.http_post`. For the events that revoke `execute` from `PUBLIC`, see [When the default grants are applied](#when-the-default-grants-are-applied). A role you create can still add rows to the queue, and the worker sends them. To check a role, run the `has_function_privilege` query from [Check which roles have access](#check-which-roles-have-access).
 
-A row in `net.http_request_queue` holds the request's URL, headers, and body until the pg\_net worker sends it. To check what a queued request exposes, see [Database roles can read request headers queued by pg\_net](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357).
+A row in `net.http_request_queue` holds the request's URL, headers, and body until the pg\_net worker sends it. To check what a queued request exposes, see [Database roles can read request headers queued by pg\_net](https://supabase.com/kb/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net).
 
 ## Limit pg\_net access on your project
 
@@ -153425,7 +153500,7 @@ To avoid this IP lockout issue in the future, stop application instances before 
 
 **See also:**
 
-- [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation)
+- [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/kb/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation)
 
 
 ---
@@ -153447,7 +153522,7 @@ This applies to regular database roles authenticating with a username/password (
 
 Caution: These steps cover the pooler-side caching delay, which resolves on its own.
 
-Separately, if application instances keep connecting with the old password after changing an existing role's credential, those failed attempts can trip the [auth circuit breaker](https://supabase.com/docs/guides/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation-0fdb72), blocking connections from that client and disrupting the system further.
+Separately, if application instances keep connecting with the old password after changing an existing role's credential, those failed attempts can trip the [auth circuit breaker](https://supabase.com/kb/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation), blocking connections from that client and disrupting the system further.
 
 To roll out a password change without downtime, create a new custom role with the new password alongside the existing one, migrate your clients over to it gradually, then retire the old role once every client has switched.
 
@@ -153459,9 +153534,9 @@ To roll out a password change without downtime, create a new custom role with th
 
 **See also:**
 
-- [FATAL: Password authentication failed](https://supabase.com/docs/guides/troubleshooting/fatal-password-authentication-failed)
-- [Supavisor error: "Circuit breaker open" after password rotation](https://supabase.com/docs/guides/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation-0fdb72).
-- [Resetting a Supabase database password](https://supabase.com/docs/guides/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB)
+- [FATAL: Password authentication failed](https://supabase.com/kb/troubleshooting/fatal-password-authentication-failed)
+- [Supavisor error: "Circuit breaker open" after password rotation](https://supabase.com/kb/troubleshooting/supavisor-error-circuit-breaker-open-after-password-rotation).
+- [Resetting a Supabase database password](https://supabase.com/kb/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB)
 
 
 ---

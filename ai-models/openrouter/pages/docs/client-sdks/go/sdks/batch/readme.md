@@ -14,7 +14,7 @@ path: docs/client-sdks/go/sdks/batch/readme
 
 ## Overview
 
-Submit, list, poll, and delete asynchronous batches of inference requests. See [https://openrouter.ai/docs/batch-quickstart](https://openrouter.ai/docs/batch-quickstart).
+Submit, list, poll, and delete asynchronous batches of inference requests. See [https://openrouter.ai/docs/batch-quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Available Operations
 
@@ -25,7 +25,7 @@ Submit, list, poll, and delete asynchronous batches of inference requests. See [
 
 ## List
 
-Lists batches in the workspace of the authenticating API key, newest first. To fetch the next page, pass the previous page's `last_id` as `after`. List items omit `results`. Use `GET /batches/{id}` to get them. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Lists batches in the workspace of the authenticating API key, newest first. To fetch the next page, pass the previous page's `last_id` as `after`. List items omit `results`. Use `GET /batches/{id}` to get them. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 
@@ -72,9 +72,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [operations.ListBatchesRequest](../../models/operations/listbatchesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [operations.ListBatchesRequest](../../models/operations/listbatchesrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -90,7 +90,7 @@ func main() {
 
 ## CreateBatches
 
-Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage: chatCompletions
 
@@ -290,9 +290,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.BatchSubmitBody](../../models/components/batchsubmitbody.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.BatchSubmitBody](../../models/components/batchsubmitbody.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -308,7 +308,7 @@ func main() {
 
 ## Delete
 
-Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 
@@ -343,9 +343,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The batch job id returned from submit. | batch\_abc123 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The batch job id returned from submit. | batch\_abc123 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -361,7 +361,7 @@ func main() {
 
 ## GetBatches
 
-Returns a batch with its status and request counts. Batches in a terminal status include `results`. Failed batches report the reason in `error.message`. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Returns a batch with its status and request counts. Batches in a terminal status include `results`. Failed batches report the reason in `error.message`. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 
@@ -396,9 +396,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The batch job id returned from submit. | batch\_abc123 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The batch job id returned from submit. | batch\_abc123 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

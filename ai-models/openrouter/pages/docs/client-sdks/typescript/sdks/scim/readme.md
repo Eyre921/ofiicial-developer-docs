@@ -14,7 +14,7 @@ path: docs/client-sdks/typescript/sdks/scim/readme
 
 ## Overview
 
-Management endpoints for SCIM group-to-workspace mappings, authenticated with a management key. These are not the SCIM 2.0 connector endpoints for your identity provider. In your identity provider, enter the SCIM endpoint URL shown when you enable provisioning under Settings > Members > SCIM Mappings. See [https://openrouter.ai/docs/guides/features/scim-mappings#set-up-provisioning](https://openrouter.ai/docs/guides/features/scim-mappings#set-up-provisioning).
+Management endpoints for SCIM group-to-workspace mappings, authenticated with a management key. These are not the SCIM 2.0 connector endpoints for your identity provider. In your identity provider, enter the SCIM endpoint URL shown when you enable provisioning under Settings > Members > SCIM Mappings. See [https://openrouter.ai/docs/guides/features/scim-mappings#set-up-provisioning](https://openrouter.ai/docs/guides/features/scim-mappings.md#set-up-provisioning).
 
 ### Available Operations
 

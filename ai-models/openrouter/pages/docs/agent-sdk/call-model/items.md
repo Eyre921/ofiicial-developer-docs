@@ -201,6 +201,6 @@ for await (const item of result.getItemsStream()) {
 
 ## Next Steps
 
-* **[Streaming](/docs/agent-sdk/call-model/streaming)** - All streaming methods including getItemsStream()
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Creating typed tools with Zod schemas
+* **[Streaming](/docs/agent-sdk/call-model/streaming.md)** - All streaming methods including getItemsStream()
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Creating typed tools with Zod schemas
 

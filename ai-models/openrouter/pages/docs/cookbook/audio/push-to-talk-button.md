@@ -18,6 +18,8 @@ Use this guide when you want users to hold a button, ask your app a question out
 
 <video controls playsInline preload="none" poster="/assets/cookbook/audio/push-to-talk-button/push-to-talk-button-poster.jpg" src="https://mintcdn.com/openrouter-d02e98a0/ROzvynXE-rUIH9Ae/assets/cookbook/audio/push-to-talk-button/push-to-talk-button.mp4?fit=max&auto=format&n=ROzvynXE-rUIH9Ae&q=85&s=0e9e4c9976de8a684adc452651aec172" />
 
+The finished button in Chrome. Hold it, ask, release, and the answer plays back in about ten seconds; the wait while it thinks is shortened in this clip. The follow-up says only “it”, and the agent knows it means the sky.
+
 > **Transcript**
 >
 > **You:** Why is the sky blue?
@@ -48,7 +50,7 @@ You need:
 * [Bun](https://bun.sh) to run the server
 * A browser with a microphone
 
-This guide uses `elevenlabs/scribe-v2` for transcription, `anthropic/claude-haiku-5.5` for answers, and `elevenlabs/eleven-v4-turbo` for speech. Any chat model in the [catalog](https://openrouter.ai/models) works for the middle step. [Speech-to-Text](/docs/guides/overview/multimodal/stt) and [Text-to-Speech](/docs/guides/overview/multimodal/tts) list the other audio models and every request parameter. See the [Scribe v2](https://openrouter.ai/elevenlabs/scribe-v2) and [Eleven v4 Turbo](https://openrouter.ai/elevenlabs/eleven-v4-turbo) model pages for pricing.
+This guide uses `elevenlabs/scribe-v2` for transcription, `anthropic/claude-haiku-5.5` for answers, and `elevenlabs/eleven-v4-turbo` for speech. Any chat model in the [catalog](https://openrouter.ai/models) works for the middle step. [Speech-to-Text](/docs/guides/overview/multimodal/stt.md) and [Text-to-Speech](/docs/guides/overview/multimodal/tts.md) list the other audio models and every request parameter. See the [Scribe v2](https://openrouter.ai/elevenlabs/scribe-v2) and [Eleven v4 Turbo](https://openrouter.ai/elevenlabs/eleven-v4-turbo) model pages for pricing.
 
 ## Step 1: Add the server route
 

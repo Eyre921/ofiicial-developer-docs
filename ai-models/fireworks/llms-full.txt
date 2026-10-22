@@ -6394,9 +6394,9 @@ Explore other training methods to improve model output for different use cases.
 # Evaluating Trained Models
 Source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 
-Evaluate a trained Fireworks model with in-session sampling during a serverless training run or a preemptible deployment for a promoted model.
+Evaluate a trained Fireworks model by sampling its serverless checkpoints with the Training SDK, or with a preemptible deployment for a promoted model.
 
-After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have and whether the training session is still active.
+After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have.
 
 > [!WARNING]
 >
@@ -6406,21 +6406,21 @@ After training, evaluate your model before you hold dedicated capacity for produ
 
 Use the path that matches your current training stage:
 
-* **Your serverless training session is still active:** use in-session sampling.
+* **You have a serverless sampler checkpoint:** sample it with the Training SDK, during or after the run.
 * **You have a promoted model ID:** use a preemptible deployment. This works regardless of whether the LoRA was trained with serverless, dedicated, or managed training, or imported.
 * **Your dedicated training run is still active:** use its inference deployment and refresh it from sampler snapshots. See [Dedicated training and sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
-| | **In-session sampling** | **Preemptible deployment** |
+| | **Serverless checkpoint sampling** | **Preemptible deployment** |
 | - | - | - |
-| **Best for** | Quick checks during an active serverless training session | Evaluating a promoted model without reserving dedicated GPUs |
+| **Best for** | Quick checks of serverless checkpoints, during or after the run | Evaluating a promoted model without reserving dedicated GPUs |
 | **Training path** | Serverless Training API only | Any training path |
 | **Artifact** | Sampler checkpoint from `save_weights_for_sampler` | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
 | **API** | Training SDK `sampler.sample()` | Chat Completions or Fireworks SDK |
-| **Session bound?** | Yes | No |
+| **Needs an active training session?** | No | No |
 
-## In-session sampling (serverless training)
+## Serverless checkpoint sampling
 
-In-session sampling is available only during an active [serverless training](/fine-tuning/training-api/serverless) session, and the base model must be available in the [serverless pool](/fine-tuning/models). It does not evaluate an adapter produced by dedicated training after that run ends.
+Sample a sampler checkpoint from [serverless training](/fine-tuning/training-api/serverless) while its base model is available in the [serverless pool](/fine-tuning/models). The training session does not need to be active: any process can open a sampler for a checkpoint your account saved. This does not apply to an adapter produced by dedicated training.
 
 There is no serverless chat endpoint for your adapter. Open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you score with your own metric.
 
@@ -6449,9 +6449,13 @@ finally:
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 
+### After the run ends
+
+You do not need a training client to sample a checkpoint: open a sampler from a fresh service client with the checkpoint path that `save_weights_for_sampler` returned. See [Sampling without a training client](/fine-tuning/training-api/serverless#sampling-without-a-training-client) on the serverless training page, which also covers running evaluation across worker processes.
+
 > [!NOTE]
 >
-> Sampler checkpoints live in the training session. If the session is gone, you cannot open a sampling client from that checkpoint. Promote checkpoints you need to retain, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
+> Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
 
 ## Preemptible deployment
 
@@ -6781,13 +6785,13 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 
 > **Epochs**
 >
-> Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Non-integer values are supported.
+> Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Epochs must be a whole number.
 >
 > **Note: we set a max value of 3 million dataset examples × epochs**
 >
 > ```shell theme={null}
 > firectl sftj create \
->   --epochs 2.0 \
+>   --epochs 2 \
 >   --base-model MY_BASE_MODEL \
 >   --dataset cancerset \
 >   --output-model my-tuned-model
@@ -7065,7 +7069,7 @@ Infrastructure applies to the **Training API** only. Managed Training uses platf
 | LoRA covers the workload (SFT, DPO, ORPO, RL, or distillation) on a model in the serverless pool | You need full-parameter training or a model outside the serverless pool |
 | You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
 | Per-token billing fits a small or bursty experiment | A sustained, highly utilized time-based run fits the workload |
-| In-session sampling is sufficient | You need provisioned rollout or evaluation deployments |
+| Sampling on the shared pool is sufficient | You need provisioned rollout or evaluation deployments |
 
 > **[Serverless Training](/fine-tuning/training-api/serverless)**
 >
@@ -10065,7 +10069,7 @@ You need full-parameter training, a model outside the serverless pool, explicit 
 | Models | Current serverless model list | Models with an enabled dedicated training shape |
 | Capacity | Shared pool and per-account limits | Resources allocated to the run, subject to account quota and platform availability |
 | Checkpoint resume | In-run snapshots; cross-run resume is limited | Explicit checkpoint, reconnect, promotion, and deployment lifecycle |
-| Sampling | In-session sampler, no deployment to create | SDK-managed rollout or evaluation deployment |
+| Sampling | Sampler on the shared pool, no deployment to create; no training client needed | SDK-managed rollout or evaluation deployment |
 | Teardown | Session lifecycle is managed by the service | You must close trainers and delete or scale down deployments |
 | Best fit | LoRA workloads on supported models without provisioning | Full-parameter work, models outside the serverless pool, sustained workloads, and explicit lifecycle control |
 
@@ -10167,7 +10171,7 @@ The SDK selects base versus delta automatically unless the recipe overrides it.
 
 Checkpoint-to-sampler behavior depends on the infrastructure:
 
-* **Serverless:** save a snapshot and bind an in-session sampling client to that snapshot. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
+* **Serverless:** save a snapshot and bind a sampling client to that snapshot, from the training process or any other. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
 * **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
 For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
@@ -10896,7 +10900,7 @@ Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 ## Related guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client) — create SDK-managed deployment samplers
-* [Serverless Training](/fine-tuning/training-api/serverless) — create an in-session sampler from a serverless checkpoint
+* [Serverless Training](/fine-tuning/training-api/serverless) — create a sampler for a serverless checkpoint or base model
 * [Training and Sampling](/fine-tuning/training-api/dedicated#training-and-sampling) — end-to-end workflow
 * [Cookbook RL recipe](/fine-tuning/training-api/cookbook/rl) — GRPO with sampling pipeline
 * [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) — TITO sidecars, harnesses, and multi-turn trajectories
@@ -11212,9 +11216,11 @@ ref = reference_client.forward(datums, "cross_entropy").result()
 
 The SDK chooses the backing automatically. LoRA policies without an explicit reference shape reuse the policy trainer with the adapter disabled. Full-parameter policies, explicit `reference_training_shape_id`, or explicit `reference_trainer_job_id` use a separate reference trainer owned by the service, backed by the model's LoRA shape with the adapter disabled.
 
-### `create_sampling_client(model_path=None, ...)`
+### `create_sampling_client(model_path=None, base_model=None, ..., tokenizer=None)`
 
-Return a Tinker-shaped sampling client backed by the SDK-managed deployment. When `model_path` is provided, the SDK first syncs that sampler snapshot to the deployment:
+Return a Tinker-shaped `FiretitanSamplingClient`.
+
+**Dedicated.** The client is backed by the SDK-managed deployment. When `model_path` is provided, the SDK first syncs that sampler snapshot to the deployment:
 
 ```python theme={null}
 saved = training_client.save_weights_for_sampler("step-100").result()
@@ -11222,6 +11228,8 @@ sampler = service.create_sampling_client(model_path=saved.path)
 ```
 
 This is the replacement for calling a standalone weight-sync helper in user code. The SDK tracks the base/delta chain and builds the weight-sync metadata internally.
+
+**Serverless.** The client samples on the shared pool and does not need a training client: pass `base_model=` or a saved checkpoint path. The returned `FiretitanSamplingClient` can be pickled or passed as a sampler handle to other processes. See [Sampling without a training client](/fine-tuning/training-api/serverless#sampling-without-a-training-client).
 
 ### `create_deployment_sampler(model_path=None, tokenizer=None, concurrency_controller=None)`
 
@@ -11951,7 +11959,7 @@ Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full
 
 **Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights. See [Saving and loading checkpoints](#saving-and-loading-checkpoints) for the full save / resume / promote surface.
 
-**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). The snapshot selects the weights to serve; it is not a prompt-cache affinity key. The sampler runs in the same session, so there's no deployment to create or hot-load. Serverless and dedicated sampling share the [`DeploymentSampler` request contract](/fine-tuning/training-api/reference/deployment-sampler).
+**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). The snapshot selects the weights to serve; it is not a prompt-cache affinity key. Sampling runs on the shared pool, so there's no deployment to create or hot-load, and it does not need a training client: any process can sample a base model or a saved checkpoint. See [Sampling without a training client](#sampling-without-a-training-client). Serverless and dedicated sampling share the [`DeploymentSampler` request contract](/fine-tuning/training-api/reference/deployment-sampler).
 
 ### Sampling with prompt caching
 
@@ -12061,11 +12069,95 @@ Track reward over time; improvement depends on the task, data, reward function, 
 
 ## Evaluating serverless checkpoints
 
-While the serverless training session is active, evaluate a sampler checkpoint with `sampler.sample()`. The sampler is bound to the session and is not a serverless chat endpoint for the adapter.
+Evaluate a sampler checkpoint with `sampler.sample()`, during the run or after it ends. After the run, open the sampler from a fresh service client with the checkpoint path (see [Sampling without a training client](#sampling-without-a-training-client)). The sampler is not a serverless chat endpoint for the adapter.
 
-If the session has ended, promote the sampler checkpoint first, then evaluate the promoted model with a preemptible deployment. In-session sampling does not apply to an adapter produced by dedicated training after its run ends.
+To evaluate through the chat completions API, promote the sampler checkpoint and evaluate the promoted model with a preemptible deployment. Serverless sampling does not apply to an adapter produced by dedicated training.
 
 See [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models) for both workflows and the dedicated training alternative.
+
+## Sampling without a training client
+
+Sampling does not need `create_lora_training_client`. A fresh `FiretitanServiceClient` can sample a base model in the serverless pool, or any sampler checkpoint your account saved with `save_weights_for_sampler`, including checkpoints from a run that has already ended. These samplers create no training run and do not use a [concurrent-run](#capacity-and-rate-limits) slot, so evaluation workers can open and close them freely. Sampled tokens are billed per token like other serverless training sampling.
+
+> [!NOTE]
+>
+> Requires SDK version 1.2.29 or later: `pip install --upgrade "fireworks-ai[training]>=1.2.29"`.
+
+### Sample a base model
+
+```python theme={null}
+import os
+from fireworks.training.sdk import FiretitanServiceClient, types
+
+service = FiretitanServiceClient(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/training/v1/serverless",
+)
+sampler = service.create_sampling_client(
+    base_model="accounts/fireworks/models/qwen3p8-27b",
+    tokenizer=tokenizer,
+)
+result = sampler.sample(
+    prompt=types.ModelInput.from_ints(tokenizer.encode("The weather today is")),
+    num_samples=1,
+    sampling_params=types.SamplingParams(max_tokens=20, temperature=0.7),
+).result()
+sampler.close()
+```
+
+### Sample a saved checkpoint
+
+Pass the path that `save_weights_for_sampler` returned, `<account>/<run-id>/<checkpoint-name>`. The process that saved it can be gone:
+
+```python theme={null}
+# In the training process
+path = training_client.save_weights_for_sampler("step-0100").result().path
+
+# Later, in any process with an API key for the same account
+service = FiretitanServiceClient(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/training/v1/serverless",
+)
+sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
+```
+
+* You can only sample checkpoints that belong to your own account. A path for another account fails before any request is sent.
+* To keep a checkpoint as a deployable model, [promote it](#promote-a-sampler-checkpoint-to-a-model).
+* On a service that has already created a training client, `create_sampling_client(model_path=...)` for that run's checkpoints, and `base_model=...` for the session's base weights, sample through the training session as before.
+
+### Share a sampler across processes
+
+`FiretitanSamplingClient` works with Python multiprocessing. Create it once in the main process and pass it to workers; the same instance can be shared by several processes.
+
+**Pickle the client.** The pickle carries the connection state, including the API key and headers, so workers need no environment of their own. Each worker gets its own event loop, HTTP connections, and concurrency controller; a fixed concurrency limit carries over.
+
+```python theme={null}
+from concurrent.futures import ProcessPoolExecutor
+
+def evaluate(sampler, prompt):
+    return sampler.sample(prompt=prompt, num_samples=1, sampling_params=params).result()
+
+with ProcessPoolExecutor(max_workers=8) as pool:
+    results = list(pool.map(evaluate, [sampler] * len(prompts), prompts))
+```
+
+**Pass a sampler handle.** To avoid putting credentials in a pickle, pass a string handle instead. It carries no API key or credential headers; the receiving process authenticates with `api_key=` or its own `FIREWORKS_API_KEY`.
+
+```python theme={null}
+handle = sampler.get_sampler_handle()  # str: store it, queue it, send it anywhere
+
+# In the worker
+from fireworks.training.sdk import FiretitanSamplingClient
+sampler = FiretitanSamplingClient.from_sampler_handle(handle, tokenizer=tokenizer)
+```
+
+| Method | Description |
+| - | - |
+| Pickling | Carries the connection state, API key, headers, and tokenizer. Each unpickled copy gets its own event loop, HTTP connections, and concurrency controller; a fixed concurrency limit carries over. |
+| `get_sampler_handle() -> str` | A pickle-free string handle to the same sampler, with no API key or credential headers. |
+| `FiretitanSamplingClient.from_sampler_handle(handle, *, api_key=None, tokenizer=None)` | Creates a client for the sampler behind `handle`, in any process and any number of times. Authenticates with `api_key`, or `FIREWORKS_API_KEY` from the environment. |
+
+Keep `FiretitanServiceClient` and training clients in the main process; only sampling clients are meant to cross process boundaries.
 
 ## Saving and loading checkpoints
 
@@ -12243,7 +12335,7 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 ### Capacity and rate limits
 
-* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires.
+* **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with `RESOURCE_EXHAUSTED`. A run holds its slot until its session is deleted or expires. [Sampling without a training client](#sampling-without-a-training-client) uses no slot.
 * **Free a slot now:** Closing the client does not end the session right away. To release its slot, promote any checkpoint you need, then delete the session (`service.training_session_id`, which starts with `ts-`):
 
   ```bash theme={null}
@@ -12258,11 +12350,11 @@ Serverless training bills three separate token meters, so a run's cost depends o
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
 * **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
+* **Serving your trained adapter.** Sample its sampler checkpoints with a sampling client, during or after the run. To serve it through an API endpoint, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own trained LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 
-This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, checkpoint evaluation, and the before-and-after comparison.
 
 > [!WARNING]
 >
@@ -12272,7 +12364,7 @@ This walkthrough trains Qwen 3.5 9B with LoRA SFT to classify prompts and route 
 
 > **[Open the current prompt-router serverless notebook](https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb)**
 >
-> Follow the current Serverless Training example for dataset preparation, LoRA SFT, in-session sampling, and evaluation.
+> Follow the current Serverless Training example for dataset preparation, LoRA SFT, checkpoint sampling, and evaluation.
 
 ## Next steps
 
@@ -24674,7 +24766,7 @@ Before you start, [enable Fireworks in Microsoft Foundry](/ecosystem/integration
 
 | Path | Best for | Harnesses |
 | - | - | - |
-| [Nexus CLI](#connect-with-nexus) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
+| [Nexus CLI](#connect-with-nexus-cli) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
 | [Manual setup](#configure-a-harness-manually) | Harnesses with a custom OpenAI-compatible provider | Any harness that accepts a base URL, key, and model name |
 | [LLM gateway](#use-an-llm-gateway) | Claude Code, or central key management | Claude Code and any harness your gateway supports |
 
@@ -26021,6 +26113,7 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
 | [DeepSeek V4.1 Flash (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
+| [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$1.40 / \$0.26 / \$4.40 | \$1.75 / \$0.325 / \$5.50 |
@@ -26492,6 +26585,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | - | - |
 | Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
+| DeepSeek V4.1 Flash 1017 | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-us` |
 | GLM 5.3 | `accounts/fireworks/routers/glm-5p3-us` |
 | GLM 5.3 Flash | `accounts/fireworks/routers/glm-5p3-flash-us` |
 | Muse Spark Open | `accounts/fireworks/models/muse-spark-open` |
@@ -32002,7 +32096,7 @@ If you use any of the models below on serverless, migrate to a recommended repla
 ## **New models on Serverless**
 
 * **DeepSeek V4.1 Flash 1017:** `accounts/fireworks/models/deepseek-v4p1-flash-1017`
-* **DeepSeek V4.1 Flash 1017 (US endpoint):** `accounts/fireworks/models/deepseek-v4p1-flash-1017-us`
+* **DeepSeek V4.1 Flash 1017 (US endpoint):** `accounts/fireworks/routers/deepseek-v4p1-flash-1017-us` ([US-only Serverless](/serverless/us-only-serverless))
 * **Muse Spark Open** (US endpoint, 50% US regional premium waived): `accounts/fireworks/models/muse-spark-open`
 * **MiniMax M3.1:** coming to serverless after its open-source release, expected Friday, October 23
 

@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15007 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 231,
@@ -42,7 +42,8 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 35057692 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 7746965 bytes received\ncurl: (28) Operation timed out "
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/langchain": {
     "pages": 1671,
@@ -185,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 92,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -204,5 +205,5 @@
     "pages": 1398,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-22T11:31:34Z"
+  "_last_crawl": "2026-10-22T23:30:50Z"
 }

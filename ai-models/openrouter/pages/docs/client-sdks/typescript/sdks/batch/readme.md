@@ -14,7 +14,7 @@ path: docs/client-sdks/typescript/sdks/batch/readme
 
 ## Overview
 
-Submit, list, poll, and delete asynchronous batches of inference requests. See [https://openrouter.ai/docs/batch-quickstart](https://openrouter.ai/docs/batch-quickstart).
+Submit, list, poll, and delete asynchronous batches of inference requests. See [https://openrouter.ai/docs/batch-quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Available Operations
 
@@ -25,7 +25,7 @@ Submit, list, poll, and delete asynchronous batches of inference requests. See [
 
 ## list
 
-Lists batches in the workspace of the authenticating API key, newest first. To fetch the next page, pass the previous page's `last_id` as `after`. List items omit `results`. Use `GET /batches/{id}` to get them. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Lists batches in the workspace of the authenticating API key, newest first. To fetch the next page, pass the previous page's `last_id` as `after`. List items omit `results`. Use `GET /batches/{id}` to get them. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 
@@ -105,7 +105,7 @@ run();
 
 ## createBatches
 
-Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage: chatCompletions
 
@@ -498,7 +498,7 @@ run();
 
 ## delete
 
-Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Deletes a batch in a terminal status (`completed`, `failed`, `expired`, or `cancelled`) and its stored requests and results. Batches still in progress return `409`. Billing and usage records are kept. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 
@@ -578,7 +578,7 @@ run();
 
 ## getBatches
 
-Returns a batch with its status and request counts. Batches in a terminal status include `results`. Failed batches report the reason in `error.message`. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+Returns a batch with its status and request counts. Batches in a terminal status include `results`. Failed batches report the reason in `error.message`. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage
 

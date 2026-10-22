@@ -14,7 +14,7 @@ path: docs/client-sdks/typescript/sdks/tools/readme
 
 ## Overview
 
-The catalog of server tools OpenRouter runs on behalf of a model: accepted `tools[].type` spellings per API format, engines and pricing, and which endpoints run each tool natively. See [https://openrouter.ai/docs/guides/features/server-tools](https://openrouter.ai/docs/guides/features/server-tools).
+The catalog of server tools OpenRouter runs on behalf of a model: accepted `tools[].type` spellings per API format, engines and pricing, and which endpoints run each tool natively. See [https://openrouter.ai/docs/guides/features/server-tools](https://openrouter.ai/docs/guides/features/server-tools.md).
 
 ### Available Operations
 

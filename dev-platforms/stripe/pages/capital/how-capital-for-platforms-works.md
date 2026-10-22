@@ -277,7 +277,7 @@ Stripe handles communications, credit decisions, servicing, and collections. You
 
 To add Capital to your own product, to co-brand communications, or to explore revenue sharing, choose a Capital for platforms integration.
 
-## Connected account experience 
+## What connected accounts see 
 
 After a connected account accepts an offer and receives their payout, you can show them their financing balance, transaction history, and payment progress:
 

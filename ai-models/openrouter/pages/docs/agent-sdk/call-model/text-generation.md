@@ -230,7 +230,7 @@ const [result1, result2, result3] = await Promise.all([
 
 ## Next Steps
 
-* **[Streaming](/docs/agent-sdk/call-model/streaming)** - Stream responses in real-time
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Add tool capabilities to your generation
-* **[Message Formats](/docs/agent-sdk/call-model/message-formats)** - Convert from OpenAI/Claude formats
+* **[Streaming](/docs/agent-sdk/call-model/streaming.md)** - Stream responses in real-time
+* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Add tool capabilities to your generation
+* **[Message Formats](/docs/agent-sdk/call-model/message-formats.md)** - Convert from OpenAI/Claude formats
 

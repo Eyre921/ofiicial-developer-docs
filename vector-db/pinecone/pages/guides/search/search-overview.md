@@ -26,7 +26,7 @@ Walk through these questions in order. Pick the first match.
    * **On a JSON-document workload**, declare a `dense_vector` field alongside one or more FTS-enabled `string` fields, then add a text-match filter to a `dense_vector` query or run two searches and merge the results client-side (Documents API).
    * **On a vector-only records workload**, store a dense vector and a sparse vector on each record in a single index (Vectors API).
 
-4. **Do you produce a learned sparse-vector representation upstream of Pinecone?** (For example, using [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) or your own sparse encoder.) → **[Sparse-vector search](/guides/search/lexical-search)**.
+4. **Do you produce a learned sparse-vector representation upstream of Pinecone?** (For example, using [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) or your own sparse encoder.) → **[Sparse-vector search](/guides/search/sparse-vector-search)**.
 
 ### Approach details
 
@@ -38,7 +38,7 @@ A useful gradient: **dense** ranks on concept (semantic similarity), **full-text
 
 * **[Hybrid search](/guides/search/hybrid-search)** — combines a keyword signal with a semantic signal so one query benefits from both. There are three patterns: on the Documents API, a text-match filter on a `dense_vector` query, or client-side RRF fusion of two searches; on the Vectors API, a single index storing a dense and a sparse vector combined server-side. See [Hybrid search](/guides/search/hybrid-search) to choose.
 
-* **[Sparse-vector search](/guides/search/lexical-search)** — recommended for workflows that use a learned sparse-vector model (for example, [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) or where the application owns the sparse-vector representation directly. For general-purpose keyword and phrase retrieval over text, start with full-text search.
+* **[Sparse-vector search](/guides/search/sparse-vector-search)** — recommended for workflows that use a learned sparse-vector model (for example, [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) or where the application owns the sparse-vector representation directly. For general-purpose keyword and phrase retrieval over text, start with full-text search.
 
 Once you've chosen an approach, see [Data modeling](/guides/index-data/data-modeling) to structure your documents or records, then [Create an index](/guides/index-data/create-an-index) to set it up.
 
