@@ -49,9 +49,9 @@ This process ensures that relevant information to the user's query is passed to 
 
 #### Update via the dashboard
 
-In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
+In your agent's settings, open **Knowledge Base** and select the **Retrieval** tab. Under **Retrieval mode**, choose **Every turn** to search the knowledge base on every turn, or **On demand** to let the agent search only when it decides it needs to. **Prompt only** turns retrieval off.
 
-![RAG configuration options including embedding model selection](/docs/_fern-img/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86.webp)
+Configure the embedding model, vector distance limit and number of candidates under **Semantic search**, and the character and chunk limits under **Retrieval limits**.
 
 #### Update via the CLI
 

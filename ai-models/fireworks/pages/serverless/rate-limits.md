@@ -18,7 +18,7 @@ There are three metrics we use to rate limit accounts:
 
 All limits are measured and enforced in **tokens per minute (TPM)**.
 
-Adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher ceilings:
+Base adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher base ceilings:
 
 <table>
   <colgroup>
@@ -85,43 +85,55 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 
 Models not listed here are tiered by total parameter count using the thresholds above.
 
-Based on your usage, your adaptive limits will grow and shrink within these ceilings. If your traffic ramps up too quickly, you will get 429s.
+Based on your usage, your adaptive limits will grow and shrink within these base ceilings. Eligible accounts may also receive temporary capacity above the base ceiling through [Elastic Burst](#elastic-burst). If your traffic ramps up too quickly, you will get 429s.
 
 ![kimi-k2p6 usage and rate limits](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/serverless/ratelimit-example.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=c50f8e058fb94ba05c8d77e283a917c0)
 
-Your current limits for each model are in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless). See [Checking your current limit](#checking-your-current-limit).
+Historical limit samples for each model are in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless). See [Checking your current limit](#checking-your-current-limit).
 
 Adaptive rate limits have an upper and lower bound. A higher account [Spending Tier](/guides/quotas_usage/account-quotas#spending-tiers) correlates with higher upper bound rate limits; **enterprise accounts** get higher upper bounds automatically.
 
 ## How do adaptive limits change?
 
-Your limit for each model starts at a default value and grows in steps as you use it. If your recent one-minute usage is above 50% of your current limit, the limit increases by 25%, and no more than once every 15 minutes, until it reaches your ceiling. If you stop using it, the limit shrinks slowly and eventually resets.
+Your limit for each model starts at a default value and grows in steps as you use it. If your recent one-minute usage is above 50% of your current limit, the limit increases by 25%, and no more than once every 15 minutes, until it reaches your base ceiling. If you stop using it, the limit shrinks slowly and eventually resets. [Elastic Burst](#elastic-burst) can move the current limit above that ceiling, and back toward it, independently of the schedule below.
 
-Each of the three metrics (Total Prompt TPM, Uncached Prompt TPM, and Generated TPM) has its own limit and changes on its own. Heavy usage on one metric does not change the other two.
+Each of the three metrics (Total Prompt TPM, Uncached Prompt TPM, and Generated TPM) has its own standard adaptive limit and changes on its own. Heavy usage on one metric does not change the other standard limits. Under Elastic Burst, high usage on one of these metrics can reduce burst capacity on the others.
 
-### Your ceiling
+### Your base ceiling
 
-The ceiling is the highest your limit can grow. Two things set it:
+The base ceiling is the highest your standard adaptive limit can grow without Elastic Burst. Two things set it:
 
 * **Model size** picks the row in the [table above](#model-size-tiers).
 * **Your [spending tier](/guides/quotas_usage/account-quotas#spending-tiers)** sets how much of that row you can reach. The table shows the maximum ceilings, available at Tier 3 and above. Tiers below Tier 3 have lower ceilings.
+
+### Elastic Burst
+
+Elastic Burst can temporarily raise an eligible account's current limit above its base ceiling when spare capacity is available. It applies to Total Prompt TPM, Uncached Prompt TPM, and Generated TPM.
+
+For eligible accounts and models, Elastic Burst applies automatically to the existing Serverless endpoint; no request or client changes are required.
+
+That extra capacity is not guaranteed, and it can change independently of the standard schedule below. If your current limit drops, pace traffic against the new limit. For `429` responses, honor the `Retry-After` header; if it is absent, retry with exponential backoff and jitter. Elastic Burst does not change your base ceiling or any [Reserved Throughput](/serverless/reserved-throughput). Elastic Burst has no separate enablement fee or burst premium. Usage is billed at your applicable Serverless token rates.
+
+To opt out, contact your Fireworks account representative. The opt-out is account-wide and applies across all models for Total Prompt TPM, Uncached Prompt TPM, and Generated TPM.
 
 ### When limits go up, down, or reset
 
 | Change | When it happens | Amount |
 | - | - | - |
-| **Increase** | Your recent usage is above 50% of your current limit. Increases happen at most once every 15 minutes. | Up 25%, capped at your ceiling |
+| **Increase** | Your recent usage is above 50% of your current limit. Increases happen at most once every 15 minutes. | Up 25%, capped at your base ceiling |
 | **Decrease** | Your highest sampled 15-minute usage over the past 3 days stayed below 33% of your current limit, and at least 24 hours have passed since the limit last changed. | Down 20%, never below the lower bound |
 | **Reset** | You send no traffic to the model for more than 72 hours. | Back to the starting default |
+| **Elastic Burst** | Not part of the schedule above. For an eligible account, the limit can move above the base ceiling and back toward it. The base ceiling and Reserved Throughput stay the same. | Changes with spare capacity |
 
 A few details:
 
 * A decrease is skipped if your recent usage would be at least 50% of the lower limit. This keeps the limit from dropping and then immediately climbing back up.
-* With [Reserved Throughput](/serverless/reserved-throughput), these thresholds apply to burst usage above your reservation and to the adaptive portion of your limit. Your reservation is added to that adaptive limit, and usage within the reservation does not count toward the thresholds.
+* With [Reserved Throughput](/serverless/reserved-throughput), the increase, decrease, and reset thresholds apply to usage above your reservation and to the adaptive portion of your limit. Usage within the reservation does not count toward the thresholds.
 * Resets do not apply to accounts with a custom limit or a reservation for that model.
-* If you have reserved throughput, your limit never drops below your reservation.
 
 ### How slowly limits shrink
+
+The steps below follow the standard **Decrease** row. Elastic Burst capacity can leave without waiting for these daily steps.
 
 Say your Total Prompt TPM limit is 10,000,000 and your traffic drops to a steady 1,000,000 tokens per minute:
 
@@ -146,15 +158,21 @@ Say your current Total Prompt TPM limit is 1,000,000.
 3. Raise your traffic to match, staying between 625,000 and 1,250,000.
 4. Repeat until your limit stops rising.
 
-At this pace, you reach your ceiling in a few hours. If you are using more than half your limit and it has stopped rising after an increase interval, you are at the ceiling for your spending tier. Moving to a higher spending tier, up to Tier 3, raises the ceiling, and the limit keeps growing in the same 25% steps.
+At this pace, you reach your base ceiling in a few hours. If you are using more than half your limit and it has stopped rising after an increase interval, the standard adaptive limit is at the base ceiling for your spending tier. Moving to a higher spending tier, up to Tier 3, raises the base ceiling, and that limit keeps growing in the same 25% steps. Elastic Burst does not follow these steps.
 
-A short burst does not lock in a higher limit. If you go 72 hours without traffic, the limit resets to the default.
+A short traffic spike does not lock in a higher limit. If you go 72 hours without traffic, the limit resets to the default.
 
 ### Checking your current limit
 
-Check your current limit in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless).
+The [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless) shows historical limit samples, not an instantaneous reading.
 
-The same limits are also returned in the [response headers](/serverless/overview#response-headers) on each request. Header values are tokens per minute, so you can compare them directly with the TPM ceilings above.
+A Serverless response can include the latest known effective limit in these headers when that limit is known. The value can lag a recent change.
+
+* `X-Ratelimit-Limit-Tokens-Prompt` for Total Prompt TPM
+* `X-Ratelimit-Limit-Tokens-Uncached-Prompt` for Uncached Prompt TPM
+* `X-Ratelimit-Limit-Tokens-Generated` for Generated TPM
+
+These headers are not present on every response. Header values are tokens per minute. Elastic Burst can put these three above the published base ceilings. `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` is a separate limit and does not include Elastic Burst. See [response headers](/serverless/overview#response-headers).
 
 ## FAQ
 
@@ -172,11 +190,11 @@ The same limits are also returned in the [response headers](/serverless/overview
 
 > **What should I do first when I see 429s?**
 >
-> First, try **exponential backoff** when retrying.
+> Honor the response's `Retry-After` header. If it is absent, retry with **exponential backoff and jitter**.
 
 > **How do I get higher limits sooner?**
 >
 > Reach out to [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for a custom solution if either of these applies:
 >
 > * **You need higher than the defaults from day one.** Your launch traffic exceeds the starting limit and you can't wait for the adaptive ramp.
-> * **You're ramping past the highest upper bound.** You are already at the highest account Spending Tier and the adaptive rate limits are not growing.
+> * **You're ramping past the highest base ceiling.** You are already at the highest account Spending Tier and the standard adaptive limit is not growing.

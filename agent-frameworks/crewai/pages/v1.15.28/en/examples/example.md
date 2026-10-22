@@ -46,7 +46,7 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 >
 > Automated email monitoring and replies.
 
-> **[Lead Score Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/lead_score_flow)**
+> **[Lead Score Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/flows/lead-score-flow)**
 >
 > Lead qualification with human‑in‑the‑loop.
 
@@ -68,7 +68,7 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
 ## Integrations
 
-> **[CrewAI ↔ LangGraph](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/crewai-langgraph)**
+> **[CrewAI ↔ LangGraph](https://github.com/crewAIInc/crewAI-examples/tree/main/integrations/CrewAI-LangGraph)**
 >
 > Integration with LangGraph framework.
 
@@ -86,10 +86,10 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
 ## Notebooks
 
-> **[Simple QA Crew + Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks/Simple%20QA%20Crew%20%2B%20Flow)**
+> **[Simple QA Crew + Flow](https://github.com/crewAIInc/crewAI-examples/tree/main/notebooks/Simple%20QA%20Crew%20%2B%20Flow)**
 >
 > Simple QA Crew + Flow.
 
-> **[All Notebooks](https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks)**
+> **[All Notebooks](https://github.com/crewAIInc/crewAI-examples/tree/main/notebooks)**
 >
 > Interactive examples for learning and experimentation.

@@ -213,6 +213,7 @@ An agent (and optional branch) that participated in the call, in first-seen tran
 - `tts_usage` (ConversationTTSUsageModel, optional, nullable) — Aggregated TTS usage for a conversation (analytics-only, not billing).
 - `asr_usage` (ConversationASRUsageModel, optional, nullable) — Aggregated ASR usage for a conversation (analytics-only, not billing).
 - `analysis` (AnalysisCharging, optional, nullable) — Cost of running post-call analysis on this conversation. Present once an analysis pass has run, billed or not.
+- `voice_surcharge_charge` (integer, optional, nullable) — Credits charged as the voice actor reward for the Voice Library voices this conversation used. It is not included in `cost`.
 
 ### ConversationHistoryMetadataCommonModelPhoneCall
 

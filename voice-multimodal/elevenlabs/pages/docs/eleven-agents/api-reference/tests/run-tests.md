@@ -262,6 +262,7 @@ Validation Error
 - `tts_usage` (ConversationTtsUsageModel, optional) — Aggregated TTS usage for a conversation (analytics-only, not billing).
 - `asr_usage` (ConversationAsrUsageModel, optional) — Aggregated ASR usage for a conversation (analytics-only, not billing).
 - `analysis` (AnalysisCharging, optional) — Cost of running post-call analysis on this conversation. Present once an analysis pass has run, billed or not.
+- `voice_surcharge_charge` (integer, optional) — Credits charged as the voice actor reward for the Voice Library voices this conversation used. It is not included in `cost`.
 
 ### TestRunResultBucket
 

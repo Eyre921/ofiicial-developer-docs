@@ -8,6 +8,43 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
+**2026-10-21**
+
+Training
+
+# Training SDK 1.2.30: clearer TITO errors and trajectory discard
+
+**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
+
+```bash theme={null}
+pip install --upgrade "fireworks-ai[training]>=1.2.30"
+```
+
+## **Errors identify their source**
+
+Before 1.2.27, the sidecar returned HTTP 502 for two failures that weren't server-side: `tito_model_malformed_output` (unparseable model output) and `tito_upstream_error` (any sampling exception, including client timeouts and dropped connections). They are replaced by:
+
+* **`tito_sdk_parse_error`** (422): the output couldn't be parsed into an assistant or tool message. Includes a stable `parser_reason_code`, finish reason, and token counts.
+* **`tito_server_http_error`:** the server returned an error, passed through with its real status, request ID, and retry details.
+* **`tito_server_stream_error`:** the inference stream reported a failure, even after HTTP 200, so the turn is rejected before it can become training data.
+* **`tito_transport_error`** (502, or 504 on timeout): the connection failed or timed out.
+
+Responses also carry `x-fireworks-error-origin` and `x-fireworks-error-code` headers. Requests to a closing or closed trajectory return `tito_trajectory_closed` (410) with the reason it ended.
+
+## **Unparseable trajectories are discarded**
+
+A parse failure makes the whole trajectory untrainable, including earlier successful turns. The cookbook RL loop drops it without retrying or stopping the run, and other rollouts continue. Parse failures don't count toward the infrastructure circuit breaker, which now classifies transient failures more accurately and reports failure counts by reason. Watch `producer/discard_errors_total`: if most trajectories are discarded, a step can be left with no usable samples.
+
+## **Failure traces are saved locally**
+
+Each failed trajectory leaves a private JSONL trace (request, prepared token IDs, raw completion, exception chain) in `fireworks-tito-traces` under the system temp directory, capped at 256 MiB. Traces from clean trajectories are deleted, and failures rejected by cookbook adapters use the same location and limits. To move or disable capture, pass `failure_trace_config=TITOFailureTraceConfig(...)` to `TITOSidecar`. If a trace can't be written, the original rollout error is still reported. A trace shows whether the model, tokenizer, or renderer caused a parse failure; it contains raw prompts and completions, so review it before sharing.
+
+## **Image inputs for `FiretitanSamplingClient.sample`**
+
+Since 1.2.27, `sample` and `sample_async` take a keyword-only `images=` list of base64 data URLs for token prompts with one placeholder per image. Prompts with unprojected image chunks are rejected so sampler-owned delimiters aren't duplicated.
+
+See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
+
 **2026-10-19**
 
 Inference

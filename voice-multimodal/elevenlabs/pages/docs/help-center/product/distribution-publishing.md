@@ -12,7 +12,7 @@ path: docs/help-center/product/distribution-publishing
 
 Embed audio players on your website or blog
 
-#### [ElevenReader Publishing](/docs/help-center/product/distribution-publishing/eleven-reader-publishing)
+#### [ElevenReader Publishing](/docs/help-center/product/distribution-publishing/elevenreader-publishing)
 
 Publish your books and content on the ElevenReader platform
 

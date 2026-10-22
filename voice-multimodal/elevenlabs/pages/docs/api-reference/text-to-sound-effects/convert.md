@@ -36,11 +36,11 @@ Reference: https://elevenlabs.io/docs/api-reference/text-to-sound-effects/conver
 This endpoint expects a Body_Sound_Generation_v1_sound_generation_post.
 
 - `text` (string, required) — The text that will get converted into a sound effect.
-- `loop` (boolean, optional, default: false) — Whether to create a sound effect that loops smoothly. Only available for the 'eleven_text_to_sound_v2 model'.
+- `loop` (boolean, optional, default: false) — Whether to create a sound effect that loops smoothly.
 - `duration_seconds` (double, optional, nullable) — The duration of the sound which will be generated in seconds. Must be at least 0.5 and at most 30. If set to None we will guess the optimal duration using the prompt. Defaults to None.
 - `prompt_influence` (double, optional, nullable, default: 0.3) — A higher prompt influence makes your generation follow the prompt more closely while also making generations less variable. Must be a value between 0 and 1. Defaults to 0.3.
 - `model_id` (enum, optional, default: eleven_text_to_sound_v2) — The model ID to use for the sound generation.
-  - Allowed values: `eleven_text_to_sound_v2`
+  - Allowed values: `eleven_text_to_sound_v2`, `eleven_text_to_sound_v3`
 
 ## Response
 

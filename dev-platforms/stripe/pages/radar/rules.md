@@ -437,7 +437,7 @@ If you’re planning any major product releases or changes to your service (for 
 
 ## Rules support multiple payment methods
 
-By default, Radar rules screen payments for cards, ACH, and SEPA Direct Debits for most users. We support the high risk block rule for all of these payment methods. You can also use the `:payment_method_type:` attribute to write custom rules that apply only to specific payment methods, for example: `if :payment_method_type: = 'us_bank_account'`. Learn more about [supported attributes](https://docs.stripe.com/radar/rules/supported-attributes.md).
+Radar is on by default for all [supported payment methods](https://docs.stripe.com/radar/supported-payment-methods.md). We support the high risk block rule for all of these payment methods. You can also use the `:payment_method_type:` attribute to write custom rules that apply only to specific payment methods, for example: `if :payment_method_type: = 'us_bank_account'`. Learn more about [supported attributes](https://docs.stripe.com/radar/rules/supported-attributes.md).
 
 ## Construct account rules
 

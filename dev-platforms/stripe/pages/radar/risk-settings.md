@@ -90,7 +90,7 @@ This risk control operates automatically in the background. You don’t need to 
 
 ### Fraudulent non-card payments
 
-Stripe automatically enables the fraudulent non-card payments control by default for all non-card, local payment methods. This risk control evaluates each transaction and automatically blocks payments that have a high risk level. Radar determines the risk level based on attributes that Stripe has identified as high fraud risk on other payments.
+Stripe enables the fraudulent non-card payments control for all [supported payment methods](https://docs.stripe.com/radar/supported-payment-methods.md). This risk control evaluates each transaction and automatically blocks payments that have a high risk level. Radar determines the risk level based on attributes that Stripe has identified as high fraud risk on other payments.
 
 You can monitor performance and review information about blocked payments on the [risk controls page](https://dashboard.stripe.com/settings/radar/risk-controls) in the Dashboard. You can also simulate how this risk control would have affected past payments to better understand the impact on conversion and fraud prevention.
 

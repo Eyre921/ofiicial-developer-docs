@@ -43,6 +43,7 @@ Successful Response
 - `type` (enum, optional, default: discovery)
   - Allowed values: `discovery`, `sitemap`
 - `pattern` (string, optional, nullable)
+- `exclude_patterns` (list of string, optional) — URLs matching any of these patterns are skipped, even if they match `pattern`.
 - `auto_discover` (boolean, optional, default: false) — Whether to automatically discover and enqueue additional pages found while crawling.
 - `status` (enum, optional, default: queued)
   - Allowed values: `queued`, `processing`, `succeeded`, `failed`, `skipped`, `cancelled`
@@ -86,6 +87,9 @@ Validation Error
   "created_at": 1,
   "type": "discovery",
   "pattern": "string",
+  "exclude_patterns": [
+    "string"
+  ],
   "auto_discover": false,
   "status": "queued",
   "pages_identified": 0,

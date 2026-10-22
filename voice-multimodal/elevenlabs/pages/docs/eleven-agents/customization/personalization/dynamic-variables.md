@@ -132,10 +132,11 @@ Use secret dynamic variables for auth tokens or private IDs that should not be s
 
 > **Warning**
 >
-> Secret values are returned redacted as `<REDACTED>`, including in post-call webhooks and the
-> conversations API. Don't use the `secret__` prefix for values you need to read back after the
-> conversation. Pass those as regular dynamic variables, or pass a non-sensitive identifier and look
-> up the sensitive value on your own system.
+> Secret values are stored redacted, so the conversations API returns them as `<REDACTED>`.
+> Post-call transcription webhooks deliver the original values, so make sure your webhook endpoint
+> handles them as secrets. Don't use the `secret__` prefix for values you need to read back from the
+> conversations API. Pass those as regular dynamic variables, or pass a non-sensitive identifier and
+> look up the sensitive value on your own system.
 
 ## Updating dynamic variables from tools
 
@@ -539,7 +540,7 @@ If the counter only decides when to branch or escalate, a [workflow edge express
 
 #### Use secret\_\_ only for values that stay in tool headers
 
-Prefix auth tokens and API keys with `secret__` so they can only be bound to tool headers and are never sent to the LLM. Because `secret__` values are redacted as `<REDACTED>` in post-call webhooks and the conversations API, pass values you need to read back after the conversation as regular dynamic variables, or pass a non-sensitive identifier and look up the sensitive value on your own system.
+Prefix auth tokens and API keys with `secret__` so they can only be bound to tool headers and are never sent to the LLM. Because `secret__` values are redacted as `<REDACTED>` in the conversations API (post-call transcription webhooks still receive the original values), pass values you need to read back from the conversations API as regular dynamic variables, or pass a non-sensitive identifier and look up the sensitive value on your own system.
 
 #### Do not rely on system\_\_user_id for authentication
 

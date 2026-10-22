@@ -47,15 +47,18 @@ Headers a Serverless caller will set or read.
 
 ### Response headers
 
-Fireworks sets the following on Serverless inference responses:
+Fireworks sets the following on Serverless inference responses. The rate-limit headers are included only when that limit is known:
 
 | Header | What it tells you |
 | - | - |
 | `fireworks-prompt-tokens` | Input tokens for the request. |
 | `fireworks-cached-prompt-tokens` | Cached portion of the input. See [Prompt caching](/guides/prompt-caching#monitoring). |
-| `X-Ratelimit-Limit-Tokens-Prompt` | Your current Total Prompt TPM (tokens per minute) limit. |
-| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Uncached Prompt TPM limit. |
-| `X-Ratelimit-Limit-Tokens-Generated` | Your current Generated TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Prompt` | Latest known Total Prompt TPM (tokens per minute) limit. |
+| `X-Ratelimit-Limit-Tokens-Uncached-Prompt` | Latest known Uncached Prompt TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Generated` | Latest known Generated TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Latest known cache-adjusted prompt limit. This is separate from Uncached Prompt TPM. |
+
+`X-Ratelimit-Limit-Tokens-Prompt`, `X-Ratelimit-Limit-Tokens-Uncached-Prompt`, and `X-Ratelimit-Limit-Tokens-Generated` show the latest known effective limit in tokens per minute, which can lag a recent change. [Elastic Burst](/serverless/rate-limits#elastic-burst) can raise those three above the [published base ceilings](/serverless/rate-limits#model-size-tiers). It does not apply to `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt`.
 
 > [!TIP]
 >

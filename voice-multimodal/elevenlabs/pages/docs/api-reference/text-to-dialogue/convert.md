@@ -45,10 +45,10 @@ This endpoint expects a Body_Text_to_dialogue__multi_voice__v1_text_to_dialogue_
 - `seed` (integer, optional, nullable) — If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be integer between 0 and 4294967295.
 - `apply_text_normalization` (enum, optional, default: auto) — This parameter controls text normalization with three modes: 'auto', 'on', and 'off'. When set to 'auto', the system will automatically decide whether to apply text normalization (e.g., spelling out numbers). With 'on', text normalization will always be applied, while with 'off', it will be skipped.
   - Allowed values: `auto`, `on`, `off`
-- `use_pvc_as_ivc` (boolean, optional, nullable) — Whether to use the IVC version of a professional voice. This may improve expressiveness and reduce latency.
 - `previous_request_ids` (list of string, optional, nullable) — A list of request_ids of dialogue generations that came before this one. Used to condition the model for continuity when splitting a large task into multiple requests. A maximum of 3 request_ids can be sent. The last request_id is the audio which is closest to the current request. Not supported by every model.
 - `next_request_ids` (list of string, optional, nullable) — A list of request_ids of dialogue generations that come after this one. Useful for maintaining continuity when regenerating a clip in the middle of a sequence. A maximum of 3 request_ids can be sent. The first request_id is the audio which is closest to the current request. Not supported by every model.
 - `audio_effects` (EffectsSpec-Input, optional, nullable) — Audio effects applied to the generated audio. Unknown IDs return 404 with `param` naming the field. Reverb (`environment_id` with `send_level` above 0) and a non-zero `pan` produce stereo audio and are rejected with 400 for `ulaw_*`, `alaw_*`, and `pcm_*` output formats. Effects don't change the cost of the request.
+- `use_pvc_as_ivc` (boolean, optional, nullable, deprecated) — Whether to use the IVC version of a professional voice. This may improve expressiveness and reduce latency.
 
 ## Response
 
@@ -77,6 +77,7 @@ Validation Error
 
 - `stability` (double, optional, nullable, default: 0.5) — Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
 - `similarity` (double, optional, nullable, default: 0.75) — Determines how strongly the model is guided while generating. Higher values make the model adhere more closely to the voice, at the cost of variation. Not supported by every model.
+- `clone_strength` (double, optional, nullable) — Controls how closely the voice matches the professional voice clone samples, from 0 (low) to 1 (high). We recommend 0 for most use cases. Increase this value only if you experience issues with the default settings. Only applies to professional voice clones fine-tuned for the selected v4 model.
 
 ### PronunciationDictionaryVersionLocatorRequestModel
 

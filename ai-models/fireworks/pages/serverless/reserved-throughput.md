@@ -12,7 +12,7 @@ Reserved throughput lets you pre-purchase throughput that **guarantees availabil
 
 If you are experiencing rate limits on Serverless, you should consider Reserved Throughput. [Contact us](https://fireworks.ai/contact) to purchase reserved throughput or learn more.
 
-You can re-allocate throughput between models served on Serverless. Usage above your reserved throughput is billed at standard Serverless pricing and subject to Serverless adaptive rate limits.
+You can re-allocate throughput between models served on Serverless. Usage above your reserved throughput is billed at standard Serverless pricing and subject to your current [Serverless rate limits](/serverless/rate-limits).
 
 ## How it works
 
@@ -47,9 +47,9 @@ Your dollar-per-minute rate is derived from:
 * The throughput you need—tokens per minute across uncached input, cached input, and output.
 * Per-token list pricing for the models you are serving.
 
-## Burst usage
+## Usage above your reservation
 
-If your usage exceeds your reserved amount in a minute, the amount above is billed at standard Serverless rates. This burst usage is not covered by an SLA and is subject to standard [Serverless adaptive rate limits](/serverless/rate-limits).
+If your usage exceeds your reserved amount in a minute, the amount above is billed at standard Serverless rates. That usage is not covered by an SLA and is subject to your current [Serverless rate limits](/serverless/rate-limits). Elastic Burst can add temporary capacity above the base ceiling on Total Prompt TPM, Uncached Prompt TPM, and Generated TPM. It does not change your reserved amount.
 
 For example, with a \$10-per-minute reservation and \$12 of usage in one minute, \$10 is covered and \$2 is billed as overage.
 
@@ -84,7 +84,7 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 > **What happens once I hit my reserved amount?**
 >
-> Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your standard adaptive rate limits.
+> Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your current [Serverless rate limits](/serverless/rate-limits).
 
 > **Is my reserved traffic subject to an SLA?**
 >
@@ -98,13 +98,15 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 ![Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits](https://mintcdn.com/fireworksai/IUsru_NxiMk5sdgI/images/serverless/reserved-throughput-additive-light.svg?fit=max\&auto=format\&n=IUsru_NxiMk5sdgI\&q=85\&s=0db742891f2656441f08f46a07a452db)
 
+The diagram does not show Elastic Burst separately. When available, Elastic Burst can increase the adaptive portion without changing your reserved amount.
+
 > **How do I enable calls to use Reserved Throughput?**
 >
 > This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
 
 > **How does this affect my rate limits?**
 >
-> Reserved Throughput is added to your Serverless adaptive rate limits. Usage within your reservation does not count against adaptive rate limits.
+> Usage within your reservation does not count against adaptive rate limits. Elastic Burst can add temporary capacity above the base ceiling, but it does not change your reserved amount.
 
 > **How does my cache hit rate affect what I get?**
 >

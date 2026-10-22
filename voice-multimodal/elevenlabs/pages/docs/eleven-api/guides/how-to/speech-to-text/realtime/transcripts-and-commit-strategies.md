@@ -133,6 +133,8 @@ With the VAD strategy, the transcription engine automatically detects speech and
 
 When transcribing audio from the microphone in the [client-side integration](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming), it is recommended to use the VAD strategy.
 
+`vad_silence_threshold_secs` accepts 0.192 to 3.0 seconds. The JavaScript and React SDKs only accept 0.3 to 3.0.
+
 **`Client`**
 
 ```typescript title="Client"
@@ -188,6 +190,17 @@ const connection = await elevenlabs.speechToText.realtime.connect({
   minSilenceDurationMs: 100,
 });
 ```
+
+## Filtering background audio
+
+Set the `filter_background_audio=true` query parameter to reduce false activations from background speech, such as nearby conversations, and ambient noise. With filtering enabled, voice activity detection uses a model tuned to ignore background speech, and `vad_threshold` defaults to `0.15` unless you set it yourself.
+
+> **Warning**
+>
+> `filter_background_audio` can't be combined with `include_timestamps`. If you set both, the server
+> sends an `invalid_request` error and closes the connection.
+
+Filtering doesn't change billing: all audio you stream is billed, including audio the filter ignores.
 
 ## Keeping the connection alive during silence
 

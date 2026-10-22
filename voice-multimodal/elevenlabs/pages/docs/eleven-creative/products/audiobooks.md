@@ -182,7 +182,6 @@ The status of each paragraph is shown by a bar to the left of the text:
 
 You can choose how playback and generation behave using the mode selector to the left of the Play button:
 
-* **Selection** — plays or generates audio only for the selected paragraph
 * **Until end (generate one at a time)** — plays from the selected paragraph to the end of the chapter, generating one paragraph at a time
 * **Until end (generate clips ahead)** — plays from the selected paragraph to the end of the chapter, generating multiple paragraphs ahead for smoother playback
 

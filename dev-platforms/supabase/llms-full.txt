@@ -11297,7 +11297,7 @@ When an HTTP hook is created, the secret generated should be of the `v1,whsec_<b
 
 The secret is used to verify the payload received in your hook. Create an entry in your `.env.local` file to store the `<standard-base64-secret>` portion of the secret for each hook that you have. For example:
 
-```ini
+```dotenv
 SEND_SMS_HOOK_SECRETS=v1,whsec_<base64-secret>
 ```
 
@@ -11422,7 +11422,7 @@ Note: `host.docker.internal` is a special DNS name used in Docker to allow a con
 
 Fill in the Hook Secret in `supabase/functions/.env`
 
-```ini
+```dotenv
 SEND_SMS_HOOK_SECRETS='v1,whsec_<base64-secret>'
 ```
 
@@ -11957,7 +11957,7 @@ The `before-user-created` hook solves this by:
 
 Create a `.env` file with the following environment variables:
 
-```ini
+```dotenv
 BEFORE_USER_CREATED_HOOK_SECRET="v1,whsec_<base64_secret>"
 ```
 
@@ -12027,7 +12027,7 @@ The `before-user-created` hook solves this by:
 
 Create a `.env` file with the following environment variables:
 
-```ini
+```dotenv
 BEFORE_USER_CREATED_HOOK_SECRET="v1,whsec_<base64_secret>"
 ```
 
@@ -12181,7 +12181,7 @@ revoke execute
 
 Create a `.env` file with the following environment variables:
 
-```ini
+```dotenv
 BEFORE_USER_CREATED_HOOK_SECRET="v1,whsec_<base64_secret>"
 ```
 
@@ -13635,7 +13635,7 @@ If you want to send emails through the Supabase Resend integration, which uses R
 
 Create a `.env` file with the following environment variables:
 
-```ini
+```dotenv
 RESEND_API_KEY="your_resend_api_key"
 SEND_EMAIL_HOOK_SECRET="v1,whsec_<base64_secret>"
 ```
@@ -22725,7 +22725,7 @@ export default defineConfig({
 
 Create a `.env.local` file and populate with your Supabase connection variables:
 
-```text name=.env.local
+```dotenv name=.env.local
 PUBLIC_SUPABASE_URL=your-project-url
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_key
 ```
@@ -23254,7 +23254,7 @@ npx create-next-app -e with-supabase
 
 Rename `.env.example` to `.env.local` and populate with your Supabase connection variables:
 
-```text name=.env.local
+```dotenv name=.env.local
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_... key
 ```
@@ -30539,7 +30539,7 @@ class GoogleSignInViewController: UIViewController {
 To use the Google provider in local development:
 
 1. Add a new environment variable:
-   ```env
+   ```dotenv
    SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_SECRET="<client-secret>"
    ```
 2. Configure the provider in `supabase/config.toml`:
@@ -37727,7 +37727,7 @@ Choose one of these Vercel Deploy Templates. They use the [Vercel Deploy Integra
 3. Add the suffix `?workaround=supabase-pooler.vercel` to the URI.
 4. Save the result as the `POSTGRES_URL` environment variable.
 
-```txt .env.local
+```dotenv .env.local
 POSTGRES_URL="postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres?workaround=supabase-pooler.vercel"
 ```
 
@@ -65324,7 +65324,7 @@ Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discus
 
 In your .env file, set the DATABASE\_URL variable to your connection string
 
-```text .env
+```dotenv .env
 # Used for Prisma Migrations and within your application
 DATABASE_URL="postgres://[DB-USER].[PROJECT-REF]:[PRISMA-PASSWORD]@[DB-REGION].pooler.supabase.com:5432/postgres"
 ```
@@ -65341,7 +65341,7 @@ Assign the connection string for Supavisor Transaction Mode (using port 6543) to
 
 Next, create a DIRECT\_URL variable in your .env file and assign the connection string that ends with port 5432 to it.
 
-```text .env # Used in your application (use transaction mode)
+```dotenv .env # Used in your application (use transaction mode)
 DATABASE_URL="postgres://[DB-USER].[PROJECT-REF]:[PRISMA-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
 # Used for Prisma Migrations (use session mode or direct connection)
@@ -74291,7 +74291,7 @@ This guide will walk you through an example using the Amazon Bedrock JavaScript 
 - In your AWS console, navigate to Amazon Bedrock and under "Request model access", select the Amazon Titan Image Generator G1 model.
 - In your Supabase project, create a `.env` file in the `supabase` directory with the following contents:
 
-```txt
+```dotenv
 AWS_DEFAULT_REGION="<your_region>"
 AWS_ACCESS_KEY_ID="<replace_your_own_credentials>"
 AWS_SECRET_ACCESS_KEY="<replace_your_own_credentials>"
@@ -75025,7 +75025,7 @@ If you're using VS Code or Cursor, select `y` when the CLI prompts "Generate VS 
 
 Within the `supabase/functions` directory, create a new `.env` file and add the following variables:
 
-```env supabase/functions/.env
+```dotenv supabase/functions/.env
 # Find / create an API key at https://elevenlabs.io/app/settings/api-keys
 ELEVENLABS_API_KEY=your_api_key
 ```
@@ -75269,7 +75269,7 @@ If you're using VS Code or Cursor, select `y` when the CLI prompts "Generate VS 
 
 Within the `supabase/functions` directory, create a new `.env` file and add the following variables:
 
-```env supabase/functions/.env
+```dotenv supabase/functions/.env
 # Find / create an API key at https://elevenlabs.io/app/settings/api-keys
 ELEVENLABS_API_KEY=your_api_key
 
@@ -80938,7 +80938,7 @@ Create a `.env.local` file and populate with your Supabase connection variables 
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -81128,7 +81128,7 @@ Open Connect panel
 
 Expo requires environment variables to be prefixed with `EXPO_PUBLIC_` to be accessible in your app code.
 
-```text name=.env
+```dotenv name=.env
 EXPO_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -81367,7 +81367,7 @@ Create a `.env` file in your project root and populate it with your Supabase con
 
 Open Connect panel
 
-```text name=.env
+```dotenv name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -82555,7 +82555,7 @@ Rename `.env.example` to `.env.local` and populate with your Supabase connection
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 NEXT_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -82763,7 +82763,7 @@ Create a `.env` file and populate with your Supabase connection variables that y
 
 Open Connect panel
 
-```text name=.env
+```dotenv name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -82967,7 +82967,7 @@ Create a `.env.local` file and populate it with your Supabase URL and publishabl
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -83346,7 +83346,7 @@ Create a `.env` file and populate it with your Supabase URL and publishable key,
 
 Open Connect panel
 
-```text name=.env
+```dotenv name=.env
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -83622,7 +83622,7 @@ Create a `.env` file in your project root and populate it with your Supabase con
 
 Open Connect panel
 
-```text name=.env
+```dotenv name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -83958,7 +83958,7 @@ Create a `.env.local` file and populate with your Supabase connection variables 
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -84399,7 +84399,7 @@ Create a `.env` file at the root of your project and populate with your Supabase
 
 Open Connect panel
 
-```text name=.env
+```dotenv name=.env
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -84623,7 +84623,7 @@ Create a `.env.local` file in the root of your project and populate it with your
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -84862,7 +84862,7 @@ Create a `.env.local` file and populate with your Supabase connection variables 
 
 Open Connect panel
 
-```text name=.env.local
+```dotenv name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
@@ -97552,7 +97552,7 @@ Once authorization is complete, we will sends the `state` value back to your app
 
 ## Current limitations
 
-Only some features are available until we roll out fine-grained access control. If you need full database access, you will need to prompt the user for their database password.
+Only some features are available until we roll out fine-grained access control.
 
 
 ---
@@ -101209,7 +101209,7 @@ npx @snaplet/seed sync
 
 You can further enhance your seed script by using Large Language Models to generate more realistic data. To enable this feature, set one of the following environment variables in your `.env` file:
 
-```plaintext
+```dotenv
 OPENAI_API_KEY=<your_openai_api_key>
 GROQ_API_KEY=<your_groq_api_key>
 ```

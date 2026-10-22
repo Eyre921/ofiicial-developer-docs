@@ -87,6 +87,14 @@ Enterprise customers can enable user auto-provisioning via the Security & SSO ta
 
 When this feature is active, you can select which of your verified domains will trigger automatic enrollment. New users with an email address from an enabled domain will automatically join your workspace and occupy a seat.
 
+#### Can I require two-factor authentication for all members?
+
+### Requiring two-factor authentication
+
+Enterprise workspace admins can require every member to use two-factor authentication (2FA). Select your profile icon in the top right corner of the dashboard, choose **Workspace settings**, and turn on **Require Two-Factor Authentication**.
+
+You must [enable 2FA on your own account](/docs/help-center/account/general/how-do-i-add-two-factor-authentication-2-fa-to-my-account) before you can turn this on. Once it's on, members must enable 2FA to access the workspace and can't remove it while the requirement is active.
+
 #### What roles can I assign members?
 
 ### Roles and Seats

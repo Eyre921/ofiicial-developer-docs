@@ -44,7 +44,7 @@ The site deploys from `main`. Every pull request gets a Docs7 preview link and a
 cd llms && npm install && npm run build
 ```
 
-CI regenerates them on pull requests if they are stale. See [`llms/README.md`](llms/README.md).
+CI regenerates them on pull requests if they are stale. See [`llms/README.md`](https://github.com/upstash/docs/blob/main/llms/README.md).
 
 # CLI
 Source: https://upstash.com/docs/agent-resources/cli
@@ -6272,36 +6272,38 @@ again.
   </Card>
 </CardGroup>
 
-# Self-Host Hermes Agent in a Cloud Sandbox
+# Host Hermes Agent in a Cloud Sandbox and Connect from Hermes Desktop
 Source: https://upstash.com/docs/box/guides/hermes-setup
 
-This guide walks you through setting up [Hermes](https://github.com/NousResearch/hermes-agent) inside an Upstash Box.
+This guide hosts [Hermes](https://github.com/NousResearch/hermes-agent) in an Upstash Box and connects [Hermes Desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop) on your machine to it over SSH. The agent runs in the box; you chat with it from the desktop app.
 
 ***
 
 ## 1. Create a Box
 
-Create a keep-alive box with the **Medium** size. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
+Create a box with the **Fixed (keep-alive)** plan and the **Medium** size. See the [quickstart](/docs/box/overall/quickstart) if you haven't created one before.
 
 <Note>
   Hermes is resource-intensive, so we recommend starting with a Medium box to ensure a smooth installation.
 </Note>
 
-<img alt="Create a Box for Hermes" />
+<img alt="Creating a Fixed (keep-alive) Medium box in the Upstash Console" />
 
 ***
 
 ## 2. Connect via SSH
 
-Once the box is running, connect to it via SSH from your terminal. Use your [Box API key](/docs/box/overall/quickstart#1-get-your-api-key) as the password when prompted.
+Once the box is running, [set up an SSH key](/docs/box/overall/shell#ssh-keys) and connect to the box from your terminal. You'll use the same key to connect from Hermes Desktop later.
 
 The `box-id` is the name of your box (e.g. `right-flamingo-14486`).
 
 ```bash
-ssh <box-id>@us-east-1.box.upstash.com
+ssh -i ~/.ssh/upstash_box <box-id>@us-east-1.box.upstash.com
 ```
 
-<img alt="SSH connection to the Hermes Box" />
+You can also copy the command from the **SSH** tab under **Connect** on the box's page in the console.
+
+<img alt="The SSH tab in the box's Connect section" />
 
 ***
 
@@ -6315,23 +6317,29 @@ curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scri
 
 Follow the CLI prompts to complete the setup.
 
-Congratulations! You have successfully set up Hermes on your Upstash Box.
+***
+
+## 4. Connect from Hermes Desktop
+
+Hermes Desktop connects over SSH with the key from [step 2](#2-connect-via-ssh) and starts Hermes in the box for you.
+
+In Hermes Desktop, go to **Settings → Gateways → This window** and choose **Connect via SSH**. Fill in:
+
+1. **Host:** `us-east-1.box.upstash.com`
+2. **User:** your box ID
+3. **Identity file:** `~/.ssh/upstash_box`
+
+Leave **Port** and **Hermes path** blank, then click **Save and reconnect**.
+
+<img alt="Connect via SSH settings in Hermes Desktop" />
 
 ***
 
-## 4. Set Init Script for Auto-Restart
+## 5. Start Chatting
 
-To ensure Hermes restarts automatically if the box crashes, set the startup command as an init script from the Upstash Console.
+That's it. Hermes Desktop now talks to the Hermes running in your box. The agent works in the box, not on your machine, and because the box is keep-alive, it's there whenever you open the app.
 
-<img alt="Hermes init script in the Upstash Console" />
-
-The init script to use:
-
-```bash
-hermes gateway run > gateway.log 2>&1 &
-```
-
-This command runs automatically whenever the box starts, so your gateway is always available without manual intervention.
+See the [Hermes docs](https://hermes-agent.nousresearch.com/docs) for what to do next, such as adding skills or connecting messaging channels.
 
 # Sandbox Backend for LangChain Deep Agents
 Source: https://upstash.com/docs/box/guides/langchain-deep-agents
@@ -10970,7 +10978,7 @@ If you want to open an interactive shell directly, you can also connect over SSH
 ssh <box-id>@us-east-1.box.upstash.com
 ```
 
-Use your **Box API key** as the SSH password.
+Use your **Box API key** as the SSH password, or [add an SSH key](/docs/box/overall/shell#ssh-keys).
 
 ### Box size
 
@@ -12715,7 +12723,7 @@ You can also connect directly to a box shell with SSH:
 ssh <box-id>@us-east-1.box.upstash.com
 ```
 
-When SSH asks for a password, enter your **Box API key**.
+When SSH asks for a password, enter your **Box API key**. To log in without a password, [add an SSH key](/docs/box/overall/shell#ssh-keys).
 
 You can copy the exact SSH command for a box from the **SSH** button on its details page in the Upstash Console.
 
@@ -13241,6 +13249,33 @@ ssh current-wasp-05510@us-east-1.box.upstash.com
 <Tip>
   You can also copy this command from the **SSH** button on the box details page in the Upstash Console.
 </Tip>
+
+### SSH keys
+
+Instead of the password, you can log in with an SSH key. A key you add works for all boxes in your account or team.
+
+1. Create a key pair, if you don't have one:
+
+   ```bash
+   mkdir -p ~/.ssh && chmod 700 ~/.ssh
+   ssh-keygen -t ed25519 -f ~/.ssh/upstash_box
+   ```
+
+2. In the [Upstash Console](https://console.upstash.com/box?tab=settings&section=ssh-keys), go to **Box → Settings → SSH Keys**, click **New SSH Key**, and paste the contents of `~/.ssh/upstash_box.pub`.
+
+3. Connect with the private key:
+
+   ```bash
+   ssh -i ~/.ssh/upstash_box <box-id>@us-east-1.box.upstash.com
+   ```
+
+If your key is one SSH tries by default, such as `~/.ssh/id_ed25519`, you can leave out `-i`.
+
+<Note>
+  You can also click **Generate Key** to have Upstash create the key pair. The private key is shown only once and isn't stored, so save it right away.
+</Note>
+
+Accepted key types are ed25519, ECDSA, their security-key (`sk-`) variants, and RSA keys of at least 2048 bits. An account can have up to 20 keys.
 
 ***
 
@@ -53772,6 +53807,17 @@ EVAL <script> <numkeys> [<key> [<key> ...]] [<arg> [<arg> ...]]
 * A script queued inside a `MULTI`/`EXEC` transaction always runs under the global lock, even when it sets `allow-key-locking`. Call it directly if you want per-key locking.
 * Pass every key the script touches through `KEYS` when possible. With `allow-key-locking`, a dynamic key is accepted only when its hash tag is already locked, and a cold dynamic key is loaded with that lock held. See [Dynamic Keys and Latency](/docs/redis/features/key-locking#dynamic-keys-and-latency).
 
+## Time inside a script
+
+A script can read the server clock with `redis.call('TIME')`. The reply is the same two-element array as the standalone command — Unix seconds, then the microseconds within the current second — and each element arrives as a bulk string, so convert the one you need before using it in arithmetic:
+
+```lua
+local now = redis.call('TIME')
+return tonumber(now[1]) -- Unix seconds
+```
+
+Reading the clock makes the script depend on when it runs rather than only on its `KEYS` and `ARGV`, so the same script can return different results for the same inputs. That is fine when the point is to stamp a value with the current time, but a script that must be reproducible should receive the timestamp as an argument instead. This works the same over the [REST API](#rest-api) as over TCP.
+
 ## Reply conversion
 
 Replies from `redis.call` and `redis.pcall` reach the script as Lua values, converted with RESP2 rules by default whatever protocol the client connection itself negotiated. `redis.setresp(3)` switches the script to RESP3 conversions for every call that follows, and `redis.setresp(2)` switches back. The setting lasts for the rest of the script's execution and does not change how the script's own return value is sent to the client.
@@ -61317,6 +61363,8 @@ Source: https://upstash.com/docs/redis/commands/server/time
 Use `TIME` to read the server's clock.
 
 The reply has two values: the Unix time in seconds and the microseconds elapsed within the current second. Because it comes from the server, every client gets the same reference regardless of its own clock drift, which makes it the value to use when computing deadlines, measuring intervals, or writing timestamps that different machines must agree on.
+
+Inside a Lua script, the same clock is available through `redis.call('TIME')`. See [Time inside a script](/docs/redis/commands/scripting/eval#time-inside-a-script).
 
 ## Syntax
 
@@ -81258,10 +81306,11 @@ When enabled:
 * Redis database credentials are no longer stored in Upstash infrastructure
 * Credentials are displayed only once during enablement - save them immediately
 * Console features requiring database access are disabled (CLI, Data Browser, Monitor, ACL)
+* In the **Connect** section of the **Details** tab, commands and connection strings use `YOUR_PASSWORD` and `YOUR_TOKEN` placeholders, and SDK examples read the credentials from environment variables. Replace the placeholders with the credentials you saved.
 
 ## Managing Credential Protection
 
-1. Go to database details page → Configuration section
+1. Go to the database's **Settings** tab → Configuration section
 2. Toggle **Protect Credentials** switch:
 
   <img alt="Enable Redis credential protection" />
@@ -81269,6 +81318,12 @@ When enabled:
 3. Save the credentials shown in the modal:
 
   <img alt="Save protected Redis credentials" />
+
+<Note>
+  When protection is enabled, the database details card shows a **Protected**
+  field in place of the password and token. This field links to
+  **Settings** → **Protect Credentials**.
+</Note>
 
 <Warning>
   Disabling this feature will permanently revoke current credentials and
@@ -84099,7 +84154,9 @@ of your database. The token is also your database's password: whenever
 <Tip>
   The **Details** tab has a ready-to-use `redis-cli` command with your endpoint,
   port, and token already filled in. You can copy it and paste it straight
-  into your terminal.
+  into your terminal. If [Protect Credentials](/docs/redis/features/credential-protection)
+  is enabled, the command shows `YOUR_PASSWORD` instead; replace it with the
+  password you saved.
 </Tip>
 
 ## Connect

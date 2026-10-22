@@ -18121,7 +18121,7 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 
 > [!NOTE]
 >
-> These spending tiers control the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
+> These spending tiers set the base [serverless TPM ceilings](/serverless/rate-limits) for the standard adaptive limit. [Elastic Burst](/serverless/rate-limits#elastic-burst) can temporarily put the current limit above that ceiling. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
 >
 > Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 
@@ -20991,6 +20991,150 @@ See the [Create Reinforcement Fine-tuning Step API reference](/api-reference/cre
 > [!TIP]
 >
 > You now have an end-to-end secure RFT workflow with BYOB datasets, proprietary reward pipelines, and isolated training jobs that generate new checkpoints.
+
+
+# Spot Serverless
+Source: https://docs.fireworks.ai/guides/spot-serverless
+
+Use lower-cost, best-effort serverless inference and fall back to Standard
+
+Spot is a separate serverless offering for workloads that can tolerate temporary capacity limits. It uses the same OpenAI-compatible API as Standard and costs 30% less.
+
+Use Spot for background, batch, and other cost-sensitive traffic that can wait through a retry or move to Standard.
+
+> [!WARNING]
+>
+> Spot is best-effort. It has no availability or throughput guarantee, and available throughput can fall to zero.
+
+Select Spot with its model identifier. `service_tier` does not select Spot.
+
+## Models
+
+| Model | Spot model identifier | Standard model identifier |
+| - | - | - |
+| GLM-5.3 | `accounts/fireworks/models/glm-5p3-spot` | `accounts/fireworks/models/glm-5p3` |
+| Kimi K3 | `accounts/fireworks/models/kimi-k3-spot` | `accounts/fireworks/models/kimi-k3` |
+| DeepSeek V4.1 Flash | `accounts/fireworks/models/deepseek-v4p1-flash-spot` | `accounts/fireworks/models/deepseek-v4p1-flash` |
+
+## Make a request
+
+**Python (Fireworks SDK)**
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+
+response = client.chat.completions.create(
+  model="accounts/fireworks/models/kimi-k3-spot",
+  messages=[{"role": "user", "content": "Explain mixture-of-experts models."}]
+)
+
+print(response.choices[0].message.content)
+```
+
+**Python (OpenAI SDK)**
+
+```python theme={null}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("FIREWORKS_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1"
+)
+
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k3-spot",
+    messages=[{
+        "role": "user",
+        "content": "Explain mixture-of-experts models."
+    }]
+)
+
+print(response.choices[0].message.content)
+```
+
+**JavaScript**
+
+```javascript theme={null}
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.FIREWORKS_API_KEY,
+  baseURL: "https://api.fireworks.ai/inference/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "accounts/fireworks/models/kimi-k3-spot",
+  messages: [
+    {
+      role: "user",
+      content: "Explain mixture-of-experts models.",
+    },
+  ],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+**curl**
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/models/kimi-k3-spot",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain mixture-of-experts models."
+      }
+    ]
+  }'
+```
+
+## Pricing
+
+Prices are USD per 1 million tokens. Each Spot rate is 30% below the Standard rate for the same model. A request that falls back to Standard is billed at the Standard rate.
+
+| Model | Tier | Cached input | Uncached input | Output |
+| - | - | - | - | - |
+| GLM-5.3 | Standard | \$0.26 | \$1.40 | \$4.40 |
+| GLM-5.3 | Spot | \$0.182 | \$0.98 | \$3.08 |
+| Kimi K3 | Standard | \$0.30 | \$3.00 | \$15.00 |
+| Kimi K3 | Spot | \$0.21 | \$2.10 | \$10.50 |
+| DeepSeek V4.1 Flash | Standard | \$0.006 | \$0.30 | \$1.20 |
+| DeepSeek V4.1 Flash | Spot | \$0.0042 | \$0.21 | \$0.84 |
+
+## Availability, retries, and fallback
+
+When no serving capacity is available, the API returns `503`. A rate limit returns `429`. Honor the `Retry-After` header when the response includes one. The Fireworks Python SDK retries these errors automatically, up to 2 times by default. Fireworks does not fall back to Standard. See [Reliability and Error Handling](/guides/reliability) for timeouts and backoff patterns.
+
+If Spot is still unavailable after those retries, send the same request to the Standard model identifier:
+
+```python theme={null}
+from fireworks import Fireworks, InternalServerError, RateLimitError
+
+client = Fireworks()
+messages = [{"role": "user", "content": "Explain mixture-of-experts models."}]
+
+try:
+    response = client.chat.completions.create(
+        model="accounts/fireworks/models/kimi-k3-spot",
+        messages=messages,
+    )
+except (RateLimitError, InternalServerError):
+    response = client.chat.completions.create(
+        model="accounts/fireworks/models/kimi-k3",
+        messages=messages,
+    )
+
+print(response.choices[0].message.content)
+```
+
+For a streaming request, fall back only if it fails before the stream starts. Replaying a stream that has already produced output can duplicate that output.
 
 
 # Video & Audio Inputs
@@ -25767,15 +25911,18 @@ Headers a Serverless caller will set or read.
 
 ### Response headers
 
-Fireworks sets the following on Serverless inference responses:
+Fireworks sets the following on Serverless inference responses. The rate-limit headers are included only when that limit is known:
 
 | Header | What it tells you |
 | - | - |
 | `fireworks-prompt-tokens` | Input tokens for the request. |
 | `fireworks-cached-prompt-tokens` | Cached portion of the input. See [Prompt caching](/guides/prompt-caching#monitoring). |
-| `X-Ratelimit-Limit-Tokens-Prompt` | Your current Total Prompt TPM (tokens per minute) limit. |
-| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Uncached Prompt TPM limit. |
-| `X-Ratelimit-Limit-Tokens-Generated` | Your current Generated TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Prompt` | Latest known Total Prompt TPM (tokens per minute) limit. |
+| `X-Ratelimit-Limit-Tokens-Uncached-Prompt` | Latest known Uncached Prompt TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Generated` | Latest known Generated TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Latest known cache-adjusted prompt limit. This is separate from Uncached Prompt TPM. |
+
+`X-Ratelimit-Limit-Tokens-Prompt`, `X-Ratelimit-Limit-Tokens-Uncached-Prompt`, and `X-Ratelimit-Limit-Tokens-Generated` show the latest known effective limit in tokens per minute, which can lag a recent change. [Elastic Burst](/serverless/rate-limits#elastic-burst) can raise those three above the [published base ceilings](/serverless/rate-limits#model-size-tiers). It does not apply to `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt`.
 
 > [!TIP]
 >
@@ -25933,7 +26080,7 @@ There are three metrics we use to rate limit accounts:
 
 All limits are measured and enforced in **tokens per minute (TPM)**.
 
-Adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher ceilings:
+Base adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher base ceilings:
 
 <table>
   <colgroup>
@@ -26000,43 +26147,55 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 
 Models not listed here are tiered by total parameter count using the thresholds above.
 
-Based on your usage, your adaptive limits will grow and shrink within these ceilings. If your traffic ramps up too quickly, you will get 429s.
+Based on your usage, your adaptive limits will grow and shrink within these base ceilings. Eligible accounts may also receive temporary capacity above the base ceiling through [Elastic Burst](#elastic-burst). If your traffic ramps up too quickly, you will get 429s.
 
 ![kimi-k2p6 usage and rate limits](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/serverless/ratelimit-example.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=c50f8e058fb94ba05c8d77e283a917c0)
 
-Your current limits for each model are in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless). See [Checking your current limit](#checking-your-current-limit).
+Historical limit samples for each model are in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless). See [Checking your current limit](#checking-your-current-limit).
 
 Adaptive rate limits have an upper and lower bound. A higher account [Spending Tier](/guides/quotas_usage/account-quotas#spending-tiers) correlates with higher upper bound rate limits; **enterprise accounts** get higher upper bounds automatically.
 
 ## How do adaptive limits change?
 
-Your limit for each model starts at a default value and grows in steps as you use it. If your recent one-minute usage is above 50% of your current limit, the limit increases by 25%, and no more than once every 15 minutes, until it reaches your ceiling. If you stop using it, the limit shrinks slowly and eventually resets.
+Your limit for each model starts at a default value and grows in steps as you use it. If your recent one-minute usage is above 50% of your current limit, the limit increases by 25%, and no more than once every 15 minutes, until it reaches your base ceiling. If you stop using it, the limit shrinks slowly and eventually resets. [Elastic Burst](#elastic-burst) can move the current limit above that ceiling, and back toward it, independently of the schedule below.
 
-Each of the three metrics (Total Prompt TPM, Uncached Prompt TPM, and Generated TPM) has its own limit and changes on its own. Heavy usage on one metric does not change the other two.
+Each of the three metrics (Total Prompt TPM, Uncached Prompt TPM, and Generated TPM) has its own standard adaptive limit and changes on its own. Heavy usage on one metric does not change the other standard limits. Under Elastic Burst, high usage on one of these metrics can reduce burst capacity on the others.
 
-### Your ceiling
+### Your base ceiling
 
-The ceiling is the highest your limit can grow. Two things set it:
+The base ceiling is the highest your standard adaptive limit can grow without Elastic Burst. Two things set it:
 
 * **Model size** picks the row in the [table above](#model-size-tiers).
 * **Your [spending tier](/guides/quotas_usage/account-quotas#spending-tiers)** sets how much of that row you can reach. The table shows the maximum ceilings, available at Tier 3 and above. Tiers below Tier 3 have lower ceilings.
+
+### Elastic Burst
+
+Elastic Burst can temporarily raise an eligible account's current limit above its base ceiling when spare capacity is available. It applies to Total Prompt TPM, Uncached Prompt TPM, and Generated TPM.
+
+For eligible accounts and models, Elastic Burst applies automatically to the existing Serverless endpoint; no request or client changes are required.
+
+That extra capacity is not guaranteed, and it can change independently of the standard schedule below. If your current limit drops, pace traffic against the new limit. For `429` responses, honor the `Retry-After` header; if it is absent, retry with exponential backoff and jitter. Elastic Burst does not change your base ceiling or any [Reserved Throughput](/serverless/reserved-throughput). Elastic Burst has no separate enablement fee or burst premium. Usage is billed at your applicable Serverless token rates.
+
+To opt out, contact your Fireworks account representative. The opt-out is account-wide and applies across all models for Total Prompt TPM, Uncached Prompt TPM, and Generated TPM.
 
 ### When limits go up, down, or reset
 
 | Change | When it happens | Amount |
 | - | - | - |
-| **Increase** | Your recent usage is above 50% of your current limit. Increases happen at most once every 15 minutes. | Up 25%, capped at your ceiling |
+| **Increase** | Your recent usage is above 50% of your current limit. Increases happen at most once every 15 minutes. | Up 25%, capped at your base ceiling |
 | **Decrease** | Your highest sampled 15-minute usage over the past 3 days stayed below 33% of your current limit, and at least 24 hours have passed since the limit last changed. | Down 20%, never below the lower bound |
 | **Reset** | You send no traffic to the model for more than 72 hours. | Back to the starting default |
+| **Elastic Burst** | Not part of the schedule above. For an eligible account, the limit can move above the base ceiling and back toward it. The base ceiling and Reserved Throughput stay the same. | Changes with spare capacity |
 
 A few details:
 
 * A decrease is skipped if your recent usage would be at least 50% of the lower limit. This keeps the limit from dropping and then immediately climbing back up.
-* With [Reserved Throughput](/serverless/reserved-throughput), these thresholds apply to burst usage above your reservation and to the adaptive portion of your limit. Your reservation is added to that adaptive limit, and usage within the reservation does not count toward the thresholds.
+* With [Reserved Throughput](/serverless/reserved-throughput), the increase, decrease, and reset thresholds apply to usage above your reservation and to the adaptive portion of your limit. Usage within the reservation does not count toward the thresholds.
 * Resets do not apply to accounts with a custom limit or a reservation for that model.
-* If you have reserved throughput, your limit never drops below your reservation.
 
 ### How slowly limits shrink
+
+The steps below follow the standard **Decrease** row. Elastic Burst capacity can leave without waiting for these daily steps.
 
 Say your Total Prompt TPM limit is 10,000,000 and your traffic drops to a steady 1,000,000 tokens per minute:
 
@@ -26061,15 +26220,21 @@ Say your current Total Prompt TPM limit is 1,000,000.
 3. Raise your traffic to match, staying between 625,000 and 1,250,000.
 4. Repeat until your limit stops rising.
 
-At this pace, you reach your ceiling in a few hours. If you are using more than half your limit and it has stopped rising after an increase interval, you are at the ceiling for your spending tier. Moving to a higher spending tier, up to Tier 3, raises the ceiling, and the limit keeps growing in the same 25% steps.
+At this pace, you reach your base ceiling in a few hours. If you are using more than half your limit and it has stopped rising after an increase interval, the standard adaptive limit is at the base ceiling for your spending tier. Moving to a higher spending tier, up to Tier 3, raises the base ceiling, and that limit keeps growing in the same 25% steps. Elastic Burst does not follow these steps.
 
-A short burst does not lock in a higher limit. If you go 72 hours without traffic, the limit resets to the default.
+A short traffic spike does not lock in a higher limit. If you go 72 hours without traffic, the limit resets to the default.
 
 ### Checking your current limit
 
-Check your current limit in the [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless).
+The [Serverless dashboard](https://app.fireworks.ai/dashboard/serverless) shows historical limit samples, not an instantaneous reading.
 
-The same limits are also returned in the [response headers](/serverless/overview#response-headers) on each request. Header values are tokens per minute, so you can compare them directly with the TPM ceilings above.
+A Serverless response can include the latest known effective limit in these headers when that limit is known. The value can lag a recent change.
+
+* `X-Ratelimit-Limit-Tokens-Prompt` for Total Prompt TPM
+* `X-Ratelimit-Limit-Tokens-Uncached-Prompt` for Uncached Prompt TPM
+* `X-Ratelimit-Limit-Tokens-Generated` for Generated TPM
+
+These headers are not present on every response. Header values are tokens per minute. Elastic Burst can put these three above the published base ceilings. `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` is a separate limit and does not include Elastic Burst. See [response headers](/serverless/overview#response-headers).
 
 ## FAQ
 
@@ -26087,14 +26252,14 @@ The same limits are also returned in the [response headers](/serverless/overview
 
 > **What should I do first when I see 429s?**
 >
-> First, try **exponential backoff** when retrying.
+> Honor the response's `Retry-After` header. If it is absent, retry with **exponential backoff and jitter**.
 
 > **How do I get higher limits sooner?**
 >
 > Reach out to [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for a custom solution if either of these applies:
 >
 > * **You need higher than the defaults from day one.** Your launch traffic exceeds the starting limit and you can't wait for the adaptive ramp.
-> * **You're ramping past the highest upper bound.** You are already at the highest account Spending Tier and the adaptive rate limits are not growing.
+> * **You're ramping past the highest base ceiling.** You are already at the highest account Spending Tier and the standard adaptive limit is not growing.
 
 
 # Reserved Throughput
@@ -26108,7 +26273,7 @@ Reserved throughput lets you pre-purchase throughput that **guarantees availabil
 
 If you are experiencing rate limits on Serverless, you should consider Reserved Throughput. [Contact us](https://fireworks.ai/contact) to purchase reserved throughput or learn more.
 
-You can re-allocate throughput between models served on Serverless. Usage above your reserved throughput is billed at standard Serverless pricing and subject to Serverless adaptive rate limits.
+You can re-allocate throughput between models served on Serverless. Usage above your reserved throughput is billed at standard Serverless pricing and subject to your current [Serverless rate limits](/serverless/rate-limits).
 
 ## How it works
 
@@ -26143,9 +26308,9 @@ Your dollar-per-minute rate is derived from:
 * The throughput you need—tokens per minute across uncached input, cached input, and output.
 * Per-token list pricing for the models you are serving.
 
-## Burst usage
+## Usage above your reservation
 
-If your usage exceeds your reserved amount in a minute, the amount above is billed at standard Serverless rates. This burst usage is not covered by an SLA and is subject to standard [Serverless adaptive rate limits](/serverless/rate-limits).
+If your usage exceeds your reserved amount in a minute, the amount above is billed at standard Serverless rates. That usage is not covered by an SLA and is subject to your current [Serverless rate limits](/serverless/rate-limits). Elastic Burst can add temporary capacity above the base ceiling on Total Prompt TPM, Uncached Prompt TPM, and Generated TPM. It does not change your reserved amount.
 
 For example, with a \$10-per-minute reservation and \$12 of usage in one minute, \$10 is covered and \$2 is billed as overage.
 
@@ -26180,7 +26345,7 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 > **What happens once I hit my reserved amount?**
 >
-> Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your standard adaptive rate limits.
+> Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your current [Serverless rate limits](/serverless/rate-limits).
 
 > **Is my reserved traffic subject to an SLA?**
 >
@@ -26194,13 +26359,15 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 ![Diagram showing reserved throughput added on top of existing Serverless adaptive rate limits](https://mintcdn.com/fireworksai/IUsru_NxiMk5sdgI/images/serverless/reserved-throughput-additive-light.svg?fit=max\&auto=format\&n=IUsru_NxiMk5sdgI\&q=85\&s=0db742891f2656441f08f46a07a452db)
 
+The diagram does not show Elastic Burst separately. When available, Elastic Burst can increase the adaptive portion without changing your reserved amount.
+
 > **How do I enable calls to use Reserved Throughput?**
 >
 > This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
 
 > **How does this affect my rate limits?**
 >
-> Reserved Throughput is added to your Serverless adaptive rate limits. Usage within your reservation does not count against adaptive rate limits.
+> Usage within your reservation does not count against adaptive rate limits. Elastic Burst can add temporary capacity above the base ceiling, but it does not change your reserved amount.
 
 > **How does my cache hit rate affect what I get?**
 >
@@ -31771,6 +31938,43 @@ Source: https://docs.fireworks.ai/updates/changelog
 Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 All
+
+**2026-10-21**
+
+Training
+
+# Training SDK 1.2.30: clearer TITO errors and trajectory discard
+
+**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
+
+```bash theme={null}
+pip install --upgrade "fireworks-ai[training]>=1.2.30"
+```
+
+## **Errors identify their source**
+
+Before 1.2.27, the sidecar returned HTTP 502 for two failures that weren't server-side: `tito_model_malformed_output` (unparseable model output) and `tito_upstream_error` (any sampling exception, including client timeouts and dropped connections). They are replaced by:
+
+* **`tito_sdk_parse_error`** (422): the output couldn't be parsed into an assistant or tool message. Includes a stable `parser_reason_code`, finish reason, and token counts.
+* **`tito_server_http_error`:** the server returned an error, passed through with its real status, request ID, and retry details.
+* **`tito_server_stream_error`:** the inference stream reported a failure, even after HTTP 200, so the turn is rejected before it can become training data.
+* **`tito_transport_error`** (502, or 504 on timeout): the connection failed or timed out.
+
+Responses also carry `x-fireworks-error-origin` and `x-fireworks-error-code` headers. Requests to a closing or closed trajectory return `tito_trajectory_closed` (410) with the reason it ended.
+
+## **Unparseable trajectories are discarded**
+
+A parse failure makes the whole trajectory untrainable, including earlier successful turns. The cookbook RL loop drops it without retrying or stopping the run, and other rollouts continue. Parse failures don't count toward the infrastructure circuit breaker, which now classifies transient failures more accurately and reports failure counts by reason. Watch `producer/discard_errors_total`: if most trajectories are discarded, a step can be left with no usable samples.
+
+## **Failure traces are saved locally**
+
+Each failed trajectory leaves a private JSONL trace (request, prepared token IDs, raw completion, exception chain) in `fireworks-tito-traces` under the system temp directory, capped at 256 MiB. Traces from clean trajectories are deleted, and failures rejected by cookbook adapters use the same location and limits. To move or disable capture, pass `failure_trace_config=TITOFailureTraceConfig(...)` to `TITOSidecar`. If a trace can't be written, the original rollout error is still reported. A trace shows whether the model, tokenizer, or renderer caused a parse failure; it contains raw prompts and completions, so review it before sharing.
+
+## **Image inputs for `FiretitanSamplingClient.sample`**
+
+Since 1.2.27, `sample` and `sample_async` take a keyword-only `images=` list of base64 data URLs for token prompts with one placeholder per image. Prompts with unprojected image chunks are rejected so sampler-owned delimiters aren't duplicated.
+
+See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
 
 **2026-10-19**
 

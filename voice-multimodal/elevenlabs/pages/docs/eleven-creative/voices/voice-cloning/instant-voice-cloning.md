@@ -115,6 +115,10 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
       * Instant Voice Cloning: 1–2 minutes of good audio
       * Professional Voice Cloning: 30–180 minutes of good audio
 
+      **Minimum length for Instant Voice Cloning**
+
+      When you upload samples in the app, each file must be at least 5 seconds long, and all your samples together must add up to at least 10 seconds. For a good clone, aim for the recommended length above.
+
       Uncompressed formats such as WAV usually do not improve clone quality, and they can cause problems with the upload process. Focus on recording quality instead: use a clean recording with no background noise, room reverb, or multiple speakers, at a consistent volume and tone, without long gaps of silence.
 
       For more information, see [Instant Voice Cloning (IVC)](/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning) and [Professional Voice Cloning (PVC)](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning).

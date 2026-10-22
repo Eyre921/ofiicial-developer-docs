@@ -12,7 +12,6 @@ Display custom text and collect additional information on Checkout Sessions.
 
 This article has multiple variants. Fetch one of the following URLs to view specific content for your use case:
 
-- [Full hosted page](https://docs.stripe.com/payments/checkout/custom-components.md?platform=web&payment-ui=stripe-hosted)
-- [Full embedded page](https://docs.stripe.com/payments/checkout/custom-components.md?platform=web&payment-ui=embedded-page)
+- [Full page](https://docs.stripe.com/payments/checkout/custom-components.md?platform=web&ui=full-page)
 - [Embedded form](https://docs.stripe.com/payments/checkout/custom-components.md?platform=web&payment-ui=checkout-form)
 

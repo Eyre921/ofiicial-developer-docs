@@ -67,6 +67,8 @@ An inline procedure reference must use a procedure from the same agent. See [Lim
 
 A reference in the trigger lets the procedure fire based on a resource's output, for example *When `get_user` returns tier 'gold'*. A reference in content tells the agent to invoke or consult the resource at that step.
 
+Knowledge base documents referenced in a procedure always use the `auto` [usage mode](/docs/eleven-agents/customization/knowledge-base#how-your-agent-uses-knowledge): when RAG is enabled on the agent, the agent retrieves the relevant passages instead of placing the full document in the prompt. If the document is also attached to the agent, the agent's usage mode for it applies instead, so attach it to the agent with the `prompt` usage mode to keep its full text in the prompt.
+
 ![Slash menu in the procedure editor](/docs/_fern-img/8625ffec0f5584619e6ccb97720fd86f2e8d3cd0061308ad87b57f176e5535e3.webp)
 
 If a referenced resource is deleted later, or your account loses access to it, the tag shows as broken. The **Errors** badge at the top of the editor lists these references: *invalid* if the resource no longer exists, or *unavailable* if it exists but your account does not have access. Open the badge to see which step is affected and fix or remove the reference.

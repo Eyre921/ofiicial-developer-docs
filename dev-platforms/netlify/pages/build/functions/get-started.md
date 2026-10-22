@@ -43,6 +43,8 @@ For example, any of these would create a function called `hello`:
 - `netlify/functions/hello/hello.mjs`
 - `netlify/functions/hello/index.mjs`
 
+If your functions directory has a JavaScript file and a TypeScript file with the same name, for example `items.js` and `items.ts`, the JavaScript function is deployed and the TypeScript file is ignored.
+
 ### Tip - Use the `.mjs` extension
 
 Naming your file with the `.mjs` extension lets you use modern [ES module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) syntax. For more on file extensions and module formats, see [Configuration → Module format](/build/functions/configuration#module-format).

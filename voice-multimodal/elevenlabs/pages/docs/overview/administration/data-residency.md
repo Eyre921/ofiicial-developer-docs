@@ -126,6 +126,8 @@ Reach out to us if you intend to move instant voice clones. For other resources,
 
 Dubbing is currently only available in the EU isolated environment.
 
+Image & Video (including lip-sync) and Flows are not currently available in isolated environments.
+
 Different regions have different LLMs available depending on model provider availability. Custom LLMs and self-hosted LLMs are always supported. If you intend to use Zero Retention Mode (ZRM), which comes with stricter requirements, reach out to your account team to confirm exactly which models are available in your region.
 
 ## Getting access

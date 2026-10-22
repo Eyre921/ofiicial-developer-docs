@@ -32,6 +32,7 @@ This endpoint expects a Body_Create_crawl_job_v1_convai_knowledge_base_crawl_pos
 - `url` (string, required) — URL to a page of documentation that the agent will have access to in order to interact with users.
 - `max_pages` (integer, optional, default: 1000) — Maximum number of pages to crawl (1-10,000), defaults to 1000.
 - `pattern` (string, optional, nullable) — If set, only URLs that match this pattern are included.
+- `exclude_patterns` (list of string, optional, nullable) — If set, URLs that match any of these patterns are skipped, even if they match `pattern`.
 - `sitemap_urls` (list of string, optional, nullable) — List of URLs to crawl from sitemap (optional, overrides automatic URL discovery).
 - `parent_folder_id` (string, optional, nullable) — If set, the created document or folder will be placed inside the given folder.
 - `enable_auto_sync` (boolean, optional, default: false) — Whether to enable auto-sync for this URL document.

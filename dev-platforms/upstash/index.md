@@ -54,7 +54,7 @@
 - `docs/box/guides/copilotkit` — [In-App Coding Agent with CopilotKit](pages/docs/box/guides/copilotkit.md) · [原文](https://upstash.com/docs/box/guides/copilotkit)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandbox for Isolated Code Execution](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
 - `docs/box/guides/herdr-setup` — [Run Herdr Coding Agents in Isolated Cloud Sandboxes](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
-- `docs/box/guides/hermes-setup` — [Self-Host Hermes Agent in a Cloud Sandbox](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
+- `docs/box/guides/hermes-setup` — [Host Hermes Agent in a Cloud Sandbox and Connect from Hermes Desktop](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
 - `docs/box/guides/langchain-deep-agents` — [Sandbox Backend for LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
 - `docs/box/guides/neon-ai-gateway` — [Run Box Agents on Neon AI Gateway Models](pages/docs/box/guides/neon-ai-gateway.md) · [原文](https://upstash.com/docs/box/guides/neon-ai-gateway)
 - `docs/box/guides/nextjs-setup` — [Run a Next.js App in a Cloud Sandbox with a Public URL](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)

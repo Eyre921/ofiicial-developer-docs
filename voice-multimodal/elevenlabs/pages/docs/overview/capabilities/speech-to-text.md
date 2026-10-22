@@ -631,6 +631,8 @@ Yes, the multichannel [STT](https://elevenlabs.io/speech-to-text) feature allows
 
 ElevenLabs charges for speech to text based on the duration of the audio sent for transcription. Billing is calculated per hour of audio, with rates varying by tier and model. See the [API pricing page](https://elevenlabs.io/pricing/api?price.section=speech_to_text#pricing-table) for detailed pricing information.
 
+Silence counts toward the billed duration. Both batch and realtime transcription are metered on every second of audio you send, including pauses and silent stretches, and there is no discount for silence.
+
 ## Key facts
 
 * **Supported input**: Both audio and video files are accepted

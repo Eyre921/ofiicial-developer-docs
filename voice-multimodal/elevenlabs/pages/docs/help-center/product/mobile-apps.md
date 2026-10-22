@@ -8,11 +8,11 @@ path: docs/help-center/product/mobile-apps
 
 # Mobile & Apps
 
-#### [ElevenLabs for iOS and Android](/docs/help-center/product/mobile-apps/eleven-labs-for-ios-and-android)
+#### [ElevenLabs for iOS and Android](/docs/help-center/product/mobile-apps/elevenlabs-for-ios-and-android)
 
 Use ElevenLabs on your mobile device with our iOS and Android apps
 
-#### [ElevenReader](/docs/help-center/product/mobile-apps/eleven-reader)
+#### [ElevenReader](/docs/help-center/product/mobile-apps/elevenreader)
 
 Listen to articles, PDFs, and ePubs with AI narration
 

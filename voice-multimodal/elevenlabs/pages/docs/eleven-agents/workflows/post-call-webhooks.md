@@ -259,6 +259,8 @@ The `data` object contains:
 | `failure_reason`  | string | The failure reason ("busy", "no-answer", "unknown")      |
 | `metadata`        | object | Additional data provided by the telephony provider.      |
 
+For outbound calls made via Twilio, `failure_reason` is derived from the Twilio `CallStatus`: `busy` and `no-answer` are passed through as-is, and `failed` is reported as `unknown`. Other Twilio call statuses don't send a call initiation failure webhook.
+
 #### Metadata object structure
 
 The `metadata` object structure varies depending on whether the outbound call was made via Twilio or via SIP trunking. The object includes a `type` field that distinguishes between the two, and a `body` field containing provider-specific details.

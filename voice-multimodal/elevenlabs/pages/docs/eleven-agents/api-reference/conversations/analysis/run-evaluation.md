@@ -221,6 +221,7 @@ An agent (and optional branch) that participated in the call, in first-seen tran
 - `tts_usage` (ConversationTtsUsageModel, optional) — Aggregated TTS usage for a conversation (analytics-only, not billing).
 - `asr_usage` (ConversationAsrUsageModel, optional) — Aggregated ASR usage for a conversation (analytics-only, not billing).
 - `analysis` (AnalysisCharging, optional) — Cost of running post-call analysis on this conversation. Present once an analysis pass has run, billed or not.
+- `voice_surcharge_charge` (integer, optional) — Credits charged as the voice actor reward for the Voice Library voices this conversation used. It is not included in `cost`.
 
 ### ConversationHistoryMetadataCommonModelPhoneCall
 
@@ -1033,7 +1034,8 @@ A locator for other documents to be able to reference a specific dictionary and 
       "analysis": {
         "total": {},
         "last_run": {}
-      }
+      },
+      "voice_surcharge_charge": 1
     },
     "phone_call": {
       "type": "exotel",

@@ -38,7 +38,7 @@ Your spend tier controls available quotas and capacity. For legacy self-serve po
 
 > [!NOTE]
 >
-> These spending tiers control the maximum [serverless TPM upper bounds](/serverless/rate-limits) your account can reach. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
+> These spending tiers set the base [serverless TPM ceilings](/serverless/rate-limits) for the standard adaptive limit. [Elastic Burst](/serverless/rate-limits#elastic-burst) can temporarily put the current limit above that ceiling. The spend-limit maximum shown above applies only to legacy self-serve postpaid accounts.
 >
 > Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 

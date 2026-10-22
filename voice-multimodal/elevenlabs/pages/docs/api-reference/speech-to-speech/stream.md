@@ -8,7 +8,7 @@ path: docs/api-reference/speech-to-speech/stream
 
 # Voice changer stream
 
-POST https://api.elevenlabs.io/v1/speech-to-speech/{voice_id}/stream
+POST https://api.elevenlabs.io/v1/voice-changer/{voice_id}/stream
 Content-Type: multipart/form-data
 
 Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
@@ -92,7 +92,7 @@ Validation Error
 ```python
 import requests
 
-url = "https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream"
+url = "https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream"
 
 querystring = {"output_format":"mp3_44100_128"}
 
@@ -112,7 +112,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128';
+const url = 'https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128';
 const form = new FormData();
 form.append('audio', '<file1>');
 form.append('file_format', '');
@@ -146,7 +146,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128"
+	url := "https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
@@ -169,7 +169,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")
+url = URI("https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -186,7 +186,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")
   .header("xi-api-key", "xi-api-key")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
@@ -198,7 +198,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128', [
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128', [
   'multipart' => [
     [
         'name' => 'audio',
@@ -221,7 +221,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128");
+var client = new RestClient("https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128");
 var request = new RestRequest(Method.POST);
 request.AddHeader("xi-api-key", "xi-api-key");
 request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
@@ -281,7 +281,7 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/voice-changer/JBFqnCBsd6RMkjVDRZzb/stream?output_format=mp3_44100_128")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

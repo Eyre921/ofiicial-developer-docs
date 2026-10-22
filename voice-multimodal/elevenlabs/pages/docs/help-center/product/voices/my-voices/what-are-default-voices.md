@@ -42,7 +42,7 @@ If you want more control, you can create your own voices using:
 
 * Voice Design - describe the voice you want in the Voice Design prompt.
 * Voice Remixing - modify an existing voice’s tone and style.
-* Instant Voice Clone - create a voice clone with as little as 10 seconds of audio.
+* Instant Voice Clone - create a voice clone with as little as 10 seconds of audio (each file must be at least 5 seconds long).
 * Professional Voice Clone - create a higher-fidelity clone with as little as 10 minutes of audio.
 
 We recommend reviewing and testing replacement voices well in advance of December 31, 2026 to avoid disruption.

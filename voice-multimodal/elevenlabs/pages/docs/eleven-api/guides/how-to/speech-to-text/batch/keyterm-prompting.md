@@ -27,6 +27,8 @@ Keyterm prompting is a feature that allows you to highlight words or phrases to 
 | Max keyterms               | 1000                                  | 50                            |
 | Max characters per keyterm | 50                                    | 20                            |
 
+In batch transcription, each keyterm can also contain at most 5 words.
+
 For example, if your company name is not a common phrase or has a unique spelling or pronunciation you can use keyterms to ensure the model transcribes correctly. Take the following audio:
 
 <elevenlabs-audio-player audio-title="Company name example" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/stt-keyterm-prompting.mp3" />
