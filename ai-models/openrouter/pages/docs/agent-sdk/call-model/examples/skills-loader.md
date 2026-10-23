@@ -503,7 +503,7 @@ const skillMarker = `[Skill: ${params.type}]`;
 
 ## See Also
 
-* **[nextTurnParams Guide](/docs/agent-sdk/call-model/next-turn-params.md)** - Context injection patterns
-* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters.md)** - Adaptive behavior
-* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Multi-turn orchestration
+* **[nextTurnParams Guide](https://openrouter.ai/docs/agent-sdk/call-model/next-turn-params.md)** - Context injection patterns
+* **[Dynamic Parameters](https://openrouter.ai/docs/agent-sdk/call-model/dynamic-parameters.md)** - Adaptive behavior
+* **[Tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md)** - Multi-turn orchestration
 

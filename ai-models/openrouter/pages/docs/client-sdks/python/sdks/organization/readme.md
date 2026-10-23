@@ -24,7 +24,7 @@ Organization endpoints
 
 ## list\_members
 
-List all members of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all members of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -76,7 +76,7 @@ with OpenRouter(
 
 ## get\_settings
 
-Get the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Get the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -124,7 +124,7 @@ with OpenRouter(
 
 ## update\_settings
 
-Update the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

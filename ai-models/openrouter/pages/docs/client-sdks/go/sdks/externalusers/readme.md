@@ -22,7 +22,7 @@ path: docs/client-sdks/go/sdks/externalusers/readme
 
 ## List
 
-List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List registrations belonging to the authenticated organization. Inactive registrations are excluded by default. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -94,7 +94,7 @@ func main() {
 
 ## Create
 
-Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Register a caller-supplied tracking ID under the authenticated organization. No login account, policy, or credentials are created. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -153,7 +153,7 @@ func main() {
 
 ## Delete
 
-Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Soft-deactivate a registration while retaining its tracking ID. Repeat deactivation succeeds. This does not block inference; reactivate through PATCH. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -205,7 +205,7 @@ func main() {
 
 ## Get
 
-Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Retrieve an active or inactive registration by its URL-encoded, caller-supplied tracking ID. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -261,7 +261,7 @@ func main() {
 
 ## Update
 
-Update registration state without changing identity. State changes do not enforce inference access. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update registration state without changing identity. State changes do not enforce inference access. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

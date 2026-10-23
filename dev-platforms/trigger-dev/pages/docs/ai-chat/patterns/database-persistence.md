@@ -228,7 +228,7 @@ export const myChat = chat.agent({
       }),
     ]);
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });
@@ -255,7 +255,7 @@ End-to-end implementation across the three files involved: agent task, server ac
 
 ```ts trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, stepCountIs } from "ai";
+import { stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -297,7 +297,7 @@ export const myChat = chat.agent({
       }),
     ]);
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,

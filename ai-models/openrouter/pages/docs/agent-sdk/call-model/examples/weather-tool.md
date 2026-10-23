@@ -318,6 +318,6 @@ describe('weatherTool', () => {
 
 ## See Also
 
-* **[Tools Guide](/docs/agent-sdk/call-model/tools.md)** - Tool creation fundamentals
-* **[API Reference](/docs/agent-sdk/call-model/api-reference.md)** - Complete type definitions
+* **[Tools Guide](https://openrouter.ai/docs/agent-sdk/call-model/tools.md)** - Tool creation fundamentals
+* **[API Reference](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)** - Complete type definitions
 

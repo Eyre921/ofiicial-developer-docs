@@ -30,13 +30,13 @@ You need:
 
 > [!TIP]
 >
-> If you aren't already targeting a specific provider model, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
+> If you aren't already targeting a specific provider model, read [Choose a Video Generation Model](https://openrouter.ai/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
-* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
-* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
-* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README.md)
+* [Create video generation request](https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
+* [List video generation models](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
+* [TypeScript SDK video generation reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
 
 Provider-specific options can change by model and provider. Always check `allowed_passthrough_parameters` before relying on one.
 
@@ -167,7 +167,7 @@ The submit call returns the job fields immediately. In the QA run, the submitted
 }
 ```
 
-To wait for the playable MP4, use the polling and download helper from [Generate and Download a Video from Text](/docs/cookbook/video-generation/text-to-video.md) after submission.
+To wait for the playable MP4, use the polling and download helper from [Generate and Download a Video from Text](https://openrouter.ai/docs/cookbook/video-generation/text-to-video.md) after submission.
 
 ## Step 3: Keep a fallback without passthrough options
 

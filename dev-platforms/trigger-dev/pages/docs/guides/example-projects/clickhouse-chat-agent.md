@@ -40,13 +40,13 @@ This example is a fullstack [chat agent](/docs/ai-chat/overview) that answers na
 
 ### The agent
 
-The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable analyst guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable. Storing the resolved prompt with `chat.prompt.set()` lets `chat.toStreamTextOptions()` supply the system text, model, config and telemetry:
+The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable analyst guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable. Storing the resolved prompt with `chat.prompt.set()` lets the `streamText` passed to `run()` supply the system text, model, config and telemetry:
 
 ```ts src/trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
 import { prompts } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { createProviderRegistry, stepCountIs, streamText } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { z } from "zod";
 import { catalogPromptSection } from "../lib/catalog";
 
@@ -66,10 +66,14 @@ const systemPrompt = prompts.define({
 export const clickhouseAgent = chat.agent({
   id: "clickhouse-agent",
   idleTimeoutInSeconds: 300,
+  // Resolves the prompt's provider-prefixed model ("anthropic:claude-opus-4-8").
+  registry,
   // Declared on the config so tool results survive history re-conversion across turns
   tools: { listTables, describeTable, runQuery, renderVisualization },
 
-  onChatStart: async () => {
+  // onTurnStart (not onChatStart) fires on every turn, so the prompt survives
+  // an idle resume.
+  onTurnStart: async () => {
     // Latest prompt version (or an active dashboard override), with the
     // component reference generated from the catalog so it always matches
     // the deployed code.
@@ -79,14 +83,12 @@ export const clickhouseAgent = chat.agent({
     chat.prompt.set(resolved);
   },
 
-  run: async ({ messages, tools, signal }) => {
+  run: async ({ messages, tools, signal, streamText }) => {
+    // The system prompt, model (including dashboard overrides), config and
+    // telemetry come from the stored prompt. A dashboard override can change only
+    // the text and leave the model empty, so fall back to a model then.
     return streamText({
-      // Fallback model only — placed BEFORE the spread so the stored
-      // prompt's model (including dashboard overrides) wins when set.
-      model: anthropic("claude-opus-4-8"),
-      // Wires up prepareStep (compaction, steering, background injection),
-      // plus the system prompt + model + config + telemetry from chat.prompt().
-      ...chat.toStreamTextOptions({ registry }),
+      ...(chat.prompt().model ? {} : { model: anthropic("claude-opus-4-8") }),
       messages,
       tools,
       stopWhen: stepCountIs(15),
@@ -96,11 +98,10 @@ export const clickhouseAgent = chat.agent({
 });
 ```
 
-> [!WARNING]
+> [!NOTE]
 >
-> On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
-> `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
-> the run trace.
+> The `streamText` passed to `run()` records each model step and tool call as a span, and links them
+> to the stored prompt's version, so tokens, cost and latency show per prompt version.
 
 ### Generative UI with one shared catalog
 

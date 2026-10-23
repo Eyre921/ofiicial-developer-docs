@@ -53,6 +53,7 @@ Reference: https://developers.deepgram.com/reference/speech-to-text/listen-pre-r
 - `keyterm` (list of string, optional) — Key term prompting improves recognition of specialized terminology and brands. Only compatible with Nova-3. `keyterm` accepts plain terms only. Unlike the legacy `keywords` feature, it does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm. To boost multiple separate keyterms, repeat the `keyterm` parameter (for example, `keyterm=term1&keyterm=term2`). To boost one multi-word phrase as a single keyterm, join the words with `%20` or `+` (for example, `keyterm=customer%20service`). Do not separate keyterms with commas, semicolons, or line breaks.
 - `keywords` (V1ListenPostParametersKeywords, optional) — Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead.
 - `language` (string, optional, default: en) — The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
+- `language_hint` (V1ListenPostParametersLanguageHint, optional) — Biases language detection toward one or more languages on Nova-3 multilingual (`model=nova-3&language=multi`); ignored with any other `language`. Repeat the parameter to pass several codes, for example `language_hint=en&language_hint=es`. A code that is not in the [Nova-3 multilingual list](/docs/models-languages-overview#nova-3) fails the request with HTTP 400. See [Nova-3 Language Prompting](/docs/nova-3-language-prompting).
 - `measurements` (boolean, optional, default: false) — Spoken measurements will be converted to their corresponding abbreviations
 - `model` (V1ListenPostParametersModel, optional, default: base-general) — AI model used to process submitted audio
 - `multichannel` (boolean, optional, default: false) — Transcribe each audio channel independently
@@ -128,6 +129,11 @@ Invalid Request
 - list of string
 
 ### V1ListenPostParametersKeywords
+
+- string
+- list of string
+
+### V1ListenPostParametersLanguageHint
 
 - string
 - list of string
@@ -245,6 +251,7 @@ The diarizer that produced the speaker labels. Present only when a diarizer ran.
 - `confidence` (float, optional)
 - `channel` (integer, optional)
 - `transcript` (string, optional)
+- `languages` (list of string, optional) — [BCP-47](https://tools.ietf.org/html/bcp47) language tags of the languages detected in the utterance, sorted by word count in descending order. Only present when `language=multi`.
 - `words` (list of ListenV1ResponseResultsUtterancesItemsWordsItems, optional)
 - `speaker` (integer, optional)
 - `id` (string, optional)
@@ -282,6 +289,8 @@ Output whenever `sentiment=true` is used
 
 - `transcript` (string, optional)
 - `confidence` (float, optional)
+- `languages` (list of string, optional) — [BCP-47](https://tools.ietf.org/html/bcp47) language tags of the languages detected in the transcript, sorted by word count in descending order. Only present when `language=multi`. Can be absent on audio that switches languages.
+- `languages_hinted` (list of string, optional) — The `language_hint` values for the request, normalized: codes are returned in canonical form (`ES` → `es`, `zh-hk` → `zh-HK`), and a regional code the model has no tag for is returned as its base language (`en-GB` → `en`). Returned on every Nova-3 multilingual response (`model=nova-3&language=multi`); an empty array when no `language_hint` was sent.
 - `words` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems, optional)
 - `paragraphs` (ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs, optional)
 - `entities` (list of ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems, optional)
@@ -294,6 +303,7 @@ Output whenever `sentiment=true` is used
 - `start` (float, optional)
 - `end` (float, optional)
 - `confidence` (float, optional)
+- `language` (string, optional) — [BCP-47](https://tools.ietf.org/html/bcp47) language tag of the word's detected language. Only present when `language=multi`. Can be absent on audio that switches languages.
 - `speaker` (integer, optional)
 - `speaker_confidence` (float, optional)
 - `punctuated_word` (string, optional)
@@ -338,6 +348,7 @@ Output whenever `sentiment=true` is used
 - `start` (float, optional)
 - `end` (float, optional)
 - `confidence` (float, optional)
+- `language` (string, optional) — [BCP-47](https://tools.ietf.org/html/bcp47) language tag of the word's detected language. Only present when `language=multi`. Can be absent on audio that switches languages.
 - `speaker` (integer, optional) — The speaker of the word, present when diarization is enabled
 - `speaker_confidence` (float, optional) — Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
 

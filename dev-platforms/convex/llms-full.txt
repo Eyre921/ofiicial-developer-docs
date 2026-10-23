@@ -5938,7 +5938,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-10-22.
+ZDR endpoint catalog checked: 2026-10-23.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6361,7 +6361,7 @@ ZDR endpoint catalog checked: 2026-10-22.
 * `minimax/minimax-m2.5` · ZDR
 * `minimax/minimax-m2.7` · ZDR
 * `minimax/minimax-m3` · ZDR
-* `minimax/minimax-m3.1-flash`
+* `minimax/minimax-m3.1-flash` · ZDR
 * `minimax/speech-2.8-hd`
 * `minimax/speech-2.8-turbo`
 
@@ -7234,7 +7234,9 @@ Inference runs in the cloud and is charged to the linked project's team. Anonymo
 
 ## Token and timeouts[​](#token-and-timeouts "Direct link to Token and timeouts")
 
-Call `getServiceToken("ai-gateway")` inside an action whenever a gateway request needs a credential. It returns a short-lived token scoped to your deployment; the action runtime caches and refreshes it as needed. Keep the token private. Don't return it to clients, store it in environment variables, or cache it yourself.
+Call `getServiceToken("ai-gateway")` inside an action whenever a gateway request needs a credential. It returns a short-lived token scoped to your deployment. You can call it as many times as you want: the action runtime caches the token and returns a fresh one when the cached token is close to expiring. Keep the token private. Don't return it to clients, store it in environment variables, or cache it yourself.
+
+A long action that sends many requests can outlive a single token, so call `getServiceToken` again before each request instead of reusing one token for the whole action.
 
 The request runs inside your action, so a long completion can hit the [action timeout](/production/state/limits.md#execution-time-and-scheduling) (30 minutes in the Convex runtime, 10 minutes in Node) and fail as an action error rather than a gateway error.
 
@@ -25451,7 +25453,7 @@ export default crons;
 
 Get a short-lived credential for calling a Convex-managed service.
 
-This function can only be called while an action is running. The credential is scoped to the current deployment and should be sent as a bearer token. The action runtime caches and refreshes credentials as needed, so call this function whenever making a service request.
+This function can only be called while an action is running. The credential is scoped to the current deployment and should be sent as a bearer token. Credentials expire a few minutes after they're issued. The action runtime caches and refreshes them as needed, so call this function whenever making a service request rather than reusing one credential for a long action.
 
 #### Parameters[​](#parameters-14 "Direct link to Parameters")
 
@@ -25467,7 +25469,7 @@ A JWT to send as `Authorization: Bearer <token>`. Keep it inside the action: don
 
 #### Defined in[​](#defined-in-119 "Direct link to Defined in")
 
-[server/impl/actions\_impl.ts:86](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L86)
+[server/impl/actions\_impl.ts:87](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L87)
 
 ***
 
@@ -25493,7 +25495,7 @@ The service's origin, without a trailing slash.
 
 #### Defined in[​](#defined-in-120 "Direct link to Defined in")
 
-[server/impl/actions\_impl.ts:103](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L103)
+[server/impl/actions\_impl.ts:104](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L104)
 
 ***
 

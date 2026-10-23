@@ -14,7 +14,7 @@ path: docs/cookbook/coding-agents/auto-approve-permission-prompts-with-jev
 
 > [!TIP]
 >
-> This recipe assumes a coding agent is already running against OpenRouter, for OpenCode the way [OpenCode Integration](/docs/cookbook/coding-agents/opencode-integration.md) describes, and that `OPENROUTER_API_KEY` is set in the environment the agent runs in. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the coding model and the approval check can bill to the same key.
+> This recipe assumes a coding agent is already running against OpenRouter, for OpenCode the way [OpenCode Integration](https://openrouter.ai/docs/cookbook/coding-agents/opencode-integration.md) describes, and that `OPENROUTER_API_KEY` is set in the environment the agent runs in. Jev is available on OpenRouter as `typesafe/jev-1.13` through the Decisions endpoint, so the coding model and the approval check can bill to the same key.
 
 **Goal:** Stop approving `bun test`, `git status`, and `ls src` by hand in your coding agent without switching shell permissions to allow everything.
 
@@ -378,10 +378,10 @@ Cursor's default is to let a command run when a hook crashes or times out, which
 
 ## Next steps
 
-* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) applies the same threshold pattern to tools in an OpenRouter Agent SDK agent, with `approve`, `block`, and `review` outcomes
-* [OpenCode Integration](/docs/cookbook/coding-agents/opencode-integration.md) covers pointing OpenCode at OpenRouter and picking models, which the OpenCode section assumes is done
-* [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools.md) is the pause-and-resume pattern that these prompts are a coding-agent version of
-* [TypeSafe SDK on OpenRouter](/docs/guides/community/typesafe-sdk.md) shows the Choice, Score, and Noul primitives if you want a three-way `approve`, `ask`, `deny` question instead of two Nouls
-* [Jev documentation hub](/docs/guides/community/jev.md) for the [Jev tutorial](/docs/guides/community/jev-tutorial.md), pricing, and the TypeSafe docs on choosing a threshold
+* [Gate Agent Tool Calls with Jev](https://openrouter.ai/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) applies the same threshold pattern to tools in an OpenRouter Agent SDK agent, with `approve`, `block`, and `review` outcomes
+* [OpenCode Integration](https://openrouter.ai/docs/cookbook/coding-agents/opencode-integration.md) covers pointing OpenCode at OpenRouter and picking models, which the OpenCode section assumes is done
+* [Add Human-in-the-Loop Controls](https://openrouter.ai/docs/cookbook/building-agents/hitl-tools.md) is the pause-and-resume pattern that these prompts are a coding-agent version of
+* [TypeSafe SDK on OpenRouter](https://openrouter.ai/docs/guides/community/typesafe-sdk.md) shows the Choice, Score, and Noul primitives if you want a three-way `approve`, `ask`, `deny` question instead of two Nouls
+* [Jev documentation hub](https://openrouter.ai/docs/guides/community/jev.md) for the [Jev tutorial](https://openrouter.ai/docs/guides/community/jev-tutorial.md), pricing, and the TypeSafe docs on choosing a threshold
 * [Other decision models on OpenRouter](https://openrouter.ai/models?output_modalities=decisions) from OpenAI, Microsoft, Perplexity, Cloudflare, and others take the same Decisions API request: change `model` and re-check your thresholds on a labeled sample
 

@@ -393,9 +393,11 @@ This example handles an order cancellation based on shipment status. It fixes a 
 
 ## How a structured procedure runs
 
-Turning a structured procedure's steps into the form the agent executes is called compiling. The platform compiles every structured procedure when the agent draft is saved or the agent is published; authors never compile anything themselves. The compiled result is currently visible as read-only nodes in the **Workflow** tab.
+Turning a structured procedure's steps into the form the agent executes is called compiling. The platform compiles every structured procedure when the agent draft is saved or the agent is published; authors never compile anything themselves.
 
-When the user's request matches a procedure's trigger, the agent enters the procedure and runs its steps in order. While inside the structured procedure, the agent focuses on each step in isolation. When it reaches the end, it returns to the rest of the conversation.
+When the user's request matches a procedure's trigger, the platform enters the procedure and runs its steps in order. While inside the structured procedure, the agent focuses on each step in isolation. When it reaches the end, the platform returns control to the rest of the conversation.
+
+Workflow edges cannot connect to or from a structured procedure. Use a Sub-procedure step to chain structured procedures. The platform manages entry from a matching trigger and completion, including returning control to the workflow node where the procedure started.
 
 The following rules describe how steps behave at runtime.
 
@@ -752,7 +754,7 @@ One pattern is specific to mixing types: a free-form procedure can reference a s
 * The only supported system tool is `end_call`.
 * Structured procedures cannot reference knowledge base documents.
 * There is no way to end the current turn when a procedure completes; the agent keeps the turn open and may continue speaking.
-* A structured procedure cannot be started from a specific workflow node in the dashboard.
+* Workflow edges cannot connect to or from a structured procedure. Use a Sub-procedure step to chain structured procedures; entry and completion are platform-managed.
 * Starting a procedure adds latency: the agent makes a tool call to enter it and then moves through the generated workflow.
 
 ### Model provider support

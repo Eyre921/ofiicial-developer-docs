@@ -20,7 +20,7 @@ Three changes matter for migration:
 
 1. **Reasoning is on by default** — a first for Opus-family models, following the default Sonnet 5 introduced
 2. **Disabling reasoning is restricted by effort level** — allowed at `high` or lower; `xhigh` and `max` require reasoning to stay on
-3. **Mid-conversation tool changes (beta)** — add and remove tools between turns without invalidating the prompt cache, via OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message.md) only
+3. **Mid-conversation tool changes (beta)** — add and remove tools between turns without invalidating the prompt cache, via OpenRouter's [Messages API](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message.md) only
 
 ## Reasoning On by Default
 
@@ -124,13 +124,13 @@ To change a tool's definition, remove the old tool with `tool_removal`, then sen
 
 > [!NOTE]
 >
-> This feature is only supported on OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message.md) (`/api/v1/messages`) — the Chat Completions API has no representation for these blocks. You do **not** need to send the `anthropic-beta: mid-conversation-tool-changes-2026-07-01` header: OpenRouter detects requests that use tool changes and attaches the beta for you, and routes those requests only to providers that support it.
+> This feature is only supported on OpenRouter's [Messages API](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message.md) (`/api/v1/messages`) — the Chat Completions API has no representation for these blocks. You do **not** need to send the `anthropic-beta: mid-conversation-tool-changes-2026-07-01` header: OpenRouter detects requests that use tool changes and attaches the beta for you, and routes those requests only to providers that support it.
 
 ## Fast Mode
 
 Like Opus 4.6–4.8, Opus 5 supports fast mode with up to 2.5x faster output at premium pricing. Send `speed: "fast"` (or `service_tier: "fast"` / `"priority"`) with `anthropic/claude-opus-5` — the request routes to the model's `fast` service tier endpoint.
 
-The dedicated [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/claude-opus-5-fast) model is deprecated: it keeps working and is served by the same fast tier capacity, but new integrations should target `anthropic/claude-opus-5`. See [Fast Mode](/docs/cookbook/coding-agents/claude-code-integration.md#fast-mode) for details.
+The dedicated [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/claude-opus-5-fast) model is deprecated: it keeps working and is served by the same fast tier capacity, but new integrations should target `anthropic/claude-opus-5`. See [Fast Mode](https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration.md#fast-mode) for details.
 
 ## Migration Checklist
 
@@ -148,8 +148,8 @@ The dedicated [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/c
 
 ## Resources
 
-* [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens.md)
-* [OpenRouter Messages API](/docs/api/api-reference/anthropic-messages/create-a-message.md)
-* [Fast Mode](/docs/cookbook/coding-agents/claude-code-integration.md#fast-mode)
+* [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
+* [OpenRouter Messages API](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message.md)
+* [Fast Mode](https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration.md#fast-mode)
 * [Anthropic model migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide)
 

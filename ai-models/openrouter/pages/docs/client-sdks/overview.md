@@ -66,7 +66,7 @@ The Client SDKs are intentionally lean. It mirrors the OpenRouter API surface 1:
 
 > [!TIP]
 >
-> If you want higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions, and conversation state management), see the [Agent SDK](/docs/agent-sdk/overview.md) instead.
+> If you want higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions, and conversation state management), see the [Agent SDK](https://openrouter.ai/docs/agent-sdk/overview.md) instead.
 
 ## Quick example
 
@@ -120,8 +120,8 @@ with OpenRouter(api_key=os.getenv("OPENROUTER_API_KEY")) as client:
 
 ## Next steps
 
-* [TypeScript SDK reference](/docs/client-sdks/typescript)
-* [Python SDK reference](/docs/client-sdks/python)
-* [Go SDK reference](/docs/client-sdks/go)
-* [Agent SDK overview](/docs/agent-sdk/overview.md), for building agents with multi-turn loops and tools
+* [TypeScript SDK reference](https://openrouter.ai/docs/client-sdks/typescript)
+* [Python SDK reference](https://openrouter.ai/docs/client-sdks/python)
+* [Go SDK reference](https://openrouter.ai/docs/client-sdks/go)
+* [Agent SDK overview](https://openrouter.ai/docs/agent-sdk/overview.md), for building agents with multi-turn loops and tools
 

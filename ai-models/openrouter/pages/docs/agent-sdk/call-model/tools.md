@@ -130,7 +130,7 @@ const manualTool = tool({
 
 Use `getToolCalls()` to retrieve manual tool calls for processing.
 
-When manual tool calls are left unresolved at the end of a round, the loop pauses and the calls are persisted to `ConversationState.pendingToolCalls` with `status: 'awaiting_client_tools'`, so cold-start consumers can recover them from serialized state. To continue, call `callModel` again with new `input`; the stale pendings are cleared and the run proceeds as a normal turn. Manual tools are not approved or rejected by call ID the way [approval](/docs/agent-sdk/call-model/tool-approval-state.md) and [HITL](#human-in-the-loop-hitl-tools) flows are. See [Status Values](/docs/agent-sdk/call-model/tool-approval-state.md#status-values).
+When manual tool calls are left unresolved at the end of a round, the loop pauses and the calls are persisted to `ConversationState.pendingToolCalls` with `status: 'awaiting_client_tools'`, so cold-start consumers can recover them from serialized state. To continue, call `callModel` again with new `input`; the stale pendings are cleared and the run proceeds as a normal turn. Manual tools are not approved or rejected by call ID the way [approval](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md) and [HITL](#human-in-the-loop-hitl-tools) flows are. See [Status Values](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md#status-values).
 
 ### Human-in-the-Loop (HITL) Tools
 
@@ -172,7 +172,7 @@ When `onToolCalled` returns `null`, the conversation state moves to `status: 'aw
 
 > [!NOTE]
 >
-> HITL tools differ from `requireApproval`: approval gates pause *before* execution for a yes/no decision, while HITL tools let `onToolCalled` run arbitrary logic first and only pause when it returns `null`. Use HITL when the decision is data-driven (e.g., amount thresholds, risk scoring); use `requireApproval` when you always want explicit human consent. See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md).
+> HITL tools differ from `requireApproval`: approval gates pause *before* execution for a yes/no decision, while HITL tools let `onToolCalled` run arbitrary logic first and only pause when it returns `null`. Use HITL when the decision is data-driven (e.g., amount thresholds, risk scoring); use `requireApproval` when you always want explicit human consent. See [Tool Approval & State](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md).
 
 ## Schema Definition
 
@@ -977,10 +977,10 @@ const longRunningTool = tool({
 
 ## Next Steps
 
-* **[Async Tools](/docs/agent-sdk/call-model/async-tools.md)** - Background and deferred execution, task check-ins, steering, and subagent tools
-* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks.md)** - Observe or control tool execution, approvals, prompts, and sessions
-* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md)** - Human-in-the-loop approval and conversation persistence
-* **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params.md)** - Tool-driven context injection
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Advanced execution control
-* **[Examples](/docs/agent-sdk/call-model/examples/weather-tool.md)** - Complete tool implementations
+* **[Async Tools](https://openrouter.ai/docs/agent-sdk/call-model/async-tools.md)** - Background and deferred execution, task check-ins, steering, and subagent tools
+* **[Lifecycle Hooks](https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks.md)** - Observe or control tool execution, approvals, prompts, and sessions
+* **[Tool Approval & State](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md)** - Human-in-the-loop approval and conversation persistence
+* **[nextTurnParams](https://openrouter.ai/docs/agent-sdk/call-model/next-turn-params.md)** - Tool-driven context injection
+* **[Stop Conditions](https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions.md)** - Advanced execution control
+* **[Examples](https://openrouter.ai/docs/agent-sdk/call-model/examples/weather-tool.md)** - Complete tool implementations
 

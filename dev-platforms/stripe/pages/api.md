@@ -1,5 +1,5 @@
 ---
-title: "API Reference"
+title: "API reference"
 source: https://docs.stripe.com/api.md
 path: api
 ---

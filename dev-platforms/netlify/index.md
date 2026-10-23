@@ -1,6 +1,6 @@
 # dev-platforms/netlify 文档索引
 
-> 共 83 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 104 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-and-cli-guides
@@ -25,6 +25,8 @@
 - `build/build-with-ai/agent-runners/overview` — [Agent Runners overview](pages/build/build-with-ai/agent-runners/overview.md) · [原文](https://docs.netlify.com/build/build-with-ai/agent-runners/overview.md)
 - `build/build-with-ai/agent-setup-guides/agent-setup-overview` — [AI context files](pages/build/build-with-ai/agent-setup-guides/agent-setup-overview.md) · [原文](https://docs.netlify.com/build/build-with-ai/agent-setup-guides/agent-setup-overview.md)
 - `build/build-with-ai/overview` — [Build with AI overview](pages/build/build-with-ai/overview.md) · [原文](https://docs.netlify.com/build/build-with-ai/overview.md)
+- `build/caching/cache-api` — [Cache API](pages/build/caching/cache-api.md) · [原文](https://docs.netlify.com/build/caching/cache-api.md)
+- `build/caching/caching-overview` — [Caching overview](pages/build/caching/caching-overview.md) · [原文](https://docs.netlify.com/build/caching/caching-overview.md)
 - `build/configure-builds/available-software-at-build-time` — [Netlify Build Software](pages/build/configure-builds/available-software-at-build-time.md) · [原文](https://docs.netlify.com/build/configure-builds/available-software-at-build-time.md)
 - `build/configure-builds/build-hooks` — [Netlify Build Hooks](pages/build/configure-builds/build-hooks.md) · [原文](https://docs.netlify.com/build/configure-builds/build-hooks.md)
 - `build/configure-builds/environment-variables` — [Netlify Build Environment Variables](pages/build/configure-builds/environment-variables.md) · [原文](https://docs.netlify.com/build/configure-builds/environment-variables.md)
@@ -39,6 +41,9 @@
 - `build/configure-builds/troubleshooting-tips` — [Netlify Build Troubleshooting](pages/build/configure-builds/troubleshooting-tips.md) · [原文](https://docs.netlify.com/build/configure-builds/troubleshooting-tips.md)
 - `build/data-and-storage/netlify-blobs` — [Netlify Blobs Overview](pages/build/data-and-storage/netlify-blobs.md) · [原文](https://docs.netlify.com/build/data-and-storage/netlify-blobs.md)
 - `build/data-and-storage/netlify-database/api` — [Netlify Database API reference](pages/build/data-and-storage/netlify-database/api.md) · [原文](https://docs.netlify.com/build/data-and-storage/netlify-database/api.md)
+- `build/data-and-storage/netlify-database/getting-started` — [Netlify Database: Getting started](pages/build/data-and-storage/netlify-database/getting-started.md) · [原文](https://docs.netlify.com/build/data-and-storage/netlify-database/getting-started.md)
+- `build/data-and-storage/netlify-database/index` — [Netlify Database](pages/build/data-and-storage/netlify-database/index.md) · [原文](https://docs.netlify.com/build/data-and-storage/netlify-database/index.md)
+- `build/data-and-storage/netlify-database/migrations` — [Netlify Database: Migrations](pages/build/data-and-storage/netlify-database/migrations.md) · [原文](https://docs.netlify.com/build/data-and-storage/netlify-database/migrations.md)
 - `build/edge-functions/api` — [Netlify Edge Functions API](pages/build/edge-functions/api.md) · [原文](https://docs.netlify.com/build/edge-functions/api.md)
 - `build/edge-functions/create-integration` — [Edge Functions Integrations](pages/build/edge-functions/create-integration.md) · [原文](https://docs.netlify.com/build/edge-functions/create-integration.md)
 - `build/edge-functions/declarations` — [Edge Function Declarations](pages/build/edge-functions/declarations.md) · [原文](https://docs.netlify.com/build/edge-functions/declarations.md)
@@ -79,6 +84,7 @@
 - `deploy/create-deploys` — [Create deploys](pages/deploy/create-deploys.md) · [原文](https://docs.netlify.com/deploy/create-deploys.md)
 - `deploy/deploy-notifications` — [Deploy notifications](pages/deploy/deploy-notifications.md) · [原文](https://docs.netlify.com/deploy/deploy-notifications.md)
 - `deploy/deploy-overview` — [Deploy overview](pages/deploy/deploy-overview.md) · [原文](https://docs.netlify.com/deploy/deploy-overview.md)
+- `deploy/manage-deploys/manage-deploys-overview` — [Manage deploys](pages/deploy/manage-deploys/manage-deploys-overview.md) · [原文](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview.md)
 - `deploy/protect-deploys` — [Protect deploys](pages/deploy/protect-deploys.md) · [原文](https://docs.netlify.com/deploy/protect-deploys.md)
 
 ## extend
@@ -89,15 +95,30 @@
 ## manage
 
 - `manage/accounts-and-billing/billing/billing-for-credit-based-plans/billing-faq-for-credit-based-plans` — [Netlify Billing FAQ](pages/manage/accounts-and-billing/billing/billing-for-credit-based-plans/billing-faq-for-credit-based-plans.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/billing-faq-for-credit-based-plans.md)
+- `manage/accounts-and-billing/billing/overview` — [Netlify Billing](pages/manage/accounts-and-billing/billing/overview.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/billing/overview.md)
 - `manage/accounts-and-billing/organization-management` — [Netlify Organization Management](pages/manage/accounts-and-billing/organization-management.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/organization-management.md)
+- `manage/accounts-and-billing/team-management/manage-team-members` — [Netlify Team Member Management](pages/manage/accounts-and-billing/team-management/manage-team-members.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/team-management/manage-team-members.md)
+- `manage/accounts-and-billing/team-management/overview` — [Netlify Team Management](pages/manage/accounts-and-billing/team-management/overview.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/team-management/overview.md)
+- `manage/accounts-and-billing/team-management/roles-and-permissions` — [Netlify Team Roles and Permissions](pages/manage/accounts-and-billing/team-management/roles-and-permissions.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/team-management/roles-and-permissions.md)
+- `manage/accounts-and-billing/team-management/team-audit-log` — [Netlify Team Audit Log](pages/manage/accounts-and-billing/team-management/team-audit-log.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/team-management/team-audit-log.md)
 - `manage/accounts-and-billing/team-management/team-owned-sites` — [Netlify Team Site Management](pages/manage/accounts-and-billing/team-management/team-owned-sites.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/team-management/team-owned-sites.md)
 - `manage/accounts-and-billing/user-settings` — [Netlify User Settings](pages/manage/accounts-and-billing/user-settings.md) · [原文](https://docs.netlify.com/manage/accounts-and-billing/user-settings.md)
 - `manage/domains/configure-domains/configure-an-automatic-subdomain-for-deploys` — [Netlify Automatic Deploy Subdomains](pages/manage/domains/configure-domains/configure-an-automatic-subdomain-for-deploys.md) · [原文](https://docs.netlify.com/manage/domains/configure-domains/configure-an-automatic-subdomain-for-deploys.md)
+- `manage/domains/configure-domains/configure-external-dns` — [External DNS Configuration](pages/manage/domains/configure-domains/configure-external-dns.md) · [原文](https://docs.netlify.com/manage/domains/configure-domains/configure-external-dns.md)
 - `manage/domains/configure-domains/delegate-a-standalone-subdomain` — [Delegate Subdomain to Netlify DNS](pages/manage/domains/configure-domains/delegate-a-standalone-subdomain.md) · [原文](https://docs.netlify.com/manage/domains/configure-domains/delegate-a-standalone-subdomain.md)
 - `manage/domains/configure-domains/dns-records` — [Netlify DNS Records](pages/manage/domains/configure-domains/dns-records.md) · [原文](https://docs.netlify.com/manage/domains/configure-domains/dns-records.md)
 - `manage/domains/configure-domains/netlify-name-servers` — [Delegate Domain to Netlify DNS](pages/manage/domains/configure-domains/netlify-name-servers.md) · [原文](https://docs.netlify.com/manage/domains/configure-domains/netlify-name-servers.md)
 - `manage/domains/domains-fundamentals/understand-domains` — [Netlify Custom Domains](pages/manage/domains/domains-fundamentals/understand-domains.md) · [原文](https://docs.netlify.com/manage/domains/domains-fundamentals/understand-domains.md)
+- `manage/domains/get-started-with-domains` — [Netlify Domain Registration](pages/manage/domains/get-started-with-domains.md) · [原文](https://docs.netlify.com/manage/domains/get-started-with-domains.md)
 - `manage/domains/manage-domains/manage-multiple-domains` — [Netlify Multiple Domains](pages/manage/domains/manage-domains/manage-multiple-domains.md) · [原文](https://docs.netlify.com/manage/domains/manage-domains/manage-multiple-domains.md)
+- `manage/domains/secure-domains-with-https/https-ssl` — [Netlify HTTPS Setup Guide](pages/manage/domains/secure-domains-with-https/https-ssl.md) · [原文](https://docs.netlify.com/manage/domains/secure-domains-with-https/https-ssl.md)
+- `manage/domains/set-up-netlify-dns` — [Netlify DNS: Manage Domains](pages/manage/domains/set-up-netlify-dns.md) · [原文](https://docs.netlify.com/manage/domains/set-up-netlify-dns.md)
+- `manage/domains/troubleshooting-tips` — [Netlify DNS and HTTPS Troubleshooting](pages/manage/domains/troubleshooting-tips.md) · [原文](https://docs.netlify.com/manage/domains/troubleshooting-tips.md)
+- `manage/forms/notifications` — [Netlify Forms Notifications](pages/manage/forms/notifications.md) · [原文](https://docs.netlify.com/manage/forms/notifications.md)
+- `manage/forms/setup` — [Netlify Form Setup](pages/manage/forms/setup.md) · [原文](https://docs.netlify.com/manage/forms/setup.md)
+- `manage/forms/spam-filters` — [Netlify Form Spam Filters](pages/manage/forms/spam-filters.md) · [原文](https://docs.netlify.com/manage/forms/spam-filters.md)
+- `manage/forms/submissions` — [Netlify Form Submissions](pages/manage/forms/submissions.md) · [原文](https://docs.netlify.com/manage/forms/submissions.md)
+- `manage/forms/troubleshooting-tips` — [Netlify Forms Troubleshooting](pages/manage/forms/troubleshooting-tips.md) · [原文](https://docs.netlify.com/manage/forms/troubleshooting-tips.md)
 - `manage/forms/usage-and-billing` — [Netlify Forms Usage & Billing](pages/manage/forms/usage-and-billing.md) · [原文](https://docs.netlify.com/manage/forms/usage-and-billing.md)
 
 ## resources

@@ -22,7 +22,7 @@ Claude Fable 5.1 ships as [`anthropic/claude-fable-5.1`](https://openrouter.ai/a
 4. **Mid-thinking display updates (beta)** — request real-time progress summaries during long tool-using turns
 5. **Prefix-locked thinking** — thinking blocks are bound to the transcript prefix that produced them; largely not enforced on requests through OpenRouter (see below)
 
-The new request controls are available on OpenRouter's [Messages API](/docs/api/api-reference/anthropic-messages/create-a-message.md) (`/api/v1/messages`) only. You do **not** need to send the Anthropic beta headers for any of them: OpenRouter detects requests that use each feature, attaches the corresponding beta for you, and routes those requests only to providers that support it.
+The new request controls are available on OpenRouter's [Messages API](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message.md) (`/api/v1/messages`) only. You do **not** need to send the Anthropic beta headers for any of them: OpenRouter detects requests that use each feature, attaches the corresponding beta for you, and routes those requests only to providers that support it.
 
 ## Ephemeral Mid-Conversation System Messages (Beta)
 
@@ -65,7 +65,7 @@ Effort previously applied to the whole conversation as a top-level parameter. No
 }
 ```
 
-The same change is available through the Chat Completions API (`configuration_update` on a content-less system message) and the Responses API (a `configuration_update` input item). OpenRouter translates each form into the `output_config` message Fable expects. See [Changing Effort Mid-Conversation](/docs/guides/best-practices/reasoning-tokens.md#changing-effort-mid-conversation).
+The same change is available through the Chat Completions API (`configuration_update` on a content-less system message) and the Responses API (a `configuration_update` input item). OpenRouter translates each form into the `output_config` message Fable expects. See [Changing Effort Mid-Conversation](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md#changing-effort-mid-conversation).
 
 ## Forced Tool Use Is Rejected
 
@@ -74,7 +74,7 @@ On models with thinking always enabled, forcing a tool call makes the model skip
 To migrate:
 
 * **Steering toward a tool**: use `tool_choice: {"type": "auto"}` and state the expectation in the prompt (e.g. "Use the get\_weather tool to answer"). Fable 5.1 follows explicit tool instructions reliably, and thinking first improves argument quality.
-* **Extracting structured data**: if you were forcing a tool call to get JSON back, use [structured outputs](/docs/guides/features/structured-outputs.md) instead, which constrain the response format without skipping thinking.
+* **Extracting structured data**: if you were forcing a tool call to get JSON back, use [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs.md) instead, which constrain the response format without skipping thinking.
 
 ```json lines theme={null}
 // Messages API — steer with auto + prompt instead of forcing
@@ -148,9 +148,9 @@ With `drop_block`, mismatched blocks are discarded upstream and each removal is 
 
 ## Resources
 
-* [Claude Opus 5 Migration Guide](/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) — mid-conversation tool changes, which Fable 5.1 also supports
-* [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens.md)
-* [Structured Outputs](/docs/guides/features/structured-outputs.md)
-* [OpenRouter Messages API](/docs/api/api-reference/anthropic-messages/create-a-message.md)
+* [Claude Opus 5 Migration Guide](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) — mid-conversation tool changes, which Fable 5.1 also supports
+* [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
+* [Structured Outputs](https://openrouter.ai/docs/guides/features/structured-outputs.md)
+* [OpenRouter Messages API](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message.md)
 * [Anthropic Claude Fable 5.1 migration guide](https://platform.claude.com/docs/en/models/fable-5-1/migration-guide)
 

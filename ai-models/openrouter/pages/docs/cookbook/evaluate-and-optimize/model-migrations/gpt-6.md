@@ -25,7 +25,7 @@ OpenAI's [GPT-6 family](https://developers.openai.com/api/docs/guides/latest-mod
 | `openai/gpt-6-luna` | Efficient, repeatable work at scale |
 | `openai/gpt-6-luna-pro` | Luna with pro reasoning |
 
-The tiers share one API. Sol and Luna accept `none` as a reasoning effort, Astra does not. Pro reasoning is selected with `reasoning.mode: "pro"` on a standard slug or by using the `-pro` slug, the same as the [GPT-5.6 family](/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md#pro-mode-with-reasoningmode).
+The tiers share one API. Sol and Luna accept `none` as a reasoning effort, Astra does not. Pro reasoning is selected with `reasoning.mode: "pro"` on a standard slug or by using the `-pro` slug, the same as the [GPT-5.6 family](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md#pro-mode-with-reasoningmode).
 
 There are no breaking changes. Existing requests keep working as-is. This guide covers the two additive pieces worth adopting and one behavior to handle:
 
@@ -43,7 +43,7 @@ The examples below use `openai/gpt-6-astra` for async tools and `openai/gpt-6-so
 
 An ordinary function call pauses the model's turn until your application returns the tool output. Set `async: true` on a `function` or `custom` tool definition and the model can issue the call, keep working on the rest of the request, and pick the result up when you deliver it in a later request. Your application still executes the tool. The flag only changes when the model waits.
 
-OpenRouter supports async tools on the [Responses API](/docs/api/api-reference/responses/create-a-response.md). Chat Completions and Anthropic Messages requests run every tool call synchronously. A Chat Completions tool that carries `async` is accepted, but the flag is removed before the request is routed and the call behaves like any other tool call.
+OpenRouter supports async tools on the [Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md). Chat Completions and Anthropic Messages requests run every tool call synchronously. A Chat Completions tool that carries `async` is accepted, but the flag is removed before the request is routed and the call behaves like any other tool call.
 
 ### Declare the tool
 
@@ -254,7 +254,7 @@ The Messages API uses Anthropic's per-message `output_config.effort` on a conten
 
 ### Effort values
 
-Effort values in an update are translated to the model's vocabulary the same way request-level effort is, using the model's [supported reasoning efforts](/docs/guides/best-practices/reasoning-tokens.md#discovering-per-model-reasoning-options). An update whose effort has no supported equivalent is rejected with a 400. Sol and Luna accept `none`, Astra does not, so an update to `none` is accepted on `openai/gpt-6-sol` and `openai/gpt-6-luna` and rejected on `openai/gpt-6-astra`.
+Effort values in an update are translated to the model's vocabulary the same way request-level effort is, using the model's [supported reasoning efforts](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md#discovering-per-model-reasoning-options). An update whose effort has no supported equivalent is rejected with a 400. Sol and Luna accept `none`, Astra does not, so an update to `none` is accepted on `openai/gpt-6-sol` and `openai/gpt-6-luna` and rejected on `openai/gpt-6-astra`.
 
 ### Placement rules
 
@@ -264,7 +264,7 @@ OpenRouter checks these rules before forwarding, regardless of which API the upd
 * Do not place two updates next to each other. Adjacent updates are rejected.
 * Updates cannot be combined with `truncation: "auto"` in the Responses API. Automatic truncation could drop the update and silently revert the effort.
 * Keep the update at the same position in later requests. Moving or removing it changes the prefix and loses the cache benefit.
-* Mid-conversation effort updates are not accepted on the [Batch API](/docs/batch-quickstart.md) and are rejected per line.
+* Mid-conversation effort updates are not accepted on the [Batch API](https://openrouter.ai/docs/batch-quickstart.md) and are rejected per line.
 
 ### Prompt caching
 
@@ -291,7 +291,7 @@ A policy block is an HTTP 403 with `error_type: "refusal"` on every OpenRouter A
 
 On the Responses API the same block is a `response.failed` event with `response.error.code` set to the provider code and `error_type: "refusal"` on the response. On Anthropic Messages the error envelope carries `error.error_type: "refusal"` next to the native `error.type`, and the provider code is not exposed. OpenRouter does not resend a declined prompt to another endpoint serving the same model, and the block does not count against the provider's health. Treat a 403 `refusal` as a prompt problem rather than a transient failure. Retrying the same input returns the same block.
 
-A refusal that the model produces as its own completed output is not an error. The Responses API returns `status: "completed"` with a `refusal` content part, and Chat Completions returns `message.refusal` with `finish_reason: "content_filter"`. See [Errors and Debugging](/docs/api_reference/errors-and-debugging.md#content-policy) for the full contract.
+A refusal that the model produces as its own completed output is not an error. The Responses API returns `status: "completed"` with a `refusal` content part, and Chat Completions returns `message.refusal` with `finish_reason: "content_filter"`. See [Errors and Debugging](https://openrouter.ai/docs/api_reference/errors-and-debugging.md#content-policy) for the full contract.
 
 ## Migration Checklist
 
@@ -317,13 +317,13 @@ None. Async tools and `configuration_update` are both optional:
 
 * [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model), OpenAI's model guidance with migration and prompting best practices for GPT-6 Astra, Sol, and Luna
 * [Introducing GPT-6 Sol and Luna](https://openai.com/index/introducing-gpt-6-sol-and-luna/), OpenAI's announcement of the Sol and Luna tiers
-* [GPT-5.6 Migration Guide](/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) for `reasoning.mode`, `reasoning.context`, and explicit prompt caching, which carry over to GPT-6
+* [GPT-5.6 Migration Guide](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) for `reasoning.mode`, `reasoning.context`, and explicit prompt caching, which carry over to GPT-6
 * [Async tool calling](https://developers.openai.com/api/docs/guides/async-tool-calling), OpenAI's guide including the wait-tool pattern
 * [Change reasoning mid-conversation](https://developers.openai.com/api/docs/guides/reasoning?api-mode=responses#change-reasoning-mid-conversation) in OpenAI's reasoning guide
-* [Tool Calling on the Responses API](/docs/api_reference/responses/tool-calling.md) on OpenRouter
-* [Errors and Debugging](/docs/api_reference/errors-and-debugging.md#content-policy), the OpenRouter error contract for policy blocks and refusals
-* [Changing Effort Mid-Conversation](/docs/guides/best-practices/reasoning-tokens.md#mid-conversation-effort) in the OpenRouter reasoning guide
-* [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens.md)
-* [Prompt Caching](/docs/guides/best-practices/prompt-caching.md)
-* [OpenRouter Responses API](/docs/api/api-reference/responses/create-a-response.md)
+* [Tool Calling on the Responses API](https://openrouter.ai/docs/api_reference/responses/tool-calling.md) on OpenRouter
+* [Errors and Debugging](https://openrouter.ai/docs/api_reference/errors-and-debugging.md#content-policy), the OpenRouter error contract for policy blocks and refusals
+* [Changing Effort Mid-Conversation](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md#mid-conversation-effort) in the OpenRouter reasoning guide
+* [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
+* [Prompt Caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md)
+* [OpenRouter Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
 

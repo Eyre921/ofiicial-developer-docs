@@ -29,7 +29,7 @@ Management endpoints for SCIM group-to-workspace mappings, authenticated with a 
 
 ## ListMappings
 
-List SCIM group-to-workspace mappings for the organization. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List SCIM group-to-workspace mappings for the organization. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -98,7 +98,7 @@ func main() {
 
 ## Create
 
-Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -160,7 +160,7 @@ func main() {
 
 ## Delete
 
-Delete a SCIM group-to-workspace mapping. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Delete a SCIM group-to-workspace mapping. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -220,7 +220,7 @@ func main() {
 
 ## Read
 
-Get a SCIM group-to-workspace mapping. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get a SCIM group-to-workspace mapping. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -275,7 +275,7 @@ func main() {
 
 ## Update
 
-Update a SCIM group mapping role. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update a SCIM group mapping role. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -335,7 +335,7 @@ func main() {
 
 ## ListGroups
 
-List SCIM groups for the organization. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List SCIM groups for the organization. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -406,7 +406,7 @@ func main() {
 
 ## CreateSyncJob
 
-Start a SCIM directory sync. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Start a SCIM directory sync. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -460,7 +460,7 @@ func main() {
 
 ## GetSyncJob
 
-Get SCIM directory sync status. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get SCIM directory sync status. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

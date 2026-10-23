@@ -34,15 +34,15 @@ You need:
 * A cheap executor model for routine work
 * A stronger advisor model for compact second opinions
 
-If you are starting a new TypeScript agent, use the [Agent SDK `callModel` API](/docs/sdks/typescript/call-model/overview) for the executor loop. The sample below uses Chat Completions so the server-tool request shape is visible, but the budget-gate pattern is the same inside an Agent SDK workflow.
+If you are starting a new TypeScript agent, use the [Agent SDK `callModel` API](https://openrouter.ai/docs/sdks/typescript/call-model/overview) for the executor loop. The sample below uses Chat Completions so the server-tool request shape is visible, but the budget-gate pattern is the same inside an Agent SDK workflow.
 
 Use these references for exact schemas:
 
-* [Advisor server tool](/docs/guides/features/server-tools/advisor.md)
-* [Agent SDK `callModel` overview](/docs/sdks/typescript/call-model/overview)
-* [Create a chat completion](/docs/api/api-reference/chat/create-a-chat-completion.md)
-* [Create a response](/docs/api/api-reference/responses/create-a-response.md)
-* [TypeScript SDK Chat reference](/docs/client-sdks/typescript/sdks/chat/README.md)
+* [Advisor server tool](https://openrouter.ai/docs/guides/features/server-tools/advisor.md)
+* [Agent SDK `callModel` overview](https://openrouter.ai/docs/sdks/typescript/call-model/overview)
+* [Create a chat completion](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md)
+* [Create a response](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
+* [TypeScript SDK Chat reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/chat/README.md)
 
 ## What you're building
 
@@ -318,7 +318,7 @@ Token counts, cost, answer text, and provider-specific usage detail keys vary by
 
 ## Next steps
 
-* Read the [Advisor reference](/docs/guides/features/server-tools/advisor.md) for exact parameters, multiple-advisor rules, memory, streaming, and API-surface details.
-* Use [Response Caching](/docs/guides/features/response-caching.md) for repeated stable prefixes in the executor prompt.
-* Add [Human-in-the-Loop controls](/docs/cookbook/building-agents/hitl-tools.md) when a second opinion should pause for a person instead of another model.
+* Read the [Advisor reference](https://openrouter.ai/docs/guides/features/server-tools/advisor.md) for exact parameters, multiple-advisor rules, memory, streaming, and API-surface details.
+* Use [Response Caching](https://openrouter.ai/docs/guides/features/response-caching.md) for repeated stable prefixes in the executor prompt.
+* Add [Human-in-the-Loop controls](https://openrouter.ai/docs/cookbook/building-agents/hitl-tools.md) when a second opinion should pause for a person instead of another model.
 

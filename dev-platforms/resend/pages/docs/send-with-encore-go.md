@@ -8,6 +8,8 @@ Learn how to send your first email using Encore and the Resend Go SDK.
 
 [Encore](https://encore.dev) is an open-source Go framework that provisions infrastructure directly from your application code, with built-in observability and cloud deployment.
 
+Use this pre-built prompt to get started faster.
+
 # Send Email with Resend and Encore Go
 
 **Purpose:** Enforce only the **current** and **correct** instructions for sending emails using [Resend](https://resend.com/) with the [Encore Go](https://encore.dev) backend framework.

@@ -74,7 +74,7 @@ When a customer enters information such as their email, phone number, or name on
 
 If you opt your customers into saving their payment details to Link by default, it can increase the rate of Link signups. Customers with payment information saved to Link can checkout without having to re-enter their payment details when they pay at your business.
 
-This configuration automatically expands the Link sign-up fields, and can pre-fill information such as email address and phone number to help customers sign up.
+This configuration automatically expands the Link sign-up fields, and can prefill information such as email address and phone number to help customers sign up.
 
 This feature is enabled by default, and you can configure it from your settings page at **Settings** > **Payment Methods** > **Link**, or in the Connected Accounts settings. The availability of this feature is dependent on the customer’s country. Data privacy laws vary by jurisdiction; Link disables or limits this feature when local regulations prohibit it. Customers can opt out at any time.
 

@@ -2462,7 +2462,7 @@ Declare locals at module level with a unique `id`, then initialize them inside a
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, tool, stepCountIs } from "ai";
+import { tool, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -2490,7 +2490,7 @@ export const myChat = chat.agent({
       messageCount: user.messageCount,
     });
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     userContext.messageCount++;
 
     return streamText({
@@ -2534,7 +2534,7 @@ When you use `ai.toolExecute()` inside AI SDK `tool()` to expose a subtask, chat
 ```ts theme={"theme":"css-variables"}
 import { chat, ai } from "@trigger.dev/sdk/ai";
 import { schemaTask } from "@trigger.dev/sdk";
-import { streamText, tool } from "ai";
+import { tool, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -2561,7 +2561,7 @@ export const myChat = chat.agent({
   onBoot: async ({ clientData }) => {
     userContext.init({ name: "Alice", plan: "pro" });
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,
@@ -5137,7 +5137,7 @@ export const myChat = chat.agent({
     if (preloaded) return; // Already initialized in onPreload
     // ... fallback initialization for non-preloaded runs
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });
@@ -8216,12 +8216,12 @@ A `chat.agent` task takes `messages`, calls `streamText`, and returns the result
 
 ```ts trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, stepCountIs } from "ai";
+import { stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 export const myChat = chat.agent({
   id: "my-chat",
-  run: async ({ messages, signal }) =>
+  run: async ({ messages, signal, streamText }) =>
     streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,
@@ -8260,11 +8260,12 @@ See [Quick Start](/docs/ai-chat/quick-start) for the matching server actions and
 
 ## How it fits together
 
-Three primitives, related but distinct:
+Four primitives, related but distinct:
 
 * **Chat agents** — the SDK surface you define with [`chat.agent()`](/docs/ai-chat/backend#chat-agent). Owns the turn loop, lifecycle hooks, and the response stream.
 * **Sessions** — the durable, bi-directional channel keyed on `chatId` that holds the conversation across run boundaries. A chat agent runs *on top of* a [Session](/docs/ai-chat/sessions).
 * **Sub-agents** — Delegate work from one agent to another via [`AgentChat`](/docs/ai-chat/patterns/sub-agents). The sub-agent runs as its own durable agent on its own session; its response streams back through the parent as preliminary tool results, so the frontend sees the sub-agent working inside the parent's tool card.
+* **Channels** connect an agent to a surface other than your frontend. [`slack()`](/docs/webhooks/slack) and [`linear()`](/docs/webhooks/linear) turn an agent into a Slack or Linear agent, and [`chat.channels.custom()`](/docs/webhooks/channels) connects any chat surface that sends webhooks. Each conversation there is still a durable session, and the reply posts back to the surface.
 
 ## Next steps
 
@@ -8788,7 +8789,7 @@ export const myChat = chat.agent({
       }),
     ]);
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
   },
 });
@@ -8815,7 +8816,7 @@ End-to-end implementation across the three files involved: agent task, server ac
 
 ```ts trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, stepCountIs } from "ai";
+import { stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -8857,7 +8858,7 @@ export const myChat = chat.agent({
       }),
     ]);
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,
@@ -9460,7 +9461,7 @@ The fix: read the `appliedEdits` counts as they stream in `onStepFinish`, then a
 
 ```ts /trigger/native-persist.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, stepCountIs, tool, type UIMessage } from "ai";
+import { stepCountIs, tool, type UIMessage } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -9504,7 +9505,7 @@ export const nativePersist = chat.agent({
   id: "native-persist",
   idleTimeoutInSeconds: 120,
   tools: { fetchRecord },
-  run: async ({ messages, chatId, tools, signal }) => {
+  run: async ({ messages, chatId, tools, signal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,
@@ -9561,7 +9562,7 @@ OpenAI's `store: true` keeps the thread server-side and returns a `responseId`. 
 
 ```ts /trigger/openai-store.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, stepCountIs, type ModelMessage } from "ai";
+import { stepCountIs, type ModelMessage } from "ai";
 import { openai } from "@ai-sdk/openai";
 
 // Persist the stored-response handle between turns. Replace with your database.
@@ -9580,7 +9581,7 @@ function messagesSinceLastAssistant(messages: ModelMessage[]): ModelMessage[] {
 export const openaiStore = chat.agent({
   id: "openai-store",
   idleTimeoutInSeconds: 120,
-  run: async ({ messages, chatId, signal }) => {
+  run: async ({ messages, chatId, signal, streamText }) => {
     const native = nativeStore.get(chatId);
     const outbound = native ? messagesSinceLastAssistant(messages) : messages;
 
@@ -9615,7 +9616,7 @@ A native handle is a per-provider cache. An OpenAI `previousResponseId` means no
 
 ```ts /trigger/resilient-chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, generateText, stepCountIs, generateId, type ModelMessage } from "ai";
+import { generateText, stepCountIs, generateId, type ModelMessage } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { openai } from "@ai-sdk/openai";
 
@@ -9670,7 +9671,7 @@ export const resilientChat = chat.agent({
     if (chatId) nativeStore.delete(chatId);
   },
 
-  run: async ({ messages, chatId, signal }) => {
+  run: async ({ messages, chatId, signal, streamText }) => {
     let lastError: unknown;
     for (const providerId of FALLBACK_ORDER) {
       const native = nativeStore.get(chatId);
@@ -10922,7 +10923,7 @@ const tools = { research: researchTool };
 export const myAgent = chat.agent({
   id: "orchestrator",
   tools, // declare here so toModelOutput survives across turns
-  run: async ({ messages, tools, stopSignal }) => {
+  run: async ({ messages, tools, stopSignal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-6"),
       messages,
@@ -11641,7 +11642,7 @@ On the agent side, declare which versions the current code supports:
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText } from "ai";
+
 import { anthropic } from "@ai-sdk/anthropic";
 
 // The set of frontend protocol versions this agent code supports.
@@ -11662,7 +11663,7 @@ export const myChat = chat
         chat.requestUpgrade();
       }
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -11725,7 +11726,7 @@ export const myChat = chat
         chat.requestUpgrade();
       }
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -14240,12 +14241,12 @@ Inside a `chat.agent` run, `chat.channel(...)` opens a channel on the current ru
 
 ```ts /trigger/browser-agent.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText } from "ai";
+
 import { screenshots } from "./channels";
 
 export const browserAgent = chat.agent({
   id: "browser-agent",
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     const frames = chat.channel(screenshots);
 
     frames.in.on((control) => setPaused(control.paused)); // control: ViewportControl
@@ -15563,7 +15564,7 @@ Call `withUIMessage` **once**, then chain `.agent({ ... })` instead of `chat.age
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, tool } from "ai";
+import { tool } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import type { MyChatUIMessage } from "./my-chat-types";
@@ -15597,7 +15598,7 @@ export const myChat = chat
         data: { status: "preparing" },
       });
     },
-    run: async ({ messages, tools, signal }) => {
+    run: async ({ messages, tools, signal, streamText }) => {
       // `tools` is myTools, typed, handed back on the payload
       return streamText({
         model: anthropic("claude-sonnet-4-5"),
@@ -15663,7 +15664,7 @@ export const myChat = chat
       // clientData is typed as { userId: string; model?: string }
       await initUser(clientData.userId);
     },
-    run: async ({ messages, clientData, signal }) => {
+    run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
         model: getModel(clientData.model),
         messages,
@@ -15700,7 +15701,7 @@ export const myChat = chat
   })
   .agent({
     id: "my-chat",
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -15725,7 +15726,7 @@ chat
       // Runs second — task-specific logic
       await createChatRecord(event.chatId);
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -16651,8 +16652,9 @@ Prompts integrate with `chat.agent()` via `chat.prompt` — a run-scoped store f
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { prompts } from "@trigger.dev/sdk";
-import { streamText, createProviderRegistry } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
 
 const registry = createProviderRegistry({ anthropic });
 
@@ -16666,13 +16668,14 @@ const systemPrompt = prompts.define({
 
 export const myChat = chat.agent({
   id: "my-chat",
+  registry,
+  clientDataSchema: z.object({ name: z.string() }),
   onChatStart: async ({ clientData }) => {
     const resolved = await systemPrompt.resolve({ name: clientData.name });
     chat.prompt.set(resolved);
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
-      ...chat.toStreamTextOptions({ registry }),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -16681,9 +16684,11 @@ export const myChat = chat.agent({
 });
 ```
 
+The `streamText` passed to `run()` applies the stored prompt: its system text, its model (resolved through the agent's `registry`), its `config`, and telemetry that links each generation to the prompt version. Options you pass at the call site win, apart from `system`, which throws when a prompt already sets one.
+
 ### chat.toStreamTextOptions()
 
-Returns an options object ready to spread into `streamText()`. When a prompt is stored via `chat.prompt.set()`, it includes:
+Inside a `chat.agent` you don't need this: the `streamText` passed to `run()` applies the same options. Use `chat.toStreamTextOptions()` when you call `streamText` yourself, as in a [custom agent](/docs/ai-chat/custom-agents). It returns an options object ready to spread into `streamText()`. When a prompt is stored via `chat.prompt.set()`, it includes:
 
 * `system` — the compiled prompt text
 * `model` — resolved via the `registry` when provided
@@ -16709,14 +16714,13 @@ const options = chat.toStreamTextOptions();
 Access the stored prompt from anywhere in the run:
 
 ```ts theme={"theme":"css-variables"}
-run: async ({ messages, signal }) => {
+run: async ({ messages, signal, streamText }) => {
   const prompt = chat.prompt(); // Throws if not set
   console.log(prompt.text);     // The compiled prompt
   console.log(prompt.model);    // "anthropic:claude-sonnet-4-5"
   console.log(prompt.version);  // 3
 
   return streamText({
-    ...chat.toStreamTextOptions({ registry }),
     messages,
     abortSignal: signal,
     stopWhen: stepCountIs(15),
@@ -22894,13 +22898,13 @@ A chat agent runs one long-lived worker per conversation and suspends between me
 
 ```ts /trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText } from "ai";
+
 import { openai } from "@ai-sdk/openai";
 import { prisma } from "@/lib/db";
 
 export const myChat = chat.agent({
   id: "my-chat",
-  run: async ({ messages, clientData, signal }) => {
+  run: async ({ messages, clientData, signal, streamText }) => {
     const user = await prisma.user.findUnique({ where: { id: clientData.userId } });
     // The connection is back in the pool before the model stream starts.
     return streamText({
@@ -25264,20 +25268,17 @@ Build a **durable, multi-turn chat agent**. A durable session owns the conversat
 
 ## A minimal agent
 
-Define an agent with `chat.agent()`. The `run` function receives the conversation `messages` (already converted from the frontend's `UIMessage[]`) and an abort `signal`. Return a `StreamTextResult` and it's piped to the frontend automatically.
+Define an agent with `chat.agent()`. The `run` function receives the conversation `messages` (already converted from the frontend's `UIMessage[]`), an abort `signal`, and a `streamText` to call. Return its result and it's piped to the frontend automatically.
 
 ```typescript trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText, stepCountIs } from "ai";
+import { stepCountIs } from "ai";
 
 export const myChat = chat.agent({
   id: "my-chat",
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
-      // Spread chat.toStreamTextOptions() FIRST: it wires up prepareStep
-      // (compaction, steering, background injection) and telemetry.
-      ...chat.toStreamTextOptions(),
       model: anthropic("claude-sonnet-4-5"),
       messages,
       abortSignal: signal,
@@ -25287,11 +25288,11 @@ export const myChat = chat.agent({
 });
 ```
 
-> [!WARNING]
+> [!NOTE]
 >
-> Always spread `chat.toStreamTextOptions()` into your `streamText` call, and spread it first. It
-> wires up the `prepareStep` callback that drives compaction, mid-turn steering and background
-> injection. Those features silently no-op if the spread is missing.
+> Call the `streamText` passed to `run()`, not one imported from `ai`. It wires up the `prepareStep`
+> callback that drives compaction, mid-turn steering and background injection, and records each model
+> step and tool call as a span. With the imported `streamText`, those features don't run.
 
 ## Add tools
 
@@ -25300,7 +25301,7 @@ A chat agent uses tools exactly like any other AI SDK agent. Declare them on the
 ```typescript trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText, stepCountIs, tool } from "ai";
+import { stepCountIs, tool } from "ai";
 import { z } from "zod";
 
 const getCurrentTime = tool({
@@ -25313,12 +25314,9 @@ export const myChat = chat.agent({
   id: "my-chat",
   // Declared here so tool results survive history re-conversion across turns.
   tools: { getCurrentTime },
-  run: async ({ messages, tools, signal }) => {
+  run: async ({ messages, tools, signal, streamText }) => {
     return streamText({
-      // Pass tools INTO toStreamTextOptions (not separately to streamText): it
-      // merges them with any auto-injected skill tools and sets streamText's
-      // `tools`. Passing tools separately after the spread drops the skill tools.
-      ...chat.toStreamTextOptions({ tools }),
+      tools,
       model: anthropic("claude-sonnet-4-5"),
       messages,
       stopWhen: stepCountIs(15),
@@ -26606,12 +26604,12 @@ The agent writes a sentence or two, then calls a `renderVisualization` tool with
 
 ### The agent
 
-The agent is a single [`chat.agent()`](/docs/ai-chat/overview) call. Trigger.dev handles the chat session, turn loop, streaming and resumability. The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable teaching guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable, so it always matches the deployed code. Setting the resolved prompt with `chat.prompt.set()` lets `chat.toStreamTextOptions()` supply the system text, model, config and telemetry:
+The agent is a single [`chat.agent()`](/docs/ai-chat/overview) call. Trigger.dev handles the chat session, turn loop, streaming and resumability. The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable teaching guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable, so it always matches the deployed code. Setting the resolved prompt with `chat.prompt.set()` lets the `streamText` passed to `run()` supply the system text, model, config and telemetry:
 
 ```ts src/trigger/trigger-chat-agent.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { createProviderRegistry, stepCountIs, streamText } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { prompts } from "@trigger.dev/sdk";
 import { catalogPromptSection } from "../lib/catalog";
 
@@ -26635,6 +26633,8 @@ on-screen components, never walls of text.
 export const triggerChatAgent = chat.agent({
   id: "trigger-chat-agent",
   idleTimeoutInSeconds: 300,
+  // Resolves the prompt's provider-prefixed model ("anthropic:claude-haiku-4-5").
+  registry,
   // Public-demo cost guardrail: throttle how many sessions run at once.
   queue: { concurrencyLimit: 10 },
 
@@ -26647,21 +26647,22 @@ export const triggerChatAgent = chat.agent({
   },
 
   // onTurnStart (not onChatStart) fires on every turn, so the system prompt
-  // survives an idle resume. chat.toStreamTextOptions() picks up the system
-  // text, model, config AND experimental_telemetry from it — the telemetry is
-  // what makes LLM observability (tokens, cost, latency) show up per prompt version.
+  // survives an idle resume. The streamText passed to run() picks up the system
+  // text, model, config and telemetry from it, which is what makes LLM
+  // observability (tokens, cost, latency) show up per prompt version.
   onTurnStart: async () => {
     chat.prompt.set(await getResolvedPrompt());
   },
 
-  run: async ({ messages, tools, signal }) => {
+  run: async ({ messages, tools, signal, streamText }) => {
     // Escalate only genuinely hard turns to Sonnet; everything else stays on
-    // the prompt's base model (Haiku). The override goes AFTER the spread so it wins.
+    // the prompt's base model (Haiku). A model passed here wins over the prompt's,
+    // and a text-only dashboard override leaves the prompt without one.
     const escalate = await needsEscalation(messages);
+    const fallback = chat.prompt().model ? {} : { model: anthropic("claude-haiku-4-5") };
     return streamText({
-      model: anthropic("claude-haiku-4-5"),
-      ...chat.toStreamTextOptions({ registry, tools }),
-      ...(escalate ? { model: anthropic("claude-sonnet-5") } : {}),
+      tools,
+      ...(escalate ? { model: anthropic("claude-sonnet-5") } : fallback),
       messages,
       stopWhen: stepCountIs(15),
       abortSignal: signal,
@@ -26670,11 +26671,10 @@ export const triggerChatAgent = chat.agent({
 });
 ```
 
-> [!WARNING]
+> [!NOTE]
 >
-> On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
-> `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
-> the run trace.
+> The `streamText` passed to `run()` records each model step and tool call as a span, and links them
+> to the stored prompt's version, so tokens, cost and latency show per prompt version.
 
 ### Grounding answers on live docs with MCP
 
@@ -27185,13 +27185,13 @@ This example is a fullstack [chat agent](/docs/ai-chat/overview) that answers na
 
 ### The agent
 
-The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable analyst guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable. Storing the resolved prompt with `chat.prompt.set()` lets `chat.toStreamTextOptions()` supply the system text, model, config and telemetry:
+The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable analyst guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable. Storing the resolved prompt with `chat.prompt.set()` lets the `streamText` passed to `run()` supply the system text, model, config and telemetry:
 
 ```ts src/trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
 import { prompts } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { createProviderRegistry, stepCountIs, streamText } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { z } from "zod";
 import { catalogPromptSection } from "../lib/catalog";
 
@@ -27211,10 +27211,14 @@ const systemPrompt = prompts.define({
 export const clickhouseAgent = chat.agent({
   id: "clickhouse-agent",
   idleTimeoutInSeconds: 300,
+  // Resolves the prompt's provider-prefixed model ("anthropic:claude-opus-4-8").
+  registry,
   // Declared on the config so tool results survive history re-conversion across turns
   tools: { listTables, describeTable, runQuery, renderVisualization },
 
-  onChatStart: async () => {
+  // onTurnStart (not onChatStart) fires on every turn, so the prompt survives
+  // an idle resume.
+  onTurnStart: async () => {
     // Latest prompt version (or an active dashboard override), with the
     // component reference generated from the catalog so it always matches
     // the deployed code.
@@ -27224,14 +27228,12 @@ export const clickhouseAgent = chat.agent({
     chat.prompt.set(resolved);
   },
 
-  run: async ({ messages, tools, signal }) => {
+  run: async ({ messages, tools, signal, streamText }) => {
+    // The system prompt, model (including dashboard overrides), config and
+    // telemetry come from the stored prompt. A dashboard override can change only
+    // the text and leave the model empty, so fall back to a model then.
     return streamText({
-      // Fallback model only — placed BEFORE the spread so the stored
-      // prompt's model (including dashboard overrides) wins when set.
-      model: anthropic("claude-opus-4-8"),
-      // Wires up prepareStep (compaction, steering, background injection),
-      // plus the system prompt + model + config + telemetry from chat.prompt().
-      ...chat.toStreamTextOptions({ registry }),
+      ...(chat.prompt().model ? {} : { model: anthropic("claude-opus-4-8") }),
       messages,
       tools,
       stopWhen: stepCountIs(15),
@@ -27241,11 +27243,10 @@ export const clickhouseAgent = chat.agent({
 });
 ```
 
-> [!WARNING]
+> [!NOTE]
 >
-> On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
-> `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
-> the run trace.
+> The `streamText` passed to `run()` records each model step and tool call as a span, and links them
+> to the stored prompt's version, so tokens, cost and latency show per prompt version.
 
 ### Generative UI with one shared catalog
 
@@ -27595,7 +27596,7 @@ The agent is a single [`chat.agent()`](/docs/ai-chat/overview) task. Trigger.dev
 
 ```ts trigger/chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { stepCountIs, streamText } from "ai";
+import { stepCountIs } from "ai";
 import { HISTORY_TURNS, MAX_REPLY_TOKENS, SYSTEM_PROMPT } from "../lib/voice-config";
 import { chatModel } from "../lib/model";
 
@@ -27615,10 +27616,8 @@ export const voiceChat = chat.agent({
     return firstUser > 0 ? windowed.slice(firstUser) : windowed;
   },
 
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
-      // Spread first: wires up compaction, steering and telemetry.
-      ...chat.toStreamTextOptions(),
       model: chatModel,
       system: SYSTEM_PROMPT,
       maxOutputTokens: MAX_REPLY_TOKENS,
@@ -39950,15 +39949,15 @@ This is why understanding scopes is crucial: the same string key can produce dif
 # Trigger.dev docs
 Source: https://trigger.dev/docs/introduction
 
-Build and run durable AI agents and workflows in TypeScript. Long-running tasks with retries, queues, observability, and elastic scaling. Open source and self-hostable.
+Build and run durable AI agents and workflows in TypeScript. Long-running tasks with retries, queues, webhooks, observability, and elastic scaling. Open source and self-hostable.
 
 > **[Quick start](/docs/quick-start)**
 >
 > Go from zero to your first task in 3 minutes.
 
-> **[Build AI agents](/docs/guides/ai-agents/overview)**
+> **[Build AI agents](/docs/ai-chat/overview)**
 >
-> Agent patterns, worked examples, and the tools to run them in production.
+> Durable, multi-turn agents with `chat.agent`, from your frontend to Slack and Linear.
 
 > **[AI coding assistants](/docs/building-with-ai)**
 >
@@ -39972,7 +39971,7 @@ Build and run durable AI agents and workflows in TypeScript. Long-running tasks 
 
 Copy this prompt into your AI coding assistant from your app's directory:
 
-```text theme={"theme":"css-variables"}
+```text theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
 ```
 
@@ -39982,49 +39981,132 @@ Your agent guides you through login, choosing or creating an organization and pr
 
 ## What is Trigger.dev?
 
-Trigger.dev is the open source platform for building and running durable AI agents and workflows in TypeScript. Run them for hours, configure automatic retries, control concurrency, and manage queues. There's no execution timeout, and no queue or worker infrastructure for you to build.
+Trigger.dev is the open source platform for building and running durable AI agents and workflows in TypeScript. You write tasks and agents in your existing codebase, and they run on Trigger.dev with retries, queues, waits, full tracing, and elastic scaling. There's no execution timeout, and no queue or worker infrastructure for you to build.
 
-You write agents and tasks in your existing codebase using our CLI and SDK, and get durable execution, queues, waits, full tracing, and elastic scaling without building any of it yourself.
+Trigger.dev's core is Apache-2.0 licensed. [Self-host it](/docs/self-hosting/overview) on your own infrastructure, or let [Trigger.dev Cloud](https://cloud.trigger.dev) run it for you.
 
-Trigger.dev's core is Apache-2.0 licensed, a genuine OSI license. [Self-host it](/docs/self-hosting/overview) on your own infrastructure, or let [Trigger.dev Cloud](https://cloud.trigger.dev) run it for you.
+## Build agents with `chat.agent`
 
-## Core concepts
+A `chat.agent` runs each conversation as one durable task. It wakes when a message arrives and idles between turns, and its state survives page refreshes, deploys, and crashes. Turn lifecycle, resuming a stream mid-reply, and approvals are handled for you, and your frontend connects with the AI SDK's `useChat`, with no API routes to write.
+
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+
+export const supportAgent = chat.agent({
+  id: "support-agent",
+  run: async ({ messages, signal, streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      abortSignal: signal,
+    }),
+});
+```
+
+> **[Agent quick start](/docs/ai-chat/quick-start)**
+>
+> Build a chat agent and its frontend end to end.
+
+> **[Sessions](/docs/ai-chat/sessions)**
+>
+> Each conversation's durable state and two-way stream, across all its runs.
+
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declare tools on your agent and get them back typed in `run()`.
+
+> **[Human in the loop](/docs/ai-chat/patterns/human-in-the-loop)**
+>
+> Pause a tool call for approval and resume when a person decides.
+
+> **[Slack agents](/docs/webhooks/slack)**
+>
+> Turn an agent into a native Slack agent with `@trigger.dev/slack`.
+
+> **[Linear agents](/docs/webhooks/linear)**
+>
+> Assign Linear issues to an agent with `@trigger.dev/linear`.
+
+Version your [prompts](/docs/ai/prompts) in code and change them from the dashboard, and see every model step and tool call, with tokens, cost and latency, in [AI observability](/docs/ai/observability).
+
+## Run work
 
 > **[Writing tasks](/docs/tasks/overview)**
 >
-> The durable functions at the core of Trigger.dev. Write them in your existing codebase, with retries and no timeouts.
+> The durable functions at the core of Trigger.dev, written in your existing codebase.
 
 > **[Triggering tasks](/docs/triggering)**
 >
-> Trigger a task from your backend, your frontend, a schedule, or another task.
+> Trigger a task from your backend, your frontend, or another task.
 
 > **[Runs](/docs/runs)**
 >
-> Every execution of a task is a run, with its status, retries, and logs recorded.
+> Every execution of a task is a run, with its status, retries, logs and trace.
 
-> **[Idempotency](/docs/idempotency)**
+> **[Realtime](/docs/realtime/overview)**
 >
-> Use an idempotency key so a retried or duplicated trigger runs once, not twice.
+> Stream run status and LLM output to your frontend with React hooks.
 
-## Build with agents
+## React to events
 
-Build durable, multi-turn agents with the [chat agent](/docs/ai-chat/overview): one long-running task per conversation, with the tools it can call, streaming, and resumability handled for you. Add human-in-the-loop approval by pausing a run on a [waitpoint](/docs/wait-for-token) until a person signs off, and a waiting run doesn't consume compute. Stream run status and LLM output straight to your frontend with the [Realtime API](/docs/realtime/overview) and React hooks, and record your Vercel AI SDK calls as spans with the model, token counts, cost and latency using [AI observability](/docs/ai/observability). Version your [prompts](/docs/ai/prompts) in code, then edit the text or swap the model from the dashboard without redeploying.
+> **[Webhooks](/docs/webhooks/overview)**
+>
+> Hosted, verified endpoints for Stripe, GitHub and more, delivered to your tasks and agents.
 
-## Scale and scheduling
+> **[Scheduled tasks](/docs/tasks/scheduled)**
+>
+> Run a task on a cron schedule, with timezone support.
 
-Set how many runs of a task execute at once, globally or per tenant, with [concurrency](/docs/concurrency) and [queues](/docs/queues). Run a task on a [cron schedule](/docs/tasks/scheduled) with timezone support, choose the CPU and memory each task runs on with [machines](/docs/machines), and control what happens when a task throws with [errors and retries](/docs/errors-retrying).
+> **[Webhook waiters](/docs/webhooks/waiters)**
+>
+> Pause a run until a matching webhook arrives, like a payment confirmation.
 
-## Self-hosting
+> **[Waits](/docs/wait)**
+>
+> Pause a run for a duration, until a date, or until a token is completed. A waiting run doesn't use compute.
 
-Trigger.dev is open source and you can self-host. Read the [overview guide](/docs/self-hosting/overview), or how to do it with [Docker](/docs/self-hosting/docker) or [Kubernetes](/docs/self-hosting/kubernetes).
+## Run in production
+
+> **[Queues & concurrency](/docs/queues)**
+>
+> Control how many runs execute at once, globally or per tenant.
+
+> **[Machines](/docs/machines)**
+>
+> Choose the CPU and memory each task runs on.
+
+> **[Deployment](/docs/deployment/overview)**
+>
+> Atomic, versioned deploys, with preview branches and environments.
+
+> **[Errors & retries](/docs/errors-retrying)**
+>
+> Retry failed attempts automatically, and decide what happens when a task throws.
+
+> **[Logs, traces & metrics](/docs/logging)**
+>
+> A full trace of every run, with your logs and spans.
+
+> **[Query & dashboards](/docs/observability/query)**
+>
+> Query your runs with TRQL, and build dashboards from the results.
 
 ## Frequently asked questions
 
-**How do I add human-in-the-loop approval to an agent?** Pause the run on a [waitpoint](/docs/wait-for-token) until a person approves the action. A waiting run doesn't consume compute, so it can wait minutes or days.
+**Can I use Trigger.dev for background jobs, not just AI?** Yes. The same durable tasks, queues, retries, and [cron schedules](/docs/tasks/scheduled) run any background job or workflow, with or without AI.
+
+**How long can a run take?** As long as it needs. Runs have no maximum duration by default, and you can set a [`maxDuration`](/docs/runs/max-duration) for a project, a task, or a single run to cap it.
+
+**Do my serverless function timeouts apply?** No. Tasks run on Trigger.dev, not inside your serverless functions, so your platform's function timeout isn't in the execution path. Your backend triggers the task and returns.
+
+**Can I receive webhooks without running a server?** Yes. Declare a [webhook endpoint](/docs/webhooks/overview) in your code, and Trigger.dev hosts its URL, verifies each request, and delivers the event to your tasks and agents.
+
+**How do I add human-in-the-loop approval?** Pause the run on a [waitpoint](/docs/wait-for-token) until a person approves, or use a [chat agent's approvals](/docs/ai-chat/patterns/human-in-the-loop) for tool calls. A waiting run doesn't use compute, so it can wait minutes or days.
 
 **Does Trigger.dev support tool calling and MCP?** Yes. Agents call the tools you define, and the [MCP server](/docs/building-with-ai) lets AI coding assistants trigger tasks, deploy, and read run traces.
 
-**Can I use Trigger.dev for background jobs, not just AI?** Yes. The same durable tasks, queues, retries, and [cron schedules](/docs/tasks/scheduled) run any background job or workflow, with or without AI.
+**Can I self-host?** Yes. Trigger.dev is open source. Read the [self-hosting overview](/docs/self-hosting/overview), or set it up with [Docker](/docs/self-hosting/docker) or [Kubernetes](/docs/self-hosting/kubernetes).
 
 ## Getting help
 
@@ -40034,7 +40116,7 @@ We'd love to hear from you or give you a hand getting started. Here are some way
 >
 > Our Discord is the best place to get help with any questions about Trigger.dev.
 
-> **[Follow us on X (Twitter)](https://twitter.com/triggerdotdev)**
+> **[Follow us on X](https://twitter.com/triggerdotdev)**
 >
 > Follow us to get the latest updates and news.
 
@@ -40044,17 +40126,21 @@ We'd love to hear from you or give you a hand getting started. Here are some way
 
 > **[Give us a star on GitHub](https://github.com/triggerdotdev/trigger.dev)**
 >
-> Check us out our GitHub repo and give us a star if you like what we're doing.
+> Check out our GitHub repo, and give us a star if you like what we're doing.
 
 ## Facts for AI assistants
 
 **Current major version:** v4 (`@trigger.dev/sdk` 4.x). Documentation under `/docs/v2` and `/docs/v3` describes superseded versions and should not be used.
 
-**Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. A task runs until it finishes; you can cap runtime with `maxDuration` (minimum 5 seconds).
+**Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. Runs have no maximum duration by default; `maxDuration` caps a run's compute time for a project, a task, or a single run, and `timeout.None` removes the cap.
 
 **Deploys:** each deploy is an atomic version. A run already in progress is not affected by code shipped after it started.
 
 **Durability and retries:** retries are automatic and configurable. A failed attempt is retried according to the task's retry settings; once retries are exhausted the run ends terminally as `FAILED`, and some crashes (for example out of memory) end the run as `CRASHED` without a retry. Idempotency keys deduplicate the task triggers and waits you key, so the same key runs once instead of again.
+
+**Agents:** `chat.agent` is imported from `@trigger.dev/sdk/ai`, not from `@trigger.dev/sdk`. Inside `run()`, call the `streamText` passed in the run options. It records each model step and tool call as a span by default. Slack and Linear agents use the `@trigger.dev/slack` and `@trigger.dev/linear` packages, and `slack()` requires a `startOn` filter (`appMentions()` answers @mentions).
+
+**Webhooks:** `webhooks.endpoint.define()` declares a hosted, verified endpoint that syncs on `trigger dev` and on deploy; `webhook()` subscribes a task with a filter, and `webhooks.waiter` pauses a run until a matching event arrives. Both come from `@trigger.dev/sdk`.
 
 **License:** the platform core is Apache-2.0 and the `@trigger.dev/sdk` package is MIT, permissive open source, not fair-code or source-available. Some features are gated, but the open source core is not relicensed or held back.
 
@@ -44422,6 +44508,11 @@ Generate a new signing secret for an endpoint and return it once, for providers 
 **Parameters:**
 
 * `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
+* `previousSecretTtlSeconds` (optional): keep accepting the replaced secret for this many seconds (up to 604800, 7 days) while the provider switches to the new one. Omit it, or pass `0`, to replace the secret immediately, for example when it leaked. The response says when the old secret stops working.
+
+**Example usage:**
+
+* `"Rotate the GitHub endpoint's secret and keep the old one working for a day"`
 
 ### set\_webhook\_secret
 
@@ -44431,6 +44522,7 @@ Store a signing secret or public key the provider issued, such as Stripe's `whse
 
 * `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
 * `secret` (required): the secret or public key
+* `previousSecretTtlSeconds` (optional): keep accepting the replaced secret for this many seconds (up to 604800, 7 days) while the provider switches to the new one. Omit it, or pass `0`, to replace the secret immediately, for example when it leaked. The response says when the old secret stops working.
 
 `replay_webhook_delivery`, `generate_webhook_secret` and `set_webhook_secret` are write operations and are not available in readonly mode.
 
@@ -53127,6 +53219,7 @@ Environment variables for the supervisor container.
 | `KUBERNETES_IMAGE_PULL_SECRETS` | No | — | Image pull secrets (CSV). |
 | `KUBERNETES_EPHEMERAL_STORAGE_SIZE_LIMIT` | No | 10Gi | Ephemeral storage size limit. Applies to all runs. |
 | `KUBERNETES_EPHEMERAL_STORAGE_SIZE_REQUEST` | No | 2Gi | Ephemeral storage size request. Applies to all runs. |
+| `KUBERNETES_POD_RESERVED_SOURCE_PORTS` | No | — | Ports runs never use as the source port of an outbound connection, so they can't clash with services on those ports. CSV of ports or ranges, e.g. `50080,50081` or `50080-50090`. Sets the pod's `net.ipv4.ip_local_reserved_ports` sysctl. |
 | **Metrics** | | | |
 | `METRICS_ENABLED` | No | true | Enable metrics. |
 | `METRICS_COLLECT_DEFAULTS` | No | true | Collect default metrics. |
@@ -53345,6 +53438,18 @@ Environment variables for the webapp container.
 | `RUN_ENGINE_DEFAULT_MAX_TTL` | No | — | Maximum TTL for all runs (e.g. "14d"). Runs without a TTL use this as default; runs with a larger TTL are clamped. |
 | `MAXIMUM_DEV_QUEUE_SIZE` | No | — | Maximum queued runs per queue in development environments. |
 | `MAXIMUM_DEPLOYED_QUEUE_SIZE` | No | — | Maximum queued runs per queue in deployed (staging/prod) environments. |
+| **Webhooks** | | | |
+| `WEBHOOK_ENABLED` | No | 0 | Set to `1` to run hosted webhooks: ingest, delivery and waiters. See [Webhooks](#webhooks). |
+| `WEBHOOK_REDIS_HOST` | No | localhost | A node of the Redis cluster webhooks use for their queue and waiters. It must run in cluster mode. |
+| `WEBHOOK_REDIS_PORT` | No | 6379 | Port of that node. |
+| `WEBHOOK_REDIS_USERNAME` | No | — | Webhooks Redis username. |
+| `WEBHOOK_REDIS_PASSWORD` | No | — | Webhooks Redis password. |
+| `WEBHOOK_REDIS_TLS_DISABLED` | No | `REDIS_TLS_DISABLED` | Set to `true` to connect to the webhooks Redis without TLS. |
+| `WEBHOOK_INGRESS_ORIGIN` | No | `API_ORIGIN` | Public origin of the webhook URLs, for when you serve them from their own host. |
+| `WEBHOOK_INGRESS_BODY_SIZE_LIMIT_MB` | No | 1 | Largest webhook request body accepted, in MB. |
+| `WEBHOOK_DATABASE_URL` | No | `DATABASE_URL` | A separate PostgreSQL database for webhook endpoints and deliveries. |
+| `WEBHOOK_DELIVERY_RETENTION_DAYS` | No | 30 | How many days of deliveries the dashboard and API show. It doesn't delete anything: deliveries are kept for `WEBHOOK_DELIVERY_STORAGE_DAYS`, or longer when this is higher. |
+| `WEBHOOK_DELIVERY_STORAGE_DAYS` | No | 30 | How long deliveries are stored before they're deleted. Must be one of `3`, `7`, `30`, `90`, `180` or `365`; any other value stops the webapp from starting. |
 | **Misc** | | | |
 | `TRIGGER_TELEMETRY_DISABLED` | No | — | Disable telemetry. |
 | `NODE_MAX_OLD_SPACE_SIZE` | No | 8192 | Maximum memory allocation for Node.js heap in MiB (e.g. "4096" for 4GB). |
@@ -53354,6 +53459,18 @@ Environment variables for the webapp container.
 | `ADMIN_EMAILS` | No | — | Regex of user emails to automatically promote to admin on signup. Does not apply to existing users. |
 | `ADMIN_DASHBOARD_ENABLED` | No | 1 | Set to anything other than `1` or `true` to disable the admin dashboard and user impersonation on this instance. |
 | `EVENT_LOOP_MONITOR_ENABLED` | No | 1 | Node.js event loop lag monitor. |
+
+## Webhooks
+
+Hosted webhooks are off on a self-hosted instance until you turn them on:
+
+1. Run a Redis (or Valkey) cluster for webhooks and point `WEBHOOK_REDIS_HOST` and `WEBHOOK_REDIS_PORT` at one of its nodes. The webhook engine connects in cluster mode, so a standalone Redis won't work.
+2. Set `WEBHOOK_ENABLED=1` on the webapp.
+3. Give organizations access with the `hasWebhooksAccess` feature flag: turn it on for everyone on the admin dashboard's **Global Feature Flags** page, or for one organization from its feature flags on the **Organizations** page. An organization without it doesn't see Webhooks in the dashboard, and its deploys don't sync endpoints.
+
+Webhook URLs are served from `WEBHOOK_INGRESS_ORIGIN`, which defaults to `API_ORIGIN`, so providers need to reach that origin from the internet.
+
+The Docker Compose setup only passes the variables listed under the webapp service's `environment` in `hosting/docker/webapp/docker-compose.yml`, so add the webhook variables there. With the Helm chart, set them in `webapp.extraEnvVars`.
 
 ## Multi-Provider Object Storage
 
@@ -54295,6 +54412,8 @@ You own a custom base image. It must provide:
 * glibc, so native modules built in the build stage load at runtime
 
 A `DEPLOY_BUILD_BASE_IMAGES` image needs everything the base image provides, plus `python3`, `make` and `g++`. Build extensions that add image instructions are replayed on it. Without an entry, the build stage uses the published build image, except for projects whose build extensions add image instructions: those build from your base image and install the toolchain with `apt-get`, so that base must be Debian-based. To avoid the published images entirely, set both variables.
+
+A custom image is yours to harden. Deploys on the published images remove trust in publicly compromised certificate authorities and point Node.js and Python at the OS trust store. Stages built on a custom image get neither, and run with the certificate settings the image ships with. Keeping a custom image patched, trust store included, is your responsibility.
 
 > [!WARNING]
 >

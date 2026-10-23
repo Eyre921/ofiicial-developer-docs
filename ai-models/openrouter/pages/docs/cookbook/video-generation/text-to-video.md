@@ -30,13 +30,13 @@ You need:
 
 > [!TIP]
 >
-> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](https://openrouter.ai/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
-* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
-* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
-* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README.md)
+* [Create video generation request](https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
+* [List video generation models](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
+* [TypeScript SDK video generation reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
 
 Before wiring the submit path, confirm that the selected model supports the duration, resolution, and aspect ratio you plan to send. For example, the model used below returned this metadata during QA:
 
@@ -77,7 +77,7 @@ Model metadata output:
 
 ## Step 1: Submit the video job
 
-Add a server-side submit step that sends `POST /api/v1/videos` with the chosen model, prompt, duration, resolution, and aspect ratio. Store the returned job object because the next step needs its `id`, `status`, and `polling_url`. Validate those values against the selected model's supported fields from the [video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models.md) before submitting. Unsupported values return a 400 with the supported values.
+Add a server-side submit step that sends `POST /api/v1/videos` with the chosen model, prompt, duration, resolution, and aspect ratio. Store the returned job object because the next step needs its `id`, `status`, and `polling_url`. Validate those values against the selected model's supported fields from the [video models API](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md) before submitting. Unsupported values return a 400 with the supported values.
 
 Adapt this submit shape in the server route, queue, or worker that owns video generation:
 

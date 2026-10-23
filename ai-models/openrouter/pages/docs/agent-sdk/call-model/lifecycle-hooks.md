@@ -661,8 +661,8 @@ Abort active handler signals, then await detached work during graceful shutdown.
 
 ## Next steps
 
-* **[Tools](/docs/agent-sdk/call-model/tools.md)** - Define and execute typed tools
-* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md)** - Pause and resume approval-gated tools
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Control when the agent loop ends
-* **[API Reference](/docs/agent-sdk/call-model/api-reference.md)** - Review complete `callModel` types and exports
+* **[Tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md)** - Define and execute typed tools
+* **[Tool Approval & State](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md)** - Pause and resume approval-gated tools
+* **[Stop Conditions](https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions.md)** - Control when the agent loop ends
+* **[API Reference](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)** - Review complete `callModel` types and exports
 

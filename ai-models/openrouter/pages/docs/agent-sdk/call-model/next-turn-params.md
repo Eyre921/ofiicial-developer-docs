@@ -402,7 +402,7 @@ nextTurnParams: {
 
 ## See Also
 
-* **[Skills Loader Example](/docs/agent-sdk/call-model/examples/skills-loader.md)** - Complete implementation
-* **[Dynamic Parameters](/docs/agent-sdk/call-model/dynamic-parameters.md)** - Async parameter functions
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md)** - Execution control
+* **[Skills Loader Example](https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader.md)** - Complete implementation
+* **[Dynamic Parameters](https://openrouter.ai/docs/agent-sdk/call-model/dynamic-parameters.md)** - Async parameter functions
+* **[Stop Conditions](https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions.md)** - Execution control
 

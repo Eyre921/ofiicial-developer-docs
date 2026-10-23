@@ -39,9 +39,9 @@ You need:
 * An OpenRouter API key available as `OPENROUTER_API_KEY`
 * Bun, or Node.js 22.18 or newer (both run TypeScript files directly)
 * `sharp` to load and draw on the image: `npm install sharp`
-* A JPEG, PNG, WebP, or GIF photo. To follow along exactly, download the [workbench photo](/docs/assets/cookbook/image-understanding/find-objects-in-images/workbench.jpg) used on this page and save it as `workbench.jpg`.
+* A JPEG, PNG, WebP, or GIF photo. To follow along exactly, download the [workbench photo](https://openrouter.ai/docs/assets/cookbook/image-understanding/find-objects-in-images/workbench.jpg) used on this page and save it as `workbench.jpg`.
 
-This guide uses `moondream/moondream3.1-9b-a2b`. `moondream/moondream3-preview` takes the same commands. See the [Moondream 3.1](https://openrouter.ai/moondream/moondream3.1-9b-a2b) model page for pricing, and [Image Understanding](/docs/guides/overview/multimodal/image-understanding.md) for the ways to send images.
+This guide uses `moondream/moondream3.1-9b-a2b`. `moondream/moondream3-preview` takes the same commands. See the [Moondream 3.1](https://openrouter.ai/moondream/moondream3.1-9b-a2b) model page for pricing, and [Image Understanding](https://openrouter.ai/docs/guides/overview/multimodal/image-understanding.md) for the ways to send images.
 
 ## Step 1: Find every match with /detect
 

@@ -12,6 +12,6 @@ Design compliant Treasury for platforms marketing campaigns.
 
 This article has multiple variants. Fetch one of the following URLs to view specific content for your use case:
 
-- [US](https://docs.stripe.com/treasury/connect/compliance.md?accounts-namespace=v1)
-- [UK and EEA](https://docs.stripe.com/treasury/connect/compliance.md?accounts-namespace=v2)
+- [US](https://docs.stripe.com/treasury/connect/compliance.md?t4p-geo=us)
+- [UK and EEA](https://docs.stripe.com/treasury/connect/compliance.md?t4p-geo=emea)
 

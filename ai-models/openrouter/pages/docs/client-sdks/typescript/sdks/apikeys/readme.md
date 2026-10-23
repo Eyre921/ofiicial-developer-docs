@@ -103,7 +103,7 @@ run();
 
 ## list
 
-List all API keys for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all API keys for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -181,7 +181,7 @@ run();
 
 ## create
 
-Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.
+Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.
 
 ### Example Usage
 
@@ -276,7 +276,7 @@ run();
 
 ## delete
 
-Delete an existing API key. Authenticate with a [management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys).
+Delete an existing API key. Authenticate with a [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys).
 
 ### Example Usage
 
@@ -358,7 +358,7 @@ run();
 
 ## get
 
-Get a single API key by hash. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Get a single API key by hash. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -440,7 +440,7 @@ run();
 
 ## update
 
-Update an existing API key. Authenticate with a [management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys).
+Update an existing API key. Authenticate with a [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys).
 
 ### Example Usage
 

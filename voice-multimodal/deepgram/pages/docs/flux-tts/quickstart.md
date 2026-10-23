@@ -76,9 +76,10 @@ Flux TTS model strings follow the format `flux-{voice}-{language}`:
 
 ```
 flux-haley-en      # English voice
+flux-desislava-bg  # Bulgarian voice
 ```
 
-All Flux TTS voices are English (`-en`) today. See [Voices & Languages](/docs/flux-tts/voices) for the full catalog.
+The language code at the end of the model string selects the language — English (`en`) and 41 other languages. See [Voices & Languages](/docs/flux-tts/voices) for the full catalog.
 
 ## The conversation loop
 
@@ -180,7 +181,7 @@ wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
 
 ## A note on streaming text
 
-Send **plain text**. The server applies text normalization (e.g. number and date expansion) before synthesis, but it does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream raw LLM tokens without coordinating chunk boundaries.
+Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish, the server applies text normalization (e.g. number and date expansion) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream raw LLM tokens without coordinating chunk boundaries.
 
 > **Warning**
 >

@@ -88,7 +88,7 @@ To use this method:
 2. Note the `id` field in the response
 3. Use that ID to fetch usage information via the `/generation` endpoint
 
-For more details on this approach, see the [Get a Generation](/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation.md) documentation.
+For more details on this approach, see the [Get a Generation](https://openrouter.ai/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation.md) documentation.
 
 > [!NOTE]
 >

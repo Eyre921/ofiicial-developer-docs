@@ -38,7 +38,7 @@ You must follow these rules:
 - If there is ever a conflict between the user’s request and the validated setup, inform the user of the conflict and ask them to revise their setup choices using the [Interaction contract](https://docs.stripe.com/connect/required-verification-information.md#interaction-contract). Keep the validated setup aligned with what the user requested without silently dropping the conflict.
 - Follow the [Interaction contract](https://docs.stripe.com/connect/required-verification-information.md#interaction-contract) for every user question.
 - When the number of available options exceeds four, *always* print the full validated reference list before asking the multiple-choice question so the user can see the full option space.
-  - When printing countries, always print the full country name followed by its code in parentheses, e.g. `Germany (DE)`.
+  - When printing countries, always print the full country name followed by its code in parentheses, for example, `Germany (DE)`.
   - Use specific countries in the quick-pick options so the user can move forward with immediate clarity.
   - Leave the descriptions for the country quick-pick options blank.
 - For any field with a small valid option set, show the user every valid option.
@@ -307,7 +307,7 @@ Transform the API response into one or more human-readable tables in your own re
    - use the section name as the table heading, for example `Account`, `Company`, `Representative`, `Directors`, or `Owners`
    - Include the following columns:
      - Heading: blank
-       - Content: Row display name, e.g. “Name”, “Date of birth”, “Address”
+       - Content: Row display name, for example, “Name”, “Date of birth”, “Address”
      - Heading: `Requirement`
        - Content: a bulleted list of displayed fields
        - Render one bullet per displayed field

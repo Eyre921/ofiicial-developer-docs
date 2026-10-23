@@ -186,7 +186,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `pay_by_bank_payments` | Yes | The payment method must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/pay-by-bank.md?pm-info=business-locations). | Yes |
 | [PayNow](https://docs.stripe.com/payments/paynow.md)
 
-`paynow_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/paynow.md#prohibited-business-categories). | Yes, if MCC passes the PayNow prohibited business list. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/paynow.md?pm-info=business-locations). | Yes |
+`paynow_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/paynow.md#prohibited-and-restricted-business-categories). | Yes, if the MCC isn’t on the prohibited business list. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/paynow.md#paynow-business-locations). | Yes |
 | [Pix](https://docs.stripe.com/payments/pix.md)
 
 `pix_payments` | Yes | The capability must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/pix.md?pm-info=business-locations). | No |
@@ -307,7 +307,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `pay_by_bank_payments` | No | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/pay-by-bank.md?pm-info=business-locations). | Yes |
 | [PayNow](https://docs.stripe.com/payments/paynow.md)
 
-`paynow_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/paynow.md#prohibited-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/paynow.md?pm-info=business-locations). | Yes |
+`paynow_payments` | Yes | No, see [prohibited businesses](https://docs.stripe.com/payments/paynow.md#prohibited-and-restricted-business-categories). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/paynow.md#paynow-business-locations). | Yes |
 | [Pix](https://docs.stripe.com/payments/pix.md)
 
 `pix_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/pix.md?pm-info=business-locations). | No |

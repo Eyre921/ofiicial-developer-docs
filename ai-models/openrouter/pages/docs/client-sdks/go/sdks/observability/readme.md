@@ -26,7 +26,7 @@ Observability endpoints
 
 ## List
 
-List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -96,7 +96,7 @@ func main() {
 
 ## Create
 
-Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -199,7 +199,7 @@ func main() {
 
 ## Delete
 
-Delete an existing observability destination. This performs a soft delete. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing observability destination. This performs a soft delete. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -254,7 +254,7 @@ func main() {
 
 ## Get
 
-Fetch a single observability destination by its UUID. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Fetch a single observability destination by its UUID. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -348,7 +348,7 @@ func main() {
 
 ## Update
 
-Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

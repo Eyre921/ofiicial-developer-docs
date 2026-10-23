@@ -594,6 +594,8 @@ model: 'qwen3-next-80b-a3b-instruct'
 
 For a few models, `message.content` comes back as an array of content blocks instead of a plain string. See [Content shape varies by model](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use) before swapping in a model you haven't used yet.
 
+Gemini models don't support `parallel_tool_calls: false`, and a request that sets it returns `400` with `Unknown name "parallel_tool_calls"`. Leave the field out instead. Gemini makes parallel tool calls by default, so your code needs to handle more than one tool call per turn.
+
 See [Models](https://neon.com/docs/ai-gateway/models) for the full list.
 
 ## Rate limiting
@@ -888,6 +890,28 @@ console.log(answers.refund.probability); // 0.98
 
 The AI SDK calls the yes/no type `boolean` and returns its answer as `probability`; the provider sends it as `noul`. `choice` and `score` answers leave out `confidence`, which is in `providerMetadata.neon.confidence` instead. The provider accepts text and JSON state and throws `UnsupportedFunctionalityError` for file parts.
 
+You can also use TypeSafe's [`@ai-sdk/typesafe-ai`](https://www.npmjs.com/package/@ai-sdk/typesafe-ai) provider, which the examples in the Neon Console use. Point it at the gateway's `/typesafe/v1` path, since it appends `/systemone` itself, and pass your Neon credential as `apiKey`:
+
+```typescript
+import { createTypeSafeAi } from '@ai-sdk/typesafe-ai';
+import { experimental_decide as decide } from 'ai';
+
+const typesafe = createTypeSafeAi({
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/typesafe/v1`,
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+});
+
+const { answers } = await decide({
+  model: typesafe.decisionModel('typesafeai-jev-1-14-0'),
+  state: 'I was charged twice this month.',
+  questions: {
+    billing: { type: 'boolean', instructions: 'Is the user asking about billing?' },
+  },
+});
+
+console.log(answers.billing.probability); // 0.94
+```
+
 ## List the models
 
 `GET /typesafe/v1/models` lists the decision models your branch can call:
@@ -907,12 +931,15 @@ They also appear in `GET /v1/models` with `"dialects": ["systemone"]`.
 
 ## Error handling
 
-| Status                  | Meaning               | Common cause                                                                                                     |
-| ----------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `400 Bad Request`       | Invalid request       | Missing or unknown model (including `jev-latest`), no questions, `stream: true`, or a `box` question             |
-| `401 Unauthorized`      | Authentication failed | Missing or invalid `NEON_AI_GATEWAY_TOKEN`                                                                       |
-| `403 Forbidden`         | Access denied         | Credential lacks `ai_gateway:invoke` scope, or branch not in credential lineage                                  |
-| `429 Too Many Requests` | Quota or rate limited | Account quota or per-minute token limit. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits). |
+| Status                         | Meaning               | Common cause                                                                                                     |
+| ------------------------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `400 Bad Request`              | Invalid request       | Missing or unknown model (including `jev-latest`), no questions, `stream: true`, or a `box` question             |
+| `401 Unauthorized`             | Authentication failed | Missing or invalid `NEON_AI_GATEWAY_TOKEN`                                                                       |
+| `403 Forbidden`                | Access denied         | Credential lacks `ai_gateway:invoke` scope, or branch not in credential lineage                                  |
+| `413 Request Entity Too Large` | Body too large        | Request body exceeds 32 MiB, before or after decompression                                                       |
+| `415 Unsupported Media Type`   | Unsupported encoding  | `Content-Encoding` is something other than a single `gzip`, `x-gzip`, or `zstd` layer                            |
+| `429 Too Many Requests`        | Quota or rate limited | Account quota or per-minute token limit. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits). |
+| `503 Service Unavailable`      | Gateway busy          | Too many compressed requests are being decoded at once. Retry after the `Retry-After` interval.                  |
 
 For exact error messages and fixes, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
 
@@ -924,7 +951,7 @@ For exact error messages and fixes, see [Troubleshooting](https://neon.com/docs/
 
 --- [Document source](https://neon.com/docs/ai-gateway/embeddings.md) ---
 
-> Summary: Neon AI Gateway serves text-embedding models on an OpenAI-compatible /v1/embeddings endpoint. Use short model IDs like qwen3-embedding-0-6b or gte-large-en, both 1024-dimensional, with the same Neon credential you use for chat completions.
+> Summary: Neon AI Gateway serves text-embedding models on an OpenAI-compatible /v1/embeddings endpoint. Use short model IDs like qwen3-embedding-0-6b, bge-large-en, or gte-large-en, all 1024-dimensional, with the same Neon credential you use for chat completions.
 
 # Embeddings
 
@@ -944,14 +971,15 @@ On the `openai` JavaScript/TypeScript SDK **v6**, pass `encoding_format: "float"
 
 ## Models
 
-Two embedding models are available today. Both return **1024-dimensional** vectors and are billed on **input tokens only**.
+Three embedding models are available today. All return **1024-dimensional** vectors and are billed on **input tokens only**.
 
-| Model ID               | Dimensions | Notes                                                                                                                            |
-| ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `qwen3-embedding-0-6b` | 1024       | Unit-normalized (L2 norm = 1), so dot product equals cosine similarity. Supports the `dimensions` parameter for shorter vectors. |
-| `gte-large-en`         | 1024       | Not normalized (L2 norm ≈ 24). Use cosine distance, or normalize the vectors yourself. Ignores the `dimensions` parameter.       |
+| Model ID                                                                               | Dimensions | Notes                                                                                                                                                      |
+| -------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`qwen3-embedding-0-6b`](https://neon.com/docs/ai-gateway/models/qwen3-embedding-0-6b) | 1024       | Unit-normalized (L2 norm = 1), so dot product equals cosine similarity. Supports the `dimensions` parameter for shorter vectors.                           |
+| [`bge-large-en`](https://neon.com/docs/ai-gateway/models/bge-large-en)                 | 1024       | Unit-normalized (L2 norm = 1), so dot product equals cosine similarity. Reads only the first 512 tokens of each input. Ignores the `dimensions` parameter. |
+| [`gte-large-en`](https://neon.com/docs/ai-gateway/models/gte-large-en)                 | 1024       | Not normalized (L2 norm ≈ 24). Use cosine distance, or normalize the vectors yourself. Ignores the `dimensions` parameter.                                 |
 
-Use the short model IDs shown above. The `databricks-` prefixed forms (`databricks-qwen3-embedding-0-6b`, `databricks-gte-large-en`) are also accepted.
+Use the short model IDs shown above. The `databricks-` prefixed forms (`databricks-qwen3-embedding-0-6b`, `databricks-bge-large-en`, `databricks-gte-large-en`) are also accepted. Each model ID links to its catalog page, which lists the input price per million tokens and has copy-paste quickstarts in TypeScript, Python, and cURL.
 
 ## Setup
 
@@ -1038,7 +1066,7 @@ The response is OpenAI-compatible: a list of embedding objects, one per input, e
 }
 ```
 
-The `model` field reports the resolved, versioned name that served the request (`qwen3-embedding-0-6b-112025` here), which is handy for logging. Keep sending the short model ID (`qwen3-embedding-0-6b` or `gte-large-en`) in your requests.
+The `model` field reports the resolved, versioned name that served the request (`qwen3-embedding-0-6b-112025` here), which is handy for logging. Keep sending the short model ID (`qwen3-embedding-0-6b`, `bge-large-en`, or `gte-large-en`) in your requests.
 
 ## Use with the Vercel AI SDK
 
@@ -1061,6 +1089,8 @@ Use `embedMany()` to embed a batch in one call. The gateway accepts up to 150 in
 ## Batch input
 
 Pass an array of strings to embed many inputs in one request. The response returns one embedding per input, in the same order, with a matching `index`.
+
+`bge-large-en` embeds only the first 512 tokens of each input and silently drops the rest, with no error (`usage.prompt_tokens` stops at 512). Split longer documents into chunks and send the chunks as a batch.
 
 **TypeScript (OpenAI SDK)**
 
@@ -1090,7 +1120,7 @@ for item in response.data:
 
 ## Shorter vectors with `dimensions`
 
-`qwen3-embedding-0-6b` supports the `dimensions` parameter to return a shorter, Matryoshka-style vector (for example `dimensions: 256`), which trades some accuracy for smaller storage and faster search. `gte-large-en` ignores this parameter and always returns 1024 dimensions.
+`qwen3-embedding-0-6b` supports the `dimensions` parameter to return a shorter, Matryoshka-style vector (for example `dimensions: 256`), which trades some accuracy for smaller storage and faster search. `bge-large-en` and `gte-large-en` ignore this parameter and always return 1024 dimensions.
 
 ```typescript
 const response = await client.embeddings.create({
@@ -1105,9 +1135,9 @@ console.log(response.data[0].embedding.length); // 256
 
 ## Choosing a distance operator
 
-The two models differ in how their vectors are scaled, which affects the pgvector operator class you index and query with:
+The models differ in how their vectors are scaled, which affects the pgvector operator class you index and query with:
 
-- **`qwen3-embedding-0-6b`** is unit-normalized (every vector has L2 norm 1), so cosine distance and inner product rank results identically. Cosine (`vector_cosine_ops`, `<=>`) is a safe default.
+- **`qwen3-embedding-0-6b`** and **`bge-large-en`** are unit-normalized (every vector has L2 norm 1), so cosine distance and inner product rank results identically. Cosine (`vector_cosine_ops`, `<=>`) is a safe default.
 - **`gte-large-en`** is not normalized (L2 norm ≈ 24). Use cosine distance (`vector_cosine_ops`, `<=>`), which is scale-invariant, or normalize the vectors before storing them.
 
 For an end-to-end example that stores AI Gateway embeddings in Postgres and searches them, see [Get started with Lakebase Search](https://neon.com/docs/ai/lakebase-search-get-started).
@@ -1165,6 +1195,8 @@ This endpoint accepts Google models only:
 
 | Model ID                | Notes |
 | ----------------------- | ----- |
+| `gemini-3-8-flash`      |       |
+| `gemini-3-7-flash`      |       |
 | `gemini-3-6-flash`      |       |
 | `gemini-3-5-flash`      |       |
 | `gemini-3-5-flash-lite` |       |
@@ -1611,7 +1643,7 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 | Google Gemma 3 12B                             | `/v1/chat/completions`   | Chat completions only. Doesn't support the Gemini SDK endpoint                                                           |
 | Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions`   | Chat completions only                                                                                                    |
 | Alibaba (chat models)                          | `/v1/chat/completions`   | Chat completions only                                                                                                    |
-| Alibaba (embedding models)                     | `/v1/embeddings`         | No chat completions. Returns a vector, not text                                                                          |
+| Alibaba, BAAI (embedding models)               | `/v1/embeddings`         | No chat completions. Returns a vector, not text                                                                          |
 | TypeSafe (decision models)                     | `/typesafe/v1/systemone` | No chat completions. Returns answers to questions, not text. See [Decisions](https://neon.com/docs/ai-gateway/decisions) |
 
 **Warning: Content shape varies by model**
@@ -5448,13 +5480,84 @@ $3
 
 ## About
 
-Gemini 4 Argon is listed in the Neon AI Gateway model catalog. Verified availability and code examples are not currently available for this model.
+Neon AI Gateway provides Gemini 4 Argon by Google. The model supports text, image, video, audio, pdf inputs and a 1M context window.
 
 ## Command
 
 ### Text generation
 
-Code examples are not currently available for this model.
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemini-4-argon"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gemini-4-argon"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/gemini/v1beta/models/gemini-4-argon:generateContent" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {"role": "user", "parts": [{"text": "Explain Serverless Postgres."}]}
+    ]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+#   - `/typesafe`  - TypeSafe SDK base URL for System One decisions (`/typesafe/v1/systemone`)
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
 
 ## Model ID
 
@@ -5462,7 +5565,7 @@ gemini-4-argon
 
 ## Provider
 
-Google provides Gemini 4 Argon. Verified AI Gateway code examples are not currently available for this model.
+Google provides Gemini 4 Argon. Access the model through the Neon AI Gateway using chat/completions and gemini.
 
 ## Inputs
 
@@ -13597,7 +13700,7 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 
 | Model                                                                                     | Model ID                | Inputs                         | Context | Released | Reasoning | Input /M | Output /M | Endpoints                 | License      |
 | ----------------------------------------------------------------------------------------- | ----------------------- | ------------------------------ | ------- | -------- | --------- | -------- | --------- | ------------------------- | ------------ |
-| [Gemini 4 Argon](https://neon.com/docs/ai-gateway/models/gemini-4-argon.md)               | `gemini-4-argon`        | text, image, video, audio, pdf | 1M      | Oct 2026 | Yes       | $4       | $20       | —                         | —            |
+| [Gemini 4 Argon](https://neon.com/docs/ai-gateway/models/gemini-4-argon.md)               | `gemini-4-argon`        | text, image, video, audio, pdf | 1M      | Oct 2026 | Yes       | $4       | $20       | chat/completions · gemini | —            |
 | [Gemini 3.8 Flash](https://neon.com/docs/ai-gateway/models/gemini-3-8-flash.md)           | `gemini-3-8-flash`      | text, image, video, audio, pdf | 1M      | Sep 2026 | Yes       | $1.50    | $7.50     | chat/completions · gemini | —            |
 | [Gemini 3.7 Flash](https://neon.com/docs/ai-gateway/models/gemini-3-7-flash.md)           | `gemini-3-7-flash`      | text, image, video, audio, pdf | 1M      | Aug 2026 | Yes       | $1.50    | $7.50     | chat/completions · gemini | —            |
 | [Gemini 3.5 Flash Lite](https://neon.com/docs/ai-gateway/models/gemini-3-5-flash-lite.md) | `gemini-3-5-flash-lite` | text, image, video, audio, pdf | 1M      | Jul 2026 | Yes       | $0.30    | $2.50     | chat/completions · gemini | —            |
@@ -13657,8 +13760,6 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 | [DeepSeek V4.1 Flash](https://neon.com/docs/ai-gateway/models/deepseek-v4-1-flash.md) | `deepseek-v4-1-flash` | text, image | 128K    | Sep 2026 | Yes       | $0.30    | $1.20     | chat/completions | Open weights |
 
 Select a linked model for code examples matched to its measured AI Gateway capabilities.
-
-Verified code examples are not currently available for: `gemini-4-argon`.
 
 ### Image models
 
@@ -13741,7 +13842,7 @@ neon bootstrap --template mastra
 
 --- [Document source](https://neon.com/docs/ai-gateway/prepaid-credits.md) ---
 
-> Summary: Learn how AI Gateway prepaid credits work, who can buy them, how to purchase credits, how to check your balance, and how usage limits and metering affect access.
+> Summary: Learn how AI Gateway prepaid credits work, who can buy them, how to purchase credits, how to set up automatic top-up, how to check your balance, and how usage limits and metering affect access.
 
 # AI Gateway prepaid credits
 
@@ -13796,7 +13897,9 @@ Credits post to your balance promptly after the charge succeeds. The purchase
 appears in your credit history as **Manual purchase**, with the date and amount.
 
 **Important:** Only **one purchase can be open at a time** per account. You can't start a second
-purchase until the first completes.
+purchase until the first completes. If an automatic top-up is in progress, a
+manual purchase fails with "Another credit purchase is in progress. Try again in a
+moment."
 
 **If a purchase fails.** If the payment card on file is declined, the purchase
 fails and no credits are added to your balance. Neon doesn't leave a payable
@@ -13810,7 +13913,8 @@ card shows:
 
 - **Credits remaining**: your organization's current credit balance.
 - **Credits added in last 30 days**: a history panel that lists each entry's date,
-  source, and amount, plus the total credits added during the period.
+  source, and amount, plus the total credits added during the period. Automatic
+  top-ups are listed with the source **Auto-reload**.
 
 ![AI Gateway credits balance and credits added in the last 30 days](https://neon.com/docs/ai-gateway/ai-gateway-credits-balance.png)
 
@@ -13860,8 +13964,41 @@ The model list is subject to change. See
 
 ## Automatic top-up
 
-Automatic top-up is **not available**. You add credits manually by purchasing as
-described above.
+Turn on **auto-reload** to keep your balance from running out. When your balance
+drops below a threshold you set, Neon buys a fixed amount of credits with the
+payment card on file, with no action needed from you.
+
+Only organization admins can set up auto-reload, and the organization must meet
+the same requirements as for [buying credits](https://neon.com/docs/ai-gateway/prepaid-credits#who-can-buy-credits): a paid plan,
+billed directly by payment card.
+
+To set up auto-reload:
+
+1. In the Neon Console, select **Billing**.
+2. On the **AI gateway credits** card, select **Auto-reload**.
+3. Turn on **Enable auto-reload** and set:
+   - **When balance drops below (USD)**: the threshold that triggers a top-up. It
+     must be higher than the $2 minimum balance. The default is $10.
+   - **Automatically purchase (USD)**: how many credits to buy each time. The
+     amount must be at least the threshold and within the same range as a manual
+     purchase. The default is $25.
+4. Click **Save**.
+
+![Auto-reload credits dialog with a $10 threshold and a $25 purchase amount](https://neon.com/docs/ai-gateway/ai-gateway-auto-reload-modal.png)
+
+You can also turn on auto-reload in the **Add credits** dialog when you buy
+credits. Neon saves those settings only if the purchase succeeds.
+
+The **Auto-reload** button shows **On** or **Off** so you can check its status at
+a glance. If your balance is already below the threshold when you turn on
+auto-reload, Neon tops it up right away.
+
+Neon turns auto-reload off when it can't complete a top-up, for example when your
+card is declined or a top-up keeps failing. It also turns off if your
+organization no longer qualifies, such as after a downgrade to Free or removing
+your payment card. When this happens, an alert on the **AI gateway credits** card
+and in the **Auto-reload** dialog explains why. To resume, fix the issue and turn
+auto-reload back on.
 
 ## Availability
 
@@ -13896,6 +14033,10 @@ AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon c
 ### Can my credit balance go negative?
 
 Yes, by a small amount. Usage can exceed your remaining balance before it's detected, so a minimum balance of $2 applies to account for this.
+
+### Can I top up credits automatically?
+
+Yes. Organization admins can turn on auto-reload from the **AI gateway credits** card on the **Billing** page. When your balance drops below the threshold you set, Neon buys the amount you chose with the payment card on file. See [Automatic top-up](https://neon.com/docs/ai-gateway/prepaid-credits#automatic-top-up).
 
 ### Do credits expire?
 
@@ -13978,29 +14119,14 @@ The request body does not contain a valid `model` field.
 
 On your project's **AI Gateway** page, locked models show a padlock, and the **Some models are restricted** section lists them grouped by reason. Each reason links to the fix:
 
-| Message                                                  | What to do                                                                                                  |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **A paid plan is required to use these models**          | Select **Upgrade plan**. The AI Gateway is available on paid plans only.                                    |
-| **AI Gateway credits are required to use these models**  | Select **Add credits**. See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits). |
-| **Account verification is required to use these models** | Select **Complete verification**, or [contact Support](https://neon.com/docs/introduction/support).         |
-| **Your account is restricted from using these models**   | [Contact Support](https://neon.com/docs/introduction/support).                                              |
-| **Some models are not available to your account**        | [Contact Support](https://neon.com/docs/introduction/support).                                              |
+| Message                                                 | What to do                                                                                                  |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **A paid plan is required to use these models**         | Select **Upgrade plan**. The AI Gateway is available on paid plans only.                                    |
+| **AI Gateway credits are required to use these models** | Select **Add credits**. See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits). |
+| **Your account is restricted from using these models**  | [Contact Support](https://neon.com/docs/introduction/support).                                              |
+| **Some models are not available to your account**       | [Contact Support](https://neon.com/docs/introduction/support).                                              |
 
 After you upgrade or buy credits, models unlock once Neon confirms access. Reload the page if a model still shows as locked.
-
-### `403 model requires a verified account`
-
-The model exists in the catalog, but your account can't call it yet. This is a per-model access gate, separate from the credential-scope and branch-lineage `403`s above. It's the same condition the `enabled` field reports in `GET /v1/models`: a model with `"enabled": false` returns this error when called. The response body looks like this:
-
-```json
-{
-  "error": {
-    "message": "model requires a verified account"
-  }
-}
-```
-
-**Fix:** List `GET /v1/models` and filter on `enabled` to see which models your account can call (see [Check what your account can call](https://neon.com/docs/ai-gateway/models#check-what-your-account-can-call)). If you're on a paid plan with prepaid credits and still can't call a model, [contact Support](https://neon.com/docs/introduction/support).
 
 ---
 
@@ -14871,7 +14997,7 @@ The examples below send the same text to each API and get a vector back. Size yo
 
 **Neon AI Gateway**
 
-The [Neon AI Gateway](https://neon.com/docs/ai-gateway/embeddings) serves embedding models on an OpenAI-compatible endpoint, using the same Neon credential as the rest of your project instead of a separate provider key. Its `qwen3-embedding-0-6b` and `gte-large-en` models return 1024-dimensional vectors.
+The [Neon AI Gateway](https://neon.com/docs/ai-gateway/embeddings) serves embedding models on an OpenAI-compatible endpoint, using the same Neon credential as the rest of your project instead of a separate provider key. Its `qwen3-embedding-0-6b`, `bge-large-en`, and `gte-large-en` models return 1024-dimensional vectors.
 
 ```bash
 curl "$NEON_AI_GATEWAY_BASE_URL/v1/embeddings" \
@@ -16801,7 +16927,7 @@ Hackable, fully-featured, pre-built [starter apps](https://github.com/neondataba
 
 --- [Document source](https://neon.com/docs/ai/lakebase-search-get-started.md) ---
 
-> Summary: Step-by-step guide to enabling lakebase_vector and lakebase_text on a Neon Postgres database, creating a documents table with vector embeddings and a BM25 full-text index, and running vector and keyword searches from a TypeScript application using @neondatabase/serverless and OpenAI.
+> Summary: Step-by-step guide to enabling lakebase_vector and lakebase_text on a Neon Postgres database, creating a documents table with vector embeddings and a BM25 full-text index, and running vector and keyword searches from a TypeScript application using @neondatabase/serverless and the Vercel AI SDK.
 
 # Get started with Lakebase Search
 
@@ -16813,10 +16939,10 @@ This guide sets up Lakebase Search on a Neon project: enabling both extensions, 
 
 - A Neon project. You enable Lakebase Search on it in the first step below.
 - Postgres 16 or later (Lakebase Search requires PG16+)
-- Node.js 18 or later
+- Node.js 22 or later
 - Choose an embedding provider to turn text into vectors:
   - **Neon AI Gateway** (this guide's default): set `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` (see [Get started](https://neon.com/docs/ai-gateway/get-started)) and use the [`qwen3-embedding-0-6b`](https://neon.com/docs/ai-gateway/embeddings) model (1024 dimensions). Requires a paid plan in a [Neon AI Gateway region](https://neon.com/docs/ai-gateway/overview).
-  - **OpenAI directly**: set `OPENAI_API_KEY` and drop both client overrides so it's just `new OpenAI()`, then change the model to `text-embedding-3-small` (1536 dimensions).
+  - **OpenAI directly**: install `@ai-sdk/openai`, set `OPENAI_API_KEY`, and use `openai.embeddingModel('text-embedding-3-small')` from that provider (1536 dimensions).
   - **Any other provider**: generate the vector with its SDK and match the `VECTOR` column to its dimensions.
 
 ## Enable the extensions
@@ -16852,10 +16978,10 @@ The `lakebase_bm25` index is created in a later step, after data is inserted. BM
 The remaining steps run from a local TypeScript project. Install dependencies:
 
 ```bash
-npm install @neondatabase/serverless openai dotenv
+npm install @neondatabase/serverless @neon/ai-sdk-provider@1.1.0 ai@7.0.133 dotenv
 ```
 
-**Note:** This guide uses the `openai` SDK pointed at the Neon AI Gateway. Version 6 of the SDK requires `encoding_format: 'float'` on embedding calls (included below); on v7 and later it's optional. See [Embeddings](https://neon.com/docs/ai-gateway/embeddings) for details.
+This guide uses Neon's provider with the Vercel AI SDK for embeddings and Jev. The provider reads your AI Gateway credentials automatically. Keep the SDK versions pinned while `experimental_decide` is experimental.
 
 Create a `.env` file with your Neon connection string and AI Gateway credentials. See [Get started with AI Gateway](https://neon.com/docs/ai-gateway/get-started) for how to obtain the gateway values:
 
@@ -16872,15 +16998,10 @@ Create `search.ts` and paste the following. It inserts documents with embeddings
 ```typescript filename="search.ts"
 import 'dotenv/config';
 import { neon } from '@neondatabase/serverless';
-import OpenAI from 'openai';
+import { neon as neonAi } from '@neon/ai-sdk-provider';
+import { embed } from 'ai';
 
 const sql = neon(process.env.DATABASE_URL!);
-
-// Point the OpenAI SDK at the Neon AI Gateway.
-const openai = new OpenAI({
-  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
-});
 
 const documents = [
   {
@@ -16905,31 +17026,30 @@ const documents = [
   },
 ];
 
+async function embedText(text: string): Promise<string> {
+  const { embedding } = await embed({
+    model: neonAi.embeddingModel('qwen3-embedding-0-6b'),
+    value: text,
+  });
+  return JSON.stringify(embedding);
+}
+
 async function embedAndInsert() {
   for (const doc of documents) {
-    const { data } = await openai.embeddings.create({
-      model: 'qwen3-embedding-0-6b',
-      input: doc.body,
-      encoding_format: 'float', // required on the openai SDK v6; harmless on v7+
-    });
-
+    const vector = await embedText(doc.body);
     await sql`
       INSERT INTO documents (title, body, embedding)
-      VALUES (${doc.title}, ${doc.body}, ${JSON.stringify(data[0].embedding)}::vector)
+      VALUES (${doc.title}, ${doc.body}, ${vector}::vector)
     `;
   }
 }
 
 async function vectorSearch(query: string, limit = 5) {
-  const { data } = await openai.embeddings.create({
-    model: 'qwen3-embedding-0-6b',
-    input: query,
-    encoding_format: 'float',
-  });
+  const queryVector = await embedText(query);
 
   return sql`
     SELECT id, title,
-           embedding <=> ${JSON.stringify(data[0].embedding)}::vector AS distance
+           embedding <=> ${queryVector}::vector AS distance
     FROM documents
     ORDER BY distance
     LIMIT ${limit}
@@ -16939,13 +17059,17 @@ async function vectorSearch(query: string, limit = 5) {
 // BM25 scores are negative — lower (more negative) means more relevant
 async function textSearch(query: string, limit = 5) {
   return sql`
-    SELECT id, title,
-           body_tsv <@> to_bm25query(
-             to_tsvector('english', ${query}),
-             'documents_bm25'
-           ) AS score
-    FROM documents
-    ORDER BY score
+    SELECT id, title, score
+    FROM (
+      SELECT id, title,
+             body_tsv <@> to_bm25query(
+               to_tsvector('english', ${query}),
+               'documents_bm25'
+             ) AS score
+      FROM documents
+    ) AS scored
+    WHERE score < 0
+    ORDER BY score, id
     LIMIT ${limit}
   `;
 }
@@ -16979,32 +17103,137 @@ npx tsx search.ts
 
 ## Combine results with hybrid search
 
-Vector and keyword search each catch matches the other misses, so most real-world search combines them. There's no built-in hybrid function; you write one query that runs both searches and merges their results. The technique here is Reciprocal Rank Fusion (RRF): take the top candidates from each search, rank each list, then score every row by `1 / (60 + rank)` summed across both lists, so rows that rank well in either or both come out on top.
+Vector search finds matches by meaning, while keyword search finds matches by wording. You can combine their results in two ways:
+
+- **Jev through Neon AI Gateway** reads each result alongside your query and scores how likely it is to answer your question.
+- **Reciprocal Rank Fusion (RRF)** uses each result's position in the two search lists to build a combined ranking, without an extra model call.
+
+### Use Jev through Neon AI Gateway
+
+Jev reads each result alongside your query and estimates how likely it is to answer your question. The example below combines both searches, removes duplicates, and puts the most likely answers first. It follows the [TypeSafe reranking cookbook](https://docs.typesafe.ai/cookbooks/rerank_typesafe).
+
+Add the following code to `search.ts`. It reuses the provider and credentials from the embedding example. See [Decision models](https://neon.com/docs/ai-gateway/decisions#use-with-the-vercel-ai-sdk) for more about the SDK.
+
+```typescript filename="search.ts"
+import { experimental_decide as decide } from 'ai';
+
+type Candidate = { id: number; title: string; body: string };
+
+async function hybridSearchWithJev(query: string, limit = 5): Promise<Candidate[]> {
+  if (!Number.isInteger(limit) || limit < 1) {
+    throw new Error('limit must be a positive integer');
+  }
+
+  const queryVector = await embedText(query);
+  const candidates = (await sql`
+    WITH vector_candidates AS (
+      SELECT id
+      FROM documents
+      WHERE embedding IS NOT NULL
+      ORDER BY embedding <=> ${queryVector}::vector
+      LIMIT 40
+    ),
+    keyword_candidates AS (
+      SELECT id
+      FROM (
+        SELECT id, body_tsv <@> to_bm25query(
+          to_tsvector('english', ${query}), 'documents_bm25'
+        ) AS score
+        FROM documents
+      ) AS scored
+      WHERE score < 0
+      ORDER BY score, id
+      LIMIT 40
+    ),
+    candidate_ids AS (
+      SELECT id FROM vector_candidates
+      UNION
+      SELECT id FROM keyword_candidates
+    )
+    SELECT d.id, d.title, d.body
+    FROM candidate_ids AS c
+    JOIN documents AS d ON d.id = c.id
+    ORDER BY d.id
+  `) as Candidate[];
+  if (candidates.length === 0) return [];
+
+  const { answers } = await decide({
+    model: neonAi.decisionModel('typesafeai-jev-1-14-0'),
+    state: { query },
+    questions: Object.fromEntries(
+      candidates.map((doc, index) => [
+        `d${index}`,
+        {
+          type: 'boolean' as const,
+          instructions: {
+            question:
+              'Given the search query in state.query, does this candidate passage supply the specific information the user is looking for?',
+            candidate: { title: doc.title, body: doc.body },
+          },
+          criteria: {
+            true: 'The candidate states the specific facts or steps the query asks for.',
+            false:
+              'The candidate only shares keywords or a topic with the query, answers a different question, or lacks the requested information.',
+          },
+        },
+      ])
+    ),
+    maxRetries: 0,
+    abortSignal: AbortSignal.timeout(10_000),
+  });
+
+  return candidates
+    .map((doc, index) => {
+      const answer = answers[`d${index}`];
+      if (answer?.type !== 'boolean') {
+        throw new Error(`Missing relevance probability for d${index}`);
+      }
+      return { doc, index, probability: answer.probability };
+    })
+    .sort((a, b) => b.probability - a.probability || a.index - b.index)
+    .slice(0, limit)
+    .map(({ doc }) => doc);
+}
+```
+
+Call `hybridSearchWithJev(query)` after inserting the documents and building the indexes. It sends the query and all the search results to Jev in one request, which must fit within the model's 65,536-token context window. For long documents, search shorter passages or send fewer results. If your app restricts documents by tenant or user, apply those filters to both searches before limiting the results.
+
+One result will always rank first, even if none answers the query. If your app needs to say "no answer," test it with unanswered queries to choose a minimum score for accepting a result. If the Jev call fails, you can catch the error and fall back to `hybridSearch`.
+
+### Fuse ranks with RRF
+
+RRF gives each result a score of `1 / (60 + rank)` for its position in each search list, then adds the two scores. Results near the top of either list get higher scores.
 
 Add a `hybridSearch` function to `search.ts`, alongside `vectorSearch` and `textSearch`. It reuses the `documents` table and indexes from above:
 
 ```typescript filename="search.ts"
 async function hybridSearch(query: string, limit = 5) {
-  const { data } = await openai.embeddings.create({
-    model: 'qwen3-embedding-0-6b',
-    input: query,
-    encoding_format: 'float',
-  });
-  const queryVector = JSON.stringify(data[0].embedding);
+  const queryVector = await embedText(query);
 
   return sql`
     WITH vector_ranked AS (
       SELECT id, RANK() OVER (ORDER BY dist) AS rank
       FROM (
         SELECT id, embedding <=> ${queryVector}::vector AS dist
-        FROM documents ORDER BY dist LIMIT 40
+        FROM documents
+        WHERE embedding IS NOT NULL
+        ORDER BY dist
+        FETCH FIRST 40 ROWS WITH TIES
       ) v
     ),
     keyword_ranked AS (
       SELECT id, RANK() OVER (ORDER BY score) AS rank
       FROM (
-        SELECT id, body_tsv <@> to_bm25query(to_tsvector('english', ${query}), 'documents_bm25') AS score
-        FROM documents ORDER BY score LIMIT 40
+        SELECT id, score
+        FROM (
+          SELECT id, body_tsv <@> to_bm25query(
+            to_tsvector('english', ${query}), 'documents_bm25'
+          ) AS score
+          FROM documents
+        ) AS scored
+        WHERE score < 0
+        ORDER BY score, id
+        LIMIT 40
       ) k
     )
     SELECT d.id, d.title,
@@ -17019,7 +17248,7 @@ async function hybridSearch(query: string, limit = 5) {
 }
 ```
 
-Each search contributes its top 40 candidates. `RANK()` gives tied scores the same rank, the constant `60` keeps low-ranked results from dominating, and `d.id` breaks ties for stable ordering. Tune the per-search `LIMIT` and the RRF constant for your data; weighted scoring is another common approach.
+`WITH TIES` keeps vector results that share the 40th result's distance, so the search can return more than 40 rows. The keyword search leaves out non-matches and stops at 40 because many BM25 matches can have the same score. `RANK()` gives tied results the same rank, and `d.id` keeps the final order stable when scores are equal. Try different candidate counts and RRF constants to find what works best for your data.
 
 ## Next steps
 
@@ -17047,7 +17276,7 @@ Lakebase Search gives you two complementary ways to search. Use either on its ow
 
 - **Vector (semantic) search** finds rows whose meaning is closest to your query, even when they share no words. You search with an embedding (a numeric vector from a model), and the `lakebase_ann` index returns the nearest vectors by distance. Use it for natural-language questions, recommendations, and retrieval-augmented generation (RAG).
 - **Keyword (full-text) search** ranks rows by how well they match the exact terms in your query, using BM25 relevance scoring from the `lakebase_bm25` index. Use it for names, codes, and exact-term lookups where wording matters.
-- **Hybrid search** runs both and merges the results into one ranking, so you get semantic and exact-term matches together. Use it when queries mix intent with specific terms, which covers most real-world search. The [Get started guide](https://neon.com/docs/ai/lakebase-search-get-started#combine-results-with-hybrid-search) shows a worked hybrid query.
+- **Hybrid search** combines vector and keyword results with fusion or reranking, so you get semantic and exact-term matches together. Use it when queries mix intent with specific terms, which covers most real-world search. The [Get started guide](https://neon.com/docs/ai/lakebase-search-get-started#combine-results-with-hybrid-search) shows how to combine results with Jev through Neon AI Gateway or RRF.
 
 ![Keyword search matches only documents that contain the typed words and misses synonyms like "quick automobile" for "fast sports car." Vector search places the query and documents in the same embedding space and returns the nearest neighbors by meaning, including those synonyms.](https://neon.com/docs/ai/lakebase-search-keyword-vs-vector.png)
 
@@ -17488,21 +17717,21 @@ Pick a check with the `check` parameter (for example `table-sizes` or `unused-in
 
 Tools are grouped into categories. Use the `?category=` URL parameter to restrict which categories are active. You can pass it more than once to enable multiple categories.
 
-| Category                          | What it enables                                                                                                             |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                             |
-| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                     |
-| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                   |
-| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                     |
-| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                 |
-| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db` |
-| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                          |
-| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                       |
-| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                              |
-| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
-| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
-| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
-| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                         |
+| Category                          | What it enables                                                                                                                                           |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                                                           |
+| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                                                   |
+| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                                                 |
+| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                                                   |
+| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                                               |
+| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db`                               |
+| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                                                        |
+| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                                                     |
+| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                                                            |
+| Documentation (`docs`)            | Search and read Neon docs, the API reference, guides, the PostgreSQL tutorial, the blog, and the changelog from within your assistant (no OAuth required) |
+| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                                                           |
+| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                                                         |
+| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                                                       |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -20444,7 +20673,7 @@ Users approve a client once. Later authorizations for the same client, scopes, a
 
 Both pages receive the authorization request as query parameters. The query is signed and expires, so pass it back to Managed Better Auth exactly as received, as the `oauth_query` value.
 
-- **Login page.** The authorization request redirects here when the user has no session. Send `oauth_query` in the body of the sign-in request (for example, email and password sign-in). Managed Better Auth verifies the signature, signs the user in, and resumes the authorization request. The sign-in response tells your page where to go next, usually your consent page.
+- **Login page.** The authorization request redirects here when the user has no session. Send `oauth_query` in the body of the sign-in request. This works for email and password sign-in and for social sign-in, such as Google or GitHub. Managed Better Auth verifies the signature, signs the user in, and resumes the authorization request. With email and password, the sign-in response tells your page where to go next, usually your consent page. With social sign-in, the provider returns the user to your login page, signed in, with the same query. When your login page loads with a session, send `POST <issuer>/oauth2/continue` with `{ "selected": true, "oauth_query": "<query>" }` and navigate to the returned `url`. Do the same when a signed-in user reaches the login page.
 - **Consent page.** Show what the user is approving, then send `POST <issuer>/oauth2/consent` with a JSON body of `{ "accept": true, "oauth_query": "<query>" }`, or `"accept": false` to deny. The response is JSON with a `redirect` flag and the `url` to navigate the browser to. That URL is the client's redirect URI with the authorization code, or an error.
 - **Client details.** To display the client name, call `GET <issuer>/oauth2/public-client?client_id=<client_id>` with the user's session. It returns `client_id` and `client_name` for every client. Clients that identify with a Client ID Metadata Document also return the `client_uri` and `logo_uri` from their document when it sets them. Managed clients don't have these fields.
 
@@ -20470,6 +20699,10 @@ async function respond(accept: boolean) {
 ```
 
 Calls from your pages carry the user's session cookie, so make them with `credentials: 'include'` and add your pages' origins as [trusted domains](https://neon.com/docs/auth/guides/configure-domains). Navigate the browser to the returned `url`. Neither the sign-in nor the consent response is an HTTP redirect.
+
+**Tip: Use the Neon Auth client**
+
+If your pages use [`@neondatabase/auth`](https://neon.com/docs/auth/overview) 0.7.0-beta or later (or `@neondatabase/neon-js` 0.9.0-beta or later), the client handles `oauth_query` for you. Sign-in requests on your login page attach it automatically. When your login page loads with a session, call `authClient.oauth2.continue({ selected: true })`. On your consent page, `authClient.oauth2.consent({ accept })` replaces the `fetch` call above. The client navigates to the returned `url` itself, so don't navigate again.
 
 ## Sign in users to your own apps and APIs
 
@@ -20639,6 +20872,7 @@ A refreshed access token keeps the resource of the original authorization unless
 - CIMD `client_id` URLs must use `https` on the default port (443) and a hostname, not an IP address. They can't point at a Neon domain (such as `neon.tech` or `neon.com`, including subdomains), so a Neon Function URL doesn't work. The document must be served as JSON without redirects and be at most 5 KiB. If the fetch fails for any of these reasons, the client sees a generic "Failed to fetch metadata document" error. See the [redirect URI rules](https://neon.com/docs/auth/guides/plugins/oauth-provider#redirect-uri-rules) for what each kind of client can register.
 - Managed clients: up to 100 per branch, 10 redirect URIs each, and links to up to 11 resources: up to 10 configured resources plus the MCP server resource.
 - Scopes, token lifetimes, and other provider options aren't configurable.
+- Authorization requests with `prompt=login` or `max_age=0` loop back to the login page after sign-in, because continuing the flow doesn't clear these parameters.
 
 --- [Document source](https://neon.com/docs/auth/guides/plugins/openapi.md) ---
 
@@ -25985,7 +26219,7 @@ More about global options:
 - **Output:** table output may omit fields. Use `--output json` or `--output yaml` to see all data.
 - **Authentication:** the CLI checks credentials in this order: the `--api-key` option, the `NEON_API_KEY` environment variable (`export NEON_API_KEY=<neon_api_key>`), the `credentials.json` file that `neon login` creates in the config directory (override its location with `--config-dir`), then interactive web authentication. To get a key, see [Create an API key](https://neon.com/docs/manage/api-keys#creating-api-keys).
 - **Context file:** sets a default organization, project, or branch so you don't repeat IDs in every command. Create one with [`neon link`](https://neon.com/docs/cli/link) (preferred) or [`set-context`](https://neon.com/docs/cli/set-context).
-- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. If the CLI crashes on an internal bug, it also sends an error report with the error type and a sanitized stack trace, without your arguments, environment variables, or file contents. Opt out of both with `--no-analytics`, which also asks the docs search service not to record your `neon docs search` and `neon ask` queries.
+- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. Each installation gets a random ID, stored as `anonymous_id` in the config directory, and once you sign in, your events are linked to your account. The ID isn't created in CI or when you pass `--no-analytics`. If the CLI crashes on an internal bug, it also sends an error report with the error type and a sanitized stack trace, without your arguments, environment variables, or file contents. Opt out of both with `--no-analytics`, which also asks the docs search service not to record your `neon docs search` and `neon ask` queries.
 - **Help:** `--help` works at every level: `neon --help`, `neon branches --help`, `neon branches create --help`.
 
 ## GitHub repository
@@ -28799,7 +29033,7 @@ Next:
   neon functions deploy hello --src functions/hello/index.ts
 ```
 
-Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To try an unmerged template, set `NEON_FUNCTION_REGISTRY_DIR` to a local copy of that directory.
+Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To try an unmerged template, set `NEON_FUNCTION_REGISTRY_DIR` to a local copy of that directory. New templates are added over time, so run [`neon functions templates list`](https://neon.com/docs/cli/functions#templates-list) to see what's available.
 
 ## neon functions templates
 
@@ -28825,8 +29059,9 @@ neon functions templates list
 ```
 
 ```text filename="Output"
-ID     Title           Provider  Description
-basic  Basic function  Neon      A minimal Neon Function with a JSON response.
+ID           Title                 Provider     Description
+basic        Basic function        Neon         A minimal Neon Function with a JSON response.
+context-dev  Context.dev web data  Context.dev  Search the web and news, read pages, answer questions, and retrieve brand data with Context.dev.
 ```
 
 ## neon functions deploy
@@ -35284,21 +35519,21 @@ Model Context Protocol tools integration component.
 
 Tools are grouped into categories. Use the `?category=` URL parameter to restrict which categories are active. You can pass it more than once to enable multiple categories.
 
-| Category                          | What it enables                                                                                                             |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                             |
-| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                     |
-| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                   |
-| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                     |
-| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                 |
-| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db` |
-| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                          |
-| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                       |
-| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                              |
-| Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)                                                   |
-| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                             |
-| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                           |
-| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                         |
+| Category                          | What it enables                                                                                                                                           |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project management (`projects`)   | List, create, describe, and delete projects; list organizations                                                                                           |
+| Branch management (`branches`)    | Create, reset, and delete branches; manage Postgres roles and databases                                                                                   |
+| Compute endpoints (`endpoints`)   | List, create, start, suspend, and restart branch computes                                                                                                 |
+| Snapshots (`snapshots`)           | Create, restore, and schedule snapshots                                                                                                                   |
+| Schema (`schema`)                 | Inspect tables and columns; compare schemas                                                                                                               |
+| SQL (`querying`)                  | Execute queries and transactions; apply schema changes on a temporary branch; run the same diagnostics as `neon inspect db`                               |
+| Managed Better Auth (`neon_auth`) | Provision Auth; manage OAuth providers, trusted domains, and users                                                                                        |
+| Neon Data API (`data_api`)        | Enable, update, and disable the Data API for a branch                                                                                                     |
+| Observability (`observability`)   | Query function and storage logs; check AI Gateway availability                                                                                            |
+| Documentation (`docs`)            | Search and read Neon docs, the API reference, guides, the PostgreSQL tutorial, the blog, and the changelog from within your assistant (no OAuth required) |
+| Functions (`functions`)           | List, deploy, update, and delete Neon Functions                                                                                                           |
+| Object storage (`storage`)        | Manage buckets and objects; create presigned URLs                                                                                                         |
+| Realtime (`realtime`)             | Enable and disable Realtime for a branch; get and rotate its secret                                                                                       |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
@@ -37854,7 +38089,9 @@ To pull from a different branch, switch with `neon checkout`; it pulls the new b
 | Constraint                   | Value  |
 | ---------------------------- | ------ |
 | Max variables per deployment | 1,000  |
-| Max total size               | 64 KiB |
+| Max total size               | 32 KiB |
+
+The total size counts every variable's name and value. A deploy that exceeds it fails with `400 invalid environment: total size <N> bytes exceeds the 32768-byte limit`. To fix it, remove or shorten variables in the same deploy. Leave some headroom: the variables Neon injects at runtime, such as `DATABASE_URL`, also count toward the limit when your function runs.
 
 --- [Document source](https://neon.com/docs/compute/functions/get-started.md) ---
 
@@ -71249,12 +71486,16 @@ The SQL Editor maintains a query history for the project. To view your query his
 
 ## Explain and Analyze
 
-The Neon SQL Editor provides **Explain** and **Analyze** features.
+The Neon SQL Editor provides **Explain** and **Explain (Analyze)** features.
 
 - The **Explain** feature runs the specified query with the Postgres [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) command, which returns the execution plan for the query. The **Explain** feature only returns a plan with estimates. It does not execute the query.
-- The **Analyze** feature runs the specified query with [EXPLAIN ANALYZE](https://www.postgresql.org/docs/current/using-explain.html#USING-EXPLAIN-ANALYZE). The `ANALYZE` parameter causes the query to be executed and returns actual row counts and run times for plan nodes along with the `EXPLAIN` estimates.
+- The **Explain (Analyze)** feature runs the specified query with [EXPLAIN ANALYZE](https://www.postgresql.org/docs/current/using-explain.html#USING-EXPLAIN-ANALYZE). The `ANALYZE` parameter causes the query to be executed and returns actual row counts and run times for plan nodes along with the `EXPLAIN` estimates.
 
-Understanding the information provided by the **Explain** and **Analyze** features requires familiarity with the Postgres [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) command and its `ANALYZE` parameter. Refer to the [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) documentation and the [Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html) topic in the _PostgreSQL documentation_.
+Both features include Neon's `PREFETCH` and `FILECACHE` options, so **Explain (Analyze)** also shows compute cache hits and misses and prefetch statistics. See [View compute cache metrics with EXPLAIN ANALYZE](https://neon.com/docs/extensions/neon#view-lfc-metrics-with-explain-analyze).
+
+**Warning:** Because **Explain (Analyze)** executes the statement, running it on a data-modifying statement (`INSERT`, `UPDATE`, `DELETE`, or `MERGE`) changes your data.
+
+Understanding the information provided by the **Explain** and **Explain (Analyze)** features requires familiarity with the Postgres [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) command and its `ANALYZE` parameter. Refer to the [EXPLAIN](https://www.postgresql.org/docs/current/sql-explain.html) documentation and the [Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html) topic in the _PostgreSQL documentation_.
 
 ## Time Travel
 
@@ -100757,7 +100998,7 @@ If you've got feature requests or feedback about what you'd like to see from the
 
 --- [Document source](https://neon.com/docs/guides/neon-managed-vercel-integration.md) ---
 
-> Summary: The Neon-Managed Vercel Integration connects an existing Neon project to a Vercel project via Connectable Accounts, keeping billing in Neon and automatically creating an isolated database branch named `preview/<git-branch>` for each Vercel preview deployment. Use this integration instead of the Vercel-Managed Integration when you already have a Neon account or need direct billing control. The two integrations cannot coexist in the same Vercel project, and each Neon project maps to exactly one Vercel project. The integration injects `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and legacy `PG*` variables per deployment, with optional automatic branch cleanup when Git branches are deleted.
+> Summary: The Neon-Managed Vercel Integration connects an existing Neon project to a Vercel project via Connectable Accounts, keeping billing in Neon and automatically creating an isolated database branch named `preview/<git-branch>` for each Vercel preview deployment. Use this integration instead of the Vercel-Managed Integration when you already have a Neon account or need direct billing control. The two integrations cannot coexist in the same Vercel project, and each Neon project maps to exactly one Vercel project. When connecting, you can choose which Neon branch feeds Vercel's Production environment variables. The integration injects `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and legacy `PG*` variables per deployment, with optional automatic branch cleanup when Git branches are deleted.
 
 # Connecting with the Neon-Managed Integration
 
@@ -100767,6 +101008,7 @@ Link an existing Neon project to Vercel and keep billing in Neon
 
 - [The purpose of the Neon-Managed Integration](https://neon.com/docs/guides/neon-managed-vercel-integration#about-this-integration)
 - [How to install it from Connectable Accounts](https://neon.com/docs/guides/neon-managed-vercel-integration#installation-steps)
+- [How to choose which branch feeds Vercel Production](https://neon.com/docs/guides/neon-managed-vercel-integration#choose-a-production-branch)
 - [How automated Preview Branching works](https://neon.com/docs/guides/neon-managed-vercel-integration#how-preview-branching-works)
 - [How to manage environment variables and branch cleanup](https://neon.com/docs/guides/neon-managed-vercel-integration#managing-the-integration)
 
@@ -100837,9 +101079,18 @@ In the **Integrate Neon** dialog:
 
    ![Select a Vercel project](https://neon.com/docs/guides/vercel_select_project.png)
 
-2. **Choose your Neon project, database, and role**
+2. **Choose your Neon account, project, production branch, database, and role**
 
    ![Connect to Neon](https://neon.com/docs/guides/vercel_connect_neon.png)
+
+   Under **Production branch**, pick the Neon branch whose credentials Vercel should use for **Production** deployments. If you leave the default selection, Production uses your project's default branch. The read-only **Default branch** field shows the branch that preview branches are created from.
+
+   The branch you select must:
+
+   - Belong to the chosen Neon project
+   - Include the database and role you selected
+   - Not be a Vercel preview branch (for example, `preview/<git-branch>`)
+   - Not have branch expiration (TTL) enabled
 
 3. **Configure optional settings:**
    - Enable **Create a branch for your development environment** to create a persistent `vercel-dev` branch
@@ -100851,6 +101102,26 @@ In the **Integrate Neon** dialog:
 ![Confirm integration settings](https://neon.com/docs/guides/vercel_confirm_settings.png)
 
 ![Vercel integration success](https://neon.com/docs/guides/vercel_success.png)
+
+### Choose a production branch
+
+By default, Neon uses your project's **default branch** for Vercel's Production environment variables. When your live application data lives on a different branch (for example, a protected `production` branch while `main` remains the default), select that branch during setup instead.
+
+| Vercel environment | Neon branch used                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| **Production**     | The branch you choose at connect (or the project default if unchanged)                           |
+| **Preview**        | A new `preview/<git-branch>` branch per deployment, parented from the project **default** branch |
+| **Development**    | The optional `vercel-dev` branch, created as a clone of the project **default** branch           |
+
+Only Production credentials come from your chosen branch. Preview and Development environments are unchanged. Neon resolves that branch's read-write compute endpoint and the password for the role you selected on that branch (role passwords can differ across branches).
+
+If [Managed Better Auth](https://neon.com/docs/auth/overview) is enabled on your production branch, Production deployments receive `NEON_AUTH_BASE_URL` and `VITE_NEON_AUTH_URL` from that branch. Preview deployments still get isolated auth on their own preview branches.
+
+The production branch is independent of your project's default branch. If you later change the default branch, Production keeps using the branch you chose.
+
+To change the production branch after setup, go to **Neon Console → Integrations**, click **Manage** next to **Vercel** under **Added**, and open the **Branches** tab. Select a different branch under **Production branch** and click **Save**. Changing a branch that's already set asks you to confirm first. Redeploy your production deployment in Vercel so it picks up the new branch's credentials. The branch you choose must meet the requirements listed above and have a read-write compute.
+
+While the integration is connected, the production branch and its read-write compute can't be deleted. To delete that branch, choose a different production branch first, or disconnect the integration.
 
 ### What happens after installation
 
@@ -100877,7 +101148,7 @@ The integration automatically creates isolated database environments for each pr
 
 **Tip: Managed Better Auth support for preview deployments**
 
-If you've enabled [Managed Better Auth](https://neon.com/docs/auth/overview) on your production branch, it's automatically provisioned on preview branches too. Preview deployments receive `NEON_AUTH_BASE_URL` and `VITE_NEON_AUTH_URL` environment variables, letting you test authentication in isolated environments. Auth data branches with your database, so each preview has its own independent user profiles and sessions.
+If you've enabled [Managed Better Auth](https://neon.com/docs/auth/overview) on your production branch, it's automatically provisioned on preview branches too. Preview deployments receive `NEON_AUTH_BASE_URL` and `VITE_NEON_AUTH_URL` environment variables, letting you test authentication in isolated environments. Auth data branches with your database, so each preview has its own independent user profiles and sessions. Preview branches are always parented from your project's **default branch**, even when Production uses a different branch.
 
 ## Developer pushes to feature branch
 
@@ -100915,16 +101186,16 @@ This ensures schema changes in your commits are applied to each preview deployme
 
 ### Environment variables
 
-The integration sets both modern (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`) and legacy PostgreSQL variables (`POSTGRES_URL`, `PGHOST`, etc.) for Production and Development environments. Preview variables are injected dynamically per deployment.
+By default, the integration sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` for Production and Development environments. You can also select `PGHOST`, `PGHOST_UNPOOLED`, `PGUSER`, `PGDATABASE`, and `PGPASSWORD`. Preview variables are injected dynamically per deployment.
 
-- `DATABASE_URL`: Pooled connection (recommended for most applications)
+- `DATABASE_URL`: Pooled connection (recommended for most applications). For Production, sourced from the [production branch you chose at connect](https://neon.com/docs/guides/neon-managed-vercel-integration#choose-a-production-branch).
 - `DATABASE_URL_UNPOOLED`: Direct connection (for tools requiring direct database access)
-- `NEON_AUTH_BASE_URL`, `VITE_NEON_AUTH_URL`: Managed Better Auth endpoints (automatically set when Managed Better Auth is enabled on production branch)
+- `NEON_AUTH_BASE_URL`, `VITE_NEON_AUTH_URL`: Managed Better Auth endpoints. For Production, the values come from your production branch. You can select these variables on the **Settings** tab once Managed Better Auth is enabled on your project's default branch.
 
 **To customize which variables are used:**
 
-1. Go to **Neon Console → Integrations → Manage → Settings**
-2. Select the variables you want (for example, `PGHOST`, `PGUSER`, etc.)
+1. Go to **Neon Console → Integrations**, click **Manage** next to **Vercel**, and open the **Settings** tab
+2. Under **Vercel environment variables**, select the variables you want (for example, `PGHOST` or `PGUSER`)
 3. Click **Save changes**
 
 ![Select Vercel variables](https://neon.com/docs/guides/vercel_select_variables.png)
@@ -100933,21 +101204,20 @@ The integration sets both modern (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`) and l
 
 When you rotate the selected role password in Neon, the integration automatically syncs updated credentials to Vercel environment variables for connected projects.
 
-If deployments still use older credentials, open **Neon Console → Integrations → Manage → Settings** and click **Save changes** to force a resync.
+If deployments still use older credentials, open the **Settings** tab (**Neon Console → Integrations → Manage**) and click **Save changes** to force a resync.
 
 ### Branch cleanup
 
 **Automatic cleanup (recommended):**
-Enable **Automatically delete obsolete Neon branches** during setup to remove preview branches automatically when the corresponding Git branch is deleted. Cleanup runs the next time a preview deployment is created.
+Enable **Automatically delete obsolete Neon branches** during setup to remove preview branches automatically when the corresponding Git branch is merged or deleted. You can change this setting later on the **Branches** tab (**Neon Console → Integrations → Manage**), under **Automation workflows**. Cleanup runs the next time a preview deployment is created.
 
 Unlike the [Vercel-Managed Integration](https://neon.com/docs/guides/vercel-managed-integration), this cleanup is not affected by Vercel's deployment retention policies. For a full comparison and additional cleanup options, see [Managing Vercel preview branch cleanup](https://neon.com/docs/guides/vercel-branch-cleanup).
 
 **Manual cleanup:**
 If needed, you can delete branches manually:
 
-- **Individual branches:** Neon Console → Integrations → Manage → Branches → trash icon
-- **Bulk delete:** Use **Delete all** in the same interface
-- **API/CLI:** Use Neon CLI or API for programmatic cleanup
+- **Neon Console:** delete branches from your project's **Branches** page. See [Delete a branch](https://neon.com/docs/manage/branches#delete-a-branch).
+- **API/CLI:** Use the [Neon CLI](https://neon.com/docs/cli/branches#delete) or [Neon API](https://neon.com/docs/manage/branches#delete-a-branch-with-the-api) for programmatic cleanup
 
 **Warning: Important cleanup considerations**
 
@@ -100957,7 +101227,7 @@ If needed, you can delete branches manually:
 
 ### Disconnect integration
 
-To disconnect the integration: **Neon Console → Integrations → Manage → Disconnect**. This stops creating new preview branches but doesn't remove existing branches or the integration from Vercel.
+To disconnect the integration, go to **Neon Console → Integrations**, click **Manage** next to **Vercel**, open the **Disconnect** tab, and click **Disconnect**. This stops Neon from setting environment variables in Vercel. It doesn't remove existing branches or the integration itself. To fully remove the integration, uninstall it from your Vercel project's **Settings**.
 
 ---
 
@@ -100998,7 +101268,7 @@ If you see "Failed to set environment variables" during setup, remove conflictin
 
 **Issue:** Preview branches no longer created
 **Cause:** The PostgreSQL role selected during setup was deleted
-**Solution:** Reinstall the integration with a valid role, or change the role in **Neon Console → Integrations → Manage → Settings**
+**Solution:** Reinstall the integration with a valid role, or change the role under **Default database and role** on the **Settings** tab (**Neon Console → Integrations → Manage**)
 
 --- [Document source](https://neon.com/docs/guides/neon-private-networking.md) ---
 
@@ -103497,7 +103767,7 @@ The metric service names are also exposed as the `job` label on each metric.
 
 Click **Add** to save your configuration and start the data export.
 
-**Tip:** You can edit your integration settings at any time from the **Integrations** page in the Neon Console. This allows you to update your endpoint URL, change authentication credentials, or modify resource attributes without having to delete and recreate the integration.
+**Tip:** You can edit your integration settings at any time from the **Integrations** page in the Neon Console. This allows you to update your endpoint URL, change authentication credentials, or modify resource attributes without having to delete and recreate the integration. If you change the endpoint URL, protocol, or an endpoint override, enter your authentication credentials again. Neon doesn't reuse stored credentials for a new destination.
 
 ## Verify your integration is working
 
@@ -114788,6 +115058,7 @@ Create and manage Neon databases directly from your Vercel dashboard
 - [What the Vercel-Managed Integration is](https://neon.com/docs/guides/vercel-managed-integration#about-this-integration)
 - [How to install it from the Vercel Marketplace](https://neon.com/docs/guides/vercel-managed-integration#installation-walkthrough)
 - [How (and why) to enable automated Preview Branching](https://neon.com/docs/guides/vercel-managed-integration#enable-automated-preview-branching-recommended)
+- [How to choose which branch feeds Vercel Production](https://neon.com/docs/guides/vercel-managed-integration#choose-a-production-branch)
 - [Where to manage billing and configuration](https://neon.com/docs/guides/vercel-managed-integration#managing--billing)
 
 **Related topics**
@@ -114822,11 +115093,14 @@ Open the [Neon integration on the Vercel Marketplace](https://vercel.com/marketp
 
 This opens the **Install Neon** modal where you can choose between two options. Select **Create New Neon Account**, then click **Continue**.
 
-![Create a New Neon Account](https://neon.com/docs/guides/vercel_install_neon_modal_new_account.png)
-
 ## Complete Vercel's configuration
 
-Accept the terms, pick a region & plan, then name your database. (Remember: a "Database" in Vercel is a **Project** in Neon.)
+Under **Configuration and Plan**, choose a region and set the optional services:
+
+- **Auth**: provisions [Managed Better Auth](https://neon.com/docs/auth/overview) for your app's users, with profiles synced to Postgres.
+- **Realtime**: enables [Neon Realtime](https://neon.com/docs/realtime/overview) (beta) on the database's default branch. Preview branches get their own. You can only turn on Realtime when you create a database, not for an existing one.
+
+Then pick a plan, accept the terms, and name your database. (Remember: a "Database" in Vercel is a **Project** in Neon.)
 
 ## View storage settings
 
@@ -114840,17 +115114,10 @@ From the **Storage** tab, click **Open in Neon** to jump straight to your new Ne
 
 ## Connecting the database to a Vercel project
 
-1. In **Storage → `<your database>` → Connect Project** choose the Vercel project and the environments that should receive database variables (Development, Preview, Production).
-
-   ![Connect a Vercel Project](https://neon.com/docs/guides/vercel_native_connect_project.png)
-
-2. (Optional) Under **Advanced Options → Deployments Configuration** enable **Preview** to turn on _Preview Branching_ (see next section).
-
-   ![Vercel deployment configuration](https://neon.com/docs/guides/vercel_native_deployments_configuration.png)
-
-3. Click **Connect**.
-
-**Tip: Environment variable prefix**You can add a prefix if you have multiple databases in the same project, for example `PRIMARY_`.
+1. In **Storage → `<your database>` → Connect Project**, choose the Vercel **Project** and the **Environments** that should receive database variables (Development, Preview, Production).
+2. (Optional) Under **Create database branch for deployment**, select **Preview** to turn on _Preview Branching_ (see next section). Leave **Production** unchecked. It creates a new branch for every production deployment, which the recommended setup doesn't need: production deployments use your [production branch](https://neon.com/docs/guides/vercel-managed-integration#choose-a-production-branch).
+3. (Optional) Set a **Custom Prefix** for the environment variables. You only need one if your Vercel project already uses the unprefixed variable names, for example from a database you connected earlier.
+4. Click **Connect**.
 
 ---
 
@@ -114862,10 +115129,7 @@ Preview branching creates an isolated Neon branch (copy-on-write) for every Verc
 
 If you've enabled [Managed Better Auth](https://neon.com/docs/auth/overview) on your production branch, it's automatically provisioned on preview branches too. Preview deployments receive `NEON_AUTH_BASE_URL` and `VITE_NEON_AUTH_URL` environment variables, letting you test authentication in isolated environments. Auth data branches with your database, so each preview has its own independent user profiles and sessions.
 
-To enable:
-
-1. While connecting the project (step above) toggle **Required → Preview**.
-2. Make sure **Resource must be active before deployment** is also on. This allows Vercel to wait for the branch to be ready.
+To enable it, select **Preview** under **Create database branch for deployment** when you connect the project (step above).
 
 Once enabled, the flow looks like this:
 
@@ -114895,6 +115159,23 @@ To verify preview branching works:
 2. Make any change and commit: `git commit -a -m "Test change"`
 3. Push: `git push`
 4. Check Vercel deployments and Neon Console branches to confirm the preview branch was created
+
+---
+
+## Choose a production branch
+
+Your Vercel Production deployments use a dedicated **production branch** in Neon. When the integration creates your database, the production branch is your project's default branch. Preview branches are always created from the default branch.
+
+The production branch is independent of the default branch. If you later change the project's default branch, Production keeps using the same production branch. To point Production at a different branch, for example a protected `production` branch:
+
+1. In the Neon Console, open your project and go to **Integrations**.
+2. Under **Added**, click **Settings** next to **Vercel**.
+3. Under **Production branch**, select the branch you want and click **Save**. If a production branch is already set, confirm the change.
+4. Redeploy your production deployment in Vercel so it picks up the new branch's credentials.
+
+The branch you choose can't be a preview branch or have [branch expiration](https://neon.com/docs/guides/branch-expiration) set, and it needs a read-write compute. Branches created before January 14, 2024 aren't listed.
+
+While the integration is connected, the production branch and its read-write compute can't be deleted. To delete that branch, choose a different production branch first.
 
 ---
 
@@ -114993,13 +115274,14 @@ Branches you don't delete are eventually [archived](https://neon.com/docs/guides
 
 ## Environment variables set by the integration
 
-| Variable                                                          | Purpose                                                             |
-| :---------------------------------------------------------------- | :------------------------------------------------------------------ |
-| `DATABASE_URL`                                                    | Pooled connection string (PgBouncer)                                |
-| `DATABASE_URL_UNPOOLED`                                           | Direct connection string                                            |
-| `PGHOST`, `PGHOST_UNPOOLED`, `PGUSER`, `PGDATABASE`, `PGPASSWORD` | Raw pieces to build custom strings                                  |
-| `POSTGRES_*` (legacy)                                             | Provided for backwards compatibility with Vercel Postgres templates |
-| `NEON_AUTH_BASE_URL`, `VITE_NEON_AUTH_URL`                        | Managed Better Auth endpoints (when enabled on production branch)   |
+| Variable                                                          | Purpose                                                                                                                                                     |
+| :---------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                                                    | Pooled connection string (PgBouncer)                                                                                                                        |
+| `DATABASE_URL_UNPOOLED`                                           | Direct connection string                                                                                                                                    |
+| `PGHOST`, `PGHOST_UNPOOLED`, `PGUSER`, `PGDATABASE`, `PGPASSWORD` | Raw pieces to build custom strings                                                                                                                          |
+| `POSTGRES_*` (legacy)                                             | Provided for backwards compatibility with Vercel Postgres templates                                                                                         |
+| `NEON_AUTH_BASE_URL`, `VITE_NEON_AUTH_URL`                        | Managed Better Auth endpoints (when enabled on production branch)                                                                                           |
+| `NEON_REALTIME_URL`, `NEON_REALTIME_SECRET`                       | [Neon Realtime](https://neon.com/docs/realtime/overview) endpoint and secret (when Realtime is enabled). Preview deployments get their own branch's values. |
 
 ---
 
@@ -120776,7 +121058,7 @@ Here's a summary of how different types of compute failures are handled and thei
 
 While your application should handle reconnections automatically, session-specific data like temporary tables, prepared statements, and the [compute cache](https://neon.com/docs/reference/glossary#compute-cache), which stores frequently accessed data, will not persist across a failover. As a result, queries may initially run more slowly until the Postgres memory buffers and cache are rebuilt.
 
-For details on uptime and performance guarantees, refer to our available [SLAs](https://neon.com/docs/introduction/support#slas).
+For details on uptime and performance guarantees, refer to the [Neon Service Level Agreement](https://neon.com/docs/legal/sla).
 
 ## Limitations
 
@@ -122323,7 +122605,7 @@ Security features:
 
 ### Uptime SLA
 
-Guaranteed service availability is offered on the **Scale** plan. Contact [support](https://console.neon.tech) via the console for details.
+Guaranteed service availability is offered on the **Scale** plan. For uptime commitments, Service Credits, and exclusions, see the [Neon Service Level Agreement](https://neon.com/docs/legal/sla).
 
 ### Support
 
@@ -122817,7 +123099,7 @@ A Neon project's region does not change after creation. To use another region, c
 
 --- [Document source](https://neon.com/docs/introduction/roadmap.md) ---
 
-> Summary: Neon's public product roadmap tracks what is in flight, recently shipped, and planned across compute, storage, security, and cloud regions. Planned features include higher storage and compute limits, CMK encryption, RBAC, and PCI compliance. Recently shipped milestones include Postgres 18 GA, a major write throughput improvement, Managed Better Auth GA, and the AI agent pricing plan.
+> Summary: Neon's public product roadmap tracks what is in flight, recently shipped, and planned across compute, storage, security, and cloud regions. Planned features include higher storage and compute limits, CMK encryption, and RBAC. Recently shipped milestones include Postgres 18 GA, a major write throughput improvement, Managed Better Auth GA, and the AI agent pricing plan.
 
 # Roadmap
 
@@ -122874,10 +123156,6 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - Role-based access control (RBAC) in the Neon Console
 - RBAC roles extended into the database
 - Audit logging of all database access
-
-### Compliance
-
-- PCI compliance
 
 ### High availability
 
@@ -123359,18 +123637,16 @@ On the **Free** plan, the support center offers the AI assistant, the docs, and 
 
 #### Open a technical support ticket (Scale plan)
 
-1. In the support center, select **Contact our support team**.
-2. In the **Create support ticket** form, fill in:
-   - **Organization**: The organization the issue affects.
+1. In the support center, select **Contact our support team**. The **Open a support ticket** form opens for the organization you selected.
+2. Fill in:
    - **Subject**: A short summary of the issue. Required.
    - **Priority**: How urgent the issue is.
-   - **Project**, **Branch**, and **Compute**: Optional. Select the affected resources to help support find the problem faster.
    - **Problem description**: A detailed description of the issue.
    - **Attachments**: Optional. Add screenshots, logs, or other files.
 3. Leave **I consent to Neon employees connecting to my database to help resolve this support case** selected if you want support to be able to connect to your database. Clear it if you don't.
-4. Select **Submit support ticket**.
-
-Responses go to the contact email shown in the form, which is the email address for your Neon account.
+4. Optionally, select the affected **Project**, **Branch**, **Compute**, and **Affected Service** to help support find the problem faster.
+5. Check **Your contact email**. Responses go to this address, which defaults to the email address for your Neon account.
+6. Select **Submit support ticket**.
 
 #### Open a billing support ticket (Launch and Scale plans)
 
@@ -123752,6 +124028,115 @@ Each branch in the response includes a `logical_size` field (bytes). Sum across 
 ### Free plan limits
 
 See the [Neon Free plan docs](https://neon.com/docs/introduction/plans#free-plan) for current limits. Exceeding them suspends compute or blocks creation. There are no costs on the Free plan.
+
+--- [Document source](https://neon.com/docs/legal/sla.md) ---
+
+> Summary: The Neon Service Level Agreement (SLA) defines the Monthly Uptime Percentage for Compute Endpoints on the Neon Business and Scale plans, the Service Credits available when it isn't met, how to submit a claim, and exclusions.
+
+# Neon Service Level Agreement
+
+**Last Modified:** February 20, 2026 
+
+The Service Level Agreement ("**SLA"**) outlined below applies exclusively to customers who have subscribed to the Neon Business or Scale plan. This SLA is incorporated into and forms an integral part of the applicable Agreement between Neon, LLC. and the customer. Unless otherwise provided herein, capitalized terms will have the meaning specified in the Agreement. We reserve the right to change the terms of this SLA.
+
+Neon will use commercially reasonable efforts to maximize the availability of Compute Endpoints and agrees to provide the performance standards as detailed below. This SLA applies only to the availability of Compute Endpoints, and does not apply to any other part of the Platform, APIs, product, or Services offered by Neon.
+
+1. **SERVICE AVAILABILITY** 
+
+If Neon does not achieve and maintain the Monthly Uptime Percentages set forth in the table below, then the Customer may be eligible for a Service Credit as described in this SLA.
+
+| Monthly Uptime Percentage                           | Service Credit |
+| --------------------------------------------------- | -------------- |
+| Less than 99.95% but greater than or equal to 99.0% | 10%            |
+| Less than 99.0% but greater than or equal to 98.0%  | 15%            |
+| Less than 98.0% but greater than or equal to 96.0%  | 20%            |
+| Less that 96.0%                                     | 80%            |
+
+2. **SERVICE CREDITS AND PROCESS** 
+
+2.1 If the Monthly Uptime Percentage is not met, then you may be eligible for a Service Credit. 
+
+2.2 You must log a support ticket with the Neon support team within 21 days of first becoming aware of an event that impacts service availability and abide by the Customer Obligations set out below. 
+
+2.3 Neon will conduct an assessment of the Service Credit claim.
+
+2.4 A Service Credit is calculated as a percentage of the Fees paid by the Customer for the Services in the month in which the applicable SLA was not met.
+
+2.5 Neon will process claims within 45 days of receipt of full information provided to the Neon support team. 
+
+2.6 If Neon determines that the Customer has satisfied the Customer Obligations and that there are no applicable Exclusions, a Service Credit will be granted to the Customer.
+
+2.7 Neon will apply any awarded Service Credit only against future payments otherwise due from the Customer. At Neon's discretion, we may issue the Service Credit to the credit card the Customer used to pay for the billing cycle in which the Downtime occurred. 
+
+2.8 A Service Credit will not entitle the Customer to any refund or other payment from Neon.
+
+2.9 A Service Credit may not be transferred or applied to any other account. Unless otherwise provided in the Agreement, the Customer's sole and exclusive remedy for any Downtime or non-performance or other failure by Neon to provide the Platform is the receipt of a Service Credit (if eligible) in accordance with the terms of this SLA.
+
+3. **CUSTOMER OBLIGATIONS**
+
+3.1 To be eligible for a Service Credit, you must conduct the following obligations (collectively "**Customer Obligations**"):
+
+3.1.1 You must log a support ticket with Neon within 24 hours of first becoming aware of an event that impacts service availability.
+
+3.1.2 You must submit your claim and all required information by the end of the month immediately following the month in which the Downtime occurred.
+
+3.1.3 You must include all information necessary for Neon to validate your claim, including: (i) a detailed description of the events resulting in Downtime, including your request logs that document the errors and corroborate your claimed outage (with any confidential or sensitive information in the logs removed or replaced with asterisks); (ii) information regarding the time and duration of the Downtime; (iii) the number and location(s) of affected users (if applicable); and (iv) descriptions of your attempts to resolve the Downtime at the time of occurrence. 
+
+3.1.4 You must reasonably assist Neon in investigating the cause of the Downtime and processing your claim. 
+
+3.1.5 You must comply with the terms of the Agreement and any advice from our support team.
+
+3.1.6 Your failure to provide the request and other information as required above will disqualify you from receiving a Service Credit.
+
+4. **EXCLUSIONS** 
+
+4.1 Downtime does not include, and you will not be eligible for a Service Credit for, any performance or availability issue that results from the following (collectively "**SLA Exclusions"**):
+
+4.1.1 factors outside of our reasonable control, such as natural disaster, war, acts of terrorism, riots, government action, or a network or device failure at your website or premises or between your website or premises and Neon;
+
+4.1.2 services, hardware, or software provided by a third party, such as cloud platform services on which Neon runs;
+
+4.1.3 any voluntary actions or inactions from you or any third party not in accordance with the Documentation or guidance e.g., deleting a database, not configuring sufficient compute resources, exceeding available storage, unsharing a Project (if the project owner drops the privilege of a user to access the project), revoking API keys, or incorrectly modifying database connection parameters; overloading a database instance to the point it is inoperable, unsharing of Project, creating excessively large number of tables that significantly increase the recovery time etc.or failing to maintain indexes); 
+
+4.1.4 underlying database engine software that leads to repeated database crashes or an inoperable database instance;
+
+4.1.5 long recovery time due to insufficient IO capacity for your database workload;
+
+4.1.6 that result from your equipment, software or other technology and/or third party equipment, software or other technology (other than third party equipment within our direct control); 
+
+4.1.7 arising from our suspension and termination of your right to use Neon in accordance with the Agreement;
+
+4.1.8 that result from any maintenance as provided for pursuant to the Agreement
+
+4.1.8 Neon's Services being in Technical Preview.
+
+5. **DEFINITIONS**
+
+As used herein, "month" refers to a calendar month.
+
+As used herein, "month" refers to a calendar month.
+
+"**Agreement**" means the Master Service Agreement and applicable Order Form entered into between Neon and the Customer. 
+
+"**Business Hours"** means 06:00am to 14:00pm Pacific Standard Time (UTC -8), Monday through Friday, excluding public holidays in the United States.
+
+**"Compute Endpoints"** means compute instances that provide virtualized computing resources (CPU and memory) for running PostgreSQL. Clients and applications connect to a Neon database via a Compute Endpoint hostname.
+
+"**Downtime**" is calculated on a monthly basis and is the total number of minutes during the month that a Compute Endpoint was unavailable. For the purposes of calculating the Monthly Uptime Percentage, Downtime does not include partial minutes of unavailability, inaccessibility or unavailability due to Unscheduled Downtime. A minute is considered unavailable if all of your continuous attempts to establish a connection to a Compute Endpoint within the minute fail. 
+
+"**Fees"** means the total fees paid by you for the Platform during the month in which Downtime occurred.
+
+"**Monthly Uptime Percentage"**  is calculated as:
+
+_[(`total minutes in month` – `downtime`) / `total minutes in month`] x 100_
+
+**"Project"** refers to the top-level object in the Neon object hierarchy, serving as a container for all associated objects, except for API keys, which have a Neon account scope. The project framework encompasses objects including branches, compute endpoints, databases, and roles. A project also defines the region where resources are hosted.
+
+"**Service Credit**" means the percentage of the Fees to be credited to you if Neon approves your claim, as set forth in the table above.
+
+"**Unscheduled Downtime**" means the time, in minutes, that the Compute Endpoints  are not generally accessible and available to Customers, excluding inaccessibility or unavailability due to Customer's or Authorized Users' acts or omissions, Force Majeure Events, scheduled maintenance disclosed with at least 24 hours' noticel, hacking or virus attacks or emergency maintenance. 
+
+"**You**", "**your**" or "**Customer"** means the person or entity using the Platform or Services  identified in the applicable Order Form as the customer.
 
 --- [Document source](https://neon.com/docs/local/neon-local.md) ---
 
@@ -129849,6 +130234,30 @@ For attribute definitions, find the [List projects](https://neon.com/docs/refere
 ```
 
 </details>
+
+### Count projects with the API
+
+To get the number of projects without paging through the list, use the following Neon API method. It counts active projects only. Projects that are being created, or that were deleted and are still within the recovery window, aren't included. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/projects/count-projects).
+
+```http
+GET /projects/count
+```
+
+If you use a personal API key, include the `org_id` parameter to specify the organization. With an org API key, the organization is inferred from the key.
+
+```bash
+curl 'https://console.neon.tech/api/v2/projects/count?org_id=org-example-12345678' \
+ -H 'Accept: application/json' \
+ -H "Authorization: Bearer $NEON_API_KEY"
+```
+
+The response contains the count:
+
+```json
+{
+  "count": 12
+}
+```
 
 ### Update a project with the API
 
@@ -139596,6 +140005,24 @@ subscription.onChange(({ data, status }) => render(data, status))
 
 Pass a `logLevel` to see what the client is doing, as [Log client diagnostics](../guides/subscribing#log-client-diagnostics) shows.
 
+### React Native
+
+The client also runs in React Native apps, with `@neon/realtime` 0.1.2 or later. Import it from `@neon/realtime/client` as usual.
+
+React Native's WebSocket sends an `Origin` header derived from the Realtime endpoint. If your branch restricts Realtime to specific origins, pass a `webSocketFactory` that sends one of the allowed origins:
+
+```ts
+const client = createRealtimeClient({
+  url: realtimeUrl,
+  webSocketFactory: (url, protocols) =>
+    new WebSocket(url, protocols, {
+      headers: { origin: "https://app.example.com" },
+    }),
+})
+```
+
+The third `WebSocket` argument is a React Native extension and isn't available in browsers. An origin allowlist protects browser apps only. A native app can send any origin, so don't rely on it to authenticate native clients.
+
 ### Renewing sealed queries
 
 Most apps pass a `refreshQuery` function to the [React or TanStack DB bindings](../guides/reactivity), which renew for them. To renew a subscription yourself, see [Renew the sealed query](../guides/subscribing#renew-the-sealed-query). Integration authors can build on [`QueryRefreshController`](https://neon.com/docs/realtime/sdks/typescript#client-queryrefreshcontroller).
@@ -146618,7 +147045,7 @@ If you have questions about Neon's AI integrations, please reach out to [Neon Su
 
 --- [Document source](https://neon.com/docs/security/compliance.md) ---
 
-> Summary: Neon holds SOC 2 Type 1 and Type 2, SOC 3, ISO 27001, ISO 27701, GDPR, CCPA, and HIPAA certifications. Each is validated by independent audits or regulatory adherence. HIPAA compliance is available on the Scale plan. Audit reports for all certifications can be requested through the Neon Trust Center at trust.neon.com.
+> Summary: Neon holds SOC 2 Type 1 and Type 2, SOC 3, ISO 27001, ISO 27701, GDPR, CCPA, and HIPAA certifications. Each is validated by independent audits or regulatory adherence. HIPAA compliance is available on the Scale plan. Neon isn't PCI DSS compliant. Audit reports for all certifications can be requested through the Neon Trust Center at trust.neon.com.
 
 # Compliance
 
@@ -146653,6 +147080,12 @@ The California Consumer Privacy Act (CCPA) grants California residents new right
 Neon offers HIPAA compliance as part of our Scale plan, enabling applications that handle Protected Health Information (PHI) to meet compliance requirements. more information and how to get started, refer to our [Neon HIPAA Compliance Guide](https://neon.com/docs/security/hipaa).
 
 A copy of Neon's HIPAA compliance report can be requested through our [Trust Center](https://trust.neon.com/).
+
+## PCI DSS
+
+Neon isn't PCI DSS compliant at this time. Don't store or process payment cardholder data in Neon.
+
+If you need a PCI DSS compliant Postgres database, [Lakebase](https://docs.databricks.com/aws/en/oltp/), Databricks-managed Postgres, supports [PCI DSS](https://docs.databricks.com/aws/en/security/privacy/pci) in supported AWS regions.
 
 ## Questions?
 
@@ -148797,7 +149230,7 @@ aws s3 cp ./photo.jpg s3://my-bucket/images/photo.jpg \
 
 ## Multipart upload
 
-The maximum object size is currently 5 GiB, whether you upload it in a single request or as a multipart upload. Higher limits are planned: paid plans will follow standard [S3 limits](https://aws.amazon.com/s3/faqs/), with objects up to 5 TB and a 5 GB maximum for a single-request upload, so multipart upload is required for larger objects (AWS recommends it above 100 MB). For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control. Multipart upload makes large uploads more reliable because each part is retried independently. For all size and capacity limits, see [Limits](https://neon.com/docs/storage/overview#limits).
+A single-request upload can be up to 5 GiB. With multipart upload, an object can be up to 10 GiB, so use multipart upload for objects larger than 5 GiB (AWS recommends it above 100 MB). Higher limits are planned: paid plans will follow standard [S3 limits](https://aws.amazon.com/s3/faqs/), with objects up to 5 TB. For large files, the AWS SDK automatically uses multipart upload above a configurable threshold. You can also initiate multipart upload manually for fine-grained control. Multipart upload makes large uploads more reliable because each part is retried independently. For all size and capacity limits, see [Limits](https://neon.com/docs/storage/overview#limits).
 
 **TypeScript**
 
@@ -149275,10 +149708,11 @@ neon bootstrap --template ai-sdk
 
 The following limits apply:
 
-| Limit                    | Value                                                                                                                          |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Object size (maximum)    | 5 GiB, whether uploaded in a single request or with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload) |
-| Free plan object storage | 5 GB per project ([rates](https://neon.com/docs/introduction/plans#object-storage))                                            |
+| Limit                                                                                             | Value                                                                               |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Object size, single-request upload (maximum)                                                      | 5 GiB                                                                               |
+| Object size, [multipart upload](https://neon.com/docs/storage/objects#multipart-upload) (maximum) | 10 GiB                                                                              |
+| Free plan object storage                                                                          | 5 GB per project ([rates](https://neon.com/docs/introduction/plans#object-storage)) |
 
 Two limits are behavioral rather than fixed numbers:
 
@@ -149503,9 +149937,9 @@ See [S3 compatibility](https://neon.com/docs/storage/s3-compatibility#not-suppor
 
 ### `EntityTooLarge`
 
-The object exceeds the maximum size. Neon Object Storage currently allows objects up to 5 GiB, whether uploaded in a single request or via [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). A single-request `PutObject` fails immediately; a multipart upload fails at `CompleteMultipartUpload` once the assembled object would exceed the limit.
+The object exceeds the maximum size. Neon Object Storage allows objects up to 5 GiB in a single request and up to 10 GiB with [multipart upload](https://neon.com/docs/storage/objects#multipart-upload). A single-request `PutObject` over 5 GiB fails immediately; a multipart upload fails at `CompleteMultipartUpload` once the assembled object would exceed 10 GiB.
 
-**Fix:** Split the data across multiple objects, or confirm the upload isn't unexpectedly large. Multipart upload makes large uploads more reliable but doesn't raise the per-object limit. [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
+**Fix:** For an object between 5 GiB and 10 GiB, use multipart upload. For anything larger, split the data across multiple objects, or confirm the upload isn't unexpectedly large. [Contact support](https://neon.com/docs/introduction/support) if you need to store larger objects.
 
 ## Connection and performance errors
 

@@ -14,7 +14,7 @@ path: docs/cookbook/building-agents/hitl-tools
 
 > [!TIP]
 >
-> This recipe assumes you already have an agent built with the OpenRouter Agent SDK and `callModel`. If you are starting from scratch, first read the [callModel overview](/docs/agent-sdk/call-model/overview.md) to learn about the Agent SDK.
+> This recipe assumes you already have an agent built with the OpenRouter Agent SDK and `callModel`. If you are starting from scratch, first read the [callModel overview](https://openrouter.ai/docs/agent-sdk/call-model/overview.md) to learn about the Agent SDK.
 
 **Goal:** Add human-in-the-loop (HITL) controls to an existing Agent SDK agent so one of its tools can auto-resolve routine decisions and pause for human input on high-stakes ones.
 
@@ -34,7 +34,7 @@ Both pause for human input, but they solve different problems:
 | **Post-processing** | `onResponseReceived` transforms human input | Not available |
 | **Best for** | Conditional escalation, tiered approval, enrichment | Consent gates before risky actions |
 
-Use HITL when the decision depends on the input data. Use `requireApproval` when you need a human to approve whether a tool should execute. See the [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state.md) reference for details on approval flows and conditional approval predicates.
+Use HITL when the decision depends on the input data. Use `requireApproval` when you need a human to approve whether a tool should execute. See the [Tool Approval & State](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md) reference for details on approval flows and conditional approval predicates.
 
 ## Prerequisites
 
@@ -81,7 +81,7 @@ const approvePayment = tool({
 });
 ```
 
-`outputSchema` is required for HITL tools — it validates both the auto-resolved return value and any human-supplied response. See the [HITLTool type reference](/docs/agent-sdk/call-model/api-reference.md#hitltool) for the full type signature.
+`outputSchema` is required for HITL tools — it validates both the auto-resolved return value and any human-supplied response. See the [HITLTool type reference](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md#hitltool) for the full type signature.
 
 ## 2. Add post-processing with onResponseReceived
 
@@ -232,5 +232,5 @@ The `onResponseReceived` hook fires on the human-supplied output before the mode
 
 ## Next steps
 
-* [Gate Agent Tool Calls with Jev](/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) replaces the hand-written threshold in `onToolCalled` with a decision model that returns `approve`, `block`, or `review` for each call, so only ambiguous calls reach the pause path built here.
+* [Gate Agent Tool Calls with Jev](https://openrouter.ai/docs/cookbook/building-agents/gate-tool-calls-with-jev.md) replaces the hand-written threshold in `onToolCalled` with a decision model that returns `approve`, `block`, or `review` for each call, so only ambiguous calls reach the pause path built here.
 

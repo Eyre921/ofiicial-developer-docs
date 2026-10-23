@@ -12,7 +12,7 @@ path: docs/tts-sample-rate
 
 `sample_rate` *string*
 
-Text to Speech Request  Text to Speech Stream  English Only
+Text to Speech Request  Text to Speech Stream
 
 The Sample Rate feature allows users to specify the desired sample rate of the resulting text-to-speech audio output. Sample rate refers to the number of samples of audio carried per second, measured in Hertz (Hz).
 

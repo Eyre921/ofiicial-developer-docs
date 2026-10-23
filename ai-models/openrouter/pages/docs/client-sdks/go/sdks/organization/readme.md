@@ -24,7 +24,7 @@ Organization endpoints
 
 ## ListMembers
 
-List all members of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all members of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -93,7 +93,7 @@ func main() {
 
 ## GetSettings
 
-Get the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -147,7 +147,7 @@ func main() {
 
 ## UpdateSettings
 
-Update the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

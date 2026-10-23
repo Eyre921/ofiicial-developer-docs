@@ -15,14 +15,14 @@ path: docs/tts-models-languages-overview
 | Model                                                    | Description & Use                                                                                                                                                                                                                               |
 | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Flux TTS](/docs/tts-models-languages-overview#flux-tts) | Our latest-generation, conversation-native voice model — streaming-first, turn-based, and expressive by default. **Recommended for all new builds**: voice agents, customer service, IVR, and general-purpose synthesis. Served on `/v2/speak`. |
-| [Aura-2](/docs/tts-models-languages-overview#aura-2)     | Our widest-language model, with voices across seven languages. Recommended when you need synthesis in a language Flux TTS doesn't cover yet. Served on `/v1/speak`.                                                                             |
+| [Aura-2](/docs/tts-models-languages-overview#aura-2)     | Our previous-generation model, with voices across seven languages. Served on `/v1/speak`.                                                                                                                                                       |
 | [Aura](/docs/tts-models-languages-overview#aura)         | Our first-generation text-to-speech model. English voices only. Served on `/v1/speak`.                                                                                                                                                          |
 
-**Start with Flux TTS.** It's our best-sounding, most accurate model and the default recommendation for every use case it serves. Flux TTS is English-only today — for Spanish, German, French, Dutch, Italian, or Japanese, use Aura-2 until Flux TTS's multilingual voices ship.
+**Start with Flux TTS.** It's our best-sounding, most accurate model and the default recommendation for every use case it serves.
 
 > **Info**
 >
-> All models default to `language=en` (via the voice's model string). A `model` is required on every request — Flux TTS on `/v2/speak`, Aura-2 and Aura on `/v1/speak`.
+> The language comes from the voice's model string — the language code at the end selects it (`flux-desislava-bg` is Bulgarian, `flux-haley-en` is English). A `model` is required on every request — Flux TTS on `/v2/speak`, Aura-2 and Aura on `/v1/speak`.
 
 ### Example
 
@@ -46,17 +46,60 @@ Flux TTS uses `/v2/speak` (streaming WebSocket and batch REST). See [Getting Sta
 
 ## Flux TTS
 
-Flux TTS is Deepgram's best text-to-speech model and the recommended choice for every English use case — real-time voice agents, customer service, IVR, and pre-rendered audio alike. It's conversation-native: streaming-first, turn-based, expressive by default, and consistent across turns, with native interruption handling and strong accuracy on the strings that trip up agents in production (alphanumerics, drug names, and other hard-to-say entities). Model strings follow the format `flux-{voice}-{language}` (e.g. `flux-alexis-en`), and `model` is required on every `/v2/speak` connection.
+Flux TTS is Deepgram's best text-to-speech model and the recommended choice for every use case — real-time voice agents, customer service, IVR, and pre-rendered audio alike. It's conversation-native: streaming-first, turn-based, expressive by default, and consistent across turns, with native interruption handling and strong accuracy on the strings that trip up agents in production (alphanumerics, drug names, and other hard-to-say entities). Model strings follow the format `flux-{voice}-{language}` (e.g. `flux-alexis-en`), and `model` is required on every `/v2/speak` connection.
 
 | Model Option      | Language                                                                            |
 | ----------------- | ----------------------------------------------------------------------------------- |
 | `flux-{voice}-en` | English (American, British, Irish, Australian, Indian, Singaporean, Filipino): `en` |
+| `flux-{voice}-bn` | Bengali: `bn`                                                                       |
+| `flux-{voice}-bg` | Bulgarian: `bg`                                                                     |
+| `flux-{voice}-ca` | Catalan: `ca`                                                                       |
+| `flux-{voice}-zh` | Chinese (Mandarin, Taiwanese Mandarin, Cantonese): `zh`                             |
+| `flux-{voice}-hr` | Croatian: `hr`                                                                      |
+| `flux-{voice}-cs` | Czech: `cs`                                                                         |
+| `flux-{voice}-da` | Danish: `da`                                                                        |
+| `flux-{voice}-nl` | Dutch (Dutch, Flemish): `nl`                                                        |
+| `flux-{voice}-et` | Estonian: `et`                                                                      |
+| `flux-{voice}-fi` | Finnish: `fi`                                                                       |
+| `flux-{voice}-fr` | French: `fr`                                                                        |
+| `flux-{voice}-de` | German (German, Swiss German): `de`                                                 |
+| `flux-{voice}-el` | Greek: `el`                                                                         |
+| `flux-{voice}-gu` | Gujarati: `gu`                                                                      |
+| `flux-{voice}-hi` | Hindi: `hi`                                                                         |
+| `flux-{voice}-hu` | Hungarian: `hu`                                                                     |
+| `flux-{voice}-id` | Indonesian: `id`                                                                    |
+| `flux-{voice}-it` | Italian: `it`                                                                       |
+| `flux-{voice}-ja` | Japanese: `ja`                                                                      |
+| `flux-{voice}-kn` | Kannada: `kn`                                                                       |
+| `flux-{voice}-ko` | Korean: `ko`                                                                        |
+| `flux-{voice}-lv` | Latvian: `lv`                                                                       |
+| `flux-{voice}-lt` | Lithuanian: `lt`                                                                    |
+| `flux-{voice}-ms` | Malay: `ms`                                                                         |
+| `flux-{voice}-mr` | Marathi: `mr`                                                                       |
+| `flux-{voice}-no` | Norwegian: `no`                                                                     |
+| `flux-{voice}-pl` | Polish: `pl`                                                                        |
+| `flux-{voice}-pt` | Portuguese (Brazil, Portugal): `pt`                                                 |
+| `flux-{voice}-ro` | Romanian: `ro`                                                                      |
+| `flux-{voice}-ru` | Russian: `ru`                                                                       |
+| `flux-{voice}-sk` | Slovak: `sk`                                                                        |
+| `flux-{voice}-sl` | Slovenian: `sl`                                                                     |
+| `flux-{voice}-es` | Spanish: `es`                                                                       |
+| `flux-{voice}-sv` | Swedish: `sv`                                                                       |
+| `flux-{voice}-tl` | Tagalog: `tl`                                                                       |
+| `flux-{voice}-ta` | Tamil: `ta`                                                                         |
+| `flux-{voice}-te` | Telugu: `te`                                                                        |
+| `flux-{voice}-tr` | Turkish: `tr`                                                                       |
+| `flux-{voice}-uk` | Ukrainian: `uk`                                                                     |
+| `flux-{voice}-ur` | Urdu: `ur`                                                                          |
+| `flux-{voice}-vi` | Vietnamese: `vi`                                                                    |
+
+Text normalization (numbers, dates and abbreviations read out) is available for English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish; the other 32 languages are in Early Access without it — write numbers and dates out in words.
 
 See the full [Flux TTS Voices & Languages](/docs/flux-tts/voices) catalog for every voice and its characteristics.
 
 ## Aura-2
 
-Aura-2 is Deepgram's widest-language text-to-speech model, with voices across seven languages. Reach for it when you need synthesis in a language Flux TTS doesn't cover yet; for English, build on [Flux TTS](#flux-tts). Model strings follow the format `aura-2-{voice}-{language}` (e.g. `aura-2-thalia-en`).
+Aura-2 is Deepgram's previous-generation text-to-speech model, with voices across seven languages. For new work, build on [Flux TTS](#flux-tts). Model strings follow the format `aura-2-{voice}-{language}` (e.g. `aura-2-thalia-en`).
 
 | Model Option        | Language                                                                  |
 | ------------------- | ------------------------------------------------------------------------- |

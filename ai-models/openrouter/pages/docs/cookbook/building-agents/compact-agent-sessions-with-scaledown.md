@@ -354,7 +354,7 @@ With different instructions and no chunking, the same `summarize` call can turn 
 
 ## Next steps
 
-* [Detect Stuck and Looping Agents with ScaleDown Classify](/docs/cookbook/building-agents/detect-agent-loops-with-scaledown.md) to check the same transcript for loops every few steps
-* [Build a Long-Horizon Agent](/docs/cookbook/building-agents/long-horizon-agents.md) for the cost limits, saved state, and streaming around this compaction
-* [Extract Invoice Fields with ScaleDown Extract](/docs/cookbook/evaluate-and-optimize/extract-invoice-fields-with-scaledown.md) to pull named fields out of documents
+* [Detect Stuck and Looping Agents with ScaleDown Classify](https://openrouter.ai/docs/cookbook/building-agents/detect-agent-loops-with-scaledown.md) to check the same transcript for loops every few steps
+* [Build a Long-Horizon Agent](https://openrouter.ai/docs/cookbook/building-agents/long-horizon-agents.md) for the cost limits, saved state, and streaming around this compaction
+* [Extract Invoice Fields with ScaleDown Extract](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/extract-invoice-fields-with-scaledown.md) to pull named fields out of documents
 

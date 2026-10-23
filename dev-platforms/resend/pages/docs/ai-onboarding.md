@@ -120,6 +120,8 @@ Or install individually:
 
 The documentation includes quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
 
+Example agent quick start guide for sending emails.
+
 Resend provides two endpoints for sending emails:
 
 | Approach | Endpoint | Use Case |

@@ -274,6 +274,6 @@ Other Gemini models are unaffected.
 
 ## Resources
 
-* [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens.md), including how to preserve `reasoning_details` across turns
-* [OpenRouter Responses API](/docs/api/api-reference/responses/create-a-response.md)
+* [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md), including how to preserve `reasoning_details` across turns
+* [OpenRouter Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
 

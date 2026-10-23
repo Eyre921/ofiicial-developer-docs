@@ -12,7 +12,7 @@ path: docs/cookbook/administration/analytics-cost-control
 
 > Hand your coding agent a management key and the analytics skill, then ask it where your money is going
 
-**Goal:** Run a cost review on your OpenRouter account using your coding agent, the [Analytics API](/docs/api/api-reference/analytics/query-analytics-data.md), and the [openrouter-analytics skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-analytics).
+**Goal:** Run a cost review on your OpenRouter account using your coding agent, the [Analytics API](https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data.md), and the [openrouter-analytics skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-analytics).
 
 **Outcome:** A set of query recipes and agent prompts for digging into your own usage data: which models burn the most, which API keys cause it, and what to repoint or cache.
 
@@ -35,9 +35,9 @@ You need:
 
 Use these references for exact schemas:
 
-* [Query analytics endpoint](/docs/api/api-reference/analytics/query-analytics-data.md)
-* [Get analytics metadata](/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions.md)
-* [Management API keys](/docs/guides/overview/auth/management-api-keys.md)
+* [Query analytics endpoint](https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data.md)
+* [Get analytics metadata](https://openrouter.ai/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions.md)
+* [Management API keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 * [openrouter-analytics skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-analytics)
 
 ## What you're building
@@ -273,9 +273,9 @@ Filter values must match what the dimension stores internally, so agents should 
 
 ## Next steps
 
-* Read the [Analytics API reference](/docs/api/api-reference/analytics/query-analytics-data.md) for exact request and response schemas.
+* Read the [Analytics API reference](https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data.md) for exact request and response schemas.
 * Drill from an aggregate into individual requests with the `generation_id` dimension, then inspect them with the [openrouter-generations skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-generations).
-* Set [credit limits on keys](/docs/api/api-reference/api-keys/update-an-api-key.md) once you know which ones drift.
-* Add [usage accounting](/docs/cookbook/administration/usage-accounting.md) to get per-request cost in your own logs.
-* Use [prompt caching](/docs/guides/best-practices/prompt-caching.md) where this review showed low cache rates on prompt-heavy traffic.
+* Set [credit limits on keys](https://openrouter.ai/docs/api/api-reference/api-keys/update-an-api-key.md) once you know which ones drift.
+* Add [usage accounting](https://openrouter.ai/docs/cookbook/administration/usage-accounting.md) to get per-request cost in your own logs.
+* Use [prompt caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md) where this review showed low cache rates on prompt-heavy traffic.
 

@@ -22,7 +22,7 @@ You can create the following types of `OutboundTransfer`:
 | External UK bank account belonging to the same account | Faster Payments (FPS) | `bank_accounts.local` | Immediate |
 
 #### Source currency - EUR [Private preview]
-Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+Available in: AT, BE, BG, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
 You can create the following types of `OutboundTransfer`:
 
 | From the connected account’s financial account to: | Payout method | Recipient capability | Expected arrival time |
@@ -253,9 +253,9 @@ curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT
   }'
 ```
 
-#### Outbound Setup Intent
+#### Outbound Setup Intents
 
-Create a payout method for a bank account in any of more than 50 countries with the [OutboundSetupIntents API](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
+Create a payout method for a bank account in any of more than 50 countries using an [OutboundSetupIntent](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
@@ -316,7 +316,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
 
 Make the outbound transfer from the financial account according to the region and currency.
 
-#### General
+#### GBP
 
 At this point, you have all the necessary pieces to transfer funds from the connected account’s financial account using the [Create an OutboundTransfer](https://docs.stripe.com/api/v2/money-management/outbound-transfers/create.md?api-version=preview) endpoint.
 
@@ -328,22 +328,22 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   --json '{
     "from": {
         "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "usd"
+        "currency": "gbp"
     },
     "to": {
         "payout_method": "{{PAYOUT_METHOD_ID}}",
-        "currency": "usd"
+        "currency": "gbp"
     },
     "amount": {
         "value": 30000,
-        "currency": "usd"
+        "currency": "gbp"
     },
     "description": "Transfer to a connected account'\''s bank account"
   }'
 ```
 
 #### Intra-EU [Private preview]
-Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+Available in: AT, BE, BG, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
 If the account is in the EU, we need to use [Recipient Verifications](https://docs.stripe.com/api/v2/recipient-verifications.md?api-version=preview) to perform a Verification of Payee. This verification ensures that the account credentials match the bank account beneficiary before making the payment.
 
 ```curl

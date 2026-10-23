@@ -77,7 +77,7 @@ As a result, adding a new phase to a schedule that’s currently in its last pha
 
 > #### Limited support
 > 
-> This feature is only supported for disputed credit and debit card payments opened in the *full amount*. The delay for any automatic cancellation isn’t compatible with [test clocks](https://docs.stripe.com/billing/testing/test-clocks/simulate-subscriptions.md).
+> This feature is only supported for disputed credit and debit card payments opened in the *full amount*. The delay for any automatic cancellation isn’t compatible with [test clocks](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
 
 When a customer [disputes](https://docs.stripe.com/disputes.md) a charge for a subscription, the subscription continues to cycle, which can create more disputed charges. You can change this behavior in the [Dashboard](https://dashboard.stripe.com/settings/billing/automatic) to cancel subscriptions instead. Changes to the subscription take effect after approximately one hour.
 

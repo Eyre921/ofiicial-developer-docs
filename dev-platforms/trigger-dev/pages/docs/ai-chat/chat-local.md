@@ -18,7 +18,7 @@ Declare locals at module level with a unique `id`, then initialize them inside a
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, tool, stepCountIs } from "ai";
+import { tool, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -46,7 +46,7 @@ export const myChat = chat.agent({
       messageCount: user.messageCount,
     });
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     userContext.messageCount++;
 
     return streamText({
@@ -90,7 +90,7 @@ When you use `ai.toolExecute()` inside AI SDK `tool()` to expose a subtask, chat
 ```ts theme={"theme":"css-variables"}
 import { chat, ai } from "@trigger.dev/sdk/ai";
 import { schemaTask } from "@trigger.dev/sdk";
-import { streamText, tool } from "ai";
+import { tool, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -117,7 +117,7 @@ export const myChat = chat.agent({
   onBoot: async ({ clientData }) => {
     userContext.init({ name: "Alice", plan: "pro" });
   },
-  run: async ({ messages, signal }) => {
+  run: async ({ messages, signal, streamText }) => {
     return streamText({
       model: anthropic("claude-sonnet-4-5"),
       messages,

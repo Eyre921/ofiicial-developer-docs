@@ -61,7 +61,7 @@ There are two equivalent ways to request pro mode:
 
 Pro mode is only honored by OpenAI and Azure. Amazon Bedrock's OpenAI-compatible API accepts `reasoning.mode` but silently ignores it, so OpenRouter only routes pro requests to providers that honor mode selection.
 
-See [Reasoning Mode](/docs/guides/best-practices/reasoning-tokens.md#reasoning-mode) for details.
+See [Reasoning Mode](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md#reasoning-mode) for details.
 
 ## Persisted Reasoning with `reasoning.context`
 
@@ -105,13 +105,13 @@ Use `all_turns` for multi-turn work where goals stay stable and you want the mod
 
 The default value of `context` may vary by model, so set it explicitly if your use case needs a specific behavior.
 
-See [Reasoning Context Mode](/docs/guides/best-practices/reasoning-tokens.md#reasoning-context-mode) for details.
+See [Reasoning Context Mode](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md#reasoning-context-mode) for details.
 
 ## Explicit Prompt Caching
 
 Automatic prompt caching still works with no code changes. Explicit caching adds direct control over cache boundaries instead of relying on OpenAI's automatic breakpoint placement. Cached prefixes have a minimum 30-minute TTL.
 
-The fields work in both the [Chat Completions](/docs/api/api-reference/chat/send-chat-completion-request.md) and [Responses](/docs/api/api-reference/responses/create-a-response.md) APIs.
+The fields work in both the [Chat Completions](https://openrouter.ai/docs/api/api-reference/chat/send-chat-completion-request.md) and [Responses](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md) APIs.
 
 Two controls:
 
@@ -184,7 +184,7 @@ Chat Completions API:
 >
 > The block-level markers are interchangeable with the Anthropic-style `cache_control` blocks Chat Completions also accepts: `cache_control` becomes a `prompt_cache_breakpoint` on GPT-5.6+ models, and `prompt_cache_breakpoint` becomes a default 5-minute `cache_control` on Anthropic and Google. The request-level `prompt_cache_options` stays OpenAI-only.
 
-See [Prompt Caching](/docs/guides/best-practices/prompt-caching.md#openai) for details.
+See [Prompt Caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md#openai) for details.
 
 ## Cache-Write Billing
 
@@ -195,7 +195,7 @@ Cache activity is reported in `usage.input_tokens_details` (Responses) and `usag
 * `cache_write_tokens`: prompt tokens written to the cache
 * `cached_tokens`: prompt tokens read from the cache
 
-Track both to understand net caching cost. If your traffic rarely re-reads cached prefixes, explicit mode lets you avoid unnecessary cache writes. To turn caching off entirely for a one-off request of 1024 tokens or more, send `prompt_cache_options: { "mode": "explicit" }` with no `prompt_cache_breakpoint` markers. See [Disabling prompt caching](/docs/guides/best-practices/prompt-caching.md#disabling-prompt-caching).
+Track both to understand net caching cost. If your traffic rarely re-reads cached prefixes, explicit mode lets you avoid unnecessary cache writes. To turn caching off entirely for a one-off request of 1024 tokens or more, send `prompt_cache_options: { "mode": "explicit" }` with no `prompt_cache_breakpoint` markers. See [Disabling prompt caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md#disabling-prompt-caching).
 
 ## Migration Checklist
 
@@ -218,7 +218,7 @@ None. All GPT-5.6 API additions are optional:
 * [Using GPT-5.6](https://developers.openai.com/api/docs/guides/latest-model) — OpenAI's official guide with migration and prompting best practices for GPT-5.6
 * [GPT-5.6 announcement](https://openai.com/index/gpt-5-6/)
 * [OpenAI API pricing](https://developers.openai.com/api/docs/pricing)
-* [Reasoning Tokens](/docs/guides/best-practices/reasoning-tokens.md)
-* [Prompt Caching](/docs/guides/best-practices/prompt-caching.md)
-* [OpenRouter Responses API](/docs/api/api-reference/responses/create-a-response.md)
+* [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
+* [Prompt Caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md)
+* [OpenRouter Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
 

@@ -332,6 +332,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > High-performance analytics and data processing.
 
+> **[BotsRatedPreflightTool](https://github.com/botsrated/botsrated/tree/main/integrations/langchain)**
+>
+> Tools that check an x402 seller against BotsRated's latest unpaid probe before an agent pays, plus an optional paid check capped by a budget.
+
 > **[BowmarkToolkit](https://bowmark.ai/docs/langchain)**
 >
 > Tools for live websites: read Bowmark's typed function library for a task or site, or run a short script for structured data.
@@ -347,6 +351,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Brightdata](https://docs.brightdata.com/integrations/langchain)**
 >
 > Web data platform and proxy services.
+
+> **[Browser Use](/oss/python/integrations/providers/browser_use)**
+>
+> Browser agents and cloud browsers for AI applications.
 
 > **[Browserbase](/oss/python/integrations/providers/browserbase)**
 >
@@ -630,7 +638,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[EmpirioLabs AI](https://docs.empiriolabs.ai)**
 >
-> Frontier open models through one OpenAI-compatible API.
+> Specialized AI model hosting for open, proprietary, and custom stacks through one OpenAI-compatible API, plus GPU Cloud and hosted agents.
 
 > **[EnConvert](https://github.com/enconvert/langchain-enconvert)**
 >

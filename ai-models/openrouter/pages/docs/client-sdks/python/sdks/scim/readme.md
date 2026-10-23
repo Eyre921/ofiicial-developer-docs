@@ -29,7 +29,7 @@ Management endpoints for SCIM group-to-workspace mappings, authenticated with a 
 
 ## list\_mappings
 
-List SCIM group-to-workspace mappings for the organization. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List SCIM group-to-workspace mappings for the organization. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -81,7 +81,7 @@ with OpenRouter(
 
 ## create
 
-Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -134,7 +134,7 @@ with OpenRouter(
 
 ## delete
 
-Delete a SCIM group-to-workspace mapping. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Delete a SCIM group-to-workspace mapping. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -185,7 +185,7 @@ with OpenRouter(
 
 ## read
 
-Get a SCIM group-to-workspace mapping. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Get a SCIM group-to-workspace mapping. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -234,7 +234,7 @@ with OpenRouter(
 
 ## update
 
-Update a SCIM group mapping role. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update a SCIM group mapping role. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -285,7 +285,7 @@ with OpenRouter(
 
 ## list\_groups
 
-List SCIM groups for the organization. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List SCIM groups for the organization. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -339,7 +339,7 @@ with OpenRouter(
 
 ## create\_sync\_job
 
-Start a SCIM directory sync. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Start a SCIM directory sync. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -387,7 +387,7 @@ with OpenRouter(
 
 ## get\_sync\_job
 
-Get SCIM directory sync status. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Get SCIM directory sync status. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

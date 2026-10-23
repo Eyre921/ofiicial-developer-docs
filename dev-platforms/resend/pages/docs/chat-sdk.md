@@ -6,6 +6,8 @@ path: docs/chat-sdk
 
 Build conversational email experiences using the Vercel Chat SDK and Resend.
 
+Use this pre-built prompt with your AI agent to build with the Resend Chat SDK adapter.
+
 # Resend Chat SDK Adapter
 
 **Purpose:** Instructions for building bidirectional email bots using the `@resend/chat-sdk-adapter` package with the Vercel Chat SDK.

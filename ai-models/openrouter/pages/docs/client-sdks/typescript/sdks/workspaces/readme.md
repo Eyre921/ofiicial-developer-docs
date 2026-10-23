@@ -33,7 +33,7 @@ Workspaces endpoints
 
 ## list
 
-List all workspaces for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all workspaces for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -114,7 +114,7 @@ run();
 
 ## create
 
-Create a new workspace for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Create a new workspace for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -210,7 +210,7 @@ run();
 
 ## delete
 
-Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires confirm\_default\_workspace\_deletion=true. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing workspace. Workspaces with active API keys cannot be deleted; remove the keys first. Deleting the default workspace requires confirm\_default\_workspace\_deletion=true. Deleting any workspace permanently deletes its budgets and guardrails and disables its classifiers and broadcast destinations. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -293,7 +293,7 @@ run();
 
 ## get
 
-Get a single workspace by ID or slug. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Get a single workspace by ID or slug. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -375,7 +375,7 @@ run();
 
 ## update
 
-Update an existing workspace by ID or slug. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Update an existing workspace by ID or slug. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -466,7 +466,7 @@ run();
 
 ## listMembers
 
-List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -552,7 +552,7 @@ run();
 
 ## bulkAddMembers
 
-Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -647,7 +647,7 @@ run();
 
 ## bulkRemoveMembers
 
-Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -742,7 +742,7 @@ run();
 
 ## listBudgets
 
-List all budgets configured for a workspace. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all budgets configured for a workspace. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -824,7 +824,7 @@ run();
 
 ## deleteBudget
 
-Remove the budget for a given interval. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Remove the budget for a given interval. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -909,7 +909,7 @@ run();
 
 ## getBudget
 
-Retrieve the budget for a given interval. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Retrieve the budget for a given interval. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -994,7 +994,7 @@ run();
 
 ## setBudget
 
-Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). The optional `include_byok_in_budgets` flag is a workspace-wide setting: when provided it applies to every budget interval for the workspace, not just the interval in this request. Note that a change made here is applied to budget enforcement immediately, but an already-open workspace settings page in the web dashboard may keep showing the previous value until it is reloaded. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). The optional `include_byok_in_budgets` flag is a workspace-wide setting: when provided it applies to every budget interval for the workspace, not just the interval in this request. Note that a change made here is applied to budget enforcement immediately, but an already-open workspace settings page in the web dashboard may keep showing the previous value until it is reloaded. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

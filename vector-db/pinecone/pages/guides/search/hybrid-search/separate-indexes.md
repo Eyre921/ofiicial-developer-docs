@@ -166,8 +166,8 @@ sparse_index = pc.Index(host="INDEX_HOST")
 
 # Upsert the records
 # The `chunk_text` fields are converted to dense and sparse vectors
-dense_index.upsert_records("example-namespace", records)
-sparse_index.upsert_records("example-namespace", records)
+dense_index.upsert_records(namespace="example-namespace", records=records)
+sparse_index.upsert_records(namespace="example-namespace", records=records)
 ```
 
 **3. Search by dense vectors**

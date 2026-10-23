@@ -31,13 +31,13 @@ You need:
 
 > [!TIP]
 >
-> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](https://openrouter.ai/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
-* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
-* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
-* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README.md)
+* [Create video generation request](https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
+* [List video generation models](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
+* [TypeScript SDK video generation reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
 
 Use `input_references` for visual guidance. Use `frame_images` only when you need exact frame control.
 

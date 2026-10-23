@@ -16,7 +16,7 @@ path: docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4
 
 GPT-5.3 Codex, GPT-5.4, GPT-5.4 Pro, GPT-5.5, and GPT-5.5 Pro all use the `phase` field on assistant messages. This field is critical for multi-turn agentic workflows — it tells the model whether an assistant message is intermediate commentary or the final answer.
 
-OpenRouter supports `phase` in the [Responses API](/docs/api/api-reference/responses/create-a-response.md).
+OpenRouter supports `phase` in the [Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md).
 
 > [!NOTE]
 >
@@ -151,7 +151,7 @@ For follow-up requests, include the assistant output items with their `phase` in
 
 The Chat Completions API does **not** support `phase` in responses. A single chat completion response can only contain one message per choice, so there is no way to represent the separate commentary and final answer output items that models like GPT-5.4 produce.
 
-If you need `phase` support for multi-turn agentic workflows, use the [Responses API](/docs/api/api-reference/responses/create-a-response.md) instead.
+If you need `phase` support for multi-turn agentic workflows, use the [Responses API](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md) instead.
 
 ## Implementation Pattern
 
@@ -192,7 +192,7 @@ None. The `phase` field is additive:
 
 * [Prompt Guidance for GPT-5.4](https://developers.openai.com/api/docs/guides/prompt-guidance/) — OpenAI's official guide covering prompt patterns and migration tips for GPT-5.4, including completeness checks, verification loops, tool persistence, and structured outputs.
 * [OpenAI Responses API Reference](https://developers.openai.com/api/reference/resources/responses/methods/create)
-* [Codex CLI Integration Guide](/docs/cookbook/coding-agents/codex-cli.md)
-* [OpenRouter API Documentation](/docs/api_reference/overview.md)
+* [Codex CLI Integration Guide](https://openrouter.ai/docs/cookbook/coding-agents/codex-cli.md)
+* [OpenRouter API Documentation](https://openrouter.ai/docs/api_reference/overview.md)
 * [OpenRouter Codex Models](https://openrouter.ai/models?q=codex)
 

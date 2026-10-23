@@ -1478,7 +1478,7 @@ There are some situations where you might want to manually authenticate the MCP 
 
 ### CI environment
 
-To authenticate the MCP server in a CI environment, create a scoped personal access token (PAT) and pass it as a header to the MCP server.
+To authenticate the MCP server in a CI environment, create a personal access token (PAT) and pass it as a header to the MCP server.
 
 1. Production projects can contain sensitive data. Before connecting one, scope the server to that project, enable [read-only mode](#configuration-options), restrict the available feature groups, and review the [security risks](#security-risks).
 
@@ -4380,7 +4380,7 @@ On the other hand, if you need to scale your application, you will need to [crea
 
 ![dbpedia embeddings comparing ivfflat and hnsw queries-per-second using the 4XL compute add-on](https://supabase.com/docs/img/ai/going-prod/dbpedia-ivfflat-vs-hnsw-4xl--dark.png)
 
-## HNSW, understanding `ef_construction`, `ef_search`, and `m`
+## HNSW, understanding `ef_construction`, `ef_search`, and `m` \[#hnsw-understanding-efconstruction--efsearch--and-m]
 
 Index build parameters:
 
@@ -6602,7 +6602,7 @@ Instead of directly querying the `documents` table, we query the join table.
 
 You may have an existing system that stores users, documents, and their permissions in a separate database. Consider the scenario where this data exists in another Postgres database. We'll use a foreign data wrapper (FDW) to connect to the external DB from within your Supabase DB:
 
-Caution: RLS is latency-sensitive, so extra caution should be taken before implementing this method. Use the [query plan analyzer](https://supabase.com/docs/guides/platform/performance#optimizing-poor-performing-queries) to measure execution times for your queries to ensure they are within expected ranges. For enterprise applications, contact [enterprise@supabase.io](mailto:enterprise@supabase.io).
+Caution: RLS is latency-sensitive, so extra caution should be taken before implementing this method. Use the [query plan analyzer](https://supabase.com/docs/guides/database/query-optimization#analyze-the-query-plan) to measure execution times for your queries to ensure they are within expected ranges. For enterprise applications, contact [enterprise@supabase.io](mailto:enterprise@supabase.io).
 
 Note: For data sources other than Postgres, see [Foreign Data Wrappers](https://supabase.com/docs/guides/database/extensions/wrappers/overview) for a list of external sources supported today. If your data lives in a source not provided in the list, contact [support](https://supabase.com/dashboard/support/new) and we'll be happy to discuss your use case.
 
@@ -7569,7 +7569,7 @@ For example, to create an index with 100 lists on a column that uses the cosine 
 create index on items using ivfflat (column_name vector_cosine_ops) with (lists = 100);
 ```
 
-For more info on the different operators, see [Distance operations](#distance-operators).
+For more info on the different operators, see [Distance operators](https://supabase.com/docs/guides/ai/vector-indexes#distance-operators).
 
 For every query, you can set the number of probes (1 by default). The number of probes corresponds to the number of nearby cells to probe for a match. Increase this for better recall at the expense of speed.
 
@@ -8034,7 +8034,7 @@ using (true);
 
 In the dashboard, navigate to [`Authentication > Hooks (Beta)`](https://supabase.com/dashboard/project/_/auth/hooks) and select the appropriate Postgres function from the dropdown menu.
 
-When developing locally, follow the [local development](https://supabase.com/docs/guides/auth/auth-hooks#local-development) instructions.
+When developing locally, follow the [local development](https://supabase.com/docs/guides/auth/auth-hooks#developing) instructions.
 
 Note: To learn more about Auth Hooks, see the [Auth Hooks docs](https://supabase.com/docs/guides/auth/auth-hooks).
 
@@ -18023,7 +18023,7 @@ Many Auth methods involve a redirect to your app. For example:
 - Signup confirmation emails, Magic Link signins, and password reset emails contain a link that redirects to your app.
 - In OAuth signins, an automatic redirect occurs to your app.
 
-With Deep Linking, you can configure this redirect to open a specific page. This is necessary if, for example, you need to display a form for [password reset](https://supabase.com/docs/guides/auth/passwords#resetting-a-users-password-forgot-password), or to manually exchange a token hash.
+With Deep Linking, you can configure this redirect to open a specific page. This is necessary if, for example, you need to display a form for [password reset](https://supabase.com/docs/guides/auth/passwords#resetting-a-password), or to manually exchange a token hash.
 
 ## Setting up deep linking
 
@@ -19301,7 +19301,7 @@ Note: MCP authentication has no separate charge. AI agents authenticate as your 
 Before setting up MCP authentication:
 
 - [Enable OAuth 2.1 server](https://supabase.com/docs/guides/auth/oauth-server/getting-started) in your Supabase project
-- Build an [authorization endpoint](https://supabase.com/docs/guides/auth/oauth-server/getting-started#build-your-authorization-endpoint)
+- Build an [authorization UI](https://supabase.com/docs/guides/auth/oauth-server/getting-started#build-your-authorization-ui)
 - (Optional) Enable dynamic client registration
 
 ## Setting up your MCP server
@@ -21234,7 +21234,7 @@ Change this setting on the [Auth Providers page](https://supabase.com/dashboard/
 
 ### Signing up with an email and password
 
-There are two possible flows for email signup: [implicit flow](https://supabase.com/docs/guides/auth/sessions#implicit-flow) and [PKCE flow](https://supabase.com/docs/guides/auth/sessions#pkce-flow). If you're using SSR, you're using the PKCE flow. If you're using client-only code, the default flow depends upon the client library. The implicit flow is the default in JavaScript and Dart, and the PKCE flow is the default in Swift.
+There are two possible flows for email signup: [implicit flow](https://supabase.com/docs/guides/auth/sessions/implicit-flow) and [PKCE flow](https://supabase.com/docs/guides/auth/sessions/pkce-flow). If you're using SSR, you're using the PKCE flow. If you're using client-only code, the default flow depends upon the client library. The implicit flow is the default in JavaScript and Dart, and the PKCE flow is the default in Swift.
 
 The instructions in this section assume that email confirmations are enabled.
 
@@ -22613,7 +22613,7 @@ If successful, the user will now be signed in and you should receive a valid ses
 }
 ```
 
-The access token can be sent in the Authorization header as a Bearer token for any CRUD operations on supabase-js. See our guide on [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) for more info on restricting access on a user basis.
+The access token can be sent in the Authorization header as a Bearer token for any CRUD operations on supabase-js. See our guide on [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) for more info on restricting access on a user basis.
 
 ## Updating a phone number
 
@@ -23215,7 +23215,7 @@ npm run dev
 
 ## Learn more
 
-- [Supabase Auth docs](https://supabase.com/docs/guides/auth#authentication) for more Supabase authentication methods
+- [Supabase Auth docs](https://supabase.com/docs/guides/auth) for more Supabase authentication methods
 
 
 ---
@@ -23282,7 +23282,7 @@ npm run dev
 ## Learn more
 
 - [Setting up Server-Side Auth for Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=nextjs) for a Next.js deep dive
-- [Supabase Auth docs](https://supabase.com/docs/guides/auth#authentication) for more Supabase authentication methods
+- [Supabase Auth docs](https://supabase.com/docs/guides/auth) for more Supabase authentication methods
 
 
 ---
@@ -23434,7 +23434,7 @@ Learn how to implement social sign-in in an app with Expo React Native and Supab
 
 This tutorial demonstrates how to build a React Native app with [Expo](https://expo.dev) that implements social sign-in. The app showcases a complete authentication flow with protected navigation using:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data with [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) to ensure data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data with [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) to ensure data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - enables users to sign in through social sign-in providers (Apple and Google).
 
 ![The app's login screen in a web browser, an Android emulator, and an iPhone simulator. Each screen shows the Supabase logo, a Login heading, and buttons to sign in with Apple and Google.](/docs/img/supabase-expo-social-auth-login.png)
@@ -23595,7 +23595,7 @@ Implement a `ExpoSecureStoreAdapter` to pass in as Auth storage adapter for the 
 
 ### Set up environment variables
 
-You need the API URL and the `publishable` key copied [earlier](#get-the-api-keys).
+You need the API URL and the `publishable` key copied [earlier](#get-api-details).
 These variables are safe to expose in your Expo app since Supabase has [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on your database.
 
 Create a `.env` file containing these variables:
@@ -23695,7 +23695,7 @@ For Apple authentication, you can choose between:
 - [react-apple-signin-auth](https://react-apple-signin-auth.ahmedtokyo.com/) - that supports Web, also suggested by Invertase
 - [Expo's AppleAuthentication library](https://docs.expo.dev/versions/latest/sdk/apple-authentication/) - that supports iOS only
 
-For either option, you need to obtain a Service ID from the [Apple Developer Console](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple?queryGroups=framework\&framework=nextjs\&queryGroups=platform\&platform=web#configuration-web).
+For either option, you need to obtain a Service ID from the [Apple Developer Console](https://supabase.com/docs/guides/auth/social-sign-in/auth-apple?queryGroups=framework\&framework=nextjs\&queryGroups=platform\&platform=web#configuration-web-oauth).
 
 Note: To enable Apple sign-up on Android and Web, you also need to register the tunnelled URL (e.g., `https://arnrer1-anonymous-8081.exp.direct`) obtained by running:
 
@@ -23902,7 +23902,7 @@ For Google authentication, you can choose between the following options:
 
 Note: The [GN Google Sign In Free](https://react-native-google-signin.github.io/docs/install#public-version-free) doesn't support iOS or Android, as [it doesn't allow to pass a custom nonce](https://github.com/react-native-google-signin/google-signin/issues/1176) to the sign-in request.
 
-For either option, you need to obtain a Web Client ID from the Google Cloud Engine, as explained in the [Google Sign In](https://supabase.com/docs/guides/auth/social-sign-in/auth-google?queryGroups=platform\&platform=react-native#react-native) guide.
+For either option, you need to obtain a Web Client ID from the Google Cloud Engine, as explained in the [Google Sign In](https://supabase.com/docs/guides/auth/social-sign-in/auth-google?queryGroups=platform\&platform=react-native) guide.
 
 This guide only uses the [@react-oauth/google@latest](https://github.com/MomenSherif/react-oauth#googlelogin) option for the Web, and the [`signInWithOAuth`](https://supabase.com/docs/reference/javascript/auth-signinwithoauth) for the mobile platforms.
 
@@ -24091,7 +24091,7 @@ Note: **Looking for OAuth client redirect URIs?**
 
 This guide covers redirect URLs for users signing **into** your application (using social providers like Google, GitHub, etc.). If you're setting up your Supabase project as an **OAuth 2.1 provider** for third-party applications, see the [OAuth Server Redirect URI configuration](https://supabase.com/docs/guides/auth/oauth-server/getting-started#redirect-uri-configuration) instead.
 
-When using [passwordless sign-ins](https://supabase.com/docs/reference/javascript/auth-signinwithotp) or [third-party providers](https://supabase.com/docs/reference/javascript/auth-signinwithoauth#sign-in-using-a-third-party-provider-with-redirect), the Supabase client library provides a `redirectTo` parameter to specify where to redirect the user after authentication. The URL in `redirectTo` should match the [Redirect URLs](https://supabase.com/dashboard/project/_/auth/url-configuration) list configuration.
+When using [passwordless sign-ins](https://supabase.com/docs/reference/javascript/auth-signinwithotp) or [third-party providers](https://supabase.com/docs/reference/javascript/auth-signinwithoauth), the Supabase client library provides a `redirectTo` parameter to specify where to redirect the user after authentication. The URL in `redirectTo` should match the [Redirect URLs](https://supabase.com/dashboard/project/_/auth/url-configuration) list configuration.
 
 To configure allowed redirect URLs, go to the [URL Configuration](https://supabase.com/dashboard/project/_/auth/url-configuration) page. Once you've added necessary URLs, you can use the URL you want the user to be redirected to in the `redirectTo` parameter.
 
@@ -36579,10 +36579,10 @@ Note that these functions are only called on new sign-ups and sign-ins. Existing
 You need to run a script that will assign the `role: 'authenticated'` custom claim to all of your existing Firebase Authentication users. You can do this by combining the [list users](https://firebase.google.com/docs/auth/admin/manage-users#list_all_users) and [set custom user claims](https://firebase.google.com/docs/auth/admin/create-custom-tokens) admin APIs. An example script is provided below:
 
 ```javascript
-'use strict';
-const { initializeApp } = require('firebase-admin/app');
-const { getAuth } = require('firebase-admin/auth');
-initializeApp();
+'use strict'
+const { initializeApp } = require('firebase-admin/app')
+const { getAuth } = require('firebase-admin/auth')
+initializeApp()
 
 async function setRoleCustomClaim() {
   let nextPageToken = undefined
@@ -36592,17 +36592,19 @@ async function setRoleCustomClaim() {
 
     nextPageToken = listUsersResult.pageToken
 
-    await Promise.all(listUsersResult.users.map(async (userRecord) => {
-      try {
-        await getAuth().setCustomUserClaims(userRecord.id, {
-          role: 'authenticated'
-        })
-      } catch (error) {
-        console.error('Failed to set custom role for user', userRecord.id)
-      }
-    })
-  } while (nextPageToken);
-};
+    await Promise.all(
+      listUsersResult.users.map(async (userRecord) => {
+        try {
+          await getAuth().setCustomUserClaims(userRecord.uid, {
+            role: 'authenticated',
+          })
+        } catch (error) {
+          console.error('Failed to set custom role for user', userRecord.uid)
+        }
+      })
+    )
+  } while (nextPageToken)
+}
 
 setRoleCustomClaim().then(() => process.exit(0))
 ```
@@ -36758,23 +36760,23 @@ Note: A user with an email or phone identity will be able to sign in with either
 
 The user object contains the following attributes:
 
-| Attributes           | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| -------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| id                   | `string`         | The unique id of the identity of the user.                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| aud                  | `string`         | The audience claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| role                 | `string`         | The role claim used by Postgres to perform Row Level Security (RLS) checks.                                                                                                                                                                                                                                                                                                                                                                                                            |
-| email                | `string`         | The user's email address.                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| email\_confirmed\_at | `string`         | The timestamp that the user's email was confirmed. If null, it means that the user's email is not confirmed.                                                                                                                                                                                                                                                                                                                                                                           |
-| phone                | `string`         | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| phone\_confirmed\_at | `string`         | The timestamp that the user's phone was confirmed. If null, it means that the user's phone is not confirmed.                                                                                                                                                                                                                                                                                                                                                                           |
-| confirmed\_at        | `string`         | The timestamp that either the user's email or phone was confirmed. If null, it means that the user does not have a confirmed email address and phone number.                                                                                                                                                                                                                                                                                                                           |
-| last\_sign\_in\_at   | `string`         | The timestamp that the user last signed in.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| app\_metadata        | `object`         | The `provider` attribute indicates the first provider that the user used to sign up with. The `providers` attribute indicates the list of providers that the user can use to sign in with.                                                                                                                                                                                                                                                                                             |
-| user\_metadata       | `object`         | Defaults to the first provider's identity data but can contain additional custom user metadata if specified. Refer to [**User Identity**](https://supabase.com/docs/guides/auth/auth-identity-linking#the-user-identity) for more information about the identity object. Don't rely on the order of information in this field. Do not use it in security sensitive context (such as in RLS policies or authorization logic), as this value is editable by the user without any checks. |
-| identities           | `UserIdentity[]` | Contains an object array of identities linked to the user.                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| created\_at          | `string`         | The timestamp that the user was created.                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| updated\_at          | `string`         | The timestamp that the user was last updated.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| is\_anonymous        | `boolean`        | Is true if the user is an anonymous user.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Attributes           | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                   | `string`         | The unique id of the identity of the user.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| aud                  | `string`         | The audience claim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| role                 | `string`         | The role claim used by Postgres to perform Row Level Security (RLS) checks.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| email                | `string`         | The user's email address.                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| email\_confirmed\_at | `string`         | The timestamp that the user's email was confirmed. If null, it means that the user's email is not confirmed.                                                                                                                                                                                                                                                                                                                                                                       |
+| phone                | `string`         | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| phone\_confirmed\_at | `string`         | The timestamp that the user's phone was confirmed. If null, it means that the user's phone is not confirmed.                                                                                                                                                                                                                                                                                                                                                                       |
+| confirmed\_at        | `string`         | The timestamp that either the user's email or phone was confirmed. If null, it means that the user does not have a confirmed email address and phone number.                                                                                                                                                                                                                                                                                                                       |
+| last\_sign\_in\_at   | `string`         | The timestamp that the user last signed in.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| app\_metadata        | `object`         | The `provider` attribute indicates the first provider that the user used to sign up with. The `providers` attribute indicates the list of providers that the user can use to sign in with.                                                                                                                                                                                                                                                                                         |
+| user\_metadata       | `object`         | Defaults to the first provider's identity data but can contain additional custom user metadata if specified. Refer to [**User Identity**](https://supabase.com/docs/guides/auth/identities#the-user-identity-object) for more information about the identity object. Don't rely on the order of information in this field. Do not use it in security sensitive context (such as in RLS policies or authorization logic), as this value is editable by the user without any checks. |
+| identities           | `UserIdentity[]` | Contains an object array of identities linked to the user.                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| created\_at          | `string`         | The timestamp that the user was created.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| updated\_at          | `string`         | The timestamp that the user was last updated.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| is\_anonymous        | `boolean`        | Is true if the user is an anonymous user.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## Inviting users
 
@@ -59913,7 +59915,7 @@ By default, Supabase enforces query statement timeouts to ensure fair resource a
 
 Large datasets consume disk space. Ensure your Supabase project has sufficient disk capacity to accommodate the imported data. If you know how big your database is going to be, you can manually increase the size in your [projects database settings](https://supabase.com/dashboard/project/_/database/settings).
 
-Read more about [disk management](https://supabase.com/docs/guides/platform/database-size#disk-management).
+Read more about [disk management](https://supabase.com/docs/guides/platform/database-size#disk-size).
 
 ### 4. Disable triggers
 
@@ -60883,7 +60885,7 @@ create table books (
 
 - Name: `id`
   - Type: `int8`
-  - Default value: `Automatically generate as indentity`
+  - Default value: `Automatically generate as identity`
 - **title** column
   - Name: `title`
   - Type: `text`
@@ -61526,7 +61528,7 @@ Horizontally scalable Postgres for high availability
 
 Run high availability Postgres across multiple nodes with automatic failover, using Multigres.
 
-Caution: Multigres is in [Private Alpha](https://supabase.com/docs/guides/getting-started/features#feature-status). It's free during the Alpha for organizations on a paid plan, for up to two projects, but pricing may change once it leaves Alpha. It isn't covered by the [uptime SLA](https://supabase.com/sla), and Supabase isn't targeting production or mission-critical workloads with it during this stage.
+Caution: Multigres is in Private Alpha. It's free during the Alpha for organizations on a paid plan, for up to two projects, but pricing may change once it leaves Alpha. It isn't covered by the [uptime SLA](https://supabase.com/sla), and Supabase isn't targeting production or mission-critical workloads with it during this stage.
 
 Multigres gives your project high availability by running Postgres across multiple nodes instead of one, so reads and writes continue if a node fails. It is Supabase's integration of [Multigres](https://multigres.com), an open-source project that brings the same distributed-systems approach Vitess brought to MySQL to Postgres.
 
@@ -62235,7 +62237,7 @@ add constraint child_father_fkey foreign key (father) references parent (id)
   on delete no action initially deferred;
 ```
 
-Here you will see that `INITIALLY DEFFERED` seems to operate like `NO ACTION` or `RESTRICT`. When we run a delete, it seems to make no difference:
+Here you will see that `INITIALLY DEFERRED` seems to operate like `NO ACTION` or `RESTRICT`. When we run a delete, it seems to make no difference:
 
 ```shell
 postgres=# delete from grandparent;
@@ -62300,7 +62302,7 @@ For example, assume you have a `posts` table with the following columns:
 - `created_at`
 - `updated_at`
 
-You can restrict updates to the user who created it using [RLS](https://supabase.com/docs/guides/auth#row-level-security), with the following policy:
+You can restrict updates to the user who created it using [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), with the following policy:
 
 ```sql
 create policy "Allow update for owners" on posts for
@@ -62579,7 +62581,7 @@ Dropping a table removes it and all its data permanently. Always use `IF EXISTS`
 drop table if exists old_analytics;
 ```
 
-Caution: `DROP TABLE` acquires an `ACCESS EXCLUSIVE` lock, which blocks **all** other operations on the table, including reads. On a busy table, this can queue up behind long-running queries. See [Monitoring locks](#monitoring-locks) below.
+Caution: `DROP TABLE` acquires an `ACCESS EXCLUSIVE` lock, which blocks **all** other operations on the table, including reads. On a busy table, this can queue up behind long-running queries. See [Check for blocked queries](#check-for-blocked-queries) below.
 
 ### Dropping columns
 
@@ -63507,7 +63509,7 @@ connection authorized: user=postgres database=postgres application_name=Supaviso
 connection authenticated: identity="pgbouncer" method=scram-sha-256
 ```
 
-Note: The logged IP address is from the device directly communicating with Postgres. If you connect through [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
+Note: The logged IP address is from the device directly communicating with Postgres. If you connect through [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#dedicated-pooler), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
 
 **Configuration examples**
 
@@ -63541,7 +63543,7 @@ Logs when a database connection gracefully closes.
 disconnection: session time: 0:00:01.492 user=postgres database=postgres host=127.0.0.1
 ```
 
-Note: The logged IP address is from the device directly communicating with Postgres. If you connect through [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
+Note: The logged IP address is from the device directly communicating with Postgres. If you connect through [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#dedicated-pooler), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
 
 **Configuration examples**
 
@@ -65849,7 +65851,7 @@ You can obtain your connection info and Server root certificate from your applic
 
 ![Connection Info and Certificate.](/docs/img/database/database-settings-ssl.png)
 
-Download your [SSL certificate](#connecting-with-ssl) to `/path/to/prod-supabase.cer`.
+Download your SSL certificate from [Database Settings](https://supabase.com/dashboard/project/_/database/settings) to `/path/to/prod-supabase.cer`.
 
 Find your connection settings. Go to the project [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and copy the URL from the `Session pooler` section, and copy the parameters into the connection string:
 
@@ -68734,6 +68736,18 @@ created_at       | 2022-12-14 02:34:23.85159+00
 updated_at       | 2022-12-14 02:51:13.938396+00
 ```
 
+### Deleting secrets
+
+To delete a secret, replace the example ID with your secret's ID:
+
+```sql
+delete from vault.secrets
+where id = '7095d222-efe5-4cd5-b5c6-5755b451e223'
+returning id, name;
+```
+
+Deleting the secret also removes it from the `vault.decrypted_secrets` view.
+
 ## Deep dive
 
 
@@ -71100,7 +71114,7 @@ Caution: You need a *new* project for staging. A project which has already been 
 
 The Supabase CLI requires a few environment variables to run in non-interactive mode.
 
-- `SUPABASE_ACCESS_TOKEN` is a [scoped personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens) limited to the projects this workflow deploys to
+- `SUPABASE_ACCESS_TOKEN` is a [personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens) scoped to the projects this workflow deploys to
 - `SUPABASE_DB_PASSWORD` is your project specific database password
 - `SUPABASE_PROJECT_ID` is your project specific reference string
 
@@ -80090,7 +80104,7 @@ Pass the branch's own project ref to read the keys for a preview branch. A branc
 
 Use the Management API to fetch keys from your own tooling, such as a deploy script or an internal provisioning service.
 
-Authenticate with a [personal access token](https://supabase.com/dashboard/account/tokens). An OAuth application needs the `secrets:read` scope, and a [scoped personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens) needs the **API Keys** permission with **Read** access. To reveal key values with `reveal=true`, as the example below does, the scoped token also needs **API Key Secrets** with **Read** access. Without the required scope or permissions, the request returns 403 Forbidden.
+Authenticate with a [personal access token](https://supabase.com/dashboard/account/tokens). An OAuth application needs the `secrets:read` scope. A personal access token [you've scoped](https://supabase.com/docs/guides/platform/personal-access-tokens) needs the **API Keys** permission with **Read** access. To reveal key values with `reveal=true`, as the example below does, the token also needs **API Key Secrets** with **Read** access. Without the required scope or permissions, the request returns 403 Forbidden.
 
 ```bash
 export PROJECT_REF="your-project-ref"
@@ -85045,7 +85059,7 @@ Learn how to use Supabase in your Angular App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85266,7 +85280,7 @@ Learn how to use Supabase in your React Native App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85583,7 +85597,7 @@ Learn how to use Supabase in your Flutter App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85811,7 +85825,7 @@ void main() {
 
 ### Main function
 
-With deep links configured, initialize the Supabase client inside the `main` function with the API credentials that you copied [earlier](#get-the-api-keys). These variables will be exposed on the app, and that's completely fine since we have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on our Database.
+With deep links configured, initialize the Supabase client inside the `main` function with the API credentials that you copied [earlier](#get-api-details). These variables will be exposed on the app, and that's completely fine since we have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on our Database.
 
 ```dart name=lib/main.dart
 import 'package:flutter/material.dart';
@@ -86511,7 +86525,7 @@ Learn how to use Supabase in your Ionic Angular App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -86651,7 +86665,7 @@ npm install @supabase/supabase-js
 
 And finally, save the environment variables in the `src/environments/environment.ts` file.
 All you need are the API URL and the key that you copied [earlier](#get-api-details).
-These variables will be exposed on the browser, and that's fine as [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) is enabled on the Database.
+These variables will be exposed on the browser, and that's fine as [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) is enabled on the Database.
 
 
 
@@ -86752,7 +86766,7 @@ Learn how to use Supabase in your Ionic React App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -86898,7 +86912,7 @@ VITE_SUPABASE_KEY=YOUR_SUPABASE_KEY
 ```
 
 With the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed
-in the browser, which is safe because they use a restricted publishable key and the SQL quickstart enables [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) on the `profiles` table.
+in the browser, which is safe because they use a restricted publishable key and the SQL quickstart enables [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) on the `profiles` table.
 
 
 
@@ -86973,7 +86987,7 @@ Learn how to use Supabase in your Ionic Vue App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -87117,7 +87131,7 @@ VUE_APP_SUPABASE_URL=YOUR_SUPABASE_URL
 VUE_APP_SUPABASE_KEY=YOUR_SUPABASE_KEY
 ```
 
-With the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed on the browser, and that's fine since Supabase enables [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) on Databases by default.
+With the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed on the browser, and that's fine since Supabase enables [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) on Databases by default.
 
 
 
@@ -87202,7 +87216,7 @@ Learn how to use Supabase in your Android Kotlin App.
 
 This tutorial demonstrates how to build a basic product management app. The app demonstrates management operations, photo upload, account creation and authentication using:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - users sign in through magic links sent to their email (without having to set up a password).
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - users can upload a profile photo.
 
@@ -88655,7 +88669,7 @@ Note: UI components built on shadcn/ui that connect to Supabase via a single com
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -88969,7 +88983,7 @@ Note: UI components built on shadcn/ui that connect to Supabase via a single com
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -89114,7 +89128,7 @@ SUPABASE_URL="YOUR_SUPABASE_URL"
 SUPABASE_KEY="YOUR_SUPABASE_PUBLISHABLE_KEY"
 ```
 
-These variables will be exposed on the browser, and that's completely fine since we have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on our Database.
+These variables will be exposed on the browser, and that's completely fine since we have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on our Database.
 Amazing thing about [Nuxt Supabase](https://supabase.nuxtjs.org/) is that setting environment variables is all we need to do in order to start using Supabase.
 No need to initialize Supabase. The library will take care of it automatically.
 
@@ -89454,7 +89468,7 @@ Note: UI components built on shadcn/ui that connect to Supabase via a single com
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -89676,7 +89690,7 @@ Learn how to use Supabase in your RedwoodJS App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -89897,7 +89911,7 @@ And finally, you will also need to save **only** the `web side` environment vari
 
 These variables will be exposed on the browser, and that's completely fine.
 They allow your web app to initialize the Supabase client with your publishable key
-since we have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on our Database.
+since we have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on our Database.
 
 You'll see these being used to configure your Supabase client in `web/src/App.js`:
 
@@ -90354,7 +90368,7 @@ Learn how to use Supabase in your Refine App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -90682,7 +90696,7 @@ Learn how to use Supabase in your SolidJS App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -90823,7 +90837,7 @@ And finally save the environment variables in a `.env` with the API URL and the 
 
 
 Now that you have the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed
-on the browser, and that's completely fine since you have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on the Database.
+on the browser, and that's completely fine since you have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on the Database.
 
 
 
@@ -90929,7 +90943,7 @@ Learn how to use Supabase in your Svelte App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -91074,7 +91088,7 @@ VITE_SUPABASE_URL=YOUR_SUPABASE_URL
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```
 
-Now you have the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed on the browser, and that's fine since you have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on the Database.
+Now you have the API credentials in place, create a helper file to initialize the Supabase client. These variables will be exposed on the browser, and that's fine since you have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on the Database.
 
 
 
@@ -91141,7 +91155,7 @@ Learn how to use Supabase in your SvelteKit App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -91421,7 +91435,7 @@ Learn how to use Supabase in your SwiftUI App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -91553,7 +91567,7 @@ Add the `https://github.com/supabase/supabase-swift` package to your app. For in
 Create a helper file to initialize the Supabase client.
 You need the API URL and the key that you copied [earlier](#get-api-details).
 These variables will be exposed on the application, and that's completely fine since you have
-[Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on your database.
+[Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on your database.
 
 ```swift name=Supabase.swift
 import Foundation
@@ -92057,7 +92071,7 @@ Note: UI components built on shadcn/ui that connect to Supabase via a single com
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -92207,7 +92221,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```
 
 With the API credentials in place, create an `src/supabase.js` helper file to initialize the Supabase client. These variables are exposed
-on the browser, and that's fine since you have [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) enabled on the Database.
+on the browser, and that's fine since you have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) enabled on the Database.
 
 
 
@@ -97688,7 +97702,7 @@ Supabase provides several integration points:
 
 - The [Postgres connection](https://supabase.com/docs/guides/database/connecting-to-postgres). Anything that works with Postgres also works with Supabase projects.
 - The [Project REST API](https://supabase.com/docs/guides/api#rest-api-overview) & client libraries.
-- The [Project GraphQL API](https://supabase.com/docs/guides/api#graphql-api-overview).
+- The [Project GraphQL API](https://supabase.com/docs/guides/graphql).
 - The [Platform API](https://supabase.com/docs/reference/api).
 
 ## List your integration
@@ -98523,7 +98537,7 @@ When you use the Vercel Marketplace, the following limitations apply:
 
 - Projects can only be created from the Vercel dashboard. To create one, see [Quickstart](#quickstart).
 - Organizations are removed only when you delete all their projects and then uninstall the Vercel Marketplace integration.
-- Owners can't be added in the Supabase Dashboard. To make someone an owner, give them the `owner` role on your Vercel team. For how roles map between Vercel and Supabase, see [Permissions](#permissions).
+- Owners can't be added in the Supabase Dashboard. To make someone an owner, give them the `owner` role on your Vercel team. For how roles map between Vercel and Supabase, see [How your Vercel team maps to Supabase](#how-your-vercel-team-maps-to-supabase).
 - Invoices and payments are managed in the Vercel dashboard, not in the Supabase Dashboard. For how your Supabase usage reaches your Vercel invoice, see [Pricing](#pricing).
 - [Custom domains](https://supabase.com/docs/guides/platform/custom-domains) aren't supported. The Vercel environment variables always use your project's base `SUPABASE_URL`.
 
@@ -100760,7 +100774,7 @@ For more advanced secrets management workflows, including:
 - **Branch-specific secrets**: Understand how to manage secrets for different deployment environments
 - **Encrypted configuration values**: Use encrypted values directly in your `config.toml`
 
-See the [Managing secrets for branches](https://supabase.com/docs/guides/deployment/branching#managing-secrets-for-branches) section in our branching documentation, or check out the [dotenvx example repository](https://github.com/supabase/supabase/blob/master/examples/slack-clone/nextjs-slack-clone-dotenvx/README.md) for a complete implementation.
+See the [Managing secrets for branches](https://supabase.com/docs/guides/deployment/branching/configuration#managing-secrets-for-branches) section in our branching documentation, or check out the [dotenvx example repository](https://github.com/supabase/supabase/blob/master/examples/slack-clone/nextjs-slack-clone-dotenvx/README.md) for a complete implementation.
 
 
 ---
@@ -107268,7 +107282,7 @@ Actions you can take:
 
 ### Query Performance
 
-Links to the [Query Performance Advisory page](https://supabase.com/docs/guides/platform/performance#examine-query-performance) in the dashboard, which provides a detailed analysis of slow database queries
+Links to the [Query Performance Advisory page](https://supabase.com/docs/guides/platform/performance#examining-query-performance) in the dashboard, which provides a detailed analysis of slow database queries
 
 ### Database connections
 
@@ -108170,7 +108184,7 @@ You can access PITR in the [Point in Time](https://supabase.com/dashboard/projec
 
 The latest restore point of the project could be significantly behind the current time. This occurs when the database has had no recent activity, and therefore we have not made any recent WAL file backups. However, the state of the database at the latest recovery point still reflects the current state of the database, given that no transactions have occurred in between.
 
-### Restoration process
+### Restoration process \[#pitr-restoration-process]
 
 ![PITR: Calendar view](/docs/img/backups-pitr-calendar-view.png)
 
@@ -108194,7 +108208,7 @@ For a detailed breakdown of how charges are calculated, refer to [Manage Point-i
 
 ### Downloading backups after disabling PITR
 
-When you disable PITR, we still take all new backups as physical backups only. You can still use physical backups for restoration, but they are not available for direct download. If you need to download a backup after disabling PITR, you need to take a manual [legacy logical backup using the Supabase CLI or pg\_dump](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore#backup-database-using-the-cli).
+When you disable PITR, we still take all new backups as physical backups only. You can still use physical backups for restoration, but they are not available for direct download. If you need to download a backup after disabling PITR, you need to take a manual [legacy logical backup using the Supabase CLI or pg\_dump](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore#back-up-database-using-the-cli).
 
 ## Restore to a new project
 
@@ -108961,7 +108975,7 @@ To get started:
 
 1. [Install](https://supabase.com/docs/guides/local-development) the latest version of the Supabase CLI.
 2. [Sign in](https://supabase.com/docs/guides/local-development/database-migrations#sign-in-to-the-supabase-cli) to your Supabase account using the CLI.
-3. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
+3. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) for the project.
 4. Get a custom domain from a DNS provider. Currently, only subdomains are supported.
    - Use `api.example.com` instead of `example.com`.
 
@@ -109075,7 +109089,7 @@ To get started:
 
 1. [Install](https://supabase.com/docs/guides/local-development) the latest version of the Supabase CLI.
 2. [Sign in](https://supabase.com/docs/guides/local-development/database-migrations#sign-in-to-the-supabase-cli) to your Supabase account using the CLI.
-3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project you'd like to set up a vanity subdomain for.
+3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) for the project you'd like to set up a vanity subdomain for.
 4. Ensure that your organization is on a paid plan (Pro/Team/Enterprise Plan) in the [Billing page of the Dashboard](https://supabase.com/dashboard/org/_/billing).
 
 ### Configure a vanity subdomain
@@ -109229,24 +109243,51 @@ Supabase uses network-attached storage to balance performance with scalability. 
 
 ### Paid plan behavior
 
-Projects on the Pro Plan and higher have auto-scaling disks.
+Projects on the Pro Plan and higher have autoscaling disks.
 
-Disk size expands automatically when the database reaches 90% of the allocated disk size. The disk is expanded to be 50% larger (for example, 8 GB -> 12 GB). Auto-scaling is limited to four modifications within a rolling 24-hour window. If you reach 95% disk utilization and have exhausted your modification quota, your project will enter read-only mode.
+Disk size expands automatically when the database reaches 90% of the allocated disk size. The disk is expanded to be 50% larger (for example, 8 GB -> 12 GB). Autoscaling is limited to four modifications within a rolling 24-hour window. If you reach 95% disk utilization and have exhausted your modification quota, your project will enter read-only mode.
 
 Note: The automatic resize operation will add an additional 50% capped to a maximum of 200 GB. If 50% of your current usage is more than 200 GB then only 200 GB will be added to your disk (for example a size of 1500 GB will resize to 1700 GB).
 
 Disk size can also be manually expanded on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings). The maximum disk size for the Pro/Team Plan is 60 TB. If you need more than this, [contact us](https://forms.supabase.com/enterprise) to learn more about the Enterprise Plan.
 
-Note: You may want to import a lot of data into your database which requires multiple disk expansions. for example, uploading more than 1.5x the current size of your database storage will put your database into [read-only mode](#read-only-mode). If so, it is highly recommended you increase the disk size manually on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings).
+Note: You may want to import a lot of data into your database which requires multiple disk expansions. For example, uploading more than 1.5x the current size of your database storage will put your database into [read-only mode](#read-only-mode). If so, it is highly recommended you increase the disk size manually on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings).
 
 Due to restrictions on the underlying cloud provider, disk expansions can occur only once every four hours. During the four hour cool down window, the disk cannot be resized again.
 
 ### Free Plan behavior
 
-Free Plan projects enter [read-only](#read-only-mode) mode when your **database size** exceeds 500 MB. Note that this is the *database size* limit (the size of your actual Postgres data), not the *disk size*. Free Plan projects include 1 GB of disk space, but read-only mode is triggered by the 500 MB database size quota. Once in read-only mode, you have these options:
+Free Plan projects have a fixed disk size of 2 GB. The disk does not autoscale.
 
-- [Upgrade to the Pro Plan](https://supabase.com/dashboard/org/_/billing) to increase the database size quota. [Disable the Spend Cap](https://app.supabase.com/org/_/billing?panel=costControl) if you want your Pro instance to auto-scale beyond the 8 GB disk size limit.
+When disk usage reaches 95%, Supabase puts your database into [read-only mode](#read-only-mode). This helps prevent the disk from filling completely. When disk usage goes below 95%, Supabase turns off read-only mode automatically.
+
+Danger: If the disk becomes full, Postgres shuts down. It stays down until you upgrade to the Pro Plan. Read-only mode at 95% is a best-effort safeguard. Writes that are already in progress, and WAL, can continue to fill the disk after read-only mode starts.
+
+To prevent this, keep disk usage well below 95%, or upgrade to the Pro Plan before you reach the limit.
+
+Read-only mode depends on *disk usage*. The 500 MB *database size* quota does not trigger it. The database size quota is a billing quota for your organization. For more information, see [Fair use database size restriction](#fair-use-database-size-restriction).
+
+If your project is in read-only mode and Postgres is still running, you have these options:
+
+- [Upgrade to the Pro Plan](https://supabase.com/dashboard/org/_/billing) to get an 8 GB disk that autoscales. To autoscale beyond 8 GB, [disable the Spend Cap](https://supabase.com/dashboard/org/_/billing?panel=costControl).
 - [Disable read-only mode](#disabling-read-only-mode) and reduce your database size.
+
+If your database is down because the disk is full:
+
+1. [Upgrade to the Pro Plan](https://supabase.com/dashboard/org/_/billing).
+2. On the [General settings page](https://supabase.com/dashboard/project/_/settings/general), select **Restart project**.
+3. Wait about 10 minutes for the project to recover.
+
+#### Write Ahead Log (WAL) on the Free Plan
+
+The [Write Ahead Log (WAL)](#disk-space-usage) uses disk space in addition to your data. On a 2 GB disk, WAL can fill the disk even when your database size is small.
+
+WAL grows fast when you write a lot of data in a short time. Examples are bulk imports, large `update` or `delete` statements, and index builds. During heavy writes, WAL can grow past the default `max_wal_size` of 1 GB before Postgres removes old WAL files. An inactive [replication slot](https://supabase.com/docs/guides/database/replication) can also keep WAL on the disk. By default, `max_slot_wal_keep_size` limits this to about 512 MB.
+
+To keep WAL small:
+
+- Split large writes into smaller batches.
+- Drop replication slots that you do not use with `select pg_drop_replication_slot('<slot_name>');`.
 
 ### Fair use database size restriction
 
@@ -109281,7 +109322,7 @@ limit 50;
 
 ### Disabling read-only mode
 
-You manually override read-only mode to reduce disk size. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
+You can manually override read-only mode to reduce disk size. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 First, change the [transaction access mode](https://www.postgresql.org/docs/current/sql-set-transaction.html):
 
@@ -109956,7 +109997,7 @@ In the Usage Summary section, you can see how many hours your Preview branches e
 
 - Merge Preview branches as soon as they are ready
 - Delete Preview branches that are no longer in use
-- Check whether your [persistent branches](https://supabase.com/docs/guides/deployment/branching#persistent-branches) need to be defined as persistent, or if they can be ephemeral instead. Persistent branches will remain active even after the underlying PR is closed.
+- Check whether your [persistent branches](https://supabase.com/docs/guides/deployment/branching#how-branching-works) need to be defined as persistent, or if they can be ephemeral instead. Persistent branches will remain active even after the underlying PR is closed.
 
 ## FAQ
 
@@ -111040,7 +111081,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 # Manage Logs Query usage
 
-Caution: The allowance and degraded-state consequences described on this page are not enforced yet. This page describes how enforcement will work once the grace period ends at the start of 2027.
+Caution: Log Query usage is tracked, but the allowance and degraded-state consequences described on this page are not enforced yet. We'll announce a specific enforcement timeline before it takes effect — this page describes how enforcement will work once that happens.
 
 ## What you are charged for
 
@@ -111096,10 +111137,10 @@ If you exceed your allowance again the next month, while still in that degraded 
 
 ### A concrete walkthrough
 
-- January: You use 20 GB of ingest and 2,450 GB of query, more volume than your allowance covers.
-- February: Degraded — 10 queries/min, retention shrunk to 24 hours on paid tiers, 1 hour on the Free Plan.
-- March: If February also went over, that's two consecutive months, so this month is a full cutoff.
-- April: Billing cycle resets, access returns to normal. This allows you to make continued efforts to optimize your log query usage.
+- Month 1: You use 20 GB of ingest and 2,450 GB of query, more volume than your allowance covers.
+- Month 2: Degraded — 10 queries/min, retention shrunk to 24 hours on paid tiers, 1 hour on the Free Plan.
+- Month 3: If month 2 also went over, that's two consecutive months, so this month is a full cutoff.
+- Month 4: Billing cycle resets, access returns to normal. This allows you to make continued efforts to optimize your log query usage.
 
 
 ---
@@ -111643,7 +111684,7 @@ If you remove the PITR add-on, you are no longer billed from the time of removal
 
 ## Optimize usage
 
-- Review your [backup frequency](https://supabase.com/docs/guides/platform/backups#frequency-of-backups) needs to determine whether you require PITR or free Daily Backups are sufficient
+- Review your [backup frequency](https://supabase.com/docs/guides/platform/backups) needs to determine whether you require PITR or free Daily Backups are sufficient
 - Regularly check your projects and disable PITR where no longer needed
 - Consider disabling PITR for non-production databases
 
@@ -112963,8 +113004,6 @@ The result is two separate JSON files:
 Migrate your Heroku Postgres database to Supabase.
 
 Supabase is one of the best [free alternatives to Heroku Postgres](https://supabase.com/alternatives/supabase-vs-heroku-postgres). This guide shows how to migrate your Heroku Postgres database to Supabase. This migration requires the [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) CLI tools, which are installed automatically as part of the complete Postgres installation package.
-
-Alternatively, use the [Heroku to Supabase migration tool](https://migrate.supabase.com/) to migrate in a few clicks.
 
 ## Quick demo
 
@@ -115083,7 +115122,7 @@ If direct connections to your database [resolve to an IPv6 address](https://supa
 To configure network restrictions with the dashboard:
 
 1. Open your project's [Database Settings](https://supabase.com/dashboard/project/_/database/settings) page.
-2. In the Network Restrictions section, make your changes. You need [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) to make changes.
+2. In the Network Restrictions section, make your changes. You need [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) to make changes.
 
 ## Configure with the CLI \[#to-get-started-via-the-cli]
 
@@ -115092,7 +115131,7 @@ To configure network restrictions with the CLI:
 1. [Install](https://supabase.com/docs/guides/local-development) the Supabase CLI 1.22.0+.
 2. [Sign in](https://supabase.com/docs/guides/local-development/database-migrations#sign-in-to-the-supabase-cli) to your Supabase account.
 3. If your project was created before December 23, 2022, [upgrade it to the latest Supabase version](https://supabase.com/docs/guides/platform/upgrading) before using network restrictions.
-4. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
+4. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) for the project.
 
 ### Check restrictions
 
@@ -115233,24 +115272,25 @@ It is possible for violations of these assumptions to not cause an immediate out
 
 Scope personal access tokens to specific organizations, projects, and permissions
 
-Personal access tokens (PATs) authenticate you to the [Management API](https://supabase.com/docs/reference/api/introduction) and the tools built on it, like the Supabase CLI and the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp). They come in two flavors:
+Personal access tokens (PATs) authenticate you to the [Management API](https://supabase.com/docs/reference/api/introduction) and the tools built on it, like the Supabase CLI and the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp).
 
-- **Classic tokens**, shown with a **Legacy** badge in the dashboard, carry your account's full access. That means every permission, on every organization and every project you belong to today, and on every one you create or join in the future. A classic token created a year ago can touch a project you created today.
-- **Scoped tokens** carry only the organizations, projects, and permissions you choose. For example: read one project's database and view its logs, with no access to billing or organization settings.
+When you create a token, you scope it to the organizations, projects, and permissions it needs. For example, a token can read one project's database and view its logs without touching billing or organization settings. Tokens you create in the Supabase Dashboard are scoped by default.
 
-Note: We recommend scoped tokens for everything, especially AI agents, automation scripts, and CI environments. If a token leaks, the blast radius stays small.
+You can still create a token with your account's full access. The Dashboard shows these tokens with a **Legacy** badge. A token with full access carries every permission on every organization and project you belong to, including ones you create or join later. A full-access token created a year ago can touch a project you created today.
 
-To use scoped personal access tokens you need a Supabase account with a role on the organization or project you want the token to reach. A scoped personal access token's permissions only ever narrow what your account can already do. They never grant more. If your role doesn't include a permission (see [Access Control](https://supabase.com/docs/guides/platform/access-control)), granting that permission to a token has no effect: the token still can't do it.
+Note: We recommend scoping every token, especially tokens for AI agents, automation scripts, and CI environments. If a token leaks, the blast radius stays small.
 
-You create scoped tokens the same way as classic tokens, from your [access tokens](https://supabase.com/dashboard/account/tokens) settings. Choose which permissions to grant during creation instead of leaving the token with full access.
+To scope a token you need a Supabase account with a role on the organization or project you want the token to reach. A token's permissions narrow what your account can already do and never grant more. If your role doesn't include a permission (see [Access Control](https://supabase.com/docs/guides/platform/access-control)), granting that permission to a token has no effect.
 
-## Create and use a scoped personal access token
+You create and scope tokens from your [access tokens](https://supabase.com/dashboard/account/tokens) settings.
 
-This example creates a token that can only read one project's settings, then calls an endpoint outside that scope. Both calls are reads available to every organization role, including Read-Only, so anyone can run it.
+## Scope a token and use it
+
+This example creates a token that can only read one project's settings, then calls an endpoint outside that scope. Because both calls are reads that every organization role can make, including Read-Only, anyone can run the example.
 
 1. Go to your [access tokens](https://supabase.com/dashboard/account/tokens) settings and generate a new token.
 2. While creating it, scope the token to one project and grant only the **Project Settings** permission with **Read** access.
-3. Copy the token (scoped personal access tokens start with `sbp_fc`) and use it against the Management API, replacing `your-project-ref` with the project's ref:
+3. Copy the token (tokens created with a scope start with `sbp_fc`) and use it against the Management API, replacing `your-project-ref` with the project's ref:
 
 ```bash
 export SUPABASE_ACCESS_TOKEN="sbp_fc..."
@@ -115260,7 +115300,7 @@ curl "https://api.supabase.com/v1/projects/your-project-ref" \
   -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
 # Returns the project's details
 
-# Denied: this endpoint needs the Database permission, which the token lacks
+# Denied: the token lacks the Database permission this endpoint needs
 curl -i "https://api.supabase.com/v1/projects/your-project-ref/types/typescript" \
   -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
 # Returns HTTP 403
@@ -115268,9 +115308,9 @@ curl -i "https://api.supabase.com/v1/projects/your-project-ref/types/typescript"
 
 To grant exactly what a workflow needs, see [Permission scopes](#permission-scopes) for the permission each endpoint requires and [MCP tools](#mcp-tools) for the permission each MCP tool requires.
 
-## Use a scoped personal access token with the Supabase CLI
+## Use a token with the Supabase CLI
 
-The browser flow of `supabase login` creates a classic token. To run the CLI with a scoped token instead, set it in the `SUPABASE_ACCESS_TOKEN` environment variable, or save it with `supabase login --token`. The environment variable takes precedence over any saved token, which also makes it the right choice for CI.
+The browser flow of `supabase login` creates a token with your account's full access. To run the CLI with a token you scoped in the Dashboard instead, set it in the `SUPABASE_ACCESS_TOKEN` environment variable or save it with `supabase login --token`. Because the environment variable takes precedence over any saved token, it's the right choice for CI.
 
 For example, with a token granted **Projects (account-wide)** with **Read** access, `supabase projects list` lists the projects the token can reach:
 
@@ -115285,7 +115325,7 @@ Database commands that connect with your database password, such as `supabase db
 
 ## Permission scopes
 
-Each permission controls read or read-write access to one resource, for example **Database**, **Edge Functions**, or **Production Branches**. The permissions and names below match those shown when creating a scoped personal access token. Permissions that currently unlock neither a public Management API endpoint nor an MCP tool are omitted. A few endpoints need more than one permission. The footnotes call these out.
+Each permission controls read or read-write access to one resource, for example **Database**, **Edge Functions**, or **Production Branches**. The permissions and names below match those shown when you create a token. Permissions that unlock neither a public Management API endpoint nor an MCP tool are omitted. A few endpoints need more than one permission. The footnotes call these out.
 
 | Permission                       | Access required | Management API endpoint                                                                                                                 |
 | -------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -115544,7 +115584,7 @@ Each permission controls read or read-write access to one resource, for example 
 
 ## MCP tools
 
-A scoped personal access token used to authenticate the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp) can only call the tools its granted permissions unlock. See [Available tools](https://supabase.com/docs/guides/ai-tools/mcp#available-tools) for what each tool does.
+A token used to authenticate the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp) can only call the tools its granted permissions unlock. See [Available tools](https://supabase.com/docs/guides/ai-tools/mcp#available-tools) for what each tool does.
 
 | MCP tool                      | Required permission                                                           |
 | ----------------------------- | ----------------------------------------------------------------------------- |
@@ -115618,7 +115658,7 @@ Disabling connection logging does not affect other Supabase logging (for example
 
 You can configure connection logging from the **Log connections** setting in the [Database Settings](https://supabase.com/dashboard/project/_/database/settings) section of the Dashboard.
 
-Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
+Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) for the project.
 
 Note: Connection events appear in [Postgres logs](https://supabase.com/docs/guides/observability/logs#postgres). They are included by default when the Postgres log type is selected. Clear **Connection logs** under Postgres to hide them.
 
@@ -115964,7 +116004,7 @@ Each Read Replica has its own dedicated database and API endpoints.
 - Find the database endpoint on the project's [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true). Toggle between Primary and Read Replicas using the **Source** dropdown.
 - Find the API endpoint on the [API Settings page](https://supabase.com/dashboard/project/_/settings/api) under **Project URL**. Toggle between Primary and Read Replicas using the **Source** dropdown.
 
-If you use an [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address#read-replicas), the database endpoints for your Read Replicas also use an IPv4 add-on.
+If you use an [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address#read-replicas-and-ipv4-add-on), the database endpoints for your Read Replicas also use an IPv4 add-on.
 
 Read Replicas only support `GET` requests from the [REST API](https://supabase.com/docs/guides/api). If you are calling a read-only Postgres function through the REST API, make sure to set the `get: true` [option](https://supabase.com/docs/reference/javascript/rpc?queryGroups=example\&example=call-a-read-only-postgres-function).
 
@@ -116278,7 +116318,7 @@ To get started:
 
 1. [Install](https://supabase.com/docs/guides/local-development) the Supabase CLI 1.37.0+.
 2. [Sign in](https://supabase.com/docs/guides/local-development/database-migrations#sign-in-to-the-supabase-cli) to your Supabase account using the CLI.
-3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project that you are enabling SSL enforcement.
+3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) for the project that you are enabling SSL enforcement.
 
 ### Check enforcement status
 
@@ -119152,7 +119192,7 @@ Existing projects on lower versions of Postgres are not impacted, and the extens
 
 During the Supabase project upgrade, the `pg_cron` extension gets dropped and recreated. Before this process, the `cron.job_run_details` table is duplicated to avoid losing historical logs. The instantaneous disk pressure created by duplicating an extremely large details table can cause at best unnecessary performance degradation, or at worst, upgrade process failures.
 
-### Upgrading to pg\_graphql 1.6.0
+### Upgrading to pg\_graphql 1.6.0 \[#upgrading-to-pg\_graphql-160]
 
 Starting with pg\_graphql 1.6.0, GraphQL introspection is disabled by default. After the upgrade, queries to `__schema` and `__type` will return an error unless introspection is explicitly enabled. See the [pg\_graphql configuration docs](https://supabase.github.io/pg_graphql/configuration/#introspection) for full details.
 
@@ -126346,7 +126386,7 @@ channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
 await channel.Subscribe();
 ```
 
-### Negating a filter (`not`)
+### Negating a filter (`not`) \[#negating-a-filter-not]
 
 Prefix any operator with `not.` to invert it — for example `not.in`, `not.is`, or `not.like`.
 
@@ -127605,7 +127645,7 @@ Messages for all events are encoded as text frames using JSON except with the `b
 | `broadcast`    | Broadcast message sent to all clients in a channel       | ✅            | ✅                 |
 | `presence`     | Presence state update sent after joining a channel       | ✅            | ✅                 |
 
-#### phx\_join
+#### phx\_join \[#phx\_join]
 
 This is the initial message required to join a channel. The client sends this message to the server to join a specific topic and configure the features it wants to use, such as Postgres changes, Presence, and Broadcast. The payload of the `phx_join` event contains the configuration options for the channel.
 
@@ -127711,7 +127751,7 @@ Example on protocol version `2.0.0`:
 [null, "26", "phoenix", "heartbeat", {}]
 ```
 
-#### access\_token
+#### access\_token \[#access-token]
 
 Used to setup a new token to be used by Realtime for authentication and to refresh the token to prevent a private channel from closing when the token expires.
 
@@ -128639,14 +128679,14 @@ The report displays the total number of HTTP requests made to the Realtime servi
 
 ### Actions you can take
 
-| Action                   | Description                                                                  | More information                                                                                           |
-| ------------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Check logs               | Investigate request errors or issues in your project dashboard               | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                 |
-| Review error rates       | Compare total requests with error rates to identify failure patterns         | [Response Errors Report](#response-errors)                                                                 |
-| Review response times    | Monitor API response times to identify performance bottlenecks               | [Response Speed Report](#response-speed)                                                                   |
-| Learn REST API broadcast | Understand how to send broadcast messages using HTTP requests                | [Broadcast via REST API Guide](https://supabase.com/docs/guides/realtime/broadcast#broadcast-via-rest-api) |
-| Monitor database         | Review database resource utilization that may affect API request processing  | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)        |
-| Contact support          | Discuss high-volume request patterns or get assistance with API optimization | [Support Portal](https://supabase.com/dashboard/support/new)                                               |
+| Action                   | Description                                                                  | More information                                                                                                 |
+| ------------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Check logs               | Investigate request errors or issues in your project dashboard               | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                       |
+| Review error rates       | Compare total requests with error rates to identify failure patterns         | [Response Errors Report](#response-errors)                                                                       |
+| Review response times    | Monitor API response times to identify performance bottlenecks               | [Response Speed Report](#response-speed)                                                                         |
+| Learn REST API broadcast | Understand how to send broadcast messages using HTTP requests                | [Broadcast via REST API Guide](https://supabase.com/docs/guides/realtime/broadcast#broadcast-using-the-rest-api) |
+| Monitor database         | Review database resource utilization that may affect API request processing  | [Database Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database)              |
+| Contact support          | Discuss high-volume request patterns or get assistance with API optimization | [Support Portal](https://supabase.com/dashboard/support/new)                                                     |
 
 ## Response Errors
 

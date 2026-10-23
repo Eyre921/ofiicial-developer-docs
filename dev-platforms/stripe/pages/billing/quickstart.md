@@ -1,10 +1,10 @@
 ---
-title: "Build a pre-built subscription page with Stripe Checkout"
+title: "Build a prebuilt subscription page with Stripe Checkout"
 source: https://docs.stripe.com/billing/quickstart.md
 path: billing/quickstart
 ---
 
-# Build a pre-built subscription page with Stripe Checkout
+# Build a prebuilt subscription page with Stripe Checkout
 
 # Prebuilt subscription page with Stripe Checkout 
 

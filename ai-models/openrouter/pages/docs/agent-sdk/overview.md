@@ -14,7 +14,7 @@ path: docs/agent-sdk/overview
 
 The Agent SDK (`@openrouter/agent`) provides the primitives you need to build agentic applications on OpenRouter. Instead of manually wiring up conversation loops, tool dispatch, and state tracking, the Agent SDK handles all of that so you can focus on defining *what* your agent does.
 
-The Agent SDK is built on top of the TypeScript [Client SDK](/docs/client-sdks/overview.md): `@openrouter/agent` depends on `@openrouter/sdk` and installs it for you, so its `OpenRouter` class accepts the same client options. Add `@openrouter/sdk` to your own dependencies if you also want to call REST endpoints directly, so that you control which version you get.
+The Agent SDK is built on top of the TypeScript [Client SDK](https://openrouter.ai/docs/client-sdks/overview.md): `@openrouter/agent` depends on `@openrouter/sdk` and installs it for you, so its `OpenRouter` class accepts the same client options. Add `@openrouter/sdk` to your own dependencies if you also want to call REST endpoints directly, so that you control which version you get.
 
 ## When to use the Agent SDK
 
@@ -26,11 +26,11 @@ Choose the Agent SDK when you need **agentic behavior**: multi-step reasoning wh
 * **Conversation state**: the SDK tracks messages, tool results, and context across turns
 * **Streaming**: real-time token output within each agent step
 * **Dynamic parameters**: change model, temperature, or tools between turns based on context
-* **MCP tools**: plug in a remote [Model Context Protocol](/docs/agent-sdk/call-model/mcp-tools.md) server and its tools drop straight into `callModel`
+* **MCP tools**: plug in a remote [Model Context Protocol](https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools.md) server and its tools drop straight into `callModel`
 
 > [!TIP]
 >
-> If you only need simple request/response calls to a model without agent loops, the [Client SDKs](/docs/client-sdks/overview.md) are a lighter-weight option.
+> If you only need simple request/response calls to a model without agent loops, the [Client SDKs](https://openrouter.ai/docs/client-sdks/overview.md) are a lighter-weight option.
 
 ## Installation
 
@@ -114,7 +114,7 @@ The main entry point. It runs an inference loop that:
 3. Appends tool results to the conversation
 4. Repeats until a stop condition is met or no more tool calls are made
 
-See the [Call Model documentation](/docs/agent-sdk/call-model) for the full API.
+See the [Call Model documentation](https://openrouter.ai/docs/agent-sdk/call-model) for the full API.
 
 ### Tools
 
@@ -166,10 +166,10 @@ const result = openrouter.callModel({
 
 ## Next steps
 
-* [Call Model](/docs/agent-sdk/call-model): the complete `callModel` API reference
-* [Tools](/docs/agent-sdk/call-model/tools.md): defining and using tools
-* [Stop Conditions](/docs/agent-sdk/call-model/stop-conditions.md): controlling agent loop termination
-* [Streaming](/docs/agent-sdk/call-model/streaming.md): real-time token output
-* [DevTools](/docs/agent-sdk/dev-tools/devtools.md): telemetry capture and visualization for development
-* [Migrating from @openrouter/sdk](/docs/agent-sdk/agent-migration.md): move agent imports to the standalone package
+* [Call Model](https://openrouter.ai/docs/agent-sdk/call-model): the complete `callModel` API reference
+* [Tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md): defining and using tools
+* [Stop Conditions](https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions.md): controlling agent loop termination
+* [Streaming](https://openrouter.ai/docs/agent-sdk/call-model/streaming.md): real-time token output
+* [DevTools](https://openrouter.ai/docs/agent-sdk/dev-tools/devtools.md): telemetry capture and visualization for development
+* [Migrating from @openrouter/sdk](https://openrouter.ai/docs/agent-sdk/agent-migration.md): move agent imports to the standalone package
 

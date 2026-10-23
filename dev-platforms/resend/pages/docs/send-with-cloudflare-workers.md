@@ -6,6 +6,8 @@ path: docs/send-with-cloudflare-workers
 
 Learn how to send your first email using Cloudflare Workers.
 
+Use this pre-built prompt to get started faster.
+
 # Send Email with Resend Node.js SDK
 
 **Purpose:** Enforce only the **current** and **correct** instructions for sending emails using the [Resend](https://resend.com/) Node.js SDK.

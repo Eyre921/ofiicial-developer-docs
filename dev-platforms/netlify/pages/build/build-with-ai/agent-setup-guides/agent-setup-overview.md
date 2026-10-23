@@ -45,6 +45,7 @@ If you would like to use your agent's own official setup command, check out the 
 - [Claude Web](/build/build-with-ai/agent-setup-guides/set-up-claude-web-for-netlify/#connect-netlify-to-claude-web) via Claude's Netlify Connector
 - [Claude Desktop](/build/build-with-ai/agent-setup-guides/set-up-claude-desktop-for-netlify/#connect-to-the-netlify-connector) via Claude's Netlify Connector
 - [ChatGPT](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#find-netlify-in-chatgpt-apps) via ChatGPT's Netlify App
+- [Grok](/build/build-with-ai/agent-setup-guides/set-up-grok-for-netlify/#connect-netlify-to-grok) via Grok's Netlify connector
 - [Antigravity](/build/build-with-ai/agent-setup-guides/set-up-antigravity-for-netlify/#connect-to-the-netlify-mcp-server)
 - [Antigravity CLI](/build/build-with-ai/agent-setup-guides/set-up-antigravity-cli-for-netlify/#connect-to-the-netlify-mcp-server)
 

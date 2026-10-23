@@ -8,6 +8,7 @@ This file routes agents to the smallest useful TanStack docs source. Fetch the l
 
 - [TanStack Start](https://tanstack.com/start/latest/llms.txt): Full-stack Framework powered by TanStack Router for React and Solid. Frameworks: React, Solid. Packages: @tanstack/start-client-core. GitHub: https://github.com/tanstack/router.
 - [TanStack Router](https://tanstack.com/router/latest/llms.txt): Type-safe Routing for React and Solid applications. Frameworks: React, Solid. Packages: @tanstack/router-core, react-location. GitHub: https://github.com/tanstack/router.
+- [TanStack Redact](https://tanstack.com/redact/latest/llms.txt): A smaller React-compatible runtime with synchronous rendering. Frameworks: React. Packages: @tanstack/redact. GitHub: https://github.com/tanstack/redact.
 
 ## Data & State Management docs
 

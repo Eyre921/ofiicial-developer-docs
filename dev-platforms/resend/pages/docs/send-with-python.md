@@ -6,6 +6,8 @@ path: docs/send-with-python
 
 Learn how to send your first email using the Resend Python SDK.
 
+Use this pre-built prompt to get started faster.
+
 # Send Email with Resend Python SDK
 
 **Purpose:** Enforce only the **current** and **correct** instructions for sending emails using the [Resend](https://resend.com/) Python SDK.

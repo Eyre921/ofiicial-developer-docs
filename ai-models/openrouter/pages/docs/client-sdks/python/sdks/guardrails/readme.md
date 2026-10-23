@@ -34,7 +34,7 @@ Guardrails endpoints
 
 ## list
 
-List all guardrails for the authenticated user. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all guardrails for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -87,7 +87,7 @@ with OpenRouter(
 
 ## create
 
-Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](/docs/client-sdks/python/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](https://openrouter.ai/docs/client-sdks/python/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -165,7 +165,7 @@ with OpenRouter(
 
 ## delete
 
-Delete an existing guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -214,7 +214,7 @@ with OpenRouter(
 
 ## get
 
-Get a single guardrail by ID. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Get a single guardrail by ID. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -263,7 +263,7 @@ with OpenRouter(
 
 ## update
 
-Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -337,7 +337,7 @@ with OpenRouter(
 
 ## list\_guardrail\_key\_assignments
 
-List all API key assignments for a specific guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all API key assignments for a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -390,7 +390,7 @@ with OpenRouter(
 
 ## bulk\_assign\_keys
 
-Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -443,7 +443,7 @@ with OpenRouter(
 
 ## bulk\_unassign\_keys
 
-Unassign multiple API keys from a specific guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple API keys from a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -496,7 +496,7 @@ with OpenRouter(
 
 ## list\_guardrail\_member\_assignments
 
-List all organization member assignments for a specific guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all organization member assignments for a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -549,7 +549,7 @@ with OpenRouter(
 
 ## bulk\_assign\_members
 
-Assign multiple organization members to a specific guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple organization members to a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -603,7 +603,7 @@ with OpenRouter(
 
 ## bulk\_unassign\_members
 
-Unassign multiple organization members from a specific guardrail. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple organization members from a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -657,7 +657,7 @@ with OpenRouter(
 
 ## list\_key\_assignments
 
-List all API key guardrail assignments for the authenticated user. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all API key guardrail assignments for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -710,7 +710,7 @@ with OpenRouter(
 
 ## list\_member\_assignments
 
-List all organization member guardrail assignments for the authenticated user. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all organization member guardrail assignments for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

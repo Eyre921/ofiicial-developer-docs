@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 393 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -176,6 +176,7 @@
 - `docs/multilingual-code-switching` — [Multilingual Codeswitching](pages/docs/multilingual-code-switching.md) · [原文](https://developers.deepgram.com/docs/multilingual-code-switching.md)
 - `docs/multilingual-voice-agent` — [Multilingual Voice Agents](pages/docs/multilingual-voice-agent.md) · [原文](https://developers.deepgram.com/docs/multilingual-voice-agent.md)
 - `docs/networking` — [Networking](pages/docs/networking.md) · [原文](https://developers.deepgram.com/docs/networking.md)
+- `docs/nova-3-language-prompting` — [Nova-3 Language Prompting](pages/docs/nova-3-language-prompting.md) · [原文](https://developers.deepgram.com/docs/nova-3-language-prompting.md)
 - `docs/numerals` — [Numerals](pages/docs/numerals.md) · [原文](https://developers.deepgram.com/docs/numerals.md)
 - `docs/observability-sagemaker` — [Observability for Amazon SageMaker](pages/docs/observability-sagemaker.md) · [原文](https://developers.deepgram.com/docs/observability-sagemaker.md)
 - `docs/oci-docker-podman` — [Oracle Cloud Infrastructure](pages/docs/oci-docker-podman.md) · [原文](https://developers.deepgram.com/docs/oci-docker-podman.md)

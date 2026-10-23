@@ -50,7 +50,7 @@ You need:
 * [Bun](https://bun.sh) to run the server
 * A browser with a microphone
 
-This guide uses `elevenlabs/scribe-v2` for transcription, `anthropic/claude-haiku-5.5` for answers, and `elevenlabs/eleven-v4-turbo` for speech. Any chat model in the [catalog](https://openrouter.ai/models) works for the middle step. [Speech-to-Text](/docs/guides/overview/multimodal/stt.md) and [Text-to-Speech](/docs/guides/overview/multimodal/tts.md) list the other audio models and every request parameter. See the [Scribe v2](https://openrouter.ai/elevenlabs/scribe-v2) and [Eleven v4 Turbo](https://openrouter.ai/elevenlabs/eleven-v4-turbo) model pages for pricing.
+This guide uses `elevenlabs/scribe-v2` for transcription, `anthropic/claude-haiku-5.5` for answers, and `elevenlabs/eleven-v4-turbo` for speech. Any chat model in the [catalog](https://openrouter.ai/models) works for the middle step. [Speech-to-Text](https://openrouter.ai/docs/guides/overview/multimodal/stt.md) and [Text-to-Speech](https://openrouter.ai/docs/guides/overview/multimodal/tts.md) list the other audio models and every request parameter. See the [Scribe v2](https://openrouter.ai/elevenlabs/scribe-v2) and [Eleven v4 Turbo](https://openrouter.ai/elevenlabs/eleven-v4-turbo) model pages for pricing.
 
 ## Step 1: Add the server route
 

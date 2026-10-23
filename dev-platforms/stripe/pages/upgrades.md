@@ -251,7 +251,7 @@ After you disable the old webhook endpoint, Stripe won’t re-deliver events tha
 
 In addition to the general testing guidance, follow the guidelines for the products and resources that your integration uses:
 
-- [Billing](https://docs.stripe.com/billing/testing.md): Use [test clocks](https://docs.stripe.com/billing/testing/test-clocks.md) to [simulate subscriptions](https://docs.stripe.com/billing/testing/test-clocks/simulate-subscriptions.md).
+- [Billing](https://docs.stripe.com/billing/testing.md): Use [test clocks](https://docs.stripe.com/billing/testing.md#test-clocks) to [simulate subscriptions](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
 - [Invoicing](https://docs.stripe.com/invoicing/integration/testing.md): Test webhook notifications, payment failures, and other scenarios.
 - [Connect](https://docs.stripe.com/connect/testing.md): Create [test accounts](https://docs.stripe.com/connect/testing.md?accounts-namespace=v2#creating-accounts) and use them for [verification testing](https://docs.stripe.com/connect/testing-verification.md).
 - [Terminal](https://docs.stripe.com/terminal/references/testing.md): Test [simulated reader updates](https://docs.stripe.com/terminal/references/testing.md?terminal-card-present-integration=terminal#simulated-reader-updates).

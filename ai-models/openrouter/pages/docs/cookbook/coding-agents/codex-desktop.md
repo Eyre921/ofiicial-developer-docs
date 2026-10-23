@@ -14,7 +14,7 @@ path: docs/cookbook/coding-agents/codex-desktop
 
 ## What is the Codex Desktop App?
 
-Codex ships inside the [ChatGPT desktop app](https://developers.openai.com/codex/app) for macOS and Windows. The app, the [Codex CLI](/docs/cookbook/coding-agents/codex-cli.md), and the IDE extension all read the same local configuration in `~/.codex/config.toml`, so pointing the desktop app at OpenRouter is a matter of adding an OpenRouter model provider and making your API key visible to the app.
+Codex ships inside the [ChatGPT desktop app](https://developers.openai.com/codex/app) for macOS and Windows. The app, the [Codex CLI](https://openrouter.ai/docs/cookbook/coding-agents/codex-cli.md), and the IDE extension all read the same local configuration in `~/.codex/config.toml`, so pointing the desktop app at OpenRouter is a matter of adding an OpenRouter model provider and making your API key visible to the app.
 
 The one difference from the CLI is how the key reaches the process. A terminal inherits your shell profile, but a desktop app launched from the Dock or Start menu does not, so an `export` in `~/.zshrc` is not enough on its own.
 
@@ -98,7 +98,7 @@ Quit the app completely (not just the window), reopen it, choose **Codex**, and 
 
 > [!NOTE]
 >
-> With `env_key` authentication Codex does not fetch the OpenRouter model catalog, so non-OpenAI models may show an "Unknown model" fallback-metadata warning. The command-based `auth` block on the [Codex CLI page](/docs/cookbook/coding-agents/codex-cli.md#step-3-configure-codex-for-openrouter) triggers the catalog refresh and works in the desktop app as long as `OPENROUTER_API_KEY` is visible to it as described above.
+> With `env_key` authentication Codex does not fetch the OpenRouter model catalog, so non-OpenAI models may show an "Unknown model" fallback-metadata warning. The command-based `auth` block on the [Codex CLI page](https://openrouter.ai/docs/cookbook/coding-agents/codex-cli.md#step-3-configure-codex-for-openrouter) triggers the catalog refresh and works in the desktop app as long as `OPENROUTER_API_KEY` is visible to it as described above.
 
 ## Why Use OpenRouter with the Codex Desktop App?
 
@@ -136,6 +136,6 @@ Alternatively, log out of your computer and log back in, which ends all of these
 * [ChatGPT desktop app](https://developers.openai.com/codex/app)
 * [Codex configuration reference](https://developers.openai.com/codex/config-reference)
 * [Codex custom model providers](https://developers.openai.com/codex/config-advanced#custom-model-providers)
-* [Codex CLI with OpenRouter](/docs/cookbook/coding-agents/codex-cli.md)
+* [Codex CLI with OpenRouter](https://openrouter.ai/docs/cookbook/coding-agents/codex-cli.md)
 * [OpenRouter Activity Dashboard](https://openrouter.ai/activity)
 

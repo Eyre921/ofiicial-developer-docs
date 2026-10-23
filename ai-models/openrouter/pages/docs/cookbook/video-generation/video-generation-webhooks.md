@@ -32,13 +32,13 @@ You need:
 
 > [!TIP]
 >
-> If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
+> If you haven't chosen a model yet, read [Choose a Video Generation Model](https://openrouter.ai/docs/cookbook/video-generation/choose-video-model.md) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 
 Use the API reference pages as the source of truth for exact fields:
 
-* [Create video generation request](/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
-* [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
-* [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README.md)
+* [Create video generation request](https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request.md)
+* [List video generation models](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models.md)
+* [TypeScript SDK video generation reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
 
 If you adapt the Express examples below in a local test project, use these dependencies:
 
@@ -343,7 +343,7 @@ The per-request `callback_url` takes priority over a workspace-level default cal
 
 Handle webhook delivery as a terminal job update. The payload is an event envelope with the job fields inside `data`. Depending on the terminal state, `data` includes fields such as `id`, `status`, `generation_id`, `model`, `unsigned_urls`, `usage`, and `error`. Store the job state in your database, deduplicate retries with `X-OpenRouter-Idempotency-Key`, then download the video from the first `unsigned_urls` entry or from the content endpoint. If the URL points to the OpenRouter API, include the bearer token when downloading it.
 
-For a complete polling and download helper, see [Generate and Download a Video from Text](/docs/cookbook/video-generation/text-to-video.md).
+For a complete polling and download helper, see [Generate and Download a Video from Text](https://openrouter.ai/docs/cookbook/video-generation/text-to-video.md).
 
 Actual local receiver log shape from the signature test:
 

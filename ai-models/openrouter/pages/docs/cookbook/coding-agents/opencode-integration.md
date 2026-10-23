@@ -139,7 +139,7 @@ Many OpenRouter models are preloaded, but you can add any others in your `openco
 
 > [!NOTE]
 >
-> The leading `~` is not a typo. Slugs like `~anthropic/claude-sonnet-latest` are OpenRouter [latest aliases](/docs/guides/routing/routers/latest-resolution.md) that always resolve to that lab's newest flagship model, so you keep getting the freshest version without editing your config. Pinned slugs such as `anthropic/claude-sonnet-4.5` work exactly the same way — browse them all at [openrouter.ai/models](https://openrouter.ai/models).
+> The leading `~` is not a typo. Slugs like `~anthropic/claude-sonnet-latest` are OpenRouter [latest aliases](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md) that always resolve to that lab's newest flagship model, so you keep getting the freshest version without editing your config. Pinned slugs such as `anthropic/claude-sonnet-4.5` work exactly the same way — browse them all at [openrouter.ai/models](https://openrouter.ai/models).
 
 Project config belongs in `opencode.json` at your project root; user-wide settings go in `~/.config/opencode/opencode.json`. Both formats also accept JSONC.
 
@@ -193,7 +193,7 @@ When using OpenRouter, you can control which upstream providers handle your requ
 }
 ```
 
-For a full breakdown of routing options, see the [Provider Routing docs](/docs/guides/routing/provider-selection.md).
+For a full breakdown of routing options, see the [Provider Routing docs](https://openrouter.ai/docs/guides/routing/provider-selection.md).
 
 ## Why Use OpenRouter with OpenCode?
 

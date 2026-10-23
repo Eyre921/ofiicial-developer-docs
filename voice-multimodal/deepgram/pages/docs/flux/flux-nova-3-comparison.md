@@ -29,13 +29,13 @@ It's important to understand the differences between [Flux](/docs/models-languag
 
 ## Language Support
 
-| Feature                     | Flux                                                                         | Nova-3                                                           |
-| --------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| English                     | ✅                                                                            | ✅                                                                |
-| Multilingual (10 languages) | ✅ `flux-general-multi` ([Language Prompting](/docs/flux/language-prompting)) | ✅ [See language support](/docs/models-languages-overview#nova-3) |
-| Monolingual languages       | 🚫                                                                           | ✅ [Full list](/docs/models-languages-overview#nova-3)            |
-| Language control            | `language_hint` parameter                                                    | `language` parameter                                             |
-| Code-switching              | ✅ Native with `flux-general-multi`                                           | ✅ With `language=multi`                                          |
+| Feature               | Flux                                                                                        | Nova-3                                                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| English               | ✅                                                                                           | ✅                                                                                                                          |
+| Multilingual          | ✅ `flux-general-multi` — 10 languages ([Language Prompting](/docs/flux/language-prompting)) | ✅ `language=multi` — 55 languages ([see language support](/docs/models-languages-overview#nova-3))                         |
+| Monolingual languages | 🚫                                                                                          | ✅ [Full list](/docs/models-languages-overview#nova-3)                                                                      |
+| Language control      | `language_hint` parameter                                                                   | `language` parameter; `language_hint` with `language=multi` ([Nova-3 Language Prompting](/docs/nova-3-language-prompting)) |
+| Code-switching        | ✅ Native with `flux-general-multi`                                                          | ✅ With `language=multi`                                                                                                    |
 
 ## Technical Details
 

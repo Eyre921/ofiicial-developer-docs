@@ -58,7 +58,7 @@ Call `withUIMessage` **once**, then chain `.agent({ ... })` instead of `chat.age
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, tool } from "ai";
+import { tool } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import type { MyChatUIMessage } from "./my-chat-types";
@@ -92,7 +92,7 @@ export const myChat = chat
         data: { status: "preparing" },
       });
     },
-    run: async ({ messages, tools, signal }) => {
+    run: async ({ messages, tools, signal, streamText }) => {
       // `tools` is myTools, typed, handed back on the payload
       return streamText({
         model: anthropic("claude-sonnet-4-5"),
@@ -158,7 +158,7 @@ export const myChat = chat
       // clientData is typed as { userId: string; model?: string }
       await initUser(clientData.userId);
     },
-    run: async ({ messages, clientData, signal }) => {
+    run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
         model: getModel(clientData.model),
         messages,
@@ -195,7 +195,7 @@ export const myChat = chat
   })
   .agent({
     id: "my-chat",
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -220,7 +220,7 @@ chat
       // Runs second — task-specific logic
       await createChatRecord(event.chatId);
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });

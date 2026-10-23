@@ -6,7 +6,7 @@
 ## (根目录)
 
 - `acceptable-verification-documents` — [Acceptable verification documents by country](pages/acceptable-verification-documents.md) · [原文](https://docs.stripe.com/acceptable-verification-documents.md)
-- `api` — [API Reference](pages/api.md) · [原文](https://docs.stripe.com/api.md)
+- `api` — [API reference](pages/api.md) · [原文](https://docs.stripe.com/api.md)
 - `billing` — [features](pages/billing.md) · [原文](https://docs.stripe.com/billing.md)
 - `changelog` — [Changelog](pages/changelog.md) · [原文](https://docs.stripe.com/changelog.md)
 - `connect` — [Platforms and marketplaces with Stripe Connect](pages/connect.md) · [原文](https://docs.stripe.com/connect.md)
@@ -78,7 +78,7 @@
 - `billing/customer` — [Customers](pages/billing/customer.md) · [原文](https://docs.stripe.com/billing/customer.md)
 - `billing/customer/tax-ids` — [Customer Tax IDs](pages/billing/customer/tax-ids.md) · [原文](https://docs.stripe.com/billing/customer/tax-ids.md)
 - `billing/entitlements` — [Entitlements](pages/billing/entitlements.md) · [原文](https://docs.stripe.com/billing/entitlements.md)
-- `billing/quickstart` — [Build a pre-built subscription page with Stripe Checkout](pages/billing/quickstart.md) · [原文](https://docs.stripe.com/billing/quickstart.md)
+- `billing/quickstart` — [Build a prebuilt subscription page with Stripe Checkout](pages/billing/quickstart.md) · [原文](https://docs.stripe.com/billing/quickstart.md)
 - `billing/revenue-recovery` — [Revenue recovery](pages/billing/revenue-recovery.md) · [原文](https://docs.stripe.com/billing/revenue-recovery.md)
 - `billing/subscriptions/billing-cycle` — [Set the subscription billing renewal date](pages/billing/subscriptions/billing-cycle.md) · [原文](https://docs.stripe.com/billing/subscriptions/billing-cycle.md)
 - `billing/subscriptions/cancel` — [Cancel subscriptions](pages/billing/subscriptions/cancel.md) · [原文](https://docs.stripe.com/billing/subscriptions/cancel.md)

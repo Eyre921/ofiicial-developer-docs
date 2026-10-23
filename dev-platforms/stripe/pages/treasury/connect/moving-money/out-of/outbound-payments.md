@@ -6,14 +6,15 @@ path: treasury/connect/moving-money/out-of/outbound-payments
 
 # Send money to recipients and financial accounts you don't own
 
-Learn how to create outbound payments to move money out of financial accounts to third parties.
+Create outbound payments to move money in platform or connected account financial accounts to third parties.
 
 [OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/object.md?api-version=preview) objects represent push-based transfers from:
 
-- A platform’s financial accounts to a financial account owned by connected accounts.
-- Financial accounts owned by one connected account to a financial account owned by another connected account under the same platform.
-- Financial accounts of a connected account to one of the platform’s financial accounts.
-- Financial accounts of a connected accounts any third party recipient.
+- A platform’s financial account to a financial account owned by its connected accounts.
+- A platform’s financial account to any thrird-party recipient’s bank account.
+- A connected account’s financial account to a financial account owned by another connected account under the same platform.
+- A connected account’s financial account to its platform’s financial account.
+- A connected account’s financial account to any third-party recipient’s bank account.
 
 > To move funds between financial accounts and other accounts owned by the same entity, use [OutboundTransfers](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md) instead.
 
@@ -24,18 +25,19 @@ You can create the following types of `OutboundPayment`:
 | From a financial account to: | Payout method | Recipient capability | Expected arrival time |
 | --- | --- | --- | --- |
 | Another financial account under a different account | — | — | Immediate |
-| An external UK recipient (third party payout) | Faster Payments (FPS) | `bank_accounts.local` | Immediate |
-| An external recipient (third party payout) with FX | Cross-border | Varies by country | Typically 1-7 days (varies by country) |
+| An external UK recipient (third-party payout) | Faster Payments (FPS) | `bank_accounts.local` | Immediate |
+| An external FX recipient (third-party payout) | Cross-border | Varies by country | Typically 1-7 days (varies by country) |
 
 #### Source currency - EUR [Private preview]
-Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+Available in: AT, BE, BG, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
 You can create the following types of `OutboundPayment`:
 
 | From the connected account’s financial account to: | Payout method | Recipient capability | Expected arrival time |
 | --- | --- | --- | --- |
 | Another financial account under a different account | — | — | Immediate |
-| An external Eurozone recipient (third party payout) | SEPA | `bank_accounts.local` | Typically 1 business day |
-| An external recipient (third party payout) with FX | Cross-border | Varies by country | Typically 1-7 days (varies by country) |
+| An external Eurozone recipient (third-party payout) | SEPA | `bank_accounts.local` | Typically 1 business day |
+| SEPA-instant | `bank_accounts.local` | Immediate |
+| An external FX recipient (third-party payout) | Cross-border | Varies by country | Typically 1-7 days (varies by country) |
 
 #### Source currency - USD [Private preview]
 Available in: US
@@ -44,10 +46,10 @@ You can create the following types of `OutboundPayment`:
 | From a financial account to: | Payout method | Recipient capability | Expected arrival time |
 | --- | --- | --- | --- |
 | Another financial account under a different account | — | — | Immediate |
-| An external US recipient (third party payout) | Automated Clearing House (ACH) | `bank_accounts.local` | Typically 2-3 business days |
+| An external US recipient (third-party payout) | Automated Clearing House (ACH) | `bank_accounts.local` | Typically 2-3 business days |
 | Wire | `bank_accounts.wire` | Typically 1 business day |
-| Instant | `card` | Immediate |
-| An external recipient (third party payout) with FX | Cross-border | Varies by country | Typically 1-7 days (varies by country) |
+| Push-to-card (Private preview) | `card` | Immediate |
+| Real-time payment (RTP) (Private preview) | `bank_accounts.instant` | Within a few seconds to a few minutes |
 
 ## Move money from a platform to connected account
 
@@ -77,11 +79,11 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 
 > When moving funds from your platform’s financial account, don’t include the `Stripe-Context` header. The platform financial account is automatically used as the source of funds.
 
-## Move money between connected accounts’ financial accounts
+## Move money between separately owned financial accounts
 
 Use [Outbound Payments](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) to create an outbound payment:
 
-This example creates an outbound payment between two financial accounts of different connected accounts (under your platform). Set the `recipient_notification.setting` to `none` so that a Stripe notification isn’t sent to the recipient.
+This example creates an outbound payment between financial accounts belonging to different connected accounts controlled by your platform. Set the `recipient_notification.setting` to `none` so that a Stripe notification isn’t sent to the recipient.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
@@ -109,15 +111,17 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   }'
 ```
 
-> To move funds from your platform’s financial account to a connected account’s financial account, don’t specify the `Stripe-Context` header.
-
 Use a similar request to move funds from your connected account’s financial account to your platform’s financial account.
 
-## Create an OutboundPayment to a third party recipient
+## Create an OutboundPayment to a third-party recipient
 
-To pay a third party recipient, first create and onboard a [recipient-configured connected account](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) to generate an account ID and a payout method ID that you need for the transaction.
+To pay a third-party recipient, first create and onboard a [recipient-configured connected account](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) to generate an account ID and a payout method ID that you need for the transaction.
 
 Then [create an outbound payment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview).
+
+#### General
+
+The following outbound payment example is for a standard payment to a third-party recipient in the same country and currency. The currency automatically uses the corresponding network, such as ACH for USD, FPS for GBP, or SEPA for EUR.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
@@ -135,14 +139,141 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
         "currency": "usd"
     },
     "amount": {
-        "value": 30000,
+        "value": 10000,
         "currency": "usd"
     },
-    "description": "Streamer earnings"
+    "description": "Vendor payment"
   }'
 ```
 
-## Send an OutboundPayment cross-border or to a recipient in a different currency
+For payroll payments, set `"purpose": "payroll"` to comply with NACHA requirements.
+
+#### USD — Wire
+Available in: US
+The following sample sets `delivery_options` to `bank_account.wire` to request a USD wire payment.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "currency": "usd"
+    },
+    "amount": {
+        "value": 50000,
+        "currency": "usd"
+    },
+    "delivery_options": {
+        "bank_account": "wire"
+    },
+    "description": "Wire transfer"
+  }'
+```
+
+Stripe supports both FedWire and CHIPS and automatically routes to the most cost-effective and efficient network. Wire payments aren’t reversible.
+
+#### USD — Push-to-card [Private preview]
+Available in: US
+Push-to-card sends funds to a recipient’s eligible US debit card through Visa Direct or Mastercard Send.
+
+1. Request the `cards` capability on the recipient account:
+
+   ```curl
+   curl -X POST https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
+     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+     -H "Stripe-Version: 2026-09-30.preview" \
+     --json '{
+       "configuration": {
+           "recipient": {
+               "capabilities": {
+                   "cards": {
+                       "requested": true
+                   }
+               }
+           }
+       }
+     }'
+   ```
+
+2. Create the payment using the card payout method:
+
+   ```curl
+   curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
+     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+     -H "Stripe-Version: 2026-09-30.preview" \
+     -H "Stripe-Context: {{CONTEXT_ID}}" \
+     --json '{
+       "from": {
+           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+           "currency": "usd"
+       },
+       "to": {
+           "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+           "payout_method": "{{CARD_PAYOUT_METHOD_ID}}",
+           "currency": "usd"
+       },
+       "amount": {
+           "value": 10000,
+           "currency": "usd"
+       },
+       "description": "Instant payout to debit card"
+     }'
+   ```
+
+Push-to-card payments aren’t reversible. The payout method must be an outbound-eligible US-issued debit card.
+
+#### US RTP [Private preview]
+Available in: US
+Contact [treasury-support@stripe.com](mailto:treasury-support@stripe.com) to request access.
+
+Real-Time Payments (RTP) sends funds instantly through The Clearing House network and is available for domestic US bank accounts only. Not all banks support RTP. Check eligibility by inspecting the recipient’s payout method for `"instant"` in `available_payout_speeds` before sending.
+
+```curl
+curl https://api.stripe.com/v2/money_management/payout_methods/{{RECIPIENTPAYOUTMETHODID_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+If `available_payout_speeds` includes `"instant"`, the bank account supports RTP. Create the payment with `delivery_options.speed: "instant"`:
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "currency": "usd"
+    },
+    "amount": {
+        "value": 10000,
+        "currency": "usd"
+    },
+    "delivery_options": {
+        "speed": "instant"
+    },
+    "description": "Real-time payment via RTP"
+  }'
+```
+
+RTP payments aren’t reversible.
+
+## Send an OutboundPayment cross-border or to a recipient in a different country or currency
 
 Stripe supports sending money in local currency to recipients in many different countries. Before making a cross-border outbound payment, review:
 
@@ -240,11 +371,11 @@ The response contains the estimated fees, currency exchange rate, and payout amo
 }
 ```
 
-When creating the payout with [OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview), provide the quote to acknowledge the fees associated with the payout.
+Provide the quote in the payout to acknowledge the associated fees.
 
-#### General
+#### GBP to EUR
 
-At this point, you have all the necessary pieces to pay the recipient from the connected account’s financial account using the [Create an OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) endpoint.
+Create an [OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) that sends funds stored in one currency to a recipient in a different currency. The example sends 300 GBP, converted to EUR.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
@@ -270,8 +401,8 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 ```
 
 #### Intra-EU [Private preview]
-Available in: AT, BE, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
-If the payment is intra-EU, we need to use [Recipient Verifications](https://docs.stripe.com/api/v2/recipient-verifications.md?api-version=preview) to perform a Verification of Payee of the recipient. This verification ensures that the recipient account credentials match the bank account beneficiary before making the payment.
+Available in: AT, BE, BG, HR, CY, EE, FI, FR, DE, GR, IE, IT, LV, LT, LU, MT, NL, PT, SK, SI, ES
+To make an intra-EU payout, you must use [Recipient Verifications](https://docs.stripe.com/api/v2/recipient-verifications.md?api-version=preview) to perform a Verification of Payee of the recipient, even though the currency is the same. This verification ensures that the recipient account credentials match the bank account beneficiary before making the payment.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications \
@@ -312,7 +443,7 @@ curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
-At this point, you have all the necessary pieces to pay the recipient from the connected account’s financial account using the [Create an OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) endpoint.
+At this point, you can [create an OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview).
 
 See [Global payments testing](https://docs.stripe.com/global-payouts/testing.md#test-bank-account-numbers) for test payment accounts you can use to simulate successful and failed payments.
 
@@ -339,167 +470,6 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
     "outbound_payment_quote": "{{OUTBOUNDPAYMENTQUOTEID_ID}}"
   }'
 ```
-
-## Send an OutboundPayment in USD (Private preview)
-Available in: US
-You can send US outbound payments using the following methods:
-
-| Method | Capability | Speed | Reversible |
-| --- | --- | --- | --- |
-| ACH (Standard) | `bank_accounts.local` | Typically 2-3 business days | Yes |
-| Wire | `bank_accounts.wire` | Same business day | No |
-| RTP (Real-Time Payments) (Private preview) | `bank_accounts.instant` | Seconds to minutes | No |
-| Push-to-card (Private preview) | `cards` | Immediate | No |
-
-#### USD — ACH
-
-```curl
-curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
-  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
-  --json '{
-    "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "usd"
-    },
-    "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
-        "currency": "usd"
-    },
-    "amount": {
-        "value": 10000,
-        "currency": "usd"
-    },
-    "description": "Vendor payment via ACH"
-  }'
-```
-
-For payroll payments, set `"purpose": "payroll"` to comply with NACHA requirements.
-
-#### USD — Wire
-
-```curl
-curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
-  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
-  --json '{
-    "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "usd"
-    },
-    "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
-        "currency": "usd"
-    },
-    "amount": {
-        "value": 50000,
-        "currency": "usd"
-    },
-    "delivery_options": {
-        "bank_account": "wire"
-    },
-    "description": "Wire transfer"
-  }'
-```
-
-Stripe supports both FedWire and CHIPS and automatically routes to the most cost-effective and efficient network. Wire payments aren’t reversible.
-
-#### USD — RTP [Private preview]
-
-Contact [treasury-support@stripe.com](mailto:treasury-support@stripe.com) to request access.
-
-Real-Time Payments (RTP) sends funds instantly through The Clearing House network and is available for domestic US bank accounts only. Not all banks support RTP—check eligibility by inspecting the recipient’s payout method for `"instant"` in `available_payout_speeds` before sending:
-
-```curl
-curl https://api.stripe.com/v2/money_management/payout_methods/{{RECIPIENTPAYOUTMETHODID_ID}} \
-  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
-```
-
-If `"instant"` is present in `available_payout_speeds`, the bank account supports RTP. Create the payment with `delivery_options.speed: "instant"`:
-
-```curl
-curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
-  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
-  --json '{
-    "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-        "currency": "usd"
-    },
-    "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
-        "currency": "usd"
-    },
-    "amount": {
-        "value": 10000,
-        "currency": "usd"
-    },
-    "delivery_options": {
-        "speed": "instant"
-    },
-    "description": "Real-time payment via RTP"
-  }'
-```
-
-RTP payments aren’t reversible.
-
-#### USD — Push-to-card [Private preview]
-
-Push-to-card sends funds to a recipient’s eligible US debit card through Visa Direct or Mastercard Send.
-
-1. Request the `cards` capability on the recipient account:
-
-   ```curl
-   curl -X POST https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
-     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-09-30.preview" \
-     --json '{
-       "configuration": {
-           "recipient": {
-               "capabilities": {
-                   "cards": {
-                       "requested": true
-                   }
-               }
-           }
-       }
-     }'
-   ```
-
-2. Create the payment using the card payout method:
-
-   ```curl
-   curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
-     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-09-30.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}" \
-     --json '{
-       "from": {
-           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
-           "currency": "usd"
-       },
-       "to": {
-           "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-           "payout_method": "{{CARD_PAYOUT_METHOD_ID}}",
-           "currency": "usd"
-       },
-       "amount": {
-           "value": 10000,
-           "currency": "usd"
-       },
-       "description": "Instant payout to debit card"
-     }'
-   ```
-
-Push-to-card payments aren’t reversible. The payout method must be an outbound-eligible US-issued debit card.
 
 ## See also
 

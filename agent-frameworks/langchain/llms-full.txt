@@ -58952,6 +58952,158 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/jav
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
+# Build a custom frontend for a Managed Deep Agent
+Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-custom-frontend
+
+Call a Managed Deep Agents deployment from your own browser or server application instead of reaching the agent through a channel or LangSmith Studio.
+
+A custom frontend is any application you write that calls a deployment directly instead of reaching the agent through a [channel](/langsmith/javascript/managed-deep-agents-channels) or [LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development#start-local-studio). Use one when the agent belongs inside a product surface you control, such as a support console, an internal dashboard, or a customer-facing chat page.
+
+Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent-server-overview). A frontend talks to the same threads, runs, and streaming endpoints that every Agent Server client uses.
+
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+
+## Choose an identity provider
+
+Every request to a deployment names a caller, and the frontend supplies that name. Which [identity provider](/langsmith/javascript/managed-deep-agents-identity) fits depends on where the frontend code runs, not on the language it is written in.
+
+| Where the frontend calls the deployment from | Identity provider |
+| - | - |
+| The user's browser | An external auth provider. The browser sends an access token and the deployment verifies it. See [Supabase](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-supabase). |
+| Your own server, which already authenticates the user | [Your own backend](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend). Your server asserts the user ID behind a shared ingress secret. |
+| Your own server, with no end-user accounts of its own | The [LangSmith API key](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) default. The key itself is the caller. |
+
+Either server row fits a server-rendered application in any language. Streamlit, Gradio, and Dash run their code on the server, as do a Next.js route handler and an Express proxy. A frontend pointed at [`mda dev`](/langsmith/javascript/managed-deep-agents-local-development#understand-local-behavior) works before you configure a provider, because the local server supplies a test user.
+
+> [!WARNING]
+>
+> A LangSmith API key reaches every resource in the workspace, not only this deployment, so it must never ship in browser JavaScript. Use an external auth provider when the browser calls the deployment directly, and backend identity when your own server calls it on the user's behalf.
+
+## Connect to the deployment
+
+A frontend needs two values.
+
+**Deployment API URL.** `mda deploy` prints the LangSmith deployment dashboard URL, not the API URL. Open that dashboard, then copy the **API URL** from the deployment details view. The local server started by [`mda dev`](/langsmith/javascript/managed-deep-agents-local-development) serves the same routes at the URL the CLI prints.
+
+**Assistant ID.** Clients pass the agent's `name` from the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition#parameters). Managed Deep Agents also uses that name as the graph ID:
+
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
+
+export const agent = defineDeepAgent({
+  name: "research-assistant", // [!code highlight]
+  model: "openai:gpt-5.5",
+});
+```
+
+Clients address an agent named `research-assistant` with that same string. Renaming the agent changes the value clients send, so treat the name as part of the deployment's public interface.
+
+## Build a web frontend
+
+The [LangChain frontend SDKs](/oss/javascript/langchain/frontend/overview) connect a browser application to an Agent Server deployment. `useStream` exposes messages, tool calls, interrupts, and thread state as reactive values:
+
+| Framework | Package | Entry point |
+| - | - | - |
+| React | `@langchain/react` | `useStream` |
+| Vue | `@langchain/vue` | `useStream` |
+| Svelte | `@langchain/svelte` | `useStream` |
+| Angular | `@langchain/angular` | `injectStream` |
+
+The frontend runs in the browser, so these examples are TypeScript even when the agent is written in Python.
+
+Under an external auth provider, the browser sends the access token from the signed-in session. That token rotates, so re-read it whenever the session changes rather than capturing it once at mount:
+
+```ts useAuthHeaders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useEffect, useState } from "react";
+
+import { supabase } from "./supabase";
+
+export function useAuthHeaders() {
+  const [headers, setHeaders] = useState<Record<string, string>>();
+
+  useEffect(() => {
+    const refresh = async () => {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      setHeaders(token ? { Authorization: `Bearer ${token}` } : undefined);
+    };
+
+    void refresh();
+    const { data } = supabase.auth.onAuthStateChange(() => void refresh()); // [!code highlight]
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  return headers;
+}
+```
+
+The highlighted subscription fires on sign-in, sign-out, and token refresh. Without it the hook holds the token captured at mount, and requests start failing with 401 once that token expires.
+
+Point the stream at the deployment API URL, the agent name, and those headers:
+
+```tsx Chat.tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { useState } from "react";
+
+import { useAuthHeaders } from "./useAuthHeaders";
+
+export function Chat() {
+  const [input, setInput] = useState("");
+  const headers = useAuthHeaders();
+  const stream = useStream({
+    apiUrl: import.meta.env.VITE_DEPLOYMENT_API_URL,
+    assistantId: "research-assistant",
+    defaultHeaders: headers,
+  });
+
+  return (
+    <main>
+      {stream.messages.map((message) => (
+        <p key={message.id}>{message.text}</p>
+      ))}
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          stream.submit({ messages: [{ type: "human", content: input }] });
+          setInput("");
+        }}
+      >
+        <input value={input} onChange={(event) => setInput(event.target.value)} />
+        <button type="submit" disabled={stream.isLoading}>
+          Send
+        </button>
+      </form>
+    </main>
+  );
+}
+```
+
+Under backend identity the browser never reaches the deployment. Point `apiUrl` at your own server and forward the Agent Server routes from there, stamping `x-mda-ingress-secret` and the user ID your auth layer resolved on each upstream request. For the headers and the shared secret, see [Configure identity with your own backend](/langsmith/javascript/managed-deep-agents-identity#configure-identity-with-your-own-backend).
+
+The same frontend patterns work against a Managed Deep Agents deployment. See [tool-call rendering](/oss/javascript/langchain/frontend/tool-calling), [generative UI](/oss/javascript/langchain/frontend/generative-ui-overview), [human-in-the-loop approval](/oss/javascript/langchain/frontend/human-in-the-loop), [queued submissions](/oss/javascript/langchain/frontend/message-queues), and [durable rejoin](/oss/javascript/langchain/frontend/join-rejoin).
+
+### Handle authorization interrupts
+
+When the agent needs a [user-owned connection](/langsmith/javascript/managed-deep-agents-connections) the caller has not granted, the run pauses and `stream.interrupt` carries a credential gate payload. A browser frontend renders the consent links and resumes with `stream.respond`. For the payload shape and a worked example, see [Handle the authorization interrupt](/langsmith/javascript/managed-deep-agents-connections#handle-the-authorization-interrupt).
+
+## See also
+
+* [Identity](/langsmith/javascript/managed-deep-agents-identity): configure how callers authenticate to the deployment.
+* [Frontend overview](/oss/javascript/langchain/frontend/overview): message rendering, tool calls, interrupts, and generative UI patterns.
+* [Connections](/langsmith/javascript/managed-deep-agents-connections): handle the credential authorization interrupt in your UI.
+* [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint): expose the agent to MCP clients instead of calling the API.
+* [Channels](/langsmith/javascript/managed-deep-agents-channels): reach the agent from Slack or your own HTTP service.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-custom-frontend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
 # Deploy a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-deploy
 
@@ -87345,6 +87497,262 @@ For more information, see [Develop locally with LangSmith Studio](/langsmith/pyt
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
+# Build a custom frontend for a Managed Deep Agent
+Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-custom-frontend
+
+Call a Managed Deep Agents deployment from your own browser or server application instead of reaching the agent through a channel or LangSmith Studio.
+
+A custom frontend is any application you write that calls a deployment directly instead of reaching the agent through a [channel](/langsmith/python/managed-deep-agents-channels) or [LangSmith Studio](/langsmith/python/managed-deep-agents-local-development#start-local-studio). Use one when the agent belongs inside a product surface you control, such as a support console, an internal dashboard, or a customer-facing chat page.
+
+Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent-server-overview). A frontend talks to the same threads, runs, and streaming endpoints that every Agent Server client uses.
+
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+
+## Choose an identity provider
+
+Every request to a deployment names a caller, and the frontend supplies that name. Which [identity provider](/langsmith/python/managed-deep-agents-identity) fits depends on where the frontend code runs, not on the language it is written in.
+
+| Where the frontend calls the deployment from | Identity provider |
+| - | - |
+| The user's browser | An external auth provider. The browser sends an access token and the deployment verifies it. See [Supabase](/langsmith/python/managed-deep-agents-identity#configure-identity-with-supabase). |
+| Your own server, which already authenticates the user | [Your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend). Your server asserts the user ID behind a shared ingress secret. |
+| Your own server, with no end-user accounts of its own | The [LangSmith API key](/langsmith/python/managed-deep-agents-identity#configure-identity-with-a-langsmith-api-key) default. The key itself is the caller. |
+
+Either server row fits a server-rendered application in any language. Streamlit, Gradio, and Dash run their code on the server, as do a Next.js route handler and an Express proxy. A frontend pointed at [`mda dev`](/langsmith/python/managed-deep-agents-local-development#understand-local-behavior) works before you configure a provider, because the local server supplies a test user.
+
+> [!WARNING]
+>
+> A LangSmith API key reaches every resource in the workspace, not only this deployment, so it must never ship in browser JavaScript. Use an external auth provider when the browser calls the deployment directly, and backend identity when your own server calls it on the user's behalf.
+
+## Connect to the deployment
+
+A frontend needs two values.
+
+**Deployment API URL.** `mda deploy` prints the LangSmith deployment dashboard URL, not the API URL. Open that dashboard, then copy the **API URL** from the deployment details view. The local server started by [`mda dev`](/langsmith/python/managed-deep-agents-local-development) serves the same routes at the URL the CLI prints.
+
+**Assistant ID.** Clients pass the agent's `name` from the [agent definition](/langsmith/python/managed-deep-agents-agent-definition#parameters). Managed Deep Agents also uses that name as the graph ID:
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
+
+agent = define_deep_agent(
+    name="research-assistant",  # [!code highlight]
+    model="openai:gpt-5.5",
+)
+```
+
+Clients address an agent named `research-assistant` with that same string. Renaming the agent changes the value clients send, so treat the name as part of the deployment's public interface.
+
+## Build a web frontend
+
+The [LangChain frontend SDKs](/oss/python/langchain/frontend/overview) connect a browser application to an Agent Server deployment. `useStream` exposes messages, tool calls, interrupts, and thread state as reactive values:
+
+| Framework | Package | Entry point |
+| - | - | - |
+| React | `@langchain/react` | `useStream` |
+| Vue | `@langchain/vue` | `useStream` |
+| Svelte | `@langchain/svelte` | `useStream` |
+| Angular | `@langchain/angular` | `injectStream` |
+
+The frontend runs in the browser, so these examples are TypeScript even when the agent is written in Python.
+
+Under an external auth provider, the browser sends the access token from the signed-in session. That token rotates, so re-read it whenever the session changes rather than capturing it once at mount:
+
+```ts useAuthHeaders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useEffect, useState } from "react";
+
+import { supabase } from "./supabase";
+
+export function useAuthHeaders() {
+  const [headers, setHeaders] = useState<Record<string, string>>();
+
+  useEffect(() => {
+    const refresh = async () => {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      setHeaders(token ? { Authorization: `Bearer ${token}` } : undefined);
+    };
+
+    void refresh();
+    const { data } = supabase.auth.onAuthStateChange(() => void refresh()); // [!code highlight]
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  return headers;
+}
+```
+
+The highlighted subscription fires on sign-in, sign-out, and token refresh. Without it the hook holds the token captured at mount, and requests start failing with 401 once that token expires.
+
+Point the stream at the deployment API URL, the agent name, and those headers:
+
+```tsx Chat.tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { useState } from "react";
+
+import { useAuthHeaders } from "./useAuthHeaders";
+
+export function Chat() {
+  const [input, setInput] = useState("");
+  const headers = useAuthHeaders();
+  const stream = useStream({
+    apiUrl: import.meta.env.VITE_DEPLOYMENT_API_URL,
+    assistantId: "research-assistant",
+    defaultHeaders: headers,
+  });
+
+  return (
+    <main>
+      {stream.messages.map((message) => (
+        <p key={message.id}>{message.text}</p>
+      ))}
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          stream.submit({ messages: [{ type: "human", content: input }] });
+          setInput("");
+        }}
+      >
+        <input value={input} onChange={(event) => setInput(event.target.value)} />
+        <button type="submit" disabled={stream.isLoading}>
+          Send
+        </button>
+      </form>
+    </main>
+  );
+}
+```
+
+Under backend identity the browser never reaches the deployment. Point `apiUrl` at your own server and forward the Agent Server routes from there, stamping `x-mda-ingress-secret` and the user ID your auth layer resolved on each upstream request. For the headers and the shared secret, see [Configure identity with your own backend](/langsmith/python/managed-deep-agents-identity#configure-identity-with-your-own-backend).
+
+The same frontend patterns work against a Managed Deep Agents deployment. See [tool-call rendering](/oss/python/langchain/frontend/tool-calling), [generative UI](/oss/python/langchain/frontend/generative-ui-overview), [human-in-the-loop approval](/oss/python/langchain/frontend/human-in-the-loop), [queued submissions](/oss/python/langchain/frontend/message-queues), and [durable rejoin](/oss/python/langchain/frontend/join-rejoin).
+
+### Handle authorization interrupts
+
+When the agent needs a [user-owned connection](/langsmith/python/managed-deep-agents-connections) the caller has not granted, the run pauses and `stream.interrupt` carries a credential gate payload. A browser frontend renders the consent links and resumes with `stream.respond`. For the payload shape and a worked example, see [Handle the authorization interrupt](/langsmith/python/managed-deep-agents-connections#handle-the-authorization-interrupt).
+
+## Build a Python frontend
+
+Streamlit, Gradio, and Dash render on the server, so no credential reaches the browser and the API-key default works without extra setup. All three use the same [LangGraph SDK](https://reference.langchain.com/python/langgraph-sdk) client, so the connection code below applies to any of them.
+
+Install the SDK alongside your application framework:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langgraph-sdk streamlit
+```
+
+Create a client, then stream a run against a thread:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_sync_client
+
+client = get_sync_client(
+    url=DEPLOYMENT_API_URL,
+    api_key=LANGSMITH_API_KEY,
+)
+
+thread = client.threads.create()
+
+for chunk in client.runs.stream(
+    thread["thread_id"],
+    "research-assistant",
+    input={"messages": [{"role": "user", "content": "Summarize this week's incidents."}]},
+    stream_mode="messages",
+):
+    ...
+```
+
+Three details govern how that loop behaves:
+
+* **`api_key`**: Sets the `x-api-key` header. Passing `headers={"x-api-key": ...}` instead raises `ValueError: Cannot set reserved header 'x-api-key'`.
+* **Environment fallback**: When `api_key` is omitted, the client tries `LANGGRAPH_API_KEY`, then `LANGSMITH_API_KEY`, then `LANGCHAIN_API_KEY`. For Supabase or backend identity, pass `api_key=None` explicitly and put the token in `headers`. Otherwise a stray environment variable attaches a second credential.
+* **`messages/partial`**: Carries the whole message so far, not a delta. Replace the rendered text on each event rather than appending, or the output repeats itself.
+
+### Stream into a Streamlit chat
+
+This application keeps one thread per browser session and rewrites the assistant bubble as each event arrives:
+
+```python app.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+import streamlit as st
+from langgraph_sdk import get_sync_client
+
+ASSISTANT_ID = "research-assistant"
+
+
+@st.cache_resource
+def get_agent_client():
+    return get_sync_client(
+        url=os.environ["DEPLOYMENT_API_URL"],
+        api_key=os.environ["LANGSMITH_API_KEY"],
+    )
+
+
+def text_of(message):
+    return "".join(
+        block.get("text", "")
+        for block in message.get("content", [])
+        if block.get("type") == "text"
+    )
+
+
+client = get_agent_client()
+
+if "thread_id" not in st.session_state:
+    st.session_state.thread_id = client.threads.create()["thread_id"]
+    st.session_state.history = []
+
+for role, text in st.session_state.history:
+    st.chat_message(role).markdown(text)
+
+if prompt := st.chat_input("Message the agent"):
+    st.session_state.history.append(("user", prompt))
+    st.chat_message("user").markdown(prompt)
+
+    with st.chat_message("assistant"):
+        placeholder = st.empty()
+        answer = ""
+        for chunk in client.runs.stream(
+            st.session_state.thread_id,
+            ASSISTANT_ID,
+            input={"messages": [{"role": "user", "content": prompt}]},
+            stream_mode="messages",
+        ):
+            if chunk.event != "messages/partial":
+                continue
+            for message in chunk.data:
+                if message.get("type") == "ai":
+                    answer = text_of(message)
+                    placeholder.markdown(answer)  # [!code highlight]
+
+    st.session_state.history.append(("assistant", answer))
+```
+
+The highlighted line replaces the bubble contents on every event. Appending there produces duplicated text, because each event repeats the message from the beginning.
+
+`text_of` reads content blocks rather than a plain string. Agent messages arrive as a list of typed blocks, so a frontend that expects `message["content"]` to be text renders nothing. The web SDKs deserialize each event into a message object that exposes a `text` accessor, which is why the React example above reads `message.text`. The LangGraph SDK yields plain dictionaries, so a Python frontend extracts the text itself.
+
+Gradio and Dash use the same client and the same loop. Substitute their streaming primitive for the Streamlit placeholder: a generator function for `gr.ChatInterface`, or a `dcc.Interval` callback for Dash.
+
+## See also
+
+* [Identity](/langsmith/python/managed-deep-agents-identity): configure how callers authenticate to the deployment.
+* [Frontend overview](/oss/python/langchain/frontend/overview): message rendering, tool calls, interrupts, and generative UI patterns.
+* [Connections](/langsmith/python/managed-deep-agents-connections): handle the credential authorization interrupt in your UI.
+* [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint): expose the agent to MCP clients instead of calling the API.
+* [Channels](/langsmith/python/managed-deep-agents-channels): reach the agent from Slack or your own HTTP service.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-custom-frontend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
 # Deploy a Managed Deep Agent
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-deploy
 
@@ -107696,7 +108104,7 @@ By default, LangSmith Self-Hosted supports the `Authorization Code` flow with `C
   * Upgrade a `basic` auth installation by removing the [`basic` auth configuration parameters](/langsmith/self-host-basic-auth#configuration) and adding the [OAuth with client secret configuration parameters](#configuration). Users may then log in via OAuth **only**. To maintain access post-upgrade, **you must have access to log in via OAuth using an email address that previously logged in via basic auth.**
 * LangSmith does **not** support:
   * Moving from SSO to `basic` auth mode in self-hosted.
-  * Moving from OAuth Mode with client secret to OAuth mode without a client secret and vice versa.
+  * Moving from OAuth with client secret to OAuth with PKCE. To move from PKCE to client secret, see [Migrate from PKCE to client secret](#migrate-from-pkce-to-client-secret).
   * Having both `basic` auth and OAuth at the same time. Ensure you disable the `basic` auth configuration when enabling OAuth.
 
 ## Prerequisites
@@ -108137,7 +108545,40 @@ We recommend running with a [`Client Secret`](#provider-setup). However, if your
 
 > [!WARNING]
 >
-> The PKCE workflow is **deprecated as of v16** and will be **fully removed in v17**. A migration path from PKCE to OAuth with client secret will be provided. We recommend migrating to the [client secret flow](#provider-setup) as soon as possible.
+> The PKCE workflow is **deprecated as of v16** and is scheduled for removal in a future release. [Migrate to the client secret flow](#migrate-from-pkce-to-client-secret) as soon as possible.
+
+### Migrate from PKCE to client secret
+
+You can switch an installation that uses PKCE to OAuth with client secret on its current chart version. Users keep their accounts, organization and workspace memberships, and API keys, as long as they sign in with the same email address.
+
+To migrate:
+
+1. Upgrade to Helm chart version 0.17.23 (LangSmith 0.17.51) or later. Earlier versions can lock out users whose IdP `sub` claim is their email address.
+
+2. In your IdP, configure your existing application as a confidential (web) client:
+   * Create a client secret.
+   * Add `https://<host>/api/v1/oauth/custom-oidc/callback` as a redirect URI. The client secret flow requires `https`.
+
+3. Update your `values.yaml`. Keep the same `oauthClientId` and `oauthIssuerUrl`, set `authType: mixed`, and add the client secret and `hostname`:
+
+   ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   config:
+     authType: mixed
+     hostname: https://langsmith.example.com
+     oauth:
+       enabled: true
+       oauthClientId: <YOUR CLIENT ID>
+       oauthClientSecret: <YOUR CLIENT SECRET>
+       oauthIssuerUrl: <YOUR DISCOVERY URL>
+   ```
+
+4. Run `helm upgrade` **without changing the chart version**. Users must sign in again.
+
+5. Confirm users can sign in, then upgrade LangSmith as a separate `helm upgrade`.
+
+> [!NOTE]
+>
+> Switch to client secret and upgrade the chart version in separate `helm upgrade` runs. Helm runs the upgrade jobs before it applies the new configuration, so a combined run can fail.
 
 ### Requirements
 
@@ -157053,7 +157494,7 @@ The full webhook payload contains the following fields:
 | `run_id` | `string` (UUID) | Unique identifier for the run. |
 | `thread_id` | `string` (UUID) | Identifier for the thread the run belongs to. |
 | `assistant_id` | `string` | Identifier for the assistant that executed the run. |
-| `status` | `string` | Final status of the run (e.g., `"success"`, `"error"`). |
+| `status` | `string` | Final status of the run: `"success"`, `"error"`, `"timeout"`, `"interrupted"`, or `"rollback"`. See [Status values](#status-values) below. |
 | `created_at` | `string` (datetime) | Timestamp when the run was created. |
 | `updated_at` | `string` (datetime) | Timestamp when the run was last updated. |
 | `run_started_at` | `string` (datetime) | Timestamp when the run began executing. |
@@ -157063,7 +157504,7 @@ The full webhook payload contains the following fields:
 | `kwargs` | `JSON object` | Run input, configuration, and other invocation parameters. |
 | `values` | `JSON object` | The state values from the latest checkpoint of the thread. Only present for stateful runs. |
 | `multitask_strategy` | `string` | The multitask strategy used for the run. |
-| `error` | `JSON object \| null` | Present only if the run failed. Contains `error` (error type) and `message` (detail) fields. |
+| `error` | `JSON object \| null` | Present only if the run ended with an exception (any status other than `"success"`). Contains `error` (error type) and `message` (detail) fields. |
 
 Example payload:
 
@@ -157095,7 +157536,7 @@ Example payload:
 }
 ```
 
-When a run fails, the `error` field contains details about the failure:
+When a run times out, the `status` field is `"timeout"` and the `error` field contains details about the failure:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -157105,6 +157546,22 @@ When a run fails, the `error` field contains details about the failure:
   }
 }
 ```
+
+## Status values
+
+The `status` field takes one of five values:
+
+| Value | When it is sent |
+| - | - |
+| `"success"` | The run completed normally. Also sent when a run pauses at an [`interrupt()`](https://reference.langchain.com/python/langgraph/types/interrupt) call waiting for human input. The pending interrupt is not visible in the payload, so read the thread state to detect it. |
+| `"error"` | The run raised an unhandled exception. The `error` field in the payload contains the error type and message. |
+| `"timeout"` | The run exceeded the background job timeout, set by the `BG_JOB_TIMEOUT_SECS` environment variable (default 86400 seconds). |
+| `"interrupted"` | The run was cancelled while executing, either by a `multitask_strategy: "interrupt"` policy that preempted it for a newer run, or by a `runs.cancel` call with the default `interrupt` action. |
+| `"rollback"` | The run was cancelled while executing and its checkpoints were deleted, either by a `multitask_strategy: "rollback"` policy or by a `runs.cancel` call with `action="rollback"`. The `values` field is `null`. |
+
+A run that is cancelled while still pending never starts executing, so the server sends no webhook for it.
+
+A single thread can receive more than one webhook call. For example, if a new run preempts an in-flight run, the server sends an `"interrupted"` webhook for the preempted run and a separate webhook for the new run when it finishes.
 
 ## Secure webhooks
 
@@ -157194,8 +157651,24 @@ Available options:
 | `allowed_domains` | Hostname allowlist. Supports wildcards for subdomains (e.g., `*.mycompany.com`). |
 | `require_https` | Reject `http://` URLs when `true`. |
 | `allowed_ports` | Explicit port allowlist. Defaults to 443 (https) and 80 (http). |
-| `disable_loopback` | Disallow relative URLs (internal loopback calls) when `true`. |
+| `disable_loopback` | Disallow loopback addresses and relative URLs when `true`. Defaults to `true` in `langgraph-api` 0.10.0 or later. |
 | `max_url_length` | Maximum permitted URL length in characters. |
+
+Because `disable_loopback` defaults to `true`, webhooks to `localhost`, `127.0.0.1`, `host.docker.internal`, or a relative URL are rejected. This commonly affects a local receiver used with `langgraph dev`. To allow them, set `disable_loopback` to `false`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "webhooks": {
+    "url": {
+      "disable_loopback": false
+    }
+  }
+}
+```
+
+> [!NOTE]
+>
+> The server also applies an SSRF policy that blocks requests to cloud-metadata endpoints (such as `169.254.169.254`) and cluster-internal hosts by default. The `disable_loopback` option adds control over loopback and relative URLs on top of this baseline. Hosts that match an `allowed_domains` entry skip these SSRF checks.
 
 ## Disable webhooks
 
@@ -169644,7 +170117,7 @@ sequenceDiagram
     Supervisor-->>User: "Here are the results"
 ```
 
-* **Launch** creates a new thread on the server, starts a run with the task description as input, and returns the thread ID as the task ID. The supervisor reports this ID to the user and does not poll for completion.
+* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; Python fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
 * **Check** fetches the current run status. If the run succeeded, it retrieves the thread state to extract the subagent's final output. If still running, it reports that to the user.
 * **Update** creates a new run on the same thread with an interrupt multitask strategy. The previous run is interrupted, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
 * **Cancel** calls `runs.cancel()` on the server and marks the task as `"cancelled"`.
@@ -169698,7 +170171,9 @@ The `mode` field on each [`AsyncSubAgent`](https://reference.langchain.com/javas
 >
 > `mode="fork"` is available in Python only. It is experimental and may change in a future release.
 
-At launch, `start_async_task` sends the parent's full conversation history — replayed up to that point — followed by the task description. Later messages from the parent are not forwarded to the child.
+At launch, `start_async_task` sends a snapshot of the parent's effective conversation history, followed by the task description. If the parent has compacted its history, the snapshot includes that compacted context, not every original message. Later messages from the parent are not forwarded to the child.
+
+The subagent starts on a new server thread. Fork mode sends conversation messages as run input; it does not copy the parent's checkpoint history or all parent state. Metadata can associate the new thread with its supervisor, but that association does not itself transfer conversation context.
 
 **Prompt-cache reuse.** To get cache hits on the forked conversation prefix, configure the remote agent with the same model, system prompt, tools, and prompt-processing middleware as the parent. Fork mode copies conversation history; it does not synchronize those settings. Matching configuration is necessary but not sufficient: the rendered prefix must match, and cache hits depend on the provider.
 
@@ -174436,6 +174911,71 @@ const agent = await createDeepAgent({
 > If you must use mutation in custom middleware, consider what happens when subagents, parallel tools, or concurrent agent invocations run at the same time.
 
 ### Override a default middleware instance
+
+Pass a middleware instance whose `.name` matches an entry in the [Deep Agents stack](#deep-agents-stack), such as [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware), to replace that built-in instance in place instead of appending a duplicate. Any middleware you pass whose `.name` does **not** match a built-in entry is not replaced, it lands after the last core middleware entry and before the profile, prompt-caching, and memory. See [Full stack](#full-stack) for the complete ordering.
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  createSummarizationMiddleware,
+  StateBackend,
+} from "deepagents";
+
+const backend = new StateBackend();
+const model = "openai:gpt-5.5";
+
+const customSummarization = createSummarizationMiddleware({
+  model,
+  backend,
+  summaryPrompt: "Your custom summary prompt here.",
+});
+
+const agent = createDeepAgent({
+  model,
+  middleware: [customSummarization], // replaces the default SummarizationMiddleware
+});
+```
+
+> [!NOTE]
+>
+> An override **replaces** the default middleware instance, it is not merged with it. That means your replacement must be fully configured with any settings it needs. This is especially important for `FilesystemMiddleware`: if you override it, you must pass the `backend` (and `permissions`, if applicable) directly to `createFilesystemMiddleware`, since it will not inherit the `backend` and `permissions` passed to `createDeepAgent`. To restrict the available filesystem tools, pass a `tools` allowlist to your custom [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) instance; see [Virtual filesystem access](/oss/javascript/deepagents/overview#virtual-filesystem-access).
+
+The general-purpose subagent, which Deep Agents adds automatically, inherits overrides for its default middleware from the main agent, without carrying over middleware that is specific to the main agent.
+
+Declarative subagents defined via `subagents` do not inherit the main agent's middleware customization. Pass the override directly in that subagent's own [`middleware`](/oss/javascript/deepagents/subagents#subagent-dictionary-based) field to apply it there; that field is matched against the [synchronous subagent stack](#synchronous-subagent-stack), the same way `middleware` is matched against the main agent's.
+
+#### Examples
+
+> **Keep binary file content out of checkpointed history**
+>
+> Override [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) with `offloadBinaryContent: true` to store binary `read_file` payloads and inline `HumanMessage` media on the backend under `/blobs` instead of in checkpointed message history. State keeps a small reference; model requests are rehydrated from a per-run cache or the backend. This keeps checkpoint size small when the agent reads many binary files across turns.
+>
+> > [!NOTE]
+> >
+> > Binary content offloading requires `deepagents>=1.14.2`. Use a backend that stores blobs outside graph state, such as a sandbox or `FilesystemBackend`. Offloading has no effect when `/blobs` routes to `StateBackend`. Pass the same `backend` to `createFilesystemMiddleware` that you pass to `createDeepAgent`.
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   createDeepAgent,
+>   createFilesystemMiddleware,
+>   FilesystemBackend,
+> } from "deepagents";
+>
+> const backend = new FilesystemBackend({
+>   rootDir: "/path/to/project",
+>   virtualMode: true,
+> });
+>
+> const agent = createDeepAgent({
+>   model: "anthropic:claude-sonnet-4-6",
+>   backend,
+>   middleware: [
+>     createFilesystemMiddleware({ backend, offloadBinaryContent: true }),
+>   ],
+> });
+> ```
+>
+> For more information, see [Offload binary content](/oss/javascript/deepagents/backends#offload-binary-content).
 
 ### Interpreters
 
@@ -193084,7 +193624,9 @@ const result = await agent.invoke({
 
 ### How it works
 
-A fork does not get a fresh task description. It gets the parent's own conversation, with one change: the trailing call that delegated to it is dropped and replaced with a short preamble marking the messages above as a continuation, not a fresh request. When the fork finishes, its answer comes back as a normal tool result, and the parent picks up right where it left off.
+A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the parent has compacted its history, the fork receives that compacted context, not every original message.
+
+Here, forking means inheriting context for delegated work, not copying a persisted thread's checkpoint history. The subagent receives state prepared for its invocation, with parent-only fields excluded. When it finishes, its answer returns as a normal tool result, and the parent continues.
 
 ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // What the parent has, right before delegating
@@ -193118,8 +193660,8 @@ Compare isolated and forked modes along these dimensions:
 
 | Dimension | Isolated (default) | Forked |
 | - | - | - |
-| **Context** | Only the task description you pass in | The parent's conversation history and state |
-| **System prompt and skills** | You set them on the subagent | Skills not settable; system prompt is appended to the parent's base prompt (breaks caching, so usually left unset) |
+| **Context** | Only the task description you pass in | The parent's effective conversation history and inherited state, plus the task description |
+| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional system prompt appends instructions and can reduce cache reuse. |
 | **Calling other subagents** | Can use the `task` tool | Cannot use `task`; must finish the work itself |
 | **Best for** | Focused work that needs little prior context | Continuing an investigation the parent has already started |
 
@@ -210350,7 +210892,7 @@ function MessageWithForkControls({
 
         stream.submit(
           { messages: [{ type: "human", content: editedText }] },
-          { forkFrom: { checkpointId } }
+          { forkFrom: checkpointId }
         );
       }}
     >
@@ -210374,7 +210916,7 @@ fork point for edits and regenerations.
 To edit a user message and fork the conversation:
 
 1. Get `parentCheckpointId` from the message's metadata
-2. Submit the edited message with `forkFrom: { checkpointId }`
+2. Submit the edited message with `forkFrom: checkpointId`
 3. The agent re-runs from that point
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -210390,7 +210932,7 @@ function handleEdit(
     {
       messages: [{ type: "human", content: newText }],
     },
-    { forkFrom: { checkpointId: metadata.parentCheckpointId } }
+    { forkFrom: metadata.parentCheckpointId }
   );
 }
 ```
@@ -210404,8 +210946,8 @@ After the edit:
 
 To regenerate an AI response without changing the input:
 
-1. Get the `parent_checkpoint` from the AI message's metadata
-2. Submit with empty input and `forkFrom: { checkpointId }`
+1. Get `parentCheckpointId` from the AI message's metadata
+2. Submit with `undefined` input and `forkFrom: checkpointId`
 3. The agent produces a fresh response from that point
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -210416,12 +210958,19 @@ function handleRegenerate(
   if (!metadata?.parentCheckpointId) return;
 
   stream.submit(undefined, {
-    forkFrom: { checkpointId: metadata.parentCheckpointId },
+    forkFrom: metadata.parentCheckpointId,
   });
 }
 ```
 
-Each regeneration creates a new path for the AI message at that position.
+The SDK converts `undefined` input to `null` to continue from the checkpoint
+without supplying new input. An empty object (`{}`) supplies new input instead.
+Each regeneration creates a new path in the same thread.
+
+> [!WARNING]
+>
+> Regeneration can re-execute downstream tools and API calls. It does not reverse
+> external effects from the original run. Check those effects before regenerating.
 
 > [!TIP]
 >
@@ -210431,7 +210980,8 @@ Each regeneration creates a new path for the AI message at that position.
 
 ## How branching works under the hood
 
-LangGraph persists every state transition as a **checkpoint**. When you submit
+LangGraph persists state at super-step boundaries as **checkpoints**. Nodes
+that run in parallel in one super-step share a checkpoint boundary. When you submit
 with `forkFrom`, the backend starts a new execution path from that point instead
 of appending to the current conversation. The result is a tree structure:
 
@@ -210449,7 +210999,9 @@ User: "Tell me about JSX" (edited from branch A)
 
 Each path is persisted in the checkpoint store. Use
 `stream.client.threads.getHistory(threadId)` when you want to build a separate
-timeline view across checkpoints.
+timeline view across checkpoints. History is newest first and defaults to 10
+entries. Use each state's `parent_checkpoint` to reconstruct ancestry; list
+position alone does not identify a branch.
 
 ## Best practices
 
@@ -215564,11 +216116,9 @@ Source: https://docs.langchain.com/oss/javascript/langchain/frontend/time-travel
 
 Inspect, navigate, and resume from any checkpoint in the conversation history
 
-Every state change in a LangGraph agent creates a **checkpoint**, a complete
-snapshot of the agent's state at that moment. Time travel lets you inspect any
-checkpoint, view the exact state the agent held, and **resume execution from
-that point** to explore alternative paths. It's a debugger, an undo button, and
-an audit log all in one.
+A [checkpoint](/oss/javascript/langgraph/persistence#checkpoints) is a saved snapshot of a
+LangGraph agent's state. Time travel lets you inspect a checkpoint and continue
+execution from that saved state to explore alternative paths.
 
 > [!NOTE]
 >
@@ -215576,23 +216126,27 @@ an audit log all in one.
 
 ## How checkpoints work
 
-LangGraph persists agent state after every node execution. Each persisted state
+LangGraph persists agent state at super-step boundaries. Nodes that run in
+parallel in the same super-step share a checkpoint boundary. Each persisted state
 is a [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) object that captures:
 
-* **checkpoint**: metadata identifying this specific snapshot (ID, timestamp)
-* **values**: the full agent state at this point (messages, custom keys)
-* **tasks**: the graph nodes that were scheduled to run next
-* **next**: the names of upcoming nodes in the execution plan
+* **checkpoint**: The checkpoint identifier, including its ID and namespace.
+* **created\_at**: The snapshot creation time.
+* **parent\_checkpoint**: The previous checkpoint in this path.
+* **values**: The full agent state at this point (messages, custom keys).
+* **tasks**: The graph nodes that were scheduled to run next.
+* **next**: The names of upcoming nodes in the execution plan.
 
-This creates a linear timeline of every decision the agent made, every tool it
-called, and every response it produced. Your UI can render this timeline and let
-users jump to any point.
+History can contain multiple execution paths, not one linear conversation.
+`getHistory()` returns checkpoints newest first, with a default limit of 10.
+Use `parent_checkpoint` to follow ancestry rather than treating adjacent entries
+as parent and child. The examples below display the returned page of history.
 
 ## Setting up `useStream`
 
 Create the stream for your agent, then fetch checkpoint history explicitly from
 the LangGraph client for the active thread. Resuming from a checkpoint uses
-`forkFrom: { checkpointId }`.
+`forkFrom: checkpointId`.
 
 > [!NOTE]
 >
@@ -215620,8 +216174,9 @@ export function TimeTravelChat() {
   }, [stream.client, threadId, stream.isLoading]);
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 
@@ -215662,8 +216217,9 @@ watch(
 );
 
 function resumeFrom(cp: ThreadState) {
-  stream.submit({}, {
-    forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+  if (!cp.checkpoint.checkpoint_id) return;
+  stream.submit(undefined, {
+    forkFrom: cp.checkpoint.checkpoint_id,
   });
 }
 </script>
@@ -215703,8 +216259,9 @@ function resumeFrom(cp: ThreadState) {
   });
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 </script>
@@ -215758,8 +216315,9 @@ export class TimeTravelChatComponent {
   }
 
   resumeFrom(cp: ThreadState) {
-    this.stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    this.stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 }
@@ -215768,7 +216326,9 @@ export class TimeTravelChatComponent {
 ## Building a checkpoint timeline
 
 The timeline sidebar shows every checkpoint as a clickable entry. Each entry
-displays the node that ran and how many messages existed at that point:
+displays the scheduled nodes and how many messages existed at that point.
+`tasks` describes work for the next step, not the nodes that produced the
+checkpoint. Use `next` to label all scheduled nodes, including parallel work:
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function TimelineSidebar({
@@ -215785,7 +216345,7 @@ function TimelineSidebar({
       </h2>
       <div className="space-y-2">
         {history.map((cp, i) => {
-          const taskName = cp.tasks?.[0]?.name ?? "unknown";
+          const nextNodes = cp.next?.join(", ") || "Complete";
           const msgCount = (cp.values?.messages as unknown[])?.length ?? 0;
 
           return (
@@ -215797,9 +216357,9 @@ function TimelineSidebar({
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-400">#{i + 1}</span>
-                <NodeBadge name={taskName} />
+                <NodeBadge name={nextNodes} />
               </div>
-              <p className="mt-1 text-sm font-medium">{taskName}</p>
+              <p className="mt-1 text-sm font-medium">Next: {nextNodes}</p>
               <p className="text-xs text-gray-500">
                 {msgCount} message{msgCount !== 1 ? "s" : ""}
               </p>
@@ -215825,7 +216385,7 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
     <div className="rounded-lg border bg-white p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">
-          Checkpoint {checkpoint.checkpoint.checkpoint_id.slice(0, 8)}...
+          Checkpoint {checkpoint.checkpoint.checkpoint_id?.slice(0, 8)}...
         </h3>
         <button
           onClick={() => setExpanded(!expanded)}
@@ -215836,10 +216396,6 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
       </div>
 
       <div className="mt-2 space-y-1 text-sm">
-        <p>
-          <strong>Node:</strong>{" "}
-          {checkpoint.tasks?.[0]?.name ?? "—"}
-        </p>
         <p>
           <strong>Next:</strong>{" "}
           {checkpoint.next?.join(", ") || "—"}
@@ -215872,30 +216428,29 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
 ## Resuming from a checkpoint
 
 The core of time travel is the ability to **resume execution from any prior
-checkpoint**. When a user selects a checkpoint, call `submit` with `null` input
-and pass the checkpoint ID:
+checkpoint**. When a user selects a checkpoint, call `submit` with `undefined`
+input and pass the checkpoint ID as `forkFrom`:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stream.submit({}, {
-  forkFrom: { checkpointId: selectedCheckpoint.checkpoint.checkpoint_id },
-});
+const checkpointId = selectedCheckpoint.checkpoint.checkpoint_id;
+if (checkpointId) {
+  stream.submit(undefined, { forkFrom: checkpointId });
+}
 ```
 
-This tells LangGraph to:
+The SDK sends `undefined` or `null` input as `null`, which continues from the
+selected checkpoint without supplying new input. An empty object (`{}`) is new
+input, not the same continuation signal. If the checkpoint has no next nodes,
+there is no pending work to replay.
 
-1. Roll back to the selected checkpoint's state
-2. Re-execute the graph from that point forward
-3. Stream the new results to the client
+The new run creates another path in the same thread. The UI displays that path;
+the original checkpoints remain available in history.
 
-The existing messages after the selected checkpoint are replaced by the new
-execution path. This effectively creates a **branch** in the conversation
-timeline.
-
-> [!NOTE]
+> [!WARNING]
 >
-> Resuming from a checkpoint does not delete the original timeline. The previous
-> checkpoints remain available in the history. This means users can always go back
-> and try a different path without losing any prior work.
+> Replaying a checkpoint can execute downstream tools and API calls again.
+> It does not reverse earlier external effects, such as sent messages or database
+> writes. Check those effects before replaying a run.
 
 ## The SplitView layout
 
@@ -215944,11 +216499,12 @@ function TimeTravelLayout() {
           history={history}
           selected={selectedCheckpoint}
           onSelect={setSelectedCheckpoint}
-          onResume={(cp) =>
-            stream.submit({}, {
-              forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-            })
-          }
+          onResume={(cp) => {
+            if (!cp.checkpoint.checkpoint_id) return;
+            stream.submit(undefined, {
+              forkFrom: cp.checkpoint.checkpoint_id,
+            });
+          }}
         />
         {selectedCheckpoint && (
           <CheckpointInspector checkpoint={selectedCheckpoint} />
@@ -215968,7 +216524,7 @@ function formatCheckpoints(history: ThreadState[]) {
   return history.map((cp, index) => ({
     index,
     id: cp.checkpoint?.checkpoint_id,
-    taskName: cp.tasks?.[0]?.name ?? "unknown",
+    nextLabel: cp.next?.join(", ") || "Complete",
     messageCount: (cp.values?.messages as unknown[])?.length ?? 0,
     hasInterrupts: cp.tasks?.some((t) => t.interrupts?.length) ?? false,
     nextNodes: cp.next ?? [],
@@ -215985,8 +216541,8 @@ Time travel is invaluable across many scenarios:
 
 * **Debugging agent behavior**: step through the agent's decisions to
   understand why it chose a particular path
-* **Undoing actions**: if the agent took a wrong turn, resume from an earlier
-  checkpoint and try again
+* **Trying another path**: continue from an earlier saved state without
+  deleting the original checkpoints
 * **Exploring alternatives**: fork from a mid-conversation checkpoint to see
   how different inputs change the outcome
 * **Auditing**: review the complete history of an agent's actions for
@@ -216036,7 +216592,7 @@ function TimelineEntry({
         )}
       </div>
       <p className="mt-1 text-sm font-medium">
-        {checkpoint.tasks?.[0]?.name ?? "—"}
+        Next: {checkpoint.next?.join(", ") || "Complete"}
       </p>
     </div>
   );
@@ -216047,11 +216603,10 @@ function TimelineEntry({
 
 * **Load history lazily**: for threads with hundreds of checkpoints, paginate
   or load only the most recent N entries to keep the UI responsive.
-* **Show meaningful labels**: display node names and message counts instead of
-  raw checkpoint IDs. Users need context, not UUIDs.
-* **Confirm before resuming**: resuming from an old checkpoint replaces the
-  current execution path. Show a confirmation dialog so users don't
-  accidentally lose the current conversation state.
+* **Show meaningful labels**: display scheduled next nodes and message counts
+  instead of raw checkpoint IDs. Users need context, not UUIDs.
+* **Confirm before resuming**: show a confirmation dialog before starting
+  another path, especially when downstream nodes have external effects.
 * **Highlight the current checkpoint**: make it visually obvious which
   checkpoint corresponds to the current state of the conversation.
 * **Support keyboard navigation**: power users will want to step through
@@ -265051,7 +265606,7 @@ sequenceDiagram
     Supervisor-->>User: "Here are the results"
 ```
 
-* **Launch** creates a new thread on the server, starts a run with the task description as input, and returns the thread ID as the task ID. The supervisor reports this ID to the user and does not poll for completion.
+* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; Python fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
 * **Check** fetches the current run status. If the run succeeded, it retrieves the thread state to extract the subagent's final output. If still running, it reports that to the user.
 * **Update** creates a new run on the same thread with an interrupt multitask strategy. The previous run is interrupted, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
 * **Cancel** calls `runs.cancel()` on the server and marks the task as `"cancelled"`.
@@ -265194,7 +265749,9 @@ async_subagents=[
 ]
 ```
 
-At launch, `start_async_task` sends the parent's full conversation history — replayed up to that point — followed by the task description. Later messages from the parent are not forwarded to the child.
+At launch, `start_async_task` sends a snapshot of the parent's effective conversation history, followed by the task description. If the parent has compacted its history, the snapshot includes that compacted context, not every original message. Later messages from the parent are not forwarded to the child.
+
+The subagent starts on a new server thread. Fork mode sends conversation messages as run input; it does not copy the parent's checkpoint history or all parent state. Metadata can associate the new thread with its supervisor, but that association does not itself transfer conversation context.
 
 **Prompt-cache reuse.** To get cache hits on the forked conversation prefix, configure the remote agent with the same model, system prompt, tools, and prompt-processing middleware as the parent. Fork mode copies conversation history; it does not synchronize those settings. Matching configuration is necessary but not sufficient: the rendered prefix must match, and cache hits depend on the provider.
 
@@ -291368,7 +291925,9 @@ result = agent.invoke(
 
 ### How it works
 
-A fork does not get a fresh task description. It gets the parent's own conversation, with one change: the trailing call that delegated to it is dropped and replaced with a short preamble marking the messages above as a continuation, not a fresh request. When the fork finishes, its answer comes back as a normal tool result, and the parent picks up right where it left off.
+A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the parent has compacted its history, the fork receives that compacted context, not every original message.
+
+Here, forking means inheriting context for delegated work, not copying a persisted thread's checkpoint history. The subagent receives state prepared for its invocation, with parent-only fields excluded. When it finishes, its answer returns as a normal tool result, and the parent continues.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # What the parent has, right before delegating
@@ -291402,8 +291961,8 @@ Compare isolated and forked modes along these dimensions:
 
 | Dimension | Isolated (default) | Forked |
 | - | - | - |
-| **Context** | Only the task description you pass in | The parent's conversation history and state |
-| **System prompt and skills** | You set them on the subagent | Skills not settable; system prompt is appended to the parent's base prompt (breaks caching, so usually left unset) |
+| **Context** | Only the task description you pass in | The parent's effective conversation history and inherited state, plus the task description |
+| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional system prompt appends instructions and can reduce cache reuse. |
 | **Calling other subagents** | Can use the `task` tool | Cannot use `task`; must finish the work itself |
 | **Best for** | Focused work that needs little prior context | Continuing an investigation the parent has already started |
 
@@ -295608,6 +296167,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > High-performance analytics and data processing.
 
+> **[BotsRatedPreflightTool](https://github.com/botsrated/botsrated/tree/main/integrations/langchain)**
+>
+> Tools that check an x402 seller against BotsRated's latest unpaid probe before an agent pays, plus an optional paid check capped by a budget.
+
 > **[BowmarkToolkit](https://bowmark.ai/docs/langchain)**
 >
 > Tools for live websites: read Bowmark's typed function library for a task or site, or run a short script for structured data.
@@ -295623,6 +296186,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Brightdata](https://docs.brightdata.com/integrations/langchain)**
 >
 > Web data platform and proxy services.
+
+> **[Browser Use](/oss/python/integrations/providers/browser_use)**
+>
+> Browser agents and cloud browsers for AI applications.
 
 > **[Browserbase](/oss/python/integrations/providers/browserbase)**
 >
@@ -295906,7 +296473,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[EmpirioLabs AI](https://docs.empiriolabs.ai)**
 >
-> Frontier open models through one OpenAI-compatible API.
+> Specialized AI model hosting for open, proprietary, and custom stacks through one OpenAI-compatible API, plus GPU Cloud and hosted agents.
 
 > **[EnConvert](https://github.com/enconvert/langchain-enconvert)**
 >
@@ -300464,6 +301031,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [BrightData Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/introduction) | 5,000 free credits/month, then pay-as-you-go | ❌ |
 | [BrightData Unlocker](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | Pay-as-you-go | ❌ |
 | [BrightData Web Scraper API](https://docs.brightdata.com/datasets/scrapers/overview) | Pay-as-you-go | ❌ |
+| [Browser Use](/oss/python/integrations/providers/browser_use) | Pay-as-you-go | ✅ |
 | [Browserless](https://browserless.io) | Free tier, with usage-based plans after | ✅ |
 | [Context.dev](https://docs.context.dev) | Free tier available | ❌ |
 | [Stagehand](/oss/python/integrations/tools/stagehand) | Open-source / Browserbase pay-as-you-go | ✅ |
@@ -300573,10 +301141,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Tavily extract`](/oss/python/integrations/tools/tavily_extract) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tavily/month)](https://pypi.org/project/langchain-tavily/) |
 | [`Tavily map`](/oss/python/integrations/tools/tavily_map) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tavily/month)](https://pypi.org/project/langchain-tavily/) |
 | [`Tavily search`](/oss/python/integrations/tools/tavily_search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tavily/month)](https://pypi.org/project/langchain-tavily/) |
-| [`Databricks unity catalog (Uc)`](/oss/python/integrations/tools/databricks) | [  ![Downloads per month](https://static.pepy.tech/badge/databricks-langchain/month)](https://pypi.org/project/databricks-langchain/) |
 | [`Azure Logic Apps`](/oss/python/integrations/tools/azure_logic_apps) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-ai/month)](https://pypi.org/project/langchain-azure-ai/) |
 | [`Microsoft Foundry tools`](/oss/python/integrations/tools/azure_ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-ai/month)](https://pypi.org/project/langchain-azure-ai/) |
 | [`Microsoft Foundry Tools (formerly Azure AI Services) tools`](/oss/python/integrations/tools/azure_ai_services) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-ai/month)](https://pypi.org/project/langchain-azure-ai/) |
+| [`Databricks unity catalog (Uc)`](/oss/python/integrations/tools/databricks) | [  ![Downloads per month](https://static.pepy.tech/badge/databricks-langchain/month)](https://pypi.org/project/databricks-langchain/) |
 | [`Composio`](/oss/python/integrations/tools/composio) | [  ![Downloads per month](https://static.pepy.tech/badge/composio-langchain/month)](https://pypi.org/project/composio-langchain/) |
 | [`WatsonxSQLDatabaseToolkit`](/oss/python/integrations/tools/ibm_watsonx_sql) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ibm/month)](https://pypi.org/project/langchain-ibm/) |
 | [`WatsonxToolkit`](/oss/python/integrations/tools/ibm_watsonx) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ibm/month)](https://pypi.org/project/langchain-ibm/) |
@@ -300611,6 +301179,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Brightdatawebscraperapi`](https://docs.brightdata.com/datasets/scrapers/overview) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brightdata/month)](https://pypi.org/project/langchain-brightdata/) |
 | [`Compass defi toolkit`](https://pypi.org/project/langchain-compass/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-compass/month)](https://pypi.org/project/langchain-compass/) |
 | [`Fizzl`](https://fizzl.eu/agents/python/) | [  ![Downloads per month](https://static.pepy.tech/badge/fizzl/month)](https://pypi.org/project/fizzl/) |
+| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pexafy/month)](https://pypi.org/project/langchain-pexafy/) |
 | [`Taiga`](https://github.com/Shikenso-Analytics/langchain-taiga) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-taiga/month)](https://pypi.org/project/langchain-taiga/) |
 | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-atomicmail/month)](https://pypi.org/project/langchain-atomicmail/) |
@@ -300620,9 +301189,9 @@ The following table shows tools that generate video, image, or audio assets:
 | [`DexPaprikaToolkit`](https://docs.dexpaprika.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dexpaprika/month)](https://pypi.org/project/langchain-dexpaprika/) |
 | [`Firecrawl`](https://docs.firecrawl.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-firecrawl/month)](https://pypi.org/project/langchain-firecrawl/) |
 | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/hindsight-langgraph/month)](https://pypi.org/project/hindsight-langgraph/) |
-| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`ReplyLayerToolkit`](https://replylayer.ai/docs/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-replylayer/month)](https://pypi.org/project/langchain-replylayer/) |
 | [`Scavio`](https://scavio.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scavio/month)](https://pypi.org/project/langchain-scavio/) |
+| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
 | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts) | [  ![Downloads per month](https://static.pepy.tech/badge/ads4gpts-langchain/month)](https://pypi.org/project/ads4gpts-langchain/) |
 | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alex/month)](https://pypi.org/project/langchain-alex/) |
 | [`Algenta`](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-algenta/month)](https://pypi.org/project/langchain-algenta/) |
@@ -300636,30 +301205,26 @@ The following table shows tools that generate video, image, or audio assets:
 | [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ![Downloads per month](https://static.pepy.tech/badge/hirepulse-tools/month)](https://pypi.org/project/hirepulse-tools/) |
 | [`NimbleExtractTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
 | [`NimbleSearchTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
+| [`OpenpathSearch`](https://openpath.sh/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openpath/month)](https://pypi.org/project/langchain-openpath/) |
 | [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
-| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
 | [`SerpexSearchResults`](https://serpex.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpex-python/month)](https://pypi.org/project/langchain-serpex-python/) |
 | [`SwarmMemoToolkit`](https://pypi.org/project/langchain-swarmmemo/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-swarmmemo/month)](https://pypi.org/project/langchain-swarmmemo/) |
 | [`Synap`](https://www.maximem.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/maximem-synap-langchain/month)](https://pypi.org/project/maximem-synap-langchain/) |
 | [`TanodToolkit`](https://github.com/tanod-labs/integrations/tree/main/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanod/month)](https://pypi.org/project/langchain-tanod/) |
+| [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thordata/month)](https://pypi.org/project/langchain-thordata/) |
 | [`ToolGuardLayer`](https://github.com/sriram7737/pramagent) | [  ![Downloads per month](https://static.pepy.tech/badge/pramagent/month)](https://pypi.org/project/pramagent/) |
 | [`UrlpipeToolkit`](https://urlpipe.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlpipe/month)](https://pypi.org/project/langchain-urlpipe/) |
 | [`You.com search`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-youdotcom/month)](https://pypi.org/project/langchain-youdotcom/) |
-| [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thordata/month)](https://pypi.org/project/langchain-thordata/) |
 | [`VerdixAddressRiskTool`](https://github.com/verdixapi/langchain-verdix#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verdix/month)](https://pypi.org/project/langchain-verdix/) |
-| [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpkite/month)](https://pypi.org/project/langchain-serpkite/) |
 | [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
+| [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpkite/month)](https://pypi.org/project/langchain-serpkite/) |
+| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
 | [`MachineLibraryToolkit`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-machinelibrary/month)](https://pypi.org/project/langchain-machinelibrary/) |
 | [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
-| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
+| [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
+| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
 | [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
-| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
-| [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ![Downloads per month](https://static.pepy.tech/badge/pushary-langgraph/month)](https://pypi.org/project/pushary-langgraph/) |
-| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
-| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotEntitiesTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -300667,226 +301232,230 @@ The following table shows tools that generate video, image, or audio assets:
 | [`DiffbotKnowledgeGraphTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotOntologyTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotWebSearchTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
-| [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
-| [`OpenpathSearch`](https://openpath.sh/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openpath/month)](https://pypi.org/project/langchain-openpath/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
-| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
-| [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
-| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
-| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
-| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
-| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
+| [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ![Downloads per month](https://static.pepy.tech/badge/pushary-langgraph/month)](https://pypi.org/project/pushary-langgraph/) |
 | [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fmp-data/month)](https://pypi.org/project/langchain-fmp-data/) |
-| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
+| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
+| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
+| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
+| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
+| [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
 | [`Hyperbrowser browser agent`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
 | [`Hyperbrowser web scraping`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
-| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
+| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
+| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
+| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
 | [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
 | [`ClearsignedVerifyTool`](https://clearsigned.com/integrations#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-clearsigned/month)](https://pypi.org/project/langchain-clearsigned/) |
-| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
 | [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
-| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
+| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
+| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
+| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
 | [`Search1API Toolkit`](https://www.search1api.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/search1api-langchain/month)](https://pypi.org/project/search1api-langchain/) |
+| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
+| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
 | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upload-post/month)](https://pypi.org/project/langchain-upload-post/) |
 | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-getyoutubetranscript/month)](https://pypi.org/project/langchain-getyoutubetranscript/) |
-| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
-| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
 | [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
 | [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kavel/month)](https://pypi.org/project/langchain-kavel/) |
 | [`BlopusFetch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
 | [`BlopusSearch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
-| [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mart/month)](https://pypi.org/project/langchain-mart/) |
 | [`MnkiGuardedTool`](https://mnki.com/docs/integrations#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mnki/month)](https://pypi.org/project/langchain-mnki/) |
-| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
-| [`PinkToolkit`](https://pinkwallet.com/agentic/connect/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pink/month)](https://pypi.org/project/langchain-pink/) |
 | [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
+| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
+| [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mart/month)](https://pypi.org/project/langchain-mart/) |
 | [`SkimReader`](https://skim402.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skim/month)](https://pypi.org/project/langchain-skim/) |
+| [`PinkToolkit`](https://pinkwallet.com/agentic/connect/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pink/month)](https://pypi.org/project/langchain-pink/) |
 | [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-uniswap-v2/month)](https://pypi.org/project/langchain-uniswap-v2/) |
-| [`FoddaContextRetriever`](https://github.com/fodda-ai/langchain-fodda#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fodda/month)](https://pypi.org/project/langchain-fodda/) |
 | [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
+| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
+| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
 | [`OptionsAhoy`](https://optionsahoy.com/for-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/optionsahoy-langchain/month)](https://pypi.org/project/optionsahoy-langchain/) |
 | [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
+| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
+| [`FoddaContextRetriever`](https://github.com/fodda-ai/langchain-fodda#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fodda/month)](https://pypi.org/project/langchain-fodda/) |
 | [`TanvoToolkit`](https://github.com/tanvoai/langchain-tanvo#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanvo/month)](https://pypi.org/project/langchain-tanvo/) |
-| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
-| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
+| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
+| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
+| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
+| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
+| [`GAIP`](https://pypi.org/project/langchain-gaip/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gaip/month)](https://pypi.org/project/langchain-gaip/) |
+| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
+| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
 | [`MrScraperToolkit`](https://docs.mrscraper.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mrscraper/month)](https://pypi.org/project/langchain-mrscraper/) |
 | [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/ddg-langchain/month)](https://pypi.org/project/ddg-langchain/) |
+| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
 | [`ERC20Toolkit`](https://github.com/Conrad-sudo/langchain-erc20) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc20/month)](https://pypi.org/project/langchain-erc20/) |
 | [`ReserpSearchTool`](https://reserp.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reserp/month)](https://pypi.org/project/langchain-reserp/) |
 | [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
 | [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
-| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
-| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
-| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pidgeon/month)](https://pypi.org/project/langchain-pidgeon/) |
-| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
-| [`GAIP`](https://pypi.org/project/langchain-gaip/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gaip/month)](https://pypi.org/project/langchain-gaip/) |
-| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
-| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
-| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
-| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
-| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
-| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
 | [`SuperColony`](https://github.com/TheSuperColony/langchain-supercolony) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-supercolony/month)](https://pypi.org/project/langchain-supercolony/) |
-| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
+| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
+| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pidgeon/month)](https://pypi.org/project/langchain-pidgeon/) |
 | [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-daytona-data-analysis/month)](https://pypi.org/project/langchain-daytona-data-analysis/) |
 | [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
-| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
-| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
-| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
 | [`AlfrescoToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`DocumentumToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`FileNetP8Toolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
-| [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
 | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
+| [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
 | [`Cosmergon`](https://cosmergon.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cosmergon/month)](https://pypi.org/project/langchain-cosmergon/) |
 | [`Dappier`](https://docs.dappier.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dappier/month)](https://pypi.org/project/langchain-dappier/) |
+| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
+| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
+| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
 | [`ProxmintFetchTool`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
-| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
 | [`Tableau`](/oss/python/integrations/tools/tableau) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tableau/month)](https://pypi.org/project/langchain-tableau/) |
-| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
 | [`AxioraToolkit`](https://axiora.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-axiora/month)](https://pypi.org/project/langchain-axiora/) |
-| [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greencalculus/month)](https://pypi.org/project/langchain-greencalculus/) |
-| [`RelayShield`](https://api.relayshield.net/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-relayshield/month)](https://pypi.org/project/langchain-relayshield/) |
+| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
 | [`KeenableSearch`](https://docs.keenable.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keenable/month)](https://pypi.org/project/langchain-keenable/) |
-| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
-| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
+| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
+| [`RelayShield`](https://api.relayshield.net/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-relayshield/month)](https://pypi.org/project/langchain-relayshield/) |
+| [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greencalculus/month)](https://pypi.org/project/langchain-greencalculus/) |
 | [`SerpdiveSearch`](https://serpdive.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpdive/month)](https://pypi.org/project/langchain-serpdive/) |
-| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
-| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
-| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
+| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
 | [`AlphaAIInsiderNews`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAIInsiderSummary`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAINewsSearch`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAITickerSentiment`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
-| [`LexMexTool`](https://lex-mex.xyz) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lexmex/month)](https://pypi.org/project/langchain-lexmex/) |
+| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
 | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spicedb/month)](https://pypi.org/project/langchain-spicedb/) |
-| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
+| [`LexMexTool`](https://lex-mex.xyz) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lexmex/month)](https://pypi.org/project/langchain-lexmex/) |
 | [`StraleToolkit`](https://strale.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-strale/month)](https://pypi.org/project/langchain-strale/) |
-| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
-| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
+| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
+| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
 | [`ScraperAPI`](https://docs.scraperapi.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scraperapi/month)](https://pypi.org/project/langchain-scraperapi/) |
 | [`X402PaymentTool`](https://www.agentrails.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-x402/month)](https://pypi.org/project/langchain-x402/) |
-| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
 | [`SeedanceToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seedance-acedatacloud/month)](https://pypi.org/project/langchain-seedance-acedatacloud/) |
+| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
+| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
+| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
 | [`GandrText2SpeechTool`](https://gandr.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/gandr-langchain/month)](https://pypi.org/project/gandr-langchain/) |
-| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
 | [`AmazonProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`AmazonSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ChatGPTTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`CheckUsageTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`GoogleSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ScrapeUrlTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
-| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
 | [`WalmartProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`WalmartSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeMetadataTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
-| [`Naver search`](https://github.com/e7217/langchain-naver-community) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-naver-community/month)](https://pypi.org/project/langchain-naver-community/) |
-| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
+| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
+| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
 | [`Xpoz`](https://www.xpoz.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xpoz/month)](https://pypi.org/project/langchain-xpoz/) |
-| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
-| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
-| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
-| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
-| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
+| [`Naver search`](https://github.com/e7217/langchain-naver-community) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-naver-community/month)](https://pypi.org/project/langchain-naver-community/) |
 | [`Querit`](https://querit.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-querit/month)](https://pypi.org/project/langchain-querit/) |
+| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
+| [`iFlow Search`](https://platform.iflow.cn/) | [  ![Downloads per month](https://static.pepy.tech/badge/iflow-search-langchain/month)](https://pypi.org/project/iflow-search-langchain/) |
+| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
+| [`Jenkins`](https://github.com/Amitgb14/langchain_jenkins) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-jenkins/month)](https://pypi.org/project/langchain-jenkins/) |
+| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
+| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
 | [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webz/month)](https://pypi.org/project/langchain-webz/) |
 | [`GaugeCatalog`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeCoverage`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeRecord`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`TruthBearPreview`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
+| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
+| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
+| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
+| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
+| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
+| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
+| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
+| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
+| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
+| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
+| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
+| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
 | [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-carejobs/month)](https://pypi.org/project/langchain-carejobs/) |
-| [`Jenkins`](https://github.com/Amitgb14/langchain_jenkins) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-jenkins/month)](https://pypi.org/project/langchain-jenkins/) |
-| [`iFlow Search`](https://platform.iflow.cn/) | [  ![Downloads per month](https://static.pepy.tech/badge/iflow-search-langchain/month)](https://pypi.org/project/iflow-search-langchain/) |
 | [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-layrcake/month)](https://pypi.org/project/langchain-layrcake/) |
 | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rustchain-tools/month)](https://pypi.org/project/langchain-rustchain-tools/) |
-| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
-| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
+| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
 | [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
+| [`Ausca`](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ausca/month)](https://pypi.org/project/langchain-ausca/) |
 | [`Stardog`](https://github.com/stardog-union/stardog-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stardog/month)](https://pypi.org/project/langchain-stardog/) |
+| [`KerqTrustTool`](https://kerq.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kerq/month)](https://pypi.org/project/langchain-kerq/) |
 | [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
-| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
-| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
-| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
-| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
+| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
+| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
+| [`ModexiaToolkit`](https://modexia.software/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modexia/month)](https://pypi.org/project/langchain-modexia/) |
+| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
+| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
 | [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
 | [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webextract/month)](https://pypi.org/project/langchain-webextract/) |
-| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
-| [`Ausca`](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ausca/month)](https://pypi.org/project/langchain-ausca/) |
-| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
-| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
-| [`KerqTrustTool`](https://kerq.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kerq/month)](https://pypi.org/project/langchain-kerq/) |
-| [`ModexiaToolkit`](https://modexia.software/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modexia/month)](https://pypi.org/project/langchain-modexia/) |
-| [`PinchworkDelegateTaskTool`](https://pinchwork.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/pinchwork/month)](https://pypi.org/project/pinchwork/) |
-| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
-| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
-| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
-| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
-| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
 | [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
-| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
-| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
-| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
-| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
-| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
-| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
-| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
-| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
-| [`TableJourneyToolkit`](https://tablejourney.com/agents/#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tablejourney/month)](https://pypi.org/project/langchain-tablejourney/) |
-| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
-| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
+| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
+| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
 | [`CrawleoCrawler`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
 | [`CrawleoSearch`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
-| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
 | [`HashlockToolkit`](https://docs.hashlock.markets/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hashlock/month)](https://pypi.org/project/langchain-hashlock/) |
-| [`ICTPBXToolkit`](https://ictpbx.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictpbx/month)](https://pypi.org/project/langchain-ictpbx/) |
-| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
-| [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
+| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
+| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
+| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
+| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
+| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
 | [`FidacyActionFirewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fidacy/month)](https://pypi.org/project/langchain-fidacy/) |
-| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
-| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
+| [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
+| [`ICTPBXToolkit`](https://ictpbx.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictpbx/month)](https://pypi.org/project/langchain-ictpbx/) |
+| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
+| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
 | [`VeriflyEmailVerifier`](https://verifly.email/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verifly/month)](https://pypi.org/project/langchain-verifly/) |
 | [`ICTContactToolkit`](https://www.ictcontact.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictcontact/month)](https://pypi.org/project/langchain-ictcontact/) |
-| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
-| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
-| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
-| [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flowspeech/month)](https://pypi.org/project/langchain-flowspeech/) |
-| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
-| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
-| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
+| [`PinchworkDelegateTaskTool`](https://pinchwork.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/pinchwork/month)](https://pypi.org/project/pinchwork/) |
+| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
 | [`AgentPhone Toolkit`](https://docs.agentphone.ai/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentphone/month)](https://pypi.org/project/langchain-agentphone/) |
+| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
+| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
+| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
+| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
+| [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flowspeech/month)](https://pypi.org/project/langchain-flowspeech/) |
+| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
+| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
+| [`UnstructuredTransformToolkit`](/oss/python/integrations/tools/unstructured_transform) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unstructured-transform/month)](https://pypi.org/project/langchain-unstructured-transform/) |
+| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
 | [`WebContactsTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMarkdownTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMetadataExtractTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebSEOAuditTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
-| [`UnstructuredTransformToolkit`](/oss/python/integrations/tools/unstructured_transform) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unstructured-transform/month)](https://pypi.org/project/langchain-unstructured-transform/) |
-| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
-| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
-| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
+| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
 | [`ProxyClaw`](https://proxyclaw.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyclaw/month)](https://pypi.org/project/langchain-proxyclaw/) |
-| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
-| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
+| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
+| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
+| [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
+| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
+| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
 | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
-| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
-| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-geekflare/month)](https://pypi.org/project/langchain-geekflare/) |
+| [`TableJourneyToolkit`](https://tablejourney.com/agents/#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tablejourney/month)](https://pypi.org/project/langchain-tablejourney/) |
+| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
+| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
+| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
+| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
 | [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
+| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
+| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
 | [`Blindfold`](https://docs.blindfold.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blindfold/month)](https://pypi.org/project/langchain-blindfold/) |
+| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-geekflare/month)](https://pypi.org/project/langchain-geekflare/) |
 | [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
 | [`GracefulFailTool`](https://selfheal.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/graceful-fail/month)](https://pypi.org/project/graceful-fail/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`DynamicFeed`](https://dynamicfeed.ai/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/dynamicfeed-tools/month)](https://pypi.org/project/dynamicfeed-tools/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
+| [`BotsRatedPreflightTool`](https://github.com/botsrated/botsrated/tree/main/integrations/langchain) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`LfgAlarmToolkit`](https://github.com/lfg-gm/langchain-lfg#readme) | N/A |
@@ -306748,7 +307317,7 @@ function MessageWithForkControls({
 
         stream.submit(
           { messages: [{ type: "human", content: editedText }] },
-          { forkFrom: { checkpointId } }
+          { forkFrom: checkpointId }
         );
       }}
     >
@@ -306772,7 +307341,7 @@ fork point for edits and regenerations.
 To edit a user message and fork the conversation:
 
 1. Get `parentCheckpointId` from the message's metadata
-2. Submit the edited message with `forkFrom: { checkpointId }`
+2. Submit the edited message with `forkFrom: checkpointId`
 3. The agent re-runs from that point
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -306788,7 +307357,7 @@ function handleEdit(
     {
       messages: [{ type: "human", content: newText }],
     },
-    { forkFrom: { checkpointId: metadata.parentCheckpointId } }
+    { forkFrom: metadata.parentCheckpointId }
   );
 }
 ```
@@ -306802,8 +307371,8 @@ After the edit:
 
 To regenerate an AI response without changing the input:
 
-1. Get the `parent_checkpoint` from the AI message's metadata
-2. Submit with empty input and `forkFrom: { checkpointId }`
+1. Get `parentCheckpointId` from the AI message's metadata
+2. Submit with `undefined` input and `forkFrom: checkpointId`
 3. The agent produces a fresh response from that point
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -306814,12 +307383,19 @@ function handleRegenerate(
   if (!metadata?.parentCheckpointId) return;
 
   stream.submit(undefined, {
-    forkFrom: { checkpointId: metadata.parentCheckpointId },
+    forkFrom: metadata.parentCheckpointId,
   });
 }
 ```
 
-Each regeneration creates a new path for the AI message at that position.
+The SDK converts `undefined` input to `null` to continue from the checkpoint
+without supplying new input. An empty object (`{}`) supplies new input instead.
+Each regeneration creates a new path in the same thread.
+
+> [!WARNING]
+>
+> Regeneration can re-execute downstream tools and API calls. It does not reverse
+> external effects from the original run. Check those effects before regenerating.
 
 > [!TIP]
 >
@@ -306829,7 +307405,8 @@ Each regeneration creates a new path for the AI message at that position.
 
 ## How branching works under the hood
 
-LangGraph persists every state transition as a **checkpoint**. When you submit
+LangGraph persists state at super-step boundaries as **checkpoints**. Nodes
+that run in parallel in one super-step share a checkpoint boundary. When you submit
 with `forkFrom`, the backend starts a new execution path from that point instead
 of appending to the current conversation. The result is a tree structure:
 
@@ -306847,7 +307424,9 @@ User: "Tell me about JSX" (edited from branch A)
 
 Each path is persisted in the checkpoint store. Use
 `stream.client.threads.getHistory(threadId)` when you want to build a separate
-timeline view across checkpoints.
+timeline view across checkpoints. History is newest first and defaults to 10
+entries. Use each state's `parent_checkpoint` to reconstruct ancestry; list
+position alone does not identify a branch.
 
 ## Best practices
 
@@ -312076,11 +312655,9 @@ Source: https://docs.langchain.com/oss/python/langchain/frontend/time-travel
 
 Inspect, navigate, and resume from any checkpoint in the conversation history
 
-Every state change in a LangGraph agent creates a **checkpoint**, a complete
-snapshot of the agent's state at that moment. Time travel lets you inspect any
-checkpoint, view the exact state the agent held, and **resume execution from
-that point** to explore alternative paths. It's a debugger, an undo button, and
-an audit log all in one.
+A [checkpoint](/oss/python/langgraph/persistence#checkpoints) is a saved snapshot of a
+LangGraph agent's state. Time travel lets you inspect a checkpoint and continue
+execution from that saved state to explore alternative paths.
 
 > [!NOTE]
 >
@@ -312088,23 +312665,27 @@ an audit log all in one.
 
 ## How checkpoints work
 
-LangGraph persists agent state after every node execution. Each persisted state
+LangGraph persists agent state at super-step boundaries. Nodes that run in
+parallel in the same super-step share a checkpoint boundary. Each persisted state
 is a [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) object that captures:
 
-* **checkpoint**: metadata identifying this specific snapshot (ID, timestamp)
-* **values**: the full agent state at this point (messages, custom keys)
-* **tasks**: the graph nodes that were scheduled to run next
-* **next**: the names of upcoming nodes in the execution plan
+* **checkpoint**: The checkpoint identifier, including its ID and namespace.
+* **created\_at**: The snapshot creation time.
+* **parent\_checkpoint**: The previous checkpoint in this path.
+* **values**: The full agent state at this point (messages, custom keys).
+* **tasks**: The graph nodes that were scheduled to run next.
+* **next**: The names of upcoming nodes in the execution plan.
 
-This creates a linear timeline of every decision the agent made, every tool it
-called, and every response it produced. Your UI can render this timeline and let
-users jump to any point.
+History can contain multiple execution paths, not one linear conversation.
+`getHistory()` returns checkpoints newest first, with a default limit of 10.
+Use `parent_checkpoint` to follow ancestry rather than treating adjacent entries
+as parent and child. The examples below display the returned page of history.
 
 ## Setting up `useStream`
 
 Create the stream for your agent, then fetch checkpoint history explicitly from
 the LangGraph client for the active thread. Resuming from a checkpoint uses
-`forkFrom: { checkpointId }`.
+`forkFrom: checkpointId`.
 
 > [!NOTE]
 >
@@ -312132,8 +312713,9 @@ export function TimeTravelChat() {
   }, [stream.client, threadId, stream.isLoading]);
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 
@@ -312174,8 +312756,9 @@ watch(
 );
 
 function resumeFrom(cp: ThreadState) {
-  stream.submit({}, {
-    forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+  if (!cp.checkpoint.checkpoint_id) return;
+  stream.submit(undefined, {
+    forkFrom: cp.checkpoint.checkpoint_id,
   });
 }
 </script>
@@ -312215,8 +312798,9 @@ function resumeFrom(cp: ThreadState) {
   });
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 </script>
@@ -312270,8 +312854,9 @@ export class TimeTravelChatComponent {
   }
 
   resumeFrom(cp: ThreadState) {
-    this.stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    this.stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 }
@@ -312280,7 +312865,9 @@ export class TimeTravelChatComponent {
 ## Building a checkpoint timeline
 
 The timeline sidebar shows every checkpoint as a clickable entry. Each entry
-displays the node that ran and how many messages existed at that point:
+displays the scheduled nodes and how many messages existed at that point.
+`tasks` describes work for the next step, not the nodes that produced the
+checkpoint. Use `next` to label all scheduled nodes, including parallel work:
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function TimelineSidebar({
@@ -312297,7 +312884,7 @@ function TimelineSidebar({
       </h2>
       <div className="space-y-2">
         {history.map((cp, i) => {
-          const taskName = cp.tasks?.[0]?.name ?? "unknown";
+          const nextNodes = cp.next?.join(", ") || "Complete";
           const msgCount = (cp.values?.messages as unknown[])?.length ?? 0;
 
           return (
@@ -312309,9 +312896,9 @@ function TimelineSidebar({
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-400">#{i + 1}</span>
-                <NodeBadge name={taskName} />
+                <NodeBadge name={nextNodes} />
               </div>
-              <p className="mt-1 text-sm font-medium">{taskName}</p>
+              <p className="mt-1 text-sm font-medium">Next: {nextNodes}</p>
               <p className="text-xs text-gray-500">
                 {msgCount} message{msgCount !== 1 ? "s" : ""}
               </p>
@@ -312337,7 +312924,7 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
     <div className="rounded-lg border bg-white p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">
-          Checkpoint {checkpoint.checkpoint.checkpoint_id.slice(0, 8)}...
+          Checkpoint {checkpoint.checkpoint.checkpoint_id?.slice(0, 8)}...
         </h3>
         <button
           onClick={() => setExpanded(!expanded)}
@@ -312348,10 +312935,6 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
       </div>
 
       <div className="mt-2 space-y-1 text-sm">
-        <p>
-          <strong>Node:</strong>{" "}
-          {checkpoint.tasks?.[0]?.name ?? "—"}
-        </p>
         <p>
           <strong>Next:</strong>{" "}
           {checkpoint.next?.join(", ") || "—"}
@@ -312384,30 +312967,29 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
 ## Resuming from a checkpoint
 
 The core of time travel is the ability to **resume execution from any prior
-checkpoint**. When a user selects a checkpoint, call `submit` with `null` input
-and pass the checkpoint ID:
+checkpoint**. When a user selects a checkpoint, call `submit` with `undefined`
+input and pass the checkpoint ID as `forkFrom`:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stream.submit({}, {
-  forkFrom: { checkpointId: selectedCheckpoint.checkpoint.checkpoint_id },
-});
+const checkpointId = selectedCheckpoint.checkpoint.checkpoint_id;
+if (checkpointId) {
+  stream.submit(undefined, { forkFrom: checkpointId });
+}
 ```
 
-This tells LangGraph to:
+The SDK sends `undefined` or `null` input as `null`, which continues from the
+selected checkpoint without supplying new input. An empty object (`{}`) is new
+input, not the same continuation signal. If the checkpoint has no next nodes,
+there is no pending work to replay.
 
-1. Roll back to the selected checkpoint's state
-2. Re-execute the graph from that point forward
-3. Stream the new results to the client
+The new run creates another path in the same thread. The UI displays that path;
+the original checkpoints remain available in history.
 
-The existing messages after the selected checkpoint are replaced by the new
-execution path. This effectively creates a **branch** in the conversation
-timeline.
-
-> [!NOTE]
+> [!WARNING]
 >
-> Resuming from a checkpoint does not delete the original timeline. The previous
-> checkpoints remain available in the history. This means users can always go back
-> and try a different path without losing any prior work.
+> Replaying a checkpoint can execute downstream tools and API calls again.
+> It does not reverse earlier external effects, such as sent messages or database
+> writes. Check those effects before replaying a run.
 
 ## The SplitView layout
 
@@ -312456,11 +313038,12 @@ function TimeTravelLayout() {
           history={history}
           selected={selectedCheckpoint}
           onSelect={setSelectedCheckpoint}
-          onResume={(cp) =>
-            stream.submit({}, {
-              forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-            })
-          }
+          onResume={(cp) => {
+            if (!cp.checkpoint.checkpoint_id) return;
+            stream.submit(undefined, {
+              forkFrom: cp.checkpoint.checkpoint_id,
+            });
+          }}
         />
         {selectedCheckpoint && (
           <CheckpointInspector checkpoint={selectedCheckpoint} />
@@ -312480,7 +313063,7 @@ function formatCheckpoints(history: ThreadState[]) {
   return history.map((cp, index) => ({
     index,
     id: cp.checkpoint?.checkpoint_id,
-    taskName: cp.tasks?.[0]?.name ?? "unknown",
+    nextLabel: cp.next?.join(", ") || "Complete",
     messageCount: (cp.values?.messages as unknown[])?.length ?? 0,
     hasInterrupts: cp.tasks?.some((t) => t.interrupts?.length) ?? false,
     nextNodes: cp.next ?? [],
@@ -312497,8 +313080,8 @@ Time travel is invaluable across many scenarios:
 
 * **Debugging agent behavior**: step through the agent's decisions to
   understand why it chose a particular path
-* **Undoing actions**: if the agent took a wrong turn, resume from an earlier
-  checkpoint and try again
+* **Trying another path**: continue from an earlier saved state without
+  deleting the original checkpoints
 * **Exploring alternatives**: fork from a mid-conversation checkpoint to see
   how different inputs change the outcome
 * **Auditing**: review the complete history of an agent's actions for
@@ -312548,7 +313131,7 @@ function TimelineEntry({
         )}
       </div>
       <p className="mt-1 text-sm font-medium">
-        {checkpoint.tasks?.[0]?.name ?? "—"}
+        Next: {checkpoint.next?.join(", ") || "Complete"}
       </p>
     </div>
   );
@@ -312559,11 +313142,10 @@ function TimelineEntry({
 
 * **Load history lazily**: for threads with hundreds of checkpoints, paginate
   or load only the most recent N entries to keep the UI responsive.
-* **Show meaningful labels**: display node names and message counts instead of
-  raw checkpoint IDs. Users need context, not UUIDs.
-* **Confirm before resuming**: resuming from an old checkpoint replaces the
-  current execution path. Show a confirmation dialog so users don't
-  accidentally lose the current conversation state.
+* **Show meaningful labels**: display scheduled next nodes and message counts
+  instead of raw checkpoint IDs. Users need context, not UUIDs.
+* **Confirm before resuming**: show a confirmation dialog before starting
+  another path, especially when downstream nodes have external effects.
 * **Highlight the current checkpoint**: make it visually obvious which
   checkpoint corresponds to the current state of the conversation.
 * **Support keyboard navigation**: power users will want to step through
@@ -337575,6 +338157,191 @@ with PostgresStore.from_conn_string(DB_URI) as store:  # [!code highlight]
 > ```
 
 > **Example: using MongoDB store**
+>
+> ```
+> pip install -U langgraph-store-mongodb langgraph-checkpoint-mongodb
+> ```
+>
+> > [!TIP]
+> >
+> > Semantic search with `query` needs MongoDB Vector Search (`$vectorSearch`), which runs on [MongoDB Atlas](https://www.mongodb.com/docs/atlas/) or on self-managed MongoDB with [Search and Vector Search](https://www.mongodb.com/docs/search/self-managed/current/) (`mongot`). A plain `mongod` without `mongot` is not enough. Pass `index_config` from `create_vector_index_config` when you open the store. Index creation can exceed the default 15 second wait, so set `auto_index_timeout` higher on first run. For Atlas cluster setup, see [this guide](https://www.mongodb.com/docs/guides/atlas/cluster/). For vector index setup and an agent-focused walkthrough, see [long-term memory with MongoDB Atlas](/oss/python/integrations/memory/mongodb-long-term-memory).
+>
+> **Async**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from collections.abc import Sequence
+> from dataclasses import dataclass
+> from uuid import uuid4
+>
+> from langchain.chat_models import init_chat_model
+> from langgraph.checkpoint.mongodb import MongoDBSaver  # [!code highlight]
+> from langgraph.graph import StateGraph, MessagesState, START
+> from langgraph.runtime import Runtime  # [!code highlight]
+> from langgraph.store.mongodb import MongoDBStore, create_vector_index_config  # [!code highlight]
+>
+> model = init_chat_model(model="claude-haiku-4-5-20251001")
+>
+> def embed(texts: Sequence[str]) -> list[list[float]]:
+>     # Replace with an embeddings model or LangChain Embeddings instance
+>     return [[1.0, 2.0] for _ in texts]
+>
+> @dataclass
+> class Context:
+>     user_id: str
+>
+> async def call_model(  # [!code highlight]
+>     state: MessagesState,
+>     runtime: Runtime[Context],  # [!code highlight]
+> ):
+>     user_id = runtime.context.user_id  # [!code highlight]
+>     namespace = ("memories", user_id)
+>     memories = await runtime.store.asearch(namespace, query=str(state["messages"][-1].content))  # [!code highlight]
+>     info = "\n".join([d.value["data"] for d in memories])
+>     system_msg = f"You are a helpful assistant talking to the user. User info: {info}"
+>
+>     # Store new memories if the user asks the model to remember
+>     last_message = state["messages"][-1]
+>     if "remember" in last_message.content.lower():
+>         memory = "User name is Bob"
+>         await runtime.store.aput(namespace, str(uuid4()), {"data": memory})  # [!code highlight]
+>
+>     response = await model.ainvoke(
+>         [{"role": "system", "content": system_msg}] + state["messages"]
+>     )
+>     return {"messages": response}
+>
+> MONGODB_ATLAS_URI = os.environ["MONGODB_ATLAS_URI"]
+> index_config = create_vector_index_config(embed=embed, dims=2, fields=["data"])  # [!code highlight]
+>
+> with (
+>     MongoDBStore.from_conn_string(  # [!code highlight]
+>         MONGODB_ATLAS_URI,
+>         index_config=index_config,  # [!code highlight]
+>         auto_index_timeout=120,
+>     ) as store,
+>     MongoDBSaver.from_conn_string(MONGODB_ATLAS_URI) as checkpointer,
+> ):
+>     builder = StateGraph(MessagesState, context_schema=Context)  # [!code highlight]
+>     builder.add_node(call_model)
+>     builder.add_edge(START, "call_model")
+>
+>     graph = builder.compile(
+>         checkpointer=checkpointer,
+>         store=store,  # [!code highlight]
+>     )
+>
+>     import asyncio
+>
+>     async def run():
+>         config = {"configurable": {"thread_id": "1"}}
+>         stream = await graph.astream_events(
+>             {"messages": [{"role": "user", "content": "Hi! Remember: my name is Bob"}]},
+>             config,
+>             version="v3",
+>             context=Context(user_id="1"),  # [!code highlight]
+>         )
+>         async for snapshot in stream.values:
+>             snapshot["messages"][-1].pretty_print()
+>
+>         config = {"configurable": {"thread_id": "2"}}
+>         stream = await graph.astream_events(
+>             {"messages": [{"role": "user", "content": "what is my name?"}]},
+>             config,
+>             version="v3",
+>             context=Context(user_id="1"),  # [!code highlight]
+>         )
+>         async for snapshot in stream.values:
+>             snapshot["messages"][-1].pretty_print()
+>
+>     asyncio.run(run())
+> ```
+>
+> **Sync**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from collections.abc import Sequence
+> from dataclasses import dataclass
+> from uuid import uuid4
+>
+> from langchain.chat_models import init_chat_model
+> from langgraph.checkpoint.mongodb import MongoDBSaver  # [!code highlight]
+> from langgraph.graph import StateGraph, MessagesState, START
+> from langgraph.runtime import Runtime  # [!code highlight]
+> from langgraph.store.mongodb import MongoDBStore, create_vector_index_config  # [!code highlight]
+>
+> model = init_chat_model(model="claude-haiku-4-5-20251001")
+>
+> def embed(texts: Sequence[str]) -> list[list[float]]:
+>     # Replace with an embeddings model or LangChain Embeddings instance
+>     return [[1.0, 2.0] for _ in texts]
+>
+> @dataclass
+> class Context:
+>     user_id: str
+>
+> def call_model(  # [!code highlight]
+>     state: MessagesState,
+>     runtime: Runtime[Context],  # [!code highlight]
+> ):
+>     user_id = runtime.context.user_id  # [!code highlight]
+>     namespace = ("memories", user_id)
+>     memories = runtime.store.search(namespace, query=str(state["messages"][-1].content))  # [!code highlight]
+>     info = "\n".join([d.value["data"] for d in memories])
+>     system_msg = f"You are a helpful assistant talking to the user. User info: {info}"
+>
+>     # Store new memories if the user asks the model to remember
+>     last_message = state["messages"][-1]
+>     if "remember" in last_message.content.lower():
+>         memory = "User name is Bob"
+>         runtime.store.put(namespace, str(uuid4()), {"data": memory})  # [!code highlight]
+>
+>     response = model.invoke(
+>         [{"role": "system", "content": system_msg}] + state["messages"]
+>     )
+>     return {"messages": response}
+>
+> MONGODB_ATLAS_URI = os.environ["MONGODB_ATLAS_URI"]
+> index_config = create_vector_index_config(embed=embed, dims=2, fields=["data"])  # [!code highlight]
+>
+> with (
+>     MongoDBStore.from_conn_string(  # [!code highlight]
+>         MONGODB_ATLAS_URI,
+>         index_config=index_config,  # [!code highlight]
+>         auto_index_timeout=120,
+>     ) as store,
+>     MongoDBSaver.from_conn_string(MONGODB_ATLAS_URI) as checkpointer,
+> ):
+>     builder = StateGraph(MessagesState, context_schema=Context)  # [!code highlight]
+>     builder.add_node(call_model)
+>     builder.add_edge(START, "call_model")
+>
+>     graph = builder.compile(
+>         checkpointer=checkpointer,
+>         store=store,  # [!code highlight]
+>     )
+>
+>     config = {"configurable": {"thread_id": "1"}}
+>     stream = graph.stream_events(
+>         {"messages": [{"role": "user", "content": "Hi! Remember: my name is Bob"}]},
+>         config,
+>         version="v3",
+>         context=Context(user_id="1"),  # [!code highlight]
+>     )
+>     for snapshot in stream.values:
+>         snapshot["messages"][-1].pretty_print()
+>
+>     config = {"configurable": {"thread_id": "2"}}
+>     stream = graph.stream_events(
+>         {"messages": [{"role": "user", "content": "what is my name?"}]},
+>         config,
+>         version="v3",
+>         context=Context(user_id="1"),  # [!code highlight]
+>     )
+>     for snapshot in stream.values:
+>         snapshot["messages"][-1].pretty_print()
+> ```
 
 > **Example: using Redis store**
 >
@@ -351413,7 +352180,7 @@ read the [**streaming guide**](/oss/python/langgraph/streaming) section for more
 
 Example of using the streaming API to stream value chunks from a workflow run.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
 
 stream = main.stream_events({"x": 5}, config=config, version="v3")

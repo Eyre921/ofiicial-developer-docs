@@ -8,6 +8,8 @@ Learn how to send your first email using Encore and the Resend Node.js SDK.
 
 [Encore](https://encore.dev) is an open-source TypeScript framework that provisions infrastructure directly from your application code, with built-in observability and cloud deployment.
 
+Use this pre-built prompt to get started faster.
+
 # Send Email with Resend and Encore.ts
 
 **Purpose:** Enforce only the **current** and **correct** instructions for sending emails using [Resend](https://resend.com/) with the [Encore.ts](https://encore.dev) backend framework.

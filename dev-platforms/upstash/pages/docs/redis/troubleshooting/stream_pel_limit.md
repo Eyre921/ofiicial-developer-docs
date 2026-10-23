@@ -33,7 +33,7 @@ from the list of the associated group and consumer.
 - [Cloudflare Workers with Websockets and Redis](https://upstash.com/docs/redis/tutorials/cloudflare_websockets_redis.md)
 - [Use Redis in Cloudflare Workers](https://upstash.com/docs/redis/tutorials/cloudflare_workers_with_redis.md)
 - [Build a Leaderboard API At Edge using Cloudflare Workers and Redis](https://upstash.com/docs/redis/tutorials/edge_leaderboard.md): This tutorial shows how to build a Leaderboard API At Edge using Cloudflare Workers and Redis.
-- [Express Session with Serverless Redis](https://upstash.com/docs/redis/tutorials/express_session.md): This tutorial shows how to use Upstash as the session storage of your Express application.
+- [Express Session with Upstash Redis](https://upstash.com/docs/redis/tutorials/express_session.md): Store Express sessions in Upstash Redis with express-session, connect-redis and node-redis, so sessions survive restarts and work across multiple servers.
 - [Serverless Golang API with Redis](https://upstash.com/docs/redis/tutorials/goapi.md)
 - [Build a Serverless Histogram API with Redis](https://upstash.com/docs/redis/tutorials/histogram.md): This tutorial shows how to build a histogram API with Redis.
 - [Job Processing and Event Queue with Serverless Redis](https://upstash.com/docs/redis/tutorials/job_processing.md): This tutorial shows how to use Upstash Redis for job/task processing.

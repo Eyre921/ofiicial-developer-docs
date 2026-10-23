@@ -31,7 +31,7 @@ Private Endpoints endpoints
 
 ## List
 
-List the organization's private endpoints, including drafts. Requires the private endpoints entitlement. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List the organization's private endpoints, including drafts. Requires the private endpoints entitlement. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -85,7 +85,7 @@ func main() {
 
 ## Create
 
-Create a private endpoint as a draft. Drafts are not routable: validate one with `POST /private-endpoints/{id}/validate`, then activate it with `POST /private-endpoints/{id}/activate`. Pass `activate` to do all three in one call; if validation fails the draft is kept and returned with the failed checks. Send an `Idempotency-Key` header to make retries safe: a repeated key with the same request returns the endpoint the first request created; reusing it with different fields returns 422 `idempotency_key_reused`. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Create a private endpoint as a draft. Drafts are not routable: validate one with `POST /private-endpoints/{id}/validate`, then activate it with `POST /private-endpoints/{id}/activate`. Pass `activate` to do all three in one call; if validation fails the draft is kept and returned with the failed checks. Send an `Idempotency-Key` header to make retries safe: a repeated key with the same request returns the endpoint the first request created; reusing it with different fields returns 422 `idempotency_key_reused`. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -151,7 +151,7 @@ func main() {
 
 ## Delete
 
-Delete a private endpoint and stop routing to it. Pass `draft_only=true` to refuse (409) when the endpoint has been activated. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Delete a private endpoint and stop routing to it. Pass `draft_only=true` to refuse (409) when the endpoint has been activated. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -212,7 +212,7 @@ func main() {
 
 ## Get
 
-Get one private endpoint with its upstream configuration and current pricing. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get one private endpoint with its upstream configuration and current pricing. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -268,7 +268,7 @@ func main() {
 
 ## Update
 
-Replace a draft endpoint's upstream configuration: send `upstream_model_id`, and `base_url` to change it (an omitted `base_url` keeps the stored one). Omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes. Any change clears earlier validation. Active endpoints return 409; delete and re-create them instead. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Replace a draft endpoint's upstream configuration: send `upstream_model_id`, and `base_url` to change it (an omitted `base_url` keeps the stored one). Omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes. Any change clears earlier validation. Active endpoints return 409; delete and re-create them instead. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -332,7 +332,7 @@ func main() {
 
 ## Activate
 
-Make a validated draft routable. Returns 409 when the endpoint was never validated, the validation is stale, or it is already active. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Make a validated draft routable. Returns 409 when the endpoint was never validated, the validation is stale, or it is already active. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -392,7 +392,7 @@ func main() {
 
 ## Disable
 
-Stop routing to an active endpoint without deleting it. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Stop routing to an active endpoint without deleting it. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -452,7 +452,7 @@ func main() {
 
 ## Enable
 
-Resume routing to a disabled endpoint. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Resume routing to a disabled endpoint. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -512,7 +512,7 @@ func main() {
 
 ## UpdatePricing
 
-Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -579,7 +579,7 @@ func main() {
 
 ## Validate
 
-Send a live test request to the draft endpoint using the given workspace's BYOK credential for its provider. A passing validation is required before activation. Failed checks return 200 with `passed: false`. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Send a live test request to the draft endpoint using the given workspace's BYOK credential for its provider. A passing validation is required before activation. Failed checks return 200 with `passed: false`. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

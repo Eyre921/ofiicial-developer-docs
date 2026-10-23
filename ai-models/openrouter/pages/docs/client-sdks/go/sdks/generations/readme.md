@@ -145,7 +145,7 @@ func main() {
 
 ## SubmitFeedback
 
-Submit structured feedback on a generation the authenticated user made. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Submit structured feedback on a generation the authenticated user made. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

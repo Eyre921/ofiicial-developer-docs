@@ -47,7 +47,7 @@ You may send `Speak` at any time. Text sent while the current turn is still gene
 
 ### Text handling
 
-Send **plain text**. The server applies text normalization (for example, expanding numbers and dates) before synthesis, but it does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream LLM tokens directly without coordinating chunk boundaries.
+Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish, the server applies text normalization (for example, expanding numbers and dates) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream LLM tokens directly without coordinating chunk boundaries.
 
 > **Warning**
 >

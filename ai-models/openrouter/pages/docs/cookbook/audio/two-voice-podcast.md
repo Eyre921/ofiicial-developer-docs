@@ -56,11 +56,11 @@ You need:
 
 The three steps below form one script. Paste them in order into `podcast.ts` and run it with `bun podcast.ts` or `node podcast.ts`.
 
-This guide uses `google/gemini-3.8-flash-lite-tts`. Not every TTS provider supports multi-speaker input, and those that do not return a 400 rather than reading the whole dialogue in one voice. [Text-to-Speech](/docs/guides/overview/multimodal/tts.md#multi-speaker-input) lists the supported models and the full parameter reference.
+This guide uses `google/gemini-3.8-flash-lite-tts`. Not every TTS provider supports multi-speaker input, and those that do not return a 400 rather than reading the whole dialogue in one voice. [Text-to-Speech](https://openrouter.ai/docs/guides/overview/multimodal/tts.md#multi-speaker-input) lists the supported models and the full parameter reference.
 
 ## Step 1: Write the script
 
-Ask a chat model for the dialogue and use [structured outputs](/docs/guides/features/structured-outputs.md) to get it back as a list of turns. A schema saves you from parsing speaker labels out of free text, and the `direction` field gives the voice model something to act on.
+Ask a chat model for the dialogue and use [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs.md) to get it back as a list of turns. A schema saves you from parsing speaker labels out of free text, and the `direction` field gives the voice model something to act on.
 
 ```ts expandable lines theme={null}
 const apiKey = process.env.OPENROUTER_API_KEY;
@@ -245,7 +245,7 @@ The 49-second clip above cost \$0.0074 to voice. Look up any request's cost with
 
 | Error | Cause | Fix |
 | - | - | - |
-| `Multi-speaker input is not supported by this provider.` | The model's provider does not accept a list of turns | Switch to a model listed under [Multi-Speaker Input](/docs/guides/overview/multimodal/tts.md#multi-speaker-input) |
+| `Multi-speaker input is not supported by this provider.` | The model's provider does not accept a list of turns | Switch to a model listed under [Multi-Speaker Input](https://openrouter.ai/docs/guides/overview/multimodal/tts.md#multi-speaker-input) |
 | `An explicit voice is required for this TTS provider.` | A turn has no `voice` and the request has no top-level `voice` | Give every turn a voice, or set a top-level `voice` as the default |
 | `Provider returned 400` | The turns use more than two distinct voices | Gemini rejects a third speaker. Keep each request to two voices |
 | `Gemini TTS only supports response_format="pcm"` | `response_format` is `mp3` | Request `pcm` and convert it afterwards |

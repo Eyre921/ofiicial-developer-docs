@@ -102,7 +102,7 @@ On the agent side, declare which versions the current code supports:
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText } from "ai";
+
 import { anthropic } from "@ai-sdk/anthropic";
 
 // The set of frontend protocol versions this agent code supports.
@@ -123,7 +123,7 @@ export const myChat = chat
         chat.requestUpgrade();
       }
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });
@@ -186,7 +186,7 @@ export const myChat = chat
         chat.requestUpgrade();
       }
     },
-    run: async ({ messages, signal }) => {
+    run: async ({ messages, signal, streamText }) => {
       return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
     },
   });

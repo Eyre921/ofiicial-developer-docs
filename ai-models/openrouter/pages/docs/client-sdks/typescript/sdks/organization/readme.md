@@ -24,7 +24,7 @@ Organization endpoints
 
 ## listMembers
 
-List all members of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all members of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -106,7 +106,7 @@ run();
 
 ## getSettings
 
-Get the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Get the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -184,7 +184,7 @@ run();
 
 ## updateSettings
 
-Update the settings of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Update the settings of the organization associated with the authenticated management key. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

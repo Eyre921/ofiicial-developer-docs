@@ -24,7 +24,7 @@ Analytics and usage endpoints
 
 ## get\_user\_activity
 
-Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -71,7 +71,7 @@ with OpenRouter(
 
 ## get\_analytics\_meta
 
-Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -118,7 +118,7 @@ with OpenRouter(
 
 ## query\_analytics
 
-Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

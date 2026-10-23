@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1396 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -193,6 +193,7 @@
 - `docs/api-reference/legacy/usage/get` — [Get character metrics usage](pages/docs/api-reference/legacy/usage/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md)
 - `docs/api-reference/legacy/voices/create-previews` — [Voice design](pages/docs/api-reference/legacy/voices/create-previews.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
 - `docs/api-reference/legacy/voices/get-all` — [List voices](pages/docs/api-reference/legacy/voices/get-all.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md)
+- `docs/api-reference/llm/calculate` — [Calculate expected LLM usage](pages/docs/api-reference/llm/calculate.md) · [原文](https://elevenlabs.io/docs/api-reference/llm/calculate.md)
 - `docs/api-reference/llm/list` — [List LLMs](pages/docs/api-reference/llm/list.md) · [原文](https://elevenlabs.io/docs/api-reference/llm/list.md)
 - `docs/api-reference/mcp/approval-policies/create` — [Create MCP server tool approval](pages/docs/api-reference/mcp/approval-policies/create.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/create.md)
 - `docs/api-reference/mcp/approval-policies/delete` — [Delete MCP server tool approval](pages/docs/api-reference/mcp/approval-policies/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/delete.md)
@@ -897,6 +898,7 @@
 - `docs/help-center/account/general/can-i-change-my-account-from-google-sign-in-to-email-and-password` — [Can I change my account from Google Sign-in to email and password?](pages/docs/help-center/account/general/can-i-change-my-account-from-google-sign-in-to-email-and-password.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-i-change-my-account-from-google-sign-in-to-email-and-password.md)
 - `docs/help-center/account/general/can-i-export-usage-data-for-my-account` — [Can I export usage data for my account?](pages/docs/help-center/account/general/can-i-export-usage-data-for-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-i-export-usage-data-for-my-account.md)
 - `docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook` — [Can I still log in using GitHub or Facebook?](pages/docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-i-still-log-in-using-github-or-facebook.md)
+- `docs/help-center/account/general/can-users-have-more-than-one-account` — [Can users have more than one account?](pages/docs/help-center/account/general/can-users-have-more-than-one-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/can-users-have-more-than-one-account.md)
 - `docs/help-center/account/general/do-i-use-quota-on-every-generation` — [Do I use quota on every generation?](pages/docs/help-center/account/general/do-i-use-quota-on-every-generation.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/do-i-use-quota-on-every-generation.md)
 - `docs/help-center/account/general/have-characters-changed` — [Have characters changed?](pages/docs/help-center/account/general/have-characters-changed.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/have-characters-changed.md)
 - `docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account` — [How can I access usage analytics for my account?](pages/docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/how-can-i-access-usage-analytics-for-my-account.md)

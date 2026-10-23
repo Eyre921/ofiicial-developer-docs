@@ -22,6 +22,7 @@ Learn how to provide financial services to connected accounts.
 - AU
 - BE
 - BG
+- CA
 - CY
 - DE
 - EE

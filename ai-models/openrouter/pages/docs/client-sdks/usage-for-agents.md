@@ -116,7 +116,7 @@ for await (const chunk of stream) {
 
 > [!NOTE]
 >
-> If you need higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions), see the [Agent SDK](/docs/agent-sdk/overview.md) instead.
+> If you need higher-level primitives for building agents (multi-turn loops, tool definitions, stop conditions), see the [Agent SDK](https://openrouter.ai/docs/agent-sdk/overview.md) instead.
 
 ## Repository
 

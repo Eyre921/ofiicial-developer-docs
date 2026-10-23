@@ -19290,60 +19290,6 @@ The organization bot token must have the following scopes:
 * `workflows:read`
 
 
-# Get ai usage analytics report
-Source: https://developers.notion.com/reference/admin/get-ai-usage-analytics-report
-
-openapi-adminApi.json GET /v1/analytics/ai_usage/reports/{job_id}
-Fetch a AI usage analytics report.
-
-The organization bot token must have the following scopes:
-
-* `analytics:ai-analytics`
-
-Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:ai-analytics` scope can fetch a report created by another bot.
-
-Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
-
-Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
-
-Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
-
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
-
-A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
-
-CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
-
-Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
-
-
-# Get content pages analytics report
-Source: https://developers.notion.com/reference/admin/get-content-pages-analytics-report
-
-openapi-adminApi.json GET /v1/analytics/content_pages/reports/{job_id}
-Fetch a content pages analytics report.
-
-The organization bot token must have the following scopes:
-
-* `analytics:page-content`
-
-Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `analytics:page-content` scope can fetch a report created by another bot.
-
-Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
-
-Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
-
-Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
-
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
-
-A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
-
-CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
-
-Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
-
-
 # Retrieve a legal hold
 Source: https://developers.notion.com/reference/admin/get-legal-hold
 
@@ -19364,33 +19310,6 @@ Get workspace export status.
 The organization bot token must have the following scopes:
 
 * `workspace:export`
-
-
-# Get user activity analytics report
-Source: https://developers.notion.com/reference/admin/get-user-activity-analytics-report
-
-openapi-adminApi.json GET /v1/analytics/user_activity/reports/{job_id}
-Fetch a user activity analytics report.
-
-The organization bot token must have the following scopes:
-
-* `user-analytics:read`
-
-Authenticate the report request with an organization bot bearer credential. Supply the workspace UUID in `workspace_id` and the report UUID in `job_id`. A live bot in the same organization with the current `user-analytics:read` scope can fetch a report created by another bot.
-
-Completed reports include `download_url` and `link_expires_at` when the file is available. Follow that URL directly; it contains a derived organization bot file token and needs no additional Authorization header. Downloads use the configured secure file host (`file.notion.com` or `file.notion.so`; local environments use their configured file host).
-
-Links expire after seven days or at the saved file expiry, whichever comes first. Files retain their original 30-day lifetime. Fetch the report again to renew a link while its file remains available. Permissions, credential revocation, and file expiry are checked again when downloading.
-
-Completed reports also include `row_count`, `file_size_bytes`, and `data_as_of`, the ISO 8601 time of the source data. `data_as_of` can be earlier than `completed_time` because generation takes time.
-
-Expired or definitively missing files return HTTP 200 with `status: "expired"` and no download URL. Queued, running, and failed reports also omit download URLs. Failed reports include `failed_time` and `error_code`.
-
-A file that fails integrity verification returns HTTP 500 with `additional_data.tool_error_code` set to `analytics_report_integrity_failed` and `additional_data.tool_error_retryable` set to `false`. Create a new report instead of retrying. Other storage failures return HTTP 500 with `tool_error_retryable` set to `true`.
-
-CSV and JSONL files contain the same values, with two CSV-only rules. A text value that starts with `=`, `+`, `-`, `@`, `*`, `/`, or a full-width equals sign, optionally after tabs or line breaks, gets a leading `'` so spreadsheets show it as text instead of running it as a formula. List values are JSON arrays, such as `["Engineering","Product"]`; an empty list is `[]` and a missing value is an empty cell. JSONL keeps exact values.
-
-Treat the full download URL as a credential. Do not log or share it, and avoid sending it in referrers. Report responses and downloaded files use `Cache-Control: private, no-store`.
 
 
 # Get agents in a space
@@ -19432,22 +19351,6 @@ Samples requests and responses are shown for each endpoint. Requests are shown u
 ## Pagination
 
 List endpoints that paginate use cursor-based pagination. Some endpoints use a fixed page size; endpoints that accept `page_size` document its default and maximum. Pass a returned `next_cursor` as `start_cursor` to request the next page.
-
-
-# List analytics reports
-Source: https://developers.notion.com/reference/admin/list-analytics-reports
-
-openapi-adminApi.json GET /v1/analytics/reports
-List analytics reports.
-
-The organization bot token must have every scope in one of the following sets:
-
-* Option 1:
-  * `analytics:ai-analytics`
-* Option 2:
-  * `user-analytics:read`
-* Option 3:
-  * `analytics:page-content`
 
 
 # List pages on a legal hold

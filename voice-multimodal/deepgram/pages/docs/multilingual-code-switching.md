@@ -18,7 +18,7 @@ The Multilingual Codeswitching feature in Deepgram's API allows you to transcrib
 
 > **Info**
 >
-> Multilingual Code Switching is available on Nova-2, Nova-3, Nova-3 Medical (`nova-3-medical`), and Flux Multilingual (`flux-general-multi`). See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
+> Multilingual Code Switching is available on Nova-2, Nova-3, Nova-3 Medical (`nova-3-medical`), and Flux Multilingual (`flux-general-multi`). Nova-3 multilingual supports 55 languages. See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
 
 ## 1. Enable Feature
 
@@ -61,6 +61,31 @@ To transcribe an audio stream, initiate a websocket connection, including the pa
 wss://api.deepgram.com/v1/listen?language=multi&model=nova-3&sample_rate=44100&encoding=linear16&endpointing=100
 ```
 
+### Nova-3 Language Hints
+
+With Nova-3 (`model=nova-3&language=multi`), you can add one or more optional `language_hint` parameters to bias detection toward the languages you expect. Hints bias detection but do not restrict it, and the model still transcribes other supported languages it hears. Repeat the parameter to pass several hints.
+
+Pre-recorded:
+
+**`cURL`**
+
+```bash cURL
+curl \
+  --request POST \
+  --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY' \
+  --header 'Content-Type: audio/wav' \
+  --data-binary @youraudio.wav \
+  --url 'https://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=en&language_hint=es'
+```
+
+Streaming:
+
+```
+wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=en&language_hint=es&encoding=linear16&sample_rate=16000&endpointing=100
+```
+
+`language_hint` only applies with `language=multi` and is ignored otherwise. Nova-2 does not support `language_hint`. A hint that is not a supported code fails the request with HTTP 400 (`INVALID_QUERY_PARAMETER`). See the [Nova-3 Language Prompting guide](/docs/nova-3-language-prompting) for usage scenarios and response details.
+
 ### Flux Multilingual
 
 Flux Multilingual handles code-switching natively. Instead of `language=multi`, use `model=flux-general-multi` with optional `language_hint` parameters to bias toward expected languages.
@@ -84,19 +109,19 @@ When the file is finished processing, you’ll receive a JSON response that has 
 {
     "metadata": {
         "transaction_key": "deprecated",
-        "request_id": "2479c8c8-8285-40ac-9ab6-f0874449f793",
-        "sha256": "154e291ecfa8be6ab8343560bcc109001fa7853eb537253be8e4defc9b504c33",
-        "created": "2024-06-26T19:56:16.180Z",
-        "duration": 1.6,
+        "request_id": "01a15a73-1cc4-7dc2-a9f6-f0e041521f9a",
+        "sha256": "10d5f206c0d75ecb6e1bdf035f2a7b62665ed0a6afa2afb667c7c7028455659c",
+        "created": "2026-10-20T17:54:20.349Z",
+        "duration": 8.499937,
         "channels": 1,
         "models": [
-            "dc8a3fe5-a395-4b75-a8b1-71c9a5a87526"
+            "5c5e97ef-6589-4dbd-9d7a-69b8827c9e78"
         ],
         "model_info": {
-            "dc8a3fe5-a395-4b75-a8b1-71c9a5a87526": {
-                "name": "2-general-nova",
-                "version": "1999-06-13.21385",
-                "arch": "nova-2"
+            "5c5e97ef-6589-4dbd-9d7a-69b8827c9e78": {
+                "name": "general-nova-3",
+                "version": "1990-01-01.1",
+                "arch": "nova-3"
             }
         }
     },
@@ -105,47 +130,155 @@ When the file is finished processing, you’ll receive a JSON response that has 
             {
                 "alternatives": [
                     {
-                        "transcript": "No recuerdo mi bank password.",
-                        "confidence": 0.99902344,
+                        "transcript": "después de revisar su póliza de automóvil veo que actualmente cuenta con cobertura integral con un deducible de quinientos dólares",
+                        "confidence": 1.0,
                         "languages": [
+                            "es"
+                        ],
+                        "languages_hinted": [
                             "en",
                             "es"
                         ],
                         "words": [
                             {
-                                "word": "no",
-                                "start": 0.08,
-                                "end": 0.32,
-                                "confidence": 0.9975586,
-                                "language": "es"
-                            },
-                            {
-                                "word": "recuerdo",
+                                "word": "después",
                                 "start": 0.32,
                                 "end": 0.79999995,
-                                "confidence": 0.9921875,
+                                "confidence": 1.0,
                                 "language": "es"
                             },
                             {
-                                "word": "mi",
+                                "word": "de",
                                 "start": 0.79999995,
-                                "end": 1.04,
-                                "confidence": 0.96777344,
+                                "end": 0.88,
+                                "confidence": 0.99902344,
                                 "language": "es"
                             },
                             {
-                                "word": "bank",
-                                "start": 1.04,
-                                "end": 1.28,
-                                "confidence": 1,
-                                "language": "en"
+                                "word": "revisar",
+                                "start": 0.88,
+                                "end": 1.36,
+                                "confidence": 1.0,
+                                "language": "es"
                             },
                             {
-                                "word": "password",
-                                "start": 1.28,
-                                "end": 1.5999999,
-                                "confidence": 0.9926758,
-                                "language": "en"
+                                "word": "su",
+                                "start": 1.36,
+                                "end": 1.52,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "póliza",
+                                "start": 1.52,
+                                "end": 2.0,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "de",
+                                "start": 2.0,
+                                "end": 2.1599998,
+                                "confidence": 0.99902344,
+                                "language": "es"
+                            },
+                            {
+                                "word": "automóvil",
+                                "start": 2.1599998,
+                                "end": 2.96,
+                                "confidence": 0.9958008,
+                                "language": "es"
+                            },
+                            {
+                                "word": "veo",
+                                "start": 2.96,
+                                "end": 3.28,
+                                "confidence": 0.9995117,
+                                "language": "es"
+                            },
+                            {
+                                "word": "que",
+                                "start": 3.28,
+                                "end": 3.4399998,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "actualmente",
+                                "start": 3.4399998,
+                                "end": 4.0,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "cuenta",
+                                "start": 4.0,
+                                "end": 4.3199997,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "con",
+                                "start": 4.3199997,
+                                "end": 4.56,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "cobertura",
+                                "start": 4.56,
+                                "end": 5.12,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "integral",
+                                "start": 5.12,
+                                "end": 5.7599998,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "con",
+                                "start": 5.7599998,
+                                "end": 6.0,
+                                "confidence": 0.9550781,
+                                "language": "es"
+                            },
+                            {
+                                "word": "un",
+                                "start": 6.0,
+                                "end": 6.16,
+                                "confidence": 0.99902344,
+                                "language": "es"
+                            },
+                            {
+                                "word": "deducible",
+                                "start": 6.16,
+                                "end": 6.72,
+                                "confidence": 0.9482422,
+                                "language": "es"
+                            },
+                            {
+                                "word": "de",
+                                "start": 6.72,
+                                "end": 6.8799996,
+                                "confidence": 1.0,
+                                "language": "es"
+                            },
+                            {
+                                "word": "quinientos",
+                                "start": 6.8799996,
+                                "end": 7.3599997,
+                                "confidence": 0.9946289,
+                                "language": "es"
+                            },
+                            {
+                                "word": "dólares",
+                                "start": 7.3599997,
+                                "end": 9.36,
+                                "confidence": 0.9970703,
+                                "language": "es"
                             }
                         ]
                     }
@@ -163,6 +296,7 @@ In this response, we see that each channel contains:
   * **transcript**: Transcript for the audio being processed.
   * **confidence**: Floating point value between 0 and 1 that indicates overall transcript reliability. Larger values indicate higher confidence.
   * **languages**: Array of [BCP-47](https://tools.ietf.org/html/bcp47) language tags for all detected languages in the channel, sorted in descending order of number of words per language.
+  * **languages_hinted**: Array of the `language_hint` values for the request, normalized (`ES` → `es`; a regional code the model has no tag for becomes its base language, `en-GB` → `en`). Present on every Nova-3 multilingual response; an empty array when no hint was sent.
   * **words**: Object containing each word in the transcript, along with its start time and end time (in seconds) from the beginning of the audio, a word-level transcription confidence value, the language of the word, and the punctuated word if Smart Formatting is enabled.
 
 ### Streaming Audio
@@ -178,45 +312,70 @@ When streaming audio, a Results JSON message has the following structure:
         0,
         1
     ],
-    "duration": 4.0700073,
-    "start": 464.47,
-    "is_final": True,
-    "speech_final": False,
+    "duration": 2.91,
+    "start": 2.84,
+    "is_final": true,
+    "speech_final": true,
     "channel": {
         "alternatives": [
             {
-                "transcript": "será el inglés muchos",
-                "confidence": 0.937473,
+                "transcript": "veo que actualmente cuenta con cobertura integral",
+                "confidence": 1.0,
                 "languages": [
+                    "es"
+                ],
+                "languages_hinted": [
+                    "en",
                     "es"
                 ],
                 "words": [
                     {
-                        "word": "será",
-                        "start": 465.43,
-                        "end": 465.91,
-                        "confidence": 0.9494371,
+                        "word": "veo",
+                        "start": 2.9199998,
+                        "end": 3.32,
+                        "confidence": 0.97314453,
                         "language": "es"
                     },
                     {
-                        "word": "el",
-                        "start": 465.91,
-                        "end": 466.15,
-                        "confidence": 0.37035784,
+                        "word": "que",
+                        "start": 3.32,
+                        "end": 3.3999999,
+                        "confidence": 1.0,
                         "language": "es"
                     },
                     {
-                        "word": "inglés",
-                        "start": 466.15,
-                        "end": 466.65,
-                        "confidence": 0.416623,
+                        "word": "actualmente",
+                        "start": 3.3999999,
+                        "end": 4.04,
+                        "confidence": 1.0,
                         "language": "es"
                     },
                     {
-                        "word": "muchos",
-                        "start": 467.75,
-                        "end": 468.25,
-                        "confidence": 0.937473,
+                        "word": "cuenta",
+                        "start": 4.04,
+                        "end": 4.3599997,
+                        "confidence": 1.0,
+                        "language": "es"
+                    },
+                    {
+                        "word": "con",
+                        "start": 4.3599997,
+                        "end": 4.52,
+                        "confidence": 1.0,
+                        "language": "es"
+                    },
+                    {
+                        "word": "cobertura",
+                        "start": 4.52,
+                        "end": 5.08,
+                        "confidence": 1.0,
+                        "language": "es"
+                    },
+                    {
+                        "word": "integral",
+                        "start": 5.08,
+                        "end": 5.4799995,
+                        "confidence": 1.0,
                         "language": "es"
                     }
                 ]
@@ -224,16 +383,24 @@ When streaming audio, a Results JSON message has the following structure:
         ]
     },
     "metadata": {
-        "request_id": "84157495-6794-4c45-b12b-95b0aeb8793f",
+        "request_id": "01a15a73-2fe4-7be1-b95b-c3d34f6f3950",
         "model_info": {
-            "name": "2-general-nova",
-            "version": "1999-05-16.19331",
-            "arch": "nova-2"
+            "name": "general-nova-3",
+            "version": "1990-01-01.2",
+            "arch": "nova-3"
         },
-        "model_uuid": "cf62fbcf-2ee4-49ff-a064-d92fc81d27f4"
+        "model_uuid": "60457470-46ba-4b26-8735-fb6853631a05"
     },
-    "from_finalize": False
+    "from_finalize": false
 }
 ```
+
+In this message, `channel.alternatives` contains:
+
+* **transcript**: Transcript for the audio segment.
+* **confidence**: Floating point value between 0 and 1 that indicates overall transcript reliability.
+* **languages**: Array of [BCP-47](https://tools.ietf.org/html/bcp47) language tags for the languages detected in the segment, sorted in descending order of number of words per language.
+* **languages_hinted**: Array of the `language_hint` values set when the connection opened, normalized (`ES` → `es`; a regional code the model has no tag for becomes its base language, `en-GB` → `en`). Present on every interim and final result of a Nova-3 multilingual stream; an empty array when no hint was sent.
+* **words**: Each word in the segment with its start and end time, confidence, and detected `language`.
 
 ---

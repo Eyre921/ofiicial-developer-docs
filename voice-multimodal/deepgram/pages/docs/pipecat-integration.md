@@ -125,9 +125,7 @@ Remove `CARTESIA_API_KEY` from your `.env` file — it is no longer needed. No o
 
 Flux TTS voices use the model string format `flux-{voice}-{language}`, such as `flux-alexis-en`. This differs from the `aura-2-{voice}-{language}` format used by Deepgram's Aura-2 voices. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) to choose a different voice.
 
-> **Warning**
->
-> Flux TTS currently synthesizes English only. If your agent needs another language, use `DeepgramTTSService` with an [Aura-2 voice](/docs/tts-models) instead — Aura-2 covers English, Spanish, German, French, Dutch, Italian, and Japanese.
+Flux TTS speaks English and 41 other languages; the language code at the end of the model string selects the language (`flux-desislava-bg` is Bulgarian).
 
 Continue building by adding a [Pipecat Client](#next-steps)
 
@@ -192,7 +190,7 @@ DEEPGRAM_VOICE_ID=flux-alexis-en
 Replace the placeholder values with your API keys:
 
 * **DEEPGRAM_API_KEY** — from your [Deepgram Console](https://console.deepgram.com/)
-* `DEEPGRAM_VOICE_ID` — the voice your agent speaks with. Choose a [Flux TTS voice](/docs/flux-tts/voices) such as `flux-alexis-en`, or an [Aura-2 voice](/docs/tts-models) if you switched to `DeepgramTTSService`.
+* `DEEPGRAM_VOICE_ID` — the voice your agent speaks with. Choose a [Flux TTS voice](/docs/flux-tts/voices) such as `flux-alexis-en`.
 * **OPENAI_API_KEY** — from your [OpenAI dashboard](https://platform.openai.com/api-keys)
 * **DAILY_API_KEY** — from your [Daily dashboard](https://dashboard.daily.co/u/signup). Daily is the WebRTC transport layer that handles audio between the browser and your agent. See the [Pipecat Daily transport guide](https://docs.pipecat.ai/server/services/transport/daily) for more.
 
@@ -234,7 +232,7 @@ Add a pipecat client for React
 
 ## Go further with Deepgram
 
-* **Voices** — Update `DEEPGRAM_VOICE_ID` in your `.env` file. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) for `flux-{voice}-{language}` voices. If you switched to `DeepgramTTSService` for a non-English language, pick an [Aura-2 voice](/docs/tts-models) instead (`aura-2-{voice}-{language}`).
+* **Voices** — Update `DEEPGRAM_VOICE_ID` in your `.env` file. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) for `flux-{voice}-{language}` voices.
 * **Keyterm prompting** — Improve recognition of domain-specific vocabulary by passing [keyterms](/docs/keyterm) to Nova-3 via the STT service settings.
 * **Speaker diarization** — Assign a speaker identifier to each word in the transcript using [diarization](/docs/diarization) via the STT service settings.
 * **Dynamic STT settings** — Pipecat supports updating Deepgram STT settings without reconnecting. See the [Pipecat Deepgram STT guide](https://docs.pipecat.ai/server/services/stt/deepgram) for details.

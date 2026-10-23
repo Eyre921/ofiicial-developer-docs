@@ -18,7 +18,7 @@ By converting MCP (Anthropic) tool definitions to OpenAI-compatible tool definit
 
 > [!TIP]
 >
-> Building a TypeScript agent? The [`@openrouter/mcp`](/docs/agent-sdk/call-model/mcp-tools) package handles all of this for you — it connects to a remote MCP server, authenticates once, and returns tools you spread directly into `callModel`.
+> Building a TypeScript agent? The [`@openrouter/mcp`](https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools) package handles all of this for you — it connects to a remote MCP server, authenticates once, and returns tools you spread directly into `callModel`.
 
 In this example, we'll use [Anthropic's MCP client SDK](https://github.com/modelcontextprotocol/python-sdk?tab=readme-ov-file#writing-mcp-clients) to interact with the File System MCP, all with OpenRouter under the hood.
 

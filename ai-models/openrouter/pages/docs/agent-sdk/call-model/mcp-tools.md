@@ -20,9 +20,9 @@ path: docs/agent-sdk/call-model/mcp-tools
 
 ## When to use it
 
-Reach for `@openrouter/mcp` when you want to plug an existing MCP server (Linear, GitHub, an internal tool server) into an Agent SDK loop without hand-rolling the protocol. It complements your own [`tool()`](/docs/agent-sdk/call-model/tools) definitions. MCP tools and locally-defined tools can live in the same `tools` array, and the SDK keeps the two apart with a `source` discriminant so your typed tool results stay typed.
+Reach for `@openrouter/mcp` when you want to plug an existing MCP server (Linear, GitHub, an internal tool server) into an Agent SDK loop without hand-rolling the protocol. It complements your own [`tool()`](https://openrouter.ai/docs/agent-sdk/call-model/tools) definitions. MCP tools and locally-defined tools can live in the same `tools` array, and the SDK keeps the two apart with a `source` discriminant so your typed tool results stay typed.
 
-If you only need a hosted MCP server for your editor or coding assistant, see the [OpenRouter MCP server guide](/docs/guides/overview/mcp-server.md) instead.
+If you only need a hosted MCP server for your editor or coding assistant, see the [OpenRouter MCP server guide](https://openrouter.ai/docs/guides/overview/mcp-server.md) instead.
 
 ## Installation
 
@@ -207,7 +207,7 @@ Implement `MCPCacheStore` (a small `get` / `set` / `delete` interface) to back t
 
 ## Streaming, progress, and cancellation
 
-Wrapped MCP tools behave like [generator tools](/docs/agent-sdk/call-model/tools.md#generator-tools). Progress notifications the server emits during a tool call surface as `tool.progress` events on the same streams your own tools use:
+Wrapped MCP tools behave like [generator tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md#generator-tools). Progress notifications the server emits during a tool call surface as `tool.progress` events on the same streams your own tools use:
 
 ```typescript lines theme={null}
 for await (const event of result.getToolStream()) {
@@ -287,7 +287,7 @@ const result = callModel(client, {
 
 ## Related
 
-* [Tools](/docs/agent-sdk/call-model/tools.md), define your own tools with `tool()` and the Zod schema helpers.
-* [Streaming](/docs/agent-sdk/call-model/streaming.md), consume `tool.result` and `tool.progress` events, including the `source` discriminant.
-* [OpenRouter MCP server](/docs/guides/overview/mcp-server.md), the hosted MCP endpoint for your editor or coding assistant.
+* [Tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md), define your own tools with `tool()` and the Zod schema helpers.
+* [Streaming](https://openrouter.ai/docs/agent-sdk/call-model/streaming.md), consume `tool.result` and `tool.progress` events, including the `source` discriminant.
+* [OpenRouter MCP server](https://openrouter.ai/docs/guides/overview/mcp-server.md), the hosted MCP endpoint for your editor or coding assistant.
 

@@ -16,6 +16,8 @@ Dedicated read nodes support dense, sparse, hybrid, and [full-text search](/guid
 
 ![](https://mintcdn.com/pinecone/id0yJFEuv83Kq3F9/images/drn-read-path_light.png?fit=max\&auto=format\&n=id0yJFEuv83Kq3F9\&q=85\&s=d139d1364ec4349c0028f6036769a61a)
 
+Read path for dedicated read nodes
+
 ## On-demand vs. dedicated read nodes
 
 On-demand indexes and dedicated read nodes are both built on Pinecone's serverless infrastructure. They use the same write path, storage layer, and data operations API.
